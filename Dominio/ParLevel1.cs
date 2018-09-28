@@ -6,8 +6,8 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-
-    public partial class ParLevel1
+     
+    public partial class ParLevel1 : BaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLevel1()
@@ -71,12 +71,6 @@ namespace Dominio
         public bool IsFixedEvaluetionNumber { get; set; }
 
         public bool IsLimitedEvaluetionNumber { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

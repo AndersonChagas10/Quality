@@ -39,9 +39,26 @@ namespace SgqSystem.Controllers
         // GET: ParGroupParLevel1XParLevel3/Create
         public ActionResult Create()
         {
-            ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name");
-            ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name");
-            ViewBag.ParLevel3_Id = new SelectList(db.ParLevel3, "Id", "Name");
+            //ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name");
+
+            //ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name");
+
+            //ViewBag.ParLevel3_Id = new SelectList(db.ParLevel3, "Id", "Name");
+
+
+
+            var listaTiposIndicadores = db.ParGroupParLevel1Type.Where(x => x.IsActive).ToList();
+            listaTiposIndicadores.Add(new ParGroupParLevel1Type() { Id = -1, Name = "Selecione" });
+            ViewBag.ParGroupParLevel1Type_Id = new SelectList(listaTiposIndicadores, "Id", "Name", -1);
+
+            var listaIndicador = db.ParLevel1.Where(x => x.IsActive).ToList();
+            listaIndicador.Add(new ParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.ParLevel1_Id = new SelectList(listaIndicador, "Id", "Name", -1);
+
+            var listaTarefa = db.ParLevel3.Where(x => x.IsActive).ToList();
+            listaTarefa.Add(new ParLevel3() { Id = -1, Name = "Selecione" });
+            ViewBag.ParLevel3_Id = new SelectList(listaTarefa, "Id", "Name", -1);
+
             return View();
         }
 
@@ -77,9 +94,21 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name", parGroupParLevel1XParLevel3.ParGroupParLevel1Type_Id);
-            ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel1_Id);
-            ViewBag.ParLevel3_Id = new SelectList(db.ParLevel3, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel3_Id);
+            //ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name", parGroupParLevel1XParLevel3.ParGroupParLevel1Type_Id);
+            //ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel1_Id);
+            //ViewBag.ParLevel3_Id = new SelectList(db.ParLevel3, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel3_Id);
+
+            var listaTiposIndicadores = db.ParGroupParLevel1Type.Where(x => x.IsActive).ToList();
+            listaTiposIndicadores.Add(new ParGroupParLevel1Type() { Id = -1, Name = "Selecione" });
+            ViewBag.ParGroupParLevel1Type_Id = new SelectList(listaTiposIndicadores, "Id", "Name", parGroupParLevel1XParLevel3.ParGroupParLevel1Type_Id);
+
+            var listaIndicador = db.ParLevel1.Where(x => x.IsActive).ToList();
+            listaIndicador.Add(new ParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.ParLevel1_Id = new SelectList(listaIndicador, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel1_Id);
+
+            var listaTarefa = db.ParLevel3.Where(x => x.IsActive).ToList();
+            listaTarefa.Add(new ParLevel3() { Id = -1, Name = "Selecione" });
+            ViewBag.ParLevel3_Id = new SelectList(listaTarefa, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel3_Id);
             return View(parGroupParLevel1XParLevel3);
         }
  

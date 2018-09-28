@@ -10,12 +10,6 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        [Column(TypeName = "datetime2")]
-        public DateTime? AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
-
         [Required(AllowEmptyStrings = true)]
         public byte[] Imagem { get; set; }
 

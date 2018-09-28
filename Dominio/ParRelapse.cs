@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParRelapse")]
-    public partial class ParRelapse
+    public partial class ParRelapse : BaseModel
     {
         public int Id { get; set; }
 
@@ -22,12 +22,6 @@ namespace Dominio
         public int NcNumber { get; set; }
 
         public int EffectiveLength { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

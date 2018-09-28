@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParNotConformityRuleXLevel")]
-    public partial class ParNotConformityRuleXLevel
+    public partial class ParNotConformityRuleXLevel : BaseModel
     {
         public int Id { get; set; }
 
@@ -26,12 +26,6 @@ namespace Dominio
         public int? ParLevel3_Id { get; set; }
 
         public bool? IsReaudit { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

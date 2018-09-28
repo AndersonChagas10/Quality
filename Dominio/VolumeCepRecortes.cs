@@ -6,7 +6,7 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class VolumeCepRecortes
+    public partial class VolumeCepRecortes : BaseModel
     {
         public int Id { get; set; }
 
@@ -44,12 +44,6 @@ namespace Dominio
         public int? Avaliacoes { get; set; }
 
         public int? Amostras { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public int? ParCompany_id { get; set; }
 

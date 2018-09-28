@@ -7,15 +7,9 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLevel1XModule
+    public partial class ParLevel1XModule : BaseModel
     {
         public int Id { get; set; }
-
-        [DisplayName("Indicador")]
-        public int ParLevel1_Id { get; set; }
-
-        [DisplayName("Módulo")]
-        public int? ParModule_Id { get; set; }
 
         [NotMapped]
         [DisplayName("Indicador")]

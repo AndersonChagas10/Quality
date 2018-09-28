@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("EmailContent")]
-    public partial class EmailContent
+    public partial class EmailContent : BaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public EmailContent()
@@ -17,12 +17,6 @@ namespace Dominio
         }
 
         public int Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         public string To { get; set; }

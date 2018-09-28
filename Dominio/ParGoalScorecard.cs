@@ -7,14 +7,9 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParGoalScorecard")]
-    public partial class ParGoalScorecard
+    public partial class ParGoalScorecard : BaseModel
     {
         public int Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AddDate { get; set; }
-
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

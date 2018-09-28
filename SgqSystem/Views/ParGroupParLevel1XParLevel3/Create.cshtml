@@ -87,7 +87,8 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Create" class="btn btn-default" />
+                                                <input type="submit" value="@Resources.Resource.create" class="btn btn-primary" />
+                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>
@@ -111,6 +112,8 @@
             $("#IsActive").prop("checked", true);
 
             $("#ParGroupParLevel1Type_Id").select2();
+            $("#ParLevel1_Idw").select2();
+            $("#ParLevel3_Id").select2();
         });
     </script>
 }
