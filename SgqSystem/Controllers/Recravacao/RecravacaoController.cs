@@ -34,6 +34,7 @@ namespace SgqSystem.Controllers.Recravacao
                 if (itemMenu != null)
                 {
                     var reportXUserSgq = db.ReportXUserSgq
+                        .Include("ItemMenu")
                         .FirstOrDefault(r => r.ItemMenu_Id == itemMenu.Id && r.ParLevel1_Id == indicadorId);
                     reportXUserSgq.CodigoRelatorio = reportXUserSgq.CodigoRelatorio?.Replace("[", "<").Replace("]", ">");
                     ViewBag.ReportXUserSgq = reportXUserSgq;
@@ -52,6 +53,7 @@ namespace SgqSystem.Controllers.Recravacao
                 if (itemMenu != null)
                 {
                     var reportXUserSgq = db.ReportXUserSgq
+                        .Include("ItemMenu")
                         .FirstOrDefault(r => r.ItemMenu_Id == itemMenu.Id && r.ParLevel1_Id == indicadorId);
                     reportXUserSgq.CodigoRelatorio = reportXUserSgq.CodigoRelatorio?.Replace("[", "<").Replace("]", ">");
                     ViewBag.ReportXUserSgq = reportXUserSgq;
