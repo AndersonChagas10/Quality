@@ -13,6 +13,7 @@
         white-space: nowrap;
     }
 </style>
+
 <div class="page-content-wrapper">
     <div class="page-content">
         @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
@@ -29,9 +30,11 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
 
     <script type="text/javascript">
+
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
         var urlGet = '@Html.Raw(@urlGet)';
@@ -39,6 +42,7 @@
         var urlSave = '@Html.Raw(@urlSave)';
         var $btn = $('#btnSend');
         var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
+        var urlEditCabecalho = '@Html.Raw(Url.Action("EditCabecalho", "api/ApontamentosDiarios"))';
 
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -96,6 +100,7 @@
 
                 var Tipo1 = {};
                 var Tipo2 = {};
+
                 if(retornoArray[0].HashKey == 1 || retornoArray[0].HashKey == 5){
 
                     Tipo1 = { title: "@Resources.Resource.sequential", mData: "Sequencial" };
@@ -109,8 +114,9 @@
 
                 var colunas =
                     [
-                        { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button class="btn btn-link custom-button" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible" : regraEdit },
-                        { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
+                        { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button id="edit" class="btn btn-link custom-button" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible": regraEdit },
+                        { title: "@Resources.Resource.edit_header", mData: null, defaultContent: '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit_header" + '</button>', "visible" : regraEdit },
+                        { title: "@Resources.Resource.unit", mData: "Unidade" },
                         { title: "@Resources.Resource.cluster", mData: "Processo" },
                         { title: "@Resources.Resource.shift", mData: "Turno" },
                         { title: "@Resources.Resource.period", mData: "Periodo" },
@@ -178,16 +184,18 @@
                 var initDatatable = function () {
 
                     $('#loading').hide();
+
                     setTimeout(function (e) {
                         var oTable = $('#resultsApontamentos').dataTable();
                         if (oTable.length > 0) {
                             oTable.fnAdjustColumnSizing();
                         }
                     }, 100);
-                    $('#resultsApontamentos tbody').on('click', 'button', function (data, a, b) {
+
+                    $('#resultsApontamentos tbody').on('click', 'button#edit', function (data) {
 
                         var data = table.row($(this).parents('tr')).data();
-                        //console.log(data);
+
                         $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
 
                             $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
@@ -195,12 +203,32 @@
 
                             $('#changeConform').empty();
                             $('#changeConform').append($(r.showGeneric));
+
                             InitiMasksDefaults();
                         });
 
                     });
-                }
 
+                    $('#resultsApontamentos tbody').on('click', 'button#editHeader', function (data) {
+
+                        var data = table.row($(this).parents('tr')).data();
+                        debugger
+
+                        $.post(urlEditCabecalho + "/" + data.ResultLevel3Id , function (r) {
+
+                            console.log(r);
+
+                            //$('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                            //$('#ResultLevel3_Id').val(r.Id);
+
+                            //$('#changeConform').empty();
+                            //$('#changeConform').append($(r));
+
+                            //InitiMasksDefaults();
+                        });
+
+                    });
+                }
 
                 var table = datatableGRT.Inicializar({
                     idTabela: "resultsApontamentos",
@@ -234,6 +262,7 @@
             dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
             dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
             dadosResultLevel3["IsNotEvaluate"] = $('#IsEvaluated').is(':checked');
+
             if ($('#decimal').length)
                 dadosResultLevel3["Value"] = $('#decimal').val() + "x10^" + $('#precisao').val();
             if ($('#numeroDeDefeitos').length)
@@ -272,11 +301,6 @@
                 return false;
             }
 
-            @*if (!(parseInt( $('#level2Id').val().replace(/\D/g, ''), 10) > 0)) {
-                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(@Resources.Resource.select_the_level2)));
-                return false;
-            }*@
-
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
 
@@ -285,9 +309,9 @@
         }
 
         $(document).ready(function () {
+
             formControl.showFullCallendar();
             formControl.showUnit();
-            //formControl.showLevel2();
             formControl.showLevel1();
             formControl.showShift();
 
@@ -298,6 +322,7 @@
 
             //Remove o "Todos" da Unidade
             $("#unitId option[value='']").remove();
+
         });
     </script>
 

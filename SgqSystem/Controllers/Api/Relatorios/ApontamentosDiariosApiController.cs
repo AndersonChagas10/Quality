@@ -66,7 +66,7 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("GetApontamentosDomingo")]
-        public List<ApontamentosDiariosDomingoResultSet> GetApontamentosDomingo ([FromBody] FormularioParaRelatorioViewModel form)
+        public List<ApontamentosDiariosDomingoResultSet> GetApontamentosDomingo([FromBody] FormularioParaRelatorioViewModel form)
         {
 
             CommonLog.SaveReport(form, "Report_Apontamentos_Diarios");
@@ -102,7 +102,7 @@ namespace SgqSystem.Controllers.Api
                 db.Database.ExecuteSqlCommand(query);
                 var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);
                 ConsolidacaoEdicao(resultLevel3.Id);
-                //db.Database.ExecuteSqlCommand(queryLevel2);
+
             }
             catch (System.Exception e)
             {
@@ -123,27 +123,6 @@ namespace SgqSystem.Controllers.Api
             var retorno = db.CollectionLevel2.Where(r => r.ParLevel1_Id == level1).Include("Result_Level3").Include("Result_Level3.ParlLevel3").ToList();
             return retorno;
 
-
-
-            ////var query = "select * from Result_Level3 where CollectionLevel2_Id = "+id+" and IsConform = 0";
-            //var list = new List<Result_Level3>();
-            //List<CollectionLevel2> collectionL2 = db.CollectionLevel2.Where(r => r.ParLevel1_Id == level1 && r.Shift == shift && r.Period == period && 
-            //  DbFunctions.TruncateTime(r.CollectionDate)== date).ToList();
-
-            //foreach (var col in collectionL2)
-            //{
-            //    var result = db.Result_Level3.Where(r => r.CollectionLevel2_Id == col.Id && r.IsConform == false).ToList();
-            //    //var item = Mapper.Map<List<Result_Level3>>(result);
-            //    foreach (var res in result) {
-            //        var obj = JsonConvert.SerializeObject(res, Formatting.Indented,new JsonSerializerSettings {
-            //            ReferenceLoopHandling = ReferenceLoopHandling.Serialize});
-            //        list.Add(res);
-            //    }
-            //}
-
-            ////var lista = Newtonsoft.Json.JsonConvert.SerializeObject(list);
-
-            //return list;
         }
 
         public void ConsolidacaoEdicao(int id)
@@ -205,7 +184,7 @@ namespace SgqSystem.Controllers.Api
                 isQueryEdit = true;
                 GetDataToEdit();
 
-                if (string.IsNullOrEmpty(Value) || Value.Substring(0,1) == "x")
+                if (string.IsNullOrEmpty(Value) || Value.Substring(0, 1) == "x")
                 {
                     using (var databaseSgq = new SgqDbDevEntities())
                     {
@@ -962,7 +941,7 @@ namespace SgqSystem.Controllers.Api
                                     return mountHtmlIntervalos();
                                 else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 4).IsNotNull())
                                     return mountHtmlCalculado();
-                                else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 5 )).IsNotNull())
+                                else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 5)).IsNotNull())
                                     return mountHtmlTexto();
                             }
                             else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull())
@@ -982,5 +961,105 @@ namespace SgqSystem.Controllers.Api
 
         }
 
+        [HttpPost]
+        [Route("EditCabecalho/{ResultLevel3_Id}")]
+        public List<Select> EditCabecalho(int ResultLevel3_Id)
+        {
+            return getSelects(ResultLevel3_Id);
+        }
+
+        public class Select
+        {
+            public ParHeaderField HeaderField { get; set; }
+            public List<ParMultipleValues> Values { get; set; }
+            public string ValueSelected { get; set; }
+        }
+
+        public class ParLevels
+        {
+            public int ParLevel1_Id { get; set; }
+            public int ParLevel2_Id { get; set; }
+        }
+
+        public List<Select> getSelects(int ResultLevel3_Id)
+        {
+            //pegar os cabeçalhos
+            var resultHeaderField = new List<Select>();
+            var Levels = getLevels(ResultLevel3_Id);
+            var ParLevel1_Id = Levels.ParLevel1_Id;
+            var ParLevel2_Id = Levels.ParLevel2_Id;
+
+            var query = $@"SELECT *
+            FROM CollectionLevel2XParHeaderField
+            WHERE CollectionLevel2_Id IN (SELECT
+            		Id
+            	FROM CollectionLevel2
+            	WHERE id IN (SELECT
+            			CollectionLevel2_Id
+            		FROM Result_Level3
+            		WHERE id = { ResultLevel3_Id }))";
+
+            var coletas = db.Database.SqlQuery<CollectionLevel2XParHeaderField>(query).ToList();
+
+            //Ids dos cabeçalhos que não fazem parte do Monitoramento
+            var headerFields_IdNot = db.ParLevel2XHeaderField.Where(r => r.ParLevel1_Id == ParLevel1_Id && r.ParLevel2_Id == ParLevel2_Id && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
+
+            //Ids dos cabeçalhos válidos
+            var headerFields_Ids = db.ParLevel1XHeaderField.Where(r => r.ParLevel1_Id == ParLevel1_Id && !headerFields_IdNot.Contains(r.ParHeaderField_Id) && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
+
+            //Seleciona os cabeçalhos
+            var headerFields = db.ParHeaderField.Where(r => headerFields_Ids.Contains(r.Id));
+
+            var values = db.ParMultipleValues.ToList();
+
+            foreach (var headerField in headerFields)
+            {
+                var select = new Select();
+
+                //Atribui o campo de cabeçalho
+                select.HeaderField = headerField;
+
+                //pegar values dos campos de cabeçalho
+                select.Values = values.Where(r => r.ParHeaderField_Id == headerField.Id).ToList();
+
+                //Atribui o selecionado
+                //Se tiver mais do que um valor duplica a inserção
+                var resultados = coletas.Where(r => r.ParHeaderField_Id == headerField.Id).ToList();
+
+                //Quantidades de campos coletados
+                if (resultados.Count > 0)
+                {
+                    foreach (var resultado in resultados)
+                    {
+                        //Atribui a quantidade de cabeçalhos
+                        select.ValueSelected = resultado.Value;
+                        resultHeaderField.Add(select);
+                    }
+                }
+                else
+                {
+                    //Somente atribui sem valor selecionado
+                    resultHeaderField.Add(select);
+                }
+            }
+
+            //pegar os valor que está selecionado
+            return resultHeaderField;
+        }
+
+        public ParLevels getLevels(int ResultLevel3_Id)
+        {
+
+            var query = $@"SELECT
+                    	ParLevel1_Id
+                       ,ParLevel2_Id
+                    FROM CollectionLevel2
+                    WHERE id = (SELECT
+                    		CollectionLevel2_Id
+                    	FROM Result_Level3
+                    	WHERE id = {ResultLevel3_Id})";
+
+            return db.Database.SqlQuery<ParLevels>(query).FirstOrDefault();
+        }
     }
 }
