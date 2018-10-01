@@ -2199,4 +2199,7 @@
   <data name="update" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="indicator_in_use" xml:space="preserve">
+    <value>This Indicator already have link on the selected date.</value>
+  </data>
 </root>

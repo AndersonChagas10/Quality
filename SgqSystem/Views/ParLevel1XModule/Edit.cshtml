@@ -54,7 +54,8 @@
                                                 @*@Html.HiddenFor(model => model.ParLevel1_Id)*@
                                             </div>
                                             <div class="col-md-10 col-md-offset-2">
-                                                @Html.ValidationMessageFor(model => model.ParLevel1_IdHelper, "", new { @class = "text-danger" })
+                                                @Html.ValidationMessageFor(model => model.ParLevel1_IdHelper, "", new { @class = "text-danger", @style = "width:275px" })
+                                                @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger", @style = "width:275px" })
                                             </div>
                                         </div>
 

@@ -162,6 +162,7 @@ namespace SgqSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ModelState.AddModelError("ParLevel1_Id", Resources.Resource.indicator_in_use);
             var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
             var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
             ViewBag.Indicadores = listaIndicadores;
@@ -274,8 +275,8 @@ namespace SgqSystem.Controllers
                 //nova verificação
                 isNotValid = db.ParLevel1XModule
                     .Any(x => x.ParModule_Id == parLevel1XModule.ParModule_Id && x.ParLevel1_Id == indicadorId
-                    && ((x.EffectiveDateStart < parLevel1XModule.EffectiveDateStart && x.EffectiveDateEnd > x.EffectiveDateStart)
-                    || (x.EffectiveDateStart < parLevel1XModule.EffectiveDateEnd && x.EffectiveDateEnd > parLevel1XModule.EffectiveDateEnd)
+                    && ((x.EffectiveDateStart <= parLevel1XModule.EffectiveDateStart && x.EffectiveDateEnd >= x.EffectiveDateStart)
+                    || (x.EffectiveDateStart <= parLevel1XModule.EffectiveDateEnd && x.EffectiveDateEnd >= parLevel1XModule.EffectiveDateEnd)
                     || (parLevel1XModule.EffectiveDateStart < x.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd > x.EffectiveDateStart)));
             }
 

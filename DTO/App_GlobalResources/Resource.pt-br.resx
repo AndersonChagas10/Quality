@@ -2190,4 +2190,7 @@
   <data name="String1" xml:space="preserve">
     <value>Atualizar</value>
   </data>
+  <data name="indicator_in_use" xml:space="preserve">
+    <value>Este indicador já possui um vinculo na data selecionada.</value>
+  </data>
 </root>
