@@ -12,6 +12,13 @@
 
 <br />
 
+<style>
+    /*#TabelaDespesaTodasRegionais {
+        margin: 0 auto !important;
+        width: 50% !important;  Valor da Largura 
+    }*/
+</style>
+
 @if (Model.Title != null)
 {
     if (Model.Title.Length > 0)
@@ -77,7 +84,7 @@
                         <tr>
                             @foreach (var i in Model.trsCabecalho2)
                             {
-                                <td onclick="@Model.CallBackTableTituloColunas" dado1="@i.name" align="center" style="height:30px; min-width:40px; background-color: #DDDDDD;" colspan="4">
+                                <td onclick="@Model.CallBackTableTituloColunas" dado1="@i.name" title="@i.title" data-html="true" data-toggle="tooltip" align="center" style="height:30px; min-width:40px; background-color: #DDDDDD;" colspan="4">
                                     <b>@i.name</b>
                                 </td>
                             }
@@ -226,6 +233,9 @@
 
 <script>
 
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip(options);
+    });
 
     function scroolTable (container){
 

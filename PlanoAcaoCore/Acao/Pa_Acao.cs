@@ -5,6 +5,7 @@ using PlanoAcaoCore.Acao;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 
 namespace PlanoAcaoCore
@@ -55,6 +56,22 @@ namespace PlanoAcaoCore
         [Display(Name = "Pra que")]
         public string PraQue { get; set; }
 
+        [Display(Name = "Unidade de medida")]
+        public int UnidadeDeMedida_Id { get; set; }
+        public Pa_UnidadeMedida _UnidadeDeMedida_Id
+        {
+            get
+            {
+                if (UnidadeDeMedida_Id > 0)
+                {
+                    var unidade = Pa_UnidadeMedida.Get(UnidadeDeMedida_Id);
+                    return unidade;
+                }
+                else
+                    return new Pa_UnidadeMedida();
+            }
+        }
+
         [Display(Name = "Quanto custa")]
         public decimal QuantoCusta { get; set; }
         public string _QuantoCusta { get; set; }
@@ -83,7 +100,7 @@ namespace PlanoAcaoCore
         public int CausaGenerica_Id { get; set; }
         public string _CausaGenerica { get; set; }
 
-        [Display(Name = "Contramedida Genérica")]
+        [Display(Name = "Ação Genérica")]
         public int ContramedidaGenerica_Id { get; set; }
         public string _ContramedidaGenerica { get; set; }
 
@@ -94,7 +111,7 @@ namespace PlanoAcaoCore
         [Display(Name = "Causa Especifica")]
         public string CausaEspecifica { get; set; }
 
-        [Display(Name = "Contramedida Especifica")]
+        [Display(Name = "Ação Especifica")]
         public string ContramedidaEspecifica { get; set; }
 
         [Display(Name = "Indicador")]
@@ -113,6 +130,7 @@ namespace PlanoAcaoCore
         public string Regional { get; set; }
 
         public int TipoIndicador { get; set; }
+        public string TipoIndicadorName { get; set; }
 
         public string _QuandoFimData
         {
@@ -189,85 +207,48 @@ namespace PlanoAcaoCore
                     if (_StatusName.Contains("Concluido") || _StatusName.Contains("Concluído") || _StatusName.Contains("Cancelado"))
                         return "Finalizado";
 
-                var agora = DateTime.Now;
-                if (QuandoFim > agora)
-                    return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
-                else if (QuandoFim < agora)
-                    return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
+                var agora = DateTime.Now.Date;
+                //if (QuandoFim >= agora && QuandoFim <= agora)
+                return string.Format("{0} Dias", Math.Round((QuandoFim.Date - agora).TotalDays));
 
-                return string.Empty;
+                //return string.Empty;
             }
         }
 
         public void IsValid()
         {
+            Pa_Status status;
+
+            var dataInicio = this._QuandoInicio == null ? DateTime.Now : DateTime.ParseExact(this._QuandoInicio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
             if (Id <= 0)
             {
-                Pa_Status status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Em Andamento"));
+                
+                if (dataInicio.Date > DateTime.Now.Date)
+                {
+                    status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Não iniciado"));
+                }
+                else
+                {
+                    status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Em Andamento"));
+                }
 
                 Status = status.Id;
-                //StatusName = status.Name;
             }
             else
             {
+
+                if (dataInicio.Date > DateTime.Now.Date)
+                {
+                    status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Não iniciado"));
+
+                    Status = status.Id;
+                }
+
                 var old = Pa_Acao.Get(Id);
                 Panejamento_Id = old.Panejamento_Id;
 
-
-
             }
-
-            //if (Pa_IndicadorSgqAcao_Id <= 0)
-            //    message += "\n Indicador Operacional,";
-
-            //if (Pa_Problema_Desvio_Id <= 0 || Pa_Problema_Desvio_Id == null)
-            //    message += "\n Problema ou Desvio,";
-
-            //if (AcaoXQuem != null)
-            //{
-            //    foreach (var i in AcaoXQuem)
-            //        if (i.Quem_Id <= 0)
-            //            message = "\n Quem,";
-            //}
-            //else
-            //    message = "\n Quem,";
-
-            //if (CausaMedidasXAcao == null)
-            //    CausaMedidasXAcao = new Pa_CausaMedidasXAcao();
-
-            //if (CausaMedidasXAcao.CausaGenerica_Id <= 0)
-            //    message += "\n Causa generica,";
-
-            //if (CausaMedidasXAcao.GrupoCausa_Id <= 0)
-            //    message += "\n Grupo causa,";
-
-            //if (CausaMedidasXAcao.ContramedidaGenerica_Id <= 0)
-            //    message += "\n Contramedida generica,";
-
-            //if (string.IsNullOrEmpty(CausaMedidasXAcao._CausaEspecifica))
-            //    message += "\n Causa Específica,";
-
-            //if (string.IsNullOrEmpty(CausaMedidasXAcao._ContramedidaEspecifica))
-            //    message += "\n Contramedida Específica,";
-
-            //if (string.IsNullOrEmpty(_QuandoInicio))
-            //    message += "\n Quando início,";
-
-            //if (string.IsNullOrEmpty(_QuandoFim))
-            //    message += "\n Quando fim,";
-
-            //if (string.IsNullOrEmpty(ComoPontosimportantes))
-            //    message += "\n Como pontos importantes,";
-
-            //if (string.IsNullOrEmpty(PraQue))
-            //    message += "\n Pra que,";
-
-            //if (string.IsNullOrEmpty(_QuantoCusta))
-            //    message += "\n Quanto custa,";
-
-            //if (Status <= 0)
-            //    message += "\n Status,";
 
             VerificaMensagemCamposObrigatorios(message);
 
@@ -275,8 +256,18 @@ namespace PlanoAcaoCore
 
             //throw new Exception("treste");
             if (_QuantoCusta != null)
-                QuantoCusta = NumericExtensions.CustomParseDecimal(_QuantoCusta).GetValueOrDefault();
-
+            {
+                if (UnidadeDeMedida_Id == 1)
+                {
+                    QuantoCusta = NumericExtensions.CustomParseDecimal(_QuantoCusta.Replace("R$ ","")).GetValueOrDefault();
+                }
+                else
+                {
+                    QuantoCusta = decimal.Parse(_QuantoCusta.Replace(".",","));
+                }
+                
+            }
+                
             if (!string.IsNullOrEmpty(_QuandoFim))
                 QuandoFim = Guard.ParseDateToSqlV2(_QuandoFim, Guard.CultureCurrent.BR);
             else
@@ -297,7 +288,7 @@ namespace PlanoAcaoCore
         {
             get
             {
-                return " \n SELECT TOP 200 ACAO.* ,                                                           " +
+                return " \n SELECT ACAO.* ,                                                           " +
                         " \n STA.Name as _StatusName,                                                           " +
                         " \n UN.Name as _Unidade,                                                               " +
                         " \n DPT.Name as _Departamento,                                                         " +
@@ -344,6 +335,8 @@ namespace PlanoAcaoCore
             //retorno.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(retorno.Id);
             retorno._QuandoInicio = retorno.QuandoInicio.ToShortDateString() + " " + retorno.QuandoInicio.ToShortTimeString();
             retorno._QuandoFim = retorno.QuandoFim.ToShortDateString() + " " + retorno.QuandoFim.ToShortTimeString();
+            //retorno._QuandoInicio = retorno.QuandoInicio.ToShortDateString();
+            //retorno._QuandoFim = retorno.QuandoFim.ToShortDateString();
 
             using (var dbSgq = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {
@@ -356,13 +349,13 @@ namespace PlanoAcaoCore
                 }
                 if (retorno.Level2Id != null && retorno.Level2Id > 0)
                 {
-                    dynamic level2 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel2 WHERE ID = " + retorno.Level1Id).FirstOrDefault();
+                    dynamic level2 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel2 WHERE ID = " + retorno.Level2Id).FirstOrDefault();
                     if (level2 != null)
                         retorno._Level2 = level2.Name;
                 }
                 if (retorno.Level3Id != null && retorno.Level3Id > 0)
                 {
-                    dynamic level3 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel3 WHERE ID = " + retorno.Level1Id).FirstOrDefault();
+                    dynamic level3 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel3 WHERE ID = " + retorno.Level3Id).FirstOrDefault();
                     if (level3 != null)
                         retorno._Level3 = level3.Name;
                 }

@@ -18,7 +18,7 @@ namespace PlanoAcaoCore
 
         public static List<Pa_Indicadores> Listar()
         {
-            var query = "SELECT * FROM Pa_Indicadores";
+            var query = "SELECT * FROM Pa_Indicadores WHERE IsActive = 1";
             return ListarGenerico<Pa_Indicadores>(query);
         }
 

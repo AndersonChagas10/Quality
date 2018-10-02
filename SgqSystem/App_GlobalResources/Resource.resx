@@ -139,7 +139,7 @@
     <value>Home</value>
   </data>
   <data name="jbs_and_grt_aplication" xml:space="preserve">
-    <value>JBS and GRT Application</value>
+    <value>GRT Application</value>
   </data>
   <data name="login" xml:space="preserve">
     <value>Login</value>
@@ -181,7 +181,7 @@
     <value>Shift</value>
   </data>
   <data name="unit" xml:space="preserve">
-    <value>Unit</value>
+    <value>Plant</value>
   </data>
   <data name="april" xml:space="preserve">
     <value>April</value>
@@ -718,7 +718,7 @@
     <value>CEP Desossa</value>
   </data>
   <data name="cep_recortes" xml:space="preserve">
-    <value>CEP Recortes</value>
+    <value>CEP Matéria Prima</value>
   </data>
   <data name="nqa" xml:space="preserve">
     <value>NQA</value>
@@ -735,7 +735,7 @@
   <data name="resource_id" xml:space="preserve">
     <value>en_us</value>
   </data>
-  <data name="_new" xml:space="preserve">
+  <data name="_novo" xml:space="preserve">
     <value>New</value>
   </data>
   <data name="details" xml:space="preserve">
@@ -856,7 +856,7 @@
     <value>Change the password</value>
   </data>
   <data name="do_not_change_password" xml:space="preserve">
-    <value>Not change password</value>
+    <value>Cancel</value>
   </data>
   <data name="fullname" xml:space="preserve">
     <value>Fullname</value>
@@ -1159,13 +1159,13 @@
     <value>The acceptable value should be equal ou greater than</value>
   </data>
   <data name="acceptable_value_less_than" xml:space="preserve">
-    <value>The acceptable value should be less than</value>
+    <value>The acceptable value should  be equal ou less than</value>
   </data>
   <data name="and" xml:space="preserve">
     <value>and</value>
   </data>
   <data name="and_greater_than" xml:space="preserve">
-    <value>e maior que</value>
+    <value>And greater than</value>
   </data>
   <data name="cluster_can_not_be_duplicated" xml:space="preserve">
     <value>Cluster can not be duplicated</value>
@@ -1327,7 +1327,7 @@
     <value>Data collection execution and action plan</value>
   </data>
   <data name="general_view_of_the_area" xml:space="preserve">
-    <value>Area Overview</value>
+    <value>General view of the area</value>
   </data>
   <data name="indicators_evolution" xml:space="preserve">
     <value>Indicators evolution</value>
@@ -1474,7 +1474,7 @@
     <value>Sign</value>
   </data>
   <data name="slaughter_signature" xml:space="preserve">
-    <value>Slaughter signature</value>
+    <value>Department signature</value>
   </data>
   <data name="technical_signature" xml:space="preserve">
     <value>Technical signature</value>
@@ -1894,7 +1894,7 @@
     <value>Last</value>
   </data>
   <data name="insert_slaughter_signature" xml:space="preserve">
-    <value>Insert Slaughter Signature</value>
+    <value>Insert Department Signature</value>
   </data>
   <data name="insert_technical_signature" xml:space="preserve">
     <value>Insert Technical Signature</value>
@@ -2118,13 +2118,532 @@
   <data name="do_you_want_to_create_an_anomaly_treatment_form" xml:space="preserve">
     <value>Do you want to create an anomaly treatment form?</value>
   </data>
-  <data name="photo" xml:space="preserve">
-    <value>Photo</value>
+  <data name="criticalLevelDepartment" xml:space="preserve">
+    <value>Department</value>
   </data>
-  <data name="latitude" xml:space="preserve">
-    <value>Latitude</value>
+  <data name="fromLevel1" xml:space="preserve">
+    <value>from Level 1</value>
   </data>
-  <data name="longitude" xml:space="preserve">
-    <value>Longitude</value>
+  <data name="fromLevel2" xml:space="preserve">
+    <value>from Level 2</value>
+  </data>
+  <data name="fromUnit" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="level1Non_Conformities" xml:space="preserve">
+    <value>Level 1 % Non-conformities</value>
+  </data>
+  <data name="level1Results" xml:space="preserve">
+    <value>Level 1 Results</value>
+  </data>
+  <data name="level1Status" xml:space="preserve">
+    <value>Level 1 Status</value>
+  </data>
+  <data name="level2Non_Conformities" xml:space="preserve">
+    <value>Level 2 % Non-conformities</value>
+  </data>
+  <data name="level2Results" xml:space="preserve">
+    <value>Level 2 Results</value>
+  </data>
+  <data name="level3Non_Conformities" xml:space="preserve">
+    <value>Level 3 % Non-conformities</value>
+  </data>
+  <data name="level3Results" xml:space="preserve">
+    <value>Level 2 Results</value>
+  </data>
+  <data name="percentNon_conformities" xml:space="preserve">
+    <value>% Non-conformities</value>
+  </data>
+  <data name="perUnit" xml:space="preserve">
+    <value>per Plant</value>
+  </data>
+  <data name="structure" xml:space="preserve">
+    <value>Regional</value>
+  </data>
+  <data name="listOf" xml:space="preserve">
+    <value>List of</value>
+  </data>
+  <data name="could_not_fetch_data" xml:space="preserve">
+    <value>Could not fetch data</value>
+  </data>
+  <data name="history" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="list_results" xml:space="preserve">
+    <value>List Results</value>
+  </data>
+  <data name="non_conformities_in_period" xml:space="preserve">
+    <value>Non-Conformities in Period</value>
+  </data>
+  <data name="concluded_actions" xml:space="preserve">
+    <value>Concluded Actions</value>
+  </data>
+  <data name="consolidated_history" xml:space="preserve">
+    <value>Consolidated History</value>
+  </data>
+  <data name="final_date" xml:space="preserve">
+    <value>Final date</value>
+  </data>
+  <data name="general_cause" xml:space="preserve">
+    <value>General Cause</value>
+  </data>
+  <data name="generic_countermeasure" xml:space="preserve">
+    <value>Generic Countermeasure</value>
+  </data>
+  <data name="group_cause" xml:space="preserve">
+    <value>Group Cause</value>
+  </data>
+  <data name="level1_history" xml:space="preserve">
+    <value>Level 1 History</value>
+  </data>
+  <data name="level1_porc_non_conform_evo" xml:space="preserve">
+    <value>Level 1 % non-conformities evolutional</value>
+  </data>
+  <data name="level2_history" xml:space="preserve">
+    <value>Level 2 History</value>
+  </data>
+  <data name="level2_porc_non_conform_evo" xml:space="preserve">
+    <value>Level 2 % non-conformities evolutional</value>
+  </data>
+  <data name="level3_history" xml:space="preserve">
+    <value>Level 3 History</value>
+  </data>
+  <data name="level3_porc_non_conform_evo" xml:space="preserve">
+    <value>Level 3 % non-conformities evolutional</value>
+  </data>
+  <data name="number_of_shares" xml:space="preserve">
+    <value>Number of Shares</value>
+  </data>
+  <data name="off_goal" xml:space="preserve">
+    <value>Off Goal</value>
+  </data>
+  <data name="there_are_no_data_for_this_indicador_unit" xml:space="preserve">
+    <value>There are no data for this Level / Unit</value>
+  </data>
+  <data name="who" xml:space="preserve">
+    <value>Who</value>
+  </data>
+  <data name="within_goal" xml:space="preserve">
+    <value>Within Goal</value>
+  </data>
+  <data name="defects_per_deparment" xml:space="preserve">
+    <value>Defects per Departments</value>
+  </data>
+  <data name="next_unfolding" xml:space="preserve">
+    <value>Next Unfolding</value>
+  </data>
+  <data name="new_cluster_group" xml:space="preserve">
+    <value>New Cluster Group</value>
+  </data>
+  <data name="include_information" xml:space="preserve">
+    <value>Include Information Text</value>
+  </data>
+  <data name="fill_the_name" xml:space="preserve">
+    <value>Fill the Name</value>
+  </data>
+  <data name="fill_the_description" xml:space="preserve">
+    <value>Fill the Description</value>
+  </data>
+  <data name="show_scorecard" xml:space="preserve">
+    <value>Active in scorecard</value>
+  </data>
+  <data name="value_is_acceptable_greater" xml:space="preserve">
+    <value>the value is acceptable greater than</value>
+  </data>
+  <data name="textHomeColeta" xml:space="preserve">
+    <value />
+  </data>
+  <data name="textHomeGestao" xml:space="preserve">
+    <value />
+  </data>
+  <data name="textHomeParams" xml:space="preserve">
+    <value />
+  </data>
+  <data name="error_upper" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="processing_upper" xml:space="preserve">
+    <value>PROCESSING</value>
+  </data>
+  <data name="select_all" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="success_upper" xml:space="preserve">
+    <value>SUCCESS</value>
+  </data>
+  <data name="update_selected_units" xml:space="preserve">
+    <value>Update selected units</value>
+  </data>
+  <data name="waiting_upper" xml:space="preserve">
+    <value>WAITING</value>
+  </data>
+  <data name="use_active_directory" xml:space="preserve">
+    <value>Use AD (Active Directory)</value>
+  </data>
+  <data name="products" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="include_integrations" xml:space="preserve">
+    <value>Include system integrations</value>
+  </data>
+  <data name="edit_header" xml:space="preserve">
+    <value>Edit header</value>
+  </data>
+  <data name="advanced_itens" xml:space="preserve">
+    <value>Advanced items</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Pl1ShowInTablet" xml:space="preserve">
+    <value>Show in Tablet</value>
+  </data>
+  <data name="IsRecravacao" xml:space="preserve">
+    <value>Is Recravacao</value>
+  </data>
+  <data name="IsPointLess" xml:space="preserve">
+    <value>A tarefa se repete a cada numero de pontos  da lata na Recravação</value>
+  </data>
+  <data name="AllowNA" xml:space="preserve">
+    <value>Allow not avaliable</value>
+  </data>
+  <data name="OrderColumn" xml:space="preserve">
+    <value>Order in data aquisition list</value>
+  </data>
+  <data name="sampleInterval" xml:space="preserve">
+    <value>Sample Interval</value>
+  </data>
+  <data name="allow_the_edition_of_the_evaluation_number_popover" xml:space="preserve">
+    <value>Edit evaluation/sample</value>
+  </data>
+  <data name="hascompleteevaluation_popover" xml:space="preserve">
+    <value>Complete Evaluation is Required</value>
+  </data>
+  <data name="has_edit_level2_popover" xml:space="preserve">
+    <value>Level2 edition</value>
+  </data>
+  <data name="has_group_level2_popover" xml:space="preserve">
+    <value>Level 3 Grouped By Level 2</value>
+  </data>
+  <data name="isPartialSave_popover" xml:space="preserve">
+    <value>Is partial save</value>
+  </data>
+  <data name="level1_children_popover" xml:space="preserve">
+    <value>Level1 Children</value>
+  </data>
+  <data name="limited_number_of_evaluations_popover" xml:space="preserve">
+    <value>Limited number of evaluations</value>
+  </data>
+  <data name="n" xml:space="preserve">
+    <value>N</value>
+  </data>
+  <data name="register_total_evaluated_popover" xml:space="preserve">
+    <value>Register Total Evaluated</value>
+  </data>
+  <data name="show_scorecard_popover" xml:space="preserve">
+    <value>Active in scorecard</value>
+  </data>
+  <data name="take_photo_popover" xml:space="preserve">
+    <value>Take photo</value>
+  </data>
+  <data name="y" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="effectiveDate" xml:space="preserve">
+    <value>Effective Date</value>
+  </data>
+  <data name="actives" xml:space="preserve">
+    <value>Actives</value>
+  </data>
+  <data name="active_clusters" xml:space="preserve">
+    <value>Active Clusters</value>
+  </data>
+  <data name="active_goals" xml:space="preserve">
+    <value>Active Goals</value>
+  </data>
+  <data name="to_manager" xml:space="preserve">
+    <value>To Manager</value>
+  </data>
+  <data name="without" xml:space="preserve">
+    <value>Without</value>
+  </data>
+  <data name="description_has_between_1_and_300" xml:space="preserve">
+    <value>Description has to be between 1 and 300 characters</value>
+  </data>
+  <data name="apartmentarea" xml:space="preserve">
+    <value>Apartment/Area</value>
+  </data>
+  <data name="check_sheet_per_work" xml:space="preserve">
+    <value>Check sheet for work</value>
+  </data>
+  <data name="construction" xml:space="preserve">
+    <value>construction</value>
+  </data>
+  <data name="data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="defects_per_monitoring_at_tasks" xml:space="preserve">
+    <value>Defects per monitoring at tasks</value>
+  </data>
+  <data name="evolutionary_chart_by_company" xml:space="preserve">
+    <value>Evolutionary Chart by Company</value>
+  </data>
+  <data name="last_two_months_of_the_selected_period" xml:space="preserve">
+    <value>Last two months of the selected period</value>
+  </data>
+  <data name="pavement" xml:space="preserve">
+    <value>Pavement</value>
+  </data>
+  <data name="performance_of_regions_on_Scorecard" xml:space="preserve">
+    <value>Performance of regions on Scorecard</value>
+  </data>
+  <data name="performance_of_units_on_Scorecard" xml:space="preserve">
+    <value>Performance of units on Scorecard</value>
+  </data>
+  <data name="platform" xml:space="preserve">
+    <value>Platform</value>
+  </data>
+  <data name="real" xml:space="preserve">
+    <value>Real</value>
+  </data>
+  <data name="rooms" xml:space="preserve">
+    <value>Rooms</value>
+  </data>
+  <data name="total_nonconformity_by_monitoring" xml:space="preserve">
+    <value>Total nonconformity By Monitoring</value>
+  </data>
+  <data name="towersuburb" xml:space="preserve">
+    <value>Tower/Suburb</value>
+  </data>
+  <data name="type_of_pavement" xml:space="preserve">
+    <value>Type of pavement</value>
+  </data>
+  <data name="weighted" xml:space="preserve">
+    <value>Weighted</value>
+  </data>
+  <data name="conform2" xml:space="preserve">
+    <value>Conform</value>
+  </data>
+  <data name="edited" xml:space="preserve">
+    <value>Edited</value>
+  </data>
+  <data name="normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="retroactive" xml:space="preserve">
+    <value>Retroactive</value>
+  </data>
+  <data name="indicators_regionals" xml:space="preserve">
+    <value>Indicators by Regionals</value>
+  </data>
+  <data name="packages_regional" xml:space="preserve">
+    <value>Packages by Regional</value>
+  </data>
+  <data name="packages_unit" xml:space="preserve">
+    <value>Unit Packages</value>
+  </data>
+  <data name="per_unit_indicators" xml:space="preserve">
+    <value>Per Unit Indicators</value>
+  </data>
+  <data name="module" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="counter_name" xml:space="preserve">
+    <value>Counter Name</value>
+  </data>
+  <data name="conclued_plan_action" xml:space="preserve">
+    <value>Conclued action plan.</value>
+  </data>
+  <data name="among_others" xml:space="preserve">
+    <value>among others ...</value>
+  </data>
+  <data name="ev_with_weight" xml:space="preserve">
+    <value>Ev With Weight</value>
+  </data>
+  <data name="nc_with_weight" xml:space="preserve">
+    <value>Nc WithWeight</value>
+  </data>
+  <data name="back_to_departments" xml:space="preserve">
+    <value>Back to Departments</value>
+  </data>
+  <data name="unit_of_measurement_name" xml:space="preserve">
+    <value>Unit of Measurement Name</value>
+  </data>
+  <data name="bigger" xml:space="preserve">
+    <value>Bigger</value>
+  </data>
+  <data name="smaller" xml:space="preserve">
+    <value>Smaller</value>
+  </data>
+  <data name="indicators_by_units" xml:space="preserve">
+    <value>Indicators by Units</value>
+  </data>
+  <data name="back_to_unit_of_measurement" xml:space="preserve">
+    <value>Back to Unit of Measurement</value>
+  </data>
+  <data name="level1Group" xml:space="preserve">
+    <value>Functions</value>
+  </data>
+  <data name="minutes" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="minutes_initials" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="config" xml:space="preserve">
+    <value>Config</value>
+  </data>
+  <data name="config_global" xml:space="preserve">
+    <value>Config Global</value>
+  </data>
+  <data name="equipments" xml:space="preserve">
+    <value>Equipments</value>
+  </data>
+  <data name="parameterization_email_alert" xml:space="preserve">
+    <value>Parameterization Email Alert</value>
+  </data>
+  <data name="String2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="update_tablet_screen" xml:space="preserve">
+    <value>Update Parameterization</value>
+  </data>
+  <data name="new_binary_input_type" xml:space="preserve">
+    <value>New - Binary Input Type</value>
+  </data>
+  <data name="typification_check" xml:space="preserve">
+    <value>Typification Check</value>
+  </data>
+  <data name="notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="delete_binary_input_type" xml:space="preserve">
+    <value>Delete - Binary Input Type</value>
+  </data>
+  <data name="edition_binary_input_type" xml:space="preserve">
+    <value>Edition - Binary Input Type</value>
+  </data>
+  <data name="package" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="daily_apointments_sunday" xml:space="preserve">
+    <value>Daily Apointments on Sunday</value>
+  </data>
+  <data name="biweekly" xml:space="preserve">
+    <value>biweekly</value>
+  </data>
+  <data name="daily" xml:space="preserve">
+    <value>daily</value>
+  </data>
+  <data name="monthly" xml:space="preserve">
+    <value>monthly</value>
+  </data>
+  <data name="weekly" xml:space="preserve">
+    <value>weekly</value>
+  </data>
+  <data name="period_type_chart" xml:space="preserve">
+    <value>Tipo de Periodo Nos Gráficos</value>
+  </data>
+  <data name="a_month" xml:space="preserve">
+    <value>A Month</value>
+  </data>
+  <data name="per_day" xml:space="preserve">
+    <value>Per Day</value>
+  </data>
+  <data name="per_fortnight" xml:space="preserve">
+    <value>Per Fortnight</value>
+  </data>
+  <data name="per_week" xml:space="preserve">
+    <value>Per Week</value>
+  </data>
+  <data name="name_can_not_be_empty" xml:space="preserve">
+    <value>Name can not be empty</value>
+  </data>
+  <data name="item_menu" xml:space="preserve">
+    <value>Item of Menu</value>
+  </data>
+  <data name="icon" xml:space="preserve">
+    <value>Icon</value>
+  </data>
+  <data name="resource" xml:space="preserve">
+    <value>Resource</value>
+  </data>
+  <data name="url" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="do_audit" xml:space="preserve">
+    <value>Do Audit</value>
+  </data>
+  <data name="file_format_not_supported" xml:space="preserve">
+    <value>File Format not Supported</value>
+  </data>
+  <data name="no_file_selected" xml:space="preserve">
+    <value>No file selected</value>
+  </data>
+  <data name="import_excel" xml:space="preserve">
+    <value>Import Excel</value>
+  </data>
+  <data name="excel_file" xml:space="preserve">
+    <value>Excel File</value>
+  </data>
+  <data name="parlevel1xmodules" xml:space="preserve">
+    <value>Level1 x Modules</value>
+  </data>
+  <data name="effective_date_end" xml:space="preserve">
+    <value>Effective date end</value>
+  </data>
+  <data name="effective_date_start" xml:space="preserve">
+    <value>Effective date start</value>
+  </data>
+  <data name="parlevel1" xml:space="preserve">
+    <value>ParLevel 1</value>
+  </data>
+  <data name="parModule" xml:space="preserve">
+    <value>ParModule</value>
+  </data>
+  <data name="import_format_itens" xml:space="preserve">
+    <value>Import format Itens</value>
+  </data>
+  <data name="available_items" xml:space="preserve">
+    <value>Available Items</value>
+  </data>
+  <data name="import_format" xml:space="preserve">
+    <value>Import Format</value>
+  </data>
+  <data name="import_format_id" xml:space="preserve">
+    <value>Import Format Id</value>
+  </data>
+  <data name="key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="new_format" xml:space="preserve">
+    <value>New Format</value>
+  </data>
+  <data name="indicador_used" xml:space="preserve">
+    <value>This Indicator alredy have a alert rule!</value>
+  </data>
+  <data name="monitoring_used" xml:space="preserve">
+    <value>This Monitoring alredy have a alert rule!</value>
+  </data>
+  <data name="are_greater_than" xml:space="preserve">
+    <value>Are greater than</value>
+  </data>
+  <data name="module_link_indicator" xml:space="preserve">
+    <value>The module is linked to one or more indicators, check before inactive</value>
+  </data>
+  <data name="update_collect_message" xml:space="preserve">
+    <value>Please update the settings of your unit to have an effect on APP Collect</value>
+  </data>
+  <data name="indicator_alredy_used" xml:space="preserve">
+    <value>These Indicators already have links on the selected date.</value>
+  </data>
+  <data name="update" xml:space="preserve">
+    <value>Update</value>
   </data>
 </root>

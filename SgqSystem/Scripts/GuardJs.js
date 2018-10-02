@@ -4,6 +4,11 @@
     })[0].split('=')[1];
 }
 
+function openInNewTab(url) {
+    var win = window.open(url, '_blank');
+    win.focus();
+}
+
 var ftaPreffixLabel = ' (FTA:';
 
 function tootipFTA(arr, closureThisInTooltip) {
@@ -17,6 +22,12 @@ function tootipFTA(arr, closureThisInTooltip) {
         return '<br/><span style="color:blue">Ações Corretivas no período: ' + pegaNumeroDoFtaEmLabelQueContemFta(result) + '</span>'
     else
         return ''
+}
+
+function GetUsuarioId() {
+    return $.grep(getCookie('webControlCookie'), function (a, b) {
+        return a.indexOf('userId') != -1;
+    })[0].split('=')[1];
 }
 
 function labelFTA(arr, closureThisInTooltip) {
@@ -122,6 +133,12 @@ jQuery.fn.dataTable.Api.register('sum()', function () {
 /*Ajax tratado e com suporte a loader, utilizar ao montar graficos e tabelas*/
 function EasyAjax(url, dados, callback, loader, toggle) {
 
+    if (typeof (contadorAJAX) != "undefined") {
+        console.log("Tem contador de AJAX!");
+        contadorAJAX++;
+        console.log("Contador: " + contadorAJAX);
+    }
+
     if (!!loader)
         $('#' + loader).empty().addClass('loader');
 
@@ -142,17 +159,25 @@ function EasyAjax(url, dados, callback, loader, toggle) {
 
         } catch (e) {
             console.log(e);
+           
         } finally {
             $btn.button('reset');
+            
         }
     }).fail(function (e, h, x) {
         $btn.button('reset');
         if (e.status == 0) {
-            GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+            GuardJs.exibirMensagemAlerta(Resources("could_not_fetch_data") + ": " + e.statusText);
         } else {
-            GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+            GuardJs.exibirMensagemAlerta(Resources("could_not_fetch_data") + ": " + e.responseJSON.Message);
         }
-    }).always(function () {
+        }).always(function () {
+
+            if (typeof (contadorAJAX) != "undefined") {
+                console.log("Subtrai contador de AJAX!");
+                contadorAJAX--;
+                console.log("Contador: " + contadorAJAX);
+            }
         if (!!loader)
             $('#' + loader).removeClass('loader');
     });
@@ -192,6 +217,8 @@ function InitiMasksDefaults() {
         $(this).select2();
     });
 
+    
+
     /*FIM Select 2*/
 
     $('.DataPiker').daterangepicker({
@@ -206,7 +233,7 @@ function InitiMasksDefaults() {
 
 /*Mascaras e instancias de Select 2 por classe*/
 $(document).ready(function () {
-
+    
     InitiMasksDefaults();
 
 })
@@ -221,13 +248,13 @@ function getRole(role) {
     return $.grep(getCookie("webControlCookie"), function (n) { return n.indexOf(role) != -1 })
 }
 
-Array.prototype.max = function () {
-    return Math.max.apply(null, this);
-};
+//Array.prototype.max = function () {
+//    return Math.max.apply(null, this);
+//};
 
-Array.prototype.min = function () {
-    return Math.min.apply(null, this);
-};
+//Array.prototype.min = function () {
+//    return Math.min.apply(null, this);
+//};
 
 function heatMapSingleCol(container, tableId, index, order, isBenchemark) {
 

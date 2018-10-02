@@ -2,6 +2,7 @@
 using DTO.Helpers;
 using Helper;
 using PlanoAcaoCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -9,13 +10,15 @@ using System.Web.Http;
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     [RoutePrefix("api/Pa_Planejamento")]
-    public class ApiPa_PlanejamentoController : ApiController
+    public class ApiPa_PlanejamentoController : BaseApiController
     {
         PlanoAcaoEF.PlanoDeAcaoEntities db;
 
         public ApiPa_PlanejamentoController()
         {
             db = new PlanoAcaoEF.PlanoDeAcaoEntities();
+
+            Jobs.UpdateStatus();
         }
 
         [HttpGet]
@@ -23,6 +26,20 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public IEnumerable<Pa_Planejamento> List()
         {
             return Pa_Planejamento.Listar();
+        }
+
+        [HttpGet]
+        [Route("GetPlanejamentoAcaoRange")]
+        public IEnumerable<Pa_Planejamento> GetPlanejamentoAcaoRange(string startDate, string endDate)
+        {
+            return Pa_Planejamento.GetPlanejamentoAcao(startDate, endDate);
+        }
+
+        [HttpGet]
+        [Route("GetPlanejamentoRange")]
+        public IEnumerable<Pa_Planejamento> GetPlanejamentoRange(string startDate, string endDate)
+        {
+            return Pa_Planejamento.GetPlanejamentoRange(startDate, endDate);
         }
 
         [HttpGet]
@@ -58,70 +75,96 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("Save")]
         public Pa_Planejamento Save([FromBody]Pa_Planejamento planejamento)
         {
-           
-                planejamento.IsValid();
 
-                planejamento.IsfiltrarAcao = null;
+            planejamento.IsValid();
 
-                if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
+            planejamento.IsfiltrarAcao = null;
+
+            if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
+            {
+                if (!string.IsNullOrEmpty(planejamento._ValorDe))
                 {
-                    if (!string.IsNullOrEmpty(planejamento._ValorDe))
-                        planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();
-                    if (!string.IsNullOrEmpty(planejamento._ValorPara))
-                        planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara).GetValueOrDefault();
-                    planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio, Guard.CultureCurrent.BR);
-                    planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim, Guard.CultureCurrent.BR);
+                    if (planejamento.UnidadeDeMedida_Id == 1)
+                    {
+                        planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe.Replace("R$ ", "")).GetValueOrDefault();
+                    }
+                    else
+                    {
+                        planejamento.ValorDe = decimal.Parse(planejamento._ValorDe.Replace(".", ","));
+                    }
+                    
                 }
-
-                if (!planejamento.IsTatico)
+                    
+                if (!string.IsNullOrEmpty(planejamento._ValorPara))
                 {
-                    planejamento.Tatico_Id = null;
-                    planejamento.Gerencia_Id = 0;
-                    planejamento.Coordenacao_Id = 0;
-                    planejamento.Iniciativa_Id = 0;
-                    planejamento.ObjetivoGerencial_Id = 0;
-                    planejamento.Responsavel_Projeto = 0;
-                    planejamento.UnidadeDeMedida_Id = 0;
-                    planejamento.IndicadoresDeProjeto_Id = 0;
+                    if (planejamento.UnidadeDeMedida_Id == 1)
+                    {
+                        planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara.Replace("R$ ", "")).GetValueOrDefault();
+                    }
+                    else
+                    {
+                        planejamento.ValorPara = decimal.Parse(planejamento._ValorPara.Replace(".", ","));
+                    }
+                    
                 }
-                else if (planejamento.IsTatico && planejamento.Tatico_Id.GetValueOrDefault() > 0)
-                {
-                    planejamento.Id = planejamento.Tatico_Id.GetValueOrDefault();
-                }
+                    
+                planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio, Guard.CultureCurrent.BR);
+                planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim, Guard.CultureCurrent.BR);
+            }
 
+            if (!planejamento.IsTatico)
+            {
+                planejamento.Tatico_Id = null;
+                planejamento.Gerencia_Id = 0;
+                planejamento.Coordenacao_Id = 0;
+                planejamento.Iniciativa_Id = 0;
+                planejamento.TemaProjeto_Id = 0;
+                planejamento.TipoProjeto_Id = 0;
+                planejamento.ObjetivoGerencial_Id = 0;
+                planejamento.Responsavel_Projeto = 0;
+                planejamento.UnidadeDeMedida_Id = 0;
+                planejamento.IndicadoresDeProjeto_Id = 0;
+            }
+            else if (planejamento.IsTatico && planejamento.Tatico_Id.GetValueOrDefault() > 0)
+            {
+                planejamento.Id = planejamento.Tatico_Id.GetValueOrDefault();
+            }
+
+            //Pa_BaseObject.SalvarGenerico(planejamento);
+            var a = Mapper.Map<PlanoAcaoEF.Pa_Planejamento>(planejamento);
+
+            if (a.Id > 0)
+            {
+                a.AlterDate = DateTime.Now;
+                db.Pa_Planejamento.Attach(a);
+                var entry = db.Entry(a);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                //entry.Property(e => e.Email).IsModified = true;
+                // other changed properties
+                db.SaveChanges();
+            }
+            else
+            {
+                a.AddDate = DateTime.Now;
+                db.Pa_Planejamento.Add(a);
+                db.SaveChanges();
+            }
+
+            #region GAMBIARRA FDP
+
+            if (planejamento.IsTatico)
+            {
+                a.Tatico_Id = a.Id;
                 //Pa_BaseObject.SalvarGenerico(planejamento);
-                var a = Mapper.Map<PlanoAcaoEF.Pa_Planejamento>(planejamento);
 
-                if (a.Id > 0)
-                {
-                    db.Pa_Planejamento.Attach(a);
-                    var entry = db.Entry(a);
-                    entry.State = System.Data.Entity.EntityState.Modified;
-                    //entry.Property(e => e.Email).IsModified = true;
-                    // other changed properties
-                    db.SaveChanges();
-                }
-                else
-                {
-                    db.Pa_Planejamento.Add(a);
-                    db.SaveChanges();
-                }
+                db.Pa_Planejamento.Attach(a);
+                var entry = db.Entry(a);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                //entry.Property(e => e.Email).IsModified = true;
+                // other changed properties
+                db.SaveChanges();
 
-                #region GAMBIARRA FDP
-
-                if (planejamento.IsTatico)
-                {
-                    a.Tatico_Id = a.Id;
-                    //Pa_BaseObject.SalvarGenerico(planejamento);
-
-                    db.Pa_Planejamento.Attach(a);
-                    var entry = db.Entry(a);
-                    entry.State = System.Data.Entity.EntityState.Modified;
-                    //entry.Property(e => e.Email).IsModified = true;
-                    // other changed properties
-                    db.SaveChanges();
-
-                }
+            }
 
             #endregion
 
@@ -209,6 +252,86 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
 
             db.SaveChanges();
+        }
+
+
+        [HttpPost]
+        [Route("GetListPlanejamento/{tipo}")]
+        public dynamic GetListPlanejamento(string tipo)
+        {
+            string query = "";
+            if (tipo == "tatico")
+            {
+                query = @"SELECT
+                    	P.Id
+                       ,D.Name AS Diretoria
+                       ,M.Name AS Missão
+                       ,V.Name AS Visão
+                       ,DR.Name AS Diretriz
+                       ,IND.Name AS [Indicador da Diretriz]
+                    FROM PA_PLANEJAMENTO P
+                    LEFT JOIN Pa_Diretoria D
+                    	ON D.Id = P.Diretoria_Id
+                    LEFT JOIN PA_Missao M
+                    	ON M.Id = P.Missao_Id
+                    LEFT JOIN Pa_Visao V
+                    	ON V.Id = P.Visao_Id
+                    LEFT JOIN Pa_Objetivo DR
+                    	ON DR.Id = P.Objetivo_ID
+                    LEFT JOIN PA_IndicadoresDiretriz IND
+                    	ON IND.Id = P.IndicadoresDiretriz_Id
+                    WHERE P.ESTRATEGICO_ID IS NULL";
+
+            }else if(tipo == "acao")
+            {
+                query = @"SELECT
+                        P.Id
+                        , G.Name AS Gerência
+                        , C.Name AS Coordenação
+                        , TIP.Name AS [Tipo de projeto]
+                        , TP.Name AS [Tema do projeto]
+                        , PR.Name AS Projeto
+                        , OB.Name AS [Objetivo Gerencial]
+                        , Q.Name AS [Responsável]
+                        FROM PA_PLANEJAMENTO P
+                        LEFT JOIN Pa_Gerencia G
+                        ON G.ID = P.Gerencia_Id
+                        LEFT JOIN Pa_Coordenacao C
+                        ON C.Id = P.Coordenacao_Id
+                        LEFT JOIN Pa_Iniciativa PR
+                        ON PR.Id = P.Iniciativa_Id
+                        LEFT JOIN Pa_ObjetivoGeral OB
+                        ON OB.Id = P.ObjetivoGerencial_Id
+                        LEFT JOIN Pa_TemaProjeto TP
+                        ON TP.Id = P.TemaProjeto_Id
+                        LEFT JOIN Pa_TipoProjeto TIP
+                        ON TIP.Id = P.TipoProjeto_Id
+                        LEFT JOIN Pa_Quem Q
+                        ON Q.Id = P.Responsavel_Projeto
+                        WHERE P.ESTRATEGICO_ID IS NOT NULL";
+            }
+
+            return QueryNinjaDataTable(db, query);
+        }
+
+
+        [HttpPost]
+        [Route("Cereja/{tipo}/{id}/{idParaMudar}")]
+        public dynamic Cereja(string tipo, int id, int idParaMudar)
+        {
+            string query = "";
+            if (tipo == "tatico")
+            {
+                query = $"UPDATE PA_PLANEJAMENTO SET ESTRATEGICO_ID = {idParaMudar} WHERE ID = {id}";
+            }
+            else if(tipo == "acao")
+            {
+                query = $"UPDATE PA_ACAO SET PANEJAMENTO_ID = {idParaMudar} WHERE ID = {id}";
+            }
+
+            db.Database.ExecuteSqlCommand(query);
+
+            return true;//QueryNinjaDataTable(db, query);
         }
 
     }

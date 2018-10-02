@@ -6,7 +6,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
@@ -22,9 +22,9 @@
             <div class="page-toolbar">
                 <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
                 @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
             </div>
         </div>
         <!-- END PAGE BAR -->
@@ -41,45 +41,47 @@
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
-                                
+
                                 <p>
-                                    @Html.ActionLink(Resources.Resource._new, "Create")
+                                    @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
 
-                                <table class="table">
-                                    <tr>
-                                        <th>
-                                            @Resources.Resource.name
-                                        </th>
-                                        <th>
-                                            @Resources.Resource.description
-                                        </th>
-                                        <th>
-                                            @Resources.Resource.cluster_group
-                                        </th>
-                                        <th></th>
-                                    </tr>
-
-                                    @foreach (var item in Model)
-                                    {
+                                <table class="table" id="tabelaProcessos">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Description)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ParClusterGroup.Name)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }) |
-                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |
-                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })
-                                            </td>
+                                            <th>
+                                                @Resources.Resource.name
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.description
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.cluster_group
+                                            </th>
+                                            <th></th>
                                         </tr>
-                                    }
-
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Description)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ParClusterGroup.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+                                                    @*| @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })*@
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
                                 </table>
 
                             </div>
@@ -94,9 +96,24 @@
 </div>
 
 <script>
-
-    $(".sidebar-toggler").removeClass("hide");
-    $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar3");
 
+     $(document).ready(function () {
+        closeLeftSidebar();
+         $('#tabelaProcessos').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+            "aoColumns": [
+                null,
+                null, 
+                null,
+                { "bSearchable": false }
+            ],
+            "order": [[1, "asc"]],
+             "language": {
+                 "lengthMenu": "Mostrar _MENU_ resultados por página",
+                "emptyTable": "@Resources.Resource.no_data_to_show"
+            }
+        });
+    });
 </script>

@@ -1,6 +1,10 @@
 ﻿using PlanoAcaoCore;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 
 namespace PlanoDeAcaoMVC.Controllers
@@ -11,6 +15,8 @@ namespace PlanoDeAcaoMVC.Controllers
     {
         public Pa_PlanejamentoController()
         {
+
+            Jobs.UpdateStatus();
 
             //select* from Pa_Dimensao
             //select* from[Pa_Objetivo]
@@ -30,6 +36,8 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Iniciativa = Pa_Iniciativas.Listar();
             ViewBag.ObjetivoGerencial = Pa_ObjetivoGeral.Listar();
             ViewBag.UnidadeMedida = Pa_UnidadeMedida.Listar();
+            ViewBag.TemaProjeto = Pa_TemaProjeto.Listar();
+            ViewBag.TipoProjeto = Pa_TipoProjeto.Listar();
 
             if (ViewBag.Quem == null)
                 ViewBag.Quem = Pa_Quem.Listar();
@@ -40,7 +48,7 @@ namespace PlanoDeAcaoMVC.Controllers
         {
             ViewBag.urlSend = Url.Action("Save", "api/Pa_Planejamento");
             ViewBag.urlList = Url.Action("List", "api/Pa_Planejamento");
-
+            ViewBag.Coordenacao = new List<Pa_Coordenacao>();
             var model = new Pa_Planejamento();
 
             if(id.GetValueOrDefault() > 0)
@@ -106,10 +114,19 @@ namespace PlanoDeAcaoMVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult Editar(int id)
+        public ActionResult Editar(int id, bool? isTatico )
         {
             //var model = Pa_Planejamento.Listar().FirstOrDefault();
-            var model = Pa_Planejamento.Get(id);
+            var model = new Pa_Planejamento();
+            if(isTatico == true)
+            {
+                model = Pa_Planejamento.GetTatico(id);
+            }
+            else
+            {
+                model = Pa_Planejamento.Get(id);
+            }
+                
 
             if(model.DataInicio != null)
                 model._DataInicio = model.DataInicio.GetValueOrDefault().ToString("dd/MM/yyyy");
@@ -119,6 +136,12 @@ namespace PlanoDeAcaoMVC.Controllers
                 model._ValorDe = model.ValorDe.ToString("G29");
             if (model.ValorPara > 0)
                 model._ValorPara = model.ValorPara.ToString("G29");
+            if(model.Gerencia_Id > 0)
+                ViewBag.Coordenacao = Pa_Coordenacao.Listar().Where(r=> r.GERENCIA_ID == model.Gerencia_Id);
+            if (model.Iniciativa_Id > 0)
+                ViewBag.IndicadoresDeProjeto = Pa_IndicadoresDeProjeto.Listar().Where(r => r.Pa_Iniciativa_Id == model.Iniciativa_Id);
+            if (model.IndicadoresDeProjeto_Id > 0)
+                ViewBag.ObjetivoGerencial = Pa_ObjetivoGeral.Listar().Where(r => r.Pa_IndicadoresDeProjeto_Id == model.IndicadoresDeProjeto_Id);
 
             return PartialView("Index", model);
         }
@@ -183,6 +206,24 @@ namespace PlanoDeAcaoMVC.Controllers
             return PartialView("_DdlGenerica");
         }
 
+        public ActionResult GETCoordenacaoByGerencia(int id)
+        {
+            if (id > 0)
+                ViewBag.Disabled = "false";
+            else
+                ViewBag.Disabled = "true";
+            ViewBag.DdlName = "Coordenacao_Id";
+
+            var results = Pa_Coordenacao.GetCoordenacaoByGerencia(id);
+            if (results == null)
+                results = new List<Pa_Coordenacao>();
+
+            ViewBag.Ddl = new SelectList(results, "Id", "Name");
+
+            return PartialView("_DdlGenerica");
+        }
+
+
         public ActionResult GETObjetivosGerenciais(int id)
         {
             if (id > 0)
@@ -198,7 +239,31 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Ddl = new SelectList(results, "Id", "Name");
 
             return PartialView("_DdlGenerica");
-        } 
+        }
+
+
+        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+        {
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
+            try
+            {
+
+                System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+                ViewBag.Resources = resourceManager.GetResourceSet(
+                    Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            base.Initialize(requestContext);
+        }
+
         #endregion
     }
 }

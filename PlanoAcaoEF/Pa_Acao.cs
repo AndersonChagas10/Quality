@@ -47,5 +47,6 @@ namespace PlanoAcaoEF
         public string Level3Name { get; set; }
         public string Regional { get; set; }
         public string UnidadeName { get; set; }
+        public Nullable<int> UnidadeDeMedida_Id { get; set; }
     }
 }

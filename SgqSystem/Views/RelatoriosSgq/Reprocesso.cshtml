@@ -1,0 +1,1177 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Reprocesso";
+    var url = Url.Action("Index", "Home");
+
+    var urlGetReportReprocessoHeader = Url.Action("GetReportReprocessoHeader", "Api/Reprocesso");
+    var urlGetReportReprocesso = Url.Action("GetReportReprocesso", "Api/Reprocesso");
+    var urlGetMonitor = Url.Action("GetMonitor", "Api/Reprocesso");
+    var urlGetCollectionLevel2Reprocesso = Url.Action("GetCollectionLevel2Reprocesso", "Api/Reprocesso");
+    var urlGetUnidadeMedida = Url.Action("GetUnidadeMedida", "Api/Reprocesso");
+}
+
+
+
+
+
+<style type="text/css">
+    #conteudodatabela div.conteudodatabela {
+        width: 900px;
+        margin: 0 auto;
+    }
+    /*
+        #conteudodatabela table {
+            width: 99%;
+            border: none;
+            background-color: #f7f7f7;
+        }
+
+        #conteudodatabela table > tbody {
+            overflow: auto;
+            height: 200px;
+            overflow-x: hidden;
+        }*/
+
+    #conteudodatabela thead tr {
+        position: relative;
+        top: expression(offsetParent.scrollTop); /*IE5+ only*/
+    }
+
+    #conteudodatabela thead td, thead th {
+        text-align: center;
+        font-size: 14px;
+        background-color: white !important;
+        color: steelblue;
+        font-weight: bold;
+        border-top: solid 0px #ffffff;
+    }
+
+    /*#conteudodatabela td {
+            color: #000;
+            padding-right: 2px;
+            font-size: 12px;
+            text-align: right;
+            border: solid 1px #d8d8d8;
+        }*/
+
+    #conteudodatabela table tfoot tr { /*idea of Renato Cherullo to help IE*/
+        position: relative;
+        overflow-x: hidden;
+        background-color: white !important;
+        top: expression(parentNode.parentNode.offsetHeight >= offsetParent.offsetHeight ? 0 - parentNode.parentNode.offsetHeight + offsetParent.offsetHeight + offsetParent.scrollTop : 0);
+    }
+
+
+    #conteudodatabela tfoot td {
+        text-align: center;
+        font-size: 11px;
+        font-weight: bold;
+        background-color: white !important;
+        color: steelblue;
+        border-top: solid 0px white;
+    }
+
+    #conteudodatabela td:last-child {
+        padding-right: 20px;
+    }
+    /*prevent Mozilla scrollbar from hiding cell content*/
+</style>
+
+
+
+<!-- Estilo para impressão -->
+<style type="text/css" media="print">
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+
+    /*#conteudodatabela div.conteudodatabela {
+            overflow: visible;
+        }
+
+        #conteudodatabela table > tbody {
+            overflow: visible;
+        }
+
+        #conteudodatabela td {
+            height: 14pt;
+        }*/
+    /*adds control for test purposes*/
+    #conteudodatabela thead td {
+        font-size: 11pt;
+        border: 0px !important;
+        background-color: white !important;
+    }
+
+    #conteudodatabela tfoot td {
+        text-align: center;
+        font-size: 9pt;
+        border: 0px !important;
+        background-color: white !important;
+    }
+
+    #conteudodatabela thead {
+        display: table-header-group;
+        border: 0px !important;
+        background-color: white !important;
+    }
+
+    #conteudodatabela tfoot {
+        display: table-footer-group;
+        border: 0px !important;
+        background-color: white !important;
+    }
+
+    #conteudodatabela thead th, thead td {
+        position: static;
+        border: 0px !important;
+        background-color: white !important;
+    }
+
+    #conteudodatabela thead tr {
+        position: static;
+        border: 0px !important;
+        background-color: white !important;
+    }
+    /*prevent problem if print after scrolling table*/
+    #conteudodatabela table tfoot tr {
+        position: static;
+        border: 0px !important;
+        background-color: white !important;
+    }
+</style>
+
+
+
+<style>
+
+    body {
+  counter-reset: section;
+    name-reset: section;
+  text-align: justify;
+}
+
+@Html.Raw("@page") {
+  size: A4;
+  margin: 5%;
+  padding: 0 0 10%;
+}
+
+@Html.Raw("@media") print {
+  h6#number {
+    position: absolute;
+    page-break-before: always;
+    page-break-after: always;
+    bottom: 0;
+    right: 0;
+  }
+   h6#number::before {
+    position: relative;
+    bottom: -20px;
+    counter-increment: section;
+    content: counter(section);
+  }
+
+    h6#cod {
+    position: absolute;
+    page-break-before: always;
+    page-break-after: always;
+    bottom: 0;
+    left: 0;
+  }
+  h6#cod::before {
+
+    position: relative;
+    bottom: -20px;
+    name-increment: section;
+    content: "RGQ-00-GQC-025/06 Aprov. em: 07/12/2017";
+  }
+  .print {
+    display: none;
+  }
+}
+
+
+</style>
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+        <div id="formBodyContent">
+
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            <div id="load"></div>
+
+            <div id="divTable"></div>
+
+
+            <div id="botoesImpressao" style="z-index:1; display:none; position:absolute; top: 32px; left: 17px; background-color:rgb(51, 122, 183); padding:10px; border:1px solid #000000;">
+                <button id='btnPrint' onClick='imprimirRelatorio();' class='botao'><span class="glyphicon glyphicon-print"></span></button>
+                &nbsp;&nbsp;
+                <button onClick="$('#fundoPreto').hide(); $('#divReport').hide(); $('#botoesImpressao').hide();" class="botao"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+
+            <div id="fundoPreto" style="display:none; position:absolute; top:26px; width:100%; left:13px; background-color:#fff">
+                <div id="divReport" style="
+                     z-index:999998;
+                     display:none;
+    /*position:absolute;*/
+                top: -34px;
+                margin:auto;
+                /*A4*/
+                width: 21cm;
+                min-height: 29.7cm;
+                padding: 2cm;
+                margin: 1cm auto;
+                border: 1px #D3D3D3 solid;
+                border-radius: 5px;
+                background: white;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); background: #fff;">
+
+
+                <!--cabeçalho e Rodapé-->
+
+                <div id="conteudo">
+
+                    <div class="conteudodatabela">
+                        <table id="externo" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <td width="100%" style="border:0px solid #ffffff !important;">
+
+                                        <table width="100%" border="00" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
+                                            <tbody>
+                                                <tr>
+                                                    <td rowspan="3" width="120px" align="center"><img src="../Imagens/logo-jbs.png" width="80px"></td>
+                                                    <td align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"><b>REPROCESSO</b></td>
+                                                    <td rowspan="3" width="120px" align="center"><img src="../Imagens/logo-gq.png" width="80px"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Elaborador:</b> Equipe GQC Documentações/ANH</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Aprovador:</b> Célia Regina Mattia GQC/ANH</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr style="background-color: white;">
+                                    <td style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px; background-color:#fff; padding-top:5px;">
+                                        <div style="background-color:#ffffff; z-index:9999999; padding-top:5px; width:100%;">
+                                            @*RGQ-00-GQC-025/06 Aprov. em: 07/12/2017*@
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>
+
+                                        <!--table normal-->
+
+
+                                        <table border=0 width="100%" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">
+
+                                            @*<tr>
+                                                    <td height=80px;>
+                                                        <table width="100%" border="00" cellspacing="0" cellpadding="1" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
+                                                            <tr>
+                                                                <td rowspan="3" width="120px" align="center"><img src='../Imagens/logo-jbs.png' width="80px"></td>
+                                                                <td align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"><b>REPROCESSO</b></td>
+                                                                <td rowspan="3" width="120px" align="center"><img src='../Imagens/logo-gq.png' width="80px"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Elaborador:</b> Equipe GQC Documentações/ANH</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Aprovador:</b> Célia Regina Mattia GQC/ANH</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>*@
+                                            <tr><td height=20px;></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <table width="100%" style="font-size:10px;">
+                                                        <tr>
+                                                            <td height=30px; width="35%"><b>Data do Reprocesso:</b></td>
+                                                            <td width="13%"><span id="dtReprocesso"></span></td>
+                                                            <td width="4%"></td>
+                                                            <td width="35%"><b>Número do Ofício do SIF autorizando o reprocesso:</b></td>
+                                                            <td width="13%"><span id="OficioSIF"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td height=30px;><b>Número da Ordem do Reprocesso:</b></td>
+                                                            <td><span id="numOp"></span></td>
+                                                            <td></td>
+                                                            <td><b>Quantidade de produto envolvido:</b></td>
+                                                            <td><span id="qdeProd"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td height=30px;><b>Origem de reprocesso:</b></td>
+                                                            <td><span id="OrigemRep"></span></td>
+                                                            <td></td>
+                                                            <td><b>Motivo do reprocesso:</b></td>
+                                                            <td><span id="MotivoRep"></span></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr><td height=20px;></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <div id="tblProdutosEntrada" style="width:100%"></div>
+                                                </td>
+                                            </tr>
+
+                                            <tr><td height=20px;></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <div id="tblProdutosSaida" style="width:100%">
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr><td height=20px;></td></tr>
+                                            <tr><td height=20px;><b>Avaliação do Produto</b></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <div id="divTarefas" style="width:100%"></div>
+                                                </td>
+                                            </tr>
+                                            <tr><td height=50px;></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">
+                                                        <tr>
+                                                            <td height="20px" width="15%" align="center"></td>
+                                                            <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                                            <td width="10%" align="center"></td>
+                                                            <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                                            <td width="15%" align="center"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td height="40px" width="15%" align="center"></td>
+                                                            <td width="30%" align="center"><span id="nomePessoa"></span><br />Monitor GQ</td>
+                                                            <td width="10%" align="center"></td>
+                                                            <td width="30%" align="center">Estoque Físico<br />&nbsp;</td>
+                                                            <td width="15%" align="center"></td>
+                                                        </tr>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr><td height=30px;></td></tr>
+                                            <tr>
+                                                <td height=20px;>
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">
+                                                        <tr>
+                                                            <td height="20px" width="15%" align="center"></td>
+                                                            <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                                            <td width="10%" align="center"></td>
+                                                            <td width="30%" align="center" style="border-bottom:1px solid black"></td>
+                                                            <td width="15%" align="center"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td height="20px" width="15%" align="center"></td>
+                                                            <td width="30%" align="center">Gerente Industrial</td>
+                                                            <td width="10%" align="center"></td>
+                                                            <td width="30%" align="center">Garantia da Qualidade</td>
+                                                            <td width="15%" align="center"></td>
+                                                        </tr>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr><td><div id="divRodape"></div></td></tr>
+
+
+
+
+
+                                        </table>
+
+                                        <!--cabeçalho e rodapé final-->
+
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!-- fim cabecalho e rodape-->
+
+                </div>
+
+                <h6 id="number" class="first"></h6>
+                <h6 id="cod" class="secound"></h6>
+                <div class="insert"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+        var bottom = 0;
+
+
+        function imprimirRelatorio() {
+
+
+            $("tr:nth-child(1n)").each(function () {
+                bottom -= 100;
+                botString = bottom.toString();
+                var $counter = $('h6.first').clone().removeClass('first');
+                $counter.css("bottom", botString + "vh");
+                ($counter).insertBefore('.insert');
+
+                var $name = $('h6.secound').clone().removeClass('secound');
+                $name.css("bottom", botString + "vh");
+                ($name).insertBefore('.insert');
+            });
+
+            var conteudo = document.getElementById('divReport').innerHTML,
+                tela_impressao = window.open('');
+            tela_impressao.document.write('<html><head><title>RGQ-00-GQC-025/06 Aprov. em: 07/12/2017</title><body>' + conteudo + '</body></html>');
+            tela_impressao.window.print();
+            tela_impressao.window.close();
+        }
+
+        function calculaRodape(data, entrada, saida, obs) {
+            var linhasPorPagina = 51;
+            var linhasObrigatorias = 29 + data.length;
+            var caracteresLinhaObs = 65;
+
+            var linhasObservacoes = parseInt((obs.length / caracteresLinhaObs)) + 1;
+
+            tamanhoObservacoes = linhasObservacoes / 2;
+            linhasObrigatorias = linhasObrigatorias + tamanhoObservacoes;
+
+            var linhasParaProdutos = 0;
+
+            linhasParaProdutos = (entrada.length + saida.length) * 2;
+
+            var linhasNecessarias = 0;
+
+            linhasNecessarias = (linhasParaProdutos + linhasObrigatorias);
+
+            var linhasParaFinalPagina = 0;
+
+            linhasParaFinalPagina = (linhasPorPagina * (parseInt((linhasNecessarias) / linhasPorPagina) + 1)) - linhasNecessarias;
+
+            return 0;
+
+        }
+        //fim testes
+
+
+        //variveis de ambiente 92/367/97/368 GABRIEL /55/20171210/20171230/92/97
+
+        var unidade = ''; //Cassilândia
+        var dtIni = '';
+        var dtFim = '';
+
+        var monitoramentoEntrada = 353;
+        var monitoramentoSaida = 356;
+        var cabecalhoOPEntrada = 41;
+        var cabecalhoOPSaida = 48;
+
+        var cabecalhoObjOP = 41;
+        var cabecalhoObjDataReprocesso = 42;
+        var cabecalhoObjSIF = 43;
+        var cabecalhoObjOrigem = 44;
+        var cabecalhoObjMotivo = 42;
+        var cabecalhoObjQtdeEnvolvido = 44;
+
+        //variveis de ambiente JBS
+
+        //var unidade = 55; //lins 489
+        //var dtIni = '20171210';
+        //var dtFim = '20171230';
+
+        //var monitoramentoEntrada = 367;
+        //var monitoramentoSaida = 368;
+        //var cabecalhoOPEntrada = 92;
+        //var cabecalhoOPSaida = 97;
+
+        //var cabecalhoObjOP = 92;
+        //var cabecalhoObjDataReprocesso = 91;
+        //var cabecalhoObjSIF = 93;
+        //var cabecalhoObjOrigem = 94;
+        //var cabecalhoObjMotivo = 95;
+        //var cabecalhoObjQtdeEnvolvido = 96;
+
+
+        var urlGetCollectionLevel2Reprocesso = '@Html.Raw(urlGetCollectionLevel2Reprocesso)';
+        var urlGetReportReprocessoHeader = '@Html.Raw(urlGetReportReprocessoHeader)';
+        var urlGetReportReprocesso = '@Html.Raw(urlGetReportReprocesso)';
+        var urlGetMonitor = '@Html.Raw(urlGetMonitor)';
+        var urlGetUnidadeMedida = '@Html.Raw(urlGetUnidadeMedida)';
+
+        var dadosReprocessoCabecalho;
+        var dadosC2;
+        var tamanhoObservacoes = 1;
+
+        //data formato javascript para data BR
+        function dateInternacionalFormat(date) {
+            return (new Date(date)).toLocaleDateString("pt-BR")
+        }
+
+        function getDadosReprocessoResultados(id, unitId, dtIni, dtFim) {
+
+            $.ajax({
+                type: 'GET'
+                , url: urlGetReportReprocesso + "/" + id + "/" + unitId + "/" + dtIni + "/" + dtFim + "/" + cabecalhoOPEntrada + "/" + monitoramentoEntrada + "/" + cabecalhoOPSaida + "/" + monitoramentoSaida // int cl2_Id, int ParCompany_Id, string dtIni, string dtFim, int cabecalho_idEntrada, int level2_idEntrada, int cabecalho_idSaida, int level2_idSaida
+                , contentType: 'application/json; charset=utf-8'
+                , dataType: 'json'
+                , data: ''
+                , async: false //blocks window close
+                , success: function (data, status) {
+                    dadosC2 = data;
+
+                    $.ajax({
+                        type: 'GET'
+                        , url: urlGetReportReprocessoHeader + "/" + id + "/" + unitId + "/" + dtIni + "/" + dtFim + "/" + cabecalhoOPEntrada + "/" + monitoramentoEntrada + "/" + cabecalhoOPSaida + "/" + monitoramentoSaida
+                        , contentType: 'application/json; charset=utf-8'
+                        , dataType: 'json'
+                        , data: ''
+                        , async: false //blocks window close
+                        , success: function (result, status) {
+
+                            dadosReprocesso = result;
+
+                            if (!!result[result.length - 1].Objeto)
+                                dadosReprocessoCabecalho = JSON.parse(result[0].Objeto.replace(/(\r\n|\n|\r)/gm, ""));
+
+
+                            $.ajax({
+                                type: 'GET'
+                                , url: urlGetMonitor + "/" + dadosC2[0].AuditorId
+                                , contentType: 'application/json; charset=utf-8'
+                                , dataType: 'json'
+                                , data: ''
+                                , async: false //blocks window close
+                                , success: function (user, status) {
+                                    console.log(result);
+
+
+                                    console.log(data);
+
+                                    var lista = '';
+
+                                    var maior = 0;
+
+                                    for (var j = 0; j < dadosReprocesso.length; j++) {
+
+                                        maior = dadosReprocesso[j].CollectionLevel2_Id > maior ? dadosReprocesso[j].CollectionLevel2_Id : maior;
+
+                                    }
+
+                                    var ObjOP = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjOP;
+                                    });
+
+                                    maior = 0;
+
+                                    for (var j = 0; j < ObjOP.length; j++) {
+
+                                        maior = ObjOP[j].CollectionLevel2_Id > maior ? ObjOP[j].CollectionLevel2_Id : maior;
+
+                                    }
+
+                                    ObjOP = $.grep(ObjOP, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
+
+                                    var OP = ObjOP.length == 0 ? '' : ObjOP[ObjOP.length - 1].ValueMultiple;
+
+                                    //--------------------------------------------------------------------------
+                                    var ObjDataReprocesso = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjDataReprocesso;
+                                    });
+
+                                    maior = 0;
+
+                                    for (var j = 0; j < ObjDataReprocesso.length; j++) {
+
+                                        maior = ObjDataReprocesso[j].CollectionLevel2_Id > maior ? ObjDataReprocesso[j].CollectionLevel2_Id : maior;
+
+                                    }
+
+                                    ObjDataReprocesso = $.grep(ObjDataReprocesso, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
+
+                                    var dataReprocesso = ObjDataReprocesso.length == 0 ? '' : ObjDataReprocesso[ObjDataReprocesso.length - 1].Value.substring(8, 10) + '/' + ObjDataReprocesso[0].Value.substring(5, 7) + '/' + ObjDataReprocesso[0].Value.substring(0, 4)
+
+                                    //--------------------------------------------------------------------------
+
+                                    var ObjSIF = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjSIF;
+                                    });
+
+                                    maior = 0;
+
+                                    for (var j = 0; j < ObjSIF.length; j++) {
+
+                                        maior = ObjSIF[j].CollectionLevel2_Id > maior ? ObjSIF[j].CollectionLevel2_Id : maior;
+
+                                    }
+
+                                    ObjSIF = $.grep(ObjSIF, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
+
+                                    var SIF = ObjSIF.length == 0 ? '' : ObjSIF[ObjSIF.length - 1].ValueMultiple;
+                                    //--------------------------------------------------------------------------
+
+                                    var ObjOrigem = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjOrigem;
+                                    });
+
+                                    maior = 0;
+
+                                    for (var j = 0; j < ObjOrigem.length; j++) {
+
+                                        maior = ObjOrigem[j].CollectionLevel2_Id > maior ? ObjOrigem[j].CollectionLevel2_Id : maior;
+
+                                    }
+
+                                    ObjOrigem = $.grep(ObjOrigem, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
+
+                                    var Origem = ObjOrigem.length == 0 ? '' : ObjOrigem[ObjOrigem.length - 1].ValueMultiple;
+                                    //--------------------------------------------------------------------------
+
+                                    var ObjMotivo = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjMotivo;
+                                    });
+
+                                    maior = 0;
+
+                                    for (var j = 0; j < ObjMotivo.length; j++) {
+
+                                        maior = ObjMotivo[j].CollectionLevel2_Id > maior ? ObjMotivo[j].CollectionLevel2_Id : maior;
+
+                                    }
+
+                                    ObjMotivo = $.grep(ObjMotivo, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
+
+                                    var Motivo = ObjMotivo.length == 0 ? '' : ObjMotivo[0].ValueMultiple;
+                                    //--------------------------------------------------------------------------
+
+                                    var ObjQtdeEnvolvido = $.grep(dadosReprocesso, function (a, b) {
+                                        return a.ParHeaderField_Id == cabecalhoObjQtdeEnvolvido;
+                                    });
+
+                                    maior = 0;
+
+                                    for (var j = 0; j < ObjQtdeEnvolvido.length; j++) {
+
+                                        maior = ObjQtdeEnvolvido[j].CollectionLevel2_Id > maior ? ObjQtdeEnvolvido[j].CollectionLevel2_Id : maior;
+
+                                    }
+
+                                    ObjQtdeEnvolvido = $.grep(ObjQtdeEnvolvido, function (a, b) {
+                                        return a.CollectionLevel2_Id == maior;
+                                    });
+
+
+                                    var QtdeEnvolvido = ObjQtdeEnvolvido.length == 0 ? '' : ObjQtdeEnvolvido[ObjQtdeEnvolvido.length - 1].ValueMultiple;
+                                    //--------------------------------------------------------------------------
+
+                                    $('#dtReprocesso').text(dataReprocesso);
+                                    $('#OficioSIF').text(SIF);
+                                    $('#numOp').text(OP);
+                                    $('#qdeProd').text(QtdeEnvolvido);
+                                    $('#OrigemRep').text(Origem);
+                                    $('#MotivoRep').text(Motivo);
+
+                                    $('#nomePessoa').text(user[0].FullName);
+
+                                    var tabela = "";
+
+                                    tabela = tabela + '<table width="100%" border="00" cellspacing="0" cellpadding="1" style="border-color:#ccc; font-size:10px;">';
+                                    tabela = tabela + '<tr>';
+                                    tabela = tabela + '<td height="40px" width="25%" align="center" style="border-bottom:1px solid #CCC;"><b>Produto de Entrada</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Produção</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Embalagem</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Validade</b></td>';
+                                    tabela = tabela + '<td width="5%" align="center" style="border-bottom:1px solid #CCC;"><b>SIF</b></td>';
+                                    tabela = tabela + '<td width="20%" align="center" style="border-bottom:1px solid #CCC;"><b>Código de Rastreabilidade</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Volume</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Peso</b></td>';
+                                    tabela = tabela + '</tr>';
+
+                                    for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoEntradaOPs.length; i++) {
+
+                                        var campo2 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dProducao == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dProducao);
+                                        var campo3 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dEmbalagem == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dEmbalagem);
+                                        var campo4 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dValidade == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].dValidade);
+                                        var campo5 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdOrgaoRegulador == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdOrgaoRegulador;
+                                        var campo6 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdRastreabilidade == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].cCdRastreabilidade;
+                                        var campo7 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].iVolume == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].iVolume;
+                                        var campo8 = dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].nPesoLiquido == null ? "-" : dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].nPesoLiquido;
+
+                                        tabela = tabela + '<tr>';
+                                        tabela = tabela + '<td height="40px" width="25%" style="border-bottom:1px solid #CCC;">' + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo2 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo3 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo4 + '</td>';
+                                        tabela = tabela + '<td width="5%" align="center" style="border-bottom:1px solid #CCC;">' + campo5 + '</td>';
+                                        tabela = tabela + '<td width="20%" align="center" style="border-bottom:1px solid #CCC;">' + campo6 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo7 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo8 + '</td>';
+                                        tabela = tabela + '</tr>';
+
+                                    }
+
+                                    tabela = tabela + '</table>';
+
+                                    $('#tblProdutosEntrada').html(tabela);
+
+                                    //saída
+
+
+                                    tabela = "";
+
+                                    tabela = tabela + '<table width="100%" border="00" cellspacing="0" cellpadding="1" style="font-size:10px;">';
+                                    tabela = tabela + '<tr>';
+                                    tabela = tabela + '<td height="40px" width="25%" align="center" style="border-bottom:1px solid #CCC;"><b>Produto de Saída</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Produção</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Data de Validade</b></td>';
+                                    tabela = tabela + '<td width="14%" align="center" style="border-bottom:1px solid #CCC;"><b>Código de Rastreabilidade</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Habilitação</b></td>';
+                                    tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;"><b>Local de Estoque</b></td>';
+                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Peça</b></td>';
+                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Volume</b></td>';
+                                    tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;"><b>Total Peso</b></td>';
+                                    tabela = tabela + '</tr>';
+
+                                    for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoSaidaOPs.length; i++) {
+
+                                        var campo2 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dProducao == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dProducao);
+                                        var campo3 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dValidade == null ? "-" : dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dValidade);
+                                        var campo4 = dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cCdRastreabilidade == null ? "-" : dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cCdRastreabilidade;
+                                        var campo5 = dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cSgHabilitacao == null ? "-" : dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cSgHabilitacao;
+                                        var campo6 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].cNmLocalEstoque == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].cNmLocalEstoque;
+                                        var campo7 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalPeca == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalPeca;
+                                        var campo8 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalVolume == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalVolume;
+                                        var campo9 = dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].nTotalPeso == null ? "-" : dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].nTotalPeso;
+
+
+                                        tabela = tabela + '<tr>';
+                                        tabela = tabela + '<td height="40px" width="25%" style="border-bottom:1px solid #CCC;">' + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo2 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo3 + '</td>';
+                                        tabela = tabela + '<td width="14%" align="center" style="border-bottom:1px solid #CCC;">' + campo4 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo5 + '</td>';
+                                        tabela = tabela + '<td width="10%" align="center" style="border-bottom:1px solid #CCC;">' + campo6 + '</td>';
+                                        tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' + campo7 + '</td>';
+                                        tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' + campo8 + '</td>';
+                                        tabela = tabela + '<td width="7%" align="center" style="border-bottom:1px solid #CCC;">' + campo9 + '</td>';
+                                        tabela = tabela + '</tr>';
+
+                                    }
+
+                                    tabela = tabela + '</table>';
+
+                                    $('#tblProdutosSaida').html(tabela);
+
+                                    //produtos = "";
+
+                                    //produtos = "<tr><td colspan=3 style='font-size:10px;'>&nbsp;</td></tr><tr><td colspan=3 style='font-size:10px;'>" +
+                                    //    "<table border=1 width=100% cellspacing=0 cellpadding=0 style='font-size:10px;'>" +
+                                    //    "<tr>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center; width:230px;'>Produto de Saída</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Produção</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Data de Validade</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Código da Ratreabilidade</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Habilitação</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Local do Estoque</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Total Peça</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Total Volume</td>" +
+                                    //    "<td style='padding:5px; font-weight:bold; text-align:center;'>Total Peso</td>" +
+                                    //    "</tr>";
+
+
+                                    //for (var i = 0; i < dadosReprocessoCabecalho.parReprocessoSaidaOPs.length; i++) {
+
+                                    //    produtos = produtos +
+                                    //        "<tr>" +
+                                    //        "<td style='padding:5px;'>Produto " + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].produto.nCdProduto + " - " + dadosReprocessoCabecalho.parReprocessoEntradaOPs[i].produto.cNmProduto + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dProducao) + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dateInternacionalFormat(dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].dValidade) + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cCdRastreabilidade + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoHeaderOPs[0].cNmHabilitacao + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].cNmLocalEstoque + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalPeca + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].iTotalVolume + "</td>" +
+                                    //        "<td style='padding:5px; text-align:center;'>" + dadosReprocessoCabecalho.parReprocessoSaidaOPs[i].nTotalPeso + "</td>" +
+                                    //        "</tr>";
+
+                                    //}
+
+                                    //produtos = produtos + "</table>";
+
+                                    //lista = lista + produtos;
+
+
+
+                                    //lista = lista +
+                                    //    "<tr><td colspan=3 style='font-size:10px;'>&nbsp;</td></tr>" +
+                                    //    "<tr><td colspan=3 style='font-weight:bold; font-size:10px;'>Avaliação do Produto</td></tr>";
+
+                                    //lista = lista +
+                                    //    "<tr><td colspan=3 style='font-size:10px;'>" +
+                                    //    '<table border=0px  cellpadding=1 cellspacing=0 width=100%>' +
+                                    //'<tr><td><b>Tarefa</b></td><td><b>Padrão</b></td><td><b>Resultado</b></td></tr>' +
+                                    //'';
+
+                                    tabela = '<table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">';
+
+                                    for (var i = 0; i < 9; i++) {
+
+                                    }
+
+
+
+                                    var idObservacao = -1;
+
+                                    for (var i = 0; i < data.length; i++) {
+
+                                        var valor = '';
+                                        var intervalo = '';
+                                        var min = '';
+                                        var max = '';
+                                        var unidadeMedida = '';
+
+                                        if (data[i].ParLevel3_Id == 1316) {
+                                            idObservacao = i;
+                                            continue;
+                                        }
+
+                                        if (data[i].ValueText == "undefined") {
+                                            valor = data[i].Value.toString();
+                                            if (data[i].IntervalMin == "-9999999999999.9000000000") {
+                                                min = '';
+                                            } else {
+                                                min = 'Mín: ' + parseFloat(data[i].IntervalMin).toFixed(0).toString() + '   ';
+                                                unidadeMedida = data[i].unidadeMedida;
+                                            }
+
+                                            if (data[i].IntervalMax == "9999999999999.9000000000") {
+                                                max = '';
+                                            } else {
+                                                max = 'Máx: ' + parseFloat(data[i].IntervalMax).toFixed(0).toString();
+                                                unidadeMedida = data[i].unidadeMedida;
+                                            }
+
+                                            if (min == '' && max == '') {
+                                                valor = data[i].ValueText.toString() == "undefined" ? '' : data[i].ValueText.toString();
+                                            }
+
+                                            intervalo = min + max + ' ' + unidadeMedida;
+                                        } else if (data[i].ValueText != "null") {
+                                            valor = data[i].ValueText.toString() == "undefined" ? '' : data[i].ValueText.toString();
+                                            intervalo = '';
+
+                                        } else {
+                                            valor = data[i].IsConform == "True" ? "Conforme" : "Não Conforme";
+                                            intervalo = '';
+                                        }
+
+
+                                        tabela = tabela + '<tr>';
+                                        tabela = tabela + '<td height= "20px" width= "50%" >' + data[i].ParLevel3_Name + '</td>';
+                                        tabela = tabela + '<td width="25%" align="center">' + intervalo + '</td>';
+                                        tabela = tabela + '<td width="25%" align="center">' + valor + " " + unidadeMedida + '</td>';
+                                        tabela = tabela + '</tr>';
+
+
+                                        //          lista = lista + "<tr><td style='font-size:10px;'>" +
+
+                                        //               data[i].ParLevel3_Name +
+                                        //"</td><td style='font-size:10px;'>" +
+                                        //               intervalo  +
+                                        //               "</td><td align=center style='font-size:10px;'>" +
+                                        //               valor + " " + unidadeMedida +
+                                        //               '</td>' +
+                                        //               '</tr>';
+
+                                    }
+
+                                    if (idObservacao >= 0) {
+                                        //    lista = lista + "<tr><td style='font-size:10px;'>" +
+
+                                        //               data[idObservacao].ParLevel3_Name +
+                                        //"</td><td style='font-size:10px;'>" +
+                                        //               ''  +
+                                        //               "</td><td align=center style='font-size:10px;'>" +
+                                        //               data[idObservacao].Value.toString(); +
+                                        //               '</td>' +
+                                        //                       '</tr>';
+                                        var ob = data[idObservacao].ValueText.toString() == "undefined" ? '' : data[idObservacao].ValueText.toString();
+
+                                        tabela = tabela + '<tr>';
+                                        tabela = tabela + '<td height= "20px" width= "50%" >' + data[idObservacao].ParLevel3_Name + '</td>';
+                                        //tabela = tabela + '<td width="25%" align="center"></td>';
+                                        tabela = tabela + '<td colspan="2" width="50%" align="justify"><div style="width: 300px; overflow: auto;word-wrap: break-word;">' + ob + '</div></td>';
+                                        tabela = tabela + '</tr>';
+                                    }
+
+                                    tabela = tabela + '</table>';
+
+                                    $('#divTarefas').html(tabela);
+
+                                    var rodape = '<table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">';
+
+                                    var valorObs = "";
+                                    if (idObservacao > 0)
+                                        valorObs = data[idObservacao].ValueText.toString() == "undefined" ? '' : data[idObservacao].ValueText.toString();
+
+                                    for (var i = 0; i < calculaRodape(data, dadosReprocessoCabecalho.parReprocessoSaidaOPs, dadosReprocessoCabecalho.parReprocessoEntradaOPs, valorObs) ; i++) {
+                                        rodape = rodape + '<tr><td height=20px;></td></tr>';
+                                    }
+
+                                    //rodape = rodape + '<tr><td height=20px;>RGQ-00-GQC-025/06 Aprov. em: 07/12/2017</td></tr></table>';
+
+                                    $('#divRodape').html(rodape);
+
+                                    //------------------------------------------
+
+
+
+                                    var numeroPaginas = (Math.ceil($('#conteudo').height() / 842));
+
+                                    $('#number').attr('data-content', numeroPaginas);
+
+                                    for (var i = 0; i < numeroPaginas - 1; i++) {
+                                        bottom -= 100;
+                                        botString = bottom.toString();
+                                        var $counter = $('h6.first').clone().removeClass('first');
+                                        $counter.css("bottom", botString + "vh");
+                                        ($counter).insertBefore('.insert');
+
+                                        var $name = $('h6.secound').clone().removeClass('secound');
+                                        $name.css("bottom", botString + "vh");
+                                        ($name).insertBefore('.insert');
+                                    }
+
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
+                                    // mensagemSyncHide();
+                                    // openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
+                                }
+                            })
+
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
+                            // mensagemSyncHide();
+                            // openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
+                        }
+                    })
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
+                    // mensagemSyncHide();
+                    // openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
+                }
+            })
+
+
+
+        }
+
+        function geraLista() {
+
+            $.ajax({
+                type: 'GET'
+                , url: urlGetCollectionLevel2Reprocesso + '/' + unidade + '/' + dtIni + '/' + dtFim + '/' + cabecalhoOPEntrada + '/' + cabecalhoOPSaida
+                , contentType: 'application/json; charset=utf-8'
+                , dataType: 'json'
+                , data: ''
+                , async: false //blocks window close
+                , success: function (data, status) {
+                    console.log(data);
+
+                    var lista = "";
+
+                    for (var i = 0; i < data.length; i++) {
+
+                        lista = lista + '<a href="' + "@Url.Action("Index", "RelatorioReprocesso")" + '?numero=' + data[i].Value + '&unidade=' + unidade + '&dataini=' + dtIni + '&datafim=' + dtFim + '" target="_blank">' +
+                            "Ordem de Produção: " + data[i].Value +
+                            //' - ' +
+                            //dateInternacionalFormat(data[i].CollectionDate) +
+                            //' ' +
+                            //data[i].CollectionDate.substring(11, 16) +
+                            '</a><br>';
+                    }
+
+                    if (lista == "" || lista == undefined) {
+                        GuardJs.exibirMensagemAlerta("Não existem dados para esta seleção");
+                        lista = '';
+                    }
+
+                    $('#divTable').html(lista);
+                    $('#divTable').show();
+                    $btn.button('reset');
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    // createLog("Consolidation Error:" + XMLHttpRequest.responseText);
+                    // mensagemSyncHide();
+                    // openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
+                }
+            })
+        }
+
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
+
+        var $btn = $('#btnSend');
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+            $('#unitId > :first').remove();
+            $("#btnSend").click(function (e) {
+
+                $('#unitId').change();
+
+
+
+
+                //variveis de ambiente 92/367/97/368 GABRIEL /55/20171210/20171230/92/97
+
+                monitoramentoEntrada = 353;
+                monitoramentoSaida = 356;
+                cabecalhoOPEntrada = 41;
+                cabecalhoOPSaida = 48;
+
+                cabecalhoObjOP = 41;
+                cabecalhoObjDataReprocesso = 42;
+                cabecalhoObjSIF = 43;
+                cabecalhoObjOrigem = 44;
+                cabecalhoObjMotivo = 42;
+                cabecalhoObjQtdeEnvolvido = 44;
+
+
+                //variveis de ambiente JBS
+
+                //monitoramentoEntrada = 367;
+                //monitoramentoSaida = 368;
+                //cabecalhoOPEntrada = 92;
+                //cabecalhoOPSaida = 97;
+
+                //cabecalhoObjOP = 92;
+                //cabecalhoObjDataReprocesso = 91;
+                //cabecalhoObjSIF = 93;
+                //cabecalhoObjOrigem = 94;
+                //cabecalhoObjMotivo = 95;
+                //cabecalhoObjQtdeEnvolvido = 96;
+
+
+
+
+
+                Send(true);
+            });
+        });
+
+        function Send(toggle) {
+            $btn.button('loading');
+            $('#results').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            $('#divTable').hide();
+
+            enviar["auditorId"] = GetUsuarioId();
+
+            unidade = enviar.unitId;
+            dtIni = enviar.startDate.substring(6, 11) + '' + enviar.startDate.substring(3, 5) + '' + enviar.startDate.substring(0, 2);
+            dtFim = enviar.endDate.substring(6, 11) + '' + enviar.endDate.substring(3, 5) + '' + enviar.endDate.substring(0, 2);
+
+            $('#menu-toggle').click();
+            $('#fundoPreto').hide();
+            $('#divReport').hide();
+            $('#botoesImpressao').hide();
+
+            geraLista();
+
+        };
+
+
+        //arrSintShow.forEach(function (o, c) {
+        //    visibilidadeDefault.push({
+        //        targets: o,
+        //        visible: true
+        //    })
+        //})
+
+        //arrSintHide.forEach(function (o, c) {
+        //    visibilidadeDefault.push({
+        //        targets: o,
+        //        visible: false
+        //    })
+        //})
+
+
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            if (!($('#unitId :selected').val() > 0)) {
+                GuardJs.exibirMensagemAlerta("@Resources.Resource.select_the_unit_first");
+                return false;
+            }
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        $(document).ready(function () {
+            formControl.showFullCallendar();
+            formControl.showUnit();
+            //formControl.showProcesso();
+
+            closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+        });
+    </script>
+
+}

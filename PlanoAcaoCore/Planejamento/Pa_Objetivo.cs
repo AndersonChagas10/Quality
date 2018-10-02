@@ -8,7 +8,7 @@ namespace PlanoAcaoCore
         public string Name { get; set; }
         public static List<Pa_Objetivo> Listar()
         {
-            var query = "SELECT * FROM Pa_Objetivo";
+            var query = "SELECT * FROM Pa_Objetivo WHERE IsActive = 1";
             return ListarGenerico<Pa_Objetivo>(query);
         }
 
@@ -20,7 +20,7 @@ namespace PlanoAcaoCore
 
         public static List<Pa_Objetivo> GetObjetivoXDimensao(int id)
         {
-            var query = "SELECT * FROM Pa_Objetivo WHERE pa_dimensao_id = " + id;
+            var query = "SELECT * FROM Pa_Objetivo WHERE IsActive = 1 AND pa_dimensao_id = " + id;
             return ListarGenerico<Pa_Objetivo>(query);
         }
 

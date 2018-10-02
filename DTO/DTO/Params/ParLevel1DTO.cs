@@ -27,6 +27,7 @@ namespace DTO.DTO.Params
         //[Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar a frequencia.")]
         [Range(0, 9999999999, ErrorMessageResourceName = "select_the_frequency", ErrorMessageResourceType = typeof(Resource))]
         public int ParFrequency_Id { get; set; }
+  
 
         //[Display(Name = "level1_name", ResourceType = typeof(Resource))]
         //[Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
@@ -84,9 +85,16 @@ namespace DTO.DTO.Params
         //[Display(Name = "limited_number_of_evaluations", ResourceType = typeof(Resource))]
         public bool IsLimitedEvaluetionNumber { get; set; }
 
+        public bool IsRecravacao { get; set; }
+
         //[Display(Name = "?IsActive ", ResourceType = typeof(Resource))]
         public bool IsActive { get; set; } = true;
+        public bool ShowScorecard { get; set; } = true;
+        
         public bool HasTakePhoto { get; set; } = false;
+
+        public bool ShowInTablet { get; set; } = true;
+
         public bool IsPartialSave { get; set; } = false;
 
         public bool haveRealTimeConsolidation { get; set; }
@@ -156,6 +164,7 @@ namespace DTO.DTO.Params
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
 
         public List<ParCounterXLocalDTO> contadoresIncluidos { get; set; }
+
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
 
         /*Props novas*/

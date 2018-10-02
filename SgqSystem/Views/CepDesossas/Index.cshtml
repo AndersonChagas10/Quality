@@ -8,7 +8,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
@@ -24,12 +24,15 @@
             </ul>
             <div class="page-toolbar">
                 @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
             </div>
         </div>
         <!-- END PAGE BAR -->
+
+        @Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")
+
         <!-- END PAGE HEADER-->
         <div class="row">
             <div class="col-xs-12">
@@ -46,17 +49,17 @@
                                 <p>
 
                                     <div class="" id="complexCallendar" style="float:right;display:inline;width:550px;">
-                                        <button id="btnFilter" class="btn-success" style="float:right;margin-left:5px;padding:7px;margin-top:-12px;">Filtrar</button>
+                                        <button id="btnFilter" class="btn-info" style="float:right;margin-left:5px;padding:7px;margin-top:-12px;">Filtrar</button>
                                         <div id="reportrange" class="" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px;padding:5px;margin-left:5px;margin-top:-12px;float:right;">
                                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                                             <span></span> <b class="caret"></b>
                                         </div>
                                         @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
                                         <span style="float:right;margin-top:-5px;margin-left:5px;">Filtro: </span>
-                                  
+
                                     </div>
 
-                                    @Html.ActionLink("Novo volume de CEP Desossa", "Create")
+                                    @Html.ActionLink("Novo volume de CEP Desossa", "Create", null, new { @class = "btn btn-primary" })
                                 </p>
                                 <table class="table table-condensed">
                                     <tr>
@@ -101,16 +104,16 @@
                                                 @Html.DisplayFor(modelItem => item.Amostras)
                                             </td>
                                             <td>
-                                                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
-                                                @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
-                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id })
+                                                @*@if (item.Data != null && item.Data?.Date >= DateTime.Now.Date)
+                                                    {*@
+                                                @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                @* } *@
                                             </td>
                                         </tr>
                                     }
-
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -123,6 +126,10 @@
 @*Referencing the Angular library to the page*@
 @Scripts.Render("~/Scripts/angular.js")
 <script>
+
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
 
     var enviar = {};
 

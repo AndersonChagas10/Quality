@@ -1,6 +1,7 @@
 ﻿@using DTO
 @model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
+
     var GetListLevel1 = Url.Action("GetListLevel1", "api/ParamsApi");
     var GetListLevel2 = Url.Action("GetListLevel2", "api/ParamsApi");
     var GetListLevel3 = Url.Action("GetListLevel3", "api/ParamsApi");
@@ -21,14 +22,8 @@
         overflow-x: hidden;
     }
 
-    /* Toggle Styles */
-
     .wrapper {
         padding-left: 0;
-        -webkit-transition: all 0.5s ease;
-        -moz-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
     }
 
         .wrapper.toggled {
@@ -36,18 +31,14 @@
         }
 
     #sidebar-wrapper {
-        z-index: 1000;
-        position: absolute; /*position: fixed;*/
+        z-index: 2500;
+        position: absolute;
+        margin-left: -300px;
         left: 300px;
         width: 0;
-        height: 96.8%; /*height: 95%;*/
-        margin-left: -300px;
+        height: 100%;
         overflow-y: scroll;
         background: #ecebeb;
-        -webkit-transition: all 0.5s ease;
-        -moz-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
     }
 
     .wrapper.toggled #sidebar-wrapper {
@@ -56,12 +47,10 @@
 
     .page-content-wrapper {
         width: 100%;
-        position: absolute;
-        padding: 15px;
+        padding: 0px !important;
     }
 
     .wrapper.toggled .page-content-wrapper {
-        position: absolute;
         margin-right: -300px;
     }
 
@@ -69,18 +58,14 @@
         float: none !important;
         width: 100%;
     }
-    /* Sidebar Styles */
 
     .sidebar-nav {
         position: absolute;
         top: 0;
-        /*width: 300px;*/
         margin: 0;
         padding: 0;
         list-style: none;
     }
-
-
 
         .sidebar-nav button {
             margin-left: 15px;
@@ -157,7 +142,7 @@
                 background: none;
             }
 
-    @@media(min-width:768px) {
+    @@media(min-width:01px) {
         .wrapper {
             padding-left: 300px;
         }
@@ -179,6 +164,10 @@
             position: relative;
         }
 
+            .page-content-wrapper .page-content {
+                padding-top: 0px !important;
+            }
+
         .wrapper.toggled .page-content-wrapper {
             position: relative;
             margin-right: 0;
@@ -198,10 +187,6 @@
     /*Fullscreen*/
     .fullScreen {
         margin-top: 0px !important;
-    }
-    /*Fullscreen*/
-    #showIndicadoresManutencao table {
-        width: 250px;
     }
 
     #indicadores .radio, .checkbox {
@@ -234,18 +219,15 @@
         <li>
             <div class="" id="simpleCallendar" style="display:none">
                 <span class="redLabel">@Resources.Resource.date </span>
-                <!--<div class="has-feedback">-->
                 <span>
-                    @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@
                     <input type="text" class="" name="datefilter" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px" />
                 </span>
-                <!--</div>-->
             </div>
         </li>
 
         <li>
             <div class="" id="complexCallendar" style="display:none">
-                <span class="redLabel">@Resources.Resource.date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
+                <span class="redLabel">@Resources.Resource.date</span>
                 <div id="reportrange" class="" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px">
                     <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                     <span></span> <b class="caret"></b>
@@ -254,493 +236,134 @@
         </li>
 
         <li>
-            <div class="dropdown" id="showFiltroManutencao" style="display:none">
-                <span class="redLabel">Tipo de Relatorio</span>
-                <select id="tipoRelatorio" class="form-control" style="width:210px">
-                    <option value="Por Unidade">Por Unidade</option>
-                    <option value="Por Regional">Por Regional</option>
-                </select>
+            <div class="dropdown" id="showModulo" style="display:none">
+                <span class="redLabel">Modulo</span>
+                @Html.DropDownList("ModuloId", new SelectList(ViewBag.Modulos, "Id", "Name"), Resources.Resource.select, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
             </div>
         </li>
-
-        @if (ViewBag.Anos != null)
-        {
-            <li>
-                <div class="dropdown" id="showYearManutencao" style="display:none">
-                    <span class="redLabel">Ano</span>
-                    @Html.DropDownList("yearId", new SelectList(ViewBag.Anos, "Ano", "Ano"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-                </div>
-            </li>
-        }
-
-        <li>
-            <div class="dropdown" id="showMonthManutencao" style="display:none">
-                <span class="redLabel">Mês</span>
-                <select class="form-control select2Init" style="width:210px" id="mouthId">
-                    <option value="0">Total Acumulado</option>
-                    <option value="1">Janeiro</option>
-                    <option value="2">Fevereiro</option>
-                    <option value="3">Março</option>
-                    <option value="4">Abril</option>
-                    <option value="5">Maio</option>
-                    <option value="6">Junho</option>
-                    <option value="7">Julho</option>
-                    <option value="8">Agosto</option>
-                    <option value="9">Setembro</option>
-                    <option value="10">Outubro</option>
-                    <option value="11">Novembro</option>
-                    <option value="12">Dezembro</option>
-                </select>
-            </div>
-        </li>
-
-        @if (ViewBag.Regionais != null)
-        {
-            <li>
-                <div class="dropdown" id="showRegionaisManutencao" style="display:none">
-                    <span class="redLabel">Regional</span>
-                    @Html.DropDownList("RegionalId", new SelectList(ViewBag.Regionais, "Nome", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-                </div>
-            </li>
-        }
-        @if (ViewBag.SubRegionais != null)
-        {
-            <li>
-                <div class="dropdown" id="showSubRegionaisManutencao" style="display:none">
-                    <span class="redLabel">Sub Regional</span>
-                    @Html.DropDownList("SubRegionalId", new SelectList(ViewBag.SubRegionais, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-                </div>
-            </li>
-        }
-        @if (ViewBag.Unidades != null)
-        {
-            <li>
-                <div class="dropdown" id="showUnidadesManutencao" style="display:none">
-                    <span class="redLabel">Unidades</span>
-                    @Html.DropDownList("UnidadeId", new SelectList(ViewBag.Unidades, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-                </div>
-            </li>
-        }
 
         <li>
             <div id="showUnit" style="display:none">
                 <span class="redLabel">@Resources.Resource.unit</span>
 
-                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+                @if (ViewBag.UnitArr == null)
+                {
+                    @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
+                }
+                else
+                {
+                    @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px", @multiple = "multiple" })
+                }
             </div>
         </li>
 
         <li>
+            <div id="showGroupLevel1" style="display:none">
+                <span class="redLabel">Liderança</span>
+                @Html.DropDownList("GroupLevel1", new SelectList(ViewBag.GroupLevel1, "Id", "Name"), htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
+            </div>
+        </li>
+
+        @if (ViewBag.ListaCEP != null)
+        {
+            <li>
+                <div id="showTipoCEP" style="display:none">
+                    <span class="redLabel">@Resources.Resource.letters_cep</span>
+
+                    @Html.DropDownList("tipoCEP", new SelectList(ViewBag.ListaCEP, "Value", "Text"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
+                </div>
+            </li>
+        }
+
+        <li>
             <div id="showModulo" style="display:none">
                 <span class="redLabel">Módulo</span>
-
-                @*@Html.DropDownList("moduloId", new SelectList(ViewBag.Modulos, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })*@
             </div>
         </li>
 
         <li>
             <div id="showProcesso" style="display:none">
                 <span class="redLabel">Processo</span>
-
-                @*@Html.DropDownList("clusterId", new SelectList(ViewBag.Clusters, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })*@
             </div>
         </li>
 
-        @*@Html.Partial("~/Views/Shared/_SelectVinculado.cshtml")*@
+        <li>
+            <div id="showShift" style="display:none">
+                <span class="redLabel">@Resources.Resource.shift</span>
+                @Html.DropDownList("shift", new SelectList(ViewBag.Shift, "Id", "Name"), Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
+            </div>
+        </li>
 
-        @*<li>
-                <div id="showOnlyUnit" style="display:none">
-                    <span class="redLabel">Unidade</span>
+        @if (ViewBag.Department != null)
+        {
+            <li>
+                <div id="showDepartment" style="display:none">
+                    <span class="redLabel">Teste</span>
 
-                    @Html.DropDownList("onlyunitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                    @Html.DropDownList("departmentId", new SelectList(ViewBag.Department, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
                 </div>
-            </li>*@
+            </li>
+        }
 
         @Html.Partial("~/Views/Shared/_ClusterRegionalUnidadeCriticalLevel123.cshtml")
 
         @Html.Partial("~/Views/Shared/_Level321Chain.cshtml")
 
-        @*<li>
-                <div id="showLevel2" style="display:none">
-                    <span class="redLabel">@Resources.Resource.level2</span>
-                    @Html.DropDownList("level2Id", new SelectList(ViewBag.Level2, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
-                </div>
-            </li>
-
-            <li>
-                <div id="showLevel3" style="display:none">
-                    <span class="redLabel">@Resources.Resource.level3</span>
-                    @Html.DropDownList("level3Id", new SelectList(ViewBag.Level3, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
-                </div>
-            </li>*@
-
-        <li>
-            <div id="showShift" style="display:none">
-                <span class="redLabel">@Resources.Resource.shift</span>
-                @Html.DropDownList("shift", new SelectList(ViewBag.Shift, "Id", "Name"), "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-            </div>
-        </li>
-
         <li>
             <div id="showPeriod" style="display:none">
                 <span class="redLabel">@Resources.Resource.period</span>
-                @Html.DropDownList("period", new SelectList(ViewBag.Period, "Id", "Name"), "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                @Html.DropDownList("period", new SelectList(ViewBag.Period, "Id", "Name"), Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
             </div>
         </li>
 
         <li>
             <div id="showUsers" style="display:none">
                 <span class="redLabel">@Resources.Resource.auditor</span>
-                @Html.DropDownList("auditorId", new SelectList(ViewBag.UserSgq, "Id", "Name"), "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
+                @Html.DropDownList("auditorId", new SelectList(ViewBag.UserSgq, "Id", "Name"), Resources.Resource.all, htmlAttributes: new { @class = "form-control required select2", @style = "width:210px" })
             </div>
-
-
         </li>
 
         <li>
             <div id="showStatusIndicador" style="display:none">
-                <span class="redLabel">Status Indicador</span>
-                <select id="statusIndicador" class="form-control" style="width: 210px;">
-                    <option>Todos</option>
-                    <option value="1">Fora da Meta</option>
-                    <option value="2">Dentro da Meta</option>
+                <span class="redLabel">@Resources.Resource.level1Status</span>
+                <select id="statusIndicador" class="form-control select2" style="width: 210px;">
+                    <option>@Resources.Resource.all</option>
+                    <option value="1">@Resources.Resource.off_goal</option>
+                    <option value="2">@Resources.Resource.within_goal</option>
                 </select>
             </div>
         </li>
 
         <li>
-            <br />
-            <div id="showManutencao" style="display:none">
-
-                <div class="btn-group hide" data-toggle="buttons">
-                    <label class="btn btn-primary" style="min-width: 0px; margin-left: -1px; margin-right: 0px;">
-                        <!--<input type="checkbox" autocomplete="off" class="manutencaoAno2015"> 2015-->
-                        @Html.CheckBox("manutencaoAno2015", false, new { @class = "redLabel" })
-                        @Html.Label("2015")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 0px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoAno2016", false, new { @class = "redLabel" })
-                        @Html.Label("2016")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 0px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoAno2017", false, new { @class = "redLabel" })
-                        @Html.Label("2017")
-                    </label>
-                </div>
-
-
-                <div class="btn-group hide" data-toggle="buttons">
-                    <label class="btn btn-primary data" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoJaneiro", false, new { @class = "redLabel" })
-                        @Html.Label("Jan")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoFevereiro", false, new { @class = "redLabel" })
-                        @Html.Label("Fev")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoMarco", false, new { @class = "redLabel" })
-                        @Html.Label("Mar")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoAbril", false, new { @class = "redLabel" })
-                        @Html.Label("Abr")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoMaio", false, new { @class = "redLabel" })
-                        @Html.Label("Mai")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoJunho", false, new { @class = "redLabel" })
-                        @Html.Label("Jun")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoJulho", false, new { @class = "redLabel" })
-                        @Html.Label("Jul")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoAgosto", false, new { @class = "redLabel" })
-                        @Html.Label("Ago")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoSetembro", false, new { @class = "redLabel" })
-                        @Html.Label("Set")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoOutubro", false, new { @class = "redLabel" })
-                        @Html.Label("Out")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoNovembro", false, new { @class = "redLabel" })
-                        @Html.Label("Nov")
-                    </label>
-                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
-                        @Html.CheckBox("manutencaoDezembro", false, new { @class = "redLabel" })
-                        @Html.Label("Dez")
-                    </label>
-
-                </div>
-
-                <div class="form-group" id="cbxlistaRegionais"></div>
-
-                <div class="form-group" id="cbxlistaAnos"></div>
-
-                <div class="form-group" id="cbxlistaMeses"></div>
-
-                <br />
+            <div id="showCreateActionPlane" style="display:none">
+                <span class="redLabel">@Resources.Resource.conclued_plan_action</span>
+                <select id="createActionPlane" class="form-control select2" style="width: 210px;">
+                    <option>@Resources.Resource.all</option>
+                    <option value="1">@Resources.Resource.yes</option>
+                    <option value="2">@Resources.Resource.no</option>
+                </select>
             </div>
-            <style>
-                .tituloIndicadores {
-                    background-color: #ccc;
-                }
-            </style>
-            <div id="showIndicadoresManutencao" style="display:none">
-                <table id="indicadores">
-                    <tr class="tituloIndicadores">
-                        <td title="Produção" colspan="2">Produção</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a quantidade de Bois Abatidos no período neste Local!" colspan="2">        <input type="radio" name="optradio" value="Bois Abatidos">:: Bois Abatidos (und)</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a quantidade de Bois Processados no período neste Local!" colspan="2">     <input type="radio" name="optradio" value="Bois Processados">:: Bois Processados (und)</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a quantidade de Bois que Sobraram no período neste Local!" colspan="2">    <input type="radio" name="optradio" value="Sobra de Animais">:: Sobra de Animais (und)</td>
-                    </tr>
-                    <tr>
-                        @*<td title="Acompanhe a quantidade de Sebo Flotado no período neste Local!">         <input type="radio" name="optradio" value="Sebo Flotado">Sebo Flotado</td>
-                            <td title="Acompanhe o Rendimento do Sebo + Farinha no período neste Local!">       <input type="radio" name="optradio" value="Rend.(Sebo+Farinha)">Rend. (S+F)%</td>*@
-                    </tr>
-                    <tr class="tituloIndicadores">
-                        <td title="Custos & Indicadores Técnicos" colspan="2">Custos & Indicadores Técnicos</td>
-                    </tr>
+        </li>
 
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Custos Gerais
-                            </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        @*<td title="Acompanhe o Custo de Manutenção no período neste Local!">                    <input type="radio" name="optradio" value="Manutenção R$">Manutenção R$</td>*@
-                        <td title="Acompanhe o Custo de Manutenção por Cabeça Abatida no período neste Local!" colspan="2"> <input type="radio" name="optradio" value="R$/CB Manut">:: R$ Manutenção / Bois Abatidos</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o Custo Fixo de Manutenção Predial no período neste Local!" colspan="2">        <input type="radio" name="optradio" value="Custo Fixo Manutenção">:: Custo Fixo Manutenção R$</td>
-                    </tr>
-                    @*<tr>
-                            <td title="Acompanhe o Custo Fixo de Utilidades no período neste Local!" colspan="2">                <input type="radio" name="optradio" value="Custo Fixo Utilidades">:: Custo Fixo Utilidades R$</td>
-                        </tr>*@
-                    @*<tr>
-                            <td title="Acompanhe o Custo com Energia Fixa no período neste Local!">             <input type="radio" name="optradio" value="Energia R$ (Fixo)">Energia R$ (Fixo)</td>
-                            <td title="Acompanhe o Custo com Energia Variável no período neste Local!">         <input type="radio" name="optradio" value="Energia R$ (Variável)">Energia R$ (Variável)</td>
-                        </tr>*@
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Energia Elétrica
-                            </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a Quantidade de KWh's por Boi Processado no período neste Local!" colspan="2"><input type="radio" name="optradio" value="KWh/Boi Proc">:: KWh / Boi Processados</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o Custo com Energia Elétrica Total no período neste Local!" colspan="2">   <input type="radio" name="optradio" value="Energia R$">:: Energia R$</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a Quantidade de KWh no período neste Local!" colspan="2">      <input type="radio" name="optradio" value="KWh">:: Energia Ponta + Fora de Ponta (KWh)</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a Demanda Ponta no período neste Local!" colspan="2">          <input type="radio" name="optradio" value="Demanda Ponta">:: Demanda Ponta (KW)</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a Demanda Fora de Ponta no período neste Local!" colspan="2">  <input type="radio" name="optradio" value="Demanda Fora de Ponta">:: Demanda Fora de Ponta (KW)</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o Fator Potência no período neste Local!" colspan="2">         <input type="radio" name="optradio" value="Fator de Potência">:: Fator de Potência</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Combustível para Caldeiras
-                            </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o Custo com Caldeira no período neste Local!" colspan="2">     <input type="radio" name="optradio" value="Caldeira R$">:: Combustível para Caldeira R$</td>
-                    </tr>
-
-                    @*<tr>
-                            <td title="Acompanhe os M³ de Lenha no período neste Local!" colspan="2">                       <input type="radio" name="optradio" value="M³ de Lenha">:: M³ de Lenha</td>
-                        </tr>
-                        <tr>
-                            <td title="Acompanhe os Kg de Lenha no período neste Local!" colspan="2">                       <input type="radio" name="optradio" value="Kg Lenha (Cavaco)">:: Kg Lenha (Cavaco)</td>
-                        </tr>*@
-                    <tr>
-                        <td title="Acompanhe o Mcal no período neste Local!" colspan="2">                               <input type="radio" name="optradio" value="Mcal">:: Combustível para Caldeira (MCal)</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o Mcal por Bois Processados no período neste Local!" colspan="2">          <input type="radio" name="optradio" value="Mcal/Boi Proc">:: MCal / Boi Processados</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Água
-                            </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o Consumo de M³ por Bois Processados no período neste Local!" colspan="2"> <input type="radio" name="optradio" value="Água M³/Boi">:: Água M³/Boi</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o Consumo de M³ de Água no período neste Local!" colspan="2">              <input type="radio" name="optradio" value="Consumo Agua m³">:: Consumo Água (m³)</td>
-                    </tr>
-                    @*<tr>
-                            <td><input type="radio" name="optradio" value="R$/CB Manut+Utilid">R$/CB Manut+Utilid</td>
-                            <td><input type="radio" name="optradio" value="R$ Manut Comb.">R$ Manut Comb.</td>
-                        </tr>*@
-                    @*<tr>
-                            <td><input type="radio" name="optradio" value="Total Vendas R$">Total Vendas R$</td>
-                            <td><input type="radio" name="optradio" value="Total Devolvido R$">Total Devolvido R$</td>
-                        </tr>*@
-                    @*<tr>
-                            <td><input type="radio" name="optradio" value="Custo Fixo Utilidades">Custo Fixo Utilidades</td>
-                            <td><input type="radio" name="optradio" value="Custo Fixo Manutenção">Custo Fixo Manutenção</td>
-                        </tr>*@
-
-
-                    @*<tr>
-                            <td title="Acompanhe os Litros de Sebo no período neste Local!">                    <input type="radio" name="optradio" value="Litros de Sebo">:: Litros de Sebo</td>
-                        </tr>*@
-
-                    <tr class="tituloIndicadores">
-                        <td title="Qualidade e Entrega & Sistema De Manutenção" colspan="2">Qualidade e Entrega & Sistema De Manutenção</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Disponibilidade
-                            </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a Disponibilidade Total no período neste Local!">              <input type="radio" name="optradio" value="Disponibilidade Total">:: Disponibilidade Total</td>
-                        <td title="Acompanhe as Paradas Totais em Minutos no período neste Local!">         <input type="radio" name="optradio" value="Paradas Total">:: Paradas Total</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a Disponibilidade no Abate no período neste Local!">           <input type="radio" name="optradio" value="Disponibilidade Ab">:: Disp. Abate %</td>
-                        <td title="Acompanhe a Disponibilidade na Desossa no período neste Local!">         <input type="radio" name="optradio" value="Disponibilidade Des">:: Disp. Desossa %</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe as Paradas no Abate em Minutos no período neste Local!">       <input type="radio" name="optradio" value="Parada Abate (min)">:: Parada Abate  Min</td>
-                        <td title="Acompanhe as Paradas na Desossa em Minutos no período neste Local!">     <input type="radio" name="optradio" value="Parada Des. (min)">:: Parada Desossa  Min</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Programações
-                            </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a Eficiência em Programação no período neste Local!">          <input type="radio" name="optradio" value="Eficiên.Programção">:: Eficiência de programação (%)</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a Apropriação do Planejamento no período neste Local!" width="50%;">        <input type="radio" name="optradio" value="Apropr Planej...to">:: Aprop. Planeja/o (%)</td>
-                        <td title="Acompanhe a Apropriação das OS's no período neste Local!" width="50%;">               <input type="radio" name="optradio" value="Apropriação de O.S">:: Aprop. de OS (%)</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o Número de OS's Programadas no período neste Local!">         <input type="radio" name="optradio" value="Nº OS Programadas">:: N° OS Programadas</td>
-                        <td title="Acompanhe o Número de OS's Planejadas no período neste Local!">          <input type="radio" name="optradio" value="Nº OS Planejadas">:: N° OS Planejadas</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o Número de OS's Executadas no período neste Local!">          <input type="radio" name="optradio" value="Nº OS Executadas">:: N° OS Executadas</td>
-                        <td title="Acompanhe o Número de Horas Apropriadas de OS no período neste Local!">  <input type="radio" name="optradio" value="Nº Hrs Apropriadas OS">:: N° Hrs Aprop. OS</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o Pilar da Manutenção no período neste Local!">                <input type="radio" name="optradio" value="Pilar Manutenção">:: Pilar Manutenção (%)</td>
-
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o Número de Horas Disponíveis para Trabalhar no período neste Local!"> <input type="radio" name="optradio" value="Nº Hrs Disponíveis Trabalhar">:: N° Hrs disp. a trabalhar (Manutentores)</td>
-
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Metas
-                            </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe a Carta de Metas no período neste Local!">                     <input type="radio" name="optradio" value="CARTA METAS">:: CARTA METAS %</td>
-                    </tr>
-                    @*<tr class="tituloIndicadores">
-                            <td title="Motivação" colspan="2">Motivação</td>
-                        </tr>*@
-                    @*<tr>
-                            <td title="Head Count">                                                             <input type="radio" name="optradio" value="Head Count">:: Head Count</td>
-                            <td title="Rotatividade">                                                           <input type="radio" name="optradio" value="Rotatividade">:: Rotatividade %</td>
-                            <td><input type="radio" name="optradio" value="Absenteísmo">Absenteísmo</td>
-                        </tr>*@
-                    @*<tr>
-                            <td title="Acompanhe o Custo com as Horas Extras no período neste Local!">          <input type="radio" name="optradio" value="Horas Extras R$">:: Horas Extras R$</td>
-                            <td title="Acompanhe a Quantidade de Horas Extras no período neste Local!">         <input type="radio" name="optradio" value="Horas Extras Nº">:: Horas Extras Nº</td>
-                        </tr>*@
-                    <tr>
-                        @*<td title="Acompanhe a Quantidade de Colaboradores Ausentes no período neste Local!">       <input type="radio" name="optradio" value="Nº Colaboradores Ausentes">:: Nº Colab. Ausentes</td>*@
-                        @*<td title="Acompanhe a Quantidade de Colaboradores Desligados no período neste Local!">     <input type="radio" name="optradio" value="Nº Colaboradores Desligados">:: Nº Colab. Desligados</td>*@
-                    </tr>
-                    <tr>
-                        @*<td title="Acompanhe o Número de Horas Disponíveis para Trabalhar no período neste Local!"> <input type="radio" name="optradio" value="Nº Hrs Disponíveis Trabalhar">:: Nº Hrs Disp. Trab.</td>*@
-                        @* <td title="Acompanhe a Quantidade de Colaboradores Registrados no período neste Local!">    <input type="radio" name="optradio" value="Nº Colaboradores Registrados">:: Nº Colab. Registrados</td>*@
-                    </tr>
-                    @*<tr>
-                            <td title="Acompanhe a Taxa de Frequência de Acidentes no período neste Local!">            <input type="radio" name="optradio" value="Taxa de Frequência">:: Taxa de Frequência %</td>
-
-                        </tr>*@
-                    <tr class="tituloIndicadores">
-                        <td title="Parâmetros De Continuidade" colspan="2">Parâmetros De Continuidade</td>
-                    </tr>
-                    @*<tr>
-                            <td title="Acompanhe o ScoreCard de Água no período neste Local!">                  <input type="radio" name="optradio" value="Scorecard Água">:: Scorecard Água %</td>
-                        </tr>*@
-                    @*<tr>
-                            <td title="Acompanhe o ScoreCard de Aspersão no período neste Local!">              <input type="radio" name="optradio" value="Scorecard Aspersão">:: Scorecard Aspersão %</td>
-                        </tr>*@
-                    @*<tr>
-                            <td title="Acompanhe o ScoreCard de Unidade no período neste Local!">               <input type="radio" name="optradio" value="Scorecard Unidade">:: Scorecard Unidade %</td>
-                        </tr>*@
-                    <tr>
-                        <td title="Acompanhe o ScoreCard de Energia no período neste Local!">               <input type="radio" name="optradio" value="Scorecard Energia">:: Scorecard Energia %</td>
-                    </tr>
-                    @*<tr>
-                            <td title="Acompanhe o ScoreCard de Vácuo no período neste Local!">                 <input type="radio" name="optradio" value="Scorecard Vácuo">:: Scorecard Vácuo %</td>
-                        </tr>*@
-                    <tr>
-                        <td title="Acompanhe o ScoreCard de Vapor no período neste Local!">                 <input type="radio" name="optradio" value="Scorecard Vapor">:: Scorecard Vapor %</td>
-                    </tr>
-                    @*<tr>
-                            <td><input type="radio" name="optradio" value="Devoluções %">Devoluções %</td>
-                            <td><input type="radio" name="optradio" value="Devoluções R$">Devoluções R$</td>
-                        </tr>*@
-                    @*<tr>
-                            <td title="Acompanhe o ScoreCard de Meio Ambiente no período neste Local!">         <input type="radio" name="optradio" value="Scorecard M. Amb">:: Scorecard M. Amb %</td>
-                        </tr>*@
-                    <tr class="tituloIndicadores">
-                        <td title="OBRAS" colspan="2">OBRAS</td>
-                    </tr>
-                    <tr>
-                        <td title="Acompanhe o CAPEX no período neste Local!">                              <input type="radio" name="optradio" value="CAPEX">:: CAPEX R$</td>
-                        <td title="Acompanhe a Quantidade de Obras no período neste Local!">                <input type="radio" name="optradio" value="OBRAS">:: OBRAS</td>
-                    </tr>
-                </table>
-
+        <li>
+            <div id="showDimensaoData" style="display:none">
+                <span class="redLabel">@Resources.Resource.period_type_chart</span>
+                <select id="createDimensaoData" class="form-control select2" style="width: 210px;">
+                    <option value="1">@Resources.Resource.per_day</option>
+                    <option value="2">@Resources.Resource.per_week</option>
+                    <option value="4">@Resources.Resource.a_month</option>
+                </select>
             </div>
+        </li>
 
+        <li>
+            <div class="dropdown" id="showTipoVisao" style="display:none">
+                <span class="redLabel">Visão</span>
+                <select id="tipoVisao" class="form-control select2" style="width:210px">
+                    <option value="1">Coletados</option>
+                    <option value="2">Total</option>
+                </select>
+            </div>
         </li>
 
         <li>
@@ -750,10 +373,7 @@
     </ul>
 </div>
 
-<!-- Menu Toggle Script -->
-
 <script>
-
 
     var enviar = {};
     var start = moment();
@@ -776,30 +396,64 @@
 
     $(function () {
 
+        function RetornaArrayInteiro(array){
+            for(var i=0; i<array.length;i++) array[i] = parseInt(array[i].replace(/\D/g, ''), 10);
+            return array;
+        }
+
         $('#level1Id').on('change', function (e) {
-            enviar['level1Id'] = parseInt( $('#level1Id').val().replace(/\D/g, ''), 10);
+            @if(ViewBag.Level1IdArr == null){
+                <text>
+                    enviar['level1Id'] = parseInt( $('#level1Id').val().replace(/\D/g, ''), 10);
+                </text>
+            }else{
+                <text>
+            enviar['level1IdArr'] = RetornaArrayInteiro($('#level1Id').val());
+                </text>
+            }
             $('#level2Id').change();
         });
 
         $('#level2Id').on('change', function (e) {
-            enviar['level2Id'] = parseInt( $('#level2Id').val().replace(/\D/g, ''), 10);
+            @if(ViewBag.Level2IdArr == null){
+                <text>
+                    enviar['level2Id'] = parseInt( $('#level2Id').val().replace(/\D/g, ''), 10);
+                </text>
+            }else{
+                <text>
+            enviar['level2IdArr'] = RetornaArrayInteiro($('#level2Id').val());
+                </text>
+            }
             $('#level3Id').change();
         });
 
         $('#level3Id').on('change', function (e) {
-            enviar['level3Id'] = parseInt( $('#level3Id').val().replace(/\D/g, ''), 10);
+            @if(ViewBag.Level3IdArr == null){
+                <text>
+                    enviar['level3Id'] = parseInt( $('#level3Id').val().replace(/\D/g, ''), 10);
+                </text>
+            }else{
+                <text>
+            enviar['level3IdArr'] = RetornaArrayInteiro($('#level3Id').val());
+                </text>
+            }
         });
 
         $('#unitId').on('change', function (e) {
             enviar['unitId'] = $('#unitId option:selected').val();
+            enviar['unitIdArr'] = $('#unitId').val();
         });
 
-        //$('#onlyunitId').on('change', function (e) {
-        //    enviar['onlyunitId'] = $('#onlyunitId option:selected').val();
-        //});
+        $('#tipoCEP').on('change', function (e) {
+            enviar['tipoCEP'] = $('#tipoCEP option:selected').val();
+        });
 
         $('#shift').on('change', function (e) {
             enviar['shift'] = $('#shift option:selected').val();
+        });
+
+        $('#shiftIdV').on('change', function (e) {
+            enviar['shift'] = $('#shiftIdV option:selected').val();
         });
 
         $('#period').on('change', function (e) {
@@ -818,37 +472,95 @@
             enviar['statusIndicador'] = $('#statusIndicador option:selected').val();
         });
 
+        $('#createActionPlane').on('change', function (e) {
+            enviar['createActionPlane'] = $('#createActionPlane option:selected').val();
+        });
+
         $('#structureId').on('change',function(e){
+            enviar['structureIdArr'] = $('#structureId').val();
             enviar['structureId'] = $('#structureId option:selected').val();
         });
 
         $('#unitIdV').on('change',function(e){
+            enviar['unitIdArr'] = $('#unitIdV').val();
             enviar['unitId'] = $('#unitIdV option:selected').val();
+        });
+
+        $('#GroupLevel1').on('change', function (e) {
+            enviar['GroupLevel1'] = $('#GroupLevel1').val();
         });
 
         $('#criticalLevelId').on('change',function(e){
             enviar['criticalLevelId'] = $('#criticalLevelId option:selected').val();
         });
 
+        $('#level1Groupv').on('change', function (e) {
+            @if(ViewBag.Level3IdArr == null){
+                <text>
+            enviar['groupParLevel1IdArr'] = parseInt($('#level1Groupv').val().replace(/\D/g, ''), 10);
+                </text>
+            }else{
+                <text>
+            enviar['groupParLevel1IdArr'] = RetornaArrayInteiro($('#level1Groupv').val());
+                </text>
+            }
+            $('#level1Idv').change();
+        });
+
         $('#level1Idv').on('change', function (e) {
-            enviar['level1Id'] = parseInt( $('#level1Idv').val().replace(/\D/g, ''), 10);
+            @if(ViewBag.Level3IdArr == null){
+                <text>
+                    enviar['level1Idv'] = parseInt( $('#level1Idv').val().replace(/\D/g, ''), 10);
+                </text>
+            }else{
+                <text>
+            enviar['level1IdArr'] = RetornaArrayInteiro($('#level1Idv').val());
+                </text>
+            }
             $('#level2Idv').change();
         });
 
         $('#level2Idv').on('change', function (e) {
-            enviar['level2Id'] = parseInt( $('#level2Idv').val().replace(/\D/g, ''), 10);
+            @if(ViewBag.Level3IdArr == null){
+                <text>
+                    enviar['level2Idv'] = parseInt( $('#level2Idv').val().replace(/\D/g, ''), 10);
+                </text>
+            }else{
+                <text>
+            enviar['level2IdArr'] = RetornaArrayInteiro($('#level2Idv').val());
+                </text>
+            }
             $('#level3Idv').change();
         });
 
         $('#level3Idv').on('change', function (e) {
-            enviar['level3Id'] = parseInt( $('#level3Idv').val().replace(/\D/g, ''), 10);
+            @if(ViewBag.Level3IdArr == null){
+                <text>
+                    enviar['level3Idv'] = parseInt( $('#level3Idv').val().replace(/\D/g, ''), 10);
+                </text>
+            }else{
+                <text>
+            enviar['level3IdArr'] = RetornaArrayInteiro($('#level3Idv').val());
+                </text>
+            }
         });
 
-        //enviar['level01Id'] = null;
-        //enviar['level02Id'] = null;
-        //enviar['level03Id'] = null;
+        $('#departmentId').on('change', function(e){
+            enviar['departmentId'] = $('#departmentId option:selected').val();
+        });
 
-        //Start config datepickerrange simple
+        $('#clusterGroupId').on('change', function (e) {
+            enviar['clusterGroupId'] = $('#clusterGroupId option:selected').val();
+        });
+
+        $('#tipoVisao').on('change', function (e) {
+            enviar['tipoVisao'] = $('#tipoVisao option:selected').val();
+        });
+
+        $('#ModuloId').on('change', function (e) {
+            enviar['moduloId'] = $('#ModuloId :selected').val();
+        });
+
         $('input[name="datefilter"]').daterangepicker({
             singleDatePicker: true,
             autoUpdateInput: false,
@@ -856,13 +568,10 @@
             showDropdowns: true,
             startDate: start,
             endDate: end,
-            //opens: "left",
-            //"locale": localCultureRangePicker,
             locale: {
                 cancelLabel: 'Clear'
             }
         }, function (start, end, label) {
-            //console.log("New date range selected: ' + start.format('MM/DD/YYYY') + ' to ' + end.format('MM/DD/YYYY') + ' (predefined range: ' + label + ')");
             enviar['startDate'] = start.format();
             enviar['endDate'] = start.format();
         });
@@ -877,10 +586,6 @@
             enviar['endDate'] = "";
         });
 
-
-        //Start config datepickerrange simple
-
-        //Start config datepickerrange full
         var start = moment();
         var end = moment();
 
@@ -889,13 +594,14 @@
             enviar['startDate'] = start.format();
             enviar['endDate'] = end.format();
         }
+
         var configQueryData = @Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));
         var configCallendar = {};
         if(configQueryData){
             $('#reportrange').daterangepicker({
+                minDate: "01/01/2015",
                 startDate: start,
                 endDate: end,
-                //opens: "left",
                 locale: {
                     "format": "DD/MM/YYYY",
                     "separator": " - ",
@@ -903,7 +609,6 @@
                     "cancelLabel": "Cancelar",
                     "customRangeLabel": "Seleção",
                 },
-                //autoApply: false,
                 alwaysShowCalendars: true,
                 showDropdowns: true,
                 ranges: rangesCalendar,
@@ -913,7 +618,6 @@
             $('#reportrange').daterangepicker({
                 startDate: start,
                 endDate: end,
-                //autoApply: false,
                 locale: {
                     "format": "MM/DD/YYYY",
                     "separator": " - ",
@@ -926,41 +630,27 @@
         }
 
         cb(start, end);
-        //End config datepickerrange full
 
         enviar['startDate'] = moment().format();
         enviar['endDate'] = moment().format();
-
 
     });
 
 
     (function (H) {
 
-        //H.wrap(H.Series.prototype, 'drawGraph', function (proceed) {
-
-        //    // Before the original function
-        //    console.log("We are about to draw the graph:", this.graph);
-
-        //    // Now apply the original function with the original arguments,
-        //    // which are sliced off this function's arguments
-        //    proceed.apply(this, Array.prototype.slice.call(arguments, 1));
-
-        //    // Add some code after the original function
-        //    console.log("We just finished drawing the graph:", this.graph);
-
-        //$(Highcharts.charts).each(function (c, chart) {
-        //    if (chart != undefined) {
-        //        chart.reflow()
-        //    }
-        //});
-        //});
-
     }(Highcharts));
 
 
     $(document).ready(function () {
-        $("#menu-toggle").click(function (e) {
+
+        var isEua = @Html.Raw(Json.Encode(GlobalConfig.Eua));
+
+        if (isEua) {
+            $('#showModulo2').hide();
+        }
+
+         $('body').on("click", "#menu-toggle",function (e) {
             $("#menu-toggle > i").toggleClass("glyphicon-chevron-right");
             $('.redLabelSecTitle').toggle();
             e.preventDefault();
@@ -990,13 +680,31 @@
 
         });
 
-        $('#unitId').select2();
+            $('#unitId').select2();
+            $('#ModuloId').select2();
+            $('#shift').select2();
+            $('#period').select2();
+            $('#auditorId').select2();
+            $('#tipoCEP').select2();
 
-    });
+        //Se não for multiplo força um change para selecionar o valor (motivo: ele remove o primeiro item 'todos' e não aplicava o evento change)
+        if(!$('#unitId').attr('multiple'))
+            setTimeout(function(){$('#unitId').trigger('change');},500);
+
+            let ItemMenu = @Html.Raw(Json.Encode(ViewBag.itemMenu));
+
+            if (ItemMenu) {
+
+                enviar["ItemMenu_Id"] = ItemMenu.Id;
+            }
+
+        });
 
     var formControl = {
+
         showLevel1: function () {
-            $('#showLevel1').show();
+        $('#showLevel1').show();
+
         },
         showLevel2: function () {
             $('#showLevel2').show();
@@ -1013,12 +721,15 @@
         showUnit: function () {
             $('#showUnit').show();
         },
+        showGroupLevel1: function () {
+            $('#showGroupLevel1').show();
+        },
+        showTipoCEP: function () {
+            $('#showTipoCEP').show();
+        },
         showProcesso: function () {
             $('#showProcesso').show();
         },
-        //showOnlyUnit: function () {
-        //    $('#showOnlyUnit').show();
-        //},
         showShift: function () {
             $('#showShift').show();
         },
@@ -1033,140 +744,78 @@
             formControl.showFullCallendar();
             formControl.showShift();
             formControl.showUnit();
-            //formControl.showOnlyUnit();
             formControl.showUsers();
         },
-        orderDdls: function () {
-
-        },
-        showManutencao: function () {
-            $("#showManutencao").show();
-        },
-        loadManutencaoParametros: function () {
-
-            $("#cbxlistaAnos").empty();
-
-            var data = new Date();
-
-            var ano = data.getFullYear();
-            var selectAnos = $("<select multiple='multiple' class='form-control'></select>");
-            for (var i = ano; i > 2010; i--) {
-                selectAnos.append("<option value='" + i + "'>" + i + "</option>");
-            }
-            $("#cbxlistaAnos").append("<label>Anos: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>").append(selectAnos);
-            $("#cbxlistaAnos select").select2();
-
-            $("#cbxlistaMeses").empty();
-            var selectMeses = $("<select multiple='multiple' class='form-control'></select>");
-            for (var i = 0; i < 12; i++) {
-                selectMeses.append("<option value='" + parseInt(i + 1) + "'>" + monthNames[i] + "</option>");
-            }
-            $("#cbxlistaMeses").append("<label>Meses:     </label>").append(selectMeses);
-            $("#cbxlistaMeses select").select2();
-
-
-            $("#cbxlistaRegionais").empty();
-            var selectRegionais = $("<select multiple='multiple' class='form-control'></select>");
-            $.post("../api/Manutencao/getSelectEmpresaRegionalList", function (r) {
-                for (var i = 0 ; i < r.length; i++) {
-                    selectRegionais.append("<option value='" + r[i].Regional + "'>" + r[i].Regional + "</option>");
-                }
-                $("#cbxlistaRegionais").append("<label>Regionais:    </label>").append(selectRegionais);
-                $("#cbxlistaRegionais select").select2();
-
-                $("#showManutencao").find(".select2").css("width", "210px");
-            });
-
-            $("#showManutencao").find(".select2").css("width", "210px");
-        },
-        showIndicadoresManutencao: function () {
-            $("#showIndicadoresManutencao").show();
-        },
-
-        showYear: function () {
-            $("#showYearManutencao").show();
-        },
-
-        showMonthManutencao: function(){
-            $("#showMonthManutencao").show();
-        },
-
-        showFiltroManutencao: function () {
-            $("#showFiltroManutencao").show();
-        },
-
-        showRegionaisManutencao: function () {
-            $("#showRegionaisManutencao").show();
-        },
-
-        showSubRegionaisManutencao: function () {
-            $("#showSubRegionaisManutencao").show();
-        },
-
-        showUnidadesManutencao: function () {
-            $("#showUnidadesManutencao").show();
-        },
-
         showLevel123: function (){
             $('#showLevel123').show();
         },
-
         showStatusIndicador: function() {
             $('#showStatusIndicador').show();
         },
-
+        showCreateActionPlane: function () {
+            $('#showCreateActionPlane').show();
+        },
+        showDimensaoData: function () {
+            $('#showDimensaoData').show();
+        },
         showClustRegUnitCriticalLevel123: function(){
             $('#showClustRegUnitCriticalLevel123').show();
+        },
+        showDepartment: function(){
+            $('#showDepartment').show();
+        },
+        showTipoVisao: function () {
+            $('#showTipoVisao').show();
+        },
+        showModulo: function () {
+            $('#showModulo').show();
         }
     }
 
-    //Esconde o header e o footer quando tecla f11
-    $(document).keyup(function (e) {
-        if (e.which == 122) {
-            e.preventDefault();
+     //Esconde o header e o footer quando tecla f11
+     $(document).keyup(function (e) {
+         if (e.which == 122) {
+             e.preventDefault();
+             expand();
+             return false;
+         }
+     });
 
-            expand();
+     //Toggle navbar, header e footer
+     function expand() {
 
+         $(".navbar").toggle();
+         $(".page-header-fixed .page-container").toggleClass("fullScreen");
+         $("footer").toggle();
 
-            return false;
-        }
-    });
+     }
 
-    //Toggle navbar, header e footer
-    function expand() {
+     //Toggle fullscreen para todos os navegadores
+     function toggleFullScreen() {
+         if (!document.fullscreenElement &&
+             !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+             if (document.documentElement.requestFullscreen) {
+                 document.documentElement.requestFullscreen();
+             } else if (document.documentElement.msRequestFullscreen) {
+                 document.documentElement.msRequestFullscreen();
+             } else if (document.documentElement.mozRequestFullScreen) {
+                 document.documentElement.mozRequestFullScreen();
+             } else if (document.documentElement.webkitRequestFullscreen) {
+                 document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+             }
+         } else {
+             if (document.exitFullscreen) {
+                 document.exitFullscreen();
+             } else if (document.msExitFullscreen) {
+                 document.msExitFullscreen();
+             } else if (document.mozCancelFullScreen) {
+                 document.mozCancelFullScreen();
+             } else if (document.webkitExitFullscreen) {
+                 document.webkitExitFullscreen();
+             }
+         }
 
-        $(".navbar").toggle();
-        $(".page-header-fixed .page-container").toggleClass("fullScreen");
-        $("footer").toggle();
-
-    }
-
-    //Toggle fullscreen para todos os navegadores
-    function toggleFullScreen() {
-        if (!document.fullscreenElement &&
-            !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {  // current working methods
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            } else if (document.documentElement.msRequestFullscreen) {
-                document.documentElement.msRequestFullscreen();
-            } else if (document.documentElement.mozRequestFullScreen) {
-                document.documentElement.mozRequestFullScreen();
-            } else if (document.documentElement.webkitRequestFullscreen) {
-                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-            }
-        } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            }
-        }
-
-        expand();
-    }
+         expand();
+     }
 
 </script>

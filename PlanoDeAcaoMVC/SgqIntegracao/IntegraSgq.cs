@@ -61,8 +61,8 @@ namespace PlanoDeAcaoMVC
                 }
             }
 
-            filterContext.Controller.ViewBag.Unidade = PlanoAcaoCore.Pa_Unidade.Listar();
-            filterContext.Controller.ViewBag.Quem = PlanoAcaoCore.Pa_Quem.Listar();
+            filterContext.Controller.ViewBag.Unidade = PlanoAcaoCore.Pa_Unidade.Listar().OrderBy(r => r.Name);
+            filterContext.Controller.ViewBag.Quem = PlanoAcaoCore.Pa_Quem.Listar().OrderBy(r => r.Name);
 
         }
     }

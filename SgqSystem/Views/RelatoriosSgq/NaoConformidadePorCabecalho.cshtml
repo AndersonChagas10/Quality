@@ -10,27 +10,29 @@
 
 }
 
-<div class="page-content" style="min-height: 600px;">
+<div class="page-content-wrapper">
+    <div class="page-content">
 
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent" style="width:1000px; margin-left:auto; margin-right:auto; border">
+        <div id="formBodyContent" class="col-xs-12" style="margin-left:auto; margin-right:auto; border">
 
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-        <div id="grafico1" @*style="max-height:250px;"*@></div>
+            <div id="grafico1" @*style="max-height:250px;"*@></div>
 
-        <div id="grafico2" @*style="max-height:250px;"*@></div>
+            <div id="grafico2" @*style="max-height:250px;"*@></div>
 
-        <div id="grafico3" @*style="max-height:250px;"*@></div>
+            <div id="grafico3" @*style="max-height:250px;"*@></div>
 
-        <div id="grafico4" @*style="max-height:250px;"*@></div>
+            <div id="grafico4" @*style="max-height:250px;"*@></div>
 
-        <div id="grafico5" @*style="max-height:250px;"*@></div>
+            <div id="grafico5" @*style="max-height:250px;"*@></div>
 
-        @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+        </div>
+
     </div>
-
 </div>
 
 @section Scripts {
@@ -107,7 +109,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: 'Folha de Verificação Por Obra'
+                    text: Resources("check_sheet_per_work")
                 },
                 subtitle: {
                     text: ''
@@ -116,7 +118,7 @@
                     categories: obraNome,
                     crosshair: true,
                     title: {
-                        text: 'Obras',
+                        text: Resources('construction'),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -130,7 +132,7 @@
                         }
                     },
                     title: {
-                        text: 'Quantidade',
+                        text: Resources("quantity"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -157,7 +159,7 @@
                         }
                     },
                     title: {
-                        text: 'Porcentagem',
+                        text: Resources("percentage"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -295,7 +297,7 @@
                         name: 'Meta',
                         data: meta,
                         color: '#67D184',
-                        dataLabels: {                           
+                        dataLabels: {
                             enabled: true,
                             color: 'black',
                             align: 'right',
@@ -399,7 +401,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: 'Torre/Periferia'
+                    text: Resources("towersuburb")
                 },
                 subtitle: {
                     text: ''
@@ -408,7 +410,7 @@
                     categories: torreNome,
                     crosshair: true,
                     title: {
-                        text: 'Torres/Periferias',
+                        text: Resources("towersuburb"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -423,7 +425,7 @@
                         }
                     },
                     title: {
-                        text: 'Quantidade',
+                        text: Resources("quantity"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -450,7 +452,7 @@
                         }
                     },
                     title: {
-                        text: 'Porcentagem',
+                        text: Resources("percentage"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -695,7 +697,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: 'Tipo de Pavimento'
+                    text: Resources("type_of_pavement")
                 },
                 subtitle: {
                     text: ''
@@ -704,7 +706,7 @@
                     categories: pavimentoNome,
                     crosshair: true,
                     title: {
-                        text: 'Pavimentos',
+                        text: Resources("pavement"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -719,7 +721,7 @@
                         }
                     },
                     title: {
-                        text: 'Quantidade',
+                        text: Resources("quantity"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -746,7 +748,7 @@
                         }
                     },
                     title: {
-                        text: 'Porcentagem',
+                        text: Resources("percentage"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -992,7 +994,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: 'Apartamento/Área'
+                    text: Resources("apartmentarea")
                 },
                 subtitle: {
                     text: ''
@@ -1001,7 +1003,7 @@
                     categories: apartamentoNome,
                     crosshair: true,
                     title: {
-                        text: 'Apartamentos/Área',
+                        text: Resources("apartmentarea"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -1016,7 +1018,7 @@
                         }
                     },
                     title: {
-                        text: 'Quantidade',
+                        text: Resources("quantity"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -1043,7 +1045,7 @@
                         }
                     },
                     title: {
-                        text: 'Porcentagem',
+                        text: Resources("percentage"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -1287,7 +1289,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: 'Cômodos'
+                    text: Resources("rooms")
                 },
                 subtitle: {
                     text: ''
@@ -1296,7 +1298,7 @@
                     categories: torreNome,
                     crosshair: true,
                     title: {
-                        text: 'Cômodos',
+                        text: Resources("rooms"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -1311,7 +1313,7 @@
                         }
                     },
                     title: {
-                        text: 'Quantidade',
+                        text: Resources("quantity"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -1338,7 +1340,7 @@
                         }
                     },
                     title: {
-                        text: 'Porcentagem',
+                        text: Resources("percentage"),
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -1548,6 +1550,10 @@
 
             formControl.showFullCallendar();
             //formControl.showUnit();
+
+            closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
 
         });
     </script>

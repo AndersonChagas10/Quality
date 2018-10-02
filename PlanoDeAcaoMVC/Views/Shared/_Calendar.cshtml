@@ -1,0 +1,123 @@
+﻿@*IMPORT: @Html.Partial("~/Views/Shared/_Calendar.cshtml")*@
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+<div class="" id="complexCallendar" style="">
+    <div id="reportrange" class="" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 230px">
+        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+        <span></span> <b class="caret"></b>
+    </div>
+</div>
+
+
+@*@section scripts {*@
+    <script>
+        var enviar;
+        /*Config Callendar PT-BR*/
+        $(function () {
+            var rangesBR = {
+                'Hoje': [moment(), moment()],
+                'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+                'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+                'Este mês': [moment().startOf('month'), moment().endOf('month')],
+                'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+
+            moment.locale("Pt-Br");
+            moment.defaultFormat = "DD/MM/YYYY";
+
+            $.fn.daterangepicker('locale', {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "fromLabel": "de",
+                "toLabel": "até",
+                "customRangeLabel": "Customizado",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Dom",
+                    "Seg",
+                    "Ter",
+                    "Qua",
+                    "Qui",
+                    "Sex",
+                    "Sab"
+                ],
+                "monthNames": [
+                    "Janeiro",
+                    "Fevereiro",
+                    "Março",
+                    "Abril",
+                    "Maio",
+                    "Junho",
+                    "Julho",
+                    "Agosto",
+                    "Setembro",
+                    "Outubro",
+                    "Novembro",
+                    "Dezembro"
+                ],
+                //"firstDay": 0
+            });
+
+            rangesCalendar = rangesBR;
+
+            $.fn.daterangepicker('ranges', rangesCalendar);
+
+            //Start config datepickerrange full
+            var start = moment();
+            var end = moment();
+            function cb(start, end) {
+                $('#reportrange span').html(start.format() + ' - ' + end.format());
+                enviar['startDate'] = start.format();
+                enviar['endDate'] = end.format();
+            }
+            var configQueryData = true; // @*@Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));*@
+            var configCallendar = {};
+            if (configQueryData) {
+                $('#reportrange').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    //opens: "left",
+                    //autoApply: false,
+                    locale: {
+                        "format": "DD/MM/YYYY",
+                        "separator": " - ",
+                        "applyLabel": "Aplicar",
+                        "cancelLabel": "Cancelar",
+                        "customRangeLabel": "Seleção",
+                    },
+                    alwaysShowCalendars: true,
+                    showDropdowns: true,
+                    ranges: rangesCalendar,
+                    linkedCalendars: false
+                }, cb);
+            } else {
+                $('#reportrange').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    //autoApply: false,
+                    locale: {
+                        "format": "MM/DD/YYYY",
+                        "separator": " - ",
+                    },
+                    alwaysShowCalendars: true,
+                    showDropdowns: true,
+                    ranges: rangesCalendar,
+                    linkedCalendars: false
+                }, cb);
+            }
+
+            cb(start, end);
+            //End config datepickerrange full
+
+            enviar['startDate'] = moment().format();
+            enviar['endDate'] = moment().format();
+            /*Config Callendar FIM*/
+        });
+
+    </script>
+@*}*@

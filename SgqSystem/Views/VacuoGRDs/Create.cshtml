@@ -7,7 +7,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
@@ -127,7 +127,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.QtdadeFamiliaProduto, "Número de famílias cadastradas", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.QtdadeFamiliaProduto, new { @class = "form-control", @disabled = true } )
+                                                @Html.TextBoxFor(model => model.QtdadeFamiliaProduto, new { @class = "form-control", @readonly = true } )
                                                 @Html.ValidationMessageFor(model => model.QtdadeFamiliaProduto, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -135,26 +135,25 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Avaliacoes, "Avaliações", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Avaliacoes, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
+                                                @Html.EditorFor(model => model.Avaliacoes, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                                                 @Html.ValidationMessageFor(model => model.Avaliacoes, "", new { @class = "text-danger" })
-                                                @Html.HiddenFor(model => model.Avaliacoes, htmlAttributes: new { @id = "avaliacaoHidden" })
+                                                @*@Html.HiddenFor(model => model.Avaliacoes, htmlAttributes: new { @id = "avaliacaoHidden" })*@
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Amostras, "Amostras por Avaliação", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Amostras, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
+                                                @Html.EditorFor(model => model.Amostras, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                                                 @Html.ValidationMessageFor(model => model.Amostras, "", new { @class = "text-danger" })
-                                                @Html.HiddenFor(model => model.Amostras, htmlAttributes: new { @id = "amostraHidden" })
+                                                @*@Html.HiddenFor(model => model.Amostras, htmlAttributes: new { @id = "amostraHidden" })*@
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                             
-                                                <input type="submit" value="Salvar" onclick="habilitar()" class="btn btn-default" /> |
-                                                @Html.ActionLink("Voltar para Volume de CEP Vácuo GRD", "Index")
+                                                <input type="submit" value="Salvar" class="btn btn-primary" />
+                                                @Html.ActionLink("Voltar para Volume de CEP Vácuo GRD", "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>
@@ -198,7 +197,7 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar7");
 
-    $('#HorasTrabalhadasPorDia').on('input', function () {
+    $('#HorasTrabalhadasPorDia').on('blur, keyup', function () {
         $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
         $('#avaliacaoHidden').val($(this).val());
         applyMath();
@@ -227,10 +226,19 @@
 
     //TASK FORCE
     function applyMath() {
-        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
-        $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+        debugger
+         $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+         $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+         if (("" + $('#Amostras').val()).length <= 0) $('#Amostras').val(0);
+         if (("" + $('#amostraHidden').val()).length <= 0) $('#amostraHidden').val(0);
     }
 
 
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
 </script>

@@ -16,7 +16,7 @@ namespace SgqSystem.Controllers.Params
     public class EquipamentosController : BaseController
     {
 
-        private SGQ_GlobalEntities db = new SGQ_GlobalEntities();
+        private SgqDbDevEntities db = new SgqDbDevEntities();
         private SgqDbDevEntities db2 = new SgqDbDevEntities();
 
         // GET: Equipamentos
@@ -49,7 +49,7 @@ namespace SgqSystem.Controllers.Params
             foreach (var i in equipamentos)
             {
 
-                i.ParCompanyName = companys.FirstOrDefault(r => r.Id == i.ParCompany_Id).Name;
+                i.ParCompanyName = companys.FirstOrDefault(r => r.Id == i.ParCompany_Id)?.Name;
 
                 if (parCompanyXUserSgq.Any(r => r.ParCompany_Id == i.ParCompany_Id))
                 {

@@ -19,7 +19,7 @@ namespace SgqSystem.Controllers.Api
         private List<ScorecardResultSet> _mock { get; set; }
         private List<ScorecardResultSet> _list { get; set; }
 
-        public decimal[] SelectPontosScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id) //Se 0, tras pontos , se 1, tras tudo                                                                                                                                                                                               
+        public decimal[] SelectPontosScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id, int GroupLevel1, int moduloId, int shift) //Se 0, tras pontos , se 1, tras tudo                                                                                                                                                                                               
         {
 
             decimal[] pontosTotais = { 0, 0 };
@@ -52,18 +52,26 @@ namespace SgqSystem.Controllers.Api
                     _novaDataFim = _dtFim;
                 }
 
-                sql = new ScorecardResultSet().SelectScorecardCompleto(_novaDataIni, _novaDataFim, unidadeId, 0, clusterSelected_Id);
+                sql = new ScorecardResultSet().SelectScorecardCompleto(_novaDataIni, _novaDataFim, unidadeId, 0, clusterSelected_Id, GroupLevel1, moduloId, shift);
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
 
-                    _list = db.Database.SqlQuery<ScorecardResultSet>(sql).ToList();
+                    _list = factory.SearchQuery<ScorecardResultSet>(sql).ToList();
 
                     foreach (var r in _list.ToList())
                     {
-                        pontosDisputados = r.PontosAtingidosIndicador.Value;
-
-                        pontosAtingidos = r.PontosAtingidos.Value;
+                        try
+                        {
+                            pontosDisputados = r.PontosAtingidosIndicador.Value;
+                        }
+                        catch { }
+                        try
+                        {
+                            pontosAtingidos = r.PontosAtingidos.Value;
+                        }
+                        catch { }
+                    
                     }
                 }
 
@@ -76,6 +84,32 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [Route("getProdutoById/{codigoProduto}")]
+        public String getProdutoById(string codigoProduto)
+        {
+            var retorno = "";
+            List<ResultadoUmaColuna> lista = new List<ResultadoUmaColuna>();
+            var query = "select cNmProduto as retorno from Produto where nCdProduto = '" + codigoProduto + "'";
+
+            try
+            {
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    lista = factory.SearchQuery<ResultadoUmaColuna>(query).ToList();
+                }
+
+                retorno = lista[0].retorno;
+
+            }
+            catch
+            {
+                retorno = null;
+            }
+
+            return retorno;
+        }
+
+        [HttpPost]
         [Route("GetScorecard")]
         public List<ScorecardResultSet> GetScorecard([FromBody] FormularioParaRelatorioViewModel form)
         {
@@ -83,13 +117,14 @@ namespace SgqSystem.Controllers.Api
 
             CommonLog.SaveReport(form, "Report_Scorecard");
 
-            decimal[] pontosTotais = SelectPontosScorecard(form._dataInicio, form._dataFim, form.unitId, 0, form.clusterSelected_Id);
+            decimal[] pontosTotais = SelectPontosScorecard(form._dataInicio, form._dataFim, form.unitId, 0, form.clusterSelected_Id, form.GroupLevel1, form.ModuloId, form.shift);
 
-            var query = new ScorecardResultSet().SelectScorecardCompleto(form._dataInicio, form._dataFim, form.unitId, 1, form.clusterSelected_Id);
-            using (var db = new SgqDbDevEntities())
+            var query = new ScorecardResultSet().SelectScorecardCompleto(form._dataInicio, form._dataFim, form.unitId, 1, form.clusterSelected_Id, form.GroupLevel1, form.ModuloId, form.shift);
+
+            using (Factory factory = new Factory("DefaultConnection"))
             {
 
-                _list = db.Database.SqlQuery<ScorecardResultSet>(query).ToList();
+                _list = factory.SearchQuery<ScorecardResultSet>(query).ToList();
                 var total = new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = 784, Scorecard = 0, PontosAtingidos = 0 };
 
                 var totalPontosDisputados = 0.0M;
@@ -232,7 +267,7 @@ namespace SgqSystem.Controllers.Api
         [Route("Migracao/{unidade}/{ip}/{banco}/{ipProd}/{bancoProd}")]
         public void MigracaoParte1(string unidade, string ip, string banco, string ipProd, string bancoProd)
         {
-            
+
             #region parte01
 
             List<ResultadoUmaColuna> collectionlevel2List = new List<ResultadoUmaColuna>();

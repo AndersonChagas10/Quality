@@ -11,28 +11,66 @@ using DTO.DTO.Params;
 using Dominio;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using ADOFactory;
 
 namespace SgqSystem.Controllers.Api.SelectVinculado
 {
     [HandleApi()]
     [RoutePrefix("api/SelectVinculadoApi")]
-    public class SelectVinculadoApiController : ApiController
+    public class SelectVinculadoApiController : BaseApiController
     {
 
         [HttpPost]
-        [Route("GetParCluster")]
-        public List<ParClusterDTO> GetParCluster(List<UnitDTO> teste)
+        [Route("GetParClusterGroup")]
+        public List<ParClusterDTO> GetParClusterGroup([FromBody] int UserId)
         {
-            var lista = "";
+            var retorno = new List<ParClusterDTO>();
 
-            foreach (var item in teste)
+            if (UserId > 0)
             {
-                lista += item.Id.ToString() + ",";
+
+                string unidadesUsuario = GetUserUnits(UserId);
+
+                var query = $@"SELECT
+                        DISTINCT
+                        	PCG.Id
+                           ,PCG.Name
+                        FROM ParClusterGroup PCG
+                        LEFT JOIN ParCluster PC
+                        	ON PC.ParClusterGroup_Id = PCG.Id
+                        LEFT JOIN ParCompanyCluster PCC
+                        	ON PC.Id = PCC.ParCluster_Id
+                        LEFT JOIN ParCompany UNIT
+                        	ON PCC.ParCompany_Id = UNIT.Id
+                        WHERE UNIT.Id IN ({ unidadesUsuario })";
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    retorno = factory.SearchQuery<ParClusterDTO>(query).ToList();
+                }
+
             }
 
-            lista = lista.Remove(lista.Length - 1);
+            return retorno;
+        }
 
-            var query = @"SELECT
+        [HttpPost]
+        [Route("GetParCluster")]
+        public List<ParClusterDTO> GetParCluster([FromBody] ModelForm model)
+        {
+            var retorno = new List<ParClusterDTO>();
+
+            if (model.UserId > 0)
+            {
+                string unidadesUsuario = GetUserUnits(model.UserId);
+                string whereClusterGroup = "";
+
+                if (model.ClusterGroup > 0)
+                {
+                    whereClusterGroup = $@"AND PCG.Id = { model.ClusterGroup }";
+                }
+
+                var query = $@"SELECT
                         DISTINCT
                         	PC.Id
                            ,pc.Name
@@ -41,40 +79,43 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         	ON PC.Id = PCC.ParCluster_Id
                         LEFT JOIN ParCompany UNIT
                         	ON PCC.ParCompany_Id = UNIT.Id
-                        WHERE UNIT.Id IN (" + lista + @")";
+                        LEFT JOIN ParClusterGroup PCG
+                        	ON PC.ParClusterGroup_Id = PCG.Id
+                        WHERE UNIT.Id IN ({ unidadesUsuario })
+                        { whereClusterGroup }";
 
-            using (var db = new SgqDbDevEntities())
-            {
-                var retorno = db.Database.SqlQuery<ParClusterDTO>(query).ToList();
-                return retorno;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    retorno = factory.SearchQuery<ParClusterDTO>(query).ToList();
+                }
             }
+
+            return retorno;
         }
 
         [HttpPost]
         [Route("GetParStructure")]
-        public List<ParStructureDTO> GetParStructure(JObject JForm)
+        public List<ParStructureDTO> GetParStructure([FromBody] ModelForm model)
         {
+            var retorno = new List<ParStructureDTO>();
 
-            dynamic Form = JForm;
-
-            var lista = "";
-
-            int? ClusterId = Form.Cluster;
-            var whereCluster = "";
-
-            if (ClusterId != null)
+            if (model.UserId > 0)
             {
-                whereCluster = "AND PC.Id = " + ClusterId;
-            }
 
-            foreach (var unit in Form.UnitList)
-            {
-                lista += unit.Id.ToString() + ",";
-            }
+                var whereCluster = "";
+                var unidadesUsuario = GetUserUnits(model.UserId);
 
-            lista = lista.Remove(lista.Length - 1);
+                if (model.Cluster > 0)
+                {
+                    whereCluster = "AND PC.Id = " + model.Cluster;
+                }
+                else
+                if (model.ClusterArr != null && model.ClusterArr.Length > 0)
+                {
+                    whereCluster = $"AND PC.Id IN ({ string.Join(",", model.ClusterArr) })";
+                }
 
-            var query = @"SELECT
+                var query = $@"SELECT
                         DISTINCT
                         	ps.Id
                            ,ps.Name
@@ -88,47 +129,54 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         LEFT JOIN ParStructure PS
                         	ON PS.Id = UNITXSTRUCT.ParStructure_Id
                         		AND PS.ParStructureParent_Id = 1
-                        WHERE UNIT.Id IN (" + lista + @")
-                        " + whereCluster + @"
+                        WHERE UNIT.Id IN ({unidadesUsuario})
+                        { whereCluster }
                         AND PS.Id IS NOT NULL";
 
-            using (var db = new SgqDbDevEntities())
-            {
-                var retorno = db.Database.SqlQuery<ParStructureDTO>(query).ToList();
-                return retorno;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    retorno = factory.SearchQuery<ParStructureDTO>(query).ToList();
+                }
+
             }
+
+            return retorno;
         }
 
         [HttpPost]
         [Route("GetParCompany")]
-        public List<ParCompanyDTO> GetParCompany(JObject JForm)
+        public List<ParCompanyDTO> GetParCompany([FromBody] ModelForm model)
         {
-            dynamic Form = JForm;
+            var retorno = new List<ParCompanyDTO>();
 
-            var lista = "";
-            var whereStructure = "";
-            var whereCluster = "";
-            int? ClusterId = Form.Cluster;
-            int? Structure = Form.Structure;
-
-            if (Structure != null)
+            if (model.UserId > 0)
             {
-                whereStructure = "and PS.Id = " + Structure;
-            }
 
-            if (ClusterId != null)
-            {
-                whereCluster = "AND PC.Id = " + ClusterId;
-            }
+                var whereStructure = "";
+                var whereCluster = "";
+                var unidadesUsuario = GetUserUnits(model.UserId);
 
-            foreach (var unit in Form.UnitList)
-            {
-                lista += unit.Id.ToString() + ",";
-            }
+                if (model.Structure > 0)
+                {
+                    whereStructure = "and PS.Id = " + model.Structure;
+                }
+                else
+                if (model.StructureArr.Length > 0)
+                {
+                    whereStructure = $"AND PS.Id IN ({ string.Join(",", model.StructureArr) })";
+                }
 
-            lista = lista.Remove(lista.Length - 1);
+                if (model.Cluster > 0)
+                {
+                    whereCluster = "AND PC.Id = " + model.Cluster;
+                }
+                else
+                if (model.ClusterArr.Length > 0)
+                {
+                    whereCluster = $"AND PC.Id IN ({ string.Join(",", model.ClusterArr) })";
+                }
 
-            var query = @"SELECT
+                var query = $@"SELECT
                         DISTINCT
                         	UNIT.Id
                            ,UNIT.Name
@@ -142,69 +190,124 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         LEFT JOIN ParStructure PS
                         	ON PS.Id = UNITXSTRUCT.ParStructure_Id
                         		AND PS.ParStructureParent_Id = 1
-                        WHERE UNIT.Id IN (" + lista + @")
-                        " + whereCluster + @"
-                        " + whereStructure + @"";
+                        WHERE UNIT.Id IN ({unidadesUsuario})
+                        { whereCluster }
+                        { whereStructure } ";
 
-            using (var db = new SgqDbDevEntities())
-            {
-                var retorno = db.Database.SqlQuery<ParCompanyDTO>(query).ToList();
-                return retorno;
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    retorno = factory.SearchQuery<ParCompanyDTO>(query).ToList();
+                }
+
             }
+
+            return retorno;
+        }
+
+        [HttpPost]
+        [Route("GetParLevel1Group")]
+        public List<ParCriticalLevelDTO> GetParLevel1Group([FromBody] ModelForm model)
+        {
+            var retorno = new List<ParCriticalLevelDTO>();
+
+
+
+            //var whereCluster = "";
+
+            //if (model.Cluster > 0)
+            //{
+            //    whereCluster = "AND cc.ParCluster_Id = " + model.Cluster;
+            //}
+            //else
+            //    if (model.ClusterArr.Length > 0)
+            //{
+            //    whereCluster = $"AND cc.ParCluster_Id IN ({ string.Join(",", model.ClusterArr) })";
+            //}
+
+            var query = $@"SELECT
+                    	distinct p1.Id, p1.Name
+                    FROM ParGroupParLevel1 p1
+                    WHERE 1 = 1
+                    AND IsActive = 1
+                    ";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                retorno = factory.SearchQuery<ParCriticalLevelDTO>(query).ToList();
+            }
+
+
+            return retorno;
         }
 
         [HttpPost]
         [Route("GetParCriticalLevel")]
-        public List<ParCriticalLevelDTO> GetParCriticalLevel(JObject JForm)
+        public List<ParCriticalLevelDTO> GetParCriticalLevel([FromBody] ModelForm model)
         {
-            dynamic Form = JForm;
+            var retorno = new List<ParCriticalLevelDTO>();
+
+
 
             var whereCluster = "";
-            int? ClusterId = Form.Cluster;
 
-            if (ClusterId != null)
+            if (model.Cluster > 0)
             {
-                whereCluster = "AND cc.ParCluster_Id = " + ClusterId;
+                whereCluster = "AND cc.ParCluster_Id = " + model.Cluster;
+            }
+            else
+                if (model.ClusterArr.Length > 0)
+            {
+                whereCluster = $"AND cc.ParCluster_Id IN ({ string.Join(",", model.ClusterArr) })";
             }
 
-            var query = @"SELECT
+            var query = $@"SELECT
                     	distinct cl.Id, cl.Name
                     FROM ParLevel1XCluster cc
                     INNER JOIN ParCriticalLevel cl
                     	ON cc.ParCriticalLevel_Id = cl.id
                     WHERE 1 = 1
-                    " + whereCluster + @"";
+                    { whereCluster }";
 
-            using (var db = new SgqDbDevEntities())
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                var retorno = db.Database.SqlQuery<ParCriticalLevelDTO>(query).ToList();
-                return retorno;
+                retorno = factory.SearchQuery<ParCriticalLevelDTO>(query).ToList();
             }
+
+
+            return retorno;
         }
 
         [HttpPost]
         [Route("GetLevel1ParCriticalLevel")]
-        public List<ParCriticalLevelDTO> GetLevel1ParCriticalLevel(JObject JForm)
+        public List<ParLevel1DTO> GetLevel1ParCriticalLevel([FromBody] ModelForm model)
         {
-            dynamic Form = JForm;
+            var retorno = new List<ParLevel1DTO>();
+
 
             var whereCriticalLevel = "";
             var whereCluster = "";
 
-            int? CriticalLevel = Form.CriticalLevel;
-            int? Cluster = Form.Cluster;
-
-            if (CriticalLevel != null)
+            if (model.CriticalLevel > 0)
             {
-                whereCriticalLevel = "AND pcl.Id = " + CriticalLevel;
+                whereCriticalLevel = "AND pcl.Id = " + model.CriticalLevel;
+            }
+            else
+                if (model.CriticalLevelArr.Length > 0)
+            {
+                whereCluster = $"AND pcl.Id IN ({ string.Join(",", model.CriticalLevelArr) })";
             }
 
-            if (Cluster != null)
+            if (model.Cluster > 0)
             {
-                whereCluster = "AND plc.ParCluster_Id = " + Cluster;
+                whereCluster = "AND plc.ParCluster_Id = " + model.Cluster;
+            }
+            else
+                if (model.ClusterArr.Length > 0)
+            {
+                whereCluster = $"AND plc.ParCluster_Id IN ({ string.Join(",", model.ClusterArr) })";
             }
 
-            var query = @"SELECT
+            var query = $@"SELECT
                         DISTINCT
                         	l1.Name
                            ,L1.ID
@@ -226,17 +329,128 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         	AND PS.ParStructureParent_Id = 1
                         WHERE 1 = 1
                         AND plc.IsActive = 1
-                        " + whereCriticalLevel + @"
-                        " + whereCluster + @"
+                        { whereCriticalLevel }
+                        { whereCluster }
                         --AND PS.Id = 3
                         --AND PC.Id IN (15,11)
                         ORDER BY L1.Name";
 
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                retorno = factory.SearchQuery<ParLevel1DTO>(query).ToList();
+            }
+
+
+            return retorno;
+        }
+
+        [HttpPost]
+        [Route("GetLevel1ParLevel1Group")]
+        public List<ParLevel1DTO> GetLevel1ParLevel1Group([FromBody] ModelForm model)
+        {
+            var retorno = new List<ParLevel1DTO>();
+
+
+            var whereCriticalLevel = "";
+            var whereCluster = "";
+            var whereLevel1Group = "";
+
+            if (model.CriticalLevel > 0)
+            {
+                whereCriticalLevel = "AND pcl.Id = " + model.CriticalLevel;
+            }
+            else
+                if (model.CriticalLevelArr.Length > 0)
+            {
+                whereCriticalLevel = $"AND pcl.Id IN ({ string.Join(",", model.CriticalLevelArr) })";
+            }
+
+            if (model.Cluster > 0)
+            {
+                whereCluster = "AND plc.ParCluster_Id = " + model.Cluster;
+            }
+            else
+                if (model.ClusterArr.Length > 0)
+            {
+                whereCluster = $"AND plc.ParCluster_Id IN ({ string.Join(",", model.ClusterArr) })";
+            }
+
+            if (model.groupParLevel1IdArr.Length > 0)
+            {
+                whereLevel1Group = $"AND PGP1.ParGroupParLevel1_Id IN ({ string.Join(",", model.groupParLevel1IdArr) })"; ;
+            }
+
+                var query = $@"SELECT
+                        DISTINCT
+                        	l1.Name
+                           ,L1.ID
+                        FROM ParLevel1XCluster plc
+                        INNER JOIN ParCompanyCluster pcc
+                        	ON pcc.ParCluster_Id = plc.ParCluster_Id
+                        INNER JOIN ParCompany pc
+                        	ON pcc.ParCompany_Id = pc.Id
+                        INNER JOIN ParCompanyCluster CC
+                        	ON CC.ParCompany_Id = PC.Id
+                        INNER JOIN ParLevel1 L1
+                        	ON plc.ParLevel1_Id = l1.Id
+                        INNER JOIN ParCriticalLevel pcl
+                        	ON plc.ParCriticalLevel_Id = pcl.Id
+                        INNER JOIN ParCompanyXStructure PCS
+                        	ON PCS.ParCompany_Id = PC.Id
+                        INNER JOIN ParStructure PS
+                        	ON PS.ID = PCS.ParStructure_Id
+                        	AND PS.ParStructureParent_Id = 1
+                        LEFT JOIN ParGroupParLevel1XParLevel1 PGP1
+	                        ON L1.ID = PGP1.ParLevel1_Id
+	                        AND PGP1.IsActive = 1
+                        WHERE 1 = 1
+                        AND plc.IsActive = 1
+                        AND L1.IsActive = 1
+                        { whereCriticalLevel }
+                        { whereCluster }
+                        { whereLevel1Group }
+                        ORDER BY L1.Name";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                retorno = factory.SearchQuery<ParLevel1DTO>(query).ToList();
+            }
+
+
+            return retorno;
+        }
+
+
+        private string GetUserUnits(int User)
+        {
             using (var db = new SgqDbDevEntities())
             {
-                var retorno = db.Database.SqlQuery<ParCriticalLevelDTO>(query).ToList();
-                return retorno;
+                var user = db.UserSgq.Find(User);
+                if(user.ShowAllUnits == true)
+                {
+                    return string.Join(",", db.ParCompanyXUserSgq.Select(r => r.ParCompany_Id).ToList());
+                }
+                return string.Join(",", db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == User).Select(r => r.ParCompany_Id).ToList());
             }
         }
+
+    }
+
+    public class ModelForm
+    {
+        public int UserId { get; set; }
+        public int CriticalLevel { get; set; }
+        public int Cluster { get; set; }
+        public int ClusterGroup { get; set; }
+        public int Structure { get; set; }
+        public int[] StructureArr { get; set; } = new int[] { };
+        public int[] ClusterArr { get; set; } = new int[] { };
+        public int[] CriticalLevelArr { get; set; } = new int[] { };
+        public int[] groupParLevel1IdArr { get; set; } = new int[] { };
+
+        public int[] Level1IdArr { get; set; } = new int[] { };
+        public int[] Level2IdArr { get; set; } = new int[] { };
+        public int[] Level3IdArr { get; set; } = new int[] { };
+
     }
 }

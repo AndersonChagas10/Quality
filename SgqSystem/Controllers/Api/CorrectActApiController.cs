@@ -1,22 +1,113 @@
-﻿using AutoMapper;
+﻿using ADOFactory;
+using AutoMapper;
 using Dominio;
+using DTO;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api
 {
+
     [RoutePrefix("api/CorrectiveAction")]
     public class CorrectActApiController : ApiController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
+        [Route("GetTableCorrectiveAction")]
+        [HttpPost]
+        public List<CorrectiveAct> GetTableCorrectiveAction([FromBody]FormularioParaRelatorioViewModel model)
+        {
+            var table = new List<CorrectiveAct>();
+
+            var query = @"SELECT
+                            CA.Id as Id
+	                       ,CL2.UnitId
+                           ,PC.Name AS Unidade
+                           ,CL2.ParLevel1_Id
+                           ,P1.Name AS Indicador
+                           ,CL2.ParLevel2_Id
+                           ,P2.Name AS Monitoramento
+                           ,CA.PreventativeMeasure
+                        FROM correctiveaction AS CA WITH (NOLOCK)
+                        LEFT JOIN CollectionLevel2 AS CL2 WITH (NOLOCK)
+	                        ON CL2.Id = CA.CollectionLevel02Id
+                        LEFT JOIN Result_Level3 AS RL3 WITH (NOLOCK)
+	                        ON RL3.Id = CL2.Id
+                        LEFT JOIN ParLevel1 AS P1 WITH (NOLOCK)
+	                        ON CL2.ParLevel1_Id = P1.Id
+                        LEFT JOIN ParLevel2 AS P2 WITH (NOLOCK)
+	                        ON CL2.ParLevel2_Id = P2.Id
+                        LEFT JOIN ParCompany AS PC WITH (NOLOCK)
+	                        ON Pc.Id = CL2.UnitId";
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                table = GlobalConfig.CorrectiveAct = factory.SearchQuery<CorrectiveAct>(query).ToList();
+            }
+            return table;
+        }
+
+        [Route("GetCorrectiveAct")]
+        [HttpGet]
+        public CorrectiveAct GetCorrectiveAct([FromUri] int editar)
+        {
+            var EditAct = new CorrectiveAct();
+            var query = @"SELECT
+	                        CA.Id
+                           ,CL2.UnitId
+                           ,PC.Name AS Unidade
+                           ,CL2.ParLevel1_Id
+                           ,P1.Name AS Indicador
+                           ,CL2.ParLevel2_Id
+                           ,P2.Name AS Monitoramento
+                           ,CA.PreventativeMeasure
+                        FROM correctiveaction AS CA WITH (NOLOCK)
+                        LEFT JOIN CollectionLevel2 AS CL2 WITH (NOLOCK)
+	                        ON CL2.Id = CA.CollectionLevel02Id
+                        LEFT JOIN Result_Level3 AS RL3 WITH (NOLOCK)
+	                        ON RL3.Id = CL2.Id
+                        LEFT JOIN ParLevel1 AS P1 WITH (NOLOCK)
+	                        ON CL2.ParLevel1_Id = P1.Id
+                        LEFT JOIN ParLevel2 AS P2 WITH (NOLOCK)
+	                        ON CL2.ParLevel2_Id = P2.Id
+                        LEFT JOIN ParCompany AS PC WITH (NOLOCK)
+	                        ON Pc.Id = CL2.UnitId
+                        WHERE CA.Id =" + editar;
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                EditAct = GlobalConfig.GetCorrectiveAct = factory.SearchQuery<CorrectiveAct>(query).SingleOrDefault();
+            }
+            return EditAct;
+        }
+
+        [Route("SaveCorrectiveAct")]
+        [HttpPost]
+        public CorrectiveAct SaveCorrectiveAct([FromBody] CorrectiveAct correctiveAct)
+        {
+            return null;
+        }
+
         public CorrectActApiController()
         {
             db.Configuration.ProxyCreationEnabled = false;
+        }
+
+        [Route("Save")]
+        [HttpPost]
+        public DTO.DTO.CorrectiveActionDTO Save(DTO.DTO.CorrectiveActionDTO save)
+        {
+            var objBanco = db.CorrectiveAction.Where(r => r.Id == save.Id).AsNoTracking().FirstOrDefault(); // busca obj do banco pela Id
+            objBanco.DescriptionFailure = save.DescriptionFailure;
+            objBanco.ImmediateCorrectiveAction = save.ImmediateCorrectiveAction;
+            objBanco.ProductDisposition = save.ProductDisposition;
+            objBanco.PreventativeMeasure = save.PreventativeMeasure;
+            db.SaveChanges();
+            return null;
         }
 
         [Route("GetCorrectiveAction")]
@@ -80,7 +171,13 @@ namespace SgqSystem.Controllers.Api
                 sql += " \n and CorrectiveAction.AuditorId = " + model.auditorId + "";
             }
 
-            var dados = db.Database.SqlQuery<CorrectiveActionDTO>(sql).ToList();
+            var dados = new List<CorrectiveActionDTO>();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                dados = factory.SearchQuery<CorrectiveActionDTO>(sql).ToList();
+            }
+
+
 
             //var list = new List<CorrectiveAction>();
 
@@ -148,8 +245,8 @@ namespace SgqSystem.Controllers.Api
             CorrectiveAction obj = db.CorrectiveAction.Where(r => r.Id == id).FirstOrDefault();
             CorrectiveActionDTO obj2 = Mapper.Map<CorrectiveAction, CorrectiveActionDTO>(obj);
             obj2.AuditorName = db.UserSgq.Where(r => r.Id == obj.AuditorId).FirstOrDefault().Name;
-            obj2.NameSlaughter = db.UserSgq.Where(r => r.Id == obj.SlaughterId).FirstOrDefault().Name;
-            obj2.NameTechinical = db.UserSgq.Where(r => r.Id == obj.TechinicalId).FirstOrDefault().Name;
+            obj2.NameSlaughter = db.UserSgq.Where(r => r.Id == obj.SlaughterId).FirstOrDefault().FullName;
+            obj2.NameTechinical = db.UserSgq.Where(r => r.Id == obj.TechinicalId).FirstOrDefault().FullName;
 
             leve1Id = db.CollectionLevel2.Where(r => r.Id == obj.CollectionLevel02Id).FirstOrDefault().ParLevel1_Id;
             leve2Id = db.CollectionLevel2.Where(r => r.Id == obj.CollectionLevel02Id).FirstOrDefault().ParLevel2_Id;
@@ -199,6 +296,5 @@ namespace SgqSystem.Controllers.Api
 
             return obj2;
         }
-
     }
 }

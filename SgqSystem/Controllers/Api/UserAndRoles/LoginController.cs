@@ -15,7 +15,7 @@ namespace SgqSystem.Controllers.Api.Login
         public string Logado()
         {
             //string mensagem = "noDataBase";
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             //try
             //{
             //    using (SqlConnection connection = new SqlConnection(conexao))

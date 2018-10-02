@@ -99,9 +99,14 @@ namespace Dominio.Services
 
             foreach (ParCompanyCluster companyCluster in dbList)
             {
-                ParCompanyCluster save = listParCompanyCluster.Where(r => r.ParCluster_Id == companyCluster.ParCluster_Id &&
-                                            r.ParCompany_Id == companyCluster.ParCompany_Id &&
-                                            r.Active == true).FirstOrDefault();
+                ParCompanyCluster save = null;
+
+                if (listParCompanyCluster.IsNotNull())
+                {
+                    save = listParCompanyCluster.Where(r => r.ParCluster_Id == companyCluster.ParCluster_Id &&
+                            r.ParCompany_Id == companyCluster.ParCompany_Id &&
+                            r.Active == true).FirstOrDefault();
+                }
 
                 if (save == null)
                 {
@@ -116,15 +121,24 @@ namespace Dominio.Services
                     Guard.verifyDate(companyCluster, "AlterDate");
                     _baseRepoParCompanyCluster.Update(companyCluster);
                 }
-                listParCompanyCluster.Remove(save);
+
+                if (save.IsNotNull())
+                {
+                    listParCompanyCluster.Remove(save);
+                }
+
             }
 
-            foreach (ParCompanyCluster companyCluster in listParCompanyCluster)
+            if (listParCompanyCluster.IsNotNull())
             {
-                companyCluster.Active = true;
-                companyCluster.ParCompany_Id = parCompany.Id;
-                _baseRepoParCompanyCluster.Add(companyCluster);
+                foreach (ParCompanyCluster companyCluster in listParCompanyCluster)
+                {
+                    companyCluster.Active = true;
+                    companyCluster.ParCompany_Id = parCompany.Id;
+                    _baseRepoParCompanyCluster.Add(companyCluster);
+                }
             }
+
         }
 
         public void SaveParCompanyXStructure(List<ParCompanyXStructure> listParCompanyXStructure, ParCompany parCompany)
@@ -153,7 +167,7 @@ namespace Dominio.Services
                 listParCompanyXStructure.Remove(save);
             }
 
-            if(listParCompanyXStructure != null)
+            if (listParCompanyXStructure != null)
                 foreach (ParCompanyXStructure companyStructure in listParCompanyXStructure)
                 {
                     companyStructure.Active = true;
@@ -182,6 +196,25 @@ namespace Dominio.Services
             return parStructureDTO;
         }
 
+        public ParStructure AtivarOuDesativarParStructure(ParStructureDTO parStructureDTO)
+        {
+            var objReturno = _baseRepoParStructure.GetById(parStructureDTO.Id);
+
+            if(objReturno.Active == true)
+            {
+                objReturno.Active = false;
+            }
+            else
+            {
+                objReturno.Active = true;
+            }
+
+            _baseRepoParStructure.AddOrUpdateNotCommit(objReturno);
+            _baseRepoParStructure.Commit();
+          
+            return objReturno;
+        }
+
         public ParStructureGroupDTO AddUpdateParStructureGroup(ParStructureGroupDTO parStructureGroupDTO)
         {
             ParStructureGroup parStructureGroupSalvar = Mapper.Map<ParStructureGroup>(parStructureGroupDTO);
@@ -193,7 +226,25 @@ namespace Dominio.Services
 
             return parStructureGroupDTO;
         }
-        
+
+        public ParStructureGroup AtivarOuDesativarParStructureGroup(ParStructureGroupDTO parStructureGroupDTO)
+        {
+            var retornoObj = _baseRepoParStructureGroup.GetById(parStructureGroupDTO.Id);
+
+            if (retornoObj.Active == true)
+            {
+                retornoObj.Active = false;
+            }
+            else
+            {
+                retornoObj.Active = true;
+            }
+            _baseRepoParStructureGroup.AddOrUpdateNotCommit(retornoObj);
+            _baseRepoParStructureGroup.Commit();
+
+            return retornoObj;
+        }
+
         #endregion
     }
 }

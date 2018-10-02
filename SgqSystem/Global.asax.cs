@@ -1,27 +1,24 @@
 ﻿using Helper;
-using Microsoft.ApplicationInsights.Extensibility;
-using SgqSystem.Handlres;
 using SgqSystem.Mappers;
 using System;
 using System.Diagnostics;
-using System.Web;
-using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
-using Hangfire;
 using DTO;
 using System.Globalization;
 using System.Threading;
-using Hangfire.SqlServer;
+using Jobs;
+using SgqSystem.Jobs;
+using SgqSystem.Helpers;
+using System.Web.Http;
 
 namespace SgqSystem
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
 
-        private BackgroundJobServer _backgroundJobServer;
         private string ScriptFull;
 
         protected void Application_Start()
@@ -34,16 +31,31 @@ namespace SgqSystem
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
-            GlobalConfig.VerifyConfig("DbContextSgqEUA");
-            #if DEBUG
-            TelemetryConfiguration.Active.DisableTelemetry = true;
-            #endif
-            var options = new SqlServerStorageOptions
+            GlobalConfig.VerifyConfig("DefaultConnection");
+
+            #region LOG
+            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
             {
-                PrepareSchemaIfNecessary = false,
+                //new Business.ErrorLogBusiness().Save(eventArgs.Exception.ToClient());
             };
-            Hangfire.GlobalConfiguration.Configuration.UseSqlServerStorage("DbContextSgqEUA", options);
-            _backgroundJobServer = new BackgroundJobServer();
+            #endregion
+
+            SetGlobalConfigAmbient();
+
+            ThreadPool.QueueUserWorkItem(MailJob.SendMailJobFunction);
+            ThreadPool.QueueUserWorkItem(MandalaJob.PreencherListaMandala);
+            ThreadPool.QueueUserWorkItem(ReProcessJsonJob.ReProcessJsonJobFunction);
+
+            //if (GlobalConfig.Brasil)
+            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR" + GlobalConfig.Ambient];
+            //else if (GlobalConfig.Eua)
+            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaEUA" + GlobalConfig.Ambient];
+            //else if (GlobalConfig.Ytoara)
+            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaYTOARA" + GlobalConfig.Ambient];
+
+#if DEBUG
+            //TelemetryConfiguration.Active.DisableTelemetry = true;
+#endif
 
             if (GlobalConfig.LanguageBrasil)
             {
@@ -55,33 +67,19 @@ namespace SgqSystem
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
             }
+        }
 
-            ScriptFull = string.Empty;
-            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "IsRecravacao", "bit", "default (0)", "IsRecravacao = 0");
-            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "AllowAddLevel3", "bit", "default (0)", "AllowAddLevel3 = 0");
-            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "AllowEditPatternLevel3Task", "bit", "default (0)", "AllowEditPatternLevel3Task = 0");
-            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "AllowEditWeightOnLevel3", "bit", "default (0)", "AllowEditWeightOnLevel3 = 0");
-
-            //09/09/2017 CG
-            VerifyColumnExistsNotExistisThenCreate("ParRecravacao_Linhas", "ParLevel2_Id", "int", "default null", "ParLevel2_Id = null");
-            VerifyColumnExistsNotExistisThenCreate("RecravacaoJson", "isValidated", "bit", "default (0)", "IsValidated = 0");
-            VerifyColumnExistsNotExistisThenCreate("RecravacaoJson", "ValidateLockDate", "datetime2(7) null", "default (null)", "ValidateLockDate = null");
-
-            //18 10 2017 CG 
-            VerifyColumnExistsNotExistisThenCreate("ParLevel3", "IsPointLess", "bit", "default (1)", "IsPointLess = 1");
-            VerifyColumnExistsNotExistisThenCreate("ParLevel3", "AllowNA", "bit", "default (0)", "AllowNA = 0");
-
-            //18 10 2017 ???
-            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "ParGroupLevel1_Id", "int", "default (null)", "ParGroupLevel1_Id = null");
-
-            //18 10 2017 JB
-            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "HasTakePhoto", "bit", "default (0)", "HasTakePhoto = 0");
-            VerifyColumnExistsNotExistisThenCreate("ParLevel2", "HasTakePhoto", "bit", "default (0)", "HasTakePhoto = 0");
-            VerifyColumnExistsNotExistisThenCreate("ParLevel3", "HasTakePhoto", "bit", "default (0)", "HasTakePhoto = 0");
+        private static void SetGlobalConfigAmbient()
+        {
+            GlobalConfig.Ambient = System.Configuration.ConfigurationManager.AppSettings["BuildEm"];
+            GlobalConfig.Producao = System.Configuration.ConfigurationManager.AppSettings["Producao"] == "SIM";
         }
 
         /// <summary>
-        /// Verifica se coluna existe se não ele cria, para eveitar conflito entre clientes.
+        /// Verifica se coluna existe se não ele cria, gera arquivo de scripts em LOCA: ScriptFull, para evitar conflito entre clientes.
+        /// EXEMPLO:
+        ///  DATA - Responsavel - Breve desc
+        ///  VerifyColumnExistsNotExistisThenCreate("CollectionLevel2XParHeaderField", "Sample", "int", "default (null)", "Sample = null");
         /// </summary>
         /// <param name="table">Ex: "ParLevel1"</param>
         /// <param name="colmun">Ex: "IsRecravacao"</param>
@@ -115,7 +113,6 @@ namespace SgqSystem
 
         protected void Application_End(object sender, EventArgs e)
         {
-            _backgroundJobServer.Dispose();
         }
 
         /// <summary>

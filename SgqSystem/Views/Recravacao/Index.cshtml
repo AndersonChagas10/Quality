@@ -1,0 +1,2898 @@
+﻿@{
+    ViewBag.Title = "Coleta de Recravação";
+    var urlHome = Url.Action("Index", "Home");
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/lobi/css/lobipanel.css" />
+
+<style>
+    .level3NameDestacado td:first-child {
+        color: red !important;
+        border: 3px solid #e43a45 !important;
+        padding: 2px !important;
+        font-weight: bold !important;
+    }
+
+    .page-header.navbar.navbar-fixed-top, .page-header.navbar.navbar-static-top {
+        z-index: 1030 !important;
+    }
+
+    .modal {
+        z-index: 9998 !important;
+        outline: 0;
+    }
+
+    .modal-backdrop {
+        z-index: 3039 !important;
+    }
+
+    .btnFloatCircleAdd {
+        font-size: 32px !important;
+        position: fixed;
+        z-index: 9998 !important;
+        bottom: 35px;
+        right: 75px;
+        height: 60px;
+        width: 60px;
+        -webkit-border-radius: 70px !important;
+        -moz-border-radius: 70px !important;
+        border-radius: 70px !important;
+    }
+
+    .btnFloatCircleRenew {
+        /*font-size:32px !important;*/
+        position: fixed;
+        z-index: 9998 !important;
+        bottom: 35px;
+        right: 152px;
+        height: 40px;
+        width: 40px;
+        padding: 0px !important;
+        -webkit-border-radius: 33px !important;
+        -moz-border-radius: 33px !important;
+        border-radius: 33px !important;
+    }
+
+    .page-sidebar-wrapper {
+        display: none;
+    }
+
+    .menu-toggler {
+        display: none !important;
+    }
+
+    footer {
+        display: none !important;
+    }
+
+    .btnFloatCirclePrint {
+        /*font-size:32px !important;*/
+        position: fixed;
+        z-index: 9998 !important;
+        bottom: 35px;
+        right: 210px;
+        height: 40px;
+        width: 40px;
+        padding: 0px !important;
+        -webkit-border-radius: 33px !important;
+        -moz-border-radius: 33px !important;
+        border-radius: 33px !important;
+    }
+    
+
+    .btnFloatCirclePrintAcaoCorretiva {
+        /*font-size:32px !important;*/
+        position: fixed;
+        z-index: 9998 !important;
+        bottom: 80px;
+        right: 210px;
+        height: 40px;
+        width: 40px;
+        padding: 0px !important;
+        -webkit-border-radius: 33px !important;
+        -moz-border-radius: 33px !important;
+        border-radius: 33px !important;
+    }
+
+    .ulIndicador {
+        background-color: #f28c0433;
+        display: block;
+        width: 100%;
+    }
+
+    .ulLinha {
+        background-color: #00800017;
+        display: block;
+        width: 100%;
+    }
+
+
+    a.active {
+        background-color: rgba(128, 128, 128, 0.36);
+    }
+
+    .bgRed {
+        background-color: rgba(248, 2, 2, 0.29);
+    }
+
+    .bgGreen {
+        background-color: rgba(0, 128, 0, 0.23);
+    }
+
+    .bgYellow {
+        background-color: rgba(233, 248, 2, 0.29) !important;
+    }
+
+    .bgWhite {
+        background-color: white;
+    }
+
+    .floatinBottonButton {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        z-index: 9996;
+        display: block;
+        visibility: visible;
+        margin-top: 70px;
+    }
+
+    td {
+        position: relative;
+        text-align: center;
+    }
+
+        td > span.label {
+            position: absolute;
+            top: 1px;
+            bottom: 1px;
+            left: 1px;
+            right: 1px;
+            color: black;
+        }
+
+            td > span.label:after {
+                content: '';
+                height: 100%;
+                display: inline-block;
+                vertical-align: middle;
+                color: black;
+            }
+
+    .redDot {
+        color: red;
+    }
+
+    .floating-map {
+        z-index: 9998 !important;
+    }
+
+        .floating-map .panel-body ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .floating-map .panel-body li {
+            width: 12.5%;
+            float: left;
+            line-height: 1.4;
+            text-align: center;
+            height: 80px;
+            background-color: #f9f9f9;
+            border: 1px solid #fff;
+            padding: 4px;
+            cursor: pointer;
+        }
+
+            .floating-map .panel-body li span {
+                display: block;
+                text-align: center;
+                word-wrap: break-word;
+                font-size: 11px;
+            }
+
+                .floating-map .panel-body li span strong {
+                    font-size: 14px;
+                }
+
+        .floating-map .fa {
+            font-size: 28px !important;
+        }
+
+    .lobipanel-minimized-toolbar {
+        background: none;
+        z-index: 3000;
+    }
+
+    .floating-map.panel-minimized {
+        position: fixed !important;
+        bottom: 35px;
+        right: 265px;
+        height: 40px;
+        width: 40px;
+        min-width: 40px !important;
+        padding: 0px !important;
+        -webkit-border-radius: 33px !important;
+        -moz-border-radius: 33px !important;
+        border-radius: 33px !important;
+    }
+
+        .floating-map.panel-minimized .panel-title {
+            max-width: 100px !important;
+        }
+
+            .floating-map.panel-minimized .panel-title h4 {
+                margin-left: -7px;
+                margin-top: 7px;
+            }
+
+    .panelDanger {
+        background-color: #ec4040 !important;
+        color: azure !important;
+    }
+
+    .tooltip > .tooltip-inner {
+        background-color: #fff;
+        padding: 10px;
+        border: 1px solid #000;
+        z-index: 15000;
+    }
+</style>
+
+<script src="~/Scripts/jqueryeasing/jquery.easing.min.js"></script>
+<script src="~/Scripts/Print/print.js"></script>
+<script src="~/Content/lobi/js/lobipanel.js"></script>
+
+<div class="page-content-wrapper">
+    <div class="page-content" style="margin-left:0px!important">
+        <div class="wrapper">
+            <div ng-controller="recravacaoController as r" style="width:100%;">
+
+                <div class="collapse navbar-collapse" style="margin-right:15px; margin-left:15px;">
+                    <div class="panel panel-default">
+                        <button class="btn btn-primary" ng-class="{active:indicadorSelecionado.Name == indicador.Name}" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)" type="button" data-toggle="collapse" data-target="#collapseLinhas" aria-expanded="false" aria-controls="collapseLinhas">
+                            {{indicador.Name}}
+                        </button>
+                    </div>
+                    <div class="collapse" id="collapseLinhas">
+                        <div class="panel panel-default">
+                            <button class="btn btn-default" ng-class="{active:linhaSelecionada.Name == item.Name}" ng-repeat="item in linhas track by $index" ng-click="selectLinha($index)" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                {{item.Name}} <strong>{{timerLinha(item, $index).text}}</strong>
+                                <br/>
+                                <small>({{item.NomeTipoLata}})</small>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="(linhaSelecionada.Id > 0)" id="floatingMap" class="panel panel-danger panel-sm floating-map">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4><i class="fa fa-clock-o"></i> Tempo de Coleta</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li ng-class="{panelDanger:timerLinha(item, $index).danger}" ng-click="selectLinha($index)" ng-repeat="item in linhas track by $index">
+                                <span><strong>{{timerLinha(item, $index).text}}</strong></span>
+                                <span>{{item.Name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <br />
+
+                <button ng-if="(linhaSelecionada.Id > 0)" id="btnStartStop"
+                        type="button"
+                        class="floatinBottonButton btn btn-success btn-sm"
+                        data-toggle="modal"
+                        data-target="#modalParadaDeLinha"
+                        ng-class="{'btn-success':(tempoEntreColetaDeLatasExpirado == false), 'btn-danger':(tempoEntreColetaDeLatasExpirado == true)}"
+                        title="Adicionar Observações">
+                    <span style="Arial, Helvetica, sans-serif;font-weight:bold;color:#333; float:left;">&nbsp; Anotações / Observações </span>
+                    <span ng-show="timerDaProximaLata" style="Arial, Helvetica, sans-serif;font-weight:bold;color:#333; float:right;">Horário da ultima coleta:{{timerDaProximaLata}}</span>
+                    <span class="glyphicon glyphicon-time" aria-hidden="true" style="color:#333; float:right; padding:0px 5px;"></span>
+                </button>
+
+                <div ng-show="linhaSelecionada.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
+
+                    <form role="form" name="formularioLinha" class="ng-pristine ng-valid">
+                        <div class="row">
+                            <div class="form-group float-label-control col-lg-2 col-md-2 col-sm-2">
+                                <label for="" class="">Código ERP</label>
+                                <br />
+                                <input type="text" ng-change="changeProduto(); salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-model="linhaSelecionada.form.Produto" class="form-control" style="width:100%!important" />
+                            </div>
+                            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                <label for="" class="">Nome do Produto</label>
+                                <br />
+                                <input type="text" disabled ng-model="linhaSelecionada.form.ProdutoName" class="form-control" style="width:100%!important" />
+                            </div>
+                            <div class="form-group float-label-control col-lg-4 col-md-4 col-sm-4">
+                                <label for="" class="">Código Formulação</label>
+                                <br />
+                                <input type="text" ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-model="linhaSelecionada.form.CodProduto" class="form-control" style="width:100%!important" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                <label for="">Hora do início da Produção</label>
+                                <br />
+                                <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="linhaSelecionada.form.HoraInicioProducao">
+                            </div>
+                            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                <label for="">Hora do final da Produção</label>
+                                <br />
+                                <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="linhaSelecionada.form.HoraFimProducao">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                                <label for="">Fornecedor da Lata</label>
+                                <br />
+                                <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="linhaSelecionada.form.FornecedorLata" class="form-control select2" data-placeholder="Selecione..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                            </div>
+                            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                                <label for="">Data do recebimento das latas</label>
+                                <br />
+                                <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="linhaSelecionada.form.DataRecebimentoLatas">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                                <label for="">Fornecedor das tampas/fundos das latas</label>
+                                <br />
+                                <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="linhaSelecionada.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecione..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                            </div>
+                            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                                <label for="">Data do recebimento das tampas/fundos das latas</label>
+                                <br />
+                                <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="linhaSelecionada.form.DataRecebimentoTampasFundosLatas">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                <label for="">Tipo da Lata</label>
+                                <br />
+                                <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in tipoLataLista track by item.Id" ng-model="linhaSelecionada.form.TipoDeLata" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                            </div>
+                            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                <label for="">Horas de Verificação</label>
+                                <br />
+                                <select id="HoraVerificacao" ng-change="changeHoraVerificacao(); salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item.Id as item.Name for item in horasVerificacao track by item.Id" ng-model="linhaSelecionada.HoraVerificacao" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+
+                            <div class="row">
+
+                                <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                    <button ng-disabled="linhaSelecionada.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
+                                    </button>
+                                    <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userFinish.Name}}
+                                    &nbsp;
+                                    <span ng-show="linhaSelecionada.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserFinish}}
+                                </div>
+
+                                <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="linhaSelecionada.finalizado">
+                                    <button ng-disabled="linhaSelecionada.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
+                                    </button>
+                                    <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{linhaSelecionada.userValidacao.Name}}
+                                    &nbsp;
+                                    <span ng-show="linhaSelecionada.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{linhaSelecionada.dataUserValidacao}}
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <button class="floatinBottonButton btn btn-danger btn-sm"
+                        ng-show="(saving)">
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"><span style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">&nbsp; Salvando dados...</span></span>
+                </button>
+
+                <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom:90px;"
+                     ng-init="linhaSelecionada.IsStoped = false">
+                    <div ng-show="linhaSelecionada.Id > 0 && linhaSelecionada.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="lataEmLataDetalhe in linhaSelecionada.latas track by $index" ng-init="lataIndex = $index; lataEmLataDetalhe.Name = lataEmLataDetalhe.Name" tables>
+                        <div style="text-align:right; float:left; padding-bottom:5px; padding-top:5px; vertical-align:middle; font-size:18px;">{{lataEmLataDetalhe.Name}} <span ng-show="lataEmLataDetalhe.HoraDaRetiradaDaLata"> retirada as:{{lataEmLataDetalhe.HoraDaRetiradaDaLata | date:'HH:mm'}}</span></div>
+
+                        <div style="text-align:right; padding-bottom:5px; padding-top:5px; float:right; ">
+
+                            <button id="correctiveActionBtn"
+                                    type="button" class="btn btn-danger btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#modalCorrectiveAction"
+                                    title="Gerar Ação Corretiva para {{lataEmLataDetalhe.Name}}"
+                                    ng-show="lataEmLataDetalhe.showCorrectiveAction"
+                                    ng-click="selecionaLata($index, lataSelecionada.haveErrors);  newCorrectiveAction()">
+                                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                            </button>
+                            <button type="button"
+                                    class="btn btn-warning btn-sm"
+                                    data-toggle="modal"
+                                    title="Editar {{lataEmLataDetalhe.Name}}"
+                                    ng-show="!lataEmLataDetalhe.finalizado"
+                                    ng-click="executeDocReady(); selecionaLata($index)"
+                                    data-target="#editModal">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm" title="Remover {{lataEmLataDetalhe.Name}}"
+                                    ng-show="!lataEmLataDetalhe.finalizado"
+                                    ng-click="deleteLata(linhaSelecionada, $index)">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button>
+                            <button class="btn btn-success btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#modalAssinaturaFinalizaLata"
+                                    title="Assinar {{lataEmLataDetalhe.Name}}"
+                                    type="button"
+                                    ng-show="verificaSeMostraAssinaturaFinalizaLata(lataEmLataDetalhe)"
+                                    ng-click="selecionaLata($index)">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            </button>
+                        </div>
+
+                        <table name="visualizacao" style="width:100%">
+                            <tbody>
+
+                                <tr>
+                                    <td style="border:0px solid #cccccc; padding:2px; text-align:right; font-weight:bold; width:32%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                                    <td style="border:1px solid #cccccc; padding:2px; text-align:center; font-weight:bold; background-color:#dddddd; width:80px !important" ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
+                                </tr>
+
+                                <tr ng-repeat="ParLevel3 in lataEmLataDetalhe.ListParlevel3 | orderBy :sorterFunc track by $index" ng-class="{level3NameDestacado:(ParLevel3.Id ==  idOVERLAP)}">
+                                    <td style="border:1px solid #cccccc; padding:2px; font-weight:bold; text-align:left !important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight:100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span></td>
+                                    <td style="max-width:80px; border:1px solid #cccccc; padding:1px; text-align:center;"
+                                        ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
+                                        ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                                        colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? linhaSelecionada.TipoDeLata.NumberOfPoints :1)}}">
+
+                                        @*1 Binário*@
+                                        <span style="text-align:center;"
+                                              class="label "
+                                              ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')"
+                                              ng-class="{bgWhite:(!(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === true) && !(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === false)), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === true), bgRed:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === false)}">
+                                            <span>
+                                                <span class="validate" ng-if="lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === true">
+                                                    {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                                </span>
+                                                <span class="validate" ng-if="lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] === false">
+                                                    {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                                </span>
+                                            </span>
+                                            <span ng-if="(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA')">
+                                                <span class="validate">
+                                                    {{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}
+                                                </span>
+                                            </span>
+                                        </span>
+                                        @*2 Número de defeitos*@
+                                        <span class="label validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
+                                        </span>
+                                        @*3 Intervalos*@
+                                        <span class="label validate {{lataEmLataDetalhe.class}}"
+                                              ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura && ParLevel3.Id != idEscareacao)"
+                                              ng-class="{bgWhite:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0 && !(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA')), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]=='NA' ), bgGreen:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] !=null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                                        </span>
+                                        <span class="label validate"
+                                              ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET)"
+                                              ng-class="{bgWhite:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA') }">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                                        </span>
+                                        <span class="label validate"
+                                              ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)"
+                                              ng-class="{bgWhite:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEspessura(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed:bgRedEspessura(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                                        </span>
+                                        @*5 Texto*@
+                                        <label style="word-wrap:break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                            {{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}
+                                        </label>
+                                        @*99 NOVO CALCULADO POR OUTRO*@
+                                        <span class="label validate"
+                                              ng-class="{bgWhite:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] !=null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index+1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
+                                              ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index + 1)]}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' :''}}</span>
+                                        </span>
+
+                                        <span class="label validate"
+                                              ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEscareacao)"
+                                              ng-class="{bgWhite:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEscareacao(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed:bgRedEscareacao(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                                        </span>
+                                        @*5 Texto*@
+                                        <label style="word-wrap:break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                            {{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}
+                                        </label>
+                                        @*99 NOVO CALCULADO POR OUTRO*@
+                                        <span class="label validate"
+                                              ng-class="{bgWhite:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] !=null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index+1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
+                                              ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index + 1)]}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' :''}}</span>
+                                        </span>
+
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <div style="text-align:left; padding-top:5px; height:40px;">
+                            <div style="float:left;">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{lataEmLataDetalhe.userValidacao.Name}}
+                            </div>
+                            <div style="float:right;">
+                                <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{lataEmLataDetalhe.dataUserValidacao}}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <br />
+
+                    <button ng-show="linhaSelecionada.Id > 0 && !linhaSelecionada.finalizado" ng-click="novaLata(linhaSelecionada); executeDocReady(true)" title="Adicionar Lata" class="btn btn-lg btn-warning btnFloatCircleAdd">
+                        <i id="saveIcon" class="fa fa-plus"></i>
+                        <i id="loadIcon" class="fa fa-circle-o-notch fa-spin" style="display:none;"></i>
+                    </button>
+                    <button ng-show="linhaSelecionada.Id > 0" ng-click="atualizaPrametrizacaoParaNovaColeta(activeInLine, true, true, true)" title="Atualizar Parametrização / Nova Coleta" class="btn btn-lg btn-info btnFloatCircleRenew">
+                        <i id="saveIcon" class="fa fa-undo"></i>
+                    </button>
+                    <button ng-show="linhaSelecionada.Id > 0" ng-click="print()" title="Imprimir" class="btn btn-lg btn-info btnFloatCirclePrint">
+                        <i id="saveIcon" class="fa fa-print"></i>
+                    </button>
+                    <button ng-show="linhaSelecionada.Id > 0" ng-click="printAcaoCorretiva()" title="Imprimir Acão Corretiva" class="btn btn-lg btn-success btnFloatCirclePrintAcaoCorretiva">
+                        <i id="saveIcon" class="fa fa-print"></i>
+                    </button>
+
+                    @*<button ng-show="linhaSelecionada.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" style="margin:35px;" class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
+                        </button>
+                        <button type="button" ng-show="linhaSelecionada.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" class="btn btn-info" style="margin-left:30px;">
+                        Atualizar Parametrização / Nova Coleta
+                        </button>*@
+                </div>
+                <hr />
+
+                <!-- Modal Edit-->
+                <div class="modal fade bd-example-modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button ng-click="executeDocReady(true, true)" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5 class="modal-title" id="editModalLabel">{{lataSelecionada.Name}}</h5>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+                                <span>Horário da retirada da linha</span>
+                                <input type="time"
+                                       class="form-control"
+                                       placeholder=""
+                                       ng-model="lataSelecionada.HoraDaRetiradaDaLata">
+                                <br />
+
+
+                                <table style="width:100%" id="edit">
+                                    <tbody>
+
+                                        <tr>
+                                            <td style="border:0px solid #cccccc; padding:2px; text-align:right; font-weight:bold; width:20%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                                            <td style="border:1px solid #cccccc; padding:2px; max-width:65px; text-align:center; font-weight:bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index">
+                                                <a ng-if="RetornaImagemDoPonto($index + 1).length > 2" class="left col-xs-12" title="<div style='background:#fff;display:block'><img class='img-responsive' src='{{RetornaImagemDoPonto($index + 1)}}' width='150'/></div>"
+                                                   data-html="true" data-placement="bottom" data-toggle="tooltip" href="#"
+                                                   data-ponto-image="{{RetornaImagemDoPonto($index + 1)}}">
+                                                    {{$index + 1}}
+                                                </a>
+                                                <span ng-if="RetornaImagemDoPonto($index + 1).length <= 2">
+                                                    {{$index + 1}}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="ParLevel3 in linhaSelecionada.ListParlevel3 | orderBy :sorterFunc track by $index" ng-class="{level3NameDestacado:(ParLevel3.Id ==  idOVERLAP)}">
+                                            <td style="border:1px solid #cccccc; padding:2px; font-weight:bold; text-align:left!important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight:100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span></td>
+                                            <td style="border:1px solid #cccccc; padding:2px; max-width:65px;"
+                                                ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
+                                                ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                                                colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? linhaSelecionada.TipoDeLata.NumberOfPoints :1)}}">
+
+                                                <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura && ParLevel3.Id != idEscareacao))">
+                                                    <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
+                                                        <input style="width:100%;"
+                                                               type="text"
+                                                               title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 ? ParLevel3.ParLevel3Value[0].IntervalMin.toFixed(2) :ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 ? ParLevel3.ParLevel3Value[0].IntervalMax.toFixed(2) :ParLevel3.ParLevel3Value[0].IntervalMax}} {{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}"
+                                                               ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
+                                                               ng-class="{decimal:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax < 10), decimal2:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax >= 10), percentage:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0),bgYellow:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)}"
+                                                               ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
+                                                               id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}' />
+
+                                                        <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>
+                                                    </span>
+
+                                                    <input type="text"
+                                                           style="width:100%; max-width:65px; display:none"
+                                                           ng-if="(ParLevel3.IsPointLess == false && $index > 0)"
+                                                           id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
+                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][1]" />
+                                                </span>
+
+                                                <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET) && ParLevel3.Id != idEspessura  && ParLevel3.Id != idEscareacao)">
+                                                    <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
+                                                        <input style="width:100%;"
+                                                               type="text"
+                                                               ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
+                                                               ng-class="{decimal:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax < 10), decimal2:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax >= 10), percentage:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0)}"
+                                                               ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
+                                                               id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
+                                                               ng-change="calcularEspessura(lataSelecionada)"
+                                                               legal="{{ParLevel3.Id == idEC ? 'EC' :'ET'}}" />
+
+                                                        <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>
+                                                    </span>
+
+                                                    <input type="text"
+                                                           style="width:100%; max-width:65px; display:none"
+                                                           ng-if="(ParLevel3.IsPointLess == false && $index > 0)"
+                                                           id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
+                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][1]" />
+                                                </span>
+
+                                                <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)">
+                                                    <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
+                                                        <input style="width:100%;"
+                                                               type="text"
+                                                               title="{{lataSelecionada.espessuraTT}}"
+                                                               ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
+                                                               ng-class="{decimal:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax < 10), decimal2:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax >= 10), percentage:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0),bgYellow:(linhaSelecionada.latas[index].ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)],linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) , bgRed:bgRedEspessura(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)],linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) }"
+                                                               ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
+                                                               id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
+                                                               ng-change="calcularEspessura(lataSelecionada)"
+                                                               legal="{{ParLevel3.Id == idEC ? 'EC' :'ET'}}" />
+
+                                                        <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>
+                                                    </span>
+
+                                                    <input type="text"
+                                                           style="width:100%; max-width:65px; display:none"
+                                                           ng-if="(ParLevel3.IsPointLess == false && $index > 0)"
+                                                           id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
+                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][1]" />
+                                                </span>
+
+                                                <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEscareacao)">
+                                                    <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
+                                                        <input style="width:100%;"
+                                                               type="text"
+                                                               title="{{lataSelecionada.escareacaoTT}}"
+                                                               ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
+                                                               ng-class="{decimal:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax < 10), decimal2:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax >= 10), percentage:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0),bgYellow:(linhaSelecionada.latas[index].ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEscareacao(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)],linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) , bgRed:bgRedEscareacao(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)],linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) }"
+                                                               ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
+                                                               id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
+                                                               ng-change="calcularEspessura(lataSelecionada)"
+                                                               legal="{{ParLevel3.Id == idEC ? 'EC' :'ET'}}" />
+
+                                                        <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]" /> NA </span>
+                                                    </span>
+
+                                                    <input type="text"
+                                                           style="width:100%; max-width:65px; display:none"
+                                                           ng-if="(ParLevel3.IsPointLess == false && $index > 0)"
+                                                           id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
+                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][1]" />
+                                                </span>
+
+                                                <binario leveltres="ParLevel3" lata="lataSelecionada" indexponto="$index"></binario>
+
+                                                <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                                    <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
+                                                           style="width:100%; max-width:65px;"
+                                                           ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
+                                                           ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
+                                                           ng-class="{bgWhite:(lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)].length == 0), bgGreen:(lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] && lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed:(lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] && lataSelecionada.campoCalc1[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)}" type="number" />
+                                                </span>
+
+                                                <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                                    <textarea class="form-control input-sm"
+                                                              style="width:100%; max-width:65px;"
+                                                              cols="15"
+                                                              id="Observacao"
+                                                              rows="5"
+                                                              ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"></textarea>
+                                                </span>
+
+                                                <span style="width:100%; display:block; text-align:right;"
+                                                      title="{{ParLevel3.ParLevel3Value_OuterList[0].AceitavelEntreText}}"
+                                                      ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')"
+                                                      ng-class="{bgWhite:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] !=null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataSelecionada.ResultValue[ParLevel3.Id][($index+1)] && lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}">
+                                                    {{geraIdCalc($index, ParLevel3.ParLevel3Value_OuterList, linhaSelecionada.latas.indexOf(lataSelecionada), ParLevel3.Id)}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && lataSelecionada.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' :''}}
+                                                </span>
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="modal-footer"
+                                 ng-mouseover="executeDocReady(true)">
+
+                                <button id="correctiveActionBtn"
+                                        type="button" class="btn btn-danger btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#modalCorrectiveAction"
+                                        title="Gerar Ação Corretiva para {{lataSelecionada.Name}}"
+                                        ng-show="lataSelecionada.showCorrectiveAction"
+                                        ng-click="newCorrectiveAction()">
+                                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Ação Corretiva
+                                </button>
+
+                                <button class="btn btn-success btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#modalAssinaturaFinalizaLata"
+                                        title="Assinar {{lataSelecionada.Name}}"
+                                        type="button"
+                                        ng-show="verificaSeMostraAssinaturaFinalizaLata()">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Assinar
+                                </button>
+                                <button type="button" class="btn btn-success btn-sm" ng-click="executeDocReady(true, true)">Salvar</button>
+                                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" ng-click="executeDocReady(true, true)">Fechar</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Finalizar Lata-->
+                <div class="modal fade" id="modalAssinaturaFinalizaLata" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+
+                                <form role="form" class="ng-pristine ng-valid">
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input type="text" class="form-control" ng-model="user.Name" placeholder="Nome de Usuário" />
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input type="password" class="form-control" ng-model="user.Password" placeholder="Senha" />
+                                    </div>
+                                </form>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" ng-click="validateUserLata(user)">Validar Assinatura</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Finalizar Linha-->
+                <div class="modal fade" id="modalAssinatura" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+
+                                <form role="form" class="ng-pristine ng-valid">
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input type="text" class="form-control" ng-model="user.Name" placeholder="Nome de Usuário" />
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input type="password" class="form-control" ng-model="user.Password" placeholder="Senha" />
+                                    </div>
+                                </form>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" ng-click="finsihLine(user)">Validar Assinatura</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal ValidarLinha-->
+                <div class="modal fade" id="modalAssinaturaValidarLinha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+                                <form role="form" class="ng-pristine ng-valid">
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input class="form-control input-sm" type="text" ng-model="user.Name" placeholder="Nome de Usuário" />
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <input class="form-control input-sm" type="password" ng-model="user.Password" placeholder="Senha" />
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                        <textarea class="form-control input-sm" cols="30" id="" rows="5" ng-model="user.Obs" placeholder="Observações e Ações preventivas"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" ng-click="validateLine(user)">Validar Assinatura</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal PrventiveAction-->
+                <div class="modal fade" id="modalPreventiveAction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="preventiveAction">Ação Preventiva</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+                                <form role="form" class="ng-pristine ng-valid">
+                                    <span>Ações anteriores para esta Lata:</span>
+                                    <br />
+                                    <br />
+                                    <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12" ng-repeat="item in lataSelecionada.listPreventiveAction track by $index">
+                                        <span style="word-wrap:break-word; max-width:150px;">{{item.AddDate}}:{{item.Content}}</span>
+                                        <br />
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                        <textarea class="form-control input-sm" cols="30" id="" rows="5" ng-model="lataSelecionada.preventiveAction" placeholder="Observações e Ações preventivas"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                <button type="button" class="btn btn-primary" ng-click="insertPreventiveAction(); executeDocReady(true, true)" data-dismiss="modal">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*modalCorrectiveAction*@
+                <div class="modal fade" id="modalCorrectiveAction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5 class="modal-title" id="preventiveAction">Ação Corretiva</h5>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+                                <form role="form" name="formCA" class="ng-pristine ng-valid">
+                                    <div class="clearfix"></div>
+
+                                    <div class="alert alert-info {{formDefault12}}" ng-repeat="ca in lataSelecionada.correctiveActionList track by $index">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <button type="button" class="btn btn-sm btn-danger pull-right" style="margin-bottom:10px;" title="Remover Ação Corretiva / Preventiva" ng-show="lataSelecionada.correctiveActionList.length > 1" ng-click="lataSelecionada.correctiveActionList.splice($index, 1)"><span aria-hidden="true" class="times">&times;</span></button>
+                                            </div>
+                                        </div>
+                                        <correctiveaction lataca="ca.correctiveAction"></correctiveaction>
+                                        <preventiveaction latapa="ca.PreventiveAction"></preventiveaction>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" ng-click="newCorrectiveAction(true)">Adicionar Ação Corretiva</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="salvaLinha(true, true)">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalSugestaoAcao" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5 class="modal-title">Lista de Sugestões</h5>
+                            </div>
+
+                            <div class="modal-body" style="overflow-x:auto">
+                                <div ng-repeat="item in sugestoes" class="col-xs-12">
+                                    <label>
+                                        <input type="radio" ng-model="$parent.Sugestao" ng-value="item.Text">
+                                        {{item.Text}}
+                                    </label><br /><br />
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="sugerirAcao()">Confirmar sugestão</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="salvaLinha(true, true)">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Anotações OBs-->
+                <div class="modal fade" id="modalParadaDeLinha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button ng-hide="tempoEntreColetaDeLatasExpirado" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5 class="modal-title" id="preventiveAction">Observações da linha:{{linhaSelecionada.Name}}</h5>
+                            </div>
+
+                            <form role="form" class="ng-pristine ng-valid col-lg-12 col-md-12 col-sm-12">
+                                <div scroll-to-bottom="linhaSelecionada.ObservacoesList" class="modal-body" style="height:500px;overflow-y:scroll;">
+                                    <div class="{{formDefault12}}" ng-repeat="item in linhaSelecionada.ObservacoesList track by $index"
+                                         ng-class="{'alert alert-info':!(item.LataComAtraso),'alert alert-danger':(item.LataComAtraso)}">
+                                        <div style="margin-bottom:10px;">
+                                            <button ng-if="!item.LataComAtraso" type="button" class="close" style="margin-top:10px;" title="Remover Ação Corretiva / Preventiva" ng-show="linhaSelecionada.ObservacoesList.length > 1" ng-click="linhaSelecionada.ObservacoesList.splice($index, 1)"><span aria-hidden="true" class="times">&times;</span></button>
+                                            <br />
+                                            <label ng-if="item.LataComAtraso">{{item.adDate}} - Observação:Lata {{item.Lata}} registrada com {{item.tempoDeAtraso}} de atraso</label>
+                                            <label ng-if="!item.LataComAtraso">{{item.adDate}} - Observação:</label>
+                                            <textarea ng-model="item.DescriptionFailure"
+                                                      ng-required="false"
+                                                      class="form-control custom-control"
+                                                      name="DescriptionFailure"
+                                                      rows="3"
+                                                      style="resize:none; overflow-x:hidden"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" ng-click="addObservacao();">Nova Observação</button>
+                                <button type="button" class="btn btn-success" ng-show="tempoEntreColetaDeLatasExpirado" ng-disabled="!linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1].DescriptionFailure" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);">Salvar</button>
+                                <button type="button" class="btn btn-success" ng-hide="tempoEntreColetaDeLatasExpirado" ng-click="saveObservacao(linhaSelecionada.ObservacoesList[linhaSelecionada.ObservacoesList.length -1]);" data-dismiss="modal">Salvar e fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/lodash/lodash.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#floatingMap').lobiPanel({
+            dradraggable: true,
+            resize: 'horizontal',
+            state: 'unpinned',
+            reload: false,
+            close: false,
+            editTitle: false,
+            expand: false,
+            unpin: false,
+            minWidth: 500,
+            minHeight: 300,
+        });
+
+
+    })
+</script>
+
+<script>
+    (function () {
+        'use strict';
+
+        app.factory('timestampMarker', [function (vm) {
+            var timestampMarker = {
+                request: function (config) {
+                    config.requestTimestamp = new Date().getTime();
+                    return config;
+                },
+                response: function (response) {
+                    response.config.responseTimestamp = new Date().getTime();
+                    console.log('The request took ' + ((response.config.responseTimestamp - response.config.requestTimestamp) / 1000) + ' seconds.');
+                    return response;
+                }
+            };
+            return timestampMarker;
+        }]);
+
+        app.factory('loadingOverlay', [function () {
+            var loadingOverlay = {
+                request: function (config) {
+                    //console.log(config)
+                    if (config.showLoader)
+                        $.LoadingOverlay("show", { zIndex: 9999 });
+                    if (config.showLoader == undefined)
+                        $.LoadingOverlay("show", { zIndex: 9999 });
+                    return config;
+                },
+                response: function (response) {
+                    $.LoadingOverlay("hide");
+                    return response;
+                }
+            }
+            return loadingOverlay;
+        }]);
+
+        app.config(['$httpProvider', function ($httpProvider) {
+            $httpProvider.interceptors.push('timestampMarker');
+            $httpProvider.interceptors.push('loadingOverlay');
+            //$httpProvider.useApplyAsync(true);
+        }]);
+
+        /*
+        START ANGULAR MODULE
+        */
+        app.controller('recravacaoController', ['$scope', '$http', '$timeout', '$interval',
+            function ($scope, $http, $timeout, $interval) {
+
+                let vm = $scope
+                vm.dev = true
+                vm.jbsBrasil = false
+
+                vm.formDefault = 'form-group float-label-control col-lg-6 col-md-12 col-sm-12'
+                vm.formDefault6 = 'form-group float-label-control col-lg-6 col-md-6 col-sm-6'
+                vm.formDefault12 = 'form-group float-label-control col-lg-12 col-md-12 col-sm-12'
+                vm.Date = moment().format('DD/MM/YYYY HH:mm')
+                vm.mercado = 1
+                vm.limInferiorEspessura
+                vm.limSuperiorEspessura
+                vm.valorEt
+                vm.valorEc
+                vm.linhas = [{}]
+                vm.produtos = [{}]
+                vm.fornecedorLata = [{}]
+                vm.fornecedorTampaLata = [{}]
+                vm.linhaSelecionada = { Id: 0 }
+                vm.lataSelecionada = {}
+                vm.activeInLine = 0
+                vm.semDados = 'bgWhite'
+                vm.na = 'bgYellow'
+                vm.nc = 'bgRed'
+                vm.conform = 'bgGreen'
+
+
+                vm.escareacaoTT = function () {
+                    let lata = vm.lataSelecionada
+                    if (lata.ResultValue)
+                        if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()])
+                            lata.escareacaoTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)},  ${''}`
+                            //lata.escareacaoTT = `Lim. Inferior ((2*EC)+(3*ET))=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))=${lata["limSuperiorEspessura"]}`
+                        else
+                            lata.escareacaoTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)},  ${''}`
+                }
+
+                vm.bgGreenEscareacao = function (value, item) {
+                    let lata = item
+                    if (lata)
+                        if (lata.ResultValue)
+                            if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()][1].length > 0 && lata.ResultValue[vm.idAltura.toString()][1].length > 0) {
+                                let valorEc = lata.ResultValue[vm.idAltura.toString()]
+                                let valorEt = lata.ResultValue[vm.idAltura.toString()]
+                                lata["limInferiorEspessura"] = math.eval(`((${valorEt["1"]}))`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt["1"]}))`)
+
+                                vm.escareacaoTT()
+                                if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                    return true
+                            } else
+                                return false
+                }
+                vm.bgRedEscareacao = function (value, item) {
+                    let lata = item
+                    if (lata)
+                        if (lata.ResultValue)
+                            if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()][1].length > 0 && lata.ResultValue[vm.idAltura.toString()][1].length > 0) {
+                                let valorEc = lata.ResultValue[vm.idAltura.toString()]
+                                let valorEt = lata.ResultValue[vm.idAltura.toString()]
+                                lata["limInferiorEspessura"] = math.eval(`((${valorEt["1"]}))`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt["1"]}))`)
+
+                                vm.escareacaoTT()
+                                if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                    return true
+                            } else
+                                return false
+                }
+
+                vm.espessuraTT = function () {
+                    let lata = vm.lataSelecionada
+                    if (lata.ResultValue)
+                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()])
+                            lata.espessuraTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)}, lim. superior ${parseFloat(lata["limSuperiorEspessura"]).toFixed(2)}`
+                            //lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))+0.23=${lata["limSuperiorEspessura"]}`
+                        else
+                            lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05, lim. superior ((2*EC)+(3*ET))+0.23`
+                }
+                vm.bgGreenEspessura = function (value, item) {
+                    let lata = item
+                    if (lata)
+                        if (lata.ResultValue)
+                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
+                                let valorEc = lata.ResultValue[vm.idEC.toString()]
+                                let valorEt = lata.ResultValue[vm.idET.toString()]
+                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                                vm.espessuraTT()
+
+                                if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                    return true
+                            } else
+                                return false
+                }
+                vm.bgRedEspessura = function (value, item) {
+                    let lata = item
+                    if (lata)
+                        if (lata.ResultValue)
+                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
+                                let valorEc = lata.ResultValue[vm.idEC.toString()]
+                                let valorEt = lata.ResultValue[vm.idET.toString()]
+                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                                vm.espessuraTT()
+
+                                if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                    return true
+                            } else
+                                return false
+                }
+
+                //timer
+                var intervalId;
+                vm.counter = 0;
+                vm.horas = 2
+                vm.initialCountdown = 0 * vm.horas;
+                vm.countdown = $scope.initialCountdown;
+                vm.startTime = new Date()
+                vm.tempoEntreColetaDeLatasExpirado = false
+                vm.modalObsAberto = false
+                vm.firstLataInAftherObs = false
+
+                vm.timer = function (noFlag) {
+                    vm.horas = vm.linhaSelecionada.HoraVerificacao || 2
+                    vm.myTotal = 3600000 * vm.horas
+                    if (intervalId)
+                        $interval.cancel(intervalId);
+                    vm.startTime = null;
+                    if (vm.linhaSelecionada.latas && vm.linhaSelecionada.latas.length) {
+                        let lastLata = _.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; });
+                        let hm = lastLata ? lastLata.HoraDaRetiradaDaLata : null
+                        var ajustaHora = new Date()
+                        if (hm) {
+                            ajustaHora.setHours(hm.getHours())
+                            ajustaHora.setMinutes(hm.getMinutes())
+                            vm.startTime = new Date(ajustaHora)
+                        }
+                    }
+                    intervalId = $interval(function () {
+                        if (!vm.startTime) {
+                            vm.timerDaProximaLata = "Linha Não Iniciada";
+                            return;
+                        }
+
+                        vm.linhaSelecionada.UltimaLataRetirada = moment(vm.startTime).format('DD/MM/YYYY HH:mm');
+                        var index = _.findIndex(vm.linhas, function (o) { return o.Id == vm.activeInLine; });
+                        vm.linhas[index].UltimaLataRetirada = moment(vm.startTime).format('DD/MM/YYYY HH:mm');
+
+
+                        vm.diffTime = moment().diff(vm.startTime)
+                        vm.duration = moment.duration(vm.diffTime);
+                        let days = vm.duration.days(), hrs = vm.duration.hours(),
+                            mins = vm.duration.minutes(), secs = vm.duration.seconds();
+
+                        vm.timerDaProximaLata = (/*years + ' years ' + Dias + ' days ' +*/ hrs + ' hrs ' + mins + ' min ' + secs + ' seg');
+                        vm.timerDaLataAtrasada = (/*years + ' years ' + Dias + ' days ' +*/ (hrs - vm.horas) + ' hrs ' + mins + ' min ' + secs + ' seg');
+
+                        $scope.counter = vm.duration._milliseconds //Math.floor((new Date - vm.startTime) / 1000);
+                        $scope.countdown = $scope.myTotal - $scope.counter;
+                        $scope.tempoEntreColetaDeLatasExpirado = $scope.countdown < 0;
+                        if (vm.linhaSelecionada.isValidated == undefined || vm.linhaSelecionada.isValidated == false) {
+                            if ($scope.tempoEntreColetaDeLatasExpirado) {
+                                if (!$scope.modalObsAberto) {
+                                    $('#modalParadaDeLinha').modal()
+                                    $scope.modalObsAberto = true
+
+                                    if (vm.linhaSelecionada.ObservacoesList == undefined || vm.linhaSelecionada.ObservacoesList == [] || vm.linhaSelecionada.ObservacoesList.length <= 0)
+                                        vm.linhaSelecionada.ObservacoesList = [{
+                                            adDate: vm.Date,
+                                            LataComAtraso: true,
+                                            tempoDeAtraso: vm.timerDaLataAtrasada
+                                        }]
+                                }
+                            } else {
+                                if ($scope.modalObsAberto)
+                                    $('#modalParadaDeLinha').modal('hide')
+                                $scope.modalObsAberto = false
+                            }
+                        } else {
+                            vm.timerDaProximaLata = "Linha Finalizada / Validada"
+                            $scope.tempoEntreColetaDeLatasExpirado = false
+                            vm.stop()
+                        }
+                    }, 1000);
+                };
+
+                vm.$watch('countdown', function (countdown) {
+                    if (countdown === 0) {
+                        $scope.stop();
+                    }
+                });
+
+                vm.start = function () {
+                    $scope.timer();
+                };
+
+                vm.stop = function () {
+                    $interval.cancel(intervalId);
+                };
+
+                vm.timerLinha = function (linha, index) {
+                    if (!!linha.UltimaLataRetirada && !linha.finalizado) {
+                        var dataRetirada = moment(linha.UltimaLataRetirada, 'DD/MM/YYYY HH:mm').toDate();
+                        var agora = new Date();
+
+                        dataRetirada.setDate(agora.getDate());
+                        dataRetirada.setMonth(agora.getMonth());
+                        dataRetirada.setFullYear(agora.getFullYear());
+
+                        dataRetirada.setHours(dataRetirada.getHours() + (linha.HoraVerificacao || 2))
+
+                        var distance = dataRetirada.getTime() - agora.getTime();
+
+                        var hours = parseInt((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        var minutes = parseInt((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+                        if (hours == 0 && minutes <= 5 && minutes >= 0 && vm.linhas[index].temAlerta != true) {
+                            vm.linhas[index].temAlerta = true;
+                            toastr.warning("O tempo da linha " + linha.Name + " está acabando.")
+                        } else if (hours <= 0 && minutes < 0 && vm.linhas[index].temAlerta != true) {
+                            vm.linhas[index].temAlerta = true;
+                            toastr.error("O tempo da linha " + linha.Name + " acabou.")
+                        }
+
+                        return {
+                            text: hours + "h " + minutes + "m",
+                            danger: (minutes < 0)
+                        };
+                    }
+                    return {};
+                }
+
+                vm.saveObservacao = function (item) {
+
+                    if ($scope.tempoEntreColetaDeLatasExpirado) {
+                        item.LataComAtraso = true
+                        item.tempoDeAtraso = vm.timerDaLataAtrasada
+                        //vm.novaLata(vm.linhaSelecionada);
+                        item.Lata = vm.lataSelecionada.Name
+                        //vm.executeDocReady(true)
+                    }
+                    //vm.linhaSelecionada.ObservacoesList.push({ adDate:vm.Date });
+                    vm.salvaLinha();
+                    $('#modalParadaDeLinha').modal('hide')
+                }
+
+                vm.addObservacao = function () {
+                    if (!vm.linhaSelecionada.ObservacoesList)
+                        vm.linhaSelecionada.ObservacoesList = []
+                    vm.linhaSelecionada.ObservacoesList.push({ adDate: moment().format('DD/MM/YYYY HH:mm') });
+                }
+
+                //TUDO MOCK MOCK
+                $scope.Date = moment().format('DD/MM/YYYY HH:mm')
+
+                vm.mercado = 1
+                vm.limInferiorEspessura
+                vm.limSuperiorEspessura
+                vm.valorEt
+                vm.valorEc
+
+                vm.escareacaoTT = function () {
+                    let lata = vm.lataSelecionada
+                    if (lata.ResultValue)
+                        if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()])
+                            lata.escareacaoTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)},  ${''}`
+                            //lata.escareacaoTT = `Lim. Inferior ((2*EC)+(3*ET))=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))=${lata["limSuperiorEspessura"]}`
+                        else
+                            lata.escareacaoTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)},  ${''}`
+                }
+
+                vm.bgGreenEscareacao = function (value, item) {
+                    let lata = item
+                    if (lata)
+                        if (lata.ResultValue)
+                            if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()][1].length > 0 && lata.ResultValue[vm.idAltura.toString()][1].length > 0) {
+                                let valorEc = lata.ResultValue[vm.idAltura.toString()]
+                                let valorEt = lata.ResultValue[vm.idAltura.toString()]
+                                lata["limInferiorEspessura"] = math.eval(`((${valorEt["1"]}))`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt["1"]}))`)
+
+                                vm.escareacaoTT()
+                                if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                    return true
+                            } else
+                                return false
+                }
+                vm.bgRedEscareacao = function (value, item) {
+                    let lata = item
+                    if (lata)
+                        if (lata.ResultValue)
+                            if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()][1].length > 0 && lata.ResultValue[vm.idAltura.toString()][1].length > 0) {
+                                let valorEc = lata.ResultValue[vm.idAltura.toString()]
+                                let valorEt = lata.ResultValue[vm.idAltura.toString()]
+                                lata["limInferiorEspessura"] = math.eval(`((${valorEt["1"]}))`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt["1"]}))`)
+
+                                vm.escareacaoTT()
+                                if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                    return true
+                            } else
+                                return false
+                }
+
+                vm.espessuraTT = function () {
+                    let lata = vm.lataSelecionada
+                    if (lata.ResultValue)
+                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()])
+                            lata.espessuraTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)}, lim. superior ${parseFloat(lata["limSuperiorEspessura"]).toFixed(2)}`
+                            //lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))+0.23=${lata["limSuperiorEspessura"]}`
+                        else
+                            lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05, lim. superior ((2*EC)+(3*ET))+0.23`
+                }
+
+                vm.bgGreenEspessura = function (value, item) {
+                    let lata = item
+                    if (lata)
+                        if (lata.ResultValue)
+                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
+                                let valorEc = lata.ResultValue[vm.idEC.toString()]
+                                let valorEt = lata.ResultValue[vm.idET.toString()]
+                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                                vm.espessuraTT()
+
+                                if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                    return true
+                            } else
+                                return false
+                }
+                vm.bgRedEspessura = function (value, item) {
+                    let lata = item
+                    if (lata)
+                        if (lata.ResultValue)
+                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
+                                let valorEc = lata.ResultValue[vm.idEC.toString()]
+                                let valorEt = lata.ResultValue[vm.idET.toString()]
+                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                                vm.espessuraTT()
+
+                                if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                    return true
+                            } else
+                                return false
+                }
+
+                vm.getClassBinario = function (value, item) {
+                    let lata = item
+                    if (lata) {
+                        if (value == undefined)
+                            lata["class"] = vm.semDados
+                        else if (value == true)
+                            lata["class"] = vm.conform
+                        else if (value == false)
+                            lata["class"] = vm.nc
+                        else if (value == 'NA')
+                            lata["class"] = vm.na
+
+                        return lata["class"]
+                    }
+                }
+
+                vm.getUser = function () {
+                    return {
+                        Id: GetUsuarioId(),
+                        Name: $.grep(getCookie('webControlCookie'), function (a, b) {
+                            return a.indexOf('userName') != -1;
+                        })[0].split('=')[1],
+                        LoadPageTime: moment().format("DD/MM/YYYY HH:mm")
+
+                    }
+                }
+                vm.userAuditor = vm.getUser()
+                vm.getParametrizacaoUrl = '@Url.Action("RecravacaoLinhaApi", "api")'//'http://localhost:57506/api/RecravacaoLinhaApi'
+
+                vm.verificaSeMostraAssinaturaFinalizaLata = function (item) {
+
+                    let lataSelecionada = vm.lataSelecionada
+                    if (item)
+                        lataSelecionada = item
+                    if (lataSelecionada.liberaAssinaturaLata && !lataSelecionada.finalizado && lataSelecionada.HoraDaRetiradaDaLata)
+                        if (lataSelecionada.showCorrectiveAction) {
+                            if (lataSelecionada.correctiveActionList == undefined)
+                                return false
+
+                            if ($.grep(lataSelecionada.correctiveActionList, function (a, b) {
+                                if (a.correctiveAction == undefined)
+                                    return a
+                                if (a.correctiveAction != undefined && a.correctiveAction.IsAssinada == undefined)
+                                    return a
+                                if (a.correctiveAction != undefined && a.correctiveAction.IsAssinada == false)
+                                    return a
+                            }).length == 0 || lataSelecionada.correctiveActionList.length == 0)
+                                return true
+                        }
+                        else
+                            return true
+
+                }
+
+                vm.sorterFunc = function (item) {
+                    //return parseInt(item['Description']);
+                    return item['OrderColumn']
+                };
+
+                vm.company = GetUnidadeUsuario()
+
+                vm.findWithAttr = function (array, attr, value) {
+                    for (var i = 0; i < array.length; i += 1) {
+                        if (array[i][attr] === value) {
+                            return i
+                        }
+                    }
+                    return -1
+                }
+
+                vm.carregaIndicadores = function (showMensagem) {
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=0&linhaId=0" })
+                          .then(function (r) {
+                              if (r.data.errors) {
+                                  r.data.errors.forEach(function (o) {
+                                      toastr.error(o)
+                                  })
+                              } else {
+
+                                  vm.indicadores = r.data.model
+
+                                  if (showMensagem)
+                                      if (vm.indicadores.length == 0)
+                                          toastr.success('Nehum indicador de Recravação foi encontrado.')
+                                  //else
+                                  //    toastr.success('Indicador de Recravação encontrado.')
+
+                                  if (vm.indicadores.length)
+                                      vm.selectIndicador(vm.indicadores[0])
+
+                              }
+                          });
+                }
+
+                vm.selectIndicador = function (item) {
+                    if (vm.indicadorSelecionado != item) {
+                        vm.indicadorSelecionado = item
+                        vm.linhaSelecionada = {}
+                        vm.getParametrizacaoLinhas(item.Id)
+                    }
+                }
+
+                vm.getLinha = function (c) {
+                    $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: vm.linhaSelecionada })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                vm.linhas[c] = r.data.model[0]
+                                vm.linhas[c]["latas"] = []
+                                vm.linhas[c].HoraVerificacao = vm.linhaSelecionada.HoraVerificacao
+                                vm.linhas[c].UltimaLataRetirada = vm.linhaSelecionada.UltimaLataRetirada
+                                vm.linhaSelecionada = vm.linhas[c]
+                                vm.activeInLine = vm.linhas[c].Id
+                                vm.getState()
+                            }
+                        });
+                }
+
+                vm.getAllLinha = function (index, needFindIndex, showMensagem) {
+                    //vm.linhaSelecionada = vm.linhas[index]
+                    //vm.activeInLine = vm.linhaSelecionada.Id
+                    //if (needFindIndex)
+                    //    index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
+                    vm.linhas.forEach(function (o, c) {
+                        $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: o })
+                           .then(function (r) {
+                               if (r.data.errors) {
+                                   r.data.errors.forEach(function (o) {
+                                       toastr.error(o)
+                                   })
+                               } else {
+                                   //toastr.success(r.data.resposta)
+                                   //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                                   if (showMensagem)
+                                       toastr.success('Recuperadas linhas parametrizadas \n da base de dados')
+                                   vm.linhas[c] = r.data.model[0]
+                                   vm.linhas[c]["latas"] = []
+                                   vm.activeInLine = vm.linhas[c].Id
+                                   //vm.executeDocReady(true)
+                                   //vm.linhaSelecionada = { Id:0 }
+                                   //vm.getState()
+                               }
+                           });
+                    })
+
+                    //vm.executeDocReady(true)
+                    //vm.$apply()
+                }
+
+                vm.insertPreventiveAction = function () {
+                    let lata = vm.lataSelecionada
+                    if (lata["listPreventiveAction"] == undefined) {
+                        lata["listPreventiveAction"] = []
+                    }
+                    if (lata.preventiveAction.length) {
+                        lata["listPreventiveAction"].push({ AddDate: moment().format("DD/MM/YYYY HH:mm"), Content: lata.preventiveAction })
+                        lata.preventiveAction = ''
+                        vm.lataSelecionada = lata
+                        vm.salvaLinha()
+                    }
+                }
+
+                vm.atualizaPrametrizacaoParaNovaColeta = function (index, needFindIndex, showMensagem, novaLinha) {
+                    if (novaLinha)
+                        bootbox.confirm({
+                            message: "Esta ação atualizará a parametrização e disponibilizará uma nova coleta, a coleta atual será salva e considerada inativa caso não concluída",
+                            buttons: {
+                                confirm: {
+                                    label: 'Sim',
+                                    className: 'btn-success'
+                                },
+                                cancel: {
+                                    label: 'Não',
+                                    className: 'btn-danger'
+                                }
+                            },
+                            callback: function (result) {
+                                if (result)
+                                    vm.getParansLinha(index, needFindIndex, showMensagem, novaLinha)
+                            }
+                        });
+                }
+
+                vm.getParansLinha = function (index, needFindIndex, showMensagem, novaLinha) {
+                    index = vm.findWithAttr(vm.linhas, 'Id', vm.linhaSelecionada.Id);
+                    $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: vm.linhaSelecionada })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                if (showMensagem)
+                                    toastr.success('Recuperada linha parametrizada \n da base de dados')
+                                vm.linhas[index] = r.data.model[0]
+                                vm.linhas[index]["latas"] = []
+                                vm.linhaSelecionada = vm.linhas[index]
+                                vm.activeInLine = vm.linhaSelecionada.Id
+                                vm.salvaLinha(undefined, undefined, novaLinha)
+                                setTimeout(function () {
+                                    $('.select2[multiple]').val(0).trigger("change")
+                                    $('#HoraVerificacao').val(2).trigger('change');
+                                }, 100)
+                                $scope.modalObsAberto = false;
+                                $scope.tempoEntreColetaDeLatasExpirado = false;
+                            }
+                        });
+
+                    //vm.$apply()
+                }
+
+                vm.selectLinha = function (index, needFindIndex, showMensagem) {
+                    //$.LoadingOverlay("show");
+                    if (needFindIndex)
+                        index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
+
+                    vm.linhaSelecionada = vm.linhas[index]
+
+                    vm.activeInLine = vm.linhaSelecionada.Id
+                    vm.timer()
+
+                    //vm.executeDocReady(true)
+                    //vm.getState()
+
+                    vm.getLinha(index);
+
+                    //vm.$apply()
+                }
+
+                vm.selecionaLata = function (index, haveErr) {
+                    vm.lataSelecionada = vm.linhaSelecionada.latas[index]
+                    if (haveErr)
+                        vm.lataSelecionada.haveErrors = haveErr
+                    else
+                        vm.lataSelecionada.haveErrors = false
+                    $('body').tooltip({ html: true, selector: "a[data-ponto-image]" });
+                }
+
+                vm.selecionaAcao = function (index) {
+                    vm.acaoSelecionadaIndex = index;
+                }
+
+                vm.range = function (n) {
+                    if (n)
+                        return new Array(parseInt(n)) //return new Array(parseInt(n) + 1)
+                    else
+                        return new Array()
+                }
+
+                vm.novaLata = function (linha) {
+                    let latasNaoConformes = $.grep(linha.latas, function (elem, index) {
+                        return elem.showCorrectiveAction == true && !elem.isReavaliado
+                    })
+
+                    let quantidadeLatas = latasNaoConformes.length == 0 ? linha.NumberOfHeads : latasNaoConformes.length
+                    let isReavaliacao = latasNaoConformes.length == 0 ? false : true
+
+                    let posicaoCabecote = _.last(linha.latas) ? _.last(linha.latas).cabecote + 1 : 1;
+
+                    for (let i = 0; i < quantidadeLatas; i++) {
+                        if (linha["counterDeLatas"] == undefined)
+                            linha["counterDeLatas"] = 1
+
+                        posicaoCabecote = isReavaliacao ? latasNaoConformes[i].cabecote : i + 1
+
+                        linha.latas.push({
+                            Name: 'Lata - ' + linha.counterDeLatas + ' Cabeçote - ' + posicaoCabecote,
+                            counter: linha.counterDeLatas,
+                            cabecote: posicaoCabecote,
+                            finalizado: false,
+                            haveErrors: false,
+                            ListParlevel3: JSON.parse(JSON.stringify(linha.ListParlevel3)),
+                            StartAuditTime: moment().format("DD/MM/YYYY HH:mm"),
+                        })
+                        linha.counterDeLatas++
+                    }
+
+                    latasNaoConformes.forEach(function (elem) {
+                        elem.isReavaliado = true
+                    })
+
+                    vm.lataSelecionada = vm.linhaSelecionada.latas[vm.linhaSelecionada.latas.length - quantidadeLatas]
+                    $('#editModal').modal()
+
+                    $('body').tooltip({ html: true, selector: "a[data-ponto-image]" });
+                }
+                vm.cloneLataALot = function (linha, index, repeat) {
+
+                    $.LoadingOverlay("show");
+                    for (let i = 0; i < repeat; i++) {
+                        vm.cloneLata(linha, index)
+                    }
+                    $.LoadingOverlay("hide", true);
+
+                }
+                vm.cloneLata = function (linha, index) {
+                    let cloned = JSON.parse(JSON.stringify(linha.latas[index]))
+                    cloned.Name = 'Lata - ' + (linha["counterDeLatas"])
+                    linha.latas.push(cloned)
+                    linha.counterDeLatas++
+                }
+                vm.deleteLata = function (linha, index, trashBin, notConfirm) {
+
+                    if (notConfirm) {
+                        linha.latas.splice(index, 1)
+                        linha.latas.forEach(function (o, c) {
+                            linha["counterDeLatas"] = (c + 1)
+                        })
+                        linha["counterDeLatas"] = linha["counterDeLatas"] + 1
+                        vm.timer();
+                    } else {
+                        bootbox.confirm({
+                            message: "Deseja continuar com a exclusão dessa lata?",
+                            buttons: {
+                                confirm: {
+                                    label: 'Sim',
+                                    className: 'btn-success'
+                                },
+                                cancel: {
+                                    label: 'Não',
+                                    className: 'btn-danger'
+                                }
+                            },
+                            callback: function (result) {
+                                if (result) {
+                                    linha.latas.splice(index, 1)
+                                    linha.latas.forEach(function (o, c) {
+                                        linha["counterDeLatas"] = (c + 1)
+                                    })
+                                    linha["counterDeLatas"] = linha["counterDeLatas"] + 1
+                                    vm.timer()
+                                }
+                            }
+                        });
+                    }
+                }
+
+                vm.changeHoraVerificacao = function () {
+                    vm.horas = vm.linhaSelecionada.HoraVerificacao;
+                    vm.timer();
+                }
+
+                vm.salvaLinhaUrl = '@Url.Action("RecravacaoApi", "api")'//'http://localhost:57506/api/RecravacaoApi'
+                vm.salvaLinha = function (notShowLabel, notShowLoader, salvoParaInserirNovaLinha) {
+                    const linha = _.clone(vm.linhas.filter(function (s) {
+                        return s.Id == vm.activeInLine
+                    })[0]);
+                    var latas = _.clone(linha.latas);
+                    linha.latas = []
+
+                    vm.TimerOn()
+                    if (salvoParaInserirNovaLinha)
+                        linha['SalvoParaInserirColeta'] = true
+                    else
+                        linha['SalvoParaInserirColeta'] = false
+
+                    if (!!vm.linhaSelecionada.userFinish)
+                        linha['UserFinished_Id'] = vm.linhaSelecionada.userFinish.Id;
+                    if (!!vm.linhaSelecionada.userValidacao)
+                        linha['UserValidated_Id'] = vm.linhaSelecionada.userValidacao.Id;
+                    linha['User'] = vm.userAuditor
+                    linha['ParLevel1_Id'] = vm.indicadorSelecionado.Id.toString()
+                    vm.start()
+                    $http({ method: 'POST', url: vm.salvaLinhaUrl, data: { linha: linha, latas: latas }, showLoader: notShowLoader ? false : true })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                if (!notShowLabel)
+                                    toastr.success(r.data.resposta)
+                            }
+                        });
+                }
+
+                vm.getProdutos = function () {
+                    vm.produtos = []
+                    vm.produtos.push({
+                        Name: 'Picanha',
+                        Id: 1
+                    })
+                    vm.produtos.push({
+                        Name: 'Contra-filé',
+                        Id: 2
+                    })
+                    vm.produtos.push({
+                        Name: 'Filé Mignon',
+                        Id: 3
+                    })
+                }
+                vm.getSugestoes = function () {
+                    vm.sugestoes = []
+                    vm.sugestoes.push({
+                        Name: 'Teste 1  de sugestao',
+                        Id: 1
+                    })
+                    vm.sugestoes.push({
+                        Name: 'Teste 2  de sugestao',
+                        Id: 2
+                    })
+                    vm.sugestoes.push({
+                        Name: 'Teste 3  de sugestao',
+                        Id: 3
+                    })
+                }
+                vm.getFornecedorLata = function () {
+                    vm.fornecedorLata = []
+                    vm.fornecedorLata.push({
+                        Name: 'JBS Embalagens Metálicas Lins',
+                        Id: 1
+                    })
+                    vm.fornecedorLata.push({
+                        Name: 'JBS Embalagens Metálicas Barretos',
+                        Id: 2
+                    })
+                    vm.fornecedorLata.push({
+                        Name: 'Metalgráfica Iguaçu',
+                        Id: 3
+                    })
+                    vm.fornecedorLata.push({
+                        Name: 'Prada',
+                        Id: 4
+                    })
+                    vm.fornecedorLata.push({
+                        Name: 'Outros',
+                        Id: 5
+                    })
+                }
+                vm.tipoLata = function () {
+                    vm.tipoLataLista = []
+                    vm.tipoLataLista.push({
+                        Name: 'Litografada',
+                        Id: 1
+                    })
+                    vm.tipoLataLista.push({
+                        Name: 'Lata Branca',
+                        Id: 2
+                    })
+                }
+                vm.horaVerificacao = function () {
+                    //MOCK
+                    vm.horasVerificacao = []
+                    vm.horasVerificacao.push({
+                        Name: '1 hora',
+                        Id: 1
+                    })
+                    vm.horasVerificacao.push({
+                        Name: '2 horas',
+                        Id: 2
+                    })
+                }
+                vm.getFornecedorTampaLata = function () {
+                    vm.fornecedorTampaLata = []
+                    vm.fornecedorTampaLata.push({
+                        Name: 'JBS Embalagens Metálicas Lins',
+                        Id: 1
+                    })
+                    vm.fornecedorTampaLata.push({
+                        Name: 'JBS Embalagens Metálicas Barretos',
+                        Id: 2
+                    })
+                    vm.fornecedorTampaLata.push({
+                        Name: 'Metalgráfica Iguaçu',
+                        Id: 3
+                    })
+                    vm.fornecedorTampaLata.push({
+                        Name: 'Prada',
+                        Id: 4
+                    })
+                    vm.fornecedorTampaLata.push({
+                        Name: 'Outros',
+                        Id: 5
+                    })
+                }
+                vm.getFornecedorLata()
+                vm.getFornecedorTampaLata()
+                vm.tipoLata()
+                vm.horaVerificacao()
+
+                vm.getParametrizacaoLinhas = function (idLevel1) {
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?companyId=" + vm.company + "&level1Id=" + idLevel1 + "&linhaId=" + vm.activeInLine, showLoader: true })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                toastr.success(r.data.resposta)
+                                vm.linhas = r.data.model
+                                vm.linhas.forEach(function (o, c) {
+                                    o["latas"] = []
+                                })
+                                $("#collapseLinhas").collapse()
+                            }
+                        });
+                }
+
+                vm.changeProduto = function () {
+                    vm.searchProduto();
+                }
+
+                vm.searchProduto = function () {
+                    if (vm.linhaSelecionada.form) {
+                        let produto = _.find(vm.produtos, { 'nCdProduto': parseInt(vm.linhaSelecionada.form.Produto) })
+                        vm.linhaSelecionada.form.ProdutoName = !!produto ? produto.cNmProduto : ""
+                    }
+                }
+
+                /*GET os Dados das linhas cadastradas*/
+                vm.getState = function () {
+                    $http({ method: 'GET', url: `${vm.salvaLinhaUrl}?companyId=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                let linhasSalvas = r.data.model
+                                vm.produtos = r.data.produtos
+                                vm.sugestoes = r.data.sugestoes
+                                let novaLinha = []
+                                //vm.linhas.forEach(function (o, c) {
+                                let o = vm.linhaSelecionada
+
+                                var objetoSalvo = linhasSalvas.filter(function (objArr) {
+                                    let s = jQuery.parseJSON(objArr.ObjectRecravacaoJson)
+                                    if (s.Id == o.Id && (o.IsActive == "True" || o.IsActive == true) && (s.IsActive == "False" || s.IsActive == false))
+                                        s.IsActive = "True"
+                                    else if (s.Id == o.Id && (o.IsActive == "False" || o.IsActive == false) && (s.IsActive == "True" || s.IsActive == true))
+                                        s.IsActive = "False"
+
+                                    return s.Id == o.Id
+                                });
+
+                                if (objetoSalvo.length)
+                                    novaLinha.push(JSON.parse(JSON.stringify(jQuery.parseJSON(objetoSalvo[0].ObjectRecravacaoJson))))
+                                else
+                                    novaLinha.push(JSON.parse(JSON.stringify(o)))
+
+                                novaLinha[0].UltimaLataRetirada = vm.linhaSelecionada.UltimaLataRetirada
+                                vm.linhaSelecionada = JSON.parse(JSON.stringify(novaLinha))[0]
+
+                                vm.linhaSelecionada.latas = []
+                                if (r.data.latasId) {
+                                    r.data.latasId.forEach(function (o) {
+                                        vm.getLata(o.Id);
+                                    });
+                                }
+
+                                if (vm.linhaSelecionada.form) {
+
+
+                                    if (vm.linhaSelecionada.form.HoraInicioProducao)
+                                        vm.linhaSelecionada.form.HoraInicioProducao = new Date(vm.linhaSelecionada.form.HoraInicioProducao)
+
+                                    if (vm.linhaSelecionada.form.HoraFimProducao)
+                                        vm.linhaSelecionada.form.HoraFimProducao = new Date(vm.linhaSelecionada.form.HoraFimProducao)
+
+                                    if (vm.linhaSelecionada.form.DataRecebimentoLatas)
+                                        vm.linhaSelecionada.form.DataRecebimentoLatas = new Date(vm.linhaSelecionada.form.DataRecebimentoLatas)
+
+                                    if (vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas)
+                                        vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas = new Date(vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas)
+                                }
+
+                                let index = vm.findWithAttr(vm.linhas, 'Id', vm.linhaSelecionada.Id);
+                                vm.linhas[index] = vm.linhaSelecionada
+
+                                vm.linhaSelecionada = vm.linhas[index];
+                                if (objetoSalvo[0])
+                                    vm.linhaSelecionada.TipoDeLataImagens = objetoSalvo[0].TipoDeLataImagens;
+
+                                if (vm.linhaSelecionada.ObservacoesList == undefined)
+                                    vm.linhaSelecionada.ObservacoesList = [];
+
+                                if (!vm.linhaSelecionada.StartAuditTime)
+                                    vm.linhaSelecionada.StartAuditTime = moment().format("DD/MM/YYYY HH:mm")
+
+                                vm.activeInLine = vm.linhaSelecionada.Id
+                                vm.TimerOn()
+                                $.LoadingOverlay("hide", true);
+                                vm.executeDocReady()
+
+                                setTimeout(function () {
+                                    $('#HoraVerificacao').val(vm.linhaSelecionada.HoraVerificacao).trigger('change');
+                                }, 2);
+
+                            }
+                        });
+                }
+
+                vm.getLata = function (id) {
+                    $http({ method: 'GET', url: `${vm.salvaLinhaUrl}?recravacaoLataJsonId=${id}` })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                let o = JSON.parse(JSON.stringify(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)));
+                                o.HoraDaRetiradaDaLata = new Date(o.HoraDaRetiradaDaLata)
+                                if (o.HoraDaRetiradaDaLata == 'Invalid Date')
+                                    o.HoraDaRetiradaDaLata = '';
+                                vm.linhaSelecionada.latas.push(o);
+
+                                vm.linhaSelecionada.latas = _.orderBy(vm.linhaSelecionada.latas, ['counter'], ['asc']);
+                                vm.timer()
+                            }
+                        });
+                }
+
+                //OTIMIZAR
+                vm.geraIdCalc = function (ind, expressaoArr, lataIndex, parlevel3Name) {
+                    let expressaoFinal = ''
+                    let expressaoCompleta = ''
+                    var teste = []
+                    let indexMaisUm = ind + 1
+                    if (expressaoArr.length == 0)
+                        return;
+
+                    if (!!vm.lataSelecionada.ResultValue && vm.lataSelecionada.ResultValue[parlevel3Name] == "") {
+                        vm.lataSelecionada.ResultValue[parlevel3Name] = {};
+                    }
+
+                    for (var i = 0; i < expressaoArr.length; i++) {
+                        let o = expressaoArr[i]
+                        if (o.Operator == "dados") {
+                            let id = `#${o.OuterLevel3_Text}${indexMaisUm}`.replace(/ /g, '').replace('.', '')
+                            let valor = parseFloat($(id).val())
+                            if (isNaN(parseFloat(valor))) {
+                                if (!!vm.lataSelecionada.ResultValue && !!vm.lataSelecionada.ResultValue[parlevel3Name])
+                                    vm.lataSelecionada.ResultValue[parlevel3Name][(indexMaisUm)] = ""
+                                return ""
+                            }
+                            expressaoFinal += valor
+                        } else {
+                            //expressaoCompleta += `${o.Operator}`
+                            expressaoFinal += `${o.Operator}`
+                        }
+                    }
+
+                    let result = math.eval(expressaoFinal.replace(/\s/g, '').replace('=', ''))
+
+                    if (isNaN(result)) {
+                        return ""
+                    } else {
+
+                        let floatValue;
+                        if (expressaoArr[0] && expressaoArr[0].UnidadeMedidaText && expressaoArr[0].UnidadeMedidaText.indexOf('%') >= 0)
+                            floatValue = parseFloat(result.toFixed(0));
+                        else
+                            floatValue = parseFloat(result.toFixed(2));
+
+                        if (vm.lataSelecionada.ResultValue != undefined) {
+                            if (vm.lataSelecionada.ResultValue[parlevel3Name] == undefined)
+                                vm.lataSelecionada.ResultValue[parlevel3Name] = {};
+
+                            vm.lataSelecionada.ResultValue[parlevel3Name][(indexMaisUm)] = floatValue;
+                        }
+
+                        return floatValue
+                    }
+                }
+
+                vm.resultObj = {}
+                vm.SetResult = function (result, data, index) {
+                    let key = "ParLevel3_Id" + data.ParLevel3_Id.toString() + "ParLevel3Value_Id" + data.Id.toString() + "PontoIndex" + (index + 1)
+                    vm.resultObj[key] = { valor: result, ParLEvel3_Id: data.ParLevel3_Id, ParLevel3Value_Id: data.Id }
+                }
+
+                //OTIMIZAR
+                vm.checkTableBgRed = function ($event) {
+                    //console.log($event)
+                    vm.lataSelecionada.haveErrors = $($event.currentTarget).parents('.modal').find('table').find('.bgRed').length ? true : false
+                    console.log(vm.lataSelecionada)
+                    console.log(vm.lataSelecionada.haveErrors)
+                }
+
+                vm.validateUserUrl = '@Url.Action("AuthenticationLogin", "api/User")'//"http://localhost:57506/api/User/AuthenticationLogin"
+                //vm.user = { Name:"camilaprata-mtz", Password:"sgq345", Obs:"" }
+                vm.user = { Name: "", Password: "" }
+                vm.validateUserLata = function () {
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: vm.user })
+                        .then(function (r) {
+                            if (r.data.Retorno) {
+                                vm.user = { Name: "", Password: "" }
+                                toastr.success("Usuário validado com sucesso!")
+                                r.data.Retorno.ParCompanyXUserSgq = []
+                                vm.lataSelecionada.userValidacao = r.data.Retorno
+                                vm.lataSelecionada.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
+                                vm.lataSelecionada.finalizado = !vm.lataSelecionada.finalizado
+                                $('.modal').modal('hide')
+                                vm.salvaLinha()
+                            }
+                            else {
+                                toastr.error("Usuário ou Senha Inválidos")
+                                console.log(r.Mensagem)
+                                console.log(r.MensagemExcecao)
+                            }
+                        });
+                }
+
+                vm.validateLine = function () {
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: vm.user })
+                        .then(function (r) {
+                            if (r.data.Retorno) {
+                                toastr.success("Usuário validado com sucesso!")
+                                r.data.Retorno.ParCompanyXUserSgq = []
+                                vm.linhaSelecionada.userValidacao = r.data.Retorno
+                                vm.linhaSelecionada.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
+                                vm.linhaSelecionada.isValidated = true
+                                vm.linhaSelecionada.obs = vm.user.Obs
+                                if (vm.user.Obs) {
+                                    vm.linhaSelecionada.ObservacoesList.push({
+                                        DescriptionFailure: vm.user.Obs, adDate: moment().format('DD/MM/YYYY HH:mm')
+                                    });
+                                }
+                                vm.user = { Name: "", Password: "" }
+                                $('.modal').modal('hide')
+                                let naoFinalizados = vm.linhaSelecionada.latas.filter(r=> { return !r.finalizado })
+                                naoFinalizados.forEach(function (o, c) {
+                                    vm.deleteLata(vm.linhaSelecionada, vm.linhaSelecionada.latas.indexOf(o), null, true)
+                                })
+                                vm.stop()
+                                vm.salvaLinha()
+
+                            }
+                            else {
+                                toastr.error("Usuário ou Senha Inválidos")
+                                console.log(r.Mensagem)
+                                console.log(r.MensagemExcecao)
+                            }
+                        });
+                }
+
+                vm.finsihLine = function () {
+
+                    if (!vm.linhaSelecionada.form || !vm.linhaSelecionada.form.Produto) {
+                        toastr.warning("O produto precisa ser preenchido.");
+                        return;
+                    }
+
+                    if (!vm.linhaSelecionada.form.CodProduto) {
+                        toastr.warning("Código formulação precisa ser preenchido.");
+                        return;
+                    }
+
+                    if (!vm.linhaSelecionada.form.HoraInicioProducao) {
+                        toastr.warning("A hora de início da produção precisa ser preenchido.");
+                        return;
+                    }
+
+                    if (!vm.linhaSelecionada.form.HoraFimProducao) {
+                        toastr.warning("A hora do final da produção precisa ser preenchido.");
+                        return;
+                    }
+
+                    if (!vm.linhaSelecionada.form.FornecedorLata) {
+                        toastr.warning("O fornecedor da lata precisa ser escolhido.");
+                        return;
+                    }
+
+                    if (!vm.linhaSelecionada.form.DataRecebimentoLatas) {
+                        toastr.warning("A data de recebimento das latas precisa ser preenchido.");
+                        return;
+                    }
+
+                    if (!vm.linhaSelecionada.form.FornecedorTampaFundoLata) {
+                        toastr.warning("O fornecedor da tampa do fundo da lata precisa ser escolhido.");
+                        return;
+                    }
+
+                    if (!vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas) {
+                        toastr.warning("A data de recebimento da tampa do fundo da lata precisa ser preenchido.");
+                        return;
+                    }
+
+                    if (!vm.linhaSelecionada.form.TipoDeLata) {
+                        toastr.warning("O tipo de lata precisa ser escolhido.");
+                        return;
+                    }
+
+                    if (!vm.linhaSelecionada.HoraVerificacao) {
+                        toastr.warning("A hora de verificação precisa ser escolhida.");
+                        return;
+                    }
+
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: vm.user })
+                        .then(function (r) {
+                            if (r.data.Retorno) {
+                                vm.user = { Name: "", Password: "" }
+                                toastr.success("Usuário validado com sucesso!")
+                                r.data.Retorno.ParCompanyXUserSgq = []
+                                vm.linhaSelecionada.userFinish = r.data.Retorno
+                                vm.linhaSelecionada.dataUserFinish = moment().format("DD/MM/YYYY HH:mm")
+                                vm.linhaSelecionada.finalizado = true
+                                vm.linhaSelecionada.obs = vm.user.Obs
+                                $('.modal').modal('hide')
+                                vm.salvaLinha()
+                            }
+                            else {
+                                toastr.error("Usuário ou Senha Inválidos")
+                                console.log(r.Mensagem)
+                                console.log(r.MensagemExcecao)
+                            }
+
+                        });
+                }
+
+                vm.carregaIndicadores(true)
+
+                vm.executeDocReady = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) {
+                    setTimeout(function () { vm.docReady(executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) }, 325)
+                }
+
+                vm.executeDocReadyComLoader = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) {
+                    setTimeout(function () {
+                        $.LoadingOverlay('show')
+                        vm.docReady(executaVerificacaoParaAcao, save, notShowLabel, notShowLoader, function () { $.LoadingOverlay('hide', true) })
+                    }, 325)
+                }
+
+                vm.RetornaImagemDoPonto = function (ponto) {
+                    if (!!vm.linhaSelecionada.TipoDeLataImagens) {
+                        var image = $.grep(vm.linhaSelecionada.TipoDeLataImagens, function (o, c) {
+                            return o.PontoIndex == ponto
+                        });
+                        if (!!image && image.length > 0) {
+
+                            var urlImage = "@Url.Action("", "")/Imagens/" + image[0].FileName;
+
+                            if (image[0].existe == undefined) {
+                                image[0].existe = false;
+                                $.ajax({
+                                    type: "GET",
+                                    url: urlImage,
+                                    async: false,
+                                    success: function (html) {
+                                        image[0].existe = true;
+                                    }
+                                });
+                            }
+
+                            if (image[0].existe == true)
+                                return urlImage;
+                        }
+                    }
+                    return '';
+                }
+
+                vm.updateInputTime = function () {
+                    $(".time").inputmask({
+                        mask: " 23:59:59"
+                        , placeholder: "hh:mm"
+                        , definitions: {
+                            '5': { validator: "[0-5]" }
+                            , '3': { validator: "[0-9]" }
+                            , '2': { validator: "[0-2]" }
+                        }
+                    });
+                    $(".time").attr('placeholder', 'hh:mm')
+                }
+
+                vm.docReady = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader, cb) {
+                    $('select').select2({ allowClear: false })
+                    $('.decimal').each(function (index) {
+                        $(this).inputmask("decimal", {
+                            rightAlign: true, radixPoint: ',', greedy: false, mask: "9[.99]", digits: 2, allowMinus: false, digitsOptional: false,
+                            oncomplete: function (e) {
+                                var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                                if (currVal.length == 4) {
+                                    //$(this).next('.inputs').focus().select();
+                                    $(this).closest('td').next().find('input').focus().select();
+                                }
+                            }
+                        });
+                    })
+
+                    $('.percentage').each(function (index) {
+                        $(this).val($(this).val().replace(',', '.'));
+                        $(this).inputmask('Regex', {
+                            regex: "^[1-9][0-9]?$|^100$", rightAlign: true,
+                            oncomplete: function (e) {
+                                var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                                if (currVal > 10 && currVal.length == 2) {
+                                    $(this).next('.inputs').focus().select();
+                                    $(this).closest('td').next().find('input').focus().select();
+                                }
+                                else if (currVal.length == 3) {
+                                    $(this).next('.inputs').focus().select();
+                                    $(this).closest('td').next().find('input').focus().select();
+                                }
+                            }
+                        });
+                    })
+
+                    $('.decimal2').each(function (index) {
+                        $(this).inputmask("decimal", {
+                            rightAlign: true, radixPoint: ',', greedy: false, mask: "99[.99]", digits: 2, allowMinus: false, digitsOptional: false,
+                            oncomplete: function (e) {
+                                var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                                if (currVal.length == 4) {
+                                    //$(this).next('.inputs').focus().select();
+                                    $(this).closest('td').next().find('input').focus().select();
+                                }
+                            }
+                        });
+                    })
+
+                    //Esta mascara tem 1 bug. CG
+                    vm.updateInputTime()
+
+                    //{
+                    //    alias:'hh:mm t',
+                    //    showMaskOnHover:false,
+                    //    showMaskOnFocus:false,
+                    //    //oncomplete:function(){  },
+                    //})
+
+                    if (executaVerificacaoParaAcao) {
+                        vm.linhaSelecionada.HaveCorrectiveAction = false
+                        /*PELO AMOR DE TUDO QUE É MAIS SAGRADO!!!! REMOVER ESTA FUNCIONALIDADE DAQUI E FAZER DE FORMA DESCENTE! CELSO GEA, OBS FUI EU QUE FIZ ISTO.....*/
+                        for (let i = 0; i < $('[name=visualizacao]').length; i++) {
+                            let table = $('[name=visualizacao]')[i]
+
+                            if ($(table).find('.bgRed:not(.bgWhite, .bgYellow)').length) {
+                                vm.linhaSelecionada.latas[i].showCorrectiveAction = true
+                                vm.linhaSelecionada.HaveCorrectiveAction = true
+                            }
+                            else
+                                vm.linhaSelecionada.latas[i].showCorrectiveAction = false //$(table).parent().find('#correctiveActionBtn').addClass('ng-hide')
+
+                            vm.linhaSelecionada.latas[i].liberaAssinaturaLata = ($.grep($(table).find('.validate:visible'), function (o, c) {
+                                return $(o).text().trim().length == 0
+                            }).length == 0)
+                        }
+                    }
+
+                    var keyCodes = {
+                        'up': 38,
+                        'down': 40,
+                        'left': 37,
+                        'rigth': 39
+                    };
+
+                    $(document).ready(function () {
+                        $('#edit').find('input').off('keyup').on('keyup', function (e) {
+                            if (e.which == keyCodes.rigth) {
+                                if ($(this).closest('td').next().find('input').length)
+                                    $(this).closest('td').next().find('input').focus().select()
+                                else
+                                    $(this).closest('tr').find('input:first').focus().select()
+                            }
+                            else if (e.which == keyCodes.left) {
+                                if ($(this).closest('td').prev().find('input').length)
+                                    $(this).closest('td').prev().find('input').focus().select()
+                                else
+                                    $(this).closest('tr').find('input:last').focus().select()
+                            }
+                            else if (e.which == keyCodes.down) {
+
+                                let inputFound = false
+                                let nextTr = $(this).closest('tr').next()
+
+                                do {
+                                    if (nextTr.find('input:visible').length == 1) {
+                                        nextTr.find('input:visible').focus().select()
+                                        inputFound = !inputFound
+                                    }
+                                    else if (nextTr.find('input:visible').length > 1) {
+                                        nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input:visible').focus().select()
+                                        inputFound = !inputFound
+                                    } else if (nextTr.length != 0) {
+                                        nextTr = $(nextTr).closest('tr').next()
+                                    }
+                                    else {
+                                        nextTr = $(this).closest('tr').parent().find('tr:first')
+                                    }
+                                }
+                                while (inputFound == false)
+
+                            }
+                            else if (e.which == keyCodes.up) {
+
+                                let inputFound = false
+                                let nextTr = $(this).closest('tr').prev()
+
+                                do {
+                                    if (nextTr.find('input:visible').length == 1) {
+                                        nextTr.find('input:visible').focus().select()
+                                        inputFound = !inputFound
+                                    }
+                                    else if (nextTr.find('input:visible').length > 1) {
+                                        nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input:visible').focus().select()
+                                        inputFound = !inputFound
+                                    } else if (nextTr.length != 0) {
+                                        nextTr = $(nextTr).closest('tr').prev()
+                                    }
+                                    else {
+                                        nextTr = $(this).closest('tr').parent().find('tr:last')
+                                    }
+                                }
+                                while (inputFound == false)
+
+                            }
+                        });
+
+                    });
+
+                    if (save)
+                        vm.salvaLinha(notShowLabel, notShowLoader)
+
+                    if (cb)
+                        cb()
+
+
+                    vm.searchProduto()
+                }
+
+                vm.newCorrectiveAction = function (add) {
+                    if (vm.lataSelecionada.correctiveActionList == undefined)
+                        vm.lataSelecionada.correctiveActionList = []
+
+                    if (add)
+                        vm.lataSelecionada.correctiveActionList.push({
+                            AddDate: moment().format("DD/MM/YYYY HH:mm"),
+                            userAuditor: vm.getUser()
+                        })
+                    else if (vm.lataSelecionada.correctiveActionList.length == 0)
+                        vm.lataSelecionada.correctiveActionList.push({
+                            AddDate: moment().format("DD/MM/YYYY HH:mm"),
+                            userAuditor: vm.getUser()
+                        })
+
+                    setTimeout(function () {
+                        vm.updateInputTime();
+                    }, 5)
+                }
+
+                vm.AssinaCorrectiveAction1 = function (item) {
+                    //vm.lataSelecionada.correctiveAction.Assinatura1.IsAssinada
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: item.Assinatura })
+                       .then(function (r) {
+                           if (r.data.Retorno) {
+                               vm.user = { Name: "", Password: "" }
+                               toastr.success("Usuário validado com sucesso!")
+                               r.data.Retorno.ParCompanyXUserSgq = []
+                               item.IsAssinada = true
+                               item.HoraAssinatura = vm.Date
+                               //$('.modal').modal('hide')
+                               vm.linhaSelecionada.IsStoped = true;
+                               //vm.TimerOn(false, vm.salvaLinha(true, true))
+                               item.Assinatura.Password = null
+                               vm.salvaLinha()
+                           }
+                           else {
+                               item.IsAssinada = false
+                               toastr.error("Usuário ou Senha Inválidos")
+                               console.log(r.Mensagem)
+                               console.log(r.MensagemExcecao)
+                               vm.salvaLinha(true, true)
+                           }
+                       });
+                }
+
+                vm.sugerirAcao = function () {
+                    if (!vm.lataSelecionada.correctiveActionList[vm.acaoSelecionadaIndex].correctiveAction)
+                        vm.lataSelecionada.correctiveActionList[vm.acaoSelecionadaIndex].correctiveAction = {}
+                    vm.lataSelecionada.correctiveActionList[vm.acaoSelecionadaIndex].correctiveAction.ImmediateCorrectiveAction = vm.Sugestao;
+                }
+
+                vm.AssinaPreventiveAction = function (item) {
+                    //vm.lataSelecionada.correctiveAction.Assinatura1.IsAssinada
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: item.Assinatura })
+                       .then(function (r) {
+                           if (r.data.Retorno) {
+                               vm.user = { Name: "", Password: "" }
+                               toastr.success("Usuário validado com sucesso!")
+                               r.data.Retorno.ParCompanyXUserSgq = []
+                               item.IsAssinada = true
+                               item.HoraAssinatura = vm.Date
+                               item.Assinatura.Password = null
+                               //$('.modal').modal('hide')
+                               vm.linhaSelecionada.IsStoped = true;
+                               //vm.TimerOn(false, vm.salvaLinha(true, true))
+                               vm.salvaLinha()
+                           }
+                           else {
+                               item.IsAssinada = false
+                               toastr.error("Usuário ou Senha Inválidos")
+                               console.log(r.Mensagem)
+                               console.log(r.MensagemExcecao)
+                               vm.salvaLinha(true, true)
+                           }
+                       });
+                }
+
+                vm.fechaCorrectiveAction = function (item) {
+                    if (!vm.lataSelecionada.correctiveAction.IsAssinada) {
+                        //vm.lataSelecionada.correctiveAction.ImmediateCorrectiveAction = ""
+                        //vm.lataSelecionada.correctiveAction.DescriptionFailure = ""
+                    }
+                }
+
+                vm.generateIdParaOutroCalculado = function (ParLevel3, index) {
+                    return ((ParLevel3.Id + " - " + ParLevel3.Name + (index + 1)).replace(/ /g, '').replace('.', ''))
+                }
+
+                vm.saveLogParada = function () {
+                    if (vm.linhaSelecionada.logParada == undefined)
+                        vm.linhaSelecionada.logParada = []
+
+                    vm.linhaSelecionada.logParada.push(vm.copyObj(vm.linhaSelecionada.RegistroParada))
+                    vm.linhaSelecionada.RegistroParada = {}
+                    vm.TimerOff()
+                    vm.salvaLinha()
+                }
+
+                vm.copyObj = function (obj) {
+                    return JSON.parse(JSON.stringify(obj))
+                }
+
+                vm.parseDate = function (date) {
+                    return new Date(date);
+                }
+
+                vm.parseDateV2 = function (date) {
+                    date = new Date(date);
+                }
+
+                vm.urlPrint = '@Url.Action("print3", "Recravacao")'
+                vm.print = function () {
+                    if (vm.indicadorSelecionado && vm.indicadorSelecionado.Id > 0 && vm.linhaSelecionada && vm.linhaSelecionada.Id > 0) {
+                        let preUrl = vm.urlPrint;
+                        let urlPrint = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}`
+                        openInNewTab(urlPrint)
+                    }
+                }
+                vm.urlPrintAcaoCorretiva = '@Url.Action("printAcaoCorretiva", "Recravacao")'
+                vm.printAcaoCorretiva = function () {
+                    if (vm.indicadorSelecionado && vm.indicadorSelecionado.Id > 0 && vm.linhaSelecionada && vm.linhaSelecionada.Id > 0) {
+                        let preUrl = vm.urlPrintAcaoCorretiva;
+                        let urlPrintAcaoCorretiva = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}`
+                        openInNewTab(urlPrintAcaoCorretiva)
+                    }
+                }
+
+                function init() {
+                    $(document).on('keydown', function (e) {
+                        if (e.ctrlKey && (e.key == "p" || e.charCode == 16 || e.charCode == 112 || e.keyCode == 80)) {
+                            console.log("Please use the Print PDF button below for a better rendering on the document");
+                            e.cancelBubble = true;
+                            e.preventDefault();
+                            e.stopImmediatePropagation();
+                            vm.print()
+                        }
+                    });
+                    $(document).on('show.bs.modal', '.modal', function (event) {
+                        var zIndex = 1040 + (10 * $('.modal:visible').length);
+                        $(this).css('z-index', zIndex);
+                        setTimeout(function () {
+                            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+                        }, 0);
+                    });
+
+                    if (vm.dev) {
+                        vm.idEC = 1585
+                        vm.idET = 1584
+                        vm.idEspessura = 1250
+                        vm.idOVERLAP = 1582
+                        vm.idEscareacao = 1579
+                        vm.idAltura = 1251
+                    } if (vm.jbsBrasil) {
+                        vm.idEC = 1585
+                        vm.idET = 1584
+                        vm.idEspessura = 1250
+                        vm.idOVERLAP = 1582
+                        vm.idEscareacao = 1579
+                        vm.idAltura = 1251
+                    }
+                }
+
+                init();
+
+                //DREPRECIADO VERIFICAR
+                vm.diffTime
+
+                vm.duration
+
+                vm.TimerOn = function (isLoadData, cb) {
+                    //if (vm.linhaSelecionada.latas)
+                    //    vm.startTime = new Date(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    //else
+                    //    vm.startTime = new Date()
+                    //vm.ExcedidoTempoLimite = false
+                    //vm.StartColetaDeLata = moment();
+                    //vm.TimeoutProximaLata = $timeout($scope.onTimeout, 1000);
+
+                    //if (cb)
+                    //    cb()
+                }
+
+                vm.TimerOff = function () {
+                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    vm.duration = moment.duration(vm.diffTime);
+                    let //years = duration.years(),
+                        days = vm.duration.days(),
+                        hrs = vm.duration.hours(),
+                      mins = vm.duration.minutes(),
+                      secs = vm.duration.seconds();
+                    vm.timerDaProximaLata = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
+                    $timeout.cancel(vm.mytimeout);
+                }
+
+                vm.onTimeout = function () {
+                    vm.diffTime = moment(new Date(1970, 0, 1)).diff(_.maxBy(vm.linhaSelecionada.latas, function (o) { return o.HoraDaRetiradaDaLata; }).HoraDaRetiradaDaLata)
+                    vm.duration = moment.duration(vm.diffTime);
+                    let //years = duration.years(),
+                        days = vm.duration.days(),
+                        hrs = vm.duration.hours(),
+                      mins = vm.duration.minutes(),
+                      secs = vm.duration.seconds();
+
+                    //if (hrs > 1)
+                    //    vm.linhaSelecionada.ExcedidoTempoLimite = true
+
+                    //SEM MOCK
+                    if (hrs > 1 || days > 1)
+                        vm.ExcedidoTempoLimite = true
+                    else
+                        vm.ExcedidoTempoLimite = false
+
+                    //MOCK PARA Testes
+                    if (secs > 20 || mins > 1 || hrs > 1 || days > 1)
+                        vm.ExcedidoTempoLimite = true
+                    else
+                        vm.ExcedidoTempoLimite = false
+
+                    vm.timerDaProximaLata = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
+                    vm.mytimeout = $timeout($scope.onTimeout, 1000);
+                }
+
+                vm.saveAndClose = function (item, remove) {
+                    //console.log(item)
+                    //item["liberaAssinaturaLata"] = false
+                    let vmItem = item
+                    let index = vm.linhaSelecionada.latas.indexOf(item)
+                    let numeroDePontos = vm.linhaSelecionada.TipoDeLata.NumberOfPoints
+
+                    vm.salvaLinha()
+                    return true
+
+                    item = vmItem
+                    vm.salvaLinha()
+                    return true
+                }
+
+                vm.getFormula = function (expressaoArr) {
+                    let expressaoFinal = ''
+                    //expressaoArr.forEach(function(o, c){
+                    for (var i = 0; i < expressaoArr.length; i++) {
+                        let o = expressaoArr[i]
+                        if (o.Operator == "dados") {
+                            expressaoFinal += `(${o.OuterLevel3_Text}) `
+                        } else {
+                            expressaoFinal += `${o.Operator} `
+                        }
+                    }
+                    //})
+                    return expressaoFinal
+                }
+
+                //FIM DREPRECIADO VERIFICAR
+
+            }])
+            .filter('mathPow', function () {
+                return function (base, exponent) {
+                    return Math.pow(10, exponent);
+                }
+            })
+            .filter('mathPowRev', function () { // Implementar!!!
+                return function (base, exponent) {
+                    return Math.pow(10, exponent);
+                }
+            })
+            .filter('calculadoPorOutro', function () { // Implementar!!!
+                return function (expressaoArr, index, lataIndex, resultNaLata) {
+                    let expressaoFinal = ''
+                    var teste = []
+                    let indexMaisUm = index + 1
+                    //expressaoArr.forEach(function (o, c) {
+                    for (var i = 0; i < expressaoArr.length; i++) {
+                        let o = expressaoArr[i]
+                        if (o.Operator == "dados") {
+                            let id = `#ParLevel3_Id${o.OuterLevel3_Id}ParLevel3Value_Id${o.OuterLevel3Value_Id}PontoIndex${indexMaisUm}LataIndex${lataIndex}`
+                            let valor = parseFloat($(id).val())
+                            if (isNaN(parseFloat(valor))) {
+                                return ""
+                            }
+                            expressaoFinal += valor
+                        } else {
+                            expressaoFinal += `${o.Operator}`
+                        }
+                    }
+                    //})
+
+                    let result = math.eval(expressaoFinal.replace(/\s/g, '').replace('=', ''))
+                    return isNaN(result) ? "" : parseFloat(result.toFixed(2))
+                    //return vm.addbits(expressaoFinal.replace(/\s/g, ''))
+                }
+            })
+            .filter('reverseAnything', function () {
+                return function (items) {
+                    if (typeof items === 'undefined') { return; }
+                    return angular.isArray(items) ?
+                      items.slice().reverse() :// If it is an array, split and reverse it
+                      (items + '').split('').reverse().join(''); // else make it a string (if it isn't already), and reverse it
+                };
+            })
+            .directive('tables', ['$timeout', function ($timeout) {
+                return function (scope, element, attrs) {
+                    if (scope.$last) {
+                        //window.alert("im the last!");
+                        //$timeout(scope.$emit(scope.executeDocReady(true)), 200);
+                    }
+                };
+            }])
+            .directive('correctiveaction', function () {
+                return {
+                    scope: {
+                        ca: '=lataca'
+                    },
+                    template: `<div class="alert alert-warning {{$parent.formDefault6}}" style="min-height:284px;padding-top:0px !important;">
+                                <br />
+                                <div>
+                                    <label>Horário de parada da linha</label>
+                                    <input type="text" class="time form-control" title="Horário de parada da linha" ng-disabled="$parent.$index > 0"
+                                        ng-model="$parent.lataSelecionada.correctiveAction.HorarioDeParada" />
+                                </div>
+                                <br />
+                                <div>
+                                    <label>Deficiência:</label>
+                                    <textarea ng-disabled="ca.IsAssinada"
+                                                ng-model="ca.DescriptionFailure"
+                                                ng-required="true"
+                                                class="form-control custom-control"
+                                                name="DescriptionFailure"
+                                                rows="3"
+                                                style="resize:none; overflow-x:hidden"></textarea>
+                                </div>
+                                <h3>Ação Corretiva
+                                    <button data-toggle="modal" type="button" data-target="#modalSugestaoAcao" ng-click="$parent.selecionaAcao($parent.$index)"
+                                        class="btn btn-primary btn-sm pull-right">Sugestão de Ação</button>
+                                </h3>
+                                <div>
+                                    <label>Ação Corretiva:</label><span ng-show="!(ca.ImmediateCorrectiveAction)" class="redDot">* Campo Obrigatório</span>
+                                    <label ng-show="$parent.linhaSelecionada.correctiveAction.HorarioDeParada"> Ás {{linhaSelecionada.correctiveAction.HorarioDeParada}} a linha {{linhaSelecionada.Name}} foi paralizada:</label>
+                                    <textarea ng-disabled="ca.IsAssinada"
+                                              ng-model="ca.ImmediateCorrectiveAction"
+                                              class="form-control custom-control"
+                                              rows="3"
+                                              style="resize:none; overflow-x:hidden"></textarea>
+                                </div>
+                                <div>
+                                    <div ng-show="ca.IsAssinada">
+                                        <button type="button"
+                                                style="margin-top:67px;"
+                                                class="btn btn-primary"
+                                                ng-click="ca.IsAssinada = false">
+                                            Editar Ação Corretiva
+                                        </button>
+                                    </div>
+                                    <div ng-hide="ca.IsAssinada">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Nome de Usuário"
+                                               ng-model="ca.Assinatura.Name" />
+                                        <input type="password"
+                                               class="form-control"
+                                               placeholder="Senha"
+                                               ng-model="ca.Assinatura.Password" />
+                                        <button type="button"
+                                                class="btn btn-primary"
+                                                title="Preencha o campo Ação Corretiva para liberar a Assinatura"
+                                                ng-disabled="(!(ca.ImmediateCorrectiveAction))"
+                                                ng-click="$parent.AssinaCorrectiveAction1(ca)">
+                                            Assinar Ação Corretiva
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>`
+                }
+            })
+            .directive('preventiveaction', function () {
+                return {
+                    scope: {
+                        pa: '=latapa'
+                    },
+                    template: `<div class="alert alert-success {{$parent.formDefault6}}" style="min-height:284px;padding-top:0px !important;">
+                                <br />
+                                <div>
+                                    <label>Horário de liberação da linha</label>
+                                    <input type="text" class="time form-control" title="Horário de liberação da linha" ng-disabled="$parent.$index > 0"
+                                            ng-model="$parent.lataSelecionada.correctiveAction.HorarioDeLiberacao" />
+                                </div>
+                                <br />
+                                <h3>Ação Preventiva</h3>
+                                <div>
+                                    <label>Acão Preventiva:</label>
+                                    <textarea ng-disabled="pa.IsAssinada"
+                                              ng-model="pa.PreventativeMeasure"
+                                              class="form-control custom-control"
+                                              rows="3"
+                                              style="resize:none; overflow-x:hidden"></textarea>
+                                </div>
+                                <div>
+                                    <div ng-show="pa.IsAssinada">
+                                        <button type="button"
+                                                style="margin-top:67px;"
+                                                class="btn btn-primary"
+                                                ng-click="pa.IsAssinada = false">
+                                            Editar Ação Preventiva
+                                        </button>
+                                    </div>
+                                    <div ng-show="!pa.IsAssinada">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Nome de Usuário"
+                                               ng-model="pa.Assinatura.Name" />
+                                        <input type="password"
+                                               class="form-control"
+                                               placeholder="Senha"
+                                               ng-model="pa.Assinatura.Password" />
+                                        <button type="button"
+                                                class="btn btn-primary"
+                                                title="Preencha o campo Ação Preventiva para liberar a Assinatura"
+                                                ng-disabled="(pa.IsAssinada || !pa.PreventativeMeasure)"
+                                                ng-click="$parent.AssinaPreventiveAction(pa)">
+                                            Assinar Ação Preventiva
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>`
+                }
+            })
+            .directive('binario', function () {
+                return {
+                    scope: {
+                        params: '=leveltres'
+                        , lata: '=lata'
+                        , index: '=indexponto'
+                    },
+                    template: `<span style="display:block; text-align:left;" ng-if="(params.ParLevel3Value[0] && params.ParLevel3Value[0].ParLevel3InputType_Id == '1')"
+                        ng-class ="{bgWhite:(!(lata.ResultValue[params.Id][(index +1)] === true) && !(lata.ResultValue[params.Id][(index +1)] === false)), bgYellow:(lata.ResultValue[params.Id][(index +1)] == 'NA'), bgGreen:(lata.ResultValue[params.Id][(index +1)] === true), bgRed:(lata.ResultValue[params.Id][(index +1)] === false)}">
+                                    <span ng-if="((params.IsPointLess == true) || (params.IsPointLess == false && index == 0))">
+                                        <input type="radio" style="width:100%; max-width:65px;"
+                                                ng-value="true"
+                                                ng-model="lata.ResultValue[params.Id][(index +1)]" />
+                                        {{params.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                        <input type="radio" style="width:100%; max-width:65px;"
+                                                ng-value="false"
+                                                ng-model="lata.ResultValue[params.Id][(index +1)]" />
+                                        {{params.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                        &nbsp<span ng-if="params.AllowNA"><input type="checkbox" ng-true-value="'NA'" ng-false-value="" ng-model="lata.ResultValue[params.Id][(index +1)]" /> NA </span>
+                                    </span>
+                                </span>`
+                }
+            })
+
+    })();
+
+</script>

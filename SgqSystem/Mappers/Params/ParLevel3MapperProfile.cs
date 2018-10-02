@@ -10,6 +10,9 @@ namespace SgqSystem.Mappers
         {
             CreateMap<ParLevel3, ParLevel3DTO>();
             CreateMap<ParLevel3DTO, ParLevel3>();
+
+            CreateMap<ParLevel3Value_Outer, ParLevel3Value_OuterListDTO>();
+            CreateMap<ParLevel3Value_OuterListDTO, ParLevel3Value_Outer>();
         }
     }
 }

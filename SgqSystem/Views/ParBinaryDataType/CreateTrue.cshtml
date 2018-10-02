@@ -1,8 +1,11 @@
 ﻿@model Dominio.ParLevel3BoolTrue
 
+@{ 
+    ViewBag.Title = Resources.Resource.new_binary_input_type;
+}
 
 <div class="page-content-wrapper">
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content">
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
@@ -12,7 +15,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Cadastro</span>
+                    <span>@Resources.Resource._new</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -63,15 +66,12 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="@Resources.Resource.create" class="btn btn-default" />
+                        <input type="submit" value="@Resources.Resource.create" class="btn btn-primary" />
+                        @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
                     </div>
                 </div>
             </div>
         }
-
-        <div>
-            @Html.ActionLink(Resources.Resource.back_to_list, "Index")
-        </div>
 
     </div>
 </div>
@@ -84,3 +84,8 @@
 
 </script>
 
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
+</script>

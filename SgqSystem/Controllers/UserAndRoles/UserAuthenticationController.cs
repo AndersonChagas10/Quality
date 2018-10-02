@@ -5,6 +5,7 @@ using DTO.Helpers;
 using Helper;
 using SgqSystem.ViewModels;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -16,7 +17,6 @@ namespace SgqSystem.Controllers.Api
         private readonly IUserDomain _userDomain;
         private readonly IBaseDomain<UserSgq, UserDTO> _userBaseDomain;
         private IBaseDomain<UserSgq, UserSgqDTO> _userSgqDomain;
-        private IBaseDomain<EmailContent, EmailContentDTO> _emailContent;
 
         public UserAuthenticationController(IUserDomain userDomain, IBaseDomain<UserSgq, UserDTO> userBaseDomain, IBaseDomain<UserSgq, UserSgqDTO> userSgqDomain
             /*,IBaseDomain<EmailContent, EmailContentDTO> emailContent*/)
@@ -27,16 +27,28 @@ namespace SgqSystem.Controllers.Api
             // _emailContent = emailContent;
         }
 
+        public static int Variavel = 1;
+
         [HttpGet]
         [AllowAnonymous]
         public ActionResult LogIn()
         {
+            #region Redireciona se for a configuração inicial do sistema*/
+            SgqDbDevEntities db = new SgqDbDevEntities();
+            if (!db.UserSgq.Any())
+            {
+                return RedirectToAction("Index", "FirstConfig");
+            }
+
+            Variavel = 2;
+            #endregion
+
             HttpCookie currentUserCookie = Request.Cookies["webControlCookie"];
             if (currentUserCookie != null)
                 return RedirectToAction("Index", "Home");
 
             ExpireCookie();
-            return View(new UserViewModel() { IsWeb = true});
+            return View(new UserViewModel() { IsWeb = true });
         }
 
         [HttpPost]
@@ -79,7 +91,7 @@ namespace SgqSystem.Controllers.Api
             ExpireCookie();
         }
 
-       
+
 
         [HttpGet]
         public ActionResult KeepAlive(int id)

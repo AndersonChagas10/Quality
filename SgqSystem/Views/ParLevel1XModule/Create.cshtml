@@ -1,0 +1,186 @@
+﻿@model Dominio.ParLevel1XModule
+
+@{
+    ViewBag.Title = Resources.Resource.create;
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                    <a href="@Url.Action("Index", "ParLevel1xModule")">@Resources.Resource.parlevel1xmodules</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.create</span>
+                </li>
+            </ul>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create @Resources.Resource.parlevel1xmodules </span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                @using (Html.BeginForm("Create", "ParLevel1xModule", FormMethod.Post, new { @onsubmit = "tirarMascara()" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+                                        <h4> @Resources.Resource.parlevel1xmodules</h4>
+                                        <hr />
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.parlevel1, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.ListBoxFor(model => model.ParLevel1_IdHelper, new MultiSelectList(ViewBag.Indicadores, "Id", "Name"), new { @class = "form-control select2", @multiple = "multiple", @style = "width:275px" })
+                                            </div>
+                                            <div class="col-md-10 col-md-offset-2">
+                                                @Html.ValidationMessageFor(model => model.ParLevel1_IdHelper, "", new { @class = "text-danger", @style = "width:275px" })
+                                                @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger", @style = "width:275px" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.parModule, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownList("ParModule_Id", new SelectList(ViewBag.Modulos, "Id", "Name"), Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:275px" })
+                                                @*@Html.EditorFor(model => model.ParModule_Id, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.ValidationMessageFor(model => model.ParModule_Id, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.clusters, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownList("ParCluster_Id", new SelectList(ViewBag.Clusters, "Id", "Name"), Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:275px" })
+                                                @*@Html.EditorFor(model => model.ParModule_Id, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.ValidationMessageFor(model => model.ParCluster_Id, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+
+
+
+                                        @*<div class="form-group">
+                                                @Html.Label(Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @{decimal points = Model?.Points ?? 0;}
+                                                    @Html.TextBox("PointsText", points, new { htmlAttributes = new { @class = "form-control number_decimal", @id = "pontos" } })
+                                                    @Html.HiddenFor(model => model.Points)
+                                                    @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>*@
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.effective_date_start, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.TextBox("EffectiveDateStart", "", new { @class = "form-control", @type = "date", @style = "width:190px" })
+                                                @Html.ValidationMessageFor(model => model.EffectiveDateStart, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group hidden">
+                                            @Html.Label(Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.IsActive)
+                                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.effective_date_end, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.TextBox("EffectiveDateEnd", "", new { @class = "form-control", @type = "date", @style = "width:190px" })
+                                                @Html.ValidationMessageFor(model => model.EffectiveDateEnd, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="@Resources.Resource.create" class="btn btn-primary" />
+                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+@section Scripts {
+
+    <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
+
+
+    <script>
+        function tirarMascara() {
+            //var pontos = $("#PointsText").val().replace(".", "");
+            //$("#Points").val(pontos.replace(",", "."));
+        };
+        $(document).ready(function () {
+            $("#ParLevel1_IdHelper").select2();
+            $("#ParModule_Id").select2();
+            $("#IsActive").prop("checked", true);
+
+            $("#PointsText").inputmask('decimal', {
+                radixPoint: ",",
+                groupSeparator: ".",
+                autoGroup: false,
+                digits: 2,
+                digitsOptional: false,
+                placeholder: '0',
+                rightAlign: false,
+                onBeforeMask: function (value, opts) {
+                    return value;
+                },
+            });
+
+            $('#dataInicio').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                defaultDate: null,
+                'locale': {
+                    "format": "YYYY/MM/DD",
+                }
+            });
+
+            $('#dataTermino').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                defaultDate: null,
+                'locale': {
+                    "format": "YYYY/MM/DD",
+                }
+            });
+        });
+
+
+
+    </script>
+}
+

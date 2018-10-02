@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dominio;
 using DTO.DTO.Params;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,32 +20,17 @@ namespace SgqSystem.Controllers.Api
         [Route("GetRegionaisUsuario")]
         public List<ParStructureDTO> GetRegionaisUsuario()
         {
-            //var lista = new List<ParStructure>();
-
-            //if (Unidades.Count > 0)
-            //{
-            //    var Unidade = "";
-
-            //    foreach (var item in Unidades)
-            //    {
-            //        Unidade += item.Id.ToString() + ",";
-            //    }
-
-            //    Unidade.Remove(Unidade.Length - 1);
-
-            //    var sql = @"SELECT
-            //            	DISTINCT(PS.Id) as Id, PS.Name as Name
-            //            FROM ParStructure PS
-            //            INNER JOIN ParCompanyXStructure CXS
-            //            	ON PS.Id = CXS.ParCompany_Id
-            //            	and PS.ParStructureGroup_Id = 2
-            //            where CXS.ParCompany_Id in " + Unidades + @"";
-
-            //    lista = db.Database.SqlQuery<ParStructureDTO>(sql).ToList();
-            //}
-
 
             var retorno = Mapper.Map<List<ParStructureDTO>>(db.ParStructure.Where(r => r.ParStructureGroup_Id == 2 && r.ParStructureParent_Id == 1).ToList());
+
+            return retorno;
+        }
+
+        [HttpGet]
+        [Route("GetListClusterVinculadoClusterGroup")]
+        public List<ParClusterDTO> GetListClusterVinculadoClusterGroup(int ClusterGroupId)
+        {
+            var retorno = Mapper.Map<List<ParClusterDTO>>(db.ParCluster.Where(r => r.ParClusterGroup_Id == ClusterGroupId).ToList());
 
             return retorno;
         }

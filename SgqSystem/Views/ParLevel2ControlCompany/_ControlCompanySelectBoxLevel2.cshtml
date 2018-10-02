@@ -26,11 +26,15 @@
 
 
 <script>
+
     var level2Selected = @Html.Raw(Json.Encode(ViewBag.ParLevel2Ids));
+
     $('#level2Number').inputmask('integer', { rightAlign: false });
+
     $(document).ready(function () {
         $('#level2').select2({ allowClear: true, placeholder: "" })
         if(level2Selected != null)
             $('#level2').val(level2Selected).change();
     });
+
 </script>

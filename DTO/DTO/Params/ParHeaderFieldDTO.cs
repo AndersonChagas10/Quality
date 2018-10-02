@@ -16,6 +16,7 @@ namespace DTO.DTO.Params
         public bool IsActive { get; set; }
         public string DefaultOption { get; set; }
         public Nullable<bool> IsRequired { get; set; }
+        public Nullable<bool> duplicate { get; set; }
 
         //public ParLevelDefinitionDTO parLevelDefinitionDto { get; set; }
         /*Inclusão*/

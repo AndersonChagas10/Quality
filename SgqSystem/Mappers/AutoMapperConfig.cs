@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Dominio;
 using SgqSystem.Mappers.ParamsBrasil;
 
 namespace SgqSystem.Mappers
@@ -13,17 +14,8 @@ namespace SgqSystem.Mappers
                 x.AddProfile<CorrectiveActionMapperProfile>();
                 x.AddProfile<UserMapperProfile>();
                 x.AddProfile<ParCompanyXUserSgqMapperProfile>();
-                x.AddProfile<ConsolidationLevel01MapperProfile>();
-                x.AddProfile<ConsolidationLevel02MapperProfile>();
-                x.AddProfile<CollectionLevel02MapperProfile>();
-                x.AddProfile<CollectionLevel03MapperProfile>();
-                x.AddProfile<Level03MapperProfile>();
-                x.AddProfile<Level01MapperProfile>();
-                x.AddProfile<Level02MapperProfile>();
-                x.AddProfile<Level03MapperProfile>();
                 x.AddProfile<PeriodMapperProfile>();
                 x.AddProfile<ShiftMapperProfile>(); //PROBLEMA NA TABELA, FORA DE PADRão, MOCKADO.
-                x.AddProfile<DepartmenMapperProfile>();
                 x.AddProfile<UnitMapperProfile>();
                 x.AddProfile<UnitUserMapperProfile>();
                 x.AddProfile<ParCompanyXStructureMapperProfile>();
@@ -31,6 +23,8 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParStructureGroupMapperProfile>();
                 x.AddProfile<ParCompanyClusterProfile>();
                 x.AddProfile<ParGoalMapperProfile>();
+                x.AddProfile<ParClusterXModuleMapperProfile>();
+                x.AddProfile<ParModuleMapperProfile>();
 
                 /*
                  * Par Level1 Mapping
@@ -73,6 +67,7 @@ namespace SgqSystem.Mappers
                  *Par Level 3 Mapping
                  */
                 x.AddProfile<ParLevel3MapperProfile>();
+                x.AddProfile<ParLevel3EvaluationSampleMapperProfile>();
                 x.AddProfile<ParLevel3ValueMapperProfile>();
 
                 x.AddProfile<ParLevel3inputTypeMapperProfile>();
@@ -105,6 +100,12 @@ namespace SgqSystem.Mappers
                 x.AddProfile<EmailContentMapperProfile>();
 
                 x.AddProfile<RoleUserSgqMapperProfile>();
+
+
+                /*ItemMenu*/
+                x.AddProfile<ItemMenuMapperProfile>();
+
+                x.AddProfile<RoleUserSgqXItemMenuMapperProfile>();
 
 
                 ///*PA............*/

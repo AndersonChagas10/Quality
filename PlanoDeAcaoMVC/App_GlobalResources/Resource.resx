@@ -1,0 +1,897 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="active" xml:space="preserve">
+    <value>Active:</value>
+  </data>
+  <data name="active2" xml:space="preserve">
+    <value>active</value>
+  </data>
+  <data name="active3" xml:space="preserve">
+    <value>ACTIVE</value>
+  </data>
+  <data name="add_action" xml:space="preserve">
+    <value>Add Action</value>
+  </data>
+  <data name="all" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="all2" xml:space="preserve">
+    <value>ALL</value>
+  </data>
+  <data name="all_plannings_to_filter" xml:space="preserve">
+    <value>All Plannings to Filter</value>
+  </data>
+  <data name="all_tasks_to_filter" xml:space="preserve">
+    <value>All tasks to filter</value>
+  </data>
+  <data name="apr" xml:space="preserve">
+    <value>Apr</value>
+  </data>
+  <data name="aug" xml:space="preserve">
+    <value>Aug</value>
+  </data>
+  <data name="back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="by" xml:space="preserve">
+    <value>By</value>
+  </data>
+  <data name="by_status" xml:space="preserve">
+    <value>BY STATUS</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="change_planning" xml:space="preserve">
+    <value>Change planning</value>
+  </data>
+  <data name="change_strategic_link" xml:space="preserve">
+    <value>Change Strategic Link</value>
+  </data>
+  <data name="change_tactical_link" xml:space="preserve">
+    <value>Change Tactical Link</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="closed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="comparative" xml:space="preserve">
+    <value>Comparative</value>
+  </data>
+  <data name="completed_tasks" xml:space="preserve">
+    <value>Completed Tasks</value>
+  </data>
+  <data name="coordination" xml:space="preserve">
+    <value>Coordination</value>
+  </data>
+  <data name="could_not_save_record" xml:space="preserve">
+    <value>Could not save record:</value>
+  </data>
+  <data name="date_conclusion" xml:space="preserve">
+    <value>Date of the conclusion</value>
+  </data>
+  <data name="days_of_delay" xml:space="preserve">
+    <value>Days of delay</value>
+  </data>
+  <data name="dec" xml:space="preserve">
+    <value>Dec</value>
+  </data>
+  <data name="delayed_tasks" xml:space="preserve">
+    <value>Delayed Tasks</value>
+  </data>
+  <data name="dimension" xml:space="preserve">
+    <value>Dimension</value>
+  </data>
+  <data name="directorship" xml:space="preserve">
+    <value>Directorship</value>
+  </data>
+  <data name="edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="edit_action" xml:space="preserve">
+    <value>Edit Action</value>
+  </data>
+  <data name="feb" xml:space="preserve">
+    <value>Feb</value>
+  </data>
+  <data name="fields_must_be_completed" xml:space="preserve">
+    <value>Fields must be completed</value>
+  </data>
+  <data name="filtered_max_records" xml:space="preserve">
+    <value>(Filtered _MAX_ records)</value>
+  </data>
+  <data name="filters" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="first" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="formation_of_stocks_in_action" xml:space="preserve">
+    <value>FORMATION OF STOCKS IN ACTION</value>
+  </data>
+  <data name="form_of" xml:space="preserve">
+    <value>Form of</value>
+  </data>
+  <data name="generic_action" xml:space="preserve">
+    <value>Generic Action</value>
+  </data>
+  <data name="generic_cause" xml:space="preserve">
+    <value>Generic Cause</value>
+  </data>
+  <data name="group_cause" xml:space="preserve">
+    <value>Group Cause</value>
+  </data>
+  <data name="guideline" xml:space="preserve">
+    <value>Guideline</value>
+  </data>
+  <data name="inactive" xml:space="preserve">
+    <value>INACTIVE</value>
+  </data>
+  <data name="indicator" xml:space="preserve">
+    <value>Indicator</value>
+  </data>
+  <data name="indicators_guideline" xml:space="preserve">
+    <value>Indicators / Guideline</value>
+  </data>
+  <data name="indicator_type" xml:space="preserve">
+    <value>Indicator Type</value>
+  </data>
+  <data name="item_name" xml:space="preserve">
+    <value>Item Name:</value>
+  </data>
+  <data name="jan" xml:space="preserve">
+    <value>Jan</value>
+  </data>
+  <data name="july" xml:space="preserve">
+    <value>July</value>
+  </data>
+  <data name="june" xml:space="preserve">
+    <value>June</value>
+  </data>
+  <data name="last" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="management" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="mar" xml:space="preserve">
+    <value>Mar</value>
+  </data>
+  <data name="may" xml:space="preserve">
+    <value>May</value>
+  </data>
+  <data name="menu_results_per_page" xml:space="preserve">
+    <value>_MENU_ results per page</value>
+  </data>
+  <data name="monitoring" xml:space="preserve">
+    <value>Monitoring</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="new_action" xml:space="preserve">
+    <value>New Action</value>
+  </data>
+  <data name="new_strategic_planning" xml:space="preserve">
+    <value>New Strategic Planning</value>
+  </data>
+  <data name="new_tactic" xml:space="preserve">
+    <value>New Tactic</value>
+  </data>
+  <data name="new_tactical_planning_linked_strategic_planning" xml:space="preserve">
+    <value>New Tactical Planning Linked to Strategic Planning</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="next_tasks" xml:space="preserve">
+    <value>Next Tasks</value>
+  </data>
+  <data name="nov" xml:space="preserve">
+    <value>Nov</value>
+  </data>
+  <data name="no_data" xml:space="preserve">
+    <value>No Data</value>
+  </data>
+  <data name="no_records_found" xml:space="preserve">
+    <value>No records found</value>
+  </data>
+  <data name="no_specific_action" xml:space="preserve">
+    <value>No specific action</value>
+  </data>
+  <data name="oct" xml:space="preserve">
+    <value>Oct</value>
+  </data>
+  <data name="ongoing_tasks" xml:space="preserve">
+    <value>Ongoing Tasks</value>
+  </data>
+  <data name="open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="operational_planning" xml:space="preserve">
+    <value>Operational Planning</value>
+  </data>
+  <data name="operational_planning_follow_up" xml:space="preserve">
+    <value>Operational Planning Follow-up</value>
+  </data>
+  <data name="percent_completed" xml:space="preserve">
+    <value>% Completed</value>
+  </data>
+  <data name="percent_completed_area" xml:space="preserve">
+    <value>% COMPLETED - AREA</value>
+  </data>
+  <data name="percent_completed_demands" xml:space="preserve">
+    <value>% COMPLETED - DEMANDS</value>
+  </data>
+  <data name="percent_conclusion" xml:space="preserve">
+    <value>% of Conclusion</value>
+  </data>
+  <data name="person" xml:space="preserve">
+    <value>Person</value>
+  </data>
+  <data name="planning" xml:space="preserve">
+    <value>Planning</value>
+  </data>
+  <data name="predecessor" xml:space="preserve">
+    <value>Predecessor:</value>
+  </data>
+  <data name="processing" xml:space="preserve">
+    <value>Processing...</value>
+  </data>
+  <data name="project_initiative" xml:space="preserve">
+    <value>Project / Initiative</value>
+  </data>
+  <data name="project_overview" xml:space="preserve">
+    <value>Project Overview</value>
+  </data>
+  <data name="project_overview_guideline" xml:space="preserve">
+    <value>Project Overview Guideline</value>
+  </data>
+  <data name="project_overview_management" xml:space="preserve">
+    <value>Project Overview Management</value>
+  </data>
+  <data name="project_theme" xml:space="preserve">
+    <value>Project Theme</value>
+  </data>
+  <data name="regional" xml:space="preserve">
+    <value>Regional</value>
+  </data>
+  <data name="registry_successfully_saved" xml:space="preserve">
+    <value>Registry successfully saved!</value>
+  </data>
+  <data name="required_fields" xml:space="preserve">
+    <value>Required fields</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="save_edition" xml:space="preserve">
+    <value>Save Edition</value>
+  </data>
+  <data name="save_operational" xml:space="preserve">
+    <value>Save Operational</value>
+  </data>
+  <data name="save_strategic" xml:space="preserve">
+    <value>Save Strategic</value>
+  </data>
+  <data name="save_tactical" xml:space="preserve">
+    <value>Save Tactical</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="search_planning" xml:space="preserve">
+    <value>Search Planning</value>
+  </data>
+  <data name="select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="select_a_predecessor_above" xml:space="preserve">
+    <value>Select a predecessor above</value>
+  </data>
+  <data name="sept" xml:space="preserve">
+    <value>Sept</value>
+  </data>
+  <data name="showing_0_to_0_of_0_records" xml:space="preserve">
+    <value>Showing 0 to 0 of 0 records</value>
+  </data>
+  <data name="showing_start_to_end_of_total_records" xml:space="preserve">
+    <value>Showing _START_ to _END_ of _TOTAL_ records</value>
+  </data>
+  <data name="sort_columns_ascending" xml:space="preserve">
+    <value>:  Sort Columns Ascending</value>
+  </data>
+  <data name="sort_columns_downward" xml:space="preserve">
+    <value>:  Sort columns downward</value>
+  </data>
+  <data name="specific_action" xml:space="preserve">
+    <value>Specific Action</value>
+  </data>
+  <data name="start_date" xml:space="preserve">
+    <value>Start date</value>
+  </data>
+  <data name="start_date_must_be_less_than_end_date" xml:space="preserve">
+    <value>Start Date must be less than End Date!</value>
+  </data>
+  <data name="status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="stock" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="stocks_in_action" xml:space="preserve">
+    <value>Stocks in Action</value>
+  </data>
+  <data name="table_of_actions" xml:space="preserve">
+    <value>Table of Actions</value>
+  </data>
+  <data name="table_of_projects" xml:space="preserve">
+    <value>Table of Projects</value>
+  </data>
+  <data name="tactical_planning" xml:space="preserve">
+    <value>Tactical Planning</value>
+  </data>
+  <data name="task" xml:space="preserve">
+    <value>Task</value>
+  </data>
+  <data name="tasks_manager" xml:space="preserve">
+    <value>Tasks Manager</value>
+  </data>
+  <data name="tasks_status" xml:space="preserve">
+    <value>Tasks vs Status</value>
+  </data>
+  <data name="theme_subject" xml:space="preserve">
+    <value>Theme / Subject</value>
+  </data>
+  <data name="to_manage" xml:space="preserve">
+    <value>To Manage:</value>
+  </data>
+  <data name="type_of_project" xml:space="preserve">
+    <value>Type of Project</value>
+  </data>
+  <data name="unit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="updated_link" xml:space="preserve">
+    <value>Updated link!</value>
+  </data>
+  <data name="who" xml:space="preserve">
+    <value>Who</value>
+  </data>
+  <data name="_new" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="all_tasks_filter" xml:space="preserve">
+    <value>ALL TASKS TO FILTER</value>
+  </data>
+  <data name="date_end_project_initiative" xml:space="preserve">
+    <value>Project end date / Initiative</value>
+  </data>
+  <data name="delivery" xml:space="preserve">
+    <value>Delivery</value>
+  </data>
+  <data name="department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="deviation_analysis_report" xml:space="preserve">
+    <value>DEVIATION ANALYSIS REPORT</value>
+  </data>
+  <data name="end_date_selected_period" xml:space="preserve">
+    <value>Initial end of selected period</value>
+  </data>
+  <data name="generic_action2" xml:space="preserve">
+    <value>GENERIC ACTION</value>
+  </data>
+  <data name="generic_cause2" xml:space="preserve">
+    <value>GENERIC CAUSE</value>
+  </data>
+  <data name="goal_indicator" xml:space="preserve">
+    <value>GOAL OF THE INDICATOR</value>
+  </data>
+  <data name="group_cause2" xml:space="preserve">
+    <value>GROUP CAUSE</value>
+  </data>
+  <data name="how" xml:space="preserve">
+    <value>How</value>
+  </data>
+  <data name="indicators_devices" xml:space="preserve">
+    <value>INDICATORS WITH DEVICES</value>
+  </data>
+  <data name="indicators_guidelines" xml:space="preserve">
+    <value>Indicators of the Guidelines</value>
+  </data>
+  <data name="indicators_project_initiative" xml:space="preserve">
+    <value>Indicators of the Project / Initiative</value>
+  </data>
+  <data name="initial_date_selected_period" xml:space="preserve">
+    <value>Initial date of selected period</value>
+  </data>
+  <data name="manage" xml:space="preserve">
+    <value>To Manage</value>
+  </data>
+  <data name="management_objective" xml:space="preserve">
+    <value>Management Objective</value>
+  </data>
+  <data name="mission" xml:space="preserve">
+    <value>Mission</value>
+  </data>
+  <data name="percentage_nc_tasks" xml:space="preserve">
+    <value>PERCENTAGE OF NON-CONFORMITY OF TASKS</value>
+  </data>
+  <data name="recurrence_deviations_period" xml:space="preserve">
+    <value>RECURRENCE OF DEVIATIONS IN THE PERIOD</value>
+  </data>
+  <data name="remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="responsible_guideline" xml:space="preserve">
+    <value>Responsible for the Guideline</value>
+  </data>
+  <data name="responsible_project_initiative" xml:space="preserve">
+    <value>Responsible for the Project / Initiative</value>
+  </data>
+  <data name="seen" xml:space="preserve">
+    <value>Seen</value>
+  </data>
+  <data name="select2" xml:space="preserve">
+    <value>select...</value>
+  </data>
+  <data name="select_delivery_date_greater_today_date" xml:space="preserve">
+    <value>Select a delivery date greater than today's date!</value>
+  </data>
+  <data name="signature1" xml:space="preserve">
+    <value>Signature 1</value>
+  </data>
+  <data name="signature2" xml:space="preserve">
+    <value>Signature 2</value>
+  </data>
+  <data name="specific_action2" xml:space="preserve">
+    <value>SPECIFIC ACTION</value>
+  </data>
+  <data name="specific_cause" xml:space="preserve">
+    <value>SPECIFIC CAUSE</value>
+  </data>
+  <data name="start_date_project_initiative" xml:space="preserve">
+    <value>Start date Project / Initiative</value>
+  </data>
+  <data name="supervisor" xml:space="preserve">
+    <value>Supervisor</value>
+  </data>
+  <data name="tactical_link" xml:space="preserve">
+    <value>Tactical Link</value>
+  </data>
+  <data name="type_password" xml:space="preserve">
+    <value>Type the password</value>
+  </data>
+  <data name="unit_measurement" xml:space="preserve">
+    <value>Unit of measurement</value>
+  </data>
+  <data name="value_for" xml:space="preserve">
+    <value>Value for</value>
+  </data>
+  <data name="value_of" xml:space="preserve">
+    <value>Value of</value>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="as_important_points" xml:space="preserve">
+    <value>As Important Points</value>
+  </data>
+  <data name="columns_saved_successfully" xml:space="preserve">
+    <value>Columns have been saved successfully!</value>
+  </data>
+  <data name="completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="current_view" xml:space="preserve">
+    <value>Current View</value>
+  </data>
+  <data name="end_date" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="error_saving" xml:space="preserve">
+    <value>Error Saving!</value>
+  </data>
+  <data name="for_what" xml:space="preserve">
+    <value>For what</value>
+  </data>
+  <data name="guidelines" xml:space="preserve">
+    <value>Guidelines</value>
+  </data>
+  <data name="how_much" xml:space="preserve">
+    <value>How much</value>
+  </data>
+  <data name="indicator_sgq" xml:space="preserve">
+    <value>SGQ Indicator </value>
+  </data>
+  <data name="initial_view" xml:space="preserve">
+    <value>Initial View</value>
+  </data>
+  <data name="initiative" xml:space="preserve">
+    <value>Initiative</value>
+  </data>
+  <data name="in_progress" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="late" xml:space="preserve">
+    <value>Late</value>
+  </data>
+  <data name="monitoring_sgq" xml:space="preserve">
+    <value>SGQ Monitoring</value>
+  </data>
+  <data name="my_columns" xml:space="preserve">
+    <value>My Columns</value>
+  </data>
+  <data name="operation" xml:space="preserve">
+    <value>Operation</value>
+  </data>
+  <data name="operational_indicators" xml:space="preserve">
+    <value>Operational Indicators</value>
+  </data>
+  <data name="quality" xml:space="preserve">
+    <value>Quality</value>
+  </data>
+  <data name="save_columns" xml:space="preserve">
+    <value>Save Columns</value>
+  </data>
+  <data name="show_all" xml:space="preserve">
+    <value>Show All</value>
+  </data>
+  <data name="specific_cause2" xml:space="preserve">
+    <value>Specific Cause</value>
+  </data>
+  <data name="strategic_planning" xml:space="preserve">
+    <value>Strategic Planning</value>
+  </data>
+  <data name="task_sgq" xml:space="preserve">
+    <value>SGQ Task</value>
+  </data>
+  <data name="term" xml:space="preserve">
+    <value>Term</value>
+  </data>
+  <data name="update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="visible_columns" xml:space="preserve">
+    <value>Visible Columns</value>
+  </data>
+  <data name="when_end" xml:space="preserve">
+    <value>When (End)</value>
+  </data>
+  <data name="when_start" xml:space="preserve">
+    <value>When (Start)</value>
+  </data>
+  <data name="accompaniment_action" xml:space="preserve">
+    <value>Accompaniment of the Action</value>
+  </data>
+  <data name="action_name" xml:space="preserve">
+    <value>Action Name</value>
+  </data>
+  <data name="addressee" xml:space="preserve">
+    <value>Addressee</value>
+  </data>
+  <data name="alphabetical_order" xml:space="preserve">
+    <value>Alphabetical order</value>
+  </data>
+  <data name="apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="apr2" xml:space="preserve">
+    <value>April</value>
+  </data>
+  <data name="aug2" xml:space="preserve">
+    <value>August</value>
+  </data>
+  <data name="canceled" xml:space="preserve">
+    <value>Canceled</value>
+  </data>
+  <data name="completed_late" xml:space="preserve">
+    <value>Completed late</value>
+  </data>
+  <data name="creation_date" xml:space="preserve">
+    <value>Creation date</value>
+  </data>
+  <data name="customized" xml:space="preserve">
+    <value>Customized</value>
+  </data>
+  <data name="dec2" xml:space="preserve">
+    <value>December</value>
+  </data>
+  <data name="feb2" xml:space="preserve">
+    <value>February</value>
+  </data>
+  <data name="finished" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="finished_late" xml:space="preserve">
+    <value>Finished late</value>
+  </data>
+  <data name="fri" xml:space="preserve">
+    <value>Fri</value>
+  </data>
+  <data name="jan2" xml:space="preserve">
+    <value>January</value>
+  </data>
+  <data name="july2" xml:space="preserve">
+    <value>July</value>
+  </data>
+  <data name="june2" xml:space="preserve">
+    <value>June</value>
+  </data>
+  <data name="mar2" xml:space="preserve">
+    <value>March</value>
+  </data>
+  <data name="may2" xml:space="preserve">
+    <value>May</value>
+  </data>
+  <data name="mon" xml:space="preserve">
+    <value>Mon</value>
+  </data>
+  <data name="new_tactical_planning_linked" xml:space="preserve">
+    <value>New Tactical Planning Linked</value>
+  </data>
+  <data name="notify" xml:space="preserve">
+    <value>Notify</value>
+  </data>
+  <data name="nov2" xml:space="preserve">
+    <value>November</value>
+  </data>
+  <data name="no_operational_planning" xml:space="preserve">
+    <value>No operational planning</value>
+  </data>
+  <data name="number_action" xml:space="preserve">
+    <value>Number of Action</value>
+  </data>
+  <data name="observation" xml:space="preserve">
+    <value>Observation</value>
+  </data>
+  <data name="oct2" xml:space="preserve">
+    <value>October</value>
+  </data>
+  <data name="of" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="operational_indicator" xml:space="preserve">
+    <value>Operational Indicator</value>
+  </data>
+  <data name="order_by_value" xml:space="preserve">
+    <value>Order by Value</value>
+  </data>
+  <data name="problem_deviation" xml:space="preserve">
+    <value>Problem or Deviation</value>
+  </data>
+  <data name="sat" xml:space="preserve">
+    <value>Sat</value>
+  </data>
+  <data name="selection" xml:space="preserve">
+    <value>Selection</value>
+  </data>
+  <data name="sept2" xml:space="preserve">
+    <value>September</value>
+  </data>
+  <data name="sun" xml:space="preserve">
+    <value>Sun</value>
+  </data>
+  <data name="thur" xml:space="preserve">
+    <value>Thur</value>
+  </data>
+  <data name="tue" xml:space="preserve">
+    <value>Tue</value>
+  </data>
+  <data name="until" xml:space="preserve">
+    <value>until</value>
+  </data>
+  <data name="wed" xml:space="preserve">
+    <value>Wed</value>
+  </data>
+  <data name="when_end2" xml:space="preserve">
+    <value>When End</value>
+  </data>
+  <data name="when_start2" xml:space="preserve">
+    <value>When Start</value>
+  </data>
+  <data name="without_status" xml:space="preserve">
+    <value>Without Status</value>
+  </data>
+  <data name="_return" xml:space="preserve">
+    <value>Return</value>
+  </data>
+  <data name="accompaniment" xml:space="preserve">
+    <value>Accompaniment</value>
+  </data>
+  <data name="action_plan" xml:space="preserve">
+    <value>Action plan</value>
+  </data>
+  <data name="by_grj_solutions" xml:space="preserve">
+    <value>By GRJ Solutions</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="delete_action" xml:space="preserve">
+    <value>Delete Action</value>
+  </data>
+  <data name="details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="edit_planning" xml:space="preserve">
+    <value>Edit Planning</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="log_off" xml:space="preserve">
+    <value>Log off</value>
+  </data>
+  <data name="name_field_required" xml:space="preserve">
+    <value>The name field is required.</value>
+  </data>
+  <data name="password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="password_field_required" xml:space="preserve">
+    <value>The password field is required.</value>
+  </data>
+  <data name="plan_action_authentication" xml:space="preserve">
+    <value>Plan of Action - Authentication</value>
+  </data>
+  <data name="quantity_actions" xml:space="preserve">
+    <value>Quantity of Actions</value>
+  </data>
+  <data name="reports" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="strategic" xml:space="preserve">
+    <value>Strategic</value>
+  </data>
+  <data name="tactical" xml:space="preserve">
+    <value>Tactical</value>
+  </data>
+  <data name="type_user" xml:space="preserve">
+    <value>Type the user</value>
+  </data>
+  <data name="user" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="username_password_invalid" xml:space="preserve">
+    <value>Username or password is invalid.</value>
+  </data>
+  <data name="not_started" xml:space="preserve">
+    <value>Not started</value>
+  </data>
+</root>

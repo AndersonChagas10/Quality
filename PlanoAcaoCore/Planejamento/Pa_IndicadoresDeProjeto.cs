@@ -6,9 +6,10 @@ namespace PlanoAcaoCore
     public class Pa_IndicadoresDeProjeto : Pa_BaseObject
     {
         public string Name { get; set; }
+        public int? Pa_Iniciativa_Id { get; set; }
         public static List<Pa_IndicadoresDeProjeto> Listar()
         {
-            var query = "SELECT * FROM Pa_IndicadoresDeProjeto";
+            var query = "SELECT * FROM Pa_IndicadoresDeProjeto WHERE IsActive = 1";
             return ListarGenerico<Pa_IndicadoresDeProjeto>(query);
         }
 
@@ -20,7 +21,7 @@ namespace PlanoAcaoCore
 
         public static List<Pa_IndicadoresDeProjeto> GetIndicadoresProjetoXiniciativa(int id)
         {
-            var query = "SELECT * FROM Pa_IndicadoresDeProjeto WHERE Pa_Iniciativa_Id = " + id;
+            var query = "SELECT * FROM Pa_IndicadoresDeProjeto WHERE IsActive = 1 AND Pa_Iniciativa_Id = " + id;
             return ListarGenerico<Pa_IndicadoresDeProjeto>(query);
         }
     }

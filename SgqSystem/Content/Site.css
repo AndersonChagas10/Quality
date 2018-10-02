@@ -92,3 +92,225 @@ footer > p{
 .table-margin{
     margin: 4px;
 }
+
+/**LEO**/
+a.navbar-sgq-brand{
+    margin-right:10px;
+    margin-left:10px;
+}
+
+#btn-topo{
+  display: none;
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  z-index: 200;
+  border: none;
+  outline: none;
+  background-color: #2b3643;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+  opacity:0.5;
+}
+#btn-topo:hover{
+  opacity:0.9;
+}
+
+.select2-container{
+    z-index:2501;
+}
+
+.row .select2-container{
+    z-index:100;
+}
+
+.page-content{
+    /*height:600px;*/
+}
+
+div.page-content-wrapper div.page-content{
+    min-height:625px !important;
+}
+
+div.login div.form-signin{
+    padding:0px;
+}
+
+div.login div.form-signin h2.form-signin-heading{
+    margin:0px;
+    text-align:center;
+}
+.page-sidebar .page-sidebar-menu-closed>li.heading{
+    display:none !important;
+}
+
+/***leftLayout***/
+.zindex-control{
+    z-index: 3000 !important;
+}
+/*.modal-open .modal {
+    z-index: 2700 !important;
+}*/
+/*a.custom-button {
+    width: 47px;
+}
+.dataTables_scrollBody {
+    height: 410px;
+}
+tbody > tr {
+    white-space: nowrap;
+    font-size: 10px;
+}
+thead > tr {
+    white-space: nowrap;
+    font-size: 7.9pt;
+}
+tbody > tr > td {
+    font-size: 7.9pt;
+    line-height: 1.6;
+}
+#linkbutton {
+    display: none
+}
+.modal-content {
+    margin-top: 70px;
+}
+button.btn.btn-link.custom-button {
+    font-size: 6.7pt;
+    padding: 0px;
+}
+td.dt-center {
+    padding: 0px 30px !important;
+}
+a.dt-button {
+    font-size: 12pt;
+    padding: 2px;
+    padding-left: 13px;
+    color: #fff;
+    padding-right: 13px;
+    border-radius: 0px !important;
+    border: none;
+    background: #337ab7 !important;
+}
+    a.dt-button:hover {
+        border: none;
+    }
+#resultsApontamentos_wrapper select {
+    padding: 5px;
+    font-size: 7.9pt;
+    border-radius: 0px !important;
+}
+div#resultsApontamentos_filter {
+    font-size: 7.9pt;
+        padding-left: 6px;
+}
+div#resultsApontamentos_length {
+    font-size: 7.9pt;
+    padding-left: 6px;
+}
+.dt-button-collection {
+    width: 240px !important;
+}
+div.dt-button-collection span {
+    font-size: 7.9pt;
+}
+div#resultsApontamentos_info {
+    font-size: 7.9pt;
+}
+div#resultsApontamentos_paginate {
+    font-size: 7.9pt;
+}
+a.paginate_button.current {
+    border-radius: 0px !important;
+    border: none !important;
+    background: #337ab7 !important;
+}
+input[type="search"] {
+    border-radius: 0px !important;
+    font-size: 7.9pt;
+    padding: 4px;
+    border: 1px solid #6666667a;
+}
+button#btnSend {
+    font-size: 7.9pt;
+    border-radius: 0px !important;
+}
+a.paginate_button:hover {
+    background: #337ab7 !important;
+    border: 0px !important;
+}*/
+    /*DESCOMENTAR PARA INSERIR ANIMAÇÃO*/
+    .page-sidebar-closed .page-sidebar, .page-sidebar .page-sidebar-menu.page-sidebar-menu-closed, .page-content, .page-sidebar, #sidebar-wrapper, .wrapper, .page-sidebar a, .page-sidebar span {
+    /*-webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s linear;*/
+}
+
+/***Header Modal***/
+.modal-header-gray {
+    text-align:center;
+    font-weight:bold;
+    color:#fff;
+    padding:9px 15px;
+    border-bottom:1px solid #eee;
+    background-color: #565e61;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+     border-top-left-radius: 5px;
+     border-top-right-radius: 5px;
+}
+    .modal-header-gray > button > span {
+        color: #fff;
+    }
+    .modal .modal-header .close  {
+        margin-top: 2px !important;
+        text-decoration:none;
+        background-image: unset !important;
+        text-indent:0px;
+        outline:0;
+        height:0px;
+    }
+
+th.options{
+    width:120px;
+}
+    
+.loader *{ display:none !important;}
+
+#messageModal{
+    z-index:12000;
+}
+
+div.loader *{
+    display:none !important;
+}
+
+.select2-selection__choice {
+    width: 98%;
+    display: inline-block;
+    overflow: hidden;
+}
+
+a.selecionarTudo{
+    display:inline !important;
+    color:#000 !important;
+}
+
+a.selecionarTudo:hover{
+    color:#999 !important;
+}
+
+.select2-selection__choice{
+    z-index:2600 !important;
+}
+
+span.select2-selection--multiple {
+    overflow-y: auto;
+    max-height: 150px;
+    overflow-x: hidden;
+}

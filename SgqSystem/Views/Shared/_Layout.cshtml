@@ -7,18 +7,32 @@
     //var userRolesCompany =
     var urlLogOutCookie = @Url.Action("LogOutCookie", "UserAuthentication");
 
+    //EUA PROD
+    //ViewBag.urlRootPa = "https://sgq.jbssa.com/ActionPlan";
+    //ViewBag.urlRootPaFTA = "https://sgq.jbssa.com/ActionPlan/Pa_Acao/NewFTA?";
+
     //EUA HML
-    //ViewBag.urlRootPa = "http://sgqtest.jbssa.com/actionPlan";
-    //ViewBag.urlRootPaFTA = "http://sgqtest.jbssa.com/actionPlan/Pa_Acao/NewFTA?";
+    //ViewBag.urlRootPa = "https://sgqtest.jbssa.com/actionPlanHML";
+    //ViewBag.urlRootPaFTA = "https://sgqtest.jbssa.com/actionPlanHML/Pa_Acao/NewFTA?";
 
     //EUA GRT
-    ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
-    ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
+    //ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
+    //ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
+
+    //BR GRT
+    //ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcao";
+    //ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
+
+    //LOCAL RICARDO GABRIEL
+    //ViewBag.urlRootPa = "http://localhost/PlanoAcao";
+    //ViewBag.urlRootPaFTA = "http://localhost/PlanoAcao/Pa_Acao/NewFTA?";
 
     //JBS HML / PROD
     //ViewBag.urlRootPa = "http://mtzsvmqsc/PlanoDeAcao";
     //ViewBag.urlRootPaFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
 
+
+    ViewBag.urlHome = Url.Action("Index", "Home");
 
 }
 <!DOCTYPE html>
@@ -37,21 +51,55 @@
     @Styles.Render("~/Content/Tables")
 
     <link href="~/Content/Timeout/timeout-dialog.css" rel="stylesheet" />
-
+    <link href="~/Content/mindmap.css" rel="stylesheet" />
     <link href="~/Scripts/theme/css/components.min.css" rel="stylesheet" />
     <link href="~/Scripts/theme/css/darkblue.min.css" rel="stylesheet" />
     <link href="~/Scripts/theme/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     @if (IsSectionDefined("Styles"))
     {
-        @RenderSection("Styles");
+        @RenderSection("Styles")    ;
     }
+    <link rel="icon" href="~/Content/Imagens/favicon.png">
 
-</head>
-<body class="page-header-fixed page-sidebar-closed-hide-logo">
+    <script>
+        var hideMenu = false;
+
+        function HideMenuLayout() {
+            hideMenu = true;
+        }
+    </script>
+
+    <link href="~/Content/datatableGRT.css" rel="stylesheet" />
+    <script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="~/Content/PluginGRT/pivot.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/PluginGRT/c3.min.css">
+
+    <style>
+         @if (!GlobalConfig.Producao)
+         {
+            <text>
+            body,
+             .navbar,
+             .page-sidebar-wrapper a,
+             .page-sidebar-wrapper i
+                 {
+                 background-color:#b50000 !important;
+                 }
+             .navbar,
+             .page-sidebar-wrapper a,
+             .page-sidebar-wrapper i
+                 {
+                 color:#fff !important
+                 }
+            </text>
+         }
+    </style>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -66,14 +114,27 @@
 
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-  
+
     <script src="~/Scripts/Timeout/timeout-dialog.js"></script>
     <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/humanizeduration/humanize-duration.js"></script>
+    <script src="~/Scripts/Timer/angular-timer.min.js"></script>
     <script src="~/Angular/app.js"></script>
     <script src="~/Scripts/smart-table.min.js"></script>
-
     <script src="~/Scripts/noframework.waypoints.min.js"></script>
 
+</head>
+
+
+
+
+
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed">
+
+    <div id="mandala"></div>
+
+
+    
     <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
         <div class="modal-dialog">
 
@@ -96,7 +157,7 @@
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header modal-header-gray">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">@Resources.Resource.confirm_the_action</h4>
                 </div>
@@ -115,7 +176,7 @@
 
     <div id="overlay" class="overlay" style="display:none"></div>
 
-    <div id="messageModal" class="message padding20" style="display:none">
+    <div id="messageModal" class="message padding20" style="display:none; left:0">
         <h1 class="head">Titulo</h1>
         <div class="body font16">Mensagem</div>
         <div class="foot">
@@ -204,22 +265,23 @@
     <div class="page-wrapper">
 
         @Html.Partial("~/Views/Shared/_Navbar.cshtml")
-        <div class="page-container" >
+        <div class="page-container">
             @*@Html.Partial("~/Views/Shared/_RightLayout.cshtml")*@
             @Html.Partial("~/Views/Shared/_LeftLayout.cshtml")
 
             @*<div class="page-content-wrapper">*@
-                @RenderBody()
+            @RenderBody()
             @*</div>*@
+            <button onclick="topFunction()" id="btn-topo"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
 
         </div>
     </div>
 
     <footer class="wrapper">
 
-        <p class="page-content-wrapper" style="padding-left: 16px; padding-right: 16px;">
-            <label class="pull-right">Version: @Html.AssemblyVersion()</label>
-            <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - @Resources.Resource.jbs_and_grt_aplication </label>
+        <p class="page-content-wrapper" style="padding-left: 16px; padding-right: 16px; z-index: 999;">
+            <label class="pull-right">SGQ @Html.Raw("v" + @Html.AssemblyVersion()) App @Html.Raw("v" + @Html.AssemblyAppVersion())</label>
+            <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - GRT </label>
         </p>
 
     </footer>
@@ -239,13 +301,37 @@
         /*Muda select2 para PADRÂO EUA*/
         //$.fn.select2.defaults.set("language", "en");
 
+        $('.tableIndex').DataTable({
+            pageLength: 10,
+            loadingRecords: true,
+            destroy: true,
+            info: true,
+            responsive: true,
+            "language": {
+
+                "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                "sLengthMenu": "@Resources.Resource.show _MENU_ @Resources.Resource.resgisters_page",
+                "sZeroRecords": "Nenhum registro correspondente ao criterio encontrado",
+                "sInfoEmtpy": "Exibindo 0 a 0 de 0 registros",
+                "sInfo": "@Resources.Resource.showing _START_ @Resources.Resource.to _END_ @Resources.Resource.from _TOTAL_ @Resources.Resource.registers",
+                "sInfoFiltered": "",
+                "sSearch": "@Resources.Resource.search",
+                "oPaginate": {
+                    "sFirst": "@Resources.Resource.first",
+                    "sPrevious": "@Resources.Resource.previous",
+                    "sNext": "@Resources.Resource.next",
+                    "sLast": "@Resources.Resource.last"
+                }
+            }
+        });
+
         /*DataTable Padrão BR*/
         $.extend(true, $.fn.dataTable.defaults,
            {
                "columnDefs": [
                    { "className": "dt-center", "targets": "_all" }
                ],
-               "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+               "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "@Resources.Resource.all"]],
                "oLanguage": {
 
                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
@@ -266,21 +352,27 @@
 
 
         var rangesEUA = {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            //'Today': [moment(), moment()],
+            '⊲ Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            '⊲ Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            '⊲ Last 365 Days': [moment().subtract(12, 'month'), moment()],
+            '⬚ This Month': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ This Year': [moment().startOf('year'), moment().endOf('year')],
+            '⬚ Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
         }
 
         var rangesBR = {
-            'Hoje': [moment(), moment()],
-            'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
-            'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
-            'Este mês': [moment().startOf('month'), moment().endOf('month')],
-            'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            //'Hoje': [moment(), moment()],
+            '⊲ Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+            '⊲ Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+            '⊲ Últimos 365 Dias': [moment().subtract(12, 'month'), moment()],
+            '⬚ Este Mês': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Último Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ Este Ano': [moment().startOf('year'), moment().endOf('year')],
+            '⬚ Último Ano': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
         }
 
         var configLayout = @Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));
@@ -419,7 +511,7 @@
 
 
         //Começo Metodo de exibir Modal de alerta de expirar sessão
-        var msgLogued = '@Resources.Resource.remain_logged_in';
+        @*var msgLogued = '@Resources.Resource.remain_logged_in';
         var yes = '@Resources.Resource.yes';
         var no ='@Resources.Resource.no';
         var timer = null;
@@ -488,52 +580,13 @@
             },
 
         };
-        timerSession.verificarCookieExiste();
+        timerSession.verificarCookieExiste();*@
         //FIM Metodo de exibir Modal de alerta de expirar sessão
-
-
-        $(document).ready(function () {
-            //var settngs = $.data($('form')[0], 'validator').settings;
-            //settngs.ignore = ".ignore";
-        });
-
-        @*var cccccounter = 0;
-        if (!!getCookie('webControlCookie')) {
-            var keepAlive = '@Url.Action(ViewBag.KeepAlive, "UserAuthentication")';
-            setTimeout(function () {
-                $.timeoutDialog({
-                    timeout: 305,
-                    countdown: 300,
-                    logout_redirect_url: '@Url.Action("LogOut", "UserAuthentication")',
-                    keep_alive_url: keepAlive,
-                });
-            }, 300000 * 8);
-
-            console.log("0/3 (300000 * 8): " + new Date());
-
-            setTimeout(function () {
-
-                console.log(cccccounter + "/3 (300000 * 8): " + new Date());
-                cccccounter++;
-
-            }, 100000 * 8);
-        }*@
-
-        @*$(function () {
-            $("#timeout-example").click(function (e) {
-                e.preventDefault();
-                $.timeoutDialog({ timeout: 1,
-                    countdown: 60,
-                    logout_redirect_url: '@Url.Action("LogOut", "UserAuthentication")',
-                    restart_on_yes: false
-                });
-            });
-        });*@
 
         var LogOutCookie = '@Html.Raw(@urlLogOutCookie)';
         var flag_beforeunload = false;
 
-        var pressedCtrl = false;
+        @*var pressedCtrl = false;
         document.onkeydown=function(e){
             var winObj = checkEventObj(e);
             var intCtrlKey = winObj.ctrlKey;
@@ -559,7 +612,7 @@
                     return "Write something clever here...";
                 }
             }
-        }
+        }*@
         function checkEventObj ( _event_ ){
             // --- IE explorer
             if ( window.event )
@@ -568,16 +621,157 @@
             else
                 return _event_;
         }
-        
-        function GetUsuarioId() {
-            return $.grep(getCookie('webControlCookie'), function (a, b) {
-                return a.indexOf('userId') != -1;
-            })[0].split('=')[1];
+
+        //function GetUsuarioId() {
+        //    return $.grep(getCookie('webControlCookie'), function (a, b) {
+        //        return a.indexOf('userId') != -1;
+        //    })[0].split('=')[1];
+        //}
+
+        function GetUrlFTA(){
+            return @Html.Raw(Json.Encode(@ViewBag.urlRootPaFTA))
         }
 
     </script>
 
+    <script>
+        $(document).ready(function () {
+            if (!hideMenu) {
+                $(".sidebar-toggler").removeClass("hide");
+                $(".page-sidebar-wrapper").removeClass("hide");
+                closeLeftSidebar();
+            }
+        });
 
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                document.getElementById("btn-topo").style.display = "block";
+            } else {
+                document.getElementById("btn-topo").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+        // IsDate =: é uma data?
+
+        function IsDate(Data) {
+
+            var resposta = new Date(Data)
+
+            var IsDateBool = false;
+
+            if (resposta == 'Invalid Date'){
+                IsDateBool = false;
+            } else
+            {
+                IsDateBool = true;
+            }
+
+            return IsDateBool;
+        }
+
+        $(document).ready(function () {
+
+            $.validator.methods.range = function (value, element, param) {
+                var globalizedValue = value.replace(",", ".");
+                return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+            }
+
+            $.validator.methods.number = function (value, element) {
+                return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+            }
+
+            //Função para paleativo de numerico e decimal permitindo apenas . ao inves de ,
+            $('.number_decimal').keypress(function (event) {
+                var $this = $(this);
+                // this next line...
+                if ((event.which != 44 || $this.val().indexOf(',') != -1) &&
+                    ((event.which < 48 || event.which > 57) &&
+                        (event.which != 0 && event.which != 8))) {
+                    event.preventDefault();
+                }
+
+                var text = $(this).val().replace('.', ',');
+                // this next line...
+                if ((event.which == 44) && (text.indexOf(',') == -1)) {
+                    setTimeout(function () {
+                        if ($this.val().substring($this.val().indexOf(',')).length > 3) {
+                            $this.val($this.val().substring(0, $this.val().indexOf(',') + 3));
+                        }
+                    }, 1);
+                }
+
+                if ((text.indexOf(',') != -1) &&
+                    (text.substring(text.indexOf(',')).length > 2) &&
+                    (event.which != 0 && event.which != 8) &&
+                    ($(this)[0].selectionStart >= text.length - 2)) {
+                    event.preventDefault();
+                }
+
+                $(this).val(text.replace(',', '.'));
+            });
+
+            $('.number_decimal').keypress();
+
+            console.log(localStorage.top);
+            console.log(localStorage.left);
+
+
+
+            $('.singleDatePicker').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                'locale': {
+                    "format": "DD/MM/YYYY"
+                }
+            })
+            $('.singleDatePicker').attr("type","datetime")
+
+
+        });
+    </script>
+
+
+    <div id="mandalaModal" class="modal" role="dialog" style="z-index:9999998">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered tabela">
+                        <tr>
+                            <th class="cabecalhoAR"></th>
+                            <th class="cabecalhoAP"></th>
+                            <th class="cabecalhoTotal"></th>
+                        </tr>
+                        <tr>
+                            <td class="dadosTabelaAR"></td>
+                            <td class="dadosTabelaAP"></td>
+                            <td class="dadosTabelaTotal"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="~/Scripts/PluginGRT/c3.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PluginGRT/d3.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PluginGRT/pivot.js"></script>
+    <script type="text/javascript" src="~/Scripts/PluginGRT/c3_renderers.js"></script>
+
+    @Html.Partial("_Mandala")
 
 </body>
 </html>

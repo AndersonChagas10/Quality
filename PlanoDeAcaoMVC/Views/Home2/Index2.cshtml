@@ -1,0 +1,3523 @@
+﻿@using PlanoAcaoCore
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Styles {
+
+    <style>
+        body {
+            padding-top: 86px !important;
+        }
+
+        .fix {
+            position: absolute;
+            *position: relative; /*ie7*/
+            margin-left: -100px;
+            width: 100px;
+        }
+
+        .outer {
+            position: relative;
+        }
+
+        .inner {
+            width: 100%;
+        }
+
+        .defaultDiv {
+            padding: 3px;
+        }
+
+        .defaultDivInternal {
+            background-color: #fff;
+            padding: 5px;
+        }
+
+        .defaultSizeMin {
+            height: 250px;
+        }
+
+        .defaultSizeMinPanel {
+            height: 150px;
+            width: 100%;
+        }
+
+        .defaultSizeMinPanel2 {
+            height: 200px;
+            width: 100%;
+        }
+
+        .defaultSizeMed {
+            height: 370px;
+        }
+
+        .defaultSizeMedPanel {
+            height: 290px;
+            width: 100%;
+        }
+
+        .defaultSizeMax {
+            height: 561px;
+            font-size: xx-small;
+        }
+
+        .defaultSizeMaxPanel {
+            height: 521px;
+            width: 100%;
+        }
+
+        .defaultGroupTitle {
+            float: left;
+        }
+
+        .defaultTitle {
+            font-weight: bold;
+            font-size: 14px;
+            float: left;
+        }
+
+        .defaultSubtitle {
+            font-weight: normal;
+            font-size: 8px;
+            text-transform: uppercase;
+            float: left;
+        }
+
+        .defaultFilter {
+            float: left;
+            border-bottom: 1px dotted #ccc;
+            margin-bottom: 5px;
+            width: 100%;
+            padding: 2px;
+        }
+
+        .defaultDivFilter {
+            background-color: #06304e;
+            color: #FFF;
+            position: fixed;
+            z-index: 999;
+            top: 50px;
+        }
+
+        .btn-filter {
+            font-size: 12px;
+            height: 26px;
+            width: 23px;
+            padding: 0;
+        }
+
+        .dropdown-menu open {
+            width: 150px;
+        }
+
+        button[data-id=valor1Filtro] {
+            width: 200px !important;
+        }
+
+        div.dropdown-menu.open {
+            max-width: 300px;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+
+        div.daterangepicker {
+            width: 750px;
+        }
+
+        #example_wrapper > div.DTFC_ScrollWrapper > div.DTFC_RightWrapper > div.DTFC_RightHeadWrapper > table > thead > tr {
+            background-color: #fff;
+        }
+
+        .semDados {
+            position: absolute;
+            z-index: 10;
+            background: #ffffff;
+            height: 80%;
+            width: 100%;
+            top: 20%;
+            font-size: 20px;
+            display: none;
+        }
+
+            .semDados h1 {
+                margin-left: 40px;
+            }
+
+        .dataTables_scroll table {
+            width: 100% !important;
+        }
+
+        span.select2 {
+            min-width: 120px !important;
+        }
+
+        .hideEmail {
+            display: block !important;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+        }
+
+        table.borderedNinja {
+            border: 2px solid #c1c1c1;
+        }
+
+        .button {
+            color: #aaa;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+
+        .edit:hover {
+            color: #0a79df;
+        }
+
+        .delete:hover {
+            color: #dc2a2a;
+        }
+
+        .modal-header .btnGrp {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+        }
+
+
+        .min {
+            width: 250px;
+            height: 35px;
+            overflow: hidden !important;
+            padding: 0px !important;
+            margin: 0px;
+            float: left;
+            position: static !important;
+        }
+
+            .min .modal-dialog, .min .modal-content {
+                height: 100%;
+                width: 100%;
+                min-width: 70%;
+                align-self: center;
+                margin: 0px !important;
+                padding: 0px !important;
+            }
+
+        .modal-dialog {
+            width: 80% !important;
+        }
+
+        .min .modal-header {
+            height: 100%;
+            width: 100%;
+            margin: 0px !important;
+            padding: 3px 5px !important;
+        }
+
+        .display-none {
+            display: none;
+        }
+
+        button .fa {
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .min .fa {
+            font-size: 14px;
+        }
+
+        .min .menuTab {
+            display: none;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        .minmaxCon {
+            height: 35px;
+            bottom: 1px;
+            left: 1px;
+            position: fixed;
+            right: 1px;
+            z-index: 9999;
+        }
+
+
+        /*Datatable*/
+        ul.pagination {
+            margin: 0px;
+        }
+
+        .pagination > .active > a,
+        .pagination > .active > span,
+        .pagination > .active > a:hover,
+        .pagination > .active > span:hover,
+        .pagination > .active > a:focus,
+        .pagination > .active > span:focus {
+            background-color: #428bca !important;
+            border-color: #428bca !important;
+        }
+
+        .pagination > li > a, .pagination > li > span {
+            color: #666;
+        }
+
+        .dataTables_wrapper input {
+            border: 1px solid #666;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+        .dataTables_wrapper .dataTables_paginate span span {
+            background: transparent !important;
+            margin: 0px !important;
+            border: 1px solid #ddd;
+            color: #666 !important;
+            padding-top: 7px !important;
+            padding-bottom: 7px !important;
+        }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+            .dataTables_wrapper .dataTables_paginate .paginate_button:focus {
+                color: #666 !important;
+                background: #ddd !important;
+                border: 1px solid #ddd;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus {
+                background: #428bca !important;
+                border-color: #428bca !important;
+                color: #fff !important;
+            }
+
+        #percentualConclusao {
+            font-size: 40px;
+        }
+    </style>
+
+}
+
+<div class="container-fluid">
+    <div class="row" style="width:100% !important">
+        <div class="col-md-12" style="margin-left:10px;">
+            <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('@Resources.Resource.strategic_planning', undefined, NovoPlanejamento);" data-toggle="modal" disabled>@Resources.Resource.new_strategic_planning</button>
+
+            <button type="button" class="btn btn-success showModalNovoTatico" onclick="AbrirModalNovoApartirDeAlgo('tatico','@Resources.Resource.tactical', '@Resources.Resource.strategic')" id="btnModalNovoTatico" data-toggle="modal">@Resources.Resource.new_tactic</button>
+
+            <button type="button" class="btn btn-success showModalNovaAcao" onclick="AbrirModalNovoApartirDeAlgo('acao','@Resources.Resource.action', '@Resources.Resource.tactical')" id="btnModalNovaAcao" data-toggle="modal">@Resources.Resource.new_action</button>
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">@Resources.Resource.project_overview_management</button>
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Diretriz');">@Resources.Resource.project_overview_guideline</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalVisaoGeralProjetos" class="modal fade modal-lg" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">@Resources.Resource.project_overview</h4>
+            </div>
+            <div class="modal-body container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <div class="col-sm-12 panel panel-inf" style="background-color:dimgray; color:whitesmoke; text-align:center">
+                                <h4 class="panel-heading">@Resources.Resource.percent_completed</h4>
+                                <div id="percentualConclusao" class="panel-body">0 %</div>
+                            </div>
+                            <div>
+                                <div id="graficoPorGerencia"></div>
+                                <div id="graficoPorDiretriz"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div id="graficoPorProjetos"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <h4>@Resources.Resource.ongoing_tasks</h4>
+                            <table id="tableAndamento" class="table table-striped"></table>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4>@Resources.Resource.delayed_tasks</h4>
+                            <table id="tableAtrasadas" class="table table-striped"></table>
+                        </div>
+                    </div>
+                    <div style="clear:both; height: 40px;"></div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <h4>@Resources.Resource.next_tasks</h4>
+                            <table id="tableProximas" class="table table-striped"></table>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4>@Resources.Resource.completed_tasks</h4>
+                            <table id="tableConcluidas" class="table table-striped"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<hr class="showAsEstrategy" />
+
+<div class="container-fluid" style="background-color:#ccc;">
+    <!--MENU DE FILTROS-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDivInternal defaultDivFilter">
+            <div class="defaultGroupTitle" style="width:auto; float:left; background-color:transparent;">
+                <span class="defaultTitle" style="line-height:27px;">@Resources.Resource.filters</span>
+            </div>
+            <div class="defaultFilter input-group" style="width:auto; float:right; background-color:transparent; border-bottom: 0px; margin-bottom:0px;">
+                <div class="input-group-btn" style="width: 100px;">
+                    <input type="text" class="form-control" name="daterange" value="01/01/2017 - 31/01/2017" />
+                </div>
+                &nbsp;
+                <select style="font-size:xx-small;width:25% !important;" id="campo1Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor1Filtro');">
+                    <option value="">@Resources.Resource.all</option>
+                    <option value="Diretoria">@Resources.Resource.directorship</option>
+                    <option value="Dimensao">@Resources.Resource.dimension</option>
+                    <option value="Objetivo">@Resources.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
+                    <option value="Gerencia">@Resources.Resource.management</option>
+                    <option value="Coordenacao">@Resources.Resource.coordination</option>
+                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
+                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
+                    <option value="_GrupoCausa">@Resources.Resource.group_cause</option>
+                    <option value="_CausaGenerica">@Resources.Resource.generic_cause</option>
+                    <option value="_ContramedidaGenerica">@Resources.Resource.generic_action</option>
+                    <option value="UnidadeName">@Resources.Resource.unit</option>
+                    <option value="_Quem">@Resources.Resource.who</option>
+                    <option value="_StatusName">@Resources.Resource.status</option>
+                    <option value="Regional">@Resources.Resource.regional</option>
+                    <option value="Level1Name">@Resources.Resource.indicator</option>
+                    <option value="Level2Name">@Resources.Resource.monitoring</option>
+                    <option value="Level3Name">@Resources.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+
+                </select>
+                &nbsp;
+                <select id="valor1Filtro">
+                    <option>@Resources.Resource.all</option>
+                </select>
+                &nbsp;
+
+                <select style="font-size:xx-small;width:25% !important;" id="campo2Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor2Filtro');">
+                    <option value="">@Resources.Resource.all</option>
+                    <option value="Diretoria">@Resources.Resource.directorship</option>
+                    <option value="Dimensao">@Resources.Resource.dimension</option>
+                    <option value="Objetivo">@Resources.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
+                    <option value="Gerencia">@Resources.Resource.management</option>
+                    <option value="Coordenacao">@Resources.Resource.coordination</option>
+                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
+                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
+                    <option value="_GrupoCausa">@Resources.Resource.group_cause</option>
+                    <option value="_CausaGenerica">@Resources.Resource.generic_cause</option>
+                    <option value="_ContramedidaGenerica">@Resources.Resource.generic_action</option>
+                    <option value="UnidadeName">@Resources.Resource.unit</option>
+                    <option value="_Quem">@Resources.Resource.who</option>
+                    <option value="_StatusName">@Resources.Resource.status</option>
+                    <option value="Regional">@Resources.Resource.regional</option>
+                    <option value="Level1Name">@Resources.Resource.indicator</option>
+                    <option value="Level2Name">@Resources.Resource.monitoring</option>
+                    <option value="Level3Name">@Resources.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                </select>
+                &nbsp;
+
+                <select id="valor2Filtro">
+                    <option>@Resources.Resource.all</option>
+                </select>
+                &nbsp;
+
+                <button class="btn btn-warning btn-filter" style="font-size:12px;" id="btnTop"><span class="glyphicon glyphicon-filter"></span></button>
+            </div>
+
+        </div>
+    </div>
+    <!--FIM MENU DE FILTROS-->
+    <!--LINHA 1-->
+    <!--<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">Status das Ações</span>
+                <br />
+                <span class="defaultSubtitle">Total de ações por Status</span>
+            </div>
+            <div id="panel1" class="defaultSizeMinPanel"></div>
+        </div>
+    </div>-->
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultFilter ">
+
+                <select style="font-size:xx-small;width:25% !important;" id="campo1FiltroPie2" onchange="distinctFilter(dados, $(this).val(), 'valor1FiltroPie2');">
+                    <option value="Diretoria">@Resources.Resource.directorship</option>
+                    <option value="Dimensao">@Resources.Resource.dimension</option>
+                    <option value="Objetivo">@Resources.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
+                    <option value="Gerencia">@Resources.Resource.management</option>
+                    <option value="Coordenacao">@Resources.Resource.coordination</option>
+                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
+                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
+                    <option value="_GrupoCausa">@Resources.Resource.group_cause</option>
+                    <option value="_CausaGenerica">@Resources.Resource.generic_cause</option>
+                    <option value="_ContramedidaGenerica">@Resources.Resource.generic_action</option>
+                    <option value="UnidadeName">@Resources.Resource.unit</option>
+                    <option value="_Quem">@Resources.Resource.who</option>
+                    <option value="_StatusName">@Resources.Resource.status</option>
+                    <option value="Regional">@Resources.Resource.regional</option>
+                    <option value="Level1Name">@Resources.Resource.indicator</option>
+                    <option value="Level2Name">@Resources.Resource.monitoring</option>
+                    <option value="Level3Name">@Resources.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                </select>
+                &nbsp;
+                <select id="valor1FiltroPie2">
+                    <option>@Resources.Resource.all</option>
+                </select>
+                &nbsp;
+                <button class="btn btn-warning btn-filter" style="font-size:12px;" id="btnFiltroPie2"><span class="glyphicon glyphicon-filter"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">@Resources.Resource.tasks_status</span>
+                <br />
+                <span class="defaultSubtitle" id="spanPie2">@Resources.Resource.all2</span><span class="defaultSubtitle">&nbsp;@Resources.Resource.by_status</span><br />
+            </div>
+            <div id="panel2" class="defaultSizeMinPanel"></div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">@Resources.Resource.stocks_in_action</span>
+                <br />
+                <span class="defaultSubtitle">@Resources.Resource.formation_of_stocks_in_action</span>
+            </div>
+            <div id="panel4" class="defaultSizeMinPanel2"></div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <!--FIM LINHA 1-->
+    <!--LINHA 2-->
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed ">
+            <div class="defaultFilter">
+                <select style="font-size:xx-small;width:25% !important;" id="campo1Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel5');" oncancel="filterEixoY('valor1Panel5')">
+
+                    <option value="Diretoria" selected>@Resources.Resource.directorship</option>
+                    <option value="Dimensao">@Resources.Resource.dimension</option>
+                    <option value="Objetivo">@Resources.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
+                    <option value="Gerencia">@Resources.Resource.management</option>
+                    <option value="Coordenacao">@Resources.Resource.coordination</option>
+                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
+                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
+                    <option value="Acao._GrupoCausa">@Resources.Resource.group_cause</option>
+                    <option value="Acao._CausaGenerica">@Resources.Resource.generic_cause</option>
+                    <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
+                    <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
+                    <option value="Acao._Quem">@Resources.Resource.who</option>
+                    <option value="Acao._StatusName">@Resources.Resource.status</option>
+                    <option value="Acao.Regional">@Resources.Resource.regional</option>
+                    <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
+                    <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
+                    <option value="Acao.Level3Name">@Resources.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                </select>
+
+                <select id="valor1Panel5"></select>
+
+                <select style="font-size:xx-small;width:25% !important;" id="campo2Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel5');">
+
+                    <option value="Diretoria">@Resources.Resource.directorship</option>
+                    <option value="Dimensao">@Resources.Resource.dimension</option>
+                    <option value="Objetivo">@Resources.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
+                    <option value="Gerencia">@Resources.Resource.management</option>
+                    <option value="Coordenacao">@Resources.Resource.coordination</option>
+                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
+                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
+                    <option value="Acao._GrupoCausa">@Resources.Resource.group_cause</option>
+                    <option value="Acao._CausaGenerica">@Resources.Resource.generic_cause</option>
+                    <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
+                    <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
+                    <option value="Acao._Quem">@Resources.Resource.who</option>
+                    <option value="Acao._StatusName" selected>@Resources.Resource.status</option>
+                    <option value="Acao.Regional">@Resources.Resource.regional</option>
+                    <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
+                    <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
+                    <option value="Acao.Level3Name">@Resources.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                </select>
+
+                <select id="valor2Panel5"></select>
+                <button class="btn btn-warning btn-filter" id="btnpanel5"><span class="glyphicon glyphicon-filter"></span></button>
+                <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel5','campo2Panel5','panel5', this.id);" id="btnOrderFilterPanel5"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Ordem por Valor" id="spanOrder"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">@Resources.Resource.comparative</span>
+                <br />
+                <span class="defaultSubtitle" id="FirstParamPanel5">@Resources.Resource.status </span>
+                <span class="defaultSubtitle">&nbsp;@Resources.Resource.by&nbsp;</span>
+                <span class="defaultSubtitle" id="LastParamPanel5"> @Resources.Resource.management</span>
+            </div>
+            <div id="panel5" class="defaultSizeMedPanel"></div>
+            <div id="semDados1" class="semDados">
+                <h1>
+                    @Resources.Resource.no_data
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 defaultDiv Panel6">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed">
+            <div class="defaultFilter">
+                <select style="font-size:xx-small;width:25% !important;" id="campo1Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel6');">
+                    <option value="Diretoria">@Resources.Resource.directorship</option>
+                    <option value="Dimensao">@Resources.Resource.dimension</option>
+                    <option value="Objetivo">@Resources.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
+                    <option value="Gerencia" selected>@Resources.Resource.management</option>
+                    <option value="Coordenacao">@Resources.Resource.coordination</option>
+                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
+                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
+                    <option value="Acao._GrupoCausa">@Resources.Resource.group_cause</option>
+                    <option value="Acao._CausaGenerica">@Resources.Resource.generic_cause</option>
+                    <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
+                    <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
+                    <option value="Acao._Quem">@Resources.Resource.who</option>
+                    <option value="Acao._StatusName">@Resources.Resource.status</option>
+                    <option value="Acao.Regional">@Resources.Resource.regional</option>
+                    <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
+                    <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
+                    <option value="Acao.Level3Name">@Resources.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                </select>
+
+                <select id="valor1Panel6"></select>
+
+                <select style="font-size:xx-small;width:25% !important;" id="campo2Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel6');">
+
+                    <option value="Diretoria">@Resources.Resource.directorship</option>
+                    <option value="Dimensao">@Resources.Resource.dimension</option>
+                    <option value="Objetivo">@Resources.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
+                    <option value="Gerencia">@Resources.Resource.management</option>
+                    <option value="Coordenacao">@Resources.Resource.coordination</option>
+                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
+                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
+                    <option value="Acao._GrupoCausa">@Resources.Resource.group_cause</option>
+                    <option value="Acao._CausaGenerica">@Resources.Resource.generic_cause</option>
+                    <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
+                    <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
+                    <option value="Acao._Quem">@Resources.Resource.who</option>
+                    <option value="Acao._StatusName" selected>@Resources.Resource.status</option>
+                    <option value="Acao.Regional">@Resources.Resource.regional</option>
+                    <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
+                    <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
+                    <option value="Acao.Level3Name">@Resources.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                </select>
+
+                <select id="valor2Panel6"></select>
+
+                <button class="btn btn-warning btn-filter" id="btnpanel6"><span class="glyphicon glyphicon-filter"></span></button>
+                <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel6','campo2Panel6','panel6', this.id);" id="btnOrderFilterPanel6"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Orderm por Valor" id="spanOrder"></span></button>
+            </div>
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">@Resources.Resource.comparative</span>
+                <br />
+                <span class="defaultSubtitle" id="FirstParamPanel6">@Resources.Resource.status</span>
+                <span class="defaultSubtitle">&nbsp;@Resources.Resource.by&nbsp;</span>
+                <span class="defaultSubtitle" id="LastParamPanel6">@Resources.Resource.person</span>
+            </div>
+            <div id="panel6" class="defaultSizeMedPanel"></div>
+            <div id="semDados2" class="semDados">
+                <h1>
+                    @Resources.Resource.no_data
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <!--FIM LINHA 2-->
+    <div class="panel-group accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" onclick="tableAcaoRedrown()" data-toggle="collapse" data-target="#divPlanejamentoAcao" aria-expanded="false" style="display:block;cursor:pointer">@Resources.Resource.table_of_actions</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <!--LINHA 3-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamentoAcao">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMax">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">@Resources.Resource.tasks_manager</span>
+                <br />
+                <span class="defaultSubtitle" id="spanSubTable">@Resources.Resource.all_tasks_to_filter</span>
+            </div>
+
+            <br /><br /><br />
+
+            <div id="panel7" class="defaultSizeMaxPanel outer">
+                <div class="inner">
+                    <table id="example" class="display" cellspacing="0" style="font-size: 8pt;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!--FIM LINHA 3-->
+    <div class="panel-group accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" onclick="tablePlanejamentoRedrown()" data-toggle="collapse" data-target="#divPlanejamento" aria-expanded="false" style="display:block;cursor:pointer">@Resources.Resource.table_of_projects</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+    <!--LINHA 4-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamento">
+        <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMax">
+            <div class="defaultGroupTitle">
+                <span class="defaultTitle">@Resources.Resource.tasks_manager</span>
+                <br />
+                <span class="defaultSubtitle" id="spanSubTable">@Resources.Resource.all_plannings_to_filter</span>
+            </div>
+
+            <br /><br /><br />
+
+            <div id="panel7" class="defaultSizeMaxPanel outer">
+                <div class="inner">
+                    <table id="TablePlanejamento" class="display" cellspacing="0" style="font-size: 8pt;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!--FIM LINHA 4-->
+</div>
+
+<div class="container">
+    <div class="modal fade" id="modalLindo" role="dialog" aria-labelledby="" data-backdrop="static">
+        <div class="modal-dialog" style="max-width:90%;  min-width:70%" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
+
+                    <h4 class="modal-title" id="Header">ID: Header</h4>
+                </div>
+                <div class="modal-body" id="body">
+                    ID: Body
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="Fechar" onclick="Clicked(false, false, false);" data-dismiss="modal" style="display:none">@Resources.Resource.close</button>
+                    <button type="button" class="btn btn-default" id="Fechar2" onclick="" style="display:none">@Resources.Resource.close</button>
+                    <button type="button" class="btn btn-primary" id="Selecionar" onclick="" style="display:none" disabled>@Resources.Resource.select</button>
+                    <button type="button" class="btn btn-primary" id="Salvar" onclick="" style="display:none">@Resources.Resource.save</button>
+                    <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">@Resources.Resource.search_planning</button>
+                    <button type="button" class="btn btn-info" id="TaticoVinculado" onclick="BuscarPlanejamentos(); Clicked(true, false, true);" style="display:none">@Resources.Resource.new_tactical_planning_linked_strategic_planning</button>
+                    <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="">@Resources.Resource.new_action</button>
+                    <button type="button" class="btn btn-default" value="" id="new" style="display:none">@Resources.Resource.add_action</button>
+                    <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'), true)">@Resources.Resource.edit_action</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="modalChangeEstrategico" class="modal fade" role="dialog" style="z-index:15000">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">@Resources.Resource.change_planning</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="tablePessego" class="table table-striped"></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modalNovo" tabindex="-1" role="dialog" aria-labelledby="">
+    <div class="modal-dialog" id="" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">×</span></button>
+                <h4 class="modal-title" id="novoHeader"></h4>
+            </div>
+            <div class="modal-body" id="novoBody">
+
+                <div class="col-sm-5">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">@Resources.Resource.form_of <span id="nomeItemNovo"></span></div>
+                        <div class="panel-body">
+                            <form>
+                                <div class="form-group">
+                                    <div style="display:none" id="encadeado">
+                                        <label id="labelPredecessora">@Resources.Resource.predecessor </label>
+                                    </div>
+                                    <div class="col-sm-12 borderedNinja" id="divPredecessora">
+                                        <label>@Resources.Resource.predecessor</label>
+                                        <label id="labelPredecessoraValue"></label>
+                                        <br />
+                                    </div>
+                                    <div class="col-sm-12 borderedNinja">
+                                        <label>@Resources.Resource.item_name</label>
+                                        <textarea style="min-width: 95%; height:150px;" type="text" class="form-control" id="newItem"></textarea>
+                                        <input type="hidden" id="newIdItem" />
+                                        <br />
+                                    </div>
+                                    <div class="col-sm-12 borderedNinja" id="divIsActive">
+                                        <label for="newIsActiveItem">@Resources.Resource.active</label>
+                                        <input class="custom-control-input" type="checkbox" checked="checked" name="newIsActiveItem" id="newIsActiveItem" />
+                                        <br />
+                                    </div>
+                                    <div class="col-sm-12 borderedNinja">
+                                        <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">@Resources.Resource.save</button>
+                                        <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="SalvarNovo();">@Resources.Resource.save_edition</button>
+                                        <button type="button" class="btn btn-default hide" id="btnCancelarNovo">@Resources.Resource.cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <table id="tableNovo" class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>@Resources.Resource.name</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+        </div>
+    </div>
+</div>
+
+<div id="ModalNovoApartirDeAlgo" class="modal fade" role="dialog" style="z-index:15000">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="minmaxCon"></div>
+
+@section Scripts {
+
+    <script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
+
+    <script type="text/javascript">
+
+        $('.container').each(function (i, o) {
+            $(o).removeClass('container').addClass('container-fluid');
+        });
+
+        var ResourcesFile = @Html.Raw(Json.Encode(ViewBag.Resources));
+        function Resources(key){
+            return $.grep(ResourcesFile , function(a) { return a.Key == key})[0].Value
+        }
+
+    </script>
+
+    <script src="~/Scripts/PANovo/js/underscore-min.js"></script>
+    <script src="~/Scripts/lodash.min.js"></script>
+    <script src="~/Scripts/PANovo/js/pt-br.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/i18n/pt-BR.js"></script>
+    <script src="~/Scripts/home2.js"></script>
+    <script src="~/Scripts/DataTablePlanejamento.js"></script>
+
+    <script>
+        //Graficos Instancia
+
+        //Cria Arr de dados e instancia HC para Grafico Estoque, panel4
+        function graficoEstoque() {
+
+            dadosEstoque = [];
+
+            jQuery.each(dados, function (i, val) {
+                dadosEstoque.push(dados[i]);
+            });
+
+            //MOCK Acompanhamento
+            dadosEstoque.forEach(function (o, c) {
+                var tamanho = o.Acao._Acompanhamento.length
+                if (tamanho == 0) {
+                    o.Acao['Acompanhamento'] = { AddDate: "1900-01-01" };
+                } else {
+                    o.Acao['Acompanhamento'] = { AddDate: o.Acao._Acompanhamento[tamanho - 1].AddDate };
+                }
+            })
+
+            let categoriesArr = [];
+            var data = new Date();
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+
+            data.setMonth(data.getMonth() - 23);
+
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+            categoriesArr.push(new Date(data.getFullYear(), data.getMonth(), 1));
+            data.setMonth(data.getMonth() + 1);
+            data = new Date(data.getFullYear(), data.getMonth(), 1);
+
+            let arrayAndamento = [];
+
+            let arrayFechadas = [];
+
+            let arrayEstoque = [];
+
+            let Aux = [];
+
+            let apenasAcoesAbertas = [];
+
+            let apenasAcoesFechadas = [];
+
+            for (var i = 0; i < categoriesArr.length; i++) {
+
+                arrayAndamento[i] = $.grep(dadosEstoque, function (o, j) {
+                    return new Date(o.Acao.QuandoInicio).getFullYear() == categoriesArr[i].getFullYear() && new Date(o.Acao.QuandoInicio).getMonth() == categoriesArr[i].getMonth() && o.Acao._StatusName.indexOf('Cancelada') < 0;
+                }).length;
+
+            }
+
+            for (var i = 0; i < categoriesArr.length; i++) {
+
+                arrayFechadas[i] = $.grep(dadosEstoque, function (o, j) {
+                    return new Date(o.Acao.Acompanhamento.AddDate).getFullYear() == categoriesArr[i].getFullYear() && new Date(o.Acao.Acompanhamento.AddDate).getMonth() == categoriesArr[i].getMonth() && o.Acao._StatusName && (o.Acao._StatusName.indexOf('Concluído') >= 0 || o.Acao._StatusName.indexOf('Finalizada')) >= 0;
+                }).length;
+
+            }
+
+            arrayEstoque[0] = 0;
+
+            for (var i = 0; i < categoriesArr.length; i++) {
+                if (i == 0) {
+                    arrayEstoque[0] = arrayAndamento[0] - arrayFechadas[0];
+                } else {
+                    arrayEstoque[i] = arrayEstoque[i - 1] + (arrayAndamento[i] - arrayFechadas[i]);
+                }
+
+            }
+
+            let serieArrFinal = [{
+                type: 'column',
+                name: '@Html.Raw(Resources.Resource.open)',
+                data: arrayAndamento,
+                color: andamentoColor
+            }, {
+                type: 'column',
+                name: '@Html.Raw(Resources.Resource.closed)',
+                data: arrayFechadas,
+                color: concluidoColor
+            }, {
+                type: 'spline',
+                name: '@Html.Raw(Resources.Resource.stock)',
+                data: arrayEstoque,
+                color: atrasadaColor,
+                marker: {
+                    lineWidth: 2,
+                    lineColor: atrasadaColor,
+                    fillColor: atrasadaColor
+                }
+            }];
+
+
+            for (var i = 0; i < categoriesArr.length; i++) {
+
+                retorno = '';
+
+                switch (categoriesArr[i].getMonth()) {
+                    case 0:
+                        retorno = '@Html.Raw(Resources.Resource.jan)';
+                        break;
+                    case 1:
+                        retorno = '@Html.Raw(Resources.Resource.feb)';
+                        break;
+                    case 2:
+                        retorno = '@Html.Raw(Resources.Resource.mar)';
+                        break;
+                    case 3:
+                        retorno = '@Html.Raw(Resources.Resource.apr)';
+                        break;
+                    case 4:
+                        retorno = '@Html.Raw(Resources.Resource.may)';
+                        break;
+                    case 5:
+                        retorno = '@Html.Raw(Resources.Resource.june)';
+                        break;
+                    case 6:
+                        retorno = '@Html.Raw(Resources.Resource.july)';
+                        break;
+                    case 7:
+                        retorno = '@Html.Raw(Resources.Resource.aug)';
+                        break;
+                    case 8:
+                        retorno = '@Html.Raw(Resources.Resource.sept)';
+                        break;
+                    case 9:
+                        retorno = '@Html.Raw(Resources.Resource.oct)';
+                        break;
+                    case 10:
+                        retorno = '@Html.Raw(Resources.Resource.nov)';
+                        break;
+                    case 11:
+                        retorno = '@Html.Raw(Resources.Resource.dec)';
+                        break;
+                }
+
+                categoriesArr[i] = retorno + '-' + categoriesArr[i].getFullYear();
+
+            }
+
+            makeChart('panel4', categoriesArr, serieArrFinal, 'column', '', {});
+
+            $('select:not(#valor1Filtro)').select2({
+                dropdownAutoWidth: true,
+                width: '140px',
+                matcher: matchCustom
+            })
+
+            $('select#valor1Filtro').select2({
+                dropdownAutoWidth: true,
+                width: '250px',
+                matcher: matchCustom
+            })
+
+        }
+
+        $(document).ready(function () {
+
+            var zero = 0;
+
+            $("input[name='daterange']").css('width', '140px');
+            $("input[name='daterange']").css('height', '25px');
+
+            $('#campo1Filtro').css('width', '200px');
+            $('#valor1Filtro').css('width', '200px');
+
+            if (IsAdmin) {
+                $('#NovoPlanejamento').prop("disabled", false);
+            }
+
+        });
+
+        var selectPredecessor;
+        var tableModalNovo;
+        /**/
+        var visaoOperacional = @Html.Raw(Json.Encode(Conn.visaoOperacional));
+        /**/
+        /**/
+        var nameCausaEspecifica = @Html.Raw(Json.Encode(Conn.nameCausaEspecifica));
+        /**/
+        /**/
+        var nameComoPontosImportantes = @Html.Raw(Json.Encode(Conn.nameComoPontosImportantes));
+        /**/
+        /**/
+        var nameContramedidaEspecifica = @Html.Raw(Json.Encode(Conn.nameContramedidaEspecifica));
+        /**/
+        /**/
+        var urlGetPlanejamentoAcaoRange = '@Url.Action("GetPlanejamentoAcaoRange", "api/Pa_Planejamento")';
+        var urlGetPlanejamentoRange = '@Url.Action("GetPlanejamentoRange", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlGetUserColvis = '@Url.Action("Get", "api/ApiColvis")';
+        /**/
+        /**/
+        var urlSaveUserColvis = '@Url.Action("Save", "api/ApiColvis")';
+        /**/
+        var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
+
+        var IsAdmin = getRole("Admin").length > 0;
+
+        var counter = 0;
+        var planejamentoCorrentId = 0;
+        var isTaticoClicked = false;
+        var isNovaAcao = false;
+        var isClickedTaticoVinculado = false;
+        var isClickedEstrategico = false;
+        var NovaAcaoBuscaFeita = false;
+        var tempInput;
+        var tempName;
+        var IdBotaoClicado;
+
+        /**/
+        //var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');
+        /**/
+        /**/
+        var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
+        /**/
+        /**/
+        var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
+        /**/
+        /**/
+        var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
+        /**/
+        /**/
+        var urlEditAcao = '@Url.Action("Edit", "Pa_Acao")';
+        /**/
+        /**/
+        var urlEditPlanEstrat = '@Url.Action("Editar", "Pa_Planejamento")';
+        /**/
+        /**/
+        var urlEditPlanOp = '@Url.Action("Editar", "Pa_Planejamento")';
+        /**/
+        /**/
+        var PlanejamentoDetalhes = '@Url.Action("Details", "Pa_Planejamento")';
+        /**/
+        /**/
+        var urlNovoPlanejamento = '@Url.Action("Index", "Pa_Planejamento")';
+        /**/
+        /**/
+        var urlBuscarPlanejamentos = '@Url.Action("Buscar", "Pa_Planejamento")';
+        /**/
+        /**/
+        var urlFiltraPlanejamentos = '@Url.Action("Filtrar", "Pa_Planejamento")';
+        /**/
+        /**/
+        var GETObjetivo = '@Url.Action("GETObjetivo", "Pa_Planejamento")';
+        /**/
+        /**/
+        var GETIndicadoresDiretriz = '@Url.Action("GETIndicadoresDiretriz", "Pa_Planejamento")';
+        /**/
+        /**/
+        var GETIndicadoresProjetoIniciativa = '@Url.Action("GETIndicadoresProjetoIniciativa", "Pa_Planejamento")';
+        /**/
+        /**/
+        var GETCoordenacaoByGerencia = '@Url.Action("GETCoordenacaoByGerencia", "Pa_Planejamento")';
+        /**/
+        /**/
+        var GETObjetivosGerenciais = '@Url.Action("GETObjetivosGerenciais", "Pa_Planejamento")';
+        /**/
+        /**/
+        var urlSalvarPlanejamento = '@Url.Action("Save", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlGetPlanejamento = '@Url.Action("GET", "api/Pa_Planejamento")';
+        /**/
+        /**/
+        var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
+        /**/
+        /**/
+        var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
+        /**/
+        /**/
+        var urlEditarNovoItem = '@Url.Action("Update", "api/Generics")';
+        /**/
+        /**/
+        //var urlDeletarNovoItem = '@Url.Action("Delete", "api/Generics")';
+        /**/
+        /**/
+        var urlGetAutoComplete = '@Url.Action("Get", "api/Generics")';
+        /**/
+        /**/
+        var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
+        /**/
+        /**/
+        var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
+        /**/
+        /**/
+        var AcaoDetalhes = '@Url.Action("Details", "Pa_Acao")'
+        /**/
+
+        function DisabilitaBotaoGerenciar() {
+            $('#modalLindo').find('select[disabled]').each(function (i, o) {
+                $(o).parents('tr').find('.novoItem').attr('disabled', true);
+            });
+        }
+
+        function Clicked(isClickedTatico, isClickedAcao, isTaticoVinculado, clearId) {
+            isTaticoClicked = isClickedTatico;
+            isNovaAcao = isClickedAcao;
+            isClickedTaticoVinculado = isTaticoVinculado;
+        }
+
+        /*Planejamento*/
+        function ModalOpcoesEstrategico(title, IdParaNovaAcao, callback) {//Pos Modal1
+
+            IdBotaoClicado = IdParaNovaAcao;
+
+            $('#modalLindo').modal();
+            $('#modalLindo').find('.modal-body').empty();
+
+            if (title != undefined) {
+                $('#Header').html(title);
+            } else {
+                $('#Header').html(Html.Raw(@Resources.Resource.planning));
+            }
+
+            if (callback != undefined) {
+                callback();
+                return false;
+            }
+
+            /*Botões*/
+            $('#modalLindo').find('.modal-footer button').hide();
+            $('#Fechar').show();
+
+            if (isTaticoClicked) {
+                $('#TaticoVinculado').show();
+            }
+            else if (isNovaAcao) {
+                $('#NovaAcao').show();
+                if (planejamentoCorrentId > 0) {
+                    $('#BuscarPlanejamentos').show();
+                }
+
+                if (IdParaNovaAcao != undefined || planejamentoCorrentId > 0) { // Mostra Detalhes + BTN nova acao
+                    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+
+                        var modal = $('#modalLindo').find('.modal-body').html();
+
+                        $('#modalLindo').find('.modal-body').empty();
+                        $('#modalLindo').append(r);
+                        $('#NovaAcao').show();
+
+                    });
+                } else {
+                    $('#modalLindo').find('.modal-body').empty();
+                }
+            }
+            else {
+                $('#NovoPlanejamento').show();
+
+            }
+
+            $('#Fechar').show();
+            $('#Salvar').show();
+
+            /*Fim Botões*/
+
+        }
+
+        function NovoPlanejamento() {//Pos Modal2
+
+            var title = $('#Header').html();
+            var title2 = " > " + "@Html.Raw(Resources.Resource._new)"
+
+            $('#Header').html(title + title2);
+
+            $.get(urlNovoPlanejamento, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+                if (isTaticoClicked) {
+                    $('.novoItem ').hide();
+
+                    DdlChangeTatico();
+
+                } else {
+                    $('.novoItem ').show();
+                    $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
+                    //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(15)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(16)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(21)').hide();
+
+                    DdlChangeEstrategico();
+                }
+
+                InitDatePiker();
+                MoneyMask();
+
+                MoneyMask('R$ ');
+
+                $('.money').each(function () {
+                    $(this).maskMoney('mask', $(this).val());
+                });
+
+            });
+
+            /*Botões*/
+            $('#modalLindo').find('.modal-footer button').hide()
+            $('#Fechar').show();
+            $('#Salvar').show();
+
+            $('#Salvar').off('click').on('click', SalvarPlanejamento);
+
+            /*Fim Botões*/
+        }
+
+        //Verificando
+        function SalvarPlanejamento(form) {
+
+            if (!isClickedTaticoVinculado) {
+                isClickedEstrategico = true;
+            }
+
+            var sendObj = $('#Planejamento').serializeObject();
+
+            let isValid = $('#Planejamento').find('.error').length == 0
+            if (!isValid) {
+                alert('@Html.Raw(Resources.Resource.required_fields)');
+                return
+            }
+
+            if (isClickedTaticoVinculado)
+                sendObj['IsTAtico'] = true;
+
+            if (sendObj != undefined) {
+                $.post(urlSalvarPlanejamento, sendObj, function (r) {
+
+                    planejamentoCorrentId = parseInt(r.Id);
+                    openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+                    $('#modalLindo').modal('hide');
+                    $('#btnTop').click();
+
+                }).fail(function (e, h, x) {
+                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+                });
+            }
+
+        }/*planejamentoCorrentId*/
+
+        //Verificando
+        function SalvarPlanejamentoEditado(form) {
+
+            var sendObj = {};
+
+            if (isClickedTaticoVinculado)
+                sendObj['IsTAtico'] = true;
+
+            sendObj = $(form).serializeObject();
+
+
+            let isValid = ($(form).find('.error:visible').length == 0)
+            if (!isValid) {
+                alert('@Html.Raw(Resources.Resource.required_fields)')
+                return
+            }
+
+            $.post(urlSalvarPlanejamento, sendObj, function (r) {
+
+                planejamentoCorrentId = parseInt(r.Id);
+                openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+                $('#modalLindo').modal('hide');
+                $('#btnTop').click();
+
+
+            }).fail(function (e, h, x) {
+
+                openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+            });
+
+        }
+
+        //Verificando
+        function EditarPlanejamento(model) {
+
+            var title = $('#Header').html();
+            var title2 = " > Novo"
+            if (isTaticoClicked) {
+                $('#Header').html('@Html.Raw(Resources.Resource.tactical_planning)');
+            } else {
+                $('#Header').html(title + title2);
+            }
+
+            $.get(urlNovoPlanejamento, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+                if (isTaticoClicked) {
+                    $('.novoItem ').hide();
+                    if (isClickedTaticoVinculado) {
+
+                        //Novo tatico
+                        $('#Planejamento > #IsTatico').val(true);
+                        $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
+                        if (model != undefined) {
+
+                            //$('#Id').val(model.Id);
+                            $('#Estrategico_Id').val(model.Id);
+                            if (model.Diretoria_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').val(model.Diretoria_Id);
+                            if (model.Missao_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
+                            if (model.Visao_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
+                            if (model.TemaAssunto_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').val(model.TemaAssunto_Id);
+                            if (model.Dimensao_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').val(model.Dimensao_Id);
+                            if (model.Objetivo_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').val(model.Objetivo_Id);
+                            if (model.IndicadoresDiretriz_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').val(model.IndicadoresDiretriz_Id);
+                            if (model.Responsavel_Diretriz > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').val(model.Responsavel_Diretriz);
+
+                        }
+
+                        $('.novoTatico').show();
+                        DdlChangeTatico(model);
+                    } else {
+
+                        $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(9)').hide();
+                        //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
+                        DdlChangeEstrategico();
+                    }
+                } else {
+                    $('.novoItem ').show();
+                    $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
+                    //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(15)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(16)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
+                }
+
+                InitDatePiker();
+                MoneyMask();
+
+                MoneyMask('R$ ');
+
+                $('.money').each(function () {
+                    $(this).maskMoney('mask', $(this).val());
+                });
+
+                $('#UnidadeDeMedida_Id').trigger('change');
+
+            });
+            /*Botões*/
+
+            $('#modalLindo').find('.modal-footer button').hide()
+            $('#Fechar').show();
+            $('#Salvar').show();
+            $('#Salvar').off('click').on('click', SalvarPlanejamento);
+            /*Fim Botões*/
+        }
+
+        function DdlChangeEstrategico(v1, v2, v3, edit) {
+
+            var change1 = v1 != undefined ? v1 : "";
+            var change2 = v2 != undefined ? v2 : "";
+
+            change1 = change1 == 0 ? "" : change1;
+            change2 = change2 == 0 ? "" : change2;
+
+            v3 = v3 == 0 ? "" : v3;
+
+            let Dimensao_Id = $('#Dimensao_Id')
+            let Objetivo_Id = $('#Objetivo_Id')
+
+            var rdy = true;
+            Dimensao_Id.off('change').on('change', function () {
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+                rdy = false;
+                if (valor) {
+                    $.get(GETObjetivo, { id: valor }, function (r) {
+                        $('#Objetivo_Id').empty().html(r).attr('disabled', false);
+                        $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', false);
+                        rdy = true;
+                    })
+                }
+                else {
+                    $('#Objetivo_Id').val("").change().attr('disabled', true);
+                    $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val("").change().attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
+                }
+            });
+
+            Objetivo_Id.off('change').on('change', function () {
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+
+                if (valor) {
+                    $.get(GETIndicadoresDiretriz, { id: valor }, function (r) {
+                        $('#IndicadoresDiretriz_Id').empty().html(r).attr('disabled', false);
+                        $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', false);
+                    });
+                }
+                else {
+                    $('#IndicadoresDiretriz_Id').val("").change().attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').parent().parent().find('.novoItem').attr('disabled', true);
+                }
+            });
+
+            $('#Dimensao_Id').val(change1).change();
+
+            if (v2 != undefined) {
+                setTimeout(function () { $('#Objetivo_Id').val(v2).change(); }, 1500)
+            } else {
+
+                setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 2000)
+            }
+
+            if (v3 != undefined) {
+                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); }, 3000)
+            }
+
+        }
+
+        function DdlChangeTatico(model) {
+            changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () {
+
+            })
+            changeChainJsWithHTMLResponseGET('#Planejamento #Gerencia_Id', GETCoordenacaoByGerencia, '#Planejamento #Coordenacao_Id', function () {
+            })
+
+            $('#Iniciativa_Id').off('change').on('change', function () {
+                var Iniciativa_Id = $('#Iniciativa_Id').val() > 0 ? $('#Iniciativa_Id').val() : 0;
+                manageButton(Iniciativa_Id, 'IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+
+                $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
+                    $('#IndicadoresDeProjeto_Id').parent().html('').append(r);
+                    $('#IndicadoresDeProjeto_Id').off('change').on('change', function () {
+
+                        var Objetivo_Id = $('#IndicadoresDeProjeto_Id').val() > 0 ? $('#IndicadoresDeProjeto_Id').val() : 0;
+                        manageButton(Objetivo_Id, 'ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+
+                        $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
+
+                            $('#ObjetivoGerencial_Id').parent().html('').append(r);
+                            $('#ObjetivoGerencial_Id').addClass('tatico');
+
+                            try {
+                                $('#modalLindo span.select2').prev('select').select2('destroy');
+                            } catch (e) {
+                            }
+                            finally {
+                                $('#modalLindo select').select2({
+                                    matcher: matchCustom
+                                });
+                            }
+
+                        });
+                    });
+
+                    $('#IndicadoresDeProjeto_Id').change();
+
+                });
+            });
+            $('#Iniciativa_Id').change();
+
+
+        }
+
+        function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB, childrenSelected) {
+            let masterEl = $(idMaster)
+            let masterElVal = $(idMaster).val()
+            manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, '@Html.Raw(Resources.Resource.select_a_predecessor_above)', '');
+            masterEl.off('change').on('change', function () {
+                let seletedId = masterEl.val() > 0 ? masterEl.val() : 0;
+                manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, '@Html.Raw(Resources.Resource.select_a_predecessor_above)', '');
+                $.get(urlGETChildren, { id: seletedId }, function (response) {
+                    let childrenEl = $(idChildren)
+                    childrenEl.parent().html('').append(response);
+                    childrenEl.remove();
+                    $(idChildren).select2({
+                        matcher: matchCustom
+                    });
+
+                    if (masterCB)
+                        masterCB()
+                })
+            })
+        }
+
+        function manageButtonDisabledWhenHaveParentSelect(parentSelectedValue, elementChild, messageForDisabled, messageForEnabled) {
+            let elem = $(elementChild)
+            if (elem.length > 0)
+                if (parentSelectedValue == 0) {
+                    elem.parents('tr').find('.novoItem').attr('disabled', true)
+                    elem.parents('tr').find('.novoItem').attr('title', messageForDisabled)
+                }
+                else {
+                    elem.parents('tr').find('.novoItem').attr('disabled', false)
+                    elem.parents('tr').find('.novoItem').attr('title', messageForEnabled)
+                }
+        }
+
+        function manageButton(id, idChildren, messageDisabled, messageEnabled) {
+            if (id == 0) {
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('disabled', true)
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('title', messageDisabled)
+            }
+            else {
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('disabled', false)
+                $('#' + idChildren).parents('tr').find('.novoItem').attr('title', messageEnabled)
+            }
+        }
+
+        /*Fim Planejamento*/
+
+        /*Acao*/
+        var addButton = (function () {
+            var counter = 0;
+
+            return function () {
+                var objectContainer = $('#obj:hidden');
+                var header = objectContainer.clone();
+                counter += 1;
+                var collapseId = "collapsible_obj_" + counter;
+
+                header.find(".collapse").attr("id", collapseId);
+                header.find("button[data-toggle='collapse']").attr("data-target", "#" + collapseId);
+                header.find("button[data-toggle='collapse']").html('@Html.Raw(Resources.Resource.new_action)')
+
+                header.appendTo('#final');
+                header.show();
+
+                setTimeout(function () {
+                    header.find("select.select2-hidden-accessible").next('.select2').remove();
+                    header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
+                    header.find("select:visible").select2({
+                        matcher: matchCustom
+                    });
+                    $('.UnidadeMedida').change();
+
+                    $('[name="TipoIndicador"]').each(function () {
+                        $(this).select2({
+                            matcher: matchCustom
+                        });
+                    });
+
+                }, 1);
+
+                myfunction();
+                InitDatePiker();
+            };
+
+        })();
+
+        $('#new').click(addButton);
+
+        $('#modalLindo').on('change', '.UnidadeMedida', function (e) {
+
+            let unidadeMedida = $(this).val();
+            let valor = $(this).parent().parent().parent().find(".QuantoCusta").val();
+            let inputQuantoCusta = $(this).parent().parent().parent().find(".QuantoCusta");
+
+            if (unidadeMedida == 1) {
+
+                $(inputQuantoCusta).get(0).type = 'text';
+
+                let config = { prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
+
+                $(inputQuantoCusta).maskMoney(config);
+                $(inputQuantoCusta).maskMoney('mask');
+
+            } else {
+
+                $(inputQuantoCusta).maskMoney('destroy');
+
+                if (valor != "" && valor != NaN)
+                    $(inputQuantoCusta).val(parseFloat(valor.replace("R$ ", "")));
+                else
+                    $(inputQuantoCusta).val(valor);
+
+                $(inputQuantoCusta).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                            ((event.which < 48 || event.which > 57) &&
+                                (event.which != 0 && event.which != 8))) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#modalLindo').on('change', '.UnidadeDeMedidaTatico', function (e) {
+
+            let unidadeMedida = $(this).val();
+            let valorDe = $(this).parent().parent().parent().find(".ValorDe").val();
+            let valorPara = $(this).parent().parent().parent().find(".ValorPara").val();
+            let inputValorDe = $(this).parent().parent().parent().find(".ValorDe");
+            let inputValorPara = $(this).parent().parent().parent().find(".ValorPara");
+
+            if (unidadeMedida == 1) {
+
+                let config = { prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
+
+                $(inputValorDe).maskMoney(config);
+                $(inputValorDe).maskMoney('mask');
+                $(inputValorPara).maskMoney(config);
+                $(inputValorPara).maskMoney('mask');
+
+                $(inputValorDe).prop("disabled", false);
+                $(inputValorPara).prop("disabled", false);
+
+            } else if (unidadeMedida == "" || unidadeMedida == null || unidadeMedida == undefined || unidadeMedida == NaN) {
+
+                $(inputValorDe).maskMoney('destroy');
+                $(inputValorPara).maskMoney('destroy');
+
+
+                $(inputValorDe).val("").prop("disabled", true);
+                $(inputValorPara).val("").prop("disabled", true);
+            }
+            else
+            {
+
+                $(inputValorDe).maskMoney('destroy');
+
+                if (valorDe != "" && valorDe != NaN)
+                    $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
+                else
+                    $(inputValorDe).val(valorDe);
+
+                $(inputValorPara).maskMoney('destroy');
+
+                if (valorPara != "" && valorPara != NaN)
+                    $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
+                else
+                    $(inputValorPara).val(valorPara);
+
+                $(inputValorDe).prop("disabled", false);
+                $(inputValorPara).prop("disabled", false);
+
+                $(inputValorDe).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (event.which == 46 || event.which == 44) {//Caso for ponto ou virgula
+                            if ($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) {//se já existir um ponto ou uma virgula
+                                event.preventDefault();
+                            }
+                        } else {
+                            if ((event.which < 48 || event.which > 57) && (event.which != 0 && event.which != 8)) {//se não for numero
+                                event.preventDefault();
+                            }
+                        }
+                    }
+                });
+
+                $(inputValorPara).on("keypress", function (event) {
+
+                    if (unidadeMedida == 2 || unidadeMedida == 3) {
+
+                        var $this = $(this);
+
+                        if (event.which == 46 || event.which == 44) {
+                            if ($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) {
+                                event.preventDefault();
+                            }
+                        } else {
+                            if ((event.which < 48 || event.which > 57) && (event.which != 0 && event.which != 8)) {
+                                event.preventDefault();
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        //Verificando
+        function ModalAcao(isOpenModal, isFukingNewClicked, isTableClick) {
+            if (!$('#body > table').length) {
+                ModalOpcoesEstrategico('Planejamento Operacional', planejamentoCorrentId, function () {
+                    if (isTableClick) {
+                        $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+                            $('#modalLindo').find('.modal-body').empty().append(r);
+                        });
+                    }
+                });
+            }
+
+            if (isFukingNewClicked) {
+
+                if (isOpenModal)
+                    $('#modalLindo').modal();
+
+                $('#Header').html('@Html.Raw(Resources.Resource.new_action)');
+
+                $.get(urlNovaAcao, function (r) {
+
+                    $('#modalLindo').find('.modal-body').append('<hr>');
+                    $('#modalLindo').find('.modal-body').append(r);
+                    $('#GrupoCausa_Id').empty().attr('disabled', true);
+                    $('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+
+                    myfunction();
+                    MoneyMask('R$ ');
+
+                    $('.money').each(function () {
+                        $(this).maskMoney('mask', $(this).val());
+                    });
+
+                    $('#new').click();
+                    if (isFukingNewClicked) {
+                        $('#new').show();
+                    } else {
+                        $('#new').hide();
+                    }
+
+                });
+
+                /*Botões*/
+                $('#modalLindo').find('.modal-footer button').hide()
+                $('#Fechar').show();
+                $('#Salvar').show();
+                $('#Salvar').off('click').on('click', SalvarAcao);
+                /*Fim Botões*/
+            }
+        }
+
+        //Verificando
+        function EditarAcao(html, data) {
+            var acao = data.Acao;
+
+            $('#modalLindo').modal();
+            $('#Header').html('@Html.Raw(Resources.Resource.edit_action)');
+            $('#modalLindo').find('.modal-body').empty().append(html);
+            $('#modalLindo').find('.modal-footer button').hide();
+            myfunction();
+
+            $('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
+            $('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
+            $('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
+            $('#Status').val(acao.Status);
+            MoneyMask();
+            $('#_QuantoCusta').val(acao.QuantoCusta);
+            $('#_QuantoCusta').trigger('mask.maskMoney');
+            $('#_QuantoCusta').trigger('blur');
+
+            InitDatePiker();
+
+            MoneyMask('R$ ');
+
+            $('.money').each(function () {
+                $(this).maskMoney('mask', $(this).val());
+            });
+
+        }
+
+        //Verificando
+        function myfunction() {
+            $('[id=tipoIndicador]').off('change').on('change', function () {
+
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+
+                form.find('.IndicadorOutros').hide();
+                form.find('.IndicadorSgq').hide();
+
+                if (valor == 1) {
+                    form.find('.IndicadorOutros').show();
+                    form.find('.ProbDesv').hide();
+                    form.find('.ProbDesv').val("");
+                    form.find('.IndicadorOutros select').select2({
+                        matcher: matchCustom
+                    });
+                } else if (valor == 2) {
+                    form.find('.IndicadorSgq').show();
+                    form.find('.ProbDesv').show();
+                    form.find('.IndicadorSgq select').select2({
+                        matcher: matchCustom
+                    });
+                }
+            });
+
+            $('[id=CausaGenerica_Id]').off('change').on('change', function () {
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+                if (valor) {
+                    $.get(GETGrupoCausa, { id: valor }, function (r) {
+                        form.find('#GrupoCausa').empty().html(r);
+                        $('.showAsEstrategy select').select2({
+                            matcher: matchCustom
+                        });
+                    });
+                    $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                        form.find('#ContramedidaGenerica').empty().html(rr);
+                        $('.showAsEstrategy select').select2({
+                            matcher: matchCustom
+                        });
+                    });
+                }
+                else {
+                    form.find('#GrupoCausa_Id').empty().attr('disabled', true);
+                    form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+                    $('.showAsEstrategy select').select2({
+                        matcher: matchCustom
+                    });
+                }
+            });
+        } /*Causa Medida Etc...*/
+
+        //Verificando
+        function SalvarAcao() {
+            var listaAcoes = [];
+            $('.Acao').not(':first').each(function (c, o) {
+                listaAcoes.push(SalvarAcaoAvulsa(o));
+            });
+
+            let isValid = $('.Acao').not(':first').find('.error').length == 0
+
+            if (ValidaAcao(listaAcoes) && isValid) {
+
+                $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
+
+                    if (listaAcoes[0].isValid == '0') { return }
+
+                    $.post(urlGetPlanejamentoAcao, {}, function (r) {
+
+                        jaLiberouCallback = true;
+                        $('#modalLindo').modal('hide');
+                        openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+                        $('#btnTop').click();
+
+                    }).fail(function (e, h, x) {
+
+                        openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+
+                    }).always(function () {
+
+                    });
+                })
+                    .fail(function (e, h, x) {
+
+                        openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+
+                    });
+            } else
+                alert('@Html.Raw(Resources.Resource.required_fields)');
+
+        }
+
+        function ValidaAcao(listaAcoes) {
+
+            let dataIsValid = true;
+
+            $.each(listaAcoes, function (i, o) {
+
+                let parts = o._QuandoFim.split('/');
+
+                let DataInicio = new Date(parts[2], parts[1], parts[0]);
+
+                parts = o._QuandoInicio.split('/');
+
+                let DataFim = new Date(parts[2], parts[1], parts[0]);
+
+                if (DataInicio < DataFim) {
+                    alert('@Html.Raw(Resources.Resource.start_date_must_be_less_than_end_date)');
+                    dataIsValid = false;
+                    return;
+                }
+            });
+
+            if (listaAcoes[0] != undefined && dataIsValid) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function SalvarAcaoEditada() {
+            var listaAcoes = [];
+
+            $('#Status').prop("disabled", false);
+
+            $('.Acao').each(function (c, o) {
+
+                listaAcoes.push(SalvarAcaoAvulsa(o, true));
+
+            });
+
+            let isValid = $('.Acao').find('.error').length == 0;
+            if (!isValid) {
+                alert('@Html.Raw(Resources.Resource.required_fields)')
+                return;
+            }
+
+            if (!ValidaAcao(listaAcoes)) {
+                return;
+            }
+
+            $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
+                $.post(urlGetPlanejamentoAcao, {}, function (r) {
+
+                    jaLiberouCallback = true;
+                    $('#modalLindo').modal('hide');
+                    $('.modal-backdrop').remove();
+                    openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+
+                    $('#btnTop').click();
+
+                }).fail(function (e, h, x) {
+
+                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+
+                }).always(function () {
+
+                });
+            })
+                .fail(function (e, h, x) {
+
+                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+
+                });
+
+        }
+
+        var jaLiberouCallback = false;
+        //Verificando
+        function SalvarAcaoAvulsa(o, isEdit) {
+
+            var sendObj = $(o).serializeObject();
+
+            if (sendObj != undefined) {
+                if (sendObj.TipoIndicador == 1) {
+
+                    sendObj.Level1Id = 0;
+                    sendObj.Level2Id = 0;
+                    sendObj.Level3Id = 0;
+
+                } else if (sendObj.TipoIndicador == 2) {
+
+                    sendObj.Pa_IndicadorSgqAcao_Id = 0;
+                }
+            }
+
+            if (isEdit == undefined && sendObj != undefined) {
+                sendObj['Panejamento_Id'] = planejamentoCorrentId;
+            }
+
+            return sendObj;
+
+        }
+
+        //Verificando
+        function RemoveAcao(btn) {
+            $(btn).parents('#obj').remove();
+        }
+        /*Fim Acao*/
+
+        //Verificando
+        function Adicionar(btn) {
+            var $tr = $(btn).closest('.tr_clone');
+            var $clone;
+
+            $clone = $tr.clone();
+            $clone.find(':text').val('');
+
+            $tr.find('#remove').show();
+            $tr.find('#adicionar').hide();
+            $tr.after($clone);
+
+        }
+
+        //Verificando
+        function Remover(btn) {
+            $(btn).parents('tr').remove();
+        }
+
+        /*Novo item*/
+        function Novo(btn, encadeado) {
+
+            selectPredecessor = encadeado;
+
+            //Remove select caso exista
+            $('#encadeado').find('select').remove();
+
+            if (encadeado == undefined)
+                $('#encadeado').hide()
+
+            tempInput = $(btn).parents('tr').find('input , select');
+            tempName = $(btn).parents('tr').find('input , select').attr('name');
+
+            var valorSelectSelecionado = $(btn).parents('tr').find('input , select option:selected').html();
+            var tempIdNovo = $(btn).parents('tr').find('input , select option:selected').val();
+
+            SetaValoresModal(tempIdNovo, valorSelectSelecionado, true);
+
+            var label = $(btn).parents('tr').find('label').html();
+            $('#modalNovo > div > div.modal-footer').hide();
+            $('#modalNovo').modal();
+            $('#novoHeader').html('@Html.Raw(Resources.Resource.to_manage) ' + label);
+            $('#nomeItemNovo').html(label);
+
+            if (encadeado != undefined) {
+                $('#labelPredecessora').children().remove()
+                $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
+                $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
+            }
+
+        }
+
+        function SalvarNovo() {
+
+            var params = {
+                NomeDoItem: $('#newItem').val(),
+                ParametroDeBusca: tempName.split('_Id')[0],
+                PredecessorId: $('#encadeado').find('select').val(),
+                Id: $('#newIdItem').val(),
+                IsActive: $('#newIsActiveItem:checked').length == 1,
+            }
+
+            $.post(urlSalvarNovoItem, params, function (r) {
+                if (r.Resposta != null) {
+                    alert(r.Resposta);
+                    return;
+                }
+
+                var jaExisteoptionNoDropDown = $(tempInput).find('option[value="' + r.Id + '"]').length > 0
+                if (jaExisteoptionNoDropDown)
+                    if (r.IsActive) {
+                        $(tempInput).find("option[value= " + r.Id + "]").html(r.NomeDoItem);
+                        $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
+                        $(tempInput).select2('destroy');
+                        $(tempInput).val(r.Id).trigger('change');
+                        $(tempInput).select2({
+                            matcher: matchCustom
+                        });
+
+                    } else {
+                        $(tempInput).find('option:first').prop('selected', true);
+                        $(tempInput).find("option[value= " + r.Id + "]").remove();
+                        $(tempInput).trigger('change');
+                    }
+                else {
+                    $(tempInput).find('option:selected').prop('selected', false);
+                    $(tempInput).append('<option value=' + r.Id + ' selected> ' + r.NomeDoItem + '</option>');
+                    $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
+                    $(tempInput).trigger('change')
+                }
+                refreshDataTable();
+                $('#btnCancelarNovo').click();
+            });
+
+        }
+
+        var refreshDataTable = function () {
+            /*Dados*/
+            var param1 = $('#newItem').val();
+            var param2 = tempName.split('_Id')[0];
+            var param3 = 0;
+            if ($('#encadeado').find('select').length) {
+                param3 = $('#encadeado').find('select').val();
+            }
+            $('#labelPredecessoraValue').text($('#encadeado').find('select option:selected').text());
+
+            if (param3 != 0) {
+                $('#divPredecessora').removeClass('hide');
+            } else {
+                $('#divPredecessora').addClass('hide');
+            }
+
+            /*Ajax*/
+            $.post(urlGetAutoComplete, { NomeDoItem: param1, ParametroDeBusca: param2, PredecessorId: param3 }, function (response) {
+
+                $("#tableNovo").html('');
+
+                //Gera a lista
+                var list = [];
+                $.each(response, function (index, value) {
+                    list.push([value.Id, value.Name, value.IsActive])
+                });
+
+                tableModalNovo = $('#tableNovo').DataTable({
+                    data: list,
+                    destroy: true,
+                    lengthChange: false,
+                    pageLength: 3,
+                    "bInfo": false,
+                    language: {
+                        "sEmptyTable": "@Html.Raw(Resources.Resource.no_records_found)",
+                        "sInfo": "@Html.Raw(Resources.Resource.showing_start_to_end_of_total_records)",
+                        "sInfoEmpty": "@Html.Raw(Resources.Resource.showing_0_to_0_of_0_records)",
+                        "sInfoFiltered": "@Html.Raw(Resources.Resource.filtered_max_records)",
+                        "sInfoPostFix": "",
+                        "sInfoThousands": ".",
+                        "sLengthMenu": "@Html.Raw(Resources.Resource.menu_results_per_page)",
+                        "sLoadingRecords": "@Html.Raw(Resources.Resource.loading)",
+                        "sProcessing": "@Html.Raw(Resources.Resource.processing)",
+                        "sZeroRecords": "@Html.Raw(Resources.Resource.no_records_found)",
+                        "sSearch": "@Html.Raw(Resources.Resource.search)",
+                        "oPaginate": {
+                            "sNext": "@Html.Raw(Resources.Resource.next)",
+                            "sPrevious": "@Html.Raw(Resources.Resource.back)",
+                            "sFirst": "@Html.Raw(Resources.Resource.first)",
+                            "sLast": "@Html.Raw(Resources.Resource.last)"
+                        },
+                        "oAria": {
+                            "sSortAscending": "@Html.Raw(Resources.Resource.sort_columns_ascending)",
+                            "sSortDescending": "@Html.Raw(Resources.Resource.sort_columns_downward)"
+                        }
+                    },
+                    columns: [
+                        { title: "ID" },
+                        { title: "@Html.Raw(Resources.Resource.name)" },
+                        {
+                            title: "@Html.Raw(Resources.Resource.active2)",
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                if (data[2] == true) {
+                                    return "@Html.Raw(Resources.Resource.active3)";
+                                }
+                                return "@Html.Raw(Resources.Resource.inactive)";
+                            }
+                        },
+                        {
+                            "className": 'options',
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>@Html.Raw(Resources.Resource.edit)</span>';
+                            }
+                        }
+                    ],
+                    initComplete: function () { }
+                });
+
+                $('#tableNovo tbody').on('click', 'span', function () {
+
+                    SetaValoresModal(
+                        tableModalNovo.row($(this).parents('tr')).data()[0],
+                        tableModalNovo.row($(this).parents('tr')).data()[1],
+                        tableModalNovo.row($(this).parents('tr')).data()[2])
+                });
+            })
+        };
+
+        function SetaValoresModal(id, item, isActive) {
+
+            $('#btnCancelarNovo').click();
+            if (!!parseInt(id)) {
+                $("#newIdItem").val(id);
+                $("#newItem").val(item);
+                $("#newIsActiveItem").prop('checked', isActive);
+                $('#btnSalvarNovo').addClass('hide');
+                $('#btnEditarNovo').removeClass('hide');
+                $('#btnCancelarNovo').removeClass('hide');
+                $('#divIsActive').removeClass('hide');
+            }
+
+        }
+
+        function isPositiveInteger(n) {
+            return n == "0" || ((n | 0) > 0 && n % 1 == 0);
+        }
+
+        var selecionado;
+
+        function Relatorios() {
+            win.focus();
+        }
+
+        function TesteRenan(r, tipo, model) {
+
+            var form = $(r); 
+
+            if (tipo == 'Tatico') { 
+
+                form.find('table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(5)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(6)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
+                form.attr('id', 'formEditTatico');
+
+                form.find('button').each(function (o, c) {
+                    if ($(c).attr('onclick').split(',')[1]) {
+                        let before = $(c).attr('onclick').split(',')[1]
+                        before = before.slice(2, before.length)
+                        let after = `Novo(this, 'formEditTatico #${before}`
+                        $(c).attr('onclick', after)
+                    }
+                });
+
+                $('#modalLindo').find('.modal-body .content2').append(form);
+                if (model.Acao && model.Acao.Id > 0)
+                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>@Resources.Resource.change_tactical_link</button>");
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='save' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=true;SalvarPlanejamentoEditado($('#formEditTatico'))\" >@Resources.Resource.save_tactical</button><hr>");
+
+                myfunction();
+
+            } else {
+
+                form.find('#Estrategico_Id').remove();
+                form.find('#IsTatico').val(false).change();
+
+                form.find('table > tbody > tr:nth-child(2)').hide();
+                form.find('table > tbody > tr:nth-child(3)').hide();
+                form.find('table > tbody > tr:nth-child(11)').hide();
+                form.find('table > tbody > tr:nth-child(12)').hide();
+                form.find('table > tbody > tr:nth-child(13)').hide();
+                form.find('table > tbody > tr:nth-child(14)').hide();
+                form.find('table > tbody > tr:nth-child(15)').hide();
+                form.find('table > tbody > tr:nth-child(16)').hide();
+                form.find('table > tbody > tr:nth-child(17)').hide();
+                form.find('table > tbody > tr:nth-child(18)').hide();
+                form.find('table > tbody > tr:nth-child(19)').hide();
+                form.find('table > tbody > tr:nth-child(20)').hide();
+                form.find('table > tbody > tr:nth-child(21)').hide();
+                form.find('table > tbody > tr:nth-child(22)').hide();
+                form.attr('id', 'formEditEstrategy');
+
+                form.find('button').each(function (o, c) {
+                    if ($(c).attr('onclick').split(',')[1]) {
+                        let before = $(c).attr('onclick').split(',')[1]
+                        before = before.slice(2, before.length)
+                        let after = `Novo(this, 'formEditEstrategy #${before}`
+                        $(c).attr('onclick', after)
+                    }
+                })
+
+                if (IsAdmin) {
+                    $('#modalLindo').find('.modal-body .content1').append(form);
+                }
+
+                if (model.Tatico_Id > 0)
+                    $('#modalLindo').find('.modal-body .content1').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>@Resources.Resource.change_strategic_link</button>");
+
+                if (IsAdmin) {
+                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"isClickedEstrategico=true;isClickedTaticoVinculado=false;SalvarPlanejamentoEditado($('#formEditEstrategy'))\">@Resources.Resource.save_strategic</button><hr>");
+                }
+
+                DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
+
+            }
+
+            InitDatePiker();
+            MoneyMask();
+
+            MoneyMask('R$ ');
+
+            $('.money').each(function () {
+                $(this).maskMoney('mask', $(this).val());
+            });
+
+            DisabilitaBotaoGerenciar();
+        }
+
+        function SalvarAcompanhamento(obj) {
+
+            $('#modalLindo').modal('hide');
+            $.post(urlSalvarAcompanhamento, obj, function (r) {
+
+                formReset();
+
+                $('#btnTop').click();
+                openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+
+            }).fail(function (e, h, x) {
+
+                  openMessageModal("@Html.Raw(Resources.Resource.could_not_save_record)", e.responseJSON.Message);
+
+            });
+        }
+
+        function formReset() {
+            $('#acompanhamento #Name').val("");
+            $('#acompanhamento #MailTo').val(0);
+            $('#acompanhamento #Status_Id').val(0);
+        }
+
+        function getAcompanhamento(acaoCorrentId) {
+
+            $('#modalLindo').modal('hide');
+
+            $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+                $('#modalLindo').modal();
+                $('#Header').html('@Html.Raw(Resources.Resource.operational_planning_follow_up)');
+                $('.modal .modal-footer button').hide();
+                $('#showAcompnhamentoForm').show();
+
+                $("#SaveAcompanhamento").on("click", function (event) {
+                    var obj = $("#acompanhamento").serializeObject();
+                    if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined || obj.MailTo == undefined || !(obj.Status_Id > 0))
+                        alert("@Html.Raw(Resources.Resource.fields_must_be_completed)")
+                    else
+                        SalvarAcompanhamento(obj);
+                });
+
+                $('.edit').off('click').on('click', function (data, a, b) {
+                    var data = selecionado
+
+                    $('#modalLindo').find('.modal-body').empty().append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
+
+                    if (data.Id > 0) {
+
+                        getPlanOp(data, a, b);
+
+                    } else if (data.Estrategico_Id > 0) {
+
+                        getPlanEstrat(data, a, b);
+
+                    } else if (data.Acao && data.Acao.Id > 0) {
+
+                        getAcao(data, a, b);
+                    }
+
+                    $('#modalLindo').find('.modal-footer button').hide();
+                    $('#Header').html("@Html.Raw(Resources.Resource.edit)");
+                    $('#modalLindo').modal();
+                    $('#Fechar').show();
+                });
+
+                setTimeout(function () {
+                    $('#MailTo').select2({
+                        matcher: matchCustom
+                    });
+                    $('#Status_Id').select2({
+                        matcher: matchCustom
+                    });
+                }, 1000);
+            })
+        }
+
+        $(document).ajaxSend(function () {
+            $.LoadingOverlay("show");
+            counter++;
+        });
+
+        $(document).ajaxStop(function () {
+            $.LoadingOverlay("hide", true);
+            counter--;
+        });
+
+        $(document).ajaxError(function (e, h, x) {
+            console.log(e);
+            console.log(h);
+            console.log(x);
+            $.LoadingOverlay("hide");
+            counter--;
+        });
+
+        $(function () {
+            GetDataTable();
+
+            $('#modalNovo').on('hidden.bs.modal', function () {
+                if (selectPredecessor != undefined) {
+                } else {
+                    $('#' + IdBotaoClicado).click();
+                }
+
+            })
+
+
+            $('#modalNovo').on('shown.bs.modal', function (e) {
+
+                $('#btnCancelarNovo').on('click', function () {
+                    $("#newIdItem").val('');
+                    $("#newItem").val('');
+                    $('#btnSalvarNovo').removeClass('hide');
+                    $('#btnEditarNovo').addClass('hide');
+                    $('#btnCancelarNovo').addClass('hide');
+                    $('#divIsActive').addClass('hide');
+
+                });
+
+                refreshDataTable();
+
+            });
+        });
+        /*Table*/
+
+        function getPlanOp(data, a, b) {
+
+            $.get(urlEditPlanOp, { id: data.Id }, function (r) {
+
+                TesteRenan(r, 'Estrategico', data);
+                $('#modalNovo > div > div > div.modal-footer > button').show();
+
+                if (data.Estrategico_Id > 0) {
+                    getPlanEstrat(data, a, b);
+                }
+            });
+
+        }
+
+        function getPlanEstrat(data, a, b) {
+            $.get(urlEditPlanEstrat, { id: data.Tatico_Id, isTatico: true }, function (r) {
+                TesteRenan(r, 'Tatico', data);
+                $('#modalNovo > div > div > div.modal-footer > button').show();
+
+                //DDLs ENCADEADAS da PARTIAL VIEW
+                changeChainJsWithHTMLResponseGET('#formEditTatico #Gerencia_Id', GETCoordenacaoByGerencia, '#formEditTatico #Coordenacao_Id', function () { })
+
+                changeIniciativa();
+
+                changeIndicadoresProjetos();
+
+                $('.UnidadeDeMedidaTatico').change();
+
+                if (data.Acao && data.Acao.Id > 0) {
+                    getAcao(data, a, b);
+                }
+
+            });
+        }
+
+        function changeIniciativa() {
+
+            $('#formEditTatico').on('change','#Iniciativa_Id', function () {
+
+                var Iniciativa_Id = $('#formEditTatico #Iniciativa_Id').val() > 0 ? $('#formEditTatico #Iniciativa_Id').val() : 0;
+
+                manageButton(Iniciativa_Id, 'formEditTatico #IndicadoresDeProjeto_Id', 'Selecione uma predecessor em Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Projeto / Iniciativa', 'Gerenciar Indicadores do Projeto / Iniciativa');
+
+                $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').select2({
+                        matcher: matchCustom
+                    });
+
+                    $('#formEditTatico #IndicadoresDeProjeto_Id').change();
+                });
+            });
+        }
+
+        function changeIndicadoresProjetos() {
+
+            $('#formEditTatico').on('change', '#IndicadoresDeProjeto_Id' , function () {
+
+                var Objetivo_Id = $('#formEditTatico #IndicadoresDeProjeto_Id').val() > 0 ? $('#formEditTatico #IndicadoresDeProjeto_Id').val() : 0;
+
+                manageButton(Objetivo_Id, 'formEditTatico #ObjetivoGerencial_Id', 'Selecione uma predecessor em Indicadores do Projeto / Iniciativa para Inserir / Gerenciar os Indicadores do Objetivo Gerencial', 'Gerenciar Objetivo Gerencial');
+
+                $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
+
+                    $('#formEditTatico #ObjetivoGerencial_Id').parent().html('').append(r);
+
+                    $('#formEditTatico #ObjetivoGerencial_Id').addClass('tatico');
+
+                    $('#formEditTatico #ObjetivoGerencial_Id').select2({
+                        matcher: matchCustom
+                    });
+                });
+            });
+        }
+
+        function getAcao(data, a, b) {
+
+            $.get(urlEditAcao, { id: data.Acao.Id }, function (r) {
+                var acao = data.Acao;
+
+                $('#Header').html("@Html.Raw(Resources.Resource.edit_action)");
+
+                $('#modalLindo').find('.modal-footer button').hide();
+                $('#modalLindo').find('.modal-body .content3').append(r);
+
+                $('#modalLindo').find('.modal-body .content3').find('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
+                $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
+                $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
+                $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status).prop('disabled', true);;
+                $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
+                $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
+                $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
+
+                setTimeout(function () {
+                    $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
+                    $('.content3 select').select2({
+                        matcher: matchCustom
+                    });
+                    $('.UnidadeMedida').change();
+
+                    InitDatePiker();
+                }, 1);
+
+                $(r).attr("id", "formEditAcao");
+
+                MoneyMask();
+                myfunction();
+
+                $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=false;SalvarAcaoEditada();\" >@Resources.Resource.save_operational</button><hr>");
+                $('#obj').show(); //Apagar depois
+
+                $('#CausaGenerica_Id').change();
+                $('#modalNovo > div > div > div.modal-footer > button').show();
+
+                MoneyMask('R$ ');
+
+                $('.money').each(function () {
+                    $(this).maskMoney('mask', $(this).val());
+                })
+
+                $("input[name='_QuandoInicio']")[0].value = $("input[name='_QuandoInicio']")[0].defaultValue.substring(0, 10);
+                $("input[name='_QuandoFim']")[0].value = $("input[name='_QuandoFim']")[0].defaultValue.substring(0, 10);
+
+                $('#Fechar').show();
+            });
+        }
+
+        //Visao Geral dos Projetos
+        $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
+
+            Chaveamento = [];
+            ChaveamentoObjetivo = [];
+
+            $('#graficoPorDiretriz').empty();
+            $('#graficoPorGerencia').empty();
+
+            let Categories = [];
+            let Data = [];
+
+            dadosfilter = dados;
+
+            if (TipoGrafico == "Gerencia") {
+
+                processarChaveamento();
+
+                Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
+
+                Data = [];
+
+                Categories.forEach(function (c, o) {
+
+                    let qtdConcluido = $.grep(dados, function (r) {
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
+                    }).length;
+
+                    let listaGerencia = $.grep(dados, function (r) {
+                        return r.Gerencia == c;
+                    })
+
+                    let qtdDeGerencia = listaGerencia.length;
+
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+
+                    let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+                    Data.push({ color: gerencia.color, y: porcConcluidos });
+                });
+
+                Highcharts.chart('graficoPorGerencia', {
+
+                    title: {
+                        text: '@Html.Raw(Resources.Resource.percent_completed_area)'
+                    },
+                    chart: {
+                        height: 230
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    lang: {
+                        noData: "Sem dados"
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    yAxis: {
+                        title: {
+                            text: '@Html.Raw(Resources.Resource.percent_conclusion)'
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.0f} %',
+                                style: {
+                                    color: 'black',
+                                    fontSize: '10px',
+                                },
+
+                            },
+                            point: {
+                                events: {
+                                    click: function () {
+                                        filterDados("Gerencia", this.category, getTablesModal);
+                                        getGraficoPorProjetos("Gerencia", this.category, true);
+                                    }
+                                }
+                            },
+                        },
+                    },
+                    xAxis: {
+                        categories: Categories
+                    },
+                    tooltip: {
+                        pointFormat: '{point.y:.0f} %'
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: Data,
+                        showInLegend: false
+                    }]
+
+                });
+
+            } else {
+
+                processarChaveamentoObjetivo();
+
+                Categories = Object.values(MapeiaValorParaHC(dados, "Objetivo").filter(onlyUnique));
+
+                Data = [];
+
+                Categories.forEach(function (c, o) {
+
+                    let qtdConcluido = $.grep(dados, function (r) {
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Objetivo == c);
+                    }).length;
+
+                    let listaObjetivo = $.grep(dados, function (r) {
+                        return r.Objetivo == c;
+                    });
+
+                    let qtdDeObjetivo = listaObjetivo.length;
+
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeObjetivo) * 100
+
+                    let objetivo = retornaChaveamentoPorObjetivo(listaObjetivo[0].Objetivo_Id)[0];
+                    Data.push({ color: objetivo.color, y: porcConcluidos });
+                });
+
+                Highcharts.chart('graficoPorDiretriz', {
+
+                    title: {
+                        text: '@Html.Raw(Resources.Resource.percent_completed_area)'
+                    },
+                    chart: {
+                        height: 230
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    lang: {
+                        noData: "Sem dados"
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    yAxis: {
+                        title: {
+                            text: '@Html.Raw(Resources.Resource.percent_conclusion)'
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.0f} %',
+                                //distance: -10,
+                                style: {
+                                    color: 'black',
+                                    fontSize: '10px',
+                                },
+                                //connectorColor: 'silver'
+                            },
+                            point: {
+                                events: {
+                                    click: function () {
+                                        filterDados("Objetivo", this.category, getTablesModal);
+                                        getGraficoPorProjetos("Objetivo", this.category, true);
+                                    }
+                                }
+                            },
+                        },
+                    },
+                    xAxis: {
+                        categories: Categories
+                    },
+                    tooltip: {
+                        pointFormat: '{point.y:.0f} %'
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: Data,
+                        showInLegend: false
+                    }]
+
+                });
+
+            }
+
+            getGraficoPorProjetos(null, null, false);
+
+            getTablesModal();
+        });
+
+        var TipoGrafico = null;
+
+        function vgp(tipoGrafico){
+            TipoGrafico = tipoGrafico;
+        }
+
+        function getAcoesEspecificas(arrayRetorno) {
+
+            let AcoesEspecificas = [];
+
+            arrayRetorno.forEach(function (i) {
+                AcoesEspecificas.push(Object.values(i));
+            });
+
+            return AcoesEspecificas;
+        }
+
+        function getTableModal(id, dataSet, columnsSet) {
+
+            let table = $('#' + id).DataTable({
+
+                data: dataSet,
+                columns: columnsSet,
+                destroy: true,
+                pageLength: 5,
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "@Html.Raw(Resources.Resource.all)"]],
+                language: {
+                    "sEmptyTable": "@Html.Raw(Resources.Resource.no_records_found)",
+                    "sInfo": "@Html.Raw(Resources.Resource.showing_start_to_end_of_total_records)",
+                    "sInfoEmpty": "@Html.Raw(Resources.Resource.showing_0_to_0_of_0_records)",
+                    "sInfoFiltered": "@Html.Raw(Resources.Resource.filtered_max_records)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "@Html.Raw(Resources.Resource.menu_results_per_page)",
+                    "sLoadingRecords": "@Html.Raw(Resources.Resource.loading)",
+                    "sProcessing": "@Html.Raw(Resources.Resource.processing)",
+                    "sZeroRecords": "@Html.Raw(Resources.Resource.no_records_found)",
+                    "sSearch": "@Html.Raw(Resources.Resource.search)",
+                    "oPaginate": {
+                        "sNext": "@Html.Raw(Resources.Resource.next)",
+                        "sPrevious": "@Html.Raw(Resources.Resource.back)",
+                        "sFirst": "@Html.Raw(Resources.Resource.first)",
+                        "sLast": "@Html.Raw(Resources.Resource.last)"
+                    },
+                    "oAria": {
+                        "sSortAscending": "@Html.Raw(Resources.Resource.sort_columns_ascending)",
+                        "sSortDescending": "@Html.Raw(Resources.Resource.sort_columns_downward)"
+                    }
+                 }
+            });
+
+            return table;
+        }
+
+        function filterDados(prop, value, calback) {
+
+            dadosfilter = $.grep(dados, function (item) {
+
+                if (item[prop] == value) {
+
+                    return item;
+
+                }
+
+            });
+
+            calback();
+
+        }
+
+        function getTablesModal() {
+
+            let renderFunction = function (data, type, row, meta) {
+
+                //Gambzinha porque quando converte a data, ela fica com um dia a menos, então tive que somar mais um dia - Renan 22/06/2018
+                let dataFormatada = new Date(data);
+                dataFormatada.setDate(dataFormatada.getDate() + 1);
+
+                let html = "<span style='display:none'>" + data + "</span>" + dataFormatada.toLocaleDateString();
+
+                return html;
+            }
+
+            // Acão Em Andamento
+            let AcoesEspecificas = [];
+
+            var arrayRetorno = $.map(dadosfilter, function (o, c) {
+
+                var valor = o['Acao'].ContramedidaEspecifica;
+
+                if (o['Acao'].Status == 5) {
+                    return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor =  "@Html.Raw(Resources.Resource.no_specific_action)";
+                    }
+                }
+
+            });
+
+            Object.values(arrayRetorno.filter(onlyUnique)).forEach(function (i) {
+                AcoesEspecificas.push([i]);
+            });
+
+            let TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }]
+
+            var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
+
+            //Acoes Atrasadas
+            AcoesEspecificas = [];
+
+            arrayRetorno = $.map(dadosfilter, function (o, c) {
+
+                if (o['Acao'].Status == 1) {
+
+                    dataFim = new Date(o['Acao'].QuandoFim);
+                    dataHoje = new Date();
+
+                    var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                    var valor = o['Acao'].ContramedidaEspecifica != null ? o['Acao'].ContramedidaEspecifica : "@Html.Raw(Resources.Resource.no_specific_action)";
+
+                    return { 0:  valor, 1: String(diffDays - 1) + " Dias" };
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
+                    }
+                }
+
+            });
+
+            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+
+            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.days_of_delay)" }]
+
+            var tableAtrasadas = getTableModal("tableAtrasadas", AcoesEspecificas, TituloAcoesEspecificas);
+
+
+            //Proximas
+            AcoesEspecificas = [];
+
+            arrayRetorno = $.map(dadosfilter, function (o, c) {
+
+                dataInicio = new Date(o['Acao'].QuandoInicio);
+                dataHoje = new Date();
+
+                if (dataInicio > dataHoje && o['Acao'].Status != 3 && o['Acao'].Status != 7) {
+
+                    var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                    //var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
+                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toISOString().slice(0, 10) };
+
+                    return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
+                    }
+                }
+
+            });
+
+            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+
+            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.start_date)", render: renderFunction }]
+
+            var tableProximas = getTableModal("tableProximas", AcoesEspecificas, TituloAcoesEspecificas);
+
+
+            //Concluidas
+            AcoesEspecificas = [];
+
+            arrayRetorno = $.map(dadosfilter, function (o, c) {
+
+                if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
+
+                    let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
+
+                    //var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
+                    var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toISOString().slice(0, 10) };
+
+                    return valor;
+                } else {
+                    if (o['Acao'].Id == 0) {
+                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
+                    }
+                }
+            });
+
+            AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
+
+            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.date_conclusion)", render: renderFunction }]
+
+            var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
+        }
+
+        function getGraficoPorProjetos(prop, value, isFilter) {
+
+            let Categories = [];
+
+            let dadosInternos = dados;
+
+            if (isFilter) {
+
+                dadosInternos = $.grep(dados, function (r) {
+
+                    return r[prop] == value ;
+
+                });
+            }
+
+            Categories = Object.values(MapeiaValorParaHC(dadosInternos, "Iniciativa").filter(onlyUnique));
+
+            Data = [];
+
+            processarChaveamentoObjetivo();
+            processarChaveamento();
+
+            let dados2 = dados;
+
+            if (isFilter) {
+                dados2 = $.grep(dados, function (item) {
+
+                    if (item[prop] == value) {
+
+                        return item;
+
+                    }
+                });
+            }
+
+            Categories.forEach(function (c, o) {
+
+                let qtdConcluido = $.grep(dados2, function (r) {
+                    return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Iniciativa == c);
+                }).length;
+
+                let listaGerencia = $.grep(dados2, function (r) {
+                    return r.Iniciativa == c;
+                });
+
+                let qtdDeGerencia = listaGerencia.length;
+
+                let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
+
+                if (TipoGrafico == "Gerencia") {
+                    let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+                    Data.push({ color: gerencia.color, y: porcConcluidos });
+                }else{
+                    let objetivo = retornaChaveamentoPorObjetivo(listaGerencia[0].Objetivo_Id)[0];
+                    Data.push({ color: objetivo.color, y: porcConcluidos });
+                }
+            });
+
+            Highcharts.chart('graficoPorProjetos', {
+
+                title: {
+                    text: '@Html.Raw(Resources.Resource.percent_completed_demands)'
+                },
+                credits: {
+                    enabled: false
+                },
+                subtitle: {
+                    text: ''
+                },
+                lang: {
+                    noData: "Sem dados"
+                },
+                yAxis: {
+                    title: {
+                        text: '@Html.Raw(Resources.Resource.percent_conclusion)'
+                    }
+                },
+                xAxis: {
+                    categories: Categories,
+                },
+                plotOptions: {
+                    column: {
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.0f} %',
+                            //distance: -10,
+                            style: {
+                                color: 'black',
+                                fontSize: '10px',
+                            },
+                            //connectorColor: 'silver'
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    console.log(this.category)
+
+                                    filterDados("Iniciativa", this.category, getTablesModal)
+                                }
+                            }
+                        },
+                    },
+                },
+                tooltip: {
+                    pointFormat: '{point.y:.0f} %'
+                },
+                series: [{
+                    type: 'column',
+                    colorByPoint: true,
+                    data: Data,
+                    showInLegend: false
+                }]
+            });
+
+            let PercentualTotal = Math.floor(Data.reduce((soma, obj) => soma + obj.y, 0) / Categories.length);
+            $('#percentualConclusao').html(PercentualTotal + " %");
+
+        }
+
+        function changePlanejamento(tipo,form){
+            $.post(urlGetListPlanejamento +'/'+tipo,function(r){
+
+                var col = r.columns;
+                col.unshift({"render": function ( data, type, row ) {
+                    return '<button data-id="' + row.Id +'" class="btn btn-large btn-primary">@Html.Raw(Resources.Resource.select)</button>';
+                }});
+                datatableGRT.Inicializar({
+                    idTabela: "tablePessego",
+                    listaDeDados: r.datas,
+                    colunaDosDados:r.columns,
+                    initComplete: function(){
+                        $('#tablePessego').off().on('click','button[data-id]',function(){
+                            if(confirm("Deseja alterar o vinculo!?")){
+                                var idParaMudar = $(this).attr("data-id");
+                                var id = $(form).find('#Id').val();
+                                $.post('@Url.Action("Cereja", "api/Pa_Planejamento")/'+tipo+'/'+id+'/'+idParaMudar,function(r){
+                                    openMessageModal("@Html.Raw(Resources.Resource.updated_link)");
+                                    location.reload();
+                                });
+                            }
+                        });
+
+                        setTimeout(function (e) {
+                            var oTable = $('#tablePessego').dataTable();
+                            if (oTable.length > 0) {
+                                oTable.fnAdjustColumnSizing();
+                            }
+                        }, 1400);
+                    }
+                });
+            });
+        }
+
+        function tableAcaoRedrown() {
+            setTimeout(function () {
+                table.draw();
+            },500);
+        }
+
+        function tablePlanejamentoRedrown() {
+            setTimeout(function () {
+                tablePlanejamento.draw();
+            },500);
+        }
+
+        function AbreModalDePlanejamento(id){
+            Clicked(true, false, true);
+            $.get(urlGetPlanejamento, { id: id }, function (r) {
+                ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
+            });
+        }
+
+        function AbreModalDeAcao(id){
+            Clicked(true, true);
+
+            $('#modalLindo').modal();
+            $('#modalLindo').find('.modal-body').empty();
+            $('#Header').html("@Html.Raw(Resources.Resource.operational_planning)");
+
+            $.get(PlanejamentoDetalhes, { id: id }, function (r) {
+                $('#NovaAcao').show();
+                $('#NovaAcao').click();
+                $('#modalLindo').find('.modal-body').empty().prepend(r);
+            });
+        }
+
+        var Chaveamento = [];
+        var ChaveamentoObjetivo = [];
+
+        function processarChaveamento() {
+            if (Chaveamento.length > 0){
+                return;
+            }
+            $.each(dados, function (index, obj) {
+
+                var existe = retornaChaveamentoPorGerenciaId(obj.Gerencia_Id);
+
+                if (existe.length <= 0) {
+                    Chaveamento.push({ color: randomColor(),gerencia_id: obj.Gerencia_Id });
+                }
+            });
+        }
+
+        function processarChaveamentoObjetivo() {
+            if (ChaveamentoObjetivo.length > 0){
+                return;
+            }
+            $.each(dados, function (index, obj) {
+
+                var existe = retornaChaveamentoPorObjetivo(obj.Objetivo_Id);
+
+                if (existe.length <= 0) {
+                    ChaveamentoObjetivo.push({ color: randomColor(),objetivo_id: obj.Objetivo_Id});
+                }
+            });
+        }
+
+        function retornaChaveamentoPorGerenciaId(gerencia_id) {
+            return $.grep(Chaveamento, function (o, i) {
+                return o.gerencia_id == gerencia_id;
+            });
+        }
+
+        function retornaChaveamentoPorObjetivo(objetivo_id) {
+            return $.grep(ChaveamentoObjetivo, function (o, i) {
+                return o.objetivo_id == objetivo_id;
+            });
+        }
+
+        function randomColor() {
+            color = 'rgb(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ')';
+            return color;
+        }
+        var tableModalNovoApartirDe={};
+        // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
+        function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, NomeApartirDeQueSeraCriado){
+            $('#ModalNovoApartirDeAlgo').find('h4').text("@Html.Raw(Resources.Resource.create) "+NomeDoQueSeraCriado+" @Html.Raw(Resources.Resource.from) "+NomeApartirDeQueSeraCriado);
+            $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
+                var col = r.columns;
+                col.unshift({"render": function ( data, type, row ) {
+                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" class="btn btn-large btn-primary">@Html.Raw(Resources.Resource.create) '+NomeDoQueSeraCriado+'</button>';
+                }});
+                tableModalNovoApartirDe = datatableGRT.Inicializar({
+                    idTabela: "ModalNovoApartirDeAlgo table",
+                    listaDeDados: r.datas,
+                    colunaDosDados:r.columns,
+                    buttons: {buttons: []},
+                    initComplete: function(){
+                        $('#ModalNovoApartirDeAlgo table').off().on('click', 'button[data-id]', function () {
+                            if ($(this).attr('data-tipo') == 'tatico') {
+                                AbreModalDePlanejamento($(this).attr('data-id'));
+                            } else if ($(this).attr('data-tipo') == 'acao') {
+                                planejamentoCorrentId = $(this).attr('data-id');
+                                AbreModalDeAcao(planejamentoCorrentId);
+                            }
+                            $('#ModalNovoApartirDeAlgo').modal('hide');
+                        });
+
+                        $('#ModalNovoApartirDeAlgo').modal('show');
+
+                        setTimeout(function (e) {
+                            tableModalNovoApartirDe.draw();
+                        }, 500);
+                    }
+                });
+            });
+        }
+
+    </script>
+
+}

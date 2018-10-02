@@ -4,13 +4,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/cssBootstrap")
     @Styles.Render("~/bundles/hcstyle")
     @Styles.Render("~/Content/Tables")
     @Styles.Render("~/Content/select2css")
+    @Styles.Render("~/Content/DatePikerContentCss")
 
     @Scripts.Render("~/bundles/modernizr")
+
 
     <style>
         .message {
@@ -34,6 +41,11 @@
             opacity: 0.5;
             filter: alpha(opacity=10);
             z-index: 9998;
+        }
+
+        .error {
+            /*border-color: red;*/
+            background: pink;
         }
     </style>
 
@@ -68,6 +80,9 @@
             }
         </style>
     }
+
+
+    @RenderSection("Styles", required: false)
 </head>
 <body>
 
@@ -84,20 +99,20 @@
 
                 <div class="navbar-brand" style="display:inline-block; padding:2px;"><img src="@Url.Content("~/Imagens/Logo.png")" style="height:45px;" /> </div>
 
-                <div class="navbar-brand" style="display:inline-block; margin-left:5px;"><a href="#" style="font-family:'Century Gothic'; font-size:20px; font-weight:bold; color:#080533;">Plano de Ação</a></div>
+                <div class="navbar-brand" style="display:inline-block; margin-left:5px;"><a href="#" style="font-family:'Century Gothic'; font-size:20px; font-weight:bold; color:#080533;">@Resources.Resource.action_plan</a></div>
 
             </div>
             <div id="navbar" class="navbar-collapse collapse">
 
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active">
-                        <a href="#">By GRJ Soluções</a>
+                        <a href="#">@Resources.Resource.by_grj_solutions</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <a href="@Url.Action("LogOut", "Home")">
-                            <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
+                            <i class="fa fa-sign-out" aria-hidden="true"></i> @Resources.Resource.log_off
                         </a>
                     </li>
                 </ul>
@@ -108,12 +123,17 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="">
-                        <a href="@Url.Action("Index","Home")">Relatórios</a>
+                        <a href="@Url.Action("Index","Home")">@Resources.Resource.reports</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="">
-                        <a href="@Url.Action("Index","PaPlanejamentoAcao")">Gerenciar</a>
+                        <a href="@Url.Action("Index","PaPlanejamentoAcao")">@Resources.Resource.manage</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="@Url.Action("Index2","Home2")">@Resources.Resource.dashboard</a>
                     </li>
                 </ul>
 
@@ -121,26 +141,24 @@
             <!--/.nav-collapse -->
         </div>
     </nav>
-    <div class="container" id="RederBodyContainer" style="margin-top:20px;" >
+    <div class="container" id="RederBodyContainer" style="margin-top:20px;">
         <hr />
 
         @Html.Partial("~/Views/Shared/_AcessoSgq.cshtml")
 
         @RenderBody()
         <hr />
-        @*<footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>*@
     </div>
 
     <div id="overlay" class="overlay" style="display:none"></div>
-    <div id="messageModal" class="message padding20" style="display:none">
+    <div id="messageModal" class="message padding20" style="display:none; left:0">
         <h1 class="head">Titulo</h1>
         <div class="body font16">Mensagem</div>
         <div class="foot">
             <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
         </div>
     </div>
+       @Html.Partial("~/Views/Shared/_Rodape.cshtml")
 
 
 
@@ -195,7 +213,7 @@
             http://plentz.github.io/jquery-maskmoney/
         */
         function MoneyMask(preffix) {
-            var config = { prefix: '', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false, allowZero: true }
+            var config = { prefix: '', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
             if (preffix != undefined) {
                 config.prefix = preffix
             }
@@ -206,14 +224,19 @@
             https://uxsolutions.github.io/bootstrap-datepicker/?markup=input&format=&weekStart=&startDate=0&endDate=&startView=0&minViewMode=0&maxViewMode=4&todayBtn=linked&clearBtn=false&language=pt-BR&orientation=auto&multidate=false&multidateSeparator=&todayHighlight=on&keyboardNavigation=on&forceParse=on#sandbox
         */
         function InitDatePiker() {
+
+            //$('.datepicker').datepicker("destroy");
+
             $('.datepicker').datepicker({
                 startDate: 0,
                 todayBtn: "linked",
                 language: "pt-BR",
                 multidate: false,
+                autoclose: true,
                 todayHighlight: true
             });
         }
+
         $(document).ready(function () {
             InitDatePiker();
             MoneyMask();
@@ -246,6 +269,48 @@
         });
 
         $.fn.serializeObject = function () {
+
+            var isValid = true
+
+            var tipo = "";
+
+            if (typeof isClickedTaticoVinculado != 'undefined') {
+
+                if (isClickedTaticoVinculado) {
+                    tipo = '.tatico';
+                } else if (isClickedEstrategico) {
+                    tipo = ".estrategico";
+                } else {
+                    tipo = ".operacional";
+                }
+            }
+            //var tipo = "estrategico";
+
+            $(this).find('.error').removeClass('error')
+            $(this).find('select.required:visible' + tipo).each(function (c, o) {
+                if ($(o).find('option:selected').val() == undefined || $(o).find('option:selected').val().length == 0) {
+                    $(o).addClass('error')
+                    $(o).parents('form').find('#' + $(o).attr('id') + ' + .select2').find('.select2-selection__rendered').addClass('error');
+                }
+            });
+
+            $(this).find('input.required').each(function (c, o) {
+                $(o).addClass('error')
+                if (($(this).val().length > 0)) {
+                    $(this).removeClass('error')
+                } else {
+                    $(this).addClass('error')
+                }
+            });
+
+            $(this).find('input.money').each(function (i, e) { $(e).val($(e).val().replace('R$ ', '')); })
+
+            //if ($(this).find('.error').length) {
+            //    alert("Campos obrigatórios");
+            //    return { isValid: '0' }
+            //    throw "Campos obrigatórios";
+            //}
+
             var o = {};
             var a = this.serializeArray();
             $.each(a, function () {
@@ -258,9 +323,11 @@
                     o[this.name] = this.value || '';
                 }
             });
+
+            $(this).find('.error:hidden').removeClass('error');
+
             return o;
         };
-
     </script>
 
 </body>

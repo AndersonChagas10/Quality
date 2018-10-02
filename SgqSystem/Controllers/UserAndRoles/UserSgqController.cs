@@ -135,6 +135,7 @@ namespace SgqSystem.Controllers
             {
                 userSgqDto.AddDate = DateTime.Now;
                 userSgqDto.Password = Guard.EncryptStringAES(userSgqDto.Password);
+                IsActive = true;
             }
             else
             {
@@ -257,7 +258,7 @@ namespace SgqSystem.Controllers
                 HttpCookie currentUserCookie = Request.Cookies["webControlCookie"];
                 if (currentUserCookie != null)
                 {
-                    currentUserCookie.Expires = DateTime.Now.AddHours(1);
+                    currentUserCookie.Expires = DateTime.Now.AddHours(48);
                     Response.SetCookie(currentUserCookie);
                 }
             }
@@ -329,10 +330,14 @@ namespace SgqSystem.Controllers
 
                     myCookie.Values.Add("addDate", userSgq.AddDate.ToString("dd/MM/yyyy"));
 
-                    if (userSgq.Role != null)
+                    
+
+                    if (userSgq.ParCompanyXUserSgq != null)
                         myCookie.Values.Add("roles", userSgq.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
                     else
                         myCookie.Values.Add("roles", "");
+
+                    myCookie.Values.Add("CompanyId", userSgq.ParCompany_Id.ToString());
 
                     if (userSgq.ParCompanyXUserSgq != null)
                         if (userSgq.ParCompanyXUserSgq.Any(r => r.Role != null))
@@ -341,7 +346,7 @@ namespace SgqSystem.Controllers
                             myCookie.Values.Add("rolesCompany", "");
 
                     //set cookie expiry date-time. Made it to last for next 12 hours.
-                    myCookie.Expires = DateTime.Now.AddMinutes(60);
+                    myCookie.Expires = DateTime.Now.AddHours(48);
 
                     //Most important, write the cookie to client.
                     Response.Cookies.Add(myCookie);

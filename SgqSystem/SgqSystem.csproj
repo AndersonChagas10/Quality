@@ -26,7 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress />
+    <Use64BitIISExpress>false</Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,25 +50,33 @@
       <HintPath>..\packages\AutoMapper.5.0.2\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="ExcelDataReader, Version=3.4.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.4.0\lib\net45\ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet, Version=3.4.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.DataSet.3.4.0\lib\net45\ExcelDataReader.DataSet.dll</HintPath>
     </Reference>
     <Reference Include="GridMvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Grid.Mvc.3.0.0\lib\net40\GridMvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Hangfire.Core, Version=1.6.12.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.Core.1.6.12\lib\net45\Hangfire.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
     </Reference>
-    <Reference Include="Hangfire.Dashboard.Authorization, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.Dashboard.Authorization.2.1.0\lib\net45\Hangfire.Dashboard.Authorization.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Hangfire.SqlServer, Version=1.6.12.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.SqlServer.1.6.12\lib\net45\Hangfire.SqlServer.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="HtmlRenderer.PdfSharp, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.PdfSharp.1.5.0.6\lib\net45\HtmlRenderer.PdfSharp.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
@@ -111,6 +119,27 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unofficial.Microsoft.SQLServer.SMO.2014.12.0.2000.8\lib\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfoExtended, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unofficial.Microsoft.SQLServer.SMO.2014.12.0.2000.8\lib\Microsoft.SqlServer.ConnectionInfoExtended.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unofficial.Microsoft.SQLServer.SMO.2014.12.0.2000.8\lib\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unofficial.Microsoft.SQLServer.SMO.2014.12.0.2000.8\lib\Microsoft.SqlServer.Smo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SmoExtended, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unofficial.Microsoft.SQLServer.SMO.2014.12.0.2000.8\lib\Microsoft.SqlServer.SmoExtended.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlClrProvider, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unofficial.Microsoft.SQLServer.SMO.2014.12.0.2000.8\lib\Microsoft.SqlServer.SqlClrProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unofficial.Microsoft.SQLServer.SMO.2014.12.0.2000.8\lib\Microsoft.SqlServer.SqlEnum.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -151,10 +180,21 @@
       <HintPath>..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz, Version=2.5.0.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.5.0\lib\net40\Quartz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -174,6 +214,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Runtime.Serialization" />
@@ -306,13 +347,23 @@
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\BuildPermissionApiController.cs" />
     <Compile Include="Controllers\Api\CompanyFormApiController.cs" />
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
+    <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
+    <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
+    <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
+    <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
+    <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
+    <Compile Include="Controllers\Api\Recravacao\RepoRecravacao.cs" />
+    <Compile Include="Controllers\Api\MandalaApiController.cs" />
+    <Compile Include="Controllers\Api\ParHeaderFieldApiController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDeResultadosApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\SIFReportsApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadePorCabecalhoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
@@ -320,6 +371,7 @@
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
+    <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\SelectVinculado\SelectVinculadoApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
@@ -341,15 +393,39 @@
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
+    <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
+    <Compile Include="Controllers\ImportFormat\ImportFormatItemsController.cs" />
+    <Compile Include="Controllers\ImportFormat\ImportFormatsController.cs" />
+    <Compile Include="Controllers\ImportacaoExcelController.cs" />
+    <Compile Include="Controllers\ItemMenu\ItemMenuController.cs" />
     <Compile Include="Controllers\Params\EmailConfigEUAController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
+    <Compile Include="Controllers\Params\ParClusterGroupsController.cs" />
+    <Compile Include="Controllers\ParClusterXModulesController.cs" />
+    <Compile Include="Controllers\ParGroupParLevel1Controller.cs" />
+    <Compile Include="Controllers\ParGroupParLevel1TypeController.cs" />
+    <Compile Include="Controllers\ParGroupParLevel1XParLevel1Controller.cs" />
+    <Compile Include="Controllers\ParGroupParLevel1XParLevel3Controller.cs" />
+    <Compile Include="Controllers\ParLevel1XModuleController.cs" />
+    <Compile Include="Controllers\ParModulesController.cs" />
+    <Compile Include="Controllers\ParModuleXModulesController.cs" />
+    <Compile Include="Controllers\PrintController.cs" />
+    <Compile Include="Controllers\RelatorioReprocessoController.cs" />
+    <Compile Include="Controllers\Recravacao\RecravacaoLinhasController.cs" />
+    <Compile Include="Controllers\Recravacao\ParRecravacao_Linhas.cs" />
+    <Compile Include="Controllers\Recravacao\ParRecravacao_TipoLata.cs" />
+    <Compile Include="Controllers\Recravacao\RecravacaoController.cs" />
+    <Compile Include="Controllers\Recravacao\RecravacaoTipoLataController.cs" />
     <Compile Include="Controllers\Photo\PhotoController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
+    <Compile Include="Controllers\Relatorios\SIFReportsController.cs" />
+    <Compile Include="Controllers\ReportXUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
+    <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
@@ -379,6 +455,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AppSettingsWebConfig.cs" />
+    <Compile Include="Helpers\CommonDate.cs" />
     <Compile Include="Helpers\Handlres\HandleApi.cs" />
     <Compile Include="Helpers\Handlres\HandleController.cs" />
     <Compile Include="Helpers\Handlres\ValidateModelAttribute.cs" />
@@ -388,13 +466,18 @@
     <Compile Include="Helpers\HandleCultureAPI.cs" />
     <Compile Include="Helpers\Table.cs" />
     <Compile Include="Helpers\Teste.cs" />
+    <Compile Include="Helpers\Util.cs" />
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
+    <Compile Include="Jobs\MandalaJob.cs" />
+    <Compile Include="Jobs\ReProcessJsonJob.cs" />
+    <Compile Include="Jobs\MailJob.cs" />
     <Compile Include="Mail\SimpleAsynchronousUSA.cs" />
     <Compile Include="Mail\SimpleAsynchronous.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
     <Compile Include="Mappers\DefectMapperProfile.cs" />
     <Compile Include="Mappers\EmailContentMapperProfile.cs" />
+    <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
     <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel2XHeaderFieldMapperProfile.cs" />
@@ -405,6 +488,7 @@
     <Compile Include="Mappers\Params\ParCriticalLevelMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3EvaluationSampleMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3Level2Level1MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3ValueMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
@@ -413,6 +497,7 @@
     <Compile Include="Mappers\Params\ParLevel3InputTypeMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParMeasurementUnitMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3Level2MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParModuleMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParSampleMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParEvaluationMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3MapperProfile.cs" />
@@ -437,25 +522,19 @@
     <Compile Include="Mappers\Params\ParLevel1MapperProfile.cs" />
     <Compile Include="Mappers\ExampleMapperProfile.cs" />
     <Compile Include="Mappers\Audit\CorrectiveActionMapperProfile.cs" />
-    <Compile Include="Mappers\Audit\CollectionLevel02MapperProfile.cs" />
-    <Compile Include="Mappers\Audit\CollectionLevel03MapperProfile.cs" />
-    <Compile Include="Mappers\Audit\ConsolidationLevel01MapperProfile.cs" />
-    <Compile Include="Mappers\Audit\ConsolidationLevel02MapperProfile.cs" />
-    <Compile Include="Mappers\Audit\Level01MapperProfile.cs" />
-    <Compile Include="Mappers\Audit\Level02MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParScoreTypeMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
+    <Compile Include="Mappers\ParClusterXModuleMapperProfile.cs" />
     <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
     <Compile Include="Mappers\ResultLevel3MapperProfile.cs" />
     <Compile Include="Mappers\RoleMapperProfile.cs" />
     <Compile Include="Mappers\RoleUserSgqMapperProfile.cs" />
+    <Compile Include="Mappers\RoleUserSgqXItemMenuMapperProfile.cs" />
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />
     <Compile Include="Mappers\UnitMapperProfile.cs" />
-    <Compile Include="Mappers\DepartmenMapperProfile.cs" />
-    <Compile Include="Mappers\Audit\Level03MapperProfile.cs" />
     <Compile Include="Mappers\UserMapperProfile.cs" />
     <Compile Include="Mappers\UserSgqMapperProfile.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
@@ -492,7 +571,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Views\ResultsDivViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin-lte\css\AdminLTE.css" />
@@ -526,6 +604,7 @@
     <Content Include="admin-lte\js\app.js" />
     <Content Include="admin-lte\js\app.min.js" />
     <Content Include="Angular\app.js" />
+    <Content Include="Angular\ClusterGroupCluster.js" />
     <Content Include="Angular\ClusterRegionalUnidadeCriticalLevel123.js" />
     <Content Include="Angular\Level321Chain.js" />
     <Content Include="Angular\SelectVinculado.js" />
@@ -543,6 +622,7 @@
     <Content Include="Content\bootstrap-datepicker3.min.css" />
     <Content Include="Content\bootstrap-datepicker3.standalone.css" />
     <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="Content\bootstrap-select.min.css" />
     <Content Include="Content\bootstrap-switch\css\bootstrap2\bootstrap-switch.css" />
     <Content Include="Content\bootstrap-switch\css\bootstrap2\bootstrap-switch.min.css" />
     <Content Include="Content\bootstrap-switch\css\bootstrap3\bootstrap-switch.css" />
@@ -553,10 +633,19 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\BootStrapRecravacao\css\bootstrap-responsive.css" />
+    <Content Include="Content\BootStrapRecravacao\css\bootstrap-responsive.min.css" />
+    <Content Include="Content\BootStrapRecravacao\css\bootstrap.css" />
+    <Content Include="Content\BootStrapRecravacao\css\bootstrap.min.css" />
+    <Content Include="Content\BootStrapRecravacao\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\BootStrapRecravacao\img\glyphicons-halflings.png" />
+    <Content Include="Content\BootStrapRecravacao\js\bootstrap.js" />
+    <Content Include="Content\BootStrapRecravacao\js\bootstrap.min.js" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
+    <Content Include="Content\datatableGRT.css" />
     <Content Include="Content\datatables.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
@@ -740,8 +829,48 @@
     <Content Include="Content\gridmvc.datepicker.min.css" />
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\GRTYtoaraLogo.png" />
+    <Content Include="Content\Imagens\favicon.png" />
+    <Content Include="Content\mindmap.css" />
+    <Content Include="Content\PluginGRT\pivot.css" />
+    <Content Include="Content\lobi\bootstrap\dist\css\bootstrap-theme.min.css" />
+    <Content Include="Content\lobi\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="Content\lobi\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\lobi\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Include="Content\lobi\bootstrap\dist\js\npm.js" />
+    <Content Include="Content\lobi\css\lobipanel.css" />
+    <Content Include="Content\lobi\demo\demo.css" />
+    <Content Include="Content\lobi\demo\documentation.css" />
+    <Content Include="Content\lobi\dist\css\lobipanel.css" />
+    <Content Include="Content\lobi\dist\css\lobipanel.min.css" />
+    <Content Include="Content\lobi\dist\js\lobipanel.js" />
+    <Content Include="Content\lobi\dist\js\lobipanel.min.js" />
+    <Content Include="Content\lobi\gruntfile.js" />
+    <Content Include="Content\lobi\index.html" />
+    <Content Include="Content\lobi\js\lobipanel.js" />
+    <Content Include="Content\lobi\lib\font-awesome\css\font-awesome.css" />
+    <Content Include="Content\lobi\lib\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\lobi\lib\highlight\github.css" />
+    <Content Include="Content\lobi\lib\highlight\highlight.pack.js" />
+    <Content Include="Content\lobi\lib\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\lobi\lib\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\lobi\lib\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\lobi\lib\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\lobi\lib\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\lobi\lib\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\lobi\lib\jquery-ui.min.css" />
+    <Content Include="Content\lobi\lib\jquery-ui.min.js" />
+    <Content Include="Content\lobi\lib\jquery-ui.theme.min.css" />
+    <Content Include="Content\lobi\lib\jquery.1.11.min.js" />
+    <Content Include="Content\lobi\lib\jquery.ui.touch-punch.js" />
+    <Content Include="Content\lobi\lib\jquery.ui.touch-punch.min.js" />
+    <Content Include="Imagens\A.png" />
+    <Content Include="Imagens\C.png" />
+    <Content Include="Imagens\D.png" />
+    <Content Include="Imagens\P.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
+    <Content Include="Content\select2-bootstrap.min.css" />
     <Content Include="Content\select2.min.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -785,18 +914,31 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\Timeout\timeout-dialog.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Imagens\Brazil.png" />
     <Content Include="Imagens\chart.png" />
+    <Content Include="Imagens\JBS_logo.jpg" />
+    <Content Include="Imagens\if_check_406783.png" />
+    <Content Include="Imagens\if_tablet_406729.png" />
+    <Content Include="Imagens\if_target_406854.png" />
+    <Content Include="Imagens\logo-gq.png" />
+    <Content Include="Imagens\logo-jbs.png" />
     <Content Include="Imagens\Logo.png" />
+    <Content Include="Imagens\Recravacao\10pts.jpg" />
+    <Content Include="Imagens\Recravacao\11pts.png" />
+    <Content Include="Imagens\Recravacao\3pts.jpg" />
+    <Content Include="Imagens\Recravacao\9pts.jpg" />
+    <Content Include="Imagens\seta.png" />
     <Content Include="Imagens\setas.png" />
     <Content Include="Imagens\Spain.png" />
     <Content Include="Imagens\stack.png" />
     <Content Include="Imagens\tablet.png" />
     <Content Include="Imagens\timeout-icon.png" />
     <Content Include="Imagens\under_construction.png" />
+    <Content Include="Imagens\under_construction_red.png" />
     <Content Include="Imagens\United-States.png" />
     <Content Include="Scripts\aes.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
@@ -942,6 +1084,104 @@
     <Content Include="Content\gallery\js\jquery.blueimp-gallery.min.js.map" />
     <Content Include="Content\gallery\package.json" />
     <Content Include="Content\gallery\README.md" />
+    <Content Include="Scripts\mindmap.js" />
+    <Content Include="WebConfig_Old.xml" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Content\lobi\.gitignore" />
+    <Content Include="Content\lobi\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <Content Include="Content\lobi\bootstrap\dist\css\bootstrap.css.map" />
+    <Content Include="Content\lobi\bootstrap\dist\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\lobi\bootstrap\dist\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\lobi\bootstrap\dist\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\lobi\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\lobi\bootstrap\less\.csscomb.json" />
+    <Content Include="Content\lobi\bootstrap\less\.csslintrc" />
+    <Content Include="Content\lobi\bootstrap\less\alerts.less" />
+    <Content Include="Content\lobi\bootstrap\less\badges.less" />
+    <Content Include="Content\lobi\bootstrap\less\bootstrap.less" />
+    <Content Include="Content\lobi\bootstrap\less\breadcrumbs.less" />
+    <Content Include="Content\lobi\bootstrap\less\button-groups.less" />
+    <Content Include="Content\lobi\bootstrap\less\buttons.less" />
+    <Content Include="Content\lobi\bootstrap\less\carousel.less" />
+    <Content Include="Content\lobi\bootstrap\less\close.less" />
+    <Content Include="Content\lobi\bootstrap\less\code.less" />
+    <Content Include="Content\lobi\bootstrap\less\component-animations.less" />
+    <Content Include="Content\lobi\bootstrap\less\dropdowns.less" />
+    <Content Include="Content\lobi\bootstrap\less\forms.less" />
+    <Content Include="Content\lobi\bootstrap\less\glyphicons.less" />
+    <Content Include="Content\lobi\bootstrap\less\grid.less" />
+    <Content Include="Content\lobi\bootstrap\less\input-groups.less" />
+    <Content Include="Content\lobi\bootstrap\less\jumbotron.less" />
+    <Content Include="Content\lobi\bootstrap\less\labels.less" />
+    <Content Include="Content\lobi\bootstrap\less\list-group.less" />
+    <Content Include="Content\lobi\bootstrap\less\media.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\alerts.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\background-variant.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\border-radius.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\buttons.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\center-block.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\clearfix.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\forms.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\gradients.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\grid-framework.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\grid.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\hide-text.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\image.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\labels.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\list-group.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\nav-divider.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\nav-vertical-align.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\opacity.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\pagination.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\panels.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\progress-bar.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\reset-filter.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\reset-text.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\resize.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\responsive-visibility.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\size.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\tab-focus.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\table-row.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\text-emphasis.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\text-overflow.less" />
+    <Content Include="Content\lobi\bootstrap\less\mixins\vendor-prefixes.less" />
+    <Content Include="Content\lobi\bootstrap\less\modals.less" />
+    <Content Include="Content\lobi\bootstrap\less\navbar.less" />
+    <Content Include="Content\lobi\bootstrap\less\navs.less" />
+    <Content Include="Content\lobi\bootstrap\less\normalize.less" />
+    <Content Include="Content\lobi\bootstrap\less\pager.less" />
+    <Content Include="Content\lobi\bootstrap\less\pagination.less" />
+    <Content Include="Content\lobi\bootstrap\less\panels.less" />
+    <Content Include="Content\lobi\bootstrap\less\popovers.less" />
+    <Content Include="Content\lobi\bootstrap\less\print.less" />
+    <Content Include="Content\lobi\bootstrap\less\progress-bars.less" />
+    <Content Include="Content\lobi\bootstrap\less\responsive-embed.less" />
+    <Content Include="Content\lobi\bootstrap\less\responsive-utilities.less" />
+    <Content Include="Content\lobi\bootstrap\less\scaffolding.less" />
+    <Content Include="Content\lobi\bootstrap\less\tables.less" />
+    <Content Include="Content\lobi\bootstrap\less\theme.less" />
+    <Content Include="Content\lobi\bootstrap\less\thumbnails.less" />
+    <Content Include="Content\lobi\bootstrap\less\tooltip.less" />
+    <Content Include="Content\lobi\bootstrap\less\type.less" />
+    <Content Include="Content\lobi\bootstrap\less\utilities.less" />
+    <Content Include="Content\lobi\bootstrap\less\variables.less" />
+    <Content Include="Content\lobi\bootstrap\less\wells.less" />
+    <Content Include="Content\lobi\less\loading-animation.less" />
+    <Content Include="Content\lobi\less\lobipanel.less" />
+    <Content Include="Content\lobi\less\main.less" />
+    <Content Include="Content\lobi\less\variables.less" />
+    <Content Include="Content\lobi\lib\font-awesome\css\font-awesome.css.map" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\lobi\lib\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Content\lobi\LICENSE" />
+    <Content Include="Content\lobi\package.json" />
+    <Content Include="Content\lobi\README.md" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1084,24 +1324,33 @@
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
     <None Include="Properties\PublishProfiles\master2.pubxml" />
     <None Include="Properties\PublishProfiles\ParamsDevInterno.pubxml" />
     <None Include="Properties\PublishProfiles\ParamsInterno.pubxml" />
     <None Include="Properties\PublishProfiles\PublishEUA.pubxml" />
+    <None Include="Properties\PublishProfiles\Recravacao.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ BR.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ DEV.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ GRT.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ USA.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBr.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBrasilGlobal.pubxml" />
     <None Include="Properties\PublishProfiles\SgqGlobal.pubxml" />
     <None Include="Properties\PublishProfiles\SgqLocal.pubxml" />
     <None Include="Properties\PublishProfiles\SGQMaster.pubxml" />
     <Content Include="Scripts\DataTables\datatablePtBr.json" />
+    <None Include="Properties\PublishProfiles\SgqTablet.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSA.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSAV1.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQYtoara.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ_Local_BR.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ_Local_US.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ_Local_Ytoara.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ_Meu_Local.pubxml" />
     <None Include="Properties\PublishProfiles\sqgOnline.pubxml" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular.min.js.map" />
@@ -1120,6 +1369,8 @@
     <None Include="Properties\PublishProfiles\Ytoara.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\GuardJs.js" />
+    <Content Include="Scripts\humanizeduration\humanize-duration.js" />
+    <Content Include="Scripts\humanize\humanize-duration.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.date.extensions.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.dependencyLib.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.extensions.js" />
@@ -1151,6 +1402,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jqueryeasing\jquery.easing.min.js" />
     <Content Include="Scripts\lib-typedarrays.js" />
     <Content Include="Scripts\loadingoverlay.min.js" />
     <Content Include="Scripts\loadingoverlay_progress.min.js" />
@@ -1220,12 +1472,23 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.vi.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.min.js" />
+    <Content Include="Scripts\lodash\lodash.js" />
+    <Content Include="Scripts\Math\math.js" />
     <Content Include="Scripts\md5.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\Print\print.js" />
+    <Content Include="Content\PluginGRT\c3.min.css" />
+    <Content Include="Scripts\PluginGRT\c3.min.js" />
+    <Content Include="Scripts\PluginGRT\c3_renderers.js" />
+    <Content Include="Scripts\PluginGRT\d3.min.js" />
+    <Content Include="Scripts\PluginGRT\datatableGRT.js" />
+    <Content Include="Scripts\PluginGRT\pivot.js" />
+    <Content Include="Scripts\PluginGRT\mandalaGRT.js" />
+    <Content Include="Scripts\Print\printGRT.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
@@ -1244,6 +1507,8 @@
     <Content Include="Scripts\theme\js\app.min.js" />
     <Content Include="Scripts\theme\js\jquery.slimscroll.min.js" />
     <Content Include="Scripts\Timeout\timeout-dialog.js" />
+    <Content Include="Scripts\Timer\angular-timer.min.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\tripledes.js" />
     <Content Include="Scripts\x64-core.js" />
     <Content Include="Help.txt" />
@@ -1452,6 +1717,16 @@
     <Content Include="Views\RelatoriosSgq\_VerificacaoTipificacaoEdit.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidadePorCabecalho.cshtml" />
     <Content Include="Views\EmailConfigEUA\Index.cshtml" />
+    <Content Include="Views\Recravacao\Index.cshtml" />
+    <Content Include="Views\Recravacao\ListLinhas.cshtml" />
+    <Content Include="Views\Recravacao\ListTipoLatas.cshtml" />
+    <Content Include="Views\Recravacao\TipoLata.cshtml" />
+    <Content Include="Views\RecravacaoTipoLata\Index.cshtml" />
+    <Content Include="Views\RecravacaoTipoLata\Create.cshtml" />
+    <Content Include="Views\RecravacaoTipoLata\Details.cshtml" />
+    <Content Include="Views\RecravacaoLinhas\Index.cshtml" />
+    <Content Include="Views\RecravacaoLinhas\Create.cshtml" />
+    <Content Include="Views\RecravacaoLinhas\Details.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioDeResultados.cshtml" />
     <Content Include="Views\Shared\_SelectVinculado.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
@@ -1459,14 +1734,103 @@
     <Content Include="Views\RelatoriosSgq\_Image.cshtml" />
     <Content Include="Views\Photo\Index.cshtml" />
     <Content Include="Views\Shared\_Carousel.cshtml" />
+    <Content Include="Views\ParClusterGroups\Create.cshtml" />
+    <Content Include="Views\ParClusterGroups\Delete.cshtml" />
+    <Content Include="Views\ParClusterGroups\Details.cshtml" />
+    <Content Include="Views\ParClusterGroups\Edit.cshtml" />
+    <Content Include="Views\ParClusterGroups\Index.cshtml" />
+    <Content Include="Views\Params\_ParLevel3Value.cshtml" />
+    <Content Include="Views\UpdateTelaTablet\Index.cshtml" />
+    <Content Include="Views\RelatorioReprocesso\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\Reprocesso.cshtml" />
+    <Content Include="Views\Photo\Index.cshtml" />
+    <Content Include="Views\Recravacao\Print3.cshtml" />
+    <Content Include="Views\Print\Index.cshtml" />
+    <Content Include="Views\Print\Template1.cshtml" />
+    <Content Include="Views\Print\Template2.cshtml" />
+    <Content Include="Views\Print\Template3.cshtml" />
+    <Content Include="Views\Params\_AvaliacaoAmostraLevel3.cshtml" />
+    <Content Include="Views\Params\_TipoDadosEntrada.cshtml" />
+    <Content Include="Views\ParModules\Create.cshtml" />
+    <Content Include="Views\ParModules\Delete.cshtml" />
+    <Content Include="Views\ParModules\Details.cshtml" />
+    <Content Include="Views\ParModules\Edit.cshtml" />
+    <Content Include="Views\ParModules\Index.cshtml" />
+    <Content Include="Views\ParClusterXModules\Create.cshtml" />
+    <Content Include="Views\ParClusterXModules\Delete.cshtml" />
+    <Content Include="Views\ParClusterXModules\Details.cshtml" />
+    <Content Include="Views\ParClusterXModules\Edit.cshtml" />
+    <Content Include="Views\ParClusterXModules\Index.cshtml" />
+    <Content Include="Views\ParModuleXModules\Create.cshtml" />
+    <Content Include="Views\ParModuleXModules\Delete.cshtml" />
+    <Content Include="Views\ParModuleXModules\Details.cshtml" />
+    <Content Include="Views\ParModuleXModules\Edit.cshtml" />
+    <Content Include="Views\ParModuleXModules\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_PivotTable.cshtml" />
+    <Content Include="Views\Shared\_Mandala.cshtml" />
+    <Content Include="Views\Reports\CorrectiveActionEditReport.cshtml" />
+    <Content Include="Views\ImportacaoExcel\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\ApontamentosDiariosDomingo.cshtml" />
+    <Content Include="Views\GlobalConfig\Jobs.cshtml" />
+    <Content Include="Views\RelatoriosSgq\NaoConformidadeDuplicada.cshtml" />
+    <Content Include="Views\RoleUserSgq\Index.cshtml" />
+    <Content Include="Views\RoleUserSgq\Create.cshtml" />
+    <Content Include="Views\ItemMenu\Index.cshtml" />
+    <Content Include="Views\ItemMenu\Create.cshtml" />
+    <Content Include="Views\ItemMenu\EstruturaMenus.cshtml" />
+    <Content Include="Views\Shared\_MensagemAtualizarTablets.cshtml" />
+    <Content Include="Views\ParLevel1XModule\Create.cshtml" />
+    <Content Include="Views\ParLevel1XModule\Delete.cshtml" />
+    <Content Include="Views\ParLevel1XModule\Details.cshtml" />
+    <Content Include="Views\ParLevel1XModule\Edit.cshtml" />
+    <Content Include="Views\ParLevel1XModule\Index.cshtml" />
+    <Content Include="Views\ImportFormats\Create.cshtml" />
+    <Content Include="Views\ImportFormats\Delete.cshtml" />
+    <Content Include="Views\ImportFormats\Details.cshtml" />
+    <Content Include="Views\ImportFormats\Edit.cshtml" />
+    <Content Include="Views\ImportFormats\Index.cshtml" />
+    <Content Include="Views\ImportFormatItems\Create.cshtml" />
+    <Content Include="Views\ImportFormatItems\Delete.cshtml" />
+    <Content Include="Views\ImportFormatItems\Details.cshtml" />
+    <Content Include="Views\ImportFormatItems\Edit.cshtml" />
+    <Content Include="Views\ImportFormatItems\Index.cshtml" />
+    <Content Include="Views\SIFReports\Index.cshtml" />
+    <Content Include="Views\ReportXUserSgq\Create.cshtml" />
+    <Content Include="Views\ReportXUserSgq\Delete.cshtml" />
+    <Content Include="Views\ReportXUserSgq\Details.cshtml" />
+    <Content Include="Views\ReportXUserSgq\Edit.cshtml" />
+    <Content Include="Views\ReportXUserSgq\Index.cshtml" />
+    <Content Include="Views\Recravacao\PrintAcaoCorretiva.cshtml" />
+    <Content Include="Views\RelatoriosSgq\ParametrizacaoGeral.cshtml" />
+    <Content Include="Views\ParGroupParLevel1\Create.cshtml" />
+    <Content Include="Views\ParGroupParLevel1\Delete.cshtml" />
+    <Content Include="Views\ParGroupParLevel1\Details.cshtml" />
+    <Content Include="Views\ParGroupParLevel1\Edit.cshtml" />
+    <Content Include="Views\ParGroupParLevel1\Index.cshtml" />
+    <Content Include="Views\ParGroupParLevel1Type\Create.cshtml" />
+    <Content Include="Views\ParGroupParLevel1Type\Delete.cshtml" />
+    <Content Include="Views\ParGroupParLevel1Type\Details.cshtml" />
+    <Content Include="Views\ParGroupParLevel1Type\Edit.cshtml" />
+    <Content Include="Views\ParGroupParLevel1Type\Index.cshtml" />
+    <Content Include="Views\ParGroupParLevel1XParLevel1\Create.cshtml" />
+    <Content Include="Views\ParGroupParLevel1XParLevel1\Delete.cshtml" />
+    <Content Include="Views\ParGroupParLevel1XParLevel1\Details.cshtml" />
+    <Content Include="Views\ParGroupParLevel1XParLevel1\Edit.cshtml" />
+    <Content Include="Views\ParGroupParLevel1XParLevel1\Index.cshtml" />
+    <Content Include="Views\ParGroupParLevel1XParLevel3\Create.cshtml" />
+    <Content Include="Views\ParGroupParLevel1XParLevel3\Delete.cshtml" />
+    <Content Include="Views\ParGroupParLevel1XParLevel3\Details.cshtml" />
+    <Content Include="Views\ParGroupParLevel1XParLevel3\Edit.cshtml" />
+    <Content Include="Views\ParGroupParLevel1XParLevel3\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\Uploads\" />
     <Folder Include="Arquivos\uploads\" />
     <Folder Include="obj\" />
+    <Folder Include="Scripts\BootStrapRecravacao\" />
     <Folder Include="Scripts\i18n\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
@@ -1482,7 +1846,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
@@ -1549,7 +1915,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57506/</IISUrl>
+          <IISUrl>http://localhost/SgqSystem/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

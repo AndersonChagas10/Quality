@@ -571,7 +571,7 @@
     <value>Voltar</value>
   </data>
   <data name="inform_the_weight_of_the_level3" xml:space="preserve">
-    <value>Infome o peso do nível 3</value>
+    <value>Informe o peso do nível 3</value>
   </data>
   <data name="weight" xml:space="preserve">
     <value>Peso</value>
@@ -712,7 +712,7 @@
     <value>CEP Desossa</value>
   </data>
   <data name="cep_recortes" xml:space="preserve">
-    <value>CEP Recortes</value>
+    <value>CEP  Matéria Prima</value>
   </data>
   <data name="nqa" xml:space="preserve">
     <value>NQA</value>
@@ -729,7 +729,7 @@
   <data name="resource_id" xml:space="preserve">
     <value>pt_br</value>
   </data>
-  <data name="_new" xml:space="preserve">
+  <data name="_novo" xml:space="preserve">
     <value>Novo</value>
   </data>
   <data name="details" xml:space="preserve">
@@ -1741,7 +1741,7 @@
     <value>Tipo Scorecard</value>
   </data>
   <data name="search" xml:space="preserve">
-    <value>Procurar</value>
+    <value>Buscar</value>
   </data>
   <data name="show" xml:space="preserve">
     <value>Mostrar</value>
@@ -2003,5 +2003,191 @@
   </data>
   <data name="valued" xml:space="preserve">
     <value>Avaliado</value>
+  </data>
+  <data name="error_upper" xml:space="preserve">
+    <value>ERRO</value>
+  </data>
+  <data name="processing_upper" xml:space="preserve">
+    <value>PROCESSANDO</value>
+  </data>
+  <data name="success_upper" xml:space="preserve">
+    <value>SUCESSO</value>
+  </data>
+  <data name="waiting_upper" xml:space="preserve">
+    <value>PENDENTE</value>
+  </data>
+  <data name="effectiveDate" xml:space="preserve">
+    <value>Data Vigente</value>
+  </data>
+  <data name="actives" xml:space="preserve">
+    <value>Ativos</value>
+  </data>
+  <data name="active_clusters" xml:space="preserve">
+    <value>Processos Ativos</value>
+  </data>
+  <data name="active_goals" xml:space="preserve">
+    <value>Metas Ativas</value>
+  </data>
+  <data name="to_manager" xml:space="preserve">
+    <value>Gerenciar</value>
+  </data>
+  <data name="without" xml:space="preserve">
+    <value>Sem</value>
+  </data>
+  <data name="edited" xml:space="preserve">
+    <value>Editado</value>
+  </data>
+  <data name="normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="retroactive" xml:space="preserve">
+    <value>Retroativo</value>
+  </data>
+  <data name="description_has_between_1_and_300" xml:space="preserve">
+    <value>A Descrição deverá ter no mínimo 1 e máximo 300 caracteres</value>
+  </data>
+  <data name="data" xml:space="preserve">
+    <value>Dados</value>
+  </data>
+  <data name="weighted" xml:space="preserve">
+    <value>Ponderado</value>
+  </data>
+  <data name="module" xml:space="preserve">
+    <value>Módulos</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>Novo</value>
+  </data>
+  <data name="counter_name" xml:space="preserve">
+    <value>Nome Contador</value>
+  </data>
+  <data name="conclued_action_plan" xml:space="preserve">
+    <value>Plano de ação concluído</value>
+  </data>
+  <data name="among_others" xml:space="preserve">
+    <value>entre outros ...</value>
+  </data>
+  <data name="ev_with_weight" xml:space="preserve">
+    <value>Av Com Peso</value>
+  </data>
+  <data name="nc_with_weight" xml:space="preserve">
+    <value>Nc Com Peso</value>
+  </data>
+  <data name="back_to_departments" xml:space="preserve">
+    <value>Voltar para Departamentos</value>
+  </data>
+  <data name="unit_of_measurement_name" xml:space="preserve">
+    <value>Nome da Unidade de Medida</value>
+  </data>
+  <data name="bigger" xml:space="preserve">
+    <value>Maior</value>
+  </data>
+  <data name="smaller" xml:space="preserve">
+    <value>Menor</value>
+  </data>
+  <data name="indicators_by_units" xml:space="preserve">
+    <value>Indicadores por Unidades</value>
+  </data>
+  <data name="back_to_unit_of_measurement" xml:space="preserve">
+    <value>Voltar para Unidades de Medida</value>
+  </data>
+  <data name="package" xml:space="preserve">
+    <value>Pacote</value>
+  </data>
+  <data name="daily_apointments_sunday" xml:space="preserve">
+    <value>Aponts. Diarios Domingo</value>
+  </data>
+  <data name="file_format_not_supported" xml:space="preserve">
+    <value>Formato de Arquivo não Suportado</value>
+  </data>
+  <data name="no_file_selected" xml:space="preserve">
+    <value>Nenhum arquivo selecionado</value>
+  </data>
+  <data name="import_excel" xml:space="preserve">
+    <value>Importar Excel</value>
+  </data>
+  <data name="excel_file" xml:space="preserve">
+    <value>Arquivo Excel</value>
+  </data>
+  <data name="biweekly" xml:space="preserve">
+    <value>Quinzenal</value>
+  </data>
+  <data name="daily" xml:space="preserve">
+    <value>Diário</value>
+  </data>
+  <data name="monthly" xml:space="preserve">
+    <value>Mensal</value>
+  </data>
+  <data name="weekly" xml:space="preserve">
+    <value>Semanal</value>
+  </data>
+  <data name="period_type_chart" xml:space="preserve">
+    <value>Tipo de Periodo Nos Gráficos</value>
+  </data>
+  <data name="a_month" xml:space="preserve">
+    <value>Por Mês</value>
+  </data>
+  <data name="per_day" xml:space="preserve">
+    <value>Por Dia</value>
+  </data>
+  <data name="per_fortnight" xml:space="preserve">
+    <value>Por Quinzena</value>
+  </data>
+  <data name="per_week" xml:space="preserve">
+    <value>Por Semana</value>
+  </data>
+  <data name="parlevel1xmodules" xml:space="preserve">
+    <value>Indicador x Modulos</value>
+  </data>
+  <data name="effective_date_end" xml:space="preserve">
+    <value>Data efetiva de término</value>
+  </data>
+  <data name="effective_date_start" xml:space="preserve">
+    <value>Data efetiva de início</value>
+  </data>
+  <data name="parlevel1" xml:space="preserve">
+    <value>Indicador</value>
+  </data>
+  <data name="parModules" xml:space="preserve">
+    <value>Modulos</value>
+  </data>
+  <data name="import_format_itens" xml:space="preserve">
+    <value>Formato de itens de importação</value>
+  </data>
+  <data name="available_items" xml:space="preserve">
+    <value>Itens disponíveis</value>
+  </data>
+  <data name="import_format" xml:space="preserve">
+    <value>Formato de importação</value>
+  </data>
+  <data name="import_format_id" xml:space="preserve">
+    <value>Id do formato de importação</value>
+  </data>
+  <data name="key" xml:space="preserve">
+    <value>Chave</value>
+  </data>
+  <data name="new_format" xml:space="preserve">
+    <value>Novo Formato</value>
+  </data>
+  <data name="indicador_used" xml:space="preserve">
+    <value>Este Indicador já possui uma Regra de Alerta!</value>
+  </data>
+  <data name="monitoring_used" xml:space="preserve">
+    <value>Este Monitoramento já possui uma Regra de Alerta!</value>
+  </data>
+  <data name="are_greater_than" xml:space="preserve">
+    <value>é maior que</value>
+  </data>
+  <data name="module_link_indicator" xml:space="preserve">
+    <value>O módulo está vinculado a um ou mais indicadores, verifique antes de inativa lo</value>
+  </data>
+  <data name="update_collect_message" xml:space="preserve">
+    <value>Por favor, atualize as parametrizações da sua unidade para surtir efeito no APP Coleta.</value>
+  </data>
+  <data name="indicator_alredy_used" xml:space="preserve">
+    <value>Estes Indicadores já possuem vinculos na data vingente.</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>Atualizar</value>
   </data>
 </root>

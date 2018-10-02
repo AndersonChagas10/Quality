@@ -14,7 +14,7 @@ namespace SgqSystem.Controllers.Api
         [Route("Save")]
         public void Save(VerificacaoTipificacaoResultados vtr)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 string ctid = vtr.CaracteristicaTipificacaoId == null ? "NULL" : "'" + vtr.CaracteristicaTipificacaoId + "'";
                 string apid = vtr.AreasParticipantesId == null ? "NULL" : "'" + vtr.AreasParticipantesId + "'";
@@ -35,7 +35,7 @@ namespace SgqSystem.Controllers.Api
         [Route("Save")]
         public void Save(VerificacaoTipificacao vt)
         {
-            using (var db = new SGQ_GlobalEntities())
+            using (var db = new SgqDbDevEntities())
             {
                 db.Database.ExecuteSqlCommand("INSERT INTO VerificacaoTipificacao(Sequencial, Banda, DataHora, UnidadeId, Chave, Status) "+
                     " VALUES ('" + vt.Sequencial + "', '" + vt.Banda + "', '" + vt.DataHora+"', '" + vt.UnidadeId + "', '" + vt.Chave + "', '" + vt.Status + "');");

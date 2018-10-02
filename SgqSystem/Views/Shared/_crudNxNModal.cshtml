@@ -2,7 +2,7 @@
 <div class="modal fade" id="crudNxNEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
     <div class="modal-dialog    " role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header modal-header-gray">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">a</h4>
             </div>
@@ -32,6 +32,9 @@
             return isValid;
         },
         adiciona: function (o, idTable, tdsName) {
+
+
+
 
             var tr = "";
             var objData = {};
@@ -73,6 +76,8 @@
         },
         btnRemove: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.remove" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcRemove($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
         funcRemove: function (e) {
+            if ($(e).parents('table').find('tr').length <= 2)
+                $(e).parents('table').css('display', 'none');
             $(e).parents('tr').remove();
         },
         btnInactive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.inactivate" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcInactive($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
@@ -86,7 +91,7 @@
             element.find('td:last').append(crudNxN.btnReActive, crudNxN.btnEdit);
             reloadPopovers();
         },
-        btnReActive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.reactivate" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
+        btnReActive: '<button type="button" class="btn btn-info btn-xs popovers" data-content="@Resources.Resource.reactivate" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
         funcReActive: function (e) {
             var obj = $(e).parents('tr').data();
             obj["IsActive"] = true;
@@ -109,9 +114,8 @@
         //    reloadPopovers();
         //},
 
-        btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.alter" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
+        btnEdit: '<button type="button" class="btn btn-success btn-xs popovers" data-content="@Resources.Resource.alter" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
         funcEdit: function (e) {
-
             $('#crudNxNEdit > div > div > div.modal-body').empty();
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').off('click');
             var obj = $(e).parents('tr').data();
@@ -119,8 +123,10 @@
             /*RegraNc*/
             if ($(e).parents('#level1_nc_accordion').length || $(e).parents('#level2_nc_accordion').length || $(e).parents('#level3_nc_accordion').length) {
                 crudNxN.modalAlterarRegraNc(obj);
-                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
+                console.log(obj);
+                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {                
                     var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
+                    console.log("clique salvar" + editado);
                     $(e).parents('tr').removeData();
                     $(e).parents('tr').data(editado);
                     $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name)
@@ -158,13 +164,19 @@
             else if ($(e).parents('#level1_cluster_accordion').length) {
                 crudNxN.modalAlterarCluster(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-                    var editado = crudNxN.retornaObjetoAlteradoCluster(obj);//
-                    $(e).parents('tr').removeData();
-                    $(e).parents('tr').data(editado);
-                    $($(e).parents('tr').find('td')[0]).html(editado.Cluster_Name)//
-                    $($(e).parents('tr').find('td')[1]).html(editado.ParCriticalLevel_Name)//
-                    $($(e).parents('tr').find('td')[2]).html(editado.Points)//
-                    $('#crudNxNEdit').modal('hide');
+
+                    /*Valida se pode criar o objeto*/
+                    if (ClusterL1.veifyAdd('crudNxNEdit')) {
+                        var editado = crudNxN.retornaObjetoAlteradoCluster(obj);//
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.Cluster_Name)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.ParCriticalLevel_Name)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.EffectiveDate)//
+                        $($(e).parents('tr').find('td')[3]).html(editado.Points)//
+                        ClusterL1.atualizarDataLista();
+                        $('#crudNxNEdit').modal('hide');
+                    }
                 });
             }
                 /*Grupo L2*/
@@ -200,14 +212,15 @@
             else if ($(e).parents('#level2_AvAmostra_accordion').length) {
                 crudNxN.modalAlterarAvAmL2(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-
                     if (AvAm2.veifyAdd('crudNxNEdit')) {//
                         var editado = AvAm2.getObjAdd('crudNxNEdit', obj);//
                         $(e).parents('tr').removeData();
                         $(e).parents('tr').data(editado);
                         $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
-                        $($(e).parents('tr').find('td')[1]).html(editado.evaluationNumber)//
-                        $($(e).parents('tr').find('td')[2]).html(editado.sampleNumber)//
+                        //$($(e).parents('tr').find('td')[1]).html(editado.parLevel1_Id)//
+                        //$($(e).parents('tr').find('td')[2]).html(editado.parLevel1_Id)//
+                        $($(e).parents('tr').find('td')[3]).html(editado.evaluationNumber)//
+                        $($(e).parents('tr').find('td')[4]).html(editado.sampleNumber)//
                         $('#crudNxNEdit').modal('hide');
                     }
 
@@ -223,7 +236,9 @@
                         $(e).parents('tr').removeData();
                         $(e).parents('tr').data(editado);
                         $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
-                        $($(e).parents('tr').find('td')[1]).html(editado.PercentValue)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.EffectiveDate)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.PercentValue)//
+                        MetaL1.atualizarDataLista();
                         $('#crudNxNEdit').modal('hide');
                     }
 
@@ -239,18 +254,42 @@
                         $(e).parents('tr').removeData();
                         $(e).parents('tr').data(editado);
                         $($(e).parents('tr').find('td')[0]).html(editado.ParLevel3InputType_Name)//
-                        $($(e).parents('tr').find('td')[1]).html(editado.ParCompany_Name)//
-                        $($(e).parents('tr').find('td')[2]).html(editado.ParMeasurementUnit_Name)//
-                        $($(e).parents('tr').find('td')[3]).html(editado.IntervalMin)//
-                        $($(e).parents('tr').find('td')[4]).html(editado.IntervalMax)//
-                        $($(e).parents('tr').find('td')[5]).html(editado.AcceptableValueBetween_Name)//
-                        $($(e).parents('tr').find('td')[6]).html(editado.ParLevel3BoolFalse_Name)//
-                        $($(e).parents('tr').find('td')[7]).html(editado.ParLevel3BoolTrue_Name)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.ParLevel1_Name)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.ParLevel2_Name)//
+                        $($(e).parents('tr').find('td')[3]).html(editado.ParCompany_Name)//
+                        $($(e).parents('tr').find('td')[4]).html(editado.ParMeasurementUnit_Name)//
+                        $($(e).parents('tr').find('td')[5]).html(editado.IntervalMin)//
+                        $($(e).parents('tr').find('td')[6]).html(editado.IntervalMax)//
+                        $($(e).parents('tr').find('td')[7]).html(editado.AcceptableValueBetween_Name)//
+                        $($(e).parents('tr').find('td')[8]).html(editado.ParLevel3BoolFalse_Name)//
+                        $($(e).parents('tr').find('td')[9]).html(editado.ParLevel3BoolTrue_Name)//
                         $('#crudNxNEdit').modal('hide');
                     }
 
                 });
             }
+                /*Configuracao Amostra\Avaliacoes L3*/
+            else if ($(e).parents('#level3_AvAmostra_accordion').length) {
+                console.log(obj);
+                crudNxN.modalAlterarAvAmL3(obj);//
+                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
+
+                    if (AvAm3.veifyAdd('crudNxNEdit')) {//
+                        var editado = AvAm3.getObjAdd('crudNxNEdit', obj);//
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.ParCompany_Name)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.ParLevel1_Name)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.ParLevel2_Name)//
+                        $($(e).parents('tr').find('td')[3]).html(editado.EvaluationNumber)//
+                        $($(e).parents('tr').find('td')[4]).html(editado.SampleNumber)//
+                        $($(e).parents('tr').find('td')[5]).html(editado.EvaluationInterval)//
+                        $('#crudNxNEdit').modal('hide');
+                    }
+
+                });
+            }
+
 
             $('#crudNxNEdit').modal();
 
@@ -260,11 +299,20 @@
         modalAlterarLevel3Value: function (obj) {
             var divDeEdicao;
 
-            divDeEdicao = $('#companyValueL3 > td').clone();
+            divDeEdicao = $('#companyValueL3 > td').parent().clone();
             $(divDeEdicao).show();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
 
-            if (obj.ParLevel3InputType_Id == 3 || obj.ParLevel3InputType_Id == 4) {
+            divDeEdicao = $('.VinculoParLevel').clone();
+            $(divDeEdicao).show();
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+            //if (obj.ParLevel1_Id > 0)
+            //    $('#crudNxNEdit #parLevel1Select2TipoDadosEntrada').val(obj.ParLevel1_Id).change();
+            //if (obj.ParLevel2_Id > 0)
+            //    $('#crudNxNEdit #parLevel2Select2TipoDadosEntrada').val(obj.ParLevel2_Id).change();
+            debugger
+            if (obj.ParLevel3InputType_Id == 3 || obj.ParLevel3InputType_Id == 9 || obj.ParLevel3InputType_Id == 4) {
 
                 divDeEdicao = $('.ParIntervalos').clone();
                 $(divDeEdicao).show();
@@ -287,7 +335,7 @@
                 $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
                 $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
 
-            } else if (obj.ParLevel3InputType_Id == 1) {
+            } else if (obj.ParLevel3InputType_Id == 1 || obj.ParLevel3InputType_Id == 6) {
 
                 divDeEdicao = $('.ParBinarios').clone();
                 $(divDeEdicao).show();
@@ -324,13 +372,38 @@
                 });
                 $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
                 $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
-            }
+            }else if (obj.ParLevel3InputType_Id == 8 || obj.ParLevel3InputType_Id == 7) {
 
-            divDeEdicao = $('#selectTipoInput');
+                divDeEdicao = $('.ParIntervalos').clone();
+                $(divDeEdicao).show();
+                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+                $('#crudNxNEdit #parLevel3Value_IntervalMin').val(obj.IntervalMin);
+                $('#crudNxNEdit #parLevel3Value_IntervalMax').val(obj.IntervalMax);
+                if (obj.ParCompany_Id > 0)
+                    $('#crudNxNEdit #selectUnidadeParL3Value').val(obj.ParCompany_Id).change();
+
+                $(document).on('input', '#crudNxNEdit #parLevel3Value_IntervalMax', function (e) {
+                    changeComboEdit();
+                });
+
+                $(document).on('input', '#crudNxNEdit #parLevel3Value_IntervalMin', function (e) {
+                    changeComboEdit();
+                });
+                $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
+                $('#crudNxNEdit #selectUnidadeDeMedidas').parents('td').hide();
+                $('#crudNxNEdit #parIntervalosType').parents('td').hide();
+
+            } 
+
+            divDeEdicao = $('#selectTipoInput').clone();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
             $('#crudNxNEdit #selectTipoInput').val(obj.ParLevel3InputType_Id).change().hide();
 
-            $('#crudNxNEdit #selectUnidadeParL3Value').attr("disabled", true).parents('tr').show();
+            $('#crudNxNEdit #selectUnidadeParL3Value').attr("disabled", true).parents('tr').hide();
+            $('#crudNxNEdit #parLevel1Select2TipoDadosEntrada').attr("disabled", true).parents('tr').hide();
+            $('#crudNxNEdit #parLevel2Select2TipoDadosEntrada').attr("disabled", true).parents('tr').hide();
+            //$('#crudNxNEdit .VinculoParLevel').hide();
             $('#crudNxNEdit > div > div > div.modal-body').show();
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tableLevel3Value').attr('nameModal'));
@@ -343,6 +416,8 @@
 
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
             $('#crudNxNEdit #percentVal').val(obj.PercentValue);
+            $('#crudNxNEdit #effectiveDateMeta').val(obj.EffectiveDate);
+
             $('#crudNxNEdit #metaCompany').attr("disabled", true);
             if (obj.ParCompany_Id > 0)
                 $('#crudNxNEdit #metaCompany').val(obj.ParCompany_Id).change();
@@ -363,6 +438,32 @@
             if (obj.companyId > 0)
                 $('#crudNxNEdit #avAmCompany').val(obj.companyId).change();
 
+            $('#crudNxNEdit #parLevel1Select2AmostraLevel').parents('td').html('');
+            $('#crudNxNEdit #parClusterSelect2AmostraLevel').parents('td').html('');
+
+            $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+            $('#crudNxNEdit #myModalLabel').html($('#tableAvAm').attr('nameModal'));
+        },
+        modalAlterarAvAmL3: function (obj) {
+            var divDeEdicao = $('#level3_AvAmostra_accordion > div  table.table-erp').clone();
+
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+            $('#crudNxNEdit #avaliacao').val(obj.EvaluationNumber);
+            $('#crudNxNEdit #amostra').val(obj.SampleNumber);
+            $('#crudNxNEdit #intervaloParaAvaliar').val(obj.EvaluationInterval);
+            $('#crudNxNEdit #avAmCompany').attr("disabled", true);
+            if (obj.ParCompany_Id > 0)
+                $('#crudNxNEdit #avAmCompany').val(obj.ParCompany_Id).change();
+
+            $('#crudNxNEdit #parLevel1Select2AmostraLevel3').attr("disabled", true);
+            //if (obj.ParLevel1_Id > 0)
+                $('#crudNxNEdit #parLevel1Select2AmostraLevel3').val(obj.ParLevel1_Id).change();
+
+            $('#crudNxNEdit #parLevel2Select2AmostraLevel3').attr("disabled", true);
+            //if (obj.ParLevel2_Id > 0)
+                $('#crudNxNEdit #parLevel2Select2AmostraLevel3').val(obj.ParLevel2_Id).change();
+
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tableAvAm').attr('nameModal'));
         },
@@ -381,7 +482,7 @@
             $('#crudNxNEdit #myModalLabel').html($('#tablePeso').attr('nameModal'));
         },
 
-        modalAlterarMeta: function(obj) {
+        modalAlterarMeta: function (obj) {
             var divDeEdicao = $('#level1__Meta_collapse > div > table.table-erp').clone();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
             $('#crudNxNEdit #metaCompany').val(obj.ParCompany_Id).change();
@@ -415,7 +516,6 @@
 
 
         modalAlterarRegraNc: function (obj) {
-
             $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('destroy', true);
 
             var divDeEdicao = $('#level1_nc_collapse > div > table.table-erp').clone();
@@ -444,8 +544,8 @@
             obj.ParNotConformityRule_Id = $('#crudNxNEdit #selectNotConformityRule :selected').val();
             obj.ParNotConformityRule_Name = $('#crudNxNEdit #selectNotConformityRule :selected').text();
             obj.Value = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val();
-            obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked");
-            obj.IsReauditShowTable = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não";
+            obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? true : false;            
+            obj.IsReauditShowTable = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n";
 
             return obj;
         },
@@ -507,13 +607,14 @@
             $('#crudNxNEdit #myModalLabel').html($('#tableClusters').attr('nameModal'));
             $('#crudNxNEdit #valueCluster').val(obj.ParCluster_Id).attr('disabled', true);/*Preenche*/
             $('#crudNxNEdit #valCrit').val(obj.ParCriticalLevel_Id);/*Preenche*/
+            $('#crudNxNEdit #effectiveDate').val(obj.EffectiveDate);/*Preenche*/
             $('#crudNxNEdit #pontosCluster').val(obj.Points);/*Preenche*/
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
         },
         retornaObjetoAlteradoCluster: function (obj) {
             /*Valida se pode criar o objeto*/
-            ClusterL1.veifyAdd('crudNxNEdit')
+            //ClusterL1.veifyAdd('crudNxNEdit')
             ClusterL1.getObjAdd('crudNxNEdit', obj);
             return obj;
         },

@@ -26,7 +26,7 @@ namespace SGQDBContextYTOARA
 
         public SGQDBContext_YTOARA()
         {
-            conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             db = new SqlConnection(conexao);
             estrutura = new Estrutura();
             elemento = new Elemento();

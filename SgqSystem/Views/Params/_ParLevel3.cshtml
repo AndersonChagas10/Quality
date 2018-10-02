@@ -7,6 +7,12 @@
     //  var url = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
     //  var urlGetLevel1 = Url.Action("GetParLevel3ById", "api/ParamsApi"); //URL relativa
 }
+<style>
+    .btnCalc {
+        min-width: 32.3px;
+        min-height: 32.3px;
+    }
+</style>
 <div id="newLevel3Modal">
     @using (Html.BeginForm())
     {
@@ -22,96 +28,40 @@
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" })
                          , @Html.Label(Resources.Resource.level3_name)
                          , Table.PosicaoLabel.top
-                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }))
+                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }), classTd: "col-sm-6")
 
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" })
                          , @Html.Label(Resources.Resource.level3_description)
                          , Table.PosicaoLabel.top
-                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }))
+                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }), classTd: "col-sm-6")
 
 
                     </tr>
 
-                    <tr class="row">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
-                    </tr>
+                    @if (Model.paramsDto.parLevel3Dto.hasVinculo && Session["IsRecravacao"] != null && (bool)Session["IsRecravacao"])
+                    {
+                        <tr class="row" style="display:none;">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                        <tr class="row showAsReencravation">
+                            @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.OrderColumn, new { @class = "form-control" }), @Html.Label(Resources.Resource.OrderColumn), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                    }
 
                     <tr class="row">
                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                     </tr>
+
+                    @if (Model.paramsDto.parLevel3Dto.hasVinculo && Session["IsRecravacao"] != null && (bool)Session["IsRecravacao"])
+                    {
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsPointLess, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.IsPointLess), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.AllowNA, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.AllowNA), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                    }
                 </table>
-
-                <div class="panel-group accordion" id="level3_data_type_accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_data_type_accordion" href="#level3_data_type_collapse" aria-expanded="false"> @Resources.Resource.data_type_entry</a>
-                            </h4>
-                        </div>
-                        <div id="level3_data_type_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-
-                                <table class="table-erp">
-                                    <tr class="row">
-                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" })
-                         , @Html.Label(Resources.Resource.data_type_entry)
-                         , Table.PosicaoLabel.top
-                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }), colspan: 3)
-
-                                    </tr>
-
-
-                                    <tr class="row ParIntervalos" style="display: none;">
-                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, new { @Id = "parLevel3Value_IntervalMax", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
-                                        <td style="display: none;">
-                                            <label>@Resources.Resource.values_between</label>
-                                            <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
-                                        </td>
-                                    </tr>
-                                    <tr class="row" style="display:none;padding:10px;">
-                                        <td colspan="3">
-                                            *
-                                            <span id="ParIntervalosLabel"></span>
-                                        </td>
-                                    </tr>
-
-                                    <tr class="row ParBinarios" style="display: none;">
-                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
-                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                                        @*@Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)*@
-                                    </tr>
-                                    <tr class="row" id="companyValueL3">
-                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
-                                            , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
-
-                                    </tr>
-                                </table>
-
-                                <table id="tableLevel3Value" class="table table-condensed table-responsive no-margin margin-top" nameModal="@Resources.Resource.edit_input_data_type">
-                                    <thead>
-                                        <tr>
-                                            <th>@Resources.Resource.data_type_entry</th>
-                                            <th>@Resources.Resource.company</th>
-                                            <th>@Resources.Resource.measurement_unit</th>
-                                            <th>@Resources.Resource.minimum_range</th>
-                                            <th>@Resources.Resource.maximum_range</th>
-                                            <th>@Resources.Resource.values_between</th>
-                                            <th>@Resources.Resource.negative_value</th>
-                                            <th>@Resources.Resource.positive_value</th>
-                                            <th style="min-width: 65px;"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
 
                 @{
                     Model.levelControl = 3;
@@ -120,9 +70,15 @@
                 @*<div id="reincidencia">
                         @Html.Partial("_ReincidenciaXLevel", Model)
                     </div>*@
-                @Html.HiddenFor(r=>r.paramsDto.parLevel3Dto.hasVinculo)
+                @Html.HiddenFor(r => r.paramsDto.parLevel3Dto.hasVinculo)
+
                 @if (Model.paramsDto.parLevel3Dto.hasVinculo)
                 {
+                    <div id="level3_required_level1_level2" class="hide">
+                        @Html.Partial("_TipoDadosEntrada", Model)
+                        @Html.Partial("_AvaliacaoAmostraLevel3", Model)
+                    </div>
+
                     @Html.Partial("_Peso", Model)
                 }
 
@@ -130,64 +86,356 @@
             </div>
         </div>
         <!-- Modal -->
-                    <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog  modal-sm" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-xs-12">@Resources.Resource.positive_value</div>
-                                        <div class="col-xs-12">
-                                            <input class="form-control input-sm" id="modalInputPositive" />
-                                        </div>
-                                        <div class="col-xs-12">@Resources.Resource.negative_value</div>
-                                        <div class="col-xs-12">
-                                            <input class="form-control input-sm" id="modalInputNegative" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-                                    <button type="button" class="btn btn-primary" onclick="clicModalBinarioSave()">@Resources.Resource.save</button>
-                                </div>
+        <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog  modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-gray">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">@Resources.Resource.positive_value</div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputPositive" />
+                            </div>
+                            <div class="col-xs-12">@Resources.Resource.negative_value</div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputNegative" />
                             </div>
                         </div>
                     </div>
-                    @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                        <button type="button" class="btn btn-primary" onclick="clicModalBinarioSave()">@Resources.Resource.save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
 
         <!-- Modal -->
-                    <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog  modal-sm" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" id="fechar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
-                                        <div class="col-xs-12">
-                                            <input class="form-control input-sm" id="modalInputMeasurementUnit" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-                                    <button type="button" class="btn btn-primary" onclick="UpdateUnidadeMedidas();">@Resources.Resource.save</button>
-                                </div>
+        <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog  modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-gray">
+                        <button type="button" class="close" id="fechar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputMeasurementUnit" />
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                        <button type="button" class="btn btn-primary" onclick="UpdateUnidadeMedidas();">@Resources.Resource.save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                    }
+    }
 
 </div>
 <script>
 
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
+
+    function newExpressaObj(){
+        return {
+            OuterEmpresa_Id: null,
+            OuterEmpresa_Text: '',
+            OuterLevel3_Id: null,
+            OuterLevel3_Text: '',
+            OuterLevel3Value_Id: null,
+            OuterLevel3Value_Text: '',
+            OuterLevel3ValueIntervalMinValue: 0,
+            OuterLevel3ValueIntervalMaxValue: 0,
+            ParLevel3_Id: 0,
+            ParLevel3_Name: null,
+            ParLevel3InputType_Id: 0,
+            ParCompany_Id: 0,
+            ParCompany_Name: null,
+            ParMeasurementUnit_Id: 0,
+            ParMeasurementUnit_Name: null,
+            IsActive:  true
+        }
+    }
+
+    var expressaoObj = newExpressaObj()
+    var expressaoArr = []
+
+    function getLevel3ReencravacaoInputCalcOutro(id) {
+        console.log(id)
+    }
+
+    @*var pl3Id = @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.Id))
+    var pl3Name =  @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.Name))*@
+
+    function clickSinal(sinal) {
+
+        expressaoObj = {
+            //ParLevel3_Id: pl3Id, //Resolved in BE
+            //ParLevel3_Name: pl3Name, //Resolved in BE
+            ParLevel3InputType_Id: $('#selectTipoInput option:selected').val(),
+            ParLevel3InputType_Name: $('#selectTipoInput option:selected').text(),
+            ParCompany_Id: $('#empresaRecravacao option:selected').val(),
+            ParCompany_Name: $('#empresaRecravacao option:selected').text(),
+            ParMeasurementUnit_Id: $('#parLevel1Select2TipoDadosEntrada option:selected').val(),
+            ParMeasurementUnit_Name: $('#parLevel2Select2TipoDadosEntrada option:selected').val().toString(),
+            OuterEmpresa_Id: $('#empresaRecravacao option:selected').val(),
+            OuterEmpresa_Text: $('#empresaRecravacao option:selected').text(),
+            OuterLevel3_Id: $('#parlevel3Recravacao option:selected').val(),
+            OuterLevel3_Text: $('#parlevel3Recravacao option:selected').text(),
+            OuterLevel3Value_Id: $('#parlevel3RecravacaoValue option:selected').val(),
+            OuterLevel3Value_Text: $('#parlevel3RecravacaoValue option:selected').text(),
+            OuterLevel3ValueIntervalMinValue: $('#parlevel3RecravacaoValue option:selected').attr('minvalue'),
+            OuterLevel3ValueIntervalMaxValue: $('#parlevel3RecravacaoValue option:selected').attr('maxvalue'),
+        }
+
+        if (sinal == "undo") {
+            expressaoArr.pop();
+            updateLogicExpression();
+        }else{
+            expressaoObj["Operator"] = sinal;
+            expressaoObj["Order"] = expressaoArr.length + 1;
+            expressaoArr.push(JSON.parse(JSON.stringify(expressaoObj)));
+            expressaoObj = newExpressaObj();
+            //$('#empresaRecravacao').val(-1).change()
+            //$('#parlevel3Recravacao').val(-1).change()
+            //$('#parlevel3RecravacaoValue').val(-1).change()
+            console.log(expressaoArr);
+            updateLogicExpression();
+        }
+    }
+
+    function rainbow(value, s, l, max, min, start, end) {
+        value = ((value - min) * (start - end) / max)+end;
+        return 'hsl(' + value + ','+s+'%,'+l+'%)';
+    }
+
+    function createRainbowDiv(start,end){
+        var gradient = [];
+        for (var i = start; ((i <= end) && (i >= start)) || ((i >= end) && (i <= start));
+            i += (end-start) / Math.abs(end-start)){
+            gradient.push(rainbow(i, 100,50, Math.max(start,end), Math.min(start,end), start,end));
+        }
+
+        return gradient;
+    }
+
+    function returnUpperCase (stringExp){
+        var positions = [];
+        for (var i = 0; i < stringExp.length; i++){
+            if (stringExp[i].match(/[A-Z]/) != null) {
+                positions.push(i);
+            }
+        }
+        let retorno = '';
+        if (positions.length > 1)
+            positions.forEach(function (o, c) { retorno += stringExp[o] });
+        else
+            retorno = stringExp.slice(0, 3).toUpperCase();
+
+        return retorno
+    }
+
+    function updateLogicExpression(retorno) {
+
+        let expressaoFinal = '';
+        arrGradientCounter = 0;
+
+        expressaoArr.forEach(function (o, c) {
+            if (o.Operator == "dados") {
+                //console.log(o)
+                //expressaoFinal += `(${o.OuterEmpresa_Text}, ${o.OuterLevel3_Text}: ${o.OuterLevel3Value_Text}) `
+                let name = o.OuterLevel3_Text.split(' - ')[1];
+                name = returnUpperCase(name);
+                expressaoFinal += `<span style="background-color:#0600ff40">${name}</span> `
+            } else {
+                if (o.Operator == '(') {
+                    let color = percentToRGB(arrGradientCounter, 1);
+                    arrGradientCounter = arrGradientCounter + 25;
+                    expressaoFinal += `<span style="background-color:${color}">${o.Operator} </span>`
+                }
+                else if (o.Operator == ')') {
+                    if (arrGradientCounter > 0)
+                        arrGradientCounter = arrGradientCounter - 25;
+                    let color = percentToRGB(arrGradientCounter, 1)
+                    expressaoFinal += `<span style="background-color:${color}">${o.Operator} </span>`
+                }
+                else {
+                    expressaoFinal += `<span>${o.Operator}</span> `
+                }
+            }
+        });
+
+        if(retorno)
+            return expressaoFinal
+        else
+            $('#expFinal').empty().append($('<span style="background-color:#ff380063">' + expressaoFinal + '</span>')) //$('#expFinal').text($(expressaoFinal))
+    }
+
+    function saveLogExpression() {
+
+        let tipo = $('#selectTipoInput option:selected').text();
+        let unidade = $('#empresaRecravacao option:selected').text();
+        let expressao = updateLogicExpression(true);
+        let unidadeMedida = $('#selectUnidadeDeMedidas option:selected').text();
+
+        let level1_Name = $('#parLevel1Select2TipoDadosEntrada option:selected').text();
+        let level2_Name = $('#parLevel2Select2TipoDadosEntrada option:selected').text();
+
+        if($('#selectUnidadeDeMedidas option:selected').val() && $('#parLevel3Value_IntervalMin').val().length > 0 && $('#parLevel3Value_IntervalMin').val().length > 0 && $('#parIntervalosType option:selected').val() >= 0){
+            let limites = {
+                UnidadeMedida_Id: $('#selectUnidadeDeMedidas option:selected').val(),
+                UnidadeMedidaText:$('#selectUnidadeDeMedidas option:selected').text(),
+                LimInferior: $('#parLevel3Value_IntervalMin').val(),
+                LimSuperior: $('#parLevel3Value_IntervalMax').val(),
+                AceitavelEntre_Id: $('#parIntervalosType option:selected').val(),
+                AceitavelEntreText: $('#parIntervalosType option:selected').text(),
+            }
+
+            expressaoArr.forEach(function (o, c) {
+                o['UnidadeMedida_Id'] = limites.UnidadeMedida_Id;
+                o['UnidadeMedidaText'] = limites.UnidadeMedidaText;
+                o['LimInferior'] = limites.LimInferior;
+                o['LimSuperior'] = limites.LimSuperior;
+                o['AceitavelEntre_Id'] = limites.AceitavelEntre_Id;
+                o['AceitavelEntreText'] = limites.AceitavelEntreText;
+            });
+        }
+
+        let tr = `<tr pos="undefined">` +
+                    `<td>${tipo}</td>` +
+                    `<td>${level1_Name}</td>` +
+                    `<td>${level2_Name}</td>` +
+                    `<td>${unidade}</td>` +
+                    `<td>${unidadeMedida}</td>` +
+                    `<td>${$('#parLevel3Value_IntervalMin').val()}</td>` +
+                    `<td>${$('#parLevel3Value_IntervalMax').val()}</td>` +
+                    `<td>${expressao}</td>` +
+                    `<td></td>` +
+                    `<td></td>` +
+                    `<td>` +
+                        `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Remover Item Inserido" data-trigger="hover" data-placement="right" name="" onclick="removeExpression($(this));" data-toggle="popover" data-original-title="" title="">` +
+                            `<i class="fa fa-times" aria-hidden="true"></i>` +
+                        `</button>` +
+                        //`<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));" data-toggle="popover" data-original-title="" title="">` +
+                        //    `<i class="fa fa-pencil-square-o" aria-hidden="true"></i>` +
+                        //`</button>` +
+                    `</td>` +
+                `</tr>`;
+
+        if (!validaDados($('#parLevel1Select2TipoDadosEntrada option:selected').val(),
+            $('#parLevel2Select2TipoDadosEntrada option:selected').val(),
+            $('#empresaRecravacao option:selected').val())) {
+            openMessageModal("Já existe um tipo de dado de entrada, para este indicador, monitoramento nesta unidade");
+            return
+        }
+
+        $('#tableLevel3Value tbody').prepend(tr);
+        $('#tableLevel3Value tbody tr:first').data('ParLevel3Value_OuterList', expressaoArr);
+
+        if ($('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').show();
+        if (!$('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').hide();
+
+        expressaoObj = newExpressaObj();
+        expressaoArr = [];
+        updateLogicExpression();
+    }
+
+    function validaDados(ParLevel1_Id, ParLevel2_Id, ParCompany_Id) {
+
+
+        if ($('#tableLevel3Value tbody tr').length == 0) {
+            return true;
+        }
+
+        var list = $.grep($('#tableLevel3Value tbody tr'), function (o) {
+            var list = $.grep($('#tableLevel3Value tbody tr'), function (o) {
+                if ($(o).data('ParLevel3Value_OuterList')) {
+                    return $(o).data('ParLevel3Value_OuterList')[0].ParCompany_Id == ParCompany_Id && $(o).data('ParLevel3Value_OuterList')[0].ParMeasurementUnit_Id == ParLevel1_Id && $(o).data('ParLevel3Value_OuterList')[0].ParMeasurementUnit_Name == ParLevel2_Id
+                }
+            });
+        });
+
+
+        if (list.length > 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function myfunction() {
+
+        $('#parlevel3RecravacaoValue').empty();
+
+        let arr = [{text: 'Viado',
+            val: 10,
+            defaultSelected: false,
+            nowSelected: false,
+        },
+        {text: 'Jelsafa',
+            val: 11,
+            defaultSelected: false,
+            nowSelected: false
+        },{text: 'Jelsafa Viado',
+            val: 12,
+            defaultSelected: false,
+            nowSelected: false
+        }]
+
+        arr.forEach(atribuiOptionsADdl);
+    }
+
+    function atribuiOptionsADdl(o, c){
+        let option = new Option(o.text,o.val,o.defaultSelected,o.nowSelected)
+        $('#parlevel3RecravacaoValue').append(option)
+    }
+
+    function getLevel3ValueReencravacaoInputCalcOutro(id) {
+        $.post('@Url.Action("GetLevel3PorUnidadeRecravacaoDdl", "api/ParamsApi")', {'': id}, function (r){
+
+            let text = ''
+            let val = 1
+            let defaultSelected = false;
+            let nowSelected = false;
+
+            $('#parlevel3RecravacaoValue').empty();
+            $('#parlevel3RecravacaoValue').append(new Option('Selecione...', -1, defaultSelected, nowSelected));
+
+            r.forEach(function (o, c) {
+                if (o.ParLevel3InputType_Id == 3) {
+                    if (o.AcceptableValueBetween) {
+                        val = o.Id
+                        text = 'Valor não está entre: Min. ' + o.IntervalMin + ' - Máx. ' + o.IntervalMax + o.ParMeasurementUnit.Name;
+                        let option = new Option(text, val, defaultSelected, nowSelected);
+                        option.setAttribute("minValue", o.IntervalMin);
+                        option.setAttribute("maxValue", o.IntervalMax);
+                        $('#parlevel3RecravacaoValue').append(option);
+                    } else {
+                        val = o.Id
+                        text = 'Valor está entre: Min. ' + o.IntervalMin + ' - Máx. ' + o.IntervalMax + o.ParMeasurementUnit.Name;
+                        let option = new Option(text, val, defaultSelected, nowSelected);
+                        option.setAttribute("minValue", o.IntervalMin);
+                        option.setAttribute("maxValue", o.IntervalMax);
+                        $('#parlevel3RecravacaoValue').append(option);
+                    }
+                }
+            });
+
+            if ($('#parlevel3RecravacaoValue option:first').length < 3)
+                $('#parlevel3RecravacaoValue').val($('#parlevel3RecravacaoValue option:first').next().val()).change();
+        })
+    }
 
     function UpdateUnidadeMedidas() {
         var valor = $("#modalInputMeasurementUnit").val();
@@ -199,6 +447,93 @@
             $('#modalUnidadeMedida').hide();
         });
     }
+
+    var reencravacoes = @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.ParLevel3Value_OuterList))
+    var reencravacoes2 = @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.ParLevel3Value_OuterListGrouped))
+
+    function loadRecravacoes (){
+        console.log(reencravacoes)
+
+        if(reencravacoes2 != null && reencravacoes2!= undefined && reencravacoes2.length){
+            reencravacoes2.forEach(function(o,c){
+                expressaoArr = o;
+                updateLogicExpression(true);
+
+                let tipo = expressaoArr[0].ParLevel3InputType_Name;
+                let unidade = expressaoArr[0].ParCompany_Name;
+                let expressao = updateLogicExpression(true);
+                let UnidadeMedidaText = expressaoArr[0].UnidadeMedidaText;
+                let AceitavelEntreText = expressaoArr[0].AceitavelEntreText;
+                let LimInferior = expressaoArr[0].LimInferior;
+                let LimSuperior = expressaoArr[0].LimSuperior;
+                let level1 = $('#parLevel1Select2 option[value="' + expressaoArr[0].ParMeasurementUnit_Id +'"]').text();
+                let level2 = $('#parLevel2Select2 option[value="' + expressaoArr[0].ParMeasurementUnit_Name +'"]').text();
+
+                let tr = `<tr pos="undefined">` +
+                            `<td>${tipo}</td>` +
+                            `<td>${level1}</td>` +
+                            `<td>${level2}</td>` +
+                            `<td>${unidade}</td>` +
+                            `<td>${UnidadeMedidaText}</td>` +
+                            `<td>${LimInferior}</td>` +
+                            `<td>${LimSuperior}</td>` +
+                            `<td>${expressao} (${AceitavelEntreText})</td>` +
+                            `<td></td>` +
+                            `<td></td>` +
+                            `<td>` +
+                                `<button style="display:none" type="button" class="btn btn-danger btn-xs popovers" data-content="Ativar Item" data-trigger="hover" data-placement="right" name="" onclick="inactivateExpression($(this), true);" data-toggle="popover" data-original-title="" title="">` +
+                                    `<i class="fa fa-undo" aria-hidden="true"></i>` +
+                                `</button>`+
+                                `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Inativar Item" data-trigger="hover" data-placement="right" name="" onclick="inactivateExpression($(this), false);" data-toggle="popover" data-original-title="" title="">` +
+                                    `<i class="fa fa-times" aria-hidden="true"></i>` +
+                                `</button>` +
+                                //`<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));" data-toggle="popover" data-original-title="" title="">` +
+                                //    `<i class="fa fa-pencil-square-o" aria-hidden="true"></i>` +
+                                //`</button>` +
+                            `</td>` +
+                        `</tr>`;
+
+                $('#tableLevel3Value tbody').prepend(tr)
+                $('#tableLevel3Value tbody tr:first').data('ParLevel3Value_OuterList', expressaoArr)
+
+                if($('#tableLevel3Value tbody tr').length)
+                    $('#tableLevel3Value').show()
+                if(!$('#tableLevel3Value tbody tr').length)
+                    $('#tableLevel3Value').hide()
+
+                expressaoObj = newExpressaObj()
+                expressaoArr = []
+                updateLogicExpression()
+            })
+        }
+    }
+
+    function removeExpression(row){
+        row.parents('tr').remove()
+        if ($('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').show();
+        if (!$('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').hide();
+    }
+
+    function inactivateExpression(row, conditional){
+
+        if(conditional){
+            $(row.parents('tr').find('button')[0]).hide();
+            $(row.parents('tr').find('button')[1]).show();
+        }
+        else {
+            $(row.parents('tr').find('button')[0]).show();
+            $(row.parents('tr').find('button')[1]).hide();
+        }
+        row.parents('tr').each(function (cc, oo) {
+            $(oo).data('ParLevel3Value_OuterList').forEach(function (o, c) {
+                o['IsActive'] = conditional;
+            })
+        });
+    }
+
+    loadRecravacoes();
 
     /*Vinculo Level3Level2*/
     function saveLevel3Level2() {
@@ -234,254 +569,11 @@
 
     }
 
-    var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
-
-    var level3Value =  {
-        /*Setup*/
-        levelControl: 3,
-        level: "newLevel3Modal",
-        listObjSalvo: levelParamsDTO.parLevel3Dto.listLevel3Value,
-        idTable: 'tableLevel3Value',//
-        tdsNames: ['ParLevel3InputType_Name', 'ParCompany_Name', 'ParMeasurementUnit_Name', 'IntervalMin', 'IntervalMax', 'AcceptableValueBetween_Name', 'ParLevel3BoolFalse_Name', 'ParLevel3BoolTrue_Name', 'btn'],
-        getObjAdd: function(isEdit, obj){
-
-            var preseletor = "";
-            if(isEdit != undefined){
-                preseletor = isEdit;
-            } else {
-                preseletor = level3Value.level;
-            }
-
-            var companyName = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').text();
-            var companyValue = $('#' + preseletor + ' #selectUnidadeParL3Value :selected').val();
-
-            var selectTipoInputName = $('#' + preseletor + ' #selectTipoInput :selected').text();
-            var selectTipoInput = $('#' + preseletor + ' #selectTipoInput :selected').val();
-            var selectNaoConformeName = $('#' + preseletor + ' #selectNaoConforme :selected').text();
-            var selectNaoConforme = $('#' + preseletor + ' #selectNaoConforme :selected').val();
-            var selectConformeName = $('#' + preseletor + ' #selectConforme :selected').text();
-            var selectConforme = $('#' + preseletor + ' #selectConforme :selected').val();
-
-            var selectUnidadeDeMedidasName = $('#' + preseletor + ' #selectUnidadeDeMedidas :selected').text(); //Unidade de Medida
-            var selectUnidadeDeMedidas = $('#' + preseletor + ' #selectUnidadeDeMedidas :selected').val();
-            var parIntervalosTypeName = $('#' + preseletor + ' #parIntervalosType :selected').text(); //Valores entre
-            var parIntervalosType = $('#' + preseletor + ' #parIntervalosType :selected').val();
-            var parLevel3Value_IntervalMin = $('#' + preseletor + ' #parLevel3Value_IntervalMin').val(); //Limite Inferior
-            var parLevel3Value_IntervalMax = $('#' + preseletor + ' #parLevel3Value_IntervalMax').val(); //Limite Superior
-
-            if(companyValue == -1){
-                companyValue = null;
-                companyName = "@Resources.Resource.all";
-            }
-
-            if(selectTipoInput == 2 || selectTipoInput == 3 || selectTipoInput == 4 || selectTipoInput == 5){
-                selectConformeName = "";
-                selectNaoConformeName = "";
-            }
-
-            if(selectTipoInput == 1){
-                selectUnidadeDeMedidasName = "";
-                parLevel3Value_IntervalMin = "";
-                parLevel3Value_IntervalMax = "";
-                parIntervalosTypeName  = "";
-            }
-
-            if(selectTipoInput == 5){
-                selectUnidadeDeMedidasName = "";
-                selectNaoConforme = "";
-                selectConforme = "";
-                selectUnidadeDeMedidas = "";
-            }
-
-            if(isEdit != undefined){
-
-                obj.ParCompany_Name =                companyName;
-                obj.ParCompany_Id =                  companyValue;
-                obj.IsActive =                       true;
-
-                //Bin
-                //obj.ParLevel3InputType_Name = selectTipoInputName;
-                //obj.ParLevel3InputType_Id =   selectTipoInput;
-                obj.ParLevel3BoolFalse_Name = selectNaoConformeName;
-                obj.ParLevel3BoolFalse_Id =   selectNaoConforme;
-                obj.ParLevel3BoolTrue_Name =  selectConformeName;
-                obj.ParLevel3BoolTrue_Id =    selectConforme;
-
-                //Intervalos
-                obj.ParMeasurementUnit_Name =        selectUnidadeDeMedidasName;
-                obj.ParMeasurementUnit_Id =          selectUnidadeDeMedidas;
-                obj.AcceptableValueBetween_Name =    parIntervalosTypeName;
-                obj.AcceptableValueBetween =         parseInt(parIntervalosType) ? true : false;
-                obj.IntervalMin =                    parLevel3Value_IntervalMin;
-                obj.IntervalMax =                    parLevel3Value_IntervalMax;
-
-                return obj;
-
-            }else{
-
-                return {
-
-                    ParCompany_Name:             companyName,
-                    ParCompany_Id:               companyValue,
-                    IsActive:                    true,
-
-                    //Bin
-                    ParLevel3InputType_Name:     selectTipoInputName,
-                    ParLevel3InputType_Id:       selectTipoInput,
-                    ParLevel3BoolFalse_Name:     selectNaoConformeName,
-                    ParLevel3BoolFalse_Id:       selectNaoConforme,
-                    ParLevel3BoolTrue_Name:      selectConformeName,
-                    ParLevel3BoolTrue_Id:        selectConforme,
-
-                    //Intervalos
-                    ParMeasurementUnit_Name:     selectUnidadeDeMedidasName,
-                    ParMeasurementUnit_Id:       selectUnidadeDeMedidas,
-                    AcceptableValueBetween_Name: parIntervalosTypeName,
-                    AcceptableValueBetween:      parseInt(parIntervalosType) ? true : false,
-                    IntervalMin:                 parLevel3Value_IntervalMin,
-                    IntervalMax:                 parLevel3Value_IntervalMax,
-                    IsActive:                    true,
-                };
-            }
-        },
-        veifyAdd: function(isEdit) {
-            var seletorTato = !!isEdit ? isEdit : level3Value.level;
-            /*Valida se pode criar o objeto*/
-
-            if($('#' + seletorTato + ' #selectTipoInput :selected').val() == 1){ // Binario
-                if($('#' + seletorTato + ' #selectConforme :selected').val() <= 0){
-                    openMessageModal(Resources('required_field_was_not_filled'), Resources('select_positive_value_for_binary_field'));
-                    return false;
-                }else if($('#' + seletorTato + ' #selectNaoConforme :selected').val() <= 0){
-                    openMessageModal(Resources('required_field_was_not_filled'), Resources('select_negative_value_for_binary_field'));
-                    return false;
-                }
-            } // Intervalo ou Calculado.
-            else if($('#' + seletorTato + ' #selectTipoInput :selected').val() == 3 || $('#' + seletorTato + ' #selectTipoInput :selected').val() == 4){
-                if($('#' + seletorTato + ' #selectUnidadeDeMedidas :selected').val() <= 0){
-                    openMessageModal(Resources('required_field_was_not_filled'), Resources('select_the_measurement_unit'));
-                    return false;
-                }
-            }
-
-            /*Verifica Unidade*/
-            var companySelected = $('#' + seletorTato + ' #selectUnidadeParL3Value :selected').val();//
-            var display = $('#' + seletorTato + ' #selectUnidadeParL3Value :selected').text();//
-            var exist = $.grep($('#tableLevel3Value  tbody  tr  td:nth-child(1)'), function(o, c){//
-                if(companySelected == -1){
-                    return $(o).parent().data().ParCompany_Id == 0 || $(o).parent().data().ParCompany_Id == -1 || $(o).parent().data().ParCompany_Id == null
-                }
-                return $(o).parent().data().ParCompany_Id == companySelected;
-            });
-
-            if(!!isEdit){/*Edição*/
-
-            } else {/*Inclusão*/
-                if(exist.length){
-
-                    if(companySelected == -1)
-                        display= "@Resources.Resource.all";
-
-                    openMessageModal(Resources('data_already_register_on_company')+" " + display + ".", "")
-                    return false;
-
-                }
-            }
 
 
-            return true;
-        },
-        incluiNoObjetoParaSubmit: function(dados){
-
-            var level = level3Value.levelControl;
-            $('#' + level3Value.level + ' #' + level3Value.idTable + ' > tbody > tr ').each(function(c, obj){
-
-                var o = $(obj).data();
-                //#edit
-                if((o.Id != null || o.Id != undefined) && o.Id > 0){
-                    dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].Id"] = o.Id;
-                }
-
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParCompany_Id"] = o.ParCompany_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel3InputType_Id"] = o.ParLevel3InputType_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel3BoolFalse_Id"] = o.ParLevel3BoolFalse_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParLevel3BoolTrue_Id"] = o.ParLevel3BoolTrue_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParMeasurementUnit_Id"] = o.ParMeasurementUnit_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].AcceptableValueBetween"] = o.AcceptableValueBetween;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMin"] = o.IntervalMin;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMinCalculado"] = o.IntervalMin;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMax"] = o.IntervalMax;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMaxCalculado"] = o.IntervalMax;
-                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IsActive"] = o.IsActive;
-                //
-            });
-
-        },
-        carregaDadosDoDb: function(){
-            var id = level3Value.level + ' #' + level3Value.idTable;
-            var tdNamess = level3Value.tdsNames;
-            if( level3Value.listObjSalvo != null){ /*Carrega regras de NC*/
-                level3Value.listObjSalvo.forEach(function(o, c){
-                    o["ParLevel3InputType_Name"] = o.ParLevel3InputType.Name;
-
-                    if(o.ParCompany_Id > 0)
-                        o["ParCompany_Name"] = o.ParCompany.Name;
-                    else
-                        o["ParCompany_Name"] = "@Resources.Resource.all";
-
-                    if(o.ParLevel3InputType_Id == 1){
-                        o["ParLevel3BoolFalse_Name"] = o.ParLevel3BoolFalse.Name;
-                        o["ParLevel3BoolTrue_Name"] = o.ParLevel3BoolTrue.Name;
-                        o["ParMeasurementUnit_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = "";
-                        o["IntervalMin"] = "";
-                        o["IntervalMax"] = "";
-                    }else if (o.ParLevel3InputType_Id == 2){
-                        o["ParMeasurementUnit_Name"] = "";
-                        o["ParLevel3BoolFalse_Name"] = "";
-                        o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
-                    }else if (o.ParLevel3InputType_Id == 3){
-                        o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
-                        o["ParLevel3BoolFalse_Name"] = "";
-                        o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
-                    }else if(o.ParLevel3InputType_Id == 4){
-                        o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
-                        o["ParLevel3BoolFalse_Name"] = "";
-                        o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMinCalculado + " @Resources.Resource.and " + o.IntervalMaxCalculado : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMinCalculado + " @Resources.Resource.or_greater_than " + o.IntervalMaxCalculado;
-                        o["IntervalMin"] = o.IntervalMinCalculado;
-                        o["IntervalMinCalculado"] = o.IntervalMinCalculado;
-                        o["IntervalMax"] = o.IntervalMaxCalculado;
-                        o["IntervalMaxCalculado"] = o.IntervalMaxCalculado;
-                    }else if(o.ParLevel3InputType_Id == 5){
-                        o["ParMeasurementUnit_Name"] = "";
-                        o["ParLevel3BoolFalse_Name"] = "";
-                        o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = "";
-                        o["IntervalMin"] = "";
-                        o["IntervalMinCalculado"] = "";
-                        o["IntervalMax"] = "";
-                        o["IntervalMaxCalculado"] = "";
-                    }
-                    //o["AcceptableValueBetween_Name"] = o.ParCriticalLevel.Name;
-                    crudNxN.adiciona(o,  id, tdNamess);
-                });
-            }
-        },
-        /*Fim Setup*/
-        adiciona: function(e) {
-            if(level3Value.veifyAdd()){
-                var object = level3Value.getObjAdd();
-                crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
-            }
-        },
-    };
-
-    var hasPeso = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.pesoDoVinculo));
     var grouLevel2Selected = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.groupLevel2Selected));
     //var
+    var hasPeso = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.pesoDoVinculo));
     $('#paramsDto_parLevel3Dto_pesoDoVinculo').val(hasPeso);
 
     $('#pesoDefinido').html(hasPeso).show();
@@ -494,276 +586,6 @@
     $('#btnPositiveNegative').click(function (e) {
         $('#modalPositiveNegative').modal({ backdrop: false });
     });
-
-    $(document).on('input', '#parLevel3Value_IntervalMax', function (e) {
-
-        changeCombo();
-
-    });
-
-    $(document).on('input', '#parLevel3Value_IntervalMin', function (e) {
-
-        changeCombo();
-
-    });
-
-    function changeCombo(){
-        //se os dois campos estão nulos
-        parIntervalosTypeCreate();
-    }
-    function changeComboEdit(){
-        //se os dois campos estão nulos
-        parIntervalosTypeCreateEdit();
-    }
-    function level03ValueIntervalWriter(valueMin, valueMax) {
-        return Resources('acceptable_value_less_than') + " " + valueMin + " " + Resources('and_greater_than') + " " + valueMax;
-    }
-
-    function parIntervalosTypeCreate() {
-
-        var value = "";
-        if($('#selectUnidadeDeMedidas :selected').val() > 0)
-            value = $('#selectUnidadeDeMedidas :selected').text();
-
-        if ($("#parLevel3Value_IntervalMin").val() == "" && !$("#parLevel3Value_IntervalMax").val() == "") {
-            var options =''
-            "<option value='0'>" +
-                Resources('acceptable_value_equal_or_greater_than')
-                + " "
-                + $("#parLevel3Value_IntervalMax").val() + " " + value +
-            "</option>";
-
-            $('#parIntervalosType').empty();
-            $('#parIntervalosType').append(options);
-            $("#parIntervalosType").parents("td").show();
-
-        }
-
-        else if (!$("#parLevel3Value_IntervalMin").val() == "" && $("#parLevel3Value_IntervalMax").val() == "") {
-            var options =
-                "<option value='0'>" +
-                    Resources('acceptable_value_equal_or_greater_than')
-                    + " "
-                    + $("#parLevel3Value_IntervalMin").val() + " " + value +
-                "</option>";
-
-            $('#parIntervalosType').empty();
-            $('#parIntervalosType').append(options);
-            $("#parIntervalosType").parents("td").show();
-
-        }
-
-        else if (!$("#parLevel3Value_IntervalMin").val() == "" && !$("#parLevel3Value_IntervalMax").val() == "") {
-            var options =
-                "<option value='0'>"
-                    + Resources('value_is_acceptable_between')
-                    + " " + $("#parLevel3Value_IntervalMin").val()
-                    + " " + Resources('and')
-                    + " " + $("#parLevel3Value_IntervalMax").val() + " " + value +
-                "</option>" +
-                "<option value='1'>"
-                    + Resources('value_is_acceptable_less_than')
-                    + " " + $("#parLevel3Value_IntervalMin").val()
-                    + " " + Resources('or_greater_than')
-                    + " " + $("#parLevel3Value_IntervalMax").val() + " " + value+
-                "</option>";
-
-            $('#parIntervalosType').empty();
-            $('#parIntervalosType').append(options);
-            $("#parIntervalosType").parents("td").show();
-        } else {
-            $("#parIntervalosType").parents("td").hide();
-        }
-    }
-
-    function parIntervalosTypeCreateEdit() {
-
-        var value = "";
-        if($('#crudNxNEdit #selectUnidadeDeMedidas :selected').val() > 0)
-            value = $('#crudNxNEdit #selectUnidadeDeMedidas :selected').text();
-
-        if ($("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && !$("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
-            var options =''
-            "<option value='0'>" +
-                Resources('acceptable_value_equal_or_greater_than')
-                + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val()+" "+ value+
-            "</option>";
-
-            $('#crudNxNEdit #parIntervalosType').empty();
-            $('#crudNxNEdit #parIntervalosType').append(options);
-            $("#crudNxNEdit #parIntervalosType").parents("td").show();
-
-        }
-
-        else if (!$("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && $("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
-            var options =
-                "<option value='0'>" +
-                    Resources('acceptable_value_equal_or_greater_than')
-                    + " "
-                    + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " " + value +
-                "</option>";
-
-            $('#crudNxNEdit #parIntervalosType').empty();
-            $('#crudNxNEdit #parIntervalosType').append(options);
-            $("#crudNxNEdit #parIntervalosType").parents("td").show();
-
-        }
-
-        else if (!$("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && !$("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
-            var options =
-                "<option value='0'>" +
-                    Resources('value_is_acceptable_between')
-                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() +
-                    + " " + Resources('and')
-                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() +" "+ value+
-                "</option>" +
-                "<option value='1'>" +
-                    Resources('value_is_acceptable_less_than')
-                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() +
-                    + " " + Resources('and_greater_than')
-                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val()
-                    + " " + value +
-                "</option>";
-
-            $('#crudNxNEdit #parIntervalosType').empty();
-            $('#crudNxNEdit #parIntervalosType').append(options);
-            $("#crudNxNEdit #parIntervalosType").parents("td").show();
-        } else {
-            $("#crudNxNEdit #parIntervalosType").parents("td").hide();
-        }
-    }
-
-    $('#selectTipoInput').change(function () {
-
-        if ($("#selectTipoInput option:selected").val() == "-1") {
-
-            $('#selectNaoConforme').val(-1)
-            $('#selectConforme').val(-1)
-            $('#selectUnidadeDeMedidas').val(-1)
-            $('#paramsDto_parLevel3Value_IntervalMin, #paramsDto_parLevel3Value_IntervalMax').val("")
-
-            $('.ParIntervalos').hide();
-            $('.ParBinarios').hide();
-
-            $('#companyValueL3').hide();
-        }
-
-        //Binários
-        if ($("#selectTipoInput option:selected").val() == "1") {
-            resetaParIntervalos();
-            resetaParBinarios();
-            resetaParDefeitos();
-            $('.ParIntervalos').hide();
-            $('.ParBinarios').fadeIn();
-            $('#companyValueL3').fadeIn();
-        }
-
-        //Numero de defeitos
-        if ($("#selectTipoInput option:selected").val() == "2") {
-            resetaParIntervalos();
-            resetaParDefeitos();
-            resetaParBinarios();
-            $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
-                allowMinus: true
-            });
-            $('#parLevel3Value_IntervalMax').inputmask("numeric",  {
-                allowMinus: true
-            });
-
-            $('.ParBinarios').hide();
-
-            //Hidden Unit Medida
-            //Colocar value 1 no campo Unit Medida
-            $('#level3_data_type_collapse > div > table.table-erp > tbody > tr.row.ParIntervalos > td:nth-child(1)').hide()
-            $('#selectUnidadeDeMedidas').val(-2);
-            //Hidden Limite inferior
-            //Colocar 0 no Limite Inferior
-            $('#level3_data_type_collapse > div > table.table-erp > tbody > tr.row.ParIntervalos > td:nth-child(2)').hide()
-            $('#parLevel3Value_IntervalMin').val(0);
-
-            $('.ParIntervalos').fadeIn();
-        }
-
-        //Intervalos
-        if ($("#selectTipoInput option:selected").val() == "3") {
-            resetaParIntervalos();
-            resetaParBinarios();
-            resetaParDefeitos();
-            $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
-                //radixPoint: ".",
-                //groupSeparator: ",",
-                //groupSize: 3,
-                //digits: 2,
-                //autoGroup: true,
-                //allowPlus: true,
-                allowMinus: true
-            });
-            $('#parLevel3Value_IntervalMax').inputmask("numeric",  {
-                //radixPoint: ".",
-                //groupSeparator: ",",
-                //groupSize: 3,
-                //digits: 2,
-                //autoGroup: true,
-                //allowPlus: true,
-                allowMinus: true
-            });
-            $('.ParBinarios').hide();
-            $('.ParIntervalos').fadeIn();
-        }
-
-        if ($("#selectTipoInput option:selected").val() == "4") {
-            resetaParIntervalos();
-            resetaParBinarios();
-            resetaParDefeitos();
-            GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMin');
-            GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMax');
-            $('.ParBinarios').hide();
-            $('.ParIntervalos').fadeIn();
-        }
-
-        if ($("#selectTipoInput option:selected").val() == "5") {
-            resetaParIntervalos();
-            resetaParBinarios();
-            resetaParDefeitos();
-            GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMin');
-            GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMax');
-            $('.ParBinarios').hide();
-            $('.ParIntervalos').hide();
-            $('#companyValueL3').show();
-        }
-
-    });
-
-    function resetaParCalculado(){
-        $('#selectUnidadeParL3Value').val(-1);
-        $('#ParCalculado_IntervalMin').val("");
-        $('#ParCalculado_IntervalMax').val("");
-        $('#selectUnidadeDeMedidas').val(-1);
-    }
-
-    function resetaParIntervalos(){
-        $('#selectUnidadeDeMedidas').val(-1);
-        $('#parLevel3Value_IntervalMin').val("");
-        $('#parLevel3Value_IntervalMax').val("");
-        $('#parIntervalosType').empty().parents('td').hide();
-    }
-
-    function resetaParBinarios(){
-        $('#selectConforme').val(-1);
-        $('#selectNaoConforme').val(-1);
-        $('#companyValueL3').fadeIn();
-    }
-
-    function resetaParDefeitos(){
-        $('#selectUnidadeDeMedidas').val(-1);
-        $('#level3_data_type_collapse > div > table.table-erp > tbody > tr.row.ParIntervalos > td:nth-child(1)').show()
-        $('#level3_data_type_collapse > div > table.table-erp > tbody > tr.row.ParIntervalos > td:nth-child(2)').show()
-        $('#parLevel3Value_IntervalMin').val("");
-        $('#parLevel3Value_IntervalMax').val("");
-        $('#parIntervalosType').empty().parents('td').hide();
-    }
-
-    $('#selectTipoInput').change();
 
     function clicModalBinarioSave() {
 

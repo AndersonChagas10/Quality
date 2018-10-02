@@ -125,7 +125,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         //        var result = new List<CaracteristicaTipificacao>();
         //        var retorno = "";
 
-        //        using (var db = new SGQ_GlobalEntities())
+        //        using (var db = new SgqDbDevEntities())
         //        {
         //            var sql = "";
 

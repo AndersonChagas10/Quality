@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PlanoAcaoCore
 {
@@ -16,5 +17,11 @@ namespace PlanoAcaoCore
             var query = "SELECT * FROM Pa_Gerencia WHERE Id = " + Id;
             return GetGenerico<Pa_Gerencia>(query);
         }
+
+        //public static List<Pa_Gerencia> GetGerenciaByCoordenacao(int id)
+        //{
+        //    var query = "SELECT * FROM Pa_Gerencia WHERE GERENCIA_ID = " + id;
+        //    return ListarGenerico<Pa_Gerencia>(query);
+        //}
     }
 }

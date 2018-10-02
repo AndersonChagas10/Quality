@@ -11,40 +11,97 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content">
 
         <!-- BEGIN CONTENT BODY -->
         @*<div class="page-content" style="min-height: 525px; padding: 32px;">*@
 
 
-        <div class="center-main row">
+        @*<div class="center-main row">
 
-            <div class="col-xs-0 col-md-3 col-ls-3"></div>
+                <div class="col-xs-0 col-md-3 col-ls-3"></div>
 
-            <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlDataCollection" target="_blank" style="color:#2b3643;"><img src="~/Imagens/tablet.png" /><br /><br />@Resources.Resource.data_collection</a></div></div>
-            <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlManagement" style="color:#2b3643;"><img src="~/Imagens/chart.png" /><br /><br />@Resources.Resource.management</a></div></div>
-            <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlCustomization" style="color:#2b3643;"><img src="~/Imagens/stack.png" /><br /><br />@Resources.Resource.customization</a></div></div>
+                <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlDataCollection" target="_blank" style="color:#2b3643;"><img src="~/Imagens/tablet.png" /><br /><br />@Resources.Resource.data_collection</a></div></div>
+                <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlManagement" style="color:#2b3643;"><img src="~/Imagens/chart.png" /><br /><br />@Resources.Resource.management</a></div></div>
+                <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlCustomization" style="color:#2b3643;"><img src="~/Imagens/stack.png" /><br /><br />@Resources.Resource.customization</a></div></div>
 
-            <div class="col-xs-4 col-md-3 col-ls-3"></div>
-        </div>
+                <div class="col-xs-4 col-md-3 col-ls-3"></div>
+            </div>*@
 
-
-            @section Scripts {
-
-                <script>
-
-                    $(document).ready(function () {
-                        $(".sidebar-toggler").removeClass("hide");
-                        $(".page-sidebar-wrapper").removeClass("hide");
-                        closeLeftSidebar();
-                    });
-
-                    var version = '@Html.Raw(ViewBag.Asembly)';
-
-
-                </script>
-
+        <style>
+            .menuGeral {
+                font-size: 18px;
+                text-align: center;
+                padding: 30px 10px 30px 10px;
+                color: black;
+                text-transform: uppercase;
+                font-weight: bold;
             }
 
+            .menuGeraltexto {
+                font-size: 10px;
+                font-weight: normal;
+            }
+
+            .menuGeral a {
+                text-decoration: none;
+                color: #2a4375;
+                display:block;
+            }
+
+                .menuGeral a:hover {
+                    text-decoration: none;
+                    color: #000;
+                }
+
+                .menuGeral a:hover {
+                    text-decoration: none;
+                }
+        </style>
+
+        <div class="row" style="text-align:center;">
+
+            <img src="~/Imagens/Logo.png" style="width:180px;"/>
         </div>
+
+
+        <div class="row">
+            <div class="col-xs-0 col-lg-3 col-md-3 col-sm-0"></div>
+
+            <div class="col-xs-12 col-lg-2 col-md-2 col-sm-4 menuGeral">
+                <a href="@urlCustomization">
+                    <img src="~/Imagens/if_check_406783.png" /><br /><br />@Resources.Resource.customization
+                    <br /><p class="menuGeraltexto">@Resources.Resource.textHomeParams</p>
+                </a>
+            </div>
+
+            <div class="col-xs-12 col-lg-2 col-md-2 col-sm-4 menuGeral"><a href="@urlDataCollection" target="_blank"><img src="~/Imagens/if_tablet_406729.png" /><br /><br />@Resources.Resource.data_collection 
+                <br /><p class="menuGeraltexto">@Resources.Resource.textHomeColeta</p></a></div>
+
+            <div class="col-xs-12 col-lg-2 col-md-2 col-sm-4 menuGeral"><a href="@urlManagement"><img src="~/Imagens/if_target_406854.png" /><br /><br />@Resources.Resource.management 
+                <br /><p class="menuGeraltexto">@Resources.Resource.textHomeGestao</p></a></div>
+
+            
+            <div class="col-xs-0 col-lg-3 col-md-4 col-sm-0"></div>
+        </div>
+
+
+        @section Scripts {
+
+            <script>
+
+                $(document).ready(function () {
+                    $(".sidebar-toggler").removeClass("hide");
+                    $(".page-sidebar-wrapper").removeClass("hide");
+                    closeLeftSidebar();
+                });
+
+                var version = '@Html.Raw(ViewBag.Asembly)';
+
+
+            </script>
+
+        }
+
+    </div>
 </div>

@@ -8,7 +8,7 @@ namespace PlanoAcaoCore
         public string Name { get; set; }
         public static List<Pa_IndicadoresDiretriz> Listar()
         {
-            var query = "SELECT * FROM Pa_IndicadoresDiretriz";
+            var query = "SELECT * FROM Pa_IndicadoresDiretriz WHERE IsActive = 1";
             return ListarGenerico<Pa_IndicadoresDiretriz>(query);
         }
 
@@ -20,7 +20,7 @@ namespace PlanoAcaoCore
 
         public static List<Pa_IndicadoresDiretriz> GetIndicadoresDiretrizXObjetivo(int id)
         {
-            var query = "SELECT * FROM Pa_IndicadoresDiretriz WHERE pa_objetivo_id = " + id;
+            var query = "SELECT * FROM Pa_IndicadoresDiretriz WHERE IsActive = 1 AND pa_objetivo_id = " + id;
             return ListarGenerico<Pa_IndicadoresDiretriz>(query);
         }
     }

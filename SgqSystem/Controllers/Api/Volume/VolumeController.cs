@@ -37,6 +37,7 @@ namespace SgqSystem.Controllers.Api.Volume
                 "\n order by 2 desc                                                                                         " +
                 "\n                                                                                                         " +
                 "\n ) fam                                                                                                   ";
+
             var result = db.Database.SqlQuery<int>(query).FirstOrDefault();
             return result;
         }
@@ -71,6 +72,34 @@ namespace SgqSystem.Controllers.Api.Volume
             return result;
         }
 
-        
+        [HttpPost]
+        [Route("GetVolumeRecortes/{idUnidade}")]
+        public int GetVolumeRecortes(int idUnidade)
+        {
+            var query = "" +
+                "\n select isNull(sum(fam.familias),0) as familias from                                                               " +
+                "\n (                                                                                                       " +
+                "\n select                                                                                                  " +
+                "\n top 1 count(1) familias, Max(InitDate) data                                                             " +
+                "\n from ParLevel2ControlCompany      p                                                                      " +
+                "\n where parcompany_id = " + idUnidade + "        and p.isactive = 1                                                        " +
+                "\n and ParLevel1_Id = (Select id from parlevel1 where hashkey = 4) and InitDate < getdate()                " +
+                "\n group by InitDate                                                                                       " +
+                "\n order by 2 desc                                                                                         " +
+                "\n                                                                                                         " +
+                "\n union all                                                                                               " +
+                "\n                                                                                                         " +
+                "\n select                                                                                                  " +
+                "\n top 1 count(1) familias, Max(InitDate) data                                                             " +
+                "\n from ParLevel2ControlCompany     p                                                                       " +
+                "\n where parcompany_id is null and ParLevel1_Id = (Select id from parlevel1 where hashkey = 4)             " +
+                "\n and InitDate < getdate()      and p.isactive   = 1                                                                         " +
+                "\n group by InitDate                                                                                       " +
+                "\n order by 2 desc                                                                                         " +
+                "\n                                                                                                         " +
+                "\n ) fam                                                                                                   ";
+            var result = db.Database.SqlQuery<int>(query).FirstOrDefault();
+            return result;
+        }
     }
 }

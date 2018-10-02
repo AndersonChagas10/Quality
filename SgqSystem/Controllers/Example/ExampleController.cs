@@ -82,8 +82,7 @@ namespace SgqSystem.Controllers
         }
 
         public ActionResult Index()
-        {
-            throw new System.Exception("teste");
+        {    
             using (var db = new Factory(@"SERVERGRT\MSSQLSERVER2014", "SgqDbDev", "1qazmko0", "sa"))
             {
                var results = db.SearchQuery<UserSgq>("Select * from UserSgq");

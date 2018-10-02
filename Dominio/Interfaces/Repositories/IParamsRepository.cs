@@ -19,9 +19,11 @@ namespace Dominio.Interfaces.Repositories
         void SaveParCompany(ParCompany paramCompany);
 
         void SaveParLevel3Level2(ParLevel3Level2 paramLevel3Level2);
-        void SaveParLevel3(ParLevel3 saveParamLevel3, List<ParLevel3Value> listSaveParamLevel3Value, List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos, int level1Id);
+        void SaveParLevel3(ParLevel3 saveParamLevel3, List<ParLevel3Value> listSaveParamLevel3Value, List<ParLevel3EvaluationSample> listParLevel3EvaluationSample, List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos, int level1Id);
         void ExecuteSql(string sql);
         ParLevel2XHeaderField SaveParHeaderLevel2(ParLevel2XHeaderField parLevel2XHeaderField);
+
+        ParHeaderField SaveParHeaderDuplicate(ParHeaderField parHeaderField);
 
         void SaveVinculoL3L2L1(int idLevel1, int idLevel2, int idLevel3, int? userId, int? companyId);
     }

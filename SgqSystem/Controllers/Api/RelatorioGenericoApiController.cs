@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using Newtonsoft.Json.Linq;
 using SgqSystem.ViewModels;
 using System;
@@ -20,19 +21,22 @@ namespace SgqSystem.Controllers.Api
         public dynamic getTabela(FormularioParaRelatorioViewModel model)
         {
 
-            //var data = "And Data Between" + model._dataInicioSQL + " AND " + model._dataFimSQL;
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                //var data = "And Data Between" + model._dataInicioSQL + " AND " + model._dataFimSQL;
 
-            var db = new SgqDbDevEntities();
-            dynamic retorno = new ExpandoObject();
-            //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
-            var querybody = "SELECT TOP 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
-            //var querybody = "select STR(*) from UserSgq";
+                var db = new SgqDbDevEntities();
+                dynamic retorno = new ExpandoObject();
+                //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
+                var querybody = "SELECT TOP 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
+                //var querybody = "select STR(*) from UserSgq";
 
-            //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
-            retorno.header = new List<string> { "Id", "Nome", "Senha" };
-            retorno.body = db.Database.SqlQuery<PropriedadesGenericas>(querybody).ToList();
+                //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
+                retorno.header = new List<string> { "Id", "Nome", "Senha" };
+                retorno.body = factory.SearchQuery<PropriedadesGenericas>(querybody).ToList();
 
-            return retorno;
+                return retorno;
+            }
         }
 
         //Tabela Javascript
@@ -40,32 +44,35 @@ namespace SgqSystem.Controllers.Api
         [Route("getTabela2")]
         public dynamic getTabela2(FormularioParaRelatorioViewModel model)
         {
-
-            //var data = "And Data Between" + model._dataInicioSQL + " AND " + model._dataFimSQL;
-
-            var db = new SgqDbDevEntities();
-            dynamic retorno = new ExpandoObject();
-
-            //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
-            var querybody = "SELECT TOP 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
-            //var querybody = "select STR(*) from UserSgq";
-
-            //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
-            //retorno.header = new List<string> { "Id", "Nome", "Senha" };
-
-            var header = new List<string> { "Id", "Nome", "Senha" };
-            var header2 = new List<Header>();
-
-
-            foreach (var item in header)
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                header2.Add(new Header() { title = item });
+
+                //var data = "And Data Between" + model._dataInicioSQL + " AND " + model._dataFimSQL;
+
+                var db = new SgqDbDevEntities();
+                dynamic retorno = new ExpandoObject();
+
+                //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
+                var querybody = "SELECT TOP 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
+                //var querybody = "select STR(*) from UserSgq";
+
+                //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
+                //retorno.header = new List<string> { "Id", "Nome", "Senha" };
+
+                var header = new List<string> { "Id", "Nome", "Senha" };
+                var header2 = new List<Header>();
+
+
+                foreach (var item in header)
+                {
+                    header2.Add(new Header() { title = item });
+                }
+
+                retorno.header = header2;
+                retorno.body = factory.SearchQuery<PropriedadesGenericas>(querybody).ToList();
+
+                return retorno;
             }
-
-            retorno.header = header2;
-            retorno.body = db.Database.SqlQuery<PropriedadesGenericas>(querybody).ToList();
-
-            return retorno;
         }
 
 
@@ -116,6 +123,69 @@ namespace SgqSystem.Controllers.Api
             retorno.columns = columns;
 
             return retorno;
+        }
+
+        [HttpPost]
+        [Route("GetParametrizacaoGeral")]
+        public dynamic GetParametrizacaoGeral([FromBody] FormularioParaRelatorioViewModel form)
+        {
+
+            using (var db = new SgqDbDevEntities())
+            {
+
+                dynamic a = new ExpandoObject();
+                /*Estas 2 primeiras queryes são independentes*/
+
+                var level1 = "";
+                var level2 = "";
+                var level3 = "";
+
+                if (form.level1Id > 0)
+                    level1 = " AND P1.ID = " + form.level1Id;
+
+                if (form.level2Id > 0)
+                    level2 = " AND P2.ID = " + form.level2Id;
+
+                if (form.level3Id > 0)
+                    level3 = " AND P3.ID = " + form.level3Id;
+
+                var query = @"  SELECT
+                                P1.NAME AS Col1,
+                                P2.NAME AS Col2,
+                                P3.NAME AS Col3
+                                FROM PARLEVEL3LEVEL2 P32 with (nolock)
+                                INNER JOIN ParLevel3Level2Level1 P321 with (nolock)
+                                ON P321.PARLEVEL3LEVEL2_ID = P32.Id
+                                INNER JOIN ParLevel1 P1 with (nolock)
+                                ON P321.ParLevel1_Id = P1.ID
+                                INNER JOIN PARLEVEL2 P2 with (nolock)
+                                ON P32.ParLevel2_Id = P2.ID
+                                INNER JOIN PARLEVEL3 P3 with (nolock)
+                                ON P32.ParLevel3_Id = P3.Id
+                                WHERE 1=1"
+                                + level1 + level2 + level3 +
+                              @"  AND P32.IsActive = 1
+                                  AND P321.Active = 1
+                                  AND P1.IsActive = 1
+                                  AND P2.IsActive = 1
+                                  AND P3.IsActive = 1
+                                GROUP BY P1.NAME, P2.NAME, P3.NAME
+                                order by 1,2,3
+";
+
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    a = factory.SearchQuery<PropriedadesGenericas>(query).ToList();
+
+                }
+                //if (a.Count() == 0)
+                    return a;
+
+            }
+
+            return null;
+
         }
 
         //ApiRelatoriosController

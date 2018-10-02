@@ -38,7 +38,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 return form;
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 throw;
             }
@@ -68,6 +68,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             dynamic retorno = new JObject();
             //retorno.url = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao//NewFTA?";
             retorno.url = "http://192.168.25.200/PlanoAcao/Pa_Acao//NewFTA?";
+            //retorno.url = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao//NewFTA?";
 
             retorno.MetaFTA += "MetaFTA=" + form.MetaFTA.ToString();
             retorno.PercentualNCFTA += "&PercentualNCFTA=" + form.PercentualNCFTA.ToString();

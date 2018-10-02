@@ -7,6 +7,7 @@ using DTO.Helpers;
 using SgqSystem.Secirity;
 using SgqSystem.Helpers;
 using Helper;
+using System;
 
 namespace SgqSystem.Controllers
 {
@@ -107,13 +108,14 @@ namespace SgqSystem.Controllers
                 //Verifica se já existe uma coleta no mesmo dia
                 if(db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id).ToList().Count() == 0)
                 {
+                    cepDesossa.AddDate = DateTime.Now;
                     db.VolumeCepDesossa.Add(cepDesossa);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    ReturnError();
+                    ReturnError(cepDesossa);
                     //return View(cepDesossa);
                 }             
             }
@@ -151,11 +153,17 @@ namespace SgqSystem.Controllers
 
             if (cepDesossa.Amostras == null)
                 ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
+
+            //if (cepDesossa.Id > 0 && cepDesossa.Data != null && cepDesossa.Data?.Date < DateTime.Now.Date)
+            //{
+            //    ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
+            //}
         }
 
-        private void ReturnError()
+        private void ReturnError(VolumeCepDesossa obj)
         {
-            ModelState.AddModelError("Data","Já existe um registro nesta data para esta unidade!");
+            ModelState.AddModelError("Data", $"Já existe registro na data {obj.Data.Value.ToShortDateString()} para esta unidade!");
+            obj.Data = DateTime.Now;
         }
 
         // GET: CepDesossas/Edit/5
@@ -170,6 +178,12 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            //if (cepDesossa.Data != null && cepDesossa.Data?.Date < DateTime.Now.Date)
+            //{
+            //    return RedirectToAction("Index");
+            //}
+
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 2), "Id", "Name", cepDesossa.ParLevel1_id);
             GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(cepDesossa);
@@ -191,7 +205,12 @@ namespace SgqSystem.Controllers
             {
                 if (db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id).ToList().Count() == 0)
                 {
+                    cepDesossa.AlterDate = DateTime.Now;
                     db.Entry(cepDesossa).State = EntityState.Modified;
+                    if (db.VolumeCepDesossa.Where(r => r.Id == cepDesossa.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
+                    {
+                        db.Entry(cepDesossa).Property(x => x.Data).IsModified = false;
+                    }
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -204,7 +223,12 @@ namespace SgqSystem.Controllers
                     {
                         using (var db2 = new SgqDbDevEntities())
                         {
+                            cepDesossa.AlterDate = DateTime.Now;
                             db2.Entry(cepDesossa).State = EntityState.Modified;
+                            if (db2.VolumeCepDesossa.Where(r => r.Id == cepDesossa.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
+                            {
+                                db2.Entry(cepDesossa).Property(x => x.Data).IsModified = false;
+                            }
                             db2.SaveChanges();
                             return RedirectToAction("Index");
                         }
@@ -212,7 +236,7 @@ namespace SgqSystem.Controllers
                    }
                     else
                     {
-                        ReturnError();
+                        ReturnError(cepDesossa);
                         //return View(cepDesossa);
                     }
                 }                   

@@ -1,0 +1,10 @@
+-- Estrutura inicial
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MigrationHistory' AND xtype='U')
+	CREATE TABLE [dbo].[MigrationHistory](
+		[Id] [int] IDENTITY(1,1) NOT NULL primary key,
+		[Name] [nvarchar](155) NOT NULL,
+		[AddDate] [datetime2](7) NOT NULL
+	) 
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('00000000_0000_EstruturaMigration',GetDate())

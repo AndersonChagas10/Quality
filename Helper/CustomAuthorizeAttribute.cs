@@ -31,13 +31,13 @@ namespace Helper
         {
             _controllerLogin = controllerLogin;
             _actionLogin = actionLogin;
-        }  
+        }
 
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             if (_isLogin)
-                if (!GlobalConfig.VerifyConfig("DbContextSgqEUA"))
+                if (!GlobalConfig.VerifyConfig("DefaultConnection"))
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "FirstConfig", action = "Index" }));
 
             if (!_isLogin)
@@ -109,40 +109,46 @@ namespace Helper
 
                     //else
                     //{
-                        if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+                    if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+                    {
+                        _userSgqRoles = cookie.Values["roles"].ToString();
+                        filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
+
+                    }
+                    else
+                    {//NAO TEM ROLES
+                        filterContext.Controller.ViewBag.IsAdmin = false;
+                    }
+                    //Extends cookie ttl
+                    cookie.Expires = DateTime.Now.AddHours(48);
+                    filterContext.HttpContext.Response.Cookies.Set(cookie);
+                    //ok - cookie is found.
+                    //Gracefully check if the cookie has the key-value as expected.
+                    if (!string.IsNullOrEmpty(Roles))
+                    {
+                        if (!string.IsNullOrEmpty(_userSgqRoles))
                         {
-                            _userSgqRoles = cookie.Values["roles"].ToString();
-                            filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
+                            //Yes userId is found. Mission accomplished.
+                            //CustomPrincipal cp = new CustomPrincipal(SessionPersister.Username);
+                            if (!IsInRole(_userSgqRoles))
+                                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
 
                         }
                         else
-                        {//NAO TEM ROLES
-                            filterContext.Controller.ViewBag.IsAdmin = false;
-                        }
-                        //Extends cookie ttl
-                        cookie.Expires = DateTime.Now.AddMinutes(60);
-                        filterContext.HttpContext.Response.Cookies.Set(cookie);
-                        //ok - cookie is found.
-                        //Gracefully check if the cookie has the key-value as expected.
-                        if (!string.IsNullOrEmpty(Roles))
                         {
-                            if (!string.IsNullOrEmpty(_userSgqRoles))
-                            {
-                                //Yes userId is found. Mission accomplished.
-                                //CustomPrincipal cp = new CustomPrincipal(SessionPersister.Username);
-                                if (!IsInRole(_userSgqRoles))
-                                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
-
-                            }
-                            else
-                            {
-                                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
-                            }
+                            filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
                         }
+                    }
 
-                        filterContext.Controller.ViewBag.CompanyId = cookie.Values["CompanyId"].ToString();
-                        filterContext.Controller.ViewBag.UserSgqId = userId;
-                        Manutencao(filterContext);
+                    filterContext.Controller.ViewBag.CompanyId = cookie.Values["CompanyId"].ToString();
+                    filterContext.Controller.ViewBag.UserSgqId = userId;
+
+                    if (cookie.Values["LinkedCompanyIds"] != null)
+                    {
+                        filterContext.Controller.ViewBag.LinkedCompanyIds = cookie.Values["LinkedCompanyIds"].ToString();
+                    }
+
+                    Manutencao(filterContext);
 
                     //}
 

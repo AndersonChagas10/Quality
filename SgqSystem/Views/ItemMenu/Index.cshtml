@@ -1,0 +1,136 @@
+﻿@model IEnumerable<DTO.DTO.ItemMenuDTO>
+
+@{
+    ViewBag.Title = Resources.Resource.item_menu;
+}
+<style>
+    #setup_tab {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+</style>
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "ItemMenu")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.item_menu</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.item_menu</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab" >
+                                <p>
+                                    @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
+                                </p>
+                                <table class="table" id="tabelaMenu">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayName("Menu Predecessor")
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.add_date)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.alter_date)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.name)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.icon)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.url)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.resource)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.is_active)
+                                            </th>
+                                            <th> @Html.DisplayName(Resources.Resource.action)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.MenuPredecessor.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.AddDate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.AlterDate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    <i class="@Html.Raw(item.Icon)"></i>
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Url)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Resource)
+                                                </td>
+                                                <td>
+                                                    @Html.Raw((item.IsActive == true) ? Resources.Resource.yes : Resources.Resource.no)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar15");
+
+
+    $(document).ready(function () {
+        $('#tabelaMenu').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+            "order": [[1, "asc"]],
+            "scrollX": true,
+            "responsive": true,
+            "language": {
+            "emptyTable": "@Resources.Resource.no_data_to_show"
+             }
+        });
+    });
+
+</script>
+

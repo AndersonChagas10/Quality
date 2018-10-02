@@ -718,7 +718,7 @@
     <value>CEP Desossa</value>
   </data>
   <data name="cep_recortes" xml:space="preserve">
-    <value>CEP Recortes</value>
+    <value>CEP  Matéria Prima</value>
   </data>
   <data name="nqa" xml:space="preserve">
     <value>NQA</value>
@@ -735,7 +735,7 @@
   <data name="resource_id" xml:space="preserve">
     <value>en_us</value>
   </data>
-  <data name="_new" xml:space="preserve">
+  <data name="_novo" xml:space="preserve">
     <value>New</value>
   </data>
   <data name="details" xml:space="preserve">
@@ -2024,5 +2024,179 @@
   </data>
   <data name="valued" xml:space="preserve">
     <value>Valued</value>
+  </data>
+  <data name="error_upper" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="processing_upper" xml:space="preserve">
+    <value>PROCESSING</value>
+  </data>
+  <data name="success_upper" xml:space="preserve">
+    <value>SUCCESS</value>
+  </data>
+  <data name="waiting_upper" xml:space="preserve">
+    <value>WAITING</value>
+  </data>
+  <data name="effectiveDate" xml:space="preserve">
+    <value>Effective Date</value>
+  </data>
+  <data name="actives" xml:space="preserve">
+    <value>Actives</value>
+  </data>
+  <data name="active_clusters" xml:space="preserve">
+    <value>Active Clusters</value>
+  </data>
+  <data name="active_goals" xml:space="preserve">
+    <value>Active Goals</value>
+  </data>
+  <data name="to_manager" xml:space="preserve">
+    <value>To Manager</value>
+  </data>
+  <data name="without" xml:space="preserve">
+    <value>Without</value>
+  </data>
+  <data name="edited" xml:space="preserve">
+    <value>Edited</value>
+  </data>
+  <data name="normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="retroactive" xml:space="preserve">
+    <value>Retroactive</value>
+  </data>
+  <data name="description_has_between_1_and_300" xml:space="preserve">
+    <value>Description has to be between 1 and 300 characters</value>
+  </data>
+  <data name="data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="weighted" xml:space="preserve">
+    <value>Weighted</value>
+  </data>
+  <data name="module" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="counter_name" xml:space="preserve">
+    <value>Counter Name</value>
+  </data>
+  <data name="conclued_action_plan" xml:space="preserve">
+    <value>Conclued action plan.</value>
+  </data>
+  <data name="among_others" xml:space="preserve">
+    <value>among others ...</value>
+  </data>
+  <data name="ev_with_weight" xml:space="preserve">
+    <value>Ev With Weight</value>
+  </data>
+  <data name="nc_with_weight" xml:space="preserve">
+    <value>Nc WithWeight</value>
+  </data>
+  <data name="back_to_departments" xml:space="preserve">
+    <value>Back to Departments</value>
+  </data>
+  <data name="unit_of_measurement_name" xml:space="preserve">
+    <value>Unit of Measurement Name</value>
+  </data>
+  <data name="bigger" xml:space="preserve">
+    <value>Bigger</value>
+  </data>
+  <data name="smaller" xml:space="preserve">
+    <value>Smaller</value>
+  </data>
+  <data name="indicators_by_units" xml:space="preserve">
+    <value>Indicators by Units</value>
+  </data>
+  <data name="back_to_unit_of_measurement" xml:space="preserve">
+    <value>Back to Units of Measurement</value>
+  </data>
+  <data name="file_format_not_supported" xml:space="preserve">
+    <value>File Format not Supported</value>
+  </data>
+  <data name="no_file_selected" xml:space="preserve">
+    <value>No file selected</value>
+  </data>
+  <data name="import_excel" xml:space="preserve">
+    <value>Import Excel</value>
+  </data>
+  <data name="excel_file" xml:space="preserve">
+    <value>Excel File</value>
+  </data>
+  <data name="package" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="daily_apointments_sunday" xml:space="preserve">
+    <value>Daily Apointments on Sunday</value>
+  </data>
+  <data name="period_type_chart" xml:space="preserve">
+    <value>Period Type in Charts</value>
+  </data>
+  <data name="a_month" xml:space="preserve">
+    <value>A Month</value>
+  </data>
+  <data name="per_day" xml:space="preserve">
+    <value>Per Day</value>
+  </data>
+  <data name="per_fortnight" xml:space="preserve">
+    <value>Per Fortnight</value>
+  </data>
+  <data name="per_week" xml:space="preserve">
+    <value>Per Week</value>
+  </data>
+  <data name="parlevel1xmodules" xml:space="preserve">
+    <value>Level1 x Modules</value>
+  </data>
+  <data name="effective_date_end" xml:space="preserve">
+    <value>Effective date end</value>
+  </data>
+  <data name="effective_date_start" xml:space="preserve">
+    <value>Effective date start</value>
+  </data>
+  <data name="parlevel1" xml:space="preserve">
+    <value>ParLevel 1</value>
+  </data>
+  <data name="parModule" xml:space="preserve">
+    <value>ParModule</value>
+  </data>
+  <data name="import_format_itens" xml:space="preserve">
+    <value>Import format itens</value>
+  </data>
+  <data name="available_items" xml:space="preserve">
+    <value>Available Items</value>
+  </data>
+  <data name="import_format" xml:space="preserve">
+    <value>Import Format</value>
+  </data>
+  <data name="import_format_id" xml:space="preserve">
+    <value>Import Format Id</value>
+  </data>
+  <data name="key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="new_format" xml:space="preserve">
+    <value>New Format</value>
+  </data>
+  <data name="indicador_used" xml:space="preserve">
+    <value>This Indicator alredy have a alert rule!</value>
+  </data>
+  <data name="monitoring_used" xml:space="preserve">
+    <value>This Monitoring alredy have a alert rule!</value>
+  </data>
+  <data name="are_greater_than" xml:space="preserve">
+    <value>Are greater than</value>
+  </data>
+  <data name="module_link_indicator" xml:space="preserve">
+    <value>The module is linked to one or more indicators, check before inactive</value>
+  </data>
+  <data name="update_collect_message" xml:space="preserve">
+    <value>Please update the settings of your unit to have an effect on APP Collect</value>
+  </data>
+  <data name="indicator_alredy_used" xml:space="preserve">
+    <value>These Indicators already have links on the selected date.</value>
+  </data>
+  <data name="update" xml:space="preserve">
+    <value>Update</value>
   </data>
 </root>

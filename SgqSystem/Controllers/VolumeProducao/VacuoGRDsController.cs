@@ -3,6 +3,7 @@ using DTO.Helpers;
 using Helper;
 using SgqSystem.Helpers;
 using SgqSystem.Secirity;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -105,14 +106,14 @@ namespace SgqSystem.Controllers
                 //Verifica se já existe uma coleta no mesmo dia
                 if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id).ToList().Count() == 0)
                 {
-
+                    vacuoGRD.AddDate = DateTime.Now;
                     db.VolumeVacuoGRD.Add(vacuoGRD);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    ReturnError();
+                    ReturnError(vacuoGRD);
                     //return View(vacuoGRD);
                 }
             }
@@ -144,11 +145,17 @@ namespace SgqSystem.Controllers
 
             if (vacuoGRD.Amostras == null)
                 ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
+
+            //if (vacuoGRD.Id > 0 && vacuoGRD.Data != null && vacuoGRD.Data?.Date < DateTime.Now.Date)
+            //{
+            //    ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
+            //}
         }
 
-        private void ReturnError()
+        private void ReturnError(VolumeVacuoGRD obj)
         {
-            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade!");
+            ModelState.AddModelError("Data", $"Já existe registro na data {obj.Data.Value.ToShortDateString()} para esta unidade!");
+            obj.Data = DateTime.Now;
         }
 
         // GET: VacuoGRDs/Edit/5
@@ -163,6 +170,12 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            //if (vacuoGRD.Data != null && vacuoGRD.Data?.Date < DateTime.Now.Date)
+            //{
+            //    return RedirectToAction("Index");
+            //}
+
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 22), "Id", "Name", vacuoGRD.ParLevel1_id);
             GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(vacuoGRD, 3);
@@ -182,7 +195,14 @@ namespace SgqSystem.Controllers
             {
                 if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id).ToList().Count() == 0)
                 {
+                    vacuoGRD.AlterDate = DateTime.Now;
                     db.Entry(vacuoGRD).State = EntityState.Modified;
+
+                    if (db.VolumeVacuoGRD.Where(r => r.Id == vacuoGRD.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
+                    {
+                        db.Entry(vacuoGRD).Property(x => x.Data).IsModified = false;
+                    }
+                   
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -195,7 +215,12 @@ namespace SgqSystem.Controllers
                     {
                         using (var db2 = new SgqDbDevEntities())
                         {
+                            vacuoGRD.AlterDate = DateTime.Now;
                             db2.Entry(vacuoGRD).State = EntityState.Modified;
+                            if (db2.VolumeVacuoGRD.Where(r => r.Id == vacuoGRD.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
+                            {
+                                db2.Entry(vacuoGRD).Property(x => x.Data).IsModified = false;
+                            }
                             db2.SaveChanges();
                             return RedirectToAction("Index");
                         }
@@ -203,7 +228,7 @@ namespace SgqSystem.Controllers
                     }
                     else
                     {
-                        ReturnError();
+                        ReturnError(vacuoGRD);
                         //return View(vacuoGRD);
                     }
                 }

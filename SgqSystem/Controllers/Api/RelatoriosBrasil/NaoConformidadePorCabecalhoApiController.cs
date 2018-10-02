@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using DTO;
 using System;
 using System.Collections.Generic;
@@ -97,9 +98,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n GROUP BY pc.Name, pc.Id" +
                 "\n HAVING sum(case when Defects <> 0 then 1 else 0 end) > 0";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    _return = db.Database.SqlQuery<Generic>(query).ToList();
+                    _return = factory.SearchQuery<Generic>(query).ToList();
                 }
             }
             catch (Exception ex)
@@ -154,9 +155,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n GROUP BY pmv.Name, cl2.UnitId" +
                 "\n HAVING sum(case when Defects <> 0 then 1 else 0 end) > 0";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    _return = db.Database.SqlQuery<Generic>(query).ToList();
+                    _return = factory.SearchQuery<Generic>(query).ToList();
                 }
 
             }
@@ -223,9 +224,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                  "\n GROUP BY pmv2.Name, cl2.UnitId" +
                  "\n HAVING sum(case when Defects <> 0 then 1 else 0 end) > 0";
 
-                using (var db = new SgqDbDevEntities())
+                
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    _return = db.Database.SqlQuery<Generic>(query).ToList();
+                    _return = factory.SearchQuery<Generic>(query).ToList();
                 }
             }
             catch (Exception ex)
@@ -294,9 +296,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n GROUP BY pmv3.Name, cl2.UnitId " +
                 "\n HAVING sum(case when Defects <> 0 then 1 else 0 end) > 0";
 
-                using (var db = new SgqDbDevEntities())
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    _return = db.Database.SqlQuery<Generic>(query).ToList();
+                    _return = factory.SearchQuery<Generic>(query).ToList();
                 }
             }
             catch (Exception ex)
@@ -366,9 +368,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                  "\n GROUP BY pmv4.Name, cl2.UnitId " +
                  "\n HAVING sum(case when Defects <> 0 then 1 else 0 end) > 0";
 
-                using (var db = new SgqDbDevEntities())
+
+                using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    _return = db.Database.SqlQuery<Generic>(query).ToList();
+                    _return = factory.SearchQuery<Generic>(query).ToList();
                 }
             }
             catch (Exception ex)

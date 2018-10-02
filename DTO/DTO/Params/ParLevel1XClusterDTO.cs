@@ -10,6 +10,7 @@ namespace DTO.DTO.Params
         [Required]
         public int ParCluster_Id { get; set; }
         public decimal Points { get; set; }
+        public DateTime? EffectiveDate { get; set; }
         public bool IsActive { get; set; } = true;
         public Nullable<int> ParCriticalLevel_Id { get; set; }
 

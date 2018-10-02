@@ -13,6 +13,7 @@ namespace DTO.DTO.Params
 
         public IEnumerable<SelectListItem> DdlParConsolidation { get; set; }
         public IEnumerable<SelectListItem> DdlFrequency { get; set; }
+        public IEnumerable<SelectListItem> DdlparScoreType { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel1 { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel2 { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel3 { get; set; }
@@ -45,6 +46,11 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlEquipamentos { get; set; }
         public IEnumerable<SelectListItem> DdlCamaras { get; set; }
         public IEnumerable<SelectListItem> DdlPontosDeColeta { get; set; }
+        public IEnumerable<SelectListItem> DdlRaioX { get; set; }
+        public IEnumerable<SelectListItem> DdlSetor { get; set; }
+        public IEnumerable<SelectListItem> DdlTipoCorte { get; set; }
+        public IEnumerable<SelectListItem> DdlSetoresBPF { get; set; }
+        
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
@@ -98,12 +104,7 @@ namespace DTO.DTO.Params
             DdlparLevelDefinition = Guard.CreateDropDownList(ddlparLevelDefinition.OrderBy(r => r.Name));
 
             DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType.OrderBy(r => r.Name));
-
-            if (GlobalConfig.Eua)
-            {
-                DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType.Where(r => r.Id != 2).OrderBy(r => r.Name));
-            }
-
+            
             DdlParDepartment = Guard.CreateDropDownList(ddlParDepartment.OrderBy(r => r.Name));
             DdlParCounter_Level1 = Guard.CreateDropDownList(ddlParCounter_Level1.OrderBy(r => r.Name));
             DdlParLocal_Level1 = Guard.CreateDropDownList(ddlParLocal_Level1.OrderBy(r => r.Name));
@@ -121,6 +122,11 @@ namespace DTO.DTO.Params
                 DdlEquipamentos = CreateSelectListEquipamentos("Equipamento");
                 DdlCamaras = CreateSelectListEquipamentos("Câmara");
                 DdlPontosDeColeta = CreateSelectListEquipamentos("Ponto de Coleta");
+                DdlRaioX = CreateSelectListEquipamentos("Detector de Metais");
+                DdlSetor = CreateSelectListEquipamentos("Setor");
+                DdlTipoCorte = CreateSelectListEquipamentos("Tipo de Corte");
+                DdlSetoresBPF = CreateSelectListEquipamentos("Setores BPF");
+
             }
 
             DdlScoretype = Guard.CreateDropDownList(ddlScoretype.OrderBy(r => r.Name));
@@ -178,17 +184,15 @@ namespace DTO.DTO.Params
         private IEnumerable<SelectListItem> CreateSelectListEquipamentos(string tipo)
         {
             IEnumerable<SelectListItem> retorno;
-
-            var context = "SGQ_GlobalADO";
             
-            using (var db = new Factory(context))
+            using (Factory factory = new Factory("DefaultConnection"))
             {
                 string query = "SELECT                                                      "+
                                 "Tipo + '|' + ISNULL(Subtipo, '') as Value,          "+
                                 "Tipo + ' - ' + ISNULL(Subtipo, 'Todos') as Text            "+
                                 "FROM Equipamentos WHERE Tipo = '"+ tipo + "' GROUP BY Tipo, Subtipo ";
 
-                retorno = db.SearchQuery<SelectListItem>(query);
+                retorno = factory.SearchQuery<SelectListItem>(query);
             }
             
             return retorno;

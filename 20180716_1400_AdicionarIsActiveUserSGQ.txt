@@ -1,0 +1,13 @@
+-- Leo (Adicionar a coluna isActive na tabela UserSgq) 
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180716_1400_AdicionarIsActiveUserSGQ',GetDate())
+
+GO
+
+IF COL_LENGTH('UserSgq','IsActive') IS NULL
+    BEGIN
+		ALTER TABLE UserSgq
+		ADD IsActive bit null
+    END
+
+GO

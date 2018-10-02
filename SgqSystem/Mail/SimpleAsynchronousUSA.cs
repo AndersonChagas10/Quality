@@ -16,6 +16,7 @@ using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Data.Entity;
 using System.Net.Http;
+using ADOFactory;
 
 namespace SgqSystem.Mail
 {
@@ -55,22 +56,48 @@ namespace SgqSystem.Mail
                 using (var client = new HttpClient())
                 {
                     var url = string.Empty;
-                    if (GlobalConfig.Brasil)
+                    if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.Desenvolvimento.ToString()))
                     {
-                        url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
+                        //GlobalConfig.emailFrom = "grtservicos@hotmail.com";
+                        //GlobalConfig.emailPass = Guard.EncryptStringAES("1qazmko0");
+                        //GlobalConfig.emailSmtp = "smtp-mail.outlook.com";//"smtp.live.com";
+                        //GlobalConfig.emailPort = 587;
+                        //GlobalConfig.emailSSL = true;
+
+                        GlobalConfig.emailFrom = "celsogea@hotmail.com";
+                        GlobalConfig.emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
+                        GlobalConfig.emailSmtp = "smtp.live.com";
+                        GlobalConfig.emailPort = 587;
+                        GlobalConfig.emailSSL = true;
+
+                        url = "http://localhost/SgqSystem" + "/api/hf/SendMail";
                     }
-                    else if (GlobalConfig.Eua)
+                    else if (GlobalConfig.Ambient.Equals(GlobalConfig.Ambiets.DesenvolvimentoDeployServidorGrtParaTeste.ToString()))
                     {
-                        //url = "http://sgqtest.jbssa.com/hmlusa/api/hf/SendMail";
-                        url = "http://sgq.jbssa.com/sgq/api/hf/SendMail";
+                        //GlobalConfig.emailFrom = "grtservicos@hotmail.com";
+                        //GlobalConfig.emailPass = Guard.EncryptStringAES("1qazmko0");
+                        //GlobalConfig.emailSmtp = "smtp-mail.outlook.com";//"smtp.live.com";
+                        //GlobalConfig.emailPort = 587;
+                        //GlobalConfig.emailSSL = true;
+
+                        GlobalConfig.emailFrom = "celsogea@hotmail.com";
+                        GlobalConfig.emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
+                        GlobalConfig.emailSmtp = "smtp.live.com";
+                        GlobalConfig.emailPort = 587;
+                        GlobalConfig.emailSSL = true;
+
+                        url = "http://192.168.25.200/sgqusa" + "/api/hf/SendMail";
                     }
-                    //var url = "http://localhost:57506/" + "api/hf/SendMail";
-                    //var url = "http://localhost:8091/SgqSystem/" + "api/hf/SendMail";
+                    else
+                    {
+                        url = GlobalConfig.urlPreffixAppColleta + "/api/hf/SendMail";
+                    }
+                  
                     client.Timeout = TimeSpan.FromMinutes(2);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -91,7 +118,7 @@ namespace SgqSystem.Mail
                 ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
 
             if (ListaDeMail != null && ListaDeMail.Count() > 0)
-                foreach (var i in ListaDeMail.Take(tamanhoDoPool).ToList())
+                foreach (var i in ListaDeMail.Take(tamanhoDoPool).Distinct().ToList())
                 {
                     Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, Guard.DecryptStringAES(GlobalConfig.emailPass), GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));//ENVIA EMAILS NA EMAILCONTENT
                 }
@@ -175,9 +202,13 @@ namespace SgqSystem.Mail
 + " \n                                                                                                                                                                          "
 + " \n     ) vaiLaJesus                                                                                                                                                         "
 + " \n INNER JOIN correctiveaction CA ON CA.Id = vaiLaJesus.Id                                                                                                                  "
-+ " \n order by 1 ASC";                                                                                                                                                         
++ " \n order by 1 ASC";
 
-                        var listaCorrectiveActionDb = db.Database.SqlQuery<CorrectiveActionEmail>(sql).ToList();
+                        var listaCorrectiveActionDb = new List<CorrectiveActionEmail>();
+                        using (Factory factory = new Factory("DefaultConnection"))
+                        {
+                            listaCorrectiveActionDb = factory.SearchQuery<CorrectiveActionEmail>(sql).ToList();
+                        }
 
                         foreach (var ca in listaCorrectiveActionDb)
                         {
@@ -195,6 +226,22 @@ namespace SgqSystem.Mail
 
                             ca.AlertNumber = db.Database.SqlQuery<int>(alertNivelQuery).FirstOrDefault();
 
+                            #region Captura ultimo body do email content enviado
+                            var sqlSelecionaUltimaCorrectiveActionReferenteAEsta =
+                                $@"SELECT  top 1 ec.Body   FROM  CollectionLevel2 cl2                                                 
+                                    INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id    
+                                    INNER JOIN deviation d ON d.ParLevel1_Id = cl2.ParLevel1_Id AND   d.ParCompany_Id = cl2.UnitId
+                                    INNER JOIN EmailContent ec ON ec.Id = ca.EmailContent_Id   
+                                    WHERE                                         
+                                    CAST(GETDATE() AS Date) = CAST(cl2.CollectionDate AS Date)        
+                                    AND cl2.ParLevel1_Id = { ca.ParLevel1_Id }                                           
+                                    AND cl2.UnitId = { ca.ParCompany_Id }
+                                    AND ca.Id <= { ca.Id }
+                                    order by ec.id desc";
+
+                            var ultimoBodyEmailContent = "<div style='color:red'>"+db.Database.SqlQuery<string>(sqlSelecionaUltimaCorrectiveActionReferenteAEsta).FirstOrDefault()+"</div>";
+                            #endregion
+
                             var colectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == ca.CollectionLevel02Id);
                             var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == colectionLevel2.ParLevel1_Id).Name;
                             var parLevel2 = db.ParLevel2.FirstOrDefault(r => r.Id == colectionLevel2.ParLevel2_Id).Name;
@@ -206,7 +253,7 @@ namespace SgqSystem.Mail
                                 company = "All";
 
                             //"unidade" - "nome do indicador": 1st failure of the day
-                            var subject = string.Format("SGQ Corretive Action: Unit - {0}: {1}: {2} failure of the day.", company, parLevel1, ca.AlertNumber.DisplayWithSuffix());
+                            var subject = string.Format("SGQ Corretive Action: Plant - {0}: {1}: {2} failure of the day.", company, parLevel1, ca.AlertNumber.DisplayWithSuffix());
 
                             var newMail = new EmailContent()
                             {
@@ -217,12 +264,12 @@ namespace SgqSystem.Mail
                             };
 
                             var model = controller.GetCorrectiveActionById(ca.Id);
-                            newMail.Body = subject + "<br><br>" + model.SendMeByMail;
-                            newMail.To = DestinatariosSGQJBSUSA(newMail, ca);
+                            newMail.Body = subject + "<br><br>" + model.EmailBodyCorrectiveAction + "<br><br>" + ultimoBodyEmailContent;
+                            newMail.To = DestinatariosSGQJBSUSAPorAlertaEAssinatura(newMail, ca, model);
                             db.EmailContent.Add(newMail);
                             db.SaveChanges();
 
-                            db.Database.ExecuteSqlCommand("UPDATE CorrectiveAction SET MailProcessed = 1 WHERE Id = " + ca.Id);
+                            db.Database.ExecuteSqlCommand($"UPDATE CorrectiveAction SET MailProcessed = 1, EmailContent_Id = { newMail.Id } WHERE Id = { ca.Id }");
                             db.SaveChanges();
                         }
                     }
@@ -234,41 +281,50 @@ namespace SgqSystem.Mail
             }
 
         }
-      
+
         /// <summary>
         /// Envia para destinatários de acordo com documento na pasta desta classe
         /// </summary>
-        /// <param name="m"></param>
-        /// <param name="d"></param>
+        /// <param name="mail"></param>
+        /// <param name="caEmail"></param>
         /// <returns></returns>
-        private static string DestinatariosSGQJBSUSA(EmailContent m, CorrectiveActionEmail d)
+        private static string DestinatariosSGQJBSUSAPorAlertaEAssinatura(EmailContent mail, CorrectiveActionEmail caEmail, CorrectiveActionDTO modelCa)
         {
-            using (var dbLegado = new SgqDbDevEntities())
+
+            using (var db = new SgqDbDevEntities())
             {
                 var Roles = new List<string>();
                 var listaEmails = new List<string>();
-                var query = "SELECT * FROM UserSgq WHERE  1=1 AND ([role] like ";// ;)
+                var emailAssinatura = string.Empty;
+                var listaUserComEmailNaoNulo = db.UserSgq.Where(r => r.Email != null && r.Email.Length > 0);
+                var usersQueRecebemALertaNivelUm = listaUserComEmailNaoNulo.Where(r => r.Role.Contains("Alert1") && r.ParCompany_Id == caEmail.ParCompany_Id).ToList();
+                var usersQueRecebemALertaNivelDois = listaUserComEmailNaoNulo.Where(r => r.Role.Contains("Alert2")).ToList();
+                var usuarioQueAssinouSlaugther = listaUserComEmailNaoNulo.FirstOrDefault(r => r.Id == modelCa.SlaughterId);
+                var usuarioQueAssinouTechinical = listaUserComEmailNaoNulo.FirstOrDefault(r => r.Id == modelCa.TechinicalId);
 
-                if (d.AlertNumber == 1)
-                    query += "'%Alert1%' \n AND ParCompany_Id = " + d.ParCompany_Id + ") \n  ";
-                else 
-                    query += "'%Alert1%' AND ParCompany_Id = " + d.ParCompany_Id + ") OR [role] like '%Alert2%' \n  ";
-                   
-                query += "\n AND Email IS NOT NULL";
-                query += "\n AND Email <> ''";
-
-                var listaUsuario = dbLegado.Database.SqlQuery<UserSgq>(query);
-
-                foreach (var usuario in listaUsuario)
-                    listaEmails.Add(usuario.Email);
-
-                if (listaEmails != null && listaEmails.Count() > 0)
-                    return string.Join(",", listaEmails.ToArray());
+                if (caEmail.AlertNumber == 1)
+                {
+                    foreach (var usuario in usersQueRecebemALertaNivelUm)
+                        listaEmails.Add(usuario.Email);
+                }
                 else
                 {
-                    //Caso não existam emails cadastrados
-                    //Preenche send status e não vai para a lista de envio.
-                    m.SendStatus = "Não existem destinatários para este email.";
+                    foreach (var usuario in usersQueRecebemALertaNivelUm)
+                        listaEmails.Add(usuario.Email);
+                    foreach (var usuario in usersQueRecebemALertaNivelDois)
+                        listaEmails.Add(usuario.Email);
+                }
+
+                if(usuarioQueAssinouSlaugther != null)
+                    listaEmails.Add(usuarioQueAssinouSlaugther.Email);
+                if (usuarioQueAssinouTechinical != null)
+                    listaEmails.Add(usuarioQueAssinouTechinical.Email);
+
+                if (listaEmails != null && listaEmails.Count() > 0)
+                    return string.Join(",", listaEmails.Distinct().ToArray());
+                else
+                {
+                    mail.SendStatus = "Não existem destinatários para este email.";
                     return string.Empty;
                 }
             }
@@ -394,7 +450,7 @@ namespace SgqSystem.Mail
             public DateTime CollectionDate { get; set; }
         }
 
-        
+
 
     }
 

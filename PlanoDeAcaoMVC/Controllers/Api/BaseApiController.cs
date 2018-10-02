@@ -13,11 +13,53 @@ using PlanoAcaoCore;
 using ADOFactory;
 using DTO.Helpers;
 using PlanoDeAcaoMVC.PaMail;
+using System.Dynamic;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     public class BaseApiController : ApiController
     {
+
+        /// <summary>
+        /// Retorna Objeto Dinamico com dados da query no formato da Datatable.
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected dynamic QueryNinjaDataTable(DbContext db, string query)
+        {
+            db.Database.Connection.Open();
+            var cmd = db.Database.Connection.CreateCommand();
+            cmd.CommandText = query;
+            cmd.CommandTimeout = 9600;
+            var reader = cmd.ExecuteReader();
+            List<JObject> datas = new List<JObject>();
+            List<JObject> columns = new List<JObject>();
+            dynamic retorno = new ExpandoObject();
+
+            while (reader.Read())
+            {
+                var row = new JObject();
+                for (int i = 0; i < reader.FieldCount; i++)
+                    row[reader.GetName(i)] = reader[i].ToString();
+
+                datas.Add(row);
+            }
+
+
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                var col = new JObject();
+                col["title"] = col["data"] = reader.GetName(i);
+                columns.Add(col);
+            }
+
+            retorno.datas = datas;
+            retorno.columns = columns;
+
+            return retorno;
+        }
+
 
         /// <summary>
         /// Retorna Objeto Dinamico com dados da query.
@@ -111,6 +153,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             var cookie = new CookieHeaderValue("webControlCookie", values);
             cookie.MaxAge = TimeSpan.FromMinutes(Conn.sessionTimer);
+            cookie.Expires = DateTime.Now.AddMinutes(Conn.sessionTimer);
             cookie.Path = "/";
 
             return cookie;
@@ -134,6 +177,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             using (var dbPa = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
                 dbPa.Database.ExecuteSqlCommand("UPDATE Pa_acao SET [STATUS] = 1 WHERE Id IN (SELECT Id FROM Pa_acao WHERE [Status] = (5) AND  CONVERT (date ,QuandoFim) < CONVERT (date ,GETDATE()))");
+                dbPa.Database.ExecuteSqlCommand("UPDATE Pa_acao SET [STATUS] = 9 WHERE Id IN (SELECT Id FROM Pa_acao WHERE [Status] = (5) AND CONVERT(DATE, QuandoInicio) > CONVERT(DATE, GETDATE()))");
             }
         }
 
@@ -171,7 +215,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                         emailTo = "gabriel@grtsolucoes.com.br";
                         title += " (Destinatário sem Email)" + paUser.Name;
                     }
-                    //emailTo = "celso.bernar@grtsolucoes.com.br";
+                    //emailTo = "renan.santini@grtsolucoes.com.br";
                     CreateMail(idPlanejamento, idAcao, emailTo, title, todoConteudo);
                 }
         }

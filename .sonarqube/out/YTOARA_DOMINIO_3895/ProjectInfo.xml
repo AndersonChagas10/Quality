@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>YTOARA_DOMINIO</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>02cfb056-37ce-40f2-8790-0d47bc6d2b59</ProjectGuid>
+  <FullPath>C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\YTOARA_DOMINIO\YTOARA_DOMINIO.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\.sonarqube\out\\YTOARA_DOMINIO_3895\FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePath">C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\YTOARA_DOMINIO\bin\Debug\YTOARA_DOMINIO.dll.RoslynCA.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPath">C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\.sonarqube\out\\YTOARA_DOMINIO_3895</Property>
+    <Property Name="sonar.stylecop.projectFilePath">C:\Users\Note-pc\Source\Repos\ddd.bitbucket2\YTOARA_DOMINIO\YTOARA_DOMINIO.csproj</Property>
+  </AnalysisSettings>
+</ProjectInfo>
