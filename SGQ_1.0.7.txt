@@ -36,3 +36,19 @@ create table DatabaseLog(
 )
 
 GO
+
+
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_InsercaoDeTabelaDeLogDeErro',GetDate());
+
+GO
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ErrorLog' AND xtype='U')
+create table ErrorLog(
+	Id bigint not null identity primary key,
+	StackTrace varchar(max) NOT NULL,
+	AddDate datetime not null
+)
+
+GO

@@ -13,6 +13,7 @@ using Jobs;
 using SgqSystem.Jobs;
 using SgqSystem.Helpers;
 using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace SgqSystem
 {
@@ -34,9 +35,18 @@ namespace SgqSystem
             GlobalConfig.VerifyConfig("DefaultConnection");
 
             #region LOG
-            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+            System.Data.Entity.Database.SetInitializer<Dominio.SgqDbDevEntities>(null);
+            AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) =>
             {
-                //new Business.ErrorLogBusiness().Save(eventArgs.Exception.ToClient());
+                Task.Run(() =>
+                {
+                    using (var db = new Dominio.SgqDbDevEntities())
+                    {
+                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace =(eventArgs.ExceptionObject as Exception).ToClient() });
+                        db.SaveChanges();
+                    }
+                });
+
             };
             #endregion
 
