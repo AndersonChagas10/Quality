@@ -6,15 +6,9 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Pa_Acao
+    public partial class Pa_Acao : BaseModel
     {
         public int Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public int? Unidade_Id { get; set; }
 

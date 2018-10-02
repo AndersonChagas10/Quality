@@ -51,6 +51,8 @@ namespace Dominio
         {
             var entities = ChangeTracker.Entries().Where(x =>
             !(x.Entity is DatabaseLog)
+            && !(x.Entity is ErrorLog)
+            && !(x.Entity is UserSgq)
             && !(x.Entity is Result_Level3)
             && !(x.Entity is LogJson)
             && !(x.Entity is LogSgqGlobal)
@@ -85,6 +87,7 @@ namespace Dominio
         }
 
         public virtual DbSet<DatabaseLog> DatabaseLog { get; set; }
+        public virtual DbSet<ErrorLog> ErrorLog { get; set; }
 
         public virtual DbSet<AreasParticipantes> AreasParticipantes { get; set; }
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }

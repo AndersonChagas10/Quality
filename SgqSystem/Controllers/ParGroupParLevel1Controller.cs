@@ -42,6 +42,11 @@ namespace SgqSystem.Controllers
             var listaGrupos = db.ParGroupParLevel1Type.Where(x => x.IsActive).ToList();
             listaGrupos.Add(new ParGroupParLevel1Type() { Id = -1, Name = "Selecione" });
             ViewBag.ParGroupParLevel1Type_Id = new SelectList(listaGrupos, "Id", "Name", -1);
+
+            var listaGruposIndicador = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaGruposIndicador.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaGruposIndicador, "Id", "Name", -1);
+
             return View();
         }
 
@@ -50,7 +55,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,IsActive")] ParGroupParLevel1 parGroupParLevel1)
+        public ActionResult Create([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,IsActive,Parent_Id")] ParGroupParLevel1 parGroupParLevel1)
         {
             ValidaGrupoIndicadores(parGroupParLevel1);
             if (ModelState.IsValid)
@@ -89,7 +94,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,IsActive")] ParGroupParLevel1 parGroupParLevel1)
+        public ActionResult Edit([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,IsActive,Parent_Id")] ParGroupParLevel1 parGroupParLevel1)
         {
             ValidaGrupoIndicadores(parGroupParLevel1);
             if (ModelState.IsValid)

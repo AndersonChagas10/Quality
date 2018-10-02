@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("CollectionJson")]
-    public partial class CollectionJson
+    public partial class CollectionJson : BaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CollectionJson()
@@ -66,12 +66,6 @@ namespace Dominio
         public bool IsProcessed { get; set; }
 
         public string Device_Mac { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         public string Key { get; set; }

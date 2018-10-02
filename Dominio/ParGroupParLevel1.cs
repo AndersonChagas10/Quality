@@ -12,12 +12,14 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        [DisplayName("Nome")]
+        [DisplayName("Grupo de Indicador")]
         public string Name { get; set; }
 
         [DisplayName("Grupo de Tipo de Indicador")]
         public int? ParGroupParLevel1Type_Id { get; set; }
 
+        [DisplayName("É Pai de")]
+        public int? Parent_Id { get; set; }
 
         [DisplayName("Está Ativo")]
         public bool IsActive { get; set; }

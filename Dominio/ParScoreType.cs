@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParScoreType")]
-    public partial class ParScoreType
+    public partial class ParScoreType : BaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParScoreType()
@@ -21,11 +21,6 @@ namespace Dominio
         public string Name { get; set; }
 
         public string Description { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AddDate { get; set; }
-
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

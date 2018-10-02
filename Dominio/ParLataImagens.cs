@@ -6,15 +6,9 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLataImagens
+    public partial class ParLataImagens : BaseModel
     {
         public int Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         public byte[] Imagem { get; set; }

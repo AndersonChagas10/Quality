@@ -7,19 +7,13 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParCompanyXStructure")]
-    public partial class ParCompanyXStructure
+    public partial class ParCompanyXStructure : BaseModel
     {
         public int Id { get; set; }
 
         public int ParStructure_Id { get; set; }
 
         public int ParCompany_Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool Active { get; set; }
 
