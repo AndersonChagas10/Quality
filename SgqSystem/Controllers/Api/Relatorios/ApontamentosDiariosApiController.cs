@@ -963,9 +963,16 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("EditCabecalho/{ResultLevel3_Id}")]
-        public List<Select> EditCabecalho(int ResultLevel3_Id)
+        public string EditCabecalho(int ResultLevel3_Id)
         {
-            return getSelects(ResultLevel3_Id);
+            var retorno = getSelects(ResultLevel3_Id);
+
+            var json = JsonConvert.SerializeObject(retorno, Formatting.None, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+
+            return json;
         }
 
         public class Select
@@ -973,10 +980,13 @@ namespace SgqSystem.Controllers.Api
             public ParHeaderField HeaderField { get; set; }
             public List<ParMultipleValues> Values { get; set; }
             public string ValueSelected { get; set; }
+            public int CollectionLevel2XParHeaderField_Id { get; set; }
+            public int CollectionLevel2_Id { get; set; }
         }
 
         public class ParLevels
         {
+            public int Id { get; set; }
             public int ParLevel1_Id { get; set; }
             public int ParLevel2_Id { get; set; }
         }
@@ -988,6 +998,7 @@ namespace SgqSystem.Controllers.Api
             var Levels = getLevels(ResultLevel3_Id);
             var ParLevel1_Id = Levels.ParLevel1_Id;
             var ParLevel2_Id = Levels.ParLevel2_Id;
+            var CollectionLevel2_Id = Levels.Id;
 
             var query = $@"SELECT *
             FROM CollectionLevel2XParHeaderField
@@ -1008,7 +1019,7 @@ namespace SgqSystem.Controllers.Api
             var headerFields_Ids = db.ParLevel1XHeaderField.Where(r => r.ParLevel1_Id == ParLevel1_Id && !headerFields_IdNot.Contains(r.ParHeaderField_Id) && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
 
             //Seleciona os cabeçalhos
-            var headerFields = db.ParHeaderField.Where(r => headerFields_Ids.Contains(r.Id));
+            var headerFields = db.ParHeaderField.Where(r => headerFields_Ids.Contains(r.Id)).ToList();
 
             var values = db.ParMultipleValues.ToList();
 
@@ -1026,12 +1037,15 @@ namespace SgqSystem.Controllers.Api
                 //Se tiver mais do que um valor duplica a inserção
                 var resultados = coletas.Where(r => r.ParHeaderField_Id == headerField.Id).ToList();
 
+                select.CollectionLevel2_Id = CollectionLevel2_Id;
+
                 //Quantidades de campos coletados
                 if (resultados.Count > 0)
                 {
                     foreach (var resultado in resultados)
                     {
                         //Atribui a quantidade de cabeçalhos
+                        select.CollectionLevel2XParHeaderField_Id = resultado.Id;
                         select.ValueSelected = resultado.Value;
                         resultHeaderField.Add(select);
                     }
@@ -1051,7 +1065,8 @@ namespace SgqSystem.Controllers.Api
         {
 
             var query = $@"SELECT
-                    	ParLevel1_Id
+                        Id
+                       ,ParLevel1_Id
                        ,ParLevel2_Id
                     FROM CollectionLevel2
                     WHERE id = (SELECT

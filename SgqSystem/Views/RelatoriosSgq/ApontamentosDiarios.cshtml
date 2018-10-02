@@ -14,6 +14,31 @@
     }
 </style>
 
+<div class="modal fade bd-example-modal-lg" id="modalHeaderField" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width:895px!important">
+            <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+                <div class="unitCode"><span id="estName"></span></div>
+            </div>
+            <div class="modal-body">
+                <div id="correctiveActionModal" class="modal-padrao" style="margin-left:10px;margin-right:10px;margin-top:15px;">
+                    <span id="Level3Name" class="levelName" name="" style=""></span>
+                    <div class="container-fluid">
+                        <form id="divEdit" class="row" onsubmit='return onSubmit(this)'>
+                            <button type="button" onclick="SaveHeaderField()" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.close</button>
+                <button type="button" onclick="SaveHeaderField()" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="page-content-wrapper">
     <div class="page-content">
         @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
@@ -78,9 +103,9 @@
                 GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
             }
 
-            else{
-                //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
+            else {
 
+                //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
                 var regraEdit = false;
 
                 var roles = $.grep(getCookie('webControlCookie'), function (a, b) {
@@ -96,8 +121,8 @@
                 }else{
                     regraEdit = false;
                 }
-                //Fim Regra
 
+                //Fim Regra
                 var Tipo1 = {};
                 var Tipo2 = {};
 
@@ -115,7 +140,7 @@
                 var colunas =
                     [
                         { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button id="edit" class="btn btn-link custom-button" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible": regraEdit },
-                        { title: "@Resources.Resource.edit_header", mData: null, defaultContent: '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit_header" + '</button>', "visible" : regraEdit },
+                        { title: "@Resources.Resource.edit_header", mData: null, defaultContent: '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#modalHeaderField">' + "@Resources.Resource.edit_header" + '</button>', "visible" : regraEdit },
                         { title: "@Resources.Resource.unit", mData: "Unidade" },
                         { title: "@Resources.Resource.cluster", mData: "Processo" },
                         { title: "@Resources.Resource.shift", mData: "Turno" },
@@ -212,21 +237,130 @@
                     $('#resultsApontamentos tbody').on('click', 'button#editHeader', function (data) {
 
                         var data = table.row($(this).parents('tr')).data();
-                        debugger
 
-                        $.post(urlEditCabecalho + "/" + data.ResultLevel3Id , function (r) {
+                        $.post(urlEditCabecalho + "/" + data.ResultLevel3Id, function (r) {
 
-                            console.log(r);
+                            $('#divEdit').empty();
 
-                            //$('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
-                            //$('#ResultLevel3_Id').val(r.Id);
+                            r = JSON.parse(r);
 
-                            //$('#changeConform').empty();
-                            //$('#changeConform').append($(r));
+                            if (r.length > 0) {
 
-                            //InitiMasksDefaults();
+                                r.forEach(function (o) {
+
+                                    let html = "";
+
+                                    switch (o.HeaderField.ParFieldType_Id) {
+                                        case 1:
+                                            html =
+                                            `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                                <div class="form-group header" name="" style="margin-bottom: 4px;">
+                                                    <label class="font-small" style="height: 22px;">`+ o.HeaderField.Name +`</label>
+                                                    <select class="form-control input-sm ddl" Id="${ o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2_Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParFieldType_Id="${o.HeaderField.Id}" idpai="0" linknumberevaluetion="false">
+                                                        <option selected="selected" value="0">Selecione...</option>`
+
+                                            o.Values.forEach(function (o) {
+                                                html += '<option value="' + o.Id + '" punishmentvalue="' + o.PunishmentValue + '">' + o.Name+'</option>';
+                                            });
+
+                                            html +=`</select> <label class="">
+                                                    </label>
+                                                </div>
+                                            </div>`;
+                                            break;
+
+                                        case 2:
+
+                                            html =
+                                                `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                                    <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small" style="color: rgb(167, 176, 24); height: 22px;">`+ o.HeaderField.Name +`</label>
+                                                        <select class="form-control input-sm " Id="${ o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2_Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParFieldType_Id="${o.HeaderField.Id}" linknumberevaluetion="true" style="border: 1px solid rgb(167, 176, 24);">
+                                                            <option selected="selected" value="0">Selecione...</option>`
+
+                                            o.Values.forEach(function (o) {
+                                                html += '<option value="' + o.Id + '" punishmentvalue="' + o.PunishmentValue + '">' + o.Name +'</option>';
+                                            });
+
+                                            html += `</select>
+                                                    </div>
+                                                </div>`;
+
+                                            break;
+                                        case 3:
+
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                                      <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small" style="height: 22px;">`+ o.HeaderField.Name + `</label>
+                                                        <select class="form-control input-sm" Id="${ o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2_Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Id}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" linknumberevaluetion="false">`;
+
+                                            o.Values.forEach(function (o) {
+                                                html += '<option value="' + o.Id + '" punishmentvalue="' + o.PunishmentValue + '">' + o.Name + '</option>';
+                                            });
+
+                                            html += `</select>
+                                                        <label class=""></label>
+                                                    </div>
+                                                </div>`;
+
+                                            break;
+                                        case 4:
+
+                                            html =
+                                                `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                                    <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small" style="height: 22px;">Teste Texto</label>
+                                                        <input class="form-control input-sm" type="text" Id="${ o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2_Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Id}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${ o.ValueSelected }">
+                                                        <label class=""></label>
+                                                    </div>
+                                                </div>`;
+
+                                            break;
+
+                                        case 5:
+
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                                    <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small" style="height: 22px;">`+ o.HeaderField.Name + `</label>
+                                                        <input class="form-control input-sm" type="number" Id="${ o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2_Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Id}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${ o.ValueSelected }">
+                                                        <label class=""></label>
+                                                    </div>
+                                                </div>`;
+
+                                            break;
+
+                                        case 6:
+
+                                            html = `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                                    <div class="form-group" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small" style="height: 22px;">`+ o.HeaderField.Name +`</label>
+                                                            <input class="form-control input-sm" type="date" Id="${ o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2_Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Id}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${ o.ValueSelected }">
+                                                            <label class=""></label>
+                                                        </div>
+                                                    </div>`;
+                                            break;
+
+                                        case 7:
+
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                                    <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small" style="height: 22px;">`+ o.HeaderField.Name + `</label>
+                                                        <input class="form-control input-sm" type="time" Id="${ o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2_Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Id}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${ o.ValueSelected }">
+                                                        <label class=""></label>
+                                                    </div>
+                                                </div>`;
+
+                                            break;
+
+                                        default:
+                                    }
+
+                                    $('#estName').html("");
+                                    $('#divEdit').append(html);
+
+                                });
+                            }
                         });
-
                     });
                 }
 
@@ -246,6 +380,7 @@
             }
 
         }
+
         function SalvarResultLevel3() {
 
             var dadosResultLevel3 = {};
@@ -322,8 +457,29 @@
 
             //Remove o "Todos" da Unidade
             $("#unitId option[value='']").remove();
-
         });
+
+        function SaveHeaderField() {
+
+            let objToSave = [];
+
+            $('form#divEdit input').each(function (i, o) {
+
+                let CollectionLevel2XParHeaderField_Id = $(o).attr("Id");
+                let CollectionLevel2_Id = $(o).attr("CollectionLevel2_Id");
+                let ParHeaderField_Id = $(o).attr("ParHeaderField_Id");
+                let ParHeaderField_Name = $(o).attr("ParHeaderField_Name");
+                let ParFieldType_Id = $(o).attr("ParFieldType_Id");
+                let Value = $(o).attr("Value");
+
+                objToSave.push({ "Id": CollectionLevel2XParHeaderField_Id, "CollectionLevel2_Id": CollectionLevel2_Id, "ParHeaderField_Id": ParHeaderField_Id, "ParHeaderField_Name": ParHeaderField_Name, "ParFieldType_Id": ParFieldType_Id, "Value": Value })
+
+            });
+
+            console.log(objToSave);
+
+        }
+
     </script>
 
 }
