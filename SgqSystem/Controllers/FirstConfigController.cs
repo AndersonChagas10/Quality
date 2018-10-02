@@ -49,7 +49,7 @@ namespace SgqSystem.Controllers
                 var query = $@"insert into ParCompany
                     (Name, Description, AddDate, IsActive, Initials)
                     values
-                    ('{cfg.parCompanyDto.Name}','{cfg.parCompanyDto.Description}','{cfg.parCompanyDto.AddDate.ToString("yyyy-MM-dd HH:mm:ss")}',1,'{cfg.parCompanyDto.Initials}');
+                    ('{cfg.parCompanyDto.Name}','{cfg.parCompanyDto.Description}','{cfg.parCompanyDto.AddDate?.ToString("yyyy-MM-dd HH:mm:ss")}',1,'{cfg.parCompanyDto.Initials}');
                     { identityId }";
 
                 using (SqlCommand cmd = new SqlCommand(query, db.connection))
@@ -66,8 +66,8 @@ namespace SgqSystem.Controllers
                     $@"insert into UserSgq 
                     (Name, Password, AddDate, Role, FullName, Email, Phone, ParCompany_Id, PasswordDate)
                     values
-                    ('{cfg.userSgqDto.Name}','{cfg.userSgqDto.Password}','{cfg.userSgqDto.AddDate.ToString("yyyy-MM-dd HH:mm:ss")}','admin','{cfg.userSgqDto.FullName}',
-'{cfg.userSgqDto.Email}','{cfg.userSgqDto.Phone}','{cfg.userSgqDto.ParCompany_Id}','{cfg.userSgqDto.AddDate.ToString("yyyy-MM-dd HH:mm:ss")}')
+                    ('{cfg.userSgqDto.Name}','{cfg.userSgqDto.Password}','{cfg.userSgqDto.AddDate?.ToString("yyyy-MM-dd HH:mm:ss")}','admin','{cfg.userSgqDto.FullName}',
+'{cfg.userSgqDto.Email}','{cfg.userSgqDto.Phone}','{cfg.userSgqDto.ParCompany_Id}','{cfg.userSgqDto.AddDate?.ToString("yyyy-MM-dd HH:mm:ss")}')
                     { identityId }";
 
                 using (SqlCommand cmd = new SqlCommand(query, db.connection))

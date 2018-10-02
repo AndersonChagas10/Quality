@@ -6,7 +6,7 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLataImagens
+    public partial class ParLataImagens : BaseModel
     {
         public int Id { get; set; }
 

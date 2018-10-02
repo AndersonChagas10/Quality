@@ -2,6 +2,7 @@ namespace Dominio
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
@@ -34,6 +35,7 @@ namespace Dominio
 
         [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
+        [DisplayName("Monitoramento")]
         public string Name { get; set; }
 
         [Required(AllowEmptyStrings = true)]
