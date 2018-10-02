@@ -15,14 +15,15 @@
     #resultsApontamentos > tbody > tr:last-child > td:last-child {
         white-space: nowrap;
     }
+
     .progress-bar.animate {
         width: 100%;
     }
+
     .loading-center {
         margin: 100px auto;
         display: table !important;
     }
-
 </style>
 <div class="page-content-wrapper">
     <div class="page-content">
@@ -30,13 +31,13 @@
 
         <div id="formBodyContent">
 
-        <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
-            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
-        </div>
+            <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+                <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+            </div>
 
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
-        @Html.Partial("~/Views/RelatoriosSgq/_Image.cshtml")
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_Image.cshtml")
 
             <div id="load"></div>
             <div id="divTable">
@@ -220,67 +221,47 @@
                             $('#changeConform').append($(r.showGeneric));
                             InitiMasksDefaults();
                         });
-                    },
-                    createdRow: function (row, data, index) {
+                    });
 
-                        $(window).scroll(function () {
-                            if ($(row).is(':visible')
-                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('checked')
-                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('isChecking')
-                            )
-                                GetImagePreview($(row).find('#imgResult' + data.ResultLevel3Id), data.ResultLevel3Id);
-                        });
 
-                        //var waypoint = new Waypoint({
-                        //    element: row,
-                        //    handler: function (direction) {
-                        //    }
-                        //})
-                                                
-                    },
-                    fnDrawCallback: function (data, d, o) {
-                        //console.log(data);
-                    }
-                });
-
-                new $.fn.dataTable.Buttons(table, {
-                    buttons: [
-                        {
-                            extend: 'print',
-                            text: '@Resources.Resource.print',
-                            customize: function (win) {
-                                $(win.document.body).find('table')
-                                    .addClass('compact')
-                                    .css('font-size', 'inherit');
+                    new $.fn.dataTable.Buttons(table, {
+                        buttons: [
+                            {
+                                extend: 'print',
+                                text: '@Resources.Resource.print',
+                                customize: function (win) {
+                                    $(win.document.body).find('table')
+                                        .addClass('compact')
+                                        .css('font-size', 'inherit');
+                                },
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
                             },
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'excelHtml5',
-                            text: 'Excel',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                         {
-                             extend: 'pdf',
-                             text: 'PDF',
-                             exportOptions: {
-                                 columns: ':visible'
-                             }
-                         },
-                          {
-                              extend: 'colvis',
-                              text: '@Resources.Resource.visible_columns',
-                              exportOptions: {
-                                  columns: ':visible'
-                              }
-                          },
-                    ]
-                });
-
+                            {
+                                extend: 'excelHtml5',
+                                text: 'Excel',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                             {
+                                 extend: 'pdf',
+                                 text: 'PDF',
+                                 exportOptions: {
+                                     columns: ':visible'
+                                 }
+                             },
+                              {
+                                  extend: 'colvis',
+                                  text: '@Resources.Resource.visible_columns',
+                                  exportOptions: {
+                                      columns: ':visible'
+                                  }
+                              },
+                        ]
+                    });
+                };
 
                 var table = datatableGRT.Inicializar({
                     idTabela: "resultsApontamentos",
@@ -293,7 +274,16 @@
                     destroy: true,
                     info: true,
                     initComplete: initDatatable,
-                    createdRow: function (row, data, index) {}
+                    createdRow: function (row, data, index)
+                    {
+                        $(window).scroll(function () {
+                            if ($(row).is(':visible')
+                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('checked')
+                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('isChecking')
+                            )
+                                GetImagePreview($(row).find('#imgResult' + data.ResultLevel3Id), data.ResultLevel3Id);
+                        });
+                    }
                 });
             }
 

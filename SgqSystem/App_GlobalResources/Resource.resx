@@ -2646,4 +2646,10 @@
   <data name="update" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
 </root>
