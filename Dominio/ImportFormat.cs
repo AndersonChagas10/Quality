@@ -7,7 +7,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     
     [Table("ImportFormats")]
-    public partial class ImportFormat
+    public partial class ImportFormat : BaseModel
     {
         [Key]
         public int Id { get; set; }
@@ -15,10 +15,6 @@
         [Required(AllowEmptyStrings = true)]
         [DisplayName("Titulo")]
         public string Title { get; set; }
-
-        public DateTime AddDate { get; set; }
-
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

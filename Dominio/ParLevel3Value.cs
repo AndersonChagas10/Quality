@@ -6,7 +6,7 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLevel3Value
+    public partial class ParLevel3Value : BaseModel
     {
         public int Id { get; set; }
 
@@ -27,12 +27,6 @@ namespace Dominio
         public decimal? IntervalMin { get; set; }
 
         public decimal? IntervalMax { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

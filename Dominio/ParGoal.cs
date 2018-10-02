@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParGoal")]
-    public partial class ParGoal
+    public partial class ParGoal : BaseModel
     {
         public int Id { get; set; }
 
@@ -16,11 +16,6 @@ namespace Dominio
         public int? ParCompany_Id { get; set; }
 
         public decimal PercentValue { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AddDate { get; set; }
-
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

@@ -6,7 +6,7 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLevel1VariableProduction
+    public partial class ParLevel1VariableProduction : BaseModel
     {
         [Key]
         [Column(Order = 0)]
@@ -19,10 +19,5 @@ namespace Dominio
 
         public string Description { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
-        public DateTime AddDate { get; set; }
-
-        public DateTime? AlterDate { get; set; }
     }
 }

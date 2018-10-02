@@ -6,15 +6,9 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class VerificacaoTipificacaoV2
+    public partial class VerificacaoTipificacaoV2 : BaseModel
     {
         public int Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime? CollectionDate { get; set; }
