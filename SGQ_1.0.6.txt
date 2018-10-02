@@ -24,3 +24,11 @@ create table ReportXUserSgq(
 )
 
 GO
+
+IF COL_LENGTH('ReportXUserSgq','NomeRelatorio') IS NULL
+    BEGIN
+		ALTER TABLE ReportXUserSgq
+		ADD NomeRelatorio varchar(100);
+    END
+
+GO

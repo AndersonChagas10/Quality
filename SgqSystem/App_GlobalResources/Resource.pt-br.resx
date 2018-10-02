@@ -2640,4 +2640,7 @@
   <data name="update" xml:space="preserve">
     <value>Atualizar</value>
   </data>
+  <data name="report_files" xml:space="preserve">
+    <value>Cadastro de Relatórios</value>
+  </data>
 </root>

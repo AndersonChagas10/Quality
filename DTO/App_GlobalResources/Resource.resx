@@ -2199,4 +2199,7 @@
   <data name="update" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="report_files" xml:space="preserve">
+    <value>Report Files</value>
+  </data>
 </root>

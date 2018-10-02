@@ -18,7 +18,7 @@ namespace Dominio
         public DateTime AddDate { get; set; }
         [Display(Name = "Data de Alteração")]
         public DateTime? AlterDate { get; set; }
-        [Display(Name = "Relatorio")]
+        [Display(Name = "Relatório")]
         public int ItemMenu_Id { get; set; }
         [Display(Name = "Elaborador")]
         public string Elaborador { get; set; }
@@ -30,6 +30,9 @@ namespace Dominio
         public int? ParCompany_Id { get; set; }
         [Display(Name = "Ativo")]
         public bool IsActive { get; set; }
+
+        [Display(Name = "Nome Relatório")]
+        public string NomeRelatorio { get; set; }
 
         [ForeignKey("ItemMenu_Id")]
         public ItemMenu ItemMenu { get; set; }
