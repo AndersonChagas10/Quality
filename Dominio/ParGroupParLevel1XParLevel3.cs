@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Dominio
 {
     [Table("ParVinculoPeso")]
-    public class ParGroupParLevel1XParLevel3 : BaseModel
+    public class ParVinculoPeso : BaseModel
     {
         public int Id { get; set; }
 

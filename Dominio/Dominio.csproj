@@ -72,9 +72,6 @@
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
     <Compile Include="ItemMenu.cs" />
     <Compile Include="LeftControlRole.cs" />
-    <Compile Include="Level01.cs" />
-    <Compile Include="Level02.cs" />
-    <Compile Include="Level03.cs" />
     <Compile Include="LogAlteracoes.cs" />
     <Compile Include="LogJson.cs" />
     <Compile Include="LogService\LoggerNLog.cs" />

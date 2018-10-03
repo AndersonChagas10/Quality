@@ -28,7 +28,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParGroupParLevel1XParLevel3 parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
+            ParVinculoPeso parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
             if (parGroupParLevel1XParLevel3 == null)
             {
                 return HttpNotFound();
@@ -75,7 +75,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,IsActive,ParGroupParLevel1_Id")] ParGroupParLevel1XParLevel3 parGroupParLevel1XParLevel3)
+        public ActionResult Create([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,IsActive,ParGroupParLevel1_Id")] ParVinculoPeso parGroupParLevel1XParLevel3)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParGroupParLevel1XParLevel3 parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
+            ParVinculoPeso parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
             if (parGroupParLevel1XParLevel3 == null)
             {
                 return HttpNotFound();
@@ -138,7 +138,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,IsActive,ParGroupParLevel1_Id")] ParGroupParLevel1XParLevel3 parGroupParLevel1XParLevel3)
+        public ActionResult Edit([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,IsActive,ParGroupParLevel1_Id")] ParVinculoPeso parGroupParLevel1XParLevel3)
         {
             if (ModelState.IsValid)
             {
@@ -159,7 +159,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParGroupParLevel1XParLevel3 parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
+            ParVinculoPeso parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
             if (parGroupParLevel1XParLevel3 == null)
             {
                 return HttpNotFound();
@@ -172,7 +172,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ParGroupParLevel1XParLevel3 parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
+            ParVinculoPeso parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
             db.ParGroupParLevel1XParLevel3.Remove(parGroupParLevel1XParLevel3);
             db.SaveChanges();
             return RedirectToAction("Index");
