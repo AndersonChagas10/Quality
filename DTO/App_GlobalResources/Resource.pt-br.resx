@@ -2190,4 +2190,7 @@
   <data name="String1" xml:space="preserve">
     <value>Atualizar</value>
   </data>
+  <data name="photo" xml:space="preserve">
+    <value>Foto</value>
+  </data>
 </root>

@@ -19,7 +19,7 @@ namespace SgqSystem.Controllers.Api
     public class ResultLevel3PhotosApiController : ApiController
     {
 
-        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public ResultLevel3PhotosApiController()
         {
@@ -30,6 +30,17 @@ namespace SgqSystem.Controllers.Api
         public IHttpActionResult Insert(Result_Level3_PhotosDTO ResultPhoto)
         {
             //, int Level1Id, int Level2Id, int Level3Id, int Evaluation, int Sample, string Date
+            string quebraProcesso = "98789";
+
+            string parCluster_Id_parLevel1_id = ResultPhoto.Level1Id.ToString().Replace(quebraProcesso, "|"); //"Cluster|Indicador"
+            string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : "0";
+            string parLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
+
+            string parCluster_Id_parLevel2_id = ResultPhoto.Level2Id.ToString().Replace(quebraProcesso, "|");
+            string parLevel2_Id = parCluster_Id_parLevel2_id.Split('|').Length > 1 ? parCluster_Id_parLevel2_id.Split('|')[1] : parCluster_Id_parLevel2_id.Split('|')[0];
+
+            ResultPhoto.Level1Id = Convert.ToInt32(parLevel1_Id);
+            ResultPhoto.Level2Id = Convert.ToInt32(parLevel2_Id);
 
             string sqlResulLevel3 = @"SELECT R.Id FROM Result_Level3 R                                     
                             LEFT JOIN CollectionLevel2 C                                      
