@@ -2193,4 +2193,7 @@
   <data name="photo" xml:space="preserve">
     <value>Foto</value>
   </data>
+  <data name="not_conformities_rules_exist" xml:space="preserve">
+    <value>Regra de não conformidade já existe.</value>
+  </data>
 </root>

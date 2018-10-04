@@ -1,0 +1,4 @@
+ALTER TABLE VolumePCC1b ADD Shift_Id int null
+ALTER TABLE VolumeCEPDesossa ADD Shift_Id int null
+ALTER TABLE VolumeVacuoGRD ADD Shift_Id int null
+ALTER TABLE VolumeCepRecortes ADD Shift_Id int null

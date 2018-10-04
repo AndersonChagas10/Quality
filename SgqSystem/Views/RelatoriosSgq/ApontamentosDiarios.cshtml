@@ -318,7 +318,8 @@
                                     carouselMain.setPicturesBase64(_photos);
 
                                     $('#imageModal .modal-loading, #imageModal .modal-title-loading').addClass('hide');
-                                    $('#imageModal .modal-body, #imageModal .modal-title').removeClass('hide');
+                                    $('#imageModal .modal-body').removeClass('hide');
+                                    //$('#imageModal .modal-body, #imageModal .modal-title').removeClass('hide');
                                 });
 
                                 $('#latitudeModal').text(photos[0].Latitude);

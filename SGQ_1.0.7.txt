@@ -1,6 +1,34 @@
-Elaborador e Aprovador Por Relatorio -- Feitor por: Marcos Augusto -- Data: 27/09/2018 -- DEV-302
 
-Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.t_InsercaoParVinculoPeso',GetDate());
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180927_1600_AdicionarParCluster_Id_na_PARLEVEL1XMODULE',GetDate())
+
+GO
+
+IF NOT EXISTS 
+	(
+		SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
+		WHERE 1=1
+		 AND TABLE_NAME = 'ParGroupParLevel1'
+		 AND COLUMN_NAME = 'Id'
+	) 
+  BEGIN
+	ALTER TABLE ParGroupParLevel1
+	ADD PRIMARY KEY (Id)
+  END 
+
+GO
+
+IF COL_LENGTH('PARLEVEL1XMODULE','ParCluster_Id') IS NULL
+    BEGIN
+		ALTER TABLE PARLEVEL1XMODULE
+		ADD ParCluster_Id Int null;
+		
+		ALTER TABLE [dbo].[ParLevel1XModule]  WITH CHECK ADD  CONSTRAINT [FK_ParLevel1XModule_ParCluster] FOREIGN KEY([ParCluster_Id])
+		REFERENCES [dbo].[ParCluster] ([Id])
+    END
+
+GO
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_InsercaoParVinculoPeso',GetDate());
 
 GO
 
@@ -57,12 +85,18 @@ create table ErrorLog(
 
 GO
  
-ALTER TABLE ParGroupParLevel1
-ADD Parent_Id int;
+IF COL_LENGTH('ParGroupParLevel1','Parent_Id') IS NULL
+    BEGIN
+		ALTER TABLE ParGroupParLevel1
+		ADD Parent_Id int;
+    END
 
 go
-
-ALTER TABLE ParGroupParLevel1
-ADD Hash_Id varchar(900);
+ 
+IF COL_LENGTH('ParGroupParLevel1','Hash') IS NULL
+    BEGIN
+		ALTER TABLE ParGroupParLevel1
+		ADD Hash varchar(900);
+    END
 
 GO

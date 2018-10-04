@@ -165,7 +165,7 @@ namespace SgqSystem.Secirity
                                 }
                             }else
                             {
-                                var _companyXUserSgq = db.ParCompany.Where(p=>p.IsActive == true).ToList();
+                                var _companyXUserSgq = db.ParCompany.Where(p=>p.IsActive).ToList();
 
                                 filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(_companyXUserSgq);
                             }
@@ -179,19 +179,9 @@ namespace SgqSystem.Secirity
                     }
                 }
 
-                //return retorno;
             }
             base.OnActionExecuting(filterContext);
         }
 
-
-
-        //public override void OnActionExecuted(ActionExecutedContext filterContext)
-        //{
-        //    //if (filterContext.Exception != null)
-        //    //    filterContext.HttpContext.Trace.Write("(Logging Filter)Exception thrown");
-
-        //    base.OnActionExecuted(filterContext);
-        //}
     }
 }

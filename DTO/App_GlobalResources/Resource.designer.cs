@@ -3652,6 +3652,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not conformities rules alredy exist.
+        /// </summary>
+        internal static string not_conformities_rules_exist {
+            get {
+                return ResourceManager.GetString("not_conformities_rules_exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not conformity rule.
         /// </summary>
         internal static string not_conformity_rule {

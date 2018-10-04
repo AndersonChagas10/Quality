@@ -2208,4 +2208,7 @@
   <data name="photo" xml:space="preserve">
     <value>Phone</value>
   </data>
+  <data name="not_conformities_rules_exist" xml:space="preserve">
+    <value>Not conformities rules alredy exist</value>
+  </data>
 </root>
