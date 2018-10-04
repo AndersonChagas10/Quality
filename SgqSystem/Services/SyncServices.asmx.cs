@@ -5459,7 +5459,7 @@ $(document).ready(function(){
 
                             foreach (var value in listIntegration) //LOOP8
                             {
-                                if (value.IsDefaultOption == 1)
+                                if (value.IsDefaultOption == true)
                                 {
                                     optionsIntegration += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"0\">" + value.Name + "</option>";
                                     hasDefaultIntegration = true;

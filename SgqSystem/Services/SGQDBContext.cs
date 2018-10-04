@@ -1690,7 +1690,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             return multipleValues;
         }
 
-        public IEnumerable<ParFieldType> getIntegrationValues(int ParHeaderField_Id, string integracao, int ParCompany_Id)
+        public IEnumerable<ParMultipleValues> getIntegrationValues(int ParHeaderField_Id, string integracao, int ParCompany_Id)
         {
             string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             db = new SqlConnection(conexaoBR);
@@ -1758,10 +1758,10 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                       "\n  ";
             }
 
-            List<ParFieldType> multipleValues = new List<ParFieldType>();
+            List<ParMultipleValues> multipleValues = new List<ParMultipleValues>();
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                multipleValues = factory.SearchQuery<ParFieldType>(sql).ToList();
+                multipleValues = factory.SearchQuery<ParMultipleValues>(sql).ToList();
             }
 
             return multipleValues;

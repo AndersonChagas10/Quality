@@ -13,6 +13,7 @@ using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -1003,6 +1004,15 @@ namespace SgqSystem.Controllers.Api
                 }
 
                 db.SaveChanges();
+
+                //Reconsolida
+                if (Lsc2xhf.HeaderField.Count > 0)
+                {
+                    var syncServices = new SyncServices();
+
+                    syncServices.ReconsolidationToLevel3(Lsc2xhf.HeaderField[0].CollectionLevel2_Id.ToString());
+                }
+
             }
             catch (Exception)
             {
@@ -1020,9 +1030,6 @@ namespace SgqSystem.Controllers.Api
             public string ValueSelected { get; set; }
             public int CollectionLevel2XParHeaderField_Id { get; set; }
             public CollectionLevel2 CollectionLevel2 { get; set; }
-            //public int CollectionLevel2_Id { get; set; }
-            //public int Evaluation { get; set; }
-            //public int Sample { get; set; }
         }
 
         public class ParLevels
@@ -1070,8 +1077,32 @@ namespace SgqSystem.Controllers.Api
                 //Atribui o campo de cabeçalho
                 select.HeaderField = headerField;
 
-                //pegar values dos campos de cabeçalho
-                select.Values = values.Where(r => r.ParHeaderField_Id == headerField.Id).ToList();
+                if (headerField.ParFieldType_Id == 2) //Se for campo integração
+                {
+                    /* Se for produto que digito o código e busco em uma lista*/
+                    if (headerField.Description == "Produto")
+                    {
+                        var conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+                        var db2 = new SqlConnection(conexao);
+
+                        SGQDBContext.Generico listaProdutos = new SGQDBContext.Generico(db2);
+                        var listaProdutosJSON = listaProdutos.getProdutos();
+                    }
+                    /* se for um combobox integrado*/
+                    else
+                    {
+                        SGQDBContext.ParFieldType ParFieldTypeDB = new SGQDBContext.ParFieldType();
+
+                        select.Values = ParFieldTypeDB.getIntegrationValues(headerField.Id, headerField.Description, collectionLevel2.UnitId).ToList();
+
+                    }
+                }
+                else
+                {
+                    //pegar values dos campos de cabeçalho
+                    select.Values = values.Where(r => r.ParHeaderField_Id == headerField.Id).ToList();
+                }
 
                 //Atribui o selecionado
                 //Se tiver mais do que um valor duplica a inserção
