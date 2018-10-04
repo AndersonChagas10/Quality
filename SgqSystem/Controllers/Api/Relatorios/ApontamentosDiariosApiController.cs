@@ -975,13 +975,54 @@ namespace SgqSystem.Controllers.Api
             return json;
         }
 
+        [HttpPost]
+        [Route("SaveCabecalho")]
+        public bool SaveCabecalho([FromBody] ListCollectionLevel2XParHeaderField Lsc2xhf)
+        {
+            try
+            {
+                foreach (var item in Lsc2xhf.HeaderField)
+                {
+                    if (item.Id > 0)//Update
+                    {
+                        var original = db.CollectionLevel2XParHeaderField.FirstOrDefault(c => c.Id == item.Id);
+
+                        if (string.IsNullOrEmpty(item.Value))//Remover
+                        {                 
+                            db.CollectionLevel2XParHeaderField.Remove(original);
+                        }
+                        else //Update
+                        {
+                            original.Value = item.Value;
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(item.Value)) //Add
+                    {
+                        db.CollectionLevel2XParHeaderField.Add(item);
+                    }
+                }
+
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;
+            }
+
+            return true;
+        }
+
         public class Select
         {
             public ParHeaderField HeaderField { get; set; }
             public List<ParMultipleValues> Values { get; set; }
             public string ValueSelected { get; set; }
             public int CollectionLevel2XParHeaderField_Id { get; set; }
-            public int CollectionLevel2_Id { get; set; }
+            public CollectionLevel2 CollectionLevel2 { get; set; }
+            //public int CollectionLevel2_Id { get; set; }
+            //public int Evaluation { get; set; }
+            //public int Sample { get; set; }
         }
 
         public class ParLevels
@@ -989,16 +1030,15 @@ namespace SgqSystem.Controllers.Api
             public int Id { get; set; }
             public int ParLevel1_Id { get; set; }
             public int ParLevel2_Id { get; set; }
+            public int EvaluationNumber { get; set; }
+            public int Sample { get; set; }
         }
 
         public List<Select> getSelects(int ResultLevel3_Id)
         {
             //pegar os cabeçalhos
             var resultHeaderField = new List<Select>();
-            var Levels = getLevels(ResultLevel3_Id);
-            var ParLevel1_Id = Levels.ParLevel1_Id;
-            var ParLevel2_Id = Levels.ParLevel2_Id;
-            var CollectionLevel2_Id = Levels.Id;
+            var collectionLevel2 = getCollectionLevel2ByResultLevel3(ResultLevel3_Id);
 
             var query = $@"SELECT *
             FROM CollectionLevel2XParHeaderField
@@ -1013,10 +1053,10 @@ namespace SgqSystem.Controllers.Api
             var coletas = db.Database.SqlQuery<CollectionLevel2XParHeaderField>(query).ToList();
 
             //Ids dos cabeçalhos que não fazem parte do Monitoramento
-            var headerFields_IdNot = db.ParLevel2XHeaderField.Where(r => r.ParLevel1_Id == ParLevel1_Id && r.ParLevel2_Id == ParLevel2_Id && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
+            var headerFields_IdNot = db.ParLevel2XHeaderField.Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.ParLevel2_Id == collectionLevel2.ParLevel2_Id && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
 
             //Ids dos cabeçalhos válidos
-            var headerFields_Ids = db.ParLevel1XHeaderField.Where(r => r.ParLevel1_Id == ParLevel1_Id && !headerFields_IdNot.Contains(r.ParHeaderField_Id) && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
+            var headerFields_Ids = db.ParLevel1XHeaderField.Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && !headerFields_IdNot.Contains(r.ParHeaderField_Id) && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
 
             //Seleciona os cabeçalhos
             var headerFields = db.ParHeaderField.Where(r => headerFields_Ids.Contains(r.Id)).ToList();
@@ -1037,7 +1077,7 @@ namespace SgqSystem.Controllers.Api
                 //Se tiver mais do que um valor duplica a inserção
                 var resultados = coletas.Where(r => r.ParHeaderField_Id == headerField.Id).ToList();
 
-                select.CollectionLevel2_Id = CollectionLevel2_Id;
+                select.CollectionLevel2 = collectionLevel2;               
 
                 //Quantidades de campos coletados
                 if (resultados.Count > 0)
@@ -1061,20 +1101,22 @@ namespace SgqSystem.Controllers.Api
             return resultHeaderField;
         }
 
-        public ParLevels getLevels(int ResultLevel3_Id)
+        public CollectionLevel2 getCollectionLevel2ByResultLevel3(int ResultLevel3_Id)
         {
-
             var query = $@"SELECT
-                        Id
-                       ,ParLevel1_Id
-                       ,ParLevel2_Id
+                        *
                     FROM CollectionLevel2
                     WHERE id = (SELECT
                     		CollectionLevel2_Id
                     	FROM Result_Level3
                     	WHERE id = {ResultLevel3_Id})";
 
-            return db.Database.SqlQuery<ParLevels>(query).FirstOrDefault();
+            return db.Database.SqlQuery<CollectionLevel2>(query).FirstOrDefault();
+        }
+
+        public class ListCollectionLevel2XParHeaderField
+        {
+            public List<CollectionLevel2XParHeaderField> HeaderField { get; set; }
         }
     }
 }
