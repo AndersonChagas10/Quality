@@ -2,6 +2,7 @@ namespace Dominio
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
@@ -31,6 +32,14 @@ namespace Dominio
         public DateTime? AlterDate { get; set; }
 
         public bool Active { get; set; }
+       
+        public string Hash { get; set; }
+
+        [DisplayName("É filho de")]
+        public int? Parent_Id { get; set; }
+
+        [ForeignKey("Parent_Id")]
+        public virtual ParDepartment ParDepartmentPai { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel2> ParLevel2 { get; set; }

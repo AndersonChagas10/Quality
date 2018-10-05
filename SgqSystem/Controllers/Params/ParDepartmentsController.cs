@@ -15,6 +15,10 @@ namespace SgqSystem.Controllers
         // GET: ParDepartments
         public ActionResult Index()
         {
+            var listaFilhos = db.ParDepartment.ToList();
+            listaFilhos.Add(new ParDepartment() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", -1);
+
             return View(db.ParDepartment.ToList());
         }
 
@@ -36,6 +40,10 @@ namespace SgqSystem.Controllers
         // GET: ParDepartments/Create
         public ActionResult Create()
         {
+            var listaFilhos = db.ParDepartment.ToList();
+            listaFilhos.Insert(0 , new ParDepartment() { Id = 0, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", -1);
+
             return View();
         }
 
@@ -44,8 +52,12 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active")] ParDepartment parDepartment)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id")] ParDepartment parDepartment)
         {
+            MontaHash(parDepartment);
+            if (parDepartment.Parent_Id <= 0)
+                parDepartment.Parent_Id = null;
+
             if (ModelState.IsValid)
             {
                 db.ParDepartment.Add(parDepartment);
@@ -68,6 +80,11 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            var listaFilhos = db.ParDepartment.ToList();
+            listaFilhos.Insert(0, new ParDepartment() { Id = 0, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", parDepartment.Parent_Id);
+
             return View(parDepartment);
         }
 
@@ -76,8 +93,9 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active")] ParDepartment parDepartment)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id")] ParDepartment parDepartment)
         {
+            MontaHash(parDepartment);
             if (ModelState.IsValid)
             {
                 db.Entry(parDepartment).State = EntityState.Modified;
@@ -120,6 +138,31 @@ namespace SgqSystem.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void MontaHash(ParDepartment parDepartment)
+        {
+            ParDepartment pai = new ParDepartment();
+            if (parDepartment.Parent_Id > 0)
+                pai = db.ParDepartment.AsNoTracking().Where(x => x.Id == parDepartment.Parent_Id).FirstOrDefault();
+            else
+                pai = null; 
+
+            if (pai != null)
+            {
+                if (pai.Hash != null)
+                {
+                    parDepartment.Hash = pai.Hash + "|" + pai.Parent_Id;
+                }
+                else
+                {
+                    parDepartment.Hash = pai.Parent_Id.ToString();
+                }
+            }
+            else
+            {
+                parDepartment.Hash = null;
+            }
         }
     }
 }
