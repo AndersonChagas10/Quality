@@ -2271,7 +2271,7 @@ namespace SgqSystem.Services
                 string punishimentValue = result[13];
                 punishimentValue = DefaultValueReturn(punishimentValue, "0");
 
-                string defects = result[14] ==  "NaN" ? "0" : result[14];
+                string defects = result[14] == "NaN" ? "0" : result[14];
 
                 //aqui tem que mudar no bem estar animal, verificar com o gabriel
                 string evaluation = "1";
@@ -5455,7 +5455,7 @@ $(document).ready(function(){
 
                             foreach (var value in listIntegration) //LOOP8
                             {
-                                if (value.IsDefaultOption == 1)
+                                if (value.IsDefaultOption == true)
                                 {
                                     optionsIntegration += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"0\">" + value.Name + "</option>";
                                     hasDefaultIntegration = true;
@@ -6497,7 +6497,7 @@ $(document).ready(function(){
             }//Escala Likert
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
-                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString() );
+                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString());
             }//Resultado
             else if (parLevel3.ParLevel3InputType_Id == 10)
             {
@@ -7996,12 +7996,14 @@ $(document).ready(function(){
 
         [WebMethod]
         public string ReconsolidationToLevel3(string collectionLevel2_Id)
-        //int company_Id, int level1_Id, DateTime data, 
         {
 
             try
             {
+                ReconsolidationLevel3ByCollectionLevel2Id(collectionLevel2_Id);
+
                 string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
                     connection.Open();
@@ -8052,8 +8054,6 @@ $(document).ready(function(){
 
                     if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
-
-                //var service = new SyncServices();
 
                 using (var db = new Dominio.SgqDbDevEntities())
                 {
@@ -8126,6 +8126,61 @@ $(document).ready(function(){
                     //throw ex;
                 }
 
+            }
+
+        }
+
+        private void ReconsolidationLevel3ByCollectionLevel2Id(string collectionLevel_Id)
+        {
+            try
+            {
+
+                var sql = $@"SELECT
+                    	RL3.Id
+                       ,SUM(PMV.PunishmentValue) AS PunishmentValue
+                    FROM CollectionLevel2XParHeaderField CL2XHF
+                    INNER JOIN Result_Level3 RL3
+                    	ON RL3.CollectionLevel2_Id = CL2XHF.CollectionLevel2_Id
+                    INNER JOIN ParHeaderField PHF
+                    	ON PHF.Id = CL2XHF.ParHeaderField_Id
+                    INNER JOIN ParMultipleValues PMV
+                    	ON PMV.Id = CAST(CL2XHF.Value as int)
+                    WHERE CL2XHF.CollectionLevel2_Id = { collectionLevel_Id }
+                    and CL2XHF.ParFieldType_Id in (1,2,3)
+                    GROUP BY RL3.Id";
+
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    var resultsLevel3 = factory.SearchQuery<Dominio.Result_Level3>(sql).ToList();
+
+                    if (resultsLevel3.Count > 0)
+                    {
+                        foreach (var resultLevel3 in resultsLevel3)
+                        {
+                            var sql2 = $@"SELECT
+                        	RL3.Id
+                        	,((RL3.Defects * RL3.Weight) + ({ resultLevel3.PunishmentValue.ToString().Replace(',', '.') } + RL3.Weight)) as WeiDefects
+                        FROM Result_Level3 RL3
+                        WHERE Id = { resultLevel3.Id }";
+
+
+                            var resultLevel3WeiDefects = factory.SearchQuery<Dominio.Result_Level3>(sql2).FirstOrDefault();
+
+                            if (resultLevel3WeiDefects != null)
+                            {
+                                var sqlUpdateWeiDefects = $@"update Result_Level3 set WeiDefects = {resultLevel3WeiDefects.WeiDefects.ToString().Replace(',', '.')}, PunishmentValue = {resultLevel3.PunishmentValue.ToString().Replace(',', '.')} where id = {resultLevel3WeiDefects.Id}";
+
+                                factory.ExecuteSql(sqlUpdateWeiDefects);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
 
         }
