@@ -4,7 +4,6 @@
     ViewBag.Title = "Details";
 }
 
-
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
@@ -22,12 +21,7 @@
                     <span>@Resources.Resource.vacuo_grd</span>
                 </li>
             </ul>
-            <div class="page-toolbar">
-                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
-            </div>
+            <div class="page-toolbar"></div>
         </div>
         <!-- END PAGE BAR -->
         <!-- END PAGE HEADER-->
@@ -60,6 +54,14 @@
 
                                         <dd>
                                             @Html.DisplayFor(model => model.Unidade)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.Shift.Description)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Shift.Description)
                                         </dd>
 
                                         <dt>
@@ -172,10 +174,10 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar7");
 
-</script>
-
-<script>
     $(document).ready(function () {
+
         closeLeftSidebar();
+
     });
+
 </script>

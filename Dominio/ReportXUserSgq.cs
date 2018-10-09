@@ -10,14 +10,10 @@ using System.Threading.Tasks;
 namespace Dominio
 {
     [Table("ReportXUserSgq")]
-    public class ReportXUserSgq
+    public class ReportXUserSgq : BaseModel
     {
         [Key]
         public int Id { get; set; }
-        [Display(Name = "Data de Adição")]
-        public DateTime AddDate { get; set; }
-        [Display(Name = "Data de Alteração")]
-        public DateTime? AlterDate { get; set; }
         [Display(Name = "Relatorio")]
         public int ItemMenu_Id { get; set; }
         [Display(Name = "Elaborador")]

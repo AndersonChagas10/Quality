@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("UserSgq")]
-    public partial class UserSgq
+    public partial class UserSgq : BaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UserSgq()
@@ -29,10 +29,6 @@ namespace Dominio
         public string Password { get; set; }
 
         public DateTime? AcessDate { get; set; }
-
-        public DateTime AddDate { get; set; }
-
-        public DateTime? AlterDate { get; set; }
 
         public string Role { get; set; }
 

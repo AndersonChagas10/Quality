@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -26,7 +26,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>false</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -370,6 +371,7 @@
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
+    <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\SelectVinculado\SelectVinculadoApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
@@ -418,6 +420,7 @@
     <Compile Include="Controllers\Recravacao\ParRecravacao_TipoLata.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoTipoLataController.cs" />
+    <Compile Include="Controllers\Photo\PhotoController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\Relatorios\SIFReportsController.cs" />
@@ -795,6 +798,33 @@
     <Content Include="Content\erp.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\gallery\.eslintrc.js" />
+    <Content Include="Content\gallery\css\blueimp-gallery-indicator.css" />
+    <Content Include="Content\gallery\css\blueimp-gallery-video.css" />
+    <Content Include="Content\gallery\css\blueimp-gallery.css" />
+    <Content Include="Content\gallery\css\blueimp-gallery.min.css" />
+    <Content Include="Content\gallery\css\demo\demo.css" />
+    <Content Include="Content\gallery\img\error.png" />
+    <Content Include="Content\gallery\img\error.svg" />
+    <Content Include="Content\gallery\img\loading.gif" />
+    <Content Include="Content\gallery\img\play-pause.png" />
+    <Content Include="Content\gallery\img\play-pause.svg" />
+    <Content Include="Content\gallery\img\video-play.png" />
+    <Content Include="Content\gallery\img\video-play.svg" />
+    <Content Include="Content\gallery\index.html" />
+    <Content Include="Content\gallery\js\blueimp-gallery-fullscreen.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery-indicator.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery-video.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery-vimeo.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery-youtube.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery.min.js" />
+    <Content Include="Content\gallery\js\blueimp-helper.js" />
+    <Content Include="Content\gallery\js\demo\demo.js" />
+    <Content Include="Content\gallery\js\jquery.blueimp-gallery.js" />
+    <Content Include="Content\gallery\js\jquery.blueimp-gallery.min.js" />
+    <Content Include="Content\gallery\js\vendor\jquery.js" />
+    <Content Include="Content\gallery\LICENSE.txt" />
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\gridmvc.datepicker.css" />
     <Content Include="Content\gridmvc.datepicker.min.css" />
@@ -840,6 +870,7 @@
     <Content Include="Imagens\D.png" />
     <Content Include="Imagens\P.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
+    <Content Include="Scripts\noframework.waypoints.min.js" />
     <Content Include="Content\select2-bootstrap.min.css" />
     <Content Include="Content\select2.min.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -1046,6 +1077,14 @@
     <Content Include="Content\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\gallery\.eslintignore" />
+    <Content Include="Content\gallery\.gitignore" />
+    <Content Include="Content\gallery\.npmignore" />
+    <Content Include="Content\gallery\css\blueimp-gallery.min.css.map" />
+    <Content Include="Content\gallery\js\blueimp-gallery.min.js.map" />
+    <Content Include="Content\gallery\js\jquery.blueimp-gallery.min.js.map" />
+    <Content Include="Content\gallery\package.json" />
+    <Content Include="Content\gallery\README.md" />
     <Content Include="Scripts\mindmap.js" />
     <Content Include="WebConfig_Old.xml" />
     <None Include="job_scheduling_data_2_0.xsd">
@@ -1693,6 +1732,9 @@
     <Content Include="Views\Shared\_SelectVinculado.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
     <Content Include="Views\Shared\_ClusterRegionalUnidadeCriticalLevel123.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_Image.cshtml" />
+    <Content Include="Views\Photo\Index.cshtml" />
+    <Content Include="Views\Shared\_Carousel.cshtml" />
     <Content Include="Views\ParClusterGroups\Create.cshtml" />
     <Content Include="Views\ParClusterGroups\Delete.cshtml" />
     <Content Include="Views\ParClusterGroups\Details.cshtml" />

@@ -17,7 +17,12 @@ namespace SgqSystem.Controllers
         // GET: ParGroupParLevel1
         public ActionResult Index()
         {
-            var parGroupParLevel1 = db.ParGroupParLevel1.Include(p => p.ParGroupParLevel1Type);
+            var parGroupParLevel1 = db.ParGroupParLevel1.Include(p => p.ParGroupParLevel1Type).Where(x => x.IsActive);
+
+            var listaFilhos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaFilhos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", -1);
+
             return View(parGroupParLevel1.ToList());
         }
 
@@ -42,6 +47,11 @@ namespace SgqSystem.Controllers
             var listaGrupos = db.ParGroupParLevel1Type.Where(x => x.IsActive).ToList();
             listaGrupos.Add(new ParGroupParLevel1Type() { Id = -1, Name = "Selecione" });
             ViewBag.ParGroupParLevel1Type_Id = new SelectList(listaGrupos, "Id", "Name", -1);
+
+            var listaGruposIndicador = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaGruposIndicador.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaGruposIndicador, "Id", "Name", -1);
+
             return View();
         }
 
@@ -50,9 +60,10 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,IsActive")] ParGroupParLevel1 parGroupParLevel1)
+        public ActionResult Create([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,IsActive,Parent_Id")] ParGroupParLevel1 parGroupParLevel1)
         {
             ValidaGrupoIndicadores(parGroupParLevel1);
+            ValidaHash(parGroupParLevel1);
             if (ModelState.IsValid)
             {
                 db.ParGroupParLevel1.Add(parGroupParLevel1);
@@ -62,6 +73,27 @@ namespace SgqSystem.Controllers
 
             ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name", parGroupParLevel1.ParGroupParLevel1Type_Id);
             return View(parGroupParLevel1);
+        }
+
+        private void ValidaHash(ParGroupParLevel1 parGroupParLevel1)
+        {
+            var pai = db.ParGroupParLevel1.AsNoTracking().Where(x => x.Parent_Id == parGroupParLevel1.Parent_Id).FirstOrDefault();
+
+            if (pai != null)
+            {
+                if (pai.Hash != null)
+                {
+                    parGroupParLevel1.Hash = pai.Hash + "|" + pai.Parent_Id;
+                }
+                else
+                {
+                    parGroupParLevel1.Hash = pai.Parent_Id.ToString();
+                }
+            }
+            else
+            {
+                parGroupParLevel1.Hash = null;
+            }
         }
 
         // GET: ParGroupParLevel1/Edit/5
@@ -80,6 +112,9 @@ namespace SgqSystem.Controllers
             listaGrupos.Add(new ParGroupParLevel1Type() { Id = -1, Name = "Selecione" });
             ViewBag.ParGroupParLevel1Type_Id = new SelectList(listaGrupos, "Id", "Name", parGroupParLevel1.ParGroupParLevel1Type_Id);
 
+            var listaGruposIndicador = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaGruposIndicador.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaGruposIndicador, "Id", "Name", parGroupParLevel1.Parent_Id);
             //ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name", parGroupParLevel1.ParGroupParLevel1Type_Id);
             return View(parGroupParLevel1);
         }
@@ -89,9 +124,10 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,IsActive")] ParGroupParLevel1 parGroupParLevel1)
+        public ActionResult Edit([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,IsActive,Parent_Id")] ParGroupParLevel1 parGroupParLevel1)
         {
             ValidaGrupoIndicadores(parGroupParLevel1);
+            ValidaHash(parGroupParLevel1);
             if (ModelState.IsValid)
             {
                 db.Entry(parGroupParLevel1).State = EntityState.Modified;

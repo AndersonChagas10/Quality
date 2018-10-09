@@ -51,6 +51,8 @@ namespace Dominio
         {
             var entities = ChangeTracker.Entries().Where(x =>
             !(x.Entity is DatabaseLog)
+            && !(x.Entity is ErrorLog)
+            && !(x.Entity is UserSgq)
             && !(x.Entity is Result_Level3)
             && !(x.Entity is LogJson)
             && !(x.Entity is LogSgqGlobal)
@@ -85,6 +87,7 @@ namespace Dominio
         }
 
         public virtual DbSet<DatabaseLog> DatabaseLog { get; set; }
+        public virtual DbSet<ErrorLog> ErrorLog { get; set; }
 
         public virtual DbSet<AreasParticipantes> AreasParticipantes { get; set; }
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
@@ -110,9 +113,6 @@ namespace Dominio
         public virtual DbSet<Horarios> Horarios { get; set; }
         public virtual DbSet<ItemMenu> ItemMenu { get; set; }
         public virtual DbSet<LeftControlRole> LeftControlRole { get; set; }
-        public virtual DbSet<Level01> Level01 { get; set; }
-        public virtual DbSet<Level02> Level02 { get; set; }
-        public virtual DbSet<Level03> Level03 { get; set; }
         public virtual DbSet<LogAlteracoes> LogAlteracoes { get; set; }
         public virtual DbSet<LogJson> LogJson { get; set; }
         public virtual DbSet<LogSgq> LogSgq { get; set; }
@@ -419,30 +419,6 @@ namespace Dominio
 
             modelBuilder.Entity<ItemMenu>()
                 .Property(e => e.Resource)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level01>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level01>()
-                .Property(e => e.Alias)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level02>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level02>()
-                .Property(e => e.Alias)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level03>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level03>()
-                .Property(e => e.Alias)
                 .IsUnicode(false);
 
             modelBuilder.Entity<LogJson>()
@@ -1422,6 +1398,6 @@ namespace Dominio
                 .IsFixedLength();
         }
 
-        public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1XParLevel3> ParGroupParLevel1XParLevel3 { get; set; }
+        public System.Data.Entity.DbSet<Dominio.ParVinculoPeso> ParGroupParLevel1XParLevel3 { get; set; }
     }
 }

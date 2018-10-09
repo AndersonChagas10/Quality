@@ -67,7 +67,7 @@ namespace SgqSystem.Controllers.Api.Params
             #endregion
             paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel1(paramsViewModel.paramsDto);
             return paramsViewModel;
-        }
+        }   
 
         [HttpPost]
         [Route("SetRequiredCCAB/{Id}/{Required}")]

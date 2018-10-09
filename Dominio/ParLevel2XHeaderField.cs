@@ -6,7 +6,7 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLevel2XHeaderField
+    public partial class ParLevel2XHeaderField : BaseModel 
     {
         public int Id { get; set; }
 
@@ -15,10 +15,6 @@ namespace Dominio
         public int ParLevel1_Id { get; set; }
 
         public int ParHeaderField_Id { get; set; }
-
-        public DateTime AddDate { get; set; }
-
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
     }

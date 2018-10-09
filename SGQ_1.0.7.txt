@@ -1,20 +1,52 @@
-Elaborador e Aprovador Por Relatorio -- Feitor por: Marcos Augusto -- Data: 27/09/2018 -- DEV-302
 
-Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.t_InsercaoParGroupParLevel1XParLevel3',GetDate());
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180927_1600_AdicionarParCluster_Id_na_PARLEVEL1XMODULE',GetDate())
+
+GO
+
+IF NOT EXISTS 
+	(
+		SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
+		WHERE 1=1
+		 AND TABLE_NAME = 'ParGroupParLevel1'
+		 AND COLUMN_NAME = 'Id'
+	) 
+  BEGIN
+	ALTER TABLE ParGroupParLevel1
+	ADD PRIMARY KEY (Id)
+  END 
+
+GO
+
+IF COL_LENGTH('PARLEVEL1XMODULE','ParCluster_Id') IS NULL
+    BEGIN
+		ALTER TABLE PARLEVEL1XMODULE
+		ADD ParCluster_Id Int null;
+		
+		ALTER TABLE [dbo].[ParLevel1XModule]  WITH CHECK ADD  CONSTRAINT [FK_ParLevel1XModule_ParCluster] FOREIGN KEY([ParCluster_Id])
+		REFERENCES [dbo].[ParCluster] ([Id])
+    END
+
+GO
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_InsercaoParVinculoPeso',GetDate());
 
 GO
 
 
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParGroupParLevel1XParLevel3' AND xtype='U')
-create table ParGroupParLevel1XParLevel3(
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+create table ParVinculoPeso(
 	Id int not null identity primary key,
-	ParGroupParLevel1Type_Id int NOT NULL,
 	Name varchar(max) NOT NULL,
 	AddDate datetime not null,
-	AlterDate datetime,
+	AlterDate datetime,	
+	IsActive bit not null,
+	Peso int not null,
+	ParCompany_Id int not null FOREIGN key REFERENCES ParCompany(Id),
+	ParDepartment_Id int not null FOREIGN key REFERENCES ParDepartment(Id),
+	ParLevel2_Id int not null FOREIGN key REFERENCES ParLevel2(Id),
+	ParGroupParLevel1_Id int NOT NULL FOREIGN key REFERENCES ParGroupParLevel1(Id),
 	ParLevel1_Id int not null FOREIGN key REFERENCES ParLevel1(Id),
-	ParLevel3_Id int FOREIGN key REFERENCES ParLevel3(Id),
-	IsActive bit not null
+	ParLevel3_Id int not null FOREIGN key REFERENCES ParLevel3(Id),	
 )
 
 GO
@@ -34,5 +66,37 @@ create table DatabaseLog(
 	Operacao int NOT NULL,
 	AddDate datetime not null
 )
+
+GO
+
+
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_InsercaoDeTabelaDeLogDeErro',GetDate());
+
+GO
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ErrorLog' AND xtype='U')
+create table ErrorLog(
+	Id bigint not null identity primary key,
+	StackTrace varchar(max) NOT NULL,
+	AddDate datetime not null
+)
+
+GO
+ 
+IF COL_LENGTH('ParGroupParLevel1','Parent_Id') IS NULL
+    BEGIN
+		ALTER TABLE ParGroupParLevel1
+		ADD Parent_Id int;
+    END
+
+go
+ 
+IF COL_LENGTH('ParGroupParLevel1','Hash') IS NULL
+    BEGIN
+		ALTER TABLE ParGroupParLevel1
+		ADD Hash varchar(900);
+    END
 
 GO

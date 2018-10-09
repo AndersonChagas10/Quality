@@ -26,13 +26,7 @@
                     <span>Exclusão</span>
                 </li>
             </ul>
-            <div class="page-toolbar">
-                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
-                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
-            </div>
+            <div class="page-toolbar"></div>
         </div>
         <!-- END PAGE BAR -->
         <!-- END PAGE HEADER-->
@@ -50,10 +44,11 @@
                             <div class="tab-pane active" id="setup_tab">
 
                                 <h4>
-                                Deseja excluir o 
-                                volume de produção de <b>@Html.DisplayFor(model => model.ParLevel1.Name)</b> 
-                                do dia <b><div style="display:inline;">@data</div></b>
-                                da unidade  de <b>@Html.DisplayFor(model => model.ParCompany.Name)?</b>
+                                    Deseja excluir o
+                                    volume de produção de <b>@Html.DisplayFor(model => model.ParLevel1.Name)</b>
+                                    do dia <b><div style="display:inline;">@data</div></b>
+                                    da unidade  de <b>@Html.DisplayFor(model => model.ParCompany.Name)</b>
+                                    , no @Resources.Resource.shift <b>@Html.DisplayFor(model => model.Shift.Description)</b>?
                                 </h4>
                                 <br />
                                 <div>
@@ -68,7 +63,6 @@
                                     }
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

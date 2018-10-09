@@ -1,7 +1,9 @@
 ﻿@model Dominio.ParGroupParLevel1
 
 @{
-    ViewBag.Title = "Create";
+                /**/
+
+                ViewBag.Title = "Create";
 }
 
 <div class="page-content-wrapper">
@@ -51,13 +53,23 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group"> 
+                                        <div class="form-group">
                                             @Html.LabelFor(model => model.ParGroupParLevel1Type_Id, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParGroupParLevel1Type_Id", null, htmlAttributes: new { @class = "form-control" })
 
                                                 @*@Html.DropDownList("ParGroupParLevel1Type_Id", Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:275px" })*@
                                                 @Html.ValidationMessageFor(model => model.ParGroupParLevel1Type_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Parent_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.DropDownList("Parent_Id", null, htmlAttributes: new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.Parent_Id, "", new { @class = "text-danger" })
+                                                </div>
                                             </div>
                                         </div>
 
@@ -70,6 +82,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">

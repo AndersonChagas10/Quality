@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParSample")]
-    public partial class ParSample
+    public partial class ParSample : BaseModel
     {
         public int Id { get; set; }
 
@@ -16,12 +16,6 @@ namespace Dominio
         public int ParLevel2_Id { get; set; }
 
         public int Number { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

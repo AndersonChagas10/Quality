@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParClusterXModule")]
-    public partial class ParClusterXModule
+    public partial class ParClusterXModule : BaseModel
     {
         public int Id { get; set; }
 
@@ -16,12 +16,6 @@ namespace Dominio
         public int ParModule_Id { get; set; }
 
         public decimal Points { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

@@ -33,7 +33,6 @@ namespace SgqSystem.Controllers
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
             var userLogado = db.UserSgq.Where(r => r.Id == userId);
             var vacuoGRD = db.VolumeVacuoGRD.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1);
-            //var vacuoGRD = db.VolumeVacuoGRD.Include(v => v.ParCompany).Include(v => v.ParLevel1).OrderByDescending(v => v.Data);
 
             //Date filter
             if (!string.IsNullOrEmpty(Request.QueryString["startDate"]) && !string.IsNullOrEmpty(Request.QueryString["endDate"]))
@@ -96,7 +95,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeVacuoGRD vacuoGRD)
+        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id,Shift_Id")] VolumeVacuoGRD vacuoGRD)
         {
             GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(vacuoGRD, 3);
             ValidaVacuoGRD(vacuoGRD);
@@ -104,7 +103,7 @@ namespace SgqSystem.Controllers
             if (ModelState.IsValid)
             {
                 //Verifica se já existe uma coleta no mesmo dia
-                if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id).ToList().Count() == 0)
+                if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id && r.Shift_Id == vacuoGRD.Shift_Id).ToList().Count() == 0)
                 {
                     vacuoGRD.AddDate = DateTime.Now;
                     db.VolumeVacuoGRD.Add(vacuoGRD);
@@ -114,7 +113,6 @@ namespace SgqSystem.Controllers
                 else
                 {
                     ReturnError(vacuoGRD);
-                    //return View(vacuoGRD);
                 }
             }
 
@@ -133,23 +131,11 @@ namespace SgqSystem.Controllers
 
             if (vacuoGRD.HorasTrabalhadasPorDia == null)
                 ModelState.AddModelError("HorasTrabalhadasPorDia", Guard.MesangemModelError("Horas trabalhadas por dia", false));
-            else
-            if (vacuoGRD.HorasTrabalhadasPorDia.Value <= 0)
+            else if (vacuoGRD.HorasTrabalhadasPorDia.Value <= 0)
                 ModelState.AddModelError("HorasTrabalhadasPorDia", "O campo \"Horas trabalhadas por dia\" precisa ter valor maior que 0.");
 
             if (vacuoGRD.QtdadeFamiliaProduto == null)
                 ModelState.AddModelError("QtdadeFamiliaProduto", Guard.MesangemModelError("Número de famílias cadastradas", false));
-
-            /*if (vacuoGRD.Avaliacoes == null)
-                ModelState.AddModelError("Avaliacoes", Guard.MesangemModelError("Avaliacoes", false));
-
-            if (vacuoGRD.Amostras == null)
-                ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
-
-            //if (vacuoGRD.Id > 0 && vacuoGRD.Data != null && vacuoGRD.Data?.Date < DateTime.Now.Date)
-            //{
-            //    ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
-            //}
         }
 
         private void ReturnError(VolumeVacuoGRD obj)
@@ -171,11 +157,6 @@ namespace SgqSystem.Controllers
                 return HttpNotFound();
             }
 
-            //if (vacuoGRD.Data != null && vacuoGRD.Data?.Date < DateTime.Now.Date)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 22), "Id", "Name", vacuoGRD.ParLevel1_id);
             GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(vacuoGRD, 3);
@@ -187,13 +168,13 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeVacuoGRD vacuoGRD)
+        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id,Shift_Id")] VolumeVacuoGRD vacuoGRD)
         {
             GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(vacuoGRD, 3);
             ValidaVacuoGRD(vacuoGRD);
             if (ModelState.IsValid)
             {
-                if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id).ToList().Count() == 0)
+                if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id && r.Shift_Id == vacuoGRD.Shift_Id && r.Id != vacuoGRD.Id).ToList().Count() == 0)
                 {
                     vacuoGRD.AlterDate = DateTime.Now;
                     db.Entry(vacuoGRD).State = EntityState.Modified;
@@ -202,35 +183,13 @@ namespace SgqSystem.Controllers
                     {
                         db.Entry(vacuoGRD).Property(x => x.Data).IsModified = false;
                     }
-                   
+
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    //Se for a edição da mesma data e parCompany
-                    if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data &&
-                                                       r.ParCompany_id == vacuoGRD.ParCompany_id &&
-                                                       r.Id == vacuoGRD.Id).ToList().Count() == 1)
-                    {
-                        using (var db2 = new SgqDbDevEntities())
-                        {
-                            vacuoGRD.AlterDate = DateTime.Now;
-                            db2.Entry(vacuoGRD).State = EntityState.Modified;
-                            if (db2.VolumeVacuoGRD.Where(r => r.Id == vacuoGRD.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
-                            {
-                                db2.Entry(vacuoGRD).Property(x => x.Data).IsModified = false;
-                            }
-                            db2.SaveChanges();
-                            return RedirectToAction("Index");
-                        }
-
-                    }
-                    else
-                    {
-                        ReturnError(vacuoGRD);
-                        //return View(vacuoGRD);
-                    }
+                    ReturnError(vacuoGRD);
                 }
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
@@ -272,7 +231,5 @@ namespace SgqSystem.Controllers
             }
             base.Dispose(disposing);
         }
-
-
     }
 }
