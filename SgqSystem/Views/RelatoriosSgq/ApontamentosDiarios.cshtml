@@ -256,6 +256,19 @@
                         });
                     });
 
+
+                    new $.fn.dataTable.Buttons(table, {
+                        buttons: [
+                             {
+                                 extend: 'pdf',
+                                 text: 'PDF',
+                                 exportOptions: {
+                                     columns: ':visible'
+                                 }
+                             }
+                        ]
+                    });
+
                     $('#resultsApontamentos tbody').on('click', 'button#editHeader', function (data) {
 
                         var data = table.row($(this).parents('tr')).data();
