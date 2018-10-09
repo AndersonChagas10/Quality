@@ -113,7 +113,6 @@ namespace SgqSystem.Controllers
                 else
                 {
                     ReturnError(vacuoGRD);
-                    //return View(vacuoGRD);
                 }
             }
 
@@ -175,7 +174,7 @@ namespace SgqSystem.Controllers
             ValidaVacuoGRD(vacuoGRD);
             if (ModelState.IsValid)
             {
-                if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id && r.Shift_Id == vacuoGRD.Shift_Id).ToList().Count() == 0)
+                if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id && r.Shift_Id == vacuoGRD.Shift_Id && r.Id != vacuoGRD.Id).ToList().Count() == 0)
                 {
                     vacuoGRD.AlterDate = DateTime.Now;
                     db.Entry(vacuoGRD).State = EntityState.Modified;
@@ -184,35 +183,13 @@ namespace SgqSystem.Controllers
                     {
                         db.Entry(vacuoGRD).Property(x => x.Data).IsModified = false;
                     }
-                   
+
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    //Se for a edição da mesma data e parCompany
-                    if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data &&
-                                                       r.ParCompany_id == vacuoGRD.ParCompany_id &&
-                                                       r.Id == vacuoGRD.Id).ToList().Count() == 1)
-                    {
-                        using (var db2 = new SgqDbDevEntities())
-                        {
-                            vacuoGRD.AlterDate = DateTime.Now;
-                            db2.Entry(vacuoGRD).State = EntityState.Modified;
-                            if (db2.VolumeVacuoGRD.Where(r => r.Id == vacuoGRD.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
-                            {
-                                db2.Entry(vacuoGRD).Property(x => x.Data).IsModified = false;
-                            }
-                            db2.SaveChanges();
-                            return RedirectToAction("Index");
-                        }
-
-                    }
-                    else
-                    {
-                        ReturnError(vacuoGRD);
-                        //return View(vacuoGRD);
-                    }
+                    ReturnError(vacuoGRD);
                 }
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);

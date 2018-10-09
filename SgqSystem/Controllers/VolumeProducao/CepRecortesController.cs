@@ -124,7 +124,6 @@ namespace SgqSystem.Controllers
                 else
                 {
                     ReturnError(cepRecortes);
-                    //return View(cepRecortes);
                 }
             }
 
@@ -199,42 +198,22 @@ namespace SgqSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                if (db.VolumeCepRecortes.Where(r => r.Data == cepRecortes.Data && r.ParCompany_id == cepRecortes.ParCompany_id && r.Shift_Id == cepRecortes.Shift_Id).ToList().Count() == 0)
+                if (db.VolumeCepRecortes.Where(r => r.Data == cepRecortes.Data && r.ParCompany_id == cepRecortes.ParCompany_id && r.Shift_Id == cepRecortes.Shift_Id && r.Id != cepRecortes.Id).ToList().Count() == 0)
                 {
                     cepRecortes.AlterDate = DateTime.Now;
                     db.Entry(cepRecortes).State = EntityState.Modified;
+
                     if (db.VolumeCepRecortes.Where(r => r.Id == cepRecortes.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
                     {
                         db.Entry(cepRecortes).Property(x => x.Data).IsModified = false;
                     }
+
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    //Se for a edição da mesma data e parCompany
-                    if (db.VolumeCepRecortes.Where(r => r.Data == cepRecortes.Data &&
-                                                       r.ParCompany_id == cepRecortes.ParCompany_id &&
-                                                       r.Id == cepRecortes.Id).ToList().Count() == 1)
-                    {
-                        using (var db2 = new SgqDbDevEntities())
-                        {
-                            cepRecortes.AlterDate = DateTime.Now;
-                            db2.Entry(cepRecortes).State = EntityState.Modified;
-                            if (db2.VolumeCepRecortes.Where(r => r.Id == cepRecortes.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
-                            {
-                                db2.Entry(cepRecortes).Property(x => x.Data).IsModified = false;
-                            }
-                            db2.SaveChanges();
-                            return RedirectToAction("Index");
-                        }
-
-                    }
-                    else
-                    {
-                        ReturnError(cepRecortes);
-                        //return View(cepRecortes);
-                    }
+                    ReturnError(cepRecortes);
                 }
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
