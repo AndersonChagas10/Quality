@@ -54,6 +54,7 @@ namespace SgqSystem.Controllers.Api
                         left join ParRecravacao_TipoLata TL
                         on TL.Id = RL.ParRecravacao_TypeLata_Id
                         WHERE RL.ParCompany_Id = {0} 
+						and RL.isActive = 1
                         and TL.isActive = 1
                         and RL.ParLevel2_Id in (SELECT DISTINCT(parlevel2_Id) FROM PARLEVEL2Level1 where parlevel1_Id = {1} AND isactive = 1) order by 2 asc", companyId, level1Id);
                 var listLinhasDoLevel1 = QueryNinja(db, query).ToList();
