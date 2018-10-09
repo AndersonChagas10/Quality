@@ -7,15 +7,9 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("RoleUserSgqXItemMenu")]
-    public partial class RoleUserSgqXItemMenu
+    public partial class RoleUserSgqXItemMenu : BaseModel
     {
         public int Id { get; set; }
-
-        [Column(TypeName = "date")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "date")]
-        public DateTime? AlterDate { get; set; }
 
         [StringLength(255)]
         public string Name { get; set; }

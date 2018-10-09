@@ -359,13 +359,17 @@
         }
 
         var list = $.grep($('#tableLevel3Value tbody tr'), function (o) {
-            return $(o).data('ParLevel3Value_OuterList')[0].ParCompany_Id == ParCompany_Id && $(o).data('ParLevel3Value_OuterList')[0].ParMeasurementUnit_Id == ParLevel1_Id && $(o).data('ParLevel3Value_OuterList')[0].ParMeasurementUnit_Name == ParLevel2_Id
+            var list = $.grep($('#tableLevel3Value tbody tr'), function (o) {
+                if ($(o).data('ParLevel3Value_OuterList')) {
+                    return $(o).data('ParLevel3Value_OuterList')[0].ParCompany_Id == ParCompany_Id && $(o).data('ParLevel3Value_OuterList')[0].ParMeasurementUnit_Id == ParLevel1_Id && $(o).data('ParLevel3Value_OuterList')[0].ParMeasurementUnit_Name == ParLevel2_Id
+                }
+            });
         });
 
 
         if (list.length > 0) {
             return false;
-        } 
+        }
 
         return true;
     }
@@ -403,12 +407,13 @@
             let text = ''
             let val = 1
             let defaultSelected = false;
-            let nowSelected     = false;
+            let nowSelected = false;
 
             $('#parlevel3RecravacaoValue').empty();
             $('#parlevel3RecravacaoValue').append(new Option('Selecione...', -1, defaultSelected, nowSelected));
+
             r.forEach(function (o, c) {
-                if(o.ParLevel3InputType_Id == 3){
+                if (o.ParLevel3InputType_Id == 3) {
                     if (o.AcceptableValueBetween) {
                         val = o.Id
                         text = 'Valor não está entre: Min. ' + o.IntervalMin + ' - Máx. ' + o.IntervalMax + o.ParMeasurementUnit.Name;
@@ -425,7 +430,8 @@
                         $('#parlevel3RecravacaoValue').append(option);
                     }
                 }
-            })
+            });
+
             if ($('#parlevel3RecravacaoValue option:first').length < 3)
                 $('#parlevel3RecravacaoValue').val($('#parlevel3RecravacaoValue option:first').next().val()).change();
         })
@@ -453,13 +459,13 @@
                 expressaoArr = o;
                 updateLogicExpression(true);
 
-                let tipo = reencravacoes[0].ParLevel3InputType_Name;
-                let unidade = reencravacoes[0].ParCompany_Name;
+                let tipo = expressaoArr[0].ParLevel3InputType_Name;
+                let unidade = expressaoArr[0].ParCompany_Name;
                 let expressao = updateLogicExpression(true);
-                let UnidadeMedidaText = reencravacoes[0].UnidadeMedidaText;
-                let AceitavelEntreText = reencravacoes[0].AceitavelEntreText;
-                let LimInferior = reencravacoes[0].LimInferior;
-                let LimSuperior = reencravacoes[0].LimSuperior;
+                let UnidadeMedidaText = expressaoArr[0].UnidadeMedidaText;
+                let AceitavelEntreText = expressaoArr[0].AceitavelEntreText;
+                let LimInferior = expressaoArr[0].LimInferior;
+                let LimSuperior = expressaoArr[0].LimSuperior;
                 let level1 = $('#parLevel1Select2 option[value="' + expressaoArr[0].ParMeasurementUnit_Id +'"]').text();
                 let level2 = $('#parLevel2Select2 option[value="' + expressaoArr[0].ParMeasurementUnit_Name +'"]').text();
 

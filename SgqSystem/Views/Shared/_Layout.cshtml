@@ -58,7 +58,7 @@
     <link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+   @* <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">*@
 
     @if (IsSectionDefined("Styles"))
     {
@@ -80,10 +80,26 @@
     <link rel="stylesheet" type="text/css" href="~/Content/PluginGRT/pivot.css">
     <link rel="stylesheet" type="text/css" href="~/Content/PluginGRT/c3.min.css">
 
-</head>
-<body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed">
-
-    <div id="mandala"></div>
+    <style>
+         @if (!GlobalConfig.Producao)
+         {
+            <text>
+            body,
+             .navbar,
+             .page-sidebar-wrapper a,
+             .page-sidebar-wrapper i
+                 {
+                 background-color:#b50000 !important;
+                 }
+             .navbar,
+             .page-sidebar-wrapper a,
+             .page-sidebar-wrapper i
+                 {
+                 color:#fff !important
+                 }
+            </text>
+         }
+    </style>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -105,7 +121,20 @@
     <script src="~/Scripts/Timer/angular-timer.min.js"></script>
     <script src="~/Angular/app.js"></script>
     <script src="~/Scripts/smart-table.min.js"></script>
+    <script src="~/Scripts/noframework.waypoints.min.js"></script>
 
+</head>
+
+
+
+
+
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed">
+
+    <div id="mandala"></div>
+
+
+    
     <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
         <div class="modal-dialog">
 
@@ -694,6 +723,19 @@
 
             console.log(localStorage.top);
             console.log(localStorage.left);
+
+
+
+            $('.singleDatePicker').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                'locale': {
+                    "format": "DD/MM/YYYY"
+                }
+            })
+            $('.singleDatePicker').attr("type","datetime")
+
+
         });
     </script>
 

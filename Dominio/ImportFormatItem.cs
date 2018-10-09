@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     
     [Table("ImportFormatItems")]
-    public partial class ImportFormatItem
+    public partial class ImportFormatItem : BaseModel
     {
         [Key]
         public int Id { get; set; }
@@ -15,10 +15,6 @@
 
         [Required(AllowEmptyStrings = true)]
         public string Value { get; set; }
-
-        public DateTime AddDate { get; set; }
-
-        public DateTime? AlterDate { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         [Column("ImportFormat_Id")]

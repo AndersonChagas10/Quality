@@ -7,17 +7,11 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ItemMenu")]
-    public partial class ItemMenu
+    public partial class ItemMenu : BaseModel
     {
         public int Id { get; set; }
 
         public int? ItemMenu_Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         [StringLength(255)]

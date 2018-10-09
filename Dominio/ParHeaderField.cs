@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParHeaderField")]
-    public partial class ParHeaderField
+    public partial class ParHeaderField : BaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParHeaderField()
@@ -31,12 +31,6 @@ namespace Dominio
         public int ParLevelDefinition_Id { get; set; }
 
         public bool LinkNumberEvaluetion { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

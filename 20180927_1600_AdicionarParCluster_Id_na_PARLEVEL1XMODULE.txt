@@ -1,0 +1,14 @@
+-- Gabriel Nunes (Adicionar a coluna ParCluster_Id na tabela PARLEVEL1XMODULE) 
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('20180927_1600_AdicionarParCluster_Id_na_PARLEVEL1XMODULE',GetDate())
+
+IF COL_LENGTH('PARLEVEL1XMODULE','ParCluster_Id') IS NULL 
+
+ALTER TABLE PARLEVEL1XMODULE
+ADD ParCluster_Id Int null
+
+ALTER TABLE [dbo].[ParLevel1XModule]  WITH CHECK ADD  CONSTRAINT [FK_ParLevel1XModule_ParCluster] FOREIGN KEY([ParCluster_Id])
+REFERENCES [dbo].[ParCluster] ([Id])
+
+
+GO

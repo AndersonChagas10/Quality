@@ -6,7 +6,7 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLevel3EvaluationSample
+    public partial class ParLevel3EvaluationSample : BaseModel
     {
         public int Id { get; set; }
 
@@ -24,10 +24,6 @@ namespace Dominio
 
         [StringLength(30)]
         public string EvaluationInterval { get; set; }
-
-        public DateTime AddDate { get; set; }
-
-        public DateTime? AlterDate { get; set; }
 
         public bool? IsActive { get; set; }
 
