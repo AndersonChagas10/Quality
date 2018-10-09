@@ -100,3 +100,23 @@ IF COL_LENGTH('ParGroupParLevel1','Hash') IS NULL
     END
 
 GO
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_InsercaoDepartamentoCentroCusto',GetDate());
+
+GO
+ 
+IF COL_LENGTH('ParDepartment','Parent_Id') IS NULL
+    BEGIN
+		ALTER TABLE ParDepartment
+		ADD Parent_Id int;
+    END
+
+go
+ 
+IF COL_LENGTH('ParDepartment','Hash') IS NULL
+    BEGIN
+		ALTER TABLE ParDepartment
+		ADD Hash varchar(900);
+    END
+
+GO
