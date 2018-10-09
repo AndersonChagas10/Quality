@@ -24,14 +24,7 @@
         public decimal Points { get; set; }
 
         public int? ParCluster_Id { get; set; }
-        
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
-
+       
         [DisplayName("Está ativo")]
         public bool IsActive { get; set; }
 
