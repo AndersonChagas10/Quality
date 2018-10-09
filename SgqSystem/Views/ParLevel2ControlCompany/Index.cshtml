@@ -199,19 +199,21 @@ else
 
     }
 
-    function selectData(){
+    function selectData() {
         $('#level1').val("").trigger("change");
         $('#level2').val("").trigger("change");
     }
 
     $(document).ready(function () {
 
-        $('#level1').on('change', selectLevel2)
+        $('#level1').on('change', selectLevel2);
+
         $('#company').on('change', function () {
             if ($('#level1').val() > 0) {
                 $('#level1').trigger("change");
             }
         });
+
         $('#level1').select2()
         $('#level2').select2({ allowClear: true, placeholder: "" })
 
@@ -273,6 +275,10 @@ else
         }
 
         openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), e.responseJSON.Message);
+    });
+
+    $(document).ajaxStop(function () {
+        closeLoader();
     });
 
 </script>
