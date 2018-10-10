@@ -120,3 +120,38 @@ IF COL_LENGTH('ParDepartment','Hash') IS NULL
     END
 
 GO
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_VolumePorTurno',GetDate());
+
+GO
+
+IF COL_LENGTH('VolumePCC1b','Shift_Id') IS NULL
+    BEGIN
+		ALTER TABLE VolumePCC1b 
+		ADD Shift_Id int null
+    END
+
+GO
+
+IF COL_LENGTH('VolumeCEPDesossa','Shift_Id') IS NULL
+    BEGIN
+		ALTER TABLE VolumeCEPDesossa 
+		ADD Shift_Id int null
+    END
+
+GO
+
+IF COL_LENGTH('VolumeVacuoGRD','Shift_Id') IS NULL
+    BEGIN
+		ALTER TABLE VolumeVacuoGRD 
+		ADD Shift_Id int null
+    END
+
+GO
+
+IF COL_LENGTH('VolumeCepRecortes','Shift_Id') IS NULL
+    BEGIN
+		ALTER TABLE VolumeCepRecortes 
+		ADD Shift_Id int null
+    END
+GO
