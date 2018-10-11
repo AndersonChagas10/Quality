@@ -310,7 +310,6 @@
             display: table;
             width: 100%;
         }
-
     </style>
 
 }
@@ -1206,17 +1205,17 @@
 
             let serieArrFinal = [{
                 type: 'column',
-                name: '@Html.Raw(Resources.Resource.open)',
+                name: Resources('open'),
                 data: arrayAndamento,
                 color: andamentoColor
             }, {
                 type: 'column',
-                name: '@Html.Raw(Resources.Resource.closed)',
+                name: Resources('closed'),
                 data: arrayFechadas,
                 color: concluidoColor
             }, {
                 type: 'spline',
-                name: '@Html.Raw(Resources.Resource.stock)',
+                name: Resources('stock'),
                 data: arrayEstoque,
                 color: atrasadaColor,
                 marker: {
@@ -1233,40 +1232,40 @@
 
                 switch (categoriesArr[i].getMonth()) {
                     case 0:
-                        retorno = '@Html.Raw(Resources.Resource.jan)';
+                        retorno = Resources('jan');
                         break;
                     case 1:
-                        retorno = '@Html.Raw(Resources.Resource.feb)';
+                        retorno = Resources('feb');
                         break;
                     case 2:
-                        retorno = '@Html.Raw(Resources.Resource.mar)';
+                        retorno = Resources('mar');
                         break;
                     case 3:
-                        retorno = '@Html.Raw(Resources.Resource.apr)';
+                        retorno = Resources('apr');
                         break;
                     case 4:
-                        retorno = '@Html.Raw(Resources.Resource.may)';
+                        retorno = Resources('may');
                         break;
                     case 5:
-                        retorno = '@Html.Raw(Resources.Resource.june)';
+                        retorno = Resources('june');
                         break;
                     case 6:
-                        retorno = '@Html.Raw(Resources.Resource.july)';
+                        retorno = Resources('july');
                         break;
                     case 7:
-                        retorno = '@Html.Raw(Resources.Resource.aug)';
+                        retorno = Resources('aug');
                         break;
                     case 8:
-                        retorno = '@Html.Raw(Resources.Resource.sept)';
+                        retorno = Resources('sept');
                         break;
                     case 9:
-                        retorno = '@Html.Raw(Resources.Resource.oct)';
+                        retorno = Resources('oct');
                         break;
                     case 10:
-                        retorno = '@Html.Raw(Resources.Resource.nov)';
+                        retorno = Resources('nov');
                         break;
                     case 11:
-                        retorno = '@Html.Raw(Resources.Resource.dec)';
+                        retorno = Resources('dec');
                         break;
                 }
 
@@ -1450,7 +1449,7 @@
             if (title != undefined) {
                 $('#Header').html(title);
             } else {
-                $('#Header').html(Html.Raw(@Resources.Resource.planning));
+                $('#Header').html(Resources('planning'));
             }
 
             if (callback != undefined) {
@@ -1500,7 +1499,7 @@
         function NovoPlanejamento() {//Pos Modal2
 
             var title = $('#Header').html();
-            var title2 = " > " + "@Html.Raw(Resources.Resource._new)"
+            var title2 = " > " + Resources('_new');
 
             $('#Header').html(title + title2);
 
@@ -1563,7 +1562,7 @@
 
             let isValid = $('#Planejamento').find('.error').length == 0
             if (!isValid) {
-                alert('@Html.Raw(Resources.Resource.required_fields)');
+                alert(Resources('required_fields'));
                 return
             }
 
@@ -1574,12 +1573,12 @@
                 $.post(urlSalvarPlanejamento, sendObj, function (r) {
 
                     planejamentoCorrentId = parseInt(r.Id);
-                    openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+                    openMessageModal(Resources('registry_successfully_saved'), '');
                     $('#modalLindo').modal('hide');
                     $('#btnTop').click();
 
                 }).fail(function (e, h, x) {
-                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+                    openMessageModal(Resources('could_not_save_record'), e.responseJSON.Message);
                 });
             }
 
@@ -1598,21 +1597,21 @@
 
             let isValid = ($(form).find('.error:visible').length == 0)
             if (!isValid) {
-                alert('@Html.Raw(Resources.Resource.required_fields)')
+                alert(Resources('required_fields'))
                 return
             }
 
             $.post(urlSalvarPlanejamento, sendObj, function (r) {
 
                 planejamentoCorrentId = parseInt(r.Id);
-                openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+                openMessageModal(Resources('registry_successfully_saved'), '');
                 $('#modalLindo').modal('hide');
                 $('#btnTop').click();
 
 
             }).fail(function (e, h, x) {
 
-                openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+                openMessageModal(Resources('could_not_save_record'), e.responseJSON.Message);
             });
 
         }
@@ -1623,7 +1622,7 @@
             var title = $('#Header').html();
             var title2 = " > Novo"
             if (isTaticoClicked) {
-                $('#Header').html('@Html.Raw(Resources.Resource.tactical_planning)');
+                $('#Header').html(Resources('tactical_planning'));
             } else {
                 $('#Header').html(title + title2);
             }
@@ -2459,15 +2458,15 @@
                 if (list.length > 0 && list[0][3] != null) {
                     columns = [
                         { title: "ID" },
-                        { title: "@Html.Raw(Resources.Resource.name)" },
+                        { title: Resources('name') },
                         {
-                            title: "@Html.Raw(Resources.Resource.active2)",
+                            title: Resources('active2'),
                             "data": null,
                             "render": function (data, type, full, meta) {
                                 if (data[2] == true) {
-                                    return "@Html.Raw(Resources.Resource.active3)";
+                                    return Resources('active3');
                                 }
-                                return "@Html.Raw(Resources.Resource.inactive)";
+                                return Resources('inactive');
                             }
                         },
                         {
@@ -2484,29 +2483,29 @@
                             "className": 'options',
                             "data": null,
                             "render": function (data, type, full, meta) {
-                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>@Html.Raw(Resources.Resource.edit)</span>';
+                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>' + Resources('edit') + '</span>';
                             }
                         }
                     ];
                 } else {
                     columns = [
                         { title: "ID" },
-                        { title: "@Html.Raw(Resources.Resource.name)" },
+                        { title: Resources('name') },
                         {
-                            title: "@Html.Raw(Resources.Resource.active2)",
+                            title: Resources('active2'),
                             "data": null,
                             "render": function (data, type, full, meta) {
                                 if (data[2] == true) {
-                                    return "@Html.Raw(Resources.Resource.active3)";
+                                    return Resources('active3');
                                 }
-                                return "@Html.Raw(Resources.Resource.inactive)";
+                                return Resources('inactive');
                             }
                         },
                         {
                             "className": 'options',
                             "data": null,
                             "render": function (data, type, full, meta) {
-                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>@Html.Raw(Resources.Resource.edit)</span>';
+                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>' + Resources('edit') +'</span>';
                             }
                         }
                     ]
@@ -2629,8 +2628,8 @@
 
                 $('#modalLindo').find('.modal-body .content2').append(form);
                 if (model.Acao && model.Acao.Id > 0)
-                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>@Resources.Resource.change_tactical_link</button>");
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='save' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=true;SalvarPlanejamentoEditado($('#formEditTatico'))\" >@Resources.Resource.save_tactical</button><hr>");
+                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>" + Resources('change_tactical_link')+"</button>");
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='save' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=true;SalvarPlanejamentoEditado($('#formEditTatico'))\" >" + Resources('save_tactical') + "</button><hr>");
 
                 myfunction();
 
@@ -2954,8 +2953,13 @@
 
         function getVisaoGeralProjetos(filtro) {
 
+            $('#btnFiltraSemPrioridade').addClass('hide');
+            $('#btnFiltraPrioridade').addClass('hide');
+
             Chaveamento = [];
             ChaveamentoObjetivo = [];
+
+            let newDados = dados.slice();
 
             $('#graficoPorDiretriz').empty();
             $('#graficoPorGerencia').empty();
@@ -2963,23 +2967,21 @@
             let Categories = [];
             let Data = [];
 
-            dadosfilter = dados;
-
             if (TipoGrafico == "Gerencia") {
 
                 processarChaveamento();
 
-                Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
+                Categories = Object.values(MapeiaValorParaHC(newDados, "Gerencia").filter(onlyUnique));
 
                 Data = [];
 
                 Categories.forEach(function (c, o) {
 
-                    let qtdConcluido = $.grep(dados, function (r) {
+                    let qtdConcluido = $.grep(newDados, function (r) {
                         return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
                     }).length;
 
-                    let listaGerencia = $.grep(dados, function (r) {
+                    let listaGerencia = $.grep(newDados, function (r) {
                         return r.Gerencia == c;
                     })
 
@@ -2988,6 +2990,7 @@
                     let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
                     let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+
                     Data.push({ color: gerencia.color, y: porcConcluidos });
                 });
 
@@ -3027,8 +3030,8 @@
                             point: {
                                 events: {
                                     click: function () {
-                                        filterDados("Gerencia", this.category, getTablesModal);
-                                        getGraficoPorProjetos("Gerencia", this.category, true);
+                                        filterDados("Gerencia", this.category, getTablesModal, newDados);
+                                        getGraficoPorProjetos("Gerencia", this.category, true, newDados);
                                     }
                                 }
                             },
@@ -3052,15 +3055,17 @@
             }
             else {
 
-                let newDados = dados.slice();
-
                 if (filtro) {
+
                     newDados = $.grep(newDados, (o) => { return o["ObjetivoPriorizado"] == true });
                     $('#btnFiltraSemPrioridade').removeClass('hide');
                     $('#btnFiltraPrioridade').addClass('hide');
+
                 } else {
+
                     $('#btnFiltraSemPrioridade').addClass('hide');
                     $('#btnFiltraPrioridade').removeClass('hide');
+
                 }
 
                 processarChaveamentoObjetivo();
@@ -3123,8 +3128,8 @@
                             point: {
                                 events: {
                                     click: function () {
-                                        filterDados("Objetivo", this.category, getTablesModal);
-                                        getGraficoPorProjetos("Objetivo", this.category, true);
+                                        filterDados("Objetivo", this.category, getTablesModal, newDados);
+                                        getGraficoPorProjetos("Objetivo", this.category, true, newDados);
                                     }
                                 }
                             },
@@ -3146,9 +3151,9 @@
                 });
             }
 
-            getGraficoPorProjetos(null, null, false);
+            getGraficoPorProjetos(null, null, false, newDados);
 
-            getTablesModal();
+            getTablesModal(newDados);
         }
 
         var TipoGrafico = null;
@@ -3205,25 +3210,25 @@
             return table;
         }
 
-        function filterDados(prop, value, calback) {
+        function filterDados(prop, value, calback, arr) {
 
-            dadosfilter = $.grep(dados, function (item) {
+            let dadosfilter = $.grep(arr, function (item) {
 
                 if (item[prop] == value) {
 
                     return item;
 
+
                 }
 
             });
 
-            calback();
-
+            calback(dadosfilter);
         }
 
-        function getTablesModal() {
+        function getTablesModal(newDados) {
 
-            let renderFunction = function (data, type, row, meta) {
+            let renderFunction = function (data) {
 
                 //Gambzinha porque quando converte a data, ela fica com um dia a menos, então tive que somar mais um dia - Renan 22/06/2018
                 let dataFormatada = new Date(data);
@@ -3237,7 +3242,7 @@
             // Acão Em Andamento
             let AcoesEspecificas = [];
 
-            var arrayRetorno = $.map(dadosfilter, function (o, c) {
+            var arrayRetorno = $.map(newDados, function (o) {
 
                 var valor = o['Acao'].ContramedidaEspecifica;
 
@@ -3262,7 +3267,7 @@
             //Acoes Atrasadas
             AcoesEspecificas = [];
 
-            arrayRetorno = $.map(dadosfilter, function (o, c) {
+            arrayRetorno = $.map(newDados, function (o, c) {
 
                 if (o['Acao'].Status == 1) {
 
@@ -3292,7 +3297,7 @@
             //Proximas
             AcoesEspecificas = [];
 
-            arrayRetorno = $.map(dadosfilter, function (o, c) {
+            arrayRetorno = $.map(newDados, function (o, c) {
 
                 dataInicio = new Date(o['Acao'].QuandoInicio);
                 dataHoje = new Date();
@@ -3322,7 +3327,7 @@
             //Concluidas
             AcoesEspecificas = [];
 
-            arrayRetorno = $.map(dadosfilter, function (o, c) {
+            arrayRetorno = $.map(newDados, function (o, c) {
 
                 if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
 
@@ -3347,15 +3352,15 @@
             var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
         }
 
-        function getGraficoPorProjetos(prop, value, isFilter) {
+        function getGraficoPorProjetos(prop, value, isFilter, newDados) {
 
             let Categories = [];
 
-            let dadosInternos = dados;
+            let dadosInternos = newDados;
 
             if (isFilter) {
 
-                dadosInternos = $.grep(dados, function (r) {
+                dadosInternos = $.grep(newDados, function (r) {
 
                     return r[prop] == value ;
 
@@ -3369,10 +3374,10 @@
             processarChaveamentoObjetivo();
             processarChaveamento();
 
-            let dados2 = dados;
+            let dados2 = newDados;
 
             if (isFilter) {
-                dados2 = $.grep(dados, function (item) {
+                dados2 = $.grep(newDados, function (item) {
 
                     if (item[prop] == value) {
 
@@ -3442,7 +3447,7 @@
                                 click: function () {
                                     console.log(this.category)
 
-                                    filterDados("Iniciativa", this.category, getTablesModal)
+                                    filterDados("Iniciativa", this.category, getTablesModal, dados2)
                                 }
                             }
                         },
@@ -3549,9 +3554,11 @@
         }
 
         function processarChaveamentoObjetivo() {
+
             if (ChaveamentoObjetivo.length > 0){
                 return;
             }
+
             $.each(dados, function (index, obj) {
 
                 var existe = retornaChaveamentoPorObjetivo(obj.Objetivo_Id);
