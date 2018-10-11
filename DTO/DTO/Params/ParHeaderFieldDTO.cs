@@ -10,7 +10,7 @@ namespace DTO.DTO.Params
     {
         public int? ParFieldType_Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; } = " ";
+        public string Description { get; set; } = "";
         public int ParLevelDefinition_Id { get; set; }
         public bool LinkNumberEvaluetion { get; set; }
         public bool IsActive { get; set; }

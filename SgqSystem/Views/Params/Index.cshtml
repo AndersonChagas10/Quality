@@ -210,7 +210,7 @@
 
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
 
-                    <h4 class="modal-title" id="Header">ID: Header</h4>
+                    <h4 class="modal-title" id="Header">@Resources.Resource.edit: Campos de Cabeçalho</h4>
                 </div>
                 <div class="modal-body" id="body">
                     ID: Body
@@ -1378,7 +1378,7 @@
                     });
                 }
 
-            
+
 
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
@@ -1487,6 +1487,151 @@
                 dados['paramsDto.parHeaderFieldDto.ParMultipleValues'] = ar;
             }
             console.log(dados);
+
+            var escolhaSelecionada = parseInt($('#paramsDto_parHeaderFieldDto_ParFieldType_Id').val());
+
+            switch (escolhaSelecionada) {
+                case 1: //Multipla Escolha
+                    ValidaMultiplaEscolha();
+                    break;
+                case 2:
+                    ShowIntegracoes();
+                    break;
+                case 3: //Binario
+                    ValidaBinario();
+                    break;
+                case 4: //Texto
+                    ShowTexto();
+                    break;
+                case 5:
+                    ShowNumerico();
+                    break;
+                case 6:
+                    ShowData();
+                    break;
+                case 7:
+                    ShowHora();
+                    break;
+                case 8: //Informacoes
+                    ShowInformacoes();
+                    break;
+                default:
+                    hideAllObj();
+            }
+
+            //BINARIO
+            function ValidaBinario (isValid) {
+
+                var isValid = true;
+
+                if (!$('#1_Name').val() || $('#1_Name').val() == undefined) {
+                    //$('#punishmentNameCabecalho1').show();
+                    isValid = false;
+                }
+
+                if (!$('#2_Name').val() || $('#2_Name').val() == undefined) {
+                    //$('#punishmentNameCabecalho2').show();
+                    isValid = false;
+                }
+
+                if ($('#1_PunishmentValue').val().length == 0) {
+                    $('#1_PunishmentValueError').show();
+                    isValid = false;
+                }
+
+                if ($('#2_PunishmentValue').val().length == 0) {
+                    $('#2_PunishmentValueError').show();
+                    isValid = false;
+                }
+
+                //return isValid;
+
+                if (isValid)
+                    SalvaBinario();
+
+                else
+                    alert("campos nao preenchidos");
+                    return;
+
+            }
+
+            function SalvaBinario () {
+
+                var fieldType = $('#parFieldType option:selected').val();
+                var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+                example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                    '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>'; // Tipo
+                //var example = '<div><label class="on-off fixed-width">';
+                //example += '<label>' + $('#paramsDto_parHeaderFieldDto_Name').val() + ':&nbsp;</label>';
+                /*Cria preview*/
+                example += '<td>';
+                Cabecalhos.ParBinario.forEach(function (o, c) {
+                    debugger
+                    example += o.Name;
+                    var a = c == 0 ? 'checked = "checked"' : '';
+                    var b = c == 0 ? "true" : "false";
+                    example += '<input disable="disabled" ' + a + ' type="radio" value="' + b + '" >'
+                });
+                //example += '</label>';
+                /*Cria Hiddens*/
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + $('#parFieldType option:selected').val() + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + Cabecalhos.ParBinario[0].ParLevelDefinition_Id + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"  value="' + Cabecalhos.ParBinario[0].ParFieldType_Id + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_LinkNumberEvaluetion').is(':checked') + '"/>';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
+                Cabecalhos.ParBinario.forEach(function (o, counter) {
+                    /*Cria inputs para objeto: */
+                    for (var key in o) {
+                        example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].' + key.toString() + '"     value="' + o[key].toString() + '" />';
+                    }
+                });
+                example += '</td>';
+                example += '<td> <label> &nbsp; </label></td>';
+                example += '<td> <label> &nbsp; </label></td>';
+                example += '<td>' + Cabecalhos.BtnExcluir2() + '</td></tr>';//Btn excluir
+
+                $('#tableCabecalhosPreview').append(example);
+
+                /*Limpa formulario Header*/
+                $('#paramsDto_parHeaderFieldDto_Name').val('');
+
+                $('#objBinarioPunishmentName1').val('');
+                $('#objBinarioPunishmentName2').val('');
+                $('#objBinarioPunishmentValue1').val('0');
+                $('#objBinarioPunishmentValue2').val('0');
+
+                $('#headerLevel').val('-1').trigger('change');
+                $('#parFieldType').val('-1').trigger('change');
+
+                Cabecalhos.tableMultiplaEscolha.clear().draw();
+                $('#divCamposCabecalhoIncluidos').hide();
+                $('#objBinario').hide();
+                $('#salvarCabecalho2').hide();
+                Cabecalhos.ParBinario = [];
+
+                updateAllTables();
+            }
+
+
+            function ValidaMultiplaEscolha (isValid) {
+                debugger
+                var isValid = true;
+                isValid = Cabecalhos.ValidaCamposCabecalho(isValid);
+
+                if ($('#objMultiplaEscolhaName').val().length == 0) {
+                    $('#multiplaEscolhaNameCabecalho').show();
+                    isValid = false;
+                }
+
+                if ($('#objMultiplaEscolhaPunishmentValue').val().length == 0) {
+                    $('#multiplaEscolhaPunishmentValueCabecalho').show();
+                    isValid = false;
+                }
+                return isValid;
+            }
+
             $.post(urlAttCabecalho, dados, function (objetoReturn, statusmessage) {
                 if (idLvl1 > 0) {
                     indexParamsLevel1.GetLevel1(idLvl1, true);
@@ -1511,7 +1656,8 @@
 
     var EditCabecalho = '@Html.Raw(@urlEditCabecalho)';
 
-    function ModalEdicaoCabecalho(title, idpH,idL1, idFT) {
+    function ModalEdicaoCabecalho(title, idpH, idL1, idFT) {
+        debugger
         idpar = idpH;
         idfieldType = idFT;
         idLvl1 = idL1;

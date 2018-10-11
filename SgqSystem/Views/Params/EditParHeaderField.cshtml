@@ -75,6 +75,7 @@
                             if (Model.paramsDto.parHeaderFieldDto.ParFieldType.Id == 3)
                             {
                                 <div id="binario">
+                                    @{int contador = 0; }
                                     @foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
                                     {
                                         @Html.EditorFor(r => i.Id, new { htmlAttributes = new { @type = "text", @style = "max-width: 0px;visibility:hidden;" } })
@@ -82,14 +83,17 @@
                                             <div class="row">
                                                 <div class="col-xs-5">
                                                     <div class="form-group">
+                                                        <span class="hidden">@{ contador += 1; } </span>
                                                         @Html.Label(Resources.Resource.option)
-                                                        @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @class = "form-control", @id=$"{contador}_Name"} })
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-5">
                                                     <div class="form-group">
                                                         @Html.Label(Resources.Resource.punishment_value)
-                                                        @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" })
+                                                        @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control", @id = $"{contador}_PunishmentValue" })
+                                                        @Html.Label(Resources.Resource.required_field, new { htmlAttributes = new { @class = "form-control hidden", @id = $"{contador}_PunishmentValueError", @style = "visibility:hidden;" }  })                                                        
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
