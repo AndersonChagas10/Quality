@@ -6535,14 +6535,14 @@ $(document).ready(function(){
             }
             else if (parLevel3.ParLevel3InputType_Id == 11)
             {
-                classInput = " observacao naoValidarInput";
+                classInput = " texto naoValidarInput";
                 labels = html.div(
                                            outerhtml: "",
                                            classe: "levelName"
                                        //style: "margin-top:7px;"
                                        );
 
-                input = html.campoObservacao(id: parLevel3.Id.ToString(), classe: classInput);
+                input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
             }
             else
             {
