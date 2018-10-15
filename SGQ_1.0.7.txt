@@ -155,3 +155,14 @@ IF COL_LENGTH('VolumeCepRecortes','Shift_Id') IS NULL
 		ADD Shift_Id int null
     END
 GO
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('PA_DiretrizesPriorizadas',GetDate());
+
+GO
+
+IF COL_LENGTH('Pa_Objetivo','IsPriority') IS NULL
+    BEGIN
+		ALTER TABLE Pa_Objetivo
+		ADD IsPriority bit not null default 0;
+    END
+GO

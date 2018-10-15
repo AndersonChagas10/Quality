@@ -305,6 +305,11 @@
         #percentualConclusao {
             font-size: 40px;
         }
+
+        #modalVisaoGeralProjetos .modal-header {
+            display: table;
+            width: 100%;
+        }
     </style>
 
 }
@@ -333,6 +338,10 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">@Resources.Resource.project_overview</h4>
+                <div id="divPrioridade">
+                    <button type="button" class="btn btn-primary hide" id="btnFiltraPrioridade" style="float:right;" onclick="getVisaoGeralProjetos(true)">Diretrizes com Prioridade</button>
+                    <button type="button" class="btn btn-primary hide" id="btnFiltraSemPrioridade" style="float:right;" onclick="getVisaoGeralProjetos(false)">Todas Diretrizes</button>
+                </div>
             </div>
             <div class="modal-body container-fluid">
                 <div class="row">
@@ -972,6 +981,11 @@
                                         <input class="custom-control-input" type="checkbox" checked="checked" name="newIsActiveItem" id="newIsActiveItem" />
                                         <br />
                                     </div>
+                                    <div class="col-sm-12 borderedNinja" id="divIsPriority">
+                                        <label for="newIsPriority">Prioritário</label>
+                                        <input class="custom-control-input" type="checkbox" name="isPriority" id="isPriority" />
+                                        <br />
+                                    </div>
                                     <div class="col-sm-12 borderedNinja">
                                         <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">@Resources.Resource.save</button>
                                         <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="SalvarNovo();">@Resources.Resource.save_edition</button>
@@ -1191,17 +1205,17 @@
 
             let serieArrFinal = [{
                 type: 'column',
-                name: '@Html.Raw(Resources.Resource.open)',
+                name: Resources('open'),
                 data: arrayAndamento,
                 color: andamentoColor
             }, {
                 type: 'column',
-                name: '@Html.Raw(Resources.Resource.closed)',
+                name: Resources('closed'),
                 data: arrayFechadas,
                 color: concluidoColor
             }, {
                 type: 'spline',
-                name: '@Html.Raw(Resources.Resource.stock)',
+                name: Resources('stock'),
                 data: arrayEstoque,
                 color: atrasadaColor,
                 marker: {
@@ -1218,40 +1232,40 @@
 
                 switch (categoriesArr[i].getMonth()) {
                     case 0:
-                        retorno = '@Html.Raw(Resources.Resource.jan)';
+                        retorno = Resources('jan');
                         break;
                     case 1:
-                        retorno = '@Html.Raw(Resources.Resource.feb)';
+                        retorno = Resources('feb');
                         break;
                     case 2:
-                        retorno = '@Html.Raw(Resources.Resource.mar)';
+                        retorno = Resources('mar');
                         break;
                     case 3:
-                        retorno = '@Html.Raw(Resources.Resource.apr)';
+                        retorno = Resources('apr');
                         break;
                     case 4:
-                        retorno = '@Html.Raw(Resources.Resource.may)';
+                        retorno = Resources('may');
                         break;
                     case 5:
-                        retorno = '@Html.Raw(Resources.Resource.june)';
+                        retorno = Resources('june');
                         break;
                     case 6:
-                        retorno = '@Html.Raw(Resources.Resource.july)';
+                        retorno = Resources('july');
                         break;
                     case 7:
-                        retorno = '@Html.Raw(Resources.Resource.aug)';
+                        retorno = Resources('aug');
                         break;
                     case 8:
-                        retorno = '@Html.Raw(Resources.Resource.sept)';
+                        retorno = Resources('sept');
                         break;
                     case 9:
-                        retorno = '@Html.Raw(Resources.Resource.oct)';
+                        retorno = Resources('oct');
                         break;
                     case 10:
-                        retorno = '@Html.Raw(Resources.Resource.nov)';
+                        retorno = Resources('nov');
                         break;
                     case 11:
-                        retorno = '@Html.Raw(Resources.Resource.dec)';
+                        retorno = Resources('dec');
                         break;
                 }
 
@@ -1435,7 +1449,7 @@
             if (title != undefined) {
                 $('#Header').html(title);
             } else {
-                $('#Header').html(Html.Raw(@Resources.Resource.planning));
+                $('#Header').html(Resources('planning'));
             }
 
             if (callback != undefined) {
@@ -1485,7 +1499,7 @@
         function NovoPlanejamento() {//Pos Modal2
 
             var title = $('#Header').html();
-            var title2 = " > " + "@Html.Raw(Resources.Resource._new)"
+            var title2 = " > " + Resources('_new');
 
             $('#Header').html(title + title2);
 
@@ -1548,7 +1562,7 @@
 
             let isValid = $('#Planejamento').find('.error').length == 0
             if (!isValid) {
-                alert('@Html.Raw(Resources.Resource.required_fields)');
+                alert(Resources('required_fields'));
                 return
             }
 
@@ -1559,12 +1573,12 @@
                 $.post(urlSalvarPlanejamento, sendObj, function (r) {
 
                     planejamentoCorrentId = parseInt(r.Id);
-                    openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+                    openMessageModal(Resources('registry_successfully_saved'), '');
                     $('#modalLindo').modal('hide');
                     $('#btnTop').click();
 
                 }).fail(function (e, h, x) {
-                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+                    openMessageModal(Resources('could_not_save_record'), e.responseJSON.Message);
                 });
             }
 
@@ -1583,21 +1597,21 @@
 
             let isValid = ($(form).find('.error:visible').length == 0)
             if (!isValid) {
-                alert('@Html.Raw(Resources.Resource.required_fields)')
+                alert(Resources('required_fields'))
                 return
             }
 
             $.post(urlSalvarPlanejamento, sendObj, function (r) {
 
                 planejamentoCorrentId = parseInt(r.Id);
-                openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+                openMessageModal(Resources('registry_successfully_saved'), '');
                 $('#modalLindo').modal('hide');
                 $('#btnTop').click();
 
 
             }).fail(function (e, h, x) {
 
-                openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+                openMessageModal(Resources('could_not_save_record'), e.responseJSON.Message);
             });
 
         }
@@ -1608,7 +1622,7 @@
             var title = $('#Header').html();
             var title2 = " > Novo"
             if (isTaticoClicked) {
-                $('#Header').html('@Html.Raw(Resources.Resource.tactical_planning)');
+                $('#Header').html(Resources('tactical_planning'));
             } else {
                 $('#Header').html(title + title2);
             }
@@ -1815,10 +1829,10 @@
         function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, masterCB, childrenSelected) {
             let masterEl = $(idMaster)
             let masterElVal = $(idMaster).val()
-            manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, '@Html.Raw(Resources.Resource.select_a_predecessor_above)', '');
+            manageButtonDisabledWhenHaveParentSelect(masterElVal, idChildren, Resources('select_a_predecessor_above'), '');
             masterEl.off('change').on('change', function () {
                 let seletedId = masterEl.val() > 0 ? masterEl.val() : 0;
-                manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, '@Html.Raw(Resources.Resource.select_a_predecessor_above)', '');
+                manageButtonDisabledWhenHaveParentSelect(seletedId, idChildren, Resources('select_a_predecessor_above'), '');
                 $.get(urlGETChildren, { id: seletedId }, function (response) {
                     let childrenEl = $(idChildren)
                     childrenEl.parent().html('').append(response);
@@ -1871,7 +1885,7 @@
 
                 header.find(".collapse").attr("id", collapseId);
                 header.find("button[data-toggle='collapse']").attr("data-target", "#" + collapseId);
-                header.find("button[data-toggle='collapse']").html('@Html.Raw(Resources.Resource.new_action)')
+                header.find("button[data-toggle='collapse']").html(Resources('new_action'))
 
                 header.appendTo('#final');
                 header.show();
@@ -2044,7 +2058,7 @@
                 if (isOpenModal)
                     $('#modalLindo').modal();
 
-                $('#Header').html('@Html.Raw(Resources.Resource.new_action)');
+                $('#Header').html(Resources('new_action'));
 
                 $.get(urlNovaAcao, function (r) {
 
@@ -2083,7 +2097,7 @@
             var acao = data.Acao;
 
             $('#modalLindo').modal();
-            $('#Header').html('@Html.Raw(Resources.Resource.edit_action)');
+            $('#Header').html(Resources('edit_action'));
             $('#modalLindo').find('.modal-body').empty().append(html);
             $('#modalLindo').find('.modal-footer button').hide();
             myfunction();
@@ -2179,12 +2193,12 @@
 
                         jaLiberouCallback = true;
                         $('#modalLindo').modal('hide');
-                        openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+                        openMessageModal(Resources('registry_successfully_saved'), '');
                         $('#btnTop').click();
 
                     }).fail(function (e, h, x) {
 
-                        openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+                        openMessageModal(Resources('could_not_save_record'), e.responseJSON.Message);
 
                     }).always(function () {
 
@@ -2192,11 +2206,11 @@
                 })
                     .fail(function (e, h, x) {
 
-                        openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+                        openMessageModal(Resources('could_not_save_record'), e.responseJSON.Message);
 
                     });
             } else
-                alert('@Html.Raw(Resources.Resource.required_fields)');
+                alert(Resources('required_fields'));
 
         }
 
@@ -2215,7 +2229,7 @@
                 let DataFim = new Date(parts[2], parts[1], parts[0]);
 
                 if (DataInicio < DataFim) {
-                    alert('@Html.Raw(Resources.Resource.start_date_must_be_less_than_end_date)');
+                    alert(Resources('start_date_must_be_less_than_end_date'));
                     dataIsValid = false;
                     return;
                 }
@@ -2241,7 +2255,7 @@
 
             let isValid = $('.Acao').find('.error').length == 0;
             if (!isValid) {
-                alert('@Html.Raw(Resources.Resource.required_fields)')
+                alert(Resources('required_fields'))
                 return;
             }
 
@@ -2255,13 +2269,13 @@
                     jaLiberouCallback = true;
                     $('#modalLindo').modal('hide');
                     $('.modal-backdrop').remove();
-                    openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+                    openMessageModal(Resources('registry_successfully_saved'), '');
 
                     $('#btnTop').click();
 
                 }).fail(function (e, h, x) {
 
-                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+                    openMessageModal(Resources('could_not_save_record'), e.responseJSON.Message);
 
                 }).always(function () {
 
@@ -2269,7 +2283,7 @@
             })
                 .fail(function (e, h, x) {
 
-                    openMessageModal('@Html.Raw(Resources.Resource.could_not_save_record)', e.responseJSON.Message);
+                    openMessageModal(Resources('could_not_save_record'), e.responseJSON.Message);
 
                 });
 
@@ -2344,12 +2358,14 @@
             var valorSelectSelecionado = $(btn).parents('tr').find('input , select option:selected').html();
             var tempIdNovo = $(btn).parents('tr').find('input , select option:selected').val();
 
-            SetaValoresModal(tempIdNovo, valorSelectSelecionado, true);
+            let isDiretriz = (tempName == "Objetivo_Id");
+
+            SetaValoresModal(tempIdNovo, valorSelectSelecionado, true, isDiretriz, true);
 
             var label = $(btn).parents('tr').find('label').html();
             $('#modalNovo > div > div.modal-footer').hide();
             $('#modalNovo').modal();
-            $('#novoHeader').html('@Html.Raw(Resources.Resource.to_manage) ' + label);
+            $('#novoHeader').html(Resources('to_manage') + " " + label);
             $('#nomeItemNovo').html(label);
 
             if (encadeado != undefined) {
@@ -2368,6 +2384,7 @@
                 PredecessorId: $('#encadeado').find('select').val(),
                 Id: $('#newIdItem').val(),
                 IsActive: $('#newIsActiveItem:checked').length == 1,
+                IsPriority: $('#isPriority:visible').prop('checked') == undefined ? null : $('#isPriority:visible').prop('checked')
             }
 
             $.post(urlSalvarNovoItem, params, function (r) {
@@ -2425,11 +2442,74 @@
 
                 $("#tableNovo").html('');
 
+                if (tableModalNovo) {
+                    tableModalNovo.destroy();
+                    $('#tableNovo').empty();
+                }
+
                 //Gera a lista
                 var list = [];
                 $.each(response, function (index, value) {
-                    list.push([value.Id, value.Name, value.IsActive])
+                    list.push([value.Id, value.Name, value.IsActive, value.IsPriority])
                 });
+
+                let columns = [];
+
+                if (list.length > 0 && list[0][3] != null) {
+                    columns = [
+                        { title: "ID" },
+                        { title: Resources('name') },
+                        {
+                            title: Resources('active2'),
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                if (data[2] == true) {
+                                    return Resources('active3');
+                                }
+                                return Resources('inactive');
+                            }
+                        },
+                        {
+                            title: "Prioritário",
+                            "data": null,
+                            "render": function (data) {
+                                if (data[3] == true) {
+                                    return "SIM";
+                                }
+                                return "NÃO";
+                            }
+                        },
+                        {
+                            "className": 'options',
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>' + Resources('edit') + '</span>';
+                            }
+                        }
+                    ];
+                } else {
+                    columns = [
+                        { title: "ID" },
+                        { title: Resources('name') },
+                        {
+                            title: Resources('active2'),
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                if (data[2] == true) {
+                                    return Resources('active3');
+                                }
+                                return Resources('inactive');
+                            }
+                        },
+                        {
+                            "className": 'options',
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>' + Resources('edit') +'</span>';
+                            }
+                        }
+                    ]
+                }
 
                 tableModalNovo = $('#tableNovo').DataTable({
                     data: list,
@@ -2460,27 +2540,7 @@
                             "sSortDescending": "@Html.Raw(Resources.Resource.sort_columns_downward)"
                         }
                     },
-                    columns: [
-                        { title: "ID" },
-                        { title: "@Html.Raw(Resources.Resource.name)" },
-                        {
-                            title: "@Html.Raw(Resources.Resource.active2)",
-                            "data": null,
-                            "render": function (data, type, full, meta) {
-                                if (data[2] == true) {
-                                    return "@Html.Raw(Resources.Resource.active3)";
-                                }
-                                return "@Html.Raw(Resources.Resource.inactive)";
-                            }
-                        },
-                        {
-                            "className": 'options',
-                            "data": null,
-                            "render": function (data, type, full, meta) {
-                                return '<span class="btn btn-mini btn-info pull-right" data-id=' + data.Id + ' data-name=' + data.Name + '>@Html.Raw(Resources.Resource.edit)</span>';
-                            }
-                        }
-                    ],
+                    columns: columns,
                     initComplete: function () { }
                 });
 
@@ -2489,14 +2549,17 @@
                     SetaValoresModal(
                         tableModalNovo.row($(this).parents('tr')).data()[0],
                         tableModalNovo.row($(this).parents('tr')).data()[1],
-                        tableModalNovo.row($(this).parents('tr')).data()[2])
+                        tableModalNovo.row($(this).parents('tr')).data()[2],
+                        (tableModalNovo.row($(this).parents('tr')).data()[3] != null && tableModalNovo.row($(this).parents('tr')).data()[3] != undefined),
+                        tableModalNovo.row($(this).parents('tr')).data()[3]);
                 });
             })
         };
 
-        function SetaValoresModal(id, item, isActive) {
+        function SetaValoresModal(id, item, isActive, isDiretriz, isPriority) {
 
             $('#btnCancelarNovo').click();
+
             if (!!parseInt(id)) {
                 $("#newIdItem").val(id);
                 $("#newItem").val(item);
@@ -2505,8 +2568,27 @@
                 $('#btnEditarNovo').removeClass('hide');
                 $('#btnCancelarNovo').removeClass('hide');
                 $('#divIsActive').removeClass('hide');
-            }
 
+                if (isDiretriz) {
+                    $('#isPriority').prop('checked', isPriority);
+                    $('#divIsPriority').removeClass('hide');
+                } else {
+                    $('#isPriority').prop('checked', isPriority);
+                    $('#divIsPriority').addClass('hide');
+                }
+            } else {
+
+                $('#divIsActive').removeClass('hide');
+
+                if (!isDiretriz) {
+                    $('#divIsPriority').addClass('hide');
+                }
+                else {
+                    $('#divIsPriority').removeClass('hide');
+                    $('#isPriority').prop('checked', false);
+                }
+
+            }
         }
 
         function isPositiveInteger(n) {
@@ -2521,9 +2603,9 @@
 
         function TesteRenan(r, tipo, model) {
 
-            var form = $(r); 
+            var form = $(r);
 
-            if (tipo == 'Tatico') { 
+            if (tipo == 'Tatico') {
 
                 form.find('table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
@@ -2546,8 +2628,8 @@
 
                 $('#modalLindo').find('.modal-body .content2').append(form);
                 if (model.Acao && model.Acao.Id > 0)
-                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>@Resources.Resource.change_tactical_link</button>");
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='save' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=true;SalvarPlanejamentoEditado($('#formEditTatico'))\" >@Resources.Resource.save_tactical</button><hr>");
+                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>" + Resources('change_tactical_link')+"</button>");
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='save' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=true;SalvarPlanejamentoEditado($('#formEditTatico'))\" >" + Resources('save_tactical') + "</button><hr>");
 
                 myfunction();
 
@@ -2638,14 +2720,14 @@
             $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 $('#modalLindo').modal();
-                $('#Header').html('@Html.Raw(Resources.Resource.operational_planning_follow_up)');
+                $('#Header').html(Resources('operational_planning_follow_up'));
                 $('.modal .modal-footer button').hide();
                 $('#showAcompnhamentoForm').show();
 
                 $("#SaveAcompanhamento").on("click", function (event) {
                     var obj = $("#acompanhamento").serializeObject();
                     if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined || obj.MailTo == undefined || !(obj.Status_Id > 0))
-                        alert("@Html.Raw(Resources.Resource.fields_must_be_completed)")
+                        alert(Resources('fields_must_be_completed'))
                     else
                         SalvarAcompanhamento(obj);
                 });
@@ -2669,7 +2751,7 @@
                     }
 
                     $('#modalLindo').find('.modal-footer button').hide();
-                    $('#Header').html("@Html.Raw(Resources.Resource.edit)");
+                    $('#Header').html(Resources('edit'));
                     $('#modalLindo').modal();
                     $('#Fechar').show();
                 });
@@ -2810,12 +2892,12 @@
             });
         }
 
-        function getAcao(data, a, b) {
+        function getAcao(data) {
 
             $.get(urlEditAcao, { id: data.Acao.Id }, function (r) {
                 var acao = data.Acao;
 
-                $('#Header').html("@Html.Raw(Resources.Resource.edit_action)");
+                $('#Header').html(Resources('edit_action'));
 
                 $('#modalLindo').find('.modal-footer button').hide();
                 $('#modalLindo').find('.modal-body .content3').append(r);
@@ -2843,7 +2925,7 @@
                 MoneyMask();
                 myfunction();
 
-                $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=false;SalvarAcaoEditada();\" >@Resources.Resource.save_operational</button><hr>");
+                $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=false;SalvarAcaoEditada();\" >" + Resources('save_operational') + "</button><hr>");
                 $('#obj').show(); //Apagar depois
 
                 $('#CausaGenerica_Id').change();
@@ -2865,8 +2947,19 @@
         //Visao Geral dos Projetos
         $('#modalVisaoGeralProjetos').on('shown.bs.modal', function () {
 
+            getVisaoGeralProjetos(false);
+
+        });
+
+        function getVisaoGeralProjetos(filtro) {
+
+            $('#btnFiltraSemPrioridade').addClass('hide');
+            $('#btnFiltraPrioridade').addClass('hide');
+
             Chaveamento = [];
             ChaveamentoObjetivo = [];
+
+            let newDados = dados.slice();
 
             $('#graficoPorDiretriz').empty();
             $('#graficoPorGerencia').empty();
@@ -2874,23 +2967,21 @@
             let Categories = [];
             let Data = [];
 
-            dadosfilter = dados;
-
             if (TipoGrafico == "Gerencia") {
 
                 processarChaveamento();
 
-                Categories = Object.values(MapeiaValorParaHC(dados, "Gerencia").filter(onlyUnique));
+                Categories = Object.values(MapeiaValorParaHC(newDados, "Gerencia").filter(onlyUnique));
 
                 Data = [];
 
                 Categories.forEach(function (c, o) {
 
-                    let qtdConcluido = $.grep(dados, function (r) {
+                    let qtdConcluido = $.grep(newDados, function (r) {
                         return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Gerencia == c);
                     }).length;
 
-                    let listaGerencia = $.grep(dados, function (r) {
+                    let listaGerencia = $.grep(newDados, function (r) {
                         return r.Gerencia == c;
                     })
 
@@ -2899,13 +2990,14 @@
                     let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeGerencia) * 100
 
                     let gerencia = retornaChaveamentoPorGerenciaId(listaGerencia[0].Gerencia_Id)[0];
+
                     Data.push({ color: gerencia.color, y: porcConcluidos });
                 });
 
                 Highcharts.chart('graficoPorGerencia', {
 
                     title: {
-                        text: '@Html.Raw(Resources.Resource.percent_completed_area)'
+                        text: Resources('percent_completed_area')
                     },
                     chart: {
                         height: 230
@@ -2921,7 +3013,7 @@
                     },
                     yAxis: {
                         title: {
-                            text: '@Html.Raw(Resources.Resource.percent_conclusion)'
+                            text: Resources('percent_conclusion')
                         }
                     },
                     plotOptions: {
@@ -2938,93 +3030,8 @@
                             point: {
                                 events: {
                                     click: function () {
-                                        filterDados("Gerencia", this.category, getTablesModal);
-                                        getGraficoPorProjetos("Gerencia", this.category, true);
-                                    }
-                                }
-                            },
-                        },
-                    },
-                    xAxis: {
-                        categories: Categories
-                    },
-                    tooltip: {
-                        pointFormat: '{point.y:.0f} %'
-                    },
-                    series: [{
-                        type: 'column',
-                        colorByPoint: true,
-                        data: Data,
-                        showInLegend: false
-                    }]
-
-                });
-
-            } else {
-
-                processarChaveamentoObjetivo();
-
-                Categories = Object.values(MapeiaValorParaHC(dados, "Objetivo").filter(onlyUnique));
-
-                Data = [];
-
-                Categories.forEach(function (c, o) {
-
-                    let qtdConcluido = $.grep(dados, function (r) {
-                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Objetivo == c);
-                    }).length;
-
-                    let listaObjetivo = $.grep(dados, function (r) {
-                        return r.Objetivo == c;
-                    });
-
-                    let qtdDeObjetivo = listaObjetivo.length;
-
-                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeObjetivo) * 100
-
-                    let objetivo = retornaChaveamentoPorObjetivo(listaObjetivo[0].Objetivo_Id)[0];
-                    Data.push({ color: objetivo.color, y: porcConcluidos });
-                });
-
-                Highcharts.chart('graficoPorDiretriz', {
-
-                    title: {
-                        text: '@Html.Raw(Resources.Resource.percent_completed_area)'
-                    },
-                    chart: {
-                        height: 230
-                    },
-                    credits: {
-                        enabled: false
-                    },
-                    lang: {
-                        noData: "Sem dados"
-                    },
-                    subtitle: {
-                        text: ''
-                    },
-                    yAxis: {
-                        title: {
-                            text: '@Html.Raw(Resources.Resource.percent_conclusion)'
-                        }
-                    },
-                    plotOptions: {
-                        column: {
-                            dataLabels: {
-                                enabled: true,
-                                format: '{point.y:.0f} %',
-                                //distance: -10,
-                                style: {
-                                    color: 'black',
-                                    fontSize: '10px',
-                                },
-                                //connectorColor: 'silver'
-                            },
-                            point: {
-                                events: {
-                                    click: function () {
-                                        filterDados("Objetivo", this.category, getTablesModal);
-                                        getGraficoPorProjetos("Objetivo", this.category, true);
+                                        filterDados("Gerencia", this.category, getTablesModal, newDados);
+                                        getGraficoPorProjetos("Gerencia", this.category, true, newDados);
                                     }
                                 }
                             },
@@ -3046,11 +3053,108 @@
                 });
 
             }
+            else {
 
-            getGraficoPorProjetos(null, null, false);
+                if (filtro) {
 
-            getTablesModal();
-        });
+                    newDados = $.grep(newDados, (o) => { return o["ObjetivoPriorizado"] == true });
+                    $('#btnFiltraSemPrioridade').removeClass('hide');
+                    $('#btnFiltraPrioridade').addClass('hide');
+
+                } else {
+
+                    $('#btnFiltraSemPrioridade').addClass('hide');
+                    $('#btnFiltraPrioridade').removeClass('hide');
+
+                }
+
+                processarChaveamentoObjetivo();
+
+                Categories = Object.values(MapeiaValorParaHC(newDados, "Objetivo").filter(onlyUnique));
+
+                Data = [];
+
+                Categories.forEach(function (c, o) {
+
+                    let qtdConcluido = $.grep(newDados, function (r) {
+                        return ((r.Acao.Status == 3 || r.Acao.Status == 4) && r.Objetivo == c);
+                    }).length;
+
+                    let listaObjetivo = $.grep(newDados, function (r) {
+                        return r.Objetivo == c;
+                    });
+
+                    let qtdDeObjetivo = listaObjetivo.length;
+
+                    let porcConcluidos = qtdConcluido == 0 ? 0 : (qtdConcluido / qtdDeObjetivo) * 100
+
+                    let objetivo = retornaChaveamentoPorObjetivo(listaObjetivo[0].Objetivo_Id)[0];
+                    Data.push({ color: objetivo.color, y: porcConcluidos });
+
+                });
+
+                Highcharts.chart('graficoPorDiretriz', {
+
+                    title: {
+                        text: Resources('percent_completed_area')
+                    },
+                    chart: {
+                        height: 230
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    lang: {
+                        noData: "Sem dados"
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    yAxis: {
+                        title: {
+                            text: Resources('percent_conclusion')
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.0f} %',
+                                style: {
+                                    color: 'black',
+                                    fontSize: '10px',
+                                },
+                            },
+                            point: {
+                                events: {
+                                    click: function () {
+                                        filterDados("Objetivo", this.category, getTablesModal, newDados);
+                                        getGraficoPorProjetos("Objetivo", this.category, true, newDados);
+                                    }
+                                }
+                            },
+                        },
+                    },
+                    xAxis: {
+                        categories: Categories
+                    },
+                    tooltip: {
+                        pointFormat: '{point.y:.0f} %'
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: Data,
+                        showInLegend: false
+                    }]
+
+                });
+            }
+
+            getGraficoPorProjetos(null, null, false, newDados);
+
+            getTablesModal(newDados);
+        }
 
         var TipoGrafico = null;
 
@@ -3106,25 +3210,25 @@
             return table;
         }
 
-        function filterDados(prop, value, calback) {
+        function filterDados(prop, value, calback, arr) {
 
-            dadosfilter = $.grep(dados, function (item) {
+            let dadosfilter = $.grep(arr, function (item) {
 
                 if (item[prop] == value) {
 
                     return item;
 
+
                 }
 
             });
 
-            calback();
-
+            calback(dadosfilter);
         }
 
-        function getTablesModal() {
+        function getTablesModal(newDados) {
 
-            let renderFunction = function (data, type, row, meta) {
+            let renderFunction = function (data) {
 
                 //Gambzinha porque quando converte a data, ela fica com um dia a menos, então tive que somar mais um dia - Renan 22/06/2018
                 let dataFormatada = new Date(data);
@@ -3138,7 +3242,7 @@
             // Acão Em Andamento
             let AcoesEspecificas = [];
 
-            var arrayRetorno = $.map(dadosfilter, function (o, c) {
+            var arrayRetorno = $.map(newDados, function (o) {
 
                 var valor = o['Acao'].ContramedidaEspecifica;
 
@@ -3146,7 +3250,7 @@
                     return valor;
                 } else {
                     if (o['Acao'].Id == 0) {
-                        valor =  "@Html.Raw(Resources.Resource.no_specific_action)";
+                        valor =  Resources('no_specific_action');
                     }
                 }
 
@@ -3156,14 +3260,14 @@
                 AcoesEspecificas.push([i]);
             });
 
-            let TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }]
+            let TituloAcoesEspecificas = [{ title: Resources('specific_action') }]
 
             var tableAndamento = getTableModal("tableAndamento", AcoesEspecificas, TituloAcoesEspecificas);
 
             //Acoes Atrasadas
             AcoesEspecificas = [];
 
-            arrayRetorno = $.map(dadosfilter, function (o, c) {
+            arrayRetorno = $.map(newDados, function (o, c) {
 
                 if (o['Acao'].Status == 1) {
 
@@ -3173,12 +3277,12 @@
                     var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
                     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                    var valor = o['Acao'].ContramedidaEspecifica != null ? o['Acao'].ContramedidaEspecifica : "@Html.Raw(Resources.Resource.no_specific_action)";
+                    var valor = o['Acao'].ContramedidaEspecifica != null ? o['Acao'].ContramedidaEspecifica : Resources('no_specific_action');
 
                     return { 0:  valor, 1: String(diffDays - 1) + " Dias" };
                 } else {
                     if (o['Acao'].Id == 0) {
-                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
+                        valor = { 0: Resources('no_specific_action'), 1: "" };
                     }
                 }
 
@@ -3186,15 +3290,14 @@
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.days_of_delay)" }]
+            TituloAcoesEspecificas = [{ title: Resources('specific_action') }, { title: Resources('days_of_delay') }]
 
             var tableAtrasadas = getTableModal("tableAtrasadas", AcoesEspecificas, TituloAcoesEspecificas);
-
 
             //Proximas
             AcoesEspecificas = [];
 
-            arrayRetorno = $.map(dadosfilter, function (o, c) {
+            arrayRetorno = $.map(newDados, function (o, c) {
 
                 dataInicio = new Date(o['Acao'].QuandoInicio);
                 dataHoje = new Date();
@@ -3204,13 +3307,12 @@
                     var timeDiff = Math.abs(dataHoje.getTime() - dataFim.getTime());
                     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                    //var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toLocaleDateString() };
                     var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataInicio.toISOString().slice(0, 10) };
 
                     return valor;
                 } else {
                     if (o['Acao'].Id == 0) {
-                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
+                        valor = { 0: Resources('no_specific_action'), 1: "" };
                     }
                 }
 
@@ -3218,47 +3320,47 @@
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.start_date)", render: renderFunction }]
+            TituloAcoesEspecificas = [{ title: Resources('specific_action') }, { title: Resources('start_date'), render: renderFunction }]
 
             var tableProximas = getTableModal("tableProximas", AcoesEspecificas, TituloAcoesEspecificas);
-
 
             //Concluidas
             AcoesEspecificas = [];
 
-            arrayRetorno = $.map(dadosfilter, function (o, c) {
+            arrayRetorno = $.map(newDados, function (o, c) {
 
                 if (o['Acao'].Status == 3 || o['Acao'].Status == 4) {
 
                     let dataConclusao = new Date(o['Acao'].Acompanhamento.AddDate);
 
-                    //var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toLocaleString() };
                     var valor = { 0: o['Acao'].ContramedidaEspecifica, 1: dataConclusao.toISOString().slice(0, 10) };
 
                     return valor;
+
                 } else {
+
                     if (o['Acao'].Id == 0) {
-                        valor = { 0: "@Html.Raw(Resources.Resource.no_specific_action)", 1: "" };
+                        valor = { 0: Resources('no_specific_action'), 1: "" };
                     }
                 }
             });
 
             AcoesEspecificas = getAcoesEspecificas(arrayRetorno);
 
-            TituloAcoesEspecificas = [{ title: "@Html.Raw(Resources.Resource.specific_action)" }, { title: "@Html.Raw(Resources.Resource.date_conclusion)", render: renderFunction }]
+            TituloAcoesEspecificas = [{ title: Resources('specific_action') }, { title: Resources('date_conclusion'), render: renderFunction }]
 
             var tableConcluidas = getTableModal("tableConcluidas", AcoesEspecificas, TituloAcoesEspecificas);
         }
 
-        function getGraficoPorProjetos(prop, value, isFilter) {
+        function getGraficoPorProjetos(prop, value, isFilter, newDados) {
 
             let Categories = [];
 
-            let dadosInternos = dados;
+            let dadosInternos = newDados;
 
             if (isFilter) {
 
-                dadosInternos = $.grep(dados, function (r) {
+                dadosInternos = $.grep(newDados, function (r) {
 
                     return r[prop] == value ;
 
@@ -3272,10 +3374,10 @@
             processarChaveamentoObjetivo();
             processarChaveamento();
 
-            let dados2 = dados;
+            let dados2 = newDados;
 
             if (isFilter) {
-                dados2 = $.grep(dados, function (item) {
+                dados2 = $.grep(newDados, function (item) {
 
                     if (item[prop] == value) {
 
@@ -3311,7 +3413,7 @@
             Highcharts.chart('graficoPorProjetos', {
 
                 title: {
-                    text: '@Html.Raw(Resources.Resource.percent_completed_demands)'
+                    text: Resources('percent_completed_demands')
                 },
                 credits: {
                     enabled: false
@@ -3324,7 +3426,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: '@Html.Raw(Resources.Resource.percent_conclusion)'
+                        text: Resources('percent_conclusion')
                     }
                 },
                 xAxis: {
@@ -3335,19 +3437,17 @@
                         dataLabels: {
                             enabled: true,
                             format: '{point.y:.0f} %',
-                            //distance: -10,
                             style: {
                                 color: 'black',
                                 fontSize: '10px',
                             },
-                            //connectorColor: 'silver'
                         },
                         point: {
                             events: {
                                 click: function () {
                                     console.log(this.category)
 
-                                    filterDados("Iniciativa", this.category, getTablesModal)
+                                    filterDados("Iniciativa", this.category, getTablesModal, dados2)
                                 }
                             }
                         },
@@ -3369,12 +3469,12 @@
 
         }
 
-        function changePlanejamento(tipo,form){
+        function changePlanejamento(tipo, form) {
             $.post(urlGetListPlanejamento +'/'+tipo,function(r){
 
                 var col = r.columns;
                 col.unshift({"render": function ( data, type, row ) {
-                    return '<button data-id="' + row.Id +'" class="btn btn-large btn-primary">@Html.Raw(Resources.Resource.select)</button>';
+                    return '<button data-id="' + row.Id +'" class="btn btn-large btn-primary">' + Resources('select') + '</button>';
                 }});
                 datatableGRT.Inicializar({
                     idTabela: "tablePessego",
@@ -3386,7 +3486,7 @@
                                 var idParaMudar = $(this).attr("data-id");
                                 var id = $(form).find('#Id').val();
                                 $.post('@Url.Action("Cereja", "api/Pa_Planejamento")/'+tipo+'/'+id+'/'+idParaMudar,function(r){
-                                    openMessageModal("@Html.Raw(Resources.Resource.updated_link)");
+                                    openMessageModal(Resources('updated_link'));
                                     location.reload();
                                 });
                             }
@@ -3422,12 +3522,12 @@
             });
         }
 
-        function AbreModalDeAcao(id){
+        function AbreModalDeAcao(id) {
             Clicked(true, true);
 
             $('#modalLindo').modal();
             $('#modalLindo').find('.modal-body').empty();
-            $('#Header').html("@Html.Raw(Resources.Resource.operational_planning)");
+            $('#Header').html(Resources('operational_planning'));
 
             $.get(PlanejamentoDetalhes, { id: id }, function (r) {
                 $('#NovaAcao').show();
@@ -3454,9 +3554,11 @@
         }
 
         function processarChaveamentoObjetivo() {
+
             if (ChaveamentoObjetivo.length > 0){
                 return;
             }
+
             $.each(dados, function (index, obj) {
 
                 var existe = retornaChaveamentoPorObjetivo(obj.Objetivo_Id);
@@ -3486,11 +3588,11 @@
         var tableModalNovoApartirDe={};
         // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
         function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, NomeApartirDeQueSeraCriado){
-            $('#ModalNovoApartirDeAlgo').find('h4').text("@Html.Raw(Resources.Resource.create) "+NomeDoQueSeraCriado+" @Html.Raw(Resources.Resource.from) "+NomeApartirDeQueSeraCriado);
+            $('#ModalNovoApartirDeAlgo').find('h4').text(Resources('create') + NomeDoQueSeraCriado + Resources('from') + NomeApartirDeQueSeraCriado);
             $.post(urlGetListPlanejamento +'/'+tipoQueSeraCriado,function(r){
                 var col = r.columns;
                 col.unshift({"render": function ( data, type, row ) {
-                    return '<button data-id="' + row.Id +'" data-tipo="'+tipoQueSeraCriado+'" class="btn btn-large btn-primary">@Html.Raw(Resources.Resource.create) '+NomeDoQueSeraCriado+'</button>';
+                    return '<button data-id="' + row.Id + '" data-tipo="' + tipoQueSeraCriado + '" class="btn btn-large btn-primary">' + Resources('create') + NomeDoQueSeraCriado + '</button>';
                 }});
                 tableModalNovoApartirDe = datatableGRT.Inicializar({
                     idTabela: "ModalNovoApartirDeAlgo table",
