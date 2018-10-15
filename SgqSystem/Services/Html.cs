@@ -415,6 +415,23 @@ namespace SgqSystem.Services
             return texto;
         }
 
+        public string campoObservacao(string id, string classe = null)
+        {
+            //definir min value //min=\"0\" 
+            //definir max value
+            //definir default value
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
+                                 "         <input type=\"text\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:100%;\">     " +
+                                 "</div>                                                    ";
+            return texto;
+        }
+
         public string campoTextoBinario(string id, string classe = null)
         {
             //definir min value //min=\"0\" 

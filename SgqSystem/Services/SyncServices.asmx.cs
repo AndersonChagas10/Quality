@@ -6533,6 +6533,17 @@ $(document).ready(function(){
 
                 input = html.campoResultado(parLevel3.Id.ToString(), parLevel3.DynamicValue);
             }
+            else if (parLevel3.ParLevel3InputType_Id == 11)
+            {
+                classInput = " observacao naoValidarInput";
+                labels = html.div(
+                                           outerhtml: "",
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
+
+                input = html.campoObservacao(id: parLevel3.Id.ToString(), classe: classInput);
+            }
             else
             {
                 ///Campo interval está repetindo , falta o campo defeitos
