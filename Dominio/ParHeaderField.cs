@@ -23,9 +23,11 @@ namespace Dominio
 
         [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
+        [Display(Name="Nome")]
         public string Name { get; set; }
 
         [Required(AllowEmptyStrings = true)]
+        [Display(Name = "Descrição")]
         public string Description { get; set; }
 
         public int ParLevelDefinition_Id { get; set; }

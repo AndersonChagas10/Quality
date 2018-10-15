@@ -91,8 +91,7 @@
                                                 <div class="col-xs-5">
                                                     <div class="form-group">
                                                         @Html.Label(Resources.Resource.punishment_value)
-                                                        @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control", @id = $"{contador}_PunishmentValue" })
-                                                        @Html.Label(Resources.Resource.required_field, new { htmlAttributes = new { @class = "form-control hidden", @id = $"{contador}_PunishmentValueError", @style = "visibility:hidden;" }  })                                                        
+                                                        @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control", @id = $"{contador}_PunishmentValue" })                                                                                                          
                                                         
                                                     </div>
                                                 </div>

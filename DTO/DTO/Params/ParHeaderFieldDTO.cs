@@ -2,6 +2,8 @@
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace DTO.DTO.Params
@@ -9,10 +11,13 @@ namespace DTO.DTO.Params
     public class ParHeaderFieldDTO : EntityBase
     {
         public int? ParFieldType_Id { get; set; }
+        [Display(Name="Nome")]
         public string Name { get; set; }
+        [DisplayName("Descrição")]
         public string Description { get; set; } = "";
         public int ParLevelDefinition_Id { get; set; }
         public bool LinkNumberEvaluetion { get; set; }
+        [DisplayName("Está ativo")]
         public bool IsActive { get; set; }
         public string DefaultOption { get; set; }
         public Nullable<bool> IsRequired { get; set; }
