@@ -166,3 +166,11 @@ IF COL_LENGTH('Pa_Objetivo','IsPriority') IS NULL
 		ADD IsPriority bit not null default 0;
     END
 GO
+
+IF COL_LENGTH('ReportXUserSgq','NomeRelatorio') IS NULL
+    BEGIN
+		ALTER TABLE ReportXUserSgq
+		ADD NomeRelatorio varchar(100);
+    END
+
+GO

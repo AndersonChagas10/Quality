@@ -5533,6 +5533,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report Files.
+        /// </summary>
+        internal static string report_files {
+            get {
+                return ResourceManager.GetString("report_files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Required.
         /// </summary>
         internal static string required {

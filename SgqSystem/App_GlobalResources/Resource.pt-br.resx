@@ -2646,4 +2646,7 @@
   <data name="not_conformities_rules_exist" xml:space="preserve">
     <value>Regra de não conformidade já existe.</value>
   </data>
+  <data name="report_files" xml:space="preserve">
+    <value>Cadastro de Relatórios</value>
+  </data>
 </root>

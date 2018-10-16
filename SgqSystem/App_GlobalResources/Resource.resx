@@ -2658,4 +2658,7 @@
   <data name="photo" xml:space="preserve">
     <value>Phone</value>
   </data>
+  <data name="report_files" xml:space="preserve">
+    <value>Report Files</value>
+  </data>
 </root>

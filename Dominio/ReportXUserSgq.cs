@@ -27,6 +27,9 @@ namespace Dominio
         [Display(Name = "Ativo")]
         public bool IsActive { get; set; }
 
+        [Display(Name = "Nome Relatório")]
+        public string NomeRelatorio { get; set; }
+
         [ForeignKey("ItemMenu_Id")]
         public ItemMenu ItemMenu { get; set; }
 
