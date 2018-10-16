@@ -2214,4 +2214,7 @@
   <data name="not_conformities_rules_exist" xml:space="preserve">
     <value>Not conformities rules alredy exist</value>
   </data>
+  <data name="indicator_in_use" xml:space="preserve">
+    <value>This Indicator already have link on the selected date.</value>
+  </data>
 </root>
