@@ -93,7 +93,7 @@ namespace SgqSystem.Controllers.Params
                             break;
 
                         default:
-                            valor = ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name;
+                            valor = CommonData.getResource(ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name).Value.ToString();
                             break;
 
                     }
