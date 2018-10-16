@@ -1229,7 +1229,7 @@
 
         },
         IncluirBinario: function (e) {
-
+            debugger
             if(binary == false){
 
                 /*Valida se os campos estão preenchidos*/
@@ -1417,7 +1417,7 @@
                 $('#salvarCabecalho2').fadeIn();
         },
         SalvaBinario: function () {
-
+            debugger
             var fieldType = $('#parFieldType option:selected').val();
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
@@ -1427,6 +1427,7 @@
             /*Cria preview*/
             example += '<td>';
             Cabecalhos.ParBinario.forEach(function (o, c) {
+                debugger
                 example += o.Name;
                 var a = c == 0 ? 'checked = "checked"' : '';
                 var b = c == 0 ? "true" : "false";
