@@ -69,7 +69,7 @@ namespace SgqSystem.Controllers.Api.Params
             #endregion
             paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel1(paramsViewModel.paramsDto);
             return paramsViewModel;
-        }   
+        }
 
         [HttpPost]
         [Route("SetRequiredCCAB/{Id}/{Required}")]
@@ -586,6 +586,8 @@ namespace SgqSystem.Controllers.Api.Params
                 }
 
                 parr.paramsDto.parHeaderFieldDto.IsActive = true;
+                if (parr.paramsDto.parHeaderFieldDto.Description == null)
+                    parr.paramsDto.parHeaderFieldDto.Description = "";
                 return _baseParHeaderField.AddOrUpdate(parr.paramsDto.parHeaderFieldDto);
             }
             catch (DbEntityValidationException e)
@@ -594,8 +596,8 @@ namespace SgqSystem.Controllers.Api.Params
                 StringBuilder mensagem = new StringBuilder();
                 foreach (var item in listaDeErros)
                 {
-                   var erros = item.ValidationErrors;
-                   foreach(var erro in erros)
+                    var erros = item.ValidationErrors;
+                    foreach (var erro in erros)
                     {
                         mensagem.Append(erro.ErrorMessage).Append(" ");
                     }
