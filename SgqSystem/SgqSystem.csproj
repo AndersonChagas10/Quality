@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -934,6 +934,11 @@
     <Content Include="Imagens\Recravacao\9pts.jpg" />
     <Content Include="Imagens\seta.png" />
     <Content Include="Imagens\setas.png" />
+    <Content Include="Imagens\sort_asc.png" />
+    <Content Include="Imagens\sort_asc_disabled.png" />
+    <Content Include="Imagens\sort_both.png" />
+    <Content Include="Imagens\sort_desc.png" />
+    <Content Include="Imagens\sort_desc_disabled.png" />
     <Content Include="Imagens\Spain.png" />
     <Content Include="Imagens\stack.png" />
     <Content Include="Imagens\tablet.png" />
