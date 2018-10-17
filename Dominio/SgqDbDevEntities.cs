@@ -74,7 +74,7 @@ namespace Dominio
                 Type t = entity.Entity.GetType();
                 foreach (var propInfo in t.GetProperties())
                 {
-                    if (!propInfo.PropertyType.IsClass)
+                    if (!propInfo.PropertyType.IsClass && !propInfo.PropertyType.IsGenericType)
                     {
                         object valor = propInfo.GetValue(entity.Entity, null);
                         Type tipo = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;

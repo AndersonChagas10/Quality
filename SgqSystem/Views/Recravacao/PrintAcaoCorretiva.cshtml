@@ -437,70 +437,11 @@
 
             <div id="contentBody">
                 <div>
-                    <div class="">
-                        <table class="tableForm" style="width: 75%;">
-                            <tbody>
-                                <tr class="red">
-                                    <td class="title">Linha</td>
-                                    <td colspan="3">{{seletedLinha.Name}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Produto</td>
-                                    <td>{{seletedLinha.form.ProdutoName}}</td>
-                                    <td class="title">Código da formulação</td>
-                                    <td>{{seletedLinha.form.CodProduto}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Hora do início da Produção</td>
-                                    <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
-                                    <td class="title">Hora do final da Produção</td>
-                                    <td>{{seletedLinha.form.HoraFimProducao  | date:'HH:mm'}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Fornecedor da Lata</td>
-                                    <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
-                                    <td class="title">Data do recebimento das latas</td>
-                                    <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Fornecedor das tampas/fundos das latas</td>
-                                    <td><span ng-repeat="item in seletedLinha.form.FornecedorTampaFundoLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
-                                    <td class="title">Data do recebimento das tampas/fundos das latas</td>
-                                    <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas  | date:'dd/MM/yyyy'}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Tipo da Lata</td>
-                                    <td>{{seletedLinha.form.TipoDeLata.Name}}</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                        <img class="lataPtImg img-responsive" src="~/Imagens/Recravacao/{{seletedLinha.TipoDeLata.NumberOfPoints}}pts.jpg" />
-                        <div class="clearfix"></div>
-                    </div>
+                    
                 </div>
                 <div class="clearfix"></div>
                 <div>
-                    <div class="border">
-                        <p>
-                            ORIENTAÇÕES PARA PREENCHIMENTO DAS AÇÕES - ITENS NÃO CONFORMES
-                            <br />- Identificar o desvio e eliminá-lo:
-                            <br />"Descrever o horário da ocorrência (1) e relatar a deficiência identificando o local, equipamento/estrutura e produtos envolvidos (2).
-                            <br />No caso do PPHO, se não houver produto envolvido, identificar como ""Não há produto envolvido"".  "
-                        </p>
 
-                        <p>
-                            - Assegurar a apropriada disposição do produto que possa estar contaminado:
-                            <br />Em caso de produto envolvido, assegurar a segregação para avaliação e posterior destino.
-                            <br />- Restabelecer as condições sanitárias:
-                            <br />Descrever a ação tomada para restabelecer as condições sanitárias imediatas (3). Registrar o horário de liberação do local/produto, quando aplicável (4). Sugestões de ações corretivas podem ser consultadas em seus respectivos programas.
-                        </p>
-
-                        <p>
-                            - Prevenir a recorrência de contaminação direta ou adulteração do produto:
-                            <br />O supervisor da área deverá analisar o desvio para definir uma ação preventiva (5) para que o desvio não volte a ocorrer. Sugestões de ações preventivas podem ser consultadas em seus respectivos programas.  Vale ressaltar que o supervisor do setor (que assina a planilha) é o responsável por tratar corretivamente e preventivamente a anomalia em questão. Caso tenha mais de um supervisor responsável pelas ações, ambos devem vistar e assinar a planilha.
-                        </p>
-                    </div>
 
                     <div class="divTableCorrectiveAction" style="padding-top: 20px;">
 
@@ -531,11 +472,11 @@
                                     <col style="width: 28.3%;">
                                 </colgroup>
                                 @*<tr>
-                                        <th>Hora (1)</th>
-                                        <th>DEFICIÊNCIA (2)</th>
-                                        <th>AÇÃO CORRETIVA (3)</th>
-                                        <th>AÇÃO PREVENTIVA (4)</th>
-                                    </tr>*@
+                        <th>Hora (1)</th>
+                        <th>DEFICIÊNCIA (2)</th>
+                        <th>AÇÃO CORRETIVA (3)</th>
+                        <th>AÇÃO PREVENTIVA (4)</th>
+                    </tr>*@
                                 <tr>
                                     <td class="tbodyTd">
                                         {{acoes.AddDate}}
@@ -569,6 +510,29 @@
 
 
                         </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="clearfix"></div>
+                    <div class="clearfix"></div>
+                    <div class="border">
+                        <p>
+                            ORIENTAÇÕES PARA PREENCHIMENTO DAS AÇÕES - ITENS NÃO CONFORMES
+                            <br />- Identificar o desvio e eliminá-lo:
+                            <br />"Descrever o horário da ocorrência (1) e relatar a deficiência identificando o local, equipamento/estrutura e produtos envolvidos (2).
+                            <br />No caso do PPHO, se não houver produto envolvido, identificar como ""Não há produto envolvido"".  "
+                        </p>
+
+                        <p>
+                            - Assegurar a apropriada disposição do produto que possa estar contaminado:
+                            <br />Em caso de produto envolvido, assegurar a segregação para avaliação e posterior destino.
+                            <br />- Restabelecer as condições sanitárias:
+                            <br />Descrever a ação tomada para restabelecer as condições sanitárias imediatas (3). Registrar o horário de liberação do local/produto, quando aplicável (4). Sugestões de ações corretivas podem ser consultadas em seus respectivos programas.
+                        </p>
+
+                        <p>
+                            - Prevenir a recorrência de contaminação direta ou adulteração do produto:
+                            <br />O supervisor da área deverá analisar o desvio para definir uma ação preventiva (5) para que o desvio não volte a ocorrer. Sugestões de ações preventivas podem ser consultadas em seus respectivos programas.  Vale ressaltar que o supervisor do setor (que assina a planilha) é o responsável por tratar corretivamente e preventivamente a anomalia em questão. Caso tenha mais de um supervisor responsável pelas ações, ambos devem vistar e assinar a planilha.
+                        </p>
                     </div>
 
                     <table class="footerCA">
@@ -605,24 +569,7 @@
 
             <div id="contentFooter">
 
-                <div ng-if="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" class="border-rounded">
-
-
-                    <small ng-repeat="item in seletedLinha.latas[0].ListParlevel3 | limitTo:limit:begin track by $index"
-                           style="float:left;width:25%;display:block;font-size:9px!important;font-weight: 800 !important;">
-                        <span>{{item.Name}}</span>
-                        <br />
-                        <span ng-if="item.ParLevel3Value[0].ParMeasurementUnit.Name || item.ParLevel3Value_OuterList[0].UnidadeMedidaText"
-                              style="font-size:6px!important;font-weight: 100 !important;">
-                            ({{seletedLinha.ParLevel3Interval['limite_'+item.Name]}} {{item.ParLevel3Value_OuterList[0].UnidadeMedidaText}})
-                        </span>
-                        <span ng-if="!(item.ParLevel3Value[0].ParMeasurementUnit.Name || item.ParLevel3Value_OuterList[0].UnidadeMedidaText)"
-                              style="font-size:6px!important;font-weight: 100 !important;">
-                            ({{seletedLinha.ParLevel3Interval['limite_'+item.Name]}})
-                        </span>
-                    </small>
-                    <div style="clear:both"></div>
-                </div>
+                
                 <span>@Html.Raw(ViewBag.ReportXUserSgq.CodigoRelatorio)</span>
 
 
