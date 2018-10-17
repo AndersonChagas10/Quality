@@ -31,14 +31,22 @@ namespace SgqSystem.Controllers.Recravacao
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 var itemMenu = (ItemMenuDTO)ViewBag.itemMenu;
+
+                var unidadeUsuario_Id = getUserUnitId();
+
                 if (itemMenu != null)
                 {
                     var reportXUserSgq = db.ReportXUserSgq
                         .Include("ItemMenu")
-                        .FirstOrDefault(r => r.ItemMenu_Id == itemMenu.Id && r.ParLevel1_Id == indicadorId);
-                    reportXUserSgq.CodigoRelatorio = reportXUserSgq.CodigoRelatorio?.Replace("[", "<").Replace("]", ">");
+                        .OrderByDescending(r => r.ParCompany_Id)
+                        .FirstOrDefault(r => r.ItemMenu_Id == itemMenu.Id && r.ParLevel1_Id == indicadorId && (r.ParCompany_Id == unidadeUsuario_Id || r.ParCompany_Id == null));
+
+                    if (reportXUserSgq != null)
+                        reportXUserSgq.CodigoRelatorio = reportXUserSgq.CodigoRelatorio?.Replace("[", "<").Replace("]", ">");
+
                     ViewBag.ReportXUserSgq = reportXUserSgq;
                 }
+
                 ViewBag.IndicadorId = indicadorId;
                 ViewBag.LinhaId = linhaId;
                 return View();
@@ -50,14 +58,21 @@ namespace SgqSystem.Controllers.Recravacao
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 var itemMenu = (ItemMenuDTO)ViewBag.itemMenu;
+
+                var unidadeUsuario_Id = getUserUnitId();
+
                 if (itemMenu != null)
                 {
                     var reportXUserSgq = db.ReportXUserSgq
                         .Include("ItemMenu")
-                        .FirstOrDefault(r => r.ItemMenu_Id == itemMenu.Id && r.ParLevel1_Id == indicadorId);
-                    reportXUserSgq.CodigoRelatorio = reportXUserSgq.CodigoRelatorio?.Replace("[", "<").Replace("]", ">");
+                        .OrderByDescending(r => r.ParCompany_Id)
+                        .FirstOrDefault(r => r.ItemMenu_Id == itemMenu.Id && r.ParLevel1_Id == indicadorId && (r.ParCompany_Id == unidadeUsuario_Id || r.ParCompany_Id == null));
+
+                    if (reportXUserSgq != null)
+                        reportXUserSgq.CodigoRelatorio = reportXUserSgq.CodigoRelatorio?.Replace("[", "<").Replace("]", ">");
                     ViewBag.ReportXUserSgq = reportXUserSgq;
                 }
+
                 ViewBag.IndicadorId = indicadorId;
                 ViewBag.LinhaId = linhaId;
                 return View();
