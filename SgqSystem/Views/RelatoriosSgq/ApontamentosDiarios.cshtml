@@ -244,30 +244,17 @@
 
                         var data = table.row($(this).parents('tr')).data();
 
-                        $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
+                        $.post(urlEdit + "/" + data.ResultLevel3Id, function (r) {
 
-                            $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
-                            $('#ResultLevel3_Id').val(r.Id);
+                            $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                            $('#myModal #ResultLevel3_Id').val(r.Id);
 
-                            $('#changeConform').empty();
-                            $('#changeConform').append($(r.showGeneric));
+                            $('#myModal #changeConform').empty();
+                            $('#myModal #changeConform').append($(r.showGeneric));
 
                             InitiMasksDefaults();
                         });
                     });
-
-
-                    //new $.fn.dataTable.Buttons(table, {
-                    //    buttons: [
-                    //         {
-                    //             extend: 'pdf',
-                    //             text: 'PDF',
-                    //             exportOptions: {
-                    //                 columns: ':visible'
-                    //             }
-                    //         }
-                    //    ]
-                    //});
 
                     $('#resultsApontamentos tbody').on('click', 'button#editHeader', function (data) {
 
