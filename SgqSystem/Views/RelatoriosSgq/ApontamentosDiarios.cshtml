@@ -5,12 +5,24 @@
     var urlGet = Url.Action("Get", "api/ApontamentosDiarios");
     var urlEdit = Url.Action("Edit", "api/ApontamentosDiarios");
     var urlSave = Url.Action("Save", "api/ApontamentosDiarios");
+    var urlPhotos = Url.Action("Photos", "api/ApontamentosDiarios");
+    var urlPhotoPreview = Url.Action("PhotoPreview", "api/ApontamentosDiarios");
+    var urlGetCarousel = Url.Action("GetCarousel", "RelatoriosSgq");
 }
 
 <style>
     /*Não quebra a linha nos campos de cabeçalho*/
     #resultsApontamentos > tbody > tr:last-child > td:last-child {
         white-space: nowrap;
+    }
+
+    .progress-bar.animate {
+        width: 100%;
+    }
+
+    .loading-center {
+        margin: 100px auto;
+        display: table !important;
     }
 </style>
 
@@ -43,8 +55,13 @@
 
         <div id="formBodyContent">
 
+            <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+                <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+            </div>
+
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
             @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_Image.cshtml")
 
             <div id="load"></div>
             <div id="divTable">
@@ -63,6 +80,9 @@
         var urlGet = '@Html.Raw(@urlGet)';
         var urlEdit = '@Html.Raw(@urlEdit)';
         var urlSave = '@Html.Raw(@urlSave)';
+        var urlPhotos = '@Html.Raw(urlPhotos)';
+        var urlPhotoPreview = '@Html.Raw(urlPhotoPreview)';
+        var urlGetCarousel = '@Html.Raw(urlGetCarousel)';
         var $btn = $('#btnSend');
         var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
         var urlEditCabecalho = '@Html.Raw(Url.Action("EditCabecalho", "api/ApontamentosDiarios"))';
@@ -201,7 +221,12 @@
                                     return '@Resources.Resource.normal';
                                 }
                             }
-                        }
+                        },
+                        {
+                            title: "@Resources.Resource.photo", mData: "ResultLevel3Id", "width": "50%", mRender: function (data, type, full) {
+                                return "<img data-toggle='modal' data-target='#imageModal' height='60' id='imgResult" + data +"'></img>";
+                            }
+                        },
 
                     ];
 
@@ -229,8 +254,20 @@
 
                             InitiMasksDefaults();
                         });
-
                     });
+
+
+                    //new $.fn.dataTable.Buttons(table, {
+                    //    buttons: [
+                    //         {
+                    //             extend: 'pdf',
+                    //             text: 'PDF',
+                    //             exportOptions: {
+                    //                 columns: ':visible'
+                    //             }
+                    //         }
+                    //    ]
+                    //});
 
                     $('#resultsApontamentos tbody').on('click', 'button#editHeader', function (data) {
 
@@ -403,10 +440,60 @@
                     destroy: true,
                     info: true,
                     initComplete: initDatatable,
-                    createdRow: function (row, data, index) {}
+                    createdRow: function (row, data, index)
+                    {
+                        $(window).scroll(function () {
+                            if ($(row).is(':visible')
+                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('checked')
+                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('isChecking')
+                            )
+                                GetImagePreview($(row).find('#imgResult' + data.ResultLevel3Id), data.ResultLevel3Id);
+                        });
+                    }
                 });
             }
 
+        }
+
+        function GetImagePreview(Img, ResultLevel3Id) {
+            Img.addClass('hide');
+            Img.after('<i class="fa fa-spinner fa-pulse"></i>');
+            Img.attr('isChecking', true);
+            $.get(urlPhotoPreview + "/" + ResultLevel3Id, function (result1) {
+                Img.siblings('i').remove();
+                Img.removeClass('hide');
+                Img.attr('checked', true);
+                Img.removeAttr('isChecking');
+                if (result1) {
+                    Img.attr('src', result1);
+                    Img.click(function (o) {
+                        console.log(o);
+
+                        $('#imageModal .modal-loading, #imageModal .modal-title-loading').removeClass('hide');
+                        $('#imageModal .modal-body, #imageModal .modal-title').addClass('hide');
+
+                        $.get(urlPhotos + "/" + ResultLevel3Id, function (photos) {
+                            if (photos.length > 0) {
+                                var _photos = [];
+                                $.grep(photos, function (o) {
+                                    if (o) _photos.push(o.Photo);
+                                });
+                                $.get(urlGetCarousel, function (carousel) {
+                                    $('#imageModal .modal-body').html(carousel);
+                                    carouselMain.setPicturesBase64(_photos);
+
+                                    $('#imageModal .modal-loading, #imageModal .modal-title-loading').addClass('hide');
+                                    $('#imageModal .modal-body').removeClass('hide');
+                                    //$('#imageModal .modal-body, #imageModal .modal-title').removeClass('hide');
+                                });
+
+                                $('#latitudeModal').text(photos[0].Latitude);
+                                $('#longitudeModal').text(photos[0].Longitude);
+                            }
+                        });
+                    });
+                }
+            });
         }
 
         function SalvarResultLevel3() {

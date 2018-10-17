@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParCounterXLocal")]
-    public partial class ParCounterXLocal
+    public partial class ParCounterXLocal : BaseModel
     {
         public int Id { get; set; }
 
@@ -20,12 +20,6 @@ namespace Dominio
         public int? ParLevel2_Id { get; set; }
 
         public int? ParLevel3_Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

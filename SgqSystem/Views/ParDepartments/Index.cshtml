@@ -55,9 +55,12 @@
                                                 @Resources.Resource.description
                                             </th>
                                             <th>
+                                                É Filho de
+                                            </th>
+                                            <th>
                                                 @Resources.Resource.action
                                             </th>
-                                          
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -69,6 +72,9 @@
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Description)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ParDepartmentPai.Name)
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
@@ -106,14 +112,12 @@
             "aoSearching": true,
             "aoColumns": [
                 null,
-                null, 
+                null,
+                null,
                 { "bSearchable": false }
             ],
             "order": [[1, "asc"]],
-             "language": {
-                "lengthMenu": "Mostrar _MENU_ resultados por página",
-                "emptyTable": "@Resources.Resource.no_data_to_show"
-            }
+             "language": linguagemComResourcesParaDatatable
         });
     });
 </script>

@@ -829,7 +829,6 @@
                                     </thead>
                                     <tbody></tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
@@ -1230,7 +1229,7 @@
 
         },
         IncluirBinario: function (e) {
-
+            debugger
             if(binary == false){
 
                 /*Valida se os campos estão preenchidos*/
@@ -1418,7 +1417,7 @@
                 $('#salvarCabecalho2').fadeIn();
         },
         SalvaBinario: function () {
-
+            debugger
             var fieldType = $('#parFieldType option:selected').val();
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
@@ -1428,6 +1427,7 @@
             /*Cria preview*/
             example += '<td>';
             Cabecalhos.ParBinario.forEach(function (o, c) {
+                debugger
                 example += o.Name;
                 var a = c == 0 ? 'checked = "checked"' : '';
                 var b = c == 0 ? "true" : "false";
@@ -1882,10 +1882,40 @@
                     return;
                 }
 
-                if ($('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == "") {
-                    openMessageModal("@Resources.Resource.fill_the_alert_rule_value");
-                    return;
+            if($('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
+                openMessageModal("@Resources.Resource.fill_the_alert_rule_value");
+                return;
+            }
+            var regraNaoConformidade;
+            var exist = $.grep($('#tableRegraNc  tbody  tr  td:nth-child(1)'), function (o, c) {//
+                debugger
+                var count = 0;
+                if ($(o).text() == $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text()) {
+                    count++;
+                } else {
+                    count = 0;
                 }
+
+                if (count > 0) {
+                    regraNaoConformidade = $(o).text();
+                    return true;
+                }
+                return false;
+            });
+
+            debugger
+            if (false) {/*Edição*/ //!!isEdit
+
+            } else {/*Inclusão*/
+                if (exist.length) {
+                    debugger
+                    @*if (regraNaoConformidade == -1)
+                        display = "@Resources.Resource.all";*@
+                    openMessageModal(Resources('not_conformities_rules_exist') + " " + regraNaoConformidade + ".", "")
+                    return false;
+
+                }
+            }
 
                 /*Cria o objeto*/
                 var object = {/*Objeto*/

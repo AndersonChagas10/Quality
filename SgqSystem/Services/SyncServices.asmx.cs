@@ -35,7 +35,6 @@ namespace SgqSystem.Services
     public class SyncServices : System.Web.Services.WebService
     {
 
-        //private SqlConnection connection;
         string conexao;
         string conexaoSGQ_GlobalADO;
 
@@ -61,7 +60,6 @@ namespace SgqSystem.Services
 
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
-            //db.Open();
 
             dbEf = new Dominio.SgqDbDevEntities();
 
@@ -71,11 +69,10 @@ namespace SgqSystem.Services
         {
             if (disposing)
             {
-                //SGQ_GlobalADO.Close();
                 SGQ_GlobalADO.Dispose();
-                //db.Close();
                 db.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -89,14 +86,12 @@ namespace SgqSystem.Services
         /// <param name="collectionDate">Data Formatada do Tablet</param>
         /// <returns></returns>
         /// 
-
         /**
          * TODOS QUE CHAMEREM ESTE MÉTODO DEVEM ENVIAR A DATA MM/dd/yyyy
          * OU YYYY-MM-DD (2017-05-03)
          * COMENTÁRIO: GABRIEL 2017-04-24
          * 
          */
-
         private DateTime DateCollectConvert(string collectionDate)
         {
             //acerto para data yyyy-mm-dd
@@ -135,6 +130,7 @@ namespace SgqSystem.Services
 
             return newData;
         }
+
         /// <summary>
         /// Retornar um valor Padrão para Campos que chegam como NULL, "", "undefined" ou "null"
         /// </summary>
@@ -149,6 +145,7 @@ namespace SgqSystem.Services
             }
             return valor;
         }
+
         /// <summary>
         /// Converter para Booleano Padrão Sql um valor passado
         /// </summary>
@@ -2666,7 +2663,6 @@ namespace SgqSystem.Services
 
         }
         public string _getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id)
-        //public string getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id = 0)
         {
 
             string clusterDaUnidade = "1";
@@ -3722,7 +3718,7 @@ namespace SgqSystem.Services
         }
 
         [WebMethod]
-        public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
+        public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date, int Shift_Id)
         {
 
             //Factory factory = new Factory("DefaultConnection");
@@ -3735,7 +3731,7 @@ namespace SgqSystem.Services
             string APPMain = string.Empty;
 
             //colocar autenticação
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, null); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date ,null, Shift_Id); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
 
             string supports = "<div class=\"Results hide\"></div>" +
@@ -3834,13 +3830,13 @@ $(document).ready(function(){
         }
 
         [WebMethod]
-        public string getAPPLevelsModulado(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
+        public string getAPPLevelsModulado(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId,int Shift_Id)
         {
 
             string APPMain = string.Empty;
 
             //colocar autenticação
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, Shift_Id); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
 
             string supports = "<div class=\"Results hide\"></div>" +
@@ -3859,11 +3855,11 @@ $(document).ready(function(){
         }
 
         [WebMethod]
-        public string getAPPLevelsVolume(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
+        public string getAPPLevelsVolume(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId, int Shift_Id)
         {
             string APPMain = string.Empty;
 
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, true);
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, Shift_Id , true);
 
             return APPMain;// + resource;
         }
@@ -4067,7 +4063,7 @@ $(document).ready(function(){
             return evaluate;
         }
 
-        public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId, bool isVolume = false)
+        public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId, int Shift_Id, bool isVolume = false)
         {
             #region Antes do loop1
 
@@ -4102,7 +4098,7 @@ $(document).ready(function(){
 
             #endregion
 
-            var seiLaLevel1 = GetLevel01(ParCompany_Id: ParCompany_Id, dateCollect: Date, Level1ListId: Level1ListId, isVolume: isVolume); /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
+            var seiLaLevel1 = GetLevel01(ParCompany_Id: ParCompany_Id, dateCollect: Date, Level1ListId: Level1ListId, isVolume: isVolume, Shift_Id: Shift_Id); /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
 
             var seiLaCluster = GetClustersCompany(ParCompany_Id);
 
@@ -4443,7 +4439,7 @@ $(document).ready(function(){
         /// Recupera Level1 e seus monitoramentos e tarefas relacionados
         /// </summary>
         /// <returns></returns>
-        public string GetLevel01(int ParCompany_Id, DateTime dateCollect, string Level1ListId, bool isVolume)
+        public string GetLevel01(int ParCompany_Id, DateTime dateCollect, string Level1ListId, bool isVolume, int Shift_Id)
         {
 
             #region Parametros do level 1 e "instancias"
@@ -4524,7 +4520,7 @@ $(document).ready(function(){
 
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);
-                    var alertas = ParLevel1AlertasDB.getAlertas(parlevel1, ParCompany_Id, dateCollect);
+                    var alertas = ParLevel1AlertasDB.getAlertas(parlevel1, ParCompany_Id, dateCollect, Shift_Id);
 
                     if (alertas != null)
                     {
@@ -4676,7 +4672,7 @@ $(document).ready(function(){
                     #endregion
 
                     //Busca os Level2 e reforna no level3Group;
-                    listLevel2.Append(GetLevel02(parlevel1, ParCompany_Id, dateCollect, level3Group));
+                    listLevel2.Append(GetLevel02(parlevel1, ParCompany_Id, dateCollect, level3Group, Shift_Id));
 
                     //Incrementa Level3Group
                     listLevel3.Append(level3Group);
@@ -4843,7 +4839,7 @@ $(document).ready(function(){
         /// <param name="ParCompany_Id"></param>
         /// <param name="level3Group"></param>
         /// <returns></returns>
-        public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, DateTime dateCollect, StringBuilder level3Group)
+        public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, DateTime dateCollect, StringBuilder level3Group, int Shift_Id)
         {
 
             #region Parametros e "Instancias"
@@ -4879,19 +4875,19 @@ $(document).ready(function(){
 
             //Verifica avaliações padrão
             var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
-                                                              ParCompany_Id: null, DateCollection: dateCollect);
+                                                              ParCompany_Id: null, DateCollection: dateCollect, Shift_Id: Shift_Id);
 
             //Verifica avaliações pela company informada
             var ParEvaluateCompany = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
-                                                               ParCompany_Id: ParCompany_Id, DateCollection: dateCollect);
+                                                               ParCompany_Id: ParCompany_Id, DateCollection: dateCollect, Shift_Id: Shift_Id);
 
             //Verifia amostra padrão
             var ParSamplePadrao = ParSampleDB.getSample(ParLevel1: ParLevel1,
-                                                        ParCompany_Id: null, DateCollection: dateCollect);
+                                                        ParCompany_Id: null, DateCollection: dateCollect, Shift_Id: Shift_Id);
 
             //Verifica amostra pela company informada
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
-                                                        ParCompany_Id: ParCompany_Id, DateCollection: dateCollect);
+                                                        ParCompany_Id: ParCompany_Id, DateCollection: dateCollect, Shift_Id: Shift_Id);
 
             //Variaveis para avaliação de grupos
             int evaluateGroup = 0;
@@ -6536,6 +6532,17 @@ $(document).ready(function(){
                                        );
 
                 input = html.campoResultado(parLevel3.Id.ToString(), parLevel3.DynamicValue);
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 11)
+            {
+                classInput = " texto naoValidarInput";
+                labels = html.div(
+                                           outerhtml: "",
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
+
+                input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
             }
             else
             {

@@ -7,17 +7,11 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("BkpCollection")]
-    public partial class BkpCollection
+    public partial class BkpCollection : BaseModel
     {
         public int Id { get; set; }
 
         public int User_Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public int Shift { get; set; }
 

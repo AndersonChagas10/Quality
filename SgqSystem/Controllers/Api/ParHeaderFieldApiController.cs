@@ -47,8 +47,8 @@ namespace SgqSystem.Controllers.Api
 
             var sql =
                 "SELECT                                                                        " +
-                "C.ParLevel1_Id AS ParLevel1_Id,                                               " +
-                "C.ParLevel2_Id AS ParLevel2_Id,                                               " +
+                "IIF(CC.ParCluster_Id is null, C.ParLevel1_Id, CONCAT(CC.ParCluster_Id,'98789', C.ParLevel1_Id)) AS ParLevel1_Id," +
+                "IIF(CC.ParCluster_Id is null, C.ParLevel2_Id, CONCAT(CC.ParCluster_Id,'98789', C.ParLevel2_Id)) AS ParLevel2_Id," +
                 "C.Period AS Period,                                                           " +
                 "C.Shift AS Shift,                                                             " +
                 "CP.ParHeaderField_Id AS ParHeaderField_Id,                                    " +
@@ -57,6 +57,7 @@ namespace SgqSystem.Controllers.Api
                 "C.Sample AS Sample                                                            " +
                 "FROM CollectionLevel2XParHeaderField CP (NOLOCK)                              " +
                 "LEFT JOIN CollectionLevel2 C (NOLOCK) ON C.Id = CP.CollectionLevel2_Id        " +
+                "LEFT JOIN CollectionLevel2XCluster CC (NOLOCK) ON CC.CollectionLevel2_Id = C.Id " +
                 "LEFT JOIN ParHeaderField PH (NOLOCK) ON CP.ParHeaderField_Id = PH.Id          " +
                 "AND PH.LinkNumberEvaluetion = 1                                               " +
                 "WHERE C.UnitId = " + UnitId + " AND                                           " +

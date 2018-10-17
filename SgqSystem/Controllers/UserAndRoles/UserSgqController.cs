@@ -328,7 +328,7 @@ namespace SgqSystem.Controllers
                         myCookie.Values.Add("alterDate", "");
                     }
 
-                    myCookie.Values.Add("addDate", userSgq.AddDate.ToString("dd/MM/yyyy"));
+                    myCookie.Values.Add("addDate", userSgq.AddDate?.ToString("dd/MM/yyyy"));
 
                     
 

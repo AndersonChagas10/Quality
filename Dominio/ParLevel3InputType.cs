@@ -6,7 +6,7 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLevel3InputType
+    public partial class ParLevel3InputType : BaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLevel3InputType()
@@ -23,12 +23,6 @@ namespace Dominio
 
         [Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

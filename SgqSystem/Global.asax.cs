@@ -11,6 +11,9 @@ using System.Globalization;
 using System.Threading;
 using Jobs;
 using SgqSystem.Jobs;
+using SgqSystem.Helpers;
+using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace SgqSystem
 {
@@ -30,6 +33,22 @@ namespace SgqSystem
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
             GlobalConfig.VerifyConfig("DefaultConnection");
+
+            #region LOG
+            System.Data.Entity.Database.SetInitializer<Dominio.SgqDbDevEntities>(null);
+            AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) =>
+            {
+                Task.Run(() =>
+                {
+                    using (var db = new Dominio.SgqDbDevEntities())
+                    {
+                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace =(eventArgs.ExceptionObject as Exception).ToClient() });
+                        db.SaveChanges();
+                    }
+                });
+
+            };
+            #endregion
 
             SetGlobalConfigAmbient();
 

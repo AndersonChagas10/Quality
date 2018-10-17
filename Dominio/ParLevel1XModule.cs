@@ -7,31 +7,24 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLevel1XModule
+    public partial class ParLevel1XModule : BaseModel
     {
         public int Id { get; set; }
+
+        [NotMapped]
+        [DisplayName("Indicador")]
+        public IEnumerable<int> ParLevel1_IdHelper { get; set; }
 
         [DisplayName("Indicador")]
         public int ParLevel1_Id { get; set; }
 
         [DisplayName("Módulo")]
-        public int? ParModule_Id { get; set; }
+        public int ParModule_Id { get; set; }
 
-        [NotMapped]
-        [DisplayName("Indicador")]
-        public IEnumerable<int> ParLevel1_IdHelper { get; set; }
-        
         public decimal Points { get; set; }
 
         public int? ParCluster_Id { get; set; }
-        
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
-
+       
         [DisplayName("Está ativo")]
         public bool IsActive { get; set; }
 

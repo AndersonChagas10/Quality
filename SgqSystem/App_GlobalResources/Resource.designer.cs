@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option or rebuild the Visual Studio project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "14.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -2995,6 +2995,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Indicator already have link on the selected date..
+        /// </summary>
+        internal static string indicator_in_use {
+            get {
+                return ResourceManager.GetString("indicator_in_use", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         internal static string info {
@@ -3261,6 +3270,15 @@ namespace Resources {
         internal static string last_two_months_of_the_selected_period {
             get {
                 return ResourceManager.GetString("last_two_months_of_the_selected_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latitude.
+        /// </summary>
+        internal static string latitude {
+            get {
+                return ResourceManager.GetString("latitude", resourceCulture);
             }
         }
         
@@ -3846,6 +3864,15 @@ namespace Resources {
         internal static string log_out {
             get {
                 return ResourceManager.GetString("log_out", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Longitude.
+        /// </summary>
+        internal static string longitude {
+            get {
+                return ResourceManager.GetString("longitude", resourceCulture);
             }
         }
         
@@ -4444,6 +4471,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not conformities rules alredy exist.
+        /// </summary>
+        internal static string not_conformities_rules_exist {
+            get {
+                return ResourceManager.GetString("not_conformities_rules_exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not conformity rule.
         /// </summary>
         internal static string not_conformity_rule {
@@ -4741,6 +4777,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to page.
+        /// </summary>
+        internal static string page {
+            get {
+                return ResourceManager.GetString("page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameterization Email Alert.
         /// </summary>
         internal static string parameterization_email_alert {
@@ -4957,6 +5002,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to per page.
+        /// </summary>
+        internal static string per_page {
+            get {
+                return ResourceManager.GetString("per_page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Per Unit Indicators.
         /// </summary>
         internal static string per_unit_indicators {
@@ -4989,6 +5043,15 @@ namespace Resources {
         internal static string phone {
             get {
                 return ResourceManager.GetString("phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        internal static string photo {
+            get {
+                return ResourceManager.GetString("photo", resourceCulture);
             }
         }
         
@@ -5493,6 +5556,15 @@ namespace Resources {
         internal static string reports {
             get {
                 return ResourceManager.GetString("reports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report Files.
+        /// </summary>
+        internal static string report_files {
+            get {
+                return ResourceManager.GetString("report_files", resourceCulture);
             }
         }
         

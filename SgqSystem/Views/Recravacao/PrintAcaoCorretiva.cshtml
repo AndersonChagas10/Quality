@@ -421,86 +421,27 @@
                         <col style="width: 75px;">
                     </colgroup>
                     <tr>
-                        <th class="tg-031e" colspan="2" rowspan="4"><img src="~/Imagens/JBS_logo.jpg" /> </th>
-                        <th class="tg-s6z2" rowspan="1"><strong>{{indicadorSelecionado.Name}}</strong> - {{seletedLinha.Name}} ({{seletedLinha.Description}})</th>
-                        <th class="tg-baqh" colspan="2" rowspan="4">GARANTIA E QUALIDADE LOGO</th>
+                        <th class="tg-031e" colspan="2" rowspan="4" style="text-align: center; padding-top:2px; padding-bottom:2px;width:100px;"><img src="~/Imagens/JBS_logo.jpg" class="img-responsive" style="width:100%"> </th>
+                        <th class="tg-s6z2" rowspan="1"><strong>@Html.Raw(ViewBag.ReportXUserSgq.ItemMenu.Name)</strong></th>
+                        <th class="tg-baqh" colspan="2" rowspan="4" style="text-align: center; padding-top:2px; padding-bottom:2px;width:80px;"><img src="~/Imagens/logo-gq.png" class="img-responsive" style="width:100%"></th>
                     </tr>
                     <tr></tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Elaborador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Elaborador) {{seletedLinha.userFinish.FullName}} <i> - GQU/BTS</i></td>
+                        <td style="font-size: 11px;"><strong>Elaborador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Elaborador) {{seletedLinha.userFinish.FullName}}</td>
                     </tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Aprovador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Aprovador) {{seletedLinha.userValidacao.FullName}} <i> - GQU/BTS</i></td>
+                        <td style="font-size: 11px;"><strong>Aprovador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Aprovador) {{seletedLinha.userValidacao.FullName}}</td>
                     </tr>
                 </table>
             </div>
 
             <div id="contentBody">
                 <div>
-                    <div class="">
-                        <table class="tableForm" style="width: 75%;">
-                            <tbody>
-                                <tr class="red">
-                                    <td class="title">Linha</td>
-                                    <td colspan="3">{{seletedLinha.Name}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Produto</td>
-                                    <td>{{seletedLinha.form.ProdutoName}}</td>
-                                    <td class="title">Código da formulação</td>
-                                    <td>{{seletedLinha.form.CodProduto}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Hora do início da Produção</td>
-                                    <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
-                                    <td class="title">Hora do final da Produção</td>
-                                    <td>{{seletedLinha.form.HoraFimProducao  | date:'HH:mm'}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Fornecedor da Lata</td>
-                                    <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
-                                    <td class="title">Data do recebimento das latas</td>
-                                    <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Fornecedor das tampas/fundos das latas</td>
-                                    <td><span ng-repeat="item in seletedLinha.form.FornecedorTampaFundoLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
-                                    <td class="title">Data do recebimento das tampas/fundos das latas</td>
-                                    <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas  | date:'dd/MM/yyyy'}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Tipo da Lata</td>
-                                    <td>{{seletedLinha.form.TipoDeLata.Name}}</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                        <img class="lataPtImg img-responsive" src="~/Imagens/Recravacao/{{seletedLinha.TipoDeLata.NumberOfPoints}}pts.jpg" />
-                        <div class="clearfix"></div>
-                    </div>
+                    
                 </div>
                 <div class="clearfix"></div>
                 <div>
-                    <div class="border">
-                        <p>
-                            ORIENTAÇÕES PARA PREENCHIMENTO DAS AÇÕES - ITENS NÃO CONFORMES
-                            <br />- Identificar o desvio e eliminá-lo:
-                            <br />"Descrever o horário da ocorrência (1) e relatar a deficiência identificando o local, equipamento/estrutura e produtos envolvidos (2).
-                            <br />No caso do PPHO, se não houver produto envolvido, identificar como ""Não há produto envolvido"".  "
-                        </p>
 
-                        <p>
-                            - Assegurar a apropriada disposição do produto que possa estar contaminado:
-                            <br />Em caso de produto envolvido, assegurar a segregação para avaliação e posterior destino.
-                            <br />- Restabelecer as condições sanitárias:
-                            <br />Descrever a ação tomada para restabelecer as condições sanitárias imediatas (3). Registrar o horário de liberação do local/produto, quando aplicável (4). Sugestões de ações corretivas podem ser consultadas em seus respectivos programas.
-                        </p>
-
-                        <p>
-                            - Prevenir a recorrência de contaminação direta ou adulteração do produto:
-                            <br />O supervisor da área deverá analisar o desvio para definir uma ação preventiva (5) para que o desvio não volte a ocorrer. Sugestões de ações preventivas podem ser consultadas em seus respectivos programas.  Vale ressaltar que o supervisor do setor (que assina a planilha) é o responsável por tratar corretivamente e preventivamente a anomalia em questão. Caso tenha mais de um supervisor responsável pelas ações, ambos devem vistar e assinar a planilha.
-                        </p>
-                    </div>
 
                     <div class="divTableCorrectiveAction" style="padding-top: 20px;">
 
@@ -531,11 +472,11 @@
                                     <col style="width: 28.3%;">
                                 </colgroup>
                                 @*<tr>
-                                        <th>Hora (1)</th>
-                                        <th>DEFICIÊNCIA (2)</th>
-                                        <th>AÇÃO CORRETIVA (3)</th>
-                                        <th>AÇÃO PREVENTIVA (4)</th>
-                                    </tr>*@
+                        <th>Hora (1)</th>
+                        <th>DEFICIÊNCIA (2)</th>
+                        <th>AÇÃO CORRETIVA (3)</th>
+                        <th>AÇÃO PREVENTIVA (4)</th>
+                    </tr>*@
                                 <tr>
                                     <td class="tbodyTd">
                                         {{acoes.AddDate}}
@@ -569,6 +510,29 @@
 
 
                         </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="clearfix"></div>
+                    <div class="clearfix"></div>
+                    <div class="border">
+                        <p>
+                            ORIENTAÇÕES PARA PREENCHIMENTO DAS AÇÕES - ITENS NÃO CONFORMES
+                            <br />- Identificar o desvio e eliminá-lo:
+                            <br />"Descrever o horário da ocorrência (1) e relatar a deficiência identificando o local, equipamento/estrutura e produtos envolvidos (2).
+                            <br />No caso do PPHO, se não houver produto envolvido, identificar como ""Não há produto envolvido"".  "
+                        </p>
+
+                        <p>
+                            - Assegurar a apropriada disposição do produto que possa estar contaminado:
+                            <br />Em caso de produto envolvido, assegurar a segregação para avaliação e posterior destino.
+                            <br />- Restabelecer as condições sanitárias:
+                            <br />Descrever a ação tomada para restabelecer as condições sanitárias imediatas (3). Registrar o horário de liberação do local/produto, quando aplicável (4). Sugestões de ações corretivas podem ser consultadas em seus respectivos programas.
+                        </p>
+
+                        <p>
+                            - Prevenir a recorrência de contaminação direta ou adulteração do produto:
+                            <br />O supervisor da área deverá analisar o desvio para definir uma ação preventiva (5) para que o desvio não volte a ocorrer. Sugestões de ações preventivas podem ser consultadas em seus respectivos programas.  Vale ressaltar que o supervisor do setor (que assina a planilha) é o responsável por tratar corretivamente e preventivamente a anomalia em questão. Caso tenha mais de um supervisor responsável pelas ações, ambos devem vistar e assinar a planilha.
+                        </p>
                     </div>
 
                     <table class="footerCA">
@@ -604,59 +568,11 @@
             </div>
 
             <div id="contentFooter">
-                <div class="border-rounded">
-                    <table class="table-footer">
-                        <tr>
-                            <td>
-                                <small>
-                                    <b>Espaço Livre: </b>{{ seletedLinha.ParLevel3Interval['limite_Espaço Livre'] }}<br>
-                                    <b>Escareação: </b>{{ seletedLinha.ParLevel3Interval['limite_Escareação'] }}<br>
-                                    <b>Altura: </b>{{ seletedLinha.ParLevel3Interval['limite_Altura'] }}<br>
-                                    <b>Gancho Corpo: </b>{{ seletedLinha.ParLevel3Interval['limite_Gancho Corpo'] }}<br>
-                                </small>
-                            </td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td>
-                                <small>
-                                    <b>Gancho Tampa: </b>{{ seletedLinha.ParLevel3Interval['limite_Gancho Tampa'] }}<br>
-                                    <b>Junção: </b>{{ seletedLinha.ParLevel3Interval['limite_Gancho Tampa'] }}<br>
-                                    <b><i>Teste de ar: </b>Ausência (0% de Vazamento) </i><br>
-                                    <b>Legendas: C</b> - Conforme <b>NC</b> - Não Conforme <b>NA</b> - Não Aplicável
-                                </small>
-                            </td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td>
-                                <small>
-                                    <b>GC Butting</b>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    x 100=% <br>
-                                    <u>&nbsp;&nbsp; GC - 1.1 EC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><br>
-                                    ALT - (2,2 ET + 1,1 EC)<br>
-                                    Valor Mínimo = {{ seletedLinha.ParLevel3Interval['min_% GC Butting'] }}{{ seletedLinha.ParLevel3Interval['unidade_% GC Butting'] }}
-                                </small>
-                            </td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td>
-                                <small>
-                                    <b>Procentagem Overlap </b>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    x 100 = % <br>
-                                    <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp; </u><br>
-                                    ALT - (2,2 ET + 1,1 EC) <br>
-                                    Valor Mínimo = {{ seletedLinha.ParLevel3Interval['min_% Overlap'] }}{{ seletedLinha.ParLevel3Interval['unidade_% Overlap'] }}
-                                </small>
-                            </td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td>
-                                <small>
-                                    <b>Overlap Calculado </b> </br>
-                                    <u>(GC + GT + 1,1 ET) - ALT &nbsp;&nbsp;</u> <br>
-                                    Valor Mínimo = {{ seletedLinha.ParLevel3Interval['min_Overlap'] }}{{ seletedLinha.ParLevel3Interval['unidade_Overlap'] }}
-                                </small>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+
+                
+                <span>@Html.Raw(ViewBag.ReportXUserSgq.CodigoRelatorio)</span>
+
+
             </div>
 
         </div>

@@ -6,7 +6,7 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class VolumePcc1b
+    public partial class VolumePcc1b : BaseModel
     {
         public int Id { get; set; }
 
@@ -38,15 +38,14 @@ namespace Dominio
 
         public int? Amostras { get; set; }
 
-        [Column(TypeName = "datetime2")]
-        public DateTime? AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
-
         public int? ParCompany_id { get; set; }
 
         public int? ParLevel1_id { get; set; }
+
+        public int? Shift_Id { get; set; }
+
+        [ForeignKey("Shift_Id")]
+        public virtual Shift Shift { get; set; }
 
         public virtual ParCompany ParCompany { get; set; }
 

@@ -4,6 +4,9 @@ namespace Dominio
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using System.Threading.Tasks;
+    using System.Threading;
+    using Newtonsoft.Json;
 
     public partial class SgqDbDevEntities : DbContext
     {
@@ -12,6 +15,94 @@ namespace Dominio
         {
             this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
+        public override int SaveChanges()
+        {
+            AddTimestamps();
+            AddDatabaseLog();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            AddTimestamps();
+            AddDatabaseLog();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void AddTimestamps()
+        {
+            var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseModel && (x.State == EntityState.Added || x.State == EntityState.Modified));
+
+            foreach (var entity in entities)
+            {
+                if (entity.State == EntityState.Added)
+                {
+                    ((BaseModel)entity.Entity).AddDate = DateTime.Now;
+                    ((BaseModel)entity.Entity).AlterDate = DateTime.Now;
+                }
+                else
+                {
+                    this.Entry(((BaseModel)entity.Entity)).Property(x => x.AddDate).IsModified = false;
+                    ((BaseModel)entity.Entity).AlterDate = DateTime.Now;
+                }
+            }
+        }
+
+        private void AddDatabaseLog()
+        {
+            var entities = ChangeTracker.Entries().Where(x =>
+            !(x.Entity is DatabaseLog)
+            && !(x.Entity is ErrorLog)
+            && !(x.Entity is UserSgq)
+            && !(x.Entity is Result_Level3)
+            && !(x.Entity is LogJson)
+            && !(x.Entity is LogSgqGlobal)
+            && !(x.Entity is LogAlteracoes)
+            && !(x.Entity is CollectionJson)
+            && !(x.Entity is CollectionLevel2)
+            && !(x.Entity is ConsolidationLevel2)
+            && !(x.Entity is ConsolidationLevel1)
+            && !(x.Entity is CollectionLevel2XParHeaderField)
+            && !(x.Entity is RecravacaoJson)
+            && !(x.Entity is EmailContent)
+            && !(x.Entity is Deviation)
+            && !(x.State == EntityState.Detached || x.State == EntityState.Unchanged)
+            ).ToList();
+            foreach (var entity in entities)
+            {
+                object objeto = Activator.CreateInstance(entity.Entity.GetType());
+                Type t = entity.Entity.GetType();
+                foreach (var propInfo in t.GetProperties())
+                {
+                    if (!propInfo.PropertyType.IsClass && !propInfo.PropertyType.IsGenericType)
+                    {
+                        object valor = propInfo.GetValue(entity.Entity, null);
+                        Type tipo = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
+                        object valorConvertido = (valor == null) ? null : Convert.ChangeType(valor, tipo);
+                        propInfo.SetValue(objeto, valorConvertido, null);
+                    }
+                }
+
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(objeto, Formatting.None, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    PreserveReferencesHandling = PreserveReferencesHandling.None
+                });
+                this.DatabaseLog.Add(
+                    new DatabaseLog()
+                    {
+                        AddDate = DateTime.Now,
+                        Json = json,
+                        Operacao = (int)entity.State,
+                        Tabela = entity.Entity.GetType().ToString()
+                    }
+                 );
+                base.SaveChanges();
+            }
+        }
+
+        public virtual DbSet<DatabaseLog> DatabaseLog { get; set; }
+        public virtual DbSet<ErrorLog> ErrorLog { get; set; }
 
         public virtual DbSet<AreasParticipantes> AreasParticipantes { get; set; }
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
@@ -37,9 +128,6 @@ namespace Dominio
         public virtual DbSet<Horarios> Horarios { get; set; }
         public virtual DbSet<ItemMenu> ItemMenu { get; set; }
         public virtual DbSet<LeftControlRole> LeftControlRole { get; set; }
-        public virtual DbSet<Level01> Level01 { get; set; }
-        public virtual DbSet<Level02> Level02 { get; set; }
-        public virtual DbSet<Level03> Level03 { get; set; }
         public virtual DbSet<LogAlteracoes> LogAlteracoes { get; set; }
         public virtual DbSet<LogJson> LogJson { get; set; }
         public virtual DbSet<LogSgq> LogSgq { get; set; }
@@ -147,6 +235,9 @@ namespace Dominio
         public virtual DbSet<ImportFormat> ImportFormat { get; set; }
         public virtual DbSet<ImportFormatItem> ImportFormatItem { get; set; }
         public virtual DbSet<ReportXUserSgq> ReportXUserSgq { get; set; }
+        public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1> ParGroupParLevel1 { get; set; }
+        public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1Type> ParGroupParLevel1Type { get; set; }
+        public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1XParLevel1> ParGroupParLevel1XParLevel1 { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -343,30 +434,6 @@ namespace Dominio
 
             modelBuilder.Entity<ItemMenu>()
                 .Property(e => e.Resource)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level01>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level01>()
-                .Property(e => e.Alias)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level02>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level02>()
-                .Property(e => e.Alias)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level03>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Level03>()
-                .Property(e => e.Alias)
                 .IsUnicode(false);
 
             modelBuilder.Entity<LogJson>()
@@ -1345,5 +1412,7 @@ namespace Dominio
                 .Property(e => e.Role)
                 .IsFixedLength();
         }
+
+        public System.Data.Entity.DbSet<Dominio.ParVinculoPeso> ParGroupParLevel1XParLevel3 { get; set; }
     }
 }

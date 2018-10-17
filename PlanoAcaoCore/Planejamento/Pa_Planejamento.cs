@@ -34,6 +34,7 @@ namespace PlanoAcaoCore
         [Display(Name = "Diretriz")]
         public int Objetivo_Id { get; set; }
         public string Objetivo { get; set; }
+        public bool ObjetivoPriorizado { get; set; }
 
         [Display(Name = "Indicadores da Diretrizes")]
         public int IndicadoresDiretriz_Id { get; set; }
@@ -320,6 +321,7 @@ namespace PlanoAcaoCore
    ,DIME.Name AS Dimensao
    ,INICI.Name AS Iniciativa
    ,OBJ.Name AS Objetivo
+   ,OBJ.IsPriority AS ObjetivoPriorizado
 FROM (SELECT
 		Pl1.Id
 	   ,Pl1.AddDate

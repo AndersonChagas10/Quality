@@ -81,6 +81,23 @@ namespace SgqSystem.Controllers.Api
             return _listApontomentosDiarioDomingo;
         }
 
+        [HttpGet]
+        [Route("PhotoPreview/{ResultLevel3Id}")]
+        public String GetPhotoPreview(int ResultLevel3Id)
+        {
+            var result = db.Result_Level3_Photos.FirstOrDefault(r => r.Result_Level3_Id == ResultLevel3Id);
+            if(result != null)
+                return result.Photo_Thumbnaills;
+            return null;
+        }
+
+        [HttpGet]
+        [Route("Photos/{ResultLevel3Id}")]
+        public List<Result_Level3_Photos> GetPhotos(int ResultLevel3Id)
+        {
+            return db.Result_Level3_Photos.Where(r => r.Result_Level3_Id == ResultLevel3Id).ToList();
+        }
+
         [HttpPost]
         [Route("Edit/{id}")]
         public Result_Level3DTO EditResultLevel3(int id)

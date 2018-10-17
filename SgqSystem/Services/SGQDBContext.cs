@@ -14,7 +14,6 @@ namespace SGQDBContext
 {
     public partial class ParLevel1
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public string Id { get; set; }
         public int hashKey { get; set; }
@@ -64,7 +63,7 @@ namespace SGQDBContext
         {
             try
             {
-                //SqlConnection db = new SqlConnection(conexao);
+
                 string sql = "SELECT * FROM ParLevel1 (nolock)  WHERE Id='" + Id + "'";
 
                 ParLevel1 parLevel1List = null;
@@ -85,7 +84,7 @@ namespace SGQDBContext
         {
             try
             {
-                //SqlConnection db = new SqlConnection(conexao);
+
                 string sql = "SELECT * FROM ParLevel1 WHERE Id                                              " +
                              " IN (                                                                         " +
                              " SELECT ParLevel1_Id FROM ParLevel2ControlCompany                             " +
@@ -100,6 +99,7 @@ namespace SGQDBContext
                         "HAVING MAX(InitDate) = InitDate)                                                   ";
 
                 var parLevel1List = new List<ParLevel1>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parLevel1List = factory.SearchQuery<ParLevel1>(sql).ToList();
@@ -115,41 +115,7 @@ namespace SGQDBContext
 
         public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id, string Level1ListId, DateTime dateCollection)
         {
-
-            /*
-             * MOCK GABRIEL PARA TESTE DE TRAZER TAREFAS DO OUTRO INDICADOR
-             * 30/03/2017
-             */
-
-            //string whereIsChildren = "  ";
             string whereIsChildren = " AND IsChildren = 0 ";
-
-            //SqlConnection db = new SqlConnection(conexao);
-            //string sql1 = "\n SELECT P1.Id, P1.Name, P1.HasTakePhoto, " +
-            //             "\n (1) AS ParCriticalLevel_Id, ('Gabriel') AS ParCriticalLevel_Name, " +
-            //             "\n P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
-            //             "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
-            //             "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2, P1.IsFixedEvaluetionNumber AS IsFixedEvaluetionNumber " +
-            //             "\n FROM ParLevel1 P1  (nolock)                                                                                                         " +
-            //             "\n INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
-            //             "\n ON P321.ParLevel1_Id = P1.Id                                                                                               " +
-            //             "\n INNER JOIN ParLevel1XCluster P1C  (nolock)                                                                                           " +
-            //             "\n ON P1C.ParLevel1_Id = P1.Id                                                                                                " +
-            //             "\n INNER JOIN ParCluster C    (nolock)                                                                                                  " +
-            //             "\n ON C.Id = P1C.ParCluster_Id                                                                                                " +
-            //             "\n INNER JOIN ParCompanyCluster CC   (nolock)                                                                                           " +
-            //             "\n ON CC.ParCluster_Id = P1C.ParCluster_Id  and CC.Active = 1                                                               " +
-            //             "\n INNER JOIN ParCriticalLevel CL     (nolock)                                                                                          " +
-            //             "\n ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
-            //             "\n LEFT JOIN ParNotConformityRuleXLevel AL    (nolock)                                                                                 " +
-            //             "\n ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               " +
-
-            //             "\n INNER JOIN (SELECT ParLevel1_Id FROM (select * from parGoal (nolock)  where IsActive = 1 and (ParCompany_Id is null or ParCompany_Id = '" + ParCompany_Id + "')) A GROUP BY ParLevel1_Id) G  " +
-            //             "\n ON P1.Id = G.ParLevel1_Id                                                                                        " +
-
-            //             "\n WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
-            //             "\n " + whereIsChildren + "                                                                                                       " +
-            //             "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       ";
 
             string sql = @"SELECT * FROM (
                         -- SELECT CAST(C.Id AS VARCHAR) + '" + SyncServices.quebraProcesso + @"' + CAST(P1.Id AS VARCHAR)  AS Id, P1.Id as ParLevel1_Id , P1.Name + ' - ' + C.Name as Name, P1.HasTakePhoto, 
@@ -193,9 +159,8 @@ namespace SGQDBContext
                     where ParCriticalLevel_id is not null  
                     ORDER BY 5, 2";
 
-            //var parLevel1List = (List<ParLevel1>)db.Query<ParLevel1>(sql);
-
             List<ParLevel1> parLevel1List = new List<ParLevel1>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 parLevel1List = factory.SearchQuery<ParLevel1>(sql).ToList();
@@ -217,26 +182,22 @@ namespace SGQDBContext
 
     public partial class ParLevel1Alertas
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
         public decimal Nivel1 { get; set; }
         public decimal Nivel2 { get; set; }
         public string Nivel3 { get; set; }
         public decimal VolumeAlerta { get; set; }
         public decimal Meta { get; set; }
 
-
-        //public DateTime DataCollect { get; set; }
-        //public int? Evaluate { get; set; }
-        //public int? Sample { get; set; }
-        //public int? ParCompany_Id_Evaluate { get; set; }
-        //public int? ParCompany_Id_Sample { get; set; }
         private SqlConnection db { get; set; }
         public ParLevel1Alertas() { }
+
         public ParLevel1Alertas(SqlConnection _db)
         {
             db = _db;
         }
-        public ParLevel1Alertas getAlertas(ParLevel1 ParLevel1, int ParCompany_Id, DateTime DateCollect)
+
+        public ParLevel1Alertas getAlertas(ParLevel1 ParLevel1, int ParCompany_Id, DateTime DateCollect, int Shift_Id)
         {
 
             int ParLevel1_Id = ParLevel1.ParLevel1_Id;
@@ -244,164 +205,249 @@ namespace SGQDBContext
 
             string _DataCollect = DateCollect.ToString("yyyyMMdd");
 
-            string sql = "DECLARE @PARLEVEL1 INT = " + ParLevel1_Id + " ";
+            string sql = $@"DECLARE @PARLEVEL1 INT = {ParLevel1_Id}
+create table #pcc(hashKey int, id int, indicador int, av int, am int, peso float)
+INSERT INTO #pcc
+	SELECT
+		1
+	   ,3
+	   ,3
+	   ,1
+	   ,1
+	   ,1
+SELECT
+	CAST(SUM((VolumeAlerta * (Meta / 100))) AS VARCHAR) AS nivel3
+   ,SUM((VolumeAlerta * (Meta / 100)) / 3 * 2) AS nivel2
+   ,SUM((VolumeAlerta * (Meta / 100)) / 3) AS nivel1
+   ,SUM(VolumeAlerta) AS VolumeAlerta
+   ,AVG(Meta) AS Meta
+FROM (SELECT
+		CASE
+			WHEN ParConsolidationType_Id = 1 THEN AV * AM * PESO
+			WHEN ParConsolidationType_Id = 2 THEN AV * AM * (CASE
+					WHEN PESO > 0 THEN 1
+					ELSE 0
+				END)
+			ELSE AV * AM * PESO
+		END AS VolumeAlerta
+	   ,_META AS Meta
+	   ,*
+	FROM (SELECT
+			RESULT.*
+		   ,(SELECT
+					ParConsolidationType_Id
+				FROM ParLevel1(nolock)
+				WHERE Id = @PARLEVEL1)
+			AS ParConsolidationType_Id
+		   ,(SELECT TOP 1
+					PercentValue
+				FROM ParGoal(nolock)
+				WHERE ParLevel1_Id = @PARLEVEL1
+				AND (ParCompany_Id = {ParCompany_Id}
+				OR ParCompany_Id IS NULL)
+				AND EffectiveDate <= CONVERT(DATE, '{_DataCollect}')
+				AND IsActive = 1
+				ORDER BY ParCompany_id DESC, EffectiveDate DESC)
+			AS _META
+		FROM (
+			/*****PCC1b**************************************************************************************************************************************************************************/
+			SELECT TOP 1
+				*
+			FROM (SELECT
+					*
+				FROM (SELECT TOP 1
+						1 AS ""hashKey""
+					   ,(SELECT
+								Id
+							FROM ParLevel1(nolock)
+							WHERE hashKey = 1)
+						AS ID
+					   ,'PCC1b' AS INDICADOR
+					   ,1 AS AV
+					   ,COALESCE(Amostras, 0) * 2 AS AM
+					   ,1 AS PESO
+					FROM VolumePcc1b(nolock)
+					WHERE ParCompany_id = { ParCompany_Id }
+					AND CONVERT(DATE, Data) = CONVERT(DATE, '{ _DataCollect }')
+                    AND (Shift_Id = { Shift_Id }
+				    OR Shift_Id IS NULL)
+				    ORDER BY Shift_Id, Data DESC) PCC) PCC1b
+			/************************************************************************************************************************************************************************************/
+			UNION ALL
+			/*****CEP VÁCUO GRD******************************************************************************************************************************************************************/
+			SELECT
+				*
+			FROM (SELECT TOP 1
+					3 AS ""hashKey""
+				   ,(SELECT
+							Id
+						FROM ParLevel1(nolock)
+						WHERE hashKey = 3)
+					AS ID
+				   ,'CEP VÁCUO GRD' AS INDICADOR
+				   ,Avaliacoes AS AV
+				   ,Amostras * QtdadeFamiliaProduto AS AM
+				   ,1 AS PESO
+				FROM VolumeVacuoGRD(nolock)
+				WHERE ParCompany_id = {ParCompany_Id}
+				AND CONVERT(DATE, Data) <= CONVERT(DATE, '{_DataCollect}')
+                AND (Shift_Id = { Shift_Id }
+				OR Shift_Id IS NULL)
+				ORDER BY Shift_Id, Data DESC) GRD
+			/************************************************************************************************************************************************************************************/
+			UNION ALL
+			/*****CEP DESOSSA********************************************************************************************************************************************************************/
+			SELECT
+				*
+			FROM (SELECT TOP 1
+					2 AS ""hashKey""
+				   ,(SELECT
+							Id
+						FROM ParLevel1(nolock)
+						WHERE hashKey = 2)
+					AS ID
+				   ,'CEP DESOSSA' AS INDICADOR
+				   ,Avaliacoes AS AV
+				   ,Amostras * QtdadeFamiliaProduto AS AM
+				   ,1 AS PESO
+				FROM VolumeCepDesossa(nolock)
+				WHERE ParCompany_id = {ParCompany_Id}
+				AND CONVERT(DATE, Data) <= CONVERT(DATE, '{_DataCollect}')
+                AND (Shift_Id = { Shift_Id }
+				OR Shift_Id IS NULL)
+				ORDER BY Shift_Id, Data DESC) DESOSSA
+			/************************************************************************************************************************************************************************************/
+			UNION ALL
+			/*****CEP RECORTES*******************************************************************************************************************************************************************/
+			SELECT
+				*
+			FROM (SELECT TOP 1
+					4 AS ""hashKey""
+				   ,(SELECT
+							Id
+						FROM ParLevel1(nolock)
+						WHERE hashKey = 4)
+					AS ID
+				   ,'CEP RECORTES' AS INDICADOR
+				   ,Avaliacoes AS AV
+				   ,Amostras AS AM
+				   ,1 AS PESO
+				FROM VolumeCepRecortes(nolock)
+				WHERE ParCompany_id = {ParCompany_Id}
+				AND CONVERT(DATE, Data) <= CONVERT(DATE, '{_DataCollect}')
+                AND (Shift_Id = { Shift_Id }
+				OR Shift_Id IS NULL)
+				ORDER BY Shift_Id, Data DESC) RECORTES
+			/************************************************************************************************************************************************************************************/
+			UNION ALL
+			/*****OUTROS*************************************************************************************************************************************************************************/
+			SELECT
+				hashKey AS hasKey
+			   ,Id AS Id
+			   ,INDICADOR AS INDICADOR
+			   ,AVALIACOES AS AV
+			   ,AMOSTRAS AS AM
+			   ,PESO_DA_TAREFA AS PESO
+			FROM (SELECT
+					INDICADOR.*
+				   ,MON.Name AS MONITORAMENTO
+				   ,TAR.Name AS TAREFA
+				   ,MONITORAMENTOS.Weight AS ""PESO_DA_TAREFA""
+				   ,(SELECT TOP 1
+							Number
+						FROM ParEvaluation(nolock)
+						WHERE ParLevel2_Id = MON.Id
+						AND (ParCompany_Id = {ParCompany_Id}
+						OR ParCompany_Id IS NULL)
+						AND (ParLevel1_id = @PARLEVEL1
+						OR ParLevel1_id IS NULL)
+						AND ParCluster_Id = {ParCluster_Id}
+						ORDER BY ParCompany_Id DESC)
+					AS AVALIACOES
+				   ,(SELECT TOP 1
+							Number
+						FROM ParSample(nolock)
+						WHERE ParLevel2_Id = MON.Id
+						AND (ParCompany_Id = {ParCompany_Id}
+						OR ParCompany_Id IS NULL)
+						AND (ParLevel1_id = @PARLEVEL1
+						OR ParLevel1_id IS NULL)
+						AND ParCluster_Id = {ParCluster_Id}
+						ORDER BY ParCompany_Id DESC)
+					AS AMOSTRAS
+				FROM
+				----INDICADOR-------------------------------------------------- 
+				(SELECT
+						IND.Id AS ""Id""
+					   ,IND.""hashKey"" AS ""hashKey""
+					   ,IND.Name AS ""INDICADOR""
+					   ,IND.hashKey AS ""CÓDIGO ESPECÍFICO""
+					   ,Cons.Name AS ""TIPO_DE_CONSOLIDACAO""
+					   ,IND.HasAlert AS ""EMITE_ALERTA ? ""
+					   ,IND.IsSpecific AS ""ESPECÍFICO""
+					   ,IND.IsSpecificNumberEvaluetion AS ""ESPECÍFICO - AVALIAÇÕES""
+					   ,IND.IsSpecificNumberSample AS ""ESPECÍFICO - AMOSTRAS""
+					   ,IND.IsFixedEvaluetionNumber AS ""ESPECÍFICO - FAMÍLIA DE PRODUTOS""
+					FROM ParLevel1 IND (NOLOCK)
+					LEFT JOIN ParConsolidationType Cons (NOLOCK)
+						ON Cons.Id = IND.ParConsolidationType_Id
+					WHERE IND.Id = @PARLEVEL1) INDICADOR
+				INNER JOIN
+				----MONITORAMENTO---------------------------------------------- 
+				(SELECT
+						@PARLEVEL1 AS INDICADOR
+					   ,*
+					FROM (SELECT
+							I_M_T.ParLevel3Level2_Id
+						   ,MAX(I_M_T.ParCompany_Id) AS ParCompany_Id
+						FROM ParLevel3Level2Level1 I_M_T (NOLOCK)
+						WHERE I_M_T.ParLevel1_Id = @PARLEVEL1
+						AND I_M_T.Active = 1
+						AND (I_M_T.ParCompany_Id = {ParCompany_Id}
+						OR I_M_T.ParCompany_Id IS NULL)
+						GROUP BY I_M_T.ParLevel3Level2_Id) M1
+					INNER JOIN (SELECT
+							(SELECT TOP 1
+									Id
+								FROM ParLevel3Level2(nolock)
+								WHERE ParLevel2_Id = M_T.ParLevel2_Id
+								AND ParLevel3_Id = M_T.ParLevel3_Id
+								AND COALESCE(ParCompany_Id, 0) = MAX(COALESCE(M_T.ParCompany_Id, 0)))
+							AS Id
+						   ,(SELECT TOP 1
+									Weight
+								FROM ParLevel3Level2(nolock)
+								WHERE ParLevel2_Id = M_T.ParLevel2_Id
+								AND ParLevel3_Id = M_T.ParLevel3_Id
+								AND COALESCE(ParCompany_Id, 0) = MAX(COALESCE(M_T.ParCompany_Id, 0)))
+							AS Weight
+						   ,M_T.ParLevel2_Id
+						   ,M_T.ParLevel3_Id
+						   ,MAX(M_T.ParCompany_Id) AS _ParCompany_Id
+						FROM ParLevel3Level2 M_T (NOLOCK)
+						INNER JOIN ParLevel3 TAR (NOLOCK)
+							ON TAR.Id = M_T.ParLevel3_Id
+							AND TAR.IsActive = 1
+						INNER JOIN ParLevel2 MON (NOLOCK)
+							ON MON.Id = M_T.ParLevel2_Id
+							AND MON.IsActive = 1
+						WHERE (M_T.ParCompany_Id = {ParCompany_Id}
+						OR M_T.ParCompany_Id IS NULL)
+						GROUP BY M_T.ParLevel2_Id
+								,M_T.ParLevel3_Id) M2
+						ON M1.ParLevel3Level2_Id = M2.Id) MONITORAMENTOS
+					ON INDICADOR.ID = MONITORAMENTOS.INDICADOR
+				INNER JOIN ParLevel2 MON (NOLOCK)
+					ON MON.Id = MONITORAMENTOS.ParLevel2_Id
+				INNER JOIN ParLevel3 TAR (NOLOCK)
+					ON TAR.Id = MONITORAMENTOS.ParLevel3_Id
+				WHERE (hashKey IS NULL
+				OR hashKey = 5)) OUTROS
+		/************************************************************************************************************************************************************************************/
+		) RESULT
+		WHERE RESULT.ID = @PARLEVEL1) SELECAO) FIM
+HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
-            sql = sql + @" create table #pcc(
-
-                            hashKey int, id int, indicador int, av int, am int, peso float
-                        )
-
-                        insert into #pcc select 1, 3, 3, 1, 1, 1";
-
-            sql = sql + "\n SELECT " +
-                    "\n cast(SUM((VolumeAlerta * (Meta/100))) as varchar)		AS nivel3    " +
-                    "\n ,SUM((VolumeAlerta * (Meta / 100)) / 3 * 2)   AS nivel2 " +
-                    "\n , SUM((VolumeAlerta * (Meta / 100)) / 3)     AS nivel1 " +
-                    "\n , sum(VolumeAlerta) AS VolumeAlerta " +
-                    "\n , AVG(Meta) AS Meta " +
-                    "\n   FROM " +
-                    "\n   ( " +
-                    "\n       SELECT " +
-                    "\n       CASE " +
-                    "\n           WHEN ParConsolidationType_Id = 1 THEN AV * AM * PESO " +
-                    "\n           WHEN ParConsolidationType_Id = 2 THEN AV * AM * (CASE WHEN PESO > 0 THEN 1 ELSE 0 END) " +
-                    "\n        ELSE AV * AM * PESO " +
-                    "\n        END AS VolumeAlerta " +
-                    "\n       , _META AS Meta " +
-                    "\n       , * " +
-                    "\n       FROM " +
-                    "\n           ( " +
-                    "\n           SELECT  RESULT.* " +
-                    "\n                  , (SELECT ParConsolidationType_Id FROM ParLevel1  (nolock) WHERE Id = @PARLEVEL1) AS ParConsolidationType_Id " +
-                    "\n                  , (SELECT TOP 1 PercentValue FROM ParGoal (nolock)  WHERE ParLevel1_Id = @PARLEVEL1 AND (ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) AND EffectiveDate <= CONVERT(DATE, '" + _DataCollect + "') AND IsActive = 1 ORDER BY ParCompany_id DESC,EffectiveDate DESC) AS _META " +
-                    "\n                FROM " +
-                    "\n         ( " +
-                    "\n             /*****PCC1b**************************************************************************************************************************************************************************/ " +
-                    "\n             SELECT TOP 1 * FROM ( " +
-                    "\n " +
-                    //"\n             SELECT * FROM #PCC " +
-                    //"\n             UNION ALL " +
-
-
-                    "\n             SELECT * FROM " +
-                    "\n             (SELECT TOP 1 1 AS \"hashKey\" " +
-                    "\n             , (SELECT Id FROM ParLevel1  (nolock) WHERE hashKey = 1) AS ID " +
-                    "\n             , 'PCC1b' AS INDICADOR, 1 AS AV, COALESCE(Amostras, 0) * 2 AS AM, 1 AS PESO FROM VolumePcc1b (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " and CONVERT(DATE, Data) = CONVERT(DATE, '" + _DataCollect + "')) PCC " +
-                    
-                    "\n             ) PCC1b " +                    
-                    
-                    "\n               /************************************************************************************************************************************************************************************/ " +
-                    "\n               UNION ALL " +
-                    "\n            /*****CEP VÁCUO GRD******************************************************************************************************************************************************************/ " +
-                    "\n            SELECT * FROM " +
-                    "\n            (SELECT TOP 1 3 AS \"hashKey\" " +
-                    "\n            , (SELECT Id FROM ParLevel1  (nolock) WHERE hashKey = 3) AS ID " +
-                    "\n             ,'CEP VÁCUO GRD' AS INDICADOR, Avaliacoes AS AV, Amostras *QtdadeFamiliaProduto AS AM, 1 AS PESO FROM VolumeVacuoGRD (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " and CONVERT(DATE, Data) <= CONVERT(DATE, '" + _DataCollect + "') ORDER BY Data DESC) GRD " +
-                    "\n            /************************************************************************************************************************************************************************************/ " +
-                    "\n            UNION ALL " +
-                    "\n            /*****CEP DESOSSA********************************************************************************************************************************************************************/ " +
-                    "\n            SELECT * FROM " +
-                    "\n            (SELECT TOP 1 2 AS \"hashKey\" " +
-                    "\n            , (SELECT Id FROM ParLevel1 (nolock)  WHERE hashKey = 2) AS ID " +
-                    "\n             ,'CEP DESOSSA' AS INDICADOR, Avaliacoes AS AV, Amostras *QtdadeFamiliaProduto AS AM, 1 AS PESO FROM VolumeCepDesossa (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " and CONVERT(DATE, Data) <= CONVERT(DATE, '" + _DataCollect + "') ORDER BY Data DESC) DESOSSA " +
-                    "\n            /************************************************************************************************************************************************************************************/ " +
-                    "\n            UNION ALL " +
-                    "\n            /*****CEP RECORTES*******************************************************************************************************************************************************************/ " +
-                    "\n            SELECT* FROM " +
-                    "\n            (SELECT TOP 1 4 AS \"hashKey\" " +
-                    "\n            , (SELECT Id FROM ParLevel1  (nolock) WHERE hashKey = 4) AS ID " +
-                    "\n             ,'CEP RECORTES' AS INDICADOR, Avaliacoes AS AV, Amostras AS AM, 1 AS PESO FROM VolumeCepRecortes (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " and CONVERT(DATE, Data) <= CONVERT(DATE, '" + _DataCollect + "') ORDER BY Data DESC) RECORTES " +
-                    "\n             /************************************************************************************************************************************************************************************/ " +
-                    "\n             UNION ALL " +
-                    "\n             /*****OUTROS*************************************************************************************************************************************************************************/ " +
-                    "\n             SELECT " +
-                    "\n             hashKey AS hasKey " +
-                    "\n			,Id AS Id " +
-                    "\n			,INDICADOR AS INDICADOR " +
-                    "\n			,AVALIACOES AS AV " +
-                    "\n			,AMOSTRAS AS AM " +
-                    "\n			,PESO_DA_TAREFA AS PESO " +
-                    "\n            FROM " +
-                    "\n            ( " +
-                    "\n                SELECT " +
-                    "\n                 INDICADOR.* " +
-                    "\n               , MON.Name AS MONITORAMENTO " +
-                    "\n                , TAR.Name AS TAREFA " +
-                    "\n                , MONITORAMENTOS.Weight AS \"PESO_DA_TAREFA\" " +
-                    "\n                , (SELECT TOP 1 Number FROM ParEvaluation (nolock)  WHERE ParLevel2_Id = MON.Id AND(ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) and (ParLevel1_id = " + ParLevel1_Id + " OR ParLevel1_id IS NULL) and ParCluster_Id = " + ParCluster_Id + " ORDER BY ParCompany_Id DESC) AS AVALIACOES " +
-                    "\n                ,(SELECT TOP 1 Number FROM ParSample (nolock)      WHERE ParLevel2_Id = MON.Id AND(ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) and (ParLevel1_id = " + ParLevel1_Id + " OR ParLevel1_id IS NULL) and ParCluster_Id = " + ParCluster_Id + " ORDER BY ParCompany_Id DESC) AS AMOSTRAS " +
-                    "\n                FROM " +
-                    "\n                ----INDICADOR-------------------------------------------------- " +
-                    "\n                ( " +
-                    "\n                    SELECT " +
-                    "\n                     IND.Id                             AS \"Id\" " +
-                    "\n                    , IND.\"hashKey\"                      AS \"hashKey\" " +
-                    "\n                    , IND.Name                           AS \"INDICADOR\" " +
-                    "\n                    , IND.hashKey                        AS \"CÓDIGO ESPECÍFICO\" " +
-                    "\n                    , Cons.Name                          AS \"TIPO_DE_CONSOLIDACAO\" " +
-                    "\n                    , IND.HasAlert                       AS \"EMITE_ALERTA ? \" " +
-                    "\n                    , IND.IsSpecific                     AS \"ESPECÍFICO\" " +
-                    "\n                    , IND.IsSpecificNumberEvaluetion     AS \"ESPECÍFICO - AVALIAÇÕES\" " +
-                    "\n                    , IND.IsSpecificNumberSample         AS \"ESPECÍFICO - AMOSTRAS\" " +
-                    "\n                    , IND.IsFixedEvaluetionNumber        AS \"ESPECÍFICO - FAMÍLIA DE PRODUTOS\" " +
-                    "\n                    FROM ParLevel1 IND  (nolock) " +
-                    "\n                    LEFT JOIN ParConsolidationType Cons  (nolock) " +
-                    "\n                    ON Cons.Id = IND.ParConsolidationType_Id " +
-                    "\n                   WHERE IND.Id = @PARLEVEL1 " +
-                    "\n                )INDICADOR " +
-                    "\n                INNER JOIN " +
-                    "\n                ----MONITORAMENTO---------------------------------------------- " +
-                    "\n                ( " +
-                    "\n                    SELECT " +
-                    "\n                    @PARLEVEL1 AS INDICADOR " +
-                    "\n                    , * " +
-                    "\n                    FROM " +
-                    "\n                    ( " +
-                    "\n                        SELECT " +
-                    "\n                         I_M_T.ParLevel3Level2_Id " +
-                    "\n                        , MAX(I_M_T.ParCompany_Id) AS ParCompany_Id " +
-                    "\n                        FROM ParLevel3Level2Level1 I_M_T  (nolock) " +
-                    "\n                        WHERE I_M_T.ParLevel1_Id = @PARLEVEL1 and I_M_T.Active = 1 " +
-                    "\n                        AND(I_M_T.ParCompany_Id = " + ParCompany_Id + " " +
-                    "\n                         OR I_M_T.ParCompany_Id IS NULL) " +
-                    "\n                        GROUP BY I_M_T.ParLevel3Level2_Id " +
-                    "\n                    ) M1 " +
-                    "\n                    INNER JOIN " +
-                    "\n                    ( " +
-                    "\n                        SELECT " +
-                    "\n                         (SELECT TOP 1 Id     FROM ParLevel3Level2  (nolock) WHERE ParLevel2_Id = M_T.ParLevel2_Id AND ParLevel3_Id = M_T.ParLevel3_Id AND COALESCE(ParCompany_Id, 0) = MAX(COALESCE(M_T.ParCompany_Id, 0))) AS Id " +
-                    "\n                        , (SELECT TOP 1 Weight FROM ParLevel3Level2  (nolock) WHERE ParLevel2_Id = M_T.ParLevel2_Id AND ParLevel3_Id = M_T.ParLevel3_Id AND COALESCE(ParCompany_Id, 0) = MAX(COALESCE(M_T.ParCompany_Id, 0))) AS Weight " +
-                    "\n                        , M_T.ParLevel2_Id " +
-                    "\n                        , M_T.ParLevel3_Id " +
-                    "\n                        , MAX(M_T.ParCompany_Id) AS _ParCompany_Id " +
-                    "\n                        FROM ParLevel3Level2 M_T  (nolock) " +
-                    "\n                        INNER JOIN ParLevel3 TAR (nolock)  " +
-                    "\n                        ON TAR.Id = M_T.ParLevel3_Id " +
-                    "\n                        AND TAR.IsActive = 1 " +
-                    "\n                        INNER JOIN ParLevel2 MON (nolock)  " +
-                    "\n                        ON MON.Id = M_T.ParLevel2_Id " +
-                    "\n                        AND MON.IsActive = 1 " +
-                    "\n                        WHERE(M_T.ParCompany_Id = " + ParCompany_Id + " " +
-                    "\n                        OR M_T.ParCompany_Id IS NULL) " +
-                    "\n                        GROUP BY " +
-                    "\n                         M_T.ParLevel2_Id " +
-                    "\n                        , M_T.ParLevel3_Id " +
-                    "\n                    ) M2 " +
-                    "\n                    ON M1.ParLevel3Level2_Id = M2.Id " +
-                    "\n				) MONITORAMENTOS " +
-                    "\n                ON INDICADOR.ID = MONITORAMENTOS.INDICADOR " +
-                    "\n                INNER JOIN ParLevel2 MON (nolock)  " +
-                    "\n                ON MON.Id = MONITORAMENTOS.ParLevel2_Id " +
-                    "\n                INNER JOIN ParLevel3 TAR  (nolock) " +
-                    "\n                ON TAR.Id = MONITORAMENTOS.ParLevel3_Id " +
-                    "\n                WHERE (hashKey IS NULL or hashKey = 5) " +
-                    "\n			) OUTROS " +
-                    "\n/************************************************************************************************************************************************************************************/ " +
-                    "\n		) RESULT " +
-                    "\n        WHERE RESULT.ID = @PARLEVEL1 " +
-                    "\n	) SELECAO " +
-                    "\n) FIM HAVING sum(VolumeAlerta) IS NOT NULL ";
-            
             ParLevel1Alertas parLevel2List = null;
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -414,7 +460,7 @@ namespace SGQDBContext
 
     public partial class ParLevel2
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
         public string Id { get; set; }
 
         public int ParLevel2_id { get; set; }
@@ -452,8 +498,6 @@ namespace SGQDBContext
         public int getExisteAvaliacao(int ParCompany_Id, int ParLevel2_Id, int ParLevel1_Id)
         {
 
-            //SqlConnection db = new SqlConnection(conexao);
-
             string sql = "" +
                 "\n  select count(1) from " +
                 "\n ( " +
@@ -472,8 +516,6 @@ namespace SGQDBContext
         public int getExisteAmostra(int ParCompany_Id, int ParLevel2_Id, int ParLevel1_Id)
         {
 
-            //SqlConnection db = new SqlConnection(conexao);
-
             string sql = "" +
                 "\n  select count(1) from " +
                 "\n ( " +
@@ -488,19 +530,15 @@ namespace SGQDBContext
             return command.ExecuteNonQuery();
         }
 
-        //public int? Evaluate { get; set; }
-        //public int? Sample { get; set; }
-        //public int? ParCompany_Id_Evaluate { get; set; }
-        //public int? ParCompany_Id_Sample { get; set; }
         public ParLevel2()
         {
 
         }
+
         public ParLevel2 getById(int Id)
         {
             try
             {
-                //SqlConnection db = new SqlConnection(conexao);
                 string sql = "SELECT * FROM ParLevel2 (nolock)  WHERE Id='" + Id + "'";
 
                 ParLevel2 parLevel1List = null;
@@ -517,24 +555,10 @@ namespace SGQDBContext
         }
         public IEnumerable<ParLevel2> getLevel2ByIdLevel1(SGQDBContext.ParLevel1 parLevel1, DateTime dateCollection, int ParCompany_Id)
         {
-            //SqlConnection db = new SqlConnection(conexao);            
-
-            //bool parLevel1Familia = false;
-
-            //using (var dbEf = new SgqDbDevEntities())
-            //{
-
-            //    var level1 = parLevel1db.getByFamilia(dateCollection, ParLevel1_Id);
-
-            //    if(level1.Count() > 0 || parLevel1db.IsFixedEvaluetionNumber == true)
-            //    {
-            //        parLevel1Familia = true;
-            //    }
-            //}
 
             /****CONTROLE DE FAMÍLIA DE PRODUTOS*****/
 
-            if (parLevel1.IsFixedEvaluetionNumber == true)
+            if (parLevel1.IsFixedEvaluetionNumber)
             {
                 string sql = "   SELECT '" + parLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id " +
                              "\n FROM ParLevel3Level2 P32   (nolock)                                                                                                                             " +
@@ -549,17 +573,18 @@ namespace SGQDBContext
                              "\n where ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "' AND CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'  and (ParCompany_Id =  " + ParCompany_Id + " or ParCompany_Id is null)   and IsActive = 1 " +
 
                              "\n -- GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND PL.IsActive = 1) OR (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND CAST(f1.data AS DATE) < CAST(PL.AlterDate AS DATE) AND PL.IsActive = 1) AND (F1.UNIDADE = PL.ParCompany_id                                                                " +
-                             "\n GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND F1.UNIDADE = PL.ParCompany_id) OR  (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND F1.UNIDADE IS NULL)                                                              " +
+                             "\n GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND ISNULL(F1.UNIDADE,'') = ISNULL(PL.ParCompany_id,'')) " +
                              "\n -- or F1.UNIDADE is null))  Familia                                                                                                                      " +
                              "\n )  Familia                                                                                                                      " +
                              "\n ON Familia.ParLevel2_Id = PL2.Id                                                                                                                      " +
                              "\n WHERE P321.ParLevel1_Id = " + parLevel1.ParLevel1_Id + "                                                                                                      " +
                              "\n AND PL2.IsActive = 1     " +
                              "\n AND (Familia.ParCompany_Id = " + ParCompany_Id + "  or Familia.ParCompany_Id IS NULL)                                                               " +
-                             "\n and Familia.IsActive = 1 " + 
+                             "\n and Familia.IsActive = 1 " +
                              "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto             ";
 
                 List<ParLevel2> parLevel2List = new List<ParLevel2>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parLevel2List = factory.SearchQuery<ParLevel2>(sql);
@@ -571,10 +596,6 @@ namespace SGQDBContext
             else
             {
 
-
-
-
-
                 string sql = "\n SELECT '" + parLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit,PL2.ParFrequency_id  " +
                          "\n FROM ParLevel3Level2 P32                                      " +
                          "\n INNER JOIN ParLevel3Level2Level1 P321                         " +
@@ -585,30 +606,25 @@ namespace SGQDBContext
                          "\n ON AL.ParLevel2_Id = PL2.Id     AND AL.IsActive = 1                                                                                             " +
                         "\n WHERE P321.ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "'              " +
                          "\n AND PL2.IsActive = 1  AND P32.IsActive = 1 AND P321.Active = 1                                        " +
-
                          "\n AND " +
                          "\n  (select sum(a) from " +
                          "\n ( " +
                          "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
                          "\n union all " +
                          "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
-
-
                          "\n ) temAv) > 0 " +
-
                          "\n AND " +
                          "\n  (select sum(a) from " +
                          "\n ( " +
                          "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
                          "\n union all " +
                          "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
-
                          "\n ) temAm) > 0 " +
-
                          "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto                 " +
                          "\n ";
 
                 List<ParLevel2> parLevel2List = new List<ParLevel2>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parLevel2List = factory.SearchQuery<ParLevel2>(sql);
@@ -621,136 +637,150 @@ namespace SGQDBContext
 
     public partial class ParLevel2Evaluate
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public string Id { get; set; }
         public string Name { get; set; }
         public int Evaluate { get; set; }
-        //public int? ParCompany_Id { get; set; }
-
         public int ParCluster_Id { get; set; }
-
         private SqlConnection db { get; set; }
+
         public ParLevel2Evaluate() { }
         public ParLevel2Evaluate(SqlConnection _db)
         {
             db = _db;
         }
 
-        public IEnumerable<ParLevel2Evaluate> getEvaluate(ParLevel1 ParLevel1, int? ParCompany_Id, DateTime DateCollection)
+        public IEnumerable<ParLevel2Evaluate> getEvaluate(ParLevel1 ParLevel1, int? ParCompany_Id, DateTime DateCollection, int Shift_Id)
         {
 
-            //SqlConnection db = new SqlConnection(conexao);
             string queryCompany = null;
 
             var date = DateCollection.ToString("yyyy-MM-dd");
 
-
             if (ParLevel1.hashKey == 2 && ParCompany_Id != null)
             {
 
-                string sql = "SELECT '" + ParLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, " +
-                             + ParLevel1.ParCluster_Id + " AS ParCluster_Id, PL2.Name AS Name,              " +
-                             "(SELECT top 1 Avaliacoes FROM VolumeCepDesossa (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
-                             "FROM                                                                        " +
-                             "ParLevel3Level2 P32  (nolock)                                                         " +
-                             "INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                       " +
-                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
-                             "INNER JOIN ParLevel2 PL2    (nolock)                                                  " +
-                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
-
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "' and p321.Active = 1                         " +
-                             "GROUP BY PL2.Id, PL2.Name                                                   ";
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
+                             { ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name,
+                             (SELECT top 1 Avaliacoes 
+                             FROM VolumeCepDesossa (nolock) 
+                             WHERE Data = (SELECT MAX(DATA) 
+                                         FROM VolumeCepDesossa (nolock)  
+                                         WHERE ParCompany_id = { ParCompany_Id } 
+                                         AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                             AND CAST(DATA AS DATE) <= '{ date }') 
+                             AND ParCompany_id = { ParCompany_Id } 
+                             AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                             ORDER BY Shift_Id DESC) AS Evaluate 
+                             FROM ParLevel3Level2 P32  (nolock)
+                             INNER JOIN ParLevel3Level2Level1 P321 (nolock)
+                                 ON P321.ParLevel3Level2_Id = P32.Id
+                             INNER JOIN ParLevel2 PL2 (nolock)
+                                 ON PL2.Id = P32.ParLevel2_Id
+                             WHERE P321.ParLevel1_Id = '{ ParLevel1.ParLevel1_Id }' and p321.Active = 1
+                             GROUP BY PL2.Id, PL2.Name";
 
                 List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parEvaluate = factory.SearchQuery<ParLevel2Evaluate>(sql);
                 }
 
                 return parEvaluate;
-
-
             }
             else if (ParLevel1.hashKey == 3 && ParCompany_Id != null)
             {
 
-                string sql = "SELECT '" + ParLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, " +
-                    + ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
-                    " PL2.Name AS Name,              " +
-                             "(SELECT TOP 1 Avaliacoes FROM VolumeVacuoGRD (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
-                             "FROM                                                                        " +
-                             "ParLevel3Level2 P32  (nolock)                                                         " +
-                             "INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                       " +
-                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
-                             "INNER JOIN ParLevel2 PL2     (nolock)                                                 " +
-                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
+                    { ParLevel1.ParCluster_Id } AS ParCluster_Id, 
+                    PL2.Name AS Name,
+                             (SELECT TOP 1 Avaliacoes FROM VolumeVacuoGRD (nolock)  
+                                WHERE Data = (
+                                    SELECT MAX(DATA) FROM VolumeVacuoGRD (nolock)  
+                                    WHERE ParCompany_id = { ParCompany_Id }
+                                    AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                AND CAST(DATA AS DATE) <= '{ date }') 
+                                AND ParCompany_id = { ParCompany_Id }
+                                AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                ORDER BY Shift_Id DESC) AS Evaluate
+                             FROM ParLevel3Level2 P32  (nolock)
+                             INNER JOIN ParLevel3Level2Level1 P321  (nolock)
+                                ON P321.ParLevel3Level2_Id = P32.Id
+                             INNER JOIN ParLevel2 PL2 (nolock)
+                                ON PL2.Id = P32.ParLevel2_Id
+                             WHERE P321.ParLevel1_Id = '{ ParLevel1.ParLevel1_Id }' and  p321.Active = 1
+                             GROUP BY PL2.Id, PL2.Name";
 
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "' and  p321.Active = 1                          " +
-                             "GROUP BY PL2.Id, PL2.Name                                                   ";
-                
                 List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parEvaluate = factory.SearchQuery<ParLevel2Evaluate>(sql);
                 }
 
                 return parEvaluate;
-
 
             }
             else if (ParLevel1.hashKey == 4 && ParCompany_Id != null)
             {
 
-                string sql = "SELECT '" + ParLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id,               " +
-                    +ParLevel1.ParCluster_Id + " AS ParCluster_Id, PL2.Name AS Name, " +
-                             "(SELECT TOP 1 Avaliacoes FROM VolumeCepRecortes (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
-                             "FROM                                                                        " +
-                             "ParLevel3Level2 P32   (nolock)                                                        " +
-                             "INNER JOIN ParLevel3Level2Level1 P321    (nolock)                                     " +
-                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
-                             "INNER JOIN ParLevel2 PL2      (nolock)                                                " +
-                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
-
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'  and    P321.Active = 1                       " +
-                             "GROUP BY PL2.Id, PL2.Name                                                   ";
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
+                    { ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name,
+                             (SELECT TOP 1 Avaliacoes FROM VolumeCepRecortes (nolock) WHERE Data = (
+                                    SELECT MAX(DATA) FROM VolumeCepRecortes (nolock)  
+                                    WHERE ParCompany_id = { ParCompany_Id } 
+                                    AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                    AND CAST(DATA AS DATE) <= '{ date }') 
+                                AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                and ParCompany_id = { ParCompany_Id } 
+                                ORDER BY Shift_Id DESC) AS Evaluate
+                             FROM ParLevel3Level2 P32 (nolock)
+                             INNER JOIN ParLevel3Level2Level1 P321 (nolock)
+                                ON P321.ParLevel3Level2_Id = P32.Id
+                             INNER JOIN ParLevel2 PL2 (nolock)
+                                ON PL2.Id = P32.ParLevel2_Id
+                             WHERE P321.ParLevel1_Id = '{ ParLevel1.ParLevel1_Id }'  and P321.Active = 1
+                             GROUP BY PL2.Id, PL2.Name";
 
                 List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parEvaluate = factory.SearchQuery<ParLevel2Evaluate>(sql);
                 }
 
                 return parEvaluate;
-
 
             }
             else if (ParLevel1.hashKey == 1 && ParCompany_Id != null)
             {
 
-                string sql = "SELECT '" + ParLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id,               " +
-                    ParLevel1.ParCluster_Id + " AS ParCluster_Id, PL2.Name AS Name, " +
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
+                             { ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name,
+                             (SELECT TOP 1 Avaliacoes FROM VolumePcc1b (nolock)  WHERE Data = (
+                                        SELECT MAX(DATA) FROM VolumePcc1b (nolock)  WHERE ParCompany_id = { ParCompany_Id } 
+                                        AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                        AND CAST(DATA AS DATE) <= '{ date }') 
+                                and ParCompany_id = { ParCompany_Id } 
+                                AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                ORDER BY Shift_Id DESC) AS Evaluate 
+                             FROM ParLevel3Level2 P32 (nolock)
+                             INNER JOIN ParLevel3Level2Level1 P321 (nolock)
+                                ON P321.ParLevel3Level2_Id = P32.Id 
+                             INNER JOIN ParLevel2 PL2 (nolock) 
+                                ON PL2.Id = P32.ParLevel2_Id 
+                             WHERE P321.ParLevel1_Id = '{ ParLevel1.ParLevel1_Id }'and P321.Active = 1 
+                             GROUP BY PL2.Id, PL2.Name";
 
-                             "(SELECT TOP 1 Avaliacoes FROM VolumePcc1b (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
-                             "FROM                                                                        " +
-                             "ParLevel3Level2 P32    (nolock)                                                       " +
-                             "INNER JOIN ParLevel3Level2Level1 P321   (nolock)                                      " +
-                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
-                             "INNER JOIN ParLevel2 PL2     (nolock)                                                 " +
-                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
-
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'    and P321.Active = 1                        " +
-                             "GROUP BY PL2.Id, PL2.Name                                                   ";
-                
                 List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parEvaluate = factory.SearchQuery<ParLevel2Evaluate>(sql);
                 }
 
                 return parEvaluate;
-
-
             }
             else
             {
@@ -764,97 +794,87 @@ namespace SGQDBContext
                     queryCompany = " AND PE.ParCompany_Id IS NULL ";
                 }
 
-                string queryLevel1 = " AND (PE.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "' OR PE.ParLevel1_Id IS NULL) ";               
+                string queryLevel1 = " AND (PE.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "' OR PE.ParLevel1_Id IS NULL) ";
 
-                string sql = @"SELECT '" + ParLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, " +
-                    ParLevel1.ParCluster_Id + @" AS ParCluster_Id, PL2.Name AS Name, +
-                    PE.Number AS Evaluate             
-                                FROM                                                                      
-                                ParLevel3Level2 P32    (nolock)                                           
-                                INNER JOIN ParLevel3Level2Level1 P321   (nolock)                          
-                                ON P321.ParLevel3Level2_Id = P32.Id and p321.Active = 1                                      
-                                INNER JOIN ParLevel2 PL2   (nolock)                                       
-                                ON PL2.Id = P32.ParLevel2_Id                                              
-                                INNER JOIN ParEvaluation PE   (nolock)                                    
-                                ON PE.ParLevel2_Id = PL2.Id                                               
-                                WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "' " +
-                             @" AND PE.IsActive = 1 
-                                AND PE.ParCluster_Id = " + ParLevel1.ParCluster_Id + " " +
-                                 queryCompany +
-                                 queryLevel1 +
-                             @"GROUP BY PL2.Id, PL2.Name, PE.Number, PE.AlterDate, PE.AddDate, PE.ParCompany_Id              
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id, 
+                    {ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name, +
+                    PE.Number AS Evaluate FROM                                                                      
+                                ParLevel3Level2 P32 (nolock)                                           
+                                INNER JOIN ParLevel3Level2Level1 P321 (nolock)                          
+                                    ON P321.ParLevel3Level2_Id = P32.Id and p321.Active = 1                                      
+                                INNER JOIN ParLevel2 PL2 (nolock)                                       
+                                    ON PL2.Id = P32.ParLevel2_Id                                              
+                                INNER JOIN ParEvaluation PE (nolock)                                    
+                                    ON PE.ParLevel2_Id = PL2.Id                                               
+                                WHERE P321.ParLevel1_Id = '{ ParLevel1.ParLevel1_Id }' 
+                                AND PE.IsActive = 1 
+                                AND PE.ParCluster_Id = { ParLevel1.ParCluster_Id }
+                                { queryCompany }
+                                { queryLevel1 }
+                             GROUP BY PL2.Id, PL2.Name, PE.Number, PE.AlterDate, PE.AddDate, PE.ParCompany_Id              
                              ORDER BY PE.ParCompany_Id  DESC, PE.AlterDate, PE.AddDate";
 
-                // sql = "SELECT 67 AS Id, 'NC Desossa - Alcatra', 50 AS Evaluate";
-                
                 List<ParLevel2Evaluate> parEvaluate = new List<ParLevel2Evaluate>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parEvaluate = factory.SearchQuery<ParLevel2Evaluate>(sql);
                 }
+
                 return parEvaluate;
 
             }
-
-
-
         }
-
-
-
     }
+
     public partial class ParLevel2Sample
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public string Id { get; set; }
         public string Name { get; set; }
         public int Sample { get; set; }
-
         public int ParCluster_Id { get; set; }
-        //public int? ParCompany_Id { get; set; }
-
         private SqlConnection db { get; set; }
+
         public ParLevel2Sample() { }
+
         public ParLevel2Sample(SqlConnection _db)
         {
             db = _db;
         }
 
-        public IEnumerable<ParLevel2Sample> getSample(ParLevel1 ParLevel1, int? ParCompany_Id, DateTime DateCollection)
+        public IEnumerable<ParLevel2Sample> getSample(ParLevel1 ParLevel1, int? ParCompany_Id, DateTime DateCollection, int Shift_Id)
         {
 
             var date = DateCollection.ToString("yyyy-MM-dd");
 
-            //SqlConnection db = new SqlConnection(conexao);
             string queryCompany = null;
 
             if (ParLevel1.hashKey == 2 && ParCompany_Id != null)
             {
 
-                string sql = @"SELECT  '" + ParLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, " +
-                          ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
-                    @" PL2.Name AS Name,          
-                             (SELECT TOP 1 Amostras 
-                                    FROM VolumeCepDesossa (nolock)  
-                                    WHERE Data = (SELECT MAX(DATA) 
-                                                        FROM VolumeCepDesossa (nolock)  
-                                                        WHERE ParCompany_id = " + ParCompany_Id + " " +
-                                                        @"   AND CAST(DATA AS DATE) <= '" + date +
-                                    @"') and ParCompany_id = " + ParCompany_Id +
-                             @"ORDER BY ID DESC) AS Sample  
-                             FROM                                                                     
-                             ParLevel3Level2 P32      (nolock)                                        
-                             INNER JOIN ParLevel3Level2Level1 P321   (nolock)                         
-                             ON P321.ParLevel3Level2_Id = P32.Id and p321.Active = 1                                     
-                             INNER JOIN ParLevel2 PL2     (nolock)                                    
-                             ON PL2.Id = P32.ParLevel2_Id                                             
-
-                             WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id +
-                             @"'                         
-                             GROUP BY PL2.Id, PL2.Name ";                                               
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
+                            { ParLevel1.ParCluster_Id } AS ParCluster_Id, 
+                            PL2.Name AS Name,          
+                            (SELECT TOP 1 Amostras 
+                                   FROM VolumeCepDesossa (nolock)  
+                                   WHERE Data = (SELECT MAX(DATA) 
+                                                FROM VolumeCepDesossa (nolock)  
+                                                WHERE ParCompany_id = { ParCompany_Id }
+                                                AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                                AND CAST(DATA AS DATE) <= '{ date }') 
+                                    and ParCompany_id = { ParCompany_Id } 
+                                    AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                    ORDER BY Shift_Id DESC) AS Sample
+                            FROM ParLevel3Level2 P32 (nolock)                            
+                            INNER JOIN ParLevel3Level2Level1 P321 (nolock)   
+                                ON P321.ParLevel3Level2_Id = P32.Id and p321.Active = 1                                     
+                            INNER JOIN ParLevel2 PL2 (nolock)                       
+                                ON PL2.Id = P32.ParLevel2_Id                        
+                            WHERE P321.ParLevel1_Id = '{ ParLevel1.ParLevel1_Id }'                         
+                            GROUP BY PL2.Id, PL2.Name";
 
                 List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parSample = factory.SearchQuery<ParLevel2Sample>(sql);
@@ -862,26 +882,31 @@ namespace SGQDBContext
 
                 return parSample;
 
-
             }
             else if (ParLevel1.hashKey == 3 && ParCompany_Id != null)
             {
 
-                string sql = "SELECT '" + ParLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id,  " +
-                    ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
-                    @"PL2.Name AS Name,              " +
-                             "(SELECT TOP 1  Amostras FROM VolumeVacuoGRD  (nolock) WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
-                             "FROM                                                                        " +
-                             "ParLevel3Level2 P32   (nolock)                                                        " +
-                             "INNER JOIN ParLevel3Level2Level1 P321       (nolock)                                  " +
-                             "ON P321.ParLevel3Level2_Id = P32.Id    and p321.Active = 1                                     " +
-                             "INNER JOIN ParLevel2 PL2     (nolock)                                                 " +
-                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
+                    { ParLevel1.ParCluster_Id } AS ParCluster_Id, 
+                             PL2.Name AS Name, 
+                             (SELECT TOP 1  Amostras FROM VolumeVacuoGRD (nolock) WHERE Data = (
+                                        SELECT MAX(DATA) FROM VolumeVacuoGRD (nolock)  
+                                        WHERE ParCompany_id = { ParCompany_Id } 
+                                        AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                        AND CAST(DATA AS DATE) <= '{ date }') 
+                                and ParCompany_id = { ParCompany_Id }
+                                AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                ORDER BY Shift_Id DESC) AS Sample 
+                             FROM ParLevel3Level2 P32 (nolock)
+                             INNER JOIN ParLevel3Level2Level1 P321 (nolock)
+                                ON P321.ParLevel3Level2_Id = P32.Id    and p321.Active = 1
+                             INNER JOIN ParLevel2 PL2 (nolock)
+                                ON PL2.Id = P32.ParLevel2_Id
+                             WHERE P321.ParLevel1_Id = '{ ParLevel1.ParLevel1_Id }'
+                             GROUP BY PL2.Id, PL2.Name";
 
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'                            " +
-                             "GROUP BY PL2.Id, PL2.Name                                                   ";
-                
                 List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parSample = factory.SearchQuery<ParLevel2Sample>(sql);
@@ -894,55 +919,64 @@ namespace SGQDBContext
             else if (ParLevel1.hashKey == 4 && ParCompany_Id != null)
             {
 
-                string sql = "SELECT '" + ParLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, " +
-                    ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
-                    @" PL2.Name AS Name,              " +
-                             "(SELECT  TOP 1 Amostras FROM VolumeCepRecortes  (nolock) WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
-                             "FROM                                                                        " +
-                             "ParLevel3Level2 P32    (nolock)                                                       " +
-                             "INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                       " +
-                             "ON P321.ParLevel3Level2_Id = P32.Id     and p321.Active = 1                                    " +
-                             "INNER JOIN ParLevel2 PL2  (nolock)                                                    " +
-                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
+                    { ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name,
+                             (SELECT  TOP 1 Amostras FROM VolumeCepRecortes (nolock) WHERE Data = (
+                                        SELECT MAX(DATA) FROM VolumeCepRecortes (nolock)  
+                                        WHERE ParCompany_id = { ParCompany_Id } 
+                                        AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                        AND CAST(DATA AS DATE) <= '{ date }') 
+                                and ParCompany_id = { ParCompany_Id } 
+                                AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                ORDER BY Shift_Id DESC) AS Sample
+                             FROM ParLevel3Level2 P32 (nolock)
+                             INNER JOIN ParLevel3Level2Level1 P321 (nolock)
+                                ON P321.ParLevel3Level2_Id = P32.Id and p321.Active = 1
+                             INNER JOIN ParLevel2 PL2  (nolock)
+                                ON PL2.Id = P32.ParLevel2_Id
+                             WHERE P321.ParLevel1_Id = '{ ParLevel1.ParLevel1_Id }'
+                             GROUP BY PL2.Id, PL2.Name";
 
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'                            " +
-                             "GROUP BY PL2.Id, PL2.Name                                                   ";
-                
                 List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parSample = factory.SearchQuery<ParLevel2Sample>(sql);
                 }
 
                 return parSample;
-
 
             }
             else if (ParLevel1.hashKey == 1 && ParCompany_Id != null)
             {
 
-                string sql = "SELECT '" + ParLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, " +
-                    ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
-                    @" PL2.Name AS Name,              " +
-                             "(SELECT TOP 1 Amostras FROM VolumePcc1b (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
-                             "FROM                                                                        " +
-                             "ParLevel3Level2 P32  (nolock)                                                         " +
-                             "INNER JOIN ParLevel3Level2Level1 P321     (nolock)                                    " +
-                             "ON P321.ParLevel3Level2_Id = P32.Id   and p321.active = 1                                      " +
-                             "INNER JOIN ParLevel2 PL2        (nolock)                                              " +
-                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
+                    { ParLevel1.ParCluster_Id } AS ParCluster_Id, 
+                    PL2.Name AS Name, (SELECT TOP 1 Amostras FROM VolumePcc1b(nolock) 
+                            WHERE Data = (
+                                        SELECT MAX(DATA) FROM VolumePcc1b (nolock)  
+                                        WHERE ParCompany_id = { ParCompany_Id } 
+                                        AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                                        AND CAST(DATA AS DATE) <= '{ date }') 
+                            and ParCompany_id = { ParCompany_Id }
+                            AND (Shift_Id = {Shift_Id} OR Shift_Id IS NULL)
+                            ORDER BY Shift_Id DESC) AS Sample 
+                            FROM ParLevel3Level2 P32 (nolock)
+                            INNER JOIN ParLevel3Level2Level1 P321 (nolock)
+                               ON P321.ParLevel3Level2_Id = P32.Id and p321.active = 1
+                            INNER JOIN ParLevel2 PL2 (nolock)
+                               ON PL2.Id = P32.ParLevel2_Id
+                            WHERE P321.ParLevel1_Id = '{ ParLevel1.ParLevel1_Id }'
+                            GROUP BY PL2.Id, PL2.Name";
 
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "'                            " +
-                             "GROUP BY PL2.Id, PL2.Name                                                   ";
-                
                 List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parSample = factory.SearchQuery<ParLevel2Sample>(sql);
                 }
 
                 return parSample;
-
 
             }
             else
@@ -959,26 +993,23 @@ namespace SGQDBContext
 
                 string queryLevel1 = " AND (PS.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "' OR PS.ParLevel1_Id IS NULL) ";
 
-                string sql = @"SELECT '" + ParLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id,  " +
-ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
-@" PL2.Name AS Name, PS.Number AS Sample FROM  
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
+                            { ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name, PS.Number AS Sample FROM  
                              ParLevel3Level2 P32  (nolock)                                    
-                             INNER JOIN ParLevel3Level2Level1 P321   (nolock)                 
-                             ON P321.ParLevel3Level2_Id = P32.Id   and p321.active = 1                            
-                             INNER JOIN ParLevel2 PL2     (nolock)                            
-                             ON PL2.Id = P32.ParLevel2_Id                                     
-                             INNER JOIN ParSample PS     (nolock)                             
-                             ON PS.ParLevel2_Id = PL2.Id                                      
-                             WHERE P321.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id +
-                             @"' AND PS.ParCluster_Id = " + ParLevel1.ParCluster_Id + 
-                  
-                             @" AND PS.IsActive = 1  " +
-                             queryCompany +
-                             queryLevel1 +                                                                          
-                             @" GROUP BY PL2.Id, PL2.Name, PS.Number, PS.ParCompany_Id, PS.AlterDate, PS.AddDate, PS.ParCompany_Id          
-                             ORDER BY PS.ParCompany_Id desc, PS.AlterDate DESC, PS.AddDate DESC                                ";
-                
+                             INNER JOIN ParLevel3Level2Level1 P321 (nolock)                 
+                                ON P321.ParLevel3Level2_Id = P32.Id  and p321.active = 1                            
+                             INNER JOIN ParLevel2 PL2 (nolock)                            
+                                ON PL2.Id = P32.ParLevel2_Id                                     
+                             INNER JOIN ParSample PS (nolock)                             
+                                ON PS.ParLevel2_Id = PL2.Id                                      
+                             WHERE P321.ParLevel1_Id = '{ ParLevel1.ParLevel1_Id }' AND PS.ParCluster_Id = { ParLevel1.ParCluster_Id } AND PS.IsActive = 1 
+                             { queryCompany }
+                             { queryLevel1 }
+                             GROUP BY PL2.Id, PL2.Name, PS.Number, PS.ParCompany_Id, PS.AlterDate, PS.AddDate, PS.ParCompany_Id          
+                             ORDER BY PS.ParCompany_Id desc, PS.AlterDate DESC, PS.AddDate DESC";
+
                 List<ParLevel2Sample> parSample = new List<ParLevel2Sample>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     parSample = factory.SearchQuery<ParLevel2Sample>(sql);
@@ -987,13 +1018,10 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                 return parSample;
             }
         }
-
-
-
     }
+
     public partial class ParLevel3
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -1024,10 +1052,11 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<ParLevel3> getList()
         {
-            //SqlConnection db = new SqlConnection(conexao);
+
             string sql = "SELECT Id, Name FROM ParLevel3 (nolock) ";
 
             List<ParLevel3> parLevel3List = new List<ParLevel3>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 parLevel3List = factory.SearchQuery<ParLevel3>(sql);
@@ -1039,10 +1068,11 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<ParLevel3> getListPerLevel1Id(int ParLevel1_Id)
         {
-            //SqlConnection db = new SqlConnection(conexao);
+
             string sql = "SELECT P3.Id, P3.Name FROM ParLevel3Level2Level1 P321  (nolock) INNER JOIN ParLevel3Level2 P32 (nolock)  ON P32.Id = P321.ParLevel3Level2_Id INNER JOIN ParLevel3 P3 (nolock)  ON P3.Id = P32.ParLevel3_Id WHERE  p321.active = 1 and  P321.ParLevel1_Id = " + ParLevel1_Id.ToString();
-            
+
             List<ParLevel3> parLevel3List = new List<ParLevel3>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 parLevel3List = factory.SearchQuery<ParLevel3>(sql);
@@ -1052,12 +1082,8 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         }
 
-        //
         public IEnumerable<ParLevel3> getLevel3ByLevel2(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime DateCollect)
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
-            //var syncServices = new SgqSystem.Services.SyncServices();
 
             //Instanciamos variavel de data
             string dataInicio = null;
@@ -1066,50 +1092,12 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             //Pega a data pela regra da frequencia
             SyncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
 
-            //string queryResult = null;
-            //if(ParLevel1.IsPartialSave == true)
-            //{
-            //    queryResult = "/*tirar as tarefas que já foram lançadas no período */" +
-
-            //                  "AND L3.Id NOT IN " +
-            //                  "( " +
-            //                  "SELECT R3.ParLevel3_Id FROM RESULT_LEVEL3 R3 " +
-            //                  "INNER JOIN CollectionLevel2 C2 " +
-            //                  "ON C2.Id = R3.CollectionLevel2_Id " +
-            //                  "INNER JOIN( " +
-            //                  "SELECT L3.Id as ParLevel3_Id, L2.Id as ParLevel2_Id, L321.ParLevel1_Id as ParLevel1_Id " +
-            //                  "FROM ParLevel3 AS L3 INNER JOIN " +
-            //                  "ParLevel3Value AS L3V ON L3V.ParLevel3_Id = L3.Id INNER JOIN " +
-            //                  "ParLevel3InputType AS L3IT ON L3IT.Id = L3V.ParLevel3InputType_Id LEFT OUTER JOIN " +
-            //                  "ParLevel3BoolFalse AS L3BF ON L3BF.Id = L3V.ParLevel3BoolFalse_Id LEFT OUTER JOIN " +
-            //                  "ParLevel3BoolTrue AS L3BT ON L3BT.Id = L3V.ParLevel3BoolTrue_Id LEFT OUTER JOIN " +
-            //                  "ParMeasurementUnit AS MU ON MU.Id = L3V.ParMeasurementUnit_Id LEFT OUTER JOIN " +
-            //                  "ParLevel3Level2 AS L32 ON L32.ParLevel3_Id = L3.Id LEFT OUTER JOIN " +
-            //                  "ParLevel3Group AS L3G ON L3G.Id = L32.ParLevel3Group_Id INNER JOIN " +
-            //                  "ParLevel2 AS L2 ON L2.Id = L32.ParLevel2_Id INNER JOIN " +
-            //                  "ParLevel3Level2Level1 AS L321 ON L321.ParLevel3Level2_Id = L32.Id " +
-            //                  "WHERE(L3.IsActive = 1) AND(L32.IsActive = 1) AND(L2.Id = '" + ParLevel2.Id + "') AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR " +
-            //                  "                  L32.ParCompany_Id IS NULL) AND L321.ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "' " +
-            //                  "GROUP BY L321.ParLevel1_Id, L2.Id, L3.Id, L3.Name, L3G.Id, L3G.Name, L3IT.Id, L3IT.Name, L3V.ParLevel3BoolFalse_Id, L3BF.Name, L3V.ParLevel3BoolTrue_Id, L3BT.Name, L3V.IntervalMin, L3V.IntervalMax, MU.Name, L32.Weight, " +
-            //                  "                   L32.ParCompany_Id " +
-            //                  ") TAREFAS " +
-            //                  "ON TAREFAS.ParLevel3_Id = R3.ParLevel3_Id AND TAREFAS.ParLevel2_Id = C2.ParLevel2_Id AND TAREFAS.ParLevel1_Id = C2.ParLevel1_Id " +
-            //                  "AND C2.UnitId = '" + ParCompany_Id + "' " +
-            //                  "AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' " +
-
-            //                   ") " +
-            //                    "/****************************************************/ ";
-
-            //}
-
             string sql = "\n SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
-                         "\n ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id  AS ParCompany_id1 , L32.ParCompany_Id AS ParCompany_id2, L3V.DynamicValue                                                                                                                                                                                                                                       " +
+                         "\n ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id  AS ParCompany_id1 , L32.ParCompany_Id AS ParCompany_id2, L3V.DynamicValue, L3.HasTakePhoto                                                                                                                                                                                                                                       " +
                          "\n FROM ParLevel3 L3      (nolock)                                                                                                                                                                                                                                                                                                                                       " +
                          "\n INNER JOIN ParLevel3Value L3V      (nolock)                                                                                                                                                                                                                                                                                                                           " +
-                         "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id =  " + ParCompany_Id + " or ParCompany_id is null) and (ParLevel1_id =  " + ParLevel1.ParLevel1_Id + " or ParLevel1_id is null) and (ParLevel2_id =  " + ParLevel2.ParLevel2_id + " or ParLevel2_id is null) order by ParCompany_Id desc) " +
-                         // "           ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)" +
-                         // "\n and (ParLevel1_id = " + parLevel1.ParLevel1_Id + " or ParLevel1_id is null) and (ParLevel2_id = " + ParLevel2.Id + " or ParLevel2_id is null) order by ParCompany_Id desc, ParLevel2_Id desc, ParLevel1_Id desc)                                                                                                       " +
-                         "\n INNER JOIN ParLevel3InputType L3IT    (nolock)                                                                                                                                                                                                                                                                                                                        " +
+                         "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id =  " + ParCompany_Id + " or ParCompany_id is null) and (ParLevel1_id =  " + ParLevel1.ParLevel1_Id + " or ParLevel1_id is null) and (ParLevel2_id =  " + ParLevel2.ParLevel2_id + " or ParLevel2_id is null) order by ParCompany_Id desc, ParLevel1_id desc, ParLevel2_id desc ) " +
+                          "\n INNER JOIN ParLevel3InputType L3IT    (nolock)                                                                                                                                                                                                                                                                                                                        " +
                          "\n         ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
                          "\n LEFT JOIN ParLevel3BoolFalse L3BF      (nolock)                                                                                                                                                                                                                                                                                                                       " +
                          "\n         ON L3BF.Id = L3V.ParLevel3BoolFalse_Id                                                                                                                                                                                                                                                                                                              " +
@@ -1130,10 +1118,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                          "\n  AND(L3V.ParCompany_Id = '" + ParCompany_Id + "' OR L3V.ParCompany_Id IS NULL) " +
                          "\n  AND L321.ParLevel1_Id='" + ParLevel1.ParLevel1_Id + "'                                                                                                        " +
 
-
-                         //queryResult + 
-
-
                          "\n  GROUP BY " +
                             "\n    L321.ParLevel1_Id " +
                             "\n  , L2.Id " +
@@ -1153,6 +1137,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                             "\n  , L32.Weight " +
                             "\n  , L3V.ParCompany_Id " +
                             "\n  , L32.ParCompany_Id " +
+                            "\n  , L3.HasTakePhoto " +
                             "\n  , L3V.DynamicValue ";
 
 
@@ -1161,7 +1146,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
              * 30/03/2017
              */
 
-            string possuiIndicadorFilho = "SELECT cast(id as varchar(153)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.ParLevel1_Id.ToString();
+            string possuiIndicadorFilho = "SELECT cast(id as varchar(153)) as retorno FROM ParLevel1(nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.ParLevel1_Id.ToString();
             string ParLevel1Origin_Id = "";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -1202,10 +1187,10 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                 string ParLevel1_IdFilho = "\n  AND L321.ParLevel1_Id IN (" + ParLevel1Origin_Id + ") \n  AND L2.Id = '" + ParLevel2.ParLevel2_id + "'";
 
                 sqlFilho = " \n UNION ALL SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
-                        "\n  ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, " + sqlPeso + " AS Weight, L3V.ParCompany_Id AS ParCompany_id1 , L32.ParCompany_Id AS ParCompany_id2, L3V.DynamicValue " +
+                        "\n  ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, " + sqlPeso + " AS Weight, L3V.ParCompany_Id AS ParCompany_id1 , L32.ParCompany_Id AS ParCompany_id2, L3V.DynamicValue, L3.HasTakePhoto " +
                         "\n FROM ParLevel3 L3     (nolock)                                                                                                                                                                                                                                                                                                                                        " +
                         "\n INNER JOIN ParLevel3Value L3V     (nolock)                                                                                                                                                                                                                                                                                                                            " +
-                        "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)                                                                                                                                                                                                                                                                                                                       " +
+                        "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id =  " + ParCompany_Id + " or ParCompany_id is null) and (ParLevel1_id IN (" + ParLevel1Origin_Id + ") or ParLevel1_id is null) and (ParLevel2_id =  " + ParLevel2.ParLevel2_id + " or ParLevel2_id is null) order by ParCompany_Id desc, ParLevel1_id desc, ParLevel2_id desc ) " + 
                         "\n INNER JOIN ParLevel3InputType L3IT  (nolock)                                                                                                                                                                                                                                                                                                                          " +
                         "\n         ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
                         "\n LEFT JOIN ParLevel3BoolFalse L3BF   (nolock)                                                                                                                                                                                                                                                                                                                          " +
@@ -1250,6 +1235,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
            "\n  , L32.Weight " +
            "\n  , L3V.ParCompany_Id " +
            "\n  , L32.ParCompany_Id " +
+           "\n  , L3.HasTakePhoto " +
            "\n  , L3V.DynamicValue ";
 
 
@@ -1258,7 +1244,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
             sql += sqlFilho;
             //ORDENAR POR TIPO DE INPUT
-            //sql += "\n   ORDER BY 5 ASC, 4 ASC, 2 ASC, 15  DESC , 16  DESC  ";
 
             //ORDENAR POR ORDEM ALFABÉTICA
 
@@ -1286,7 +1271,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         {
             try
             {
-                //var syncServices = new SgqSystem.Services.SyncServices();
 
                 //Instanciamos variavel de data
                 string dataInicio = null;
@@ -1294,10 +1278,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
                 //Pega a data pela regra da frequencia
                 SyncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
-
-                //SqlConnection db = new SqlConnection(conexao);
-
-
 
                 string sql = "SELECT " +
                              "R3.ParLevel3_Id AS Id " +
@@ -1307,30 +1287,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                              "INNER JOIN Result_Level3 R3  (nolock) " +
                              "ON R3.CollectionLevel2_Id = C2.Id " +
                              "WHERE C2.UnitId = '" + ParCompany_Id + "' AND L1.Id='" + ParLevel1.ParLevel1_Id + "' AND C2.ParLevel2_Id='" + ParLevel2.ParLevel2_id + "' AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
-
-                //string sql = "SELECT R3.ParLevel3_Id AS Id FROM RESULT_LEVEL3 R3 " +
-                //              "INNER JOIN CollectionLevel2 C2 " +
-                //              "ON C2.Id = R3.CollectionLevel2_Id " +
-                //              "INNER JOIN( " +
-                //              "SELECT L3.Id as ParLevel3_Id, L2.Id as ParLevel2_Id, L321.ParLevel1_Id as ParLevel1_Id " +
-                //              "FROM ParLevel3 AS L3 INNER JOIN " +
-                //              "ParLevel3Value AS L3V ON L3V.ParLevel3_Id = L3.Id INNER JOIN " +
-                //              "ParLevel3InputType AS L3IT ON L3IT.Id = L3V.ParLevel3InputType_Id LEFT OUTER JOIN " +
-                //              "ParLevel3BoolFalse AS L3BF ON L3BF.Id = L3V.ParLevel3BoolFalse_Id LEFT OUTER JOIN " +
-                //              "ParLevel3BoolTrue AS L3BT ON L3BT.Id = L3V.ParLevel3BoolTrue_Id LEFT OUTER JOIN " +
-                //              "ParMeasurementUnit AS MU ON MU.Id = L3V.ParMeasurementUnit_Id LEFT OUTER JOIN " +
-                //              "ParLevel3Level2 AS L32 ON L32.ParLevel3_Id = L3.Id LEFT OUTER JOIN " +
-                //              "ParLevel3Group AS L3G ON L3G.Id = L32.ParLevel3Group_Id INNER JOIN " +
-                //              "ParLevel2 AS L2 ON L2.Id = L32.ParLevel2_Id INNER JOIN " +
-                //              "ParLevel3Level2Level1 AS L321 ON L321.ParLevel3Level2_Id = L32.Id " +
-                //              "WHERE(L3.IsActive = 1) AND(L32.IsActive = 1) AND(L2.Id = '" + ParLevel2.Id + "') AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR " +
-                //              "                  L32.ParCompany_Id IS NULL) AND L321.ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "' " +
-                //              "GROUP BY L321.ParLevel1_Id, L2.Id, L3.Id, L3.Name, L3G.Id, L3G.Name, L3IT.Id, L3IT.Name, L3V.ParLevel3BoolFalse_Id, L3BF.Name, L3V.ParLevel3BoolTrue_Id, L3BT.Name, L3V.IntervalMin, L3V.IntervalMax, MU.Name, L32.Weight, " +
-                //              "                   L32.ParCompany_Id " +
-                //              ") TAREFAS " +
-                //              "ON TAREFAS.ParLevel3_Id = R3.ParLevel3_Id AND TAREFAS.ParLevel2_Id = C2.ParLevel2_Id AND TAREFAS.ParLevel1_Id = C2.ParLevel1_Id " +
-                //              "AND C2.UnitId = '" + ParCompany_Id + "' " +
-                //              "AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
 
                 List<ParLevel3> parLevel3List = new List<ParLevel3>();
                 using (Factory factory = new Factory("DefaultConnection"))
@@ -1350,8 +1306,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
     public partial class Level2Result
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public int Id { get; set; }
         public string Key { get; set; }
         public int ParLevel1_Id { get; set; }
@@ -1363,8 +1317,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public int EvaluateLast { get; set; }
         public int SampleLast { get; set; }
         public int ConsolidationLevel2_Id { get; set; }
-        //public int Sequential { get; set; }
-        //public int Side { get; set; }
 
         private SqlConnection db { get; set; }
         public Level2Result() { }
@@ -1375,9 +1327,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<Level2Result> getList(int ParLevel1_Id, int ParCompany_Id, string dataInicio, string dataFim)
         {
-
-
-            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT ParLevel1_Id, ParLevel2_Id, UnitId AS Unit_Id, Shift, Period, CollectionDate, MAX(EvaluationNumber) AS EvaluateLast, MAX(Sample) AS SampleLast, MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id " +
                          "FROM(SELECT CL2.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, Shift, Period, CONVERT(date, CollectionDate) AS CollectionDate, EvaluationNumber, MAX(Sample) AS Sample, MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id " +
@@ -1401,9 +1350,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         {
             try
             {
-
-                //SqlConnection db = new SqlConnection(conexao);
-
                 string sql = "SELECT MAX(Sample) FROM CollectionLevel2 (nolock)  WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND EvaluationNumber = " + EvaluationNumber;
                 var LastSample = db.Query<int>(sql).FirstOrDefault();
                 return LastSample;
@@ -1417,13 +1363,12 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public IEnumerable<Level2Result> getKeys(int ParLevel1_Id, int ParCompany_Id, string dataInicio, string dataFim)
         {
 
-            //SqlConnection db = new SqlConnection(conexao);
-
             string sql = "SELECT CL2.Id, CL2.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, CL2.Shift, CL2.Period, CL2.EvaluationNumber, CL2.Sample, CL2.ConsolidationLevel2_Id, CL2.[Key] " +
                          "FROM CollectionLevel2 CL2  (nolock) " +
                          "WHERE CL2.ParLevel1_Id = '" + ParLevel1_Id + "' AND CL2.UnitId = '" + ParCompany_Id + "' AND CL2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
-            
+
             List<Level2Result> Level2ResultList = new List<Level2Result>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 Level2ResultList = factory.SearchQuery<Level2Result>(sql);
@@ -1434,11 +1379,8 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
     }
 
-
     public partial class ParLevel1ConsolidationXParFrequency
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public int ParLevel1_Id { get; set; }
         public int ParFrequency_Id { get; set; }
         public bool IsPartialSave { get; set; }
@@ -1455,7 +1397,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         {
             try
             {
-                //SqlConnection db = new SqlConnection(conexao);
 
                 DateTime data_ini = new DateTime(data.Year, data.Month, 1);
                 DateTime data_fim = new DateTime(data.Year, data.Month, DateTime.DaysInMonth(data.Year, data.Month));
@@ -1481,12 +1422,10 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                 throw ex;
             }
         }
-
     }
+
     public partial class ConsolidationResultL1L2
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public int AlertLevelL1 { get; set; }
         public decimal WeiEvaluationL1 { get; set; }
         public decimal EvaluateTotalL1 { get; set; }
@@ -1496,7 +1435,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public decimal TotalLevel3WithDefectsL1 { get; set; }
         public int LastEvaluationAlertL1 { get; set; }
         public int LastLevel2AlertL1 { get; set; }
-
 
         public int AlertLevelL2 { get; set; }
 
@@ -1534,8 +1472,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public ConsolidationResultL1L2 getConsolidation(int ParLevel2_Id, int ParCompany_Id, int? Id)
         {
-
-            //SqlConnection db = new SqlConnection(conexao);
             var sql2 = "";
 
             if (Id != null)
@@ -1569,8 +1505,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
     public partial class ParLevelHeader
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public int ParHeaderField_Id { get; set; }
         public string ParHeaderField_Name { get; set; }
         public string ParHeaderField_Description { get; set; }
@@ -1589,7 +1523,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<ParLevelHeader> getHeaderByLevel1(int ParLevel1_Id)
         {
-            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PH.Description AS ParHeaderField_Description, PT.Id AS ParFieldType_Id, PH.LinkNumberEvaluetion AS LinkNumberEvaluetion, PH.IsRequired AS IsRequired, PH.duplicate, isnull(PL.HeaderFieldGroup,'-') as HeaderFieldGroup FROM ParLevel1XHeaderField PL (nolock)   " +
                          "\n LEFT JOIN ParHeaderField PH (nolock)  ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
@@ -1600,8 +1533,9 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                          "\n PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
                          "\n PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
                          "\n GROUP BY PH.Id, PH.Name, PT.Id, PH.IsRequired, PH.Description, PH.LinkNumberEvaluetion, ph.duplicate, PL.HeaderFieldGroup                                                                                                                             ";
-            
-            List<ParLevelHeader> parLevel3List = new List<ParLevelHeader>();
+
+            List<ParLevelHeader> parLevel3List = new List<ParLevelHeader>(); 
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 parLevel3List = factory.SearchQuery<ParLevelHeader>(sql).ToList();
@@ -1612,7 +1546,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<ParLevelHeader> getHeaderByLevel1Level2(int ParLevel1_Id, int ParLevel2_Id)
         {
-            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PH.Description AS ParHeaderField_Description, PT.Id AS ParFieldType_Id, PH.LinkNumberEvaluetion AS LinkNumberEvaluetion, PH.IsRequired AS IsRequired, PH.duplicate, isnull(PL.HeaderFieldGroup,'-') as HeaderFieldGroup FROM ParLevel1XHeaderField PL  (nolock)  " +
                          "\n LEFT JOIN ParHeaderField PH  (nolock) ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
@@ -1623,8 +1556,9 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                          "\n PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
                          "\n PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
                          "\n GROUP BY PH.Id, PH.Name, PT.Id, PH.Description, PH.IsRequired, PH.LinkNumberEvaluetion, PH.duplicate, PL.HeaderFieldGroup;                                                                                                                             ";
-            
+
             List<ParLevelHeader> parLevel3List = new List<ParLevelHeader>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 parLevel3List = factory.SearchQuery<ParLevelHeader>(sql).ToList();
@@ -1635,8 +1569,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public bool isHeaderLeve2Exception(int ParLevel1_Id, int ParLevel2_Id, int HeaderField_Id)
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
             string sql = "SELECT * FROM ParLevel2XHeaderField PHF (nolock)                                                    \n" +
                          "\n INNER JOIN ParHeaderField HF (nolock)  " +
                          "\n ON HF.Id = PHF.ParHeaderField_Id AND HF.IsActive = 1 " +
@@ -1644,7 +1576,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                          "\n AND PHF.ParLevel2_Id = " + ParLevel2_Id + "                                               \n" +
                          "\n AND PHF.ParHeaderField_Id = " + HeaderField_Id + "                                         \n" +
                          "\n AND PHF.IsActive = 1;                                                                    \n";
-            
+
             List<ParLevelHeader> parLevel3List = new List<ParLevelHeader>();
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -1657,10 +1589,9 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                 return false;
         }
     }
+
     public partial class ParFieldType
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal PunishmentValue { get; set; }
@@ -1675,13 +1606,12 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<ParFieldType> getMultipleValues(int ParHeaderField_Id)
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
 
             string sql = "SELECT Id, Name, PunishmentValue, IsDefaultOption FROM ParMultipleValues (nolock)        " +
                          "WHERE ParHeaderField_Id = '" + ParHeaderField_Id + "' and IsActive = 1;        ";
 
             List<ParFieldType> multipleValues = new List<ParFieldType>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 multipleValues = factory.SearchQuery<ParFieldType>(sql).ToList();
@@ -1699,7 +1629,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
             var valores = integracao.Split('|');
 
-            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta" || valores[0] == "Detector de Metais"  || valores[0] == "Setor" || valores[0] == "Tipo de Corte" || valores[0] == "Setores BPF")
+            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta" || valores[0] == "Detector de Metais" || valores[0] == "Setor" || valores[0] == "Tipo de Corte" || valores[0] == "Setores BPF")
             {
                 var subtipo = "";
 
@@ -1725,8 +1655,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             }
             else if (valores[0] == "familiaProduto")
             {
-                //sql = "\n SELECT Id as Id, Name as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
-                //      "\n FROM UserSgq With (nolock) ";
 
                 sql = @"SELECT 
                         TT.cNrClassificacao as Id,
@@ -1768,8 +1696,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         }
     }
 
-
-
     public partial class Generico
     {
         public string id { get; set; }
@@ -1788,8 +1714,9 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             db = new SqlConnection(conexaoBR);
 
             var sql = "SELECT nCdProduto as id, cNmProduto as nome FROM Produto";
-            
+
             List<Generico> lista = new List<Generico>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 lista = factory.SearchQuery<Generico>(sql).ToList();
@@ -1806,6 +1733,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             var sql = "SELECT CG.Id as id, CG.Name AS nome  FROM ParCompanyCluster CC LEFT JOIN ParCluster C ON C.ID = CC.ParCluster_Id LEFT JOIN ParClusterGroup CG ON CG.Id = C.ParClusterGroup_Id WHERE CC.ParCompany_Id = " + ParCompany_Id + " and cc.Active = 1 and c.IsActive = 1 and CG.IsActive = 1 GROUP BY CG.Id, CG.Name";
 
             List<Generico> lista = new List<Generico>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 lista = factory.SearchQuery<Generico>(sql).ToList();
@@ -1852,7 +1780,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public List<ParLevel3Vinculado> getParLevel3Vinculado(int ParCompanyId)
         {
             var sql = string.Format(
-                "SELECT * FROM ParLevel3EvaluationSample WHERE(ParCompany_Id = {0} OR ParCompany_Id IS NULL) AND IsActive = 1;", 
+                "SELECT * FROM ParLevel3EvaluationSample WHERE(ParCompany_Id = {0} OR ParCompany_Id IS NULL) AND IsActive = 1;",
                 ParCompanyId);
 
             List<ParLevel3Vinculado> lista = new List<ParLevel3Vinculado>();
@@ -1867,8 +1795,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
     public partial class ParRelapse
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public int Id { get; set; }
         public int ParFrequency_Id { get; set; }
         public int NcNumber { get; set; }
@@ -1883,9 +1809,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<ParRelapse> getRelapses(int ParLevel1_Id)
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
-
             string sql = "SELECT Id, ParFrequency_Id, NcNumber, EffectiveLength FROM ParRelapse  (nolock)                 " +
                          "WHERE ParLevel1_Id = '" + ParLevel1_Id + "' and IsActive = 1;                         ";
 
@@ -1898,10 +1821,9 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             return parRelapses;
         }
     }
+
     public partial class Result_Level3
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public int Id { get; set; }
         private SqlConnection db { get; set; }
         public Result_Level3() { }
@@ -1912,8 +1834,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public Result_Level3 get(int CollectionLevel2_Id, int ParLevel3_Id)
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
 
             string sql = "SELECT Id FROM Result_Level3  (nolock)          " +
                          "WHERE ParLevel3_Id = '" + ParLevel3_Id + "' and " +
@@ -1931,8 +1851,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
     public partial class ParLevel1VariableProduction
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public int Id { get; set; }
         public string Name { get; set; }
 
@@ -1944,8 +1862,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         }
         public IEnumerable<ParLevel1VariableProduction> getVariable(int ParLevel1_Id)
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
             string sql = "select P.Id, P.Name from ParLevel1VariableProductionXLevel1 PL  (nolock) left join " +
                          "ParLevel1VariableProduction P (nolock)  on P.Id = PL.ParLevel1VariableProduction_Id " +
                          " where PL.ParLevel1_Id = " + ParLevel1_Id + "; ";
@@ -1962,7 +1878,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
     public partial class ParConfSGQContext
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public bool HaveUnitLogin { get; set; }
@@ -1976,8 +1891,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public ParConfSGQContext get()
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
             string sql = "SELECT Id, HaveUnitLogin, HaveShitLogin FROM ParConfSGQ (nolock) ";
 
             ParConfSGQContext conf = null;
@@ -2013,16 +1926,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public UserSGQ getUserByLoginOrId(string userLogin = null, int id = 0)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-            //SqlConnection db = new SqlConnection(conexao);
-
-            //string sql = "SELECT U.Id, U.Name AS Login, U.Password, U.FullName AS Name, U.ParCompany_Id , C.Name AS ParCompany_Name, PxU.Role " +
-            //             "FROM                                                                                                                " +
-            //             "UserSgq U                                                                                                           " +
-            //             "INNER JOIN ParCompany C ON U.ParCompany_Id = C.Id                                                                   " +
-            //             "INNER JOIN ParCompanyXUserSgq PxU ON U.Id = PxU.UserSgq_Id                                                          " +
-            //             "WHERE U.Name = '" + userLogin + "' AND PxU.ParCompany_Id = C.Id                                                     ";
 
             string where = "WHERE U.name = '" + userLogin + "'";
             if (id > 0)
@@ -2044,6 +1947,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             return user;
         }
     }
+
     public partial class ParCompanyXUserSgq
     {
         public int UserSGQ_Id { get; set; }
@@ -2064,15 +1968,14 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         /// 
         private SqlConnection db { get; set; }
         public ParCompanyXUserSgq() { }
+
         public ParCompanyXUserSgq(SqlConnection _db)
         {
             db = _db;
         }
+
         public IEnumerable<ParCompanyXUserSgq> getCompanyUsers(int ParCompany_Id)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "select U.Id AS UserSGQ_Id, U.Name AS UserSGQ_Login, U.FullName AS UserSGQ_Name, U.Password AS UserSGQ_Pass, U.Role, PxC.Role AS Role, C.Id ParCompany_Id, C.Name ParCompany_Name from ParCompanyXUserSgq PxC (nolock)  " +
                          "INNER JOIN ParCompany C  (nolock) ON PxC.ParCompany_Id = c.Id                                                                                                                                                          " +
@@ -2088,6 +1991,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
             return users;
         }
+
         /// <summary>
         /// Retorna todas as unidades do usuário
         /// </summary>
@@ -2095,17 +1999,15 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         /// <returns></returns>
         public IEnumerable<ParCompanyXUserSgq> getUserCompany(int UserSgq_Id)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "select U.Id AS UserSGQ_Id, U.Name AS UserSGQ_Login, U.FullName AS UserSGQ_Name, U.Password AS UserSGQ_Pass, U.Role, PxC.Role AS Role, C.Id ParCompany_Id, C.Name ParCompany_Name from ParCompanyXUserSgq PxC  (nolock) " +
                          "INNER JOIN ParCompany C  (nolock) ON PxC.ParCompany_Id = c.Id                                                                                                                                                          " +
                          "INNER JOIN UserSgq U  (nolock) ON PxC.UserSgq_Id = u.Id                                                                                                                                                                " +
                          "WHERE PxC.UserSgq_Id='" + UserSgq_Id + "'                                                                                                                                                              " +
                          "ORDER BY C.Name ASC                                                                                                                                                                                          ";
-            
+
             List<ParCompanyXUserSgq> companys = new List<ParCompanyXUserSgq>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 companys = factory.SearchQuery<ParCompanyXUserSgq>(sql).ToList();
@@ -2113,7 +2015,9 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
             return companys;
         }
+
     }
+
     public partial class RoleXUserSgq
     {
         public string HashKey { get; set; }
@@ -2135,9 +2039,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         /// <returns></returns>
         public IEnumerable<RoleXUserSgq> getRoles(int UserSGQ_Id, int ParCompany_id)
         {
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT DISTINCT TC.HashKey as HashKey, RT.Id as Type, TJbs.Role as RoleJBS, Tsgq.Role as RoleSGQ FROM ScreenComponent TC  (nolock) " +
                          "LEFT JOIN RoleType RT (nolock)  on RT.Id = TC.Type                                                                          " +
@@ -2150,6 +2051,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                          "U.id = " + UserSGQ_Id + ";                                                                                         ";
 
             List<RoleXUserSgq> users = new List<RoleXUserSgq>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 users = factory.SearchQuery<RoleXUserSgq>(sql).ToList();
@@ -2158,10 +2060,9 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             return users;
         }
     }
+
     public partial class VolumePcc1b
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public int Id { get; set; }
         public int VolumeAnimais { get; set; }
         public int Quartos { get; set; }
@@ -2176,8 +2077,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         }
         public IEnumerable<VolumePcc1b> getVolumePcc1b(int Indicador, int Unidade)
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
             string sql = "select VP.Id VP.VolumeAnimais, VP.Quartos, VP.Avaliacoes, VP.Amostras from VolumePcc1b (nolock)  VP where VP.Indicador = " + Indicador + " and VP.Unidade = " + Unidade + "; ";
 
             List<VolumePcc1b> list = new List<VolumePcc1b>();
@@ -2189,10 +2088,9 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             return list;
         }
     }
+
     public partial class CaracteristicaTipificacao
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public String nCdCaracteristica { get; set; }
         public String cNmCaracteristica { get; set; }
         public String cNrCaracteristica { get; set; }
@@ -2208,8 +2106,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<CaracteristicaTipificacao> getCaracteristicasTipificacao(int id)
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
             string sql = "select null nCdCaracteristica, null cNmCaracteristica, null cNrCaracteristica, null cSgCaracteristica, null cIdentificador ";
             if (GlobalConfig.Brasil)
             {
@@ -2218,6 +2114,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             }
 
             List<CaracteristicaTipificacao> list = new List<CaracteristicaTipificacao>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 list = factory.SearchQuery<CaracteristicaTipificacao>(sql).ToList();
@@ -2228,8 +2125,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<CaracteristicaTipificacao> getAreasParticipantes()
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
                          " from AreasParticipantes CP  (nolock) where LEN(cNrCaracteristica) >= 5;";
 
@@ -2244,8 +2139,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<CaracteristicaTipificacao> getCaracteristicasTipificacaoUnico(int ncdcaracteristica)
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
                          " from CaracteristicaTipificacao CP (nolock)  where cNrCaracteristica = " + ncdcaracteristica;
 
@@ -2260,12 +2153,11 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<CaracteristicaTipificacao> getAreasParticipantesUnico()
         {
-            //SqlConnection db = new SqlConnection(conexao);
-
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
                          " from AreasParticipantes CP  (nolock) where cNrCaracteristica = 0209;";
 
             List<CaracteristicaTipificacao> list = new List<CaracteristicaTipificacao>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 list = factory.SearchQuery<CaracteristicaTipificacao>(sql).ToList();
@@ -2274,11 +2166,10 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             return list;
         }
 
-
     }
+
     public partial class VerificacaoTipificacaoTarefaIntegracao
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         public int Id { get; set; }
         public int TarefaId { get; set; }
@@ -2293,11 +2184,11 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<VerificacaoTipificacaoTarefaIntegracao> getTarefa(int caracteristicatipificacaoid)
         {
-            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "select Id, TarefaId, CaracteristicaTipificacaoId from VerificacaoTipificacaoTarefaIntegracao (nolock)  where CaracteristicaTipificacaoId = " + caracteristicatipificacaoid;
 
             List<VerificacaoTipificacaoTarefaIntegracao> list = new List<VerificacaoTipificacaoTarefaIntegracao>();
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 list = factory.SearchQuery<VerificacaoTipificacaoTarefaIntegracao>(sql).ToList();
@@ -2305,6 +2196,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
             return list;
         }
+
     }
 
     public partial class CollectionLevel2Consolidation
@@ -2314,7 +2206,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public int ParLevel2_Id { get; set; }
 
         public decimal WeiEvaluationTotal { get; set; }
-        // public decimal EvaluateTotal { get; set; }
         public decimal DefectsTotal { get; set; }
         public decimal WeiDefectsTotal { get; set; }
         public int TotalLevel3Evaluation { get; set; }
@@ -2323,8 +2214,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public int LastLevel2Alert { get; set; }
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
-
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public CollectionLevel2Consolidation() { }
@@ -2337,13 +2226,13 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         {
             try
             {
-                //SqlConnection db = new SqlConnection(conexao);
 
                 string sql = "SELECT ConsolidationLevel2_Id, ParLevel2_Id, SUM(WeiEvaluation) AS [WeiEvaluationTotal], SUM(Defects) AS [DefectsTotal], SUM(WeiDefects) AS[WeiDefectsTotal], SUM(TotalLevel3WithDefects) AS [TotalLevel3WithDefects], SUM(TotalLevel3Evaluation) AS [TotalLevel3Evaluation], MAX(LastEvaluationAlert) AS LastEvaluationAlert, (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 WHERE Id = max(c2.id)) AS LastLevel2Alert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult " +
                              "FROM CollectionLevel2 C2  (nolock) WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND ParLevel2_Id = " + ParLevel2_Id + " AND NotEvaluatedIs=0" +
                              "group by ConsolidationLevel2_Id, ParLevel2_Id";
 
                 CollectionLevel2Consolidation consolidationLevel2 = null;
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     consolidationLevel2 = factory.SearchQuery<CollectionLevel2Consolidation>(sql).FirstOrDefault();
@@ -2359,10 +2248,9 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         }
 
     }
+
     public partial class ConsolidationLevel1XConsolidationLevel2
     {
-        //public int ParLevel1_Id { get; set; }
-
 
         public decimal WeiEvaluation { get; set; } //OK
         public decimal EvaluateTotal { get; set; } //OK
@@ -2383,15 +2271,12 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             db = _db;
         }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public ConsolidationLevel1XConsolidationLevel2 getConsolidation(int ConsolidationLevel1_Id)
         {
             try
             {
-                //SqlConnection db = new SqlConnection(conexao);
 
-                string sql = "select  SUM(WeiEvaluation) AS WeiEvaluation, SUM(EvaluateTotal) AS EvaluateTotal, SUM(DefectsTotal) AS DefectsTotal, SUM(WeiDefects) AS WeiDefects,  SUM(TotalLevel3Evaluation) AS TotalLevel3Evaluation, SUM(TotalLevel3WithDefects) AS TotalLevel3WithDefects, MAX(LastEvaluationAlert) AS LastEvaluationAlert, (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 (nolock)  WHERE Id = max(c2.id)) AS LastLevel2Alert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult FROM ConsolidationLevel2 C2 (nolock)  where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
+                string sql = "select SUM(WeiEvaluation) AS WeiEvaluation, SUM(EvaluateTotal) AS EvaluateTotal, SUM(DefectsTotal) AS DefectsTotal, SUM(WeiDefects) AS WeiDefects,  SUM(TotalLevel3Evaluation) AS TotalLevel3Evaluation, SUM(TotalLevel3WithDefects) AS TotalLevel3WithDefects, MAX(LastEvaluationAlert) AS LastEvaluationAlert, (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 (nolock)  WHERE Id = max(c2.id)) AS LastLevel2Alert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult FROM ConsolidationLevel2 C2 (nolock)  where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
 
                 ConsolidationLevel1XConsolidationLevel2 consolidationLevel1 = null;
                 using (Factory factory = new Factory("DefaultConnection"))
@@ -2408,8 +2293,8 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             }
         }
 
-
     }
+
     public partial class ConsolidationLevel1
     {
         public int Id { get; set; }
@@ -2432,7 +2317,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public ConsolidationLevel1() { }
         public ConsolidationLevel1(SqlConnection _db)
@@ -2469,7 +2353,9 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                 throw new Exception("Deu merda 3 ", ex);
             }
         }
+
     }
+
     public partial class ConsolidationLevel2
     {
         public int Id { get; set; }
@@ -2491,8 +2377,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         private SqlConnection db { get; set; }
         public ConsolidationLevel2() { }
         public ConsolidationLevel2(SqlConnection _db)
@@ -2505,8 +2389,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             {
                 string sql = "SELECT * FROM ConsolidationLevel2 (nolock)  WHERE UnitId = " + ParCompany_Id + " AND ParLevel1_Id= " + ParLevel1_Id + " AND ConsolidationDate BETWEEN '" + collectionDate.ToString("yyyy-MM-dd") + " 00:00' AND '" + collectionDate.ToString("yyyy-MM-dd") + " 23:59:59'";
 
-                //SqlConnection db = new SqlConnection(conexao);
-
                 /**
                  * ADD PARAMETER FORLINI
                  * DECLARA TODAS AS COLUNAS!! AO INVES DO *
@@ -2514,11 +2396,12 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                  */
 
                 ConsolidationLevel2 obj = null;
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     obj = factory.SearchQuery<ConsolidationLevel2>(sql).FirstOrDefault();
                 }
-                
+
                 return obj;
             }
             catch (Exception)
@@ -2550,10 +2433,10 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                             ON C2C.ConsolidationLevel2_id = c2.Id
                             WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
                             " AND ParLevel2_Id= '" + ParLevel2_Id + "' " +
-                            " AND UnitId='" + ParCompany_Id + "'" + 
-                            " AND (C2C.ParCluster_Id = '" + cluster +"' OR C2C.ParCluster_Id IS NULL)" ;
+                            " AND UnitId='" + ParCompany_Id + "'" +
+                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)";
 
-                
+
 
                 ConsolidationLevel2 obj = null;
                 using (Factory factory = new Factory("DefaultConnection"))
@@ -2649,7 +2532,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public DateTime? AlterDate { get; }
         public string Key { get; set; }
         public string TTP { get; set; }
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private SqlConnection db { get; set; }
         public CollectionJson() { }
@@ -2662,14 +2544,14 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         {
             try
             {
-                //SqlConnection db = new SqlConnection(conexao);
-                
+
                 List<CollectionJson> list = new List<CollectionJson>();
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     list = factory.SearchQuery<CollectionJson>(sql).ToList();
                 }
-                
+
                 return list;
             }
             catch (Exception)
@@ -2686,8 +2568,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public string Level { get; set; }
         public string indicador { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         private SqlConnection db { get; set; }
         public ParCounter() { }
         public ParCounter(SqlConnection _db)
@@ -2697,9 +2577,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
         public IEnumerable<ParCounter> GetParLevelXParCounterList(ParLevel1 ParLevel1, ParLevel2 ParLevel2, int Level)
         {
-
-            
-
             try
             {
 
@@ -2716,7 +2593,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                 if (ParLevel1 != null)
                 {
                     ParCluster_IdL1 = ParLevel1.ParCluster_Id.ToString();
-                }          
+                }
 
 
                 var ParLevel1_Id = ParLevel1 == null ? 0 : ParLevel1.ParLevel1_Id;
@@ -2727,15 +2604,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                     string sql = "";
                     if (ParLevel1_Id > 0)
                     {
-                        /*
-                        sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                      " +
-                                 "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
-                                 "   LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id                                        " +
-                                 "   WHERE PL.ParLevel1_Id = " + ParLevel1_Id +
-                                 "   AND PL.ParLevel2_Id IS NULL                                                            " +
-                                 "   AND PO.Name = '" + Local + "'                                                             " +
-                                 "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
-                        */
 
                         sql = "SELECT Distinct PO.level, PC.Name as Counter, PO.Name as Local, '" + ParCluster_IdL1 + SyncServices.quebraProcesso + "' + CAST(PL.ParLevel1_Id AS VARCHAR) AS indicador FROM ParCounterXLocal PL (nolock)  " +
                               "LEFT JOIN ParCounter PC (nolock)  ON PL.ParCounter_Id = PC.Id " +
@@ -2748,15 +2616,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                     }
                     else if (ParLevel2_Id > 0)
                     {
-                        /*
-                        sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                      " +
-                                 "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
-                                 "   LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id                                        " +
-                                 "   WHERE PL.ParLevel1_Id IS NULL                                                          " +
-                                 "   AND PL.ParLevel2_Id = " + ParLevel2_Id +
-                                 "   AND PO.Name = '" + Local + "'                                                             " +
-                                 "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
-                        */
 
                         sql = "SELECT Distinct PO.level, PC.Name as Counter, PO.Name as Local, '" + ParCluster_IdL2 + SyncServices.quebraProcesso + "' + CAST(PL.ParLevel2_Id AS VARCHAR) AS indicador FROM ParCounterXLocal PL (nolock)  " +
                               "LEFT JOIN ParCounter PC (nolock)  ON PL.ParCounter_Id = PC.Id " +
@@ -2769,8 +2628,8 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
                     }
 
-                    //SqlConnection db = new SqlConnection(conexao);
                     List<ParCounter> list = new List<ParCounter>();
+
                     using (Factory factory = new Factory("DefaultConnection"))
                     {
                         list = factory.SearchQuery<ParCounter>(sql).ToList();
@@ -2796,7 +2655,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public int Id { get; set; }
         public decimal Value { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public NotConformityRule() { }
         public NotConformityRule(SqlConnection _db)
@@ -2812,7 +2670,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                              "   LEFT JOIN ParLevel2 P2  (nolock) ON P2.Id = NCL.ParLevel2_Id                                 " +
                              "   WHERE NCR.Id = " + NCR_Id + " AND P2.Id = " + P2_Id + " AND NCL.IsActive = 1;                                     ";
 
-                //SqlConnection db = new SqlConnection(conexao);
                 NotConformityRule obj = null;
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
@@ -2827,6 +2684,7 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         }
 
     }
+
     public partial class CollectionLevel2
     {
         public int Id { get; set; }
@@ -2871,8 +2729,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public int DefectsResult { get; set; }
         public bool IsEmptyLevel3 { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         private SqlConnection db { get; set; }
         public CollectionLevel2() { }
         public CollectionLevel2(SqlConnection _db)
@@ -2885,8 +2741,8 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             {
                 string sql = "SELECT * FROM CollectionLevel2 (nolock)  WHERE [Key] = '" + key + "'";
 
-                //SqlConnection db = new SqlConnection(conexao);
                 CollectionLevel2 obj = null;
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     obj = factory.SearchQuery<CollectionLevel2>(sql).FirstOrDefault();
@@ -2899,12 +2755,10 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
             }
         }
 
-
     }
 
     public partial class UpdateCollectionLevel2
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public UpdateCollectionLevel2() { }
         public UpdateCollectionLevel2(SqlConnection _db)
@@ -2925,8 +2779,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                 {
                     sql = "UPDATE CollectionLevel2 SET HaveReaudit = 0, ReauditNumber = " + ReauditNumber + " WHERE [Key] = '" + Key + "'";
                 }
-
-                //SqlConnection db = new SqlConnection(conexao);
                 db.Execute(sql);
             }
             catch (Exception)
@@ -2969,7 +2821,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
 
                 }
 
-                //SqlConnection db = new SqlConnection(conexao);
                 db.Execute(sql);
             }
             catch (Exception)
@@ -2992,7 +2843,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public int CountPeriod { get; set; }
         public int CountShift { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public ResultPhase() { }
         public ResultPhase(SqlConnection _db)
@@ -3028,8 +2878,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                             "      GROUP BY c1b.ParLevel1_id, c1b.ParLevel2_Id                                                              " +
                             "  )                                                                                                            ";
 
-
-                //SqlConnection db = new SqlConnection(conexao);
 
                 List<ResultPhase> list = new List<ResultPhase>();
                 using (Factory factory = new Factory("DefaultConnection"))
@@ -3068,7 +2916,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                              "                                                                                              ";
 
 
-                //SqlConnection db = new SqlConnection(conexao);
                 ResultPhaseFrequency obj = null;
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
@@ -3126,7 +2973,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         public int Period { get; set; }
         public int Shift { get; set; }
 
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private SqlConnection db { get; set; }
         public ResultEvaluationDefects() { }
         public ResultEvaluationDefects(SqlConnection _db)
@@ -3143,8 +2989,6 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
                                 "CAST(CollectionDate as date) = CAST('" + Date.ToString("yyyyMMdd") + "' as DATE)        " +
                                 "GROUP BY EvaluationNumber, Sample, Period, Shift; ";
 
-                //SqlConnection db = new SqlConnection(conexao);
-
                 List<ResultEvaluationDefects> list = new List<ResultEvaluationDefects>();
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
@@ -3160,17 +3004,8 @@ ParLevel1.ParCluster_Id + " AS ParCluster_Id, " +
         }
     }
 
-    /*
-         * novo metodo getConsolidation
-         * Autor: Gabriel Nunes
-         * Data: 2017 04 28
-         */
     public partial class ResultadoUmaColuna
     {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         public string retorno { get; set; }
-
     }
-
 }

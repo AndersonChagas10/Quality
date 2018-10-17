@@ -6,7 +6,7 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLevel2ControlCompany
+    public partial class ParLevel2ControlCompany : BaseModel
     {
         public int Id { get; set; }
 
@@ -18,12 +18,6 @@ namespace Dominio
 
         [Column(TypeName = "datetime2")]
         public DateTime? InitDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool? IsActive { get; set; }
 
