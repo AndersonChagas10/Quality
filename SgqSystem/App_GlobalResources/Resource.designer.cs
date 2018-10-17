@@ -4777,6 +4777,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to page.
+        /// </summary>
+        internal static string page {
+            get {
+                return ResourceManager.GetString("page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameterization Email Alert.
         /// </summary>
         internal static string parameterization_email_alert {
@@ -4989,6 +4998,15 @@ namespace Resources {
         internal static string per_fortnight {
             get {
                 return ResourceManager.GetString("per_fortnight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to per page.
+        /// </summary>
+        internal static string per_page {
+            get {
+                return ResourceManager.GetString("per_page", resourceCulture);
             }
         }
         

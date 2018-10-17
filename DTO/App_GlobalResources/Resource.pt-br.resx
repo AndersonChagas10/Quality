@@ -2190,6 +2190,12 @@
   <data name="String1" xml:space="preserve">
     <value>Atualizar</value>
   </data>
+  <data name="page" xml:space="preserve">
+    <value>página</value>
+  </data>
+  <data name="per_page" xml:space="preserve">
+    <value>por página</value>
+  </data>
   <data name="photo" xml:space="preserve">
     <value>Foto</value>
   </data>
