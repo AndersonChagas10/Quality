@@ -429,10 +429,10 @@
                     </tr>
                     <tr></tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Elaborador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Elaborador) {{seletedLinha.userFinish.FullName}}</td>
+                        <td style="font-size: 11px;"><strong>Elaborador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Elaborador) </td>
                     </tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Aprovador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Aprovador) {{seletedLinha.userValidacao.FullName}}</td>
+                        <td style="font-size: 11px;"><strong>Aprovador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Aprovador) </td>
                     </tr>
                 </table>
             </div>
@@ -711,11 +711,22 @@
                            style="float:left;width:25%;display:block;font-size:9px!important;font-weight: 800 !important;">
                         <span>{{item.Name}}</span>
                         <br />
-                        <span ng-if="item.ParLevel3Value[0].ParMeasurementUnit.Name || item.ParLevel3Value_OuterList[0].UnidadeMedidaText"
+
+                        <span ng-if="item.Id == idEscareacao"
+                              style="font-size:6px!important;font-weight: 100 !important;">
+                            mínimo igual a altura
+                        </span>
+
+                        <span ng-if="item.ParLevel3Value[0].ParLevel3InputType_Id == 1 && item.Id != idEscareacao"
+                              style="font-size:6px!important;font-weight: 100 !important;">
+                            Conforme | Não conforme
+                        </span>                
+
+                        <span ng-if="(item.ParLevel3Value[0].ParMeasurementUnit.Name || item.ParLevel3Value_OuterList[0].UnidadeMedidaText) && item.Id != idEscareacao && item.ParLevel3Value[0].ParLevel3InputType_Id != 1"
                               style="font-size:6px!important;font-weight: 100 !important;">
                             ({{seletedLinha.ParLevel3Interval['limite_'+item.Name]}} {{item.ParLevel3Value_OuterList[0].UnidadeMedidaText}})
                         </span>
-                        <span ng-if="!(item.ParLevel3Value[0].ParMeasurementUnit.Name || item.ParLevel3Value_OuterList[0].UnidadeMedidaText)"
+                        <span ng-if="(!(item.ParLevel3Value[0].ParMeasurementUnit.Name || item.ParLevel3Value_OuterList[0].UnidadeMedidaText)) && item.Id != idEscareacao && item.ParLevel3Value[0].ParLevel3InputType_Id != 1"
                               style="font-size:6px!important;font-weight: 100 !important;">
                             ({{seletedLinha.ParLevel3Interval['limite_'+item.Name]}})
                         </span>
@@ -1714,16 +1725,22 @@
 
                 function init() {
 
+                    
+
                     if (vm.dev) {
-                        vm.idEC = 1263
-                        vm.idET = 1264
-                        vm.idEspessura = 1254
-                        vm.idOVERLAP = 1262
+                        vm.idEC = 1660
+                        vm.idET = 1659
+                        vm.idEspessura = 1250
+                        vm.idOVERLAP = 1662
+                        vm.idEscareacao = 1656
+                        vm.idAltura = 1251
                     } if (vm.jbsBrasil) {
-                        vm.idEC = 3320
-                        vm.idET = 3319
-                        vm.idEspessura = 3314
-                        vm.idOVERLAP = 3327
+                        vm.idEC = 1660
+                        vm.idET = 1659
+                        vm.idEspessura = 1250
+                        vm.idOVERLAP = 1662
+                        vm.idEscareacao = 1656
+                        vm.idAltura = 1251
                     }
                 }
                 init();
