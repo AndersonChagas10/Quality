@@ -606,10 +606,10 @@
 
                 $.post(urlSaveHeaderField, { "HeaderField": objToSave }, function (IsSaved) {
                     if (IsSaved) {
-                        openMessageModal(Resources("saved_successfully"));
+                        openMessageModal(Resources("saved_successfully"),"");
                         $('#modalHeaderField').modal('hide');
                     } else {
-                        openMessageModal(Resources("error"));
+                        openMessageModal(Resources("error"),"");
                     }
                 });
             }
