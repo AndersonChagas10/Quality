@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option or rebuild the Visual Studio project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "14.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -2536,6 +2536,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Indicator already have link on the selected date..
+        /// </summary>
+        internal static string indicator_in_use {
+            get {
+                return ResourceManager.GetString("indicator_in_use", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         internal static string info {
@@ -2757,6 +2766,15 @@ namespace Resources {
         internal static string last {
             get {
                 return ResourceManager.GetString("last", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latitude.
+        /// </summary>
+        internal static string latitude {
+            get {
+                return ResourceManager.GetString("latitude", resourceCulture);
             }
         }
         
@@ -3153,6 +3171,15 @@ namespace Resources {
         internal static string log_out {
             get {
                 return ResourceManager.GetString("log_out", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Longitude.
+        /// </summary>
+        internal static string longitude {
+            get {
+                return ResourceManager.GetString("longitude", resourceCulture);
             }
         }
         
@@ -3634,6 +3661,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not conformities rules alredy exist.
+        /// </summary>
+        internal static string not_conformities_rules_exist {
+            get {
+                return ResourceManager.GetString("not_conformities_rules_exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not conformity rule.
         /// </summary>
         internal static string not_conformity_rule {
@@ -4084,6 +4120,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        internal static string photo {
+            get {
+                return ResourceManager.GetString("photo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Planning.
         /// </summary>
         internal static string planning {
@@ -4521,6 +4566,15 @@ namespace Resources {
         internal static string reports {
             get {
                 return ResourceManager.GetString("reports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report Files.
+        /// </summary>
+        internal static string report_files {
+            get {
+                return ResourceManager.GetString("report_files", resourceCulture);
             }
         }
         

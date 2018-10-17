@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParStructure")]
-    public partial class ParStructure
+    public partial class ParStructure : BaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParStructure()
@@ -27,12 +27,6 @@ namespace Dominio
         public string Description { get; set; }
 
         public int ParStructureParent_Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool Active { get; set; }
 

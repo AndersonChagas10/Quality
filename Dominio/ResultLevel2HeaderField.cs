@@ -6,7 +6,7 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ResultLevel2HeaderField
+    public partial class ResultLevel2HeaderField : BaseModel
     {
         [Key]
         [Column(Order = 0)]
@@ -27,12 +27,6 @@ namespace Dominio
         public string value { get; set; }
 
         public decimal? PunishmentValue { get; set; }
-
-        [Key]
-        [Column(Order = 3)]
-        public DateTime AddDate { get; set; }
-
-        public DateTime? AlterDate { get; set; }
 
         [Key]
         [Column(Order = 4)]

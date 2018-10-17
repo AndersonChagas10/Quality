@@ -29,13 +29,7 @@
                     <span>@adicaoEdicao</span>
                 </li>
             </ul>
-            <div class="page-toolbar">
-                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
-                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                    </div>*@
-            </div>
+            <div class="page-toolbar"></div>
         </div>
         <!-- END PAGE BAR -->
         <!-- END PAGE HEADER-->
@@ -58,21 +52,6 @@
 
                                     <div class="form-horizontal">
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        @*<div class="form-group">
-                                                @Html.LabelFor(model => model.Indicador, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                <div class="col-md-10">
-                                                    @Html.EditorFor(model => model.Indicador, new { htmlAttributes = new { @class = "form-control" } })
-                                                    @Html.ValidationMessageFor(model => model.Indicador, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>*@
-
-                                        @*<div class="form-group">
-                                                @Html.LabelFor(model => model.Unidade, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                <div class="col-md-10">
-                                                    @Html.EditorFor(model => model.Unidade, new { htmlAttributes = new { @class = "form-control" } })
-                                                    @Html.ValidationMessageFor(model => model.Unidade, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>*@
 
                                         @{ Html.EnableClientValidation(false); }
                                         <div class="form-group">
@@ -88,8 +67,15 @@
                                             @Html.LabelFor(model => model.ParCompany_id, "Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
-                                                @*@Html.DropDownList("ParCompany_id", null, htmlAttributes: new { @class = "form-control" })*@
                                                 @Html.ValidationMessageFor(model => model.ParCompany_id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Shift_Id, Resources.Resource.shift, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownList("Shift_Id", new SelectList(ViewBag.ShiftVolume, "Id", "Name"), Resources.Resource.all, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.Shift_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
@@ -108,14 +94,6 @@
                                                 @Html.ValidationMessageFor(model => model.QtdadeFamiliaProduto, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-
-                                        @*<div class="form-group">
-                                                @Html.LabelFor(model => model.Departamento, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                <div class="col-md-10">
-                                                    @Html.EditorFor(model => model.Departamento, new { htmlAttributes = new { @class = "form-control" } })
-                                                    @Html.ValidationMessageFor(model => model.Departamento, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>*@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.HorasTrabalhadasPorDia, "Horas trabalhadas por dia", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -138,7 +116,6 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.QtdadeMediaKgRecProdHora, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
                                                 @Html.ValidationMessageFor(model => model.QtdadeMediaKgRecProdHora, "", new { @class = "text-danger" })
-                                                @*@Html.HiddenFor(model => model.QtdadeMediaKgRecProdHora, htmlAttributes: new { @id = "QtdadeMediaKgRecProdHoraHidden" })*@
                                             </div>
                                         </div>
 
@@ -153,7 +130,6 @@
 
                                                 </select>
 
-                                                @*@Html.EditorFor(model => model.NBR, new { htmlAttributes = new { @class = "form-control" } })*@
                                                 @Html.ValidationMessageFor(model => model.NBR, "", new { @class = "text-danger" })
 
                                             </div>
@@ -164,7 +140,6 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.TotalKgAvaliaHoraProd, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
                                                 @Html.ValidationMessageFor(model => model.TotalKgAvaliaHoraProd, "", new { @class = "text-danger" })
-                                                @*@Html.HiddenFor(model => model.TotalKgAvaliaHoraProd, htmlAttributes: new { @id = "TotalKgAvaliaHoraProdHidden" })*@
                                             </div>
                                         </div>
 
@@ -197,18 +172,14 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
                                                 @Html.ValidationMessageFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd, "", new { @class = "text-danger" })
-                                                @*@Html.HiddenFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd, htmlAttributes: new { @id = "TotalAmostraAvaliaColabEsteiraHoraProdHidden" })*@
                                             </div>
                                         </div>
-
-
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Avaliacoes, "Avaliações", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Avaliacoes, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                                                 @Html.ValidationMessageFor(model => model.Avaliacoes, "", new { @class = "text-danger" })
-                                                @*@Html.HiddenFor(model => model.Avaliacoes, htmlAttributes: new { @id = "avaliacaoHidden" })*@
                                             </div>
                                         </div>
 
@@ -217,7 +188,6 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Amostras, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                                                 @Html.ValidationMessageFor(model => model.Amostras, "", new { @class = "text-danger" })
-                                                @*@Html.HiddenFor(model => model.Amostras, htmlAttributes: new { @id = "amostraHidden" })*@
                                             </div>
                                         </div>
 
@@ -230,9 +200,7 @@
                                     </div>
                                 }
 
-
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -242,7 +210,6 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
-
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
@@ -255,17 +222,14 @@
 
     $('#HorasTrabalhadasPorDia, #QtdadeMediaKgRecProdDia').on('blur, keyup', function () {
         $('#QtdadeMediaKgRecProdHora').val(Math.round(($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val())));
-       // $('#QtdadeMediaKgRecProdHoraHidden').val(Math.round(($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val())));
         CalcularAmostras();
     });
 
     function CalcularAmostras() {
-        debugger
+
         $.get("../api/NQA/getNQA/" + $('#NBR').val() + "/" + $('#QtdadeMediaKgRecProdHora').val() + "", function (r) {
-            console.log(r);
 
             $('#TotalKgAvaliaHoraProd').val(r);
-           // $('#TotalKgAvaliaHoraProdHidden').val(r);
             $('#TotalAvaliaColaborEsteirHoraProd').val(r);
 
             var resultadoSeiLaDoQue = ($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val());
@@ -278,10 +242,13 @@
     }
 
     $('#QtdadeMediaKgRecProdHora, #NBR').on('input', function () {
-        CalcularAmostras();      
+
+        CalcularAmostras();
+
     });
 
     $('#QtadeTrabEsteiraRecortes, #TotalKgAvaliaHoraProd').on('input', function () {
+
         $('#TotalAvaliaColaborEsteirHoraProd').val(($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
         $('#TotalAvaliaColaborEsteirHoraProdHidden').val(($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
         $('#TotalAvaliaColaborEsteirHoraProd').val($('#TotalKgAvaliaHoraProd').val());
@@ -291,30 +258,23 @@
         $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.round(resultadoSeiLaDoQue));
         $('#Amostras').val(Math.ceil((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val() / $('#QtdadeFamiliaProduto').val()));
         $('#amostraHidden').val(Math.ceil((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val() / $('#QtdadeFamiliaProduto').val()));
+
     });
 
     $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('blur, keyup', function () {
+
         var resultadoSeiLaDoQue = ($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val());
         $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.round(resultadoSeiLaDoQue));
         $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.round(resultadoSeiLaDoQue));
         $('#Amostras').val(Math.ceil((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val() / $('#QtdadeFamiliaProduto').val()));
         $('#amostraHidden').val(Math.ceil((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val() / $('#QtdadeFamiliaProduto').val()));
-    });
-
-    $('#btnTeste').click(function (e) {
-
 
     });
 
+    $(document).ready(function () {
 
-
-    //$('#Data').daterangepicker({
-    //    singleDatePicker: true,
-    //    showDropdowns: true
-    //});
-
-    $(document).ready(function() {
         $('#QtdadeFamiliaProduto').val("");
+
         $('#ParCompany_id').on('change', function () {
             if ($('#ParCompany_id').val() > 0) {
                 $.post('@Url.Action("GetVolumeRecortes", "api/Volume")' + "/" + $('#ParCompany_id').val(), {}, function (r) {
@@ -326,11 +286,8 @@
                 $('#QtdadeFamiliaProduto').val("");
             }
         });
+
         $('#ParCompany_id').change();
-    })
-
-
-    $(document).ready(function () {
 
         $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false, min: 0, max: 24 });
         $('#QtdadeMediaKgRecProdDia').inputmask("integer", { rightAlign: false });
@@ -343,7 +300,7 @@
             singleDatePicker: true,
             showDropdowns: true,
             'locale': {
-                "format": "DD/MM/YYYY",
+                "format": "DD/MM/YYYY"
             }
         });
 
@@ -359,20 +316,16 @@
 
         }
 
+        closeLeftSidebar();
+
     });
 
-</script>
-
-<script>
-
-    //TASK FORCE
     function applyMath() {
+
         $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val() / $('#QtdadeFamiliaProduto').val() / $('#QtdadeFamiliaProduto').val()));
         $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+        if (("" + $('#Amostras').val()).length <= 0) $('#Amostras').val(0);
+        if ((""+$('#amostraHidden').val()).length <= 0) $('#amostraHidden').val(0);
     }
 
-
-    $(document).ready(function () {
-        closeLeftSidebar();
-    });
 </script>

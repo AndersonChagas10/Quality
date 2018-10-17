@@ -210,7 +210,7 @@
 
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
 
-                    <h4 class="modal-title" id="Header">ID: Header</h4>
+                    <h4 class="modal-title" id="Header">@Resources.Resource.edit: Campos de Cabeçalho</h4>
                 </div>
                 <div class="modal-body" id="body">
                     ID: Body
@@ -509,7 +509,7 @@
 
                 }).fail(function (e, h, x) {
                     //closeLoader();
-                    var $btn = $('#btnSaveNewLevel1');
+                    var $btn = $('#btnSaveNewLevel1'); 
                     try {
                         closeLoader();
                         $btn.button('reset');
@@ -1250,7 +1250,7 @@
 
                 /*Habilita Edicao do AV AM*/
                 $('#tableAvAm > tbody > tr').each(function() {
-                    if (!linkedUnitIds.includes($(this).data().Parcompany_Id))
+                    if (!linkedUnitIds.includes($(this).data().companyId))
                         $(this).find('input, select, button').attr("disabled", true);
                 });
             }else{
@@ -1346,7 +1346,7 @@
                     $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
                     /*Habilita Exclusão do Peso para uma unidade especifica*/
                     $('#tablePeso > tbody > tr').each(function() {
-                        if(linkedUnitIds.includes($(this).data().Parcompany_Id)){
+                        if(linkedUnitIds.includes($(this).data().ParCompany_Id)){
                             $(this).find('button.btn-danger').attr("disabled", false);
                         }else{
                             $(this).find('button.btn-danger').attr("disabled", true);
@@ -1365,7 +1365,7 @@
                     $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
                     /*habilita Edicao do Peso para uma unidade especifica*/
                     $('#tablePeso > tbody > tr').each(function() {
-                        if (linkedUnitIds.includes($(this).data().Parcompany_Id)){
+                        if (linkedUnitIds.includes($(this).data().ParCompany_Id)){
                             $(this).find('input, select, button.btn-success').attr("disabled", false);
                         }else{
                             $(this).find('input, select, button.btn-success').attr("disabled", true);
@@ -1378,7 +1378,7 @@
                     });
                 }
 
-            
+
 
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
@@ -1487,6 +1487,7 @@
                 dados['paramsDto.parHeaderFieldDto.ParMultipleValues'] = ar;
             }
             console.log(dados);
+
             $.post(urlAttCabecalho, dados, function (objetoReturn, statusmessage) {
                 if (idLvl1 > 0) {
                     indexParamsLevel1.GetLevel1(idLvl1, true);
@@ -1511,7 +1512,8 @@
 
     var EditCabecalho = '@Html.Raw(@urlEditCabecalho)';
 
-    function ModalEdicaoCabecalho(title, idpH,idL1, idFT) {
+    function ModalEdicaoCabecalho(title, idpH, idL1, idFT) {
+        debugger
         idpar = idpH;
         idfieldType = idFT;
         idLvl1 = idL1;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28010.2026
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dominio", "Dominio\Dominio.csproj", "{777D8E88-0D52-446A-BC77-2F50A7D936E5}"
 EndProject
@@ -52,8 +52,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", 
 		20180716_1400_AdicionarIsActiveUserSGQ.txt = 20180716_1400_AdicionarIsActiveUserSGQ.txt
 		20180718_1100_CriacaoFormatoImportacao.txt = 20180718_1100_CriacaoFormatoImportacao.txt
 		20180723_1600_AdicionarShowAllUnits.txt = 20180723_1600_AdicionarShowAllUnits.txt
+		20180913_0000_VolumePorTurno.txt = 20180913_0000_VolumePorTurno.txt
+		20180927_1600_AdicionarParCluster_Id_na_PARLEVEL1XMODULE.txt = 20180927_1600_AdicionarParCluster_Id_na_PARLEVEL1XMODULE.txt
 		_oldscripts-em desenvolvimento.txt = _oldscripts-em desenvolvimento.txt
+		PA_1.txt = PA_1.txt
 		SGQ_1.0.6.txt = SGQ_1.0.6.txt
+		SGQ_1.0.7.txt = SGQ_1.0.7.txt
 	EndProjectSection
 EndProject
 Global

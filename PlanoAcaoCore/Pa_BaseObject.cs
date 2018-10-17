@@ -119,17 +119,28 @@ namespace PlanoAcaoCore
             return GetGenerico<Generico>(query)?.Id ?? 0;
         }
 
-        public static int GenericInsert(string valor, string table, int predecessor, string fk)
+        public static int GenericInsert(string valor, string table, int predecessor, string fk, bool? isPriority = null)
         {
             string query;
+
+            var IsPriority = "";
+            var IsPriority2 = "";
+
+            if (isPriority != null)
+            {
+                IsPriority = "IsPriority,";
+                IsPriority2 = "@IsPriority,";
+            }
 
             query = $@"INSERT INTO [dbo].[{ table }] 
                           ([Name],                  
                            { fk },
+                           { IsPriority }
                             IsActive)         
                     VALUES                          
                           (@Name,                   
                            @predecessor,
+                           { IsPriority2 } 
                             1)             
                           SELECT CAST(scope_identity() AS int) ";
 
@@ -137,17 +148,25 @@ namespace PlanoAcaoCore
             cmd = new SqlCommand(query);
             cmd.Parameters.AddWithValue("@Name", valor);
             cmd.Parameters.AddWithValue("@predecessor", predecessor);
+            cmd.Parameters.AddWithValue("@IsPriority", isPriority);
 
             return SalvarStatic(cmd);
         }
 
-        public static int GenericUpdate(string valor, string table, bool isActive, int predecessor, string fk, int id)
+        public static int GenericUpdate(string valor, string table, bool isActive, int predecessor, string fk, int id, bool? isPriority = null)
         {
             string query;
             SqlCommand cmd;
 
+            var IsPriority = "";
+
+            if (isPriority != null)
+            {
+                IsPriority = ", [IsPriority] = @IsPriority";
+            }
+                
             query = $@"UPDATE [dbo].[{ table }]
-                    SET [Name] = @Name, [{fk}] = @predecessor, [IsActive] = @IsActive
+                    SET [Name] = @Name, [{fk}] = @predecessor, [IsActive] = @IsActive { IsPriority }
                     WHERE Id = @Id
                     SELECT @Id";
 
@@ -156,11 +175,12 @@ namespace PlanoAcaoCore
             cmd.Parameters.AddWithValue("@predecessor", predecessor);
             cmd.Parameters.AddWithValue("@IsActive", isActive);
             cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@IsPriority", isPriority);
 
             return SalvarStatic(cmd);
         }
 
-        public static int GetIdGenerico(string valor, string table, int predecessor, string fk)
+        public static int GetIdGenerico(string valor, string table, int predecessor, string fk, bool? isPrimary = null)
         {
             string query;
 
@@ -170,7 +190,7 @@ namespace PlanoAcaoCore
             return GetGenerico<Generico>(query)?.Id ?? 0;
         }
 
-        public static int GenericInsertIfNotExists(string valor, string table)
+        public static int GenericInsertIfNotExists(string valor, string table, bool? isPrimary = null)
         {
             if (!(GetIdGenerico(valor, table) > 0))
             {
@@ -179,11 +199,11 @@ namespace PlanoAcaoCore
             return 0;
         }
 
-        public static int GenericInsertIfNotExists(string valor, string table, int predecessor, string fk)
+        public static int GenericInsertIfNotExists(string valor, string table, int predecessor, string fk, bool? isPrimary = null)
         {
             if (!(GetIdGenerico(valor, table, predecessor, fk) > 0))
             {
-                return GenericInsert(valor, table, predecessor, fk);
+                return GenericInsert(valor, table, predecessor, fk, isPrimary);
             }
             return 0;
         }
@@ -198,12 +218,12 @@ namespace PlanoAcaoCore
             return 0;
         }
 
-        public static int GenericUpdateIfUnique(string valor, string table, bool isActive, int predecessor, string fk, int id)
+        public static int GenericUpdateIfUnique(string valor, string table, bool isActive, int predecessor, string fk, int id, bool? isPrimary = null)
         {
             int auxId = GetIdGenerico(valor, table, predecessor, fk);
             if (auxId == id || auxId == 0)
             {
-                return GenericUpdate(valor, table, isActive, predecessor, fk, id);
+                return GenericUpdate(valor, table, isActive, predecessor, fk, id, isPrimary);
             }
             return 0;
         }
@@ -213,6 +233,7 @@ namespace PlanoAcaoCore
             public int Id { get; set; }
             public string Name { get; set; }
             public bool IsActive { get; set; }
+            public bool? IsPriority { get; set; }
         }
 
         public static int ExecutarSql(string sql)

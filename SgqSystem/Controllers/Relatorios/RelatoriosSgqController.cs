@@ -50,12 +50,19 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult ParametrizacaoGeral()
+        {
+            return View(form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Scorecard()
         {
 
             GetMetaAtualScorecard();
             return View(form);
         }
+
 
         private void GetMetaAtualScorecard()
         {
@@ -224,6 +231,11 @@ namespace SgqSystem.Controllers
         public ActionResult RelatorioDeResultados()
         {
             return View(form);
+        }
+
+        public ActionResult GetCarousel()
+        {
+            return PartialView("_Carousel");
         }
 
         #region Visao Geral da Area

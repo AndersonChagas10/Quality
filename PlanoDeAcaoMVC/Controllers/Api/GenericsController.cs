@@ -8,7 +8,7 @@ using System.Web.Http.Results;
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     [RoutePrefix("api/Generics")]
-    public class GenericsController : ApiController
+    public class GenericsController : BaseApiController
     {
         [HttpPost]
         [Route("Save")]
@@ -49,24 +49,30 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         [HttpPost]
         [Route("Get")]
-        public List<Pa_BaseObject.Generico> Get(GenericInsertPa valores)
+        public dynamic Get(GenericInsertPa valores)
         {
             var table = string.Empty;
             string fk = string.Empty;
+            string isPriority = string.Empty;
 
             EncontraTabelaParametrosParaQuery(valores.ParametroDeBusca, ref table, ref fk);
 
             var retorno = new List<Pa_BaseObject.Generico>();
+
+            if (table == "Pa_Objetivo")
+            {
+                isPriority = ",[IsPriority]";
+            }
+
             if (valores.PredecessorId > 0)
                 retorno = Pa_BaseObject.ListarGenerico<Pa_BaseObject.Generico>(
-                    $@"SELECT [Id],[Name],[IsActive] FROM [dbo].[{ table }] 
+                    $@"SELECT [Id],[Name],[IsActive] { isPriority } FROM [dbo].[{ table }] 
                     WHERE { fk } = {valores.PredecessorId.GetValueOrDefault()}"
                     ).ToList();
             else
                 retorno = Pa_BaseObject.ListarGenerico<Pa_BaseObject.Generico>(
-                    $@"SELECT [Id],[Name],[IsActive] FROM [dbo].[{ table }] "
+                    $@"SELECT [Id],[Name],[IsActive] { isPriority } FROM [dbo].[{ table }] "
                     ).ToList();
-
             return retorno;
 
         }
@@ -76,17 +82,13 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public GenericInsertPa Delete(GenericInsertPa valores)
         {
             throw new NotImplementedException("Ação não implementada.");
-            //var table = string.Empty;
-            //string fk = string.Empty;
-            //EncontraTabelaParametrosParaQuery(valores.NomeDoItem, ref table, ref fk);
-            //return valores;
         }
 
         private static int SaveGenericInsertPa(GenericInsertPa valores, string table, string fk)
         {
             int idSalvo;
             if (valores.PredecessorId > 0)
-                idSalvo = Pa_BaseObject.GenericInsertIfNotExists(valores.NomeDoItem, table, valores.PredecessorId.GetValueOrDefault(), fk);
+                idSalvo = Pa_BaseObject.GenericInsertIfNotExists(valores.NomeDoItem, table, valores.PredecessorId.GetValueOrDefault(), fk, valores.IsPriority);
             else
                 idSalvo = Pa_BaseObject.GenericInsertIfNotExists(valores.NomeDoItem, table);
             return idSalvo;
@@ -96,7 +98,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             int idSalvo;
             if (valores.PredecessorId > 0)
-                idSalvo = Pa_BaseObject.GenericUpdateIfUnique(valores.NomeDoItem, table, valores.IsActive, valores.PredecessorId.GetValueOrDefault(), fk, valores.Id);
+                idSalvo = Pa_BaseObject.GenericUpdateIfUnique(valores.NomeDoItem, table, valores.IsActive, valores.PredecessorId.GetValueOrDefault(), fk, valores.Id, valores.IsPriority);
             else
                 idSalvo = Pa_BaseObject.GenericUpdateIfUnique(valores.NomeDoItem, table, valores.IsActive, valores.Id);
             return idSalvo;
@@ -147,54 +149,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        /// <summary>
-        /// DEPRECIADO
-        /// </summary>
-        //[HttpPost]
-        //[Route("Update")]
-        //public GenericUpdatePa Update(GenericUpdatePa valores)
-        //{
-        //    try
-        //    {
-        //        var retorno = 0;
-
-        //        if (String.IsNullOrEmpty(valores.val))
-        //        {
-        //            valores.resposta = "Valor informado é invalido.";
-        //            return valores;
-        //        }
-        //        if (!(valores.id > 0))
-        //        {
-        //            valores.resposta = "Valor do ID é inválido.";
-        //            return valores;
-        //        }
-
-        //        var table = string.Empty;
-        //        string fk = string.Empty;
-
-        //        SwitchParam(valores.NomeDoItem, ref table, ref fk);
-
-        //        if (valores.PredecessorId > 0)
-        //            retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.isActive, valores.PredecessorId.GetValueOrDefault(), fk, valores.id);
-        //        else
-        //            retorno = Pa_BaseObject.GenericUpdateIfUnique(valores.val, table, valores.isActive, valores.id);
-
-
-        //        if (retorno == 0)
-        //        {
-        //            valores.resposta = "Valor informado já existe. Não pode ser duplicado.";
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        valores.resposta = "Ocorreu um erro durante a tentativa de processar o dado.";
-        //    }
-
-        //    return valores;
-
-        //}
-
         public class GenericInsertPa
         {
             public string NomeDoItem { get; set; }
@@ -203,6 +157,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             public string Resposta { get; set; }
             public bool IsActive { get; set; }
             public int Id { get; set; } = 0;
+            public bool? IsPriority { get; set; }
         }
 
     }

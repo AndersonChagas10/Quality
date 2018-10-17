@@ -2590,7 +2590,7 @@
     <value>Indicador x Módulos</value>
   </data>
   <data name="effective_date_end" xml:space="preserve">
-    <value>Data efetiva de témino</value>
+    <value>Data efetiva de término</value>
   </data>
   <data name="effective_date_start" xml:space="preserve">
     <value>Data efetiva de início</value>
@@ -2645,5 +2645,17 @@
   </data>
   <data name="per_page" xml:space="preserve">
     <value>por página</value>
+  </data>
+  <data name="photo" xml:space="preserve">
+    <value>Foto</value>
+  </data>
+  <data name="not_conformities_rules_exist" xml:space="preserve">
+    <value>Regra de não conformidade já existe.</value>
+  </data>
+  <data name="report_files" xml:space="preserve">
+    <value>Cadastro de Relatórios</value>
+  </data>
+  <data name="indicator_in_use" xml:space="preserve">
+    <value>Este indicador já possui um vinculo na data selecionada.</value>
   </data>
 </root>

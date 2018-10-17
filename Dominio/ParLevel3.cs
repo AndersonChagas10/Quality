@@ -2,11 +2,12 @@ namespace Dominio
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLevel3
+    public partial class ParLevel3 : BaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLevel3()
@@ -24,17 +25,12 @@ namespace Dominio
 
         [Required(AllowEmptyStrings = true)]
         [StringLength(1000)]
+        [DisplayName("Tarefa")]
         public string Name { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         [StringLength(1000)]
         public string Description { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

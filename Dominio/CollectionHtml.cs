@@ -7,15 +7,9 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("CollectionHtml")]
-    public partial class CollectionHtml
+    public partial class CollectionHtml : BaseModel
     {
         public int Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         public string Html { get; set; }

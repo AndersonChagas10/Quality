@@ -298,6 +298,11 @@
 
                     <form role="form" name="formularioLinha" class="ng-pristine ng-valid">
                         <div class="row">
+                            <div class="form-group col-sm-12">
+                                <h4><strong>Nome da Lata: </strong>{{linhaSelecionada.NomeTipoLata}}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group float-label-control col-lg-2 col-md-2 col-sm-2">
                                 <label for="" class="">Código ERP</label>
                                 <br />
@@ -1987,7 +1992,8 @@
                                 vm.linhas[index] = vm.linhaSelecionada
 
                                 vm.linhaSelecionada = vm.linhas[index];
-                                vm.linhaSelecionada.TipoDeLataImagens = objetoSalvo[0].TipoDeLataImagens;
+                                if (objetoSalvo[0])
+                                    vm.linhaSelecionada.TipoDeLataImagens = objetoSalvo[0].TipoDeLataImagens;
 
                                 if (vm.linhaSelecionada.ObservacoesList == undefined)
                                     vm.linhaSelecionada.ObservacoesList = [];

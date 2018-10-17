@@ -1,0 +1,7 @@
+-- Prioridade na tabela de Diretrizes
+IF COL_LENGTH('Pa_Objetivo','IsPriority') IS NULL
+    BEGIN
+		ALTER TABLE Pa_Objetivo
+		ADD IsPriority bit not null default 0;
+    END
+GO

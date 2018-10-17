@@ -99,14 +99,14 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepDesossa cepDesossa)
+        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id,Shift_Id")] VolumeCepDesossa cepDesossa)
         {
             GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(cepDesossa);
             ValidaCepDesossa(cepDesossa);
             if (ModelState.IsValid)
             {
                 //Verifica se já existe uma coleta no mesmo dia
-                if(db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id).ToList().Count() == 0)
+                if (db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id && r.Shift_Id == cepDesossa.Shift_Id).ToList().Count() == 0)
                 {
                     cepDesossa.AddDate = DateTime.Now;
                     db.VolumeCepDesossa.Add(cepDesossa);
@@ -115,9 +115,8 @@ namespace SgqSystem.Controllers
                 }
                 else
                 {
-                    ReturnError();
-                    //return View(cepDesossa);
-                }             
+                    ReturnError(cepDesossa);
+                }
             }
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
@@ -138,8 +137,7 @@ namespace SgqSystem.Controllers
 
             if (cepDesossa.HorasTrabalhadasPorDia == null)
                 ModelState.AddModelError("HorasTrabalhadasPorDia", "O campo \"Horas trabalhadas por dia\" precisa ser preenchido.");
-            else
-            if (cepDesossa.HorasTrabalhadasPorDia.Value <= 0)
+            else if (cepDesossa.HorasTrabalhadasPorDia.Value <= 0)
                 ModelState.AddModelError("HorasTrabalhadasPorDia", "O campo \"Horas trabalhadas por dia\" precisa ter valor maior que 0.");
 
             if (cepDesossa.AmostraPorDia == null)
@@ -147,22 +145,12 @@ namespace SgqSystem.Controllers
 
             if (cepDesossa.QtdadeFamiliaProduto == null)
                 ModelState.AddModelError("QtdadeFamiliaProduto", "O campo \"Número de famílias cadastradas\" precisa ser preenchido.");
-
-            /*if (cepDesossa.Avaliacoes == null)
-                ModelState.AddModelError("Avaliacoes", Guard.MesangemModelError("Avaliacoes", false));
-
-            if (cepDesossa.Amostras == null)
-                ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
-
-            //if (cepDesossa.Id > 0 && cepDesossa.Data != null && cepDesossa.Data?.Date < DateTime.Now.Date)
-            //{
-            //    ModelState.AddModelError("Data", "Não é possível alterar o volume com data menor que a data atual");
-            //}
         }
 
-        private void ReturnError()
+        private void ReturnError(VolumeCepDesossa obj)
         {
-            ModelState.AddModelError("Data","Já existe um registro nesta data para esta unidade!");
+            ModelState.AddModelError("Data", $"Já existe registro na data {obj.Data.Value.ToShortDateString()} para esta unidade!");
+            obj.Data = DateTime.Now;
         }
 
         // GET: CepDesossas/Edit/5
@@ -172,16 +160,13 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             VolumeCepDesossa cepDesossa = db.VolumeCepDesossa.Find(id);
+
             if (cepDesossa == null)
             {
                 return HttpNotFound();
             }
-
-            //if (cepDesossa.Data != null && cepDesossa.Data?.Date < DateTime.Now.Date)
-            //{
-            //    return RedirectToAction("Index");
-            //}
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 2), "Id", "Name", cepDesossa.ParLevel1_id);
@@ -195,14 +180,14 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepDesossa cepDesossa)
+        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id,Shift_Id")] VolumeCepDesossa cepDesossa)
         {
             GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(cepDesossa);
             ValidaCepDesossa(cepDesossa);
 
             if (ModelState.IsValid)
             {
-                if (db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id).ToList().Count() == 0)
+                if (db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id && r.Shift_Id == cepDesossa.Shift_Id && r.Id != cepDesossa.Id).ToList().Count() == 0)
                 {
                     cepDesossa.AlterDate = DateTime.Now;
                     db.Entry(cepDesossa).State = EntityState.Modified;
@@ -215,31 +200,9 @@ namespace SgqSystem.Controllers
                 }
                 else
                 {
-                    //Se for a edição da mesma data e parCompany
-                    if(db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && 
-                                                      r.ParCompany_id == cepDesossa.ParCompany_id &&
-                                                      r.Id == cepDesossa.Id).ToList().Count() == 1)
-                    {
-                        using (var db2 = new SgqDbDevEntities())
-                        {
-                            cepDesossa.AlterDate = DateTime.Now;
-                            db2.Entry(cepDesossa).State = EntityState.Modified;
-                            if (db2.VolumeCepDesossa.Where(r => r.Id == cepDesossa.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
-                            {
-                                db2.Entry(cepDesossa).Property(x => x.Data).IsModified = false;
-                            }
-                            db2.SaveChanges();
-                            return RedirectToAction("Index");
-                        }
-                       
-                   }
-                    else
-                    {
-                        ReturnError();
-                        //return View(cepDesossa);
-                    }
-                }                   
-                
+                    ReturnError(cepDesossa);
+                }
+
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.AsNoTracking().OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepDesossa.ParLevel1_id);

@@ -125,6 +125,69 @@ namespace SgqSystem.Controllers.Api
             return retorno;
         }
 
+        [HttpPost]
+        [Route("GetParametrizacaoGeral")]
+        public dynamic GetParametrizacaoGeral([FromBody] FormularioParaRelatorioViewModel form)
+        {
+
+            using (var db = new SgqDbDevEntities())
+            {
+
+                dynamic a = new ExpandoObject();
+                /*Estas 2 primeiras queryes são independentes*/
+
+                var level1 = "";
+                var level2 = "";
+                var level3 = "";
+
+                if (form.level1Id > 0)
+                    level1 = " AND P1.ID = " + form.level1Id;
+
+                if (form.level2Id > 0)
+                    level2 = " AND P2.ID = " + form.level2Id;
+
+                if (form.level3Id > 0)
+                    level3 = " AND P3.ID = " + form.level3Id;
+
+                var query = @"  SELECT
+                                P1.NAME AS Col1,
+                                P2.NAME AS Col2,
+                                P3.NAME AS Col3
+                                FROM PARLEVEL3LEVEL2 P32 with (nolock)
+                                INNER JOIN ParLevel3Level2Level1 P321 with (nolock)
+                                ON P321.PARLEVEL3LEVEL2_ID = P32.Id
+                                INNER JOIN ParLevel1 P1 with (nolock)
+                                ON P321.ParLevel1_Id = P1.ID
+                                INNER JOIN PARLEVEL2 P2 with (nolock)
+                                ON P32.ParLevel2_Id = P2.ID
+                                INNER JOIN PARLEVEL3 P3 with (nolock)
+                                ON P32.ParLevel3_Id = P3.Id
+                                WHERE 1=1"
+                                + level1 + level2 + level3 +
+                              @"  AND P32.IsActive = 1
+                                  AND P321.Active = 1
+                                  AND P1.IsActive = 1
+                                  AND P2.IsActive = 1
+                                  AND P3.IsActive = 1
+                                GROUP BY P1.NAME, P2.NAME, P3.NAME
+                                order by 1,2,3
+";
+
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    a = factory.SearchQuery<PropriedadesGenericas>(query).ToList();
+
+                }
+                //if (a.Count() == 0)
+                    return a;
+
+            }
+
+            return null;
+
+        }
+
         //ApiRelatoriosController
     }
 

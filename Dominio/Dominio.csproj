@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AreasParticipantes.cs" />
+    <Compile Include="BaseModel.cs" />
     <Compile Include="BkpCollection.cs" />
     <Compile Include="CaracteristicaTipificacao.cs" />
     <Compile Include="ClusterDepartamentos.cs" />
@@ -43,6 +44,8 @@
     <Compile Include="ConsolidationLevel1.cs" />
     <Compile Include="ConsolidationLevel2.cs" />
     <Compile Include="CorrectiveAction.cs" />
+    <Compile Include="ErrorLog.cs" />
+    <Compile Include="DatabaseLog.cs" />
     <Compile Include="Defect.cs" />
     <Compile Include="DepartamentoOperacoes.cs" />
     <Compile Include="Departamentos.cs" />
@@ -69,9 +72,6 @@
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
     <Compile Include="ItemMenu.cs" />
     <Compile Include="LeftControlRole.cs" />
-    <Compile Include="Level01.cs" />
-    <Compile Include="Level02.cs" />
-    <Compile Include="Level03.cs" />
     <Compile Include="LogAlteracoes.cs" />
     <Compile Include="LogJson.cs" />
     <Compile Include="LogService\LoggerNLog.cs" />
@@ -100,6 +100,10 @@
     <Compile Include="ParFrequency.cs" />
     <Compile Include="ParGoal.cs" />
     <Compile Include="ParGoalScorecard.cs" />
+    <Compile Include="ParGroupParLevel1.cs" />
+    <Compile Include="ParGroupParLevel1Type.cs" />
+    <Compile Include="ParGroupParLevel1XParLevel1.cs" />
+    <Compile Include="ParGroupParLevel1XParLevel3.cs" />
     <Compile Include="ParHeaderField.cs" />
     <Compile Include="ParLataImagens.cs" />
     <Compile Include="ParLevel1.cs" />
@@ -211,6 +215,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>

@@ -118,7 +118,7 @@ namespace SgqSystem.Secirity
 
                     UserSgq userLogado = db.UserSgq.FirstOrDefault(r => r.Id == userId);
 
-                    filterContext.Controller.ViewBag.UserSgq = db.UserSgq.ToList();
+                    filterContext.Controller.ViewBag.UserSgq = db.UserSgq.OrderBy(x => x.Name).ToList();
                     filterContext.Controller.ViewBag.Level01 = Mapper.Map<List<ParLevel1DTO>>(db.ParLevel1.ToList());
                     filterContext.Controller.ViewBag.Level02 = Mapper.Map<List<ParLevel2DTO>>(db.ParLevel2.ToList());
                     filterContext.Controller.ViewBag.Level03 = Mapper.Map<List<ParLevel3DTO>>(db.ParLevel3.ToList());
@@ -165,7 +165,7 @@ namespace SgqSystem.Secirity
                                 }
                             }else
                             {
-                                var _companyXUserSgq = db.ParCompany.Where(p=>p.IsActive == true).ToList();
+                                var _companyXUserSgq = db.ParCompany.Where(p=>p.IsActive).ToList();
 
                                 filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(_companyXUserSgq);
                             }
@@ -179,19 +179,9 @@ namespace SgqSystem.Secirity
                     }
                 }
 
-                //return retorno;
             }
             base.OnActionExecuting(filterContext);
         }
 
-
-
-        //public override void OnActionExecuted(ActionExecutedContext filterContext)
-        //{
-        //    //if (filterContext.Exception != null)
-        //    //    filterContext.HttpContext.Trace.Write("(Logging Filter)Exception thrown");
-
-        //    base.OnActionExecuted(filterContext);
-        //}
     }
 }
