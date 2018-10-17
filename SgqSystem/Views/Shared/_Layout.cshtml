@@ -296,6 +296,21 @@
             }
         });
 
+
+        var linguagemComResourcesParaDatatable = {
+            "search": '@Resources.Resource.search',
+            "emptyTable": "@Resources.Resource.no_data_to_show",
+            "zeroRecords": '@Resources.Resource.no_data_to_show',
+            "info": "@Resources.Resource.page _PAGE_ de _PAGES_",
+            "lengthMenu": "@Resources.Resource.show _MENU_ @Resources.Resource.results @Resources.Resource.per_page",
+            "infoEmpty": "@Resources.Resource.no_data_to_show",
+            "infoFiltered": "(Filtrado de _MAX_ registros)",
+            "paginate": {
+                "previous": '@Resources.Resource.last',
+                "next": '@Resources.Resource.next'
+            }
+        };
+
         /*DataTable Padrão BR*/
         $.extend(true, $.fn.dataTable.defaults,
            {

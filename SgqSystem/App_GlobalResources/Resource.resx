@@ -2646,4 +2646,10 @@
   <data name="update" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="page" xml:space="preserve">
+    <value>page</value>
+  </data>
+  <data name="per_page" xml:space="preserve">
+    <value>per page</value>
+  </data>
 </root>
