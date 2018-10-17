@@ -16,14 +16,19 @@ namespace Dominio
         public int Id { get; set; }
         [Display(Name = "Relatorio")]
         public int ItemMenu_Id { get; set; }
+
         [Display(Name = "Elaborador")]
         public string Elaborador { get; set; }
+
         [Display(Name = "Aprovador")]
         public string Aprovador { get; set; }
+
         [Display(Name = "Indicador")]
         public int ParLevel1_Id { get; set; }
+
         [Display(Name = "Unidade")]
         public int? ParCompany_Id { get; set; }
+
         [Display(Name = "Ativo")]
         public bool IsActive { get; set; }
 

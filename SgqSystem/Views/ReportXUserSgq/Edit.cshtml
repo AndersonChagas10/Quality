@@ -40,6 +40,14 @@
                                         @Html.HiddenFor(model => model.AddDate)
 
                                         <div class="form-group">
+                                            @Html.LabelFor(model => model.NomeRelatorio, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.TextBoxFor(model => model.NomeRelatorio, null, htmlAttributes: new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.NomeRelatorio, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
                                             @Html.LabelFor(model => model.ItemMenu_Id, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ItemMenu_Id", null, htmlAttributes: new { @class = "form-control select2" })
