@@ -278,6 +278,8 @@
 
                             $('#divEdit').empty();
 
+                            $('modalHeaderField #estName').html("");
+
                             r = JSON.parse(r);
 
                             if (r.length > 0) {
@@ -421,7 +423,8 @@
                                         default:
                                     }
 
-                                    $('#estName').html("");
+                                    $('#modalHeaderField #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento);
+
                                     $('#divEdit').append(html);
 
                                 });
