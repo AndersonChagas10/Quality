@@ -5272,7 +5272,7 @@ $(document).ready(function(){
             ParLevel2List = headerList +
                             ParLevel2List;
 
-            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.ParLevel1_Id), ParFieldTypeDB, html);
+            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.ParLevel1_Id), ParFieldTypeDB, html, ParCompany_id: ParCompany_Id);
 
 
             //if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
