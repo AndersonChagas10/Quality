@@ -97,6 +97,16 @@
     <script src="~/Scripts/noframework.waypoints.min.js"></script>
 
     <style>
+        table.table th, table.table td{
+            max-width:100px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        table.table th:active, table.table td:active{
+            max-width: 100% !important;
+            background-color:#fff;
+        }
         table.table thead .sorting {
             background: url('@Url.Content("~/imagens/sort_both.png")') no-repeat center right;
         }
