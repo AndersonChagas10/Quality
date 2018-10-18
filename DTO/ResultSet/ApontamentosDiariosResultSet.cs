@@ -86,11 +86,11 @@ public class ApontamentosDiariosResultSet
 
         if (GlobalConfig.Eua)
         {
-            formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 101)";
+            formatDate = "CONVERT(varchar, CONVERT(DATE, CL2HF2.value, 111), 101)";
         }
         else
         {
-            formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 103)";
+            formatDate = "CONVERT(varchar, CONVERT(DATE, CL2HF2.value, 111), 103)";
         }
 
         var query = $@" 
@@ -187,7 +187,7 @@ public class ApontamentosDiariosResultSet
                         (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case 
                         when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
                         when CL2HF2.ParFieldType_Id = 2 then case when HF.Description = 'Produto' then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end 
-                        when CL2HF2.ParFieldType_Id = 6 then CL2HF2.Value -- { formatDate }
+                        when CL2HF2.ParFieldType_Id = 6 then { formatDate }
                         else CL2HF2.Value end)
                         FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) 
                         left join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id

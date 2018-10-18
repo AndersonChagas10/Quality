@@ -80,11 +80,11 @@ namespace DTO.ResultSet
 
             if (GlobalConfig.Eua)
             {
-                formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 101)";
+                formatDate = "CONVERT(varchar, CONVERT(DATE, CL2HF2.value, 111), 101)";
             }
             else
             {
-                formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 103)";
+                formatDate = "CONVERT(varchar, CONVERT(DATE, CL2HF2.value, 111), 103)";
             }
 
             var query = $@" 
