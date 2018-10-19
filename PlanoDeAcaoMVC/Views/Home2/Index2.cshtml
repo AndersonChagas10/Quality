@@ -2360,11 +2360,10 @@
 
             let isDiretriz = (tempName == "Objetivo_Id");
             let isPriority = false;
+            let Objetivo_Id = parseInt($(btn).parents('tr').find('input , select').val());
             
             //pegar se é true ou false
-            if (isDiretriz && valorSelectSelecionado != "" && valorSelectSelecionado) {
-
-                let Objetivo_Id = parseInt($(btn).parents('tr').find('input , select').val());
+            if (isDiretriz && valorSelectSelecionado != "" && Objetivo_Id) {                
 
                 $.post('@Url.Action("GetDiretriz", "api/Generics")/' + Objetivo_Id, function (o) {
 
