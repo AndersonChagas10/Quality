@@ -1486,7 +1486,7 @@
                 }
                 dados['paramsDto.parHeaderFieldDto.ParMultipleValues'] = ar;
             }
-            console.log(dados);
+            //console.log(dados);
 
             $.post(urlAttCabecalho, dados, function (objetoReturn, statusmessage) {
                 if (idLvl1 > 0) {
@@ -1494,6 +1494,7 @@
                     openMessageModal("@Resources.Resource.alert", statusmessage);
                     idLvl1 = 0 ;
                     $('#modalEdicaoCabecalho').modal('hide');
+                    $('#parLevel2Select2').trigger('change'); //Atualiza o level2
                 }
 
             }).fail(function (e, h, x) {

@@ -234,6 +234,8 @@
 
                         var data = table.row($(this).parents('tr')).data();
 
+                        $('modalHeaderField #estName').html("");
+
                         $.post(urlEditCabecalho + "/" + data.ResultLevel3Id, function (r) {
 
                             $('#divEdit').empty();
@@ -381,7 +383,8 @@
                                         default:
                                     }
 
-                                    $('#estName').html("");
+                                    $('#modalHeaderField #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento);
+
                                     $('#divEdit').append(html);
 
                                 });

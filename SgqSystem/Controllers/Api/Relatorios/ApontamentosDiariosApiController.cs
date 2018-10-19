@@ -86,7 +86,7 @@ namespace SgqSystem.Controllers.Api
         public String GetPhotoPreview(int ResultLevel3Id)
         {
             var result = db.Result_Level3_Photos.FirstOrDefault(r => r.Result_Level3_Id == ResultLevel3Id);
-            if(result != null)
+            if (result != null)
                 return result.Photo_Thumbnaills;
             return null;
         }
@@ -1006,7 +1006,7 @@ namespace SgqSystem.Controllers.Api
                         var original = db.CollectionLevel2XParHeaderField.FirstOrDefault(c => c.Id == item.Id);
 
                         if (string.IsNullOrEmpty(item.Value))//Remover
-                        {                 
+                        {
                             db.CollectionLevel2XParHeaderField.Remove(original);
                         }
                         else //Update
@@ -1125,17 +1125,21 @@ namespace SgqSystem.Controllers.Api
                 //Se tiver mais do que um valor duplica a inserção
                 var resultados = coletas.Where(r => r.ParHeaderField_Id == headerField.Id).ToList();
 
-                select.CollectionLevel2 = collectionLevel2;               
+                select.CollectionLevel2 = collectionLevel2;
 
                 //Quantidades de campos coletados
                 if (resultados.Count > 0)
                 {
                     foreach (var resultado in resultados)
                     {
-                        //Atribui a quantidade de cabeçalhos
+                        //Atribui a quantidade de cabeçalhos                       
                         select.CollectionLevel2XParHeaderField_Id = resultado.Id;
                         select.ValueSelected = resultado.Value;
-                        resultHeaderField.Add(select);
+                        resultHeaderField.Add(new Select() { CollectionLevel2 = select.CollectionLevel2,
+                            CollectionLevel2XParHeaderField_Id = select.CollectionLevel2XParHeaderField_Id,
+                            HeaderField = select.HeaderField,
+                            Values = select.Values, ValueSelected = 
+                            select.ValueSelected });
                     }
                 }
                 else

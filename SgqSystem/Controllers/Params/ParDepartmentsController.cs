@@ -41,7 +41,7 @@ namespace SgqSystem.Controllers
         public ActionResult Create()
         {
             var listaFilhos = db.ParDepartment.ToList();
-            listaFilhos.Insert(0 , new ParDepartment() { Id = 0, Name = "Selecione" });
+            listaFilhos.Insert(0, new ParDepartment() { Id = 0, Name = "Selecione" });
             ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", -1);
 
             return View();
@@ -80,11 +80,7 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
-
-            var listaFilhos = db.ParDepartment.ToList();
-            listaFilhos.Insert(0, new ParDepartment() { Id = 0, Name = "Selecione" });
-            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", parDepartment.Parent_Id);
-
+            MontaLista(parDepartment);
             return View(parDepartment);
         }
 
@@ -102,6 +98,7 @@ namespace SgqSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            MontaLista(parDepartment);
             return View(parDepartment);
         }
 
@@ -146,7 +143,7 @@ namespace SgqSystem.Controllers
             if (parDepartment.Parent_Id > 0)
                 pai = db.ParDepartment.AsNoTracking().Where(x => x.Id == parDepartment.Parent_Id).FirstOrDefault();
             else
-                pai = null; 
+                pai = null;
 
             if (pai != null)
             {
@@ -163,6 +160,16 @@ namespace SgqSystem.Controllers
             {
                 parDepartment.Hash = null;
             }
+        }
+
+        private void MontaLista(ParDepartment parDepartment)
+        {
+            ViewBag.TemFilhos = db.ParDepartment.Any(x => x.Parent_Id == parDepartment.Id && x.Active);
+
+            var listaFilhos = db.ParDepartment.Where(x=>x.Active).ToList();
+            listaFilhos.Insert(0, new ParDepartment() { Id = 0, Name = "Selecione" });
+            listaFilhos.Remove(parDepartment);
+            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", parDepartment.Parent_Id);
         }
     }
 }
