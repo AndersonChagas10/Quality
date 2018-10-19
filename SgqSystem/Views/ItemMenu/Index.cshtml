@@ -120,23 +120,18 @@
 
 
     $(document).ready(function () {
-        $('#tabelaMenu').dataTable({
-            "aoPaging": true,
-            "aoSearching": true,
-            "aoColumns": [
-                null,
-                null, 
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                { "bSearchable": false }
-            ],
-            "order": [[1, "asc"]],
-             "language": linguagemComResourcesParaDatatable
-        });
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaMenu').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 
 </script>

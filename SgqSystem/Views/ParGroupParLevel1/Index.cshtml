@@ -18,7 +18,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Grupo de  Indicador</span>
+                    <span>@Resources.Resource.indicator_group</span>
                 </li>
             </ul>
         </div>
@@ -30,7 +30,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">Lista de Grupo de  Indicador</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.listOf @Resources.Resource.indicator_group</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -75,7 +75,6 @@
                                             </td>
                                             <td>
                                                 @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                                             </td>
                                         </tr>
                                         }
@@ -94,19 +93,14 @@
 <script>
 
     $(document).ready(function () {
-        $('#tabelaGrupo').dataTable({
-            "aoPaging": true,
-            "aoSearching": true,
-            "aoColumns": [
-                null,
-                null,
-                null,
-                null,
-                { "bSearchable": false }
-            ],
-            "order": [[1, "asc"]],
-            "language": linguagemComResourcesParaDatatable
-        });
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaGrupo').dataTable(DataTableComResourcesEpropriedadesjaSetadas});
     });
 
 </script>

@@ -10,18 +10,18 @@ using Dominio;
 
 namespace SgqSystem.Controllers
 {
-    public class ParGroupParLevel1XParLevel3Controller : BaseController
+    public class ParVinculoPesoController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
-        // GET: ParGroupParLevel1XParLevel3
+        // GET: ParVinculoPeso
         public ActionResult Index()
         {
             var parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Include(p => p.ParLevel1).Include(p => p.ParLevel3);
             return View(parGroupParLevel1XParLevel3.ToList());
         }
 
-        // GET: ParGroupParLevel1XParLevel3/Details/5
+        // GET: ParVinculoPeso/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,7 +36,7 @@ namespace SgqSystem.Controllers
             return View(parGroupParLevel1XParLevel3);
         }
 
-        // GET: ParGroupParLevel1XParLevel3/Create
+        // GET: ParVinculoPeso/Create
         public ActionResult Create()
         {
             var listaTiposIndicadores = db.ParGroupParLevel1Type.Where(x => x.IsActive).ToList();
@@ -70,7 +70,7 @@ namespace SgqSystem.Controllers
             return View();
         }
 
-        // POST: ParGroupParLevel1XParLevel3/Create
+        // POST: ParVinculoPeso/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -90,7 +90,7 @@ namespace SgqSystem.Controllers
             return View(parGroupParLevel1XParLevel3);
         }
 
-        // GET: ParGroupParLevel1XParLevel3/Edit/5
+        // GET: ParVinculoPeso/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -132,8 +132,8 @@ namespace SgqSystem.Controllers
 
             return View(parGroupParLevel1XParLevel3);
         }
- 
-        // POST: ParGroupParLevel1XParLevel3/Edit/5
+
+        // POST: ParVinculoPeso/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -152,7 +152,7 @@ namespace SgqSystem.Controllers
             return View(parGroupParLevel1XParLevel3);
         }
 
-        // GET: ParGroupParLevel1XParLevel3/Delete/5
+        // GET: ParVinculoPeso/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -167,7 +167,7 @@ namespace SgqSystem.Controllers
             return View(parGroupParLevel1XParLevel3);
         }
 
-        // POST: ParGroupParLevel1XParLevel3/Delete/5
+        // POST: ParVinculoPeso/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

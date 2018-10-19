@@ -16,7 +16,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Grupo de Indicador X Indicador</span>
+                    <span>@Resources.Resource.indicatorxindicator_group</span>
                 </li>
             </ul>
         </div>
@@ -28,7 +28,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">Lista de Grupo de Indicador X Indicador</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.listOf @Resources.Resource.indicatorxindicator_group</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -66,8 +66,7 @@
                                                     @Html.DisplayFor(modelItem => item.IsActive)
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 </td>
                                             </tr>
                                         }
@@ -86,18 +85,13 @@
 <script>
 
     $(document).ready(function () {
-        $('#tabelaGrupoXIndicador').dataTable({
-            "aoPaging": true,
-            "aoSearching": true,
-            "aoColumns": [
-                null,
-                null,
-                null,
-                { "bSearchable": false }
-            ],
-            "order": [[1, "asc"]],
-            "language": linguagemComResourcesParaDatatable
-        });
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            null,
+            { "bSearchable": false }
+        ]; 
+        $('#tabelaGrupoXIndicador').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 
 </script>

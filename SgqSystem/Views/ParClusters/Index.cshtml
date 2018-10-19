@@ -99,18 +99,13 @@
     navbarSelect("navbar3");
 
      $(document).ready(function () {
-        closeLeftSidebar();
-         $('#tabelaProcessos').dataTable({
-            "aoPaging": true,
-            "aoSearching": true,
-            "aoColumns": [
-                null,
-                null, 
-                null,
-                { "bSearchable": false }
-            ],
-            "order": [[1, "asc"]],
-             "language": linguagemComResourcesParaDatatable
-        });
+         closeLeftSidebar();
+         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+             null,
+             null,
+             null,
+             { "bSearchable": false }
+         ];
+         $('#tabelaProcessos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 </script>

@@ -2208,4 +2208,19 @@
   <data name="indicator_in_use" xml:space="preserve">
     <value>Este indicador já possui um vinculo na data selecionada.</value>
   </data>
+  <data name="indicatorxindicator_group" xml:space="preserve">
+    <value>Grupo de Indicador X Indicador</value>
+  </data>
+  <data name="indicator_group_type" xml:space="preserve">
+    <value>Tipo de Grupo de Indicador</value>
+  </data>
+  <data name="indicator_group_type_list" xml:space="preserve">
+    <value>Lista de Tipo de Grupo de  Indicador</value>
+  </data>
+  <data name="indicatorxassignment_group" xml:space="preserve">
+    <value>Grupo de  Indicador X Tarefa</value>
+  </data>
+  <data name="indicator_group" xml:space="preserve">
+    <value>Grupo de Indicador</value>
+  </data>
 </root>

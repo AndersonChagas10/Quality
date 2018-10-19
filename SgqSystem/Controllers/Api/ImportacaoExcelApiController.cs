@@ -45,6 +45,11 @@ namespace SgqSystem.Controllers.Api
                 //Metodo para criar um dicionario padrão
                 var dicionarioPadrao = CriaDicionarioPadrao();
 
+                //montar um divjeto com os seguintes campos e enviar ao metodo CriarCollectJson
+                //{parlevel1_id}/{parlevel2_id}/{parlevel3_id}/{cluster_id}/{versionApp}/{empresa}/{ano}/{mes}/{dia}/{initials}/{av}/{NC}"
+                //var novoDivjetoPReenchido = NovoGetUrlDivjeto(divjeto, dicionarioItem, dicionarioPadrao);
+
+
                 //metodo para formatar o divjeto, e preencher com os dados padroes 
                 var divjetoPreenchido = GetUrlDivjeto(divjeto, dicionarioItem, dicionarioPadrao);
 
@@ -99,7 +104,7 @@ namespace SgqSystem.Controllers.Api
 
         public static Dictionary<string, string> CriaDicionarioPadrao()
         {
-
+            var data = DateTime.Now;
             Dictionary<string, string> dicionarioPadrao = new Dictionary<string, string>();
             dicionarioPadrao.Add("Processo", "3");
             dicionarioPadrao.Add("Indicador", "42");
@@ -112,155 +117,173 @@ namespace SgqSystem.Controllers.Api
             dicionarioPadrao.Add("Tarefa", "1142");
             dicionarioPadrao.Add("Avaliacao", "17");
             dicionarioPadrao.Add("Nao Conformidade", "258");
+            dicionarioPadrao.Add("Ano", data.Year.ToString());
+            dicionarioPadrao.Add("Mes", data.Month.ToString());
+            dicionarioPadrao.Add("Dia", data.Day.ToString());
 
             return dicionarioPadrao;
         }
 
         private string MontaDivJeto(List<JObject> dados)
         {
-            string collectionJson = "<level02>";
-            collectionJson += "{Processo}" + "|" + "{Indicador}"; //[0]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "{Data da Coleta}"; //[1]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "{Processo}" + "|" + "{Monitoramento}"; //[2]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "{Data da Coleta}"; //[3]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "{Unidade}"; //[4]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "1"; //[5]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "1"; //[6]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "1"; //[7]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "0"; //[8]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "false"; //[9]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "{Horario de Inicio}"; //[10]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "1"; //[11]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "1"; //[12]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += ""; //[13]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "false"; //[14]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "false"; //[15]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += ""; //[16]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "undefined"; //[17]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "undefined"; //[18]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "false"; //[19]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "{Versão App}"; //[20]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "{Empresa}"; //[21]
-            collectionJson += ";"; //SEPARADOR LEVEL2
+            //{parlevel1_id}/{parlevel2_id}/{parlevel3_id}/{cluster_id}/{versionApp}/{empresa}/{ano}/{mes}/{dia}/{initials}/{av}/{NC}"
 
-            // Início do Level03
+            string json = "{Indicador}" + "/";
+            json += "{Monitoramento}" + "/";
+            json += "{Tarefa}" + "/";
+            json += "{Processo}" + "/";
+            json += "{Versão App}" + "/";
+            json += "{Empresa}" + "/";
+            json += "{Ano}" + "/";
+            json += "{Mes}" + "/";
+            json += "{Dia}" + "/";
+            json += "{Unidade}" + "/";
+            json += "{Avaliacao}" + "/";
+            json += "{Nao Conformidade}";
 
-            collectionJson += "<level03>";
-            collectionJson += "{Tarefa}"; //level3 1
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "{Data da Coleta}";//collectionDate; //level3 2
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 2???
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "true"; //level3 3
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "1"; //level3 6
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "null"; //level3 7
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "undefined"; //level3 8
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "undefined"; //level3 9
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 10
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += ""; //level3 11
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 12
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 13
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 14
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "{Avaliacao}";//av; //level3 15
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "{Nao Conformidade}";//NC; //level3 16
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 17
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 17??
-            collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "0"; //level3 17??
-            collectionJson += "</level03>";
+            //string collectionJson = "<level02>";
+            //collectionJson += "{Processo}" + "|" + "{Indicador}"; //[0]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "{Data da Coleta}"; //[1]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "{Processo}" + "|" + "{Monitoramento}"; //[2]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "{Data da Coleta}"; //[3]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "{Unidade}"; //[4]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "1"; //[5]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "1"; //[6]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "1"; //[7]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "0"; //[8]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "false"; //[9]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "{Horario de Inicio}"; //[10]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "1"; //[11]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "1"; //[12]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += ""; //[13]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "false"; //[14]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "false"; //[15]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += ""; //[16]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "undefined"; //[17]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "undefined"; //[18]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "false"; //[19]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "{Versão App}"; //[20]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "{Empresa}"; //[21]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
 
-            // Final do Level03
+            //// Início do Level03
 
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += ""; //[23]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "false"; //[24]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "false"; //[25]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "0"; //[26]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "null"; //[27]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "null"; //[28]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "false"; //[29]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "undefined"; //[30]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "false"; //[31]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "false"; //[32]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "undefined"; //[33]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "1"; //[35]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "0"; //[36]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "0"; //[37]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "1"; //[38]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "0"; //[39]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "0"; //[40]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "1"; //[41]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "0"; //[42]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "1"; //[43]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "1"; //[44]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "0"; //[45]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "0"; //[46]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "0"; //[47]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "0"; //[48]
-            collectionJson += ";"; //SEPARADOR LEVEL2
-            collectionJson += "{Processo}"; //[49]
-            collectionJson += "</level02>";
+            //collectionJson += "<level03>";
+            //collectionJson += "{Tarefa}"; //level3 1
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "{Data da Coleta}";//collectionDate; //level3 2
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "0"; //level3 2???
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "true"; //level3 3
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "1"; //level3 6
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "null"; //level3 7
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "undefined"; //level3 8
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "undefined"; //level3 9
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "0"; //level3 10
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += ""; //level3 11
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "0"; //level3 12
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "0"; //level3 13
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "0"; //level3 14
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "{Avaliacao}";//av; //level3 15
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "{Nao Conformidade}";//NC; //level3 16
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "0"; //level3 17
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "0"; //level3 17??
+            //collectionJson += ","; //SEPARADOR LEVEL3
+            //collectionJson += "0"; //level3 17??
+            //collectionJson += "</level03>";
 
-            return collectionJson;
+            //// Final do Level03
+
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += ""; //[23]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "false"; //[24]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "false"; //[25]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "0"; //[26]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "null"; //[27]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "null"; //[28]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "false"; //[29]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "undefined"; //[30]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "false"; //[31]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "false"; //[32]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "undefined"; //[33]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "1"; //[35]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "0"; //[36]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "0"; //[37]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "1"; //[38]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "0"; //[39]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "0"; //[40]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "1"; //[41]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "0"; //[42]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "1"; //[43]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "1"; //[44]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "0"; //[45]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "0"; //[46]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "0"; //[47]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "0"; //[48]
+            //collectionJson += ";"; //SEPARADOR LEVEL2
+            //collectionJson += "{Processo}"; //[49]
+            //collectionJson += "</level02>";
+
+            return json;
         }
 
         private List<string> GetUrlDivjetoFinal(string divjetoPreenchido, Dictionary<string, string> dicionarioItem, List<JObject> dados, ref List<string> error)
@@ -280,6 +303,15 @@ namespace SgqSystem.Controllers.Api
                     if (item[value] != null)
                     {
                         var valor = item[value].ToString();
+
+                        if(value == "Data da Coleta")
+                        {
+                            string dataString = valor.ToString();
+                            DateTime data = Convert.ToDateTime(dataString);
+                            string ano = data.Year.ToString();
+                            string mes = data.Month.ToString();
+                            string dia = data.Day.ToString();
+                        }
 
                         if (dicionarioItem.FirstOrDefault(x => x.Key.Equals("Data da Coleta") || x.Key.Equals("Horario de Inicio")).Value == m.Value)
                         {
@@ -310,6 +342,15 @@ namespace SgqSystem.Controllers.Api
             while (m.Success)
             {
                 var value = m.Value.Replace("{", "").Replace("}", "");
+
+                if (value == "Ano" || value == "Mes" || value == "Dia")
+                {
+                    string dataString = value.ToString();
+                    DateTime data = Convert.ToDateTime(dataString);
+                    var ano = Convert.ToInt16(data.Year);
+                    var mes = Convert.ToInt16(data.Month);
+                    var dia = Convert.ToInt16(data.Day);
+                }
 
                 if (dicionarioItem.Any(i => i.Key == value))
                 {

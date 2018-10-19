@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option or rebuild the Visual Studio project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -2527,11 +2527,56 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Indicator x Assignment Group.
+        /// </summary>
+        internal static string indicatorxassignment_group {
+            get {
+                return ResourceManager.GetString("indicatorxassignment_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicator x Indicator Group.
+        /// </summary>
+        internal static string indicatorxindicator_group {
+            get {
+                return ResourceManager.GetString("indicatorxindicator_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to These Indicators already have links on the selected date..
         /// </summary>
         internal static string indicator_alredy_used {
             get {
                 return ResourceManager.GetString("indicator_alredy_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicator Group.
+        /// </summary>
+        internal static string indicator_group {
+            get {
+                return ResourceManager.GetString("indicator_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicator Group Type.
+        /// </summary>
+        internal static string indicator_group_type {
+            get {
+                return ResourceManager.GetString("indicator_group_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicator Group Type List.
+        /// </summary>
+        internal static string indicator_group_type_list {
+            get {
+                return ResourceManager.GetString("indicator_group_type_list", resourceCulture);
             }
         }
         

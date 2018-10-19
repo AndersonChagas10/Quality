@@ -17,8 +17,8 @@ namespace SgqSystem.Controllers
         // GET: ParGroupParLevel1XParLevel1
         public ActionResult Index()
         {
-            var parGroupParLevel1XParLevel1 = db.ParGroupParLevel1XParLevel1.Include(p => p.ParGroupParLevel1).Include(p => p.ParLevel1);
-            return View(parGroupParLevel1XParLevel1.ToList());
+            var parGroupParLevel1XParLevel1 = db.ParGroupParLevel1XParLevel1.Include("ParGroupParLevel1").Include("ParLevel1").Where(x => x.IsActive).ToList();
+            return View(parGroupParLevel1XParLevel1);
         }
 
         // GET: ParGroupParLevel1XParLevel1/Details/5
@@ -39,16 +39,7 @@ namespace SgqSystem.Controllers
         // GET: ParGroupParLevel1XParLevel1/Create
         public ActionResult Create()
         {
-           // ViewBag.ParGroupParLevel1_Id = new SelectList(db.ParGroupParLevel1, "Id", "Name");
-           // ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name");
-
-            var listaGrupos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
-            listaGrupos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
-            ViewBag.ParGroupParLevel1_Id = new SelectList(listaGrupos, "Id", "Name", -1);
-
-            var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
-            listaIndicadores.Add(new ParLevel1() { Id = -1, Name = "Selecione" });
-            ViewBag.ParLevel1_Id = new SelectList(listaIndicadores, "Id", "Name", -1);
+            PreencheDropDownList(null);
             return View();
         }
 
@@ -67,8 +58,7 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ParGroupParLevel1_Id = new SelectList(db.ParGroupParLevel1, "Id", "Name", parGroupParLevel1XParLevel1.ParGroupParLevel1_Id);
-            ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name", parGroupParLevel1XParLevel1.ParLevel1_Id);
+            PreencheDropDownList(parGroupParLevel1XParLevel1);
             return View(parGroupParLevel1XParLevel1);
         }
 
@@ -93,17 +83,8 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
-            //ViewBag.ParGroupParLevel1_Id = new SelectList(db.ParGroupParLevel1, "Id", "Name", parGroupParLevel1XParLevel1.ParGroupParLevel1_Id);
-            //ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name", parGroupParLevel1XParLevel1.ParLevel1_Id);
 
-
-            var listaGrupos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
-            listaGrupos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
-            ViewBag.ParGroupParLevel1_Id = new SelectList(listaGrupos, "Id", "Name", parGroupParLevel1XParLevel1.ParGroupParLevel1_Id);
-
-            var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
-            listaIndicadores.Add(new ParLevel1() { Id = -1, Name = "Selecione" });
-            ViewBag.ParLevel1_Id = new SelectList(listaIndicadores, "Id", "Name", parGroupParLevel1XParLevel1.ParLevel1_Id);
+            PreencheDropDownList(parGroupParLevel1XParLevel1);
             return View(parGroupParLevel1XParLevel1);
         }
 
@@ -121,8 +102,7 @@ namespace SgqSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ParGroupParLevel1_Id = new SelectList(db.ParGroupParLevel1, "Id", "Name", parGroupParLevel1XParLevel1.ParGroupParLevel1_Id);
-            ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name", parGroupParLevel1XParLevel1.ParLevel1_Id);
+            PreencheDropDownList(parGroupParLevel1XParLevel1);
             return View(parGroupParLevel1XParLevel1);
         }
 
@@ -159,6 +139,19 @@ namespace SgqSystem.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void PreencheDropDownList(ParGroupParLevel1XParLevel1 parGroupParLevel1XParLevel1)
+        {
+
+            var listaGrupos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaGrupos.Insert(0, new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.ParGroupParLevel1_Id = new SelectList(listaGrupos, "Id", "Name", parGroupParLevel1XParLevel1?.ParGroupParLevel1_Id ?? -1);
+
+            var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
+            listaIndicadores.Insert(0, new ParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.ParLevel1_Id = new SelectList(listaIndicadores, "Id", "Name", parGroupParLevel1XParLevel1?.ParLevel1_Id ?? -1);
+
         }
     }
 }

@@ -409,7 +409,7 @@
     <Compile Include="Controllers\ParGroupParLevel1Controller.cs" />
     <Compile Include="Controllers\ParGroupParLevel1TypeController.cs" />
     <Compile Include="Controllers\ParGroupParLevel1XParLevel1Controller.cs" />
-    <Compile Include="Controllers\ParGroupParLevel1XParLevel3Controller.cs" />
+    <Compile Include="Controllers\ParVinculoPesoController.cs" />
     <Compile Include="Controllers\ParLevel1XModuleController.cs" />
     <Compile Include="Controllers\ParModulesController.cs" />
     <Compile Include="Controllers\ParModuleXModulesController.cs" />
@@ -1823,11 +1823,11 @@
     <Content Include="Views\ParGroupParLevel1XParLevel1\Details.cshtml" />
     <Content Include="Views\ParGroupParLevel1XParLevel1\Edit.cshtml" />
     <Content Include="Views\ParGroupParLevel1XParLevel1\Index.cshtml" />
-    <Content Include="Views\ParGroupParLevel1XParLevel3\Create.cshtml" />
-    <Content Include="Views\ParGroupParLevel1XParLevel3\Delete.cshtml" />
-    <Content Include="Views\ParGroupParLevel1XParLevel3\Details.cshtml" />
-    <Content Include="Views\ParGroupParLevel1XParLevel3\Edit.cshtml" />
-    <Content Include="Views\ParGroupParLevel1XParLevel3\Index.cshtml" />
+    <Content Include="Views\ParVinculoPeso\Create.cshtml" />
+    <Content Include="Views\ParVinculoPeso\Delete.cshtml" />
+    <Content Include="Views\ParVinculoPeso\Details.cshtml" />
+    <Content Include="Views\ParVinculoPeso\Edit.cshtml" />
+    <Content Include="Views\ParVinculoPeso\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

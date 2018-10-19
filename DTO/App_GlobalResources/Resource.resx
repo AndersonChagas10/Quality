@@ -2223,4 +2223,19 @@
   <data name="indicator_in_use" xml:space="preserve">
     <value>This Indicator already have link on the selected date.</value>
   </data>
+  <data name="indicatorxindicator_group" xml:space="preserve">
+    <value>Indicator x Indicator Group</value>
+  </data>
+  <data name="indicator_group_type" xml:space="preserve">
+    <value>Indicator Group Type</value>
+  </data>
+  <data name="indicator_group_type_list" xml:space="preserve">
+    <value>Indicator Group Type List</value>
+  </data>
+  <data name="indicatorxassignment_group" xml:space="preserve">
+    <value>Indicator x Assignment Group</value>
+  </data>
+  <data name="indicator_group" xml:space="preserve">
+    <value>Indicator Group</value>
+  </data>
 </root>

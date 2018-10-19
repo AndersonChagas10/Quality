@@ -14,7 +14,7 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParGroupParLevel1Type")">Tipo de Grupo de Indicador</a>
+                    <a href="@Url.Action("Index", "ParGroupParLevel1Type")">@Resources.Resource.indicator_group_type</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -30,7 +30,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.edit Tipo de Grupo de Indicador</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.edit @Resources.Resource.indicator_group_type</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -67,7 +67,8 @@
 
                                     <div class="form-group">
                                         <div class="col-md-offset-2 col-md-10">
-                                            <input type="submit" value="Save" class="btn btn-default" />
+                                            <input type="submit" value="@Resources.Resource.save" onClick="HabilitaCampo()" class="btn btn-primary" />
+                                            @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
                                         </div>
                                     </div>
                                 </div>
