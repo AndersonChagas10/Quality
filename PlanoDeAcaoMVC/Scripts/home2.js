@@ -687,7 +687,7 @@ function MountDataTable(json) {
 
 }
 
-$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function () {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
 
     var data = table.row($(this).parents('tr')).data();
 
@@ -703,7 +703,7 @@ $('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoTatico', function (
 
 });
 
-$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', function () {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
 
     var data = table.row($(this).parents('tr')).data();
 
@@ -727,7 +727,7 @@ $('#divPlanejamentoAcao table > tbody').on('click', '.btnNovoOperacional', funct
 
 });
 
-$('#divPlanejamentoAcao table > tbody').on('click', '.btnAcompanhamento', function () {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
 
     var data = table.row($(this).parents('tr')).data();
 
@@ -739,7 +739,7 @@ $('#divPlanejamentoAcao table > tbody').on('click', '.btnAcompanhamento', functi
 
 });
 
-$('#divPlanejamentoAcao table > tbody').on('click', '.btnEditarPlanejamento', function () {
+$('#divPlanejamentoAcao table > tbody').on('click', '.btnEditarPlanejamento', function (data, a, b) {
 
     $('#modalLindo').find('.modal-body').empty().append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
 

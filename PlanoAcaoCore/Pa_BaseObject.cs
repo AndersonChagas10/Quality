@@ -161,10 +161,9 @@ namespace PlanoAcaoCore
             var IsPriority = "";
 
             if (isPriority != null)
-            {
                 IsPriority = ", [IsPriority] = @IsPriority";
-            }
-                
+
+
             query = $@"UPDATE [dbo].[{ table }]
                     SET [Name] = @Name, [{fk}] = @predecessor, [IsActive] = @IsActive { IsPriority }
                     WHERE Id = @Id
@@ -175,7 +174,9 @@ namespace PlanoAcaoCore
             cmd.Parameters.AddWithValue("@predecessor", predecessor);
             cmd.Parameters.AddWithValue("@IsActive", isActive);
             cmd.Parameters.AddWithValue("@Id", id);
-            cmd.Parameters.AddWithValue("@IsPriority", isPriority);
+
+            if (isPriority != null)
+                cmd.Parameters.AddWithValue("@IsPriority", isPriority);
 
             return SalvarStatic(cmd);
         }
