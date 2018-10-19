@@ -2199,6 +2199,15 @@
   <data name="update" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="page" xml:space="preserve">
+    <value>page</value>
+  </data>
+  <data name="per_page" xml:space="preserve">
+    <value>per page</value>
+  </data>
+  <data name="report_files" xml:space="preserve">
+    <value>Report Files</value>
+  </data>
   <data name="latitude" xml:space="preserve">
     <value>Latitude</value>
   </data>
@@ -2210,5 +2219,8 @@
   </data>
   <data name="not_conformities_rules_exist" xml:space="preserve">
     <value>Not conformities rules alredy exist</value>
+  </data>
+  <data name="indicator_in_use" xml:space="preserve">
+    <value>This Indicator already have link on the selected date.</value>
   </data>
 </root>

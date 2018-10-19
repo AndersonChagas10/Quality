@@ -35,7 +35,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AddDate,AlterData,ItemMenu_Id,Elaborador,Aprovador,ParLevel1_Id,ParCompany_Id,IsActive,CodigoRelatorio")] ReportXUserSgq reportXUserSgq)
+        public ActionResult Create([Bind(Include = "Id,AddDate,AlterData,NomeRelatorio,ItemMenu_Id,Elaborador,Aprovador,ParLevel1_Id,ParCompany_Id,IsActive,CodigoRelatorio")] ReportXUserSgq reportXUserSgq)
         {
 
             if (db.ReportXUserSgq.Any(r => r.ItemMenu_Id == reportXUserSgq.ItemMenu_Id && 
@@ -86,7 +86,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AddDate,AlterData,ItemMenu_Id,Elaborador,Aprovador,ParLevel1_Id,ParCompany_Id,IsActive,CodigoRelatorio")] ReportXUserSgq reportXUserSgq)
+        public ActionResult Edit([Bind(Include = "Id,AddDate,AlterData,NomeRelatorio,ItemMenu_Id,Elaborador,Aprovador,ParLevel1_Id,ParCompany_Id,IsActive,CodigoRelatorio")] ReportXUserSgq reportXUserSgq)
         {
 
             if (db.ReportXUserSgq.Any(r => r.ItemMenu_Id == reportXUserSgq.ItemMenu_Id &&

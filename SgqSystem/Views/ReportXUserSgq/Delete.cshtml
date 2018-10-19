@@ -7,11 +7,11 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ReportXUserSgq")">Elaborador e Editor de Relatórios</a>
+                    <a href="@Url.Action("Index", "ReportXUserSgq")">@Resources.Resource.report_files</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Excluir</span>
+                    <span>@Resources.Resource.delete</span>
                 </li>
             </ul>
             <div class="page-toolbar"></div>
@@ -22,7 +22,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">Elaborador e Editor de Relatórios</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.report_files</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -31,6 +31,7 @@
                                 <h3>@Resources.Resource.confirm_delete?</h3>
                                 <div>
                                     <dl class="dl-horizontal">
+
                                         <dt>
                                             @Html.DisplayNameFor(model => model.Aprovador)
                                         </dt>
@@ -76,6 +77,14 @@
 
                                         <dd>
                                             @Html.DisplayFor(model => model.ParLevel1.Name)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.NomeRelatorio)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.NomeRelatorio)
                                         </dd>
 
                                         <dt>

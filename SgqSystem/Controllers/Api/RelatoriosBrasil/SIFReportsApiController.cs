@@ -102,6 +102,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         retorno.Aprovador = getAprovadorName(form, dbSgq);
 
                         retorno.Elaborador = getElaboradorName(form, dbSgq);
+
+                        retorno.NomeRelatorio = getNomeRelatorio(form, dbSgq);
                     }
                 }
             }
@@ -206,6 +208,19 @@ ORDER BY em_coluna.Sequential";
             return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
         }
 
+        private string getNomeRelatorio(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        {
+            var SQL = $@"SELECT top 1
+    	NomeRelatorio
+        FROM ReportXUserSgq RXU
+        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+        AND RXU.ParLevel1_Id = {form.level1Id}
+        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+        Order by RXU.Parcompany_Id desc";
+
+            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+        }
+
     }
 
     public class Retorno
@@ -215,6 +230,7 @@ ORDER BY em_coluna.Sequential";
         public DateTime? FinalTime { get; set; }
         public string Elaborador { get; set; }
         public string Aprovador { get; set; }
+        public string NomeRelatorio { get; set; }
     }
 
     public class EscalaAbate

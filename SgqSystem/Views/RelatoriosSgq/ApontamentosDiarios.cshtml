@@ -24,6 +24,20 @@
         margin: 100px auto;
         display: table !important;
     }
+
+    .itemHeaderField {
+        padding-right: 4px !important;
+        padding-left: 4px !important;
+        height: 100px;
+    }
+
+        .itemHeaderField .labelHeaderField {
+            height: 49px;
+        }
+
+        .itemHeaderField .labelHeaderFieldIntegracao {
+            color: rgb(167, 176, 24);
+        }
 </style>
 
 <div class="modal fade bd-example-modal-lg" id="modalHeaderField" role="dialog">
@@ -73,7 +87,7 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -244,30 +258,17 @@
 
                         var data = table.row($(this).parents('tr')).data();
 
-                        $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
+                        $.post(urlEdit + "/" + data.ResultLevel3Id, function (r) {
 
-                            $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
-                            $('#ResultLevel3_Id').val(r.Id);
+                            $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                            $('#myModal #ResultLevel3_Id').val(r.Id);
 
-                            $('#changeConform').empty();
-                            $('#changeConform').append($(r.showGeneric));
+                            $('#myModal #changeConform').empty();
+                            $('#myModal #changeConform').append($(r.showGeneric));
 
                             InitiMasksDefaults();
                         });
                     });
-
-
-                    //new $.fn.dataTable.Buttons(table, {
-                    //    buttons: [
-                    //         {
-                    //             extend: 'pdf',
-                    //             text: 'PDF',
-                    //             exportOptions: {
-                    //                 columns: ':visible'
-                    //             }
-                    //         }
-                    //    ]
-                    //});
 
                     $('#resultsApontamentos tbody').on('click', 'button#editHeader', function (data) {
 
@@ -277,10 +278,12 @@
 
                             $('#divEdit').empty();
 
+                            $('modalHeaderField #estName').html("");
+
                             r = JSON.parse(r);
 
                             if (r.length > 0) {
-
+                                
                                 r.forEach(function (o) {
 
                                     let html = "";
@@ -288,9 +291,9 @@
                                     switch (o.HeaderField.ParFieldType_Id) {
                                         case 1:
                                             html =
-                                            `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                            `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
                                                 <div class="form-group header" name="" style="margin-bottom: 4px;">
-                                                    <label class="font-small" style="height: 22px;">${o.HeaderField.Name}</label>
+                                                    <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                     <select class="form-control input-sm ddl" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" idpai="0" linknumberevaluetion="false" IsRequired="${o.HeaderField.IsRequired}">
                                                         <option value="">Selecione...</option>`
 
@@ -313,9 +316,9 @@
                                         case 2:
 
                                             html =
-                                                `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                                `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
                                                     <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
-                                                        <label class="font-small" style="color: rgb(167, 176, 24); height: 22px;">${o.HeaderField.Name}</label>
+                                                        <label class="font-small labelHeaderField labelHeaderFieldIntegracao">${o.HeaderField.Name}</label>
                                                         <select class="form-control input-sm " CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="true" style="border: 1px solid rgb(167, 176, 24);" IsRequired="${o.HeaderField.IsRequired}">
                                                             <option value="">Selecione...</option>`
 
@@ -336,9 +339,9 @@
                                             break;
                                         case 3:
 
-                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
                                                       <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
-                                                        <label class="font-small" style="height: 22px;">${o.HeaderField.Name}</label>
+                                                        <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                         <select class="form-control input-sm" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParHeaderField_Name="${o.HeaderField.Id}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="false" IsRequired="${o.HeaderField.IsRequired}">`;
 
                                             o.Values.forEach(function (oo) {
@@ -363,9 +366,9 @@
                                             if (o.ValueSelected == null)
                                                 o.ValueSelected = "";
 
-                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
                                                         <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
-                                                            <label class="font-small" style="height: 22px;">Teste Texto</label>
+                                                            <label class="font-small labelHeaderField">Teste Texto</label>
                                                             <input class="form-control input-sm" type="text" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
                                                             <label class=""></label>
                                                         </div>
@@ -378,9 +381,9 @@
                                             if (o.ValueSelected == null)
                                                 o.ValueSelected = "";
 
-                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
                                                     <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
-                                                        <label class="font-small" style="height: 22px;">${o.HeaderField.Name }</label>
+                                                        <label class="font-small labelHeaderField">${o.HeaderField.Name }</label>
                                                         <input class="form-control input-sm" type="number" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
                                                         <label class=""></label>
                                                     </div>
@@ -393,9 +396,9 @@
                                             if (o.ValueSelected == null)
                                                 o.ValueSelected = "";
 
-                                            html = `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                            html = `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
                                                     <div class="form-group" name="" style="margin-bottom: 4px;">
-                                                        <label class="font-small" style="height: 22px;">${o.HeaderField.Name}</label>
+                                                        <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                             <input class="form-control input-sm" type="date" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
                                                             <label class=""></label>
                                                         </div>
@@ -407,9 +410,9 @@
                                             if (o.ValueSelected == null)
                                                 o.ValueSelected = "";
 
-                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
                                                     <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
-                                                        <label class="font-small" style="height: 22px;">${o.HeaderField.Name}</label>
+                                                        <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                         <input class="form-control input-sm" type="time" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
                                                         <label class=""></label>
                                                     </div>
@@ -420,7 +423,8 @@
                                         default:
                                     }
 
-                                    $('#estName').html("");
+                                    $('#modalHeaderField #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento);
+
                                     $('#divEdit').append(html);
 
                                 });
@@ -527,12 +531,12 @@
             }
 
             $.post(urlSave, dadosResultLevel3, function (r, x, e) {
-                openMessageModal('@Resources.Resource.done', '@Resources.Resource.registry_alter_success'); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
+                openMessageModal(Resources('done'), Resources('registry_alter_success')); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
             }).fail(function (r, x, e) {
                 console.log(r);
                 console.log(x);
                 console.log(e);
-                openMessageModal('@Resources.Resource.impossible_refresh_result', '@Resources.Resource.impossible_refresh_result');//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
+                openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
             });
         }
 
@@ -618,16 +622,25 @@
             if (isValid) {
 
                 $.post(urlSaveHeaderField, { "HeaderField": objToSave }, function (IsSaved) {
+
                     if (IsSaved) {
-                        openMessageModal(Resources("saved_successfully"));
+
+                        openMessageModal(Resources('done'), Resources('registry_alter_success'));
                         $('#modalHeaderField').modal('hide');
+
                     } else {
-                        openMessageModal(Resources("error"));
+                        openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));
                     }
+
+                }).fail(function (r, x, e) {
+                    console.log(r);
+                    console.log(x);
+                    console.log(e);
+                    openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));
                 });
             }
         }
 
-    </script>
+</script>
 
 }

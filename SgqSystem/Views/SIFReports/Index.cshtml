@@ -231,6 +231,7 @@
         exibeTodosLevels = false; //Variavel global para não exibir os monitoramentos sem que selecione o indicador
         let elaborador = "";
         let aprovador = "";
+        let nomeRelatorio = "";
 
         $(document).ready(function () {
 
@@ -311,16 +312,14 @@
                 siglaUnidade = obj.Dados[0].Initials;
 
                 var table = "";
-
                 var nSequestro = 0;
-
                 var fontSize = 'style="font-size: 8px !important;"';
 
                 var dividir = Math.ceil(obj.Dados.length / 9);
 
                 elaborador = obj.Elaborador;
-
                 aprovador = obj.Aprovador;
+                nomeRelatorio = obj.NomeRelatorio;
 
                 for (var i = 0; i < 9; i++) {
 
@@ -431,8 +430,12 @@
                 aprovador = "";
             }
 
+            if (nomeRelatorio == null) {
+                nomeRelatorio = "";
+            }
+
             PrepararImpressao(
-                'PCC 1B - MONITORAMENTO DE CONTAMINAÇÃO FECAL E/OU INGESTA',
+                nomeRelatorio,
                 elaborador + " - " + "/" + siglaUnidade,
                 aprovador + " - " + "/" + siglaUnidade,
                 "RGQ-504-GQU-001/05 Aprov. Em 02/05/2018",

@@ -2536,6 +2536,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Indicator already have link on the selected date..
+        /// </summary>
+        internal static string indicator_in_use {
+            get {
+                return ResourceManager.GetString("indicator_in_use", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         internal static string info {
@@ -3904,6 +3913,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to page.
+        /// </summary>
+        internal static string page {
+            get {
+                return ResourceManager.GetString("page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pareto.
         /// </summary>
         internal static string pareto_chart {
@@ -4062,6 +4080,15 @@ namespace Resources {
         internal static string per_fortnight {
             get {
                 return ResourceManager.GetString("per_fortnight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to per page.
+        /// </summary>
+        internal static string per_page {
+            get {
+                return ResourceManager.GetString("per_page", resourceCulture);
             }
         }
         
@@ -4539,6 +4566,15 @@ namespace Resources {
         internal static string reports {
             get {
                 return ResourceManager.GetString("reports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report Files.
+        /// </summary>
+        internal static string report_files {
+            get {
+                return ResourceManager.GetString("report_files", resourceCulture);
             }
         }
         

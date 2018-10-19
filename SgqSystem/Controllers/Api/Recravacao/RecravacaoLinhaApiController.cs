@@ -270,7 +270,7 @@ namespace SgqSystem.Controllers.Api
                     //Foi utilizado o campo ParMeasurementUnit_Id para colocar o id do monitoramento vinculado
                     valueCampoCalcOutro = factory.SearchQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1) and ParMeasurementUnit_Name = {2}", level3.Id, parcompany, level2_id)).ToList();
                     if (valueCampoCalcOutro.Count == 0)
-                        valueCampoCalcOutro = factory.SearchQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1) and ParMeasurementUnit_Name = 0", level3.Id, parcompany)).ToList();
+                        valueCampoCalcOutro = factory.SearchQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1) and (ParMeasurementUnit_Name = 0 or ParMeasurementUnit_Name = -1)", level3.Id, parcompany)).ToList();
 
                     //valueCampoCalcOutro = factory.SearchQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1)", level3.Id, parcompany)).ToList();
 

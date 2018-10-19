@@ -126,28 +126,6 @@
                 console.log(obj);
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {                
 
-                    var regraNaoConformidade;
-                    var count = 0;
-                    var exist = $.grep($('#tableRegraNc  tbody  tr  td:nth-child(1)'), function (o, c) {//
-                        debugger                       
-                        if ($(o).text() == $("#crudNxNEdit > div > div  #selectNotConformityRule :selected").text()) {
-                            count++;
-                        } else {
-                            count = 0;
-                        }
-                        if (count > 0) {
-                            regraNaoConformidade = $(o).text();
-                            return true;
-                        }
-                        return false;
-                    });                  
-                    debugger
-                    if (exist.length) {
-                            @*if (regraNaoConformidade == -1)
-                                display = "@Resources.Resource.all";*@
-                        openMessageModal(Resources('not_conformities_rules_exist') + " " + regraNaoConformidade + ".", "")
-                        return false;
-                    } else {
                         var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
                         console.log("clique salvar" + editado);
                         $(e).parents('tr').removeData();
@@ -156,7 +134,6 @@
                         $($(e).parents('tr').find('td')[1]).html(editado.Value);
                         $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable);
                         $('#crudNxNEdit').modal('hide');
-                    }
 
                 });
             }
@@ -542,6 +519,8 @@
 
         modalAlterarRegraNc: function (obj) {
             $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('destroy', true);
+
+            $('#crudNxNEdit #myModalLabel').html($('#tableRegraNc').attr('nameModal'));
 
             var divDeEdicao = $('#level1_nc_collapse > div > table.table-erp').clone();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/

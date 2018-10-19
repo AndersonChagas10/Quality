@@ -233,6 +233,27 @@ namespace SgqSystem.Controllers
                 }
             }
         }
+
+        protected int getUserUnitId()
+        {
+            var webControlCookie = System.Web.HttpContext.Current.Request.Cookies["webControlCookie"];
+
+            if (webControlCookie != null)
+            {
+                var UserId = webControlCookie.Values["userId"];
+
+                if (UserId != null && UserId != "" && int.Parse(UserId) > 0)
+                {
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        return db.UserSgq.Find(int.Parse(UserId)).ParCompany_Id.Value;
+                    }
+                }
+            }
+
+            return 0;
+
+        }
     }
 
 }

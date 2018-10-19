@@ -452,7 +452,7 @@
     var reencravacoes2 = @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.ParLevel3Value_OuterListGrouped))
 
     function loadRecravacoes (){
-        console.log(reencravacoes)
+        //console.log(reencravacoes)
 
         if(reencravacoes2 != null && reencravacoes2!= undefined && reencravacoes2.length){
             reencravacoes2.forEach(function(o,c){
@@ -648,8 +648,9 @@
 
         $('[data-toggle="popover"]').popover();
 
-        level3Value.carregaDadosDoDb();
-
+        if (typeof (level3Value) !== 'undefined') 
+            level3Value.carregaDadosDoDb();
+        
         $('[data-toggle="popover"]').popover();
 
         ///initialize form

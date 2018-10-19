@@ -55,7 +55,10 @@
                                                 @Resources.Resource.description
                                             </th>
                                             <th>
-                                                É Filho de
+                                                @Resources.Resource.linked
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.is_active
                                             </th>
                                             <th>
                                                 @Resources.Resource.action
@@ -77,9 +80,12 @@
                                                     @Html.DisplayFor(modelItem => item.ParDepartmentPai.Name)
                                                 </td>
                                                 <td>
+                                                    @Html.Raw(item.Active ? Resources.Resource.yes : Resources.Resource.no)
+                                                </td>
+                                                <td>
                                                     @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                     @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |*@
-                                                    @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                    @*@Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })*@
                                                 </td>
                                             </tr>
                                         }
@@ -114,13 +120,11 @@
                 null,
                 null,
                 null,
+                null,
                 { "bSearchable": false }
             ],
             "order": [[1, "asc"]],
-             "language": {
-                "lengthMenu": "Mostrar _MENU_ resultados por página",
-                "emptyTable": "@Resources.Resource.no_data_to_show"
-            }
+             "language": linguagemComResourcesParaDatatable
         });
     });
 </script>

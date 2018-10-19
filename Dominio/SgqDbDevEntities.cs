@@ -38,6 +38,7 @@ namespace Dominio
                 if (entity.State == EntityState.Added)
                 {
                     ((BaseModel)entity.Entity).AddDate = DateTime.Now;
+                    ((BaseModel)entity.Entity).AlterDate = DateTime.Now;
                 }
                 else
                 {
@@ -69,9 +70,23 @@ namespace Dominio
             ).ToList();
             foreach (var entity in entities)
             {
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(entity.Entity, Formatting.None, new JsonSerializerSettings()
+                object objeto = Activator.CreateInstance(entity.Entity.GetType());
+                Type t = entity.Entity.GetType();
+                foreach (var propInfo in t.GetProperties())
                 {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    if (!propInfo.PropertyType.IsClass && !propInfo.PropertyType.IsGenericType)
+                    {
+                        object valor = propInfo.GetValue(entity.Entity, null);
+                        Type tipo = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
+                        object valorConvertido = (valor == null) ? null : Convert.ChangeType(valor, tipo);
+                        propInfo.SetValue(objeto, valorConvertido, null);
+                    }
+                }
+
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(objeto, Formatting.None, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    PreserveReferencesHandling = PreserveReferencesHandling.None
                 });
                 this.DatabaseLog.Add(
                     new DatabaseLog()

@@ -210,7 +210,7 @@
 
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
 
-                    <h4 class="modal-title" id="Header">ID: Header</h4>
+                    <h4 class="modal-title" id="Header">@Resources.Resource.edit: Campos de Cabeçalho</h4>
                 </div>
                 <div class="modal-body" id="body">
                     ID: Body
@@ -1378,7 +1378,7 @@
                     });
                 }
 
-            
+
 
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
@@ -1486,13 +1486,15 @@
                 }
                 dados['paramsDto.parHeaderFieldDto.ParMultipleValues'] = ar;
             }
-            console.log(dados);
+            //console.log(dados);
+
             $.post(urlAttCabecalho, dados, function (objetoReturn, statusmessage) {
                 if (idLvl1 > 0) {
                     indexParamsLevel1.GetLevel1(idLvl1, true);
                     openMessageModal("@Resources.Resource.alert", statusmessage);
                     idLvl1 = 0 ;
                     $('#modalEdicaoCabecalho').modal('hide');
+                    $('#parLevel2Select2').trigger('change'); //Atualiza o level2
                 }
 
             }).fail(function (e, h, x) {
@@ -1511,7 +1513,8 @@
 
     var EditCabecalho = '@Html.Raw(@urlEditCabecalho)';
 
-    function ModalEdicaoCabecalho(title, idpH,idL1, idFT) {
+    function ModalEdicaoCabecalho(title, idpH, idL1, idFT) {
+        debugger
         idpar = idpH;
         idfieldType = idFT;
         idLvl1 = idL1;

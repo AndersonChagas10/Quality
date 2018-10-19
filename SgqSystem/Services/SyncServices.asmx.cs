@@ -5272,7 +5272,7 @@ $(document).ready(function(){
             ParLevel2List = headerList +
                             ParLevel2List;
 
-            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.ParLevel1_Id), ParFieldTypeDB, html);
+            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.ParLevel1_Id), ParFieldTypeDB, html, ParCompany_id: ParCompany_Id);
 
 
             //if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
@@ -6532,6 +6532,17 @@ $(document).ready(function(){
                                        );
 
                 input = html.campoResultado(parLevel3.Id.ToString(), parLevel3.DynamicValue);
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 11)
+            {
+                classInput = " texto naoValidarInput";
+                labels = html.div(
+                                           outerhtml: "",
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
+
+                input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
             }
             else
             {

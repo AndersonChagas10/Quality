@@ -870,6 +870,9 @@
     <Content Include="Imagens\D.png" />
     <Content Include="Imagens\P.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
+    <Content Include="images\sort_asc.png" />
+    <Content Include="images\sort_both.png" />
+    <Content Include="images\sort_desc.png" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
     <Content Include="Content\select2-bootstrap.min.css" />
     <Content Include="Content\select2.min.css" />
@@ -934,6 +937,11 @@
     <Content Include="Imagens\Recravacao\9pts.jpg" />
     <Content Include="Imagens\seta.png" />
     <Content Include="Imagens\setas.png" />
+    <Content Include="Imagens\sort_asc.png" />
+    <Content Include="Imagens\sort_asc_disabled.png" />
+    <Content Include="Imagens\sort_both.png" />
+    <Content Include="Imagens\sort_desc.png" />
+    <Content Include="Imagens\sort_desc_disabled.png" />
     <Content Include="Imagens\Spain.png" />
     <Content Include="Imagens\stack.png" />
     <Content Include="Imagens\tablet.png" />

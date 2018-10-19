@@ -26,7 +26,7 @@ namespace Dominio
         [Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
 
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
        
         public string Hash { get; set; }
 

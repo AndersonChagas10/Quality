@@ -96,11 +96,42 @@
     <script src="~/Scripts/smart-table.min.js"></script>
     <script src="~/Scripts/noframework.waypoints.min.js"></script>
 
+    <style>
+        /*table.table th, table.table td{
+            max-width:100px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        table.table th:active, table.table td:active{
+            max-width: 100% !important;
+            background-color:#fff;
+        }*/
+        table.table thead .sorting {
+            background: url('@Url.Content("~/imagens/sort_both.png")') no-repeat center right;
+        }
+
+        table.table thead .sorting_asc {
+            background: url('@Url.Content("~/imagens/sort_asc.png")') no-repeat center right;
+        }
+
+        table.table thead .sorting_desc {
+            background: url('@Url.Content("~/imagens/sort_desc.png")') no-repeat center right;
+        }
+
+        table.table thead .sorting_asc_disabled {
+            background: url('@Url.Content("~/imagens/sort_asc_disabled.png")') no-repeat center right;
+        }
+
+        table.table thead .sorting_desc_disabled {
+            background: url('@Url.Content("~/imagens/sort_desc_disabled.png")') no-repeat center right;
+        }
+    </style>
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed">
 
-    <div id="mandala"></div>  
+    <div id="mandala"></div>
     <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -286,6 +317,21 @@
                 }
             }
         });
+
+
+        var linguagemComResourcesParaDatatable = {
+            "search": '@Resources.Resource.search',
+            "emptyTable": "@Resources.Resource.no_data_to_show",
+            "zeroRecords": '@Resources.Resource.no_data_to_show',
+            "info": "@Resources.Resource.page _PAGE_ de _PAGES_",
+            "lengthMenu": "@Resources.Resource.show _MENU_ @Resources.Resource.results @Resources.Resource.per_page",
+            "infoEmpty": "@Resources.Resource.no_data_to_show",
+            "infoFiltered": "(Filtrado de _MAX_ registros)",
+            "paginate": {
+                "previous": '@Resources.Resource.previous',
+                "next": '@Resources.Resource.next'
+            }
+        };
 
         /*DataTable Padrão BR*/
         $.extend(true, $.fn.dataTable.defaults,

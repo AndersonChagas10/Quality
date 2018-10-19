@@ -1390,7 +1390,7 @@
     <value>Linha do monitoramento</value>
   </data>
   <data name="level3_header" xml:space="preserve">
-    <value>Cabeçalho da tarefa</value>
+    <value>Cabeçalho na lista de tarefas</value>
   </data>
   <data name="select_the_shift" xml:space="preserve">
     <value>Selecione o turno...</value>
@@ -2640,10 +2640,22 @@
   <data name="update" xml:space="preserve">
     <value>Atualizar</value>
   </data>
+  <data name="page" xml:space="preserve">
+    <value>página</value>
+  </data>
+  <data name="per_page" xml:space="preserve">
+    <value>por página</value>
+  </data>
   <data name="photo" xml:space="preserve">
     <value>Foto</value>
   </data>
   <data name="not_conformities_rules_exist" xml:space="preserve">
     <value>Regra de não conformidade já existe.</value>
+  </data>
+  <data name="report_files" xml:space="preserve">
+    <value>Cadastro de Relatórios</value>
+  </data>
+  <data name="indicator_in_use" xml:space="preserve">
+    <value>Este indicador já possui um vinculo na data selecionada.</value>
   </data>
 </root>
