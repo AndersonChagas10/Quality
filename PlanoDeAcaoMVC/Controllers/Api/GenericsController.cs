@@ -160,6 +160,13 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             public bool? IsPriority { get; set; }
         }
 
+        [HttpPost]
+        [Route("GetDiretriz/{id}")]
+        public Pa_Objetivo GetDiretriz(int id)
+        {
+            return Pa_Objetivo.Get(id);
+        }
+
     }
 
 

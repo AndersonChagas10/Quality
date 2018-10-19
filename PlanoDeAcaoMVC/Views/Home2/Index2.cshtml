@@ -2359,21 +2359,49 @@
             var tempIdNovo = $(btn).parents('tr').find('input , select option:selected').val();
 
             let isDiretriz = (tempName == "Objetivo_Id");
+            let isPriority = false;
+            
+            //pegar se é true ou false
+            if (isDiretriz && valorSelectSelecionado != "" && valorSelectSelecionado) {
 
-            SetaValoresModal(tempIdNovo, valorSelectSelecionado, true, isDiretriz, true);
+                let Objetivo_Id = parseInt($(btn).parents('tr').find('input , select').val());
 
-            var label = $(btn).parents('tr').find('label').html();
-            $('#modalNovo > div > div.modal-footer').hide();
-            $('#modalNovo').modal();
-            $('#novoHeader').html(Resources('to_manage') + " " + label);
-            $('#nomeItemNovo').html(label);
+                $.post('@Url.Action("GetDiretriz", "api/Generics")/' + Objetivo_Id, function (o) {
 
-            if (encadeado != undefined) {
-                $('#labelPredecessora').children().remove()
-                $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
-                $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
+                    isPriority = o.IsPriority;
+
+                    SetaValoresModal(tempIdNovo, valorSelectSelecionado, true, isDiretriz, isPriority);
+
+                    var label = $(btn).parents('tr').find('label').html();
+                    $('#modalNovo > div > div.modal-footer').hide();
+                    $('#modalNovo').modal();
+                    $('#novoHeader').html(Resources('to_manage') + " " + label);
+                    $('#nomeItemNovo').html(label);
+
+                    if (encadeado != undefined) {
+                        $('#labelPredecessora').children().remove()
+                        $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
+                        $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
+                    }
+
+                });
+
+            } else {
+
+                SetaValoresModal(tempIdNovo, valorSelectSelecionado, true, isDiretriz, isPriority);
+
+                var label = $(btn).parents('tr').find('label').html();
+                $('#modalNovo > div > div.modal-footer').hide();
+                $('#modalNovo').modal();
+                $('#novoHeader').html(Resources('to_manage') + " " + label);
+                $('#nomeItemNovo').html(label);
+
+                if (encadeado != undefined) {
+                    $('#labelPredecessora').children().remove()
+                    $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
+                    $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
+                }
             }
-
         }
 
         function SalvarNovo() {
