@@ -148,7 +148,9 @@ namespace PlanoAcaoCore
             cmd = new SqlCommand(query);
             cmd.Parameters.AddWithValue("@Name", valor);
             cmd.Parameters.AddWithValue("@predecessor", predecessor);
-            cmd.Parameters.AddWithValue("@IsPriority", isPriority);
+
+            if (isPriority != null)
+                cmd.Parameters.AddWithValue("@IsPriority", isPriority);
 
             return SalvarStatic(cmd);
         }
