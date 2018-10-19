@@ -174,3 +174,8 @@ IF COL_LENGTH('ReportXUserSgq','NomeRelatorio') IS NULL
     END
 
 GO
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('DescriçõesCampoCabeçalhos',GetDate());
+
+update ParLevelDefiniton set Name = 'Cabeçalho na lista de Monitoramentos', Description = 'Cabeçalho na lista de Monitoramentos' where id = 1
+update ParLevelDefiniton set Name = 'Cabeçalho na lista de Tarefas', Description = 'Cabeçalho na lista de Tarefas' where id = 2

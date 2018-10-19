@@ -4,13 +4,15 @@
 <!--MODAL-->
 
 @{
-                /**/
+    /**/
+
+    /**/
 
 
-                var urlHeaderLevel1 = Url.Action("AddRemoveParHeaderDuplicate", "api/ParamsApi"); //URL relativa
-                var urlHeaderLevel1HeaderFieldGroup = Url.Action("GroupParHeaderField", "api/ParamsApi"); //URL relativa
-                var urlHeaderLevel1HeaderFieldGroupUnlink = Url.Action("UnlinkGroupParHeaderField", "api/ParamsApi"); //URL relativa
-                Session["IsRecravacao"] = Model.paramsDto?.parLevel1Dto?.IsRecravacao ?? false;
+    var urlHeaderLevel1 = Url.Action("AddRemoveParHeaderDuplicate", "api/ParamsApi"); //URL relativa
+    var urlHeaderLevel1HeaderFieldGroup = Url.Action("GroupParHeaderField", "api/ParamsApi"); //URL relativa
+    var urlHeaderLevel1HeaderFieldGroupUnlink = Url.Action("UnlinkGroupParHeaderField", "api/ParamsApi"); //URL relativa
+    Session["IsRecravacao"] = Model.paramsDto?.parLevel1Dto?.IsRecravacao ?? false;
 
 }
 
@@ -35,10 +37,10 @@
                             {*@
                         <tr class="row">
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-sm", @id = "selectConsolidacao" })
-            , @Html.Label(Resources.Resource.consolidation_type)
-            , Table.PosicaoLabel.top
-            , info: Resources.Resource.consolidation_type_popover
-            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
+                            , @Html.Label(Resources.Resource.consolidation_type)
+                            , Table.PosicaoLabel.top
+                            , info: Resources.Resource.consolidation_type_popover
+                            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
 
                             <div style="display:none !important">
                                 @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
@@ -1933,7 +1935,7 @@
             } else {
                 openMessageModal("@Resources.Resource.indicador_used");
             }
-           
+
         },
         incluiNoObjetoParaSubmit: function(dados){
 
@@ -2109,8 +2111,8 @@
 
             var IsRuleConformity = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsRuleConformity));
             var IsSpecificNumberEvaluetion = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion));
-            console.log("IsRuleConformity: " + IsRuleConformity);
-            console.log("IsSpecificNumberEvaluetion: " + IsSpecificNumberEvaluetion);
+            //console.log("IsRuleConformity: " + IsRuleConformity);
+            //console.log("IsSpecificNumberEvaluetion: " + IsSpecificNumberEvaluetion);
 
             /*Seta as 2 fdp pra false*/
             $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber').bootstrapSwitch('toggleState');
@@ -2144,11 +2146,11 @@
                 if (classeSpan) {
                     span.removeClass('fa fa-copy');
                     span.addClass('glyphicon glyphicon-duplicate')
-                    span.attr("title", "Clonar cabeçalho - Ativado")    
+                    span.attr("title", "Clonar cabeçalho - Ativado")
                 } else {
                     span.removeClass('glyphicon glyphicon-duplicate');
                     span.addClass('fa fa-copy')
-                    span.attr("title", "Clonar cabeçalho - Inativado")  
+                    span.attr("title", "Clonar cabeçalho - Inativado")
                 }
             });
         },
