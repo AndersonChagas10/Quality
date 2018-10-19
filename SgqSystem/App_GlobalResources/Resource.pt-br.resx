@@ -1390,7 +1390,7 @@
     <value>Linha do monitoramento</value>
   </data>
   <data name="level3_header" xml:space="preserve">
-    <value>Cabeçalho da tarefa</value>
+    <value>Cabeçalho na lista de tarefas</value>
   </data>
   <data name="select_the_shift" xml:space="preserve">
     <value>Selecione o turno...</value>
