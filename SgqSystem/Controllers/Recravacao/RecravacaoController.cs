@@ -57,6 +57,12 @@ namespace SgqSystem.Controllers.Recravacao
                         .FirstOrDefault(r => r.ItemMenu_Id == itemMenu.Id && r.ParLevel1_Id == indicadorId);
                     reportXUserSgq.CodigoRelatorio = reportXUserSgq.CodigoRelatorio?.Replace("[", "<").Replace("]", ">");
                     ViewBag.ReportXUserSgq = reportXUserSgq;
+
+                    var outroRelatorio = db.ReportXUserSgq
+                        .Include("ItemMenu")
+                        .FirstOrDefault(r => r.ParLevel1_Id == indicadorId && r.Id != reportXUserSgq.Id);
+                    outroRelatorio.AddDate = DateTime.Now.Date;
+                    ViewBag.OutroRelatorio = outroRelatorio;
                 }
                 ViewBag.IndicadorId = indicadorId;
                 ViewBag.LinhaId = linhaId;
