@@ -17,7 +17,7 @@ namespace SgqSystem.Controllers
         // GET: ParGroupParLevel1XParLevel1
         public ActionResult Index()
         {
-            var parGroupParLevel1XParLevel1 = db.ParGroupParLevel1XParLevel1.Include("ParGroupParLevel1").Include("ParLevel1").Where(x => x.IsActive).ToList();
+            var parGroupParLevel1XParLevel1 = db.ParGroupParLevel1XParLevel1.Include("ParGroupParLevel1").Include("ParLevel1").ToList();
             return View(parGroupParLevel1XParLevel1);
         }
 

@@ -17,7 +17,7 @@ namespace SgqSystem.Controllers
         // GET: ParGroupParLevel1
         public ActionResult Index()
         {
-            var parGroupParLevel1 = db.ParGroupParLevel1.Include(p => p.ParGroupParLevel1Type).Where(x => x.IsActive);
+            var parGroupParLevel1 = db.ParGroupParLevel1.Include(p => p.ParGroupParLevel1Type);
 
             var listaFilhos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
             listaFilhos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
