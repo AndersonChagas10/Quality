@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("CorrectiveAction")]
-    public partial class CorrectiveAction
+    public partial class CorrectiveAction : BaseModel
     {
         public int Id { get; set; }
 
@@ -24,12 +24,6 @@ namespace Dominio
 
         [Column(TypeName = "datetime2")]
         public DateTime? DateTimeTechinical { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime DateCorrectiveAction { get; set; }

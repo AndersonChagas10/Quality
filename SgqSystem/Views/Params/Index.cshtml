@@ -210,7 +210,7 @@
 
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
 
-                    <h4 class="modal-title" id="Header">ID: Header</h4>
+                    <h4 class="modal-title" id="Header">@Resources.Resource.edit: Campos de Cabeçalho</h4>
                 </div>
                 <div class="modal-body" id="body">
                     ID: Body
@@ -1250,7 +1250,7 @@
 
                 /*Habilita Edicao do AV AM*/
                 $('#tableAvAm > tbody > tr').each(function() {
-                    if(!linkedUnitIds.includes($(this).data().companyId))
+                    if (!linkedUnitIds.includes($(this).data().companyId))
                         $(this).find('input, select, button').attr("disabled", true);
                 });
             }else{
@@ -1302,7 +1302,7 @@
 
                     /*Libera os campos para Tipos de dados de entrada*/
                     $('#level3_data_type_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
-                    $('#selectTipoInput').on('change', function() {
+                    $('#selectTipoInput').on('change', function () {
                         $('#level3_data_type_accordion').find('input, select, button').attr("disabled", false).attr("readonly", false);
                     });
 
@@ -1322,7 +1322,7 @@
 
                     /*Bloqueia os campos para Tipos de dados de entrada*/
                     $('#level3_data_type_accordion').find('input, select, button').attr("disabled", true).attr("readonly", true);
-                    $('#selectTipoInput').on('change', function() {
+                    $('#selectTipoInput').on('change', function () {
                         $('#level3_data_type_accordion').find('input, select, button').attr("disabled", true).attr("readonly", true);
                     });
 
@@ -1346,7 +1346,7 @@
                     $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
                     /*Habilita Exclusão do Peso para uma unidade especifica*/
                     $('#tablePeso > tbody > tr').each(function() {
-                        if(linkedUnitIds.includes($(this).data().Parcompany_Id)){
+                        if(linkedUnitIds.includes($(this).data().ParCompany_Id)){
                             $(this).find('button.btn-danger').attr("disabled", false);
                         }else{
                             $(this).find('button.btn-danger').attr("disabled", true);
@@ -1365,7 +1365,7 @@
                     $('#level3_PesoL3_accordion').find('input, select').attr("disabled", false).attr("readonly", false);
                     /*habilita Edicao do Peso para uma unidade especifica*/
                     $('#tablePeso > tbody > tr').each(function() {
-                        if(linkedUnitIds.includes($(this).data().companyId)){
+                        if (linkedUnitIds.includes($(this).data().ParCompany_Id)){
                             $(this).find('input, select, button.btn-success').attr("disabled", false);
                         }else{
                             $(this).find('input, select, button.btn-success').attr("disabled", true);
@@ -1377,6 +1377,8 @@
                         $(this).find('input, select, button.btn-success').attr("disabled", true);
                     });
                 }
+
+
 
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
@@ -1404,6 +1406,18 @@
             if ($('#tableLevel3Value > tbody > tr').length == 0)
                 $('#tableLevel3Value').css('display', 'none');
 
+            $('#tableLevel3Value > tbody > tr').each(function () {
+                if (!linkedUnitIds.includes($(this).data().ParCompany_Id) || !($(this).data().ParCompany_Id > 0)) {
+                    $(this).find('input, select, button').attr("disabled", true);
+                    $(this).remove();
+                }
+            });
+
+            $('#tablePeso > tbody > tr').each(function () {
+                if (!linkedUnitIds.includes($(this).data().ParCompany_Id)) {
+                    $(this).addClass('hide');
+                }
+            });
         });
 
 
@@ -1472,13 +1486,15 @@
                 }
                 dados['paramsDto.parHeaderFieldDto.ParMultipleValues'] = ar;
             }
-            console.log(dados);
+            //console.log(dados);
+
             $.post(urlAttCabecalho, dados, function (objetoReturn, statusmessage) {
                 if (idLvl1 > 0) {
                     indexParamsLevel1.GetLevel1(idLvl1, true);
                     openMessageModal("@Resources.Resource.alert", statusmessage);
                     idLvl1 = 0 ;
                     $('#modalEdicaoCabecalho').modal('hide');
+                    $('#parLevel2Select2').trigger('change'); //Atualiza o level2
                 }
 
             }).fail(function (e, h, x) {
@@ -1497,7 +1513,8 @@
 
     var EditCabecalho = '@Html.Raw(@urlEditCabecalho)';
 
-    function ModalEdicaoCabecalho(title, idpH,idL1, idFT) {
+    function ModalEdicaoCabecalho(title, idpH, idL1, idFT) {
+        debugger
         idpar = idpH;
         idfieldType = idFT;
         idLvl1 = idL1;

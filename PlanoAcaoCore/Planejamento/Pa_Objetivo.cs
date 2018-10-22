@@ -6,6 +6,8 @@ namespace PlanoAcaoCore
     public class Pa_Objetivo : Pa_BaseObject
     {
         public string Name { get; set; }
+        public bool IsPriority { get; set; }
+
         public static List<Pa_Objetivo> Listar()
         {
             var query = "SELECT * FROM Pa_Objetivo WHERE IsActive = 1";

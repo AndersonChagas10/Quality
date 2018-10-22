@@ -573,7 +573,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                              "\n where ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "' AND CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'  and (ParCompany_Id =  " + ParCompany_Id + " or ParCompany_Id is null)   and IsActive = 1 " +
 
                              "\n -- GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND PL.IsActive = 1) OR (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND CAST(f1.data AS DATE) < CAST(PL.AlterDate AS DATE) AND PL.IsActive = 1) AND (F1.UNIDADE = PL.ParCompany_id                                                                " +
-                             "\n GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND F1.UNIDADE = PL.ParCompany_id) OR  (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND F1.UNIDADE IS NULL)                                                              " +
+                             "\n GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND ISNULL(F1.UNIDADE,'') = ISNULL(PL.ParCompany_id,'')) " +
                              "\n -- or F1.UNIDADE is null))  Familia                                                                                                                      " +
                              "\n )  Familia                                                                                                                      " +
                              "\n ON Familia.ParLevel2_Id = PL2.Id                                                                                                                      " +
@@ -1093,11 +1093,11 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             SyncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
 
             string sql = "\n SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
-                         "\n ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id  AS ParCompany_id1 , L32.ParCompany_Id AS ParCompany_id2, L3V.DynamicValue                                                                                                                                                                                                                                       " +
+                         "\n ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id  AS ParCompany_id1 , L32.ParCompany_Id AS ParCompany_id2, L3V.DynamicValue, L3.HasTakePhoto                                                                                                                                                                                                                                       " +
                          "\n FROM ParLevel3 L3      (nolock)                                                                                                                                                                                                                                                                                                                                       " +
                          "\n INNER JOIN ParLevel3Value L3V      (nolock)                                                                                                                                                                                                                                                                                                                           " +
-                         "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id =  " + ParCompany_Id + " or ParCompany_id is null) and (ParLevel1_id =  " + ParLevel1.ParLevel1_Id + " or ParLevel1_id is null) and (ParLevel2_id =  " + ParLevel2.ParLevel2_id + " or ParLevel2_id is null) order by ParCompany_Id desc) " +
-                         "\n INNER JOIN ParLevel3InputType L3IT    (nolock)                                                                                                                                                                                                                                                                                                                        " +
+                         "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id =  " + ParCompany_Id + " or ParCompany_id is null) and (ParLevel1_id =  " + ParLevel1.ParLevel1_Id + " or ParLevel1_id is null) and (ParLevel2_id =  " + ParLevel2.ParLevel2_id + " or ParLevel2_id is null) order by ParCompany_Id desc, ParLevel1_id desc, ParLevel2_id desc ) " +
+                          "\n INNER JOIN ParLevel3InputType L3IT    (nolock)                                                                                                                                                                                                                                                                                                                        " +
                          "\n         ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
                          "\n LEFT JOIN ParLevel3BoolFalse L3BF      (nolock)                                                                                                                                                                                                                                                                                                                       " +
                          "\n         ON L3BF.Id = L3V.ParLevel3BoolFalse_Id                                                                                                                                                                                                                                                                                                              " +
@@ -1137,6 +1137,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             "\n  , L32.Weight " +
                             "\n  , L3V.ParCompany_Id " +
                             "\n  , L32.ParCompany_Id " +
+                            "\n  , L3.HasTakePhoto " +
                             "\n  , L3V.DynamicValue ";
 
 
@@ -1186,10 +1187,10 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                 string ParLevel1_IdFilho = "\n  AND L321.ParLevel1_Id IN (" + ParLevel1Origin_Id + ") \n  AND L2.Id = '" + ParLevel2.ParLevel2_id + "'";
 
                 sqlFilho = " \n UNION ALL SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
-                        "\n  ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, " + sqlPeso + " AS Weight, L3V.ParCompany_Id AS ParCompany_id1 , L32.ParCompany_Id AS ParCompany_id2, L3V.DynamicValue " +
+                        "\n  ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, " + sqlPeso + " AS Weight, L3V.ParCompany_Id AS ParCompany_id1 , L32.ParCompany_Id AS ParCompany_id2, L3V.DynamicValue, L3.HasTakePhoto " +
                         "\n FROM ParLevel3 L3     (nolock)                                                                                                                                                                                                                                                                                                                                        " +
                         "\n INNER JOIN ParLevel3Value L3V     (nolock)                                                                                                                                                                                                                                                                                                                            " +
-                        "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)                                                                                                                                                                                                                                                                                                                       " +
+                        "\n         ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id =  " + ParCompany_Id + " or ParCompany_id is null) and (ParLevel1_id IN (" + ParLevel1Origin_Id + ") or ParLevel1_id is null) and (ParLevel2_id =  " + ParLevel2.ParLevel2_id + " or ParLevel2_id is null) order by ParCompany_Id desc, ParLevel1_id desc, ParLevel2_id desc ) " + 
                         "\n INNER JOIN ParLevel3InputType L3IT  (nolock)                                                                                                                                                                                                                                                                                                                          " +
                         "\n         ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
                         "\n LEFT JOIN ParLevel3BoolFalse L3BF   (nolock)                                                                                                                                                                                                                                                                                                                          " +
@@ -1234,6 +1235,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
            "\n  , L32.Weight " +
            "\n  , L3V.ParCompany_Id " +
            "\n  , L32.ParCompany_Id " +
+           "\n  , L3.HasTakePhoto " +
            "\n  , L3V.DynamicValue ";
 
 
@@ -1618,7 +1620,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             return multipleValues;
         }
 
-        public IEnumerable<ParFieldType> getIntegrationValues(int ParHeaderField_Id, string integracao, int ParCompany_Id)
+        public IEnumerable<ParMultipleValues> getIntegrationValues(int ParHeaderField_Id, string integracao, int ParCompany_Id)
         {
             string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             db = new SqlConnection(conexaoBR);
@@ -1684,11 +1686,10 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                       "\n  ";
             }
 
-            List<ParFieldType> multipleValues = new List<ParFieldType>();
-
+            List<ParMultipleValues> multipleValues = new List<ParMultipleValues>();
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                multipleValues = factory.SearchQuery<ParFieldType>(sql).ToList();
+                multipleValues = factory.SearchQuery<ParMultipleValues>(sql).ToList();
             }
 
             return multipleValues;

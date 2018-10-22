@@ -776,7 +776,9 @@
                             } catch(e){
                             }
                             finally {
-                                $('#modalLindo select').select2();
+                                $('#modalLindo select').select2({
+                                    matcher: matchCustom
+                                });
                             }
 
                         });
@@ -809,9 +811,6 @@
                     let childrenEl = $(idChildren)
                     childrenEl.parent().html('').append(response);
                     childrenEl.remove();
-                    //if($(childrenEl).data('select2'))
-                    //    childrenEl.select2('destroy')
-                    //childrenEl.select2()
                     if(masterCB)
                         masterCB()
                 })
@@ -866,7 +865,7 @@
                 InitDatePiker();
 
                 $('div[id = ' + collapseId + '] select').select2({
-
+                    matcher: matchCustom,
                     width: "280px"
                 });
             };
@@ -1135,7 +1134,7 @@
 
             selectPredecessor = encadeado;
 
-            $('#body').find('select').select2()
+            $('#body').find('select').select2({ matcher: matchCustom })
             $('#body').find('select').select2('destroy')
 
             //Remove select caso exista
@@ -1163,12 +1162,16 @@
             if (encadeado != undefined) {
                 $('#labelPredecessora').children().remove()
                 $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
-                $('#modalNovo select').select2();
+                $('#modalNovo select').select2({
+                    matcher: matchCustom
+                });
                 $('#modalNovo select').select2('destroy');
-                $('#modalNovo select').select2();
+                $('#modalNovo select').select2({
+                    matcher: matchCustom
+                });
                 $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
             }
-            $('#body').find('select').select2()
+            $('#body').find('select').select2({ matcher: matchCustom });
         }
 
         function SalvarNovo() {
@@ -2075,10 +2078,8 @@
                 HideForOperacional();
                 $('#modalLindo').modal();
                 $('#Header').html('Acompanhamento do Planejamento Operacional');
-                //$(".select2Init").select2();
                 $('.modal .modal-footer button').hide();
                 $('#showAcompnhamentoForm').show();
-                //$('select').select2();
                 $("#SaveAcompanhamento").on("click", function (event) {
                     //event.preventDefault();
                     var obj = $("#acompanhamento").serializeObject();
@@ -2138,7 +2139,9 @@
                                                  } catch(e){
                                                  }
                                                  finally {
-                                                     $('#formEditTatico #modalLindo select').select2();
+                                                     $('#formEditTatico #modalLindo select').select2({
+                                                         matcher: matchCustom
+                                                     });
                                                  }
 
                                              });
@@ -2217,9 +2220,9 @@
             counter--;
 
             setTimeout(function () {
-                $('select:visible').select2()
+                $('select:visible').select2({ matcher: matchCustom });
                 $('select:visible').select2('destroy')
-                $('select:visible').select2()
+                $('select:visible').select2({ matcher: matchCustom });
             }, 500)
 
             HideForOperacional();

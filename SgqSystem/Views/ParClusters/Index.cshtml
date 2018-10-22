@@ -98,8 +98,14 @@
 <script>
     navbarSelect("navbar3");
 
-    $('#tabelaProcessos').dataTable({
-        "aoPaging": true,
-        "aoSearching": true,
+     $(document).ready(function () {
+         closeLeftSidebar();
+         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+             null,
+             null,
+             null,
+             { "bSearchable": false }
+         ];
+         $('#tabelaProcessos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 </script>

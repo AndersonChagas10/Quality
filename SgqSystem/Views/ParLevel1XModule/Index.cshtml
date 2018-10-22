@@ -1,9 +1,8 @@
 ﻿@model IEnumerable<Dominio.ParLevel1XModule>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Indicador por Módulos";
 }
-
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
@@ -48,6 +47,9 @@
                                             <th>
                                                 @Html.DisplayName(Resources.Resource.parModule)
                                             </th>
+                                            <th>
+                                                @Html.DisplayName(Resources.Resource.clusters)
+                                            </th>
                                             @*
                                                 <th>
                                                     @Html.DisplayName(Resources.Resource.points)
@@ -78,6 +80,9 @@
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.ParModule.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ParCluster.Name)
                                                 </td>
                                                 @*
                                                     <td>
@@ -120,15 +125,17 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
+
     $(document).ready(function () {
-        $('#tabelaIndicadorModulo').dataTable({
-            "aoPaging": true,
-            "aoSearching": true,
-            "order": [[1, "asc"]],
-            "language": {
-                "emptyTable": "@Resources.Resource.no_data_to_show"
-            }
-        });
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            null,
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaIndicadorModulo').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 
 </script>

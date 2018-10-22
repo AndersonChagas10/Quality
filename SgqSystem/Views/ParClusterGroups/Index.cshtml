@@ -122,9 +122,11 @@
 <script>
     $(document).ready(function () {
         closeLeftSidebar();
-        $('#tabelaGrupoProcessos').dataTable({
-            "aoPaging": true,
-            "aoSearching": true,
-        });
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaGrupoProcessos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 </script>

@@ -98,9 +98,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         retorno.InitialTime = getInitialTime(form, dbSgq);
 
                         retorno.FinalTime = getFinalTime(form, dbSgq);
+
+                        retorno.Aprovador = getAprovadorName(form, dbSgq);
+
+                        retorno.Elaborador = getElaboradorName(form, dbSgq);
+
+                        retorno.NomeRelatorio = getNomeRelatorio(form, dbSgq);
                     }
                 }
-
             }
             catch (Exception)
             {
@@ -111,7 +116,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return retorno;
         }
 
-        private DateTime getInitialTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        private DateTime? getInitialTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
         {
 
             var query = $@"SELECT
@@ -124,11 +129,11 @@ AND ParLevel2_Id = { form.level2Id }
 AND CAST(CollectionDate AS DATE) = CAST('{form._dataInicioSQL}' AS DATE)";
 
 
-            return dbSgq.Database.SqlQuery<DateTime>(query).FirstOrDefault();
+            return dbSgq.Database.SqlQuery<DateTime?>(query).FirstOrDefault();
 
         }
 
-        private DateTime getFinalTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        private DateTime? getFinalTime(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
         {
             var query = $@"SELECT
 	MAX(CollectionDate)
@@ -140,7 +145,7 @@ AND ParLevel2_Id = { form.level2Id }
 AND CAST(CollectionDate AS DATE) = CAST('{form._dataInicioSQL}' AS DATE)";
 
 
-            return dbSgq.Database.SqlQuery<DateTime>(query).FirstOrDefault();
+            return dbSgq.Database.SqlQuery<DateTime?>(query).FirstOrDefault();
         }
 
         private string getQuery1(FormularioParaRelatorioViewModel form)
@@ -177,13 +182,55 @@ ORDER BY em_coluna.Sequential";
             return query;
         }
 
+        private string getAprovadorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        {
+            var SQL = $@"SELECT top 1
+        Aprovador
+        FROM ReportXUserSgq RXU      
+        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+        AND RXU.ParLevel1_Id = {form.level1Id}
+        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+        Order by RXU.Parcompany_Id desc";
+
+            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+        }
+
+        private string getElaboradorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        {
+            var SQL = $@"SELECT top 1
+    	Elaborador
+        FROM ReportXUserSgq RXU
+        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+        AND RXU.ParLevel1_Id = {form.level1Id}
+        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+        Order by RXU.Parcompany_Id desc";
+
+            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+        }
+
+        private string getNomeRelatorio(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        {
+            var SQL = $@"SELECT top 1
+    	NomeRelatorio
+        FROM ReportXUserSgq RXU
+        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+        AND RXU.ParLevel1_Id = {form.level1Id}
+        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+        Order by RXU.Parcompany_Id desc";
+
+            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+        }
+
     }
 
     public class Retorno
     {
         public List<Dado> Dados { get; set; }
-        public DateTime InitialTime { get; set; }
-        public DateTime FinalTime { get; set; }
+        public DateTime? InitialTime { get; set; }
+        public DateTime? FinalTime { get; set; }
+        public string Elaborador { get; set; }
+        public string Aprovador { get; set; }
+        public string NomeRelatorio { get; set; }
     }
 
     public class EscalaAbate

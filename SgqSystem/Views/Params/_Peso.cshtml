@@ -222,7 +222,8 @@
                 }
             },
             /*Fim Setup*/
-            adiciona: function(e) {
+            adiciona: function (e) {
+                debugger
                 if(this.veifyAdd()){
                     var object = this.getObjAdd();
                     crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);

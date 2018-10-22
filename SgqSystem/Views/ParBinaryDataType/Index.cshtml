@@ -40,12 +40,21 @@
 </script>
 
 <script>
-    $(document).ready(function () {
+      $(document).ready(function () {
         closeLeftSidebar();
-
-        $('.tabelaBinario').dataTable({
+          $('.tabelaBinario').dataTable({
             "aoPaging": true,
             "aoSearching": true,
+            "aoColumns": [
+                null,
+                null,
+                { "bSearchable": false }
+            ],
+            "order": [[1, "asc"]],
+              "language": {
+                  "lengthMenu": "Mostrar _MENU_ resultados por página",
+                "emptyTable": "@Resources.Resource.no_data_to_show"
+            }
         });
     });
 </script>

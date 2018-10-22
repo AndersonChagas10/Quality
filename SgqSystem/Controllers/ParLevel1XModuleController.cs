@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Dominio;
 using DTO.Helpers;
 using Microsoft.Ajax.Utilities;
+using System.Text;
 
 namespace SgqSystem.Controllers
 {
@@ -43,8 +44,10 @@ namespace SgqSystem.Controllers
         {
             var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
             var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
+            var listaClusters = db.ParCluster.Where(x => x.IsActive).ToList();
             ViewBag.Indicadores = listaIndicadores;
             ViewBag.Modulos = listaModulos;
+            ViewBag.Clusters = listaClusters;
             return View();
         }
 
@@ -53,7 +56,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Points,ParModule_Id,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper,ParLevel1_IdHelper")] ParLevel1XModule parLevel1XModule)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Points,ParModule_Id,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper,ParLevel1_IdHelper,ParCluster_Id")] ParLevel1XModule parLevel1XModule)
         {
             parLevel1XModule.AddDate = DateTime.Now;
             parLevel1XModule.AlterDate = DateTime.Now;
@@ -65,7 +68,7 @@ namespace SgqSystem.Controllers
                 {
                     parLevel1XModule.ParLevel1_Id = item;
                     ValidaIndicadoresxModulos(parLevel1XModule);
-                    ValidaDataEntre(parLevel1XModule, item);
+                    var listaErros = ValidaDataEntre(parLevel1XModule, item);
 
                     if (ModelState.IsValid)
                     {
@@ -75,29 +78,42 @@ namespace SgqSystem.Controllers
                             EffectiveDateEnd = parLevel1XModule.EffectiveDateEnd,
                             EffectiveDateStart = parLevel1XModule.EffectiveDateStart,
                             ParModule_Id = parLevel1XModule.ParModule_Id,
+                            ParCluster_Id = parLevel1XModule.ParCluster_Id,
                             Points = parLevel1XModule.Points,
                             IsActive = parLevel1XModule.IsActive,
                             AddDate = DateTime.Now,
                             AlterDate = DateTime.Now
                         };
-                        db.ParLevel1XModule.Add(objInserir);                                          
+                        db.ParLevel1XModule.Add(objInserir);
                         quantSalvo++;
                     }
                     else
                     {
-                        arrayIndicadorDuplicado.Add(parLevel1XModule.ParLevel1_Id);                      
+                        //arrayIndicadorDuplicado.Add(parLevel1XModule.ParLevel1_Id);
+                        arrayIndicadorDuplicado.Add(listaErros);
                     }
                 }
                 if (quantSalvo == parLevel1XModule.ParLevel1_IdHelper.Count())
                 {
-                  
+
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
                 {
                     var ListaDeIndicadoresQueJaExistem = db.ParLevel1.Where(r => arrayIndicadorDuplicado.Contains(r.Id)).Select(r => r.Name).ToList();
-                    ModelState.AddModelError("ParLevel1_Id", string.Join(",", ListaDeIndicadoresQueJaExistem));
+                    if (ListaDeIndicadoresQueJaExistem.Count() > 0)
+                    {
+                        var mensagemErro = new StringBuilder();
+                        foreach (var item in ListaDeIndicadoresQueJaExistem)
+                        {
+                            if(mensagemErro.Length > 0) 
+                                mensagemErro.Append(", ");
+                            mensagemErro.Append(item);
+                        }
+                        ModelState.AddModelError("ParLevel1_Id", Resources.Resource.indicator_alredy_used + mensagemErro);
+                    }
+
                 }
 
             }
@@ -107,8 +123,10 @@ namespace SgqSystem.Controllers
             }
             var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
             var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
+            var listaClusters = db.ParCluster.Where(x => x.IsActive).ToList();
             ViewBag.Indicadores = listaIndicadores;
             ViewBag.Modulos = listaModulos;
+            ViewBag.Clusters = listaClusters;
             return View(parLevel1XModule);
         }
 
@@ -126,8 +144,10 @@ namespace SgqSystem.Controllers
             }
             var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
             var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
+            var listaClusters = db.ParCluster.Where(x => x.IsActive).ToList();
             ViewBag.Indicadores = listaIndicadores;
             ViewBag.Modulos = listaModulos;
+            ViewBag.Clusters = listaClusters;
             return View(parLevel1XModule);
         }
 
@@ -136,7 +156,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper")] ParLevel1XModule parLevel1XModule)
+        public ActionResult Edit([Bind(Include = "Id,ParLevel1_Id,ParModule_Id,Points,IsActive,EffectiveDateStart,EffectiveDateEnd,ParLevel1Helper,ParCluster_Id")] ParLevel1XModule parLevel1XModule)
         {
             parLevel1XModule.AlterDate = DateTime.Now;
             ValidaIndicadoresxModulosEdicao(parLevel1XModule);
@@ -144,15 +164,19 @@ namespace SgqSystem.Controllers
             var indicadorxModuloEditado = db.ParLevel1XModule.Where(x => x.Id == parLevel1XModule.Id).FirstOrDefault();
             if (ModelState.IsValid)
             {
+                indicadorxModuloEditado.ParCluster_Id = parLevel1XModule.ParCluster_Id;
                 indicadorxModuloEditado.EffectiveDateEnd = parLevel1XModule.EffectiveDateEnd;
                 indicadorxModuloEditado.EffectiveDateStart = parLevel1XModule.EffectiveDateStart;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ModelState.AddModelError("ParLevel1_Id", Resources.Resource.indicator_in_use);
             var listaIndicadores = db.ParLevel1.Where(x => x.IsActive).ToList();
             var listaModulos = db.ParModule.Where(x => x.IsActive).ToList();
+            var listaClusters = db.ParCluster.Where(x => x.IsActive).ToList();
             ViewBag.Indicadores = listaIndicadores;
             ViewBag.Modulos = listaModulos;
+            ViewBag.Clusters = listaClusters;
             return View(parLevel1XModule);
         }
 
@@ -228,7 +252,7 @@ namespace SgqSystem.Controllers
                 ModelState.AddModelError("EffectiveDateEnd", Resources.Resource.effective_date_start + " " + Resources.Resource.are_greater_than + " " + Resources.Resource.effective_date_end);
 
         }
-        private void ValidaDataEntre(ParLevel1XModule parLevel1XModule, int indicadorId)
+        private int ValidaDataEntre(ParLevel1XModule parLevel1XModule, int indicadorId)
         {
             var isNotValid = true;
 
@@ -253,17 +277,26 @@ namespace SgqSystem.Controllers
             else
             {
 
+                //isNotValid = db.ParLevel1XModule
+                //    .Any(x => x.ParModule_Id == parLevel1XModule.ParModule_Id && x.ParLevel1_Id == indicadorId
+                //    && (x.EffectiveDateStart < parLevel1XModule.EffectiveDateStart
+                //    && x.EffectiveDateEnd < parLevel1XModule.EffectiveDateStart) && x.Id != parLevel1XModule.Id);
+
+                //nova verificação
                 isNotValid = db.ParLevel1XModule
                     .Any(x => x.ParModule_Id == parLevel1XModule.ParModule_Id && x.ParLevel1_Id == indicadorId
-                    && (x.EffectiveDateStart > parLevel1XModule.EffectiveDateStart
-                    && x.EffectiveDateEnd > parLevel1XModule.EffectiveDateStart) && x.Id != parLevel1XModule.Id);
+                    && ((x.EffectiveDateStart <= parLevel1XModule.EffectiveDateStart && x.EffectiveDateEnd >= x.EffectiveDateStart)
+                    || (x.EffectiveDateStart <= parLevel1XModule.EffectiveDateEnd && x.EffectiveDateEnd >= parLevel1XModule.EffectiveDateEnd)
+                    || (parLevel1XModule.EffectiveDateStart < x.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd > x.EffectiveDateStart)));
             }
 
-
             if (isNotValid)
-            {               
-                ModelState.AddModelError("ParLevel1_IdHelper", "Este indicador já possui vinculo na data vigente!");
-            }         
+            {
+                ModelState.AddModelError("ParLevel1_IdHelper", "Alerta!");
+                return parLevel1XModule.ParLevel1_Id;
+            }
+
+            return 0;
         }
     }
 }

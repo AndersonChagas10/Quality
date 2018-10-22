@@ -72,7 +72,7 @@ namespace SgqSystem.Controllers
         public ActionResult Create()
         {
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name");
-            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 3), "Id", "Name");            
+            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 3), "Id", "Name");
             return View();
         }
 
@@ -97,7 +97,7 @@ namespace SgqSystem.Controllers
                 }
                 else
                 {
-                    ReturnError();
+                    ReturnError(pcc1b);
                 }
             }
 
@@ -136,7 +136,7 @@ namespace SgqSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data && r.ParCompany_id == pcc1b.ParCompany_id && r.Shift_Id == pcc1b.Shift_Id).ToList().Count() == 0)
+                if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data && r.ParCompany_id == pcc1b.ParCompany_id && r.Shift_Id == pcc1b.Shift_Id && r.Id != pcc1b.Id).ToList().Count() == 0)
                 {
                     pcc1b.AlterDate = DateTime.Now;
                     db.Entry(pcc1b).State = EntityState.Modified;
@@ -149,28 +149,7 @@ namespace SgqSystem.Controllers
                 }
                 else
                 {
-                    //Se for a edição da mesma data e parCompany
-                    if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data &&
-                                                       r.ParCompany_id == pcc1b.ParCompany_id &&
-                                                       r.Id == pcc1b.Id).ToList().Count() == 1)
-                    {
-                        using (var db2 = new SgqDbDevEntities())
-                        {
-                            pcc1b.AlterDate = DateTime.Now;
-                            db2.Entry(pcc1b).State = EntityState.Modified;
-                            if (db2.VolumePcc1b.Where(r => r.Id == pcc1b.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
-                            {
-                                db2.Entry(pcc1b).Property(x => x.Data).IsModified = false;
-                            }
-                            db2.SaveChanges();
-                            return RedirectToAction("Index");
-                        }
-
-                    }
-                    else
-                    {
-                        ReturnError();
-                    }
+                    ReturnError(pcc1b);
                 }
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", pcc1b.ParCompany_id);
@@ -194,9 +173,10 @@ namespace SgqSystem.Controllers
                 ModelState.AddModelError("VolumeAnimais", Guard.MesangemModelError("Número de animais", false));
         }
 
-        private void ReturnError()
+        private void ReturnError(VolumePcc1b obj)
         {
-            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade e turno!");
+            ModelState.AddModelError("Data", $"Já existe registro na data {obj.Data.Value.ToShortDateString()} para esta unidade!");
+            obj.Data = DateTime.Now;
         }
 
         // GET: Pcc1b/Delete/5

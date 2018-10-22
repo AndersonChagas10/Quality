@@ -53,7 +53,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Data, new { htmlAttributes = Model.Data?.Date < DateTime.Now.Date ? (object)new { @class = "form-control", @disabled = "disable" } : new { @class = "form-control" } })
+                                                @Html.EditorFor(model => model.Data, new { htmlAttributes = Model.Data?.Date < DateTime.Now.Date ? (object)new { @class = "form-control", @readonly = "readonly" } : new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -138,7 +138,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                }
+                                            }
 
                             </div>
                         </div>
@@ -215,11 +215,33 @@
         applyMath();
     });
 
+    $(document).ready(function () {
+        $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false , min:0 , max: 24});
+        $('#QtdadeFamiliaProduto').inputmask("integer", { rightAlign: false });
+
+        if(!$('#Data').attr('readonly')){
+            $('#Data').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                'locale': {
+                    "format": "DD/MM/YYYY",
+                }
+            })
+        }
+        $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
+        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+
+        var data = "@Model.Data.Value.Date.ToString("dd/MM/yyyy")";
+        $('#Data').val(data);
+    });
+
+    //TASK FORCE
     function applyMath() {
 
         $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
         $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
-
+        if (("" + $('#Amostras').val()).length <= 0) $('#Amostras').val(0);
+        if ((""+$('#amostraHidden').val()).length <= 0) $('#amostraHidden').val(0);
     }
 
 </script>

@@ -1390,7 +1390,7 @@
     <value>Linha do monitoramento</value>
   </data>
   <data name="level3_header" xml:space="preserve">
-    <value>Cabeçalho da tarefa</value>
+    <value>Cabeçalho na lista de tarefas</value>
   </data>
   <data name="select_the_shift" xml:space="preserve">
     <value>Selecione o turno...</value>
@@ -2169,8 +2169,14 @@
   <data name="new_format" xml:space="preserve">
     <value>Novo Formato</value>
   </data>
+  <data name="indicador_used" xml:space="preserve">
+    <value>Este Indicador já possui uma Regra de Alerta!</value>
+  </data>
+  <data name="monitoring_used" xml:space="preserve">
+    <value>Este Monitoramento já possui uma Regra de Alerta!</value>
+  </data>
   <data name="are_greater_than" xml:space="preserve">
-    <value>É maior que</value>
+    <value>é maior que</value>
   </data>
   <data name="module_link_indicator" xml:space="preserve">
     <value>O módulo está vinculado a um ou mais indicadores, verifique antes de inativa lo</value>
@@ -2178,7 +2184,43 @@
   <data name="update_collect_message" xml:space="preserve">
     <value>Por favor, atualize as parametrizações da sua unidade para surtir efeito no APP Coleta.</value>
   </data>
+  <data name="indicator_alredy_used" xml:space="preserve">
+    <value>Estes Indicadores já possuem vinculos na data vingente.</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>Atualizar</value>
+  </data>
+  <data name="page" xml:space="preserve">
+    <value>página</value>
+  </data>
+  <data name="per_page" xml:space="preserve">
+    <value>por página</value>
+  </data>
+  <data name="photo" xml:space="preserve">
+    <value>Foto</value>
+  </data>
   <data name="not_conformities_rules_exist" xml:space="preserve">
     <value>Regra de não conformidade já existe.</value>
+  </data>
+  <data name="report_files" xml:space="preserve">
+    <value>Cadastro de Relatórios</value>
+  </data>
+  <data name="indicator_in_use" xml:space="preserve">
+    <value>Este indicador já possui um vinculo na data selecionada.</value>
+  </data>
+  <data name="indicatorxindicator_group" xml:space="preserve">
+    <value>Grupo de Indicador X Indicador</value>
+  </data>
+  <data name="indicator_group_type" xml:space="preserve">
+    <value>Tipo de Grupo de Indicador</value>
+  </data>
+  <data name="indicator_group_type_list" xml:space="preserve">
+    <value>Lista de Tipo de Grupo de  Indicador</value>
+  </data>
+  <data name="indicatorxassignment_group" xml:space="preserve">
+    <value>Grupo de  Indicador X Tarefa</value>
+  </data>
+  <data name="indicator_group" xml:space="preserve">
+    <value>Grupo de Indicador</value>
   </data>
 </root>

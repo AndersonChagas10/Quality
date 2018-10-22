@@ -79,7 +79,7 @@
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "empresaRecravacao", @onchange = "getLevel3ReencravacaoInputCalcOutro($('#empresaRecravacao option:selected').val())" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top)
                     </tr>
                     <tr class="row reencravacaoL3">
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3Recravacao", @onchange = "getLevel3ValueReencravacaoInputCalcOutro($('#parlevel3Recravacao option:selected').val())" }), @Html.Label("Selecione Par Level 3"), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3Recravacao", @onchange = "getLevel3ValueReencravacaoInputCalcOutro($('#parlevel3Recravacao option:selected').val())" }), @Html.Label("Selecione a tarefa"), Table.PosicaoLabel.top)
                     </tr>
                     <tr class="row reencravacaoL3">
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3RecravacaoValue", @onchange = "" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
@@ -218,6 +218,7 @@
     var eTipoDado_EscalaLikert = 8;
     var eTipoDado_IntervalosTexto = 9;
     var eTipoDado_Resultado = 10;
+    var eTipoDado_Observacao = 11;
     var eTipoDado_Recravacao = 99;
 
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
@@ -292,7 +293,7 @@
                 parLevel3Value_DynamicValue = "";
             }
 
-            if (selectTipoInput == eTipoDado_Texto) {
+            if (selectTipoInput == eTipoDado_Texto || selectTipoInput == eTipoDado_Observacao) {
                 selectUnidadeDeMedidasName = "";
                 selectNaoConforme = "";
                 selectConforme = "";
@@ -311,7 +312,7 @@
                 parLevel3Value_DynamicValue = "";
             }
 
-            if (selectTipoInput == eTipoDado_IntervaloMinutos) {
+            @*if (selectTipoInput == eTipoDado_IntervaloMinutos) {
                 selectUnidadeDeMedidasName = "";
                 selectNaoConforme = "";
                 selectConforme = "";
@@ -320,7 +321,7 @@
                 selectUnidadeDeMedidas = "";
                 parIntervalosTypeName = "@Resources.Resource.value_is_acceptable_between " + parLevel3Value_IntervalMin + " @Resources.Resource.and " + parLevel3Value_IntervalMax;
                 parLevel3Value_DynamicValue = "";
-            }
+            }*@
 
             if (selectTipoInput == eTipoDado_IntervaloMinutos) {
                 selectUnidadeDeMedidasName = "";
@@ -552,7 +553,6 @@
                         o["ParLevel2_Name"] = "@Resources.Resource.all";
                     //console.log(o["ParLevel2_Name"]);
                     //console.log(o["ParLevel1_Name"]);
-
                     if (o.ParLevel3InputType_Id == eTipoDado_Binario || o.ParLevel3InputType_Id == eTipoDado_BinarioComTexto) {
                         o["ParLevel3BoolFalse_Name"] = o.ParLevel3BoolFalse.Name;
                         o["ParLevel3BoolTrue_Name"] = o.ParLevel3BoolTrue.Name;
@@ -584,7 +584,7 @@
                         o["IntervalMinCalculado"] = o.IntervalMinCalculado == null ? "" : o.IntervalMinCalculado;
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
                         o["IntervalMaxCalculado"] = o.IntervalMaxCalculado == null ? "" : o.IntervalMaxCalculado;
-                    } else if (o.ParLevel3InputType_Id == eTipoDado_Texto) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_Texto || o.ParLevel3InputType_Id == eTipoDado_Observacao) {
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
@@ -642,9 +642,13 @@
             if (level3Value.veifyAdd()) {
                 var object = level3Value.getObjAdd();
 
-                if(object.DynamicValue != null){
-                    object.AcceptableValueBetween_Name = object.DynamicValue;
-                    object.AcceptableValueBetween_Name = $("#parIntervalosType option:selected").text();
+                if (object.DynamicValue != null) {
+
+                    if (object.AcceptableValueBetween_Name == "") {
+                        object.AcceptableValueBetween_Name = object.DynamicValue;
+                        object.AcceptableValueBetween_Name = $("#parIntervalosType option:selected").text();
+                    }
+                
                 }
 
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
@@ -689,15 +693,18 @@
 
     });
 
-    function changeCombo(){
+    function changeCombo() {
         //se os dois campos estão nulos
         parIntervalosTypeCreate();
         CorrigirLarguraColunas();
+
     }
+
     function changeComboEdit(){
         //se os dois campos estão nulos
         parIntervalosTypeCreateEdit();
     }
+
     function level03ValueIntervalWriter(valueMin, valueMax) {
         return Resources('acceptable_value_less_than') + " " + valueMin + " " + Resources('and_greater_than') + " " + valueMax;
     }
@@ -821,6 +828,7 @@
     }
 
     $('#selectTipoInput').change(function () {
+
         var tipoSelecionado = $("#selectTipoInput option:selected").val();
 
         $('.reencravacaoL3').hide();
@@ -916,7 +924,7 @@
         }
 
         //Texto
-        if (tipoSelecionado == eTipoDado_Texto) {
+        if (tipoSelecionado == eTipoDado_Texto || tipoSelecionado == eTipoDado_Observacao) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
@@ -958,23 +966,27 @@
             let vinculados = $('#parLevel3Select2 option:selected').closest('optgroup')[0].children
             let companyesVinculadas = $('#tablePeso > tbody > tr > td:nth-child(1)')
 
-            $('#parlevel3Recravacao option').hide()
+            $('#parlevel3Recravacao option').hide();
+
             $(vinculados).each(function (c, o) {
                 let value = $(o).val()
-                $('#parlevel3Recravacao option[value="'+value+'"]').show()
-            })
+                $('#parlevel3Recravacao option[value="' + value + '"]').show()
+            });
+
             $('#parlevel3Recravacao option[value="-1"]').show()
 
-            $('#empresaRecravacao option').hide()
-            companyesVinculadas.each(function(c,o){
-                if($(o).text() == 'Todas'){
+            //$('#empresaRecravacao option').hide();
+
+            companyesVinculadas.each(function (c, o) {
+                if ($(o).text() == 'Todas') {
                 }
-                else{
+                else {
                     $('#empresaRecravacao option').filter(function () { return $(this).html() == $(o).text() }).show()
                 }
-            })
-            $('#empresaRecravacao option[value="-1"]').show()
-            $('#empresaRecravacao').parents('td').hide()
+            });
+
+            $('#empresaRecravacao option[value="-1"]').show();
+            //$('#empresaRecravacao').parents('td').hide();
 
             resetaParIntervalos();
             resetaParBinarios();
@@ -988,7 +1000,7 @@
             $('.ParBinarios').hide();
             //$('.reencravacaoL3').hide();
             $('.ParIntervalos').fadeIn();
-            $('#companyValueL3 > td').hide()
+            $('#companyValueL3 > td').hide();
         }
 
         //Resultado
@@ -1092,5 +1104,9 @@
             $(o).css('width',tdWidth+"%");
         });
     }
+
+    $(document).ready(function () {
+        $('#empresaRecravacao option:first').text("Todos");
+    });
 
 </script>

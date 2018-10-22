@@ -331,7 +331,7 @@ namespace SgqSystem.Services
 
                         var ParLevel1Origin_Id = DefaultValueReturn(result[0], "0");
 
-                        string indicadorPai = "SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                        string indicadorPai = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
                                               "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
                                               "\n  on p321.ParLevel1_Id = p1.id " +
                                               "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
@@ -339,7 +339,8 @@ namespace SgqSystem.Services
                                               "\n  WHERE ParLevel1Origin_Id = " + ParLevel1Origin_Id +
                                               "\n  and p1.isActive = 1 " +
                                               "\n  and p321.Active = 1 " +
-                                              "\n  and p32.IsActive = 1";
+                                              "\n  and p32.IsActive = 1" +
+                                              "\n  and p32.Parlevel2_Id = " + parLevel2_Id;
 
 
                         List<ResultadoUmaColuna> list;
@@ -397,7 +398,7 @@ namespace SgqSystem.Services
 
                         if (level01Id == "0")
                         {
-                            string p1Undefined = "SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                            string p1Undefined = "    SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
                                                  "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
                                                  "\n  on p321.ParLevel1_Id = p1.id " +
                                                  "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
@@ -642,7 +643,7 @@ namespace SgqSystem.Services
                             {
 
                                 //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
-                                string indicadorFilho = "SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) " +
+                                string indicadorFilho = " SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) " +
                                                       "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK) " +
                                                       "\n  on p321.ParLevel1_Id = p1.id " +
                                                       "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK) " +
@@ -2270,7 +2271,7 @@ namespace SgqSystem.Services
                 string punishimentValue = result[13];
                 punishimentValue = DefaultValueReturn(punishimentValue, "0");
 
-                string defects = result[14] ==  "NaN" ? "0" : result[14];
+                string defects = result[14] == "NaN" ? "0" : result[14];
 
                 //aqui tem que mudar no bem estar animal, verificar com o gabriel
                 string evaluation = "1";
@@ -4514,6 +4515,9 @@ $(document).ready(function(){
                         tipoTela = variableList[0].Name;
                     }
 
+                    var ParLevel2DB = new SGQDBContext.ParLevel2(db);
+                    var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(parlevel1, dateCollect, ParCompany_Id);
+
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);
                     var alertas = ParLevel1AlertasDB.getAlertas(parlevel1, ParCompany_Id, dateCollect, Shift_Id);
@@ -5268,7 +5272,7 @@ $(document).ready(function(){
             ParLevel2List = headerList +
                             ParLevel2List;
 
-            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.ParLevel1_Id), ParFieldTypeDB, html);
+            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.ParLevel1_Id), ParFieldTypeDB, html, ParCompany_id: ParCompany_Id);
 
 
             //if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
@@ -5451,7 +5455,7 @@ $(document).ready(function(){
 
                             foreach (var value in listIntegration) //LOOP8
                             {
-                                if (value.IsDefaultOption == 1)
+                                if (value.IsDefaultOption == true)
                                 {
                                     optionsIntegration += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"0\">" + value.Name + "</option>";
                                     hasDefaultIntegration = true;
@@ -6493,7 +6497,7 @@ $(document).ready(function(){
             }//Escala Likert
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
-                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString() );
+                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString());
             }//Resultado
             else if (parLevel3.ParLevel3InputType_Id == 10)
             {
@@ -6528,6 +6532,17 @@ $(document).ready(function(){
                                        );
 
                 input = html.campoResultado(parLevel3.Id.ToString(), parLevel3.DynamicValue);
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 11)
+            {
+                classInput = " texto naoValidarInput";
+                labels = html.div(
+                                           outerhtml: "",
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
+
+                input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
             }
             else
             {
@@ -7992,12 +8007,14 @@ $(document).ready(function(){
 
         [WebMethod]
         public string ReconsolidationToLevel3(string collectionLevel2_Id)
-        //int company_Id, int level1_Id, DateTime data, 
         {
 
             try
             {
+                ReconsolidationLevel3ByCollectionLevel2Id(collectionLevel2_Id);
+
                 string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
                     connection.Open();
@@ -8048,8 +8065,6 @@ $(document).ready(function(){
 
                     if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
-
-                //var service = new SyncServices();
 
                 using (var db = new Dominio.SgqDbDevEntities())
                 {
@@ -8122,6 +8137,61 @@ $(document).ready(function(){
                     //throw ex;
                 }
 
+            }
+
+        }
+
+        private void ReconsolidationLevel3ByCollectionLevel2Id(string collectionLevel_Id)
+        {
+            try
+            {
+
+                var sql = $@"SELECT
+                    	RL3.Id
+                       ,SUM(PMV.PunishmentValue) AS PunishmentValue
+                    FROM CollectionLevel2XParHeaderField CL2XHF
+                    INNER JOIN Result_Level3 RL3
+                    	ON RL3.CollectionLevel2_Id = CL2XHF.CollectionLevel2_Id
+                    INNER JOIN ParHeaderField PHF
+                    	ON PHF.Id = CL2XHF.ParHeaderField_Id
+                    INNER JOIN ParMultipleValues PMV
+                    	ON PMV.Id = CAST(CL2XHF.Value as int)
+                    WHERE CL2XHF.CollectionLevel2_Id = { collectionLevel_Id }
+                    and CL2XHF.ParFieldType_Id in (1,2,3)
+                    GROUP BY RL3.Id";
+
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    var resultsLevel3 = factory.SearchQuery<Dominio.Result_Level3>(sql).ToList();
+
+                    if (resultsLevel3.Count > 0)
+                    {
+                        foreach (var resultLevel3 in resultsLevel3)
+                        {
+                            var sql2 = $@"SELECT
+                        	RL3.Id
+                        	,((RL3.Defects * RL3.Weight) + ({ resultLevel3.PunishmentValue.ToString().Replace(',', '.') } + RL3.Weight)) as WeiDefects
+                        FROM Result_Level3 RL3
+                        WHERE Id = { resultLevel3.Id }";
+
+
+                            var resultLevel3WeiDefects = factory.SearchQuery<Dominio.Result_Level3>(sql2).FirstOrDefault();
+
+                            if (resultLevel3WeiDefects != null)
+                            {
+                                var sqlUpdateWeiDefects = $@"update Result_Level3 set WeiDefects = {resultLevel3WeiDefects.WeiDefects.ToString().Replace(',', '.')}, PunishmentValue = {resultLevel3.PunishmentValue.ToString().Replace(',', '.')} where id = {resultLevel3WeiDefects.Id}";
+
+                                factory.ExecuteSql(sqlUpdateWeiDefects);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
 
         }

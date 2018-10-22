@@ -106,7 +106,7 @@ namespace SgqSystem.Controllers
             if (ModelState.IsValid)
             {
                 //Verifica se já existe uma coleta no mesmo dia
-                if(db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id && r.Shift_Id == cepDesossa.Shift_Id).ToList().Count() == 0)
+                if (db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id && r.Shift_Id == cepDesossa.Shift_Id).ToList().Count() == 0)
                 {
                     cepDesossa.AddDate = DateTime.Now;
                     db.VolumeCepDesossa.Add(cepDesossa);
@@ -115,8 +115,8 @@ namespace SgqSystem.Controllers
                 }
                 else
                 {
-                    ReturnError();
-                }             
+                    ReturnError(cepDesossa);
+                }
             }
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
@@ -147,9 +147,10 @@ namespace SgqSystem.Controllers
                 ModelState.AddModelError("QtdadeFamiliaProduto", "O campo \"Número de famílias cadastradas\" precisa ser preenchido.");
         }
 
-        private void ReturnError()
+        private void ReturnError(VolumeCepDesossa obj)
         {
-            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade e turno!");
+            ModelState.AddModelError("Data", $"Já existe registro na data {obj.Data.Value.ToShortDateString()} para esta unidade!");
+            obj.Data = DateTime.Now;
         }
 
         // GET: CepDesossas/Edit/5
@@ -186,7 +187,7 @@ namespace SgqSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                if (db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id && r.Shift_Id == cepDesossa.Shift_Id).ToList().Count() == 0)
+                if (db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id && r.Shift_Id == cepDesossa.Shift_Id && r.Id != cepDesossa.Id).ToList().Count() == 0)
                 {
                     cepDesossa.AlterDate = DateTime.Now;
                     db.Entry(cepDesossa).State = EntityState.Modified;
@@ -199,30 +200,9 @@ namespace SgqSystem.Controllers
                 }
                 else
                 {
-                    //Se for a edição da mesma data e parCompany
-                    if(db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && 
-                                                      r.ParCompany_id == cepDesossa.ParCompany_id &&
-                                                      r.Id == cepDesossa.Id).ToList().Count() == 1)
-                    {
-                        using (var db2 = new SgqDbDevEntities())
-                        {
-                            cepDesossa.AlterDate = DateTime.Now;
-                            db2.Entry(cepDesossa).State = EntityState.Modified;
-                            if (db2.VolumeCepDesossa.Where(r => r.Id == cepDesossa.Id).Select(r => r.Data).FirstOrDefault() < DateTime.Now.Date)
-                            {
-                                db2.Entry(cepDesossa).Property(x => x.Data).IsModified = false;
-                            }
-                            db2.SaveChanges();
-                            return RedirectToAction("Index");
-                        }
-                       
-                   }
-                    else
-                    {
-                        ReturnError();
-                    }
-                }                   
-                
+                    ReturnError(cepDesossa);
+                }
+
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.AsNoTracking().OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepDesossa.ParLevel1_id);

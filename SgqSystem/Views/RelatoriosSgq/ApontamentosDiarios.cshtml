@@ -5,6 +5,9 @@
     var urlGet = Url.Action("Get", "api/ApontamentosDiarios");
     var urlEdit = Url.Action("Edit", "api/ApontamentosDiarios");
     var urlSave = Url.Action("Save", "api/ApontamentosDiarios");
+    var urlPhotos = Url.Action("Photos", "api/ApontamentosDiarios");
+    var urlPhotoPreview = Url.Action("PhotoPreview", "api/ApontamentosDiarios");
+    var urlGetCarousel = Url.Action("GetCarousel", "RelatoriosSgq");
 }
 
 <style>
@@ -12,15 +15,67 @@
     #resultsApontamentos > tbody > tr:last-child > td:last-child {
         white-space: nowrap;
     }
+
+    .progress-bar.animate {
+        width: 100%;
+    }
+
+    .loading-center {
+        margin: 100px auto;
+        display: table !important;
+    }
+
+    .itemHeaderField {
+        padding-right: 4px !important;
+        padding-left: 4px !important;
+        height: 100px;
+    }
+
+        .itemHeaderField .labelHeaderField {
+            height: 49px;
+        }
+
+        .itemHeaderField .labelHeaderFieldIntegracao {
+            color: rgb(167, 176, 24);
+        }
 </style>
+
+<div class="modal fade bd-example-modal-lg" id="modalHeaderField" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width:895px!important">
+            <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+                <div class="unitCode"><span id="estName"></span></div>
+            </div>
+            <div class="modal-body">
+                <div id="correctiveActionModal" class="modal-padrao" style="margin-left:10px;margin-right:10px;margin-top:15px;">
+                    <span id="Level3Name" class="levelName" name="" style=""></span>
+                    <div class="container-fluid">
+                        <form id="divEdit" class="row"></form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.close</button>
+                <button type="button" onclick="SaveHeaderField()" class="btn btn-default non-printable">@Resources.Resource.save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="page-content-wrapper">
     <div class="page-content">
         @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
         <div id="formBodyContent">
 
+            <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+                <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+            </div>
+
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
             @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_Image.cshtml")
 
             <div id="load"></div>
             <div id="divTable">
@@ -29,16 +84,23 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
+
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
         var urlGet = '@Html.Raw(@urlGet)';
         var urlEdit = '@Html.Raw(@urlEdit)';
         var urlSave = '@Html.Raw(@urlSave)';
+        var urlPhotos = '@Html.Raw(urlPhotos)';
+        var urlPhotoPreview = '@Html.Raw(urlPhotoPreview)';
+        var urlGetCarousel = '@Html.Raw(urlGetCarousel)';
         var $btn = $('#btnSend');
         var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
+        var urlEditCabecalho = '@Html.Raw(Url.Action("EditCabecalho", "api/ApontamentosDiarios"))';
+        var urlSaveHeaderField = '@Html.Raw(Url.Action("SaveCabecalho", "api/ApontamentosDiarios"))';
 
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -74,9 +136,9 @@
                 GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
             }
 
-            else{
-                //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
+            else {
 
+                //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
                 var regraEdit = false;
 
                 var roles = $.grep(getCookie('webControlCookie'), function (a, b) {
@@ -92,10 +154,11 @@
                 }else{
                     regraEdit = false;
                 }
-                //Fim Regra
 
+                //Fim Regra
                 var Tipo1 = {};
                 var Tipo2 = {};
+
                 if(retornoArray[0].HashKey == 1 || retornoArray[0].HashKey == 5){
 
                     Tipo1 = { title: "@Resources.Resource.sequential", mData: "Sequencial" };
@@ -109,8 +172,9 @@
 
                 var colunas =
                     [
-                        { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button class="btn btn-link custom-button" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible" : regraEdit },
-                        { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
+                        { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button id="edit" class="btn btn-link custom-button" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible": regraEdit },
+                        { title: "@Resources.Resource.edit_header", mData: null, defaultContent: '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#modalHeaderField">' + "@Resources.Resource.edit_header" + '</button>', "visible" : regraEdit },
+                        { title: "@Resources.Resource.unit", mData: "Unidade" },
                         { title: "@Resources.Resource.cluster", mData: "Processo" },
                         { title: "@Resources.Resource.shift", mData: "Turno" },
                         { title: "@Resources.Resource.period", mData: "Periodo" },
@@ -171,7 +235,12 @@
                                     return '@Resources.Resource.normal';
                                 }
                             }
-                        }
+                        },
+                        {
+                            title: "@Resources.Resource.photo", mData: "ResultLevel3Id", "width": "50%", mRender: function (data, type, full) {
+                                return "<img data-toggle='modal' data-target='#imageModal' height='60' id='imgResult" + data +"'></img>";
+                            }
+                        },
 
                     ];
 
@@ -184,23 +253,185 @@
                             oTable.fnAdjustColumnSizing();
                         }
                     }, 100);
-                    $('#resultsApontamentos tbody').on('click', 'button', function (data, a, b) {
+
+                    $('#resultsApontamentos tbody').on('click', 'button#edit', function (data) {
 
                         var data = table.row($(this).parents('tr')).data();
-                        //console.log(data);
-                        $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
 
-                            $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
-                            $('#ResultLevel3_Id').val(r.Id);
+                        $.post(urlEdit + "/" + data.ResultLevel3Id, function (r) {
 
-                            $('#changeConform').empty();
-                            $('#changeConform').append($(r.showGeneric));
+                            $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                            $('#myModal #ResultLevel3_Id').val(r.Id);
+
+                            $('#myModal #changeConform').empty();
+                            $('#myModal #changeConform').append($(r.showGeneric));
+
                             InitiMasksDefaults();
                         });
+                    });
 
+                    $('#resultsApontamentos tbody').on('click', 'button#editHeader', function (data) {
+
+                        var data = table.row($(this).parents('tr')).data();
+
+                        $.post(urlEditCabecalho + "/" + data.ResultLevel3Id, function (r) {
+
+                            $('#divEdit').empty();
+
+                            $('modalHeaderField #estName').html("");
+
+                            r = JSON.parse(r);
+
+                            if (r.length > 0) {
+                                
+                                r.forEach(function (o) {
+
+                                    let html = "";
+
+                                    switch (o.HeaderField.ParFieldType_Id) {
+                                        case 1:
+                                            html =
+                                            `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                                <div class="form-group header" name="" style="margin-bottom: 4px;">
+                                                    <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
+                                                    <select class="form-control input-sm ddl" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" idpai="0" linknumberevaluetion="false" IsRequired="${o.HeaderField.IsRequired}">
+                                                        <option value="">Selecione...</option>`
+
+                                            o.Values.forEach(function (oo) {
+
+                                                let selected = '';
+
+                                                if (oo.Id == o.ValueSelected)
+                                                    selected = 'selected="selected"';
+
+                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name +'</option>';
+                                            });
+
+                                            html +=`</select> <label class="">
+                                                    </label>
+                                                </div>
+                                            </div>`;
+                                            break;
+
+                                        case 2:
+
+                                            html =
+                                                `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                                    <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small labelHeaderField labelHeaderFieldIntegracao">${o.HeaderField.Name}</label>
+                                                        <select class="form-control input-sm " CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="true" style="border: 1px solid rgb(167, 176, 24);" IsRequired="${o.HeaderField.IsRequired}">
+                                                            <option value="">Selecione...</option>`
+
+                                            o.Values.forEach(function (oo) {
+
+                                                let selected = '';
+
+                                                if (oo.Id == o.ValueSelected)
+                                                    selected = 'selected="selected"';
+
+                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name +'</option>';
+                                            });
+
+                                            html += `</select>
+                                                    </div>
+                                                </div>`;
+
+                                            break;
+                                        case 3:
+
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                                      <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
+                                                        <select class="form-control input-sm" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParHeaderField_Name="${o.HeaderField.Id}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="false" IsRequired="${o.HeaderField.IsRequired}">`;
+
+                                            o.Values.forEach(function (oo) {
+
+                                                let selected = '';
+
+                                                if (oo.Id == o.ValueSelected)
+                                                    selected = 'selected="selected"';
+
+                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
+
+                                            });
+
+                                            html += `</select>
+                                                        <label class=""></label>
+                                                    </div>
+                                                </div>`;
+
+                                            break;
+                                        case 4:
+
+                                            if (o.ValueSelected == null)
+                                                o.ValueSelected = "";
+
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                                        <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                            <label class="font-small labelHeaderField">Teste Texto</label>
+                                                            <input class="form-control input-sm" type="text" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
+                                                            <label class=""></label>
+                                                        </div>
+                                                    </div>`;
+
+                                            break;
+
+                                        case 5:
+
+                                            if (o.ValueSelected == null)
+                                                o.ValueSelected = "";
+
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                                    <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small labelHeaderField">${o.HeaderField.Name }</label>
+                                                        <input class="form-control input-sm" type="number" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
+                                                        <label class=""></label>
+                                                    </div>
+                                                </div>`;
+
+                                            break;
+
+                                        case 6:
+
+                                            if (o.ValueSelected == null)
+                                                o.ValueSelected = "";
+
+                                            html = `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                                    <div class="form-group" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
+                                                            <input class="form-control input-sm" type="date" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
+                                                            <label class=""></label>
+                                                        </div>
+                                                    </div>`;
+                                            break;
+
+                                        case 7:
+
+                                            if (o.ValueSelected == null)
+                                                o.ValueSelected = "";
+
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                                    <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
+                                                        <input class="form-control input-sm" type="time" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
+                                                        <label class=""></label>
+                                                    </div>
+                                                </div>`;
+
+                                            break;
+
+                                        default:
+                                    }
+
+                                    $('#modalHeaderField #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento);
+
+                                    $('#divEdit').append(html);
+
+                                });
+                            }
+                        });
                     });
                 }
-
 
                 var table = datatableGRT.Inicializar({
                     idTabela: "resultsApontamentos",
@@ -213,11 +444,62 @@
                     destroy: true,
                     info: true,
                     initComplete: initDatatable,
-                    createdRow: function (row, data, index) {}
+                    createdRow: function (row, data, index)
+                    {
+                        $(window).scroll(function () {
+                            if ($(row).is(':visible')
+                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('checked')
+                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('isChecking')
+                            )
+                                GetImagePreview($(row).find('#imgResult' + data.ResultLevel3Id), data.ResultLevel3Id);
+                        });
+                    }
                 });
             }
 
         }
+
+        function GetImagePreview(Img, ResultLevel3Id) {
+            Img.addClass('hide');
+            Img.after('<i class="fa fa-spinner fa-pulse"></i>');
+            Img.attr('isChecking', true);
+            $.get(urlPhotoPreview + "/" + ResultLevel3Id, function (result1) {
+                Img.siblings('i').remove();
+                Img.removeClass('hide');
+                Img.attr('checked', true);
+                Img.removeAttr('isChecking');
+                if (result1) {
+                    Img.attr('src', result1);
+                    Img.click(function (o) {
+                        console.log(o);
+
+                        $('#imageModal .modal-loading, #imageModal .modal-title-loading').removeClass('hide');
+                        $('#imageModal .modal-body, #imageModal .modal-title').addClass('hide');
+
+                        $.get(urlPhotos + "/" + ResultLevel3Id, function (photos) {
+                            if (photos.length > 0) {
+                                var _photos = [];
+                                $.grep(photos, function (o) {
+                                    if (o) _photos.push(o.Photo);
+                                });
+                                $.get(urlGetCarousel, function (carousel) {
+                                    $('#imageModal .modal-body').html(carousel);
+                                    carouselMain.setPicturesBase64(_photos);
+
+                                    $('#imageModal .modal-loading, #imageModal .modal-title-loading').addClass('hide');
+                                    $('#imageModal .modal-body').removeClass('hide');
+                                    //$('#imageModal .modal-body, #imageModal .modal-title').removeClass('hide');
+                                });
+
+                                $('#latitudeModal').text(photos[0].Latitude);
+                                $('#longitudeModal').text(photos[0].Longitude);
+                            }
+                        });
+                    });
+                }
+            });
+        }
+
         function SalvarResultLevel3() {
 
             var dadosResultLevel3 = {};
@@ -234,6 +516,7 @@
             dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
             dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
             dadosResultLevel3["IsNotEvaluate"] = $('#IsEvaluated').is(':checked');
+
             if ($('#decimal').length)
                 dadosResultLevel3["Value"] = $('#decimal').val() + "x10^" + $('#precisao').val();
             if ($('#numeroDeDefeitos').length)
@@ -248,12 +531,12 @@
             }
 
             $.post(urlSave, dadosResultLevel3, function (r, x, e) {
-                openMessageModal('@Resources.Resource.done', '@Resources.Resource.registry_alter_success'); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
+                openMessageModal(Resources('done'), Resources('registry_alter_success')); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
             }).fail(function (r, x, e) {
                 console.log(r);
                 console.log(x);
                 console.log(e);
-                openMessageModal('@Resources.Resource.impossible_refresh_result', '@Resources.Resource.impossible_refresh_result');//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
+                openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
             });
         }
 
@@ -272,11 +555,6 @@
                 return false;
             }
 
-            @*if (!(parseInt( $('#level2Id').val().replace(/\D/g, ''), 10) > 0)) {
-                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(@Resources.Resource.select_the_level2)));
-                return false;
-            }*@
-
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
 
@@ -285,9 +563,9 @@
         }
 
         $(document).ready(function () {
+
             formControl.showFullCallendar();
             formControl.showUnit();
-            //formControl.showLevel2();
             formControl.showLevel1();
             formControl.showShift();
 
@@ -299,6 +577,70 @@
             //Remove o "Todos" da Unidade
             $("#unitId option[value='']").remove();
         });
-    </script>
+
+        function SaveHeaderField() {
+
+            let objToSave = [];
+            let isValid = false;
+
+            $('form#divEdit input, form#divEdit select').each(function (i, o) {
+
+                let CollectionLevel2XParHeaderField_Id = $(o).attr("CollectionLevel2XParHeaderField_Id");
+                let CollectionLevel2_Id = $(o).attr("CollectionLevel2_Id");
+                let ParHeaderField_Id = $(o).attr("ParHeaderField_Id");
+                let ParHeaderField_Name = $(o).attr("ParHeaderField_Name");
+                let ParFieldType_Id = $(o).attr("ParFieldType_Id");
+                let Evaluation = $(o).attr("Evaluation");
+                let Sample = $(o).attr("Sample");
+                let Value = $(o).val();
+                let IsRequired = JSON.parse($(o).attr("IsRequired"));
+
+                $(o).css("background-color", "");
+
+                if (IsRequired && !Value) {
+                    $(o).focus();
+                    $(o).css("background", "#ffb7b7");
+                    isValid = false;
+                    return false;
+                }
+
+                objToSave.push({
+                    "Id": CollectionLevel2XParHeaderField_Id,
+                    "CollectionLevel2_Id": CollectionLevel2_Id,
+                    "ParHeaderField_Id": ParHeaderField_Id,
+                    "ParHeaderField_Name": ParHeaderField_Name,
+                    "ParFieldType_Id": ParFieldType_Id,
+                    "Evaluation": Evaluation,
+                    "Sample": Sample,
+                    "Value": Value
+                });
+
+                isValid = true;
+
+            });
+
+            if (isValid) {
+
+                $.post(urlSaveHeaderField, { "HeaderField": objToSave }, function (IsSaved) {
+
+                    if (IsSaved) {
+
+                        openMessageModal(Resources('done'), Resources('registry_alter_success'));
+                        $('#modalHeaderField').modal('hide');
+
+                    } else {
+                        openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));
+                    }
+
+                }).fail(function (r, x, e) {
+                    console.log(r);
+                    console.log(x);
+                    console.log(e);
+                    openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));
+                });
+            }
+        }
+
+</script>
 
 }

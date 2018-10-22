@@ -15,9 +15,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Web.Http;
 
@@ -67,7 +69,7 @@ namespace SgqSystem.Controllers.Api.Params
             #endregion
             paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel1(paramsViewModel.paramsDto);
             return paramsViewModel;
-        }   
+        }
 
         [HttpPost]
         [Route("SetRequiredCCAB/{Id}/{Required}")]
@@ -569,21 +571,39 @@ namespace SgqSystem.Controllers.Api.Params
         [Route("atualizaCabecalho")]
         public ParHeaderFieldDTO atualizaCabecalho([FromBody] ParamsViewModel parr)
         {
-            if (parr.paramsDto.parHeaderFieldDto.ParFieldType_Id == 1 || parr.paramsDto.parHeaderFieldDto.ParFieldType_Id == 3)
+            try
             {
-                List<ParMultipleValuesDTO> lista = parr.paramsDto.parHeaderFieldDto.ParMultipleValues;
-                int count = 0;
-                while (count < lista.Count())
+                if (parr.paramsDto.parHeaderFieldDto.ParFieldType_Id == 1 || parr.paramsDto.parHeaderFieldDto.ParFieldType_Id == 3)
                 {
-                    ParMultipleValuesDTO mv = lista[count];
-                    _baseParMultipleValues.AddOrUpdate(mv);
-                    count++;
+                    List<ParMultipleValuesDTO> lista = parr.paramsDto.parHeaderFieldDto.ParMultipleValues;
+                    int count = 0;
+                    while (count < lista.Count())
+                    {
+                        ParMultipleValuesDTO mv = lista[count];
+                        _baseParMultipleValues.AddOrUpdate(mv);
+                        count++;
+                    }
                 }
+
+                parr.paramsDto.parHeaderFieldDto.IsActive = true;
+                if (parr.paramsDto.parHeaderFieldDto.Description == null)
+                    parr.paramsDto.parHeaderFieldDto.Description = "";
+                return _baseParHeaderField.AddOrUpdate(parr.paramsDto.parHeaderFieldDto);
             }
-
-            parr.paramsDto.parHeaderFieldDto.IsActive = true;
-            return _baseParHeaderField.AddOrUpdate(parr.paramsDto.parHeaderFieldDto);
-
+            catch (DbEntityValidationException e)
+            {
+                var listaDeErros = e.EntityValidationErrors;
+                StringBuilder mensagem = new StringBuilder();
+                foreach (var item in listaDeErros)
+                {
+                    var erros = item.ValidationErrors;
+                    foreach (var erro in erros)
+                    {
+                        mensagem.Append(erro.ErrorMessage).Append(" ");
+                    }
+                }
+                throw new Exception(mensagem.ToString());
+            }
         }
 
         [HttpGet]

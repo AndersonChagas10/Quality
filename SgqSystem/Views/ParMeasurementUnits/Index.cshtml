@@ -96,18 +96,13 @@
 </script>
 
 <script>
-    $(document).ready(function () {
-        closeLeftSidebar();
-
-        $(document).ready(function () {
-            closeLeftSidebar();
-
-            $(document).ready(function () {
-                $('#tabelaUniMedidas').dataTable({
-                    "aoPaging": true,
-                    "aoSearching": true,
-                });
-            });
-        });
+     $(document).ready(function () {
+         closeLeftSidebar();
+         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+             null,
+             null,
+             { "bSearchable": false }
+         ];
+         $('#tabelaUniMedidas').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 </script>

@@ -107,14 +107,17 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-
-        $(document).ready(function () {
-            $('#tabelaModuloProcesso').dataTable({
-                "aoPaging": true,
-                "aoSearching": true,
-            });
-        });
+     $(document).ready(function () {
+         closeLeftSidebar();
+         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+             null,
+             null,
+             null,
+             null,
+             null,
+             { "bSearchable": false }
+         ];
+         $('#tabelaModuloProcesso').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 
 </script>

@@ -2491,6 +2491,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Indicator alredy have a alert rule!.
+        /// </summary>
+        internal static string indicador_used {
+            get {
+                return ResourceManager.GetString("indicador_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Indicators by Units.
         /// </summary>
         internal static string indicators_by_units {
@@ -2514,6 +2523,69 @@ namespace Resources {
         internal static string indicators_evolution {
             get {
                 return ResourceManager.GetString("indicators_evolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicator x Assignment Group.
+        /// </summary>
+        internal static string indicatorxassignment_group {
+            get {
+                return ResourceManager.GetString("indicatorxassignment_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicator x Indicator Group.
+        /// </summary>
+        internal static string indicatorxindicator_group {
+            get {
+                return ResourceManager.GetString("indicatorxindicator_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These Indicators already have links on the selected date..
+        /// </summary>
+        internal static string indicator_alredy_used {
+            get {
+                return ResourceManager.GetString("indicator_alredy_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicator Group.
+        /// </summary>
+        internal static string indicator_group {
+            get {
+                return ResourceManager.GetString("indicator_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicator Group Type.
+        /// </summary>
+        internal static string indicator_group_type {
+            get {
+                return ResourceManager.GetString("indicator_group_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicator Group Type List.
+        /// </summary>
+        internal static string indicator_group_type_list {
+            get {
+                return ResourceManager.GetString("indicator_group_type_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Indicator already have link on the selected date..
+        /// </summary>
+        internal static string indicator_in_use {
+            get {
+                return ResourceManager.GetString("indicator_in_use", resourceCulture);
             }
         }
         
@@ -2739,6 +2811,15 @@ namespace Resources {
         internal static string last {
             get {
                 return ResourceManager.GetString("last", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latitude.
+        /// </summary>
+        internal static string latitude {
+            get {
+                return ResourceManager.GetString("latitude", resourceCulture);
             }
         }
         
@@ -3139,6 +3220,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Longitude.
+        /// </summary>
+        internal static string longitude {
+            get {
+                return ResourceManager.GetString("longitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Main.
         /// </summary>
         internal static string main {
@@ -3306,6 +3396,15 @@ namespace Resources {
         internal static string monitoring_task_linked_indicator_successfully {
             get {
                 return ResourceManager.GetString("monitoring_task_linked_indicator_successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Monitoring alredy have a alert rule!.
+        /// </summary>
+        internal static string monitoring_used {
+            get {
+                return ResourceManager.GetString("monitoring_used", resourceCulture);
             }
         }
         
@@ -3859,6 +3958,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to page.
+        /// </summary>
+        internal static string page {
+            get {
+                return ResourceManager.GetString("page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pareto.
         /// </summary>
         internal static string pareto_chart {
@@ -4021,6 +4129,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to per page.
+        /// </summary>
+        internal static string per_page {
+            get {
+                return ResourceManager.GetString("per_page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Per Week.
         /// </summary>
         internal static string per_week {
@@ -4044,6 +4161,15 @@ namespace Resources {
         internal static string phone {
             get {
                 return ResourceManager.GetString("phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        internal static string photo {
+            get {
+                return ResourceManager.GetString("photo", resourceCulture);
             }
         }
         
@@ -4485,6 +4611,15 @@ namespace Resources {
         internal static string reports {
             get {
                 return ResourceManager.GetString("reports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report Files.
+        /// </summary>
+        internal static string report_files {
+            get {
+                return ResourceManager.GetString("report_files", resourceCulture);
             }
         }
         
@@ -5880,6 +6015,15 @@ namespace Resources {
         internal static string unvalued {
             get {
                 return ResourceManager.GetString("unvalued", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string update {
+            get {
+                return ResourceManager.GetString("update", resourceCulture);
             }
         }
         

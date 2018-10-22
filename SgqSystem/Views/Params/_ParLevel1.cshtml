@@ -4,13 +4,15 @@
 <!--MODAL-->
 
 @{
-                /**/
+    /**/
+
+    /**/
 
 
-                var urlHeaderLevel1 = Url.Action("AddRemoveParHeaderDuplicate", "api/ParamsApi"); //URL relativa
-                var urlHeaderLevel1HeaderFieldGroup = Url.Action("GroupParHeaderField", "api/ParamsApi"); //URL relativa
-                var urlHeaderLevel1HeaderFieldGroupUnlink = Url.Action("UnlinkGroupParHeaderField", "api/ParamsApi"); //URL relativa
-                Session["IsRecravacao"] = Model.paramsDto?.parLevel1Dto?.IsRecravacao ?? false;
+    var urlHeaderLevel1 = Url.Action("AddRemoveParHeaderDuplicate", "api/ParamsApi"); //URL relativa
+    var urlHeaderLevel1HeaderFieldGroup = Url.Action("GroupParHeaderField", "api/ParamsApi"); //URL relativa
+    var urlHeaderLevel1HeaderFieldGroupUnlink = Url.Action("UnlinkGroupParHeaderField", "api/ParamsApi"); //URL relativa
+    Session["IsRecravacao"] = Model.paramsDto?.parLevel1Dto?.IsRecravacao ?? false;
 
 }
 
@@ -35,10 +37,10 @@
                             {*@
                         <tr class="row">
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-sm", @id = "selectConsolidacao" })
-            , @Html.Label(Resources.Resource.consolidation_type)
-            , Table.PosicaoLabel.top
-            , info: Resources.Resource.consolidation_type_popover
-            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
+                            , @Html.Label(Resources.Resource.consolidation_type)
+                            , Table.PosicaoLabel.top
+                            , info: Resources.Resource.consolidation_type_popover
+                            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
 
                             <div style="display:none !important">
                                 @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
@@ -1229,7 +1231,7 @@
 
         },
         IncluirBinario: function (e) {
-
+            debugger
             if(binary == false){
 
                 /*Valida se os campos estão preenchidos*/
@@ -1417,7 +1419,7 @@
                 $('#salvarCabecalho2').fadeIn();
         },
         SalvaBinario: function () {
-
+            debugger
             var fieldType = $('#parFieldType option:selected').val();
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
@@ -1427,6 +1429,7 @@
             /*Cria preview*/
             example += '<td>';
             Cabecalhos.ParBinario.forEach(function (o, c) {
+                debugger
                 example += o.Name;
                 var a = c == 0 ? 'checked = "checked"' : '';
                 var b = c == 0 ? "true" : "false";
@@ -1872,12 +1875,14 @@
         level: 'ParLevel1',
         listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto)),
         tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'btn'],
-        adiciona: function() {
+        adiciona: function () {
+            debugger
             /*Valida se pode criar o objeto*/
-            if($('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val() <= 0){
-                openMessageModal("@Resources.Resource.select_not_conformity_rule");
-                return;
-            }
+            if ($("#tableRegraNc").find('td:first').text() == "") {
+                if ($('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val() <= 0) {
+                    openMessageModal("@Resources.Resource.select_not_conformity_rule");
+                    return;
+                }
 
             if($('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
                 openMessageModal("@Resources.Resource.fill_the_alert_rule_value");
@@ -1914,19 +1919,23 @@
                 }
             }
 
-            /*Cria o objeto*/
-            var object = {/*Objeto*/
-                ParNotConformityRule_Id: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val(),
-                ParNotConformityRule_Name: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text(),
-                Value: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
-                IsReaudit: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
-                IsReauditShowTable: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n",
-                IsActive: true,
-                //btn: crudNxN.btnRemove + crudNxN.btnEdit,
+                /*Cria o objeto*/
+                var object = {/*Objeto*/
+                    ParNotConformityRule_Id: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val(),
+                    ParNotConformityRule_Name: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text(),
+                    Value: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
+                    IsReaudit: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
+                    IsReauditShowTable: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n",
+                    IsActive: true,
+                    //btn: crudNxN.btnRemove + crudNxN.btnEdit,
+                }
+
+                /*Conclui*/
+                crudNxN.adiciona(object, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
+            } else {
+                openMessageModal("@Resources.Resource.indicador_used");
             }
 
-            /*Conclui*/
-            crudNxN.adiciona(object, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
         },
         incluiNoObjetoParaSubmit: function(dados){
 
@@ -2102,8 +2111,8 @@
 
             var IsRuleConformity = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsRuleConformity));
             var IsSpecificNumberEvaluetion = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion));
-            console.log("IsRuleConformity: " + IsRuleConformity);
-            console.log("IsSpecificNumberEvaluetion: " + IsSpecificNumberEvaluetion);
+            //console.log("IsRuleConformity: " + IsRuleConformity);
+            //console.log("IsSpecificNumberEvaluetion: " + IsSpecificNumberEvaluetion);
 
             /*Seta as 2 fdp pra false*/
             $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber').bootstrapSwitch('toggleState');
@@ -2128,7 +2137,7 @@
             Group_Id: '',
             ParLevel1_Id: 0
         },
-        Add: function(idHeader, button){
+        Add: function (idHeader, button) {
             HeaderLevel1.object.Id = idHeader;
 
             $.post(urlHeaderLevel1, HeaderLevel1.object, function(r){
@@ -2137,9 +2146,11 @@
                 if (classeSpan) {
                     span.removeClass('fa fa-copy');
                     span.addClass('glyphicon glyphicon-duplicate')
+                    span.attr("title", "Clonar cabeçalho - Ativado")
                 } else {
                     span.removeClass('glyphicon glyphicon-duplicate');
                     span.addClass('fa fa-copy')
+                    span.attr("title", "Clonar cabeçalho - Inativado")
                 }
             });
         },

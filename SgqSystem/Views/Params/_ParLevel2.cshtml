@@ -12,7 +12,7 @@
 <div id="newLevel2Modal">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(r=>r.paramsDto.parLevel2Dto.isVinculado)
+        @Html.HiddenFor(r => r.paramsDto.parLevel2Dto.isVinculado)
         <div class="row">
             <div class="col-lg-12">
 
@@ -37,20 +37,20 @@
                         </tr>
 
                         @*<tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsEmptyLevel3, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_audit_of_detached_level3), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_audit_of_detached_level3_popover)
-                        </tr>*@
+                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsEmptyLevel3, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_audit_of_detached_level3), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_audit_of_detached_level3_popover)
+                            </tr>*@
 
                         @*<tr id="showlevel3" class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.show_group_on_level3), Table.PosicaoLabel.left, null, null)
-                        </tr>*@
+                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.show_group_on_level3), Table.PosicaoLabel.left, null, null)
+                            </tr>*@
 
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_on_level3), Table.PosicaoLabel.left, null, null)
                         </tr>
 
                         @*<tr id="HasSampleTotaltr" class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasSampleTotal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_sample_total), Table.PosicaoLabel.left, null, null)
-                        </tr>*@
+                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasSampleTotal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_sample_total), Table.PosicaoLabel.left, null, null)
+                            </tr>*@
 
                         <tr class="row" style="display:none;">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
@@ -230,30 +230,35 @@
         tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'btn'],
         adiciona: function() {
 
-            /*Valida se pode criar o objeto*/
-            if($('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').val() <= 0){
-                alert("@Resources.Resource.select_the_not_conformity_rule");
-                return;
+            if ($('#' + RegraNcL2.level + ' #tableRegraNc > tbody > tr ').find("td:first").text() == "") {
+                /*Valida se pode criar o objeto*/
+                if ($('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').val() <= 0) {
+                    alert("@Resources.Resource.select_the_not_conformity_rule");
+                    return;
+                }
+
+                if ($('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == "") {
+                    alert("@Resources.Resource.fill_the_alert_rule_value");
+                    return;
+                }
+
+                /*Cria o objeto*/
+                var object = {/*Objeto*/
+                    ParNotConformityRule_Id: $('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').val(),
+                    ParNotConformityRule_Name: $('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').text(),
+                    Value: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
+                    IsReaudit: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
+                    IsReauditShowTable: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.yes" : "@Resources.Resource.no",
+                    IsActive: true,
+                    //btn: crudNxN.btnRemove + crudNxN.btnEdit,
+                }
+
+                /*Conclui*/
+                crudNxN.adiciona(object, RegraNcL2.level + ' #tableRegraNc', RegraNcL2.tdsNames);
+            } else {
+                openMessageModal("@Resources.Resource.monitoring_used");
             }
 
-            if($('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
-                alert("@Resources.Resource.fill_the_alert_rule_value");
-                return;
-            }
-
-            /*Cria o objeto*/
-            var object = {/*Objeto*/
-                ParNotConformityRule_Id: $('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').val(),
-                ParNotConformityRule_Name: $('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').text(),
-                Value: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
-                IsReaudit: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
-                IsReauditShowTable: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.yes" : "@Resources.Resource.no",
-                IsActive: true,
-                //btn: crudNxN.btnRemove + crudNxN.btnEdit,
-            }
-
-            /*Conclui*/
-            crudNxN.adiciona(object, RegraNcL2.level + ' #tableRegraNc', RegraNcL2.tdsNames);
 
         },
         incluiNoObjetoParaSubmit: function(dados){
@@ -306,7 +311,7 @@
 
         var includeItem = true;
 
-
+        debugger
         if (includeItem == true) {
             var indexValue = $('.counterLevel2Class').length;
 

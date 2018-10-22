@@ -62,6 +62,17 @@ namespace Dominio.Services
                         return "Cannot log in, the user does not have permission to audit";
                 }
             }
+
+            public static string usuarioInativo
+            {
+                get
+                {
+                    if (GlobalConfig.LanguageBrasil)
+                        return "Usuário Inativo";
+                    else
+                        return "Inactive User";
+                }
+            }
         }
 
         private readonly IUserRepository _userRepo;
@@ -112,7 +123,7 @@ namespace Dominio.Services
             try
             {
                 UserSgq userByName;
-                UserSgq isUser = null;
+                UserSgq userSgq = null;
                 var PermiteColeta = false;
 
                 if (userDto.IsNull())
@@ -131,16 +142,16 @@ namespace Dominio.Services
                 /*Se for Brasil executa RN do Sistema Brasil*/
                 if (GlobalConfig.Brasil)
                 {
-                    isUser = LoginBrasil(userDto, userByName);
+                    userSgq = LoginBrasil(userDto, userByName);
 
                     #region HARDCODE - Verifica se o usuario tem identificador 366 e atribui a Role para 'backdate'
                     try
                     {
-                        var isProfile366 = _baseParCompanyXUserSgq.GetAll().Any(r => r.UserSgq_Id == isUser.Id && r.ParCompany_Id == isUser.ParCompany_Id && r.Role == "366");
+                        var isProfile366 = _baseParCompanyXUserSgq.GetAll().Any(r => r.UserSgq_Id == userSgq.Id && r.ParCompany_Id == userSgq.ParCompany_Id && (r.Role == "366" || r.Role == "529" || r.Role == "1885"));
 
                         using (var db = new SgqDbDevEntities())
                         {
-                            var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == isUser.Id);
+                            var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == userSgq.Id);
                             db.UserSgq.Attach(atualizarUsuario);
 
                             if (isProfile366)
@@ -176,34 +187,40 @@ namespace Dominio.Services
 
                 /*Se for Brasil executa RN do Sistema EUA*/
                 if (GlobalConfig.Eua)
-                    isUser = LoginEUA(userDto, userByName);
+                    userSgq = LoginEUA(userDto, userByName);
+
+                /*Valida se o usuário está ativo*/
+                if (!userSgq.IsActive.Value)
+                {
+                    throw new Exception(mensagens.usuarioInativo);
+                }
 
                 /*Login SGQ Puro*/
                 if (GlobalConfig.Ytoara || GlobalConfig.Santander)
-                    isUser = LoginSgq(userDto, userByName);
+                    userSgq = LoginSgq(userDto, userByName);
 
-                if (isUser.IsNull())
+                if (userSgq.IsNull())
                     throw new ExceptionHelper(mensagens.naoEncontrado);
 
                 /*Caso usuario não possua ao menos uma unidade na tbl UserSgq, estes erros são acionados.*/
-                if (isUser.ParCompany_Id == null)
+                if (userSgq.ParCompany_Id == null)
                     throw new Exception(mensagens.erroUnidade);
-                if (isUser.ParCompany_Id <= 0)
+                if (userSgq.ParCompany_Id <= 0)
                     throw new Exception(mensagens.erroUnidade);
 
                 /*Verificação se o ParCompany_Id da tabela UserSgq tem que ser atualizada*/
                 var defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(
-                    r => r.UserSgq_Id == isUser.Id && r.ParCompany_Id == isUser.ParCompany_Id);
+                    r => r.UserSgq_Id == userSgq.Id && r.ParCompany_Id == userSgq.ParCompany_Id);
 
                 if (defaultCompany == null)
                 {
                     defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(
-                    r => r.UserSgq_Id == isUser.Id);
+                    r => r.UserSgq_Id == userSgq.Id);
                     //var atualizarCompanyUser = _userRepo.GetByName(isUser.Name);
                     //atualizarCompanyUser.ParCompany_Id = defaultCompany.ParCompany_Id;
                     using (var db = new SgqDbDevEntities())
                     {
-                        var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == isUser.Id);
+                        var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == userSgq.Id);
                         atualizarUsuario.ParCompany_Id = defaultCompany.ParCompany_Id;
                         db.UserSgq.Attach(atualizarUsuario);
                         db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
@@ -218,7 +235,7 @@ namespace Dominio.Services
                 {
                     using (var db = new SgqDbDevEntities())
                     {
-                        var RolesUserName = db.UserSgq.Find(isUser.Id).Role.Split(',');
+                        var RolesUserName = db.UserSgq.Find(userSgq.Id).Role.Split(',');
 
                         if (RolesUserName.Length > 0)
                         {
@@ -233,7 +250,7 @@ namespace Dominio.Services
                 }
 
 
-                return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(isUser));
+                return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(userSgq));
             }
             catch (Exception e)
             {

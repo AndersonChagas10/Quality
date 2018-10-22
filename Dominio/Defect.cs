@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("Defect")]
-    public partial class Defect
+    public partial class Defect : BaseModel
     {
         public int Id { get; set; }
 
@@ -19,12 +19,6 @@ namespace Dominio
 
         [Column(TypeName = "datetime2")]
         public DateTime Date { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AlterDate { get; set; }
 
         public bool Active { get; set; }
 

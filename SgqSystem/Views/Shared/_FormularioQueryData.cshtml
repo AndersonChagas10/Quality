@@ -237,7 +237,7 @@
 
         <li>
             <div class="dropdown" id="showModulo" style="display:none">
-                <span class="redLabel">Modulo</span>
+                <span class="redLabel">Módulo</span>
                 @Html.DropDownList("ModuloId", new SelectList(ViewBag.Modulos, "Id", "Name"), Resources.Resource.select, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
             </div>
         </li>
@@ -679,19 +679,26 @@
             }, 500)
 
         });
-
-            $('#unitId').select2();
-            $('#ModuloId').select2();
-            $('#shift').select2();
-            $('#period').select2();
-            $('#auditorId').select2();
-            $('#tipoCEP').select2();
+        
+         $('#unitId').select2();
+         $('#ModuloId').select2();
+         $('#shift').select2();
+         $('#period').select2();
+         $('#auditorId').select2();
+         $('#tipoCEP').select2();
 
         //Se não for multiplo força um change para selecionar o valor (motivo: ele remove o primeiro item 'todos' e não aplicava o evento change)
         if(!$('#unitId').attr('multiple'))
             setTimeout(function(){$('#unitId').trigger('change');},500);
 
-    });
+            let ItemMenu = @Html.Raw(Json.Encode(ViewBag.itemMenu));
+
+            if (ItemMenu) {
+
+                enviar["ItemMenu_Id"] = ItemMenu.Id;
+            }
+
+        });
 
     var formControl = {
 

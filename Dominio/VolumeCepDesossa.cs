@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("VolumeCepDesossa")]
-    public partial class VolumeCepDesossa
+    public partial class VolumeCepDesossa : BaseModel
     {
         public int Id { get; set; }
 
@@ -30,12 +30,6 @@ namespace Dominio
         public int? Avaliacoes { get; set; }
 
         public int? Amostras { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public int? ParCompany_id { get; set; }
 

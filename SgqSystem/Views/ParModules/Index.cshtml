@@ -96,9 +96,14 @@
 
 <script>
     $(document).ready(function () {
-        $('#tabelaModulos').dataTable({
-            "aoPaging": true,
-            "aoSearching": true,
-        });
+        closeLeftSidebar();
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaModulos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 </script>

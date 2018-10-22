@@ -94,10 +94,15 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
-    $(document).ready(function () {
-        $('#tabelaFormatos').dataTable({
-            "aoPaging": true,
-            "aoSearching": true,
-        });
+       $(document).ready(function () {
+           closeLeftSidebar();
+           DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+               null,
+               null,
+               null,
+               null,
+               { "bSearchable": false }
+           ];
+           $('#tabelaFormatos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 </script>

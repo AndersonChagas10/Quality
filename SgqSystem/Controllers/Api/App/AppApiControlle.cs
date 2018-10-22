@@ -168,7 +168,7 @@ namespace SgqSystem.Controllers.Api.App
 
                         retorno.ParteDaTela = this.GetFile(UnitId, ShiftId);
 
-                        if (retorno.ParteDaTela != null && GlobalConfig.PaginaDoTablet[UnitId]?.DataFim > DateTime.Now.Date)
+                        if (retorno.ParteDaTela != null && GlobalConfig.PaginaDoTablet[UnitId]?.DataFim > DateTime.Now.Date.AddHours(-3))
                             return retorno;
                     }
                 }

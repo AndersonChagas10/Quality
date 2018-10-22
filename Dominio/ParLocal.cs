@@ -7,7 +7,7 @@ namespace Dominio
     using System.Data.Entity.Spatial;
 
     [Table("ParLocal")]
-    public partial class ParLocal
+    public partial class ParLocal : BaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLocal()
@@ -22,12 +22,6 @@ namespace Dominio
         [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
         public string Name { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

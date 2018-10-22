@@ -93,7 +93,7 @@ namespace SgqSystem.Controllers
             base.Initialize(requestContext);
         }
 
-        protected override void EndExecute(IAsyncResult asyncResult)
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var webControlCookie = System.Web.HttpContext.Current.Request.Cookies["webControlCookie"];
 
@@ -107,12 +107,18 @@ namespace SgqSystem.Controllers
 
                     if (webControlCookie != null && webControlCookie.Values["userId"] != null)
                     {
-                        var itensMenu = (IEnumerable<ItemMenuDTO>)ViewBag.ItensMenu;
-                        if (!itensMenu.Any(i => i.Url != null && i.Url.Contains(controller + "/" + action)))
+                        var itensMenu = (IEnumerable<ItemMenuDTO>)ViewBag.TodosItensMenu;
+                        ViewBag.itemMenu = itensMenu.FirstOrDefault(i => i.Url != null && i.Url.ToUpperInvariant().Contains((controller + "/" + action).ToUpperInvariant()));
+                        if (ViewBag.itemMenu == null)
                             throw new Exception("Acesso Negado!");
                     }
             }
 
+            base.OnActionExecuting(filterContext);
+        }
+
+        protected override void EndExecute(IAsyncResult asyncResult)
+        {
             base.EndExecute(asyncResult);
         }
 
@@ -221,10 +227,32 @@ namespace SgqSystem.Controllers
 
                         var ItensDeMenuUsuarioIds = db.RoleUserSgqXItemMenu.Where(r => rolesIDs.Contains(r.RoleUserSgq_Id) && r.IsActive == true).Select(r => r.ItemMenu_Id).Distinct().ToList();
 
+                        ViewBag.TodosItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && ItensDeMenuUsuarioIds.Contains(r.Id)));
                         ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null && ItensDeMenuUsuarioIds.Contains(r.Id)));
                     }
                 }
             }
+        }
+
+        protected int getUserUnitId()
+        {
+            var webControlCookie = System.Web.HttpContext.Current.Request.Cookies["webControlCookie"];
+
+            if (webControlCookie != null)
+            {
+                var UserId = webControlCookie.Values["userId"];
+
+                if (UserId != null && UserId != "" && int.Parse(UserId) > 0)
+                {
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        return db.UserSgq.Find(int.Parse(UserId)).ParCompany_Id.Value;
+                    }
+                }
+            }
+
+            return 0;
+
         }
     }
 

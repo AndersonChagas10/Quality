@@ -6,7 +6,7 @@ namespace Dominio
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLevel1XCluster
+    public partial class ParLevel1XCluster : BaseModel
     {
         public int Id { get; set; }
 
@@ -15,12 +15,6 @@ namespace Dominio
         public int ParCluster_Id { get; set; }
 
         public decimal Points { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

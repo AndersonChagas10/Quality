@@ -2,11 +2,12 @@ namespace Dominio
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class ParLevel2
+    public partial class ParLevel2 : BaseModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLevel2()
@@ -34,6 +35,7 @@ namespace Dominio
 
         [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
+        [DisplayName("Monitoramento")]
         public string Name { get; set; }
 
         [Required(AllowEmptyStrings = true)]
@@ -44,12 +46,6 @@ namespace Dominio
         public bool HasShowLevel03 { get; set; }
 
         public bool HasGroupLevel3 { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime AddDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? AlterDate { get; set; }
 
         public bool IsActive { get; set; }
 

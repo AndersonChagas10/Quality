@@ -355,18 +355,18 @@ namespace Dominio.Services
             var parLevel2 = _baseRepoParLevel2.GetById(idParLevel2);
             var level2 = Mapper.Map<ParLevel2DTO>(parLevel2);
             var headerFieldLevel1 = db.ParLevel1XHeaderField.Include("ParHeaderField").ToList();
-            var headerFieldLevel2 = db.ParLevel2XHeaderField.Where(r => r.IsActive == true).ToList();
-            var evaluation = parLevel2.ParEvaluation.Where(r => r.IsActive == true);
-            var relapse = parLevel2.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
-            var counter = parLevel2.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
-            var nonConformityrule = parLevel2.ParNotConformityRuleXLevel.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
-            var headerAdd = headerFieldLevel1.Where(r => r.IsActive == true && r.ParLevel1_Id == level1Id);
-            var headerRemove = headerFieldLevel2.Where(r => r.IsActive == true && r.ParLevel1_Id == level1Id && r.ParLevel2_Id == idParLevel2);
-            var parLevel3Group = parLevel2.ParLevel3Group.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
+            var headerFieldLevel2 = db.ParLevel2XHeaderField.Where(r => r.IsActive).ToList();
+            var evaluation = parLevel2.ParEvaluation.Where(r => r.IsActive);
+            var relapse = parLevel2.ParRelapse.Where(r => r.IsActive).OrderByDescending(r => r.IsActive);
+            var counter = parLevel2.ParCounterXLocal.Where(r => r.IsActive).OrderByDescending(r => r.IsActive);
+            var nonConformityrule = parLevel2.ParNotConformityRuleXLevel.Where(r => r.IsActive).OrderByDescending(r => r.IsActive);
+            var headerAdd = headerFieldLevel1.Where(r => r.IsActive && r.ParLevel1_Id == level1Id && r.ParHeaderField.ParLevelDefinition_Id == 2); //Somente cabeçalhos da tarefa
+            var headerRemove = headerFieldLevel2.Where(r => r.IsActive && r.ParLevel1_Id == level1Id && r.ParLevel2_Id == idParLevel2);
+            var parLevel3Group = parLevel2.ParLevel3Group.Where(r => r.IsActive).OrderByDescending(r => r.IsActive);
             /*Avaliação e amostra*/
             level2.listEvaluation = Mapper.Map<List<ParEvaluationDTO>>(evaluation);
             if (parLevel2.ParSample.Count() > 0)
-                level2.listSample = Mapper.Map<List<ParSampleDTO>>(parLevel2.ParSample.Where(r => r.IsActive == true));
+                level2.listSample = Mapper.Map<List<ParSampleDTO>>(parLevel2.ParSample.Where(r => r.IsActive));
 
             #endregion
 
@@ -581,7 +581,9 @@ namespace Dominio.Services
             level3.listParLevel3EvaluationSample = Mapper.Map<List<ParLevel3EvaluationSampleDTO>>(level3EvaluationSample);
             retorno.parLevel3Value = new ParLevel3ValueDTO(); // Mini Gambi....
             level3.ParLevel3Value_OuterList = Mapper.Map<List<ParLevel3Value_OuterListDTO>>(parlevel3Reencravacao);
-            level3.ParLevel3Value_OuterListGrouped = level3.ParLevel3Value_OuterList.GroupBy(r => r.ParCompany_Id);
+            level3.ParLevel3Value_OuterListGrouped = level3.ParLevel3Value_OuterList
+                .GroupBy(r => new { r.ParMeasurementUnit_Name, r.ParCompany_Id, r.ParMeasurementUnit_Id })
+                .Select(r => r.ToList()).ToList();
             #endregion
 
             #region Rn's

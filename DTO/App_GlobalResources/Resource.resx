@@ -2178,6 +2178,12 @@
   <data name="new_format" xml:space="preserve">
     <value>New Format</value>
   </data>
+  <data name="indicador_used" xml:space="preserve">
+    <value>This Indicator alredy have a alert rule!</value>
+  </data>
+  <data name="monitoring_used" xml:space="preserve">
+    <value>This Monitoring alredy have a alert rule!</value>
+  </data>
   <data name="are_greater_than" xml:space="preserve">
     <value>Are greater than</value>
   </data>
@@ -2187,7 +2193,49 @@
   <data name="update_collect_message" xml:space="preserve">
     <value>Please update the settings of your unit to have an effect on APP Collect</value>
   </data>
+  <data name="indicator_alredy_used" xml:space="preserve">
+    <value>These Indicators already have links on the selected date.</value>
+  </data>
+  <data name="update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="page" xml:space="preserve">
+    <value>page</value>
+  </data>
+  <data name="per_page" xml:space="preserve">
+    <value>per page</value>
+  </data>
+  <data name="report_files" xml:space="preserve">
+    <value>Report Files</value>
+  </data>
+  <data name="latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="photo" xml:space="preserve">
+    <value>Phone</value>
+  </data>
   <data name="not_conformities_rules_exist" xml:space="preserve">
     <value>Not conformities rules alredy exist</value>
+  </data>
+  <data name="indicator_in_use" xml:space="preserve">
+    <value>This Indicator already have link on the selected date.</value>
+  </data>
+  <data name="indicatorxindicator_group" xml:space="preserve">
+    <value>Indicator x Indicator Group</value>
+  </data>
+  <data name="indicator_group_type" xml:space="preserve">
+    <value>Indicator Group Type</value>
+  </data>
+  <data name="indicator_group_type_list" xml:space="preserve">
+    <value>Indicator Group Type List</value>
+  </data>
+  <data name="indicatorxassignment_group" xml:space="preserve">
+    <value>Indicator x Assignment Group</value>
+  </data>
+  <data name="indicator_group" xml:space="preserve">
+    <value>Indicator Group</value>
   </data>
 </root>
