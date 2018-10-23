@@ -1101,7 +1101,7 @@
                 vm.escareacaoTT = function () {
                     let lata = vm.lataSelecionada
                     if (lata.ResultValue)
-                        if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()])
+                        if (lata.ResultValue[vm.idAltura.toString()])
                             lata.escareacaoTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)},  ${''}`
                             //lata.escareacaoTT = `Lim. Inferior ((2*EC)+(3*ET))=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))=${lata["limSuperiorEspessura"]}`
                         else
@@ -1112,11 +1112,10 @@
                     let lata = item
                     if (lata)
                         if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()][1].length > 0 && lata.ResultValue[vm.idAltura.toString()][1].length > 0) {
-                                let valorEc = lata.ResultValue[vm.idAltura.toString()]
-                                let valorEt = lata.ResultValue[vm.idAltura.toString()]
-                                lata["limInferiorEspessura"] = math.eval(`((${valorEt["1"]}))`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt["1"]}))`)
+                            if (lata.ResultValue[vm.idAltura.toString()] && Object.values(lata.ResultValue[vm.idAltura.toString()])[0].length > 0) {
+                                let valorEt = Object.values(lata.ResultValue[vm.idAltura.toString()])
+                                lata["limInferiorEspessura"] = math.eval(`((${valorEt[0]}))`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt[0]}))`)
 
                                 vm.escareacaoTT()
                                 if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
@@ -1128,11 +1127,10 @@
                     let lata = item
                     if (lata)
                         if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()][1].length > 0 && lata.ResultValue[vm.idAltura.toString()][1].length > 0) {
-                                let valorEc = lata.ResultValue[vm.idAltura.toString()]
-                                let valorEt = lata.ResultValue[vm.idAltura.toString()]
-                                lata["limInferiorEspessura"] = math.eval(`((${valorEt["1"]}))`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt["1"]}))`)
+                            if (lata.ResultValue[vm.idAltura.toString()] && Object.values(lata.ResultValue[vm.idAltura.toString()])[0].length > 0) {
+                                let valorEt = Object.values(lata.ResultValue[vm.idAltura.toString()])
+                                lata["limInferiorEspessura"] = math.eval(`((${valorEt[0]}))`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt[0]}))`)
 
                                 vm.escareacaoTT()
                                 if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
@@ -1154,11 +1152,11 @@
                     let lata = item
                     if (lata)
                         if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
-                                let valorEc = lata.ResultValue[vm.idEC.toString()]
-                                let valorEt = lata.ResultValue[vm.idET.toString()]
-                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && Object.values(lata.ResultValue[vm.idEC.toString()])[0].length > 0 && Object.values(lata.ResultValue[vm.idET.toString()])[0].length > 0) {
+                                let valorEc = Object.values(lata.ResultValue[vm.idEC.toString()])
+                                let valorEt = Object.values(lata.ResultValue[vm.idET.toString()])
+                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.05`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.23`)
                                 vm.espessuraTT()
 
                                 if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
@@ -1170,11 +1168,11 @@
                     let lata = item
                     if (lata)
                         if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
-                                let valorEc = lata.ResultValue[vm.idEC.toString()]
-                                let valorEt = lata.ResultValue[vm.idET.toString()]
-                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && Object.values(lata.ResultValue[vm.idEC.toString()])[0].length > 0 && Object.values(lata.ResultValue[vm.idET.toString()])[0].length > 0) {
+                                let valorEc = Object.values(lata.ResultValue[vm.idEC.toString()])
+                                let valorEt = Object.values(lata.ResultValue[vm.idET.toString()])
+                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.05`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.23`)
                                 vm.espessuraTT()
 
                                 if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
@@ -1336,7 +1334,7 @@
                 vm.escareacaoTT = function () {
                     let lata = vm.lataSelecionada
                     if (lata.ResultValue)
-                        if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()])
+                        if (lata.ResultValue[vm.idAltura.toString()])
                             lata.escareacaoTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)},  ${''}`
                             //lata.escareacaoTT = `Lim. Inferior ((2*EC)+(3*ET))=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))=${lata["limSuperiorEspessura"]}`
                         else
@@ -1347,11 +1345,10 @@
                     let lata = item
                     if (lata)
                         if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()][1].length > 0 && lata.ResultValue[vm.idAltura.toString()][1].length > 0) {
-                                let valorEc = lata.ResultValue[vm.idAltura.toString()]
-                                let valorEt = lata.ResultValue[vm.idAltura.toString()]
-                                lata["limInferiorEspessura"] = math.eval(`((${valorEt["1"]}))`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt["1"]}))`)
+                            if (lata.ResultValue[vm.idAltura.toString()] && Object.values(lata.ResultValue[vm.idAltura.toString()])[0].length > 0) {
+                                let valorEt = Object.values(lata.ResultValue[vm.idAltura.toString()])
+                                lata["limInferiorEspessura"] = math.eval(`((${valorEt[0]}))`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt[0]}))`)
 
                                 vm.escareacaoTT()
                                 if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
@@ -1363,11 +1360,10 @@
                     let lata = item
                     if (lata)
                         if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()][1].length > 0 && lata.ResultValue[vm.idAltura.toString()][1].length > 0) {
-                                let valorEc = lata.ResultValue[vm.idAltura.toString()]
-                                let valorEt = lata.ResultValue[vm.idAltura.toString()]
-                                lata["limInferiorEspessura"] = math.eval(`((${valorEt["1"]}))`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt["1"]}))`)
+                            if (lata.ResultValue[vm.idAltura.toString()] && Object.values(lata.ResultValue[vm.idAltura.toString()])[0].length > 0) {
+                                let valorEt = Object.values(lata.ResultValue[vm.idAltura.toString()])
+                                lata["limInferiorEspessura"] = math.eval(`((${valorEt[0]}))`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt[0]}))`)
 
                                 vm.escareacaoTT()
                                 if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
@@ -1390,11 +1386,11 @@
                     let lata = item
                     if (lata)
                         if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
-                                let valorEc = lata.ResultValue[vm.idEC.toString()]
-                                let valorEt = lata.ResultValue[vm.idET.toString()]
-                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && Object.values(lata.ResultValue[vm.idEC.toString()])[0].length > 0 && Object.values(lata.ResultValue[vm.idET.toString()])[0].length > 0) {
+                                let valorEc = Object.values(lata.ResultValue[vm.idEC.toString()])
+                                let valorEt = Object.values(lata.ResultValue[vm.idET.toString()])
+                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.05`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.23`)
                                 vm.espessuraTT()
 
                                 if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
@@ -1406,11 +1402,11 @@
                     let lata = item
                     if (lata)
                         if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && lata.ResultValue[vm.idEC.toString()][1].length > 0 && lata.ResultValue[vm.idET.toString()][1].length > 0) {
-                                let valorEc = lata.ResultValue[vm.idEC.toString()]
-                                let valorEt = lata.ResultValue[vm.idET.toString()]
-                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && Object.values(lata.ResultValue[vm.idEC.toString()])[0].length > 0 && Object.values(lata.ResultValue[vm.idET.toString()])[0].length > 0) {
+                                let valorEc = Object.values(lata.ResultValue[vm.idEC.toString()])
+                                let valorEt = Object.values(lata.ResultValue[vm.idET.toString()])
+                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.05`)
+                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.23`)
                                 vm.espessuraTT()
 
                                 if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))

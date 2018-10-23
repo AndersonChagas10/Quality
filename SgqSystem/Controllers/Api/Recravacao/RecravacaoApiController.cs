@@ -194,17 +194,18 @@ namespace SgqSystem.Controllers.Api
 
         private int SaveLatas(int? RecravacaoJson_Id, dynamic latas)
         {
+            var retorno = 0;
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 factory.ExecuteSql(string.Format("DELETE FROM RecravacaoLataJson WHERE RecravacaoJson_Id = {0};", RecravacaoJson_Id));
                 foreach (dynamic lata in latas)
                 {
                     var lataStringFormatada = ToJson(lata);
-                    return factory.ExecuteSql(
+                    retorno = factory.ExecuteSql(
                         string.Format("INSERT INTO RecravacaoLataJson (RecravacaoJson_Id, AddDate, ObjectRecravacaoJson) VALUES ({0}, GETDATE(), '{1}')", RecravacaoJson_Id, lataStringFormatada));
                 }
             }
-            return 0;
+            return retorno;
         }
 
         private void UpdateRecravacaoLataJson(int RecravacaoJson_Id, string LataJson)
