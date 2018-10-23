@@ -1083,7 +1083,7 @@ namespace SgqSystem.Controllers.Api
             var headerFields_Ids = db.ParLevel1XHeaderField.Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && !headerFields_IdNot.Contains(r.ParHeaderField_Id) && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
 
             //Seleciona os cabeçalhos
-            var headerFields = db.ParHeaderField.Where(r => headerFields_Ids.Contains(r.Id)).ToList();
+            var headerFields = db.ParHeaderField.Where(r => headerFields_Ids.Contains(r.Id)).OrderBy(r => r.ParLevelDefinition_Id).ThenBy(r => r.Id).ToList();
 
             var values = db.ParMultipleValues.ToList();
 
