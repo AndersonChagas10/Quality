@@ -18,7 +18,7 @@ public class ApontamentosDiariosResultSet
     public string Lancado { get; set; }
 
     public Nullable<bool> Conforme { get; set; }
-    public string _Conforme { get { return Conforme.Value ? GetResources.getResource("according").Value.ToString() : GetResources.getResource("not_accordance").Value.ToString();} }
+    public string _Conforme { get { return Conforme.Value ? GetResources.getResource("according").Value.ToString() : GetResources.getResource("not_accordance").Value.ToString(); } }
 
     public Nullable<bool> NA { get; set; }
     public string _NA { get { return NA.Value ? GetResources.getResource("unvalued").Value.ToString() : GetResources.getResource("valued").Value.ToString(); } }
@@ -46,6 +46,8 @@ public class ApontamentosDiariosResultSet
     public string Platform { get; set; }
     public string Type { get; set; }
     public string Processo { get; set; }
+
+    public int? ParLevel3InputType_Id { get; set; }
 
     public string Select(DataCarrierFormulario form)
     {
@@ -166,7 +168,16 @@ public class ApontamentosDiariosResultSet
 				   ELSE '0'
 				   END
 				 as Type,
-                 PC.Name as Processo
+                 PC.Name as Processo,
+                  (SELECT top 1 PL3V.ParLevel3InputType_Id 
+						FROM parlevel3value PL3V 
+						WHERE 1 = 1
+						 AND (isnull(PL3V.parcompany_id,un.id) = un.id ) 
+						 AND (isnull(PL3V.ParLevel1_id,l1.id) = l1.id ) 
+						 AND (isnull(PL3V.ParLevel2_id,l2.id) = l2.id ) 
+						 AND PL3V.ParLevel3_Id = L3.Id
+						 AND PL3V.IsActive = 1
+				  order by PL3V.id DESC,PL3V.parcompany_id DESC, PL3V.ParLevel2_Id DESC,PL3V.ParLevel1_Id DESC) as ParLevel3InputType_Id
                  FROM #CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     
                  ON UN.Id = c2.UnitId                  
@@ -177,7 +188,7 @@ public class ApontamentosDiariosResultSet
                  INNER JOIN ParLevel2 L2 (nolock)      
                  ON L2.Id = C2.ParLevel2_Id            
                  INNER JOIN ParLevel1 L1 (nolock)      
-                 ON L1.Id = C2.ParLevel1_Id            
+                 ON L1.Id = C2.ParLevel1_Id         
                  INNER JOIN UserSgq US (nolock)        
                  ON C2.AuditorId = US.Id               
                  LEFT JOIN                             
@@ -221,5 +232,5 @@ public class ApontamentosDiariosResultSet
 
         return query;
     }
-   
+
 }
