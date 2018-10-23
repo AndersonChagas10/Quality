@@ -2624,6 +2624,8 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 				ON C.ID = H.CollectionLevel2_Id
 
             ALTER TABLE #CUBO_ACERTO DROP COLUMN CollectionLevel2_Id
+
+            ALTER TABLE #CUBO_ACERTO DROP COLUMN Campo1
 	
 			SELECT * FROM #CUBO_ACERTO
 	
