@@ -70,7 +70,7 @@ namespace SgqSystem.Controllers.Api
                 var divjetoFinal = GetUrlDivjetoFinal(divjetoPreenchido, dicionarioItem, dados, ref error);
                 if (error.Count > 0)
                 {
-                    return BadRequest(string.Join("-", error.ToArray()));
+                    return BadRequest(string.Join("",error.ToArray()));
                 }
                 // CriarCollectJson(string parlevel1_id, string parlevel2_id, string parlevel3_id, string cluster_id, string versionApp, string empresa, int ano, int mes, int dia, string initials, string av, string NC)
                 ExcelItens itensExcel = new ExcelItens();
@@ -152,6 +152,7 @@ namespace SgqSystem.Controllers.Api
                 string expRegex = "{.*?}";
                 Match m = Regex.Match(divjetoPreenchido, expRegex);
                 string divjeto = divjetoPreenchido;
+                string camposErrados = "";
                 while (m.Success)
                 {
                     var value = m.Value.Replace("{", "").Replace("}", "");
@@ -170,9 +171,11 @@ namespace SgqSystem.Controllers.Api
 
                         divjeto = divjeto.Replace(m.Value, valor);
                     }
-                    else
+                    else 
                     {
-                        error.Add("O campo obrigatorio " + m.Value + " precisa ser preenchido");
+                        var mensagemErro = "O campo obrigatorio " + m.Value + " precisa ser preenchido <br />";
+                        if(!error.Contains(mensagemErro))
+                            error.Add(mensagemErro);
                     }
                     m = m.NextMatch();
                 }

@@ -164,6 +164,7 @@
                     var formatoId = $("#formato").val();
                     var dados = JSON.stringify(dadosPreenchidos);
 
+                    $('body').LoadingOverlay("show");
                     $.ajax({
                         type: "Post",
                         url: urlExcel + "?formatoId=" + formatoId,
@@ -171,10 +172,12 @@
                         contentType: "application/json",
                         data: dados,
                         success: function (retorno) {
+                            $('body').LoadingOverlay("hide");
                             $("#ModalErro").hide();
                             $("#ModalInformacao").modal('show');
                         },
                         error: function (retorno) {
+                            $('body').LoadingOverlay("hide");
                             $("#ModalErro").html("<p>" + retorno.responseJSON.Message + "</p>")
                             $("#ModalErro").show();
                         },
