@@ -47,6 +47,9 @@
                 <div class="unitCode"><span id="estName"></span></div>
             </div>
             <div class="modal-body">
+                <div id="divMensagemVazio" style="display: none" class="alert alert-info" role="alert">
+                    <span id="mensagemVazio" class="icon-info-sign"></span>
+                </div>
                 <div id="correctiveActionModal" class="modal-padrao" style="margin-left:10px;margin-right:10px;margin-top:15px;">
                     <span id="Level3Name" class="levelName" name="" style=""></span>
                     <div class="container-fluid">
@@ -61,7 +64,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="page-content-wrapper">
     <div class="page-content">
@@ -87,7 +89,7 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -280,6 +282,8 @@
 
                         var data = table.row($(this).parents('tr')).data();
 
+                        escondeMensagemVazio();
+
                         $.post(urlEditCabecalho + "/" + data.ResultLevel3Id, function (r) {
 
                             $('#divEdit').empty();
@@ -297,7 +301,7 @@
                                     switch (o.HeaderField.ParFieldType_Id) {
                                         case 1:
                                             html =
-                                            `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                                `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
                                                 <div class="form-group header" name="" style="margin-bottom: 4px;">
                                                     <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                     <select class="form-control input-sm ddl" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" idpai="0" linknumberevaluetion="false" IsRequired="${o.HeaderField.IsRequired}">
@@ -310,10 +314,10 @@
                                                 if (oo.Id == o.ValueSelected)
                                                     selected = 'selected="selected"';
 
-                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name +'</option>';
+                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
                                             });
 
-                                            html +=`</select> <label class="">
+                                            html += `</select> <label class="">
                                                     </label>
                                                 </div>
                                             </div>`;
@@ -335,7 +339,7 @@
                                                 if (oo.Id == o.ValueSelected)
                                                     selected = 'selected="selected"';
 
-                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name +'</option>';
+                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
                                             });
 
                                             html += `</select>
@@ -389,7 +393,7 @@
 
                                             html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
                                                     <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
-                                                        <label class="font-small labelHeaderField">${o.HeaderField.Name }</label>
+                                                        <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                         <input class="form-control input-sm" type="number" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
                                                         <label class=""></label>
                                                     </div>
@@ -434,6 +438,8 @@
                                     $('#divEdit').append(html);
 
                                 });
+                            } else {
+                                exibeMensagemVazio(Resources('no_data_to_show'));
                             }
                         });
                     });
@@ -647,6 +653,16 @@
             }
         }
 
-    </script>
+        function exibeMensagemVazio(mensagem) {
+            $('#divMensagemVazio').show();
+            $('#mensagemVazio').html(mensagem);
+        }
+
+        function escondeMensagemVazio() {
+            $('#divMensagemVazio').hide();
+            $('#mensagemVazio').html();
+        }
+
+</script>
 
 }
