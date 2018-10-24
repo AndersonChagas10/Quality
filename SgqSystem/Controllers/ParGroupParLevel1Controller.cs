@@ -52,6 +52,10 @@ namespace SgqSystem.Controllers
             listaGruposIndicador.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
             ViewBag.Parent_Id = new SelectList(listaGruposIndicador, "Id", "Name", -1);
 
+            var listaFilhos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaFilhos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", -1);
+
             return View();
         }
 
@@ -72,6 +76,11 @@ namespace SgqSystem.Controllers
             }
 
             ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name", parGroupParLevel1.ParGroupParLevel1Type_Id);
+
+            var listaFilhos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaFilhos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", -1);
+
             return View(parGroupParLevel1);
         }
 
@@ -108,6 +117,10 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+            var listaFilhos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaFilhos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", parGroupParLevel1.Parent_Id);
+
             var listaGrupos = db.ParGroupParLevel1Type.Where(x => x.IsActive).ToList();
             listaGrupos.Add(new ParGroupParLevel1Type() { Id = -1, Name = "Selecione" });
             ViewBag.ParGroupParLevel1Type_Id = new SelectList(listaGrupos, "Id", "Name", parGroupParLevel1.ParGroupParLevel1Type_Id);
@@ -134,6 +147,10 @@ namespace SgqSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            var listaGruposIndicador = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaGruposIndicador.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaGruposIndicador, "Id", "Name", parGroupParLevel1.Parent_Id);
+
             ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name", parGroupParLevel1.ParGroupParLevel1Type_Id);
             return View(parGroupParLevel1);
         }

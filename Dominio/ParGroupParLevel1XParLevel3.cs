@@ -14,12 +14,12 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        public int Peso { get; set; }
+        public int? Peso { get; set; }
 
         [DisplayName("Está Ativo")]
         public bool IsActive { get; set; }
 
-        [DisplayName("Vinculo Grupo Indicador x Tarefa")]
+        [DisplayName("Nome Vinculo")]
         public string Name { get; set; }
 
         [DisplayName("Tarefa")]
