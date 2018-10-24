@@ -75,7 +75,9 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name", parGroupParLevel1.ParGroupParLevel1Type_Id);
+            var listaGrupos = db.ParGroupParLevel1Type.Where(x => x.IsActive).ToList();
+            listaGrupos.Add(new ParGroupParLevel1Type() { Id = -1, Name = "Selecione" });
+            ViewBag.ParGroupParLevel1Type_Id = new SelectList(listaGrupos, "Id", "Name", -1);
 
             var listaFilhos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
             listaFilhos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
