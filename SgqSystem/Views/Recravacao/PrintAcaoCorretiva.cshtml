@@ -437,12 +437,15 @@
 
             <div id="contentBody">
                 <div>
-                    
+                    <p>
+                        <strong>Data: </strong> @Html.Raw(ViewBag.OutroRelatorio.AddDate.ToString("dd/MM/yyyy"))
+                    </p>
+                    <p>
+                        <strong>Relatório: </strong> @Html.Raw(ViewBag.OutroRelatorio.ItemMenu.Name)
+                    </p>
                 </div>
                 <div class="clearfix"></div>
                 <div>
-
-
                     <div class="divTableCorrectiveAction" style="padding-top: 20px;">
 
                         <table class="tableCorrectiveAction">
@@ -472,11 +475,11 @@
                                     <col style="width: 28.3%;">
                                 </colgroup>
                                 @*<tr>
-                        <th>Hora (1)</th>
-                        <th>DEFICIÊNCIA (2)</th>
-                        <th>AÇÃO CORRETIVA (3)</th>
-                        <th>AÇÃO PREVENTIVA (4)</th>
-                    </tr>*@
+                                        <th>Hora (1)</th>
+                                        <th>DEFICIÊNCIA (2)</th>
+                                        <th>AÇÃO CORRETIVA (3)</th>
+                                        <th>AÇÃO PREVENTIVA (4)</th>
+                                    </tr>*@
                                 <tr>
                                     <td class="tbodyTd">
                                         {{acoes.AddDate}}
@@ -569,7 +572,7 @@
 
             <div id="contentFooter">
 
-                
+
                 <span>@Html.Raw(ViewBag.ReportXUserSgq.CodigoRelatorio)</span>
 
 
