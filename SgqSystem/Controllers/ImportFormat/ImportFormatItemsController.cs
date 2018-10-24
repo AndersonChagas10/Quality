@@ -42,7 +42,8 @@ namespace SgqSystem.Controllers.ImportFormat
         {
             ImportFormatItem importFormatItem = new ImportFormatItem();
             importFormatItem.ImportFormat_Id = id;
-            var itens = ImportacaoExcelApiController.CriaDicionarioPadrao();
+            var formato = db.ImportFormatItem.Where(x => x.ImportFormat_Id == id);
+            var itens = ImportacaoExcelApiController.CriaDicionarioPadrao().Where(x => !formato.Any(y => y.Key == x.Key));
             ViewBag.ItensDisponiveis = new SelectList(itens, "Key", "Key");
             return View(importFormatItem);
         }
