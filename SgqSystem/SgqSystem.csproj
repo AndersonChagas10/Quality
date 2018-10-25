@@ -1332,7 +1332,6 @@
     <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
@@ -1344,6 +1343,7 @@
     <None Include="Properties\PublishProfiles\SGQ BR.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ DEV.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ GRT.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ Servidor.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ USA.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBr.pubxml" />
