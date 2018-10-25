@@ -87,7 +87,7 @@
 
 @section Scripts {
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -226,12 +226,14 @@
                         { title: "@Resources.Resource.add_date", mData: "_AddDate", "width": "50%"},
                         {
                             title: "@Resources.Resource.type ", mData: "Type", mRender: function (data, type, full) {
-
+                                debugger
                                 if (data == "2") {
                                     return '@Resources.Resource.retroactive';
+                                }else if (full.Platform == "Excel") {
+                                    return "Data futura";
                                 }else if(data == '1'){
                                     return '@Resources.Resource.edited';
-                                }else{
+                                }else {
                                     return '@Resources.Resource.normal';
                                 }
                             }
@@ -283,7 +285,7 @@
                             r = JSON.parse(r);
 
                             if (r.length > 0) {
-                                
+
                                 r.forEach(function (o) {
 
                                     let html = "";
@@ -641,6 +643,6 @@
             }
         }
 
-</script>
+    </script>
 
 }
