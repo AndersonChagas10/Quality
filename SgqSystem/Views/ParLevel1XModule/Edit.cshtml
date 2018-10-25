@@ -73,7 +73,7 @@
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.clusters, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.ParCluster_Id, new SelectList(ViewBag.Clusters, "Id", "Name"), Resources.Resource.select, htmlAttributes: new { @class = "form-control  select2", @style = "width:275px" })
+                                                @Html.DropDownListFor(model => model.ParCluster_Id, new SelectList(ViewBag.Clusters, "Id", "Name"), Resources.Resource.select, htmlAttributes: new { @class = "form-control  select2", @style = "width:275px", @disabled = "true" })
                                             </div>
                                             <div class="col-md-10 col-md-offset-2">
                                                 @Html.HiddenFor(model => model.ParCluster_Id)
@@ -125,7 +125,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                                    }
+                                }
                             </div>
 
                         </div>
@@ -151,7 +151,7 @@
         function tirarMascara() {
             //var pontos = $("#PointsText").val().replace(".", "");
             // $("#Points").val(pontos.replace(",", "."));
-        };
+        }
 
         function HabilitaCampo() {
             $("#ParLevel1_Id").removeAttr('disabled');
@@ -160,7 +160,7 @@
         $(document).ready(function () {
             closeLeftSidebar();
             $("#ParLevel1_IdHelper").select2();
-            $("#ParModule_Id").select2();
+
 
             $("#PointsText").inputmask('decimal', {
                 radixPoint: ",",
