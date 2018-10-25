@@ -284,8 +284,8 @@ namespace SgqSystem.Controllers
 
                 //nova verificação
                 isNotValid = db.ParLevel1XModule
-                    .Any(x => x.ParModule_Id == parLevel1XModule.ParModule_Id && x.ParLevel1_Id == indicadorId
-                    && ((x.EffectiveDateStart <= parLevel1XModule.EffectiveDateStart && x.EffectiveDateEnd >= x.EffectiveDateStart)
+                    .Any(x => x.ParModule_Id == parLevel1XModule.ParModule_Id && x.ParLevel1_Id == indicadorId && parLevel1XModule.ParCluster_Id == x.ParCluster_Id
+                    && ((x.EffectiveDateStart <= parLevel1XModule.EffectiveDateStart && x.EffectiveDateEnd >= parLevel1XModule.EffectiveDateStart)
                     || (x.EffectiveDateStart <= parLevel1XModule.EffectiveDateEnd && x.EffectiveDateEnd >= parLevel1XModule.EffectiveDateEnd)
                     || (parLevel1XModule.EffectiveDateStart < x.EffectiveDateStart && parLevel1XModule.EffectiveDateEnd > x.EffectiveDateStart)));
             }

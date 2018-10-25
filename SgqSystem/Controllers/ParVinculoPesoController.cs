@@ -82,7 +82,7 @@ namespace SgqSystem.Controllers
             {
                 db.ParGroupParLevel1XParLevel3.Add(parGroupParLevel1XParLevel3);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index"); 
             }
 
             var listaTiposIndicadores = db.ParGroupParLevel1Type.Where(x => x.IsActive).ToList();
