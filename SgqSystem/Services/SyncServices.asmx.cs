@@ -5496,14 +5496,14 @@ $(document).ready(function(){
                         break;
                     //Numérico
                     case 5:
-                        var idRandomico = new Random().Next(-1000, 1000)+""+ header.ParHeaderField_Id + ParLevel2_Id + ParLevel1_Id;
+                        var idRandomico = new Random().Next(-1000, 1000) + "" + header.ParHeaderField_Id + ParLevel2_Id + ParLevel1_Id;
                         form_control = $@"
                             <div>
-                                <i class=""fa fa-minus col-sm-1 btn"" aria-hidden=""true"" onclick=""document.getElementsByClassName('hf{idRandomico}')[0].value = parseInt(!!document.getElementsByClassName('hf{idRandomico}')[0].value ? document.getElementsByClassName('hf{idRandomico}')[0].value : 0)-1;""></i> 
-                                <input class=""col-sm-8 input-sm hf{idRandomico}"" type=""number"" Id=""cb{ header.ParHeaderField_Id }""
+                                <input class=""form-control pull-left hf{idRandomico}"" type=""number"" Id=""cb{ header.ParHeaderField_Id }""
                                 ParHeaderField_Id=""{header.ParHeaderField_Id}"" ParFieldType_Id=""{header.ParFieldType_Id}"">
-                                <label class=""""></label>
-                                <i class=""fa fa-plus col-sm-1 btn"" aria-hidden=""true"" onclick=""document.getElementsByClassName('hf{idRandomico}')[0].value = parseInt(!!document.getElementsByClassName('hf{idRandomico}')[0].value ? document.getElementsByClassName('hf{idRandomico}')[0].value : 0)+1;""></i
+                                <i class=""fa fa-exchange pull-right btn btn-info text-center input-sm"" aria-hidden=""true"" 
+                                onclick=""document.getElementsByClassName('hf{idRandomico}')[0].value = parseInt(!!document.getElementsByClassName('hf{idRandomico}')[0].value ? document.getElementsByClassName('hf{idRandomico}')[0].value : 0)*-1;""
+                                style=""margin-top: -30px !important;""></i> 
                             </div>";
                         break;
                     //Data
@@ -5537,7 +5537,7 @@ $(document).ready(function(){
                 retorno += html.div(
                                             outerhtml: form_group,
                                             classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
-                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;height:90px !important"
                                             );
 
 
