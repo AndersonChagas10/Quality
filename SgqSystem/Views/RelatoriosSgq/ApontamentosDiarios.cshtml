@@ -89,7 +89,7 @@
 
 @section Scripts {
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -237,6 +237,8 @@
 
                                         if (data == "2") {
                                             return '@Resources.Resource.retroactive';
+                                        }else if (full.Platform == "Excel") {
+                                            return "Data futura";
                                         }else if(data == '1'){
                                             return '@Resources.Resource.edited';
                                         }else{
@@ -663,6 +665,6 @@
             $('#mensagemVazio').html();
         }
 
-</script>
+    </script>
 
 }
