@@ -5498,13 +5498,11 @@ $(document).ready(function(){
                     case 5:
                         var idRandomico = new Random().Next(-1000, 1000) + "" + header.ParHeaderField_Id + ParLevel2_Id + ParLevel1_Id;
                         form_control = $@"
-                            <div>
                                 <input class=""form-control pull-left hf{idRandomico} input-sm"" type=""number"" Id=""cb{ header.ParHeaderField_Id }""
                                 ParHeaderField_Id=""{header.ParHeaderField_Id}"" ParFieldType_Id=""{header.ParFieldType_Id}"">
                                 <i class=""fa fa-exchange pull-right btn btn-info text-center input-sm"" aria-hidden=""true"" 
                                 onclick=""document.getElementsByClassName('hf{idRandomico}')[0].value = parseInt(!!document.getElementsByClassName('hf{idRandomico}')[0].value ? document.getElementsByClassName('hf{idRandomico}')[0].value : 0)*-1;""
-                                style=""margin-top: -30px !important;""></i> 
-                            </div>";
+                                style=""margin-top: -30px !important;""></i>";
                         break;
                     //Data
                     case 6:
