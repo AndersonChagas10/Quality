@@ -3731,7 +3731,7 @@ namespace SgqSystem.Services
             string APPMain = string.Empty;
 
             //colocar autenticação
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date ,null, Shift_Id); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, null, Shift_Id); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
 
             string supports = "<div class=\"Results hide\"></div>" +
@@ -3830,7 +3830,7 @@ $(document).ready(function(){
         }
 
         [WebMethod]
-        public string getAPPLevelsModulado(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId,int Shift_Id)
+        public string getAPPLevelsModulado(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId, int Shift_Id)
         {
 
             string APPMain = string.Empty;
@@ -3859,7 +3859,7 @@ $(document).ready(function(){
         {
             string APPMain = string.Empty;
 
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, Shift_Id , true);
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, Shift_Id, true);
 
             return APPMain;// + resource;
         }
@@ -5496,8 +5496,15 @@ $(document).ready(function(){
                         break;
                     //Numérico
                     case 5:
-                        form_control = "<input class=\"form-control input-sm \" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
-                        form_control += " <label class=\"\"></label>";
+                        var idRandomico = new Random().Next(-1000, 1000)+""+ header.ParHeaderField_Id + ParLevel2_Id + ParLevel1_Id;
+                        form_control = $@"
+                            <div>
+                                <i class=""fa fa-minus col-sm-1 btn"" aria-hidden=""true"" onclick=""document.getElementsByClassName('hf{idRandomico}')[0].value = parseInt(!!document.getElementsByClassName('hf{idRandomico}')[0].value ? document.getElementsByClassName('hf{idRandomico}')[0].value : 0)-1;""></i> 
+                                <input class=""col-sm-8 input-sm hf{idRandomico}"" type=""number"" Id=""cb{ header.ParHeaderField_Id }""
+                                ParHeaderField_Id=""{header.ParHeaderField_Id}"" ParFieldType_Id=""{header.ParFieldType_Id}"">
+                                <label class=""""></label>
+                                <i class=""fa fa-plus col-sm-1 btn"" aria-hidden=""true"" onclick=""document.getElementsByClassName('hf{idRandomico}')[0].value = parseInt(!!document.getElementsByClassName('hf{idRandomico}')[0].value ? document.getElementsByClassName('hf{idRandomico}')[0].value : 0)+1;""></i
+                            </div>";
                         break;
                     //Data
                     case 6:
