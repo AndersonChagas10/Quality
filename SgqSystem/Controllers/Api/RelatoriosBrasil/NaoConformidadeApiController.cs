@@ -2292,7 +2292,6 @@ DROP TABLE #AMOSTRATIPO4 ";
                     FROM collectionlevel2 CL2
                         WHERE 1=1
 						AND cl2.Collectiondate BETWEEN @DATEINI AND @DATEFIM
-						AND CL2.UnitId IN (22,14,4,13,26,3,47,38,34,20,27,8,32,5,31,29,25,21,43,39,46,35,24,1,12,30,28,17,18,44,19,40,37,6,36,33,41,45,11,10,9,16,42,15,23)
 						AND CL2.ParLevel1_Id != 43
 						AND CL2.ParLevel1_Id != 42
 						AND CASE WHEN @UNITID = '0' THEN '0' ELSE cl2.unitid END = @UNITID
