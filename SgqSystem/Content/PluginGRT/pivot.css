@@ -115,3 +115,12 @@ table.pvtTable tbody tr td {
 td.pvtUnused.pvtHorizList{
     min-height:32px !important;
 }
+
+table.pvtUi td {
+    display:table-cell !important;
+    vertical-align:top;
+}
+
+table.pvtUi{
+    border: 1px solid #000;
+}
