@@ -268,15 +268,17 @@
                                                     <select class="form-control input-sm ddl" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" idpai="0" linknumberevaluetion="false" IsRequired="${o.HeaderField.IsRequired}">
                                                         <option value="">Selecione...</option>`
 
-                                            o.Values.forEach(function (oo) {
+                                            if (o.Values) {
+                                                o.Values.forEach(function (oo) {
 
-                                                let selected = '';
+                                                    let selected = '';
 
-                                                if (oo.Id == o.ValueSelected)
-                                                    selected = 'selected="selected"';
+                                                    if (oo.Id == o.ValueSelected)
+                                                        selected = 'selected="selected"';
 
-                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
-                                            });
+                                                    html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
+                                                });
+                                            }
 
                                             html += `</select> <label class="">
                                                     </label>
@@ -293,15 +295,18 @@
                                                         <select class="form-control input-sm " CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="true" style="border: 1px solid rgb(167, 176, 24);" IsRequired="${o.HeaderField.IsRequired}">
                                                             <option value="">Selecione...</option>`
 
-                                            o.Values.forEach(function (oo) {
+                                            if (o.Values) {
 
-                                                let selected = '';
+                                                o.Values.forEach(function (oo) {
 
-                                                if (oo.Id == o.ValueSelected)
-                                                    selected = 'selected="selected"';
+                                                    let selected = '';
 
-                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
-                                            });
+                                                    if (oo.Id == o.ValueSelected)
+                                                        selected = 'selected="selected"';
+
+                                                    html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
+                                                });
+                                            }
 
                                             html += `</select>
                                                     </div>
@@ -314,17 +319,19 @@
                                                       <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
                                                         <label class="font-small" style="height: 22px;">${o.HeaderField.Name}</label>
                                                         <select class="form-control input-sm" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParHeaderField_Name="${o.HeaderField.Id}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="false" IsRequired="${o.HeaderField.IsRequired}">`;
+                                            if (o.Values) {
 
-                                            o.Values.forEach(function (oo) {
+                                                o.Values.forEach(function (oo) {
 
-                                                let selected = '';
+                                                    let selected = '';
 
-                                                if (oo.Id == o.ValueSelected)
-                                                    selected = 'selected="selected"';
+                                                    if (oo.Id == o.ValueSelected)
+                                                        selected = 'selected="selected"';
 
-                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
+                                                    html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
 
-                                            });
+                                                });
+                                            }
 
                                             html += `</select>
                                                         <label class=""></label>
