@@ -1077,7 +1077,7 @@ namespace SgqSystem.Controllers.Api
             var coletas = db.Database.SqlQuery<CollectionLevel2XParHeaderField>(query).ToList();
 
             //Ids dos cabeçalhos de monitoramentos
-            var level1HeaderFields_Id = db.ParLevel1XHeaderField.Include("ParHeaderField").Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.IsActive && r.ParHeaderField.ParFieldType_Id == 1).Select(r => r.ParHeaderField_Id).ToList();
+            var level1HeaderFields_Id = db.ParLevel1XHeaderField.Include("ParHeaderField").Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.IsActive && r.ParHeaderField.ParLevelDefinition_Id == 1).Select(r => r.ParHeaderField_Id).ToList();
 
             //Ids dos cabeçalhos que não fazem parte do Monitoramento
             var headerFields_IdNot = db.ParLevel2XHeaderField.Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.ParLevel2_Id == collectionLevel2.ParLevel2_Id && r.IsActive).Select(r => r.ParHeaderField_Id).Except(level1HeaderFields_Id).ToList();
