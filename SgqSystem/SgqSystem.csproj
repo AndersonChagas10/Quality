@@ -353,6 +353,7 @@
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
+    <Compile Include="Controllers\Api\Integracao\IntegracaoApiController.cs" />
     <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
     <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
     <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
@@ -398,6 +399,7 @@
     <Compile Include="Controllers\ImportFormat\ImportFormatItemsController.cs" />
     <Compile Include="Controllers\ImportFormat\ImportFormatsController.cs" />
     <Compile Include="Controllers\ImportacaoExcelController.cs" />
+    <Compile Include="Controllers\Integracao\IntegracaoController.cs" />
     <Compile Include="Controllers\ItemMenu\ItemMenuController.cs" />
     <Compile Include="Controllers\Params\EmailConfigEUAController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
@@ -1831,6 +1833,7 @@
     <Content Include="Views\ParVinculoPeso\Details.cshtml" />
     <Content Include="Views\ParVinculoPeso\Edit.cshtml" />
     <Content Include="Views\ParVinculoPeso\Index.cshtml" />
+    <Content Include="Views\Integracao\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

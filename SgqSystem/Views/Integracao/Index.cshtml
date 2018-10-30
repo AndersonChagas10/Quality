@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "Equipamentos";
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.equipment_registration</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
+                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.equipment_registration</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>Consultar código de barra</h3>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="text" name="codigoBarra" class="input-sm col-sm-4" />
+                                    <button id="buscarCodigoBarra" class="btn btn-sm btn-info col-sm-1">Consultar</button>
+                                </div>
+                                <div class="col-md-12" id="divCodigoBarra">
+                                    <table id="tableCodigoBarra"></table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>Consultar Pedido de Entrada</h3>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="text" name="numeroPedidoEntrada" class="input-sm col-sm-4" />
+                                    <button id="buscarPedidoEntrada" class="btn btn-sm btn-info col-sm-1">Consultar</button>
+                                </div>
+                                <div class="col-md-12" id="divCodigoBarra">
+                                    <table id="tablePedidoEntrada"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+
+        $('#buscarCodigoBarra').on('click', function () {
+            const url = "@Url.Action("ConsultarCodigoBarra", "api/Integracao")"
+            var busca = $('input[name=codigoBarra]').val();
+            $('body').LoadingOverlay("show");
+            $.ajax(
+                {
+                    type: "GET",
+                    url: `${url}/${@Html.Raw(ViewBag.UnitId)}/${busca}`,
+                    data: {},
+                    dataType: "JSON",
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    success: function (response) {
+                        var table = datatableGRT.Inicializar({
+                            idTabela: "tableCodigoBarra",
+                            listaDeDados: response,
+                            colunaDosDados: [
+                                { title: "nCdProduto", mData: "nCdProduto" },
+                                { title: "cNmProduto", mData: "cNmProduto" },
+                                { title: "cSIFProducao", mData: "cSIFProducao" },
+                                { title: "dProducao", mData: "dProducao" },
+                                { title: "dEmbalagem", mData: "dEmbalagem" },
+                                { title: "dValidade", mData: "dValidade" },
+                                { title: "nPesoBruto", mData: "nPesoBruto" },
+                                { title: "nPesoLiquido", mData: "nPesoLiquido" }
+                            ],
+                            numeroLinhasNaTabela: 25,
+                            aplicarResponsividade: true,
+                            tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                            loadingRecords: true,
+                            destroy: true,
+                            info: true
+                        });
+                        $('body').LoadingOverlay("hide");
+                    },
+                    fail: function(){
+                        alert("Ocorreu um erro ao tentar obter o resultado do código de barrada");
+                    }
+                });
+        });
+
+        $('#buscarPedidoEntrada').on('click', function () {
+            const url = "@Url.Action("ConsultarPedidoEntrada", "api/Integracao")"
+            var busca = $('input[name=numeroPedidoEntrada]').val();
+            $('body').LoadingOverlay("show");
+            $.ajax(
+                {
+                    type: "GET",
+                    url: `${url}/${@Html.Raw(ViewBag.UnitId)}/${busca}`,
+                    data: {},
+                    dataType: "JSON",
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    success: function (response) {
+                        var table = datatableGRT.Inicializar({
+                            idTabela: "tablePedidoEntrada",
+                            listaDeDados: response,
+                            colunaDosDados: [
+                                { title: "nCdPedidoComercial", mData: "nCdPedidoComercial" },
+                                { title: "iCarga", mData: "iCarga" },
+                                { title: "nCdTpVeiculo", mData: "nCdTpVeiculo" },
+                                { title: "cNmTpVeiculo", mData: "cNmTpVeiculo" },
+                                { title: "nCdEmpresaEmbarque", mData: "nCdEmpresaEmbarque" },
+                                { title: "cSgEmpresaEmbarque", mData: "cSgEmpresaEmbarque" },
+                                { title: "cSIFEmbarque", mData: "cSIFEmbarque" },
+                                { title: "nCdEmpresaRecebimento", mData: "nCdEmpresaRecebimento" },
+                                { title: "cSgEmpresaRecebimento", mData: "cSgEmpresaRecebimento" },
+                                { title: "cSIFRecebimento", mData: "cSIFRecebimento" },
+                                { title: "nCdTransportadora", mData: "nCdTransportadora" },
+                                { title: "cNmTransportadora", mData: "cNmTransportadora" },
+                                { title: "cPlaca", mData: "cPlaca" },
+                                { title: "cNF", mData: "cNF" }
+                            ],
+                            numeroLinhasNaTabela: 25,
+                            aplicarResponsividade: true,
+                            tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                            loadingRecords: true,
+                            destroy: true,
+                            info: true
+                        });
+                        $('body').LoadingOverlay("hide");
+                    },
+                    fail: function(){
+                        alert("Ocorreu um erro ao tentar obter o resultado do código de barrada");
+                    }
+                });
+        });
+    });
+</script>
