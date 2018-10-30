@@ -3679,6 +3679,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This link is already being used.
+        /// </summary>
+        internal static string link_alredy_used {
+            get {
+                return ResourceManager.GetString("link_alredy_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link with the evaluation number.
         /// </summary>
         internal static string link_number_evaluation {
@@ -4098,6 +4107,15 @@ namespace Resources {
         internal static string name {
             get {
                 return ResourceManager.GetString("name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An item already registered with this Name already exists.
+        /// </summary>
+        internal static string name_alredy_exist {
+            get {
+                return ResourceManager.GetString("name_alredy_exist", resourceCulture);
             }
         }
         

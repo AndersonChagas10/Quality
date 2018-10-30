@@ -86,8 +86,8 @@ namespace SgqSystem.Controllers
             }
 
             //ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name", parGroupParLevel1XParLevel3.ParGroupParLevel1Type_Id);
-           // ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel1_Id);
-           // ViewBag.ParLevel3_Id = new SelectList(db.ParLevel3, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel3_Id);
+            // ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel1_Id);
+            // ViewBag.ParLevel3_Id = new SelectList(db.ParLevel3, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel3_Id);
             var listaTiposIndicadores = db.ParGroupParLevel1Type.Where(x => x.IsActive).ToList();
             listaTiposIndicadores.Add(new ParGroupParLevel1Type() { Id = -1, Name = "Selecione" });
             ViewBag.ParGroupParLevel1Type_Id = new SelectList(listaTiposIndicadores, "Id", "Name", -1);
@@ -121,29 +121,49 @@ namespace SgqSystem.Controllers
 
         private void ValidaGrupoIndicadorXTarefa(ParGroupParLevel1XParLevel3 parGroupParLevel1XParLevel3)
         {
-            if (parGroupParLevel1XParLevel3.Peso == 0 || parGroupParLevel1XParLevel3.Peso == null)
-                ModelState.AddModelError("Peso", Resources.Resource.required_field + " " + Resources.Resource.weight);
+            var existe = true;
 
-            if (parGroupParLevel1XParLevel3.Name == "" || parGroupParLevel1XParLevel3.Name == null)
-                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+            existe = db.ParGroupParLevel1XParLevel3
+               .Any(
+               x => ((x.ParCompany_Id == parGroupParLevel1XParLevel3.ParCompany_Id &&
+               x.ParDepartment_Id == parGroupParLevel1XParLevel3.ParDepartment_Id &&
+               x.ParGroupParLevel1_Id == parGroupParLevel1XParLevel3.ParGroupParLevel1_Id &&
+               x.ParLevel1_Id == parGroupParLevel1XParLevel3.ParLevel1_Id &&
+               x.ParLevel2_Id == parGroupParLevel1XParLevel3.ParLevel2_Id &&
+               x.ParLevel3_Id == parGroupParLevel1XParLevel3.ParLevel3_Id) ||
+               x.Name == parGroupParLevel1XParLevel3.Name) && x.Id != parGroupParLevel1XParLevel3.Id);
 
-            if (parGroupParLevel1XParLevel3.ParDepartment_Id <= 0)
-                ModelState.AddModelError("ParDepartment_Id", Resources.Resource.required_field + " " + Resources.Resource.department);
 
-            if (parGroupParLevel1XParLevel3.ParCompany_Id <= 0)
-                ModelState.AddModelError("ParCompany_Id", Resources.Resource.required_field + " " + Resources.Resource.unit);
+            if (!existe)
+            {
+                if (parGroupParLevel1XParLevel3.Peso == 0 || parGroupParLevel1XParLevel3.Peso == null)
+                    ModelState.AddModelError("Peso", Resources.Resource.required_field + " " + Resources.Resource.weight);
 
-            if (parGroupParLevel1XParLevel3.ParLevel3_Id <= 0)
-                ModelState.AddModelError("ParLevel3_Id", Resources.Resource.required_field + " " + Resources.Resource.task);
+                if (parGroupParLevel1XParLevel3.Name == "" || parGroupParLevel1XParLevel3.Name == null)
+                    ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
 
-            if (parGroupParLevel1XParLevel3.ParLevel2_Id <= 0)
-                ModelState.AddModelError("ParLevel2_Id", Resources.Resource.required_field + " " + Resources.Resource.monitoring);
+                if (parGroupParLevel1XParLevel3.ParDepartment_Id <= 0)
+                    ModelState.AddModelError("ParDepartment_Id", Resources.Resource.required_field + " " + Resources.Resource.department);
 
-            if (parGroupParLevel1XParLevel3.ParLevel1_Id <= 0)
-                ModelState.AddModelError("ParLevel1_Id", Resources.Resource.required_field + " " + "Indicador");
+                if (parGroupParLevel1XParLevel3.ParCompany_Id <= 0)
+                    ModelState.AddModelError("ParCompany_Id", Resources.Resource.required_field + " " + Resources.Resource.unit);
 
-            if (parGroupParLevel1XParLevel3.ParGroupParLevel1_Id <= 0)
-                ModelState.AddModelError("ParGroupParLevel1_Id", Resources.Resource.required_field + " " + "Grupo Indicadores");
+                if (parGroupParLevel1XParLevel3.ParLevel3_Id <= 0)
+                    ModelState.AddModelError("ParLevel3_Id", Resources.Resource.required_field + " " + Resources.Resource.task);
+
+                if (parGroupParLevel1XParLevel3.ParLevel2_Id <= 0)
+                    ModelState.AddModelError("ParLevel2_Id", Resources.Resource.required_field + " " + Resources.Resource.monitoring);
+
+                if (parGroupParLevel1XParLevel3.ParLevel1_Id <= 0)
+                    ModelState.AddModelError("ParLevel1_Id", Resources.Resource.required_field + " " + "Indicador");
+
+                if (parGroupParLevel1XParLevel3.ParGroupParLevel1_Id <= 0)
+                    ModelState.AddModelError("ParGroupParLevel1_Id", Resources.Resource.required_field + " " + "Grupo Indicadores");
+            }
+            else
+            {
+                ModelState.AddModelError("ParLevel1_Id", Resources.Resource.link_alredy_used);
+            }
         }
 
         // GET: ParGroupParLevel1XParLevel3/Edit/5
@@ -188,7 +208,7 @@ namespace SgqSystem.Controllers
 
             return View(parGroupParLevel1XParLevel3);
         }
- 
+
         // POST: ParGroupParLevel1XParLevel3/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.

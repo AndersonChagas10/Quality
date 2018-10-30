@@ -2190,4 +2190,10 @@
   <data name="String1" xml:space="preserve">
     <value>Atualizar</value>
   </data>
+  <data name="name_alredy_exist" xml:space="preserve">
+    <value>Já existe um item cadastrado com este Nome</value>
+  </data>
+  <data name="link_alredy_used" xml:space="preserve">
+    <value>Este vínculo já está sendo utilizado</value>
+  </data>
 </root>

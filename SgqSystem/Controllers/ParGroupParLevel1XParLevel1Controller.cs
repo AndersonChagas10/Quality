@@ -39,8 +39,8 @@ namespace SgqSystem.Controllers
         // GET: ParGroupParLevel1XParLevel1/Create
         public ActionResult Create()
         {
-           // ViewBag.ParGroupParLevel1_Id = new SelectList(db.ParGroupParLevel1, "Id", "Name");
-           // ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name");
+            // ViewBag.ParGroupParLevel1_Id = new SelectList(db.ParGroupParLevel1, "Id", "Name");
+            // ViewBag.ParLevel1_Id = new SelectList(db.ParLevel1, "Id", "Name");
 
             var listaGrupos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
             listaGrupos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
@@ -83,11 +83,21 @@ namespace SgqSystem.Controllers
 
         private void ValidaGrupoIndicadorXIndicador(ParGroupParLevel1XParLevel1 parGroupParLevel1XParLevel1)
         {
-            if (parGroupParLevel1XParLevel1.ParLevel1_Id <= 0)
-                ModelState.AddModelError("ParLevel1_Id", Resources.Resource.required_field + " " + "Indicador");
+            bool existe = db.ParGroupParLevel1XParLevel1
+                .Any(x => (x.ParGroupParLevel1_Id == parGroupParLevel1XParLevel1.ParGroupParLevel1_Id && x.ParLevel1_Id == parGroupParLevel1XParLevel1.ParLevel1_Id) && x.Id != parGroupParLevel1XParLevel1.Id);
 
-            if (parGroupParLevel1XParLevel1.ParGroupParLevel1_Id <= 0)
-                ModelState.AddModelError("ParGroupParLevel1_Id", Resources.Resource.required_field + " " + "Grupo Indicador");
+            if (!existe)
+            {
+                if (parGroupParLevel1XParLevel1.ParLevel1_Id <= 0)
+                    ModelState.AddModelError("ParLevel1_Id", Resources.Resource.required_field + " " + "Indicador");
+
+                if (parGroupParLevel1XParLevel1.ParGroupParLevel1_Id <= 0)
+                    ModelState.AddModelError("ParGroupParLevel1_Id", Resources.Resource.required_field + " " + "Grupo Indicador");
+            }
+            else
+            {
+                ModelState.AddModelError("ParLevel1_Id", Resources.Resource.link_alredy_used);
+            }
         }
 
         // GET: ParGroupParLevel1XParLevel1/Edit/5
