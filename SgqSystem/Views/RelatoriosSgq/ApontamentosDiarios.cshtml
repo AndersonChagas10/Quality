@@ -33,11 +33,18 @@
 
         .itemHeaderField .labelHeaderField {
             height: 49px;
+            display: flex;
+            align-items: flex-end;
         }
 
         .itemHeaderField .labelHeaderFieldIntegracao {
             color: rgb(167, 176, 24);
         }
+
+    .productNamelabel{
+        font-size:10px;
+        color:blue;
+    }
 </style>
 
 <div class="modal fade bd-example-modal-lg" id="modalHeaderField" role="dialog">
@@ -103,6 +110,7 @@
         var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
         var urlEditCabecalho = '@Html.Raw(Url.Action("EditCabecalho", "api/ApontamentosDiarios"))';
         var urlSaveHeaderField = '@Html.Raw(Url.Action("SaveCabecalho", "api/ApontamentosDiarios"))';
+        var listaProdutosJson = @Html.Raw(Json.Encode(ViewBag.Produtos));
 
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -305,21 +313,25 @@
                                     switch (o.HeaderField.ParFieldType_Id) {
                                         case 1:
                                             html =
-                                                `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                                `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3 itemHeaderField" name="">
                                                 <div class="form-group header" name="" style="margin-bottom: 4px;">
                                                     <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                     <select class="form-control input-sm ddl" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" idpai="0" linknumberevaluetion="false" IsRequired="${o.HeaderField.IsRequired}">
                                                         <option value="">Selecione...</option>`
 
-                                            o.Values.forEach(function (oo) {
+                                            if (o.Values) {
 
-                                                let selected = '';
+                                                o.Values.forEach(function (oo) {
 
-                                                if (oo.Id == o.ValueSelected)
-                                                    selected = 'selected="selected"';
+                                                    let selected = '';
 
-                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
-                                            });
+                                                    if (oo.Id == o.ValueSelected)
+                                                        selected = 'selected="selected"';
+
+                                                    html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
+                                                });
+
+                                            }
 
                                             html += `</select> <label class="">
                                                     </label>
@@ -329,45 +341,68 @@
 
                                         case 2:
 
-                                            html =
-                                                `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
-                                                    <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
-                                                        <label class="font-small labelHeaderField labelHeaderFieldIntegracao">${o.HeaderField.Name}</label>
-                                                        <select class="form-control input-sm " CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="true" style="border: 1px solid rgb(167, 176, 24);" IsRequired="${o.HeaderField.IsRequired}">
-                                                            <option value="">Selecione...</option>`
+                                            if (o.HeaderField.Description == "Produto") {
 
-                                            o.Values.forEach(function (oo) {
+                                                if (o.ValueSelected == null)
+                                                    o.ValueSelected = "";
 
-                                                let selected = '';
+                                                html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 itemHeaderField" name="">
+                                                        <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                            <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
+                                                            <input class="form-control input-sm produto" type="number" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}" onkeyup="buscarProduto(this, $(this).val());" onchange="validaProduto(this, $(this).val());">
+                                                            <label class="productNamelabel" title=""></label>
+                                                        </div>
+                                                    </div>`;
 
-                                                if (oo.Id == o.ValueSelected)
-                                                    selected = 'selected="selected"';
+                                            } else {
 
-                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
-                                            });
+                                                html =
+                                                    `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 itemHeaderField" name="">
+                                                        <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                            <label class="font-small labelHeaderField labelHeaderFieldIntegracao">${o.HeaderField.Name}</label>
+                                                            <select class="form-control input-sm " CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="true" style="border: 1px solid rgb(167, 176, 24);" IsRequired="${o.HeaderField.IsRequired}">
+                                                                <option value="">Selecione...</option>`
 
-                                            html += `</select>
-                                                    </div>
-                                                </div>`;
+                                                if (o.Values) {
+
+                                                    o.Values.forEach(function (oo) {
+
+                                                        let selected = '';
+
+                                                        if (oo.Id == o.ValueSelected)
+                                                            selected = 'selected="selected"';
+
+                                                        html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
+                                                    });
+                                                }
+
+                                                html += `</select>
+                                                        </div>
+                                                    </div>`;
+                                            }
 
                                             break;
                                         case 3:
 
-                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 itemHeaderField" name="">
                                                       <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
                                                         <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                         <select class="form-control input-sm" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParHeaderField_Name="${o.HeaderField.Id}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="false" IsRequired="${o.HeaderField.IsRequired}">`;
 
-                                            o.Values.forEach(function (oo) {
+                                            if (o.Values) {
 
-                                                let selected = '';
+                                                o.Values.forEach(function (oo) {
 
-                                                if (oo.Id == o.ValueSelected)
-                                                    selected = 'selected="selected"';
+                                                    let selected = '';
 
-                                                html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
+                                                    if (oo.Id == o.ValueSelected)
+                                                        selected = 'selected="selected"';
 
-                                            });
+                                                    html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
+
+                                                });
+
+                                            }
 
                                             html += `</select>
                                                         <label class=""></label>
@@ -380,7 +415,7 @@
                                             if (o.ValueSelected == null)
                                                 o.ValueSelected = "";
 
-                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 itemHeaderField" name="">
                                                         <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
                                                             <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                             <input class="form-control input-sm" type="text" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
@@ -395,7 +430,7 @@
                                             if (o.ValueSelected == null)
                                                 o.ValueSelected = "";
 
-                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 itemHeaderField" name="">
                                                     <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
                                                         <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                         <input class="form-control input-sm" type="number" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
@@ -410,7 +445,7 @@
                                             if (o.ValueSelected == null)
                                                 o.ValueSelected = "";
 
-                                            html = `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                            html = `<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3 itemHeaderField" name="">
                                                     <div class="form-group" name="" style="margin-bottom: 4px;">
                                                         <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                             <input class="form-control input-sm" type="date" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
@@ -424,7 +459,7 @@
                                             if (o.ValueSelected == null)
                                                 o.ValueSelected = "";
 
-                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                            html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 itemHeaderField" name="">
                                                     <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
                                                         <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
                                                         <input class="form-control input-sm" type="time" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}">
@@ -440,6 +475,8 @@
                                     $('#modalHeaderField #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento);
 
                                     $('#divEdit').append(html);
+
+                                    $('.produto').trigger('onkeyup');
 
                                 });
                             } else {
@@ -665,6 +702,33 @@
         function escondeMensagemVazio() {
             $('#divMensagemVazio').hide();
             $('#mensagemVazio').html();
+        }
+
+        function buscarProduto(a, valor) {
+
+            for (var j = 0; j < listaProdutosJson.length; j++) {
+                if (listaProdutosJson[j].id == valor) {
+
+                    $(a).next().html(listaProdutosJson[j].nome.substring(0, 24));
+                    $(a).next().prop('title', listaProdutosJson[j].nome);
+
+                    return;
+                }
+            }
+
+            $(a).next().html('');
+            $(a).next().prop('title', '');
+        }
+
+        function validaProduto(a, valor) {
+
+            for (var j = 0; j < listaProdutosJson.length; j++) {
+                if (listaProdutosJson[j].id == valor) {
+                    return;
+                }
+            }
+
+            $(a).val('');
         }
 
     </script>
