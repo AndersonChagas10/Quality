@@ -51,7 +51,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <p>Arquivo salvo com sucesso!</p>
+                        <p id="mensagemAposImportacao">Arquivo salvo com sucesso!</pif>
                     </div>
                     <div class="modal-footer">
                         <button id="modalSucesso" type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -173,14 +173,15 @@
                         data: dados,
                         success: function (retorno) {
                             $('body').LoadingOverlay("hide");
+                            $("#mensagemAposImportacao").html(retorno);
                             $("#ModalErro").hide();
                             $("#ModalInformacao").modal('show');
                         },
                         error: function (retorno) {
                             $('body').LoadingOverlay("hide");
-                            $("#ModalErro").html("<p>" + retorno.responseJSON.Message + "</p>")
+                            $("#ModalErro").html("<p>" + retorno.responseJSON.Message + "</p>");
                             $("#ModalErro").show();
-                        },
+                        }
                     });
                 } else {
                     $("#ModalConfirmacao").modal('hide');

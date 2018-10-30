@@ -1076,8 +1076,11 @@ namespace SgqSystem.Controllers.Api
 
             var coletas = db.Database.SqlQuery<CollectionLevel2XParHeaderField>(query).ToList();
 
+            //Ids dos cabeçalhos de monitoramentos
+            var level1HeaderFields_Id = db.ParLevel1XHeaderField.Include("ParHeaderField").Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.IsActive && r.ParHeaderField.ParLevelDefinition_Id == 1).Select(r => r.ParHeaderField_Id).ToList();
+
             //Ids dos cabeçalhos que não fazem parte do Monitoramento
-            var headerFields_IdNot = db.ParLevel2XHeaderField.Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.ParLevel2_Id == collectionLevel2.ParLevel2_Id && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
+            var headerFields_IdNot = db.ParLevel2XHeaderField.Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.ParLevel2_Id == collectionLevel2.ParLevel2_Id && r.IsActive).Select(r => r.ParHeaderField_Id).Except(level1HeaderFields_Id).ToList();
 
             //Ids dos cabeçalhos válidos
             var headerFields_Ids = db.ParLevel1XHeaderField.Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && !headerFields_IdNot.Contains(r.ParHeaderField_Id) && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
@@ -1096,18 +1099,8 @@ namespace SgqSystem.Controllers.Api
 
                 if (headerField.ParFieldType_Id == 2) //Se for campo integração
                 {
-                    /* Se for produto que digito o código e busco em uma lista*/
-                    if (headerField.Description == "Produto")
-                    {
-                        var conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-                        var db2 = new SqlConnection(conexao);
-
-                        SGQDBContext.Generico listaProdutos = new SGQDBContext.Generico(db2);
-                        var listaProdutosJSON = listaProdutos.getProdutos();
-                    }
-                    /* se for um combobox integrado*/
-                    else
+                    /* Se não for produto que digito o código e busco em uma lista*/
+                    if (headerField.Description != "Produto")
                     {
                         SGQDBContext.ParFieldType ParFieldTypeDB = new SGQDBContext.ParFieldType();
 

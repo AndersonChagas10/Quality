@@ -3731,7 +3731,7 @@ namespace SgqSystem.Services
             string APPMain = string.Empty;
 
             //colocar autenticação
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date ,null, Shift_Id); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, null, Shift_Id); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
 
             string supports = "<div class=\"Results hide\"></div>" +
@@ -3830,7 +3830,7 @@ $(document).ready(function(){
         }
 
         [WebMethod]
-        public string getAPPLevelsModulado(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId,int Shift_Id)
+        public string getAPPLevelsModulado(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId, int Shift_Id)
         {
 
             string APPMain = string.Empty;
@@ -3859,7 +3859,7 @@ $(document).ready(function(){
         {
             string APPMain = string.Empty;
 
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, Shift_Id , true);
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, Shift_Id, true);
 
             return APPMain;// + resource;
         }
@@ -5496,7 +5496,7 @@ $(document).ready(function(){
                         break;
                     //Numérico
                     case 5:
-                        form_control = "<input class=\"form-control input-sm \" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
+                        form_control = "<input class=\"form-control input-sm \" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
                         form_control += " <label class=\"\"></label>";
                         break;
                     //Data
@@ -5530,7 +5530,7 @@ $(document).ready(function(){
                 retorno += html.div(
                                             outerhtml: form_group,
                                             classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
-                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;height:90px !important"
                                             );
 
 

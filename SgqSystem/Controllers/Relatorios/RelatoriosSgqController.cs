@@ -10,6 +10,7 @@ using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -141,6 +142,16 @@ namespace SgqSystem.Controllers
             }
 
             ViewBag.Roles = Retorno;
+
+            //Produtos para edição de cabeçalhos
+            var conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            var db2 = new SqlConnection(conexao);
+
+            SGQDBContext.Generico listaProdutos = new SGQDBContext.Generico(db2);
+            
+            ViewBag.Produtos = listaProdutos.getProdutos();
+
             //Fim da Role
 
             return View(form);
@@ -169,6 +180,15 @@ namespace SgqSystem.Controllers
 
             ViewBag.Roles = Retorno;
             //Fim da Role
+
+            //Produtos para edição de cabeçalhos
+            var conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            var db2 = new SqlConnection(conexao);
+
+            SGQDBContext.Generico listaProdutos = new SGQDBContext.Generico(db2);
+
+            ViewBag.Produtos = listaProdutos.getProdutos();
 
             return View(form);
         }
