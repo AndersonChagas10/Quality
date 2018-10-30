@@ -4235,7 +4235,7 @@ namespace SgqSystem.Controllers
                    ON _CROSS.CLASSIFIC_NEGOCIO = A.LEVEL1NAME
                    AND _CROSS.MACROPROCESSO = A.RegName
              WHERE 1=1
-                    AND PP1.Name IS NOT NULL 
+                    AND _CROSS.MACROPROCESSO IS NOT NULL 
 				 GROUP BY _CROSS.CLASSIFIC_NEGOCIO,_CROSS.MACROPROCESSO ";
 
             var orderby = "\n ORDER BY 1, 2, 3";
