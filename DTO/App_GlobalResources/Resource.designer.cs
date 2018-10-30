@@ -466,6 +466,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Anticipated.
+        /// </summary>
+        internal static string anticipated {
+            get {
+                return ResourceManager.GetString("anticipated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to April.
         /// </summary>
         internal static string april {
@@ -2406,6 +2415,15 @@ namespace Resources {
         internal static string immediate_corrective_action_is_empty {
             get {
                 return ResourceManager.GetString("immediate_corrective_action_is_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        internal static string import {
+            get {
+                return ResourceManager.GetString("import", resourceCulture);
             }
         }
         

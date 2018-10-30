@@ -235,13 +235,15 @@
                                 {
                                     title: "@Resources.Resource.type ", mData: "Type", mRender: function (data, type, full) {
 
-                                        if (data == "2") {
+                                       if (data == "2") {
                                             return '@Resources.Resource.retroactive';
-                                        }else if (full.Platform == "Excel") {
-                                            return "Data futura";
-                                        }else if(data == '1'){
+                                        } else if (data == "3") {
+                                           return '@Resources.Resource.anticipated';
+                                        } else if (data == "4") {
+                                            return '@Resources.Resource.import';
+                                        }else if (data == '1') {
                                             return '@Resources.Resource.edited';
-                                        }else{
+                                        }else {
                                             return '@Resources.Resource.normal';
                                         }
                                     }

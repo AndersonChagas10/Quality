@@ -2685,4 +2685,10 @@
   <data name="indicator_group" xml:space="preserve">
     <value>Indicator Group</value>
   </data>
+  <data name="anticipated" xml:space="preserve">
+    <value>Anticipated</value>
+  </data>
+  <data name="import" xml:space="preserve">
+    <value>Import</value>
+  </data>
 </root>
