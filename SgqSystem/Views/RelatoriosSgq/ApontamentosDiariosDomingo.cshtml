@@ -68,6 +68,7 @@
         var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
         var urlEditCabecalho = '@Html.Raw(Url.Action("EditCabecalho", "api/ApontamentosDiarios"))';
         var urlSaveHeaderField = '@Html.Raw(Url.Action("SaveCabecalho", "api/ApontamentosDiarios"))';
+        var listaProdutosJson = @Html.Raw(Json.Encode(ViewBag.Produtos));
 
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -288,29 +289,45 @@
 
                                         case 2:
 
-                                            html =
-                                                `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2" name="" style="padding-right: 4px !important; padding-left: 4px !important;">
-                                                    <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
-                                                        <label class="font-small" style="color: rgb(167, 176, 24); height: 22px;">${o.HeaderField.Name}</label>
-                                                        <select class="form-control input-sm " CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="true" style="border: 1px solid rgb(167, 176, 24);" IsRequired="${o.HeaderField.IsRequired}">
-                                                            <option value="">Selecione...</option>`
+                                            if (o.HeaderField.Description == "Produto") {
 
-                                            if (o.Values) {
+                                                if (o.ValueSelected == null)
+                                                    o.ValueSelected = "";
 
-                                                o.Values.forEach(function (oo) {
+                                                html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                                        <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                            <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
+                                                            <input class="form-control input-sm produto" type="number" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}" onkeyup="buscarProduto(this, $(this).val());" onchange="validaProduto(this, $(this).val());">
+                                                            <label class="productNamelabel" title=""></label>
+                                                        </div>
+                                                    </div>`;
 
-                                                    let selected = '';
+                                            } else {
 
-                                                    if (oo.Id == o.ValueSelected)
-                                                        selected = 'selected="selected"';
+                                                html =
+                                                    `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 itemHeaderField" name="">
+                                                        <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                            <label class="font-small labelHeaderField labelHeaderFieldIntegracao">${o.HeaderField.Name}</label>
+                                                            <select class="form-control input-sm " CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="true" style="border: 1px solid rgb(167, 176, 24);" IsRequired="${o.HeaderField.IsRequired}">
+                                                                <option value="">Selecione...</option>`
 
-                                                    html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
-                                                });
+                                                if (o.Values) {
+
+                                                    o.Values.forEach(function (oo) {
+
+                                                        let selected = '';
+
+                                                        if (oo.Id == o.ValueSelected)
+                                                            selected = 'selected="selected"';
+
+                                                        html += '<option value="' + oo.Id + '" punishmentvalue="' + oo.PunishmentValue + '" ' + selected + '>' + oo.Name + '</option>';
+                                                    });
+                                                }
+
+                                                html += `</select>
+                                                        </div>
+                                                    </div>`;
                                             }
-
-                                            html += `</select>
-                                                    </div>
-                                                </div>`;
 
                                             break;
                                         case 3:
@@ -568,6 +585,33 @@
         function escondeMensagemVazio() {
             $('#divMensagemVazio').hide();
             $('#mensagemVazio').html();
+        }
+
+        function buscarProduto(a, valor) {
+
+            for (var j = 0; j < listaProdutosJson.length; j++) {
+                if (listaProdutosJson[j].id == valor) {
+
+                    $(a).next().html(listaProdutosJson[j].nome.substring(0, 15));
+                    $(a).next().prop('title', listaProdutosJson[j].nome);
+
+                    return;
+                }
+            }
+
+            $(a).next().html('');
+            $(a).next().prop('title', '');
+        }
+
+        function validaProduto(a, valor) {
+
+            for (var j = 0; j < listaProdutosJson.length; j++) {
+                if (listaProdutosJson[j].id == valor) {
+                    return;
+                }
+            }
+
+            $(a).val('');
         }
 
     </script>

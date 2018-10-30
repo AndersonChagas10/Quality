@@ -1099,18 +1099,8 @@ namespace SgqSystem.Controllers.Api
 
                 if (headerField.ParFieldType_Id == 2) //Se for campo integração
                 {
-                    /* Se for produto que digito o código e busco em uma lista*/
-                    if (headerField.Description == "Produto")
-                    {
-                        var conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-                        var db2 = new SqlConnection(conexao);
-
-                        SGQDBContext.Generico listaProdutos = new SGQDBContext.Generico(db2);
-                        var listaProdutosJSON = listaProdutos.getProdutos();
-                    }
-                    /* se for um combobox integrado*/
-                    else
+                    /* Se não for produto que digito o código e busco em uma lista*/
+                    if (headerField.Description != "Produto")
                     {
                         SGQDBContext.ParFieldType ParFieldTypeDB = new SGQDBContext.ParFieldType();
 
