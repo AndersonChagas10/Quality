@@ -128,8 +128,17 @@ namespace SgqSystem.Controllers
 
         private void ValidaTipoGrupo(ParGroupParLevel1Type parGroupParLevel1Type)
         {
-            if (parGroupParLevel1Type.Name == null)
-                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+            bool existe = db.ParGroupParLevel1Type.Any(x => (x.Name == parGroupParLevel1Type.Name) && x.Id != parGroupParLevel1Type.Id);
+
+            if (!existe)
+            {
+                if (parGroupParLevel1Type.Name == null)
+                    ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+            }
+            else
+            {
+                ModelState.AddModelError("Name", Resources.Resource.name_alredy_exist);
+            }
         }
     }
 }
