@@ -116,7 +116,7 @@ namespace SgqSystem.Controllers
             return View(parGroupParLevel1XParLevel3);
         }
 
-        private void ValidaGrupoIndicadorXTarefa(ParGroupParLevel1XParLevel3 parGroupParLevel1XParLevel3)
+        private void ValidaGrupoIndicadorXTarefa(ParVinculoPeso parGroupParLevel1XParLevel3)
         {
             var existe = true;
 
@@ -284,32 +284,7 @@ namespace SgqSystem.Controllers
             }
             base.Dispose(disposing);
         }
-        private void ValidaGrupoIndicadorXTarefa(ParVinculoPeso parGroupParLevel1XParLevel3)
-        {
-            if (parGroupParLevel1XParLevel3.Peso == 0 || parGroupParLevel1XParLevel3.Peso == null)
-                ModelState.AddModelError("Peso", Resources.Resource.required_field + " " + Resources.Resource.weight);
-
-            if (parGroupParLevel1XParLevel3.Name == "" || parGroupParLevel1XParLevel3.Name == null)
-                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
-
-            if (parGroupParLevel1XParLevel3.ParDepartment_Id <= 0)
-                ModelState.AddModelError("ParDepartment_Id", Resources.Resource.required_field + " " + Resources.Resource.department);
-
-            if (parGroupParLevel1XParLevel3.ParCompany_Id <= 0)
-                ModelState.AddModelError("ParCompany_Id", Resources.Resource.required_field + " " + Resources.Resource.unit);
-
-            if (parGroupParLevel1XParLevel3.ParLevel3_Id <= 0)
-                ModelState.AddModelError("ParLevel3_Id", Resources.Resource.required_field + " " + Resources.Resource.task);
-
-            if (parGroupParLevel1XParLevel3.ParLevel2_Id <= 0)
-                ModelState.AddModelError("ParLevel2_Id", Resources.Resource.required_field + " " + Resources.Resource.monitoring);
-
-            if (parGroupParLevel1XParLevel3.ParLevel1_Id <= 0)
-                ModelState.AddModelError("ParLevel1_Id", Resources.Resource.required_field + " " + "Indicador");
-
-            if (parGroupParLevel1XParLevel3.ParGroupParLevel1_Id <= 0)
-                ModelState.AddModelError("ParGroupParLevel1_Id", Resources.Resource.required_field + " " + "Grupo Indicadores");
-        }
+       
 
     }
 }
