@@ -445,7 +445,7 @@
     <value>Positivo</value>
   </data>
   <data name="punishment_value" xml:space="preserve">
-    <value>Valor da punição/recompensa</value>
+    <value>Valor da punição</value>
   </data>
   <data name="punishment_value_popover" xml:space="preserve">
     <value>Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior</value>

@@ -5389,7 +5389,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Punishment/reward value.
+        ///   Looks up a localized string similar to Punishment.
         /// </summary>
         internal static string punishment_value {
             get {
