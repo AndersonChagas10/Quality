@@ -112,7 +112,8 @@
             listObjSalvo: listSalvo,
             idTable: 'tableAvAm',//
             tdsNames: ['companyName', 'ParLevel1_Name', 'ParCluster_Name','evaluationNumber', 'sampleNumber', 'btn'],
-            getObjAdd: function(isEdit, obj){
+            getObjAdd: function (isEdit, obj) {
+                debugger
                 if(isEdit != undefined){
                     var compId = $('#' + isEdit + ' #avAmCompany :selected').val();
                     var compName = $('#' + isEdit + ' #avAmCompany :selected').text();
@@ -178,7 +179,6 @@
                 var parLevel1Selected = $('#' + seletorTato + ' #parLevel1Select2AmostraLevel :selected').val();
                 var parClusterSelected = $('#' + seletorTato + ' #parClusterSelect2AmostraLevel :selected').val();
                 var exist = $.grep($('#tableAvAm  tbody  tr  td:nth-child(1)'), function(o, c){//
-
                     var count = 0;
                     if(companySelected == -1){
                         count += verify($(o).parent().data().companyId);

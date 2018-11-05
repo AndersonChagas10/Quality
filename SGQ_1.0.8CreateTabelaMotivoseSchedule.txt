@@ -1,0 +1,32 @@
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.8CreateTabelaMotivoseSchedule',GetDate());
+
+GO
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MotivosAtraso' AND xtype='U')
+Create Table MotivosAtraso (   
+	Id int not null identity PRIMARY KEY,
+	Motivo varchar(250) not null,
+)
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParEvaluationSchedule' AND xtype='U')
+Create Table ParEvaluationSchedule (
+		Id int not null identity PRIMARY KEY,
+		ParEvaluation_Id int not null FOREIGN KEY REFERENCES ParEvaluation(Id),
+        Av int not null,
+        Inicio  int not null,
+        Fim  int not null,
+        Shift_Id  int null,
+)
+
+GO
+ 
+
+
+
+ 
+
+
