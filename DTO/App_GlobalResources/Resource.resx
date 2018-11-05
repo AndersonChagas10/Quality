@@ -2244,4 +2244,10 @@
   <data name="import" xml:space="preserve">
     <value>Import</value>
   </data>
+  <data name="name_alredy_exist" xml:space="preserve">
+    <value>An item already registered with this Name already exists</value>
+  </data>
+  <data name="link_alredy_used" xml:space="preserve">
+    <value>This link is already being used</value>
+  </data>
 </root>

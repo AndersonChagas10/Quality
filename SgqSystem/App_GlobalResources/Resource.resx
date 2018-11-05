@@ -451,7 +451,7 @@
     <value>Positive</value>
   </data>
   <data name="punishment_value" xml:space="preserve">
-    <value>Punishment/reward value</value>
+    <value>Punishment</value>
   </data>
   <data name="punishment_value_popover" xml:space="preserve">
     <value>Define the value of the punishment and/or reward on regard of the options according to the last one</value>
@@ -2690,5 +2690,11 @@
   </data>
   <data name="import" xml:space="preserve">
     <value>Import</value>
+  </data>
+  <data name="name_alredy_exist" xml:space="preserve">
+    <value>An item already registered with this Name already exists</value>
+  </data>
+  <data name="link_alredy_used" xml:space="preserve">
+    <value>This link is already being used</value>
   </data>
 </root>

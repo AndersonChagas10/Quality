@@ -8171,7 +8171,7 @@ $(document).ready(function(){
                         {
                             var sql2 = $@"SELECT
                         	RL3.Id
-                        	,((RL3.Defects * RL3.Weight) + ({ resultLevel3.PunishmentValue.ToString().Replace(',', '.') } + RL3.Weight)) as WeiDefects
+                        	,((RL3.Defects * RL3.Weight) + ({ resultLevel3.PunishmentValue.ToString().Replace(',', '.') } * RL3.Weight)) as WeiDefects
                         FROM Result_Level3 RL3
                         WHERE Id = { resultLevel3.Id }";
 

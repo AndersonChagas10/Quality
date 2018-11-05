@@ -1012,6 +1012,8 @@ namespace SgqSystem.Controllers.Api
                         else //Update
                         {
                             original.Value = item.Value;
+                            original.ParHeaderField_Id = item.ParHeaderField_Id;
+                            original.ParHeaderField_Name = item.ParHeaderField_Name;
                         }
                     }
                     else if (!string.IsNullOrEmpty(item.Value)) //Add

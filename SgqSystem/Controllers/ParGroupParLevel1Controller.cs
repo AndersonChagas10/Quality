@@ -194,11 +194,20 @@ namespace SgqSystem.Controllers
 
         private void ValidaGrupoIndicadores(ParGroupParLevel1 parGroupParLevel1)
         {
-            if (parGroupParLevel1.Name == null)
-                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+            bool existe = db.ParGroupParLevel1.Any(x => (x.Name == parGroupParLevel1.Name) && x.Id != parGroupParLevel1.Id);
 
-            if (parGroupParLevel1.ParGroupParLevel1Type_Id <= 0)
-                ModelState.AddModelError("ParGroupParLevel1Type_Id", Resources.Resource.required_field + " " + "Grupo de Tipo de Indicador");
+            if (!existe)
+            {
+                if (parGroupParLevel1.Name == null)
+                    ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+
+                if (parGroupParLevel1.ParGroupParLevel1Type_Id <= 0)
+                    ModelState.AddModelError("ParGroupParLevel1Type_Id", Resources.Resource.required_field + " " + "Grupo de Tipo de Indicador");
+            }
+            else
+            {
+                ModelState.AddModelError("Name", Resources.Resource.name_alredy_exist);
+            }
         }
 
     }
