@@ -4984,6 +4984,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scheduling.
+        /// </summary>
+        internal static string scheduling {
+            get {
+                return ResourceManager.GetString("scheduling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scorecard.
         /// </summary>
         internal static string scorecard {

@@ -2697,4 +2697,7 @@
   <data name="link_alredy_used" xml:space="preserve">
     <value>This link is already being used</value>
   </data>
+  <data name="scheduling" xml:space="preserve">
+    <value>Scheduling</value>
+  </data>
 </root>
