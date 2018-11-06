@@ -8230,8 +8230,13 @@ $(document).ready(function(){
 
                     if (listaCollectionsLevel2XMotivosAtraso != null && listaCollectionsLevel2XMotivosAtraso.DadosIsValid())
                     {
-
-                        conexaoEF.CollectionLevel2XMotivoAtraso.AddRange(listaCollectionsLevel2XMotivosAtraso.CollectionsLevel2XMotivosAtraso);
+                        foreach (var item in listaCollectionsLevel2XMotivosAtraso.CollectionsLevel2XMotivosAtraso)
+                        {
+                            if (item.IsValid())
+                            {
+                                conexaoEF.CollectionLevel2XMotivoAtraso.Add(item);
+                            }                       
+                        }
                     }
 
                     conexaoEF.SaveChanges();

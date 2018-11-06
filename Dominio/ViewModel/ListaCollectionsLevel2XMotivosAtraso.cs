@@ -17,19 +17,6 @@ namespace Dominio
                 return false;
             }
 
-            foreach (var item in CollectionsLevel2XMotivosAtraso)
-            {
-                if(item.CollectionLevel2_Id <= 0)
-                {
-                    return false;
-                }
-
-                if (item.MotivoAtraso_Id <= 0)
-                {
-                    return false;
-                }
-            }
-
             return true;
         }
     }
