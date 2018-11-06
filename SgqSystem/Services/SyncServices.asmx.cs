@@ -4014,22 +4014,27 @@ $(document).ready(function(){
             return sample;
         }
 
-        public void GetEvaluationSchedule(ParLevel2Evaluate parLevel2Evaluate, int shift_Id)
+        public string GetEvaluationSchedule(int parLevel1_Id, int parLevel2_Id, int company_Id, int shift_Id)
         {
             try
             {
+                List<string> frequencia = new List<string>();
                 using (var conexaoEF = new SgqDbDevEntities())
                 {
-                    //foreach (var item in conexaoEF.ParEvaluationSchedule.Where(x=>x.ParEvaluation))
-                    //{
-                    //}
-
-                    conexaoEF.SaveChanges();
+                    foreach (var item in conexaoEF.ParEvaluationSchedule
+                        .Where(x => x.ParEvaluation.ParLevel1_Id == parLevel1_Id
+                        && x.ParEvaluation.ParLevel2_Id == parLevel2_Id
+                        && x.ParEvaluation.ParCompany_Id == company_Id
+                        && x.Shift_Id == shift_Id).ToList())
+                    {
+                        frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
+                    }
                 }
+                return string.Join("|", frequencia);
             }
             catch (Exception Ex)
             {
-                throw;
+                return "";
             }
         }
 
@@ -4936,12 +4941,12 @@ $(document).ready(function(){
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List) //LOOP3
             {
+                string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
                     var parlevel2Evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
-                    //Shift_Id
-                    GetEvaluationSchedule(parlevel2Evaluate, Shift_Id);
+                    frequencia = GetEvaluationSchedule(parlevel2.ParLevel2_id, ParLevel1.ParLevel1_Id, ParCompany_Id, Shift_Id);
                     evaluate = parlevel2Evaluate.Evaluate;
                     sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
                     //defect = getCollectionLevel2Keys(ParCompany_Id,data, ParLevel1);
@@ -5116,9 +5121,8 @@ $(document).ready(function(){
                                             RuleValue: ruleValue.ToString(),
                                             reaudit: parlevel2.IsReaudit,
                                             HasTakePhoto: parlevel2.HasTakePhoto,
-                                            FrequenciaTipo:"",
-                                            FrequenciaValor: "",
-                                            FrequenciaMensagemInativo:"");
+                                            FrequenciaValor: frequencia,
+                                            FrequenciaMensagemInativo: "");
 
                 var listLineCounter = ParCounterDB.GetParLevelXParCounterList(null, parlevel2, 2);
 
