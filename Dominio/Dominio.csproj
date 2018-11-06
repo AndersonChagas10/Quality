@@ -98,6 +98,7 @@
     <Compile Include="ParCriticalLevel.cs" />
     <Compile Include="ParDepartment.cs" />
     <Compile Include="ParEvaluation.cs" />
+    <Compile Include="ParEvaluationSchedule.cs" />
     <Compile Include="ParFieldType.cs" />
     <Compile Include="ParFrequency.cs" />
     <Compile Include="ParGoal.cs" />

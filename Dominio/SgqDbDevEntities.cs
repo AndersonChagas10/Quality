@@ -239,6 +239,8 @@ namespace Dominio
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1Type> ParGroupParLevel1Type { get; set; }
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1XParLevel1> ParGroupParLevel1XParLevel1 { get; set; }
         public virtual DbSet<CollectionLevel2XMotivoAtraso> CollectionLevel2XMotivoAtraso { get; set; }
+        public virtual DbSet<ParEvaluationSchedule> ParEvaluationSchedule { get; set; }
+        public virtual DbSet<MotivoAtraso> MotivoAtraso { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

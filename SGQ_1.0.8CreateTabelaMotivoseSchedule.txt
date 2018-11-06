@@ -3,9 +3,8 @@ Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.8CreateTabelaMotiv
 
 GO
 
-
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MotivosAtraso' AND xtype='U')
-Create Table MotivosAtraso (   
+Create Table MotivoAtraso (   
 	Id int not null identity PRIMARY KEY,
 	Motivo varchar(250) not null,
 	AddDate datetime not null,
@@ -28,7 +27,16 @@ Create Table ParEvaluationSchedule (
 
 GO
  
+ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XMotivoAtraso' AND xtype='U')
+ create table CollectionLevel2XMotivoAtraso (
+	Id int primary key identity not null,
+	AddDate datetime not null,
+	AlterDate datetime,
+	CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
+	MotivoAtraso_Id int not null foreign key references MotivoAtraso(Id)
+)
 
+GO
 
 
  

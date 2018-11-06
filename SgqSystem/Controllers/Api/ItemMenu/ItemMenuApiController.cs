@@ -27,7 +27,7 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("UpdateItensMenu")]
-        public bool UpdateItensMenu(MeuRabo ItensMenu)
+        public bool UpdateItensMenu(ListaItemMenu ItensMenu)
         {
 
             //Setar todos ItemMenu_Id para null antes de salvar
@@ -62,7 +62,7 @@ namespace SgqSystem.Controllers.Api
             return true;
         }
 
-        public class MeuRabo
+        public class ListaItemMenu
         {
             public List<ItemMenu> ItensMenu { get; set; }
         }

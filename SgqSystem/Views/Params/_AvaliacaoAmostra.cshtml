@@ -65,7 +65,7 @@
                     <thead>
                         <tr>
                             <th>@Resources.Resource.company</th>
-                            <th>@Resources.Resource.level1</th> 
+                            <th>@Resources.Resource.level1</th>
                             <th>@Resources.Resource.cluster</th>
                             <th>@Resources.Resource.evaluation</th>
                             <th>@Resources.Resource.samples / @Resources.Resource.evaluation</th>
@@ -75,7 +75,47 @@
                     </thead>
                     <tbody></tbody>
                 </table>
+                <div class="modal fade" id="modalAgendamento" role="dialog">
+                    <div class="modal-dialog modal-lg vertical-align-center">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Agendamento</h4>
+                            </div>
+                            <div class="modal-body">
+                                
+                                    <div class="form-group">
+                                        <label>Tipo de agendamento do monitoramento:</label>
+                                        <input id="inpTipoAgendamento" disabled="disabled" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Avaliação:</label>
+                                        <input id="inpAvaliacao" />
+                                        <label>Turno:</label>
 
+                                        <select id="slAgendamento">
+                                            <option value="0">Todos</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                        </select>
+
+                                        @*<input id="inpTurno" />*@
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Inicio:</label>
+                                        <input id="inpInicio" />
+                                        <label>Termino:</label>
+                                        <input id="inpTermino" />
+                                    </div>
+                            
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" id="btnSalvarAgendamento" class="btn btn-success">Salvar</button>
+                                <button type="button" data-dismiss="modal" onclick="LimpaCampos()" class="btn btn-default">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -98,7 +138,7 @@
             levelDomain = "newLevel2Modal";
             listSalvo = paramsDto.parLevel2Dto.listParLevel2SampleEvaluationDTO;//
             AvAm2 = getCounterObject(levelDomain, listSalvo);//
-            AvAm2 .carregaDadosDoDb();//
+            AvAm2.carregaDadosDoDb();//
         }
 
     }
@@ -272,7 +312,7 @@
                         }else{
                             o['ParLevel1_Name'] = "@Resources.Resource.all";
                         }
-                        o['agendamento'] = '<button class="btn btn-info btn-xs popovers" title="agendamento">Agendamento</button>';
+                        o['agendamento'] = '<button type="button" class="btn btn-info btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
@@ -288,8 +328,9 @@
             },
             /*Fim Setup*/
             adiciona: function(e) {
-                if(this.veifyAdd()){
+                if (this.veifyAdd()) {
                     var object = this.getObjAdd();
+                    object.agendamento = "";
                     crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
 
                     $("#parClusterSelect2AmostraLevel").val($("#parClusterSelect2AmostraLevel option:first").val());
@@ -300,7 +341,72 @@
         };
     }
 
+    function abrirModalAgendamento(linha) {
+        debugger
+        var obj = $(linha).parents('tr').data();
+        $('#modalAgendamento').modal('show');
 
+        $("#inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        $("#inpAvaliacao").val(obj.evaluationNumber);
+    }
+
+    function LimpaCampos() {
+        $("#inpInicio").val("");
+        $("#inpTermino").val("");
+    }
+
+    $("#btnSalvarAgendamento").on('click', function () {
+
+        var inicio = parseInt($("#inpInicio").val());
+        var termino = parseInt($("#inpTermino").val());
+
+        var form = {
+            Inicio: $("#inpInicio").val(),
+            Termino: $("#inpTermino").val(),
+            Avaliacao: $("#inpAvaliacao").val(),
+            Turno: $("#slAgendamento").val()
+        };
+        $.ajax({
+            url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
+            type: 'POST',
+            data: form,
+            dataType: 'json',
+            success: function (data) {
+                alert('Data: ' + data);
+            },
+            error: function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+
+        var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
+        switch (formato) {
+            case "Diario":
+                break;
+            case "Semanal":
+                if (termino <= 7 && inicio >= 1 && inicio < termino)
+                    console.log("ajax pra salvar");
+                else
+                    console.log("valores invalidos");
+                break;
+            case "Quinzenal":
+                if (termino <= 15 && inicio >= 1 && inicio < termino)
+                    console.log("ajax pra salvar");
+                else
+                    console.log("valores invalidos");
+                break;
+            case "Mensal":
+                if (termino <= 31 && inicio >= 1 && inicio < termino)
+                    console.log("ajax pra salvar");
+                else
+                    console.log("valores invalidos");
+                break;
+            case "Turno":
+                break;
+            default:
+
+        }
+    });
 
 
 </script>
