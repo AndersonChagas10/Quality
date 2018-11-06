@@ -79,7 +79,7 @@ namespace SgqSystem.Services
         /// <param name="style">Styles</param>
         /// <param name="tags">Tags</param>
         /// <returns></returns>
-        public void div(bool t, StringBuilder outerhtml, string id = null, string classe = null, string name = null,string style = null, string tags = null, string outerAngular = null)
+        public void div(bool t, StringBuilder outerhtml, string id = null, string classe = null, string name = null, string style = null, string tags = null, string outerAngular = null)
         {
 
             if (!string.IsNullOrEmpty(tags))
@@ -103,7 +103,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public string span(string id = null, string classe = null, string name = null, string outerhtml = null, string style = null, string attr = null)
         {
-            return "<span id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\" "+ attr + ">" + outerhtml + "</span>";
+            return "<span id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\" " + attr + ">" + outerhtml + "</span>";
         }
         /// <summary>
         /// Retorna uma quebra de linha <br />
@@ -204,7 +204,7 @@ namespace SgqSystem.Services
                 disabledTag = " disabled";
             }
 
-            return "<button type=\"" + type.ToString() + "\" id=\"" + id + "\" class=\"" + classe.Trim() + "\" " + dataloading + disabledTag + " style=\""+ style + "\">" + label + "</button>";
+            return "<button type=\"" + type.ToString() + "\" id=\"" + id + "\" class=\"" + classe.Trim() + "\" " + dataloading + disabledTag + " style=\"" + style + "\">" + label + "</button>";
         }
         /// <summary>
         /// Retorna um select
@@ -319,10 +319,11 @@ namespace SgqSystem.Services
             {
                 tags = " " + tags;
             }
-            if(href != null && href != "#")
+            if (href != null && href != "#")
             {
                 href = " href=\"" + href + "\"";
-            }else
+            }
+            else
             {
                 href = "";
             }
@@ -571,15 +572,14 @@ namespace SgqSystem.Services
                                  "</div> ";
             return calculado;
         }
-        //public string level2(string id, string label, string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false,
-        //                     string alertlevel1 = null, string alertlevel2 = null, string alertlevel3 = null, string AlertLevel = null, string ParFrequency_Id = null)
 
         public string level2(string id, string label,
                              string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1,
                              bool reaudit = false, bool correctiveaction = false, bool phase = false,
                              bool HasSampleTotal = false, bool IsEmptyLevel3 = false, string level1Group_Id = "",
                              int RuleId = 0, string RuleValue = null, decimal AlertValue = 0, int ParFrequency_Id = 0,
-                             bool HasTakePhoto = false)
+                             bool HasTakePhoto = false, 
+                             string FrequenciaTipo = "", string FrequenciaValor = "", string FrequenciaMensagemInativo = "")
         {
 
             string tagLevel1Group = null;
@@ -607,6 +607,9 @@ namespace SgqSystem.Services
                            + "\" AlertValue=\"" + AlertValue.ToString()
                            + "\" reaudit=\"" + reaudit.ToString().ToLower()
                            + "\" hastakephoto=\"" + HasTakePhoto.ToString().ToLower()
+                           + "\" frequenciaTipo=\"" + FrequenciaTipo
+                           + "\" frequenciaValor=\"" + FrequenciaValor
+                           + "\" frequenciaMensagemInativo=\"" + FrequenciaMensagemInativo
                            + "\"" + tagLevel1Group,
                            outerhtml: span(outerhtml: label, classe: "levelName")
                        );
@@ -624,7 +627,7 @@ namespace SgqSystem.Services
                                    );
 
 
-            string tags = " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\""+parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
+            string tags = " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\"" + parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
 
 
             //Gera o level3
@@ -718,17 +721,17 @@ namespace SgqSystem.Services
                              bool IsLimitedEvaluetionNumber, IEnumerable<ParRelapse> listParRelapse, string ParCluster_Id)
         {
 
-            StringBuilder tags = new StringBuilder("parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\" editlevel2=\""+ParLevel1.EditLevel2.ToString().ToLower() + "\" hastakephoto=\"" + ParLevel1.HasTakePhoto.ToString().ToLower()+"\" ParCluster_Id=\"" + ParCluster_Id + "\"");
+            StringBuilder tags = new StringBuilder("parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\" editlevel2=\"" + ParLevel1.EditLevel2.ToString().ToLower() + "\" hastakephoto=\"" + ParLevel1.HasTakePhoto.ToString().ToLower() + "\" ParCluster_Id=\"" + ParCluster_Id + "\"");
 
             string btnReaudit = button(Resources.Resource.reaudit, type.submit, "", classe: "btn-primary pull-right btnReaudit btn-sm hide", style: "margin-left: 4px;");
             string btnCA = button(Resources.Resource.corrective_action, type.submit, "", classe: "btn-danger pull-right btnCALevel1 btn-sm hide");
-                        
-            if(listParRelapse.Count() > 0)
+
+            if (listParRelapse.Count() > 0)
             {
                 var i = 1;
                 foreach (var parRelapse in listParRelapse)
                 {
-                    tags.Append(" phase" + i + "='" + parRelapse.ParFrequency_Id + ";" + parRelapse.EffectiveLength + ";"+ parRelapse.NcNumber+"' ");
+                    tags.Append(" phase" + i + "='" + parRelapse.ParFrequency_Id + ";" + parRelapse.EffectiveLength + ";" + parRelapse.NcNumber + "' ");
                     i++;
                 }
             }
@@ -764,7 +767,7 @@ namespace SgqSystem.Services
             //Adiciona Div Lateral
             clusterList += div(
                             //aqui vai os botoes
-                            
+
                             classe: "userInfo col-xs-5");
             return clusterList;
         }
@@ -791,8 +794,8 @@ namespace SgqSystem.Services
         public string counter(string label, string level, string indicador, string headerLevel)
         {
             //return "<span class=\"counter " + classe + "\"><b><span class=\"labelCounter\">" + label.Trim() + "</span></b>: <span class=\"value\">" + value.Trim() + "</span></span>";
-            return "<span class=\"counter hide col-xs-4\" counter=\""+label+"\" level=\"" + level + "\" indicador=\"" + indicador + "\" headerLevel=\"" + headerLevel + 
-                "\"><b><span class=\"labelCounter\">" + label+"</span></b>: <b><span class=\"value\">0</span></span></b>";
+            return "<span class=\"counter hide col-xs-4\" counter=\"" + label + "\" level=\"" + level + "\" indicador=\"" + indicador + "\" headerLevel=\"" + headerLevel +
+                "\"><b><span class=\"labelCounter\">" + label + "</span></b>: <b><span class=\"value\">0</span></span></b>";
         }
 
         public DictionaryEntry getResource(string value)

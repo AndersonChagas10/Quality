@@ -3905,7 +3905,7 @@ $(document).ready(function(){
             return "<div class='Resource hide'>" + items + "</div>";
         }
 
-        public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
+        public ParLevel2Evaluate getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
 
             var lista = parlevel2.Id.ToString().Replace(quebraProcesso, "|").Split('|');
@@ -3914,23 +3914,19 @@ $(document).ready(function(){
 
             int parlevel2_id = lista.Length > 1 ? Int32.Parse(lista[1]) : Int32.Parse(lista[0]);
 
-            int evaluate = 0;
+            ParLevel2Evaluate evaluate = new ParLevel2Evaluate() { Evaluate = 0 };
             var evaluateConf = ParEvaluateCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
             if (evaluateConf != null)
             {
-                evaluate = evaluateConf.Evaluate;
+                evaluate = evaluateConf;
             }
             else
             {
                 evaluateConf = ParEvaluatePadrao.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
                 if (evaluateConf != null)
                 {
-                    evaluate = evaluateConf.Evaluate;
+                    evaluate = evaluateConf;
                 }
-            }
-            if (evaluate == 0)
-            {
-                evaluate = 0;
             }
             return evaluate;
         }
@@ -4924,7 +4920,8 @@ $(document).ready(function(){
                 //Verifica se pega avaliações e amostras padrão ou da company
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
-                    evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
+                    var parlevel2Evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
+                    evaluate = parlevel2Evaluate.Evaluate;
                     sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
                     //defect = getCollectionLevel2Keys(ParCompany_Id,data, ParLevel1);
                 }
@@ -5097,7 +5094,10 @@ $(document).ready(function(){
                                             RuleId: parlevel2.ParNotConformityRule_id,
                                             RuleValue: ruleValue.ToString(),
                                             reaudit: parlevel2.IsReaudit,
-                                            HasTakePhoto: parlevel2.HasTakePhoto);
+                                            HasTakePhoto: parlevel2.HasTakePhoto,
+                                            FrequenciaTipo:,
+                                            FrequenciaValor: ,
+                                            FrequenciaMensagemInativo:);
 
                 var listLineCounter = ParCounterDB.GetParLevelXParCounterList(null, parlevel2, 2);
 
