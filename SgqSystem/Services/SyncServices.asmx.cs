@@ -19,6 +19,7 @@ using SgqSystem.Controllers.Api.App;
 using System.Data;
 using System.Text;
 using ADOFactory;
+using Dominio;
 
 namespace SgqSystem.Services
 {
@@ -163,6 +164,7 @@ namespace SgqSystem.Services
                 return "0";
             }
         }
+
         public string BoolCompletedConverter(string valor)
         {
             valor = valor.ToLower();
@@ -175,6 +177,7 @@ namespace SgqSystem.Services
                 return "0";
             }
         }
+
         public int insertLogJson(string result, string log, string deviceId, string AppVersion, string callback)
         {
             string sql = "INSERT INTO LogJson ([result],[log],[AddDate],[Device_Id],[AppVersion], [callback]) " +
@@ -216,6 +219,7 @@ namespace SgqSystem.Services
         }
 
         #endregion
+
         #region Json
         /// <summary>
         /// Método Para Inserir Resultado da Coleta
@@ -1318,6 +1322,7 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
+
         public int updateCorrectiveAction_CollectionLevel2_By_ParLevel1(string ParLevel1_Id, string ParCompany_Id, string dataInicio, string dataFim, string reauditnumber)
         {
 
@@ -1390,6 +1395,7 @@ namespace SgqSystem.Services
             }
         }
         #endregion
+
         #region Consolidation Level01
         /// <summary>
         /// Método que faz a inserção da consolidação
@@ -1549,8 +1555,8 @@ namespace SgqSystem.Services
                 return 0;
             }
         }
-
         #endregion
+
         #region Consolidation Level02
         /// <summary>
         /// Insere Consolodiação do Level02
@@ -1681,7 +1687,6 @@ namespace SgqSystem.Services
             }
         }
 
-
         //public int GetLevel2Consolidation2(string Level01ConsolidationId, string Level02Id)
         //{
         //    string sql = "SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = '" + Level01ConsolidationId + "' AND ParLevel2_Id= '" + Level02Id + "'";
@@ -1715,8 +1720,8 @@ namespace SgqSystem.Services
         //        return 0;
         //    }
         //}
-
         #endregion
+
         #region Collection Level02
         /// <summary>
         /// Metodo que grava a coleta
@@ -1949,6 +1954,7 @@ namespace SgqSystem.Services
 
 
         }
+
         public int ResultLevel3Delete(int CollectionLevel2_Id)
         {
 
@@ -1983,6 +1989,7 @@ namespace SgqSystem.Services
                 throw;
             }
         }
+
         public int InsertCollectionLevel2HeaderField(int CollectionLevel2Id, string headerList)
         {
 
@@ -2126,8 +2133,8 @@ namespace SgqSystem.Services
                 throw;
             }
         }
-
         #endregion
+
         #region Collection Level03
         /// <summary>
         /// Metodo que insere o CollectionLevel03
@@ -2377,7 +2384,6 @@ namespace SgqSystem.Services
             }
 
         }
-
         #endregion
 
         #region WeiEvaluation
@@ -2495,6 +2501,7 @@ namespace SgqSystem.Services
             }
         }
         #endregion
+
         #region DataBase HTML
         /// <summary>
         /// Metodo que retorna a ultima data de consolidação a anterior a data informada 
@@ -2542,6 +2549,7 @@ namespace SgqSystem.Services
         /// <param name="unidadeId"></param>
         /// <returns></returns>
         /// PORQUE QUE ESSA PORRA DESTA DATA É MESDIAANO?????????????????? (Comentário Gabriel)
+
         [WebMethod]
         public string reciveData(string unidadeId, string data)
         {
@@ -2549,6 +2557,7 @@ namespace SgqSystem.Services
             string consolidation = getConsolidation(unidadeId, dataConsolidation, 0);
             return consolidation;
         }
+
         [WebMethod]
         public string reciveDataByLevel1(string ParCompany_Id, string data, string ParLevel1_Id)
         {
@@ -2556,12 +2565,14 @@ namespace SgqSystem.Services
             string consolidation = getConsolidation(ParCompany_Id, dataConsolidation, Convert.ToInt32(ParLevel1_Id));
             return consolidation;
         }
+
         /// <summary>
         /// Metodo que verifica as consolidações necessárias
         /// </summary>
         /// <param name="unidadeId">Id da Unidade</param>
         /// <param name="lastDate">Se False, traz o resultado do dia atual somente, se True, traz o ultimo resultado sem o dia atual</param>
         /// <returns></returns>
+
         //public string GetConsolidationLevel01(string unidadeId, bool lastDate = false)
         //{
 
@@ -2662,6 +2673,7 @@ namespace SgqSystem.Services
             dataFim = periodoFim.ToString("yyyyMMdd");
 
         }
+
         public string _getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id)
         {
 
@@ -2865,8 +2877,6 @@ namespace SgqSystem.Services
             }
             return Results;
         }
-
-
 
         public string getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id)
         {
@@ -3464,7 +3474,6 @@ namespace SgqSystem.Services
         //    }
         //}
 
-
         public string getMaxEvaluate(string CollectionLevel02Ids, string Level02Ids)
         {
             string sql = "SELECT MAX([EvaluationNumber]) FROM CollectionLevel02 (nolock)  WHERE ConsolidationLevel02id IN (" + CollectionLevel02Ids + ") AND Level02id IN (" + Level02Ids + ")";
@@ -3645,6 +3654,7 @@ namespace SgqSystem.Services
         //        return null;
         //    }
         //}
+
         public string GetCollectionLevel03(string CollectionLevel02Id, string date, string auditorId, ref int defects)
         {
             string sql = "SELECT [Id], [Level03Id], [ConformedIs], [Value], [ValueText] FROM CollectionLevel03 (nolock)  WHERE CollectionLevel02Id = '" + CollectionLevel02Id + "'";
@@ -3702,8 +3712,8 @@ namespace SgqSystem.Services
                 return null;
             }
         }
-
         #endregion
+
         #region App
         [WebMethod]
         public string getAPP()
@@ -3863,7 +3873,6 @@ $(document).ready(function(){
 
             return APPMain;// + resource;
         }
-
 
         public string GetResource()
         {
@@ -4236,8 +4245,6 @@ $(document).ready(function(){
                            listaParLevel3Vinculado;
         }
 
-
-
         public string navBar(int UserSgq_Id, int ParCompany_Id)
         {
             string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                             " +
@@ -4255,6 +4262,7 @@ $(document).ready(function(){
 
             return navBar;
         }
+
         public string rightMenu()
         {
             string menu = "<div class=\"rightMenu\">                                                                                                  " +
@@ -4279,6 +4287,7 @@ $(document).ready(function(){
 
             return menu;
         }
+
         public string correctiveAction()
         {
             string correctiveAction =
@@ -4830,7 +4839,6 @@ $(document).ready(function(){
             return listCluster.ToString();
 
         }
-
 
         /// <summary>
         /// Gera Linhas do level2
@@ -5541,7 +5549,6 @@ $(document).ready(function(){
             return retorno;
         }
 
-
         /// <summary>
         /// Obter tela da Ytoara com o cabeçalho
         /// </summary>
@@ -5550,7 +5557,6 @@ $(document).ready(function(){
         {
             return ytoaraUtil.criarHeader(ytoaraUtil.getElementoEstruturado());
         }
-
 
         /// <summary>
         /// Retorna Level3 
@@ -6580,6 +6586,7 @@ $(document).ready(function(){
             }
             return input;
         }
+
         public string getTipoInputBEA(SGQDBContext.ParLevel3 parLevel3, ref string classInput, ref string labels)
         {
             var html = new Html();
@@ -6854,6 +6861,7 @@ $(document).ready(function(){
         }
 
         #region Users
+
         [WebMethod]
         public string getCompanyUsers(string ParCompany_Id)
         {
@@ -6877,6 +6885,7 @@ $(document).ready(function(){
             }
             return usersList;
         }
+
         [WebMethod]
         public string getUserCompanys(string UserSgq_Id)
         {
@@ -6897,6 +6906,7 @@ $(document).ready(function(){
             }
             return usersList;
         }
+
         [WebMethod]
         public string UserSGQLogin(string UserName, string Password)
         {
@@ -6930,6 +6940,7 @@ $(document).ready(function(){
             }
 
         }
+
         [WebMethod]
         public string UserSGQById(int Id)
         {
@@ -6947,7 +6958,9 @@ $(document).ready(function(){
 
             return "Usuário não localizado";
         }
+
         #endregion
+
         [WebMethod]
         public string insertDeviation(string deviations)
         {
@@ -7055,6 +7068,7 @@ $(document).ready(function(){
                 return "error";
             }
         }
+
         [WebMethod]
         public string sendEmailAlerta()
         {
@@ -7108,6 +7122,7 @@ $(document).ready(function(){
             }
             return null;
         }
+
         [WebMethod]
         public string sendEmail(string email, string subject, string body, string email_CopiaOculta = null)
         {
@@ -7170,6 +7185,7 @@ $(document).ready(function(){
             }
             return null;
         }
+
         [WebMethod]
         public string sendEmailManutencao()
         {
@@ -7229,6 +7245,7 @@ $(document).ready(function(){
                 return "erro";
             }
         }
+
         [WebMethod]
         public string updateLevel1Consolidaton(string ParLevel1_Id, string Unit_Id, string DepartmentId, string Evaluation, string Defects)
         {
@@ -7268,6 +7285,7 @@ $(document).ready(function(){
                 return "error";
             }
         }
+
         [WebMethod]
         public string updateConsolidacoes(string consolidacoes)
         {
@@ -7304,6 +7322,7 @@ $(document).ready(function(){
                 return null;
             }
         }
+
         /// <summary>
         /// Seleciona Todas as unidades que o usuário pode acessar
         /// </summary>
@@ -7333,6 +7352,7 @@ $(document).ready(function(){
             }
             return options;
         }
+
         [WebMethod]
         public string UserCompanyUpdate(string UserSgq_Id, int ParCompany_Id)
         {
@@ -7366,6 +7386,7 @@ $(document).ready(function(){
                 return "Não foi possivel alterar a unidade";
             }
         }
+
         [WebMethod]
         public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id,
             string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter,
@@ -7450,6 +7471,7 @@ $(document).ready(function(){
                 throw ex;
             }
         }
+
         public int getCollectionLevel2WithCorrectiveAction(string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber, string reauditnumber, string data, string parCluster_Id)
         {
             //Converte a data no padrão de busca do Banco de Dados
@@ -8195,6 +8217,39 @@ $(document).ready(function(){
             }
 
         }
+
+        #region StatusColeta
+
+        [WebMethod]
+        public void InsertStatusColeta(ListaCollectionsLevel2XMotivosAtraso listaCollectionsLevel2XMotivosAtraso)
+        {
+            try
+            {
+                using (var conexaoEF = new SgqDbDevEntities())
+                {
+
+                    if (listaCollectionsLevel2XMotivosAtraso != null && listaCollectionsLevel2XMotivosAtraso.DadosIsValid())
+                    {
+                        foreach (var item in listaCollectionsLevel2XMotivosAtraso.CollectionsLevel2XMotivosAtraso)
+                        {
+                            if (item.IsValid())
+                            {
+                                conexaoEF.CollectionLevel2XMotivoAtraso.Add(item);
+                            }                       
+                        }
+                    }
+
+                    conexaoEF.SaveChanges();
+                }
+            }
+            catch (Exception Ex)
+            {
+                throw;
+            }
+        }
+
+        #endregion
+
     }
 }
 
