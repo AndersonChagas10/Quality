@@ -65,10 +65,11 @@
                     <thead>
                         <tr>
                             <th>@Resources.Resource.company</th>
-                            <th>@Resources.Resource.level1</th>
+                            <th>@Resources.Resource.level1</th> 
                             <th>@Resources.Resource.cluster</th>
                             <th>@Resources.Resource.evaluation</th>
                             <th>@Resources.Resource.samples / @Resources.Resource.evaluation</th>
+                            <th>@Resources.Resource.scheduling</th>
                             <th class="options"></th>
                         </tr>
                     </thead>
@@ -111,7 +112,7 @@
             level: levelDomain,
             listObjSalvo: listSalvo,
             idTable: 'tableAvAm',//
-            tdsNames: ['companyName', 'ParLevel1_Name', 'ParCluster_Name','evaluationNumber', 'sampleNumber', 'btn'],
+            tdsNames: ['companyName', 'ParLevel1_Name', 'ParCluster_Name','evaluationNumber', 'sampleNumber', 'agendamento','btn'],
             getObjAdd: function (isEdit, obj) {
                 debugger
                 if(isEdit != undefined){
@@ -271,6 +272,7 @@
                         }else{
                             o['ParLevel1_Name'] = "@Resources.Resource.all";
                         }
+                        o['agendamento'] = '<button class="btn btn-info btn-xs popovers" title="agendamento">Agendamento</button>';
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
