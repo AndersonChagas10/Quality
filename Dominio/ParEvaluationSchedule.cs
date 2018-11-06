@@ -14,10 +14,10 @@ namespace Dominio
         [Key]
         public int Id { get; set; }
         public int Inicio { get; set; }
-        public int Termino { get; set; }
-        public int Avaliacao { get; set; }
-        public int Turno { get; set; }
+        public int Fim { get; set; }
+        public int Av { get; set; }
+        public int Shift_Id { get; set; }
         
-        public ParEvaluation ParEvaluation { get; set; }
+        public ParEvaluation ParEvaluation_Id { get; set; }
     }
 }

@@ -373,6 +373,7 @@
             dataType: 'json',
             success: function (data) {
                 alert('Data: ' + data);
+                LimpaCampos();
             },
             error: function (request, error) {
                 alert("Request: " + JSON.stringify(request));
