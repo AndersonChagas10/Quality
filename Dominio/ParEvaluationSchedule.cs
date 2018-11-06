@@ -17,7 +17,8 @@ namespace Dominio
         public int Fim { get; set; }
         public int Av { get; set; }
         public int Shift_Id { get; set; }
-        
-        public ParEvaluation ParEvaluation_Id { get; set; }
+        public int ParEvaluation_Id { get; set; }
+
+        public virtual ParEvaluation ParEvaluation { get; set; }
     }
 }
