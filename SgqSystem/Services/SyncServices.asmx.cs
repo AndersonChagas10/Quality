@@ -4014,6 +4014,25 @@ $(document).ready(function(){
             return sample;
         }
 
+        public void GetEvaluationSchedule(ParLevel2Evaluate parLevel2Evaluate, int shift_Id)
+        {
+            try
+            {
+                using (var conexaoEF = new SgqDbDevEntities())
+                {
+                    //foreach (var item in conexaoEF.ParEvaluationSchedule.Where(x=>x.ParEvaluation))
+                    //{
+                    //}
+
+                    conexaoEF.SaveChanges();
+                }
+            }
+            catch (Exception Ex)
+            {
+                throw;
+            }
+        }
+
         public int getMaxSampleLevel1(SGQDBContext.ParLevel1 parlevel1, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany)
         {
             int evaluate = 0;
@@ -4921,6 +4940,8 @@ $(document).ready(function(){
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
                     var parlevel2Evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
+                    //Shift_Id
+                    GetEvaluationSchedule(parlevel2Evaluate, Shift_Id);
                     evaluate = parlevel2Evaluate.Evaluate;
                     sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
                     //defect = getCollectionLevel2Keys(ParCompany_Id,data, ParLevel1);
@@ -5095,9 +5116,9 @@ $(document).ready(function(){
                                             RuleValue: ruleValue.ToString(),
                                             reaudit: parlevel2.IsReaudit,
                                             HasTakePhoto: parlevel2.HasTakePhoto,
-                                            FrequenciaTipo:,
-                                            FrequenciaValor: ,
-                                            FrequenciaMensagemInativo:);
+                                            FrequenciaTipo:"",
+                                            FrequenciaValor: "",
+                                            FrequenciaMensagemInativo:"");
 
                 var listLineCounter = ParCounterDB.GetParLevelXParCounterList(null, parlevel2, 2);
 
@@ -8235,7 +8256,7 @@ $(document).ready(function(){
                             if (item.IsValid())
                             {
                                 conexaoEF.CollectionLevel2XMotivoAtraso.Add(item);
-                            }                       
+                            }
                         }
                     }
 

@@ -579,7 +579,9 @@ namespace SgqSystem.Services
                              bool HasSampleTotal = false, bool IsEmptyLevel3 = false, string level1Group_Id = "",
                              int RuleId = 0, string RuleValue = null, decimal AlertValue = 0, int ParFrequency_Id = 0,
                              bool HasTakePhoto = false, 
-                             string FrequenciaTipo = "", string FrequenciaValor = "", string FrequenciaMensagemInativo = "")
+                             //Frequencia
+                             string FrequenciaTipo = "", string FrequenciaValor = "", 
+                             string FrequenciaMensagemInativo = "")
         {
 
             string tagLevel1Group = null;
