@@ -18,14 +18,17 @@ namespace SgqSystem.Controllers.Api
         public ParEvaluationSchedule Post([FromBody] ParEvaluationSchedule agendamento)
         {
             //ValidaDados(agendamento);
-            
+            agendamento.Shift_Id = 1;
+            agendamento.AddDate = DateTime.Now;
+            agendamento.AlterDate = DateTime.Now;
+
             using (var db = new SgqDbDevEntities())
             {
-                //var avaliacao = db.ParEvaluation.Where(x => x.ParCompany_Id == agendamento.ParEvaluation.Id).ToList();
-
+                //agendamento.ParEvaluation_Id = db.ParEvaluation.Where(x => x.Id == agendamento.ParEvaluation_Id.Id).FirstOrDefault();
                 db.ParEvaluationSchedule.Add(agendamento);
+                db.SaveChanges();
             }
-            return null;
+            return agendamento;
         }
 
         //private void ValidaDados(ParEvaluationSchedule agendamento)

@@ -75,6 +75,7 @@
                     </thead>
                     <tbody></tbody>
                 </table>
+
                 <div class="modal fade" id="modalAgendamento" role="dialog">
                     <div class="modal-dialog modal-lg vertical-align-center">
                         <div class="modal-content">
@@ -83,43 +84,76 @@
                                 <h4 class="modal-title">Agendamento</h4>
                             </div>
                             <div class="modal-body">
-                                
-                                    <div class="form-group">
+                                @*<div class="form-group">
                                         <label>Tipo de agendamento do monitoramento:</label>
                                         <input id="inpTipoAgendamento" disabled="disabled" />
                                     </div>
+
                                     <div class="form-group">
                                         <label>Avaliação:</label>
                                         <input id="inpAvaliacao" />
-                                        <label>Turno:</label>
 
+                                        
+
+                                        <label>Inicio:</label>
+                                        <input id="inpInicio" />
+
+                                        <label>Termino:</label>
+                                        <input id="inpTermino" />
+
+                                        <label>Turno:</label>
                                         <select id="slAgendamento">
                                             <option value="0">Todos</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
-                                        </select>
+                                        </select>*@
 
-                                        @*<input id="inpTurno" />*@
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Inicio:</label>
-                                        <input id="inpInicio" />
-                                        <label>Termino:</label>
-                                        <input id="inpTermino" />
-                                    </div>
-                            
+                                @*<button type="button" class="btn btn-primary btn-sm" onclick="adiciona($(this));" id=""><i class="fa fa-plus" aria-hidden="true"></i></button>*@
+                                <input class="hidden" id="inpAvaliacaoId" />
+                                <table id="tabelaAgendamento" class="table table-condensed table-responsive no-margin margin-top">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo de agendamento do monitoramento</th>
+                                            <th>Inicio</th>
+                                            <th>Fim</th>
+                                            <th>Avaliação</th>
+                                            <th>Turno</th>
+                                            <th>Ações</th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td> <input class="inpTipoAgendamento" disabled="disabled" /></td>
+                                            <td> <input id="inpInicio" /></td>
+                                            <td><input id="inpTermino" /></td>
+                                            <td> <input class="inpAvaliacao" /></td>
+                                            <td>
+                                                <select id="slAgendamento">
+                                                    <option value="0">Todos</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                </select>
+                                            </td>
+                                            <td class="hidden">  <input class="hidden" id="inpId" /></td>
+                                            <td> <button type="button" class="btn btn-primary btn-sm" id="btnSalvarAgendamento"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" data-dismiss="modal" id="btnSalvarAgendamento" class="btn btn-success">Salvar</button>
+                                @*<button type="button" data-dismiss="modal" id="btnSalvarAgendamento" class="btn btn-success">Salvar</button>*@
                                 <button type="button" data-dismiss="modal" onclick="LimpaCampos()" class="btn btn-default">Fechar</button>
                             </div>
                         </div>
+                    
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 
 <script>
@@ -341,30 +375,59 @@
         };
     }
 
+
     function abrirModalAgendamento(linha) {
-        debugger
         var obj = $(linha).parents('tr').data();
         $('#modalAgendamento').modal('show');
 
-        $("#inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
-        $("#inpAvaliacao").val(obj.evaluationNumber);
+        $(".inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        $(".inpAvaliacao").val(obj.evaluationNumber);
+        $("#inpAvaliacaoId").val(obj.evaluationId);      
     }
+
 
     function LimpaCampos() {
         $("#inpInicio").val("");
         $("#inpTermino").val("");
     }
 
-    $("#btnSalvarAgendamento").on('click', function () {
 
+    function adiciona(linha) {
+        debugger
+        var obj = $(linha).parents('tr').data();
+        var idTabela = "tabelaAgendamento";
+        var tdsNames = ["Av", "Inicio", "Fim", "Turno"];
+
+        crudNxN.adiciona(obj, idTabela, tdsNames);
+    }
+
+    function MontaNovaLinha(data) {        
+        $("#tabelaAgendamento").find('tbody').append("<tr>")
+        $("#tabelaAgendamento").find('tbody').append('<td><input class="inpTipoAgendamento" disabled="disabled" /></td>');
+        $("#tabelaAgendamento").find('tbody').append('<td> <input id="inpInicio" /></td>');
+        $("#tabelaAgendamento").find('tbody').append('<td><input id="inpTermino" /></td>');
+        $("#tabelaAgendamento").find('tbody').append('<td> <input class="inpAvaliacao" /></td>');
+        $("#tabelaAgendamento").find('tbody').append('<td> <select id="slAgendamento"> <option value="0" > Todos</option> <option value="1">1</option><option value="2">2</option> </select ></td>');
+       
+        $("#tabelaAgendamento").find('tbody').append('<td class="hidden"> <input class="hidden" id="inpId" /></td>');
+        $("#tabelaAgendamento").find('tbody').append('<td>  <button type="button" class="btn btn-primary btn-sm"  id="btnSalvarAgendamento"><i class="fa fa-plus" aria-hidden="true"></i></button></td>');   
+        $("#tabelaAgendamento").find('tbody').append("</tr>")
+       
+        $(".inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        $(".inpAvaliacao").val(data.Av);
+        $("#inpAvaliacaoId").val(data.Id); 
+    }
+
+    $("#btnSalvarAgendamento").on('click', function () {
         var inicio = parseInt($("#inpInicio").val());
         var termino = parseInt($("#inpTermino").val());
 
         var form = {
             Inicio: $("#inpInicio").val(),
-            Termino: $("#inpTermino").val(),
-            Avaliacao: $("#inpAvaliacao").val(),
-            Turno: $("#slAgendamento").val()
+            Fim: $("#inpTermino").val(),
+            Av: $(".inpAvaliacao").val(),
+            Shift_Id: $("#slAgendamento").val(),
+            ParEvaluation_Id: $("#inpAvaliacaoId").val()
         };
         $.ajax({
             url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
@@ -372,8 +435,8 @@
             data: form,
             dataType: 'json',
             success: function (data) {
-                alert('Data: ' + data);
-                LimpaCampos();
+                $("#inpId").val(data.Id);
+                MontaNovaLinha(data);
             },
             error: function (request, error) {
                 alert("Request: " + JSON.stringify(request));
