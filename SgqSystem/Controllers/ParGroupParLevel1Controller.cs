@@ -17,7 +17,7 @@ namespace SgqSystem.Controllers
         // GET: ParGroupParLevel1
         public ActionResult Index()
         {
-            var parGroupParLevel1 = db.ParGroupParLevel1.Include(p => p.ParGroupParLevel1Type).Where(x => x.IsActive);
+            var parGroupParLevel1 = db.ParGroupParLevel1.Include(p => p.ParGroupParLevel1Type);
 
             var listaFilhos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
             listaFilhos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
@@ -52,6 +52,10 @@ namespace SgqSystem.Controllers
             listaGruposIndicador.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
             ViewBag.Parent_Id = new SelectList(listaGruposIndicador, "Id", "Name", -1);
 
+            var listaFilhos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaFilhos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", -1);
+
             return View();
         }
 
@@ -71,7 +75,14 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name", parGroupParLevel1.ParGroupParLevel1Type_Id);
+            var listaGrupos = db.ParGroupParLevel1Type.Where(x => x.IsActive).ToList();
+            listaGrupos.Add(new ParGroupParLevel1Type() { Id = -1, Name = "Selecione" });
+            ViewBag.ParGroupParLevel1Type_Id = new SelectList(listaGrupos, "Id", "Name", -1);
+
+            var listaFilhos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaFilhos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", -1);
+
             return View(parGroupParLevel1);
         }
 
@@ -108,6 +119,10 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+            var listaFilhos = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaFilhos.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", parGroupParLevel1.Parent_Id);
+
             var listaGrupos = db.ParGroupParLevel1Type.Where(x => x.IsActive).ToList();
             listaGrupos.Add(new ParGroupParLevel1Type() { Id = -1, Name = "Selecione" });
             ViewBag.ParGroupParLevel1Type_Id = new SelectList(listaGrupos, "Id", "Name", parGroupParLevel1.ParGroupParLevel1Type_Id);
@@ -134,6 +149,10 @@ namespace SgqSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            var listaGruposIndicador = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+            listaGruposIndicador.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
+            ViewBag.Parent_Id = new SelectList(listaGruposIndicador, "Id", "Name", parGroupParLevel1.Parent_Id);
+
             ViewBag.ParGroupParLevel1Type_Id = new SelectList(db.ParGroupParLevel1Type, "Id", "Name", parGroupParLevel1.ParGroupParLevel1Type_Id);
             return View(parGroupParLevel1);
         }
@@ -175,11 +194,20 @@ namespace SgqSystem.Controllers
 
         private void ValidaGrupoIndicadores(ParGroupParLevel1 parGroupParLevel1)
         {
-            if (parGroupParLevel1.Name == null)
-                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+            bool existe = db.ParGroupParLevel1.Any(x => (x.Name == parGroupParLevel1.Name) && x.Id != parGroupParLevel1.Id);
 
-            if (parGroupParLevel1.ParGroupParLevel1Type_Id <= 0)
-                ModelState.AddModelError("ParGroupParLevel1Type_Id", Resources.Resource.required_field + " " + "Grupo de Tipo de Indicador");
+            if (!existe)
+            {
+                if (parGroupParLevel1.Name == null)
+                    ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+
+                if (parGroupParLevel1.ParGroupParLevel1Type_Id <= 0)
+                    ModelState.AddModelError("ParGroupParLevel1Type_Id", Resources.Resource.required_field + " " + "Grupo de Tipo de Indicador");
+            }
+            else
+            {
+                ModelState.AddModelError("Name", Resources.Resource.name_alredy_exist);
+            }
         }
 
     }

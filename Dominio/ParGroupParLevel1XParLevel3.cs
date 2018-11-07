@@ -14,30 +14,36 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        public int Peso { get; set; }
+        public int? Peso { get; set; }
 
         [DisplayName("Está Ativo")]
         public bool IsActive { get; set; }
 
-        [DisplayName("Vinculo Grupo Indicador x Tarefa")]
+        [DisplayName("Nome Vinculo")]
         public string Name { get; set; }
 
         [DisplayName("Tarefa")]
+        [Index(IsUnique = true)]
         public int? ParLevel3_Id { get; set; }
 
         [DisplayName("Empresa")]
+        [Index(IsUnique = true)]
         public int? ParCompany_Id { get; set; }
 
         [DisplayName("Grupo Indicadores")]
+        [Index(IsUnique = true)]
         public int? ParGroupParLevel1_Id { get; set; }
 
         [DisplayName("Departamento")]
+        [Index(IsUnique = true)]
         public int? ParDepartment_Id { get; set; }
 
         [DisplayName("Indicador")]
+        [Index(IsUnique = true)]
         public int? ParLevel1_Id { get; set; }
 
         [DisplayName("Monitoramento")]
+        [Index(IsUnique = true)]
         public int? ParLevel2_Id { get; set; }
 
         [ForeignKey("ParLevel3_Id")]

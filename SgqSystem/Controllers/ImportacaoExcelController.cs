@@ -1,6 +1,7 @@
 ﻿using Dominio;
 using ExcelDataReader;
 using Newtonsoft.Json.Linq;
+using SgqSystem.Controllers.Api;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -31,32 +32,40 @@ namespace SgqSystem.Controllers
             var dicionarioCabecalho = new Dictionary<int, string>();
             var dicionarioDados = new List<Dictionary<string, string>>();
             DataTable dt = UploadExcelTo(arquivo);
-
-            for (int i = 0; i < dt.Rows.Count; i++)
+            if (dt != null)
             {
-                DataRow row = dt.Rows[i];
-                if (i == 0)
+                for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    if (row[0] != null && row[0].ToString().Length > 0)
+                    DataRow row = dt.Rows[i];
+                    if (i == 0)
                     {
-                        for (var j = 0; j < row.ItemArray.Length; j++)
+                        if (row[0] != null && row[0].ToString().Length > 0)
                         {
-                            if (row[j].ToString().Length > 0)
-                                dicionarioCabecalho.Add(j, row[j].ToString());
+                            for (var j = 0; j < row.ItemArray.Length; j++)
+                            {
+                                if (row[j].ToString().Length > 0)
+                                    dicionarioCabecalho.Add(j, row[j].ToString().Trim());
+                            }
                         }
                     }
-                }
-                else
-                {
-                    var dicionarioDadosCorpo = new Dictionary<string, string>();
-                    foreach (var item in dicionarioCabecalho)
+                    else
                     {
-                        dicionarioDadosCorpo.Add(item.Value, row[item.Key].ToString());
+                        var dicionarioDadosCorpo = new Dictionary<string, string>();
+                        foreach (var item in dicionarioCabecalho)
+                        {
+                            dicionarioDadosCorpo.Add(item.Value, row[item.Key].ToString().Trim());
+                        }
+                        dicionarioDados.Add(dicionarioDadosCorpo);
                     }
-                    dicionarioDados.Add(dicionarioDadosCorpo);
                 }
             }
-            var listaDeFormatos = db.ImportFormat.Where(x => x.IsActive).ToList();
+            else
+            {
+                return View("Index");
+            }
+            var contadorFormatos = ImportacaoExcelApiController.CriaDicionarioPadrao().Count();
+
+            var listaDeFormatos = db.ImportFormat.Where(x => x.IsActive && x.ImportFormatItems.Count() == contadorFormatos).ToList();
             ViewBag.Formatos = new SelectList(listaDeFormatos, "Id", "Title");
             return View("Index", dicionarioDados);
 

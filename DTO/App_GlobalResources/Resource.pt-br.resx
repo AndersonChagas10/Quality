@@ -2223,4 +2223,16 @@
   <data name="indicator_group" xml:space="preserve">
     <value>Grupo de Indicador</value>
   </data>
+  <data name="anticipated" xml:space="preserve">
+    <value>Antecipado</value>
+  </data>
+  <data name="import" xml:space="preserve">
+    <value>Importação</value>
+  </data>
+  <data name="name_alredy_exist" xml:space="preserve">
+    <value>Já existe um item cadastrado com este Nome</value>
+  </data>
+  <data name="link_alredy_used" xml:space="preserve">
+    <value>Este vínculo já está sendo utilizado</value>
+  </data>
 </root>
