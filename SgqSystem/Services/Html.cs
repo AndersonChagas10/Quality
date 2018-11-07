@@ -624,7 +624,12 @@ namespace SgqSystem.Services
                                    );
 
 
-            string tags = " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\""+parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
+            string peso = parLevel3.Weight.ToString();
+
+            if (parLevel3.ParLevel3InputType_Id == 11)
+                peso = "0";
+
+            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\""+parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
 
 
             //Gera o level3
