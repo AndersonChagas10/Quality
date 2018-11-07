@@ -7,6 +7,7 @@ namespace Dominio
     using System.Threading.Tasks;
     using System.Threading;
     using Newtonsoft.Json;
+    using System.Data.Entity.ModelConfiguration.Conventions;
 
     public partial class SgqDbDevEntities : DbContext
     {
@@ -244,6 +245,8 @@ namespace Dominio
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
             modelBuilder.Entity<AreasParticipantes>()
                 .Property(e => e.nCdCaracteristica)
                 .HasPrecision(12, 0);
