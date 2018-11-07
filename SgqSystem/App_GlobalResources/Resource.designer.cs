@@ -3202,6 +3202,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Late.
+        /// </summary>
+        internal static string IsLate {
+            get {
+                return ResourceManager.GetString("IsLate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is partial save.
         /// </summary>
         internal static string isPartialSave {
@@ -3333,6 +3342,15 @@ namespace Resources {
         internal static string last_two_months_of_the_selected_period {
             get {
                 return ResourceManager.GetString("last_two_months_of_the_selected_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason of the delay.
+        /// </summary>
+        internal static string LateReason {
+            get {
+                return ResourceManager.GetString("LateReason", resourceCulture);
             }
         }
         

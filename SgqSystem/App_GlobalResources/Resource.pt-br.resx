@@ -2685,4 +2685,10 @@
   <data name="link_alredy_used" xml:space="preserve">
     <value>Este vínculo já está sendo utilizado</value>
   </data>
+  <data name="IsLate" xml:space="preserve">
+    <value>Com atraso</value>
+  </data>
+  <data name="LateReason" xml:space="preserve">
+    <value>Motivo do atraso</value>
+  </data>
 </root>

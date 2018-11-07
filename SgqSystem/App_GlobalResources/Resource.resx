@@ -2697,4 +2697,10 @@
   <data name="link_alredy_used" xml:space="preserve">
     <value>This link is already being used</value>
   </data>
+  <data name="IsLate" xml:space="preserve">
+    <value>Late</value>
+  </data>
+  <data name="LateReason" xml:space="preserve">
+    <value>Reason of the delay</value>
+  </data>
 </root>
