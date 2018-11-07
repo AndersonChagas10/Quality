@@ -478,14 +478,16 @@ FROM (SELECT
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= @DATAFINAL)
+						AND G.IsActive = 1
+                		AND G.EffectiveDate <= @DATAFINAL)
 					> 0 THEN (SELECT TOP 1
 							ISNULL(G.PercentValue, 0)
 						FROM ParGoal G (NOLOCK)
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= @DATAFINAL
+                        AND G.IsActive = 1
+                		AND G.EffectiveDate <= @DATAFINAL
 						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
 
 				ELSE (SELECT TOP 1
@@ -1075,7 +1077,7 @@ AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFim
 AND IND.Id IN (SELECT
 		P1XC.ParLevel1_Id
 	FROM ParLevel1XCluster P1XC
-	WHERE P1XC.ParCriticalLevel_Id = 3)
+	)
 GROUP BY IND.Id
 		,IND.Name
 		,MON.Id
