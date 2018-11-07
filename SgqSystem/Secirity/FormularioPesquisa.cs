@@ -119,6 +119,7 @@ namespace SgqSystem.Secirity
                     UserSgq userLogado = db.UserSgq.FirstOrDefault(r => r.Id == userId);
 
                     filterContext.Controller.ViewBag.UserSgq = db.UserSgq.OrderBy(x => x.Name).ToList();
+                    filterContext.Controller.ViewBag.ParGroupParLevel1 = Mapper.Map<List<ParGroupParLevel1>>(db.ParGroupParLevel1.ToList());
                     filterContext.Controller.ViewBag.Level01 = Mapper.Map<List<ParLevel1DTO>>(db.ParLevel1.ToList());
                     filterContext.Controller.ViewBag.Level02 = Mapper.Map<List<ParLevel2DTO>>(db.ParLevel2.ToList());
                     filterContext.Controller.ViewBag.Level03 = Mapper.Map<List<ParLevel3DTO>>(db.ParLevel3.ToList());

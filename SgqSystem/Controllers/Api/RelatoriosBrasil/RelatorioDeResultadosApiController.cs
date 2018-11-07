@@ -3025,10 +3025,10 @@ ORDER BY 3
 
             // Função
 
-            if (form.groupParLevel1IdArr.Length > 0)
-            {
-                Wfuncao += " AND Indicador IN (SELECT id FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
-            }
+            //if (form.groupParLevel1IdArr.Length > 0)
+            //{
+            //    Wfuncao += " AND Indicador IN (SELECT id FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
+            //}
 
             #endregion
 
@@ -3525,21 +3525,6 @@ ORDER BY 3
 
             var WunidadeAcesso = GetUserUnits(form.auditorId);
 
-            // Turno
-
-            if (form.shift > 0)
-            {
-                Wshift = $@" AND CL1.shift = "+form.shift;
-            }
-
-
-            // Função
-
-            if (form.groupParLevel1IdArr.Length > 0)
-            {
-                Wfuncao += " AND CL1.ParLevel1_id IN (SELECT distinct ParLevel1_id FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
-            }
-
             if (nivel == 1 || nivel == 2 || nivel == 3)
             {
                 // Indicador
@@ -3577,9 +3562,24 @@ ORDER BY 3
                 }
             }
 
-            // Unidade
             if (nivel == 1 || nivel == 2 || nivel == 3 || nivel == 4)
             {
+                // Turno
+
+                if (form.shift > 0)
+                {
+                    Wshift = $@" AND CL1.shift = " + form.shift;
+                }
+
+                // Função
+
+                if (form.groupParLevel1IdArr.Length > 0)
+                {
+                    Wfuncao += " AND CL1.ParLevel1_id IN (SELECT distinct ParLevel1_id FROM ParGroupParLevel1XParLevel1 WHERE IsActive = 1 AND ParGroupParLevel1_Id IN (" + string.Join(",", form.groupParLevel1IdArr) + "))"; // " AND ParCriticalLevel_Id  IN (" + string.Join(",", form.criticalLevelIdArr) + ") ";
+                }
+
+                // Unidade
+
                 if (form.unitIdArr.Length > 0 && form.unitIdArr[0] != 0)
                 {
                     Wunidade = " AND CL1.UnitId IN (" + string.Join(",", form.unitIdArr) + ")";

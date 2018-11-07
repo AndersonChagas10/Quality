@@ -77,6 +77,19 @@
                 <div class="clearfix"></div>
             </div>
 
+            <div class="totalNC" id="NCFuncao" hidden>
+                <div id="showNCFuncao" class="alert alert-info col-lg-2" role="alert">
+                    <h1>0 %</h1>
+                    <br />
+                    <span>@Resources.Resource.non_conformities_in_period</span>
+                </div>
+                <button id="Fdia" class="btn btn-default">Dia</button>
+                <button id="Fsemana" class="btn btn-default">Semana</button>
+                <button id="Fmes" class="btn btn-default">Mês</button>
+                <div class="col-lg-10" id="GraficoHistoricoFuncao"></div>
+                <div class="clearfix"></div>
+            </div>
+
             <div class="totalNC" id="NCIndicador" hidden>
                 <div id="showNCIndicador" class="alert alert-info col-lg-2" role="alert">
                     <h1>0 %</h1>
@@ -216,10 +229,11 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     var Subtitle = "";
 
+    var funcao = @Html.Raw(Json.Encode(ViewBag.ParGroupParLevel1));
     var indicador = @Html.Raw(Json.Encode(ViewBag.Level01));
     var monitoramento = @Html.Raw(Json.Encode(ViewBag.Level02));
     var tarefa = @Html.Raw(Json.Encode(ViewBag.Level03));
@@ -304,7 +318,7 @@
         }
 
 
-        if (((enviar['unitId'] != undefined) && (enviar['unitId'] > 0)) || ((enviar['level1Id'] != undefined) && (enviar['level1Id'] > 0)))
+        if (((enviar['unitId'] != undefined) && (enviar['unitId'] > 0)) || ((enviar['level1Id'] != undefined) && (enviar['level1Id'] > 0)) || ((enviar['groupParLevel1Id'] != undefined) && (enviar['groupParLevel1Id'] > 0)))
                 retornaSubtitulos()
 
 
@@ -359,7 +373,22 @@
 
         EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "loaderNCGeral", undefined);
 
+        //Por Função
+        if (enviar['groupParLevel1Id'] > 0 || (enviar['groupParLevel1IdArr'] != undefined && enviar['groupParLevel1IdArr'].length > 0)) {
 
+            enviar["dimensaoData"] = 1;
+            var enviarComFuncao = Object.create(enviar);
+
+            enviarComFuncao['level2Id'] = undefined;
+
+            enviarComFuncao['level2IdArr'] = undefined;
+
+            enviarComFuncao['level1Id'] = undefined;
+
+            enviarComFuncao['level1IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComFuncao, GerarGraficoHistoricoFuncao, "GraficoHistoricoFuncao", undefined);
+        }
 
         //EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
         if (!(enviar['level3idArr'] != undefined && enviar['level3idArr'].length > 0)) {
@@ -1837,6 +1866,291 @@
                 chartHistoricoGeral.reflow();
 
             }
+        }
+    }
+
+    function GerarGraficoHistoricoFuncao(data) {
+
+        if (data.length > 0) {
+
+            var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+            if (enviar.dimensaoData == 1)
+                var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_date") : MapeiaValorParaHC(data, "_dateEUA"));
+            if (enviar.dimensaoData == 2)
+                var dia = MapeiaValorParaHC(data, "semana");
+            if (enviar.dimensaoData == 4)
+                var dia = MapeiaValorParaHC(data, "mes");
+
+            var nc = MapeiaValorParaHC(data, "nc");
+            var porc = MapeiaValorParaHC(data, "procentagemNc");
+            var qtdAv = MapeiaValorParaHC(data, "av");
+            var avComPeso = MapeiaValorParaHC(data, "avComPeso");
+            var ncComPeso = MapeiaValorParaHC(data, "ncComPeso");
+            var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+            //var Subtitle = "";
+
+            // FUNÇÃO => REVEZAR DATA
+
+            var sumav = qtdAv.reduce(function (a, b) { return a + b; });
+            var sumnc = nc.reduce(function (a, b) { return a + b; });
+            var sumavCP = avComPeso.reduce(function (a, b) { return a + b; });
+            var sumncCP = ncComPeso.reduce(function (a, b) { return a + b; });
+            var porcPeriodo = sumncCP / sumavCP * 100;
+
+            var sumavComPeso = avComPeso.reduce(function (a, b) { return a + b; });
+            var sumncComPeso = ncComPeso.reduce(function (a, b) { return a + b; });
+
+            var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
+
+            let TituloGraficoHistoricoFuncao = "Histórico de Função";//  + " | " + Resources("unit") + ": " + data[0].UnidadeName;
+
+            $('#GraficoHistoricoFuncao').removeClass('loader');
+
+            $('#GraficoHistoricoFuncao').empty();
+
+
+            var SubtitleFuncao = "";
+
+            if (enviar.unitId != null || enviar.unitId != "") {
+                //SubtitleFuncao += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/> "
+
+                var array = [];
+                $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
+                SubtitleFuncao = (array.length > 100 ? array.join(', ') + ", " + Resources("among_others") : array.join(', ')) + " |   <br/> ";
+            };
+            SubtitleFuncao = "";
+            if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
+                //SubtitleFuncao += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/>";
+
+                var array = [];
+                $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
+                SubtitleFuncao = (array.length > 100 ? array.join(', ') + ", "  : array.join(', ')) + " |   <br/> ";
+            }
+            if (enviar.structureId != '' && enviar.structureId != undefined) {
+               // SubtitleFuncao += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/>";
+
+                var array = [];
+                $.each($('#structureId').val(), function (i, o) { array.push($('#structureId option[value="' + o + '"]').text()) });
+                SubtitleFuncao = (array.length > 100 ? array.join(', ') + ", " : array.join(', ')) + " |   <br/> ";
+            }
+            if (enviar.unitId != '' && enviar.unitId != undefined) {
+                SubtitleFuncao += Resources("unit") + ": " + enviar.unidadesFiltradas;
+
+                //var array = [];
+                //$.each($('#unitIdV').val(), function (i, o) { array.push($('#unitIdV option[value="' + o + '"]').text()) });
+                //SubtitleFuncao = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+            }
+            //if (enviar.auditorId != '' && enviar.auditorId != undefined) {
+            //    if (!$('#auditorId :selected').text() == "All")
+            //        //SubtitleFuncao += Resources("auditor") + ": " + $('#auditorId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/>";
+
+            //    var array = [];
+            //    $.each($('#auditorId').val(), function (i, o) { array.push($('#auditorId option[value="' + o + '"]').text()) });
+            //    SubtitleFuncao = (array.length > 100 ? array.join(', ') + ", " + Resources("among_others") : array.join(', ')) + " |   <br/> ";
+            //}
+            if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
+                SubtitleFuncao += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/>";
+
+                var array = [];
+                $.each($('#criticalLevelId').val(), function (i, o) { array.push($('#criticalLevelId option[value="' + o + '"]').text()) });
+                SubtitleFuncao = (array.length > 100 ? array.join(', ') + ", " : array.join(', ')) + " |   <br/> ";
+            }
+            if (enviar.groupParLevel1Id != '' && enviar.groupParLevel1Id != undefined && !isNaN(enviar.groupParLevel1Id)) {
+                SubtitleFuncao += "Função" + ": " + enviar.funcaoFiltrado;
+
+                //var array = [];
+                //$.each($('#level1Idv').val(), function (i, o) { array.push($('#level1Idv option[value="' + o + '"]').text()) });
+                //SubtitleFuncao = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+            }
+            //if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
+                //SubtitleFuncao += Resources("level1") + ": " + enviar.nivel1Filtrado;
+
+                //var array = [];
+                //$.each($('#level1Idv').val(), function (i, o) { array.push($('#level1Idv option[value="' + o + '"]').text()) });
+                //SubtitleFuncao = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+            //}
+            SubtitleFuncao = SubtitleFuncao.substring(0, (SubtitleFuncao.length - 0));
+
+
+                chartHistoricoFuncao = Highcharts.chart('GraficoHistoricoFuncao', {
+                    credits: {
+                        enabled: false
+                    },
+                    chart: {
+                        type: 'column',
+                        zoomType: 'x,y',
+                        height: 300
+                    },
+                    title: {
+                        //text: getNomeDoFuncaoTitulo(data[0].ChartTitle)
+                        text: TituloGraficoHistoricoFuncao
+                    },
+                    subtitle: {
+                        text: SubtitleFuncao
+                    },
+                    xAxis: {
+                        categories: dia,
+                        title: {
+                            text: Resources("data"),
+                        },
+                    },
+                    yAxis: [
+                        {
+                            //min: 0,
+                            title: {
+                                text: Resources("quantity")
+                            },
+                            labels: {
+                                format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                        }, {
+                            //min: 0,
+                            labels: {
+                                format: '{value} %',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: "% " + Resources("nonconformity"),
+                            },
+                            opposite: true
+                        }],
+                    legend: {
+                        shadow: false
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        shared: true,
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
+                    },
+                    plotOptions: {
+                        column: {
+                            grouping: false,
+                            shadow: false,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        visible: false,
+                        name: 'NC',
+                        color: 'rgba(77,143,189,1)',
+                        data: nc,
+                        yAxis: 0,
+                        type: 'line',
+                        marker: {
+                            enabled: false
+                        },
+                        pointPadding: 0.2,
+                        //pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    clickFiltroData(this);
+                                //FTA2(enviar, this)
+                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                            }
+                        }
+                    },
+                    dataLabels: {
+                    //enabled: true,
+                    enabled: false,
+                    color: 'black',
+                    align: 'center',
+                    format: '{point.y:.2f}',
+                    style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: '',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
+                    }
+                }, {
+                    visible: true,
+                    name: '% NC',
+                    color: 'rgba(240,124,0,1)',
+                    data: porc,
+                    yAxis: 1,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                clickFiltroData(this);
+                                //FTA2(enviar, this)
+                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false,
+                        color: 'black',
+                        align: 'center',
+                        format: '{point.y:.2f}',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
+                    }
+                }, {
+                    visible: false,
+                    name: Resources("samples"),
+                    data: qtdAv,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    color: 'rgba(81,207,64,1)',
+                    pointPadding: 0.3,
+                    pointPlacement: 0.2,
+                    yAxis: 0,
+                    point: {
+                        events: {
+                            click: function () {
+                                clickFiltroData(this);
+                                //FTA2(enviar, this)
+                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        //enabled: true,
+                        enabled: false,
+                        color: 'black',
+                        align: 'center',
+                        format: '{point.y:.2f}',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: '',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
+                    }
+                }]
+            }, function () {
+                $('#showNCFuncao > h1').text(parseFloat(porcPeriodoComPeso.toFixed(2)) + " %");
+                $('#NCFuncao').show();
+            });
+
+            chartHistoricoFuncao.reflow();
         }
     }
 
@@ -3643,6 +3957,37 @@
 
             enviar.unidadesFiltradas = enviar.unidadesFiltradas + "  <br/> ";
         }
+
+        // Subtitulo Funcao
+        if (enviar.groupParLevel1Id > 0) {
+
+            // Cria array de Sigla de Unidades
+
+            var name = [];
+            enviar['funcaoName'] = [];
+            enviar.groupParLevel1IdArr.forEach(function (o, c) {
+                name = funcao.filter(function (obj) { return obj.Id == o; });
+                enviar['funcaoName'].push(name[0].Name);
+                return enviar['funcaoName'];
+            })
+
+            //Transforma em Subtitle
+            enviar['funcaoFiltrado'] = "";
+            enviar.funcaoName.forEach(function (o, c) {
+
+                tam = enviar.funcaoFiltrado.length;
+
+                if (tam <= 100) {
+                    enviar.funcaoFiltrado += " " + o + " |";
+                }
+
+            })
+
+            // Retira ultimo divisor
+            tam = enviar.funcaoFiltrado.length;
+            enviar.funcaoFiltrado = tam >= 100 ? enviar.funcaoFiltrado.substring(0, tam - 1) + Resources("among_others") : enviar.funcaoFiltrado.substring(0, tam - 1) + " <br/> ";
+        }
+
         // Subtitulo Level 1
         if (enviar.level1Id > 0) {
 
@@ -3811,6 +4156,54 @@
             EasyAjax(UrlGraficoHistoricoModalUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", true);
         });
 
+        // Consolidado Função
+        $("#Fdia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            var enviarComFuncao = Object.create(enviar);
+
+            enviarComFuncao['level2Id'] = undefined;
+
+            enviarComFuncao['level2IdArr'] = undefined;
+
+            enviarComFuncao['level1Id'] = undefined;
+
+            enviarComFuncao['level1IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComFuncao, GerarGraficoHistoricoFuncao, "GraficoHistoricoFuncao", undefined);
+        });
+
+        $("#Fsemana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+
+            var enviarComFuncao = Object.create(enviar);
+
+            enviarComFuncao['level2Id'] = undefined;
+
+            enviarComFuncao['level2IdArr'] = undefined;
+
+            enviarComFuncao['level1Id'] = undefined;
+
+            enviarComFuncao['level1IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComFuncao, GerarGraficoHistoricoFuncao, "GraficoHistoricoFuncao", undefined);
+        });
+
+        $("#Fmes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+
+            var enviarComFuncao = Object.create(enviar);
+
+            enviarComFuncao['level2Id'] = undefined;
+
+            enviarComFuncao['level2IdArr'] = undefined;
+
+            enviarComFuncao['level1Id'] = undefined;
+
+            enviarComFuncao['level1IdArr'] = undefined;
+
+            EasyAjax(UrlGraficoHistorico, enviarComFuncao, GerarGraficoHistoricoFuncao, "GraficoHistoricoFuncao", undefined);
+        });
+
         // Consolidado Indicador
         $("#Idia").on('click', function () {
             enviar["dimensaoData"] = 1;
@@ -3904,10 +4297,10 @@
 
         if (IsDate(data_comparar) == true && this_.category.format("dd/MM/yyyy").length >= 8 ) {
             cb(this_.category.format("dd/MM/yyyy"), this_.category.format("dd/MM/yyyy"));
-            Send(true);        
+            Send(true);
         }
     }
 
-    </script>
+</script>
 
 }
