@@ -445,7 +445,7 @@ namespace SgqSystem.Services
 
             string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
                                  "    <span class=\"input-group-btn btn-minus\"> </span>             " +
-                                 "         <input type=\"text\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:100%;\">     " +
+                                 "         <input type=\"text\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:100%;\" placeholder=\"Observações\">     " +
                                  "</div>                                                    ";
             return texto;
         }
@@ -642,6 +642,13 @@ namespace SgqSystem.Services
                                     classe: "col-xs-0"
                                 );
             }
+            else if (parLevel3.ParLevel3InputType_Id == 6)
+            {
+                labels = div(
+                                    outerhtml: input,
+                                    classe: "col-xs-3 counters"
+                                );
+            }
             else
             {
                 labels = div(
@@ -657,6 +664,13 @@ namespace SgqSystem.Services
                 counters = div(
                               outerhtml: input,
                               classe: "col-xs-6 counters"
+                              );
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 6)
+            {
+                counters = div(
+                              outerhtml: labelsInputs,
+                              classe: "col-xs-3"
                               );
             }
             else
