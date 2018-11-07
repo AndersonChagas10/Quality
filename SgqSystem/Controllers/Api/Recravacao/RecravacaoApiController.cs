@@ -83,7 +83,7 @@ namespace SgqSystem.Controllers.Api
                 int parLevel1_Id = int.Parse(linha["ParLevel1_Id"].ToString());
                 bool salvoParaInserirNovaColeta = false;
                 bool isValidated = false;
-                var existente = db.RecravacaoJson.FirstOrDefault(r => r.ParCompany_Id == idCompany && r.Linha_Id == idLinha && !isValidated && r.SalvoParaInserirNovaColeta == null)?.Id;
+                var existente = db.RecravacaoJson.Where(r => r.ParCompany_Id == idCompany && r.Linha_Id == idLinha && !isValidated && r.SalvoParaInserirNovaColeta == null).OrderByDescending(x=>x.Id).FirstOrDefault()?.Id;
 
                 int RecravacaoJsonId = 0;
 

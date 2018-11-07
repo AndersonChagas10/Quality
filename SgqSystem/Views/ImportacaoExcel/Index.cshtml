@@ -51,7 +51,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <p>Arquivo salvo com sucesso!</p>
+                        <p id="mensagemAposImportacao">Arquivo salvo com sucesso!</pif>
                     </div>
                     <div class="modal-footer">
                         <button id="modalSucesso" type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -164,6 +164,7 @@
                     var formatoId = $("#formato").val();
                     var dados = JSON.stringify(dadosPreenchidos);
 
+                    $('body').LoadingOverlay("show");
                     $.ajax({
                         type: "Post",
                         url: urlExcel + "?formatoId=" + formatoId,
@@ -171,13 +172,16 @@
                         contentType: "application/json",
                         data: dados,
                         success: function (retorno) {
+                            $('body').LoadingOverlay("hide");
+                            $("#mensagemAposImportacao").html(retorno);
                             $("#ModalErro").hide();
                             $("#ModalInformacao").modal('show');
                         },
                         error: function (retorno) {
-                            $("#ModalErro").html("<p>" + retorno.responseJSON.Message + "</p>")
+                            $('body').LoadingOverlay("hide");
+                            $("#ModalErro").html("<p>" + retorno.responseJSON.Message + "</p>");
                             $("#ModalErro").show();
-                        },
+                        }
                     });
                 } else {
                     $("#ModalConfirmacao").modal('hide');

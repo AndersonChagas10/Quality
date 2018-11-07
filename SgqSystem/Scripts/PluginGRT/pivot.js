@@ -1323,7 +1323,7 @@
         if (opts.unusedAttrsVertical === true || unusedAttrsVerticalAutoOverride) {
             unused.addClass('pvtVertList').css('overflow-y', 'auto').css('display', 'block').css('max-height', '600px');
         } else {
-            unused.addClass('pvtHorizList').css('overflow-x', 'auto').css('display', 'block').css('min-width', '700px').css('max-width', '1000px').css('height', '32px');
+            unused.addClass('pvtHorizList').css('overflow-x', 'auto').css('display', 'block').css('min-width', '700px').css('max-width', '1000px').css('min-height', '32px');
         }
         fn1 = function(attr) {
           var attrElem, checkContainer, closeFilterBox, controls, filterItem, filterItemExcluded, finalButtons, hasExcludedItem, len2, n, placeholder, ref1, sorter, triangleLink, v, value, valueCount, valueList, values;

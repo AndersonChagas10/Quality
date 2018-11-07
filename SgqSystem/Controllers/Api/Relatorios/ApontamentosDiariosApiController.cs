@@ -118,7 +118,8 @@ namespace SgqSystem.Controllers.Api
             try
             {
                 db.Database.ExecuteSqlCommand(query);
-                var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);
+                var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);                
+
                 ConsolidacaoEdicao(resultLevel3.Id);
 
             }
@@ -152,6 +153,9 @@ namespace SgqSystem.Controllers.Api
             var level1_Id = level3.CollectionLevel2.ParLevel1_Id;
 
             var service = new SyncServices();
+
+            service.ReconsolidationLevel3ByCollectionLevel2Id(level3.CollectionLevel2_Id.ToString());
+
             var retorno = service._ReConsolidationByLevel1(company_Id, level1_Id, data);
         }
 
@@ -197,7 +201,6 @@ namespace SgqSystem.Controllers.Api
             }
 
             internal string CreateUpdate()
-
             {
                 isQueryEdit = true;
                 GetDataToEdit();
@@ -705,6 +708,11 @@ namespace SgqSystem.Controllers.Api
 
                     }
 
+                    if (IsConform.GetValueOrDefault())
+                    {
+                        return "0";
+                    }
+
                     var defeitoXPeso = (defects * Weight.GetValueOrDefault());
                     var punicaoXPeso = (PunishmentValue.GetValueOrDefault() * Weight.GetValueOrDefault());
 
@@ -1012,6 +1020,8 @@ namespace SgqSystem.Controllers.Api
                         else //Update
                         {
                             original.Value = item.Value;
+                            original.ParHeaderField_Id = item.ParHeaderField_Id;
+                            original.ParHeaderField_Name = item.ParHeaderField_Name;
                         }
                     }
                     else if (!string.IsNullOrEmpty(item.Value)) //Add
@@ -1076,14 +1086,17 @@ namespace SgqSystem.Controllers.Api
 
             var coletas = db.Database.SqlQuery<CollectionLevel2XParHeaderField>(query).ToList();
 
+            //Ids dos cabeçalhos de monitoramentos
+            var level1HeaderFields_Id = db.ParLevel1XHeaderField.Include("ParHeaderField").Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.IsActive && r.ParHeaderField.ParLevelDefinition_Id == 1).Select(r => r.ParHeaderField_Id).ToList();
+
             //Ids dos cabeçalhos que não fazem parte do Monitoramento
-            var headerFields_IdNot = db.ParLevel2XHeaderField.Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.ParLevel2_Id == collectionLevel2.ParLevel2_Id && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
+            var headerFields_IdNot = db.ParLevel2XHeaderField.Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.ParLevel2_Id == collectionLevel2.ParLevel2_Id && r.IsActive).Select(r => r.ParHeaderField_Id).Except(level1HeaderFields_Id).ToList();
 
             //Ids dos cabeçalhos válidos
             var headerFields_Ids = db.ParLevel1XHeaderField.Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && !headerFields_IdNot.Contains(r.ParHeaderField_Id) && r.IsActive).Select(r => r.ParHeaderField_Id).ToList();
 
             //Seleciona os cabeçalhos
-            var headerFields = db.ParHeaderField.Where(r => headerFields_Ids.Contains(r.Id)).ToList();
+            var headerFields = db.ParHeaderField.Where(r => headerFields_Ids.Contains(r.Id)).OrderBy(r => r.ParLevelDefinition_Id).ThenBy(r => r.Id).ToList();
 
             var values = db.ParMultipleValues.ToList();
 
@@ -1096,18 +1109,8 @@ namespace SgqSystem.Controllers.Api
 
                 if (headerField.ParFieldType_Id == 2) //Se for campo integração
                 {
-                    /* Se for produto que digito o código e busco em uma lista*/
-                    if (headerField.Description == "Produto")
-                    {
-                        var conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-                        var db2 = new SqlConnection(conexao);
-
-                        SGQDBContext.Generico listaProdutos = new SGQDBContext.Generico(db2);
-                        var listaProdutosJSON = listaProdutos.getProdutos();
-                    }
-                    /* se for um combobox integrado*/
-                    else
+                    /* Se não for produto que digito o código e busco em uma lista*/
+                    if (headerField.Description != "Produto")
                     {
                         SGQDBContext.ParFieldType ParFieldTypeDB = new SGQDBContext.ParFieldType();
 

@@ -10,6 +10,7 @@ using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -141,6 +142,16 @@ namespace SgqSystem.Controllers
             }
 
             ViewBag.Roles = Retorno;
+
+            //Produtos para edição de cabeçalhos
+            var conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            var db2 = new SqlConnection(conexao);
+
+            SGQDBContext.Generico listaProdutos = new SGQDBContext.Generico(db2);
+            
+            ViewBag.Produtos = listaProdutos.getProdutos();
+
             //Fim da Role
 
             return View(form);
@@ -169,6 +180,15 @@ namespace SgqSystem.Controllers
 
             ViewBag.Roles = Retorno;
             //Fim da Role
+
+            //Produtos para edição de cabeçalhos
+            var conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            var db2 = new SqlConnection(conexao);
+
+            SGQDBContext.Generico listaProdutos = new SGQDBContext.Generico(db2);
+
+            ViewBag.Produtos = listaProdutos.getProdutos();
 
             return View(form);
         }
@@ -2929,7 +2949,7 @@ namespace SgqSystem.Controllers
             /*1º*/
             tabela.trsCabecalho1 = new List<Ths>();
             //tabela.trsCabecalho1.Add(new Ths() { name = "Pacote: " + form.ParametroTableRow[0] });
-            tabela.trsCabecalho1.Add(new Ths() { name = "Indicadores por Unidades" });
+            tabela.trsCabecalho1.Add(new Ths() { name = "Todas as Funções por Todas as Unidades" });
             tabela.trsCabecalho1.Add(new Ths() { name = "" });
             /*Fim  1º*/
 
@@ -4235,7 +4255,7 @@ namespace SgqSystem.Controllers
                    ON _CROSS.CLASSIFIC_NEGOCIO = A.LEVEL1NAME
                    AND _CROSS.MACROPROCESSO = A.RegName
              WHERE 1=1
-                    AND PP1.Name IS NOT NULL 
+                    AND _CROSS.MACROPROCESSO IS NOT NULL 
 				 GROUP BY _CROSS.CLASSIFIC_NEGOCIO,_CROSS.MACROPROCESSO ";
 
             var orderby = "\n ORDER BY 1, 2, 3";
@@ -4261,7 +4281,7 @@ namespace SgqSystem.Controllers
             var pacote = Resources.Resource.package;
             /*1º*/
             tabela.trsCabecalho1 = new List<Ths>();
-            tabela.trsCabecalho1.Add(new Ths() { name = ""});
+            tabela.trsCabecalho1.Add(new Ths() { name = "Todos os Indicadores por Todas as Regionais"});
             tabela.trsCabecalho1.Add(new Ths() { name = "" });
             /*Fim  1º*/
 

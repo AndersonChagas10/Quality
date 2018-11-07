@@ -104,7 +104,7 @@ namespace SgqSystem.Controllers.Api.Public
             collectionJson += ","; //SEPARADOR LEVEL3
             collectionJson += NC; //level3 2 VALUE
             collectionJson += ","; //SEPARADOR LEVEL3
-            collectionJson += "true"; //level3 3 CONFORME
+            collectionJson += Convert.ToInt32(NC) > 0 ? "false" : "true"; //level3 3 CONFORME
             collectionJson += ","; //SEPARADOR LEVEL3
             collectionJson += "1"; //level3 4 ??
             collectionJson += ","; //SEPARADOR LEVEL3

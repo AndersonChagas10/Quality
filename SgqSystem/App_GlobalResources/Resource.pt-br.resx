@@ -445,7 +445,7 @@
     <value>Positivo</value>
   </data>
   <data name="punishment_value" xml:space="preserve">
-    <value>Valor da punição/recompensa</value>
+    <value>Valor da punição</value>
   </data>
   <data name="punishment_value_popover" xml:space="preserve">
     <value>Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior</value>
@@ -2672,5 +2672,17 @@
   </data>
   <data name="indicator_group" xml:space="preserve">
     <value>Grupo de Indicador</value>
+  </data>
+  <data name="anticipated" xml:space="preserve">
+    <value>Antecipado</value>
+  </data>
+  <data name="import" xml:space="preserve">
+    <value>Importação</value>
+  </data>
+  <data name="name_alredy_exist" xml:space="preserve">
+    <value>Já existe um item cadastrado com este Nome</value>
+  </data>
+  <data name="link_alredy_used" xml:space="preserve">
+    <value>Este vínculo já está sendo utilizado</value>
   </data>
 </root>

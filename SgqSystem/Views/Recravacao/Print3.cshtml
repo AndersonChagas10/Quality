@@ -526,7 +526,7 @@
                                             <span>{{item.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
                                         </span>
                                         <span class="validate"
-                                              ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Id][($index +1)].length == 0 && !(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA')), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }"
+                                              ng-class="{bgWhite:  ((item.ResultValue[ParLevel3.Id][($index +1)].length == 0 && !(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA')) || ParLevel3.Id == idEC || ParLevel3.Id == idET), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }"
                                               ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
                                             <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
                                             <span style="font-size:9px">
@@ -1729,14 +1729,14 @@
                         vm.idEC = 1660
                         vm.idET = 1659
                         vm.idEspessura = 1250
-                        vm.idOVERLAP = 1662
+                        vm.idOVERLAP = 1663
                         vm.idEscareacao = 1656
                         vm.idAltura = 1251
                     } if (vm.jbsBrasil) {
                         vm.idEC = 1660
                         vm.idET = 1659
                         vm.idEspessura = 1250
-                        vm.idOVERLAP = 1662
+                        vm.idOVERLAP = 1663
                         vm.idEscareacao = 1656
                         vm.idAltura = 1251
                     }
