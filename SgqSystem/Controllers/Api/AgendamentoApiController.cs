@@ -33,7 +33,8 @@ namespace SgqSystem.Controllers.Api
         {
             //ValidaDados(agendamento);
             agendamento.IsActive = true;
-            
+            if (agendamento.Shift_Id <= 0)
+                agendamento.Shift_Id = null;
             using (var db = new SgqDbDevEntities())
             {
                 if (agendamento.Id > 0)

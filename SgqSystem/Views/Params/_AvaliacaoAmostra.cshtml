@@ -354,7 +354,7 @@
 
         $.get('@Url.Action("Get", "api/Shift")', function (r) {
             let shifts = r;
-            avaliacaAmostraSelectShifts = '<td> <select class="input-sm" data-column="slAgendamento"> <option value="-1" >Todos</option>';
+            avaliacaAmostraSelectShifts = '<td> <select class="input-sm" data-column="slAgendamento"> <option value="" >Todos</option>';
             shifts.forEach(function (item) {
                 avaliacaAmostraSelectShifts += '<option value="' + item.Id + '">' + item.Description +'</option>';
             })
@@ -523,15 +523,15 @@
                 break;
             case "Quinzenal":
                 if (fim < 1 || inicio < 1 || fim > 15 || inicio > 15 || inicio > fim)
-                    return true;
-                else
                     return false;
+                else
+                    return true;
                 break;
             case "Mensal":
                 if (fim < 1 || inicio < 1 || fim > 31 || inicio > 31 || inicio > fim)
-                    return true;
-                else
                     return false;
+                else
+                    return true;
                 break;
             case "Turno":
                 break;
