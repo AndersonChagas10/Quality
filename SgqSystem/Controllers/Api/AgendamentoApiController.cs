@@ -18,10 +18,12 @@ namespace SgqSystem.Controllers.Api
         [HttpGet]
         [Route("Get/{id}")]
         public List<ParEvaluationSchedule> Get(int id)
-        {
+        {        
             var db = new SgqDbDevEntities();
             db.Configuration.LazyLoadingEnabled = false;
-            var agendamentos = db.ParEvaluationSchedule.Where(x => x.ParEvaluation_Id == id).ToList();         
+
+            var agendamentos = db.ParEvaluationSchedule.Where(x => x.ParEvaluation_Id == id && x.IsActive).ToList();
+            
             return agendamentos;
         }
 
@@ -30,14 +32,18 @@ namespace SgqSystem.Controllers.Api
         public ParEvaluationSchedule Post([FromBody] ParEvaluationSchedule agendamento)
         {
             //ValidaDados(agendamento);
-            agendamento.Shift_Id = 1;
-
             agendamento.IsActive = true;
+            
             using (var db = new SgqDbDevEntities())
             {
-                //http://localhost/SgqSystem/api/Shift/Get
-                //agendamento.ParEvaluation_Id = db.ParEvaluation.Where(x => x.Id == agendamento.ParEvaluation_Id.Id).FirstOrDefault();
-                db.ParEvaluationSchedule.Add(agendamento);
+                if (agendamento.Id > 0)
+                {
+                    db.Entry(agendamento).State = EntityState.Modified;                   
+                }
+                else
+                {
+                    db.ParEvaluationSchedule.Add(agendamento);
+                }
                 db.SaveChanges();
             }
             return agendamento;
@@ -46,8 +52,7 @@ namespace SgqSystem.Controllers.Api
         [HttpDelete]
         [Route("Delete")]
         public ParEvaluationSchedule Delete([FromBody] ParEvaluationSchedule agendamento)
-        {
-            agendamento.Shift_Id = 1;
+        {   
             agendamento.IsActive = false;
             using (var db = new SgqDbDevEntities())
             {
