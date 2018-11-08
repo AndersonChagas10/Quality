@@ -93,7 +93,7 @@
                                         <label>Avaliação:</label>
                                         <input id="inpAvaliacao" />
 
-                                        
+
 
                                         <label>Inicio:</label>
                                         <input id="inpInicio" />
@@ -109,8 +109,8 @@
                                         </select>*@
 
                                 @*<button type="button" class="btn btn-primary btn-sm" onclick="adiciona($(this));" id=""><i class="fa fa-plus" aria-hidden="true"></i></button>*@
-                                <input class="hidden" id="inpAvaliacaoId" />
-                                <table id="tabelaAgendamento" class="table table-condensed table-responsive no-margin margin-top">
+                                <input class="hidden" data-column="inpAvaliacaoId" />
+                                <table id="tabelaAgendamento" style="display:block !important" class="table table-condensed table-responsive no-margin margin-top">
                                     <thead>
                                         <tr>
                                             <th>Tipo de agendamento do monitoramento</th>
@@ -119,25 +119,11 @@
                                             <th>Avaliação</th>
                                             <th>Turno</th>
                                             <th>Ações</th>
-                                           
+
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td> <input class="inpTipoAgendamento" disabled="disabled" /></td>
-                                            <td> <input id="inpInicio" /></td>
-                                            <td><input id="inpTermino" /></td>
-                                            <td> <input class="inpAvaliacao" /></td>
-                                            <td>
-                                                <select id="slAgendamento">
-                                                    <option value="0">Todos</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                </select>
-                                            </td>
-                                            <td class="hidden">  <input class="hidden" id="inpId" /></td>
-                                            <td> <button type="button" class="btn btn-primary btn-sm" id="btnSalvarAgendamento"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
-                                        </tr>
+                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -146,7 +132,7 @@
                                 <button type="button" data-dismiss="modal" onclick="LimpaCampos()" class="btn btn-default">Fechar</button>
                             </div>
                         </div>
-                    
+
                     </div>
                 </div>
             </div>
@@ -377,57 +363,113 @@
 
 
     function abrirModalAgendamento(linha) {
+        $("#tabelaAgendamento").attr('style', '');
+        debugger
         var obj = $(linha).parents('tr').data();
         $('#modalAgendamento').modal('show');
+        var id = parseInt(obj.evaluationId);
 
-        $(".inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
-        $(".inpAvaliacao").val(obj.evaluationNumber);
-        $("#inpAvaliacaoId").val(obj.evaluationId);      
+        $.ajax({
+            url: '@Url.Content("~")' + 'api/AgendamentoApi/Get/' + id,
+            type: 'GET',
+            //data:  id,
+            dataType: 'json',
+            success: function (data) {
+                debugger
+                data.forEach(function (item) {
+                    MontaNovaLinha(item);
+                });
+                console.log(data);
+            },
+            error: function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+
+
+        $("[data-column=inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        //$(".inpAvaliacao").val(obj.evaluationNumber);
+        $("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
+        $("#tabelaAgendamento tbody").html("");
+        MontaNovaLinha(null)
     }
 
 
     function LimpaCampos() {
-        $("#inpInicio").val("");
-        $("#inpTermino").val("");
+        $("[data-column=inpInicio]").val("");
+        $("[data-column=inpTermino]").val("");
     }
 
+    function DeletaLinha(data, linha) {
+        $(linha).html('tr').remove();
+    }
 
-    function adiciona(linha) {
+    function MontaNovaLinha(data) {
+        $("#tabelaAgendamento tbody").append("<tr>"
+        +'<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
+        +'<td> <input class="input-sm" data-column="inpInicio" /></td>'
+        +'<td><input class="input-sm" data-column="inpTermino" /></td>'
+        +'<td> <input  data-column="inpAvaliacao" input-sm" /></td>'
+        +'<td> <select class="input-sm" data-column="slAgendamento"> <option value="0" > Todos</option> <option value="1">1</option><option value="2">2</option> </select ></td>'                          
+        +'<td class="hidden"> <input data-column="inpId" class="hidden inpId" /></td>'
+            +'<td>  <button type="button" class="btn btn-primary btn-sm"  id="btnSalvarAgendamento">Salvar</button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm hidden btnDeletarAgendamento">Deletar</button></td>'
+            + "</tr>");
+
+        $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        //$data-column=inpAvaliacaoId]").val(data.Id);
         debugger
-        var obj = $(linha).parents('tr').data();
-        var idTabela = "tabelaAgendamento";
-        var tdsNames = ["Av", "Inicio", "Fim", "Turno"];
-
-        crudNxN.adiciona(obj, idTabela, tdsNames);
+       
+        if (!!data && data.Id > 0) {
+            debugger
+            $("#tabelaAgendamento tbody tr:last").data(data);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpInicio]').val(data.Inicio);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpTermino]').val(data.Fim);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpAvaliacao]').val(data.Av);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
+            $("#tabelaAgendamento tbody tr:last").find("#btnSalvarAgendamento").removeClass('btn-primary').addClass('btn-success').text('Editar');
+            $("#tabelaAgendamento tbody tr:last").find(".btnDeletarAgendamento").removeClass('hidden');
+        }
     }
 
-    function MontaNovaLinha(data) {        
-        $("#tabelaAgendamento").find('tbody').append("<tr>")
-        $("#tabelaAgendamento").find('tbody').append('<td><input class="inpTipoAgendamento" disabled="disabled" /></td>');
-        $("#tabelaAgendamento").find('tbody').append('<td> <input id="inpInicio" /></td>');
-        $("#tabelaAgendamento").find('tbody').append('<td><input id="inpTermino" /></td>');
-        $("#tabelaAgendamento").find('tbody').append('<td> <input class="inpAvaliacao" /></td>');
-        $("#tabelaAgendamento").find('tbody').append('<td> <select id="slAgendamento"> <option value="0" > Todos</option> <option value="1">1</option><option value="2">2</option> </select ></td>');
-       
-        $("#tabelaAgendamento").find('tbody').append('<td class="hidden"> <input class="hidden" id="inpId" /></td>');
-        $("#tabelaAgendamento").find('tbody').append('<td>  <button type="button" class="btn btn-primary btn-sm"  id="btnSalvarAgendamento"><i class="fa fa-plus" aria-hidden="true"></i></button></td>');   
-        $("#tabelaAgendamento").find('tbody').append("</tr>")
-       
-        $(".inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
-        $(".inpAvaliacao").val(data.Av);
-        $("#inpAvaliacaoId").val(data.Id); 
-    }
-
-    $("#btnSalvarAgendamento").on('click', function () {
-        var inicio = parseInt($("#inpInicio").val());
-        var termino = parseInt($("#inpTermino").val());
-
+    function deletarRegistro(data) {
+        console.log(data);
+        var linha = $(data).parents('tr');
+        debugger
         var form = {
-            Inicio: $("#inpInicio").val(),
-            Fim: $("#inpTermino").val(),
-            Av: $(".inpAvaliacao").val(),
-            Shift_Id: $("#slAgendamento").val(),
-            ParEvaluation_Id: $("#inpAvaliacaoId").val()
+            Inicio: $(linha).data()['Inicio'], //$("#inpInicio").val(),
+            Fim: $(linha).data()['Fim'], //$("#inpTermino").val(),
+            Av: $(linha).data()['Av'], //$(".inpAvaliacao").val(),
+            Shift_Id: $(linha).data()['Shift_Id'], //$("#slAgendamento").val(),
+            ParEvaluation_Id: $(linha).data()['ParEvaluation_Id'], //$("#inpAvaliacaoId").val()
+            Id: $(linha).data()['Id']
+        };
+
+        $.ajax({
+            url: '@Url.Content("~")' + 'api/AgendamentoApi/Delete',
+            type: 'DELETE',
+            data: form,
+            dataType: 'json',
+            success: function (data) {
+                DeletaLinha(data, linha);
+            },
+            error: function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+    }
+
+
+    $("#modalAgendamento").on('click', "#btnSalvarAgendamento", function () {
+        var inicio = parseInt($("[data-column=inpInicio]").val());
+        var termino = parseInt($("[data-column=inpTermino]").val());
+        var linha = $(this).parent().parent();
+        debugger
+        var form = {
+            Inicio: $(linha).find("[data-column=inpInicio]").val(),
+            Fim: $(linha).find("[data-column=inpTermino]").val(),
+            Av: $(linha).find("[data-column=inpAvaliacao]").val(),
+            Shift_Id: $(linha).find("[data-column=slAgendamento]").val(),
+            ParEvaluation_Id: $("[data-column=inpAvaliacaoId]").val()
         };
         $.ajax({
             url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
@@ -435,7 +477,13 @@
             data: form,
             dataType: 'json',
             success: function (data) {
-                $("#inpId").val(data.Id);
+                $("[data-column=inpId]").val(data.Id);
+                debugger
+                $(linha).data(data);
+                var id = $(linha).data()['Id'];
+                if (id > 0) {
+                    $(linha).find(".btnDeletarAgendamento").removeClass('hidden');
+                }
                 MontaNovaLinha(data);
             },
             error: function (request, error) {

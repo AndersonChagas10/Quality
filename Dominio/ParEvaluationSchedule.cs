@@ -18,7 +18,9 @@ namespace Dominio
         public int Av { get; set; }
         public int Shift_Id { get; set; }
         public int ParEvaluation_Id { get; set; }
+        public bool IsActive { get; set; }
 
+        [ForeignKey("ParEvaluation_Id")]
         public virtual ParEvaluation ParEvaluation { get; set; }
     }
 }
