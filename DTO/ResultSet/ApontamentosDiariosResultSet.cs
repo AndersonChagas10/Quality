@@ -49,6 +49,9 @@ public class ApontamentosDiariosResultSet
 
     public int? ParLevel3InputType_Id { get; set; }
 
+    public bool IsLate { get; set; }
+    public string MotivoAtraso { get; set; }
+
     public string Select(DataCarrierFormulario form)
     {
         var dtInit = form._dataInicio.ToString("yyyyMMdd");
@@ -179,7 +182,9 @@ public class ApontamentosDiariosResultSet
 						 AND (isnull(PL3V.ParLevel2_id,l2.id) = l2.id ) 
 						 AND PL3V.ParLevel3_Id = L3.Id
 						 AND PL3V.IsActive = 1
-				  order by PL3V.id DESC,PL3V.parcompany_id DESC, PL3V.ParLevel2_Id DESC,PL3V.ParLevel1_Id DESC) as ParLevel3InputType_Id
+				 order by PL3V.id DESC,PL3V.parcompany_id DESC, PL3V.ParLevel2_Id DESC,PL3V.ParLevel1_Id DESC) as ParLevel3InputType_Id
+	            ,CASE WHEN MA.Motivo IS NULL THEN 0 ELSE 1 END AS IsLate
+	            ,ma.Motivo as MotivoAtraso
                  FROM #CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     
                  ON UN.Id = c2.UnitId                  
@@ -228,6 +233,10 @@ public class ApontamentosDiariosResultSet
 				 ON C2XC.CollectionLevel2_Id = C2.Id
 				 LEFT JOIN ParCluster PC
 				 ON PC.Id = C2XC.ParCluster_Id
+                 LEFT JOIN CollectionLevel2XMotivoAtraso CL2MA
+                 ON CL2MA.CollectionLevel2_Id = C2.Id
+                 LEFT JOIN MotivoAtraso MA
+                 ON MA.Id = CL2MA.MotivoAtraso_Id
                  WHERE 1=1 
                   -- AND C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
                   { sqlLevel3 }   DROP TABLE #CollectionLevel2 ";

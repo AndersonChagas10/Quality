@@ -54,6 +54,7 @@ namespace SgqSystem.Controllers.Api.App
             var units = db.ParCompany.Where(r => r.IsActive).ToList();
 
             var shifts = db.Shift.ToList();
+            shifts.Insert(0, new Shift());
 
             using (var service = new SyncServices())
             {
@@ -100,6 +101,7 @@ namespace SgqSystem.Controllers.Api.App
             GlobalConfig.PaginaDoTablet[UnitId].DataInicio = DateTime.Now;
 
             var shifts = db.Shift.ToList();
+            shifts.Insert(0, new Shift());
 
             using (var service = new SyncServices())
             {
@@ -152,12 +154,13 @@ namespace SgqSystem.Controllers.Api.App
         /// <param name="UnitId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("GetTela/{UnitId}/{ShiftId}")]
-        public RetornoParaTablet GetTela(int UnitId, int ShiftId)
+        [Route("GetTela/{UnitId}/{ShiftId?}")]
+        public RetornoParaTablet GetTela(int UnitId, int ShiftId = 0)
         {
             var retorno = new RetornoParaTablet();
 
             var shifts = db.Shift.ToList();
+            shifts.Insert(0, new Shift());
 
             try
             {
@@ -336,7 +339,10 @@ namespace SgqSystem.Controllers.Api.App
 
         private void SaveFile(int id, string html, int Shift_Id)
         {
-            var path = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "appParametrization", $"HTMLTabletUnidade{id}_Shift{Shift_Id}.txt");
+            var fileName = $"HTMLTabletUnidade{id}_Shift{Shift_Id}.txt";
+            if (Shift_Id == 0)
+                fileName = $"HTMLTabletUnidade{id}.txt";
+            var path = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "appParametrization", fileName);
             Directory.CreateDirectory(path.Substring(0, path.LastIndexOf("\\")));
             using (StreamWriter writer = new StreamWriter(path))
             {
@@ -348,7 +354,10 @@ namespace SgqSystem.Controllers.Api.App
         {
             //Código para Ler o arquivo
             string file;
-            var path = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "appParametrization", $"HTMLTabletUnidade{id}_Shift{Shift_Id}.txt");
+            var fileName = $"HTMLTabletUnidade{id}_Shift{Shift_Id}.txt";
+            if (Shift_Id == 0)
+                fileName = $"HTMLTabletUnidade{id}.txt";
+            var path = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "appParametrization", fileName);
             Directory.CreateDirectory(path.Substring(0, path.LastIndexOf("\\")));
             try
             {

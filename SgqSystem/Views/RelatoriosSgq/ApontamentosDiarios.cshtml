@@ -41,9 +41,9 @@
             color: rgb(167, 176, 24);
         }
 
-    .productNamelabel{
-        font-size:10px;
-        color:blue;
+    .productNamelabel {
+        font-size: 10px;
+        color: blue;
     }
 </style>
 
@@ -182,86 +182,100 @@
 
                 var colunas =
                     [
-                        { title: "@Resources.Resource.edit", mData: null, mRender: function (data, type, full) {
-                            if (data.ParLevel3InputType_Id == 11) {
-                                return '<button class="btn btn-link custom-button" disabled style="cursor: not-allowed;">' + "@Resources.Resource.edit" + '</button>';
-                            } else {
-                                return '<button id="edit" data-ParLevel3InputType_Id="'+data.ParLevel3InputType_Id+'" class="btn btn-link custom-button" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>';
+                        {
+                            title: "@Resources.Resource.edit", mData: null, mRender: function (data, type, full) {
+                                if (data.ParLevel3InputType_Id == 11) {
+                                    return '<button class="btn btn-link custom-button" disabled style="cursor: not-allowed;">' + "@Resources.Resource.edit" + '</button>';
+                                } else {
+                                    return '<button id="edit" data-ParLevel3InputType_Id="' + data.ParLevel3InputType_Id + '" class="btn btn-link custom-button" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>';
+                                }
+                            }, "visible": regraEdit
+                        },
+
+                        { title: "@Resources.Resource.edit_header", mData: null, defaultContent: '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#modalHeaderField">' + "@Resources.Resource.edit_header" + '</button>', "visible": regraEdit },
+                        { title: "@Resources.Resource.unit", mData: "Unidade" },
+                        { title: "@Resources.Resource.cluster", mData: "Processo" },
+                        { title: "@Resources.Resource.shift", mData: "Turno" },
+                        { title: "@Resources.Resource.period", mData: "Periodo" },
+                        { title: "@Resources.Resource.auditor", mData: "Auditor" },
+                        { title: "@Resources.Resource.date", mData: "_Data" },
+                        { title: "@Resources.Resource.time", mData: "_Hora" },
+                        { title: "@Resources.Resource.audit", mData: "Indicador" },
+                        { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
+                        { title: "@Resources.Resource.task", mData: "Tarefa" },
+                        { title: "@Resources.Resource.weight", mData: "Peso" },
+                        {
+                            title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
+
+                                if (isNaN(parseFloat(data))) {
+
+                                    return data;
+
+                                } else {
+
+                                    return data.toString().match(/^-?\d+(\.\d{1,2})?/g)[0];
+                                }
+
                             }
-                        }, "visible": regraEdit },
-                                    { title: "@Resources.Resource.edit_header", mData: null, defaultContent: '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#modalHeaderField">' + "@Resources.Resource.edit_header" + '</button>', "visible" : regraEdit },
-                                { title: "@Resources.Resource.unit", mData: "Unidade" },
-                                { title: "@Resources.Resource.cluster", mData: "Processo" },
-                                { title: "@Resources.Resource.shift", mData: "Turno" },
-                                { title: "@Resources.Resource.period", mData: "Periodo" },
-                                { title: "@Resources.Resource.auditor", mData: "Auditor"},
-                                { title: "@Resources.Resource.date", mData: "_Data" },
-                                { title: "@Resources.Resource.time", mData: "_Hora" },
-                                { title: "@Resources.Resource.audit", mData: "Indicador" },
-                                { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
-                                { title: "@Resources.Resource.task", mData: "Tarefa" },
-                                { title: "@Resources.Resource.weight", mData: "Peso" },
-                                {
-                                    title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
+                        },
+                        {
+                            title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
 
-                                        if (isNaN(parseFloat(data))) {
+                                if (isNaN(parseFloat(data))) {
 
-                                            return data;
+                                    return data;
 
-                                        } else {
+                                } else {
 
-                                            return data.toString().match(/^-?\d+(\.\d{1,2})?/g)[0];
-                                        }
+                                    return data.toString().match(/^-?\d+(\.\d{1,2})?/g)[0];
+                                }
 
-                                    }
-                                },
-                                {
-                                    title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
+                            }
+                        },
+                        { title: "@Resources.Resource.value", mData: "Lancado" },
+                        { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
+                        { title: "@Resources.Resource.na ?", mData: "_NA" },
+                        { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
+                        { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
+                        { title: "@Resources.Resource.valueText", mData: "ValueText" },
+                        Tipo1,
+                        Tipo2,
+                        { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%" },
+                        { title: "@Resources.Resource.platform", mData: "Platform", "width": "50%" },
+                        { title: "@Resources.Resource.add_date", mData: "_AddDate", "width": "50%" },
+                        {
+                            title: "@Resources.Resource.type ", mData: "Type", mRender: function (data, type, full) {
 
-                                        if (isNaN(parseFloat(data))) {
+                                if (data == "2") {
+                                    return '@Resources.Resource.retroactive';
+                                } else if (data == "3") {
+                                    return '@Resources.Resource.anticipated';
+                                } else if (data == "4") {
+                                    return '@Resources.Resource.import';
+                                } else if (data == '1') {
+                                    return '@Resources.Resource.edited';
+                                } else {
+                                    return '@Resources.Resource.normal';
+                                }
+                            }
+                        },
+                        {
+                            title: "@Resources.Resource.IsLate", mData: "IsLate", mRender: function (data, type, full) {
 
-                                            return data;
+                                if (data) {
+                                    return '@Resources.Resource.yes'
+                                } else {
+                                    return '@Resources.Resource.no'
+                                }
 
-                                        } else {
-
-                                            return data.toString().match(/^-?\d+(\.\d{1,2})?/g)[0];
-                                        }
-
-                                    }
-                                },
-                                { title: "@Resources.Resource.value", mData: "Lancado" },
-                                { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
-                                { title: "@Resources.Resource.na ?", mData: "_NA" },
-                                { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
-                                { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
-                                { title: "@Resources.Resource.valueText", mData: "ValueText" },
-                                Tipo1,
-                                Tipo2,
-                                { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"},
-                                { title: "@Resources.Resource.platform", mData: "Platform", "width": "50%"},
-                                { title: "@Resources.Resource.add_date", mData: "_AddDate", "width": "50%"},
-                                {
-                                    title: "@Resources.Resource.type ", mData: "Type", mRender: function (data, type, full) {
-                                      
-                                       if (data == "2") {
-                                            return '@Resources.Resource.retroactive';
-                                        } else if (data == "3") {
-                                           return '@Resources.Resource.anticipated';
-                                        } else if (data == "4") {
-                                            return '@Resources.Resource.import';
-                                        }else if (data == '1') {
-                                            return '@Resources.Resource.edited';
-                                        }else {
-                                            return '@Resources.Resource.normal';
-                                        }
-                                    }
-                                },
-                                {
-                                    title: "@Resources.Resource.photo", mData: "ResultLevel3Id", "width": "50%", mRender: function (data, type, full) {
-                                        return "<img data-toggle='modal' data-target='#imageModal' height='60' id='imgResult" + data +"'></img>";
-                                    }
-                                },
-
+                            }
+                        },
+                        { title: "@Resources.Resource.LateReason", mData: "MotivoAtraso", "width": "50%" },
+                        {
+                            title: "@Resources.Resource.photo", mData: "ResultLevel3Id", "width": "50%", mRender: function (data, type, full) {
+                                return "<img data-toggle='modal' data-target='#imageModal' height='60' id='imgResult" + data +"'></img>";
+                            }
+                        }
                     ];
 
                 var initDatatable = function () {

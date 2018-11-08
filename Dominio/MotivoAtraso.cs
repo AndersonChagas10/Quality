@@ -12,7 +12,10 @@ namespace Dominio
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public string Motivo { get; set; }
+
+        public bool IsActive { get; set; }
 
     }
 }
