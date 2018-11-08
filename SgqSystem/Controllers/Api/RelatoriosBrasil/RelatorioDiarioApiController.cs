@@ -688,7 +688,7 @@ SELECT
 							SUM(Quartos) - @RESS
 						FROM VolumePcc1b(nolock)
 						WHERE ParCompany_id = UNI.Id
-						AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+						AND Data = DD.Data_)
 				WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -700,7 +700,7 @@ SELECT
 							SUM(Quartos) - @RESS
 						FROM VolumePcc1b(nolock)
 						WHERE ParCompany_id = UNI.Id
-						AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+						AND Data = DD.Data_)
 				WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal
 				WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -754,7 +754,7 @@ SELECT
 			FROM ConsolidationLevel1(nolock)
 			WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 			AND UnitId <> 12341614) CL1
-			ON DD.Data_ = CL1.ConsolidationDate
+			ON DD.Data_ = CAST(CL1.ConsolidationDate AS DATE)
 		LEFT JOIN ParLevel1 IND (NOLOCK)
 			ON IND.Id = CL1.ParLevel1_Id
 		--AND IND.ID = 1  
@@ -805,9 +805,10 @@ SELECT
 		   ,Level2Name
 		   ,Data 
 ) S1) S2
-WHERE (RELATORIO_DIARIO = 1
-OR (RELATORIO_DIARIO = 0
-AND AV = 0))
+WHERE 1=1
+--and (RELATORIO_DIARIO = 1
+--OR (RELATORIO_DIARIO = 0
+--AND AV = 0))
 AND s2.Unidade_Id = @UNIDADE
 DROP TABLE #AMOSTRATIPO4";
 
