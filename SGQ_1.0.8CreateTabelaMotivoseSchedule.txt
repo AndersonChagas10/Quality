@@ -9,6 +9,7 @@ Create Table MotivoAtraso (
 	Motivo varchar(250) not null,
 	AddDate datetime not null,
 	AlterDate datetime,
+	IsActive bit not null default 1
 )
 
 GO
@@ -23,6 +24,7 @@ Create Table ParEvaluationSchedule (
         Shift_Id  int null,
 		AddDate datetime not null,
 		AlterDate datetime,
+		IsActive bit not null,
 )
 
 GO

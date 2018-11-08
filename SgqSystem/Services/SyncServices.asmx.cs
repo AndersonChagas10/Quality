@@ -8189,7 +8189,7 @@ $(document).ready(function(){
 
         }
 
-        private void ReconsolidationLevel3ByCollectionLevel2Id(string collectionLevel_Id)
+        public void ReconsolidationLevel3ByCollectionLevel2Id(string collectionLevel2_Id)
         {
             try
             {
@@ -8197,6 +8197,7 @@ $(document).ready(function(){
                 var sql = $@"SELECT
                     	RL3.Id
                        ,SUM(PMV.PunishmentValue) AS PunishmentValue
+                       ,RL3.IsConform
                     FROM CollectionLevel2XParHeaderField CL2XHF
                     INNER JOIN Result_Level3 RL3
                     	ON RL3.CollectionLevel2_Id = CL2XHF.CollectionLevel2_Id
@@ -8204,9 +8205,9 @@ $(document).ready(function(){
                     	ON PHF.Id = CL2XHF.ParHeaderField_Id
                     INNER JOIN ParMultipleValues PMV
                     	ON PMV.Id = CAST(CL2XHF.Value as int)
-                    WHERE CL2XHF.CollectionLevel2_Id = { collectionLevel_Id }
+                    WHERE CL2XHF.CollectionLevel2_Id = { collectionLevel2_Id }
                     and CL2XHF.ParFieldType_Id in (1,2,3)
-                    GROUP BY RL3.Id";
+                    GROUP BY RL3.Id, RL3.IsConform";
 
 
                 using (Factory factory = new Factory("DefaultConnection"))
@@ -8217,20 +8218,22 @@ $(document).ready(function(){
                     {
                         foreach (var resultLevel3 in resultsLevel3)
                         {
-                            var sql2 = $@"SELECT
+                            if (!resultLevel3.IsConform.Value)
+                            {
+                                var sql2 = $@"SELECT
                         	RL3.Id
                         	,((RL3.Defects * RL3.Weight) + ({ resultLevel3.PunishmentValue.ToString().Replace(',', '.') } * RL3.Weight)) as WeiDefects
                         FROM Result_Level3 RL3
                         WHERE Id = { resultLevel3.Id }";
 
+                                var resultLevel3WeiDefects = factory.SearchQuery<Dominio.Result_Level3>(sql2).FirstOrDefault();
 
-                            var resultLevel3WeiDefects = factory.SearchQuery<Dominio.Result_Level3>(sql2).FirstOrDefault();
+                                if (resultLevel3WeiDefects != null)
+                                {
+                                    var sqlUpdateWeiDefects = $@"update Result_Level3 set WeiDefects = {resultLevel3WeiDefects.WeiDefects.ToString().Replace(',', '.')}, PunishmentValue = {resultLevel3.PunishmentValue.ToString().Replace(',', '.')} where id = {resultLevel3WeiDefects.Id}";
 
-                            if (resultLevel3WeiDefects != null)
-                            {
-                                var sqlUpdateWeiDefects = $@"update Result_Level3 set WeiDefects = {resultLevel3WeiDefects.WeiDefects.ToString().Replace(',', '.')}, PunishmentValue = {resultLevel3.PunishmentValue.ToString().Replace(',', '.')} where id = {resultLevel3WeiDefects.Id}";
-
-                                factory.ExecuteSql(sqlUpdateWeiDefects);
+                                    factory.ExecuteSql(sqlUpdateWeiDefects);
+                                }
                             }
                         }
                     }

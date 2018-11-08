@@ -2,6 +2,7 @@
 using SgqSystem.Handlres;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -13,19 +14,53 @@ namespace SgqSystem.Controllers.Api
     [RoutePrefix("api/AgendamentoAPI")]
     public class AgendamentoApiController : ApiController
     {
+
+        [HttpGet]
+        [Route("Get/{id}")]
+        public List<ParEvaluationSchedule> Get(int id)
+        {        
+            var db = new SgqDbDevEntities();
+            db.Configuration.LazyLoadingEnabled = false;
+
+            var agendamentos = db.ParEvaluationSchedule.Where(x => x.ParEvaluation_Id == id && x.IsActive).ToList();
+            
+            return agendamentos;
+        }
+
         [HttpPost]
         [Route("Post")]
         public ParEvaluationSchedule Post([FromBody] ParEvaluationSchedule agendamento)
         {
             //ValidaDados(agendamento);
-            
+            agendamento.IsActive = true;
+            if (agendamento.Shift_Id <= 0)
+                agendamento.Shift_Id = null;
             using (var db = new SgqDbDevEntities())
             {
-                //var avaliacao = db.ParEvaluation.Where(x => x.ParCompany_Id == agendamento.ParEvaluation.Id).ToList();
-
-                db.ParEvaluationSchedule.Add(agendamento);
+                if (agendamento.Id > 0)
+                {
+                    db.Entry(agendamento).State = EntityState.Modified;                   
+                }
+                else
+                {
+                    db.ParEvaluationSchedule.Add(agendamento);
+                }
+                db.SaveChanges();
             }
-            return null;
+            return agendamento;
+        }
+
+        [HttpDelete]
+        [Route("Delete")]
+        public ParEvaluationSchedule Delete([FromBody] ParEvaluationSchedule agendamento)
+        {   
+            agendamento.IsActive = false;
+            using (var db = new SgqDbDevEntities())
+            {
+                db.Entry(agendamento).State = EntityState.Modified;
+                db.SaveChanges();             
+            }
+            return agendamento;
         }
 
         //private void ValidaDados(ParEvaluationSchedule agendamento)

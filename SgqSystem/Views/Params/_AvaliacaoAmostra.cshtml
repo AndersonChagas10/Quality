@@ -11,6 +11,17 @@
     //var click = "alert();";
 }
 
+<style>
+
+    #tabelaAgendamento td {
+        white-space: nowrap;
+    }
+
+    #tabelaAgendamento input {
+        width: 140px;
+    }
+</style>
+
 <div class="panel-group accordion" id="@id">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -75,6 +86,7 @@
                     </thead>
                     <tbody></tbody>
                 </table>
+
                 <div class="modal fade" id="modalAgendamento" role="dialog">
                     <div class="modal-dialog modal-lg vertical-align-center">
                         <div class="modal-content">
@@ -83,37 +95,29 @@
                                 <h4 class="modal-title">Agendamento</h4>
                             </div>
                             <div class="modal-body">
-                                
-                                    <div class="form-group">
-                                        <label>Tipo de agendamento do monitoramento:</label>
-                                        <input id="inpTipoAgendamento" disabled="disabled" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Avaliação:</label>
-                                        <input id="inpAvaliacao" />
-                                        <label>Turno:</label>
-
-                                        <select id="slAgendamento">
-                                            <option value="0">Todos</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
-
-                                        @*<input id="inpTurno" />*@
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Inicio:</label>
-                                        <input id="inpInicio" />
-                                        <label>Termino:</label>
-                                        <input id="inpTermino" />
-                                    </div>
-                            
+                                <input class="hidden" data-column="inpAvaliacaoId" />
+                                <div style="overflow:auto;">
+                                    <table id="tabelaAgendamento" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
+                                        <thead>
+                                            <tr>
+                                                <th>Tipo de Frequência</th>
+                                                <th>Inicio</th>
+                                                <th>Fim</th>
+                                                <th>Avaliação</th>
+                                                <th>Turno</th>
+                                                <th>Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" data-dismiss="modal" id="btnSalvarAgendamento" class="btn btn-success">Salvar</button>
+                                @*<button type="button" data-dismiss="modal" id="btnSalvarAgendamento" class="btn btn-success">Salvar</button>*@
                                 <button type="button" data-dismiss="modal" onclick="LimpaCampos()" class="btn btn-default">Fechar</button>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -122,15 +126,16 @@
 </div>
 
 
+
 <script>
 
     //function changeCompanyAvAm() {
 
-    var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
+    var levelControl = @Html.Raw(Json.Encode(@Model.levelControl))
 
     function atribuiLevelDivAvAm (){
 
-        var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
+        var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto))
         var levelDomain;
         var listSalvo;
 
@@ -342,72 +347,196 @@
     }
 
     function abrirModalAgendamento(linha) {
-        debugger
+        $("#tabelaAgendamento").attr('style', '');
         var obj = $(linha).parents('tr').data();
         $('#modalAgendamento').modal('show');
+        var id = parseInt(obj.evaluationId);
 
-        $("#inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
-        $("#inpAvaliacao").val(obj.evaluationNumber);
+        $.get('@Url.Action("Get", "api/Shift")', function (r) {
+            let shifts = r;
+            avaliacaAmostraSelectShifts = '<td> <select class="input-sm" data-column="slAgendamento"> <option value="" >Todos</option>';
+            shifts.forEach(function (item) {
+                avaliacaAmostraSelectShifts += '<option value="' + item.Id + '">' + item.Description +'</option>';
+            })
+            avaliacaAmostraSelectShifts += '</select ></td>'; 
+
+            $.ajax({
+                url: '@Url.Content("~")' + 'api/AgendamentoApi/Get/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    MontaNovaLinha(null);
+                    data.forEach(function (item) {
+                        MontaNovaLinha(item, false);
+                    });
+                    console.log(data);
+                },
+                error: function (request, error) {
+                    alert("Request: " + JSON.stringify(request));
+                }
+            });
+        });
+
+        $("[data-column=inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        $("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
+        $("#tabelaAgendamento tbody").html("");
     }
 
     function LimpaCampos() {
-        $("#inpInicio").val("");
-        $("#inpTermino").val("");
+        $("[data-column=inpInicio]").val("");
+        $("[data-column=inpTermino]").val("");
     }
 
-    $("#btnSalvarAgendamento").on('click', function () {
+    function DeletaLinha(data, linha) {
+        $(linha).html('tr').remove();
+    }
 
-        var inicio = parseInt($("#inpInicio").val());
-        var termino = parseInt($("#inpTermino").val());
+    function MontaNovaLinha(data) {
+        debugger
+            $("#tabelaAgendamento tbody").append("<tr>"
+                + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
+                + '<td><input type="number" class="input-sm" data-column="inpInicio" /></td>'
+                + '<td><input type="number" class="input-sm" data-column="inpTermino" /></td>'
+                + '<td><input type="number" class="input-sm" data-column="inpAvaliacao" /></td>'
+                + avaliacaAmostraSelectShifts
+                + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
+                + '<td>  <button type="button" class="btn btn-primary btn-sm"  id="btnSalvarAgendamento">Salvar</button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm hidden btnDeletarAgendamento">Deletar</button></td>'
+                + "</tr>");
 
+            $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+
+            if (!!data && data.Id > 0) {
+                $("#tabelaAgendamento tbody tr:last").data(data);
+                $("#tabelaAgendamento tbody tr:last").find('[data-column=inpInicio]').val(data.Inicio);
+                $("#tabelaAgendamento tbody tr:last").find('[data-column=inpTermino]').val(data.Fim);
+                $("#tabelaAgendamento tbody tr:last").find('[data-column=inpAvaliacao]').val(data.Av);
+                $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
+                $("#tabelaAgendamento tbody tr:last").find("#btnSalvarAgendamento").removeClass('btn-primary').addClass('btn-success').text('Editar');
+                $("#tabelaAgendamento tbody tr:last").find(".btnDeletarAgendamento").removeClass('hidden');
+                $("#tabelaAgendamento tbody tr:last").find("[data-column=slAgendamento]").val(data.Shift_Id);
+            }
+
+    }
+
+    function EditaLinha(data, linha) {
+
+        if (!!data && data.Id > 0) {
+            $(linha).data(data);
+            $(linha).find('[data-column=inpInicio]').val(data.Inicio);
+            $(linha).find('[data-column=inpTermino]').val(data.Fim);
+            $(linha).find('[data-column=inpAvaliacao]').val(data.Av);
+            $(linha).find('[data-column=inpId]').val(data.Id);
+            $(linha).find("#btnSalvarAgendamento").removeClass('btn-primary').addClass('btn-success').text('Editar');
+            $(linha).find(".btnDeletarAgendamento").removeClass('hidden');
+            $(linha).find("[data-column=slAgendamento]").val(data.Shift_Id);
+        }
+
+    }
+
+    function deletarRegistro(data) {
+        console.log(data);
+        var linha = $(data).parents('tr');
         var form = {
-            Inicio: $("#inpInicio").val(),
-            Termino: $("#inpTermino").val(),
-            Avaliacao: $("#inpAvaliacao").val(),
-            Turno: $("#slAgendamento").val()
+            Inicio: $(linha).data()['Inicio'], //$("#inpInicio").val(),
+            Fim: $(linha).data()['Fim'], //$("#inpTermino").val(),
+            Av: $(linha).data()['Av'], //$(".inpAvaliacao").val(),
+            Shift_Id: $(linha).data()['Shift_Id'], //$("#slAgendamento").val(),
+            ParEvaluation_Id: $(linha).data()['ParEvaluation_Id'], //$("#inpAvaliacaoId").val()
+            Id: $(linha).data()['Id']
         };
+
+        $.ajax({
+            url: '@Url.Content("~")' + 'api/AgendamentoApi/Delete',
+            type: 'DELETE',
+            data: form,
+            dataType: 'json',
+            success: function (data) {
+                DeletaLinha(data, linha);
+            },
+            error: function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+    }
+
+    $("#modalAgendamento").on('click', "#btnSalvarAgendamento", function () {
+
+        var inicio = parseInt($("[data-column=inpInicio]").val());
+        var termino = parseInt($("[data-column=inpTermino]").val());
+        var linha = $(this).parent().parent();
+
+        var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
+
+        if (!frequenciaIsValid(formato, inicio, termino)) {
+            openMessageModal("Intervalo de frequencia inválido", null);
+            return false;
+        }
+        debugger
+        var form = {
+            Inicio: $(linha).find("[data-column=inpInicio]").val(),
+            Fim: $(linha).find("[data-column=inpTermino]").val(),
+            Av: $(linha).find("[data-column=inpAvaliacao]").val(),
+            Shift_Id: $(linha).find("[data-column=slAgendamento]").val(),
+            ParEvaluation_Id: $("[data-column=inpAvaliacaoId]").val(),
+            Id: $(linha).find("[data-column=inpId]").val(),
+            //Id: $(this).parents('tr').data()['Id']
+        };
+
+        var isEdit = !!$(this).parents('tr').data()['Id'];
+
         $.ajax({
             url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
             type: 'POST',
             data: form,
             dataType: 'json',
             success: function (data) {
-                alert('Data: ' + data);
-                LimpaCampos();
+                if (form.Id > 0) {
+                    EditaLinha(data, linha);
+                } else {
+                    MontaNovaLinha(data, isEdit);
+                    $(linha).find('input:enabled').val('');
+                    $(linha).find('select').val(-1);
+                }
             },
             error: function (request, error) {
                 alert("Request: " + JSON.stringify(request));
             }
         });
 
-        var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
+    });
+
+    function frequenciaIsValid(formato, inicio, fim) {
+
         switch (formato) {
             case "Diario":
+                if (fim < 1 || inicio < 1 || fim > 23 || inicio > 23 || inicio > fim)
+                    return false;
+                else
+                    return true;
                 break;
             case "Semanal":
-                if (termino <= 7 && inicio >= 1 && inicio < termino)
-                    console.log("ajax pra salvar");
+                debugger
+                if (fim < 1 || inicio < 1 || fim > 7 || inicio > 7 || inicio > fim)
+                    return false;
                 else
-                    console.log("valores invalidos");
+                    return true;
                 break;
             case "Quinzenal":
-                if (termino <= 15 && inicio >= 1 && inicio < termino)
-                    console.log("ajax pra salvar");
+                if (fim < 1 || inicio < 1 || fim > 15 || inicio > 15 || inicio > fim)
+                    return false;
                 else
-                    console.log("valores invalidos");
+                    return true;
                 break;
             case "Mensal":
-                if (termino <= 31 && inicio >= 1 && inicio < termino)
-                    console.log("ajax pra salvar");
+                if (fim < 1 || inicio < 1 || fim > 31 || inicio > 31 || inicio > fim)
+                    return false;
                 else
-                    console.log("valores invalidos");
+                    return true;
                 break;
             case "Turno":
                 break;
             default:
-
         }
-    });
-
+    }
 
 </script>
