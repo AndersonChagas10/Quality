@@ -4022,10 +4022,11 @@ $(document).ready(function(){
                 using (var conexaoEF = new SgqDbDevEntities())
                 {
                     foreach (var item in conexaoEF.ParEvaluationSchedule
-                        .Where(x => x.ParEvaluation.ParLevel1_Id == parLevel1_Id
+                        .Where(x => (x.ParEvaluation.ParLevel1_Id == parLevel1_Id || x.ParEvaluation.ParLevel1_Id == null)
                         && x.ParEvaluation.ParLevel2_Id == parLevel2_Id
-                        && x.ParEvaluation.ParCompany_Id == company_Id
-                        && x.Shift_Id == shift_Id).ToList())
+                        && (x.ParEvaluation.ParCompany_Id == company_Id || x.ParEvaluation.ParCompany_Id == null)
+                        && (x.Shift_Id == shift_Id || x.Shift_Id == 0))
+                        .OrderByDescending(x=> new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList())
                     {
                         frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
                     }
@@ -4946,7 +4947,7 @@ $(document).ready(function(){
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
                     var parlevel2Evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
-                    frequencia = GetEvaluationSchedule(parlevel2.ParLevel2_id, ParLevel1.ParLevel1_Id, ParCompany_Id, Shift_Id);
+                    frequencia = GetEvaluationSchedule(ParLevel1.ParLevel1_Id,parlevel2.ParLevel2_id, ParCompany_Id, Shift_Id);
                     evaluate = parlevel2Evaluate.Evaluate;
                     sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
                     //defect = getCollectionLevel2Keys(ParCompany_Id,data, ParLevel1);
