@@ -129,6 +129,7 @@
 
 <script>
 
+    var botaoAgendamento = '';
     //function changeCompanyAvAm() {
 
     var levelControl = @Html.Raw(Json.Encode(@Model.levelControl))
@@ -294,7 +295,8 @@
                 });
 
             },
-            carregaDadosDoDb: function(){
+            carregaDadosDoDb: function () {
+                debugger
                 var id = this.level + ' #' + this.idTable;
                 var tdNamess = this.tdsNames;
 
@@ -317,7 +319,12 @@
                         }else{
                             o['ParLevel1_Name'] = "@Resources.Resource.all";
                         }
-                        o['agendamento'] = '<button type="button" class="btn btn-info btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
+                        if (o.TemAgendamento) {
+                            o['agendamento'] = '<button type="button" class="btn btn-success btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
+                        } else {
+                            o['agendamento'] = '<button type="button" class="btn btn-default btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
+                        }
+                       
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
@@ -347,8 +354,11 @@
     }
 
     function abrirModalAgendamento(linha) {
+        debugger
+       
         $("#tabelaAgendamento").attr('style', '');
         var obj = $(linha).parents('tr').data();
+        botaoAgendamento = linha;
         $('#modalAgendamento').modal('show');
         var id = parseInt(obj.evaluationId);
 
@@ -389,6 +399,18 @@
 
     function DeletaLinha(data, linha) {
         $(linha).html('tr').remove();
+    }
+
+    function ContadorLinhas(botaoAgendamento) {
+        debugger
+        var tamanho = $("#tabelaAgendamento tbody").find('tr').length;
+
+        if (tamanho <= 1) {
+            $(botaoAgendamento).removeClass('btn-success').addClass('btn-default');
+        } else {
+            $(botaoAgendamento).removeClass('btn-default').addClass('btn-success');
+        }
+       
     }
 
     function MontaNovaLinha(data) {
@@ -452,6 +474,7 @@
             dataType: 'json',
             success: function (data) {
                 DeletaLinha(data, linha);
+                ContadorLinhas(botaoAgendamento);
             },
             error: function (request, error) {
                 alert("Request: " + JSON.stringify(request));
@@ -497,6 +520,7 @@
                     $(linha).find('input:enabled').val('');
                     $(linha).find('select').val(-1);
                 }
+                ContadorLinhas(botaoAgendamento);
             },
             error: function (request, error) {
                 alert("Request: " + JSON.stringify(request));
