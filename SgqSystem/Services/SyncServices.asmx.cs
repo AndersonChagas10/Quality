@@ -4026,7 +4026,7 @@ $(document).ready(function(){
                         && x.ParEvaluation.ParLevel2_Id == parLevel2_Id
                         && (x.ParEvaluation.ParCompany_Id == company_Id || x.ParEvaluation.ParCompany_Id == null)
                         && (x.Shift_Id == shift_Id || x.Shift_Id == 0))
-                        .OrderByDescending(x=> new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList())
+                        .OrderByDescending(x => new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList())
                     {
                         frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
                     }
@@ -4146,7 +4146,7 @@ $(document).ready(function(){
                              "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
                              "   <div class=\"body font16\">Mensagem</div>                                                                                                " +
                              "   <div class=\"foot\"><button id=\"btnMessageOk\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> Ok</button></div>      " +
-                             "</div>                                                                                                                                    ";
+                             "</div>";
             // string messageConfirm = null;
             //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                         " +
             //                       "</div>                                                                                                                                                                                                    ";
@@ -4167,7 +4167,31 @@ $(document).ready(function(){
                                         "        <input type=\"text\" masc=\"date\" id=\"inputDate\" placeholder=\"99/99/9999\" class=\"form-control input-sm hide\" style=\"max-width:160px;\" /> </div>       " +
                                         "    <div class=\"foot\"><button id=\"btnMessageYes\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> " + CommonData.getResource("yes").Value.ToString() + " </button></div>                 " +
                                         "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> " + CommonData.getResource("no").Value.ToString() + " </button></div>                   " +
-                                        "</div>                                                                                                                                                         ";
+                                        "</div>         " +
+                                        "                                                                                                                                                ";
+
+            #region MotivoAtraso
+
+            var listMotivo = dbEf.MotivoAtraso.Where(r => r.IsActive).ToList();
+
+            StringBuilder selectMotivo = new StringBuilder();
+
+            selectMotivo.Append(@"<select id=""slcMotivo"" class=""form-control"" style=""width: 600px;"">");
+
+            foreach (var item in listMotivo)
+                selectMotivo.Append($@"<option value=""{ item.Id }"">{item.Motivo}</option>");
+
+            selectMotivo.Append(@"</select>");
+
+            string messageMotivoAtraso =
+                $@"<div class=""messageMotivoAtraso padding20"" style=""display:none;"">
+                        <h1 class=""head"">{ CommonData.getResource("LateReason").Value.ToString() }</h1>
+                        <div class=""body font16""> <div class=""txtMessage""></div>
+                            { selectMotivo }
+                        <div class=""foot""><button id=""btnAtrasoOk"" class=""btn btn-lg marginRight30 btn-primary pull-right btnMessage""> OK </button></div>
+                    </div>";
+
+            #endregion
 
             string debug = "<div id = 'ControlaDivDebugAlertas' onclick='showHideDivDebugAlerta();'></div> " +
 
@@ -4262,6 +4286,7 @@ $(document).ready(function(){
                            modalPCC1B +
                            message +
                            messageConfirm +
+                           messageMotivoAtraso +
                            debug +
                            listaParLevel3Vinculado;
         }
@@ -4947,7 +4972,7 @@ $(document).ready(function(){
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
                     var parlevel2Evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
-                    frequencia = GetEvaluationSchedule(ParLevel1.ParLevel1_Id,parlevel2.ParLevel2_id, ParCompany_Id, Shift_Id);
+                    frequencia = GetEvaluationSchedule(ParLevel1.ParLevel1_Id, parlevel2.ParLevel2_id, ParCompany_Id, Shift_Id);
                     evaluate = parlevel2Evaluate.Evaluate;
                     sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
                     //defect = getCollectionLevel2Keys(ParCompany_Id,data, ParLevel1);
