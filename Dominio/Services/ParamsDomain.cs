@@ -373,6 +373,12 @@ namespace Dominio.Services
             #region Mappers, Rn e DropDown Level3
 
             level2.RecuperaListaSampleEvaluation();
+
+            foreach(var item in level2.listParLevel2SampleEvaluationDTO)
+            {
+                item.TemAgendamento = db.ParEvaluationSchedule.Any(x => x.ParEvaluation_Id == item.evaluationId);
+            }
+
             level2.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(relapse);/*Reincidencia*/
             level2.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(counter);/*Contadores*/
             level2.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(nonConformityrule);/*Regra de Alerta*/

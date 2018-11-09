@@ -15,5 +15,7 @@
         public int? companyId { get; set; }
         public int? Id { get; set; }
         public bool IsActive { get; set; }
+        
+        public bool TemAgendamento { get; set; }
     }
 }

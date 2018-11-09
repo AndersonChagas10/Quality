@@ -294,7 +294,8 @@
                 });
 
             },
-            carregaDadosDoDb: function(){
+            carregaDadosDoDb: function () {
+                debugger
                 var id = this.level + ' #' + this.idTable;
                 var tdNamess = this.tdsNames;
 
@@ -317,7 +318,12 @@
                         }else{
                             o['ParLevel1_Name'] = "@Resources.Resource.all";
                         }
-                        o['agendamento'] = '<button type="button" class="btn btn-info btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
+                        if (o.TemAgendamento) {
+                            o['agendamento'] = '<button type="button" class="btn btn-success btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
+                        } else {
+                            o['agendamento'] = '<button type="button" class="btn btn-default btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
+                        }
+                       
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
