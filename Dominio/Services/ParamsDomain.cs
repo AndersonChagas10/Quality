@@ -376,7 +376,7 @@ namespace Dominio.Services
 
             foreach(var item in level2.listParLevel2SampleEvaluationDTO)
             {
-                item.TemAgendamento = db.ParEvaluationSchedule.Any(x => x.ParEvaluation_Id == item.evaluationId);
+                item.TemAgendamento = db.ParEvaluationSchedule.Any(x => x.ParEvaluation_Id == item.evaluationId && x.IsActive);
             }
 
             level2.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(relapse);/*Reincidencia*/
