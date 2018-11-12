@@ -230,30 +230,25 @@
 
         switch (formato) {
             case "Diario":
-                if (fim < 1 || inicio < 1 || fim > 23 || inicio > 23 || inicio > fim)
+                if(fim < 1 || inicio < 1 || fim > 23 || inicio > 23 || inicio > fim)
                     return false;
                 else
-                    return true;
-                break;
+                    return true;      
             case "Semanal":
-                debugger
-                if (fim < 1 || inicio < 1 || fim > 7 || inicio > 7 || inicio > fim)
+                if(fim < 1 || inicio < 1 || fim > 7 || inicio > 7 || inicio > fim)
                     return false;
                 else
                     return true;
-                break;
             case "Quinzenal":
-                if (fim < 1 || inicio < 1 || fim > 15 || inicio > 15 || inicio > fim)
+                if(fim < 1 || inicio < 1 || fim > 15 || inicio > 15 || inicio > fim)
                     return false;
                 else
                     return true;
-                break;
             case "Mensal":
-                if (fim < 1 || inicio < 1 || fim > 31 || inicio > 31 || inicio > fim)
+                if(fim < 1 || inicio < 1 || fim > 31 || inicio > 31 || inicio > fim)
                     return false;
                 else
                     return true;
-                break;
             case "Turno":
                 break;
             default:
