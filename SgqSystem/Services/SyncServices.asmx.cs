@@ -531,10 +531,10 @@ namespace SgqSystem.Services
                             endphaseevaluation = result[48];
                         }
 
-                        //if (result.Length > 49)
-                        //{
-                        //    reprocesso = result[49];
-                        //}
+                        if (result.Length > 49)
+                        {
+                            reprocesso = result[49];
+                        }
 
                         if (result.Length > 50)
                         {
@@ -542,39 +542,39 @@ namespace SgqSystem.Services
                         }
 
                         //Gera o Cabeçalho do Level02
-                        string level02HeaderJSon = result[13];
-                        level02HeaderJSon += ";" + phase;
-                        level02HeaderJSon += ";" + startphasedate;
-                        level02HeaderJSon += ";" + consecutivefailurelevel;
-                        level02HeaderJSon += ";" + consecutivefailuretotal;
+                        string level02HeaderJSon = result[13]; //[0]
+                        level02HeaderJSon += ";" + phase; //[1]
+                        level02HeaderJSon += ";" + startphasedate; //[2]
+                        level02HeaderJSon += ";" + consecutivefailurelevel; //[3]
+                        level02HeaderJSon += ";" + consecutivefailuretotal; //[4]
                         level02HeaderJSon += ";" + notavaliable; //[5]
-                        level02HeaderJSon += ";" + completed;
-                        level02HeaderJSon += ";" + havePhases;
-                        level02HeaderJSon += ";" + CollectionLevel02Id;
-                        level02HeaderJSon += ";" + correctiveActionCompleted;
+                        level02HeaderJSon += ";" + completed; //[6]
+                        level02HeaderJSon += ";" + havePhases; //[7]
+                        level02HeaderJSon += ";" + CollectionLevel02Id; //[8]
+                        level02HeaderJSon += ";" + correctiveActionCompleted; //[9]
                         level02HeaderJSon += ";" + completeReaudit; //[10]
-                        level02HeaderJSon += ";" + AlertLevel;
-                        level02HeaderJSon += ";" + sequential;
-                        level02HeaderJSon += ";" + side;
-                        level02HeaderJSon += ";" + weievaluation;
-                        level02HeaderJSon += ";" + weidefects;
-                        level02HeaderJSon += ";" + defects;
-                        level02HeaderJSon += ";" + totallevel3withdefects;
-                        level02HeaderJSon += ";" + totalLevel2Evaluation;
-                        level02HeaderJSon += ";" + avaliacaoultimoalerta;
-                        level02HeaderJSon += ";" + evaluatedresult;
-                        level02HeaderJSon += ";" + defectsresult;
-                        level02HeaderJSon += ";" + sequential;
-                        level02HeaderJSon += ";" + side;
-                        level02HeaderJSon += ";" + isemptylevel3;
-                        level02HeaderJSon += ";" + hassampletotal;
-                        level02HeaderJSon += ";" + hashKey;
-                        level02HeaderJSon += ";" + monitoramentoultimoalerta;
-                        level02HeaderJSon += ";" + startphaseevaluation;
-                        level02HeaderJSon += ";" + endphaseevaluation;
-                        level02HeaderJSon += ";" + reprocesso;
-                        level02HeaderJSon += ";" + cluster;
-                        level02HeaderJSon += ";" + motivoAtraso_Id;
+                        level02HeaderJSon += ";" + AlertLevel; //[11]
+                        level02HeaderJSon += ";" + sequential; //[12]
+                        level02HeaderJSon += ";" + side; //[13]
+                        level02HeaderJSon += ";" + weievaluation; //[14]
+                        level02HeaderJSon += ";" + weidefects; //[15]
+                        level02HeaderJSon += ";" + defects; //[16]
+                        level02HeaderJSon += ";" + totallevel3withdefects; //[17]
+                        level02HeaderJSon += ";" + totalLevel2Evaluation; //[18]
+                        level02HeaderJSon += ";" + avaliacaoultimoalerta; //[19]
+                        level02HeaderJSon += ";" + evaluatedresult; //[20]
+                        level02HeaderJSon += ";" + defectsresult; //[21]
+                        level02HeaderJSon += ";" + sequential; //[22]
+                        level02HeaderJSon += ";" + side; //[23]
+                        level02HeaderJSon += ";" + isemptylevel3; //[24]
+                        level02HeaderJSon += ";" + hassampletotal; //[25]
+                        level02HeaderJSon += ";" + hashKey; //[26]
+                        level02HeaderJSon += ";" + monitoramentoultimoalerta; //[27]
+                        level02HeaderJSon += ";" + startphaseevaluation; //[28]
+                        level02HeaderJSon += ";" + endphaseevaluation; //[29]
+                        level02HeaderJSon += ";" + reprocesso; //[30]
+                        level02HeaderJSon += ";" + cluster; //[31]
+                        level02HeaderJSon += ";" + motivoAtraso_Id; //[32]
 
                         //level02HeaderJSon += ";" + alertaAtual;
 
@@ -977,9 +977,9 @@ namespace SgqSystem.Services
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
                                                 weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey, cluster, motivoAtraso_Id);
 
-                    if (arrayHeader.Length > 32)
+                    if (arrayHeader.Length > 30)
                     {
-                        string reprocesso = DefaultValueReturn(arrayHeader[32], null);
+                        string reprocesso = DefaultValueReturn(arrayHeader[30], null);
 
                         if (reprocesso != null)
                             InsertCollectionLevel2Object(CollectionLevel2Id, reprocesso);
@@ -1896,10 +1896,11 @@ namespace SgqSystem.Services
                             {
                                 InsertCollectionLevel2XCluster(i, cluster);
 
-                                if (motivoAtraso_Id != null)
-                                {
-                                    InsertCollectionLevel2XMotivoAtraso(i, motivoAtraso_Id);
-                                }
+                            }
+
+                            if (motivoAtraso_Id != null)
+                            {
+                                InsertCollectionLevel2XMotivoAtraso(i, motivoAtraso_Id);
                             }
 
                             return i;
@@ -2144,12 +2145,26 @@ namespace SgqSystem.Services
             }
         }
 
-        public int InsertCollectionLevel2XMotivoAtraso(int CollectionLevel2Id, string MotivoAtraso_Id)
+        public void InsertCollectionLevel2XMotivoAtraso(int CollectionLevel2_Id, string MotivoAtraso_Id)
         {
-            string sql = "INSERT INTO CollectionLevel2XMotivoAtraso ([CollectionLevel2_Id], [MotivoAtraso_Id], [AddDate]) " +
-           "VALUES ('" + CollectionLevel2Id + "', " + MotivoAtraso_Id + ", GETDATE()) ";
+            var IsUpdate = false;
+            var sql = "";
 
-            sql += " SELECT @@IDENTITY AS 'Identity' ";
+            using (var db = new SgqDbDevEntities())
+            {
+                IsUpdate = db.CollectionLevel2XMotivoAtraso.Any(r => r.CollectionLevel2_Id == CollectionLevel2_Id);
+            }
+
+            if (IsUpdate)
+            {
+                sql = $@"UPDATE CollectionLevel2XMotivoAtraso set [MotivoAtraso_Id] = { MotivoAtraso_Id }, [AlterDate] = GETDATE() 
+                WHERE [CollectionLevel2_Id] = { CollectionLevel2_Id }";
+            }
+            else
+            {
+                sql = $@"INSERT INTO CollectionLevel2XMotivoAtraso ([CollectionLevel2_Id], [MotivoAtraso_Id], [AddDate]) 
+                VALUES ('{ CollectionLevel2_Id }', { MotivoAtraso_Id } , GETDATE())";
+            }
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
@@ -2160,8 +2175,7 @@ namespace SgqSystem.Services
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteScalar());
-                        return i;
+                        Convert.ToInt32(command.ExecuteScalar());
                     }
                 }
             }
