@@ -150,7 +150,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ID FROM ParCluster WITH (NOLOCK) WHERE ParClusterGroup_Id = " + form.clusterGroupId + ") ";
             }
 
             // Processo
@@ -271,6 +271,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -310,6 +311,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -348,7 +350,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ID FROM ParCluster WITH (NOLOCK) WHERE ParClusterGroup_Id = " + form.clusterGroupId + ") ";
             }
 
             // Processo
@@ -466,6 +468,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -506,6 +509,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -545,7 +549,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ID FROM ParCluster WITH (NOLOCK) WHERE ParClusterGroup_Id = " + form.clusterGroupId + ") ";
             }
 
             // Processo
@@ -665,6 +669,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -700,6 +705,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -760,7 +766,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ID FROM ParCluster WITH (NOLOCK) WHERE ParClusterGroup_Id = " + form.clusterGroupId + ") ";
             }
 
             // Processo
@@ -872,6 +878,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -900,6 +907,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -937,7 +945,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ID FROM ParCluster WITH (NOLOCK) WHERE ParClusterGroup_Id = " + form.clusterGroupId + ") ";
             }
 
             // Processo
@@ -1051,6 +1059,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -1081,6 +1090,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -1119,7 +1129,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ID FROM ParCluster WITH (NOLOCK) WHERE ParClusterGroup_Id = " + form.clusterGroupId + ") ";
             }
 
             // Processo
@@ -1234,6 +1244,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                ,IIF(IIF(sum(isnull(AVComPeso,0))=0,0,IIF(isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)>100,100,isnull(sum(NULLIF(NCComPeso,0))/sum(isnull(AVComPeso,0))*100,0)))>max(ISNULL(Meta,0)),0,1) AS Status
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -1266,6 +1277,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -2430,7 +2442,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ID FROM ParCluster WITH (NOLOCK) WHERE ParClusterGroup_Id = " + form.clusterGroupId + ") ";
             }
 
             // Processo
@@ -2548,6 +2560,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -2588,6 +2601,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -2623,7 +2637,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ID FROM ParCluster WITH (NOLOCK) WHERE ParClusterGroup_Id = " + form.clusterGroupId + ") ";
             }
 
             // Processo
@@ -2739,6 +2753,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -2776,6 +2791,7 @@ ORDER BY 7
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -2810,7 +2826,7 @@ ORDER BY 3
 
             if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ID FROM ParCluster WITH (NOLOCK) WHERE ParClusterGroup_Id = " + form.clusterGroupId + ") ";
             }
 
             // Processo
@@ -2924,6 +2940,7 @@ ORDER BY 3
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -2958,6 +2975,7 @@ ORDER BY 3
 		       ,sum(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -2991,7 +3009,7 @@ ORDER BY 3
 
             if (form.clusterGroupId > 0)
             {
-                Wmodulo += " AND ParCluster_ID IN (" + form.clusterGroupId + ") ";
+                Wmodulo += " AND ParCluster_ID IN (SELECT ID FROM ParCluster WITH (NOLOCK) WHERE ParClusterGroup_Id = " + form.clusterGroupId + ") ";
             }
 
             // Processo
@@ -3103,6 +3121,7 @@ ORDER BY 3
 		       ,AVG(ISNULL(Meta,0)) AS Meta
 	        FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
@@ -3135,6 +3154,7 @@ ORDER BY 3
 		       ,AVG(ISNULL(Meta,0)) AS Meta
 	FROM #CUBO Cubo WITH (NOLOCK)
             WHERE 1=1 
+                { Wmodulo }
                 { Wprocesso }
                 { Wregional }
                 { Wnivelcritico }
