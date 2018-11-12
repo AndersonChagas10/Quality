@@ -299,16 +299,16 @@ namespace SgqSystem.Services
 
                         result[45] = parLevel2_Id_UltimoAlerta;
 
-                        List<string> r1 = result.ToList<string>();
+                        //List<string> r1 = result.ToList<string>();
 
-                        r1.Add(parCluster_Id);
+                        //r1.Add(parCluster_Id);
 
                         int insertLog = 0;
 
                         if (parCluster_Id == "0")
                             insertLog = insertLogJson(objObjResultJSonPuro, "Gravou cluster 0", deviceId, versaoApp, "Cluster 0");
 
-                        result = r1.ToArray();
+                        //result = r1.ToArray();
 
 
                         string[] resultCopy = result;
@@ -519,7 +519,9 @@ namespace SgqSystem.Services
                         string startphaseevaluation = "0";
                         string endphaseevaluation = "0";
                         string reprocesso = null;
-                        string cluster = null;
+                        string cluster = parCluster_Id;
+                        string motivoAtraso_Id = null;
+
                         if (result.Length > 47)
                         {
                             startphaseevaluation = result[47];
@@ -529,16 +531,16 @@ namespace SgqSystem.Services
                             endphaseevaluation = result[48];
                         }
 
-
-                        if (result.Length > 49)
-                        {
-                            cluster = result[49];
-                        }
+                        //if (result.Length > 49)
+                        //{
+                        //    reprocesso = result[49];
+                        //}
 
                         if (result.Length > 50)
                         {
-                            reprocesso = result[50];
+                            motivoAtraso_Id = result[50];
                         }
+
                         //Gera o Cabeçalho do Level02
                         string level02HeaderJSon = result[13];
                         level02HeaderJSon += ";" + phase;
@@ -572,6 +574,7 @@ namespace SgqSystem.Services
                         level02HeaderJSon += ";" + endphaseevaluation;
                         level02HeaderJSon += ";" + reprocesso;
                         level02HeaderJSon += ";" + cluster;
+                        level02HeaderJSon += ";" + motivoAtraso_Id;
 
                         //level02HeaderJSon += ";" + alertaAtual;
 
@@ -816,6 +819,8 @@ namespace SgqSystem.Services
                     string avaliacaoultimoalerta = "0";
                     string monitoramentoultimoalerta = "0";
 
+                    string motivoAtraso_Id = null;
+
                     //using (var transacao = new TransactionScope())
                     //{
                     //Cabecalho                   
@@ -962,17 +967,15 @@ namespace SgqSystem.Services
                         endphaseevaluation = DefaultValueReturn(arrayHeader[29], "0");
                     }
 
+                    if (arrayHeader.Length > 32)
+                    {
+                        motivoAtraso_Id = arrayHeader[32];
+                    }
+
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
-                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey, cluster);
-
-
-
-
-
-
-
+                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey, cluster, motivoAtraso_Id);
 
                     if (arrayHeader.Length > 32)
                     {
@@ -1759,7 +1762,7 @@ namespace SgqSystem.Services
                                            string StartPhase, int Evaluation, int Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
                                            string Duplicated, string haveReaudit, int reauditLevel, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
-                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation, string endphaseevaluation, string hashKey = null, string cluster = null)
+                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation, string endphaseevaluation, string hashKey = null, string cluster = null, string motivoAtraso_Id = null)
         {
 
             var buscaParLevel1HashKey = "SELECT TOP 1 Hashkey FROM ParLevel1 WHERE id = " + ConsolidationLevel1.ParLevel1_Id.ToString();
@@ -1890,7 +1893,14 @@ namespace SgqSystem.Services
                         if (i > 0)
                         {
                             if (id == "0")
+                            {
                                 InsertCollectionLevel2XCluster(i, cluster);
+
+                                if (motivoAtraso_Id != null)
+                                {
+                                    InsertCollectionLevel2XMotivoAtraso(i, motivoAtraso_Id);
+                                }
+                            }
 
                             return i;
                         }
@@ -2133,6 +2143,34 @@ namespace SgqSystem.Services
                 throw;
             }
         }
+
+        public int InsertCollectionLevel2XMotivoAtraso(int CollectionLevel2Id, string MotivoAtraso_Id)
+        {
+            string sql = "INSERT INTO CollectionLevel2XMotivoAtraso ([CollectionLevel2_Id], [MotivoAtraso_Id], [AddDate]) " +
+           "VALUES ('" + CollectionLevel2Id + "', " + MotivoAtraso_Id + ", GETDATE()) ";
+
+            sql += " SELECT @@IDENTITY AS 'Identity' ";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        var i = Convert.ToInt32(command.ExecuteScalar());
+                        return i;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         #endregion
 
         #region Collection Level03
