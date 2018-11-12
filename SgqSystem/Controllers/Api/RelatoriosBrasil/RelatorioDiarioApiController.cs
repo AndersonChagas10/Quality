@@ -478,14 +478,16 @@ FROM (SELECT
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= @DATAFINAL)
+						AND G.IsActive = 1
+                		AND G.EffectiveDate <= @DATAFINAL)
 					> 0 THEN (SELECT TOP 1
 							ISNULL(G.PercentValue, 0)
 						FROM ParGoal G (NOLOCK)
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						AND G.AddDate <= @DATAFINAL
+                        AND G.IsActive = 1
+                		AND G.EffectiveDate <= @DATAFINAL
 						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
 
 				ELSE (SELECT TOP 1
@@ -686,7 +688,7 @@ SELECT
 							SUM(Quartos) - @RESS
 						FROM VolumePcc1b(nolock)
 						WHERE ParCompany_id = UNI.Id
-						AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+						AND Data = DD.Data_)
 				WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -698,7 +700,7 @@ SELECT
 							SUM(Quartos) - @RESS
 						FROM VolumePcc1b(nolock)
 						WHERE ParCompany_id = UNI.Id
-						AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+						AND Data = DD.Data_)
 				WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal
 				WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
 				WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
@@ -752,7 +754,7 @@ SELECT
 			FROM ConsolidationLevel1(nolock)
 			WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 			AND UnitId <> 12341614) CL1
-			ON DD.Data_ = CL1.ConsolidationDate
+			ON DD.Data_ = CAST(CL1.ConsolidationDate AS DATE)
 		LEFT JOIN ParLevel1 IND (NOLOCK)
 			ON IND.Id = CL1.ParLevel1_Id
 		--AND IND.ID = 1  
@@ -803,9 +805,10 @@ SELECT
 		   ,Level2Name
 		   ,Data 
 ) S1) S2
-WHERE (RELATORIO_DIARIO = 1
-OR (RELATORIO_DIARIO = 0
-AND AV = 0))
+WHERE 1=1
+--and (RELATORIO_DIARIO = 1
+--OR (RELATORIO_DIARIO = 0
+--AND AV = 0))
 AND s2.Unidade_Id = @UNIDADE
 DROP TABLE #AMOSTRATIPO4";
 
@@ -1075,7 +1078,7 @@ AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFim
 AND IND.Id IN (SELECT
 		P1XC.ParLevel1_Id
 	FROM ParLevel1XCluster P1XC
-	WHERE P1XC.ParCriticalLevel_Id = 3)
+	)
 GROUP BY IND.Id
 		,IND.Name
 		,MON.Id
