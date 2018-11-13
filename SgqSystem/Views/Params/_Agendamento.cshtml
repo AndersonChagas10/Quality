@@ -1,5 +1,4 @@
 ﻿<style>
-
     #tabelaAgendamento td {
         white-space: nowrap;
     }
@@ -61,10 +60,12 @@
 <script>
 
     var botaoAgendamento = '';
+    var valorAvaliacao = '';
 
-      function abrirModalAgendamento(linha) {
+    function abrirModalAgendamento(linha) {
         $("#tabelaAgendamento").attr('style', '');
         var obj = $(linha).parents('tr').data();
+        valorAvaliacao = obj.evaluationNumber;
         botaoAgendamento = linha;
         $('#modalAgendamento').modal('show');
         var id = parseInt(obj.evaluationId);
@@ -114,10 +115,10 @@
 
         if (tamanho <= 1) {
             $(botaoAgendamento).removeClass('btn-success').addClass('btn-default');
-            $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', false)
+            $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', false);
         } else {
             $(botaoAgendamento).removeClass('btn-default').addClass('btn-success');
-            $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', true)
+            $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', true);
         }
     }
 
@@ -129,7 +130,7 @@
             + '<td><input type="number" class="input-sm" data-column="inpAvaliacao" /></td>'
             + avaliacaAmostraSelectShifts
             + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
-            + '<td>  <button type="button" class="btn btn-primary btn-sm"  id="btnSalvarAgendamento">Salvar</button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm hidden btnDeletarAgendamento">Deletar</button></td>'
+            + '<td>  <button type="button" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
             + "</tr>");
 
         $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
@@ -140,11 +141,12 @@
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpTermino]').val(data.Fim);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpAvaliacao]').val(data.Av);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
-            $("#tabelaAgendamento tbody tr:last").find("#btnSalvarAgendamento").removeClass('btn-primary').addClass('btn-success').text('Editar');
+            $("#tabelaAgendamento tbody tr:last").find("#btnSalvarAgendamento").removeClass('btn-primary fa fa-plus').addClass('btn-success fa fa-pencil-square-o').text('').addClass('hidden');       
             $("#tabelaAgendamento tbody tr:last").find(".btnDeletarAgendamento").removeClass('hidden');
             $("#tabelaAgendamento tbody tr:last").find("[data-column=slAgendamento]").val(data.Shift_Id);
         }
     }
+
 
     function EditaLinha(data, linha) {
         if (!!data && data.Id > 0) {
@@ -153,11 +155,17 @@
             $(linha).find('[data-column=inpTermino]').val(data.Fim);
             $(linha).find('[data-column=inpAvaliacao]').val(data.Av);
             $(linha).find('[data-column=inpId]').val(data.Id);
-            $(linha).find("#btnSalvarAgendamento").removeClass('btn-primary').addClass('btn-success').text('Editar');
+            $(linha).find("#btnSalvarAgendamento").removeClass('btn-primary fa fa-plus').addClass('btn-success fa fa-pencil-square-o').text('');
             $(linha).find(".btnDeletarAgendamento").removeClass('hidden');
             $(linha).find("[data-column=slAgendamento]").val(data.Shift_Id);
         }
     }
+
+    $("#modalAgendamento").on('input', "input, select", function () {
+        debugger
+        $(this).parents("tr").find("#btnSalvarAgendamento").removeClass('hidden');
+    });
+
 
        function deletarRegistro(data) {
         var linha = $(data).parents('tr');
@@ -203,9 +211,9 @@
             ParEvaluation_Id: $("[data-column=inpAvaliacaoId]").val(),
             Id: $(linha).find("[data-column=inpId]").val(),
         };
-
         var isEdit = !!$(this).parents('tr').data()['Id'];
-        $.ajax({
+        if (valorAvaliacao >= $(linha).find("[data-column=inpAvaliacao]").val()) {
+            $.ajax({
             url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
             type: 'POST',
             data: form,
@@ -224,6 +232,9 @@
                 alert("Request: " + JSON.stringify(request));
             }
         });
+        } else {
+            openMessageModal("Valor da avaliação inválido.", null);
+        }
     });
 
     function frequenciaIsValid(formato, inicio, fim) {
@@ -233,7 +244,7 @@
                 if(fim < 1 || inicio < 1 || fim > 23 || inicio > 23 || inicio > fim)
                     return false;
                 else
-                    return true;      
+                    return true;
             case "Semanal":
                 if(fim < 1 || inicio < 1 || fim > 7 || inicio > 7 || inicio > fim)
                     return false;
