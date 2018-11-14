@@ -488,7 +488,7 @@ FROM (SELECT
 						OR G.ParCompany_id IS NULL)
                         AND G.IsActive = 1
                 		AND G.EffectiveDate <= @DATAFINAL
-						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
 
 				ELSE (SELECT TOP 1
 							ISNULL(G.PercentValue, 0)
@@ -496,7 +496,7 @@ FROM (SELECT
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+						ORDER BY G.ParCompany_Id DESC, EffectiveDate ASC)
 			END
 			AS Meta
 		--    , (SELECT TOP 1 PercentValue FROM ParGoal WHERE ParLevel1_Id = CL1.ParLevel1_Id AND(ParCompany_Id = CL1.UnitId OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS Meta 
@@ -739,7 +739,7 @@ SELECT
 						OR G.ParCompany_id IS NULL)
                         AND G.IsActive = 1
                 		AND G.EffectiveDate <= @DATAFINAL
-						ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
 
 				ELSE (SELECT TOP 1
 							ISNULL(G.PercentValue, 0)
@@ -747,7 +747,7 @@ SELECT
 						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
 						AND (G.ParCompany_id = CL1.UnitId
 						OR G.ParCompany_id IS NULL)
-						ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+						ORDER BY G.ParCompany_Id DESC, EffectiveDate ASC)
 			END
 			AS Meta
 			--, CL1.ConsolidationDate as Data  
