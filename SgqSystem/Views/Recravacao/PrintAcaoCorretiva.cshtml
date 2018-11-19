@@ -356,9 +356,9 @@
         .tableCorrectiveAction td.tbodyTd {
             height: 35px;
         }
-
-    .bgRed {
-        background-color: rgba(248, 2, 2, 0.29) !important;
+        
+    .bgRed, .bgRed * {
+        color: rgba(248, 2, 2, 1) !important;
         display: block;
     }
 
@@ -514,6 +514,8 @@
 
                         </div>
                     </div>
+
+                    
                     <div class="clearfix"></div>
                     <div class="clearfix"></div>
                     <div class="clearfix"></div>
@@ -689,6 +691,7 @@
                 vm.linhas = [{}]
                 vm.produtos = [{}]
                 vm.fornecedorLata = [{}]
+                vm.dataRecebimento = []
                 vm.fornecedorTampaLata = [{}]
                 vm.seletedLinha = { Id: 0 }
                 vm.selectedLata = {}
@@ -1066,6 +1069,18 @@
 
                                     if (vm.seletedLinha.form.DataRecebimentoLatas)
                                         vm.seletedLinha.form.DataRecebimentoLatas = new Date(vm.seletedLinha.form.DataRecebimentoLatas)
+                                    
+                                    if (vm.seletedLinha.form.dataRecebimento) {
+                                        vm.dataRecebimento = vm.seletedLinha.form.dataRecebimento;
+                                        var list = [];
+                                        vm.dataRecebimento.forEach(function (o, i) {
+                                            if (o != null)
+                                                list.push(new Date(o));
+                                            else
+                                                list.push(null);
+                                        });
+                                        vm.dataRecebimento = list;
+                                    }
 
                                     if (vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
                                         vm.seletedLinha.form.DataRecebimentoTampasFundosLatas = new Date(vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)

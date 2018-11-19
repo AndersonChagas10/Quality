@@ -359,8 +359,8 @@
             height: 35px;
         }
 
-    .bgRed {
-        background-color: rgba(248, 2, 2, 0.29) !important;
+    .bgRed, .bgRed * {
+        color: rgba(248, 2, 2, 1) !important;
         display: block;
     }
 
@@ -462,7 +462,11 @@
                                     <td class="title">Fornecedor da Lata</td>
                                     <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
                                     <td class="title">Data do recebimento das latas</td>
-                                    <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
+                                    <td>
+                                        <span ng-repeat="item in dataRecebimento track by $index">
+                                            {{item | date:'dd/MM/yyyy'}}
+                                        </span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="title">Fornecedor das tampas/fundos das latas</td>
@@ -511,8 +515,11 @@
                                         ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
                                         colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
 
-                                        <span ng-class="{bgWhite: (!(item.ResultValue[ParLevel3.Id][($index +1)] === true) && !(item.ResultValue[ParLevel3.Id][($index +1)] === false)), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] === true), bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] === false)}"
-                                              ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                                        @*1 Binário*@
+                                        <span style="text-align:center;"
+                                              class=""
+                                              ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')"
+                                              ng-class="{bgWhite:(!(item.ResultValue[ParLevel3.Id][($index +1)] === true) && !(item.ResultValue[ParLevel3.Id][($index +1)] === false)), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:(item.ResultValue[ParLevel3.Id][($index +1)] === true), bgRed:(item.ResultValue[ParLevel3.Id][($index +1)] === false)}">
                                             <span>
                                                 <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === true">
                                                     {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
@@ -521,28 +528,46 @@
                                                     {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
                                                 </span>
                                             </span>
+                                            <span ng-if="(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA')">
+                                                <span class="validate">
+                                                    {{item.ResultValue[ParLevel3.Id][($index +1)]}}
+                                                </span>
+                                            </span>
                                         </span>
+                                        @*2 Número de defeitos*@
                                         <span class="validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
                                             <span>{{item.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
                                         </span>
-                                        <span class="validate"
-                                              ng-class="{bgWhite:  ((item.ResultValue[ParLevel3.Id][($index +1)].length == 0 && !(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA')) || ParLevel3.Id == idEC || ParLevel3.Id == idET), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }"
-                                              ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
-                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
-                                            <span style="font-size:9px">
-                                                {{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}
-                                            </span>
+                                        @*3 Intervalos*@
+                                        <span class="validate {{item.class}}"
+                                              ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura && ParLevel3.Id != idEscareacao)"
+                                              ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0 && !(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA')), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)]=='NA' ), bgGreen:(item.ResultValue[ParLevel3.Id][($index +1)] !=null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed:(item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }">
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}} {{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
                                         </span>
-                                        <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                        <span class="validate"
+                                              ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET)"
+                                              ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA') }">
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}} {{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
+                                        </span>
+                                        <span class="validate"
+                                              ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)"
+                                              ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEspessura(item.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed:bgRedEspessura(item.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}} {{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
+                                        </span>        
+                                        <span class="validate"
+                                              ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEscareacao)"
+                                              ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEscareacao(item.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed:bgRedEscareacao(item.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}{{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
+                                        </span>                         
+                                        @*5 Texto*@
+                                        <label style="word-wrap:break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
                                             {{item.ResultValue[ParLevel3.Id][($index +1)]}}
                                         </label>
+                                        @*99 NOVO CALCULADO POR OUTRO*@
                                         <span class="validate"
-                                              ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
+                                              ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:(item.ResultValue[ParLevel3.Id][($index +1)] !=null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index+1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed:(item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
                                               ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                                            <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}}</span>
-                                            <span style="font-size:9px">
-                                                {{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && item.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' : ''}}
-                                            </span>
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}} {{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && item.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' :''}}</span>
                                         </span>
                                     </td>
                                 </tr>
@@ -628,6 +653,7 @@
 
                         </div>
                     </div>-->
+
 
                     <div ng-if="seletedLinha.ObservacoesList.length > 0" class="divTableCorrectiveAction" style="padding-top: 20px;">
 
@@ -720,7 +746,7 @@
                         <span ng-if="item.ParLevel3Value[0].ParLevel3InputType_Id == 1 && item.Id != idEscareacao"
                               style="font-size:6px!important;font-weight: 100 !important;">
                             Conforme | Não conforme
-                        </span>                
+                        </span>
 
                         <span ng-if="(item.ParLevel3Value[0].ParMeasurementUnit.Name || item.ParLevel3Value_OuterList[0].UnidadeMedidaText) && item.Id != idEscareacao && item.ParLevel3Value[0].ParLevel3InputType_Id != 1"
                               style="font-size:6px!important;font-weight: 100 !important;">
@@ -845,6 +871,7 @@
                 vm.linhas = [{}]
                 vm.produtos = [{}]
                 vm.fornecedorLata = [{}]
+                vm.dataRecebimento = []
                 vm.fornecedorTampaLata = [{}]
                 vm.seletedLinha = { Id: 0 }
                 vm.selectedLata = {}
@@ -1222,6 +1249,16 @@
 
                                     if (vm.seletedLinha.form.DataRecebimentoLatas)
                                         vm.seletedLinha.form.DataRecebimentoLatas = new Date(vm.seletedLinha.form.DataRecebimentoLatas)
+
+                                    if (vm.seletedLinha.form.dataRecebimento) {
+                                        vm.dataRecebimento = vm.seletedLinha.form.dataRecebimento;
+                                        var list = [];
+                                        vm.dataRecebimento.forEach(function (o, i) {
+                                            if (o != null)
+                                                list.push(new Date(o));
+                                        });
+                                        vm.dataRecebimento = list;
+                                    }
 
                                     if (vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
                                         vm.seletedLinha.form.DataRecebimentoTampasFundosLatas = new Date(vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
@@ -1723,7 +1760,7 @@
 
                 function init() {
 
-                    
+
 
                     if (vm.dev) {
                         vm.idEC = 1660
