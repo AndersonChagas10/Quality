@@ -20,6 +20,9 @@ namespace Dominio
         public int ParEvaluation_Id { get; set; }
         public bool IsActive { get; set; }
 
+        [NotMapped]
+        public bool isDeletar { get; set; }
+
         [ForeignKey("ParEvaluation_Id")]
         public virtual ParEvaluation ParEvaluation { get; set; }
     }

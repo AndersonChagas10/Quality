@@ -18,54 +18,59 @@ namespace SgqSystem.Controllers.Api
         [HttpGet]
         [Route("Get/{id}")]
         public List<ParEvaluationSchedule> Get(int id)
-        {        
+        {
             var db = new SgqDbDevEntities();
             db.Configuration.LazyLoadingEnabled = false;
 
             var agendamentos = db.ParEvaluationSchedule.Where(x => x.ParEvaluation_Id == id && x.IsActive).ToList();
-            
+
             return agendamentos;
         }
 
         [HttpPost]
         [Route("Post")]
-        public ParEvaluationSchedule Post([FromBody] ParEvaluationSchedule agendamento)
+        public List<ParEvaluationSchedule> Post([FromBody] List<ParEvaluationSchedule> listaAgendamento)
         {
-            //ValidaDados(agendamento);
-            agendamento.IsActive = true;
-            if (agendamento.Shift_Id <= 0)
-                agendamento.Shift_Id = null;
-            using (var db = new SgqDbDevEntities())
+            foreach (var item in listaAgendamento)
             {
-                if (agendamento.Id > 0)
+                if (item.isDeletar && item.Id > 0)
                 {
-                    db.Entry(agendamento).State = EntityState.Modified;                   
+                    Delete(item);
                 }
-                else
+                else if(!item.isDeletar)
                 {
-                    db.ParEvaluationSchedule.Add(agendamento);
+                    item.IsActive = true;
+                    if (item.Shift_Id <= 0)
+                        item.Shift_Id = null;
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        if (item.Id > 0)
+                        {
+                            db.Entry(item).State = EntityState.Modified;
+                        }
+                        else
+                        {
+                            db.ParEvaluationSchedule.Add(item);
+                        }
+                        db.SaveChanges();
+                    }
                 }
-                db.SaveChanges();
             }
-            return agendamento;
+            return listaAgendamento;
         }
 
         [HttpDelete]
         [Route("Delete")]
         public ParEvaluationSchedule Delete([FromBody] ParEvaluationSchedule agendamento)
-        {   
+        {
             agendamento.IsActive = false;
             using (var db = new SgqDbDevEntities())
             {
                 db.Entry(agendamento).State = EntityState.Modified;
-                db.SaveChanges();             
+                db.SaveChanges();
             }
+
             return agendamento;
         }
-
-        //private void ValidaDados(ParEvaluationSchedule agendamento)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

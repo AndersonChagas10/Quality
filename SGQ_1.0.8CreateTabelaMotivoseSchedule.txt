@@ -3,7 +3,7 @@ Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.8CreateTabelaMotiv
 
 GO
 
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MotivosAtraso' AND xtype='U')
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MotivoAtraso' AND xtype='U')
 Create Table MotivoAtraso (   
 	Id int not null identity PRIMARY KEY,
 	Motivo varchar(250) not null,
@@ -24,7 +24,7 @@ Create Table ParEvaluationSchedule (
         Shift_Id  int null,
 		AddDate datetime not null,
 		AlterDate datetime,
-		IsActive bit not null,
+		IsActive bit not null default 1
 )
 
 GO
