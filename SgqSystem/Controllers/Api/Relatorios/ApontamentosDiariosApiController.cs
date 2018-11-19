@@ -118,7 +118,8 @@ namespace SgqSystem.Controllers.Api
             try
             {
                 db.Database.ExecuteSqlCommand(query);
-                var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);
+                var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);                
+
                 ConsolidacaoEdicao(resultLevel3.Id);
 
             }
@@ -152,6 +153,9 @@ namespace SgqSystem.Controllers.Api
             var level1_Id = level3.CollectionLevel2.ParLevel1_Id;
 
             var service = new SyncServices();
+
+            service.ReconsolidationLevel3ByCollectionLevel2Id(level3.CollectionLevel2_Id.ToString());
+
             var retorno = service._ReConsolidationByLevel1(company_Id, level1_Id, data);
         }
 
@@ -197,7 +201,6 @@ namespace SgqSystem.Controllers.Api
             }
 
             internal string CreateUpdate()
-
             {
                 isQueryEdit = true;
                 GetDataToEdit();
@@ -703,6 +706,11 @@ namespace SgqSystem.Controllers.Api
                             defects = _Defects;
                         }
 
+                    }
+
+                    if (IsConform.GetValueOrDefault())
+                    {
+                        return "0";
                     }
 
                     var defeitoXPeso = (defects * Weight.GetValueOrDefault());
