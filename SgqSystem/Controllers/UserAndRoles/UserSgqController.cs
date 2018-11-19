@@ -135,7 +135,7 @@ namespace SgqSystem.Controllers
             {
                 userSgqDto.AddDate = DateTime.Now;
                 userSgqDto.Password = Guard.EncryptStringAES(userSgqDto.Password);
-                IsActive = true;
+                userSgqDto.IsActive = true;
             }
             else
             {
