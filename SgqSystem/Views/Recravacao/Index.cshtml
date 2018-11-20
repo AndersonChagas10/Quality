@@ -460,7 +460,7 @@
 
                                 <tr ng-repeat="ParLevel3 in lataEmLataDetalhe.ListParlevel3 | orderBy :sorterFunc track by $index" ng-class="{level3NameDestacado:(ParLevel3.Id ==  idOVERLAP)}">
                                     <td style="border:1px solid #cccccc; padding:2px; font-weight:bold; text-align:left !important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight:100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span></td>
-                                    
+
                                     <td style="max-width:80px; border:1px solid #cccccc; padding:1px; text-align:center;"
                                         ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
                                         ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
@@ -1595,8 +1595,10 @@
                                 }
                             },
                             callback: function (result) {
-                                if (result)
+                                if (result) {
+                                    vm.dataRecebimento = [];
                                     vm.getParansLinha(index, needFindIndex, showMensagem, novaLinha)
+                                }
                             }
                         });
                 }
@@ -1779,6 +1781,8 @@
 
                     listaSemNulo.push(null);
                     vm.dataRecebimento = listaSemNulo;
+                    if (!!!linha.form)
+                        linha.form = {};
                     linha.form.dataRecebimento = vm.dataRecebimento;
 
                     vm.TimerOn()
@@ -1969,7 +1973,6 @@
                     })
                 }
                 vm.getFornecedorLata()
-                vm.dataRecebimento.push(new Date());
                 vm.getFornecedorTampaLata()
                 vm.tipoLata()
                 vm.horaVerificacao()
@@ -2264,17 +2267,17 @@
                         return;
                     }
 
-                    if (!vm.linhaSelecionada.form.FornecedorLata) {
+                    if (vm.linhaSelecionada.form.FornecedorLata.length == 0) {
                         toastr.warning("O fornecedor da lata precisa ser escolhido.");
                         return;
                     }
 
-                    if (!vm.linhaSelecionada.form.DataRecebimentoLatas) {
+                    if (vm.linhaSelecionada.form.dataRecebimento.length == 1) {
                         toastr.warning("A data de recebimento das latas precisa ser preenchido.");
                         return;
                     }
 
-                    if (!vm.linhaSelecionada.form.FornecedorTampaFundoLata) {
+                    if (vm.linhaSelecionada.form.FornecedorTampaFundoLata.length == 0) {
                         toastr.warning("O fornecedor da tampa do fundo da lata precisa ser escolhido.");
                         return;
                     }
