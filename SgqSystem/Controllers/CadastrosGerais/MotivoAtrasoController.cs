@@ -10,7 +10,7 @@ using Dominio;
 
 namespace SgqSystem.Controllers
 {
-    public class MotivoAtrasoController : Controller
+    public class MotivoAtrasoController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 

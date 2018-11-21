@@ -264,7 +264,7 @@
             return false;
         }
 
-        if (!frequenciaIsValid(formato, inicio, termino)) {
+        if (!frequenciaIsValid(formato, parseInt(inicio), parseInt(termino))) {
             openMessageModal("Intervalo de frequência inválido", null);
             return false;
         }
@@ -288,7 +288,7 @@
     });
 
     function frequenciaIsValid(formato, inicio, fim) {
-
+        debugger
         switch (formato) {
             case "Diario":
                 if(fim < 1 || inicio < 1 || fim > 23 || inicio > 23 || inicio > fim)
