@@ -284,6 +284,8 @@
             $(linha).find('input:enabled').val('');
 
 
+        } else {
+            openMessageModal('Valor da avaliação maior do que o permitido!', null);
         }
     });
 
@@ -319,7 +321,7 @@
     function camposIsValid(avaliacao, inicio, termino, turno) {
 
         if (avaliacao == null || avaliacao == undefined || avaliacao < 0 || avaliacao === "") {
-            openMessageModal("O campo Avalição deve ser preechido", null);
+            openMessageModal("O campo Avaliação deve ser preechido", null);
             return false;
         }
 
