@@ -56,7 +56,7 @@ namespace SgqSystem.Controllers.Api
                     }
                 }
             }
-            return listaAgendamento;
+            return listaAgendamento.Where(x => x.isDeletar != true).ToList();
         }
 
         [HttpDelete]

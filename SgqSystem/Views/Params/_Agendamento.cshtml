@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" id="btnSalvar" class="btn btn-success">Salvar</button>
+                <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>
                 <button type="button" data-dismiss="modal" onclick="LimpaCampos()" class="btn btn-default">Fechar</button>
             </div>
         </div>
@@ -63,8 +63,13 @@
     var valorAvaliacao = '';
     var listaAgendamento = [];
 
+    $("#modalAgendamento").on('close', function(){
+        console.log('model fechado');
+        ContadorLinhas();
+    });
+
     function abrirModalAgendamento(linha) {
-       
+
         $("#tabelaAgendamento").attr('style', '');
         var obj = $(linha).parents('tr').data();
         valorAvaliacao = obj.evaluationNumber;
@@ -113,6 +118,7 @@
     }
 
     function ContadorLinhas() {
+        debugger
         var tamanho = $("#tabelaAgendamento tbody").find('tr').length;
 
         if (tamanho <= 1) {
@@ -132,7 +138,7 @@
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpAvaliacao" /></td>'
             + avaliacaAmostraSelectShifts
             + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
-            + '<td>  <button type="button" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
+            + '<td>  <button type="button" title="Adicionar na lista" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
             + "</tr>");
 
         $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
@@ -198,37 +204,50 @@
     $("#modalAgendamento").on('click', "#btnSalvar", function () {
         var listaTabelaAgendamento = [];
         listaTabelaAgendamento = $("#tabelaAgendamento tbody tr").not(':first');
-        listaTabelaAgendamento.each(function (index, item) {
+        if ($("#tabelaAgendamento tbody tr").find("[data-column=inpInicio]").val() !== '' || $("#tabelaAgendamento tbody tr").find("[data-column=inpTermino]").val() !== '' || $("#tabelaAgendamento tbody tr").find("[data-column=inpAvaliacao]").val() !== '') {
+            openMessageModal('Dados não inseridos na lista, adicione antes de salvar!', null);
+        }
+        else if (listaTabelaAgendamento.length <= 0) {
+            openMessageModal('Nenhum registro inserido na lista!', null);
+        } else {
+            listaTabelaAgendamento.each(function (index, item) {
 
-            form = {
-                Inicio: $(item).find("[data-column=inpInicio]").val(),
-                Fim: $(item).find("[data-column=inpTermino]").val(),
-                Av: $(item).find("[data-column=inpAvaliacao]").val(),
-                Shift_Id: $(item).find("[data-column=slAgendamento]").val(),
-                ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
-                Id: $(item).find("[data-column=inpId]").val(),
-                IsDeletar: $(item).data("IsDeletar")
-            };
+                form = {
+                    Inicio: $(item).find("[data-column=inpInicio]").val(),
+                    Fim: $(item).find("[data-column=inpTermino]").val(),
+                    Av: $(item).find("[data-column=inpAvaliacao]").val(),
+                    Shift_Id: $(item).find("[data-column=slAgendamento]").val(),
+                    ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
+                    Id: $(item).find("[data-column=inpId]").val(),
+                    IsDeletar: $(item).data("IsDeletar")
+                };
+                listaAgendamento.push(form);
+            });
+            $.ajax({
+                url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
+                type: 'POST',
+                data: JSON.stringify(listaAgendamento),
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    listaAgendamento = [];
+                    $('#tabelaAgendamento tbody tr').not(':first').remove();
+                    data.forEach(function (item) {
+                        MontaNovaLinha(item, false);
+                    });
 
-            listaAgendamento.push(form);
-        });
+                    openMessageModal("Dados salvos com sucesso", null);
+                    $('#modalAgendamento').modal('hide');
+                    ContadorLinhas();
+                },
+                error: function (request, error) {
+                    listaAgendamento = [];
+                    ContadorLinhas();
+                    alert("Request: " + JSON.stringify(request));
+                }
+            });
+        }
 
-        $.ajax({
-            url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
-            type: 'POST',
-            data: JSON.stringify(listaAgendamento),
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                listaAgendamento = [];
-                ContadorLinhas();
-                openMessageModal("Dados salvos com sucesso", null);
-            },
-            error: function (request, error) {
-                listaAgendamento = [];
-                alert("Request: " + JSON.stringify(request));
-            }
-        });
     });
 
     $("#modalAgendamento").on('click', "#btnSalvarAgendamento", function () {
@@ -261,12 +280,10 @@
                 ParEvaluation_Id: $(linha).find("[data-column=inpAvaliacaoId]").val(),
                 Id: $(linha).find("[data-column=inpId]").val()
             };
-
             MontaNovaLinha(form, isEdit);
             $(linha).find('input:enabled').val('');
 
-        } else {
-            openMessageModal("Valor da avaliação inválido.", null);
+
         }
     });
 
@@ -319,18 +336,15 @@
         let tabela = $('#tabelaAgendamento tbody tr').not(':first');
 
         let isDuplicated = $.grep(tabela, (o) => {
-            //termino >= $(o).find('[data-column="inpInicio"]').val() &&
-            //inicio <= $(o).find('[data-column="inpTermino"]').val() &&
             return turno == $(o).find('[data-column="slAgendamento"] :selected').val() &&
                 avaliacao == $(o).find('[data-column=inpAvaliacao]').val();
 
         }).length > 0;
 
         if (isDuplicated) {
-            openMessageModal("Já existe um agendamento neste horário, avaliação ou turno", null);
+            openMessageModal("Já existe um agendamento para esta avaliação ou turno", null);
             return false;
         }
-
         return true;
     }
 
