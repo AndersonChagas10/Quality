@@ -1009,6 +1009,7 @@
 <script src="~/Scripts/lodash/lodash.js"></script>
 
 <script>
+    var gambiLeo = 0;
     $(document).ready(function () {
         $('#floatingMap').lobiPanel({
             dradraggable: true,
@@ -1813,10 +1814,6 @@
                     linha.form.dataRecebimentoTampaLata = vm.dataRecebimentoTampaLata;
 
                     vm.TimerOn()
-                    if (salvoParaInserirNovaLinha)
-                        linha['SalvoParaInserirColeta'] = true
-                    else
-                        linha['SalvoParaInserirColeta'] = false
 
                     if (!!vm.linhaSelecionada.userFinish)
                         linha['UserFinished_Id'] = vm.linhaSelecionada.userFinish.Id;
@@ -1825,17 +1822,39 @@
                     linha['User'] = vm.userAuditor
                     linha['ParLevel1_Id'] = vm.indicadorSelecionado.Id.toString()
                     vm.start()
-                    $http({ method: 'POST', url: vm.salvaLinhaUrl, data: { linha: linha, latas: latas }, showLoader: notShowLoader ? false : true })
-                        .then(function (r) {
-                            if (r.data.errors) {
-                                r.data.errors.forEach(function (o) {
-                                    toastr.error(o)
-                                })
-                            } else {
-                                if (!notShowLabel)
-                                    toastr.success(r.data.resposta)
-                            }
-                        });
+
+                    //gambi pq isso é chamado N vezes aleatoriamente
+                    if (salvoParaInserirNovaLinha) {
+                        linha['SalvoParaInserirColeta'] = true;
+                        $http({ method: 'POST', url: vm.salvaLinhaUrl, data: { linha: linha, latas: latas }, showLoader: notShowLoader ? false : true })
+                                .then(function (r) {
+                                    if (r.data.errors) {
+                                        r.data.errors.forEach(function (o) {
+                                            toastr.error(o)
+                                        })
+                                    } else {
+                                        if (!notShowLabel)
+                                            toastr.success(r.data.resposta)
+                                    }
+                                });
+                    } else {
+                        linha['SalvoParaInserirColeta'] = false
+                        gambiLeo += 500;
+                        setTimeout(function () {
+                            $http({ method: 'POST', url: vm.salvaLinhaUrl, data: { linha: linha, latas: latas }, showLoader: notShowLoader ? false : true })
+                                .then(function (r) {
+                                    if (r.data.errors) {
+                                        r.data.errors.forEach(function (o) {
+                                            toastr.error(o)
+                                        })
+                                    } else {
+                                        if (!notShowLabel)
+                                            toastr.success(r.data.resposta)
+                                    }
+                                    gambiLeo -= 500;
+                                });
+                        }, gambiLeo);
+                    }
                 }
 
                 vm.getProdutos = function () {
@@ -2112,7 +2131,7 @@
                                         });
                                         vm.dataRecebimentoTampaLata = list;
                                     }
-                                    
+
                                 }
 
                                 let index = vm.findWithAttr(vm.linhas, 'Id', vm.linhaSelecionada.Id);
@@ -2321,7 +2340,7 @@
                         toastr.warning("O fornecedor da tampa do fundo da lata precisa ser escolhido.");
                         return;
                     }
-                    
+
                     if (vm.linhaSelecionada.form.dataRecebimentoTampaLata.length == 1) {
                         toastr.warning("A data de recebimento da tampa do fundo da lata precisa ser preenchido.");
                         return;

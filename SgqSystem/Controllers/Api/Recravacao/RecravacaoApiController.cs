@@ -8,6 +8,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api
 {
@@ -37,6 +38,31 @@ namespace SgqSystem.Controllers.Api
                 var query = string.Format("SELECT TOP 1* FROM RecravacaoJson WHERE ParCompany_Id = {0} AND ParLevel1_Id = {1} AND SalvoParaInserirNovaColeta IS NULL AND Linha_Id = {2} AND ISACTIVE = 1 ORDER BY Id DESC", companyId, level1Id, linhaId);
                 var results = QueryNinja(db, query);
                 var latasId = results.Count() > 0 ? QueryNinja(db, string.Format("SELECT Id from RecravacaoLataJson where RecravacaoJson_Id = {0}", results[0].GetValue("Id").ToString())) : null;
+                var produtos = factory.SearchQuery<ReprocessoApiController.Produto>("SELECT * FROM Produto").ToList();
+                var sugestoes = factory.SearchQuery<DTO.DTO.RecravacaoSugestaoDTO>("SELECT * FROM RecravacaoSugestao").ToList();
+
+                if (results.Count() > 0)
+                {
+                    var queryImagensTipoLataPorparRecravacao_TypeLata_Id = "select * from ParLataImagens where ParRecravacao_TipoLata_Id = (select top 1 ParRecravacao_TypeLata_Id from ParRecravacao_Linhas where id = (select top 1 Linha_Id from RecravacaoJson where id = {0}))";
+                    var listImages = QueryNinja(db, string.Format(queryImagensTipoLataPorparRecravacao_TypeLata_Id, results[0].GetValue("Id").ToString())).ToList();
+                    results[0]["TipoDeLataImagens"] = JToken.FromObject(listImages, new Newtonsoft.Json.JsonSerializer { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    new { resposta = "Dados Recuperados", model = results, produtos = produtos, sugestoes = sugestoes, latasId = latasId });
+            }
+        }
+
+        // GET: api/RecravacaoApi
+        public HttpResponseMessage Get(int id, int x)
+        {
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                var requestResults = Request.Content.ReadAsStringAsync().Result;
+                var paramsFromRequest = ToDynamic(Request.Content.ReadAsStringAsync().Result);
+                var query = string.Format("SELECT * FROM RecravacaoJson WHERE Id = {0}", id);
+                var results = QueryNinja(db, query);
+                var latasId = id;
                 var produtos = factory.SearchQuery<ReprocessoApiController.Produto>("SELECT * FROM Produto").ToList();
                 var sugestoes = factory.SearchQuery<DTO.DTO.RecravacaoSugestaoDTO>("SELECT * FROM RecravacaoSugestao").ToList();
 
@@ -83,7 +109,6 @@ namespace SgqSystem.Controllers.Api
                 int parLevel1_Id = int.Parse(linha["ParLevel1_Id"].ToString());
                 bool salvoParaInserirNovaColeta = false;
                 bool isValidated = false;
-                var existente = db.RecravacaoJson.Where(r => r.ParCompany_Id == idCompany && r.Linha_Id == idLinha && !isValidated && r.SalvoParaInserirNovaColeta == null).OrderByDescending(x=>x.Id).FirstOrDefault()?.Id;
 
                 int RecravacaoJsonId = 0;
 
@@ -98,6 +123,7 @@ namespace SgqSystem.Controllers.Api
                 if (IsPropertyExist(linha, "SalvoParaInserirColeta"))
                     salvoParaInserirNovaColeta = linha["SalvoParaInserirColeta"];
 
+                var existente = db.RecravacaoJson.Where(r => r.ParCompany_Id == idCompany && r.Linha_Id == idLinha && !isValidated && r.SalvoParaInserirNovaColeta == null).OrderByDescending(x => x.Id).FirstOrDefault()?.Id;
                 if (existente.GetValueOrDefault() > 0 && salvoParaInserirNovaColeta == false)
                     RecravacaoJsonId = Update(linhaStringFormatada, existente, userFinished_Id, userValidated_Id);
                 else
@@ -127,7 +153,8 @@ namespace SgqSystem.Controllers.Api
                 //Post Save
                 mensagemSucesso = "Registro atualizado";
 
-                SaveLatas(RecravacaoJsonId, latas);
+                if (!salvoParaInserirNovaColeta)
+                    SaveLatas(RecravacaoJsonId, latas);
 
             }
             catch (Exception e)
@@ -241,8 +268,8 @@ namespace SgqSystem.Controllers.Api
             var dataAtual = DateTime.Now.Date;
             int avaliacaoAtual = Convert.ToInt32(db.CollectionJson
                 .Where(x => x.Level01CollectionDate > dataAtual && x.level01_Id == parLevel1)
-                .OrderByDescending(x=>x.Evaluate)
-                .Select(x=>x.Evaluate)
+                .OrderByDescending(x => x.Evaluate)
+                .Select(x => x.Evaluate)
                 .FirstOrDefault()
                 + 1);
             int amostraAtual = 0;
@@ -363,9 +390,10 @@ namespace SgqSystem.Controllers.Api
                         {
                             isConform = Convert.ToDecimal(minimo.Replace(".", ",")) <= Convert.ToDecimal(valorDaTarefa.Replace(".", ","))
                                 && Convert.ToDecimal(valorDaTarefa.Replace(".", ",")) <= Convert.ToDecimal(maximo.Replace(".", ","));
-                        }else
+                        }
+                        else
                         {
-                            if(valorDaTarefa == "1" || valorDaTarefa == "true")
+                            if (valorDaTarefa == "1" || valorDaTarefa == "true")
                             {
                                 isConform = true;
                             }
