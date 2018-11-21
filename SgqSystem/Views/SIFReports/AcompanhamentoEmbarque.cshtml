@@ -1,0 +1,466 @@
+﻿
+@{
+    ViewBag.Title = "SIF Embarque";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+
+    #cabecalho tbody tr td .titleTd {
+        font-size: 8px;
+    }
+
+    #cabecalho tbody tr td .value {
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    #tabelaEsquerda tbody tr td {
+        font-size: 8px;
+        /*white-space: nowrap;*/
+    }
+
+    #tabelaDireita tbody tr td {
+        font-size: 8px;
+        /*white-space: nowrap;*/
+    }
+
+    #cabecalho2 tbody tr td {
+        font-size: 8px;
+        /*white-space: nowrap;*/
+    }
+</style>
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+        <div id="formBodyContent">
+
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+            <div class="col-xs-12">
+
+                <div id="loader"></div>
+
+                <div class="portlet light bordered">
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="btnPrint">@Resources.Resource.print</button>
+                        <br />
+                        <br />
+                        <div style="display:none">
+                            <div id="contentHeader">
+                                <table border="1" cellspacing="0" cellpadding="1" style="width:100%;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="3" width="120px" align="center"><img id="printImagemCabecalhoLeft" src="../Imagens/logo-jbs.png" width="80px"></td>
+                                            <td id="printTitulo" align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"></td>
+                                            <td rowspan="3" width="120px" align="center"><img id="printImagemCabecalhoRight" src="../Imagens/logo-gq.png" width="80px"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Elaborador:</b> <span id="printElaborador"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Aprovador:</b> <span id="printAprovador"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div id="contentFooter" style="display:none">
+                            <div>
+                                <strong id="printCodigoRodape"></strong>
+                            </div>
+                        </div>
+
+                        <div id="contentBody">
+
+                            <table id="cabecalho" class="table table-bordered">
+                                <tr>
+                                    <td>
+                                        <div class="titleTd">Data:</div>
+                                        <span class="value" id="CollectionDate"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            CD:
+                                        </div>
+                                        <span class="value" id="ParCompanyName"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Unidade JBS/SIF:
+                                        </div>
+                                        <span class="value" id="SifNumber"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Tipo de Veículo:
+                                        </div>
+                                        <span class="value" id="TipoVeiculo"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Pedido:
+                                        </div>
+                                        <span class="value" id="Pedido"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Conferente da Operação:
+                                        </div>
+                                        <span class="value" id="NomeUsuario"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="titleTd">
+                                            Termógrafo presente:
+                                        </div>
+                                        <span class="value" id="TermografoIsPresente"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Numero:
+                                        </div>
+                                        <span class="value" id="Termografo_Id"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Temp mínima e máxima:
+                                        </div>
+                                        <span class="value" id="TemperaturaMin"></span> ºC | <span class="value" id="TemperaturaMax"></span> ºC
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Tipo de Embalagem:
+                                        </div>
+                                        <span class="value" id="TipoEmbalagem"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Tipo de Carga:
+                                        </div>
+                                        <span class="value" id="TipoCarga"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Transportador:
+                                        </div>
+                                        <span class="value" id="Transportador"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="titleTd">
+                                            Nome do Motorista:
+                                        </div>
+                                        <span class="value" id="NomeMotorista"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Monitoramento (Verificar nome correto):
+                                        </div>
+                                        <span class="value" id="ParLevel2_Name"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Nota Fiscal:
+                                        </div>
+                                        <span class="value" id="NumeroNotaFiscal"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Lacre número:
+                                        </div>
+                                        <span class="value" id="LacreNumero"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Placa:
+                                        </div>
+                                        <span class="value" id="Placa"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Instrução:
+                                        </div>
+                                        <span class="value" id="Instrucao"></span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table id="cabecalho2" class="table table-bordered">
+                                <tbody></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END CONTENT BODY -->
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/Print/printGRT.js"></script>
+
+    <script>
+
+        var $btn = $('#btnSend');
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+        var urlGet = '@Html.Raw(Url.Action("Get", "api/AcompanhamentoEmbarque"))';
+        exibeTodosLevels = false;
+
+        $(document).ready(function () {
+
+            closeLeftSidebar();
+
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+
+            $('#simpleCallendar input[type="text"]').val(start.format());
+
+            $('#unitId').children('option:first').remove();
+            $('#level1Id').children('option:first').remove();
+
+            $('#level1Id').prop("disabled", true);
+            $('#level1Id').select2("destroy");
+
+            setTimeout(function () {
+                //$('#level1Id option[value="number:83"]').attr('selected', 'selected'); //Numero do Indicador na JBS
+                $('#level1Id option[value="number:68"]').attr('selected', 'selected'); //Numero Indicador na GRT
+                $('#level1Id').trigger("change");
+                $('select').select2();
+            }, 2000);
+
+            $('#showLevel1 > div:nth-child(3)').hide();
+
+            $("#btnSend").click(function (e) {
+
+                Send(true);
+
+            });
+
+            //$('.portlet').hide();
+
+
+            formControl.showSimpleDate();
+            formControl.showLevel1();
+            formControl.showUnit();
+
+        });
+
+        function Send(toggle) {
+
+            if (formIsValid()) {
+
+                $btn.button('loading');
+
+                //$('.portlet').hide();
+
+                $('#level1Id').trigger("change");
+
+                EasyAjax(urlGet, enviar, GerarRelatorio, "loader", toggle);
+
+            }
+        }
+
+        function GerarRelatorio(r) {
+
+            console.log(r);
+
+            PreencherCabecalho(r);
+
+            let conteudoTabela = PreencherCabecalho2(r.Coletas);
+
+            conteudoTabela += PreencherConteudo(r.Coletas);
+
+            $('#cabecalho2 tbody').html(conteudoTabela);
+        }
+
+        function PreencherCabecalho(r) {
+
+            $("#CollectionDate").html(new Date(r.CollectionDate).toLocaleDateString());
+            $("#ParCompanyName").html(r.ParCompanyName);
+            $("#SifNumber").html(r.SifNumber);
+            $("#TipoVeiculo").html(r.TipoVeiculo);
+            $("#Pedido").html(r.Pedido);
+            $("#NomeUsuario").html(r.NomeUsuario);
+            $("#TermografoIsPresente").html(r.TermografoIsPresente ? "Sim" : "Não");
+            $("#Termografo_Id").html(r.Termografo_Id);
+            $("#TemperaturaMax").html(r.TemperaturaMax);
+            $("#TemperaturaMin").html(r.TemperaturaMin);
+            $("#TipoEmbalagem").html(r.TipoEmbalagem);
+            $("#TipoCarga").html(r.TipoCarga);
+            $("#Transportador").html(r.Transportador);
+            $("#NomeMotorista").html(r.NomeMotorista);
+            $("#ParLevel2_Name").html(r.ParLevel2_Name);
+            $("#NumeroNotaFiscal").html(r.NumeroNotaFiscal);
+            $("#LacreNumero").html(r.LacreNumero);
+            $("#Placa").html(r.Placa);
+            $("#Instrucao").html(r.Instrucao);
+
+        }
+
+        function PreencherCabecalho2(array) {
+
+            let produtos = [...new Set(array.map(item => item.Produto))];
+            let produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
+
+            let lstObjProduto = [];
+
+            produtos.forEach((item, index) => {
+                lstObjProduto.push({ "Produto": produtos[index], "Produto_Id": produtos_Id[index] })
+            });
+
+
+            let linhaAmostra =
+                `<tr style="background-color: #c3c3c3;">
+                    <td colspan="3">Amostras</td>`;
+
+            let terceiraLinha =
+                `<tr>
+                    <td>Data</td>`;
+
+            let segundaLinha = `<tr>`;
+
+            let primeiraLinha = `<tr>
+                                    <td rowspan="3" colspan="2">Caracteristicas da Qualidade</td>
+                                    <td rowspan="2">Padrão</td>`;
+
+            lstObjProduto.forEach((item) => {
+
+                let amostrasPorProduto = array.filter((coleta) => { return coleta.Produto == item.Produto });
+
+                let numeroAmostras = [...new Set(amostrasPorProduto.map(item => item.Amostra))];
+
+                let dataAmostras = [...new Set(amostrasPorProduto.map(item => item.CollectionDate))];
+
+                numeroAmostras.forEach((amostra, index) => {
+
+                    terceiraLinha += "<td>" + new Date(dataAmostras[index]).toLocaleDateString() + "</td>";
+
+                    linhaAmostra += "<td>" + amostra + "</td>";
+
+                });
+
+                let colspanMax = Math.ceil(numeroAmostras.length / 2);
+                let colspanMin = Math.floor(numeroAmostras.length / 2);
+
+                segundaLinha += `<td colspan="${colspanMin}">Produto:</td>
+                                <td colspan="${colspanMax}">${item.Produto}</td>`;
+
+
+                primeiraLinha += `<td colspan="${colspanMin}">Cod:</td>
+                                  <td colspan="${colspanMax}">${item.Produto_Id}</td>`;
+
+            });
+
+            primeiraLinha += `</tr>`;
+
+            segundaLinha += `</tr>`;
+
+            terceiraLinha += "</tr>";
+
+            linhaAmostra += "</tr>"
+
+            let segundoCabecalho = primeiraLinha + segundaLinha + terceiraLinha + linhaAmostra;
+
+            return segundoCabecalho;
+        }
+
+        function PreencherConteudo(array) {
+
+            let levels3_Id = [...new Set(array.map(item => item.ParLevel3_Id))];
+            let levels3 = [...new Set(array.map(item => item.ParLevel3))];
+
+            let conteudoTabela;
+
+            levels3_Id.forEach((level3, index) => {
+
+                conteudoTabela +=
+                    `<tr>
+                        <td colspan="3">${levels3[index]}</td>`;
+
+                let Produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
+
+                Produtos_Id.forEach((produto) => {
+
+                    let coletasByLevel3 = array.filter(item => item.Produto_Id == produto && item.ParLevel3_Id == level3);
+
+                    coletasByLevel3.forEach((item) => {
+
+                        let td;
+
+                        if (!item.IsNotEvaluate) {
+
+                            if (item.IsConform) {
+                                td = `<td style="background-color:blue;"></td>`;
+                            } else {
+                                td = `<td style="background-color:red;"></td>`;
+                            }
+
+                        } else {
+                            td = `<td style="background-color:black;"></td>`;
+                        }
+
+                        conteudoTabela += td;
+
+                    });
+
+                });
+
+                conteudoTabela += `</tr>`;
+
+            });
+
+            return conteudoTabela
+
+        }
+
+        function formIsValid() {
+
+            return true;
+        }
+
+        function PrepararImpressao(titulo, elaborador, aprovador, codigoRodape, idBody, imagemCabecalhoLeft, imagemCabecalhoRight) {
+
+            $('#printTitulo').html(titulo);
+            $("#printElaborador").html(elaborador);
+            $("#printAprovador").html(aprovador);
+            $("#printCodigoRodape").html(codigoRodape);
+            $("#printImagemCabecalhoLeft").attr('src', imagemCabecalhoLeft);
+            $("#printImagemCabecalhoRight").attr('src', imagemCabecalhoRight);
+
+            printGRT.Inicializar({
+
+                headerHtml: document.getElementById('contentHeader').innerHTML,
+                bodyHtml: document.getElementById(idBody).innerHTML,
+                footerHtml: document.getElementById('contentFooter').innerHTML,
+                numberMarginRight: 25,
+                numberMarginBottom: 25,
+                renderTableMargin: 0,
+                pageMarginHeader: "25px 25px 10px 25px",
+                pageMarginFooter: "10px 25px 25px 25px",
+                pageMarginBody: "0 25px 0 25px"
+
+            });
+
+            printGRT.Imprimir();
+
+            $('#divRenderPrint').remove();
+        }
+
+    </script>
+}

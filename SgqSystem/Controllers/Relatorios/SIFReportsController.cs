@@ -18,5 +18,11 @@ namespace SgqSystem.Controllers.Relatorios
         {
             return View();
         }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult AcompanhamentoEmbarque()
+        {
+            return View();
+        }
     }
 }
