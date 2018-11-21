@@ -361,7 +361,12 @@
                             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                                 <label for="">Data do recebimento das tampas/fundos das latas</label>
                                 <br />
-                                <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="linhaSelecionada.form.DataRecebimentoTampasFundosLatas">
+                                <div ng-repeat="item in dataRecebimentoTampaLata track by $index">
+                                    <input ng-change="salvaLinha(true, true); $event.stopPropagation();"
+                                           ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control"
+                                           placeholder="Data do recebimento das tampas e fundos das latas"
+                                           ng-model="dataRecebimentoTampaLata[$index]" value="{item}">
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -1089,6 +1094,7 @@
                 vm.fornecedorLata = [{}]
                 vm.dataRecebimento = []
                 vm.fornecedorTampaLata = [{}]
+                vm.dataRecebimentoTampaLata = []
                 vm.linhaSelecionada = { Id: 0 }
                 vm.lataSelecionada = {}
                 vm.activeInLine = 0
@@ -1597,6 +1603,7 @@
                             callback: function (result) {
                                 if (result) {
                                     vm.dataRecebimento = [];
+                                    vm.dataRecebimentoTampaLata = [];
                                     vm.getParansLinha(index, needFindIndex, showMensagem, novaLinha)
                                 }
                             }
@@ -1633,6 +1640,9 @@
 
                 vm.selectLinha = function (index, needFindIndex, showMensagem) {
                     //$.LoadingOverlay("show");
+                    vm.dataRecebimento = [null];
+                    vm.dataRecebimentoTampaLata = [null];
+
                     if (needFindIndex)
                         index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
 
@@ -1770,6 +1780,7 @@
                     var latas = _.clone(linha.latas);
                     linha.latas = []
 
+                    //DATA RECEBIMENTO
                     var criarNovaLinha = true;
                     var listaSemNulo = [];
                     vm.dataRecebimento.forEach(function (o, i) {
@@ -1784,6 +1795,22 @@
                     if (!!!linha.form)
                         linha.form = {};
                     linha.form.dataRecebimento = vm.dataRecebimento;
+
+                    //DATA RECEBIMENTO TAMPA LATA
+                    criarNovaLinha = true;
+                    listaSemNulo = [];
+                    vm.dataRecebimentoTampaLata.forEach(function (o, i) {
+                        if (o == null)
+                            criarNovaLinha = false;
+                        else
+                            listaSemNulo.push(o);
+                    });
+
+                    listaSemNulo.push(null);
+                    vm.dataRecebimentoTampaLata = listaSemNulo;
+                    if (!!!linha.form)
+                        linha.form = {};
+                    linha.form.dataRecebimentoTampaLata = vm.dataRecebimentoTampaLata;
 
                     vm.TimerOn()
                     if (salvoParaInserirNovaLinha)
@@ -2073,6 +2100,19 @@
 
                                     if (vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas)
                                         vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas = new Date(vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas)
+
+                                    if (vm.linhaSelecionada.form.dataRecebimentoTampaLata) {
+                                        vm.dataRecebimentoTampaLata = vm.linhaSelecionada.form.dataRecebimentoTampaLata;
+                                        var list = [];
+                                        vm.dataRecebimentoTampaLata.forEach(function (o, i) {
+                                            if (o != null)
+                                                list.push(new Date(o));
+                                            else
+                                                list.push(null);
+                                        });
+                                        vm.dataRecebimentoTampaLata = list;
+                                    }
+                                    
                                 }
 
                                 let index = vm.findWithAttr(vm.linhas, 'Id', vm.linhaSelecionada.Id);
@@ -2281,8 +2321,8 @@
                         toastr.warning("O fornecedor da tampa do fundo da lata precisa ser escolhido.");
                         return;
                     }
-
-                    if (!vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas) {
+                    
+                    if (vm.linhaSelecionada.form.dataRecebimentoTampaLata.length == 1) {
                         toastr.warning("A data de recebimento da tampa do fundo da lata precisa ser preenchido.");
                         return;
                     }
