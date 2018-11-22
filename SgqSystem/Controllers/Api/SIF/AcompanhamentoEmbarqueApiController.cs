@@ -154,7 +154,22 @@ namespace SgqSystem.Controllers.Api.SIF
 
                     retorno.ParLevel2_Name = db.ParLevel2.Find(form.level2Id).Name;
 
+                    var dataColeta = DateTime.ParseExact(form._dataInicioSQL, "yyyyMMdd", null);
+                    var dataColetaAmanha = DateTime.ParseExact(form._dataInicioSQL, "yyyyMMdd", null).AddDays(1);
+
+                    var usersColection = db.CollectionLevel2.Where(
+                        r => (r.CollectionDate >= dataColeta && r.CollectionDate <= dataColetaAmanha) &&
+                        r.ParLevel1_Id == form.level1Id &&
+                        r.ParLevel2_Id == form.level2Id &&
+                        r.UnitId == form.unitId).Select(r => r.AuditorId).Distinct().ToList();
+
+                    var usuarios = db.UserSgq.Where(r => usersColection.Contains(r.Id)).Select(r => r.FullName).ToList();
+
+                    retorno.NomeUsuario = String.Join(",", usuarios);
+
                     retorno.Coletas = GetColetas(form);
+
+                    retorno.CollectionDate = dataColeta;
 
                     return retorno;
 
@@ -177,6 +192,7 @@ namespace SgqSystem.Controllers.Api.SIF
    ,c2.Sample as Amostra
    ,r3.ParLevel3_Id
    ,r3.ParLevel3_Name as ParLevel3
+   ,L3G.Name as Level3Group
    ,r3.Id
    ,r3.IsConform
    ,r3.IsNotEvaluate
@@ -185,12 +201,15 @@ FROM CollectionLevel2 C2
 	INNER JOIN Produto pd ON C2XHF.value = CAST(pd.nCdProduto AS VARCHAR(500))
 	INNER JOIN Result_Level3 R3 ON R3.CollectionLevel2_Id = c2.Id
 	INNER JOIN parlevel2 P2 ON c2.ParLevel2_Id = p2.Id
+	INNER JOIN ParLevel3Level2 L3L2 ON r3.ParLevel3_Id = L3L2.ParLevel3_Id and c2.ParLevel2_Id = L3L2.ParLevel2_Id and (c2.UnitId = L3L2.ParCompany_Id or L3L2.ParCompany_Id is null)
+	LEFT JOIN ParLevel3Group L3G on L3G.Id = L3L2.ParLevel3Group_Id
 WHERE 1 = 1
 	AND CAST(c2.CollectionDate AS DATE) = '{form._dataInicioSQL}'
 	AND c2.parlevel1_id = { form.level1Id }
 	AND c2.ParLevel2_Id = { form.level2Id }
-	AND C2XHF.ParFieldType_Id = 2
-ORDER BY c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
+    AND c2.UnitId = { form.unitId }
+ 	AND C2XHF.ParFieldType_Id = 2
+ORDER BY L3G.Name DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
 
             using (var db = new SgqDbDevEntities())
             {
@@ -256,6 +275,7 @@ ORDER BY c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
         public int Amostra { get; set; }
         public int ParLevel3_Id { get; set; }
         public string ParLevel3 { get; set; }
+        public string Level3Group { get; set; }
         public int Id { get; set; }
         public bool IsConform { get; set; }
         public bool IsNotEvaluate { get; set; }

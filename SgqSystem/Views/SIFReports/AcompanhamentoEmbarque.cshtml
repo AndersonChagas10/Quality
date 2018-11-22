@@ -202,25 +202,33 @@
                                 <tbody></tbody>
                             </table>
 
+                            <div class="height-fix">
+
+                            </div>
+
+                            <div style="clear:both"></div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- END CONTENT BODY -->
         </div>
-        <!-- END CONTENT BODY -->
     </div>
-</div>
 
-@section Scripts{
+    @section Scripts{
 
-    <script src="~/Scripts/Print/printGRT.js"></script>
+        <script src="~/Scripts/Print/printGRT.js"></script>
 
-    <script>
+        <script>
 
         var $btn = $('#btnSend');
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
         var urlGet = '@Html.Raw(Url.Action("Get", "api/AcompanhamentoEmbarque"))';
         exibeTodosLevels = false;
+        let elaborador = "";
+        let aprovador = "";
+        let nomeRelatorio = "";
+        var siglaUnidade = "";
 
         $(document).ready(function () {
 
@@ -252,7 +260,7 @@
 
             });
 
-            //$('.portlet').hide();
+            $('.portlet').hide();
 
 
             formControl.showSimpleDate();
@@ -267,7 +275,7 @@
 
                 $btn.button('loading');
 
-                //$('.portlet').hide();
+                $('.portlet').hide();
 
                 $('#level1Id').trigger("change");
 
@@ -278,8 +286,6 @@
 
         function GerarRelatorio(r) {
 
-            console.log(r);
-
             PreencherCabecalho(r);
 
             let conteudoTabela = PreencherCabecalho2(r.Coletas);
@@ -287,10 +293,12 @@
             conteudoTabela += PreencherConteudo(r.Coletas);
 
             $('#cabecalho2 tbody').html(conteudoTabela);
+
+            $('.portlet').show();
         }
 
         function PreencherCabecalho(r) {
-
+            
             $("#CollectionDate").html(new Date(r.CollectionDate).toLocaleDateString());
             $("#ParCompanyName").html(r.ParCompanyName);
             $("#SifNumber").html(r.SifNumber);
@@ -386,12 +394,36 @@
             let levels3 = [...new Set(array.map(item => item.ParLevel3))];
 
             let conteudoTabela;
+            let level3Group;
 
             levels3_Id.forEach((level3, index) => {
 
-                conteudoTabela +=
-                    `<tr>
-                        <td colspan="3">${levels3[index]}</td>`;
+                newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
+
+                let qtdeLevel3Group = array.filter(item => item.Level3Group == newLevel3Group).map((value) => { return value.ParLevel3 }).filter((value, index, self) => { return self.indexOf(value) === index; }).length
+
+                if (newLevel3Group && level3Group != newLevel3Group) {
+
+                    conteudoTabela +=
+                        `<tr>
+                            <td rowspan="${qtdeLevel3Group}"> ${newLevel3Group} </td>
+                            <td colspan="2">${levels3[index]}</td>`;
+
+                    level3Group = newLevel3Group;
+
+                } else if (!newLevel3Group) {
+
+                    conteudoTabela +=
+                        `<tr>
+                            <td colspan="3">${levels3[index]}</td>`;
+
+                } else {
+
+                    conteudoTabela +=
+                        `<tr>
+                            <td colspan="2">${levels3[index]}</td>`;
+
+                }
 
                 let Produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
 
@@ -407,8 +439,10 @@
 
                             if (item.IsConform) {
                                 td = `<td style="background-color:blue;"></td>`;
+
                             } else {
                                 td = `<td style="background-color:red;"></td>`;
+
                             }
 
                         } else {
@@ -431,8 +465,47 @@
 
         function formIsValid() {
 
+            if (!enviar.level1Id > 0) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_level1"));
+                return false;
+            }
+
+            if (!enviar.level2Id) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_level2"));
+                return false;
+            }
+
+            if (!enviar.unitId) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_unit_first"));
+                return false;
+            }
+
             return true;
         }
+
+        $('body').on('click', '#btnPrint', function () {
+
+            if (elaborador == null) {
+                elaborador = "";
+            }
+
+            if (aprovador == null) {
+                aprovador = "";
+            }
+
+            if (nomeRelatorio == null) {
+                nomeRelatorio = "";
+            }
+
+            PrepararImpressao(
+                nomeRelatorio,
+                elaborador + " - " + "/" + siglaUnidade,
+                aprovador + " - " + "/" + siglaUnidade,
+                "RGQ-504-GQU-001/05 Aprov. Em 02/05/2018",
+                'contentBody',
+                "../Imagens/logo-jbs.png",
+                "../Imagens/logo-gq.png");
+        });
 
         function PrepararImpressao(titulo, elaborador, aprovador, codigoRodape, idBody, imagemCabecalhoLeft, imagemCabecalhoRight) {
 
@@ -462,5 +535,5 @@
             $('#divRenderPrint').remove();
         }
 
-    </script>
-}
+        </script>
+    }
