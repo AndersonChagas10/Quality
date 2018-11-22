@@ -1,0 +1,113 @@
+﻿
+@model IEnumerable<dynamic>
+
+@{
+    ViewBag.Title = "Listagem de Tipos de Linhas";
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content" style="min-height: 600px;">
+        <br />
+        <h1 class="page-title">
+            Recravação
+            <small>Listagem de coletas realizadas</small>
+        </h1>
+        <!-- END PAGE TITLE-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@ViewBag.urlHome">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span> Recravação </span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <div>
+            @using (Html.BeginForm("Index", "RecravacaoJson", FormMethod.Get))
+            {
+                <div class="form-group">
+                    <strong>Visualizar todas as coletas de recravação do dia: </strong>
+                    <input type="date" name="date" class="input-sm" value="@Html.Raw(ViewBag.dataFiltroRecravacao.ToString("yyyy-MM-dd"))" />
+                    <input type="submit" value="Salvar" class="btn btn-sm btn-primary" />
+                </div>
+            }
+            <table class="table table-striped dataTable">
+                <thead>
+                    <tr>
+                        <th>
+                            Data
+                        </th>
+                        <th>
+                            Nome da linha
+                        </th>
+                        <th>
+                            Situação
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+            {
+                        <tr>
+                            <td>
+                                @Html.Raw(item.AlterDate)
+                            </td>
+                            <td>
+                                @Html.Raw(item.Name)
+                            </td>
+                            <td>
+                                @if(item.UserValidated_Id > 0)
+                                {
+                                    <text>Linha Validada</text>
+                                }else if(item.UserFinished_Id > 0)
+                                {
+                                    <text>Linha Finalizada</text>
+                                }else
+                                {
+                                    <text>Linha Aberta</text>
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Retroativo", "Recravacao", new { id = item.Id })">Entrar na Coleta</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+        navbarSelect("navbar7");
+
+        $('table').DataTable({
+            "language": {
+                "sProcessing": "A processar...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                "sInfoPostFix": "",
+                "sSearch": "Procurar:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Seguinte",
+                    "sLast": "Último"
+                }
+            }
+        });
+    });
+</script>

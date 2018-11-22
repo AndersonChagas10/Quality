@@ -62,7 +62,7 @@ namespace SgqSystem.Controllers.Api
                 var paramsFromRequest = ToDynamic(Request.Content.ReadAsStringAsync().Result);
                 var query = string.Format("SELECT * FROM RecravacaoJson WHERE Id = {0}", id);
                 var results = QueryNinja(db, query);
-                var latasId = id;
+                var latasId = results.Count() > 0 ? QueryNinja(db, string.Format("SELECT Id from RecravacaoLataJson where RecravacaoJson_Id = {0}", id)) : null;
                 var produtos = factory.SearchQuery<ReprocessoApiController.Produto>("SELECT * FROM Produto").ToList();
                 var sugestoes = factory.SearchQuery<DTO.DTO.RecravacaoSugestaoDTO>("SELECT * FROM RecravacaoSugestao").ToList();
 
@@ -123,7 +123,19 @@ namespace SgqSystem.Controllers.Api
                 if (IsPropertyExist(linha, "SalvoParaInserirColeta"))
                     salvoParaInserirNovaColeta = linha["SalvoParaInserirColeta"];
 
-                var existente = db.RecravacaoJson.Where(r => r.ParCompany_Id == idCompany && r.Linha_Id == idLinha && !isValidated && r.SalvoParaInserirNovaColeta == null).OrderByDescending(x => x.Id).FirstOrDefault()?.Id;
+                //SE TIVER ID DE RECRAVAÇÃO QUER DIZER QUE É RETROATIVO E DEVE SER CONSIDERADO PARA QUALQUER AÇÃO
+                int? existente = 0;
+                if (data["recravacaoJsonId"] != null)
+                {
+                    existente = (int)data["recravacaoJsonId"];
+                }
+                else
+                {
+                    existente = db.RecravacaoJson.Where(r => r.ParCompany_Id == idCompany
+                    && r.Linha_Id == idLinha && !isValidated && r.SalvoParaInserirNovaColeta == null)
+                    .OrderByDescending(x => x.Id).FirstOrDefault()?.Id;
+                }
+
                 if (existente.GetValueOrDefault() > 0 && salvoParaInserirNovaColeta == false)
                     RecravacaoJsonId = Update(linhaStringFormatada, existente, userFinished_Id, userValidated_Id);
                 else

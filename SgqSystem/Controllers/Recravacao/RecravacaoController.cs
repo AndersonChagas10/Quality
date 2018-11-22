@@ -18,6 +18,19 @@ namespace SgqSystem.Controllers.Recravacao
             return View();
         }
 
+        [Route("{id}")]
+        public ActionResult Retroativo(int id)
+        {
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                RecravacaoJson rj = db.RecravacaoJson.FirstOrDefault(x => x.Id == id);
+                ViewBag.RecravacaoJsonId = rj.Id;
+                ViewBag.RecravacaoJson_LinhaId = rj.Linha_Id;
+            }
+            return View();
+        }
+
         // GET: Recravacao
         public ActionResult Print(int? indicadorId = 0, int? linhaId = 0)
         {
