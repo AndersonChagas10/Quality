@@ -203,6 +203,7 @@
 
     $("#modalAgendamento").on('click', "#btnSalvar", function () {
         var listaTabelaAgendamento = [];
+        var contadorErros = 0;
         listaTabelaAgendamento = $("#tabelaAgendamento tbody tr").not(':first');
         if ($("#tabelaAgendamento tbody tr").find("[data-column=inpInicio]").val() !== '' || $("#tabelaAgendamento tbody tr").find("[data-column=inpTermino]").val() !== '' || $("#tabelaAgendamento tbody tr").find("[data-column=inpAvaliacao]").val() !== '') {
             openMessageModal('Dados não inseridos na lista, adicione antes de salvar!', null);
@@ -210,44 +211,134 @@
         else if (listaTabelaAgendamento.length <= 0) {
             openMessageModal('Nenhum registro inserido na lista!', null);
         } else {
-            listaTabelaAgendamento.each(function (index, item) {
+                listaTabelaAgendamento.each(function (index, item) {
+                    form = {
+                        Inicio: $(item).find("[data-column=inpInicio]").val(),
+                        Fim: $(item).find("[data-column=inpTermino]").val(),
+                        Av: $(item).find("[data-column=inpAvaliacao]").val(),
+                        Shift_Id: $(item).find("[data-column=slAgendamento]").val(),
+                        ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
+                        Id: $(item).find("[data-column=inpId]").val(),
+                        IsDeletar: $(item).data("IsDeletar")
+                    };
+                    var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
+                    var linha = $(this).parent().parent();
+                    debugger
+                    if (!frequenciaIsValid(formato, parseInt(form.Inicio), parseInt(form.Fim)) || $('#tabelaAgendamento tbody tr').find('[data-column=inpAvaliacao]').hasClass('alert-danger') || form.Av > $(linha).find("[data-column=inpAvaliacao]").val()) {
+                        contadorErros += 1;
+                    } else {
+                        listaAgendamento.push(form);
+                    }
 
-                form = {
-                    Inicio: $(item).find("[data-column=inpInicio]").val(),
-                    Fim: $(item).find("[data-column=inpTermino]").val(),
-                    Av: $(item).find("[data-column=inpAvaliacao]").val(),
-                    Shift_Id: $(item).find("[data-column=slAgendamento]").val(),
-                    ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
-                    Id: $(item).find("[data-column=inpId]").val(),
-                    IsDeletar: $(item).data("IsDeletar")
-                };
-                listaAgendamento.push(form);
-            });
-            $.ajax({
-                url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
-                type: 'POST',
-                data: JSON.stringify(listaAgendamento),
-                dataType: 'json',
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    listaAgendamento = [];
-                    $('#tabelaAgendamento tbody tr').not(':first').remove();
-                    data.forEach(function (item) {
-                        MontaNovaLinha(item, false);
+                });
+                if (contadorErros <= 0) {
+                    $.ajax({
+                        url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
+                        type: 'POST',
+                        data: JSON.stringify(listaAgendamento),
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            listaAgendamento = [];
+                            $('#tabelaAgendamento tbody tr').not(':first').remove();
+                            data.forEach(function (item) {
+                                MontaNovaLinha(item, false);
+                            });
+
+                            openMessageModal("Dados salvos com sucesso", null);
+                            $('#modalAgendamento').modal('hide');
+                            ContadorLinhas();
+                        },
+                        error: function (request, error) {
+                            listaAgendamento = [];
+                            ContadorLinhas();
+                            alert("Request: " + JSON.stringify(request));
+                        }
                     });
-
-                    openMessageModal("Dados salvos com sucesso", null);
-                    $('#modalAgendamento').modal('hide');
-                    ContadorLinhas();
-                },
-                error: function (request, error) {
-                    listaAgendamento = [];
-                    ContadorLinhas();
-                    alert("Request: " + JSON.stringify(request));
+                } else {
+                    openMessageModal("Dados informados inválidos. Verifique e salve as alterações!", null);
                 }
-            });
-        }
+             }
+    });
 
+    $("#modalAgendamento").on('input', '[data-column=inpAvaliacao]', function () {
+        let tabela = $('#tabelaAgendamento tbody tr').not(':first');
+        $(tabela).find('[data-column=inpAvaliacao]').each(function (i, o) {
+            var self = o;
+            var avaliacao = $(self).parents("tr").find('[data-column=inpAvaliacao]').val();
+            var turno = $(self).parents("tr").find('[data-column=slAgendamento]').val();
+
+            let isDuplicated = $.grep(tabela, (o) => {
+                return avaliacao == $(o).find('[data-column=inpAvaliacao]').val()
+                    && turno == $(o).find('[data-column=slAgendamento]').val();
+            });
+            $(self).removeClass('alert-danger');
+            if (isDuplicated.length > 1) {
+                $(self).addClass('alert-danger');
+            }
+
+        });
+    });
+
+    $("#modalAgendamento").on('change', '[data-column=slAgendamento]', function () {
+        debugger
+        let tabela = $('#tabelaAgendamento tbody tr').not(':first');
+        $(tabela).find('[data-column=inpAvaliacao]').each(function (i, o) {
+            var self = o;
+            var avaliacao = $(self).parents("tr").find('[data-column=inpAvaliacao]').val();
+            var turno = $(self).parents("tr").find('[data-column=slAgendamento]').val();
+
+            let isDuplicated = $.grep(tabela, (o) => {
+                return avaliacao == $(o).find('[data-column=inpAvaliacao]').val()
+                    && turno == $(o).find('[data-column=slAgendamento]').val();
+            });
+            $(self).removeClass('alert-danger');
+            if (isDuplicated.length > 1) {
+                $(self).addClass('alert-danger');
+            }
+
+        });
+    });
+
+    $("#modalAgendamento").on('input', '[data-column="inpInicio"] , [data-column="inpTermino"]', function () {
+        var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
+        switch (formato) {
+            case "Diario":
+                if ($(this).val() > 24) {
+                    $(this).addClass('alert-danger');
+                    break;
+                } else {
+                    $(this).removeClass('alert-danger');
+                    break;
+                }
+            case "Semanal":
+                if ($(this).val() > 7) {
+                    $(this).addClass('alert-danger');
+                    break;
+                } else {
+                    $(this).removeClass('alert-danger');
+                    break;
+                }
+            case "Quinzenal":
+                if ($(this).val() > 15) {
+                    $(this).addClass('alert-danger');
+                    break;
+                } else {
+                    $(this).removeClass('alert-danger');
+                    break;
+                }
+            case "Mensal":
+                if ($(this).val() > 31) {
+                    $(this).addClass('alert-danger');
+                    break;
+                } else {
+                    $(this).removeClass('alert-danger');
+                    break;
+                }
+            case "Turno":
+                break;
+            default:
+        }
     });
 
     $("#modalAgendamento").on('click', "#btnSalvarAgendamento", function () {
@@ -290,10 +381,9 @@
     });
 
     function frequenciaIsValid(formato, inicio, fim) {
-        debugger
         switch (formato) {
             case "Diario":
-                if(fim < 1 || inicio < 1 || fim > 23 || inicio > 23 || inicio > fim)
+                if(fim < 0 || inicio < 0 || fim > 24 || inicio > 24 || inicio > fim)
                     return false;
                 else
                     return true;
@@ -319,7 +409,7 @@
     }
 
     function camposIsValid(avaliacao, inicio, termino, turno) {
-
+        debugger
         if (avaliacao == null || avaliacao == undefined || avaliacao < 0 || avaliacao === "") {
             openMessageModal("O campo Avaliação deve ser preechido", null);
             return false;
