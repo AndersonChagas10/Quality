@@ -223,8 +223,9 @@
                     };
                     var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
                     var linha = $(this).parent().parent();
-                    debugger
-                    if (!frequenciaIsValid(formato, parseInt(form.Inicio), parseInt(form.Fim)) || $('#tabelaAgendamento tbody tr').find('[data-column=inpAvaliacao]').hasClass('alert-danger') || form.Av > $(linha).find("[data-column=inpAvaliacao]").val()) {
+                    if (!form.IsDeletar && (!frequenciaIsValid(formato, parseInt(form.Inicio), parseInt(form.Fim))
+                        || $('#tabelaAgendamento tbody tr').find('[data-column=inpAvaliacao]').hasClass('alert-danger')
+                        || form.Av > valorAvaliacao)) {
                         contadorErros += 1;
                     } else {
                         listaAgendamento.push(form);
@@ -381,6 +382,7 @@
     });
 
     function frequenciaIsValid(formato, inicio, fim) {
+        debugger
         switch (formato) {
             case "Diario":
                 if(fim < 0 || inicio < 0 || fim > 24 || inicio > 24 || inicio > fim)
