@@ -271,6 +271,8 @@
 
         function Send(toggle) {
 
+            $('#divMensagemAlerta').hide();
+                
             if (formIsValid()) {
 
                 $btn.button('loading');
@@ -285,6 +287,11 @@
         }
 
         function GerarRelatorio(r) {
+
+            if (!r) {
+                GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
+                return false;
+            }
 
             PreencherCabecalho(r);
 
