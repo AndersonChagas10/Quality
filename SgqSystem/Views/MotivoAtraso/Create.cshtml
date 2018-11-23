@@ -14,7 +14,11 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.LateReason</span>
+                    <a href="@Url.Action("Index", "MotivoAtraso")">@Resources.Resource.LateReason</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.create</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -42,7 +46,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Motivo, Resources.Resource.LateReason, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextAreaFor(model => model.Motivo, new { @class = "form-control" })
+                                                @Html.TextBoxFor(model => model.Motivo, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.Motivo, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -59,7 +63,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
+                                                <input type="submit" value="@Resources.Resource.create" class="btn btn-primary" />
                                                 @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
@@ -74,3 +78,13 @@
         </div>
     </div>
 </div>
+@section Scripts {
+
+    <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#IsActive").prop("checked", true);
+        });
+    </script>
+}

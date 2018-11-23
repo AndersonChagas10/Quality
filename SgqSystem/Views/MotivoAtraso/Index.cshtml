@@ -20,6 +20,7 @@
             </ul>
             <div class="page-toolbar"> </div>
         </div>
+        @Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")
         <div class="row">
             <div class="col-xs-12">
                 <div class="portlet light bordered">
@@ -33,34 +34,36 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink(Resources.Resource._new, "Create", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table table-condensed">
-                                    <tr>
-                                        <th>
-                                            @Resources.Resource.LateReason
-                                        </th>
-                                        <th>
-                                            @Resources.Resource.is_active
-                                        </th>
-                                        <th></th>
-                                    </tr>
-
-                                    @foreach (var item in Model)
-                                    {
+                                <table class="table table-condensed" id="tabelaMotivo">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Motivo)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.IsActive)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                            </td>
+                                            <th>
+                                                @Resources.Resource.LateReason
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.is_active
+                                            </th>
+                                            <th></th>
                                         </tr>
-                                    }
-
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Motivo)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -70,3 +73,15 @@
         </div>
     </div>
 </div>
+<script>
+
+    $(document).ready(function () {
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaMotivo').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+    });
+
+</script>
