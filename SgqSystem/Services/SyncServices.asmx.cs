@@ -1898,7 +1898,9 @@ namespace SgqSystem.Services
 
                             }
 
-                            if (motivoAtraso_Id != null)
+                            int motivoAtrasoId = 0;
+                            Int32.TryParse(motivoAtraso_Id, out motivoAtrasoId);
+                            if (motivoAtrasoId > 0)
                             {
                                 InsertCollectionLevel2XMotivoAtraso(i, motivoAtraso_Id);
                             }
