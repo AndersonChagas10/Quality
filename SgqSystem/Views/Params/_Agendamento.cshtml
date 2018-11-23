@@ -274,6 +274,12 @@
                     && turno == $(o).find('[data-column=slAgendamento]').val();
             });
             $(self).removeClass('alert-danger');
+
+            if (avaliacao > valorAvaliacao) {
+                $(self).addClass('alert-danger');
+            } else {
+                $(self).removeClass('alert-danger');
+            }
             if (isDuplicated.length > 1) {
                 $(self).addClass('alert-danger');
             }
