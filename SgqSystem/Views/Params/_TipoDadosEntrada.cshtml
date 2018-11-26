@@ -656,7 +656,7 @@
 
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
                 if (object.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
-                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));" data-toggle="popover" data-original-title="" title=""><i class="fa fa-cog" aria-hidden="true"></i></button>')
+                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="abrirModalAgendamento($(this))" data-toggle="popover" data-original-title="" title="MC DONALD"><i class="fa fa-cog" aria-hidden="true"></i></button>')
                 }
 
                 $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id'] option:first").val());
