@@ -35,7 +35,6 @@
         border-top: solid;
         border-width: 1px;
     }
-
 </style>
 
 
@@ -99,7 +98,7 @@
                 <br>
             </div>
 
-            @*<div id="loaderNCUnidade"></div>*@
+            <div id="loaderNCFuncao"></div>
             <div class="totalNC" id="NCFuncao" hidden data-toggle="collapse" data-target="#filtroFunc" aria-expanded="false" aria-controls="filtroFunc">
                 <div style="background-color:white">
                     <div id="showNCFuncao" class="alert alert-info col-lg-2" role="alert">
@@ -117,7 +116,7 @@
                 <br>
             </div>
 
-            @*<div id="loaderNCUnidade"></div>*@
+            <div id="loaderNCIndicador"></div>
             <div class="totalNC" id="NCIndicador" hidden data-toggle="collapse" data-target="#filtroInd" aria-expanded="false" aria-controls="filtroInd">
                 <div style="background-color:white">
                     <div id="showNCIndicador" class="alert alert-info col-lg-2" role="alert">
@@ -135,7 +134,7 @@
                 <br>
             </div>
 
-            @*<div id="loaderNCUnidade"></div>*@
+            <div id="loaderNCMonitoramento"></div>
             <div class="totalNC" id="NCMonitoramento" hidden data-toggle="collapse" data-target="#filtroMon" aria-expanded="false" aria-controls="filtroMon">
                 <div style="background-color:white">
                     <div id="showNCMonitoramento" class="alert alert-info col-lg-2" role="alert">
@@ -153,7 +152,7 @@
                 <br>
             </div>
             <br />
-            @*<div id="GraficoPeriodoSemUnidadeLoader"></div>*@
+            <div id="GraficoPeriodoSemUnidadeLoader"></div>
             <div class="totalNC" id="NCIndSUni" hidden data-toggle="collapse" data-target="#filtroIndSUni" aria-expanded="false" aria-controls="filtroIndSUni">
                 <div style="background-color:white">
                     <div id="GraficoPeriodoSemUnidade"></div>
@@ -188,15 +187,25 @@
             <br />
             <h3 id="TituloTabela"></h3>
             <br />
-            <table id="DataTable"></table>
-
+            <div class="totalNC" id="NCTable" hidden data-toggle="collapse" data-target="#filtroTable" aria-expanded="false" aria-controls="filtroTable">
+                <div style="background-color:white">
+                    <table id="DataTable"></table>
+                </div>
+                <div class="clearfix"></div>
+                <div class="collapse bloco-filtro multi-collapse" id="filtroTable">  </div>
+            </div>
             <br />
             <h3 id="TituloTabela2"></h3>
             <br />
             <div id="DataTable2Loader"></div>
-            <table id="DataTable2"></table>
-
+            <div class="totalNC" id="NCTable2" hidden data-toggle="collapse" data-target="#filtroTable2" aria-expanded="false" aria-controls="filtroTable2">
+                <div style="background-color:white">
+                    <table id="DataTable2"></table>
+                </div>
+                <div class="clearfix"></div>
+                <div class="collapse bloco-filtro multi-collapse" id="filtroTable2">  </div>
             </div>
+        </div>
         </div>
 
     <!-- Modal Historico do Indicador-->
@@ -292,7 +301,7 @@
 
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         //$("#butão").on('click', function () { $(".collapse"). })
 
@@ -405,7 +414,7 @@
 
         if ((enviar['unitIdArr'] == undefined) || enviar["unitIdArr"].length != 1) {
 
-            EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
+            EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", true);
         }
 
         // Tarefas Acumuladas
@@ -422,7 +431,7 @@
             ((enviar['groupParLevel1IdArr'] != undefined) && (enviar['groupParLevel1IdArr'].length == 1))
         ) {
 
-            EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", undefined);
+            EasyAjax(UrlGraficosTarefasAcumuladas, enviar, GerarGraficoTarefasAcumuladas, "GraficoTarefasAcumuladasLoader", true);
 
         }
         //else
@@ -472,7 +481,7 @@
         //EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
         if (!(enviar['level3idArr'] != undefined && enviar['level3idArr'].length > 0)) {
 
-            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
+            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
 
         }
 
@@ -484,7 +493,7 @@
 
             if (enviar["unitIdArr"] && enviar["unitIdArr"].length > 1) {
 
-                EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
+                EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
             }
 
             if (enviar['level2Id'] > 0) {
@@ -559,6 +568,14 @@
                 //table.column(8).visible(false);
             }
 
+            SubtitleTable = Subtitle.trim().replace('<br/>', '');
+            SubtitleTable = SubtitleTable.trim().replace('Resources("among_others")', '');
+            SubtitleTable = SubtitleTable.trim().substring(0, SubtitleTable.trim().substring(SubtitleTable.trim().length - 1, SubtitleTable.trim().length) === "|" ? SubtitleTable.trim().length - 1 : SubtitleTable.trim().length);
+
+            $("#filtroTable").text(SubtitleTable);
+
+            $('#NCTable').show();
+
             var table = datatableGRT.Inicializar({
                 idTabela: "DataTable",
                 listaDeDados: retornoArray,
@@ -623,7 +640,7 @@
                 createdRow: function (row, data, index) { }
             });
         }
-     }
+    }
 
     function GerarTabela2(retornoArray) {
             if (retornoArray.length > 0) {
@@ -654,6 +671,16 @@
                     //table.column(7).visible(false);
                     //table.column(8).visible(false);
                 }
+
+
+                SubtitleTable2 = Subtitle.trim().replace('<br/>', '');
+                SubtitleTable2 = SubtitleTable2.trim().replace('Resources("among_others")', '');
+                SubtitleTable2 = SubtitleTable2.trim().substring(0, SubtitleTable2.trim().substring(SubtitleTable2.trim().length - 1, SubtitleTable2.trim().length) === "|" ? SubtitleTable2.trim().length - 1 : SubtitleTable2.trim().length);
+
+
+                $("#filtroTable2").text(SubtitleTable2);
+
+                $('#NCTable2').show();
 
                 var table = datatableGRT.Inicializar({
                     idTabela: "DataTable2",
@@ -805,10 +832,9 @@
                 SubtitleIndicador += array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
 
-            SubtitleIndicador = SubtitleIndicador.trim().replace('<br/>', '');
+            SubtitleIndicador = Subtitle.trim().replace('<br/>', '');
             SubtitleIndicador = SubtitleIndicador.trim().replace('Resources("among_others")', '');
             SubtitleIndicador = SubtitleIndicador.trim().substring(0, (SubtitleIndicador.trim().length - 1));
-            $("#filtroPer").text(SubtitleIndicador)
 
             //Resources("among_others")
 
@@ -826,6 +852,7 @@
 
 
 
+            $("#filtroPer").text(Subtitle)
 
             //fazGambipraMenosCem(porc);
 
@@ -3357,6 +3384,9 @@
         if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
             Subtitle += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
         }
+        if (enviar.groupParLevel1Id != '' && enviar.groupParLevel1Id != undefined && !isNaN(enviar.groupParLevel1Id)) {
+            Subtitle += "Função" + ": " + enviar.funcaoFiltrado+" | ";
+        }
         if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
             Subtitle += Resources("level1") + ": " + $('#level1Idv :selected').text().substring(0, 100) + Resources("among_others") + " |  ";
         }
@@ -3491,6 +3521,9 @@
                 $.each($('#criticalLevelId').val(), function (i, o) { array.push($('#criticalLevelId option[value="' + o + '"]').text()) });
                 Subtitle = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
+            if (enviar.groupParLevel1Id != '' && enviar.groupParLevel1Id != undefined && !isNaN(enviar.groupParLevel1Id)) {
+                Subtitle += "Função" + ": " + enviar.funcaoFiltrado + " | ";
+            }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
                 //Subtitle += Resources("level1") + " : " + $('#level1Idv :selected').text().substring(0, 100) + Resources("among_others") +  " | ";
                 var array = [];
@@ -3607,8 +3640,11 @@
 
         //if (enviar["shift"] != "" && enviar["shift"] != undefined)
         //    subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "1" : "2");
+        SubtitleTarAcu = Subtitle.trim().replace('<br/>', '');
+        SubtitleTarAcu = SubtitleTarAcu.trim().replace('Resources("among_others")', '');
+        SubtitleTarAcu = SubtitleTarAcu.trim().substring(0, SubtitleTarAcu.trim().substring(SubtitleTarAcu.trim().length - 1, SubtitleTarAcu.trim().length) === "|" ? SubtitleTarAcu.trim().length - 1 : SubtitleTarAcu.trim().length);
 
-        $("#filtroTarAcu").text(Subtitle.replace('<br/>', ''));
+        $("#filtroTarAcu").text(SubtitleTarAcu);
 
        //graficoTarefasAcumuladas
         graficoTarefasAcumuladas = Highcharts.chart('GraficoTarefasAcumuladas', {
@@ -4417,6 +4453,6 @@
         }
     }
 
-</script>
+    </script>
 
 }
