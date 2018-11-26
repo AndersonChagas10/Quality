@@ -24,7 +24,20 @@
         top: 5%;
         outline: none;
     }
+
+    .bloco-filtro {
+        /*background-color: rgba(188, 232, 241, 0.55);*/
+        text-align: center;
+        background-color: rgba(240, 124, 0, 0.2);
+        border-bottom: solid;
+        border-left: solid;
+        border-right: solid;
+        border-top: solid;
+        border-width: 1px;
+    }
+
 </style>
+
 
 <div class="page-content-wrapper">
     <div class="page-content">
@@ -45,85 +58,116 @@
                 @Resources.Resource.select_the_unit_first
             </div>
 
+            <button class="btn btn-primary" id="botao-filtros" style="display: none;margin-left:50%;margin-right:50%;background-color:rgb(240, 124, 0);border-color:rgb(240, 124, 0);" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="filtro">Exibir Filtros</button>
+
             <h2 id="Titulo"></h2>
             <h3 id="TituloGrafico" style="display:none;"></h3>
             <br />
             <div id="loaderNCGeral"></div>
-            <div class="totalNC" id="NCGeral" hidden>
-                <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert">
-                    <h1>0 %</h1>
-                    <br />
-                    <span>@Resources.Resource.non_conformities_in_period</span>
+            <div class="totalNC" id="NCGeral" hidden data-toggle="collapse" data-target="#filtro" aria-expanded="false">
+                <div style="background-color:white">
+                    <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert">
+                        <h1>0 %</h1>
+                        <br />
+                        <span>@Resources.Resource.non_conformities_in_period</span>
+                    </div>
+                    <button id="dia" class="btn btn-default">Dia</button>
+                    <button id="semana" class="btn btn-default">Semana</button>
+                    <button id="mes" class="btn btn-default">Mês</button>
+                    <div class="col-lg-10" id="GraficoHistoricoGeral"></div>
                 </div>
-                <button id="dia" class="btn btn-default">Dia</button>
-                <button id="semana" class="btn btn-default">Semana</button>
-                <button id="mes" class="btn btn-default">Mês</button>
-                <div class="col-lg-10" id="GraficoHistoricoGeral"></div>
                 <div class="clearfix"></div>
+                <div class="collapse bloco-filtro multi-collapse" id="filtro" aria-controls="filtro"> _ </div>
+                <br>
             </div>
 
             <div id="loaderNCUnidade"></div>
-            <div class="totalNC" id="NCUnidade" hidden>
-                <button id="Udia" class="btn btn-default">Dia</button>
-                <button id="Usemana" class="btn btn-default">Semana</button>
-                <button id="Umes" class="btn btn-default">Mês</button>
-                <div id="showNCUnidade" class="alert alert-info col-lg-2" role="alert">
-                    <h1>0 %</h1>
-                    <br />
-                    <span>@Resources.Resource.non_conformities_in_period</span>
+            <div class="totalNC" id="NCUnidade" hidden data-toggle="collapse" data-target="#filtroUni" aria-expanded="false" aria-controls="filtroUni">
+                <div style="background-color:white">
+                    <div id="showNCUnidade" class="alert alert-info col-lg-2" role="alert">
+                        <h1>0 %</h1>
+                        <br />
+                        <span>@Resources.Resource.non_conformities_in_period</span>
+                    </div>
+                    <button id="Udia" class="btn btn-default">Dia</button>
+                    <button id="Usemana" class="btn btn-default">Semana</button>
+                    <button id="Umes" class="btn btn-default">Mês</button>
+                    <div class="col-lg-10" id="GraficoHistoricoUnidade"></div>
                 </div>
-
-                <div class="col-lg-10" id="GraficoHistoricoUnidade"></div>
                 <div class="clearfix"></div>
+                <div class="collapse bloco-filtro multi-collapse" id="filtroUni"> _ </div>
+                <br>
             </div>
 
-            <div class="totalNC" id="NCFuncao" hidden>
-                <div id="showNCFuncao" class="alert alert-info col-lg-2" role="alert">
-                    <h1>0 %</h1>
-                    <br />
-                    <span>@Resources.Resource.non_conformities_in_period</span>
+            <div class="totalNC" id="NCFuncao" hidden data-toggle="collapse" data-target="#filtroFunc" aria-expanded="false" aria-controls="filtroFunc">
+                <div style="background-color:white">
+                    <div id="showNCFuncao" class="alert alert-info col-lg-2" role="alert">
+                        <h1>0 %</h1>
+                        <br />
+                        <span>@Resources.Resource.non_conformities_in_period</span>
+                    </div>
+                    <button id="Fdia" class="btn btn-default">Dia</button>
+                    <button id="Fsemana" class="btn btn-default">Semana</button>
+                    <button id="Fmes" class="btn btn-default">Mês</button>
+                    <div class="col-lg-10" id="GraficoHistoricoFuncao"></div>
                 </div>
-                <button id="Fdia" class="btn btn-default">Dia</button>
-                <button id="Fsemana" class="btn btn-default">Semana</button>
-                <button id="Fmes" class="btn btn-default">Mês</button>
-                <div class="col-lg-10" id="GraficoHistoricoFuncao"></div>
                 <div class="clearfix"></div>
+                <div class="collapse bloco-filtro multi-collapse" id="filtroFunc">  </div>
+                <br>
             </div>
 
-            <div class="totalNC" id="NCIndicador" hidden>
-                <div id="showNCIndicador" class="alert alert-info col-lg-2" role="alert">
-                    <h1>0 %</h1>
-                    <br />
-                    <span>@Resources.Resource.non_conformities_in_period</span>
+            <div class="totalNC" id="NCIndicador" hidden data-toggle="collapse" data-target="#filtroInd" aria-expanded="false" aria-controls="filtroInd">
+                <div style="background-color:white">
+                    <div id="showNCIndicador" class="alert alert-info col-lg-2" role="alert">
+                        <h1>0 %</h1>
+                        <br />
+                        <span>@Resources.Resource.non_conformities_in_period</span>
+                    </div>
+                    <button id="Idia" class="btn btn-default">Dia</button>
+                    <button id="Isemana" class="btn btn-default">Semana</button>
+                    <button id="Imes" class="btn btn-default">Mês</button>
+                    <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
                 </div>
-                <button id="Idia" class="btn btn-default">Dia</button>
-                <button id="Isemana" class="btn btn-default">Semana</button>
-                <button id="Imes" class="btn btn-default">Mês</button>
-                <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
                 <div class="clearfix"></div>
+                <div class="collapse bloco-filtro multi-collapse" id="filtroInd">  </div>
+                <br>
             </div>
 
-            <div class="totalNC" id="NCMonitoramento" hidden>
-                <div id="showNCMonitoramento" class="alert alert-info col-lg-2" role="alert">
-                    <h1>0 %</h1>
-                    <br />
-                    <span>@Resources.Resource.non_conformities_in_period</span>
+            <div class="totalNC" id="NCMonitoramento" hidden data-toggle="collapse" data-target="#filtroMon" aria-expanded="false" aria-controls="filtroMon">
+                <div style="background-color:white">
+                    <div id="showNCMonitoramento" class="alert alert-info col-lg-2" role="alert">
+                        <h1>0 %</h1>
+                        <br />
+                        <span>@Resources.Resource.non_conformities_in_period</span>
+                    </div>
+                    <button id="Mdia" class="btn btn-default">Dia</button>
+                    <button id="Msemana" class="btn btn-default">Semana</button>
+                    <button id="Mmes" class="btn btn-default">Mês</button>
+                    <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
                 </div>
-                <button id="Mdia" class="btn btn-default">Dia</button>
-                <button id="Msemana" class="btn btn-default">Semana</button>
-                <button id="Mmes" class="btn btn-default">Mês</button>
-                <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
                 <div class="clearfix"></div>
+                <div class="collapse bloco-filtro multi-collapse" id="filtroMon">  </div>
+                <br>
             </div>
             <br />
             <div id="GraficoPeriodoSemUnidadeLoader"></div>
-            <div id="GraficoPeriodoSemUnidade"></div>
+            <div id="GraficoPeriodoSemUnidade" data-toggle="collapse" data-target="#filtroIndSUni" aria-expanded="false" aria-controls="filtroIndSUni"></div>
+            <div class="clearfix"></div>
+            <div class="collapse bloco-filtro multi-collapse" id="filtroIndSUni">  </div>
+            <br>
+            <br>
             <br />
             <div id="GraficoPeriodoLoader"></div>
-            <div id="GraficoPeriodo"></div>
+            <div id="GraficoPeriodo" data-toggle="collapse" data-target="#filtroPer" aria-expanded="false" aria-controls="filtroPer"></div>
+            <div class="clearfix"></div>
+            <div class="collapse bloco-filtro multi-collapse" id="filtroPer">  </div>
+            <br>
 
             <div id="GraficoTarefasAcumuladasLoader"></div>
-            <div id="GraficoTarefasAcumuladas"></div>
+            <div id="GraficoTarefasAcumuladas" data-toggle="collapse" data-target="#filtroTarAcu" aria-expanded="false" aria-controls="filtroTarAcu"></div>
+            <div class="clearfix"></div>
+            <div class="collapse bloco-filtro multi-collapse" id="filtroTarAcu">  </div>
+            <br>
 
             <br />
             <h3 id="TituloTabela"></h3>
@@ -229,9 +273,14 @@
 
 @section Scripts {
 
+
+
+
 <script type="text/javascript">
 
-    var Subtitle = "";
+        //$("#butão").on('click', function () { $(".collapse"). })
+
+        var Subtitle = "";
 
     var funcao = @Html.Raw(Json.Encode(ViewBag.ParGroupParLevel1));
     var indicador = @Html.Raw(Json.Encode(ViewBag.Level01));
@@ -266,14 +315,28 @@
     var enviar3 = {};
     var enviarHistorico = {};
     var $btn = $('#btnSend');
+    enviar['botaoFiltros'] = 0;
     exibeTodosLevels = false;
 
-
+    $("#botao-filtros").on('click', function () {
+        if (enviar["botaoFiltros"] === 0) {
+            enviar["botaoFiltros"] = 1;
+        } else {
+            enviar["botaoFiltros"] = 0;
+        }
+    });
 
 
     function Send(toggle) {
 
         //debugger;
+
+        // Botão desabilita até retorno
+        if (enviar["botaoFiltros"] === 1) {
+            $("#botao-filtros").trigger('click');
+        }
+
+        $("#botao-filtros").show()
 
         limpaDadosTela();
         enviar["shift"] = $('#shiftIdV :selected').val();
@@ -318,7 +381,7 @@
         }
 
 
-        if (((enviar['unitId'] != undefined) && (enviar['unitId'] > 0)) || ((enviar['level1Id'] != undefined) && (enviar['level1Id'] > 0)) || ((enviar['groupParLevel1Id'] != undefined) && (enviar['groupParLevel1Id'] > 0)))
+        // if (((enviar['unitId'] != undefined) && (enviar['unitId'] > 0)) || ((enviar['level1Id'] != undefined) && (enviar['level1Id'] > 0)) || ((enviar['groupParLevel1Id'] != undefined) && (enviar['groupParLevel1Id'] > 0)))
                 retornaSubtitulos()
 
 
@@ -546,7 +609,7 @@
         }
      }
 
-        function GerarTabela2(retornoArray) {
+    function GerarTabela2(retornoArray) {
             if (retornoArray.length > 0) {
                 var counter = 0;
                 while (counter < retornoArray.length) {
@@ -672,26 +735,28 @@
 
             var SubtitleIndicador = "";
 
+            SubtitleIndicador += "Grupo de Processos" + ": " + $("#clusterGroupId :selected").text() + " |  <br/>";
+
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
                // SubtitleIndicador += Resources("cluster") + " : " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
 
                 var array = [];
                 $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
-                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+                SubtitleIndicador += array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
                 //SubtitleIndicador += Resources("structure") + " : " + $('#structureId :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
 
                 var array = [];
                 $.each($('#structureId').val(), function (i, o) { array.push($('#structureId option[value="' + o + '"]').text()) });
-                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+                SubtitleIndicador += array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
                 //SubtitleIndicador += Resources("unit") + " : " + $('#unitIdV :selected').text().substring(0, 100) + Resources("among_others") + " |   <br/> ";
 
                 var array = [];
                 $.each($('#unitIdV').val(), function (i, o) { array.push($('#unitIdV option[value="' + o + '"]').text()) });
-                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+                SubtitleIndicador += array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.auditorId != '' && enviar.auditorId != undefined) {
                 if (!$('#auditorId :selected').text() == "All") {
@@ -699,7 +764,7 @@
 
                     var array = [];
                     $.each($('#auditorId').val(), function (i, o) { array.push($('#auditorId option[value="' + o + '"]').text()) });
-                    SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+                    SubtitleIndicador += array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
                 }
             }
             if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
@@ -707,24 +772,29 @@
 
                 var array = [];
                 $.each($('#criticalLevelId').val(), function (i, o) { array.push($('#criticalLevelId option[value="' + o + '"]').text()) });
-                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+                SubtitleIndicador += array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
                 //SubtitleIndicador += Resources("level1") + " : " + $('#level1Idv :selected').text().substring(0, 100) + Resources("among_others") + " | ";
 
                 var array = [];
                 $.each($('#level1Idv').val(), function (i, o) { array.push($('#level1Idv option[value="' + o + '"]').text()) });
-                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+                SubtitleIndicador += array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
             if (enviar.level2Id != '' && enviar.level2Id != undefined && !isNaN(enviar.level2Id)) {
                 //SubtitleIndicador += Resources("level2") + " : " + $('#level2Idv :selected').text().substring(0, 100) + Resources("among_others") + " |  ";
 
                 var array = [];
                 $.each($('#level2Idv').val(), function (i, o) { array.push($('#level2Idv option[value="' + o + '"]').text()) });
-                SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
+                SubtitleIndicador += array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
 
-            SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 0));
+            SubtitleIndicador = SubtitleIndicador.trim().replace('<br/>', '');
+            SubtitleIndicador = SubtitleIndicador.trim().replace('Resources("among_others")', '');
+            SubtitleIndicador = SubtitleIndicador.trim().substring(0, (SubtitleIndicador.trim().length - 1));
+            $("#filtroPer").text(SubtitleIndicador)
+
+            //Resources("among_others")
 
             //SubtitleIndicador = SubtitleIndicador.substring(0, 100) + " entre outros ...";
 
@@ -759,7 +829,7 @@
                     text: Titulo,
                 },
                 subtitle: {
-                    text: Subtitle,
+                    text: SubtitleIndicador,
                 },
                 xAxis: {
                     categories: IndicadorUnidade,
@@ -925,6 +995,7 @@
 
             SubtitleSemUnidade = Subtitle;
             //SubtitleSemUnidade = Subtitle.substring(0, 100)+" ...";
+            $("#filtroIndSUni").text(Subtitle.replace('<br/>', ''));
 
             //$('#GraficoPeriodoLoader').removeClass('loader');
             GraficoPeriodoSemUnidade = Highcharts.chart('GraficoPeriodoSemUnidade', {
@@ -1357,6 +1428,7 @@
 
                 SubtitleConsolidado = "JBS";
 
+                $("#filtro").text(SubtitleConsolidado.replace('<br/>', ''));
 
                 $('#GraficoHistoricoGeral').removeClass('loader');
 
@@ -1685,6 +1757,7 @@
 
                 SubtitleConsolidado = SubtitleConsolidado.substring(0, (SubtitleConsolidado.length - 1  ));
 
+                $("#filtroUni").text(SubtitleConsolidado.replace('<br/>', ''));
 
                 $('#GraficoHistoricoUnidade').removeClass('loader');
 
@@ -1949,14 +2022,14 @@
             //    $.each($('#auditorId').val(), function (i, o) { array.push($('#auditorId option[value="' + o + '"]').text()) });
             //    SubtitleFuncao = (array.length > 100 ? array.join(', ') + ", " + Resources("among_others") : array.join(', ')) + " |   <br/> ";
             //}
-            if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
-                SubtitleFuncao += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/>";
-
-                var array = [];
-                $.each($('#criticalLevelId').val(), function (i, o) { array.push($('#criticalLevelId option[value="' + o + '"]').text()) });
-                SubtitleFuncao = (array.length > 100 ? array.join(', ') + ", " : array.join(', ')) + " |   <br/> ";
-            }
-            if (enviar.groupParLevel1Id != '' && enviar.groupParLevel1Id != undefined && !isNaN(enviar.groupParLevel1Id)) {
+            //if (enviar.criticalLevelId != '' && enviar.criticalLevelId != undefined) {
+            //    SubtitleFuncao += Resources("department") + ": " + $('#criticalLevelId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/>";
+            //
+            //    var array = [];
+            //    $.each($('#criticalLevelId').val(), function (i, o) { array.push($('#criticalLevelId option[value="' + o + '"]').text()) });
+            //    SubtitleFuncao = (array.length > 100 ? array.join(', ') + ", " : array.join(', ')) + " |   <br/> ";
+            //}
+            if (enviar.groupParLevel1Id != '' && enviar.groupParLevel1Id != undefined /*&& !isNaN(enviar.groupParLevel1Id)*/) {
                 SubtitleFuncao += "Função" + ": " + enviar.funcaoFiltrado;
 
                 //var array = [];
@@ -1970,7 +2043,11 @@
                 //$.each($('#level1Idv').val(), function (i, o) { array.push($('#level1Idv option[value="' + o + '"]').text()) });
                 //SubtitleFuncao = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             //}
-            SubtitleFuncao = SubtitleFuncao.substring(0, (SubtitleFuncao.length - 0));
+            SubtitleFuncao = SubtitleFuncao.substring(0, (SubtitleFuncao.length - 1));
+
+            //alert(SubtitleFuncao.replace('<br/>', '\n'));
+
+            $("#filtroFunc").text(SubtitleFuncao.replace('<br/>', ' - '));
 
 
                 chartHistoricoFuncao = Highcharts.chart('GraficoHistoricoFuncao', {
@@ -2194,15 +2271,16 @@
 
             $('#GraficoHistoricoIndicador').empty();
 
-
             var SubtitleIndicador = "";
+
+            SubtitleIndicador += "Grupo de Processos" + ": " + $("#clusterGroupId :selected").text() + " |  <br/>";
 
             if (enviar.unitId != null || enviar.unitId != "") {
                 //SubtitleIndicador += Resources("cluster") + ": " + $('#clusterId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/> "
 
                 var array = [];
                 $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
-                SubtitleIndicador = (array.length > 100 ? array.join(', ') + ", " + Resources("among_others") : array.join(', ')) + " |   <br/> ";
+                SubtitleIndicador += (array.length > 100 ? array.join(', ') + ", " + Resources("among_others") : array.join(', ')) + " |   <br/> ";
             };
             SubtitleIndicador = "";
             if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
@@ -2210,14 +2288,14 @@
 
                 var array = [];
                 $.each($('#clusterId').val(), function (i, o) { array.push($('#clusterId option[value="' + o + '"]').text()) });
-                SubtitleIndicador = (array.length > 100 ? array.join(', ') + ", "  : array.join(', ')) + " |   <br/> ";
+                SubtitleIndicador += (array.length > 100 ? array.join(', ') + ", "  : array.join(', ')) + " |   <br/> ";
             }
             if (enviar.structureId != '' && enviar.structureId != undefined) {
                // SubtitleIndicador += Resources("structure") + ": " + $('#structureId :selected').text().substring(0, 100) + Resources("among_others") + " |  <br/>";
 
                 var array = [];
                 $.each($('#structureId').val(), function (i, o) { array.push($('#structureId option[value="' + o + '"]').text()) });
-                SubtitleIndicador = (array.length > 100 ? array.join(', ') + ", " : array.join(', ')) + " |   <br/> ";
+                SubtitleIndicador += (array.length > 100 ? array.join(', ') + ", " : array.join(', ')) + " |   <br/> ";
             }
             if (enviar.unitId != '' && enviar.unitId != undefined) {
                 SubtitleIndicador += Resources("unit") + ": " + enviar.unidadesFiltradas;
@@ -2239,7 +2317,7 @@
 
                 var array = [];
                 $.each($('#criticalLevelId').val(), function (i, o) { array.push($('#criticalLevelId option[value="' + o + '"]').text()) });
-                SubtitleIndicador = (array.length > 100 ? array.join(', ') + ", " : array.join(', ')) + " |   <br/> ";
+                SubtitleIndicador += (array.length > 100 ? array.join(', ') + ", " : array.join(', ')) + " |   <br/> ";
             }
             if (enviar.level1Id != '' && enviar.level1Id != undefined && !isNaN(enviar.level1Id)) {
                 SubtitleIndicador += Resources("level1") + ": " + enviar.nivel1Filtrado;
@@ -2248,7 +2326,9 @@
                 //$.each($('#level1Idv').val(), function (i, o) { array.push($('#level1Idv option[value="' + o + '"]').text()) });
                 //SubtitleIndicador = array.join(', ') + ", " + Resources("among_others") + " |   <br/> ";
             }
-            SubtitleIndicador = SubtitleIndicador.substring(0, (SubtitleIndicador.length - 0));
+            SubtitleIndicador = SubtitleIndicador.trim().substring(0, (SubtitleIndicador.trim().length - 1));
+
+            $("#filtroInd").text(SubtitleIndicador.replace('<br/>', ' - '));
 
 
                 chartHistoricoIndicador = Highcharts.chart('GraficoHistoricoIndicador', {
@@ -2496,6 +2576,8 @@
             }
 
             SubtitleMonitoramento = SubtitleMonitoramento.substring(0, (SubtitleMonitoramento.length - 0));
+
+            $("#filtroMon").text(Subtitle.replace('<br/>', ''));
 
             chartHistoricoMonitoramento = Highcharts.chart('GraficoHistoricoMonitoramento', {
                 credits: {
@@ -3164,7 +3246,7 @@
             retorno.push((Math.round(totalAcc, 0)));
         });
         return retorno;
-    }
+    };
 
     function calculaPonderado(data) {
         var retorno = [];
@@ -3186,7 +3268,7 @@
         });
 
         return retorno;
-    }
+        };
 
     function FTA2() {
 
@@ -3348,8 +3430,6 @@
 
         $("#btnSend").click(function (e) {
 
-            // Botão desabilita até retorno
-
             $('#btnSend').prop("disabled", true);
             //colocar espaços entre as palavras
             Subtitle = "";
@@ -3424,11 +3504,11 @@
         formControl.showClustRegUnitCriticalLevel123();
 
         setTimeout(function () {
-            $("#clusterGroupId").find("option").eq(0).remove();
-            $("#clusterGroupId").val(8).change();
-            if ($("#clusterGroupId").val() == null) {
-                $("#clusterGroupId").val(2).change();
-            }
+           // $("#clusterGroupId").find("option").eq(0).remove();
+        $("#clusterGroupId").val(0).change();
+          ///  if ($("#clusterGroupId").val() == null) {
+          //      $("#clusterGroupId").val(0).change();
+          //  }
         }, 30);
 
         $('select').select2();
@@ -3505,6 +3585,8 @@
         //if (enviar["shift"] != "" && enviar["shift"] != undefined)
         //    subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "1" : "2");
 
+        $("#filtroTarAcu").text(Subtitle.replace('<br/>', ''));
+
        //graficoTarefasAcumuladas
         graficoTarefasAcumuladas = Highcharts.chart('GraficoTarefasAcumuladas', {
         // $('#' + selector).empty().highcharts({
@@ -3548,7 +3630,7 @@
             }
         }
 
-        var Chart = {
+    var Chart = {
             criaTitulo: function (prefix, sufix) {
                 return prefix + sufix;
             },
@@ -3977,15 +4059,15 @@
 
                 tam = enviar.funcaoFiltrado.length;
 
-                if (tam <= 100) {
+                //if (tam <= 100) {
                     enviar.funcaoFiltrado += " " + o + " |";
-                }
+                //}
 
             })
 
             // Retira ultimo divisor
             tam = enviar.funcaoFiltrado.length;
-            enviar.funcaoFiltrado = tam >= 100 ? enviar.funcaoFiltrado.substring(0, tam - 1) + Resources("among_others") : enviar.funcaoFiltrado.substring(0, tam - 1) + " <br/> ";
+            //enviar.funcaoFiltrado = tam >= 100 ? enviar.funcaoFiltrado.substring(0, tam - 1) + Resources("among_others") : enviar.funcaoFiltrado.substring(0, tam - 1) + " <br/> ";
         }
 
         // Subtitulo Level 1
@@ -4015,7 +4097,7 @@
 
             // Retira ultimo divisor
             tam = enviar.nivel1Filtrado.length;
-            enviar.nivel1Filtrado = tam >= 100 ? enviar.nivel1Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel1Filtrado.substring(0, tam - 1) + " <br/> " ;
+            //enviar.nivel1Filtrado = tam >= 100 ? enviar.nivel1Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel1Filtrado.substring(0, tam - 1) + " <br/> " ;
         }
 
         // Subtitulo Level 2
@@ -4045,7 +4127,7 @@
 
             // Retira ultimo divisor
             tam = enviar.nivel2Filtrado.length;
-            enviar.nivel2Filtrado = tam >= 100 ? enviar.nivel2Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel2Filtrado.substring(0, tam - 1) + " <br/> ";
+            //enviar.nivel2Filtrado = tam >= 100 ? enviar.nivel2Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel2Filtrado.substring(0, tam - 1) + " <br/> ";
         }
 
         // Subtitulo Level 3
@@ -4075,7 +4157,7 @@
 
             // Retira ultimo divisor
             tam = enviar.nivel3Filtrado.length;
-            enviar.nivel3Filtrado = tam >= 100 ? enviar.nivel3Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel3Filtrado.substring(0, tam - 1) + " <br/> ";
+            //enviar.nivel3Filtrado = tam >= 100 ? enviar.nivel3Filtrado.substring(0, tam - 1) + Resources("among_others") : enviar.nivel3Filtrado.substring(0, tam - 1) + " <br/> ";
         }
 
         subtitleGeneral();
@@ -4085,6 +4167,10 @@
     function subtitleGeneral() {
 
         Subtitle = "";
+
+        //if (enviar.clusterSelected_Id != '' && enviar.clusterGroupId != undefined) {
+            Subtitle += "Grupo de Processos" + ": " + $("#clusterGroupId :selected").text() + " |  <br/>";
+        //}
         if (enviar.clusterSelected_Id != '' && enviar.clusterSelected_Id != undefined) {
             Subtitle += Resources("cluster") + ": " + $('#clusterId :selected').text() + " |  <br/>";
         }
@@ -4110,8 +4196,11 @@
         if ((enviar.level3Id != '' && enviar.level3Id != undefined && !isNaN(enviar.level3Id))) {
             Subtitle += Resources("level3") + ": " + enviar.nivel3Filtrado;
         }
-        Subtitle = Subtitle.substring(0, (Subtitle.length - 0));
 
+        Subtitle = Subtitle.replace('<br/>', '');
+        Subtitle = Subtitle.replace('<br/>', '');
+
+        Subtitle = Subtitle.trim().substring(0, (Subtitle.trim().length - 1)).trim();
 
         }
 
