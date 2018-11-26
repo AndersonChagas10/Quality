@@ -99,6 +99,7 @@
                 <br>
             </div>
 
+            @*<div id="loaderNCUnidade"></div>*@
             <div class="totalNC" id="NCFuncao" hidden data-toggle="collapse" data-target="#filtroFunc" aria-expanded="false" aria-controls="filtroFunc">
                 <div style="background-color:white">
                     <div id="showNCFuncao" class="alert alert-info col-lg-2" role="alert">
@@ -116,6 +117,7 @@
                 <br>
             </div>
 
+            @*<div id="loaderNCUnidade"></div>*@
             <div class="totalNC" id="NCIndicador" hidden data-toggle="collapse" data-target="#filtroInd" aria-expanded="false" aria-controls="filtroInd">
                 <div style="background-color:white">
                     <div id="showNCIndicador" class="alert alert-info col-lg-2" role="alert">
@@ -133,6 +135,7 @@
                 <br>
             </div>
 
+            @*<div id="loaderNCUnidade"></div>*@
             <div class="totalNC" id="NCMonitoramento" hidden data-toggle="collapse" data-target="#filtroMon" aria-expanded="false" aria-controls="filtroMon">
                 <div style="background-color:white">
                     <div id="showNCMonitoramento" class="alert alert-info col-lg-2" role="alert">
@@ -150,23 +153,36 @@
                 <br>
             </div>
             <br />
-            <div id="GraficoPeriodoSemUnidadeLoader"></div>
-            <div id="GraficoPeriodoSemUnidade" data-toggle="collapse" data-target="#filtroIndSUni" aria-expanded="false" aria-controls="filtroIndSUni"></div>
-            <div class="clearfix"></div>
-            <div class="collapse bloco-filtro multi-collapse" id="filtroIndSUni">  </div>
+            @*<div id="GraficoPeriodoSemUnidadeLoader"></div>*@
+            <div class="totalNC" id="NCIndSUni" hidden data-toggle="collapse" data-target="#filtroIndSUni" aria-expanded="false" aria-controls="filtroIndSUni">
+                <div style="background-color:white">
+                    <div id="GraficoPeriodoSemUnidade"></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="collapse bloco-filtro multi-collapse" id="filtroIndSUni">  </div>
+            </div>
             <br>
             <br>
             <br />
             <div id="GraficoPeriodoLoader"></div>
-            <div id="GraficoPeriodo" data-toggle="collapse" data-target="#filtroPer" aria-expanded="false" aria-controls="filtroPer"></div>
-            <div class="clearfix"></div>
-            <div class="collapse bloco-filtro multi-collapse" id="filtroPer">  </div>
+            <div class="totalNC" id="NCPer" hidden data-toggle="collapse" data-target="#filtroPer" aria-expanded="false" aria-controls="filtroPer">
+                <div style="background-color:white">
+                    <div id="GraficoPeriodo"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="collapse bloco-filtro multi-collapse" id="filtroPer">  </div>
+            </div>
             <br>
 
             <div id="GraficoTarefasAcumuladasLoader"></div>
-            <div id="GraficoTarefasAcumuladas" data-toggle="collapse" data-target="#filtroTarAcu" aria-expanded="false" aria-controls="filtroTarAcu"></div>
-            <div class="clearfix"></div>
-            <div class="collapse bloco-filtro multi-collapse" id="filtroTarAcu">  </div>
+            <div class="totalNC" id="NCTarAcu" hidden data-toggle="collapse" data-target="#filtroTarAcu" aria-expanded="false" aria-controls="filtroTarAcu">
+                <div style="background-color:white">
+                    <div id="GraficoTarefasAcumuladas"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="collapse bloco-filtro multi-collapse" id="filtroTarAcu">  </div>
+            </div>
             <br>
 
             <br />
@@ -180,8 +196,8 @@
             <div id="DataTable2Loader"></div>
             <table id="DataTable2"></table>
 
+            </div>
         </div>
-    </div>
 
     <!-- Modal Historico do Indicador-->
     <div class="modal fade bs-example-modal-lg position-modal" id="modalHistorico" role="dialog">
@@ -952,11 +968,14 @@
                  CurvaPareto(calculaPareto(porc)),
                  LinhaPonderada(calculaPonderado(data))
                 ]
+            }, function () {
+                $('#NCPer').show();
             });
             //Fim HC
         } else {
             $('#SemDados').show();
         }
+        graficoPeriodo.reflow();
     }
 
     function GerarGraficoSemUnidade(data) {
@@ -991,7 +1010,7 @@
             var Monitoramento = MapeiaValorParaHC(data, "Monitoramento");
             var Tarefa = MapeiaValorParaHC(data, "Tarefa");
             //fazGambipraMenosCem(porc);
-            var SubtitleSemUnidade="";
+            var SubtitleSemUnidade = "";
 
             SubtitleSemUnidade = Subtitle;
             //SubtitleSemUnidade = Subtitle.substring(0, 100)+" ...";
@@ -999,7 +1018,7 @@
 
             //$('#GraficoPeriodoLoader').removeClass('loader');
             GraficoPeriodoSemUnidade = Highcharts.chart('GraficoPeriodoSemUnidade', {
-            //$('#GraficoPeriodoSemUnidade').empty().highcharts({
+                //$('#GraficoPeriodoSemUnidade').empty().highcharts({
                 credits: {
                     enabled: false
                 },
@@ -1076,50 +1095,54 @@
                     }
                 },
                 series: [
-                {
-                    name: '% NC',
-                    color: 'rgba(240,124,0,1)',
-                    data: porc,
-                    yAxis: 0,
-                    point: {
-                        events: {
-                            click: function () {
-                                //FTA2();
-                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
-                                enviar3 = {};
-                                enviar3['auditorId'] = enviar["auditorId"];
-                                enviar3['level1Id'] = Indicador[this.x];
-                                enviar3['level2Id'] = Monitoramento[this.x];
-                                enviar3['level3Id'] = Tarefa[this.x];
+                    {
+                        name: '% NC',
+                        color: 'rgba(240,124,0,1)',
+                        data: porc,
+                        yAxis: 0,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //FTA2();
+                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                    enviar3 = {};
+                                    enviar3['auditorId'] = enviar["auditorId"];
+                                    enviar3['level1Id'] = Indicador[this.x];
+                                    enviar3['level2Id'] = Monitoramento[this.x];
+                                    enviar3['level3Id'] = Tarefa[this.x];
 
-                                clickSemUnidade(enviar3);
+                                    clickSemUnidade(enviar3);
+                                }
                             }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            format: '{point.y:.2f}',
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' %',
+                            format: '{point.y:.2f}',
+                            format: '{point:.2f}',
                         }
                     },
-                    dataLabels: {
-                        enabled: true,
-                        color: 'black',
-                        align: 'center',
-                        format: '{point.y:.2f}',
-                        style: {
-                            fontSize: '10px',
-                        }
-                    },
-                    tooltip: {
-                        valueDecimals: 2,
-                        valueSuffix: ' %',
-                        format: '{point.y:.2f}',
-                        format: '{point:.2f}',
-                    }
-                },
-                 CurvaPareto(calculaPareto(porc)),
-                 LinhaPonderada(calculaPonderado(data))
+                    CurvaPareto(calculaPareto(porc)),
+                    LinhaPonderada(calculaPonderado(data))
                 ]
+            }, function () {
+                $('#NCIndSUni').show();
             });
             //Fim HC
-        } else {
+        }
+        else {
             $('#SemDados').show();
         }
+        GraficoPeriodoSemUnidade.reflow();
     }
 
     function CallbackGraficoHistoricoModal(data) {
@@ -3624,11 +3647,15 @@
                 Chart.Av(av, FTATarefasAcumuladas, null, null, null, "", data),
                 Chart.curvaPareto(data, Proc, 1, inverse)
             ]
+        }, function () {
+            $('#NCTarAcu').show();
         });
-            } else {
-                $('#SemDados').show();
-            }
+            //Fim HC
+        } else {
+            $('#SemDados').show();
         }
+            graficoTarefasAcumuladas.reflow();
+    }
 
     var Chart = {
             criaTitulo: function (prefix, sufix) {
