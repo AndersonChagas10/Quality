@@ -63,41 +63,44 @@
     });
 
     function abrirmodalAgendamento(linha) {
+        debugger
         $("#tabelaAgendamento").attr('style', '');
         var obj = $(linha).parents('tr').data();
+
+
         valorAvaliacao = obj.evaluationNumber;
         botaoAgendamento = linha;
         $('#modalAgendamento').modal('show');
         var id = parseInt(obj.evaluationId);
+        MontaNovaLinha(null);
+        //$.get('@Url.Action("Get", "api/Shift")', function (r) {
+        //    let shifts = r;
+        //    avaliacaAmostraSelectShifts = '<td> <select class="input-sm" data-column="slAgendamento"> <option value="" >Todos</option>';
+        //    shifts.forEach(function (item) {
+        //        avaliacaAmostraSelectShifts += '<option value="' + item.Id + '">' + item.Description + '</option>';
+        //    });
+        //    avaliacaAmostraSelectShifts += '</select ></td>';
 
-        $.get('@Url.Action("Get", "api/Shift")', function (r) {
-            let shifts = r;
-            avaliacaAmostraSelectShifts = '<td> <select class="input-sm" data-column="slAgendamento"> <option value="" >Todos</option>';
-            shifts.forEach(function (item) {
-                avaliacaAmostraSelectShifts += '<option value="' + item.Id + '">' + item.Description + '</option>';
-            });
-            avaliacaAmostraSelectShifts += '</select ></td>';
+        //    $.ajax({
+        //        url: '@Url.Content("~")' + 'api/AgendamentoApi/Get/' + id,
+        //        type: 'GET',
+        //        dataType: 'json',
+        //        success: function (data) {
+        //            MontaNovaLinha(null);
+        //            data.forEach(function (item) {
+        //                MontaNovaLinha(item, false);
+        //            });
+        //            console.log(data);
+        //        },
+        //        error: function (request, error) {
+        //            alert("Request: " + JSON.stringify(request));
+        //        }
+        //    });
+        //});
 
-            $.ajax({
-                url: '@Url.Content("~")' + 'api/AgendamentoApi/Get/' + id,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    MontaNovaLinha(null);
-                    data.forEach(function (item) {
-                        MontaNovaLinha(item, false);
-                    });
-                    console.log(data);
-                },
-                error: function (request, error) {
-                    alert("Request: " + JSON.stringify(request));
-                }
-            });
-        });
-
-        $("[data-column=inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
-        $("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
-        $("#tabelaAgendamento tbody").html("");
+        //$("[data-column=inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        //$("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
+        //$("#tabelaAgendamento tbody").html("");
     }
 
     function LimpaCampos() {
@@ -124,8 +127,8 @@
     }
 
     function MontaNovaLinha(data) {
+        debugger
         $("#tabelaAgendamento tbody").append("<tr>"
-            + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" /></td>'
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpPeso" /></td>'
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpCor" /></td>'
@@ -133,7 +136,7 @@
             + '<td>  <button type="button" title="Adicionar na lista" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
             + "</tr>");
 
-        $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        //$("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
 
         if (data != null && data != undefined) {
             $("#tabelaAgendamento tbody tr:last").data(data);

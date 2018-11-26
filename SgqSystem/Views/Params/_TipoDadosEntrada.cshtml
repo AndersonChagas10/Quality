@@ -627,7 +627,7 @@
                         || o.ParLevel2_Id == $('#parLevel2Select2 :selected').val()))
                         crudNxN.adiciona(o, id, tdNamess);
                     if (o.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
-                        $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-success btn-xs popovers" onclick="abrirModalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                        $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-success btn-xs popovers" onclick="abrirmodalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
                     }
                 });
             }
@@ -659,7 +659,7 @@
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
                 if (object.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
                     debugger
-                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers" onclick="abrirModalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers" onclick="abrirmodalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
                 }
 
                 $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id'] option:first").val());

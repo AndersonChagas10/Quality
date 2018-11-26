@@ -235,6 +235,7 @@ namespace Dominio
         public virtual DbSet<ImportFormat> ImportFormat { get; set; }
         public virtual DbSet<ImportFormatItem> ImportFormatItem { get; set; }
         public virtual DbSet<ReportXUserSgq> ReportXUserSgq { get; set; }
+        public virtual DbSet<ParInputTypeValues> ParInputTypeValues { get; set; }
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1> ParGroupParLevel1 { get; set; }
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1Type> ParGroupParLevel1Type { get; set; }
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1XParLevel1> ParGroupParLevel1XParLevel1 { get; set; }
