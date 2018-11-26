@@ -68,8 +68,8 @@
                 }
 
                 @*<div id="reincidencia">
-                        @Html.Partial("_ReincidenciaXLevel", Model)
-                    </div>*@
+            @Html.Partial("_ReincidenciaXLevel", Model)
+        </div>*@
                 @Html.HiddenFor(r => r.paramsDto.parLevel3Dto.hasVinculo)
 
                 @if (Model.paramsDto.parLevel3Dto.hasVinculo)
@@ -81,7 +81,7 @@
 
                     @Html.Partial("_Peso", Model)
                 }
-
+                
                 <button type="button" id="btnSaveNewLevel3" data-loading-text="@Resources.Resource.saving_the_level3" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-danger margin-button">@Resources.Resource.save_level3</button>
             </div>
         </div>
