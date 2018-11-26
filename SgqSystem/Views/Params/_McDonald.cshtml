@@ -57,22 +57,25 @@
     var valorAvaliacao = '';
     var listaAgendamento = [];
 
-    $("#modalAgendamento").on('close', function(){
+    $("#modalAgendamento").on('close', function () {
         console.log('model fechado');
         ContadorLinhas();
     });
 
     function abrirmodalAgendamento(linha) {
         debugger
+        $("#tabelaAgendamento tbody").html("");
         $("#tabelaAgendamento").attr('style', '');
         var obj = $(linha).parents('tr').data();
-
-
         valorAvaliacao = obj.evaluationNumber;
         botaoAgendamento = linha;
         $('#modalAgendamento').modal('show');
         var id = parseInt(obj.evaluationId);
-        MontaNovaLinha(null);
+        for (i = obj.IntervalMin; i <= obj.IntervalMax; i++) {
+            var valor = i;
+            MontaNovaLinha(obj, valor);
+        }
+
         //$.get('@Url.Action("Get", "api/Shift")', function (r) {
         //    let shifts = r;
         //    avaliacaAmostraSelectShifts = '<td> <select class="input-sm" data-column="slAgendamento"> <option value="" >Todos</option>';
@@ -126,21 +129,21 @@
         }
     }
 
-    function MontaNovaLinha(data) {
+    function MontaNovaLinha(data, valor) {
         debugger
         $("#tabelaAgendamento tbody").append("<tr>"
-            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" /></td>'
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" disabled="disabled" /></td>'
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpPeso" /></td>'
-            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpCor" /></td>'
+            + '<td><input type="text" class="input-sm" data-column="inpCor" /></td>'
             + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
-            + '<td>  <button type="button" title="Adicionar na lista" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
+            // + '<td>  <button type="button" title="Adicionar na lista" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
             + "</tr>");
 
         //$("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
 
         if (data != null && data != undefined) {
             $("#tabelaAgendamento tbody tr:last").data(data);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpInicio]').val(data.Inicio);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpValor"]').val(valor);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpTermino]').val(data.Fim);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpAvaliacao]').val(data.Av);
             $("#tabelaAgendamento tbody tr:last").find("#btnSalvarAgendamento").removeClass('btn-primary fa fa-plus').addClass('btn-success fa fa-pencil-square-o').text('').addClass('hidden');
@@ -167,120 +170,103 @@
         }
     }
 
-    function deletarRegistro(data) {
-        var linha = $(data).parents('tr');
-        var form = {
-            Inicio: $(linha).data()['Inicio'],
-            Fim: $(linha).data()['Fim'],
-            Av: $(linha).data()['Av'],
-            Shift_Id: $(linha).data()['Shift_Id'],
-            ParEvaluation_Id: $(linha).data()['ParEvaluation_Id'],
-            Id: $(linha).data()['Id'],
-            IsDeletar: !$(linha).data()['IsDeletar']
-        };
-        $(linha).data(form);
-        $(linha).find(".btnDeletarAgendamento").removeClass('btn-danger').addClass('btn-default');
-        @*$.ajax({
-            url: '@Url.Content("~")' + 'api/AgendamentoApi/Delete',
-            type: 'DELETE',
-            data: form,
-            dataType: 'json',
-            success: function (data) {
-                DeletaLinha(data, linha);
-                ContadorLinhas();
-                openMessageModal("Registro deletado com sucesso",null);
-            },
-            error: function (request, error) {
-                alert("Request: " + JSON.stringify(request));
-            }
-        });*@
-    }
+    //function deletarRegistro(data) {
+    //    var linha = $(data).parents('tr');
+    //    var form = {
+    //        Inicio: $(linha).data()['Inicio'],
+    //        Fim: $(linha).data()['Fim'],
+    //        Av: $(linha).data()['Av'],
+    //        Shift_Id: $(linha).data()['Shift_Id'],
+    //        ParEvaluation_Id: $(linha).data()['ParEvaluation_Id'],
+    //        Id: $(linha).data()['Id'],
+    //        IsDeletar: !$(linha).data()['IsDeletar']
+    //    };
+    //    $(linha).data(form);
+    //    $(linha).find(".btnDeletarAgendamento").removeClass('btn-danger').addClass('btn-default');
+    //    @*$.ajax({
+    //        url: '@Url.Content("~")' + 'api/AgendamentoApi/Delete',
+    //        type: 'DELETE',
+    //        data: form,
+    //        dataType: 'json',
+    //        success: function (data) {
+    //            DeletaLinha(data, linha);
+    //            ContadorLinhas();
+    //            openMessageModal("Registro deletado com sucesso",null);
+    //        },
+    //        error: function (request, error) {
+    //            alert("Request: " + JSON.stringify(request));
+    //        }
+    //    });*@
+    //}
 
     $("#modalAgendamento").on('click', "#btnSalvar", function () {
+        debugger
         var listaTabelaAgendamento = [];
         var contadorErros = 0;
-        listaTabelaAgendamento = $("#tabelaAgendamento tbody tr").not(':first');
-        if ($("#tabelaAgendamento tbody tr").find("[data-column=inpInicio]").val() !== '' || $("#tabelaAgendamento tbody tr").find("[data-column=inpTermino]").val() !== '' || $("#tabelaAgendamento tbody tr").find("[data-column=inpAvaliacao]").val() !== '') {
-            openMessageModal('Dados não inseridos na lista, adicione antes de salvar!', null);
-        }
-        else if (listaTabelaAgendamento.length <= 0) {
-            openMessageModal('Nenhum registro inserido na lista!', null);
-        } else {
-                listaTabelaAgendamento.each(function (index, item) {
-                    form = {
-                        Inicio: $(item).find("[data-column=inpInicio]").val(),
-                        Fim: $(item).find("[data-column=inpTermino]").val(),
-                        Av: $(item).find("[data-column=inpAvaliacao]").val(),
-                        Shift_Id: $(item).find("[data-column=slAgendamento]").val(),
-                        ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
-                        Id: $(item).find("[data-column=inpId]").val(),
-                        IsDeletar: $(item).data("IsDeletar")
-                    };
-                    var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
-                    var linha = $(this).parent().parent();
-                    if (!form.IsDeletar && (!frequenciaIsValid(formato, parseInt(form.Inicio), parseInt(form.Fim))
-                        || $('#tabelaAgendamento tbody tr').find('[data-column=inpAvaliacao]').hasClass('alert-danger')
-                        || form.Av > valorAvaliacao)) {
-                        contadorErros += 1;
-                    } else {
-                        listaAgendamento.push(form);
-                    }
+        listaTabelaAgendamento = $("#tabelaAgendamento tbody tr");
 
-                });
-                if (contadorErros <= 0) {
-                    $.ajax({
-                        url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
-                        type: 'POST',
-                        data: JSON.stringify(listaAgendamento),
-                        dataType: 'json',
-                        contentType: "application/json; charset=utf-8",
-                        success: function (data) {
-                            listaAgendamento = [];
-                            $('#tabelaAgendamento tbody tr').not(':first').remove();
-                            data.forEach(function (item) {
-                                MontaNovaLinha(item, false);
-                            });
+        listaTabelaAgendamento.each(function (index, item) {
+            form = {
+                Valor: $(item).find("[data-column=inpValor]").val(),
+                Peso: $(item).find("[data-column=inpPeso]").val(),
+                Cor: $(item).find("[data-column=inpCor]").val()
+                //ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
+                //Id: $(item).find("[data-column=inpId]").val(),
+                //IsDeletar: $(item).data("IsDeletar")
+            };
 
-                            openMessageModal("Dados salvos com sucesso", null);
-                            $('#modalAgendamento').modal('hide');
-                            ContadorLinhas();
-                        },
-                        error: function (request, error) {
-                            listaAgendamento = [];
-                            ContadorLinhas();
-                            alert("Request: " + JSON.stringify(request));
-                        }
-                    });
-                } else {
-                    openMessageModal("Dados informados inválidos. Verifique e salve as alterações!", null);
-                }
-             }
-    });
-
-    $("#modalAgendamento").on('input', '[data-column=inpAvaliacao]', function () {
-        let tabela = $('#tabelaAgendamento tbody tr').not(':first');
-        $(tabela).find('[data-column=inpAvaliacao]').each(function (i, o) {
-            var self = o;
-            var avaliacao = $(self).parents("tr").find('[data-column=inpAvaliacao]').val();
-            var turno = $(self).parents("tr").find('[data-column=slAgendamento]').val();
-
-            let isDuplicated = $.grep(tabela, (o) => {
-                return avaliacao == $(o).find('[data-column=inpAvaliacao]').val()
-                    && turno == $(o).find('[data-column=slAgendamento]').val();
-            });
-            $(self).removeClass('alert-danger');
-
-            if (avaliacao > valorAvaliacao) {
-                $(self).addClass('alert-danger');
-            } else {
-                $(self).removeClass('alert-danger');
-            }
-            if (isDuplicated.length > 1) {
-                $(self).addClass('alert-danger');
-            }
-
+            listaAgendamento.push(form);
         });
+        $.ajax({
+            url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
+            type: 'POST',
+            data: JSON.stringify(listaAgendamento),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                listaAgendamento = [];
+                $('#tabelaAgendamento tbody tr').not(':first').remove();
+                data.forEach(function (item) {
+                    MontaNovaLinha(item, false);
+                });
+
+                openMessageModal("Dados salvos com sucesso", null);
+                $('#modalAgendamento').modal('hide');
+                ContadorLinhas();
+            },
+            error: function (request, error) {
+                listaAgendamento = [];
+                ContadorLinhas();
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+
     });
+
+    //$("#modalAgendamento").on('input', '[ data-column=inpPeso]', function () {
+    //    let tabela = $('#tabelaAgendamento tbody tr').not(':first');
+    //    $(tabela).find('[data-column=inpPeso]').each(function (i, o) {
+    //        var self = o;
+    //        var peso = $(self).parents("tr").find('[data-column=inpPeso]').val();
+    //        //var turno = $(self).parents("tr").find('[data-column=slAgendamento]').val();
+
+    //        //let isDuplicated = $.grep(tabela, (o) => {
+    //        //    return avaliacao == $(o).find('[data-column=inpAvaliacao]').val()
+    //        //        && turno == $(o).find('[data-column=slAgendamento]').val();
+    //        //});
+    //        //$(self).removeClass('alert-danger');
+
+    //        if (peso > 0 || peso < 100) {
+    //            $(self).addClass('alert-danger');
+    //        } else {
+    //            $(self).removeClass('alert-danger');
+    //        }
+    //        //if (isDuplicated.length > 1) {
+    //        //    $(self).addClass('alert-danger');
+    //        //}
+
+    //    });
+    //});
 
     $("#modalAgendamento").on('change', '[data-column=slAgendamento]', function () {
         debugger
@@ -386,22 +372,22 @@
         debugger
         switch (formato) {
             case "Diario":
-                if(fim < 0 || inicio < 0 || fim > 24 || inicio > 24 || inicio > fim)
+                if (fim < 0 || inicio < 0 || fim > 24 || inicio > 24 || inicio > fim)
                     return false;
                 else
                     return true;
             case "Semanal":
-                if(fim < 1 || inicio < 1 || fim > 7 || inicio > 7 || inicio > fim)
+                if (fim < 1 || inicio < 1 || fim > 7 || inicio > 7 || inicio > fim)
                     return false;
                 else
                     return true;
             case "Quinzenal":
-                if(fim < 1 || inicio < 1 || fim > 15 || inicio > 15 || inicio > fim)
+                if (fim < 1 || inicio < 1 || fim > 15 || inicio > 15 || inicio > fim)
                     return false;
                 else
                     return true;
             case "Mensal":
-                if(fim < 1 || inicio < 1 || fim > 31 || inicio > 31 || inicio > fim)
+                if (fim < 1 || inicio < 1 || fim > 31 || inicio > 31 || inicio > fim)
                     return false;
                 else
                     return true;

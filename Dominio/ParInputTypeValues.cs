@@ -21,7 +21,7 @@ namespace Dominio
 
         public int? ParLevel3Value_Id { get; set; }
 
-        [ForeignKey("ParGroupParLevel1Type_Id")]
+        [ForeignKey("ParLevel3Value_Id")]
         public virtual ParLevel3Value ParLevel3Value { get; set; }
     }
 }
