@@ -37,6 +37,7 @@ namespace SgqSystem.Controllers.Api.SIF
                     where c2.parlevel1_id = { form.level1Id } 
                     	and c2.ParLevel2_Id = { form.level2Id }
                         and c2.UnitId = { form.unitId }
+                        and c2.EvaluationNumber = { form.avaliacao }
                     	and cast(c2.CollectionDate as Date) = '{ form._dataInicioSQL }'
                     	and C2XHF.ParFieldType_Id <> 2";
 
@@ -161,6 +162,7 @@ namespace SgqSystem.Controllers.Api.SIF
                         r => (r.CollectionDate >= dataColeta && r.CollectionDate <= dataColetaAmanha) &&
                         r.ParLevel1_Id == form.level1Id &&
                         r.ParLevel2_Id == form.level2Id &&
+                        r.EvaluationNumber == form.avaliacao &&
                         r.UnitId == form.unitId).Select(r => r.AuditorId).Distinct().ToList();
 
                     var usuarios = db.UserSgq.Where(r => usersColection.Contains(r.Id)).Select(r => r.FullName).ToList();
@@ -208,6 +210,7 @@ WHERE 1 = 1
 	AND c2.parlevel1_id = { form.level1Id }
 	AND c2.ParLevel2_Id = { form.level2Id }
     AND c2.UnitId = { form.unitId }
+    AND c2.EvaluationNumber = { form.avaliacao }
  	AND C2XHF.ParFieldType_Id = 2
 ORDER BY L3G.Name DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
 
