@@ -78,7 +78,7 @@
         -moz-border-radius: 33px !important;
         border-radius: 33px !important;
     }
-    
+
 
     .btnFloatCirclePrintAcaoCorretiva {
         /*font-size:32px !important;*/
@@ -335,12 +335,21 @@
                             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                                 <label for="">Fornecedor da Lata</label>
                                 <br />
-                                <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="linhaSelecionada.form.FornecedorLata" class="form-control select2" data-placeholder="Selecione..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                                <select ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado"
+                                        ng-options="item as item.Name for item in fornecedorLata track by item.Id"
+                                        ng-model="linhaSelecionada.form.FornecedorLata" class="form-control select2"
+                                        data-placeholder="Selecione..." multiple tabindex="-1" aria-hidden="true"
+                                        style="width:100%!important"></select>
                             </div>
                             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                                 <label for="">Data do recebimento das latas</label>
                                 <br />
-                                <input ng-change="salvaLinha(true, true); $event.stopPropagation();" ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="linhaSelecionada.form.DataRecebimentoLatas">
+                                <div ng-repeat="item in dataRecebimento track by $index">
+                                    <input ng-change="salvaLinha(true, true); $event.stopPropagation();"
+                                           ng-disabled="linhaSelecionada.finalizado" type="date" class="form-control"
+                                           placeholder="Data do recebimento das latas"
+                                           ng-model="dataRecebimento[$index]" value="{item}">
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -451,6 +460,7 @@
 
                                 <tr ng-repeat="ParLevel3 in lataEmLataDetalhe.ListParlevel3 | orderBy :sorterFunc track by $index" ng-class="{level3NameDestacado:(ParLevel3.Id ==  idOVERLAP)}">
                                     <td style="border:1px solid #cccccc; padding:2px; font-weight:bold; text-align:left !important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight:100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span></td>
+
                                     <td style="max-width:80px; border:1px solid #cccccc; padding:1px; text-align:center;"
                                         ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
                                         ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
@@ -495,17 +505,6 @@
                                               ng-class="{bgWhite:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEspessura(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed:bgRedEspessura(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
                                             <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
                                         </span>
-                                        @*5 Texto*@
-                                        <label style="word-wrap:break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                                            {{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}
-                                        </label>
-                                        @*99 NOVO CALCULADO POR OUTRO*@
-                                        <span class="label validate"
-                                              ng-class="{bgWhite:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] !=null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index+1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
-                                              ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                                            <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index + 1)]}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' :''}}</span>
-                                        </span>
-
                                         <span class="label validate"
                                               ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEscareacao)"
                                               ng-class="{bgWhite:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEscareacao(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed:bgRedEscareacao(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
@@ -1088,6 +1087,7 @@
                 vm.linhas = [{}]
                 vm.produtos = [{}]
                 vm.fornecedorLata = [{}]
+                vm.dataRecebimento = []
                 vm.fornecedorTampaLata = [{}]
                 vm.linhaSelecionada = { Id: 0 }
                 vm.lataSelecionada = {}
@@ -1595,8 +1595,10 @@
                                 }
                             },
                             callback: function (result) {
-                                if (result)
+                                if (result) {
+                                    vm.dataRecebimento = [];
                                     vm.getParansLinha(index, needFindIndex, showMensagem, novaLinha)
+                                }
                             }
                         });
                 }
@@ -1767,6 +1769,21 @@
                     })[0]);
                     var latas = _.clone(linha.latas);
                     linha.latas = []
+
+                    var criarNovaLinha = true;
+                    var listaSemNulo = [];
+                    vm.dataRecebimento.forEach(function (o, i) {
+                        if (o == null)
+                            criarNovaLinha = false;
+                        else
+                            listaSemNulo.push(o);
+                    });
+
+                    listaSemNulo.push(null);
+                    vm.dataRecebimento = listaSemNulo;
+                    if (!!!linha.form)
+                        linha.form = {};
+                    linha.form.dataRecebimento = vm.dataRecebimento;
 
                     vm.TimerOn()
                     if (salvoParaInserirNovaLinha)
@@ -2042,6 +2059,18 @@
                                     if (vm.linhaSelecionada.form.DataRecebimentoLatas)
                                         vm.linhaSelecionada.form.DataRecebimentoLatas = new Date(vm.linhaSelecionada.form.DataRecebimentoLatas)
 
+                                    if (vm.linhaSelecionada.form.dataRecebimento) {
+                                        vm.dataRecebimento = vm.linhaSelecionada.form.dataRecebimento;
+                                        var list = [];
+                                        vm.dataRecebimento.forEach(function (o, i) {
+                                            if (o != null)
+                                                list.push(new Date(o));
+                                            else
+                                                list.push(null);
+                                        });
+                                        vm.dataRecebimento = list;
+                                    }
+
                                     if (vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas)
                                         vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas = new Date(vm.linhaSelecionada.form.DataRecebimentoTampasFundosLatas)
                                 }
@@ -2238,17 +2267,17 @@
                         return;
                     }
 
-                    if (!vm.linhaSelecionada.form.FornecedorLata) {
+                    if (vm.linhaSelecionada.form.FornecedorLata.length == 0) {
                         toastr.warning("O fornecedor da lata precisa ser escolhido.");
                         return;
                     }
 
-                    if (!vm.linhaSelecionada.form.DataRecebimentoLatas) {
+                    if (vm.linhaSelecionada.form.dataRecebimento.length == 1) {
                         toastr.warning("A data de recebimento das latas precisa ser preenchido.");
                         return;
                     }
 
-                    if (!vm.linhaSelecionada.form.FornecedorTampaFundoLata) {
+                    if (vm.linhaSelecionada.form.FornecedorTampaFundoLata.length == 0) {
                         toastr.warning("O fornecedor da tampa do fundo da lata precisa ser escolhido.");
                         return;
                     }
