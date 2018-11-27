@@ -29,7 +29,7 @@ namespace SgqSystem.Controllers.Recravacao
                 var query = string.Format(@"
 SELECT RJ.AlterDate, RJ.UserValidated_Id, RJ.Id, RJ.UserFinished_Id, PRL.Name FROM RecravacaoJson RJ 
 LEFT JOIN ParRecravacao_Linhas PRL ON PRL.Id = RJ.Linha_Id
-WHERE RJ.AlterDate >= '{0}' AND RJ.AlterDate < '{1}' AND RJ.ParCompany_Id = {2}"
+WHERE RJ.AddDate >= '{0}' AND RJ.AddDate < '{1}' AND RJ.ParCompany_Id = {2}"
                     , dataFiltroRecravacao.ToString("yyyy-MM-dd")
                     , dataFiltroRecravacaoAmanha.ToString("yyyy-MM-dd")
                     , companyId);

@@ -31,9 +31,10 @@
             @using (Html.BeginForm("Index", "RecravacaoJson", FormMethod.Get))
             {
                 <div class="form-group">
-                    <strong>Visualizar todas as coletas de recravação do dia: </strong>
-                    <input type="date" name="date" class="input-sm" value="@Html.Raw(ViewBag.dataFiltroRecravacao.ToString("yyyy-MM-dd"))" />
-                    <input type="submit" value="Salvar" class="btn btn-sm btn-primary" />
+                    <input type="submit" value="@Resources.Resource.search" class="btn btn-sm btn-primary pull-right" />
+                    <input type="date" name="date" class="input-sm pull-right" value="@Html.Raw(ViewBag.dataFiltroRecravacao.ToString("yyyy-MM-dd"))" />
+                    <strong class="pull-right">Visualizar todas as coletas de recravação do dia: </strong>
+                    <br />
                 </div>
             }
             <table class="table table-striped dataTable">
@@ -62,19 +63,21 @@
                                 @Html.Raw(item.Name)
                             </td>
                             <td>
-                                @if(item.UserValidated_Id > 0)
+                                @if (item.UserValidated_Id > 0)
                                 {
                                     <text>Linha Validada</text>
-                                }else if(item.UserFinished_Id > 0)
+                                }
+                                else if (item.UserFinished_Id > 0)
                                 {
                                     <text>Linha Finalizada</text>
-                                }else
+                                }
+                                else
                                 {
                                     <text>Linha Aberta</text>
                                 }
                             </td>
                             <td>
-                                <a href="@Url.Action("Retroativo", "Recravacao", new { id = item.Id })">Entrar na Coleta</a>
+                                <a href="@Url.Action("Retroativo", "Recravacao", new { id = item.Id })" target="_blank">Entrar na Coleta</a>
                             </td>
                         </tr>
                     }

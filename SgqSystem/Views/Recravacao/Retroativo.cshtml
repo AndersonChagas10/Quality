@@ -2706,19 +2706,19 @@
                     date = new Date(date);
                 }
 
-                vm.urlPrint = '@Url.Action("print3", "Recravacao")'
+                vm.urlPrint = '@Url.Action("printRetroativa", "Recravacao")'
                 vm.print = function () {
                     if (vm.indicadorSelecionado && vm.indicadorSelecionado.Id > 0 && vm.linhaSelecionada && vm.linhaSelecionada.Id > 0) {
                         let preUrl = vm.urlPrint;
-                        let urlPrint = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}`
+                        let urlPrint = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}&recravacaoJsonId=@Html.Raw(ViewBag.RecravacaoJsonId)`
                         openInNewTab(urlPrint)
                     }
                 }
-                vm.urlPrintAcaoCorretiva = '@Url.Action("printAcaoCorretiva", "Recravacao")'
+                vm.urlPrintAcaoCorretiva = '@Url.Action("printAcaoCorretivaRetroativa", "Recravacao")'
                 vm.printAcaoCorretiva = function () {
                     if (vm.indicadorSelecionado && vm.indicadorSelecionado.Id > 0 && vm.linhaSelecionada && vm.linhaSelecionada.Id > 0) {
                         let preUrl = vm.urlPrintAcaoCorretiva;
-                        let urlPrintAcaoCorretiva = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}`
+                        let urlPrintAcaoCorretiva = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}&recravacaoJsonId=@Html.Raw(ViewBag.RecravacaoJsonId)`
                         openInNewTab(urlPrintAcaoCorretiva)
                     }
                 }

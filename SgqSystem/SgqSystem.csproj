@@ -1836,6 +1836,8 @@
     <Content Include="Views\Integracao\Index.cshtml" />
     <Content Include="Views\RecravacaoJson\Index.cshtml" />
     <Content Include="Views\Recravacao\Retroativo.cshtml" />
+    <Content Include="Views\Recravacao\PrintRetroativa.cshtml" />
+    <Content Include="Views\Recravacao\PrintAcaoCorretivaRetroativa.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
