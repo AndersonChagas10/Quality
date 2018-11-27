@@ -8,24 +8,12 @@
     }
 </style>
 
-<table id="tableAvAm" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Avaliação e Amostra:">
-    <thead>
-        <tr>
-            <th>Intervalo</th>
-            <th>Valor</th>
-            <th>Cor</th>
-            <th class="options"></th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
-
 <div class="modal fade" id="modalAgendamento" role="dialog">
     <div class="modal-dialog modal-lg vertical-align-center">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Agendamento</h4>
+                <h4 id="titulo" class="modal-title"></h4>
             </div>
             <div class="modal-body">
                 <input class="hidden" data-column="inpAvaliacaoId" />
@@ -57,11 +45,6 @@
     var listaAgendamento = [];
     var ParLevel3_Id = '';
 
-    $("#modalAgendamento").on('close', function () {
-        console.log('model fechado');
-        ContadorLinhas();
-    });
-
     function abrirmodalAgendamento(linha) {
         debugger
         $("#tabelaAgendamento tbody").html("");
@@ -71,6 +54,7 @@
         valorAvaliacao = obj.evaluationNumber;
         botaoAgendamento = linha;
         $('#modalAgendamento').modal('show');
+        $("#titulo").append("Escala Likert - Intervalo Min: " + obj.IntervalMin + "Max: " + obj.IntervalMax);
         var id = obj.Id;
         $.ajax({
             url: '@Url.Content("~")' + 'api/AgendamentoApi/Get/' + id,
@@ -79,7 +63,7 @@
             success: function (data) {
                 for (i = obj.IntervalMin; i <= obj.IntervalMax; i++) {
                     var valor = i;
-                    var teste = data.find((item) => item.Valor == valor);
+                    var teste = data.find((item) => item.Intervalo == valor);
 
                     if (teste != null) {
                         MontaNovaLinha(teste, valor);
@@ -101,23 +85,8 @@
     }
 
 
-    function DeletaLinha(data, linha) {
-        $(linha).html('tr').remove();
-    }
-
-    function ContadorLinhas() {
-        var tamanho = $("#tabelaAgendamento tbody").find('tr').length;
-
-        if (tamanho <= 1) {
-            $(botaoAgendamento).removeClass('btn-success').addClass('btn-default');
-            $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', false);
-        } else {
-            $(botaoAgendamento).removeClass('btn-default').addClass('btn-success');
-            $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', true);
-        }
-    }
-
     function MontaNovaLinha(data, valor) {
+
         $("#tabelaAgendamento tbody").append("<tr>"
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpIntervalo" disabled="disabled" /></td>'
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" /></td>'
@@ -130,9 +99,10 @@
         //$("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
 
         if (data != null && data != undefined) {
+
             $("#tabelaAgendamento tbody tr:last").data(data);
             $("#tabelaAgendamento tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpValor"]').val(data.Peso);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpValor"]').val(data.Valor);
             $("#tabelaAgendamento tbody tr:last").find('[data-column="inpCor"]').val(data.Cor);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
@@ -180,7 +150,6 @@
     //        dataType: 'json',
     //        success: function (data) {
     //            DeletaLinha(data, linha);
-    //            ContadorLinhas();
     //            openMessageModal("Registro deletado com sucesso",null);
     //        },
     //        error: function (request, error) {
@@ -204,8 +173,8 @@
         debugger
         listaTabelaAgendamento.each(function (index, item) {
             form = {
-                Valor: $(item).find("[data-column=inpIntervalo]").val(),
-                Peso: $(item).find("[data-column=inpValor]").val(),
+                Intervalo: $(item).find("[data-column=inpIntervalo]").val(),
+                Valor: $(item).find("[data-column=inpValor]").val(),
                 Cor: $(item).find("[data-column=inpCor]").val(),
                 ParLevel3Value_Id: $('input[data-column="inpParLevel3Value_Id"]').val(),
                 Id: $(item).find("[data-column=inpId]").val()
@@ -233,11 +202,10 @@
                     openMessageModal("Dados salvos com sucesso", null);
 
                     $('#modalAgendamento').modal('hide');
-                    ContadorLinhas();
+                    $('#tableLevel3Value  tbody  tr:last td:last').find('likert').addClass('btn-success');
                 },
                 error: function (request, error) {
                     listaAgendamento = [];
-                    ContadorLinhas();
                     alert("Request: " + JSON.stringify(request));
                 }
             });
