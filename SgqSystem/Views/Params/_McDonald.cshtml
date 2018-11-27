@@ -11,8 +11,8 @@
 <table id="tableAvAm" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Avaliação e Amostra:">
     <thead>
         <tr>
+            <th>Intervalo</th>
             <th>Valor</th>
-            <th>Peso</th>
             <th>Cor</th>
             <th class="options"></th>
         </tr>
@@ -33,8 +33,8 @@
                     <table id="tabelaAgendamento" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
                         <thead>
                             <tr>
+                                <th>Intervalo</th>
                                 <th>Valor</th>
-                                <th>Peso</th>
                                 <th>Cor</th>
                             </tr>
                         </thead>
@@ -119,8 +119,8 @@
 
     function MontaNovaLinha(data, valor) {
         $("#tabelaAgendamento tbody").append("<tr>"
-            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" disabled="disabled" /></td>'
-            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpPeso" /></td>'
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpIntervalo" disabled="disabled" /></td>'
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" /></td>'
             + '<td><input type="color" name="favcolor" value = "#ff0000"  class="input-sm" data-column="inpCor" /></td>'
             + '<td class="hidden"> <input data-column="inpParLevel3Value_Id" class="hidden" /></td>'
             + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
@@ -131,8 +131,8 @@
 
         if (data != null && data != undefined) {
             $("#tabelaAgendamento tbody tr:last").data(data);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpValor"]').val(valor);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpPeso"]').val(data.Peso);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpValor"]').val(data.Peso);
             $("#tabelaAgendamento tbody tr:last").find('[data-column="inpCor"]').val(data.Cor);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
@@ -141,7 +141,7 @@
             //    $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
             //}
         } else {
-            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpValor"]').val(valor);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
         }
     }
@@ -189,7 +189,7 @@
     //    });*@
     //}
 
-    $("#modalAgendamento").on('input', '[data-column="inpPeso"]', function () {
+    $("#modalAgendamento").on('input', '[data-column="inpValor"]', function () {
         if (parseInt($(this).val()) < 0 || parseInt($(this).val()) > 100) {
             $(this).addClass('alert-danger');
         } else {
@@ -204,8 +204,8 @@
         debugger
         listaTabelaAgendamento.each(function (index, item) {
             form = {
-                Valor: $(item).find("[data-column=inpValor]").val(),
-                Peso: $(item).find("[data-column=inpPeso]").val(),
+                Valor: $(item).find("[data-column=inpIntervalo]").val(),
+                Peso: $(item).find("[data-column=inpValor]").val(),
                 Cor: $(item).find("[data-column=inpCor]").val(),
                 ParLevel3Value_Id: $('input[data-column="inpParLevel3Value_Id"]').val(),
                 Id: $(item).find("[data-column=inpId]").val()
@@ -247,11 +247,11 @@
 
     });
 
-    //$("#modalAgendamento").on('input', '[ data-column=inpPeso]', function () {
+    //$("#modalAgendamento").on('input', '[ data-column=inpValor]', function () {
     //    let tabela = $('#tabelaAgendamento tbody tr').not(':first');
-    //    $(tabela).find('[data-column=inpPeso]').each(function (i, o) {
+    //    $(tabela).find('[data-column=inpValor]').each(function (i, o) {
     //        var self = o;
-    //        var peso = $(self).parents("tr").find('[data-column=inpPeso]').val();
+    //        var peso = $(self).parents("tr").find('[data-column=inpValor]').val();
     //        //var turno = $(self).parents("tr").find('[data-column=slAgendamento]').val();
 
     //        //let isDuplicated = $.grep(tabela, (o) => {

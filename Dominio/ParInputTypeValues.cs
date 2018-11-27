@@ -11,9 +11,9 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        public int Valor { get; set; }
+        public int Intervalo { get; set; }
 
-        public int Peso { get; set; }
+        public int Valor { get; set; }
 
         public string Cor { get; set; }
 
