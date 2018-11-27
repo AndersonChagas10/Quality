@@ -6497,7 +6497,17 @@ $(document).ready(function(){
             }//Escala Likert
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
+                var ranges = dbEf.ParInputTypeValues.Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id).ToList();
+
+                var paramns = new StringBuilder();
+
+                foreach (var item in ranges)
+                {
+                    paramns.Append(item.Valor + ":" + item.Cor + "|");
+                }
+
                 input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString());
+
             }//Resultado
             else if (parLevel3.ParLevel3InputType_Id == 10)
             {
