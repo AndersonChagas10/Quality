@@ -1,17 +1,17 @@
 
-Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_McDonald',GetDate())
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.8',GetDate())
 
 GO
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParInputTypeValues' AND xtype='U')
 create table ParInputTypeValues(
 	Id int not null identity primary key,
+	Intervalo int NOT NULL,
 	Valor int NOT NULL,
-	Peso int NOT NULL,
 	Cor varchar(7) NOT NULL,
 	AddDate datetime not null,
 	AlterDate datetime null,
-	IsActive bit not null,
+	IsActive bit not null default 1,
 	ParLevel3Value_Id int not null FOREIGN key REFERENCES ParLevel3Value(Id),
 )
 

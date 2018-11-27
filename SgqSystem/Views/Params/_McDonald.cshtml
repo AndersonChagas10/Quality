@@ -11,8 +11,8 @@
 <table id="tableAvAm" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Avaliação e Amostra:">
     <thead>
         <tr>
+            <th>Intervalo</th>
             <th>Valor</th>
-            <th>Peso</th>
             <th>Cor</th>
             <th class="options"></th>
         </tr>
@@ -33,8 +33,8 @@
                     <table id="tabelaAgendamento" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
                         <thead>
                             <tr>
+                                <th>Intervalo</th>
                                 <th>Valor</th>
-                                <th>Peso</th>
                                 <th>Cor</th>
                             </tr>
                         </thead>
@@ -47,15 +47,15 @@
                 <button type="button" data-dismiss="modal" onclick="LimpaCampos()" class="btn btn-default">Fechar</button>
             </div>
         </div>
+        
 
     </div>
-</div>
-
 <script>
     //variaveis globais
     var botaoAgendamento = '';
     var valorAvaliacao = '';
     var listaAgendamento = [];
+    var ParLevel3_Id = '';
 
     $("#modalAgendamento").on('close', function () {
         console.log('model fechado');
@@ -67,43 +67,32 @@
         $("#tabelaAgendamento tbody").html("");
         $("#tabelaAgendamento").attr('style', '');
         var obj = $(linha).parents('tr').data();
+        ParLevel3_Id = obj.Id;
         valorAvaliacao = obj.evaluationNumber;
         botaoAgendamento = linha;
         $('#modalAgendamento').modal('show');
-        var id = parseInt(obj.evaluationId);
-        for (i = obj.IntervalMin; i <= obj.IntervalMax; i++) {
-            var valor = i;
-            MontaNovaLinha(obj, valor);
-        }
+        var id = obj.Id;
+        $.ajax({
+            url: '@Url.Content("~")' + 'api/AgendamentoApi/Get/' + id,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                for (i = obj.IntervalMin; i <= obj.IntervalMax; i++) {
+                    var valor = i;
+                    var teste = data.find((item) => item.Valor == valor);
 
-        //$.get('@Url.Action("Get", "api/Shift")', function (r) {
-        //    let shifts = r;
-        //    avaliacaAmostraSelectShifts = '<td> <select class="input-sm" data-column="slAgendamento"> <option value="" >Todos</option>';
-        //    shifts.forEach(function (item) {
-        //        avaliacaAmostraSelectShifts += '<option value="' + item.Id + '">' + item.Description + '</option>';
-        //    });
-        //    avaliacaAmostraSelectShifts += '</select ></td>';
-
-        //    $.ajax({
-        //        url: '@Url.Content("~")' + 'api/AgendamentoApi/Get/' + id,
-        //        type: 'GET',
-        //        dataType: 'json',
-        //        success: function (data) {
-        //            MontaNovaLinha(null);
-        //            data.forEach(function (item) {
-        //                MontaNovaLinha(item, false);
-        //            });
-        //            console.log(data);
-        //        },
-        //        error: function (request, error) {
-        //            alert("Request: " + JSON.stringify(request));
-        //        }
-        //    });
-        //});
-
-        //$("[data-column=inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
-        //$("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
-        //$("#tabelaAgendamento tbody").html("");
+                    if (teste != null) {
+                        MontaNovaLinha(teste, valor);
+                    } else {
+                       
+                        MontaNovaLinha(null, valor);
+                    }
+                }
+            },
+            error: function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
     }
 
     function LimpaCampos() {
@@ -117,7 +106,6 @@
     }
 
     function ContadorLinhas() {
-        debugger
         var tamanho = $("#tabelaAgendamento tbody").find('tr').length;
 
         if (tamanho <= 1) {
@@ -130,11 +118,11 @@
     }
 
     function MontaNovaLinha(data, valor) {
-        debugger
         $("#tabelaAgendamento tbody").append("<tr>"
-            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" disabled="disabled" /></td>'
-            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpPeso" /></td>'
-            + '<td><input type="text" class="input-sm" data-column="inpCor" /></td>'
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpIntervalo" disabled="disabled" /></td>'
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" /></td>'
+            + '<td><input type="color" name="favcolor" value = "#ff0000"  class="input-sm" data-column="inpCor" /></td>'
+            + '<td class="hidden"> <input data-column="inpParLevel3Value_Id" class="hidden" /></td>'
             + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
             // + '<td>  <button type="button" title="Adicionar na lista" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
             + "</tr>");
@@ -143,16 +131,18 @@
 
         if (data != null && data != undefined) {
             $("#tabelaAgendamento tbody tr:last").data(data);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpValor"]').val(valor);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpTermino]').val(data.Fim);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpAvaliacao]').val(data.Av);
-            $("#tabelaAgendamento tbody tr:last").find("#btnSalvarAgendamento").removeClass('btn-primary fa fa-plus').addClass('btn-success fa fa-pencil-square-o').text('').addClass('hidden');
-            $("#tabelaAgendamento tbody tr:last").find(".btnDeletarAgendamento").removeClass('hidden');
-            $("#tabelaAgendamento tbody tr:last").find("[data-column=slAgendamento]").val(data.Shift_Id);
-
-            if (data.Id > 0) {
-                $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
-            }
+            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpValor"]').val(data.Peso);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpCor"]').val(data.Cor);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
+            //$("#tabelaAgendamento tbody tr:last").find("#btnSalvarAgendamento").removeClass('btn-primary fa fa-plus').addClass('btn-success fa fa-pencil-square-o').text('').addClass('hidden');
+            //if (data.Id > 0) {
+            //    $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
+            //}
+        } else {
+            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
         }
     }
 
@@ -199,55 +189,69 @@
     //    });*@
     //}
 
+    $("#modalAgendamento").on('input', '[data-column="inpValor"]', function () {
+        if (parseInt($(this).val()) < 0 || parseInt($(this).val()) > 100) {
+            $(this).addClass('alert-danger');
+        } else {
+            $(this).removeClass('alert-danger');
+        }
+    });
+
     $("#modalAgendamento").on('click', "#btnSalvar", function () {
-        debugger
         var listaTabelaAgendamento = [];
         var contadorErros = 0;
         listaTabelaAgendamento = $("#tabelaAgendamento tbody tr");
-
+        debugger
         listaTabelaAgendamento.each(function (index, item) {
             form = {
-                Valor: $(item).find("[data-column=inpValor]").val(),
-                Peso: $(item).find("[data-column=inpPeso]").val(),
-                Cor: $(item).find("[data-column=inpCor]").val()
-                //ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
-                //Id: $(item).find("[data-column=inpId]").val(),
-                //IsDeletar: $(item).data("IsDeletar")
+                Valor: $(item).find("[data-column=inpIntervalo]").val(),
+                Peso: $(item).find("[data-column=inpValor]").val(),
+                Cor: $(item).find("[data-column=inpCor]").val(),
+                ParLevel3Value_Id: $('input[data-column="inpParLevel3Value_Id"]').val(),
+                Id: $(item).find("[data-column=inpId]").val()
             };
+            debugger
+            if (parseInt(form.Peso) < 0 || form.Peso === "" || parseInt(form.Peso) === "NaN" || parseInt(form.Peso) > 100) {
+                contadorErros++;
+            }
+            if (form.Cor === null || form.Cor === "" || form.Cor === "NaN") {
+                contadorErros++;
+            }
 
             listaAgendamento.push(form);
         });
-        $.ajax({
-            url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
-            type: 'POST',
-            data: JSON.stringify(listaAgendamento),
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                listaAgendamento = [];
-                $('#tabelaAgendamento tbody tr').not(':first').remove();
-                data.forEach(function (item) {
-                    MontaNovaLinha(item, false);
-                });
+  
+        if (contadorErros <= 0) {
+            $.ajax({
+                url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
+                type: 'POST',
+                data: JSON.stringify(listaAgendamento),
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    listaAgendamento = [];
+                    openMessageModal("Dados salvos com sucesso", null);
 
-                openMessageModal("Dados salvos com sucesso", null);
-                $('#modalAgendamento').modal('hide');
-                ContadorLinhas();
-            },
-            error: function (request, error) {
-                listaAgendamento = [];
-                ContadorLinhas();
-                alert("Request: " + JSON.stringify(request));
-            }
-        });
+                    $('#modalAgendamento').modal('hide');
+                    ContadorLinhas();
+                },
+                error: function (request, error) {
+                    listaAgendamento = [];
+                    ContadorLinhas();
+                    alert("Request: " + JSON.stringify(request));
+                }
+            });
+        } else {
+            openMessageModal("Campos obrigatórios Peso e Cor possuem valores inválidos.", null);
+        }
 
     });
 
-    //$("#modalAgendamento").on('input', '[ data-column=inpPeso]', function () {
+    //$("#modalAgendamento").on('input', '[ data-column=inpValor]', function () {
     //    let tabela = $('#tabelaAgendamento tbody tr').not(':first');
-    //    $(tabela).find('[data-column=inpPeso]').each(function (i, o) {
+    //    $(tabela).find('[data-column=inpValor]').each(function (i, o) {
     //        var self = o;
-    //        var peso = $(self).parents("tr").find('[data-column=inpPeso]').val();
+    //        var peso = $(self).parents("tr").find('[data-column=inpValor]').val();
     //        //var turno = $(self).parents("tr").find('[data-column=slAgendamento]').val();
 
     //        //let isDuplicated = $.grep(tabela, (o) => {
@@ -269,7 +273,6 @@
     //});
 
     $("#modalAgendamento").on('change', '[data-column=slAgendamento]', function () {
-        debugger
         let tabela = $('#tabelaAgendamento tbody tr').not(':first');
         $(tabela).find('[data-column=inpAvaliacao]').each(function (i, o) {
             var self = o;
@@ -286,47 +289,6 @@
             }
 
         });
-    });
-
-    $("#modalAgendamento").on('input', '[data-column="inpInicio"] , [data-column="inpTermino"]', function () {
-        var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
-        switch (formato) {
-            case "Diario":
-                if ($(this).val() > 24) {
-                    $(this).addClass('alert-danger');
-                    break;
-                } else {
-                    $(this).removeClass('alert-danger');
-                    break;
-                }
-            case "Semanal":
-                if ($(this).val() > 7) {
-                    $(this).addClass('alert-danger');
-                    break;
-                } else {
-                    $(this).removeClass('alert-danger');
-                    break;
-                }
-            case "Quinzenal":
-                if ($(this).val() > 15) {
-                    $(this).addClass('alert-danger');
-                    break;
-                } else {
-                    $(this).removeClass('alert-danger');
-                    break;
-                }
-            case "Mensal":
-                if ($(this).val() > 31) {
-                    $(this).addClass('alert-danger');
-                    break;
-                } else {
-                    $(this).removeClass('alert-danger');
-                    break;
-                }
-            case "Turno":
-                break;
-            default:
-        }
     });
 
     $("#modalAgendamento").on('click', "#btnSalvarAgendamento", function () {
@@ -368,64 +330,29 @@
         }
     });
 
-    function frequenciaIsValid(formato, inicio, fim) {
-        debugger
-        switch (formato) {
-            case "Diario":
-                if (fim < 0 || inicio < 0 || fim > 24 || inicio > 24 || inicio > fim)
-                    return false;
-                else
-                    return true;
-            case "Semanal":
-                if (fim < 1 || inicio < 1 || fim > 7 || inicio > 7 || inicio > fim)
-                    return false;
-                else
-                    return true;
-            case "Quinzenal":
-                if (fim < 1 || inicio < 1 || fim > 15 || inicio > 15 || inicio > fim)
-                    return false;
-                else
-                    return true;
-            case "Mensal":
-                if (fim < 1 || inicio < 1 || fim > 31 || inicio > 31 || inicio > fim)
-                    return false;
-                else
-                    return true;
-            case "Turno":
-                break;
-            default:
-        }
-    }
-
-    function camposIsValid(avaliacao, inicio, termino, turno) {
-        debugger
-        if (avaliacao == null || avaliacao == undefined || avaliacao < 0 || avaliacao === "") {
-            openMessageModal("O campo Avaliação deve ser preechido", null);
+    function camposIsValid(peso, cor) {
+        if (peso == null || peso == undefined || peso < 0 || peso === "") {
+            openMessageModal("O campo Peso deve ser preechido", null);
             return false;
         }
 
-        if (inicio == null || inicio == undefined || inicio < 0 || inicio === "") {
-            openMessageModal("O campo Inicio deve ser preechido", null);
+        if (cor == null || cor == undefined || cor < 0 || cor === "") {
+            openMessageModal("O campo Cor deve ser preechido", null);
             return false;
         }
 
-        if (termino == null || termino == undefined || termino < 0 || termino === "") {
-            openMessageModal("O campo Fim deve ser preechido", null);
-            return false;
-        }
+        //let tabela = $('#tabelaAgendamento tbody tr').not(':first');
 
-        let tabela = $('#tabelaAgendamento tbody tr').not(':first');
+        //let isDuplicated = $.grep(tabela, (o) => {
+        //    return turno == $(o).find('[data-column="slAgendamento"] :selected').val() &&
+        //        avaliacao == $(o).find('[data-column=inpAvaliacao]').val();
 
-        let isDuplicated = $.grep(tabela, (o) => {
-            return turno == $(o).find('[data-column="slAgendamento"] :selected').val() &&
-                avaliacao == $(o).find('[data-column=inpAvaliacao]').val();
+        //}).length > 0;
 
-        }).length > 0;
-
-        if (isDuplicated) {
-            openMessageModal("Já existe um agendamento para esta avaliação ou turno", null);
-            return false;
-        }
+        //if (isDuplicated) {
+        //    openMessageModal("Já existe um agendamento para esta avaliação ou turno", null);
+        //    return false;
+        //}
         return true;
     }
 
