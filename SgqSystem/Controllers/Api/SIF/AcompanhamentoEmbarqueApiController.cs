@@ -49,107 +49,141 @@ namespace SgqSystem.Controllers.Api.SIF
                 {
                     var retorno = new Retorno();
 
+
+                    var TipoVeiculo = new List<string>();
+                    var Transportador = new List<string>();
+                    var Placa = new List<string>();
+                    var NomeMotorista = new List<string>();
+                    var LacreNumero = new List<string>();
+                    var Termografo_Id = new List<string>();
+                    var SifNumber = new List<string>();
+                    var Pedido = new List<string>();
+                    var Instrucao = new List<string>();
+                    var NumeroNotaFiscal = new List<string>();
+                    var TipoCarga = new List<string>();
+                    var TipoEmbalagem = new List<string>();
+                    var TemperaturaMin = new List<string>();
+                    var TemperaturaMax = new List<string>();
+
+
                     foreach (var item in headerFieldsValues)
                     {
+
                         switch (item.Id)
                         {
                             //case 198: //Tipo de veículo
-                            //    retorno.TipoVeiculo = item.Value;
+                            //    TipoVeiculo.Add(item.Value);
                             //    break;
                             //case 199://Transportadora
-                            //    retorno.Transportador = item.Value;
+                            //    Transportador.Add(item.Value);
                             //    break;
                             //case 200: //Placa do veículo
-                            //    retorno.Placa = item.Value;
+                            //    Placa.Add(item.Value);
                             //    break;
                             //case 201: //Nome do motorista
-                            //    retorno.NomeMotorista = item.Value;
+                            //    NomeMotorista.Add(item.Value);
                             //    break;
                             //case 202: //Lacre número
-                            //    retorno.LacreNumero = item.Value;
+                            //    LacreNumero.Add(item.Value);
                             //    break;
                             //case 203: //Termógrafo número
-                            //    retorno.Termografo_Id = item.Value;
+                            //    Termografo_Id.Add(item.Value);
                             //    break;
                             //case 204: //SIF ou Nome
-                            //    retorno.SifNumber = item.Value;
+                            //    SifNumber.Add(item.Value);
                             //    break;
                             //case 205: //Pedido
-                            //    retorno.Pedido = item.Value;
+                            //    Pedido.Add(item.Value);
                             //    break;
                             //case 207: //Instrução
-                            //    retorno.Instrucao = item.Value;
+                            //    Instrucao.Add(item.Value);
                             //    break;
                             //case 208: //Notas Fiscais
-                            //    retorno.NumeroNotaFiscal = item.Value;
+                            //    NumeroNotaFiscal.Add(item.Value);
                             //    break;
                             //case 209: //Tipo de produto
-                            //    retorno.TipoCarga = item.Value;
+                            //    TipoCarga.Add(item.Value);
                             //    break;
                             //case 210: //Tipo de embalagem
-                            //    retorno.TipoEmbalagem = item.Value;
+                            //    TipoEmbalagem.Add(item.Value);
                             //    break;
                             //case 211: //Tipo de veículo
-                            //    retorno.TipoVeiculo = item.Value;
+                            //    TipoVeiculo.Add(item.Value);
                             //    break;
                             //case 212: //Termógrafo - T° mín
-                            //    retorno.TemperaturaMin = item.Value;
+                            //    TemperaturaMin.Add(item.Value);
                             //    break;
                             //case 213: //Termógrafo - T° máx   
-                            //    retorno.TemperaturaMax = item.Value;
+                            //    TemperaturaMax.Add(item.Value);
                             //    break;
 
 
                             case 1166: //Tipo de veículo
-                                retorno.TipoVeiculo = item.Value;
+                                TipoVeiculo.Add(item.Value);
                                 break;
                             case 1167://Transportadora
-                                retorno.Transportador = item.Value;
+                                Transportador.Add(item.Value);
                                 break;
                             case 1168: //Placa do veículo
-                                retorno.Placa = item.Value;
+                                Placa.Add(item.Value);
                                 break;
                             case 1169: //Nome do motorista
-                                retorno.NomeMotorista = item.Value;
+                                NomeMotorista.Add(item.Value);
                                 break;
                             case 1170: //Lacre número
-                                retorno.LacreNumero = item.Value;
+                                LacreNumero.Add(item.Value);
                                 break;
                             case 1172: //Lacre número
-                                retorno.LacreNumero = item.Value;
+                                LacreNumero.Add(item.Value);
                                 break;
                             case 1171: //Termógrafo número
-                                retorno.Termografo_Id = item.Value;
+                                Termografo_Id.Add(item.Value);
                                 break;
                             case 1173: //Termógrafo número
-                                retorno.Termografo_Id = item.Value;
+                                Termografo_Id.Add(item.Value);
                                 break;
                             case 1174: //SIF ou Nome
-                                retorno.SifNumber = item.Value;
+                                SifNumber.Add(item.Value);
                                 break;
                             case 1175: //Pedido
-                                retorno.Pedido = item.Value;
+                                Pedido.Add(item.Value);
                                 break;
                             case 1177: //Instrução
-                                retorno.Instrucao = item.Value;
+                                Instrucao.Add(item.Value);
                                 break;
                             case 1178: //Notas Fiscais
-                                retorno.NumeroNotaFiscal = item.Value;
+                                NumeroNotaFiscal.Add(item.Value);
                                 break;
                             case 1181: //Tipo de produto
-                                retorno.TipoCarga = item.Value;
+                                TipoCarga.Add(item.Value);
                                 break;
                             case 1180: //Tipo de embalagem
-                                retorno.TipoEmbalagem = item.Value;
+                                TipoEmbalagem.Add(item.Value);
                                 break;
                             case 1182: //Termógrafo - T° mín
-                                retorno.TemperaturaMin = item.Value;
+                                TemperaturaMin.Add(item.Value);
                                 break;
                             case 1183: //Termógrafo - T° máx   
-                                retorno.TemperaturaMax = item.Value;
+                                TemperaturaMax.Add(item.Value);
                                 break;
                         }
+
                     }
+
+                    retorno.TipoVeiculo = string.Join(" ,", TipoVeiculo);
+                    retorno.Transportador = string.Join(" ,", Transportador);
+                    retorno.Placa = string.Join(" ,", Placa);
+                    retorno.NomeMotorista = string.Join(" ,", NomeMotorista);
+                    retorno.LacreNumero = string.Join(" ,", LacreNumero);
+                    retorno.Termografo_Id = string.Join(" ,", Termografo_Id);
+                    retorno.SifNumber = string.Join(" ,", SifNumber);
+                    retorno.Pedido = string.Join(" ,", Pedido);
+                    retorno.Instrucao = string.Join(" ,", Instrucao);
+                    retorno.NumeroNotaFiscal = string.Join(" ,", NumeroNotaFiscal);
+                    retorno.TipoCarga = string.Join(" ,", TipoCarga);
+                    retorno.TipoEmbalagem = string.Join(" ,", TipoEmbalagem);
+                    retorno.TemperaturaMin = string.Join(" ,", TemperaturaMin);
+                    retorno.TemperaturaMax = string.Join(" ,", TemperaturaMax);
 
                     retorno.ParCompanyName = db.ParCompany.Find(form.unitId).Name;
 

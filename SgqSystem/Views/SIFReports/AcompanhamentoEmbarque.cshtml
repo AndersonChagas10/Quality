@@ -204,11 +204,48 @@
                                 <tbody></tbody>
                             </table>
 
+                            <hr />
+                            <br />
                             <div class="height-fix">
+                                <div class="">
+                                    <table border="0" cellspacing="0" cellpadding="1" style="width:100%;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Assinatura dos responsáveis pela avaliação deste relatório.</strong></td>
+                                            </tr>
+                                            <tr><td height="30px;"></td></tr>
+                                            <tr>
+                                                <td height="20px;">
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td height="20px" width="5%" align="center"></td>
+                                                                <td width="20%" align="center" style="border-bottom:1px solid black"></td>
+                                                                <td width="5%" align="center"></td>
+                                                                <td width="20%" align="center" style="border-bottom:1px solid black"></td>
+                                                                <td width="5%" align="center"></td>
+                                                                <td width="20%" align="center" style="border-bottom:1px solid black"></td>
+                                                                <td width="5%" align="center"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td height="20px" width="5%" align="center"></td>
+                                                                <td width="20%" align="center">Monitor GQ</td>
+                                                                <td width="5%" align="center"></td>
+                                                                <td width="20%" align="center">Supevisor do Setor<br>&nbsp;</td>
+                                                                <td width="5%" align="center"></td>
+                                                                <td width="20%" align="center">Garantia da Qualidade<br>&nbsp;</td>
+                                                                <td width="5%" align="center"></td>
+                                                            </tr>
 
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr><td><div id="divRodape"><table width="100%" border="0" cellspacing="0" cellpadding="1" style="font-size:10px;"></table></div></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-
-                            <div style="clear:both"></div>
                         </div>
                     </div>
                 </div>
@@ -476,15 +513,15 @@
                             if (!item.IsNotEvaluate) {
 
                                 if (item.IsConform) {
-                                    td = `<td colspan="${colspanStatus}" style="background-color:blue;"></td>`;
+                                    td = `<td colspan="${colspanStatus}">0</td>`;
 
                                 } else {
-                                    td = `<td colspan="${colspanStatus}" style="background-color:red;"></td>`;
+                                    td = `<td colspan="${colspanStatus}">1</td>`;
 
                                 }
 
                             } else {
-                                td = `<td colspan="${colspanStatus}" style="background-color:black;"></td>`;
+                                td = `<td colspan="${colspanStatus}"></td>`;
                             }
 
                             conteudoTabela += td;
