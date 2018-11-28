@@ -638,9 +638,9 @@
                             success: function (data) {
                                 debugger
                                 if (data.length <= 0) {
-                                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-info btn-xs popovers likert" onclick="abrirmodalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-info btn-xs popovers likert" onclick="abrirmodalEscalaLikert($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
                                 } else {
-                                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-success btn-xs popovers likert" onclick="abrirmodalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-success btn-xs popovers likert" onclick="abrirmodalEscalaLikert($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
                                 }
                             },
                             error: function (request, error) {

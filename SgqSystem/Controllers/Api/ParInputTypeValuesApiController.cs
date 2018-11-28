@@ -22,16 +22,16 @@ namespace SgqSystem.Controllers.Api
             var db = new SgqDbDevEntities();
             db.Configuration.LazyLoadingEnabled = false;
 
-            var agendamentos = db.ParInputTypeValues.Where(x => x.ParLevel3Value_Id == id).ToList();
+            var escalasLikert = db.ParInputTypeValues.Where(x => x.ParLevel3Value_Id == id).ToList();
 
-            return agendamentos;
+            return escalasLikert;
         }
 
         [HttpPost]
         [Route("Post")]
-        public List<ParInputTypeValues> Post([FromBody] List<ParInputTypeValues> listaAgendamento)
+        public List<ParInputTypeValues> Post([FromBody] List<ParInputTypeValues> listaEscalaLikert)
         {
-            foreach (var item in listaAgendamento)
+            foreach (var item in listaEscalaLikert)
             {
 
                 item.IsActive = true;
@@ -49,7 +49,7 @@ namespace SgqSystem.Controllers.Api
                 }
 
             }
-            return listaAgendamento;
+            return listaEscalaLikert;
         }
     }
 }

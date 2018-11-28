@@ -1,14 +1,14 @@
 ﻿<style>
-    #tabelaAgendamento td {
+    #tabelaLikert td {
         white-space: nowrap;
     }
 
-    #tabelaAgendamento input {
+    #tabelaLikert input {
         width: 140px;
     }
 </style>
 
-<div class="modal fade" id="modalAgendamento" role="dialog">
+<div class="modal fade" id="modalEscalaLikert" role="dialog">
     <div class="modal-dialog modal-lg vertical-align-center">
         <div class="modal-content">
             <div class="modal-header">
@@ -18,7 +18,7 @@
             <div class="modal-body">
                 <input class="hidden" data-column="inpAvaliacaoId" />
                 <div style="overflow:auto;">
-                    <table id="tabelaAgendamento" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
+                    <table id="tabelaLikert" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
                         <thead>
                             <tr>
                                 <th>Intervalo</th>
@@ -50,14 +50,14 @@
         openMessageModal("Por favor, salve a tarefa para parametrizar o intervalo.",null);
     }
 
-    function abrirmodalAgendamento(linha) {
-        $("#tabelaAgendamento tbody").html("");
-        $("#tabelaAgendamento").attr('style', '');
+    function abrirmodalEscalaLikert(linha) {
+        $("#tabelaLikert tbody").html("");
+        $("#tabelaLikert").attr('style', '');
         var obj = $(linha).parents('tr').data();
         ParLevel3_Id = obj.Id;
         valorAvaliacao = obj.evaluationNumber;
         botaoAgendamento = linha;
-        $('#modalAgendamento').modal('show');
+        $('#modalEscalaLikert').modal('show');
         $("#titulo").html("");
         $("#titulo").append("Escala Likert - Intervalo Min: " + obj.IntervalMin + " Max: " + obj.IntervalMax);
         var id = obj.Id;
@@ -84,15 +84,9 @@
         });
     }
 
-    function LimpaCampos() {
-        $("[data-column=inpInicio]").val("");
-        $("[data-column=inpTermino]").val("");
-    }
-
-
     function MontaNovaLinha(data, valor) {
 
-        $("#tabelaAgendamento tbody").append("<tr>"
+        $("#tabelaLikert tbody").append("<tr>"
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpIntervalo" disabled="disabled" /></td>'
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" /></td>'
             + '<td><input type="color" name="favcolor" value = "#ff0000"  class="input-sm" data-column="inpCor" /></td>'
@@ -103,19 +97,19 @@
     
         if (data != null && data != undefined) {
 
-            $("#tabelaAgendamento tbody tr:last").data(data);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpValor"]').val(data.Valor);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpCor"]').val(data.Cor);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
+            $("#tabelaLikert tbody tr:last").data(data);
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpValor"]').val(data.Valor);
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpCor"]').val(data.Cor);
+            $("#tabelaLikert tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
+            $("#tabelaLikert tbody tr:last").find('[data-column=inpId]').val(data.Id);
         } else {
-            $("#tabelaAgendamento tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
-            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
+            $("#tabelaLikert tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
         }
     }
 
-    $("#modalAgendamento").on('input', '[data-column="inpValor"]', function () {
+    $("#modalEscalaLikert").on('input', '[data-column="inpValor"]', function () {
         if (parseInt($(this).val()) < 0 || parseInt($(this).val()) > 100) {
             $(this).addClass('alert-danger');
         } else {
@@ -123,12 +117,11 @@
         }
     });
 
-    $("#modalAgendamento").on('click', "#btnSalvar", function () {
-        var listaTabelaAgendamento = [];
+    $("#modalEscalaLikert").on('click', "#btnSalvar", function () {
+        var listatabelaLikert = [];
         var contadorErros = 0;
-        listaTabelaAgendamento = $("#tabelaAgendamento tbody tr");
-        debugger
-        listaTabelaAgendamento.each(function (index, item) {
+        listatabelaLikert = $("#tabelaLikert tbody tr");
+        listatabelaLikert.each(function (index, item) {
             form = {
                 Intervalo: $(item).find("[data-column=inpIntervalo]").val(),
                 Valor: $(item).find("[data-column=inpValor]").val(),
@@ -157,7 +150,7 @@
                     listaEscala = [];
                     openMessageModal("Dados salvos com sucesso", null);
 
-                    $('#modalAgendamento').modal('hide');
+                    $('#modalEscalaLikert').modal('hide');
                     
                     var tabela = $('#tableLevel3Value  tbody  tr');
                     var botao = $.grep($(tabela), function (a) {
@@ -175,18 +168,5 @@
             openMessageModal("Campos obrigatórios Valor e Cor possuem valores inválidos.", null);
         }
     });
-
-    function camposIsValid(peso, cor) {
-        if (peso == null || peso == undefined || peso < 0 || peso === "") {
-            openMessageModal("O campo Peso deve ser preechido", null);
-            return false;
-        }
-
-        if (cor == null || cor == undefined || cor < 0 || cor === "") {
-            openMessageModal("O campo Cor deve ser preechido", null);
-            return false;
-        }
-        return true;
-    }
 
 </script>
