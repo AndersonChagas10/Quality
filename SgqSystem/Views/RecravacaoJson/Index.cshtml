@@ -63,13 +63,12 @@
                                 @Html.Raw(item.Name)
                             </td>
                             <td>
-                                @if (item.UserValidated_Id > 0)
-                                {
-                                    <text>Linha Validada</text>
-                                }
-                                else if (item.UserFinished_Id > 0)
+                                @if (item.UserFinished_Id > 0)
                                 {
                                     <text>Linha Finalizada</text>
+                                }else if (item.UserValidated_Id > 0)
+                                {
+                                    <text>Linha Validada</text>
                                 }
                                 else
                                 {

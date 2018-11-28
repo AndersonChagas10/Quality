@@ -132,7 +132,7 @@ namespace SgqSystem.Controllers.Api
                 else
                 {
                     existente = db.RecravacaoJson.Where(r => r.ParCompany_Id == idCompany
-                    && r.Linha_Id == idLinha && !isValidated && r.SalvoParaInserirNovaColeta == null)
+                    && r.Linha_Id == idLinha && r.isValidated == null && r.SalvoParaInserirNovaColeta == null)
                     .OrderByDescending(x => x.Id).FirstOrDefault()?.Id;
                 }
 
@@ -345,110 +345,113 @@ namespace SgqSystem.Controllers.Api
                     collectionJson += ";"; //SEPARADOR LEVEL2
 
                     // Início do Level03
-                    foreach (dynamic Tarefa in lata["ResultValue"])
+                    if (lata["ResultValue"] != null)
                     {
-                        int parCompany = Convert.ToInt32(linha["ParCompany_Id"]);
-                        var parLeve3Level2 = db.ParLevel3Level2.Where(t => t.ParCompany_Id == null
-                        || t.ParCompany_Id == parCompany)
-                            .OrderByDescending(t => t.ParCompany_Id).FirstOrDefault();
-                        decimal peso = parLeve3Level2.Weight;
-
-                        string tarefa_id = Convert.ToString(Tarefa);
-                        int primeiraAspas = tarefa_id.IndexOf("\"");
-                        int segundaAspas = tarefa_id.Substring(primeiraAspas + 1).IndexOf("\"");
-                        tarefa_id = tarefa_id.Substring(primeiraAspas + 1, segundaAspas - primeiraAspas);
-                        int contador = 0;
-                        string valorDaTarefa = "";
-                        string tipo = "";
-                        string minimo = "", maximo = "";
-                        string nome = "";
-
-                        foreach (dynamic Parametrizacao in lata["ListParlevel3"])
+                        foreach (dynamic Tarefa in lata["ResultValue"])
                         {
-                            nome = Parametrizacao["Name"];
+                            int parCompany = Convert.ToInt32(linha["ParCompany_Id"]);
+                            var parLeve3Level2 = db.ParLevel3Level2.Where(t => t.ParCompany_Id == null
+                            || t.ParCompany_Id == parCompany)
+                                .OrderByDescending(t => t.ParCompany_Id).FirstOrDefault();
+                            decimal peso = parLeve3Level2.Weight;
 
-                            if (tarefa_id == Convert.ToString(Parametrizacao["Id"]))
+                            string tarefa_id = Convert.ToString(Tarefa);
+                            int primeiraAspas = tarefa_id.IndexOf("\"");
+                            int segundaAspas = tarefa_id.Substring(primeiraAspas + 1).IndexOf("\"");
+                            tarefa_id = tarefa_id.Substring(primeiraAspas + 1, segundaAspas - primeiraAspas);
+                            int contador = 0;
+                            string valorDaTarefa = "";
+                            string tipo = "";
+                            string minimo = "", maximo = "";
+                            string nome = "";
+
+                            foreach (dynamic Parametrizacao in lata["ListParlevel3"])
                             {
-                                foreach (dynamic listParlevel3 in Parametrizacao["ParLevel3Value"])
+                                nome = Parametrizacao["Name"];
+
+                                if (tarefa_id == Convert.ToString(Parametrizacao["Id"]))
                                 {
-                                    tipo = listParlevel3["ParLevel3InputType_Id"];
-                                    minimo = listParlevel3["IntervalMin"];
-                                    maximo = listParlevel3["IntervalMax"];
+                                    foreach (dynamic listParlevel3 in Parametrizacao["ParLevel3Value"])
+                                    {
+                                        tipo = listParlevel3["ParLevel3InputType_Id"];
+                                        minimo = listParlevel3["IntervalMin"];
+                                        maximo = listParlevel3["IntervalMax"];
+                                        break;
+                                    }
+                                    foreach (dynamic parLevel3Value_OuterList in Parametrizacao["ParLevel3Value_OuterList"])
+                                    {
+                                        tipo = parLevel3Value_OuterList["ParLevel3InputType_Id"];
+                                        minimo = parLevel3Value_OuterList["LimInferior"];
+                                        maximo = parLevel3Value_OuterList["LimSuperior"];
+                                        break;
+                                    }
                                     break;
                                 }
-                                foreach (dynamic parLevel3Value_OuterList in Parametrizacao["ParLevel3Value_OuterList"])
+                            }
+
+                            foreach (dynamic valorTarefa in Tarefa)
+                            {
+                                valorDaTarefa = valorTarefa[(amostraAtual + 1).ToString()];
+                                if (contador == amostraAtual)
                                 {
-                                    tipo = parLevel3Value_OuterList["ParLevel3InputType_Id"];
-                                    minimo = parLevel3Value_OuterList["LimInferior"];
-                                    maximo = parLevel3Value_OuterList["LimSuperior"];
                                     break;
                                 }
-                                break;
+                                ++contador;
                             }
-                        }
 
-                        foreach (dynamic valorTarefa in Tarefa)
-                        {
-                            valorDaTarefa = valorTarefa[(amostraAtual + 1).ToString()];
-                            if (contador == amostraAtual)
+                            bool isConform = false;
+                            if (Convert.ToInt32(tipo) == 99 || Convert.ToInt32(tipo) == 3)
                             {
-                                break;
+                                isConform = Convert.ToDecimal(minimo.Replace(".", ",")) <= Convert.ToDecimal(valorDaTarefa.Replace(".", ","))
+                                    && Convert.ToDecimal(valorDaTarefa.Replace(".", ",")) <= Convert.ToDecimal(maximo.Replace(".", ","));
                             }
-                            ++contador;
-                        }
-
-                        bool isConform = false;
-                        if (Convert.ToInt32(tipo) == 99 || Convert.ToInt32(tipo) == 3)
-                        {
-                            isConform = Convert.ToDecimal(minimo.Replace(".", ",")) <= Convert.ToDecimal(valorDaTarefa.Replace(".", ","))
-                                && Convert.ToDecimal(valorDaTarefa.Replace(".", ",")) <= Convert.ToDecimal(maximo.Replace(".", ","));
-                        }
-                        else
-                        {
-                            if (valorDaTarefa == "1" || valorDaTarefa == "true")
+                            else
                             {
-                                isConform = true;
+                                if (valorDaTarefa == "1" || valorDaTarefa == "true")
+                                {
+                                    isConform = true;
+                                }
                             }
+
+                            collectionJson += "<level03>";
+                            collectionJson += tarefa_id; //level3 0
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += dataColetaFormatada.ToString("MM/dd/yyyy HH:mm:ss");//collectionDate; //level3 1
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += valorDaTarefa; //level3 2
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += isConform; //level3 3 //conforme ou não
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += "1"; //level3 4
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += "null"; //level3 5
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += valorDaTarefa; //level3 6
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += "undefined"; //level3 7
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += peso.ToString().Replace(",", "."); //level3 8 -------------------------- peso da tarefa
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += nome; //level3 9 --------------------------- nome da tarefa
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += minimo; //level3 10
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += maximo; //level3 11
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += "0"; //level3 12 --------------------- verificar caso que possa existir Não Avaliar
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += "0";//av; //level3 13
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += (isConform ? 0 : 1);//NC; //level3 14
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += "1"; //level3 15 
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += (isConform ? 0 : 1) * peso; //level3 16 --------------------- peso X defeito
+                            collectionJson += ","; //SEPARADOR LEVEL3
+                            collectionJson += "0"; //level3 17
+                            collectionJson += "</level03>";
+
                         }
-
-                        collectionJson += "<level03>";
-                        collectionJson += tarefa_id; //level3 0
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += dataColetaFormatada.ToString("MM/dd/yyyy HH:mm:ss");//collectionDate; //level3 1
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += valorDaTarefa; //level3 2
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += isConform; //level3 3 //conforme ou não
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "1"; //level3 4
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "null"; //level3 5
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += valorDaTarefa; //level3 6
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "undefined"; //level3 7
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += peso.ToString().Replace(",", "."); //level3 8 -------------------------- peso da tarefa
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += nome; //level3 9 --------------------------- nome da tarefa
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += minimo; //level3 10
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += maximo; //level3 11
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "0"; //level3 12 --------------------- verificar caso que possa existir Não Avaliar
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "0";//av; //level3 13
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += (isConform ? 0 : 1);//NC; //level3 14
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "1"; //level3 15 
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += (isConform ? 0 : 1) * peso; //level3 16 --------------------- peso X defeito
-                        collectionJson += ","; //SEPARADOR LEVEL3
-                        collectionJson += "0"; //level3 17
-                        collectionJson += "</level03>";
-
                     }
 
                     // Final do Level03
