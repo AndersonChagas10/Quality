@@ -3822,9 +3822,68 @@ $(document).ready(function(){
                                     });
                             });
 });
+
+function validaNumeroEscalaLikert(evt, that)
+{
+    let e = event || evt; 
+    let charCode = e.which || e.keyCode;
+
+    $(that).parents('li').css('background-color', '');
+
+	if(!(charCode == 45 && $(that).val().length == 0)){
+		if (charCode > 31 && (charCode < 48 || charCode > 57)){
+			e.preventDefault();
+			return false;
+		}
+	}
+
+    aplicaCorAoInput(that);
+
+    return true;
+}
+
+function aplicaCorAoInput(input) {
+
+    let paramns = $(input).attr('paramns')
+
+    let properties = paramns.split('|');
+    let arr = [];
+
+    properties.forEach(function(property) {
+        let tup = property.split(':');
+        arr[tup[0]] = tup[1];
+    });
+
+    let value = $(input).val();
+    let color = arr[value];
+
+    $(input).parents('li').css('background-color', color);
+
+}
+
+function validaValoresValidosEscalaLikert(input) {
+
+    let paramns = $(input).attr('paramns')
+
+    let properties = paramns.split('|');
+    let arr = [];
+	
+	var valido = false;
+
+    properties.forEach(function(property) {
+        let tup = property.split(':');
+		if(tup[0] == $(input).val())
+			valido = true;
+    });
+
+    $(input).val('');
+    $(input).parents('li').css('background-color', '');
+
+}
                               </script> ";
 
             //string resource = GetResource();
+
 
             return APPMain + supports;// + resource;
         }
@@ -6497,7 +6556,17 @@ $(document).ready(function(){
             }//Escala Likert
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
-                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString());
+                var ranges = dbEf.ParInputTypeValues.Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id).ToList();
+
+                var paramns = new List<string>();
+
+                foreach (var item in ranges)
+                {
+                    paramns.Add(item.Intervalo + ":" + item.Cor);
+                }
+
+                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|",paramns));
+
             }//Resultado
             else if (parLevel3.ParLevel3InputType_Id == 10)
             {
