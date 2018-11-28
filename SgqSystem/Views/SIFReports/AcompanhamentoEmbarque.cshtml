@@ -31,6 +31,15 @@
         font-size: 8px;
         /*white-space: nowrap;*/
     }
+
+    @@media print {
+
+        #trAmostra {
+            background-color: #c3c3c3 !important;
+            -webkit-print-color-adjust: exact !important;
+        }
+    }
+
 </style>
 
 <div class="page-content-wrapper">
@@ -382,8 +391,8 @@
 
 
                 let linhaAmostra =
-                    `<tr style="background-color: #c3c3c3;">
-                        <td colspan="3">Amostras</td>`;
+                    `<tr id="trAmostra" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
+                        <td colspan="3"><strong>Amostras</strong></td>`;
 
                 let terceiraLinha =
                     `<tr>
@@ -413,7 +422,7 @@
 
                         terceiraLinha += "<td colspan=" + colspanAmostraEData + ">" + new Date(dataAmostras[index]).toLocaleDateString() + "</td>";
 
-                        linhaAmostra += "<td colspan=" + colspanAmostraEData + ">" + amostra + "</td>";
+                        linhaAmostra += "<td colspan=" + colspanAmostraEData + "><strong> " + amostra + "</strong></td>";
 
                     });
 
@@ -491,7 +500,6 @@
                                 <td> ${newLevel3Group} </td>
                                 <td colspan="2">${levels3[index]}</td>`;
                     }
-
 
 
                     let Produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
