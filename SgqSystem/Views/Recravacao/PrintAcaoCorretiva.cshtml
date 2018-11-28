@@ -356,9 +356,9 @@
         .tableCorrectiveAction td.tbodyTd {
             height: 35px;
         }
-
-    .bgRed {
-        background-color: rgba(248, 2, 2, 0.29) !important;
+        
+    .bgRed, .bgRed * {
+        color: rgba(248, 2, 2, 1) !important;
         display: block;
     }
 
@@ -383,6 +383,7 @@
 
 <html xmlns="">
 <head>
+    <meta charset="UTF-8">
     <title>Print Recravação</title>
 
     @Styles.Render("~/bundles/RecravacaoPrintCss")
@@ -441,7 +442,7 @@
                         <strong>Data: </strong> @Html.Raw(ViewBag.OutroRelatorio.AddDate.ToString("dd/MM/yyyy"))
                     </p>
                     <p>
-                        <strong>Relatório: </strong> @Html.Raw(ViewBag.OutroRelatorio.ItemMenu.Name)
+                        <strong>Referência ao Documento: </strong> @Html.Raw(ViewBag.OutroRelatorio.ItemMenu.Name)
                     </p>
                 </div>
                 <div class="clearfix"></div>
@@ -514,6 +515,8 @@
 
                         </div>
                     </div>
+
+                    
                     <div class="clearfix"></div>
                     <div class="clearfix"></div>
                     <div class="clearfix"></div>
@@ -554,11 +557,11 @@
                                         </tr>
                                         <tr>
                                             <td height="20px" width="5%" align="center"></td>
-                                            <td width="25%" align="center">Monitor</td>
+                                            <td width="25%" align="center">Monitor responsável</td>
                                             <td width="5%" align="center"></td>
-                                            <td width="25%" align="center">Resp. Setor Enlatamento</td>
+                                            <td width="25%" align="center">Supervisor do setor</td>
                                             <td width="5%" align="center"></td>
-                                            <td width="25%" align="center">Garantia de Qualidade</td>
+                                            <td width="25%" align="center">Supervisor responsável</td>
                                             <td width="5%" align="center"></td>
                                         </tr>
 
@@ -689,6 +692,7 @@
                 vm.linhas = [{}]
                 vm.produtos = [{}]
                 vm.fornecedorLata = [{}]
+                vm.dataRecebimento = []
                 vm.fornecedorTampaLata = [{}]
                 vm.seletedLinha = { Id: 0 }
                 vm.selectedLata = {}
@@ -1066,6 +1070,18 @@
 
                                     if (vm.seletedLinha.form.DataRecebimentoLatas)
                                         vm.seletedLinha.form.DataRecebimentoLatas = new Date(vm.seletedLinha.form.DataRecebimentoLatas)
+                                    
+                                    if (vm.seletedLinha.form.dataRecebimento) {
+                                        vm.dataRecebimento = vm.seletedLinha.form.dataRecebimento;
+                                        var list = [];
+                                        vm.dataRecebimento.forEach(function (o, i) {
+                                            if (o != null)
+                                                list.push(new Date(o));
+                                            else
+                                                list.push(null);
+                                        });
+                                        vm.dataRecebimento = list;
+                                    }
 
                                     if (vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
                                         vm.seletedLinha.form.DataRecebimentoTampasFundosLatas = new Date(vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)

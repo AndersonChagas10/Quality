@@ -257,7 +257,11 @@
                     </div>
                     <div class="collapse" id="collapseLinhas">
                         <div class="panel panel-default">
-                            <button class="btn btn-default" ng-class="{active:linhaSelecionada.Name == item.Name}" ng-repeat="item in linhas track by $index" ng-click="selectLinha($index)" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            <button class="btn btn-default" ng-class="{active:linhaSelecionada.Name == item.Name}" 
+                                    ng-repeat="item in linhas track by $index" ng-click="selectLinha($index)" 
+                                    type="button" data-toggle="collapse" data-target="#collapseExample" 
+                                    aria-expanded="false" aria-controls="collapseExample"
+                                    ng-if="item.Id == @Html.Raw(ViewBag.RecravacaoJson_LinhaId)">
                                 {{item.Name}} <strong>{{timerLinha(item, $index).text}}</strong>
                             </button>
                         </div>
@@ -272,7 +276,9 @@
                     </div>
                     <div class="panel-body">
                         <ul>
-                            <li ng-class="{panelDanger:timerLinha(item, $index).danger}" ng-click="selectLinha($index)" ng-repeat="item in linhas track by $index">
+                            <li ng-class="{panelDanger:timerLinha(item, $index).danger}" 
+                                ng-click="selectLinha($index)" 
+                                ng-repeat="item in linhas track by $index"
                                 <span><strong>{{timerLinha(item, $index).text}}</strong></span>
                                 <span>{{item.Name}}</span>
                             </li>
@@ -549,9 +555,9 @@
                         <i id="saveIcon" class="fa fa-plus"></i>
                         <i id="loadIcon" class="fa fa-circle-o-notch fa-spin" style="display:none;"></i>
                     </button>
-                    <button ng-show="linhaSelecionada.Id > 0" ng-click="atualizaPrametrizacaoParaNovaColeta(activeInLine, true, true, true)" title="Atualizar Parametrização / Nova Coleta" class="btn btn-lg btn-info btnFloatCircleRenew">
+                    @*<button ng-show="linhaSelecionada.Id > 0" ng-click="atualizaPrametrizacaoParaNovaColeta(activeInLine, true, true, true)" title="Atualizar Parametrização / Nova Coleta" class="btn btn-lg btn-info btnFloatCircleRenew">
                         <i id="saveIcon" class="fa fa-undo"></i>
-                    </button>
+                    </button>*@
                     <button ng-show="linhaSelecionada.Id > 0" ng-click="print()" title="Imprimir" class="btn btn-lg btn-info btnFloatCirclePrint">
                         <i id="saveIcon" class="fa fa-print"></i>
                     </button>
@@ -916,7 +922,7 @@
                                                 <button type="button" class="btn btn-sm btn-danger pull-right" style="margin-bottom:10px;" title="Remover Ação Corretiva / Preventiva" ng-show="lataSelecionada.correctiveActionList.length > 1" ng-click="lataSelecionada.correctiveActionList.splice($index, 1)"><span aria-hidden="true" class="times">&times;</span></button>
                                             </div>
                                         </div>
-                                        <correctiveaction lataca="ca.correctiveAction"></correctiveaction>
+                                        @*<correctiveaction lataca="ca.correctiveAction"></correctiveaction>*@
                                         <preventiveaction latapa="ca.PreventiveAction"></preventiveaction>
                                     </div>
 
@@ -1539,6 +1545,7 @@
                                 vm.linhaSelecionada = vm.linhas[c]
                                 vm.activeInLine = vm.linhas[c].Id
                                 vm.getState()
+
                             }
                         });
                 }
@@ -1826,7 +1833,7 @@
                     //gambi pq isso é chamado N vezes aleatoriamente
                     if (salvoParaInserirNovaLinha) {
                         linha['SalvoParaInserirColeta'] = true;
-                        $http({ method: 'POST', url: vm.salvaLinhaUrl, data: { linha: linha, latas: latas }, showLoader: notShowLoader ? false : true })
+                        $http({ method: 'POST', url: vm.salvaLinhaUrl, data: { recravacaoJsonId: @Html.Raw(ViewBag.RecravacaoJsonId), linha: linha, latas: latas }, showLoader: notShowLoader ? false : true })
                                 .then(function (r) {
                                     if (r.data.errors) {
                                         r.data.errors.forEach(function (o) {
@@ -1841,7 +1848,7 @@
                         linha['SalvoParaInserirColeta'] = false
                         gambiLeo += 500;
                         setTimeout(function () {
-                            $http({ method: 'POST', url: vm.salvaLinhaUrl, data: { linha: linha, latas: latas }, showLoader: notShowLoader ? false : true })
+                            $http({ method: 'POST', url: vm.salvaLinhaUrl, data: { recravacaoJsonId: @Html.Raw(ViewBag.RecravacaoJsonId), linha: linha, latas: latas }, showLoader: notShowLoader ? false : true })
                                 .then(function (r) {
                                     if (r.data.errors) {
                                         r.data.errors.forEach(function (o) {
@@ -2054,7 +2061,7 @@
 
                 /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
-                    $http({ method: 'GET', url: `${vm.salvaLinhaUrl}?companyId=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}&linhaId=${vm.activeInLine}` })
+                    $http({ method: 'GET', url: `${vm.salvaLinhaUrl}?id=@Html.Raw(ViewBag.RecravacaoJsonId)&x=0` })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -2699,19 +2706,19 @@
                     date = new Date(date);
                 }
 
-                vm.urlPrint = '@Url.Action("print3", "Recravacao")'
+                vm.urlPrint = '@Url.Action("printRetroativa", "Recravacao")'
                 vm.print = function () {
                     if (vm.indicadorSelecionado && vm.indicadorSelecionado.Id > 0 && vm.linhaSelecionada && vm.linhaSelecionada.Id > 0) {
                         let preUrl = vm.urlPrint;
-                        let urlPrint = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}`
+                        let urlPrint = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}&recravacaoJsonId=@Html.Raw(ViewBag.RecravacaoJsonId)`
                         openInNewTab(urlPrint)
                     }
                 }
-                vm.urlPrintAcaoCorretiva = '@Url.Action("printAcaoCorretiva", "Recravacao")'
+                vm.urlPrintAcaoCorretiva = '@Url.Action("printAcaoCorretivaRetroativa", "Recravacao")'
                 vm.printAcaoCorretiva = function () {
                     if (vm.indicadorSelecionado && vm.indicadorSelecionado.Id > 0 && vm.linhaSelecionada && vm.linhaSelecionada.Id > 0) {
                         let preUrl = vm.urlPrintAcaoCorretiva;
-                        let urlPrintAcaoCorretiva = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}`
+                        let urlPrintAcaoCorretiva = `${preUrl}?indicadorId=${vm.indicadorSelecionado.Id}&linhaId=${vm.linhaSelecionada.Id}&recravacaoJsonId=@Html.Raw(ViewBag.RecravacaoJsonId)`
                         openInNewTab(urlPrintAcaoCorretiva)
                     }
                 }

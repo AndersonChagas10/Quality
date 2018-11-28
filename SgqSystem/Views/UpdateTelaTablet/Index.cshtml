@@ -63,10 +63,19 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
         closeLeftSidebar();
-        const refreshStatusUrl = "@Url.Action("GetGeneratedUnits", "api/AppParams")"
-        const urlUpdateTablets = '@Url.Action("UpdateGetTelaThread", "api/AppParams")'
-        //const refreshStatusUrl = "/SGQ/api/AppParams/GetGeneratedUnits";
-        //const urlUpdateTablets = "/SGQ/api/AppParams/UpdateGetTelaThread";
+        @if (ViewBag.UpdateTelaTabletRoot == "~") {
+            <text>
+                const refreshStatusUrl = "@Url.Action("GetGeneratedUnits", "api/AppParams")"
+                const urlUpdateTablets = '@Url.Action("UpdateGetTelaThread", "api/AppParams")'
+             </text>
+        }else
+        {
+            <text>
+                const refreshStatusUrl = "@Html.Raw(ViewBag.UpdateTelaTabletRoot)/GetGeneratedUnits";
+                const urlUpdateTablets = "@Html.Raw(ViewBag.UpdateTelaTabletRoot)/UpdateGetTelaThread";
+            </text>
+        }
+
         var userUnit;
 
         $(document).ready(function() {
@@ -88,7 +97,7 @@
                         data: things,
                         dataType: "JSON",
                         contentType: "application/json; charset=utf-8",
-                        cache: false, 
+                        cache: false,
                         success: function (response) {
                             getDataTable(response);
                             $('#spamLoading').LoadingOverlay("hide");

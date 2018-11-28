@@ -26,8 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>false</Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -420,6 +419,7 @@
     <Compile Include="Controllers\CadastrosGerais\ParModulesController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParModuleXModulesController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
+    <Compile Include="Controllers\Recravacao\RecravacaoJsonController.cs" />
     <Compile Include="Controllers\Relatorios\RelatorioReprocessoController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoLinhasController.cs" />
     <Compile Include="Controllers\Recravacao\ParRecravacao_Linhas.cs" />
@@ -1844,6 +1844,10 @@
     <Content Include="Views\MotivoAtraso\Edit.cshtml" />
     <Content Include="Views\MotivoAtraso\Index.cshtml" />
     <Content Include="Views\Params\_Agendamento.cshtml" />
+    <Content Include="Views\RecravacaoJson\Index.cshtml" />
+    <Content Include="Views\Recravacao\Retroativo.cshtml" />
+    <Content Include="Views\Recravacao\PrintRetroativa.cshtml" />
+    <Content Include="Views\Recravacao\PrintAcaoCorretivaRetroativa.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1938,7 +1942,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem/</IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -446,7 +446,7 @@ namespace SgqSystem.Services
 
             string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
                                  "    <span class=\"input-group-btn btn-minus\"> </span>             " +
-                                 "         <input type=\"text\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:100%;\">     " +
+                                 "         <input type=\"text\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:100%;\" placeholder=\"Observações\">     " +
                                  "</div>                                                    ";
             return texto;
         }
@@ -629,7 +629,12 @@ namespace SgqSystem.Services
                                    );
 
 
-            string tags = " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\"" + parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
+            string peso = parLevel3.Weight.ToString();
+
+            if (parLevel3.ParLevel3InputType_Id == 11)
+                peso = "0";
+
+            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\""+parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
 
 
             //Gera o level3
@@ -647,6 +652,13 @@ namespace SgqSystem.Services
                                     classe: "col-xs-0"
                                 );
             }
+            else if (parLevel3.ParLevel3InputType_Id == 6)
+            {
+                labels = div(
+                                    outerhtml: input,
+                                    classe: "col-xs-3 counters"
+                                );
+            }
             else
             {
                 labels = div(
@@ -662,6 +674,13 @@ namespace SgqSystem.Services
                 counters = div(
                               outerhtml: input,
                               classe: "col-xs-6 counters"
+                              );
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 6)
+            {
+                counters = div(
+                              outerhtml: labelsInputs,
+                              classe: "col-xs-3"
                               );
             }
             else
