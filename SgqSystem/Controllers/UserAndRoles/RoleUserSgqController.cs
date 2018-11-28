@@ -80,7 +80,7 @@ namespace SgqSystem.Controllers.UserAndRoles
 
         private void SaveRoleSgqXItemMenu(RoleUserSgqDTO regra)
         {
-            var ListaModfy = db.RoleUserSgqXItemMenu.Where(r => r.RoleUserSgq_Id == regra.Id).ToList();
+            var ListaModfy = db.RoleUserSgqXItemMenu.Where(r => r.RoleUserSgq_Id == regra.Id && r.IsActive == true && !regra.ItemMenuIDs.Contains(r.ItemMenu_Id)).ToList();
 
             foreach (var item in ListaModfy)
             {
@@ -88,11 +88,9 @@ namespace SgqSystem.Controllers.UserAndRoles
                 item.AlterDate = DateTime.Now;
             }
 
-            db.SaveChanges();
-
             if (regra.ItemMenuIDs != null)
             {
-                foreach (var ItemMenu_Id in regra.ItemMenuIDs)
+                foreach (var ItemMenu_Id in regra.ItemMenuIDs.Where(r=> !ListaModfy.Any(y=>y.ItemMenu_Id == r)))
                 {
                     //var RoleUserSgqXItemMenu = Mapper.Map<RoleUserSgqXItemMenu>(item);
                     var RoleUserSgqXItemMenu = new RoleUserSgqXItemMenu();
@@ -104,9 +102,9 @@ namespace SgqSystem.Controllers.UserAndRoles
 
                     db.RoleUserSgqXItemMenu.Add(RoleUserSgqXItemMenu);
                 }
-
-                db.SaveChanges();
             }
+
+			db.SaveChanges();
         }
 
         private void ValidaUserSgqDto(RoleUserSgqDTO regra)

@@ -415,6 +415,7 @@
     <Compile Include="Controllers\ParModulesController.cs" />
     <Compile Include="Controllers\ParModuleXModulesController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
+    <Compile Include="Controllers\Recravacao\RecravacaoJsonController.cs" />
     <Compile Include="Controllers\RelatorioReprocessoController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoLinhasController.cs" />
     <Compile Include="Controllers\Recravacao\ParRecravacao_Linhas.cs" />
@@ -1833,6 +1834,10 @@
     <Content Include="Views\ParVinculoPeso\Edit.cshtml" />
     <Content Include="Views\ParVinculoPeso\Index.cshtml" />
     <Content Include="Views\Integracao\Index.cshtml" />
+    <Content Include="Views\RecravacaoJson\Index.cshtml" />
+    <Content Include="Views\Recravacao\Retroativo.cshtml" />
+    <Content Include="Views\Recravacao\PrintRetroativa.cshtml" />
+    <Content Include="Views\Recravacao\PrintAcaoCorretivaRetroativa.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

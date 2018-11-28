@@ -28,6 +28,8 @@ namespace SgqSystem.Controllers.Home
             List<ParCompanyDTO> listaMinhasUnidades = (List<ParCompanyDTO>)ViewBag.UnidadeUsuario;
             ViewBag.UnidadesUsuario = listaMinhasUnidades;
             ViewBag.IdUnidadesUsuario = listaMinhasUnidades.Select(u => u.Id).ToList();
+
+            ViewBag.UpdateTelaTabletRoot = System.Configuration.ConfigurationManager.AppSettings["UpdateTelaTabletRoot"];
             //listaMinhasUnidades.Select(u=>u.Id);
 
             ViewBag.IsBtnAtualizar = false;

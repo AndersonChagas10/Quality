@@ -695,7 +695,8 @@ namespace Dominio.Services
                                 FullName = existenteNoDbAntigo.cNmUsuario,
                                 Phone = existenteNoDbAntigo.cCelular ?? existenteNoDbAntigo.cTelefone,
                                 Email = existenteNoDbAntigo.cEMail,
-                                Password = Guard.EncryptStringAES(userDto.Password)
+                                Password = Guard.EncryptStringAES(userDto.Password),
+                                IsActive = true
                             };
                         }
                         catch (Exception e)
