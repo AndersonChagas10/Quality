@@ -35,18 +35,22 @@
                 <button type="button" data-dismiss="modal" onclick="LimpaCampos()" class="btn btn-default">Fechar</button>
             </div>
         </div>
-        
+
 
     </div>
+</div>
 <script>
     //variaveis globais
     var botaoAgendamento = '';
     var valorAvaliacao = '';
-    var listaAgendamento = [];
+    var listaEscala = [];
     var ParLevel3_Id = '';
 
+    function mensagemAlerta() {
+        openMessageModal("Por favor, salve a tarefa para parametrizar o intervalo.",null);
+    }
+
     function abrirmodalAgendamento(linha) {
-        debugger
         $("#tabelaAgendamento tbody").html("");
         $("#tabelaAgendamento").attr('style', '');
         var obj = $(linha).parents('tr').data();
@@ -58,7 +62,7 @@
         $("#titulo").append("Escala Likert - Intervalo Min: " + obj.IntervalMin + " Max: " + obj.IntervalMax);
         var id = obj.Id;
         $.ajax({
-            url: '@Url.Content("~")' + 'api/AgendamentoApi/Get/' + id,
+            url: '@Url.Content("~")' + 'api/EscalaLikertAPI/Get/' + id,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -94,11 +98,9 @@
             + '<td><input type="color" name="favcolor" value = "#ff0000"  class="input-sm" data-column="inpCor" /></td>'
             + '<td class="hidden"> <input data-column="inpParLevel3Value_Id" class="hidden" /></td>'
             + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
-            // + '<td>  <button type="button" title="Adicionar na lista" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
             + "</tr>");
 
-        //$("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
-
+    
         if (data != null && data != undefined) {
 
             $("#tabelaAgendamento tbody tr:last").data(data);
@@ -107,57 +109,11 @@
             $("#tabelaAgendamento tbody tr:last").find('[data-column="inpCor"]').val(data.Cor);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
-            //$("#tabelaAgendamento tbody tr:last").find("#btnSalvarAgendamento").removeClass('btn-primary fa fa-plus').addClass('btn-success fa fa-pencil-square-o').text('').addClass('hidden');
-            //if (data.Id > 0) {
-            //    $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
-            //}
         } else {
             $("#tabelaAgendamento tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
         }
     }
-
-
-    function EditaLinha(data, linha) {
-        if (!!data && data.Id > 0) {
-            $(linha).data(data);
-            $(linha).find('[data-column=inpInicio]').val(data.Inicio);
-            $(linha).find('[data-column=inpTermino]').val(data.Fim);
-            $(linha).find('[data-column=inpAvaliacao]').val(data.Av);
-            $(linha).find('[data-column=inpId]').val(data.Id);
-            $(linha).find("#btnSalvarAgendamento").removeClass('btn-primary fa fa-plus').addClass('btn-success fa fa-pencil-square-o').text('');
-            $(linha).find(".btnDeletarAgendamento").removeClass('hidden');
-            $(linha).find("[data-column=slAgendamento]").val(data.Shift_Id);
-        }
-    }
-
-    //function deletarRegistro(data) {
-    //    var linha = $(data).parents('tr');
-    //    var form = {
-    //        Inicio: $(linha).data()['Inicio'],
-    //        Fim: $(linha).data()['Fim'],
-    //        Av: $(linha).data()['Av'],
-    //        Shift_Id: $(linha).data()['Shift_Id'],
-    //        ParEvaluation_Id: $(linha).data()['ParEvaluation_Id'],
-    //        Id: $(linha).data()['Id'],
-    //        IsDeletar: !$(linha).data()['IsDeletar']
-    //    };
-    //    $(linha).data(form);
-    //    $(linha).find(".btnDeletarAgendamento").removeClass('btn-danger').addClass('btn-default');
-    //    @*$.ajax({
-    //        url: '@Url.Content("~")' + 'api/AgendamentoApi/Delete',
-    //        type: 'DELETE',
-    //        data: form,
-    //        dataType: 'json',
-    //        success: function (data) {
-    //            DeletaLinha(data, linha);
-    //            openMessageModal("Registro deletado com sucesso",null);
-    //        },
-    //        error: function (request, error) {
-    //            alert("Request: " + JSON.stringify(request));
-    //        }
-    //    });*@
-    //}
 
     $("#modalAgendamento").on('input', '[data-column="inpValor"]', function () {
         if (parseInt($(this).val()) < 0 || parseInt($(this).val()) > 100) {
@@ -180,26 +136,25 @@
                 ParLevel3Value_Id: $('input[data-column="inpParLevel3Value_Id"]').val(),
                 Id: $(item).find("[data-column=inpId]").val()
             };
-            debugger
-            if (parseInt(form.Peso) < 0 || form.Peso === "" || parseInt(form.Peso) === "NaN" || parseInt(form.Peso) > 100) {
+            if (parseInt(form.Valor) < 0 || form.Valor === "" || parseInt(form.Valor) === "NaN" || parseInt(form.Valor) > 100) {
                 contadorErros++;
             }
             if (form.Cor === null || form.Cor === "" || form.Cor === "NaN") {
                 contadorErros++;
             }
 
-            listaAgendamento.push(form);
+            listaEscala.push(form);
         });
   
         if (contadorErros <= 0) {
             $.ajax({
-                url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
+                url: '@Url.Content("~")' + 'api/EscalaLikertAPI/Post',
                 type: 'POST',
-                data: JSON.stringify(listaAgendamento),
+                data: JSON.stringify(listaEscala),
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    listaAgendamento = [];
+                    listaEscala = [];
                     openMessageModal("Dados salvos com sucesso", null);
 
                     $('#modalAgendamento').modal('hide');
@@ -212,96 +167,12 @@
                     $(botao).find('.likert').addClass('btn-success');
                 },
                 error: function (request, error) {
-                    listaAgendamento = [];
+                    listaEscala = [];
                     alert("Request: " + JSON.stringify(request));
                 }
             });
         } else {
-            openMessageModal("Campos obrigatórios Peso e Cor possuem valores inválidos.", null);
-        }
-
-    });
-
-    //$("#modalAgendamento").on('input', '[ data-column=inpValor]', function () {
-    //    let tabela = $('#tabelaAgendamento tbody tr').not(':first');
-    //    $(tabela).find('[data-column=inpValor]').each(function (i, o) {
-    //        var self = o;
-    //        var peso = $(self).parents("tr").find('[data-column=inpValor]').val();
-    //        //var turno = $(self).parents("tr").find('[data-column=slAgendamento]').val();
-
-    //        //let isDuplicated = $.grep(tabela, (o) => {
-    //        //    return avaliacao == $(o).find('[data-column=inpAvaliacao]').val()
-    //        //        && turno == $(o).find('[data-column=slAgendamento]').val();
-    //        //});
-    //        //$(self).removeClass('alert-danger');
-
-    //        if (peso > 0 || peso < 100) {
-    //            $(self).addClass('alert-danger');
-    //        } else {
-    //            $(self).removeClass('alert-danger');
-    //        }
-    //        //if (isDuplicated.length > 1) {
-    //        //    $(self).addClass('alert-danger');
-    //        //}
-
-    //    });
-    //});
-
-    $("#modalAgendamento").on('change', '[data-column=slAgendamento]', function () {
-        let tabela = $('#tabelaAgendamento tbody tr').not(':first');
-        $(tabela).find('[data-column=inpAvaliacao]').each(function (i, o) {
-            var self = o;
-            var avaliacao = $(self).parents("tr").find('[data-column=inpAvaliacao]').val();
-            var turno = $(self).parents("tr").find('[data-column=slAgendamento]').val();
-
-            let isDuplicated = $.grep(tabela, (o) => {
-                return avaliacao == $(o).find('[data-column=inpAvaliacao]').val()
-                    && turno == $(o).find('[data-column=slAgendamento]').val();
-            });
-            $(self).removeClass('alert-danger');
-            if (isDuplicated.length > 1) {
-                $(self).addClass('alert-danger');
-            }
-
-        });
-    });
-
-    $("#modalAgendamento").on('click', "#btnSalvarAgendamento", function () {
-
-        var linha = $(this).parent().parent();
-        var inicio = $(linha).find('[data-column=inpInicio]').val();
-        var termino = $(linha).find('[data-column=inpTermino]').val();
-        var avaliacao = $(linha).find('[data-column=inpAvaliacao]').val();
-        var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
-        var turno = $('[data-column="slAgendamento"] :selected').val();
-
-        //Validar preenchido
-        if (!camposIsValid(avaliacao, inicio, termino, turno)) {
-            return false;
-        }
-
-        if (!frequenciaIsValid(formato, parseInt(inicio), parseInt(termino))) {
-            openMessageModal("Intervalo de frequência inválido", null);
-            return false;
-        }
-
-        var isEdit = !!$(this).parents('tr').data()['Id'];
-        if (valorAvaliacao >= $(linha).find("[data-column=inpAvaliacao]").val()) {
-
-            var form = {
-                Inicio: $(linha).find("[data-column=inpInicio]").val(),
-                Fim: $(linha).find("[data-column=inpTermino]").val(),
-                Av: $(linha).find("[data-column=inpAvaliacao]").val(),
-                Shift_Id: $(linha).find("[data-column=slAgendamento]").val(),
-                ParEvaluation_Id: $(linha).find("[data-column=inpAvaliacaoId]").val(),
-                Id: $(linha).find("[data-column=inpId]").val()
-            };
-            MontaNovaLinha(form, isEdit);
-            $(linha).find('input:enabled').val('');
-
-
-        } else {
-            openMessageModal('Valor da avaliação maior do que o permitido!', null);
+            openMessageModal("Campos obrigatórios Valor e Cor possuem valores inválidos.", null);
         }
     });
 
@@ -315,19 +186,6 @@
             openMessageModal("O campo Cor deve ser preechido", null);
             return false;
         }
-
-        //let tabela = $('#tabelaAgendamento tbody tr').not(':first');
-
-        //let isDuplicated = $.grep(tabela, (o) => {
-        //    return turno == $(o).find('[data-column="slAgendamento"] :selected').val() &&
-        //        avaliacao == $(o).find('[data-column=inpAvaliacao]').val();
-
-        //}).length > 0;
-
-        //if (isDuplicated) {
-        //    openMessageModal("Já existe um agendamento para esta avaliação ou turno", null);
-        //    return false;
-        //}
         return true;
     }
 

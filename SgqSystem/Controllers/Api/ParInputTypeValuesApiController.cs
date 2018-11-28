@@ -12,7 +12,7 @@ namespace SgqSystem.Controllers.Api
 {
 
     [HandleApi()]
-    [RoutePrefix("api/AgendamentoAPI")]
+    [RoutePrefix("api/EscalaLikertAPI")]
     public class ParInputTypeValuesApiController : ApiController
     {
         [HttpGet]

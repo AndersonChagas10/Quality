@@ -24,11 +24,12 @@
                         <td class="td-erp col-sm-6" colspan="0">
                             <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
                             <div>
-                                @Html.DropDownList("paramsDto.parLevel1Selected", new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }@*Model.paramsDdl.DdlparLevel1*@                                     /**/
-                                                                                                                                                                                                                                                                                      /**/
-                                                                                                                                                                                                                                                                                      /**/
-                                                                                                                                                                                                                                                                                      /**/
-                                                                                                                                                                                                                                                                                      , htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2TipoDadosEntrada", style = "width: 100%" })
+                                @Html.DropDownList("paramsDto.parLevel1Selected", new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }@*Model.paramsDdl.DdlparLevel1*@                                                      /**/
+                                                                                                                                                                                                                                                                                                       /**/
+                                                                                                                                                                                                                                                                                                       /**/
+                                                                                                                                                                                                                                                                                                       /**/
+                                                                                                                                                                                                                                                                                                       /**/
+                                                                                                                                                                                                                                                                                                       , htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2TipoDadosEntrada", style = "width: 100%" })
                             </div>
                         </td>
                         <td class="td-erp col-sm-6">
@@ -626,9 +627,28 @@
                         || o.ParLevel2_Id == "-1"
                         || o.ParLevel2_Id == $('#parLevel2Select2 :selected').val()))
                         crudNxN.adiciona(o, id, tdNamess);
-                    debugger
+                
                     if (o.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
-                        $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-info btn-xs popovers likert" onclick="abrirmodalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                       
+                        $.ajax({
+                            url: '@Url.Content("~")' + 'api/EscalaLikertAPI/Get/' + o.Id,
+                            type: 'GET',
+                            dataType: 'json',
+                            async: false,
+                            success: function (data) {
+                                debugger
+                                if (data.length <= 0) {
+                                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-info btn-xs popovers likert" onclick="abrirmodalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                                } else {
+                                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-success btn-xs popovers likert" onclick="abrirmodalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                                }
+                            },
+                            error: function (request, error) {
+                                alert("Request: " + JSON.stringify(request));
+                            }
+                        });
+
+                       
                     }
                 });
             }
@@ -660,7 +680,7 @@
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
                debugger
                 if (object.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
-                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers likert" onclick="abrirmodalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers likert" onclick="mensagemAlerta()" data-toggle="popover"><i class="fa fa-cog"></i></button>')
                 }
 
                 $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id'] option:first").val());
