@@ -54,7 +54,8 @@
         valorAvaliacao = obj.evaluationNumber;
         botaoAgendamento = linha;
         $('#modalAgendamento').modal('show');
-        $("#titulo").append("Escala Likert - Intervalo Min: " + obj.IntervalMin + "Max: " + obj.IntervalMax);
+        $("#titulo").html("");
+        $("#titulo").append("Escala Likert - Intervalo Min: " + obj.IntervalMin + " Max: " + obj.IntervalMax);
         var id = obj.Id;
         $.ajax({
             url: '@Url.Content("~")' + 'api/AgendamentoApi/Get/' + id,
@@ -202,7 +203,13 @@
                     openMessageModal("Dados salvos com sucesso", null);
 
                     $('#modalAgendamento').modal('hide');
-                    $('#tableLevel3Value  tbody  tr:last td:last').find('likert').addClass('btn-success');
+                    
+                    var tabela = $('#tableLevel3Value  tbody  tr');
+                    var botao = $.grep($(tabela), function (a) {
+                        return $(a).data().Id === ParLevel3_Id;
+                    });
+                    $(botao).find('.likert').removeClass('btn-info');
+                    $(botao).find('.likert').addClass('btn-success');
                 },
                 error: function (request, error) {
                     listaAgendamento = [];

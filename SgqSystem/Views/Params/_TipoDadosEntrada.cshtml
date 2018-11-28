@@ -626,6 +626,7 @@
                         || o.ParLevel2_Id == "-1"
                         || o.ParLevel2_Id == $('#parLevel2Select2 :selected').val()))
                         crudNxN.adiciona(o, id, tdNamess);
+                    debugger
                     if (o.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
                         $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-info btn-xs popovers likert" onclick="abrirmodalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
                     }
@@ -657,8 +658,8 @@
                 }
 
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
+               debugger
                 if (object.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
-                    debugger
                     $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers likert" onclick="abrirmodalAgendamento($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
                 }
 
