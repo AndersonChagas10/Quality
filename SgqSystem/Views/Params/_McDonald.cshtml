@@ -1,0 +1,172 @@
+﻿<style>
+    #tabelaLikert td {
+        white-space: nowrap;
+    }
+
+    #tabelaLikert input {
+        width: 140px;
+    }
+</style>
+
+<div class="modal fade" id="modalEscalaLikert" role="dialog">
+    <div class="modal-dialog modal-lg vertical-align-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="titulo" class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <input class="hidden" data-column="inpAvaliacaoId" />
+                <div style="overflow:auto;">
+                    <table id="tabelaLikert" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
+                        <thead>
+                            <tr>
+                                <th>Intervalo</th>
+                                <th>Valor</th>
+                                <th>Cor</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>
+                <button type="button" data-dismiss="modal" onclick="LimpaCampos()" class="btn btn-default">Fechar</button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script>
+    //variaveis globais
+    var botaoAgendamento = '';
+    var valorAvaliacao = '';
+    var listaEscala = [];
+    var ParLevel3_Id = '';
+
+    function mensagemAlerta() {
+        openMessageModal("Por favor, salve a tarefa para parametrizar o intervalo.",null);
+    }
+
+    function abrirmodalEscalaLikert(linha) {
+        $("#tabelaLikert tbody").html("");
+        $("#tabelaLikert").attr('style', '');
+        var obj = $(linha).parents('tr').data();
+        ParLevel3_Id = obj.Id;
+        valorAvaliacao = obj.evaluationNumber;
+        botaoAgendamento = linha;
+        $('#modalEscalaLikert').modal('show');
+        $("#titulo").html("");
+        $("#titulo").append("Escala Likert - Intervalo Min: " + obj.IntervalMin + " Max: " + obj.IntervalMax);
+        var id = obj.Id;
+        $.ajax({
+            url: '@Url.Content("~")' + 'api/EscalaLikertAPI/Get/' + id,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                for (i = obj.IntervalMin; i <= obj.IntervalMax; i++) {
+                    var valor = i;
+                    var teste = data.find((item) => item.Intervalo == valor);
+
+                    if (teste != null) {
+                        MontaNovaLinha(teste, valor);
+                    } else {
+                       
+                        MontaNovaLinha(null, valor);
+                    }
+                }
+            },
+            error: function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+    }
+
+    function MontaNovaLinha(data, valor) {
+
+        $("#tabelaLikert tbody").append("<tr>"
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpIntervalo" disabled="disabled" /></td>'
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" /></td>'
+            + '<td><input type="color" name="favcolor" value = "#ff0000"  class="input-sm" data-column="inpCor" /></td>'
+            + '<td class="hidden"> <input data-column="inpParLevel3Value_Id" class="hidden" /></td>'
+            + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
+            + "</tr>");
+
+    
+        if (data != null && data != undefined) {
+
+            $("#tabelaLikert tbody tr:last").data(data);
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpValor"]').val(data.Valor);
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpCor"]').val(data.Cor);
+            $("#tabelaLikert tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
+            $("#tabelaLikert tbody tr:last").find('[data-column=inpId]').val(data.Id);
+        } else {
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
+            $("#tabelaLikert tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
+        }
+    }
+
+    $("#modalEscalaLikert").on('input', '[data-column="inpValor"]', function () {
+        if (parseInt($(this).val()) < 0 || parseInt($(this).val()) > 100) {
+            $(this).addClass('alert-danger');
+        } else {
+            $(this).removeClass('alert-danger');
+        }
+    });
+
+    $("#modalEscalaLikert").on('click', "#btnSalvar", function () {
+        var listatabelaLikert = [];
+        var contadorErros = 0;
+        listatabelaLikert = $("#tabelaLikert tbody tr");
+        listatabelaLikert.each(function (index, item) {
+            form = {
+                Intervalo: $(item).find("[data-column=inpIntervalo]").val(),
+                Valor: $(item).find("[data-column=inpValor]").val(),
+                Cor: $(item).find("[data-column=inpCor]").val(),
+                ParLevel3Value_Id: $('input[data-column="inpParLevel3Value_Id"]').val(),
+                Id: $(item).find("[data-column=inpId]").val()
+            };
+            if (parseInt(form.Valor) < 0 || form.Valor === "" || parseInt(form.Valor) === "NaN" || parseInt(form.Valor) > 100) {
+                contadorErros++;
+            }
+            if (form.Cor === null || form.Cor === "" || form.Cor === "NaN") {
+                contadorErros++;
+            }
+
+            listaEscala.push(form);
+        });
+  
+        if (contadorErros <= 0) {
+            $.ajax({
+                url: '@Url.Content("~")' + 'api/EscalaLikertAPI/Post',
+                type: 'POST',
+                data: JSON.stringify(listaEscala),
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    listaEscala = [];
+                    openMessageModal("Dados salvos com sucesso", null);
+
+                    $('#modalEscalaLikert').modal('hide');
+                    
+                    var tabela = $('#tableLevel3Value  tbody  tr');
+                    var botao = $.grep($(tabela), function (a) {
+                        return $(a).data().Id === ParLevel3_Id;
+                    });
+                    $(botao).find('.likert').removeClass('btn-info');
+                    $(botao).find('.likert').addClass('btn-success');
+                },
+                error: function (request, error) {
+                    listaEscala = [];
+                    alert("Request: " + JSON.stringify(request));
+                }
+            });
+        } else {
+            openMessageModal("Campos obrigatórios Valor e Cor possuem valores inválidos.", null);
+        }
+    });
+
+</script>

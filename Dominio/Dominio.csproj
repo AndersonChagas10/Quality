@@ -108,6 +108,7 @@
     <Compile Include="ParGroupParLevel1XParLevel1.cs" />
     <Compile Include="ParGroupParLevel1XParLevel3.cs" />
     <Compile Include="ParHeaderField.cs" />
+    <Compile Include="ParInputTypeValues.cs" />
     <Compile Include="ParLataImagens.cs" />
     <Compile Include="ParLevel1.cs" />
     <Compile Include="ParLevel1VariableProduction.cs" />

@@ -485,13 +485,13 @@ namespace SgqSystem.Services
             return intervalo;
         }
 
-        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null, string idRandomico = null)
+        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null, 
+            string idRandomico = null, string paramns = null)
         {
             //var idRandomico = "valor_range_" + new Random().Next(999999);
-            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
-                                 "         <input type=\"range\" oninput=\"document.getElementById('" + idRandomico + "').innerHTML = this.value;\" min=\"" + Convert.ToInt32(min) + "\" max=\"" + Convert.ToInt32(max) + "\" class=\"form-control text-center levelValue naoValidarInput\" style=\"width:80%;\">     " +
-                                 "         <span id=\"" + idRandomico + "\" style=\"display: block; float:right; width: 20%; text-align:center;\"></span>     " +
-                                 "</div>                                                    ";
+            string texto = $@"<div class=""input-group input-group-sm width180 pull-right""{ classe }"" style=""width: 100% !important;"">
+                                 <input oninput=""validaNumeroEscalaLikert(event, this)"" onblur=""validaValoresValidosEscalaLikert(this)"" type=""text"" oninput="""" paramns=""{paramns}"" min=""{ Convert.ToInt32(min) }"" max=""{ Convert.ToInt32(max) }"" class=""form-control text-center levelValue naoValidarInput"" style=""width:80%;"">
+                            </div>";
             return texto;
         }
 
@@ -634,7 +634,7 @@ namespace SgqSystem.Services
             if (parLevel3.ParLevel3InputType_Id == 11)
                 peso = "0";
 
-            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\""+parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
+            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\"" + parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
 
 
             //Gera o level3
