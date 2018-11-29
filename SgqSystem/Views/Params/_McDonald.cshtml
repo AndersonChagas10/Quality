@@ -51,6 +51,7 @@
     }
 
     function abrirmodalEscalaLikert(linha) {
+        debugger
         $("#tabelaLikert tbody").html("");
         $("#tabelaLikert").attr('style', '');
         var obj = $(linha).parents('tr').data();
@@ -66,7 +67,7 @@
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                for (i = obj.IntervalMin; i <= obj.IntervalMax; i++) {
+                for (i = parseInt(obj.IntervalMin); i <= parseInt(obj.IntervalMax); i++) {
                     var valor = i;
                     var teste = data.find((item) => item.Intervalo == valor);
 
