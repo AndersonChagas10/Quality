@@ -1,6 +1,4 @@
-﻿
-@{
-    /**/
+﻿@{
 
     ViewBag.Title = "SIF Embarque";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -27,7 +25,7 @@
         /*white-space: nowrap;*/
     }
 
-    #cabecalho2 tbody tr td {
+    .cabecalho2 tbody tr td {
         font-size: 8px;
         /*white-space: nowrap;*/
     }
@@ -82,7 +80,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
 
@@ -93,7 +90,6 @@
                         </div>
 
                         <div id="contentBody">
-
                             <table id="cabecalho" class="table table-bordered">
                                 <tr>
                                     <td>
@@ -207,10 +203,6 @@
                                         <span class="value" id="Instrucao"></span>
                                     </td>
                                 </tr>
-                            </table>
-
-                            <table id="cabecalho2" class="table table-bordered">
-                                <tbody></tbody>
                             </table>
 
                             <hr />
@@ -345,12 +337,31 @@
 
                 PreencherCabecalho(r);
 
-                let conteudoTabela = PreencherCabecalho2(r.Coletas);
+                let tamanhoAmostra = Math.max.apply(null, [...new Set(r.Coletas.map(obj => obj.Amostra))]);
+                
+                for (i = 0; i <= tamanhoAmostra; i = i + 15) {
 
-                conteudoTabela += PreencherConteudo(r.Coletas);
+                    let inicio = i;
+                    let fim = i + 15;
 
-                $('#cabecalho2 tbody').html(conteudoTabela);
+                    if (fim > r.Coletas.length) {
+                        fim = r.Coletas.length;
+                    }
 
+                    let coletas = r.Coletas.filter((obj) => obj.Amostra > inicio && obj.Amostra < fim)
+
+                    let conteudoTabela = "";
+
+                    conteudoTabela += PreencherCabecalho2(coletas);
+
+                    conteudoTabela += PreencherConteudo(coletas);
+
+                    debugger
+
+                    //$('#cabecalho2').append('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>');
+                    $('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>').insertAfter($('#contentBody > table:last'));
+                }
+               
                 $('.portlet').show();
             }
 
@@ -456,7 +467,7 @@
                 let levels3_Id = [...new Set(array.map(item => item.ParLevel3_Id))];
                 let levels3 = [...new Set(array.map(item => item.ParLevel3))];
 
-                let conteudoTabela;
+                let conteudoTabela = "";
                 let level3Group;
 
                 levels3_Id.forEach((level3, index) => {
