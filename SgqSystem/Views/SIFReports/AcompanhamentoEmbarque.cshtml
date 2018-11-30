@@ -330,6 +330,8 @@
 
             function GerarRelatorio(r) {
 
+                $('.cabecalho2').remove();
+
                 if (!r) {
                     GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
                     return false;
@@ -339,10 +341,10 @@
 
                 let tamanhoAmostra = Math.max.apply(null, [...new Set(r.Coletas.map(obj => obj.Amostra))]);
                 
-                for (i = 0; i <= tamanhoAmostra; i = i + 15) {
+                for (i = 0; i <= tamanhoAmostra; i = i + 9) {
 
                     let inicio = i;
-                    let fim = i + 15;
+                    let fim = i + 9;
 
                     if (fim > r.Coletas.length) {
                         fim = r.Coletas.length;
