@@ -3827,69 +3827,74 @@ $(document).on('click','#btnMessageOk', function(e){
     preenchePCC1b(); 
 });
 
-                                function clonarHF(a){ 
-                                  var headerFieldGroupVisiveis = $('[hfg]:visible').not('[data-vinculo]');
-                                  countHeaderFieldGroup++;
-                                  headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function(o, c){ return $(o).attr('hfg') == $(a).attr('hfg') }); 
-                                  $.each(headerFieldGroupVisiveis,function(i,o){
-                                    if(!$(o).parent().attr('data-vinculo')){
-                                      var elementoClonado = $(o).parent().clone(true, true);
-                                      elementoClonado.attr('data-vinculo',countHeaderFieldGroup);
-		                              elementoClonado.insertAfter($(o).parent());
-                                    }
-                                  });
-                                }
+function clonarHF(a){ 
+    var headerFieldGroupVisiveis = $('[hfg]:visible').not('[data-vinculo]');
+    countHeaderFieldGroup++;
+    headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function(o, c){ return $(o).attr('hfg') == $(a).attr('hfg') }); 
+    $.each(headerFieldGroupVisiveis,function(i,o){
+    if(!$(o).parent().attr('data-vinculo')){
+        var elementoClonado = $(o).parent().clone(true, true);
+        elementoClonado.attr('data-vinculo',countHeaderFieldGroup);
+		elementoClonado.insertAfter($(o).parent());
+    }
+    });
+}
 
-                                function removerHF(a){ 
-                                    var headerFieldGroupVisiveis = $('[data-vinculo='+$(a).parent().attr('data-vinculo')+']:visible');
-                                    $.each(headerFieldGroupVisiveis,function(i,o){
-	                                    $(o).remove();
-                                    });
-                                }
+function removerHF(a){ 
+    var headerFieldGroupVisiveis = $('[data-vinculo='+$(a).parent().attr('data-vinculo')+']:visible');
+    $.each(headerFieldGroupVisiveis,function(i,o){
+	    $(o).remove();
+    });
+}
 
 $(document).ready(function(){
-                            $('body').on('input', 'input.interval:visible, input.likert:visible', function(){
+    $('body').on('input', 'input.interval:visible, input.likert:visible', function(){
 
-                                var id = $(this).parents('li').attr('id');
-	                            $.each($('input[resultado]:visible'), function(i, o){
-                                            if ($(o).attr('resultado').indexOf('{' + id + '}') >= 0){
-                                                var resultado = $(o).attr('resultado');
+        var id = $(this).parents('li').attr('id');
+	    $.each($('input[resultado]:visible'), function(i, o){
+			if ($(o).attr('resultado').indexOf('{' + id + '}') >= 0 || $(o).attr('resultado').indexOf('{' + id + '?}') >= 0){
+				var resultado = $(o).attr('resultado');
 
-                                                const regex = /{([^}]+)}/g;
-                                            let m;
+				const regex = /{([^}]+)}/g;
+				let m;
 
-                                            while ((m = regex.exec($(o).attr('resultado'))) !== null)
-                                            {
-                                                // This is necessary to avoid infinite loops with zero-width matches
-                                                if (m.index === regex.lastIndex)
-                                                {
-                                                    regex.lastIndex++;
-                                                }
+				while ((m = regex.exec($(o).attr('resultado'))) !== null)
+				{
+					// This is necessary to avoid infinite loops with zero-width matches
+					if (m.index === regex.lastIndex)
+					{
+						regex.lastIndex++;
+					}
 
-                                                var valor = $('li[id=""' + m[1] + '""] input.interval').val();
-                                                if(valor)
-                                                    resultado = resultado.replace(m[0],valor);
-                                                else{
-                                                    var valor = $('li[id=""' + m[1] + '""] input.likert').val();
-                                                    if(valor)
-                                                        resultado = resultado.replace(m[0],valor);
-                                                }
-                                            }
+					var valor = $('li[id=""' + m[1].replace('?','') + '""] input.interval').val();
+					if(valor)
+						resultado = resultado.replace(m[0],valor);
+					else{
+						var valor = $('li[id=""' + m[1].replace('?','') + '""] input.likert').val();
+						if(valor)
+							resultado = resultado.replace(m[0],valor);
+						else{
+							if(m[1].indexOf('?') >= 0){
+								resultado = resultado.replace(m[0],0);
+							}
+						}
+					}
+				}
 
-                                            if (resultado.indexOf('{') != -1)
-                                            {
-                                                resultado = """";
-                                            }
-                                            else
-                                            {
-                                                resultado = eval(resultado);
-                                            }
-    	                                    $(o).val(resultado);
-    	                                    $(o).trigger('input');
+				if (resultado.indexOf('{') != -1)
+				{
+					resultado = """";
+				}
+				else
+				{
+					resultado = eval(resultado);
+				}
+				$(o).val(resultado);
+				$(o).trigger('input');
 
-                                        }
-                                    });
-                            });
+			}
+		});
+    });
 });
 
 function validaNumeroEscalaLikert(evt, that)
@@ -6744,9 +6749,17 @@ function calcularSensorial(list){
                 {
                     paramns.Add(item.Intervalo + ":" + item.Cor);
                 }
-
                 input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|",paramns));
 
+                //INSERE O MIN MAX
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+
+                string valorCompleto = "";
+
+                valorCompleto = valorMinimo + " ~ " + valorMaximo;
+
+                labels = html.div(outerhtml: valorCompleto, classe: "levelName");
             }//Resultado
             else if (parLevel3.ParLevel3InputType_Id == 10)
             {
