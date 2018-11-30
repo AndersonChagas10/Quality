@@ -3945,10 +3945,72 @@ function validaValoresValidosEscalaLikert(input) {
 			valido = true;
     });
 
-    if(!valida){
+    if(!valido){
 		$(input).val('');
 		$(input).parents('li').css('background-color', '');
 	}
+
+}
+
+function calcularSensorial(list){
+
+	var attributes = list
+
+	//declare attribute and point counter
+	var noOf5 = 0
+	var noOf4and6 = 0
+	var noOf3and7 = 0
+	var noOf2and8 = 0
+	var noOf1and9 = 0
+	var noOfElem = 0 
+	var addPoint5_85 = 0
+	var addPoint5_60 = 0
+	var addPoint4and6 = 0
+	var CategoryScore_calc = 0
+
+	for (i = 0; i < attributes.length; i++){
+
+		if (attributes[i] == 1 || attributes[i] == 9){
+			noOf1and9 = noOf1and9 + 1
+		}else if (attributes[i] == 2 || attributes[i] == 8){
+			noOf2and8 = noOf2and8 + 1
+		}else if (attributes[i] == 3 || attributes[i] == 7){
+			noOf3and7 = noOf3and7 + 1
+		}else if (attributes[i] == 4 || attributes[i] == 6){
+			noOf4and6 = noOf4and6 + 1
+		}else if (attributes[i] == 5){
+			noOf5 = noOf5 + 1
+		}
+
+	}
+
+	noOfElem = 1 > (noOf4and6 + noOf3and7 + noOf5 - 1) ? 1 : (noOf4and6 + noOf3and7 + noOf5 - 1)
+
+	addPoint5_85 = (10 * noOf5 / noOfElem)
+	addPoint5_60 = (20 * noOf5 / noOfElem)
+	addPoint4and6 = (10 * noOf4and6 / noOfElem)
+
+	if (noOf1and9 > 0) {
+	    CategoryScore_calc = 0
+	}
+	else if (noOf2and8 > 0) {
+	    CategoryScore_calc = 25
+	}
+	else if (noOf3and7 > 0) {
+	    CategoryScore_calc = 60 + addPoint5_60 + addPoint4and6
+	}
+	else if (noOf4and6 > 0) {
+	    CategoryScore_calc = 85 + addPoint5_85
+	}
+	else if (noOf5 = 0) {
+	    CategoryScore_calc = 0
+	}
+	else {
+		CategoryScore_calc = 100
+	} 
+
+	//imprimir na tela
+	return  Math.round( CategoryScore_calc)
 
 }
                               </script> ";
