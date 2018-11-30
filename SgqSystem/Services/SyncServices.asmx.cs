@@ -3848,11 +3848,11 @@ $(document).on('click','#btnMessageOk', function(e){
                                 }
 
 $(document).ready(function(){
-                            $('body').on('input', 'input.interval:visible', function(){
+                            $('body').on('input', 'input.interval:visible, input.likert:visible', function(){
 
                                 var id = $(this).parents('li').attr('id');
 	                            $.each($('input[resultado]:visible'), function(i, o){
-                                            if ($(o).attr('resultado').indexOf('{' + id + '}') > 0){
+                                            if ($(o).attr('resultado').indexOf('{' + id + '}') >= 0){
                                                 var resultado = $(o).attr('resultado');
 
                                                 const regex = /{([^}]+)}/g;
@@ -3867,8 +3867,13 @@ $(document).ready(function(){
                                                 }
 
                                                 var valor = $('li[id=""' + m[1] + '""] input.interval').val();
-                                                if(valor.length > 0)
+                                                if(valor)
                                                     resultado = resultado.replace(m[0],valor);
+                                                else{
+                                                    var valor = $('li[id=""' + m[1] + '""] input.likert').val();
+                                                    if(valor)
+                                                        resultado = resultado.replace(m[0],valor);
+                                                }
                                             }
 
                                             if (resultado.indexOf('{') != -1)
@@ -3940,8 +3945,10 @@ function validaValoresValidosEscalaLikert(input) {
 			valido = true;
     });
 
-    $(input).val('');
-    $(input).parents('li').css('background-color', '');
+    if(!valida){
+		$(input).val('');
+		$(input).parents('li').css('background-color', '');
+	}
 
 }
                               </script> ";

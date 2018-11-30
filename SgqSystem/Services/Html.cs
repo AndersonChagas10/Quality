@@ -490,7 +490,7 @@ namespace SgqSystem.Services
         {
             //var idRandomico = "valor_range_" + new Random().Next(999999);
             string texto = $@"<div class=""input-group input-group-sm width180 pull-right""{ classe }"" style=""width: 100% !important;"">
-                                 <input oninput=""validaNumeroEscalaLikert(event, this)"" onblur=""validaValoresValidosEscalaLikert(this)"" type=""text"" oninput="""" paramns=""{paramns}"" min=""{ Convert.ToInt32(min) }"" max=""{ Convert.ToInt32(max) }"" class=""form-control text-center levelValue naoValidarInput"" style=""width:80%;"">
+                                 <input oninput=""validaNumeroEscalaLikert(event, this)"" onblur=""validaValoresValidosEscalaLikert(this)"" type=""text"" oninput="""" paramns=""{paramns}"" min=""{ Convert.ToInt32(min) }"" max=""{ Convert.ToInt32(max) }"" class=""form-control text-center levelValue naoValidarInput likert"" style=""width:80%;"">
                             </div>";
             return texto;
         }
