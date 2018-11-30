@@ -466,7 +466,7 @@
                     </div>
 
                     <div class="divTableCorrectiveAction" ng-repeat="lata in seletedLinha.latas track by $index">
-                        <div ng-repeat="acoes in lata.correctiveActionList | limitTo:3 track by $index">
+                        <div ng-repeat="acoes in lata.correctiveActionList | filter : { correctiveAction : { DescriptionFailure: '', ImmediateCorrectiveAction: '' } } track by $index">
 
                             <table class="tableCorrectiveAction">
                                 <colgroup>

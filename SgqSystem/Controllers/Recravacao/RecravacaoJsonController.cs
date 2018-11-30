@@ -27,18 +27,30 @@ namespace SgqSystem.Controllers.Recravacao
                 int companyId = getUserUnitId();
 
                 var query = string.Format(@"
-SELECT RJ.AlterDate, RJ.UserValidated_Id, RJ.Id, RJ.UserFinished_Id, PRL.Name FROM RecravacaoJson RJ 
-LEFT JOIN ParRecravacao_Linhas PRL ON PRL.Id = RJ.Linha_Id
-WHERE RJ.AddDate >= '{0}' AND RJ.AddDate < '{1}' AND RJ.ParCompany_Id = {2}"
-                    , dataFiltroRecravacao.ToString("yyyy-MM-dd")
-                    , dataFiltroRecravacaoAmanha.ToString("yyyy-MM-dd")
-                    , companyId);
+                SELECT
+                	RLJ.AddDate as AlterDate
+                   ,RJ.UserValidated_Id
+                   ,RJ.Id
+                   ,RJ.UserFinished_Id
+                   ,PRL.Name
+                FROM RecravacaoJson RJ
+                LEFT JOIN ParRecravacao_Linhas PRL
+                	ON PRL.Id = RJ.Linha_Id
+                INNER JOIN (SELECT DISTINCT
+                		RecravacaoJson_Id
+                	   ,MIN(AddDate) AS AddDate
+                	FROM RecravacaoLataJson
+                	GROUP BY RecravacaoJson_Id) RLJ
+                	ON RLJ.RecravacaoJson_Id = RJ.Id
+                WHERE RLJ.AddDate >= '{0}'
+                AND RLJ.AddDate < '{1}'
+                AND RJ.ParCompany_Id = {2}"
+                , dataFiltroRecravacao.ToString("yyyy-MM-dd")
+                , dataFiltroRecravacaoAmanha.ToString("yyyy-MM-dd")
+                , companyId);
 
                 var results = QueryNinja(db, query);
 
-                //listaRecravacao = db.RecravacaoJson
-                //    .Where(x => x.AlterDate >= dataFiltroRecravacao
-                //&& x.AlterDate < dataFiltroRecravacaoAmanha).ToList();
                 ViewBag.dataFiltroRecravacao = dataFiltroRecravacao;
 
                 return View(results);
