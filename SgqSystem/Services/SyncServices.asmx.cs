@@ -529,6 +529,8 @@ namespace SgqSystem.Services
                         if (result.Length > 49)
                         {
                             cluster = result[49];
+                            if (string.IsNullOrEmpty(cluster))
+                                cluster = parCluster_Id;
                         }
 
                         if (result.Length > 50)
