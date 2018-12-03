@@ -168,8 +168,8 @@ public class ApontamentosDiariosResultSet
 				 , CASE 
 					WHEN CJ.AppVersion = 'Excel'  THEN '4'
 					WHEN C2.AlterDate IS NOT NULL THEN '1'
-					WHEN CAST(C2.AddDate as date) < CAST(C2.CollectionDate as date) THEN '2'
-                    WHEN CAST(C2.AddDate as date) > CAST(C2.CollectionDate as date) THEN '3'
+					WHEN CAST(C2.AddDate as date) > CAST(C2.CollectionDate as date) THEN '2'
+                    WHEN CAST(C2.AddDate as date) < CAST(C2.CollectionDate as date) THEN '3'
 				   ELSE '0'
 				   END
 				 as Type,
