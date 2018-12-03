@@ -3925,14 +3925,15 @@ function aplicaCorAoInput(input) {
 
     properties.forEach(function(property) {
         let tup = property.split(':');
-        arr[tup[0]] = tup[1];
+        arr[tup[0]] = [tup[1],tup[2]];
     });
 
     let value = $(input).val();
-    let color = arr[value];
+    let color = arr[value][0];
+    let valueText = arr[value][1];
 
+    $(input).parents('li').attr('value', valueText);
     $(input).parents('li').css('background-color', color);
-
 }
 
 function validaValoresValidosEscalaLikert(input) {
@@ -6747,7 +6748,7 @@ function calcularSensorial(list){
 
                 foreach (var item in ranges)
                 {
-                    paramns.Add(item.Intervalo + ":" + item.Cor);
+                    paramns.Add(item.Intervalo + ":" + item.Cor + ":" + item.Valor);
                 }
                 input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|",paramns));
 
