@@ -314,6 +314,8 @@
             //if (obj.ParLevel2_Id > 0)
             //    $('#crudNxNEdit #parLevel2Select2TipoDadosEntrada').val(obj.ParLevel2_Id).change();
             debugger
+            
+
             if (obj.ParLevel3InputType_Id == 3 || obj.ParLevel3InputType_Id == 9 || obj.ParLevel3InputType_Id == 4) {
 
                 divDeEdicao = $('.ParIntervalos').clone();
@@ -348,7 +350,17 @@
                 if (obj.ParCompany_Id > 0)
                     $('#crudNxNEdit #selectUnidadeParL3Value').val(obj.ParCompany_Id).change();
 
-            } else if (obj.ParLevel3InputType_Id == 2) {
+            } else if (obj.ParLevel3InputType_Id == 10) {
+                debugger
+                divDeEdicao = $('.ParResultadoEdit').clone();
+                $(divDeEdicao).show();
+                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+                $('#crudNxNEdit #parLevel3Value_IntervalMin').val(obj.IntervalMin).change().show().append();
+                $('#crudNxNEdit #parLevel3Value_IntervalMax').val(obj.IntervalMax).change().show().append();
+                $('#crudNxNEdit #parLevel3Value_DynamicValue').val(obj.DynamicValue).change().show().append();
+
+            }else if (obj.ParLevel3InputType_Id == 2) {
                 divDeEdicao = $('.ParIntervalos').clone();
                 $(divDeEdicao).show();
                 $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
