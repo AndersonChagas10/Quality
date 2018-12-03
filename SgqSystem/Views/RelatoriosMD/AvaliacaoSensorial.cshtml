@@ -1,0 +1,312 @@
+﻿@{
+    ViewBag.Title = "Avaliação Sensorial";
+}
+
+<style>
+    .red {
+        background-color: red;
+    }
+
+    .yellow {
+        background-color: yellow;
+    }
+
+    .green {
+        background-color: green;
+    }
+
+    #cabecalho tr td {
+        font-weight:bold;
+        font-size:8px;
+    }
+
+    .fontCenter {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+</style>
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+        <div id="formBodyContent">
+
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+            <div class="col-xs-12">
+
+                <div id="loader"></div>
+
+                <div class="portlet light bordered">
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="btnPrint">@Resources.Resource.print</button>
+                        <br />
+                        <br />
+                        <div style="display:none">
+                            <div id="contentHeader">
+                                <table border="1" cellspacing="0" cellpadding="1" style="width:100%;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="3" width="120px" align="center"><img id="printImagemCabecalhoLeft" src="../Imagens/logo-jbs.png" width="80px"></td>
+                                            <td id="printTitulo" align="center" style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:20px;"></td>
+                                            <td rowspan="3" width="120px" align="center"><img id="printImagemCabecalhoRight" src="../Imagens/logo-gq.png" width="80px"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Elaborador:</b> <span id="printElaborador"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Aprovador:</b> <span id="printAprovador"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div id="contentFooter" style="display:none">
+                            <div>
+                                <strong id="printCodigoRodape"></strong>
+                            </div>
+                        </div>
+
+                        <div id="contentBody">
+                            <table class="table table-bordered" id="cabecalho">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3">Data de Produção:</td>
+                                        <td colspan="4">Produto:</td>
+                                        <td colspan="3">Turno:</td>
+                                    </tr>
+                                    <tr class="fontCenter">
+                                        <td colspan="10">Grau e Direção da Diferença com Relação ao Padrão</td>
+                                    </tr>
+                                    <tr class="fontCenter">
+                                        <td></td>
+                                        <td>Qualidade Não McD</td>
+                                        <td>Diferença Significativa</td>
+                                        <td>Marginal</td>
+                                        <td>Ligeira Diferença</td>
+                                        <td>Igual ao PADRÂO</td>
+                                        <td>Ligeira Diferença</td>
+                                        <td>Marginal</td>
+                                        <td>Diferença Significativa</td>
+                                        <td>Qualidade Não McD</td>
+                                    </tr>
+                                    <tr class="fontCenter">
+                                        <td colspan="5"><<< MENOS QUE <<<</td>
+                                        <td colspan="5">>>> MAIS QUE >>></td>
+                                    </tr>
+                                    <tr class="fontCenter">
+                                        <td>Pontuação Sensorial</td>
+                                        <td class="red">1</td>
+                                        <td class="red">2</td>
+                                        <td class="yellow">3</td>
+                                        <td class="yellow">4</td>
+                                        <td class="green">5</td>
+                                        <td class="yellow">6</td>
+                                        <td class="yellow">7</td>
+                                        <td class="red">8</td>
+                                        <td class="red">9</td>
+                                    </tr>
+                                    <tr class="fontCenter">
+                                        <td>% QI</td>
+                                        <td>0%</td>
+                                        <td>25%</td>
+                                        <td>60%</td>
+                                        <td>85%</td>
+                                        <td>100%</td>
+                                        <td>85%</td>
+                                        <td>60%</td>
+                                        <td>25%</td>
+                                        <td>0%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/Print/printGRT.js"></script>
+
+    <script>
+
+        var $btn = $('#btnSend');
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+        var urlGet = '@Html.Raw(Url.Action("Get", "api/SIFReports"))';
+        var siglaUnidade = "";
+        exibeTodosLevels = false; //Variavel global para não exibir os monitoramentos sem que selecione o indicador
+        let elaborador = "";
+        let aprovador = "";
+        let nomeRelatorio = "";
+
+        $(document).ready(function () {
+
+            closeLeftSidebar();
+
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+
+            $('#simpleCallendar input[type="text"]').val(start.format());
+
+            $('#unitId').children('option:first').remove();
+            $('#level1Id').children('option:first').remove();
+            $('#level2Id').children('option:first').remove();
+
+            $('#level1Id').prop("disabled", true);
+            $('#level1Id').select2("destroy");
+
+            setTimeout(function () {
+
+                $('#level1Id option[value="number:70"]').attr('selected', 'selected');
+                $('#level1Id').trigger("change");
+                $('select').select2();
+
+            }, 2000);
+
+            formControl.showSimpleDate();
+            formControl.showLevel1();
+            formControl.showUnit();
+            formControl.showTipoVisao();
+
+            $('#showLevel1 > div:nth-child(3)').hide();
+
+            $("#btnSend").click(function (e) {
+
+                Send(true);
+
+            });
+
+            //$('.portlet').hide();
+
+            $('#tipoVisao').trigger('change');
+
+        });
+
+        function Send(toggle) {
+
+            if (formIsValid()) {
+
+                $btn.button('loading');
+
+                $('.portlet').hide();
+
+                $('#level1Id').trigger("change");
+
+                EasyAjax(urlGet, enviar, GeraRelatorio, "loader", toggle);
+
+            }
+        }
+
+        function GeraRelatorio(obj) {
+
+            $('.portlet').hide();
+
+            if (obj.Dados === null || obj.Dados.length <= 0) {
+
+                GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
+
+            } else {
+
+                $('.portlet').show();
+
+            }
+        }
+
+        function cleanData() {
+
+        }
+
+        function formIsValid() {
+
+            GuardJs.esconderMensagem();
+
+            if (enviar['endDate'] == null || enviar['endDate'] == undefined || enviar['endDate'] == "") {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_period_first"));
+                return false;
+
+            } else if (enviar['level1Id'] == null || enviar['level1Id'] == undefined || enviar['level1Id'] == "" || enviar['level1Id'] <= 0 || isNaN(enviar['level1Id'])) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_level1"));
+                return false;
+
+            } else if (enviar['level2Id'] == null || enviar['level2Id'] == undefined || enviar['level2Id'] == "" || enviar['level2Id'] <= 0 || isNaN(enviar['level2Id'])) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_level2"));
+                return false;
+
+            } else if (enviar['unitId'] == null || enviar['unitId'] == undefined || enviar['unitId'] == "" || enviar['unitId'] <= 0) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_unit_first"));
+                return false;
+
+            } else {
+                return true;
+            }
+
+        }
+
+        $('body').on('click', '#btnPrint', function () {
+
+            if (elaborador == null) {
+                elaborador = "";
+            }
+
+            if (aprovador == null) {
+                aprovador = "";
+            }
+
+            if (nomeRelatorio == null) {
+                nomeRelatorio = "";
+            }
+
+            PrepararImpressao(
+                nomeRelatorio,
+                elaborador + " - " + "/" + siglaUnidade,
+                aprovador + " - " + "/" + siglaUnidade,
+                "RGQ-504-GQU-001/05 Aprov. Em 02/05/2018",
+                'contentBody',
+                "../Imagens/logo-jbs.png",
+                "../Imagens/logo-gq.png");
+        });
+
+        function PrepararImpressao(titulo, elaborador, aprovador, codigoRodape, idBody, imagemCabecalhoLeft, imagemCabecalhoRight) {
+
+            $('#printTitulo').html(titulo);
+            $("#printElaborador").html(elaborador);
+            $("#printAprovador").html(aprovador);
+            $("#printCodigoRodape").html(codigoRodape);
+            $("#printImagemCabecalhoLeft").attr('src', imagemCabecalhoLeft);
+            $("#printImagemCabecalhoRight").attr('src', imagemCabecalhoRight);
+            printGRT.Inicializar(
+                {
+                    headerHtml: document.getElementById('contentHeader').innerHTML,
+                    bodyHtml: document.getElementById(idBody).innerHTML,
+                    footerHtml: document.getElementById('contentFooter').innerHTML,
+                    numberMarginRight: 25,
+                    numberMarginBottom: 25,
+                    renderTableMargin: 0,
+                    pageMarginHeader: "25px 25px 10px 25px",
+                    pageMarginFooter: "10px 25px 25px 25px",
+                    pageMarginBody: "0 25px 0 25px"
+                }
+            );
+
+            printGRT.Imprimir();
+
+            $('#divRenderPrint').remove();
+        }
+
+    </script>
+}
+
