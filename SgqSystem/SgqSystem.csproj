@@ -371,6 +371,7 @@
     <Compile Include="Controllers\Api\RelatoriosBrasil\SIFReportsApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadePorCabecalhoApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosMD\AvaliacaoSensorialApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
