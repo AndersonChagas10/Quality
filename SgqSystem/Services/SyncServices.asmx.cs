@@ -1007,7 +1007,7 @@ namespace SgqSystem.Services
 
                         var isRecravacao = new SGQDBContext.ParLevel1(db).getById(c.level01_Id).IsRecravacao == true;
 
-                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao || (c.Unit_Id == 4 && c.level01_Id == 22)) //se fora a unidade de CPG reconsolida o Vácuo GRD
+                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao || (c.Unit_Id == 4 && c.level01_Id == 22) || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -3074,8 +3074,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,				  																																						  
- 	                        MAX(Side) Side,				  																																						  
+ 	                        (Sequential) Sequential,				  																																						  
+ 	                        (Side) Side,				  																																						  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3102,7 +3102,8 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential, Side
 
                          /*coletas semanal */
                          INSERT INTO #COLETA																																														  
@@ -3125,8 +3126,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,																																										
- 	                        MAX(Side) Side,  																																										  
+ 	                        (Sequential) Sequential,																																										
+ 	                        (Side) Side,  																																										  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3153,7 +3154,8 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential, Side
 
                          /*coletas quinzenal */
                          INSERT INTO #COLETA																																														  
@@ -3176,8 +3178,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,		 																																					  
- 	                        MAX(Side) Side,																																										  
+ 	                        (Sequential) Sequential,		 																																					  
+ 	                        (Side) Side,																																										  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3204,7 +3206,8 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential, Side
 
                          /*coletas mensal */
                          INSERT INTO #COLETA																																														  
@@ -3227,8 +3230,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,																																							  
- 	                        MAX(Side) Side,																																										  
+ 	                        (Sequential) Sequential,																																							  
+ 	                        (Side) Side,																																										  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3255,7 +3258,9 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential,
+                         Side
 
                          SELECT
 
@@ -3294,8 +3299,8 @@ namespace SgqSystem.Services
                           StartPhaseDate = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') +'""
                           StartPhaseEvaluation = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') + '""
                           havecorrectiveaction = ""' + ISNULL(REPLACE(CAST(Max(CAST(Level2Result.haveCorrectiveAction as Int)) AS VARCHAR),'1','true'),'NULL') + '""
-                          Sequential = ""' + ISNULL(REPLACE(CAST(MAX(Level2Result.Sequential) AS VARCHAR),'.',','),'NULL') + '""
-                          Side = ""' + ISNULL(REPLACE(CAST(MAX(Level2Result.Side) AS VARCHAR),'.',','),'NULL') + '""
+                          Sequential = ""' + ISNULL(REPLACE(CAST((Level2Result.Sequential) AS VARCHAR),'.',','),'NULL') + '""
+                          Side = ""' + ISNULL(REPLACE(CAST((Level2Result.Side) AS VARCHAR),'.',','),'NULL') + '""
                           havereaudit = ""' + ISNULL(REPLACE(CAST(Max(cast(Level2Result.haveReaudit as int)) AS VARCHAR),'1','true'),'NULL') + '""
                           reauditlevel = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.ReauditLevel) AS VARCHAR),'.',','),'NULL') + '""
                           reauditnumber = ""' + ISNULL(REPLACE(CAST(CDL2.ReauditNumber AS VARCHAR),'.',','),'NULL') + '""
@@ -3827,69 +3832,74 @@ $(document).on('click','#btnMessageOk', function(e){
     preenchePCC1b(); 
 });
 
-                                function clonarHF(a){ 
-                                  var headerFieldGroupVisiveis = $('[hfg]:visible').not('[data-vinculo]');
-                                  countHeaderFieldGroup++;
-                                  headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function(o, c){ return $(o).attr('hfg') == $(a).attr('hfg') }); 
-                                  $.each(headerFieldGroupVisiveis,function(i,o){
-                                    if(!$(o).parent().attr('data-vinculo')){
-                                      var elementoClonado = $(o).parent().clone(true, true);
-                                      elementoClonado.attr('data-vinculo',countHeaderFieldGroup);
-		                              elementoClonado.insertAfter($(o).parent());
-                                    }
-                                  });
-                                }
+function clonarHF(a){ 
+    var headerFieldGroupVisiveis = $('[hfg]:visible').not('[data-vinculo]');
+    countHeaderFieldGroup++;
+    headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function(o, c){ return $(o).attr('hfg') == $(a).attr('hfg') }); 
+    $.each(headerFieldGroupVisiveis,function(i,o){
+    if(!$(o).parent().attr('data-vinculo')){
+        var elementoClonado = $(o).parent().clone(true, true);
+        elementoClonado.attr('data-vinculo',countHeaderFieldGroup);
+		elementoClonado.insertAfter($(o).parent());
+    }
+    });
+}
 
-                                function removerHF(a){ 
-                                    var headerFieldGroupVisiveis = $('[data-vinculo='+$(a).parent().attr('data-vinculo')+']:visible');
-                                    $.each(headerFieldGroupVisiveis,function(i,o){
-	                                    $(o).remove();
-                                    });
-                                }
+function removerHF(a){ 
+    var headerFieldGroupVisiveis = $('[data-vinculo='+$(a).parent().attr('data-vinculo')+']:visible');
+    $.each(headerFieldGroupVisiveis,function(i,o){
+	    $(o).remove();
+    });
+}
 
 $(document).ready(function(){
-                            $('body').on('input', 'input.interval:visible, input.likert:visible', function(){
+    $('body').on('input', 'input.interval:visible, input.likert:visible', function(){
 
-                                var id = $(this).parents('li').attr('id');
-	                            $.each($('input[resultado]:visible'), function(i, o){
-                                            if ($(o).attr('resultado').indexOf('{' + id + '}') >= 0){
-                                                var resultado = $(o).attr('resultado');
+        var id = $(this).parents('li').attr('id');
+	    $.each($('input[resultado]:visible'), function(i, o){
+			if ($(o).attr('resultado').indexOf('{' + id + '}') >= 0 || $(o).attr('resultado').indexOf('{' + id + '?}') >= 0){
+				var resultado = $(o).attr('resultado');
 
-                                                const regex = /{([^}]+)}/g;
-                                            let m;
+				const regex = /{([^}]+)}/g;
+				let m;
 
-                                            while ((m = regex.exec($(o).attr('resultado'))) !== null)
-                                            {
-                                                // This is necessary to avoid infinite loops with zero-width matches
-                                                if (m.index === regex.lastIndex)
-                                                {
-                                                    regex.lastIndex++;
-                                                }
+				while ((m = regex.exec($(o).attr('resultado'))) !== null)
+				{
+					// This is necessary to avoid infinite loops with zero-width matches
+					if (m.index === regex.lastIndex)
+					{
+						regex.lastIndex++;
+					}
 
-                                                var valor = $('li[id=""' + m[1] + '""] input.interval').val();
-                                                if(valor)
-                                                    resultado = resultado.replace(m[0],valor);
-                                                else{
-                                                    var valor = $('li[id=""' + m[1] + '""] input.likert').val();
-                                                    if(valor)
-                                                        resultado = resultado.replace(m[0],valor);
-                                                }
-                                            }
+					var valor = $('li[id=""' + m[1].replace('?','') + '""] input.interval').val();
+					if(valor)
+						resultado = resultado.replace(m[0],valor);
+					else{
+						var valor = $('li[id=""' + m[1].replace('?','') + '""] input.likert').val();
+						if(valor)
+							resultado = resultado.replace(m[0],valor);
+						else{
+							if(m[1].indexOf('?') >= 0){
+								resultado = resultado.replace(m[0],0);
+							}
+						}
+					}
+				}
 
-                                            if (resultado.indexOf('{') != -1)
-                                            {
-                                                resultado = """";
-                                            }
-                                            else
-                                            {
-                                                resultado = eval(resultado);
-                                            }
-    	                                    $(o).val(resultado);
-    	                                    $(o).trigger('input');
+				if (resultado.indexOf('{') != -1)
+				{
+					resultado = """";
+				}
+				else
+				{
+					resultado = eval(resultado);
+				}
+				$(o).val(resultado);
+				$(o).trigger('input');
 
-                                        }
-                                    });
-                            });
+			}
+		});
+    });
 });
 
 function validaNumeroEscalaLikert(evt, that)
@@ -3920,14 +3930,15 @@ function aplicaCorAoInput(input) {
 
     properties.forEach(function(property) {
         let tup = property.split(':');
-        arr[tup[0]] = tup[1];
+        arr[tup[0]] = [tup[1],tup[2]];
     });
 
     let value = $(input).val();
-    let color = arr[value];
+    let color = arr[value][0];
+    let valueText = arr[value][1];
 
+    $(input).parents('li').attr('value', valueText);
     $(input).parents('li').css('background-color', color);
-
 }
 
 function validaValoresValidosEscalaLikert(input) {
@@ -6742,11 +6753,19 @@ function calcularSensorial(list){
 
                 foreach (var item in ranges)
                 {
-                    paramns.Add(item.Intervalo + ":" + item.Cor);
+                    paramns.Add(item.Intervalo + ":" + item.Cor + ":" + item.Valor);
                 }
-
                 input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|",paramns));
 
+                //INSERE O MIN MAX
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+
+                string valorCompleto = "";
+
+                valorCompleto = valorMinimo + " ~ " + valorMaximo;
+
+                labels = html.div(outerhtml: valorCompleto, classe: "levelName");
             }//Resultado
             else if (parLevel3.ParLevel3InputType_Id == 10)
             {
