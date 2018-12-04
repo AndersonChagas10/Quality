@@ -16,7 +16,6 @@
                 <h4 id="titulo" class="modal-title"></h4>
             </div>
             <div class="modal-body">
-                <input class="hidden" data-column="inpAvaliacaoId" />
                 <div style="overflow:auto;">
                     <table id="tabelaLikert" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
                         <thead>
@@ -59,8 +58,8 @@
         valorAvaliacao = obj.evaluationNumber;
         botaoAgendamento = linha;
         $('#modalEscalaLikert').modal('show');
-        $("#titulo").html("");
-        $("#titulo").append("Escala Likert - Intervalo Min: " + obj.IntervalMin + " Max: " + obj.IntervalMax);
+        $('#modalEscalaLikert #titulo').html("");
+        $('#modalEscalaLikert #titulo').append("Escala Likert - Intervalo Min: " + obj.IntervalMin + " Max: " + obj.IntervalMax);
         var id = obj.Id;
         $.ajax({
             url: '@Url.Content("~")' + 'api/EscalaLikertAPI/Get/' + id,
@@ -72,10 +71,10 @@
                     var teste = data.find((item) => item.Intervalo == valor);
 
                     if (teste != null) {
-                        MontaNovaLinha(teste, valor);
+                        MontaNovaLinhaLikert(teste, valor);
                     } else {
                        
-                        MontaNovaLinha(null, valor);
+                        MontaNovaLinhaLikert(null, valor);
                     }
                 }
             },
@@ -85,7 +84,7 @@
         });
     }
 
-    function MontaNovaLinha(data, valor) {
+    function MontaNovaLinhaLikert(data, valor) {
 
         $("#tabelaLikert tbody").append("<tr>"
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpIntervalo" disabled="disabled" /></td>'
