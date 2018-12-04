@@ -3751,7 +3751,7 @@ namespace SgqSystem.Services
 
 function preenchePCC1b(){
     //debugger
-    if(_level1.id.replace('98789','|').split('|')[1] == 3){
+    if(_level1 && _level1.id.replace('98789','|').split('|')[1] == 3){
         $('#DescriptionFailure').val('Foi encontrado fezes e/ou ingesta no quarto.');
         $('#ImmediateCorrectiveAction').val('A nória foi paralizada e fez-se a remoção da porção contaminada.');
         $('#ProductDisposition').val('Verificou-se a carcaça novamente e ela foi liberada.');
