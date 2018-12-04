@@ -689,7 +689,6 @@
                 }
 
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
-                debugger
                 if (parseInt(object.IntervalMin) > parseInt(object.IntervalMax)) {
                     openMessageModal("Valor do Limite Superior menor que o Limite Inferior", null);
                 } else {
@@ -754,7 +753,6 @@
     }
 
     function parIntervalosTypeCreate() {
-        debugger
         if($('#selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#selectTipoInput :selected').val()  == eTipoDado_IntervaloMinutos)
             return;
 
@@ -816,7 +814,6 @@
     }
 
     function parIntervalosTypeCreateEdit() {
-        debugger
         if($('#crudNxNEdit #selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#crudNxNEdit #selectTipoInput :selected').val()==eTipoDado_IntervaloMinutos)
             return;
 
@@ -825,7 +822,6 @@
             value = $('#crudNxNEdit #selectUnidadeDeMedidas :selected').text();
 
         if ($("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && !$("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
-            debugger
             var options = "<option value='0'>" +
                 Resources('acceptable_value_less_than')
                 + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val()+" "+ value+
@@ -838,7 +834,6 @@
         }
 
         else if (!$("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && $("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
-            debugger
             var options =
                 "<option value='0'>" +
                     Resources('acceptable_value_equal_or_greater_than')
@@ -853,7 +848,6 @@
         }
 
         else if (!$("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && !$("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
-            debugger
             //var options =
             //    "<option value='0'>" +
             //        Resources('value_is_acceptable_between')
@@ -1055,7 +1049,6 @@
 
         //Resultado
         if (tipoSelecionado == eTipoDado_Resultado) {
-            debugger
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();

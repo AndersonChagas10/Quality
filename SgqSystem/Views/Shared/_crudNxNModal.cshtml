@@ -248,13 +248,12 @@
             }
                 /*Tipos de dados L3*/
             else if ($(e).parents('#tableLevel3Value').length) {
-                debugger
                 crudNxN.modalAlterarLevel3Value(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
 
                     if (level3Value.veifyAdd('crudNxNEdit')) {//
                         var editado = level3Value.getObjAdd('crudNxNEdit', obj);//
-                        if (parseInt(editado.IntervalMin) < parseInt(editado.IntervalMax)) {
+                        if (parseInt(editado.IntervalMin) <= parseInt(editado.IntervalMax)) {
                             $(e).parents('tr').removeData();
                             $(e).parents('tr').data(editado);
                             $($(e).parents('tr').find('td')[0]).html(editado.ParLevel3InputType_Name)//
@@ -318,8 +317,6 @@
             //    $('#crudNxNEdit #parLevel1Select2TipoDadosEntrada').val(obj.ParLevel1_Id).change();
             //if (obj.ParLevel2_Id > 0)
             //    $('#crudNxNEdit #parLevel2Select2TipoDadosEntrada').val(obj.ParLevel2_Id).change();
-            debugger
-
 
             if (obj.ParLevel3InputType_Id == 3 || obj.ParLevel3InputType_Id == 9 || obj.ParLevel3InputType_Id == 4) {
 
@@ -356,7 +353,6 @@
                     $('#crudNxNEdit #selectUnidadeParL3Value').val(obj.ParCompany_Id).change();
 
             } else if (obj.ParLevel3InputType_Id == 10) {
-                debugger
                 divDeEdicao = $('.ParResultadoEdit').clone();
                 $(divDeEdicao).show();
                 $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
