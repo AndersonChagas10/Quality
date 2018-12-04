@@ -547,17 +547,17 @@
                                         <span class="validate {{item.class}}"
                                               ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura && ParLevel3.Id != idEscareacao)"
                                               ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0 && !(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA')), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)]=='NA' ), bgGreen:(item.ResultValue[ParLevel3.Id][($index +1)] !=null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed:(item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }">
-                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}} {{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}{{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
                                         </span>
                                         <span class="validate"
                                               ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET)"
                                               ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA') }">
-                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}} {{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}{{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
                                         </span>
                                         <span class="validate"
                                               ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)"
                                               ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEspessura(item.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed:bgRedEspessura(item.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
-                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}} {{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}{{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
                                         </span>
                                         <span class="validate"
                                               ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEscareacao)"
@@ -572,7 +572,7 @@
                                         <span class="validate"
                                               ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:(item.ResultValue[ParLevel3.Id][($index +1)] !=null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index+1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed:(item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
                                               ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                                            <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}} {{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && item.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' :''}}</span>
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && item.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' :''}}</span>
                                         </span>
                                     </td>
                                 </tr>
