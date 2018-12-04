@@ -622,7 +622,6 @@
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax;
                     } else if (o.ParLevel3InputType_Id == eTipoDado_Resultado) {
-                        debugger
                         o["IntervalMin"] = o.IntervalMin;
                         o["IntervalMax"] = o.IntervalMax;
                         o["ParMeasurementUnit_Name"] = "";
@@ -630,16 +629,17 @@
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = o.DynamicValue;
                     }
-
+                    debugger
                     if ((o.ParLevel1_Id == null
                         || o.ParLevel1_Id == "-1"
                         || o.ParLevel1_Id == $('#parLevel1Select2 :selected').val())
                         &&
                         (o.ParLevel2_Id == null
-                        || o.ParLevel2_Id == "-1"
-                        || o.ParLevel2_Id == $('#parLevel2Select2 :selected').val()))
+                            || o.ParLevel2_Id == "-1"
+                            || o.ParLevel2_Id == $('#parLevel2Select2 :selected').val()))
                         crudNxN.adiciona(o, id, tdNamess);
-                
+
+                      
                     if (o.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
                        
                         $.ajax({
@@ -648,7 +648,6 @@
                             dataType: 'json',
                             async: false,
                             success: function (data) {
-                                debugger
                                 if (data.length <= 0) {
                                     $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-info btn-xs popovers likert" onclick="abrirmodalEscalaLikert($(this))" data-toggle="popover"><i class="fa fa-cog"></i></button>')
                                 } else {
@@ -686,31 +685,34 @@
                         object.AcceptableValueBetween_Name = object.DynamicValue;
                         object.AcceptableValueBetween_Name = $("#parIntervalosType option:selected").text();
                     }
-                
+
                 }
 
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
-               debugger
-                if (object.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
-                    $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers likert" onclick="mensagemAlerta()" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                debugger
+                if (parseInt(object.IntervalMin) > parseInt(object.IntervalMax)) {
+                    openMessageModal("Valor do Limite Superior menor que o Limite Inferior", null);
+                } else {
+                    if (object.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
+                        $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers likert" onclick="mensagemAlerta()" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                    }
+
+                    $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id'] option:first").val());
+                    $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").change();
+
+                    $("#parLevel1Select2TipoDadosEntrada").val($("#parLevel1Select2TipoDadosEntrada option:first").val());
+                    $("#parLevel2Select2TipoDadosEntrada").val($("#parLevel2Select2TipoDadosEntrada option:first").val());
+                    $("#avAmCompany").val($("#avAmCompany option:first").val());
+
+
+                    $("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id'] option:first").val());
+                    $("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id'] option:first").val());
+                    $("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id']").val($("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id'] option:first").val());
+                    $("input[name='paramsDto.parLevel3Value.IntervalMin']").val('');
+                    $("input[name='paramsDto.parLevel3Value.IntervalMax']").val('');
+                    $("input[name='paramsDto.parLevel3Value.DynamicValue']").val('');
                 }
-
-                $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id'] option:first").val());
-                $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").change();
-
-                $("#parLevel1Select2TipoDadosEntrada").val($("#parLevel1Select2TipoDadosEntrada option:first").val());
-                $("#parLevel2Select2TipoDadosEntrada").val($("#parLevel2Select2TipoDadosEntrada option:first").val());
-                $("#avAmCompany").val($("#avAmCompany option:first").val()); 
-                
-
-                $("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id'] option:first").val());
-                $("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id'] option:first").val());
-                $("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id']").val($("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id'] option:first").val());
-                $("input[name='paramsDto.parLevel3Value.IntervalMin']").val('');
-                $("input[name='paramsDto.parLevel3Value.IntervalMax']").val('');
-                $("input[name='paramsDto.parLevel3Value.DynamicValue']").val('');
-
-            }
+            } 
         },
     };
 

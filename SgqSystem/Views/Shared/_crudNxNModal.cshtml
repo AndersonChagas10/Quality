@@ -124,7 +124,7 @@
             if ($(e).parents('#level1_nc_accordion').length || $(e).parents('#level2_nc_accordion').length || $(e).parents('#level3_nc_accordion').length) {
                 crudNxN.modalAlterarRegraNc(obj);
                 console.log(obj);
-                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {                
+                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
 
                         var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
                         console.log("clique salvar" + editado);
@@ -248,25 +248,30 @@
             }
                 /*Tipos de dados L3*/
             else if ($(e).parents('#tableLevel3Value').length) {
+                debugger
                 crudNxN.modalAlterarLevel3Value(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
 
                     if (level3Value.veifyAdd('crudNxNEdit')) {//
                         var editado = level3Value.getObjAdd('crudNxNEdit', obj);//
-                        $(e).parents('tr').removeData();
-                        $(e).parents('tr').data(editado);
-                        $($(e).parents('tr').find('td')[0]).html(editado.ParLevel3InputType_Name)//
-                        $($(e).parents('tr').find('td')[1]).html(editado.ParLevel1_Name)//
-                        $($(e).parents('tr').find('td')[2]).html(editado.ParLevel2_Name)//
-                        $($(e).parents('tr').find('td')[3]).html(editado.ParCompany_Name)//
-                        $($(e).parents('tr').find('td')[4]).html(editado.ParMeasurementUnit_Name)//
-                        $($(e).parents('tr').find('td')[5]).html(editado.IntervalMin)//
-                        $($(e).parents('tr').find('td')[6]).html(editado.IntervalMax)//
-                        $($(e).parents('tr').find('td')[7]).html(editado.AcceptableValueBetween_Name)//
-                        $($(e).parents('tr').find('td')[8]).html(editado.ParLevel3BoolFalse_Name)//
-                        $($(e).parents('tr').find('td')[9]).html(editado.ParLevel3BoolTrue_Name)//
-                        $('#crudNxNEdit').modal('hide');
-                    }
+                        if (parseInt(editado.IntervalMin) < parseInt(editado.IntervalMax)) {
+                            $(e).parents('tr').removeData();
+                            $(e).parents('tr').data(editado);
+                            $($(e).parents('tr').find('td')[0]).html(editado.ParLevel3InputType_Name)//
+                            $($(e).parents('tr').find('td')[1]).html(editado.ParLevel1_Name)//
+                            $($(e).parents('tr').find('td')[2]).html(editado.ParLevel2_Name)//
+                            $($(e).parents('tr').find('td')[3]).html(editado.ParCompany_Name)//
+                            $($(e).parents('tr').find('td')[4]).html(editado.ParMeasurementUnit_Name)//
+                            $($(e).parents('tr').find('td')[5]).html(editado.IntervalMin)//
+                            $($(e).parents('tr').find('td')[6]).html(editado.IntervalMax)//
+                            $($(e).parents('tr').find('td')[7]).html(editado.AcceptableValueBetween_Name)//
+                            $($(e).parents('tr').find('td')[8]).html(editado.ParLevel3BoolFalse_Name)//
+                            $($(e).parents('tr').find('td')[9]).html(editado.ParLevel3BoolTrue_Name)//
+                            $('#crudNxNEdit').modal('hide');
+                        } else {
+                            openMessageModal("Valor do Limite Superior menor que o Limite Inferior", null);
+                        }
+                    } 
 
                 });
             }
@@ -314,7 +319,7 @@
             //if (obj.ParLevel2_Id > 0)
             //    $('#crudNxNEdit #parLevel2Select2TipoDadosEntrada').val(obj.ParLevel2_Id).change();
             debugger
-            
+
 
             if (obj.ParLevel3InputType_Id == 3 || obj.ParLevel3InputType_Id == 9 || obj.ParLevel3InputType_Id == 4) {
 
@@ -408,7 +413,7 @@
                 $('#crudNxNEdit #selectUnidadeDeMedidas').parents('td').hide();
                 $('#crudNxNEdit #parIntervalosType').parents('td').hide();
 
-            } 
+            }
 
             divDeEdicao = $('#selectTipoInput').clone();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
@@ -560,7 +565,7 @@
             obj.ParNotConformityRule_Id = $('#crudNxNEdit #selectNotConformityRule :selected').val();
             obj.ParNotConformityRule_Name = $('#crudNxNEdit #selectNotConformityRule :selected').text();
             obj.Value = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val();
-            obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? true : false;            
+            obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? true : false;
             obj.IsReauditShowTable = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n";
 
             return obj;
