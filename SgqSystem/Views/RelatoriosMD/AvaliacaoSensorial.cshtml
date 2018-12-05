@@ -16,13 +16,18 @@
     }
 
     #cabecalho tr td {
-        font-weight:bold;
+        /*font-weight:bold;*/
         font-size:8px;
     }
 
     .fontCenter {
         text-align: center;
         vertical-align: middle;
+    }
+
+    #cabecalho tr td strong{
+        font-weight: bold;
+        font-size: 12px;
     }
 
 </style>
@@ -81,9 +86,9 @@
                             <table class="table table-bordered" id="cabecalho">
                                 <tbody>
                                     <tr>
-                                        <td colspan="3">Data de Produção:</td>
-                                        <td colspan="4">Produto:</td>
-                                        <td colspan="3">Turno:</td>
+                                        <td colspan="3">Data de Produção:<br /><strong id="dataProducao"></strong></td>
+                                        <td colspan="4">Produto:<br /><strong id="produto"></strong></td>
+                                        <td colspan="3">Turno:<br /><strong id="shiftId"></strong></td>
                                     </tr>
                                     <tr class="fontCenter">
                                         <td colspan="10">Grau e Direção da Diferença com Relação ao Padrão</td>
@@ -146,7 +151,7 @@
 
         var $btn = $('#btnSend');
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
-        var urlGet = '@Html.Raw(Url.Action("Get", "api/SIFReports"))';
+        var urlGet = '@Html.Raw(Url.Action("Get", "api/AvaliacaoSensorial"))';
         var siglaUnidade = "";
         exibeTodosLevels = false; //Variavel global para não exibir os monitoramentos sem que selecione o indicador
         let elaborador = "";
@@ -180,7 +185,7 @@
             formControl.showSimpleDate();
             formControl.showLevel1();
             formControl.showUnit();
-            formControl.showTipoVisao();
+            formControl.showShift();
 
             $('#showLevel1 > div:nth-child(3)').hide();
 
@@ -215,7 +220,9 @@
 
             $('.portlet').hide();
 
-            if (obj.Dados === null || obj.Dados.length <= 0) {
+            cleanData();
+
+            if (obj.Coletas === null || obj.Coletas.length <= 0) {
 
                 GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
 
@@ -223,10 +230,52 @@
 
                 $('.portlet').show();
 
+                PreencherCabecalho(obj.Cabecalhos);
+
+                $('#shiftId').html(obj.Shift);
+
+                console.table(obj.Coletas);
+
             }
         }
 
         function cleanData() {
+
+            $('#dataProducao').html("");
+            $('#produto').html(""); 
+            $('#shiftId').html("");
+
+        }
+
+        function PreencherCabecalho(cabecalhos) {           
+
+            let dataProducao = [];
+            let produto = [];
+
+            cabecalhos.forEach((o) => {
+
+                switch (o.Id) {
+
+                    //Ids dos cabeçalhos de data produção e produto
+                    case 1197:
+                        dataProducao.push(o.Value);
+                        break;
+
+                    case 1196:
+                        produto.push(o.Value);
+                        break;
+
+                    default:
+                }
+            })
+
+            $('#dataProducao').html(dataProducao.join(" ,"));
+            $('#produto').html(produto.join(" ,"));            
+        }
+
+        function PreencherCorpo(coletas) {
+
+            let table = "<table>";
 
         }
 
