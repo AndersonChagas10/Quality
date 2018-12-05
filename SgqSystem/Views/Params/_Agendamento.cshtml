@@ -90,9 +90,9 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    MontaNovaLinha(null);
+                    MontaNovaLinhaAgendamento(null);
                     data.forEach(function (item) {
-                        MontaNovaLinha(item, false);
+                        MontaNovaLinhaAgendamento(item, false);
                     });
                     console.log(data);
                 },
@@ -130,7 +130,7 @@
         }
     }
 
-    function MontaNovaLinha(data) {
+    function MontaNovaLinhaAgendamento(data) {
         $("#tabelaAgendamento tbody").append("<tr>"
             + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
@@ -243,7 +243,7 @@
                             listaAgendamento = [];
                             $('#tabelaAgendamento tbody tr').not(':first').remove();
                             data.forEach(function (item) {
-                                MontaNovaLinha(item, false);
+                                MontaNovaLinhaAgendamento(item, false);
                             });
 
                             openMessageModal("Dados salvos com sucesso", null);
@@ -378,7 +378,7 @@
                 ParEvaluation_Id: $(linha).find("[data-column=inpAvaliacaoId]").val(),
                 Id: $(linha).find("[data-column=inpId]").val()
             };
-            MontaNovaLinha(form, isEdit);
+            MontaNovaLinhaAgendamento(form, isEdit);
             $(linha).find('input:enabled').val('');
 
 
