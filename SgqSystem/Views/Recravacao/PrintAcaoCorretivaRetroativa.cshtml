@@ -503,7 +503,7 @@
                                         {{acoes.correctiveAction.Assinatura.Name}}
                                     </td>
                                     <td>
-                                        <strong>HORÁRIO DA LIBERAÇÃO:&nbsp;</strong> {{moment(lata.correctiveAction.HorarioDeLiberacao.toString()).format("DD-MM-YYYY HH:mm:ss");}}
+                                        <strong>HORÁRIO DA LIBERAÇÃO:&nbsp;</strong> {{lata.correctiveAction.HorarioDeLiberacao.toString() | date:" HH:mm"}}
                                     </td>
                                     <td>
                                         <strong>VISTO: &nbsp;</strong>{{acoes.PreventiveAction.Assinatura.Name}}
