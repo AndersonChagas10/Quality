@@ -1840,7 +1840,7 @@
     <Content Include="Views\ParVinculoPeso\Edit.cshtml" />
     <Content Include="Views\ParVinculoPeso\Index.cshtml" />
     <Content Include="Views\Integracao\Index.cshtml" />
-    <Content Include="Views\Params\_McDonald.cshtml" />
+    <Content Include="Views\Params\_EscalaLikert.cshtml" />
     <Content Include="Views\MotivoAtraso\Create.cshtml" />
     <Content Include="Views\MotivoAtraso\Delete.cshtml" />
     <Content Include="Views\MotivoAtraso\Details.cshtml" />
