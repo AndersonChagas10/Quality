@@ -3010,8 +3010,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,				  																																						  
- 	                        MAX(Side) Side,				  																																						  
+ 	                        (Sequential) Sequential,				  																																						  
+ 	                        (Side) Side,				  																																						  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3038,7 +3038,8 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential, Side
 
                          /*coletas semanal */
                          INSERT INTO #COLETA																																														  
@@ -3061,8 +3062,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,																																										
- 	                        MAX(Side) Side,  																																										  
+ 	                        (Sequential) Sequential,																																										
+ 	                        (Side) Side,  																																										  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3089,7 +3090,8 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential, Side
 
                          /*coletas quinzenal */
                          INSERT INTO #COLETA																																														  
@@ -3112,8 +3114,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,		 																																					  
- 	                        MAX(Side) Side,																																										  
+ 	                        (Sequential) Sequential,		 																																					  
+ 	                        (Side) Side,																																										  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3140,7 +3142,8 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential, Side
 
                          /*coletas mensal */
                          INSERT INTO #COLETA																																														  
@@ -3163,8 +3166,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,																																							  
- 	                        MAX(Side) Side,																																										  
+ 	                        (Sequential) Sequential,																																							  
+ 	                        (Side) Side,																																										  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3191,7 +3194,8 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential, Side
 
                          SELECT
 
