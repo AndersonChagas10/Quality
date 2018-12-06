@@ -1000,7 +1000,7 @@ namespace SgqSystem.Services
 
                         var isRecravacao = new SGQDBContext.ParLevel1(db).getById(c.level01_Id).IsRecravacao == true;
 
-                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao || (c.Unit_Id == 4 && c.level01_Id == 22)) //se fora a unidade de CPG reconsolida o Vácuo GRD
+                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao || (c.Unit_Id == 4 && c.level01_Id == 22) || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -3755,7 +3755,7 @@ namespace SgqSystem.Services
 
 function preenchePCC1b(){
     //debugger
-    if(_level1.id.replace('98789','|').split('|')[1] == 3){
+    if(_level1 && _level1.id.replace('98789','|').split('|')[1] == 3){
         $('#DescriptionFailure').val('Foi encontrado fezes e/ou ingesta no quarto.');
         $('#ImmediateCorrectiveAction').val('A nória foi paralizada e fez-se a remoção da porção contaminada.');
         $('#ProductDisposition').val('Verificou-se a carcaça novamente e ela foi liberada.');

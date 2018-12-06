@@ -339,6 +339,7 @@ namespace SgqSystem.Controllers.Api.App
 
         private void SaveFile(int id, string html, int Shift_Id)
         {
+            //html = System.Text.RegularExpressions.Regex.Replace(html, @"[ ]{2,}", String.Empty);
             var fileName = $"HTMLTabletUnidade{id}_Shift{Shift_Id}.txt";
             if (Shift_Id == 0)
                 fileName = $"HTMLTabletUnidade{id}.txt";

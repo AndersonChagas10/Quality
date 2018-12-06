@@ -359,8 +359,8 @@
             height: 35px;
         }
 
-    .bgRed {
-        background-color: rgba(248, 2, 2, 0.29) !important;
+    .bgRed, .bgRed * {
+        color: rgba(248, 2, 2, 1) !important;
         display: block;
     }
 
@@ -385,6 +385,7 @@
 
 <html xmlns="">
 <head>
+    <meta charset="UTF-8">
     <title>Print Recravação</title>
 
     @Styles.Render("~/bundles/RecravacaoPrintCss")
@@ -438,7 +439,7 @@
             </div>
 
             <div id="contentBody">
-                <div class="height-fix">
+                <div class="">
                     <div class="">
                         <table class="tableForm" style="width: 75%;">
                             <tbody>
@@ -462,13 +463,21 @@
                                     <td class="title">Fornecedor da Lata</td>
                                     <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
                                     <td class="title">Data do recebimento das latas</td>
-                                    <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
+                                    <td>
+                                        <span ng-repeat="item in dataRecebimento track by $index">
+                                            {{item | date:'dd/MM/yyyy'}}
+                                        </span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="title">Fornecedor das tampas/fundos das latas</td>
                                     <td><span ng-repeat="item in seletedLinha.form.FornecedorTampaFundoLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
                                     <td class="title">Data do recebimento das tampas/fundos das latas</td>
-                                    <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas  | date:'dd/MM/yyyy'}}</td>
+                                    <td>
+                                        <span ng-repeat="item in dataRecebimentoTampaLata track by $index">
+                                            {{item | date:'dd/MM/yyyy'}}
+                                        </span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="title">Tipo da Lata</td>
@@ -480,7 +489,7 @@
                         <img class="lataPtImg img-responsive" src="~/Imagens/Recravacao/{{seletedLinha.TipoDeLata.NumberOfPoints}}pts.jpg" />
                         <div class="clearfix"></div>
                     </div>
-                    <div style="height: 200px;" id="div{{($index +1)}}" class="divided avoid-break-page" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
+                    <div style="min-height: 200px;" id="div{{($index +1)}}" class="divided avoid-break-page" ng-repeat="item in seletedLinha.latas | limitTo:limit:begin track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
                         <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
                             <tr>
                                 <td style="border:1px solid #cccccc; text-align: left; width:65%; border-right:0px; border-bottom: 0px; font-size: 8px;">
@@ -511,8 +520,11 @@
                                         ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
                                         colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
 
-                                        <span ng-class="{bgWhite: (!(item.ResultValue[ParLevel3.Id][($index +1)] === true) && !(item.ResultValue[ParLevel3.Id][($index +1)] === false)), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] === true), bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] === false)}"
-                                              ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                                        @*1 Binário*@
+                                        <span style="text-align:center;"
+                                              class=""
+                                              ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')"
+                                              ng-class="{bgWhite:(!(item.ResultValue[ParLevel3.Id][($index +1)] === true) && !(item.ResultValue[ParLevel3.Id][($index +1)] === false)), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:(item.ResultValue[ParLevel3.Id][($index +1)] === true), bgRed:(item.ResultValue[ParLevel3.Id][($index +1)] === false)}">
                                             <span>
                                                 <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === true">
                                                     {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
@@ -521,28 +533,46 @@
                                                     {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
                                                 </span>
                                             </span>
+                                            <span ng-if="(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA')">
+                                                <span class="validate">
+                                                    {{item.ResultValue[ParLevel3.Id][($index +1)]}}
+                                                </span>
+                                            </span>
                                         </span>
+                                        @*2 Número de defeitos*@
                                         <span class="validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
                                             <span>{{item.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
                                         </span>
-                                        <span class="validate"
-                                              ng-class="{bgWhite:  ((item.ResultValue[ParLevel3.Id][($index +1)].length == 0 && !(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA')) || ParLevel3.Id == idEC || ParLevel3.Id == idET), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }"
-                                              ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
-                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
-                                            <span style="font-size:9px">
-                                                {{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}
-                                            </span>
+                                        @*3 Intervalos*@
+                                        <span class="validate {{item.class}}"
+                                              ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura && ParLevel3.Id != idEscareacao)"
+                                              ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0 && !(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA')), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)]=='NA' ), bgGreen:(item.ResultValue[ParLevel3.Id][($index +1)] !=null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed:(item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }">
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}{{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
                                         </span>
-                                        <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                        <span class="validate"
+                                              ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET)"
+                                              ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA') }">
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}{{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
+                                        </span>
+                                        <span class="validate"
+                                              ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)"
+                                              ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEspessura(item.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed:bgRedEspessura(item.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}{{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
+                                        </span>
+                                        <span class="validate"
+                                              ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEscareacao)"
+                                              ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEscareacao(item.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed:bgRedEscareacao(item.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}{{(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name.indexOf('%') >= 0) ? ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name : ''}}</span>
+                                        </span>
+                                        @*5 Texto*@
+                                        <label style="word-wrap:break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
                                             {{item.ResultValue[ParLevel3.Id][($index +1)]}}
                                         </label>
+                                        @*99 NOVO CALCULADO POR OUTRO*@
                                         <span class="validate"
-                                              ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
+                                              ng-class="{bgWhite:(item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:(item.ResultValue[ParLevel3.Id][($index +1)] !=null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index+1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed:(item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
                                               ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                                            <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}}</span>
-                                            <span style="font-size:9px">
-                                                {{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && item.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' : ''}}
-                                            </span>
+                                            <span>{{item.ResultValue[ParLevel3.Id][($index + 1)]}}{{(ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText.indexOf('%') >= 0 && item.ResultValue[ParLevel3.Id][($index + 1)]) ? '%' :''}}</span>
                                         </span>
                                     </td>
                                 </tr>
@@ -551,95 +581,12 @@
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                <div class="height-fix">
-                    <!--<div class="border">
-                        <p>AÇÃO CORRETIVA : Ações corretivas adotadas conforme CRF 9 Part 417.3</p>
-                        <p>1. Identificar o desvio e eliminá-lo: <u>Caso o overlap esteja abaixo de 1,02mm</u> paralisando e solicitando ajuste do equipamento de recravação ao responsável pelo processo. Se o defeito for causado pela lata de segregar o lote de latas vazias para análise e pos</p>
-                        <p>2. Assegurar que o PCC estará sob controle após a ação corretiva: verificar a eficácia da ação corretiva adotada monitorando novamente o PCC previamente ao reinicio da operação;</p>
-                        <p>3. Estabelecer medidas para previnir recorrência: informando o desvio ao responsável pelo processo para tomada de ações prevetivas.</p>
-                        <p>4. Assegurar que qualquer produto eventualmente adulterado como resultado do desvio não seja comercializado: sequestrar as latas produzidas desde o último monitoriamento para revisão e/ou abertura (descarte - vazamento ou retrabalho para outros defeitos). Registrar a ação no relatório de monitoriamento do APPCC, indicar horário da ocorrência, ação corretiva e rubricar.</p>
-                    </div>
-
-                    <div class="divTableCorrectiveAction" style="padding-top: 20px;">
-
-                        <table class="tableCorrectiveAction">
-                            <colgroup>
-                                <col style="width: 15%">
-                                <col style="width: 28.3%;">
-                                <col style="width: 28.3%;">
-                                <col style="width: 28.3%;">
-                            </colgroup>
-                            <tr>
-                                <th>Hora (1)</th>
-                                <th>DEFICIÊNCIA (2)</th>
-                                <th>AÇÃO CORRETIVA (3)</th>
-                                <th>AÇÃO PREVENTIVA (4)</th>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div class="divTableCorrectiveAction" ng-repeat="lata in seletedLinha.latas track by $index">
-                        <div ng-repeat="acoes in lata.correctiveActionList | limitTo:3 track by $index">
-
-                            <table class="tableCorrectiveAction">
-                                <colgroup>
-                                    <col style="width: 15%">
-                                    <col style="width: 28.3%;">
-                                    <col style="width: 28.3%;">
-                                    <col style="width: 28.3%;">
-                                </colgroup>
-                                @*<tr>
-                                        <th>Hora (1)</th>
-                                        <th>DEFICIÊNCIA (2)</th>
-                                        <th>AÇÃO CORRETIVA (3)</th>
-                                        <th>AÇÃO PREVENTIVA (4)</th>
-                                    </tr>*@
-                                <tr>
-                                    <td class="tbodyTd">
-                                        {{acoes.AddDate}}
-                                    </td>
-                                    <td class="tbodyTd">
-                                        {{acoes.correctiveAction.DescriptionFailure}}
-                                    </td>
-                                    <td class="tbodyTd">
-                                        {{acoes.correctiveAction.ImmediateCorrectiveAction}}
-                                    </td>
-                                    <td class="tbodyTd">
-                                        {{acoes.PreventiveAction.PreventativeMeasure}}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>VISTO</strong>
-                                    </td>
-                                    <td>
-                                        {{acoes.correctiveAction.Assinatura.Name}}
-                                    </td>
-                                    <td>
-                                        <strong>HORÁRIO DA LIBERAÇÃO:&nbsp;</strong> {{lata.correctiveAction.HorarioDeLiberacao}}
-                                    </td>
-                                    <td>
-                                        <strong>VISTO: &nbsp;</strong>{{acoes.PreventiveAction.Assinatura.Name}}
-                                    </td>
-                                </tr>
-
-                            </table>
-
-
-                        </div>
-                    </div>-->
+                <div class="avoid-break-page">
 
                     <div ng-if="seletedLinha.ObservacoesList.length > 0" class="divTableCorrectiveAction" style="padding-top: 20px;">
 
-                        <table class="table
-
                         <table class="tableCorrectiveAction">
-                            <colgroup>
-                                <col style="width: 20%">
-                                <col style="width: 80%;">
-                            </colgroup>
                             <tr>
-                                <th>Hora</th>
                                 <th>OBSERVAÇÃO</th>
                             </tr>
                         </table>
@@ -654,14 +601,7 @@
                     <div ng-if="seletedLinha.ObservacoesList.length > 0" ng-repeat="item in seletedLinha.ObservacoesList | limitTo:999 track by $index">
 
                         <table class="tableCorrectiveAction" ng-if="item.DescriptionFailure">
-                            <colgroup>
-                                <col style="width: 20%">
-                                <col style="width: 80%;">
-                            </colgroup>
                             <tr>
-                                <td class="tbodyTd">
-                                    {{item.adDate}}
-                                </td>
                                 <td class="tbodyTd">
                                     <span>{{item.DescriptionFailure}}</span>
                                 </td>
@@ -686,11 +626,11 @@
                                         </tr>
                                         <tr>
                                             <td height="20px" width="5%" align="center"></td>
-                                            <td width="25%" align="center">Monitor</td>
+                                            <td width="25%" align="center">Monitor responsável</td>
                                             <td width="5%" align="center"></td>
-                                            <td width="25%" align="center">Resp. Setor Enlatamento</td>
+                                            <td width="25%" align="center">Supervisor do setor</td>
                                             <td width="5%" align="center"></td>
-                                            <td width="25%" align="center">Garantia de Qualidade</td>
+                                            <td width="25%" align="center">Supervisor responsável</td>
                                             <td width="5%" align="center"></td>
                                         </tr>
 
@@ -706,29 +646,37 @@
 
                 <div ng-if="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" class="border-rounded">
 
-
                     <small ng-repeat="item in seletedLinha.latas[0].ListParlevel3 | limitTo:limit:begin track by $index"
+                           ng-if="item.Id != idEC && item.Id != idET && item.Name.indexOf('inguet') < 0"
                            style="float:left;width:25%;display:block;font-size:9px!important;font-weight: 800 !important;">
                         <span>{{item.Name}}</span>
                         <br />
+
 
                         <span ng-if="item.Id == idEscareacao"
                               style="font-size:6px!important;font-weight: 100 !important;">
                             mínimo igual a altura
                         </span>
 
-                        <span ng-if="item.ParLevel3Value[0].ParLevel3InputType_Id == 1 && item.Id != idEscareacao"
+                        <span ng-if="item.Id == idEspessura"
                               style="font-size:6px!important;font-weight: 100 !important;">
-                            Conforme | Não conforme
-                        </span>                
-
-                        <span ng-if="(item.ParLevel3Value[0].ParMeasurementUnit.Name || item.ParLevel3Value_OuterList[0].UnidadeMedidaText) && item.Id != idEscareacao && item.ParLevel3Value[0].ParLevel3InputType_Id != 1"
-                              style="font-size:6px!important;font-weight: 100 !important;">
-                            ({{seletedLinha.ParLevel3Interval['limite_'+item.Name]}} {{item.ParLevel3Value_OuterList[0].UnidadeMedidaText}})
+                                ((2*EC)+(3*ET))+0.05 | ((2*EC)+(3*ET))+0.23
                         </span>
-                        <span ng-if="(!(item.ParLevel3Value[0].ParMeasurementUnit.Name || item.ParLevel3Value_OuterList[0].UnidadeMedidaText)) && item.Id != idEscareacao && item.ParLevel3Value[0].ParLevel3InputType_Id != 1"
-                              style="font-size:6px!important;font-weight: 100 !important;">
-                            ({{seletedLinha.ParLevel3Interval['limite_'+item.Name]}})
+
+                        <span ng-if="item.Id != idEscareacao && item.Id != idEC && item.Id != idET && item.Name.indexOf('inguet') < 0 && item.Id != idEspessura">
+                            <span ng-if="item.ParLevel3Value[0].ParLevel3InputType_Id == 1"
+                                  style="font-size:6px!important;font-weight: 100 !important;">
+                                Conforme | Não conforme
+                            </span>
+
+                            <span ng-if="(item.ParLevel3Value[0].ParMeasurementUnit.Name || item.ParLevel3Value_OuterList[0].UnidadeMedidaText) && item.ParLevel3Value[0].ParLevel3InputType_Id != 1"
+                                  style="font-size:6px!important;font-weight: 100 !important;">
+                                ({{seletedLinha.ParLevel3Interval['limite_'+item.Name]}} {{item.ParLevel3Value_OuterList[0].UnidadeMedidaText}})
+                            </span>
+                            <span ng-if="(!(item.ParLevel3Value[0].ParMeasurementUnit.Name || item.ParLevel3Value_OuterList[0].UnidadeMedidaText)) && item.ParLevel3Value[0].ParLevel3InputType_Id != 1"
+                                  style="font-size:6px!important;font-weight: 100 !important;">
+                                ({{seletedLinha.ParLevel3Interval['limite_'+item.Name]}})
+                            </span>
                         </span>
                     </small>
                     <div style="clear:both"></div>
@@ -845,7 +793,9 @@
                 vm.linhas = [{}]
                 vm.produtos = [{}]
                 vm.fornecedorLata = [{}]
+                vm.dataRecebimento = []
                 vm.fornecedorTampaLata = [{}]
+                vm.dataRecebimentoTampaLata = []
                 vm.seletedLinha = { Id: 0 }
                 vm.selectedLata = {}
                 vm.activeInLine = 0
@@ -1223,8 +1173,28 @@
                                     if (vm.seletedLinha.form.DataRecebimentoLatas)
                                         vm.seletedLinha.form.DataRecebimentoLatas = new Date(vm.seletedLinha.form.DataRecebimentoLatas)
 
+                                    if (vm.seletedLinha.form.dataRecebimento) {
+                                        vm.dataRecebimento = vm.seletedLinha.form.dataRecebimento;
+                                        var list = [];
+                                        vm.dataRecebimento.forEach(function (o, i) {
+                                            if (o != null)
+                                                list.push(new Date(o));
+                                        });
+                                        vm.dataRecebimento = list;
+                                    }
+
                                     if (vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
                                         vm.seletedLinha.form.DataRecebimentoTampasFundosLatas = new Date(vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
+
+                                    if (vm.seletedLinha.form.dataRecebimentoTampaLata) {
+                                        vm.dataRecebimentoTampaLata = vm.seletedLinha.form.dataRecebimentoTampaLata;
+                                        var list = [];
+                                        vm.dataRecebimentoTampaLata.forEach(function (o, i) {
+                                            if (o != null)
+                                                list.push(new Date(o));
+                                        });
+                                        vm.dataRecebimentoTampaLata = list;
+                                    }
                                 }
 
                                 let index = vm.findWithAttr(vm.linhas, 'Id', vm.seletedLinha.Id);
@@ -1723,7 +1693,7 @@
 
                 function init() {
 
-                    
+
 
                     if (vm.dev) {
                         vm.idEC = 1660
