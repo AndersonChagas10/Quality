@@ -3861,7 +3861,7 @@ $(document).ready(function(){
 				var resultado = $(o).attr('resultado');
 
 				const regex = /{([^}]+)}/g;
-				let m;
+				var m;
 
 				while ((m = regex.exec($(o).attr('resultado'))) !== null)
 				{
@@ -3904,8 +3904,8 @@ $(document).ready(function(){
 
 function validaNumeroEscalaLikert(evt, that)
 {
-    let e = event || evt; 
-    let charCode = e.which || e.keyCode;
+    var e = event || evt; 
+    var charCode = e.which || e.keyCode;
 
     $(that).parents('li').css('background-color', '');
 
@@ -3923,19 +3923,19 @@ function validaNumeroEscalaLikert(evt, that)
 
 function aplicaCorAoInput(input) {
 
-    let paramns = $(input).attr('paramns')
+    var paramns = $(input).attr('paramns')
 
-    let properties = paramns.split('|');
-    let arr = [];
+    var properties = paramns.split('|');
+    var arr = [];
 
     properties.forEach(function(property) {
-        let tup = property.split(':');
+        var tup = property.split(':');
         arr[tup[0]] = [tup[1],tup[2]];
     });
 
-    let value = $(input).val();
-    let color = arr[value][0];
-    let valueText = arr[value][1];
+    var value = $(input).val();
+    var color = arr[value][0];
+    var valueText = arr[value][1];
 
     $(input).parents('li').attr('value', valueText);
     $(input).parents('li').css('background-color', color);
@@ -3943,15 +3943,15 @@ function aplicaCorAoInput(input) {
 
 function validaValoresValidosEscalaLikert(input) {
 
-    let paramns = $(input).attr('paramns')
+    var paramns = $(input).attr('paramns')
 
-    let properties = paramns.split('|');
-    let arr = [];
+    var properties = paramns.split('|');
+    var arr = [];
 	
 	var valido = false;
 
     properties.forEach(function(property) {
-        let tup = property.split(':');
+        var tup = property.split(':');
 		if(tup[0] == $(input).val())
 			valido = true;
     });
@@ -4025,6 +4025,48 @@ function calcularSensorial(list){
 
 }
                               </script> ";
+
+            try
+            {
+                SGQDBContext.Generico listaProdutos = new Generico(db);
+                var listaProdutosJSON = listaProdutos.getProdutos();
+
+                supports += @" <script>
+                                var listaProdutosJson = " + System.Web.Helpers.Json.Encode(listaProdutosJSON) + @";
+                                           
+                                function buscarProduto(a,valor){
+
+                                    for (var j=0; j < listaProdutosJson.length;j++) {
+                                        if (listaProdutosJson[j].id == valor) {
+
+		                                    $(a).next().html(listaProdutosJson[j].nome);
+                    
+                                            return;
+                                        }		                                               
+                                    }
+                                    //$(a).val('');
+                                    $(a).next().html('');
+                                }
+
+                                function validaProduto(a,valor){
+                                    for (var j=0; j < listaProdutosJson.length; j++) {
+                                        if (listaProdutosJson[j].id == valor) {
+
+		                                    //alert(listaProdutosJson[j].nome);
+                    
+                                            return;
+                                        }
+                                                                                                       
+                                    }
+                                    $(a).val('');
+                                }
+                                </script> ";
+            }
+            catch (Exception ex)
+            {
+
+            }
+
 
             //string resource = GetResource();
 
@@ -5655,45 +5697,6 @@ function calcularSensorial(list){
                         /* Se for produto que digito o código e busco em uma lista*/
                         if (header.ParHeaderField_Description == "Produto")
                         {
-                            SGQDBContext.Generico listaProdutos = new Generico(db);
-                            var listaProdutosJSON = listaProdutos.getProdutos();
-
-                            form_control = " <script> " +
-                                           "   var listaProdutosJson = " + System.Web.Helpers.Json.Encode(listaProdutosJSON) +
-
-                                           " </script>                                           ";
-
-                            form_control += @" <script>
-                                             function buscarProduto(a,valor){
-
-                                                for (var j=0; j < listaProdutosJson.length; j++) {
-                                                   if (listaProdutosJson[j].id == valor) {
-
-		                                                $(a).next().html(listaProdutosJson[j].nome);
-                    
-                                                      return;
-                                                   }		                                               
-                                                }
-                                                //$(a).val('');
-                                                $(a).next().html('');
-                                            }
-
-                                            function validaProduto(a,valor){
-                                                for (var j=0; j < listaProdutosJson.length; j++) {
-                                                   if (listaProdutosJson[j].id == valor) {
-
-		                                                //alert(listaProdutosJson[j].nome);
-                    
-                                                      return;
-                                                   }
-                                                                                                       
-                                                }
-                                                $(a).val('');
-                                            }
-                                            </script> ";
-
-
-
                             form_control += " <input class=\"form-control input-sm \" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" onkeyup=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \"  >";
                             form_control += " <label class=\"productNamelabel\"></label>";
                             //form_control += "<script>$(\"#cb" + header.ParHeaderField_Id + "\").inputmask('number');</script>";
