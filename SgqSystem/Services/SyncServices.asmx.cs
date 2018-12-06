@@ -529,6 +529,8 @@ namespace SgqSystem.Services
                         if (result.Length > 49)
                         {
                             cluster = result[49];
+                            if (string.IsNullOrEmpty(cluster))
+                                cluster = parCluster_Id;
                         }
 
                         if (result.Length > 50)
@@ -1000,7 +1002,7 @@ namespace SgqSystem.Services
 
                         var isRecravacao = new SGQDBContext.ParLevel1(db).getById(c.level01_Id).IsRecravacao == true;
 
-                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao || (c.Unit_Id == 4 && c.level01_Id == 22)) //se fora a unidade de CPG reconsolida o Vácuo GRD
+                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao || (c.Unit_Id == 4 && c.level01_Id == 22) || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -3010,8 +3012,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,				  																																						  
- 	                        MAX(Side) Side,				  																																						  
+ 	                        (Sequential) Sequential,				  																																						  
+ 	                        (Side) Side,				  																																						  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3038,7 +3040,8 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential, Side
 
                          /*coletas semanal */
                          INSERT INTO #COLETA																																														  
@@ -3061,8 +3064,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,																																										
- 	                        MAX(Side) Side,  																																										  
+ 	                        (Sequential) Sequential,																																										
+ 	                        (Side) Side,  																																										  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3089,7 +3092,8 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential, Side
 
                          /*coletas quinzenal */
                          INSERT INTO #COLETA																																														  
@@ -3112,8 +3116,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,		 																																					  
- 	                        MAX(Side) Side,																																										  
+ 	                        (Sequential) Sequential,		 																																					  
+ 	                        (Side) Side,																																										  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3140,7 +3144,8 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential, Side
 
                          /*coletas mensal */
                          INSERT INTO #COLETA																																														  
@@ -3163,8 +3168,8 @@ namespace SgqSystem.Services
                              MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
- 	                        MAX(Sequential) Sequential,																																							  
- 	                        MAX(Side) Side,																																										  
+ 	                        (Sequential) Sequential,																																							  
+ 	                        (Side) Side,																																										  
  	                        MIN(CL2.Id) AS ID
 
 
@@ -3191,7 +3196,9 @@ namespace SgqSystem.Services
                          Shift,  																																															  
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
-                         ConsolidationLevel2_Id
+                         ConsolidationLevel2_Id,
+                         Sequential,
+                         Side
 
                          SELECT
 
@@ -3230,8 +3237,8 @@ namespace SgqSystem.Services
                           StartPhaseDate = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') +'""
                           StartPhaseEvaluation = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') + '""
                           havecorrectiveaction = ""' + ISNULL(REPLACE(CAST(Max(CAST(Level2Result.haveCorrectiveAction as Int)) AS VARCHAR),'1','true'),'NULL') + '""
-                          Sequential = ""' + ISNULL(REPLACE(CAST(MAX(Level2Result.Sequential) AS VARCHAR),'.',','),'NULL') + '""
-                          Side = ""' + ISNULL(REPLACE(CAST(MAX(Level2Result.Side) AS VARCHAR),'.',','),'NULL') + '""
+                          Sequential = ""' + ISNULL(REPLACE(CAST((Level2Result.Sequential) AS VARCHAR),'.',','),'NULL') + '""
+                          Side = ""' + ISNULL(REPLACE(CAST((Level2Result.Side) AS VARCHAR),'.',','),'NULL') + '""
                           havereaudit = ""' + ISNULL(REPLACE(CAST(Max(cast(Level2Result.haveReaudit as int)) AS VARCHAR),'1','true'),'NULL') + '""
                           reauditlevel = ""' + ISNULL(REPLACE(CAST(Max(Level2Result.ReauditLevel) AS VARCHAR),'.',','),'NULL') + '""
                           reauditnumber = ""' + ISNULL(REPLACE(CAST(CDL2.ReauditNumber AS VARCHAR),'.',','),'NULL') + '""
@@ -3751,7 +3758,7 @@ namespace SgqSystem.Services
 
 function preenchePCC1b(){
     //debugger
-    if(_level1.id.replace('98789','|').split('|')[1] == 3){
+    if(_level1 && _level1.id.replace('98789','|').split('|')[1] == 3){
         $('#DescriptionFailure').val('Foi encontrado fezes e/ou ingesta no quarto.');
         $('#ImmediateCorrectiveAction').val('A nória foi paralizada e fez-se a remoção da porção contaminada.');
         $('#ProductDisposition').val('Verificou-se a carcaça novamente e ela foi liberada.');
@@ -3823,6 +3830,48 @@ $(document).ready(function(){
                             });
 });
                               </script> ";
+
+            try
+            {
+                SGQDBContext.Generico listaProdutos = new Generico(db);
+                var listaProdutosJSON = listaProdutos.getProdutos();
+
+                supports += @" <script>
+                                var listaProdutosJson = " + System.Web.Helpers.Json.Encode(listaProdutosJSON) + @";
+                                           
+                                function buscarProduto(a,valor){
+
+                                    for (var j=0; j < listaProdutosJson.length; j++) {
+                                        if (listaProdutosJson[j].id == valor) {
+
+		                                    $(a).next().html(listaProdutosJson[j].nome);
+                    
+                                            return;
+                                        }		                                               
+                                    }
+                                    //$(a).val('');
+                                    $(a).next().html('');
+                                }
+
+                                function validaProduto(a,valor){
+                                    for (var j=0; j < listaProdutosJson.length; j++) {
+                                        if (listaProdutosJson[j].id == valor) {
+
+		                                    //alert(listaProdutosJson[j].nome);
+                    
+                                            return;
+                                        }
+                                                                                                       
+                                    }
+                                    $(a).val('');
+                                }
+                                </script> ";
+            }
+            catch (Exception ex)
+            {
+
+            }
+
 
             //string resource = GetResource();
 
@@ -5403,45 +5452,6 @@ $(document).ready(function(){
                         /* Se for produto que digito o código e busco em uma lista*/
                         if (header.ParHeaderField_Description == "Produto")
                         {
-                            SGQDBContext.Generico listaProdutos = new Generico(db);
-                            var listaProdutosJSON = listaProdutos.getProdutos();
-
-                            form_control = " <script> " +
-                                           "   var listaProdutosJson = " + System.Web.Helpers.Json.Encode(listaProdutosJSON) +
-
-                                           " </script>                                           ";
-
-                            form_control += @" <script>
-                                             function buscarProduto(a,valor){
-
-                                                for (var j=0; j < listaProdutosJson.length; j++) {
-                                                   if (listaProdutosJson[j].id == valor) {
-
-		                                                $(a).next().html(listaProdutosJson[j].nome);
-                    
-                                                      return;
-                                                   }		                                               
-                                                }
-                                                //$(a).val('');
-                                                $(a).next().html('');
-                                            }
-
-                                            function validaProduto(a,valor){
-                                                for (var j=0; j < listaProdutosJson.length; j++) {
-                                                   if (listaProdutosJson[j].id == valor) {
-
-		                                                //alert(listaProdutosJson[j].nome);
-                    
-                                                      return;
-                                                   }
-                                                                                                       
-                                                }
-                                                $(a).val('');
-                                            }
-                                            </script> ";
-
-
-
                             form_control += " <input class=\"form-control input-sm \" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" onkeyup=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \"  >";
                             form_control += " <label class=\"productNamelabel\"></label>";
                             //form_control += "<script>$(\"#cb" + header.ParHeaderField_Id + "\").inputmask('number');</script>";
