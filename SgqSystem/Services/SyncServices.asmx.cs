@@ -3828,6 +3828,47 @@ $(document).ready(function(){
 });
                               </script> ";
 
+            try
+            {
+                SGQDBContext.Generico listaProdutos = new Generico(db);
+                var listaProdutosJSON = listaProdutos.getProdutos();
+
+                supports += @" <script>
+                                var listaProdutosJson = " + System.Web.Helpers.Json.Encode(listaProdutosJSON) + @";
+                                           
+                                function buscarProduto(a,valor){
+
+                                    for (var j=0; j < listaProdutosJson.length;j++) {
+                                        if (listaProdutosJson[j].id == valor) {
+
+		                                    $(a).next().html(listaProdutosJson[j].nome);
+                    
+                                            return;
+                                        }		                                               
+                                    }
+                                    //$(a).val('');
+                                    $(a).next().html('');
+                                }
+
+                                function validaProduto(a,valor){
+                                    for (var j=0; j < listaProdutosJson.length; j++) {
+                                        if (listaProdutosJson[j].id == valor) {
+
+		                                    //alert(listaProdutosJson[j].nome);
+                    
+                                            return;
+                                        }
+                                                                                                       
+                                    }
+                                    $(a).val('');
+                                }
+                                </script> ";
+            }
+            catch (Exception ex)
+            {
+
+            }
+
             //string resource = GetResource();
 
             return APPMain + supports;// + resource;
@@ -5407,45 +5448,6 @@ $(document).ready(function(){
                         /* Se for produto que digito o código e busco em uma lista*/
                         if (header.ParHeaderField_Description == "Produto")
                         {
-                            SGQDBContext.Generico listaProdutos = new Generico(db);
-                            var listaProdutosJSON = listaProdutos.getProdutos();
-
-                            form_control = " <script> " +
-                                           "   var listaProdutosJson = " + System.Web.Helpers.Json.Encode(listaProdutosJSON) +
-
-                                           " </script>                                           ";
-
-                            form_control += @" <script>
-                                             function buscarProduto(a,valor){
-
-                                                for (var j=0; j < listaProdutosJson.length; j++) {
-                                                   if (listaProdutosJson[j].id == valor) {
-
-		                                                $(a).next().html(listaProdutosJson[j].nome);
-                    
-                                                      return;
-                                                   }		                                               
-                                                }
-                                                //$(a).val('');
-                                                $(a).next().html('');
-                                            }
-
-                                            function validaProduto(a,valor){
-                                                for (var j=0; j < listaProdutosJson.length; j++) {
-                                                   if (listaProdutosJson[j].id == valor) {
-
-		                                                //alert(listaProdutosJson[j].nome);
-                    
-                                                      return;
-                                                   }
-                                                                                                       
-                                                }
-                                                $(a).val('');
-                                            }
-                                            </script> ";
-
-
-
                             form_control += " <input class=\"form-control input-sm \" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" onkeyup=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \"  >";
                             form_control += " <label class=\"productNamelabel\"></label>";
                             //form_control += "<script>$(\"#cb" + header.ParHeaderField_Id + "\").inputmask('number');</script>";
