@@ -2428,7 +2428,7 @@
 
                 vm.updateInputTime = function () {
                     $(".time").inputmask({
-                        mask: " 23:59:59"
+                        mask: " 23:59"
                         , placeholder: "hh:mm"
                         , definitions: {
                             '5': { validator: "[0-5]" }
@@ -2980,7 +2980,7 @@
                                 <br />
                                 <div>
                                     <label>Horário de liberação da linha</label>
-                                    <input type="time" class="time form-control" title="Horário de liberação da linha" ng-disabled="pa.IsAssinada"
+                                    <input type="text" class="time form-control" title="Horário de liberação da linha" ng-disabled="pa.IsAssinada"
                                             ng-model="pa.HorarioDeLiberacao" />
                                 </div>
                                 <br />
