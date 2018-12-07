@@ -5102,7 +5102,7 @@ FROM (SELECT
 					AND L32.IsActive = 1
 
 					AND L3.ID = R3.ParLevel3_Id
-				GROUP BY L3.ID HAVING MIN(PCL.ID)=3)   
+				GROUP BY L3.ID HAVING MIN(PCL.ID)!=3)   
 
             GROUP BY --IND.Id
             		--,IND.Name
