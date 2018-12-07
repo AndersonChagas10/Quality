@@ -3943,23 +3943,11 @@ function aplicaCorAoInput(input) {
 
 function validaValoresValidosEscalaLikert(input) {
 
-    var paramns = $(input).attr('paramns')
-
-    var properties = paramns.split('|');
-    var arr = [];
-	
-	var valido = false;
-
-    properties.forEach(function(property) {
-        var tup = property.split(':');
-		if(tup[0] == $(input).val())
-			valido = true;
-    });
-
-    if(!valido){
+    if(parseInt($(input).attr('min')) > $(input).val()
+        || parseInt($(input).attr('max')) < $(input).val()){
 		$(input).val('');
 		$(input).parents('li').css('background-color', '');
-	}
+    }
 
 }
 
@@ -6758,7 +6746,7 @@ function calcularSensorial(list){
                 {
                     paramns.Add(item.Intervalo + ":" + item.Cor + ":" + item.Valor);
                 }
-                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|",paramns));
+                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|", paramns));
 
                 //INSERE O MIN MAX
                 string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
