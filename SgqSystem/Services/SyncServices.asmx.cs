@@ -6761,12 +6761,12 @@ function calcularSensorial(list){
                 input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|",paramns));
 
                 //INSERE O MIN MAX
-                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
-                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" :  parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" :  parLevel3.IntervalMax.ToString("G29");
 
                 string valorCompleto = "";
 
-                valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                valorCompleto ="<strong>Escalas: </strong>" + valorMinimo + " - " + valorMaximo;
 
                 labels = html.div(outerhtml: valorCompleto, classe: "levelName");
             }//Resultado
