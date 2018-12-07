@@ -8,6 +8,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api
@@ -89,6 +90,8 @@ namespace SgqSystem.Controllers.Api
         // POST: api/RecravacaoApi
         public HttpResponseMessage Post(dynamic data)
         {
+
+            Task.Delay(new Random().Next(1, 500)).Wait(); 
             ////Teste de erros não controlados
             //throw new Exception("teste", new Exception("INNER", new Exception("Inner 2")));
             var model = string.Empty;
@@ -132,7 +135,7 @@ namespace SgqSystem.Controllers.Api
                 else
                 {
                     existente = db.RecravacaoJson.Where(r => r.ParCompany_Id == idCompany
-                    && r.Linha_Id == idLinha && r.isValidated == null && r.SalvoParaInserirNovaColeta == null)
+                    && r.Linha_Id == idLinha && (r.isValidated != true || isValidated && r.isValidated == true) && r.SalvoParaInserirNovaColeta == null)
                     .OrderByDescending(x => x.Id).FirstOrDefault()?.Id;
                 }
 
@@ -171,7 +174,7 @@ namespace SgqSystem.Controllers.Api
             }
             catch (Exception e)
             {
-                errors.Add("Não foi possível Salvas os Dados: " + e.Message);
+                errors.Add("Não foi possível Salvar os Dados: " + e.Message);
             }
 
             if (errors.Count() > 0)
