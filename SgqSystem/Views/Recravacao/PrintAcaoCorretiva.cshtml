@@ -497,18 +497,19 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <strong>VISTO </strong>{{acoes.correctiveAction.Assinatura.Name}}
+                                        <strong>HORÁRIO DA PARADA:&nbsp;</strong>{{acoes.correctiveAction.HorarioDeParada | date:"HH:mm"}}
                                     </td>
                                     <td>
-                                        <strong>HORÁRIO DA PARADA:&nbsp;</strong>{{lata.correctiveAction.HorarioDeParada | date:" HH:mm"}}
+                                        <strong>VISTO </strong>{{acoes.correctiveAction.Assinatura.Name}}
+                                      
+                                    </td>
+                                    <td>
+                                        <strong>HORÁRIO DA LIBERAÇÃO:&nbsp;</strong>{{acoes.PreventiveAction.HorarioDeLiberacao | date:" HH:mm"}}
 
                                     </td>
                                     <td>
                                         <strong>VISTO: &nbsp;</strong>{{acoes.PreventiveAction.Assinatura.Name}}
-                                    </td>
-                                    <td>
-                                        <strong>HORÁRIO DA LIBERAÇÃO:&nbsp;</strong>{{lata.correctiveAction.HorarioDeLiberacao.toString() | date:" HH:mm"}}
-
+                                       
                                     </td>
                                 </tr>
 
@@ -1468,7 +1469,7 @@
                 vm.newCorrectiveAction = function () {
                     if (vm.selectedLata.correctiveAction == undefined)
                         vm.selectedLata.correctiveAction = {
-                            AddDate: moment().format("DD/MM/YYYY HH:mm"),
+                            //AddDate: moment().format("DD/MM/YYYY HH:mm"),
                             userAuditor: vm.getUser()
                         }
                 }
@@ -1683,7 +1684,7 @@
                         //$timeout(scope.$emit(scope.executeDocReady(true)), 200);
                     }
                 };
-            }])
+            }]) 
             .directive('correctiveaction', function () {
                 return {
                     scope: {
