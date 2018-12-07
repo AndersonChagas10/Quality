@@ -81,6 +81,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosMD
                        ,r3.IsNotEvaluate
                        ,r3.value
                        ,L3V.ParLevel3InputType_Id
+                       ,L3V.Id as ParLevel3Value_Id
+                       ,IIF(L3V.IntervalMin is null OR L3V.IntervalMax is null, '', Concat(concat(Cast(L3V.IntervalMin as INT), ', '),Cast(L3V.IntervalMax as INT))) as Intervalo
                        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(L3V.DynamicValue, 'calcularSensorial(', ''), ')', ''), '[{{', ''), '}}]', ''), '}},{{', ',') AS DynamicValue
                     FROM CollectionLevel2 C2
                     INNER JOIN CollectionLevel2XParHeaderField C2XHF
@@ -98,7 +100,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosMD
                     			OR L3L2.ParCompany_Id IS NULL)
                     LEFT JOIN ParLevel3Group L3G
                     	ON L3G.Id = L3L2.ParLevel3Group_Id
-                    INNER JOIN ParLevel3Value L3V
+                    LEFT JOIN ParLevel3Value L3V
                     	ON L3V.ParLevel3_Id = r3.ParLevel3_Id
                     		AND L3V.IsActive = 1
                     WHERE 1 = 1
@@ -109,7 +111,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosMD
                     AND C2.Shift = { form.shift }
                     AND c2.EvaluationNumber = 1
                     --AND C2XHF.ParFieldType_Id = 2
-                    ORDER BY L3G.Name DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
+                    ORDER BY L3G.Name DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC, DynamicValue";
 
 
             using (var db = new SgqDbDevEntities())
@@ -144,6 +146,33 @@ namespace SgqSystem.Controllers.Api.RelatoriosMD
             public string Value { get; set; }
             public int ParLevel3InputType_Id { get; set; }
             public string DynamicValue { get; set; }
+            public int ParLevel3Value_Id { get; set; }
+            public string Intervalo { get; set; }
+            public string Interval
+            {
+                get
+                {
+                    if (string.IsNullOrEmpty(Intervalo))
+                    {
+                        return Intervalo;
+                    }
+                    else
+                    {
+
+                        List<int> intervalo = new List<int>();
+                        var inicio = int.Parse(Intervalo.Split(',')[0]);
+                        var fim = int.Parse(Intervalo.Split(',')[1]);
+
+                        for (int i = inicio; i <= fim; i++)
+                        {
+                            intervalo.Add(i);
+                        }
+
+                        return string.Join(",", intervalo);
+
+                    }
+                }
+            }
         }
 
         public class Cabecalho
