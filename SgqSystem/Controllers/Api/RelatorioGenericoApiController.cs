@@ -5,6 +5,7 @@ using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
@@ -15,6 +16,9 @@ namespace SgqSystem.Controllers.Api
     [RoutePrefix("api/RelatorioGenerico")]
     public class RelatorioGenericoApiController : ApiController
     {
+
+        
+
         //Tabela Angular
         [HttpPost]
         [Route("getTabela")]
@@ -86,7 +90,72 @@ namespace SgqSystem.Controllers.Api
 
             return retorno;
         }
-        
+
+        [HttpGet]
+        [Route("reciveDataPCC1b2/{unidadeId}/{data}")]
+        public dynamic reciveDataPCC1b2(string unidadeId, string data)
+        {
+            //DateTime dataConsolidation = DateCollectConvert(data);
+            //string consolidation = getConsolidation(unidadeId, dataConsolidation, 0);
+
+            string sql = @"
+                            SELECT 
+                            sequential, side, cast(case when Defects = 0 then 0 else 1 end as varchar) resultado, P2.NAME AS monitoramento
+                            -- '{""sequencial"":""' + cast(Sequential as varchar) + '"",""banda"":""' + cast(Side as varchar) + '"",""resultado"":""' + cast(case when Defects = 0 then 0 else 1 end as varchar) + '""}' as retorno
+
+                            FROM COLLECTIONLEVEL2 C2
+                            INNER JOIN PARLEVEL2 P2
+							ON P2.ID = C2.PARLEVEL2_ID
+                            WHERE PARLEVEL1_ID = 3
+                            AND UnitId = " + unidadeId + @"
+                            AND CAST(CollectionDate AS DATE) = '" + data + @"'
+                        ";
+
+            var resultadoPCC1b = new List<JObject>();
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader r = command.ExecuteReader())
+                        {
+
+                            while (r.Read())
+                            {
+                                JObject row = new JObject();
+                                for (int i = 0; i < r.FieldCount; i++)
+                                    row[r.GetName(i)] = r[i].ToString();
+
+                                resultadoPCC1b.Add(row);
+
+                            }
+                        }
+                    }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                //int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "resultadoPCC1b");
+            }
+
+            /* métado JQuery
+             * 
+            $.get("http://localhost:57506/api/RelatorioGenerico/reciveDataPCC1b2/10/20181206", function(data) {
+                console.log(data);
+            });
+
+            */
+
+
+            return resultadoPCC1b;
+        }
+
 
         //QueryGenerica para implementar
         protected dynamic QueryNinja(DbContext db, string query)

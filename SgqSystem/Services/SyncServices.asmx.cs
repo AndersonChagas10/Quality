@@ -19,6 +19,7 @@ using SgqSystem.Controllers.Api.App;
 using System.Data;
 using System.Text;
 using ADOFactory;
+using Newtonsoft.Json.Linq;
 
 namespace SgqSystem.Services
 {
@@ -2549,6 +2550,61 @@ namespace SgqSystem.Services
             string consolidation = getConsolidation(unidadeId, dataConsolidation, 0);
             return consolidation;
         }
+
+        [WebMethod]
+        public List<JObject> reciveDataPCC1b(string unidadeId, string data)
+        {
+            //DateTime dataConsolidation = DateCollectConvert(data);
+            //string consolidation = getConsolidation(unidadeId, dataConsolidation, 0);
+
+            string sql = @"
+                            SELECT 
+                            sequential, side, cast(case when Defects = 0 then 0 else 1 end as varchar) resultado
+                            -- '{""sequencial"":""' + cast(Sequential as varchar) + '"",""banda"":""' + cast(Side as varchar) + '"",""resultado"":""' + cast(case when Defects = 0 then 0 else 1 end as varchar) + '""}' as retorno
+
+                            FROM COLLECTIONLEVEL2 C2
+                            WHERE PARLEVEL1_ID = 3
+                            AND UnitId = 10
+                            AND CAST(CollectionDate AS DATE) = '20181206'
+                        ";
+
+            var resultadoPCC1b = new List<JObject>();
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader r = command.ExecuteReader())
+                        {
+
+                            while (r.Read())
+                            {
+                                JObject row = new JObject();
+                                for (int i = 0; i < r.FieldCount; i++)
+                                    row[r.GetName(i)] = r[i].ToString();
+
+                                resultadoPCC1b.Add(row);
+
+                            }
+                        }
+                    }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "resultadoPCC1b");
+            }
+
+
+            return resultadoPCC1b;
+        }
+
         [WebMethod]
         public string reciveDataByLevel1(string ParCompany_Id, string data, string ParLevel1_Id)
         {
