@@ -529,6 +529,8 @@ namespace SgqSystem.Services
                         if (result.Length > 49)
                         {
                             cluster = result[49];
+                            if (string.IsNullOrEmpty(cluster))
+                                cluster = parCluster_Id;
                         }
 
                         if (result.Length > 50)
@@ -1807,7 +1809,7 @@ namespace SgqSystem.Services
             }
             key += "-" + CollectionDate.ToString("yyyyMMdd");
 
-            if (Reaudit)
+            if (Reaudit == true && ConsolidationLevel1.ParLevel1_Id != 3)
             {
                 key += "-r" + ReauditNumber;
             }
