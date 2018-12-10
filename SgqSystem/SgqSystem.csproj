@@ -380,6 +380,7 @@
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\SelectVinculado\SelectVinculadoApiController.cs" />
     <Compile Include="Controllers\Api\ShiftApiController.cs" />
+    <Compile Include="Controllers\Api\SIF\AcompanhamentoEmbarqueApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
@@ -1854,6 +1855,7 @@
     <Content Include="Views\Recravacao\PrintRetroativa.cshtml" />
     <Content Include="Views\Recravacao\PrintAcaoCorretivaRetroativa.cshtml" />
     <Content Include="Views\RelatoriosMD\AvaliacaoSensorial.cshtml" />
+    <Content Include="Views\SIFReports\AcompanhamentoEmbarque.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

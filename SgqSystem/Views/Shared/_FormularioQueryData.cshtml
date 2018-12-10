@@ -367,6 +367,13 @@
         </li>
 
         <li>
+            <div class="dropdown" id="showNumeroAvaliacao" style="display:none">
+                <span class="redLabel">Número da Avaliação</span>
+                <input type="number" id="nAvaliacao" class="form-control" style="width:210px">
+            </div>
+        </li>
+
+        <li>
             <button style="margin-bottom: 40px; margin-left: 40px; max-width: 210px;" type="button" class="btn margin-top margin-bottom btn-block btn-primary" id="btnSend" onclick="">@Resources.Resource.send</button>
         </li>
 
@@ -586,6 +593,10 @@
             enviar['endDate'] = "";
         });
 
+        $('#nAvaliacao').bind('keyup mouseup', function () {
+            enviar["avaliacao"] = parseInt($(this).val());
+        });
+
         var start = moment();
         var end = moment();
 
@@ -769,6 +780,9 @@
         },
         showModulo: function () {
             $('#showModulo').show();
+        },
+        showNumeroAvaliacao: function () {
+            $('#showNumeroAvaliacao').show();
         }
     }
 
