@@ -100,7 +100,7 @@ namespace SgqSystem.Controllers.Api
 
             string sql = @"
                             SELECT 
-                            sequential, side, cast(case when EvaluationNumber = 0 then case when Defects = 0 then 0 else 1 end else 0 end as varchar) resultado, P2.NAME AS monitoramento
+                            sequential, side, cast(case when ReauditIs = 1 then case when Defects = 0 then 0 else 1 end else 0 end as varchar) resultado, P2.NAME AS monitoramento
                             -- '{""sequencial"":""' + cast(Sequential as varchar) + '"",""banda"":""' + cast(Side as varchar) + '"",""resultado"":""' + cast(case when Defects = 0 then 0 else 1 end as varchar) + '""}' as retorno
 
                             FROM COLLECTIONLEVEL2 C2
