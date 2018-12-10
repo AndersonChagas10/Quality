@@ -6754,7 +6754,7 @@ function calcularSensorial(list){
 
                 string valorCompleto = "";
 
-                valorCompleto ="<strong>Escalas: </strong>" + valorMinimo + " - " + valorMaximo;
+                valorCompleto ="<strong>Escalas: </strong>" + valorMinimo + " a " + valorMaximo;
 
                 labels = html.div(outerhtml: valorCompleto, classe: "levelName");
             }//Resultado
