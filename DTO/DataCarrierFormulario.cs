@@ -122,5 +122,7 @@ namespace DTO
         public int tipoVisao { get; set; }
 
         public int ItemMenu_Id { get; set; }
+
+        public int avaliacao { get; set; }
     }
 }

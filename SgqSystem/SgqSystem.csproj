@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -371,6 +371,7 @@
     <Compile Include="Controllers\Api\RelatoriosBrasil\SIFReportsApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadePorCabecalhoApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosMD\AvaliacaoSensorialApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
@@ -379,6 +380,7 @@
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\SelectVinculado\SelectVinculadoApiController.cs" />
     <Compile Include="Controllers\Api\ShiftApiController.cs" />
+    <Compile Include="Controllers\Api\SIF\AcompanhamentoEmbarqueApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
@@ -422,6 +424,7 @@
     <Compile Include="Controllers\CadastrosGerais\ParModuleXModulesController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoJsonController.cs" />
+    <Compile Include="Controllers\RelatoriosMD\RelatoriosMDController.cs" />
     <Compile Include="Controllers\Relatorios\RelatorioReprocessoController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoLinhasController.cs" />
     <Compile Include="Controllers\Recravacao\ParRecravacao_Linhas.cs" />
@@ -1851,6 +1854,8 @@
     <Content Include="Views\Recravacao\Retroativo.cshtml" />
     <Content Include="Views\Recravacao\PrintRetroativa.cshtml" />
     <Content Include="Views\Recravacao\PrintAcaoCorretivaRetroativa.cshtml" />
+    <Content Include="Views\RelatoriosMD\AvaliacaoSensorial.cshtml" />
+    <Content Include="Views\SIFReports\AcompanhamentoEmbarque.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

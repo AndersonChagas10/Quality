@@ -7583,8 +7583,7 @@ function calcularSensorial(list){
         /// <returns></returns>
         public string selectUserCompanys(int UserSgq_Id, int ParCompany_Id)
         {
-            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq(db);
-            var parCompanyXUserSgq = dbEf.ParCompany.Where(r => r.IsActive).ToList(); //ParCompanyXUserSgqDB.getUserCompany(UserSgq_Id);
+            var parCompanyXUserSgq = dbEf.ParCompany.Where(r => r.IsActive).ToList();
 
             string options = null;
 
@@ -7596,13 +7595,14 @@ function calcularSensorial(list){
                     selected = " selected";
                 }
 
-                options += "<option" + selected + " value=\"" + p.Id + "\">" + p.Name/*p.ParCompany_Name*/ + "</option>";
+                options += "<option" + selected + " value=\"" + p.Id + "\">" + p.Name+ "</option>";
             }
 
             if (!string.IsNullOrEmpty(options))
             {
                 options = "<select id=\"selectParCompany\" style=\"margin: 14px;\" ParCompany_Id=\"" + ParCompany_Id + "\">" + options + "</select>";
             }
+
             return options;
         }
 
@@ -7632,7 +7632,6 @@ function calcularSensorial(list){
                         }
                     }
                 }
-
             }
             catch (Exception)
             {

@@ -6,21 +6,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace SgqSystem.Controllers.Relatorios
+namespace SgqSystem.Controllers.RelatoriosMD
 {
     [CustomAuthorize]
     [OutputCache(Duration = 20, VaryByParam = "none")]
-    public class SIFReportsController : BaseController
+    public class RelatoriosMDController : BaseController
     {
-        // GET: SIFReports
+        // GET: RelatoriosMD
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
-        public ActionResult AcompanhamentoEmbarque()
+        public ActionResult AvaliacaoSensorial()
         {
             return View();
         }
