@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -26,7 +26,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>false</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -344,6 +345,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Api\AgendamentoApiController.cs" />
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
@@ -355,6 +357,8 @@
     <Compile Include="Controllers\Api\Integracao\IntegracaoApiController.cs" />
     <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
     <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
+    <Compile Include="Controllers\Api\ParInputTypeValuesApiController.cs" />
+    <Compile Include="Controllers\Api\MotivoAtrasoApiController.cs" />
     <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
@@ -374,6 +378,7 @@
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\SelectVinculado\SelectVinculadoApiController.cs" />
+    <Compile Include="Controllers\Api\ShiftApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
@@ -391,6 +396,7 @@
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VTVerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\MotivoAtrasoController.cs" />
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
@@ -406,17 +412,17 @@
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
     <Compile Include="Controllers\Params\ParClusterGroupsController.cs" />
-    <Compile Include="Controllers\ParClusterXModulesController.cs" />
-    <Compile Include="Controllers\ParGroupParLevel1Controller.cs" />
-    <Compile Include="Controllers\ParGroupParLevel1TypeController.cs" />
-    <Compile Include="Controllers\ParGroupParLevel1XParLevel1Controller.cs" />
-    <Compile Include="Controllers\ParVinculoPesoController.cs" />
-    <Compile Include="Controllers\ParLevel1XModuleController.cs" />
-    <Compile Include="Controllers\ParModulesController.cs" />
-    <Compile Include="Controllers\ParModuleXModulesController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParClusterXModulesController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParGroupParLevel1Controller.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParGroupParLevel1TypeController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParGroupParLevel1XParLevel1Controller.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParVinculoPesoController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParLevel1XModuleController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParModulesController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParModuleXModulesController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoJsonController.cs" />
-    <Compile Include="Controllers\RelatorioReprocessoController.cs" />
+    <Compile Include="Controllers\Relatorios\RelatorioReprocessoController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoLinhasController.cs" />
     <Compile Include="Controllers\Recravacao\ParRecravacao_Linhas.cs" />
     <Compile Include="Controllers\Recravacao\ParRecravacao_TipoLata.cs" />
@@ -426,7 +432,7 @@
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\Relatorios\SIFReportsController.cs" />
-    <Compile Include="Controllers\ReportXUserSgqController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ReportXUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
@@ -1834,6 +1840,13 @@
     <Content Include="Views\ParVinculoPeso\Edit.cshtml" />
     <Content Include="Views\ParVinculoPeso\Index.cshtml" />
     <Content Include="Views\Integracao\Index.cshtml" />
+    <Content Include="Views\Params\_EscalaLikert.cshtml" />
+    <Content Include="Views\MotivoAtraso\Create.cshtml" />
+    <Content Include="Views\MotivoAtraso\Delete.cshtml" />
+    <Content Include="Views\MotivoAtraso\Details.cshtml" />
+    <Content Include="Views\MotivoAtraso\Edit.cshtml" />
+    <Content Include="Views\MotivoAtraso\Index.cshtml" />
+    <Content Include="Views\Params\_Agendamento.cshtml" />
     <Content Include="Views\RecravacaoJson\Index.cshtml" />
     <Content Include="Views\Recravacao\Retroativo.cshtml" />
     <Content Include="Views\Recravacao\PrintRetroativa.cshtml" />
@@ -1850,6 +1863,7 @@
     <Folder Include="Scripts\i18n\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
+    <Folder Include="Views\MensagemAtraso\" />
     <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\RoleApi\" />
     <Folder Include="Views\ScorecardConfig\" />

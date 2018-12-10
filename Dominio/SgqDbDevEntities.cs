@@ -7,6 +7,7 @@ namespace Dominio
     using System.Threading.Tasks;
     using System.Threading;
     using Newtonsoft.Json;
+    using System.Data.Entity.ModelConfiguration.Conventions;
 
     public partial class SgqDbDevEntities : DbContext
     {
@@ -235,12 +236,18 @@ namespace Dominio
         public virtual DbSet<ImportFormat> ImportFormat { get; set; }
         public virtual DbSet<ImportFormatItem> ImportFormatItem { get; set; }
         public virtual DbSet<ReportXUserSgq> ReportXUserSgq { get; set; }
+        public virtual DbSet<ParInputTypeValues> ParInputTypeValues { get; set; }
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1> ParGroupParLevel1 { get; set; }
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1Type> ParGroupParLevel1Type { get; set; }
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1XParLevel1> ParGroupParLevel1XParLevel1 { get; set; }
+        public virtual DbSet<CollectionLevel2XMotivoAtraso> CollectionLevel2XMotivoAtraso { get; set; }
+        public virtual DbSet<ParEvaluationSchedule> ParEvaluationSchedule { get; set; }
+        public virtual DbSet<MotivoAtraso> MotivoAtraso { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
             modelBuilder.Entity<AreasParticipantes>()
                 .Property(e => e.nCdCaracteristica)
                 .HasPrecision(12, 0);

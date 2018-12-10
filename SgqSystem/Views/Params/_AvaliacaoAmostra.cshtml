@@ -11,6 +11,8 @@
     //var click = "alert();";
 }
 
+
+
 <div class="panel-group accordion" id="@id">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -60,36 +62,23 @@
                         </tr>
                     </tbody>
                 </table>
-
-                <table id="tableAvAm" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Avaliação e Amostra:">
-                    <thead>
-                        <tr>
-                            <th>@Resources.Resource.company</th>
-                            <th>@Resources.Resource.level1</th>
-                            <th>@Resources.Resource.cluster</th>
-                            <th>@Resources.Resource.evaluation</th>
-                            <th>@Resources.Resource.samples / @Resources.Resource.evaluation</th>
-                            <th class="options"></th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-
+                @Html.Partial("_Agendamento") 
             </div>
         </div>
     </div>
 </div>
 
 
+
 <script>
 
     //function changeCompanyAvAm() {
 
-    var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
+    var levelControl = @Html.Raw(Json.Encode(@Model.levelControl))
 
     function atribuiLevelDivAvAm (){
 
-        var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
+        var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto))
         var levelDomain;
         var listSalvo;
 
@@ -97,7 +86,7 @@
             levelDomain = "newLevel2Modal";
             listSalvo = paramsDto.parLevel2Dto.listParLevel2SampleEvaluationDTO;//
             AvAm2 = getCounterObject(levelDomain, listSalvo);//
-            AvAm2 .carregaDadosDoDb();//
+            AvAm2.carregaDadosDoDb();//
         }
 
     }
@@ -111,8 +100,9 @@
             level: levelDomain,
             listObjSalvo: listSalvo,
             idTable: 'tableAvAm',//
-            tdsNames: ['companyName', 'ParLevel1_Name', 'ParCluster_Name','evaluationNumber', 'sampleNumber', 'btn'],
-            getObjAdd: function(isEdit, obj){
+            tdsNames: ['companyName', 'ParLevel1_Name', 'ParCluster_Name','evaluationNumber', 'sampleNumber', 'agendamento','btn'],
+            getObjAdd: function (isEdit, obj) {
+                debugger
                 if(isEdit != undefined){
                     var compId = $('#' + isEdit + ' #avAmCompany :selected').val();
                     var compName = $('#' + isEdit + ' #avAmCompany :selected').text();
@@ -178,7 +168,6 @@
                 var parLevel1Selected = $('#' + seletorTato + ' #parLevel1Select2AmostraLevel :selected').val();
                 var parClusterSelected = $('#' + seletorTato + ' #parClusterSelect2AmostraLevel :selected').val();
                 var exist = $.grep($('#tableAvAm  tbody  tr  td:nth-child(1)'), function(o, c){//
-
                     var count = 0;
                     if(companySelected == -1){
                         count += verify($(o).parent().data().companyId);
@@ -248,7 +237,8 @@
                 });
 
             },
-            carregaDadosDoDb: function(){
+            carregaDadosDoDb: function () {
+                
                 var id = this.level + ' #' + this.idTable;
                 var tdNamess = this.tdsNames;
 
@@ -271,6 +261,14 @@
                         }else{
                             o['ParLevel1_Name'] = "@Resources.Resource.all";
                         }
+                        if (o.TemAgendamento) {
+                            o['agendamento'] = '<button type="button" id="agendamento" class="btn btn-success btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
+
+                            $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', true)
+                        } else {
+                            o['agendamento'] = '<button type="button" id="agendamento"  class="btn btn-default btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
+                        }
+
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
@@ -286,8 +284,9 @@
             },
             /*Fim Setup*/
             adiciona: function(e) {
-                if(this.veifyAdd()){
+                if (this.veifyAdd()) {
                     var object = this.getObjAdd();
+                    object.agendamento = "";
                     crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
 
                     $("#parClusterSelect2AmostraLevel").val($("#parClusterSelect2AmostraLevel option:first").val());
@@ -297,8 +296,4 @@
             },
         };
     }
-
-
-
-
 </script>

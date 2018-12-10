@@ -1,34 +1,33 @@
-﻿@model IEnumerable<Dominio.ParGroupParLevel1Type>
+﻿@model IEnumerable<Dominio.MotivoAtraso>
 
 @{
-    ViewBag.Title = "Tipo de Grupo de Indicador";
+    ViewBag.Title = Resources.Resource.LateReason;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="page-content-wrapper">
-    <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
-        <!-- BEGIN PAGE HEADER-->
-        <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
+
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.indicator_group_type_list</span>
+                    <span>@Resources.Resource.LateReason</span>
                 </li>
             </ul>
+            <div class="page-toolbar"> </div>
         </div>
-        <!-- END PAGE BAR -->
-        <!-- END PAGE HEADER-->
+        @Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")
         <div class="row">
             <div class="col-xs-12">
                 <div class="portlet light bordered">
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.indicator_group_type_list</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.LateReason</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -37,14 +36,14 @@
                                 <p>
                                     @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table" id="tabelaTipoGrupo">
+                                <table class="table table-condensed" id="tabelaMotivo">
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Name)
+                                                @Resources.Resource.LateReason
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.IsActive)
+                                                @Resources.Resource.is_active
                                             </th>
                                             <th></th>
                                         </tr>
@@ -54,27 +53,25 @@
                                         {
                                             <tr>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                    @Html.DisplayFor(modelItem => item.Motivo)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.IsActive)
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })                                                 
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 </td>
                                             </tr>
                                         }
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- END CONTENT BODY -->
 </div>
 <script>
 
@@ -83,8 +80,8 @@
             null,
             null,
             { "bSearchable": false }
-        ];    
-        $('#tabelaTipoGrupo').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+        ];
+        $('#tabelaMotivo').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 
 </script>

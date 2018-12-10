@@ -1,66 +1,58 @@
-﻿@model Dominio.ParGroupParLevel1XParLevel1
+﻿@model Dominio.MotivoAtraso
 
 @{
-    ViewBag.Title = "Novo Grupo de Indicador X Indicador";
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="page-content-wrapper">
-    <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
-        <!-- BEGIN PAGE HEADER-->
-        <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParGroupParLevel1XParLevel1")">@Resources.Resource.indicatorxindicator_group</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "MotivoAtraso")">@Resources.Resource.LateReason</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <span>@Resources.Resource.create</span>
                 </li>
             </ul>
+            <div class="page-toolbar">
+            </div>
         </div>
-        <!-- END PAGE BAR -->
-        <!-- END PAGE HEADER-->
         <div class="row">
             <div class="col-xs-12">
                 <div class="portlet light bordered">
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create @Resources.Resource.indicatorxindicator_group </span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.LateReason</span>
                         </div>
                     </div>
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
-                                @using (Html.BeginForm("Create", "ParGroupParLevel1XParLevel1", FormMethod.Post))
+
+                                @using (Html.BeginForm())
                                 {
                                     @Html.AntiForgeryToken()
 
                                     <div class="form-horizontal">
-                                        <hr />
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParLevel1_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Motivo, Resources.Resource.LateReason, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownList("ParLevel1_Id", null, htmlAttributes: new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger" })
+                                                @Html.TextBoxFor(model => model.Motivo, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.Motivo, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParGroupParLevel1_Id, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownList("ParGroupParLevel1_Id", null, htmlAttributes: new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.ParGroupParLevel1_Id, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.IsActive, Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.IsActive)
@@ -77,15 +69,14 @@
                                         </div>
                                     </div>
                                 }
-                            </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- END CONTENT BODY -->
 </div>
 @section Scripts {
 
@@ -94,9 +85,6 @@
     <script>
         $(document).ready(function () {
             $("#IsActive").prop("checked", true);
-
-            $("#ParLevel1_Id").select2();
-            $("#ParGroupParLevel1_Id").select2();
         });
     </script>
 }

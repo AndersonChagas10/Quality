@@ -240,7 +240,19 @@
                                     return '@Resources.Resource.normal';
                                 }
                             }
-                        }
+                        },
+                        {
+                            title: "@Resources.Resource.IsLate", mData: "IsLate", mRender: function (data, type, full) {
+
+                                if (data == 0) {
+                                    return '@Resources.Resource.no'
+                                } else {
+                                return '@Resources.Resource.yes'
+                                }
+
+                            }
+                        },
+                        { title: "@Resources.Resource.LateReason", mData: "MotivoAtraso", "width": "50%" },
 
                     ];
 

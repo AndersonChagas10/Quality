@@ -19,6 +19,7 @@ using SgqSystem.Controllers.Api.App;
 using System.Data;
 using System.Text;
 using ADOFactory;
+using Dominio;
 
 namespace SgqSystem.Services
 {
@@ -163,6 +164,7 @@ namespace SgqSystem.Services
                 return "0";
             }
         }
+
         public string BoolCompletedConverter(string valor)
         {
             valor = valor.ToLower();
@@ -175,6 +177,7 @@ namespace SgqSystem.Services
                 return "0";
             }
         }
+
         public int insertLogJson(string result, string log, string deviceId, string AppVersion, string callback)
         {
             string sql = "INSERT INTO LogJson ([result],[log],[AddDate],[Device_Id],[AppVersion], [callback]) " +
@@ -216,6 +219,7 @@ namespace SgqSystem.Services
         }
 
         #endregion
+
         #region Json
         /// <summary>
         /// Método Para Inserir Resultado da Coleta
@@ -295,16 +299,16 @@ namespace SgqSystem.Services
 
                         result[45] = parLevel2_Id_UltimoAlerta;
 
-                        List<string> r1 = result.ToList<string>();
+                        //List<string> r1 = result.ToList<string>();
 
-                        r1.Add(parCluster_Id);
+                        //r1.Add(parCluster_Id);
 
                         int insertLog = 0;
 
                         if (parCluster_Id == "0")
                             insertLog = insertLogJson(objObjResultJSonPuro, "Gravou cluster 0", deviceId, versaoApp, "Cluster 0");
 
-                        result = r1.ToArray();
+                        //result = r1.ToArray();
 
 
                         string[] resultCopy = result;
@@ -515,7 +519,9 @@ namespace SgqSystem.Services
                         string startphaseevaluation = "0";
                         string endphaseevaluation = "0";
                         string reprocesso = null;
-                        string cluster = null;
+                        string cluster = parCluster_Id;
+                        string motivoAtraso_Id = null;
+
                         if (result.Length > 47)
                         {
                             startphaseevaluation = result[47];
@@ -525,51 +531,50 @@ namespace SgqSystem.Services
                             endphaseevaluation = result[48];
                         }
 
-
                         if (result.Length > 49)
                         {
-                            cluster = result[49];
-                            if (string.IsNullOrEmpty(cluster))
-                                cluster = parCluster_Id;
+                            reprocesso = result[49];
                         }
 
                         if (result.Length > 50)
                         {
-                            reprocesso = result[50];
+                            motivoAtraso_Id = result[50];
                         }
+
                         //Gera o Cabeçalho do Level02
-                        string level02HeaderJSon = result[13];
-                        level02HeaderJSon += ";" + phase;
-                        level02HeaderJSon += ";" + startphasedate;
-                        level02HeaderJSon += ";" + consecutivefailurelevel;
-                        level02HeaderJSon += ";" + consecutivefailuretotal;
+                        string level02HeaderJSon = result[13]; //[0]
+                        level02HeaderJSon += ";" + phase; //[1]
+                        level02HeaderJSon += ";" + startphasedate; //[2]
+                        level02HeaderJSon += ";" + consecutivefailurelevel; //[3]
+                        level02HeaderJSon += ";" + consecutivefailuretotal; //[4]
                         level02HeaderJSon += ";" + notavaliable; //[5]
-                        level02HeaderJSon += ";" + completed;
-                        level02HeaderJSon += ";" + havePhases;
-                        level02HeaderJSon += ";" + CollectionLevel02Id;
-                        level02HeaderJSon += ";" + correctiveActionCompleted;
+                        level02HeaderJSon += ";" + completed; //[6]
+                        level02HeaderJSon += ";" + havePhases; //[7]
+                        level02HeaderJSon += ";" + CollectionLevel02Id; //[8]
+                        level02HeaderJSon += ";" + correctiveActionCompleted; //[9]
                         level02HeaderJSon += ";" + completeReaudit; //[10]
-                        level02HeaderJSon += ";" + AlertLevel;
-                        level02HeaderJSon += ";" + sequential;
-                        level02HeaderJSon += ";" + side;
-                        level02HeaderJSon += ";" + weievaluation;
-                        level02HeaderJSon += ";" + weidefects;
-                        level02HeaderJSon += ";" + defects;
-                        level02HeaderJSon += ";" + totallevel3withdefects;
-                        level02HeaderJSon += ";" + totalLevel2Evaluation;
-                        level02HeaderJSon += ";" + avaliacaoultimoalerta;
-                        level02HeaderJSon += ";" + evaluatedresult;
-                        level02HeaderJSon += ";" + defectsresult;
-                        level02HeaderJSon += ";" + sequential;
-                        level02HeaderJSon += ";" + side;
-                        level02HeaderJSon += ";" + isemptylevel3;
-                        level02HeaderJSon += ";" + hassampletotal;
-                        level02HeaderJSon += ";" + hashKey;
-                        level02HeaderJSon += ";" + monitoramentoultimoalerta;
-                        level02HeaderJSon += ";" + startphaseevaluation;
-                        level02HeaderJSon += ";" + endphaseevaluation;
-                        level02HeaderJSon += ";" + reprocesso;
-                        level02HeaderJSon += ";" + cluster;
+                        level02HeaderJSon += ";" + AlertLevel; //[11]
+                        level02HeaderJSon += ";" + sequential; //[12]
+                        level02HeaderJSon += ";" + side; //[13]
+                        level02HeaderJSon += ";" + weievaluation; //[14]
+                        level02HeaderJSon += ";" + weidefects; //[15]
+                        level02HeaderJSon += ";" + defects; //[16]
+                        level02HeaderJSon += ";" + totallevel3withdefects; //[17]
+                        level02HeaderJSon += ";" + totalLevel2Evaluation; //[18]
+                        level02HeaderJSon += ";" + avaliacaoultimoalerta; //[19]
+                        level02HeaderJSon += ";" + evaluatedresult; //[20]
+                        level02HeaderJSon += ";" + defectsresult; //[21]
+                        level02HeaderJSon += ";" + sequential; //[22]
+                        level02HeaderJSon += ";" + side; //[23]
+                        level02HeaderJSon += ";" + isemptylevel3; //[24]
+                        level02HeaderJSon += ";" + hassampletotal; //[25]
+                        level02HeaderJSon += ";" + hashKey; //[26]
+                        level02HeaderJSon += ";" + monitoramentoultimoalerta; //[27]
+                        level02HeaderJSon += ";" + startphaseevaluation; //[28]
+                        level02HeaderJSon += ";" + endphaseevaluation; //[29]
+                        level02HeaderJSon += ";" + reprocesso; //[30]
+                        level02HeaderJSon += ";" + cluster; //[31]
+                        level02HeaderJSon += ";" + motivoAtraso_Id; //[32]
 
                         //level02HeaderJSon += ";" + alertaAtual;
 
@@ -814,6 +819,8 @@ namespace SgqSystem.Services
                     string avaliacaoultimoalerta = "0";
                     string monitoramentoultimoalerta = "0";
 
+                    string motivoAtraso_Id = null;
+
                     //using (var transacao = new TransactionScope())
                     //{
                     //Cabecalho                   
@@ -960,21 +967,19 @@ namespace SgqSystem.Services
                         endphaseevaluation = DefaultValueReturn(arrayHeader[29], "0");
                     }
 
+                    if (arrayHeader.Length > 32)
+                    {
+                        motivoAtraso_Id = arrayHeader[32];
+                    }
+
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
-                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey, cluster);
+                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey, cluster, motivoAtraso_Id);
 
-
-
-
-
-
-
-
-                    if (arrayHeader.Length > 32)
+                    if (arrayHeader.Length > 30)
                     {
-                        string reprocesso = DefaultValueReturn(arrayHeader[32], null);
+                        string reprocesso = DefaultValueReturn(arrayHeader[30], null);
 
                         if (reprocesso != null)
                             InsertCollectionLevel2Object(CollectionLevel2Id, reprocesso);
@@ -1320,6 +1325,7 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
+
         public int updateCorrectiveAction_CollectionLevel2_By_ParLevel1(string ParLevel1_Id, string ParCompany_Id, string dataInicio, string dataFim, string reauditnumber)
         {
 
@@ -1392,6 +1398,7 @@ namespace SgqSystem.Services
             }
         }
         #endregion
+
         #region Consolidation Level01
         /// <summary>
         /// Método que faz a inserção da consolidação
@@ -1551,8 +1558,8 @@ namespace SgqSystem.Services
                 return 0;
             }
         }
-
         #endregion
+
         #region Consolidation Level02
         /// <summary>
         /// Insere Consolodiação do Level02
@@ -1683,7 +1690,6 @@ namespace SgqSystem.Services
             }
         }
 
-
         //public int GetLevel2Consolidation2(string Level01ConsolidationId, string Level02Id)
         //{
         //    string sql = "SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = '" + Level01ConsolidationId + "' AND ParLevel2_Id= '" + Level02Id + "'";
@@ -1717,8 +1723,8 @@ namespace SgqSystem.Services
         //        return 0;
         //    }
         //}
-
         #endregion
+
         #region Collection Level02
         /// <summary>
         /// Metodo que grava a coleta
@@ -1756,7 +1762,7 @@ namespace SgqSystem.Services
                                            string StartPhase, int Evaluation, int Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
                                            string Duplicated, string haveReaudit, int reauditLevel, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
-                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation, string endphaseevaluation, string hashKey = null, string cluster = null)
+                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation, string endphaseevaluation, string hashKey = null, string cluster = null, string motivoAtraso_Id = null)
         {
 
             var buscaParLevel1HashKey = "SELECT TOP 1 Hashkey FROM ParLevel1 WHERE id = " + ConsolidationLevel1.ParLevel1_Id.ToString();
@@ -1887,7 +1893,17 @@ namespace SgqSystem.Services
                         if (i > 0)
                         {
                             if (id == "0")
+                            {
                                 InsertCollectionLevel2XCluster(i, cluster);
+
+                            }
+
+                            int motivoAtrasoId = 0;
+                            Int32.TryParse(motivoAtraso_Id, out motivoAtrasoId);
+                            if (motivoAtrasoId > 0)
+                            {
+                                InsertCollectionLevel2XMotivoAtraso(i, motivoAtraso_Id);
+                            }
 
                             return i;
                         }
@@ -1951,6 +1967,7 @@ namespace SgqSystem.Services
 
 
         }
+
         public int ResultLevel3Delete(int CollectionLevel2_Id)
         {
 
@@ -1985,6 +2002,7 @@ namespace SgqSystem.Services
                 throw;
             }
         }
+
         public int InsertCollectionLevel2HeaderField(int CollectionLevel2Id, string headerList)
         {
 
@@ -2129,7 +2147,48 @@ namespace SgqSystem.Services
             }
         }
 
+        public void InsertCollectionLevel2XMotivoAtraso(int CollectionLevel2_Id, string MotivoAtraso_Id)
+        {
+            var IsUpdate = false;
+            var sql = "";
+
+            using (var db = new SgqDbDevEntities())
+            {
+                IsUpdate = db.CollectionLevel2XMotivoAtraso.Any(r => r.CollectionLevel2_Id == CollectionLevel2_Id);
+            }
+
+            if (IsUpdate)
+            {
+                sql = $@"UPDATE CollectionLevel2XMotivoAtraso set [MotivoAtraso_Id] = { MotivoAtraso_Id }, [AlterDate] = GETDATE() 
+                WHERE [CollectionLevel2_Id] = { CollectionLevel2_Id }";
+            }
+            else
+            {
+                sql = $@"INSERT INTO CollectionLevel2XMotivoAtraso ([CollectionLevel2_Id], [MotivoAtraso_Id], [AddDate]) 
+                VALUES ('{ CollectionLevel2_Id }', { MotivoAtraso_Id } , GETDATE())";
+            }
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        Convert.ToInt32(command.ExecuteScalar());
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         #endregion
+
         #region Collection Level03
         /// <summary>
         /// Metodo que insere o CollectionLevel03
@@ -2379,7 +2438,6 @@ namespace SgqSystem.Services
             }
 
         }
-
         #endregion
 
         #region WeiEvaluation
@@ -2497,6 +2555,7 @@ namespace SgqSystem.Services
             }
         }
         #endregion
+
         #region DataBase HTML
         /// <summary>
         /// Metodo que retorna a ultima data de consolidação a anterior a data informada 
@@ -2544,6 +2603,7 @@ namespace SgqSystem.Services
         /// <param name="unidadeId"></param>
         /// <returns></returns>
         /// PORQUE QUE ESSA PORRA DESTA DATA É MESDIAANO?????????????????? (Comentário Gabriel)
+
         [WebMethod]
         public string reciveData(string unidadeId, string data)
         {
@@ -2551,6 +2611,7 @@ namespace SgqSystem.Services
             string consolidation = getConsolidation(unidadeId, dataConsolidation, 0);
             return consolidation;
         }
+
         [WebMethod]
         public string reciveDataByLevel1(string ParCompany_Id, string data, string ParLevel1_Id)
         {
@@ -2558,12 +2619,14 @@ namespace SgqSystem.Services
             string consolidation = getConsolidation(ParCompany_Id, dataConsolidation, Convert.ToInt32(ParLevel1_Id));
             return consolidation;
         }
+
         /// <summary>
         /// Metodo que verifica as consolidações necessárias
         /// </summary>
         /// <param name="unidadeId">Id da Unidade</param>
         /// <param name="lastDate">Se False, traz o resultado do dia atual somente, se True, traz o ultimo resultado sem o dia atual</param>
         /// <returns></returns>
+
         //public string GetConsolidationLevel01(string unidadeId, bool lastDate = false)
         //{
 
@@ -2664,6 +2727,7 @@ namespace SgqSystem.Services
             dataFim = periodoFim.ToString("yyyyMMdd");
 
         }
+
         public string _getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id)
         {
 
@@ -2867,8 +2931,6 @@ namespace SgqSystem.Services
             }
             return Results;
         }
-
-
 
         public string getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id)
         {
@@ -3471,7 +3533,6 @@ namespace SgqSystem.Services
         //    }
         //}
 
-
         public string getMaxEvaluate(string CollectionLevel02Ids, string Level02Ids)
         {
             string sql = "SELECT MAX([EvaluationNumber]) FROM CollectionLevel02 (nolock)  WHERE ConsolidationLevel02id IN (" + CollectionLevel02Ids + ") AND Level02id IN (" + Level02Ids + ")";
@@ -3652,6 +3713,7 @@ namespace SgqSystem.Services
         //        return null;
         //    }
         //}
+
         public string GetCollectionLevel03(string CollectionLevel02Id, string date, string auditorId, ref int defects)
         {
             string sql = "SELECT [Id], [Level03Id], [ConformedIs], [Value], [ValueText] FROM CollectionLevel03 (nolock)  WHERE CollectionLevel02Id = '" + CollectionLevel02Id + "'";
@@ -3709,8 +3771,8 @@ namespace SgqSystem.Services
                 return null;
             }
         }
-
         #endregion
+
         #region App
         [WebMethod]
         public string getAPP()
@@ -3770,65 +3832,186 @@ $(document).on('click','#btnMessageOk', function(e){
     preenchePCC1b(); 
 });
 
-                                function clonarHF(a){ 
-                                  var headerFieldGroupVisiveis = $('[hfg]:visible').not('[data-vinculo]');
-                                  countHeaderFieldGroup++;
-                                  headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function(o, c){ return $(o).attr('hfg') == $(a).attr('hfg') }); 
-                                  $.each(headerFieldGroupVisiveis,function(i,o){
-                                    if(!$(o).parent().attr('data-vinculo')){
-                                      var elementoClonado = $(o).parent().clone(true, true);
-                                      elementoClonado.attr('data-vinculo',countHeaderFieldGroup);
-		                              elementoClonado.insertAfter($(o).parent());
-                                    }
-                                  });
-                                }
+function clonarHF(a){ 
+    var headerFieldGroupVisiveis = $('[hfg]:visible').not('[data-vinculo]');
+    countHeaderFieldGroup++;
+    headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function(o, c){ return $(o).attr('hfg') == $(a).attr('hfg') }); 
+    $.each(headerFieldGroupVisiveis,function(i,o){
+    if(!$(o).parent().attr('data-vinculo')){
+        var elementoClonado = $(o).parent().clone(true, true);
+        elementoClonado.attr('data-vinculo',countHeaderFieldGroup);
+		elementoClonado.insertAfter($(o).parent());
+    }
+    });
+}
 
-                                function removerHF(a){ 
-                                    var headerFieldGroupVisiveis = $('[data-vinculo='+$(a).parent().attr('data-vinculo')+']:visible');
-                                    $.each(headerFieldGroupVisiveis,function(i,o){
-	                                    $(o).remove();
-                                    });
-                                }
+function removerHF(a){ 
+    var headerFieldGroupVisiveis = $('[data-vinculo='+$(a).parent().attr('data-vinculo')+']:visible');
+    $.each(headerFieldGroupVisiveis,function(i,o){
+	    $(o).remove();
+    });
+}
 
 $(document).ready(function(){
-                            $('body').on('input', 'input.interval:visible', function(){
+    $('body').on('input', 'input.interval:visible, input.likert:visible', function(){
 
-                                var id = $(this).parents('li').attr('id');
-	                            $.each($('input[resultado]:visible'), function(i, o){
-                                            if ($(o).attr('resultado').indexOf('{' + id + '}') > 0){
-                                                var resultado = $(o).attr('resultado');
+        var id = $(this).parents('li').attr('id');
+	    $.each($('input[resultado]:visible'), function(i, o){
+			if ($(o).attr('resultado').indexOf('{' + id + '}') >= 0 || $(o).attr('resultado').indexOf('{' + id + '?}') >= 0){
+				var resultado = $(o).attr('resultado');
 
-                                                const regex = /{([^}]+)}/g;
-                                            let m;
+				const regex = /{([^}]+)}/g;
+				var m;
 
-                                            while ((m = regex.exec($(o).attr('resultado'))) !== null)
-                                            {
-                                                // This is necessary to avoid infinite loops with zero-width matches
-                                                if (m.index === regex.lastIndex)
-                                                {
-                                                    regex.lastIndex++;
-                                                }
+				while ((m = regex.exec($(o).attr('resultado'))) !== null)
+				{
+					// This is necessary to avoid infinite loops with zero-width matches
+					if (m.index === regex.lastIndex)
+					{
+						regex.lastIndex++;
+					}
 
-                                                var valor = $('li[id=""' + m[1] + '""] input.interval').val();
-                                                if(valor.length > 0)
-                                                    resultado = resultado.replace(m[0],valor);
-                                            }
+					var valor = $('li[id=""' + m[1].replace('?','') + '""] input.interval').val();
+					if(valor)
+						resultado = resultado.replace(m[0],valor);
+					else{
+						var valor = $('li[id=""' + m[1].replace('?','') + '""] input.likert').val();
+						if(valor)
+							resultado = resultado.replace(m[0],valor);
+						else{
+							if(m[1].indexOf('?') >= 0){
+								resultado = resultado.replace(m[0],0);
+							}
+						}
+					}
+				}
 
-                                            if (resultado.indexOf('{') != -1)
-                                            {
-                                                resultado = """";
-                                            }
-                                            else
-                                            {
-                                                resultado = eval(resultado);
-                                            }
-    	                                    $(o).val(resultado);
-    	                                    $(o).trigger('input');
+				if (resultado.indexOf('{') != -1)
+				{
+					resultado = """";
+				}
+				else
+				{
+					resultado = eval(resultado);
+				}
+				$(o).val(resultado);
+				$(o).trigger('input');
 
-                                        }
-                                    });
-                            });
+			}
+		});
+    });
 });
+
+function validaNumeroEscalaLikert(evt, that)
+{
+    var e = event || evt; 
+    var charCode = e.which || e.keyCode;
+
+    $(that).parents('li').css('background-color', '');
+
+	if(!(charCode == 45 && $(that).val().length == 0)){
+		if (charCode > 31 && (charCode < 48 || charCode > 57)){
+			e.preventDefault();
+			return false;
+		}
+	}
+
+    aplicaCorAoInput(that);
+
+    return true;
+}
+
+function aplicaCorAoInput(input) {
+
+    var paramns = $(input).attr('paramns')
+
+    var properties = paramns.split('|');
+    var arr = [];
+
+    properties.forEach(function(property) {
+        var tup = property.split(':');
+        arr[tup[0]] = [tup[1],tup[2]];
+    });
+
+    var value = $(input).val();
+    var color = arr[value][0];
+    var valueText = arr[value][1];
+
+    $(input).parents('li').attr('value', valueText);
+    $(input).parents('li').css('background-color', color);
+}
+
+function validaValoresValidosEscalaLikert(input) {
+
+    if(parseInt($(input).attr('min')) > $(input).val()
+        || parseInt($(input).attr('max')) < $(input).val()){
+		$(input).val('');
+		$(input).parents('li').css('background-color', '');
+    }
+
+}
+
+function calcularSensorial(list){
+
+	var attributes = list
+
+	//declare attribute and point counter
+	var noOf5 = 0
+	var noOf4and6 = 0
+	var noOf3and7 = 0
+	var noOf2and8 = 0
+	var noOf1and9 = 0
+	var noOfElem = 0 
+	var addPoint5_85 = 0
+	var addPoint5_60 = 0
+	var addPoint4and6 = 0
+	var CategoryScore_calc = 0
+
+	for (i = 0; i < attributes.length; i++){
+
+		if (attributes[i] == 1 || attributes[i] == 9){
+			noOf1and9 = noOf1and9 + 1
+		}else if (attributes[i] == 2 || attributes[i] == 8){
+			noOf2and8 = noOf2and8 + 1
+		}else if (attributes[i] == 3 || attributes[i] == 7){
+			noOf3and7 = noOf3and7 + 1
+		}else if (attributes[i] == 4 || attributes[i] == 6){
+			noOf4and6 = noOf4and6 + 1
+		}else if (attributes[i] == 5){
+			noOf5 = noOf5 + 1
+		}
+
+	}
+
+	noOfElem = 1 > (noOf4and6 + noOf3and7 + noOf5 - 1) ? 1 : (noOf4and6 + noOf3and7 + noOf5 - 1)
+
+	addPoint5_85 = (10 * noOf5 / noOfElem)
+	addPoint5_60 = (20 * noOf5 / noOfElem)
+	addPoint4and6 = (10 * noOf4and6 / noOfElem)
+
+	if (noOf1and9 > 0) {
+	    CategoryScore_calc = 0
+	}
+	else if (noOf2and8 > 0) {
+	    CategoryScore_calc = 25
+	}
+	else if (noOf3and7 > 0) {
+	    CategoryScore_calc = 60 + addPoint5_60 + addPoint4and6
+	}
+	else if (noOf4and6 > 0) {
+	    CategoryScore_calc = 85 + addPoint5_85
+	}
+	else if (noOf5 = 0) {
+	    CategoryScore_calc = 0
+	}
+	else {
+		CategoryScore_calc = 100
+	} 
+
+	//imprimir na tela
+	return  Math.round( CategoryScore_calc)
+
+}
                               </script> ";
 
             try
@@ -3841,7 +4024,7 @@ $(document).ready(function(){
                                            
                                 function buscarProduto(a,valor){
 
-                                    for (var j=0; j < listaProdutosJson.length; j++) {
+                                    for (var j=0; j < listaProdutosJson.length;j++) {
                                         if (listaProdutosJson[j].id == valor) {
 
 		                                    $(a).next().html(listaProdutosJson[j].nome);
@@ -3874,6 +4057,7 @@ $(document).ready(function(){
 
 
             //string resource = GetResource();
+
 
             return APPMain + supports;// + resource;
         }
@@ -3913,7 +4097,6 @@ $(document).ready(function(){
             return APPMain;// + resource;
         }
 
-
         public string GetResource()
         {
             if (GlobalConfig.LanguageBrasil)
@@ -3945,7 +4128,7 @@ $(document).ready(function(){
             return "<div class='Resource hide'>" + items + "</div>";
         }
 
-        public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
+        public ParLevel2Evaluate getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
 
             var lista = parlevel2.Id.ToString().Replace(quebraProcesso, "|").Split('|');
@@ -3954,23 +4137,19 @@ $(document).ready(function(){
 
             int parlevel2_id = lista.Length > 1 ? Int32.Parse(lista[1]) : Int32.Parse(lista[0]);
 
-            int evaluate = 0;
+            ParLevel2Evaluate evaluate = new ParLevel2Evaluate() { Evaluate = 0 };
             var evaluateConf = ParEvaluateCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
             if (evaluateConf != null)
             {
-                evaluate = evaluateConf.Evaluate;
+                evaluate = evaluateConf;
             }
             else
             {
                 evaluateConf = ParEvaluatePadrao.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
                 if (evaluateConf != null)
                 {
-                    evaluate = evaluateConf.Evaluate;
+                    evaluate = evaluateConf;
                 }
-            }
-            if (evaluate == 0)
-            {
-                evaluate = 0;
             }
             return evaluate;
         }
@@ -4056,6 +4235,31 @@ $(document).ready(function(){
                 sample = 0;
             }
             return sample;
+        }
+
+        public string GetEvaluationSchedule(int parLevel1_Id, int parLevel2_Id, int company_Id, int shift_Id)
+        {
+            try
+            {
+                List<string> frequencia = new List<string>();
+                using (var conexaoEF = new SgqDbDevEntities())
+                {
+                    foreach (var item in conexaoEF.ParEvaluationSchedule
+                        .Where(x => (x.ParEvaluation.ParLevel1_Id == parLevel1_Id || x.ParEvaluation.ParLevel1_Id == null)
+                        && x.ParEvaluation.ParLevel2_Id == parLevel2_Id
+                        && (x.ParEvaluation.ParCompany_Id == company_Id || x.ParEvaluation.ParCompany_Id == null)
+                        && (x.Shift_Id == shift_Id || x.Shift_Id == null))
+                        .OrderByDescending(x => new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList())
+                    {
+                        frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
+                    }
+                }
+                return string.Join("|", frequencia);
+            }
+            catch (Exception Ex)
+            {
+                return "";
+            }
         }
 
         public int getMaxSampleLevel1(SGQDBContext.ParLevel1 parlevel1, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany)
@@ -4165,7 +4369,7 @@ $(document).ready(function(){
                              "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
                              "   <div class=\"body font16\">Mensagem</div>                                                                                                " +
                              "   <div class=\"foot\"><button id=\"btnMessageOk\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> Ok</button></div>      " +
-                             "</div>                                                                                                                                    ";
+                             "</div>";
             // string messageConfirm = null;
             //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                         " +
             //                       "</div>                                                                                                                                                                                                    ";
@@ -4186,7 +4390,31 @@ $(document).ready(function(){
                                         "        <input type=\"text\" masc=\"date\" id=\"inputDate\" placeholder=\"99/99/9999\" class=\"form-control input-sm hide\" style=\"max-width:160px;\" /> </div>       " +
                                         "    <div class=\"foot\"><button id=\"btnMessageYes\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> " + CommonData.getResource("yes").Value.ToString() + " </button></div>                 " +
                                         "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> " + CommonData.getResource("no").Value.ToString() + " </button></div>                   " +
-                                        "</div>                                                                                                                                                         ";
+                                        "</div>         " +
+                                        "                                                                                                                                                ";
+
+            #region MotivoAtraso
+
+            var listMotivo = dbEf.MotivoAtraso.Where(r => r.IsActive).ToList();
+
+            StringBuilder selectMotivo = new StringBuilder();
+
+            selectMotivo.Append(@"<select id=""slcMotivo"" class=""form-control"" style=""width: 600px;"">");
+
+            foreach (var item in listMotivo)
+                selectMotivo.Append($@"<option value=""{ item.Id }"">{item.Motivo}</option>");
+
+            selectMotivo.Append(@"</select>");
+
+            string messageMotivoAtraso =
+                $@"<div class=""messageMotivoAtraso padding20"" style=""display:none;"">
+                        <h1 class=""head"">{ CommonData.getResource("LateReason").Value.ToString() }</h1>
+                        <div class=""body font16""> <div class=""txtMessage""></div>
+                            { selectMotivo }
+                        <div class=""foot""><button id=""btnAtrasoOk"" class=""btn btn-lg marginRight30 btn-primary pull-right btnMessage""> OK </button></div>
+                    </div>";
+
+            #endregion
 
             string debug = "<div id = 'ControlaDivDebugAlertas' onclick='showHideDivDebugAlerta();'></div> " +
 
@@ -4281,11 +4509,10 @@ $(document).ready(function(){
                            modalPCC1B +
                            message +
                            messageConfirm +
+                           messageMotivoAtraso +
                            debug +
                            listaParLevel3Vinculado;
         }
-
-
 
         public string navBar(int UserSgq_Id, int ParCompany_Id)
         {
@@ -4304,6 +4531,7 @@ $(document).ready(function(){
 
             return navBar;
         }
+
         public string rightMenu()
         {
             string menu = "<div class=\"rightMenu\">                                                                                                  " +
@@ -4328,6 +4556,7 @@ $(document).ready(function(){
 
             return menu;
         }
+
         public string correctiveAction()
         {
             string correctiveAction =
@@ -4880,7 +5109,6 @@ $(document).ready(function(){
 
         }
 
-
         /// <summary>
         /// Gera Linhas do level2
         /// </summary>
@@ -4962,10 +5190,13 @@ $(document).ready(function(){
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List) //LOOP3
             {
+                string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
-                    evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
+                    var parlevel2Evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
+                    frequencia = GetEvaluationSchedule(ParLevel1.ParLevel1_Id, parlevel2.ParLevel2_id, ParCompany_Id, Shift_Id);
+                    evaluate = parlevel2Evaluate.Evaluate;
                     sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
                     //defect = getCollectionLevel2Keys(ParCompany_Id,data, ParLevel1);
                 }
@@ -5138,7 +5369,9 @@ $(document).ready(function(){
                                             RuleId: parlevel2.ParNotConformityRule_id,
                                             RuleValue: ruleValue.ToString(),
                                             reaudit: parlevel2.IsReaudit,
-                                            HasTakePhoto: parlevel2.HasTakePhoto);
+                                            HasTakePhoto: parlevel2.HasTakePhoto,
+                                            FrequenciaValor: frequencia,
+                                            FrequenciaMensagemInativo: "");
 
                 var listLineCounter = ParCounterDB.GetParLevelXParCounterList(null, parlevel2, 2);
 
@@ -5551,7 +5784,6 @@ $(document).ready(function(){
             return retorno;
         }
 
-
         /// <summary>
         /// Obter tela da Ytoara com o cabeçalho
         /// </summary>
@@ -5560,7 +5792,6 @@ $(document).ready(function(){
         {
             return ytoaraUtil.criarHeader(ytoaraUtil.getElementoEstruturado());
         }
-
 
         /// <summary>
         /// Retorna Level3 
@@ -6507,7 +6738,25 @@ $(document).ready(function(){
             }//Escala Likert
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
-                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString());
+                var ranges = dbEf.ParInputTypeValues.Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id).ToList();
+
+                var paramns = new List<string>();
+
+                foreach (var item in ranges)
+                {
+                    paramns.Add(item.Intervalo + ":" + item.Cor + ":" + item.Valor);
+                }
+                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|", paramns));
+
+                //INSERE O MIN MAX
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" :  parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" :  parLevel3.IntervalMax.ToString("G29");
+
+                string valorCompleto = "";
+
+                valorCompleto ="<strong>Escalas: </strong>" + valorMinimo + " a " + valorMaximo;
+
+                labels = html.div(outerhtml: valorCompleto, classe: "levelName");
             }//Resultado
             else if (parLevel3.ParLevel3InputType_Id == 10)
             {
@@ -6590,6 +6839,7 @@ $(document).ready(function(){
             }
             return input;
         }
+
         public string getTipoInputBEA(SGQDBContext.ParLevel3 parLevel3, ref string classInput, ref string labels)
         {
             var html = new Html();
@@ -6864,6 +7114,7 @@ $(document).ready(function(){
         }
 
         #region Users
+
         [WebMethod]
         public string getCompanyUsers(string ParCompany_Id)
         {
@@ -6887,6 +7138,7 @@ $(document).ready(function(){
             }
             return usersList;
         }
+
         [WebMethod]
         public string getUserCompanys(string UserSgq_Id)
         {
@@ -6907,6 +7159,7 @@ $(document).ready(function(){
             }
             return usersList;
         }
+
         [WebMethod]
         public string UserSGQLogin(string UserName, string Password)
         {
@@ -6940,6 +7193,7 @@ $(document).ready(function(){
             }
 
         }
+
         [WebMethod]
         public string UserSGQById(int Id)
         {
@@ -6957,7 +7211,9 @@ $(document).ready(function(){
 
             return "Usuário não localizado";
         }
+
         #endregion
+
         [WebMethod]
         public string insertDeviation(string deviations)
         {
@@ -7065,6 +7321,7 @@ $(document).ready(function(){
                 return "error";
             }
         }
+
         [WebMethod]
         public string sendEmailAlerta()
         {
@@ -7118,6 +7375,7 @@ $(document).ready(function(){
             }
             return null;
         }
+
         [WebMethod]
         public string sendEmail(string email, string subject, string body, string email_CopiaOculta = null)
         {
@@ -7180,6 +7438,7 @@ $(document).ready(function(){
             }
             return null;
         }
+
         [WebMethod]
         public string sendEmailManutencao()
         {
@@ -7239,6 +7498,7 @@ $(document).ready(function(){
                 return "erro";
             }
         }
+
         [WebMethod]
         public string updateLevel1Consolidaton(string ParLevel1_Id, string Unit_Id, string DepartmentId, string Evaluation, string Defects)
         {
@@ -7278,6 +7538,7 @@ $(document).ready(function(){
                 return "error";
             }
         }
+
         [WebMethod]
         public string updateConsolidacoes(string consolidacoes)
         {
@@ -7314,6 +7575,7 @@ $(document).ready(function(){
                 return null;
             }
         }
+
         /// <summary>
         /// Seleciona Todas as unidades que o usuário pode acessar
         /// </summary>
@@ -7343,6 +7605,7 @@ $(document).ready(function(){
             }
             return options;
         }
+
         [WebMethod]
         public string UserCompanyUpdate(string UserSgq_Id, int ParCompany_Id)
         {
@@ -7376,6 +7639,7 @@ $(document).ready(function(){
                 return "Não foi possivel alterar a unidade";
             }
         }
+
         [WebMethod]
         public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id,
             string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter,
@@ -7460,6 +7724,7 @@ $(document).ready(function(){
                 throw ex;
             }
         }
+
         public int getCollectionLevel2WithCorrectiveAction(string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber, string reauditnumber, string data, string parCluster_Id)
         {
             //Converte a data no padrão de busca do Banco de Dados
@@ -8208,6 +8473,39 @@ $(document).ready(function(){
             }
 
         }
+
+        #region StatusColeta
+
+        [WebMethod]
+        public void InsertStatusColeta(ListaCollectionsLevel2XMotivosAtraso listaCollectionsLevel2XMotivosAtraso)
+        {
+            try
+            {
+                using (var conexaoEF = new SgqDbDevEntities())
+                {
+
+                    if (listaCollectionsLevel2XMotivosAtraso != null && listaCollectionsLevel2XMotivosAtraso.DadosIsValid())
+                    {
+                        foreach (var item in listaCollectionsLevel2XMotivosAtraso.CollectionsLevel2XMotivosAtraso)
+                        {
+                            if (item.IsValid())
+                            {
+                                conexaoEF.CollectionLevel2XMotivoAtraso.Add(item);
+                            }
+                        }
+                    }
+
+                    conexaoEF.SaveChanges();
+                }
+            }
+            catch (Exception Ex)
+            {
+                throw;
+            }
+        }
+
+        #endregion
+
     }
 }
 

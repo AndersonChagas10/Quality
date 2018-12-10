@@ -40,6 +40,7 @@
     <Compile Include="CollectionHtml.cs" />
     <Compile Include="CollectionJson.cs" />
     <Compile Include="CollectionLevel2.cs" />
+    <Compile Include="CollectionLevel2XMotivoAtraso.cs" />
     <Compile Include="CollectionLevel2XParHeaderField.cs" />
     <Compile Include="ConsolidationLevel1.cs" />
     <Compile Include="ConsolidationLevel2.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Metas.cs" />
     <Compile Include="MigrationHistory.cs" />
     <Compile Include="Monitoramentos.cs" />
+    <Compile Include="MotivoAtraso.cs" />
     <Compile Include="NQA.cs" />
     <Compile Include="Operacoes.cs" />
     <Compile Include="ParCluster.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="ParCriticalLevel.cs" />
     <Compile Include="ParDepartment.cs" />
     <Compile Include="ParEvaluation.cs" />
+    <Compile Include="ParEvaluationSchedule.cs" />
     <Compile Include="ParFieldType.cs" />
     <Compile Include="ParFrequency.cs" />
     <Compile Include="ParGoal.cs" />
@@ -105,6 +108,7 @@
     <Compile Include="ParGroupParLevel1XParLevel1.cs" />
     <Compile Include="ParGroupParLevel1XParLevel3.cs" />
     <Compile Include="ParHeaderField.cs" />
+    <Compile Include="ParInputTypeValues.cs" />
     <Compile Include="ParLataImagens.cs" />
     <Compile Include="ParLevel1.cs" />
     <Compile Include="ParLevel1VariableProduction.cs" />
@@ -182,6 +186,7 @@
     <Compile Include="VerificacaoTipificacaoTarefaIntegracao.cs" />
     <Compile Include="VerificacaoTipificacaoV2.cs" />
     <Compile Include="VerificacaoTipificacaoValidacao.cs" />
+    <Compile Include="ViewModel\ListaCollectionsLevel2XMotivosAtraso.cs" />
     <Compile Include="VolumeCepDesossa.cs" />
     <Compile Include="VolumeCepRecortes.cs" />
     <Compile Include="VolumePcc1b.cs" />

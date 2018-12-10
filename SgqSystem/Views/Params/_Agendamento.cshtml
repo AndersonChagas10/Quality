@@ -1,0 +1,451 @@
+﻿<style>
+    #tabelaAgendamento td {
+        white-space: nowrap;
+    }
+
+    #tabelaAgendamento input {
+        width: 140px;
+    }
+</style>
+
+<table id="tableAvAm" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Avaliação e Amostra:">
+    <thead>
+        <tr>
+            <th>@Resources.Resource.company</th>
+            <th>@Resources.Resource.level1</th>
+            <th>@Resources.Resource.cluster</th>
+            <th>@Resources.Resource.evaluation</th>
+            <th>@Resources.Resource.samples / @Resources.Resource.evaluation</th>
+            <th>@Resources.Resource.scheduling</th>
+            <th class="options"></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div class="modal fade" id="modalAgendamento" role="dialog">
+    <div class="modal-dialog modal-lg vertical-align-center">
+        <div class="modal-content">
+            <div class="modal-header modal-header-gray">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Agendamento</h4>
+            </div>
+            <div class="modal-body">
+                <input class="hidden" data-column="inpAvaliacaoId" />
+                <div style="overflow:auto;">
+                    <table id="tabelaAgendamento" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
+                        <thead>
+                            <tr>
+                                <th>Tipo de Frequência</th>
+                                <th>Início</th>
+                                <th>Fim</th>
+                                <th>Avaliação</th>
+                                <th>@Resources.Resource.shift</th>
+                                <th>@Resources.Resource.action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>
+                <button type="button" data-dismiss="modal" onclick="LimpaCampos()" class="btn btn-default">Fechar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    //variaveis globais
+    var botaoAgendamento = '';
+    var valorAvaliacao = '';
+    var listaAgendamento = [];
+
+    $("#modalAgendamento").on('close', function(){
+        console.log('model fechado');
+        ContadorLinhas();
+    });
+
+    function abrirModalAgendamento(linha) {
+
+        $("#tabelaAgendamento").attr('style', '');
+        var obj = $(linha).parents('tr').data();
+        valorAvaliacao = obj.evaluationNumber;
+        botaoAgendamento = linha;
+        $('#modalAgendamento').modal('show');
+        var id = parseInt(obj.evaluationId);
+
+        $.get('@Url.Action("Get", "api/Shift")', function (r) {
+            let shifts = r;
+            avaliacaAmostraSelectShifts = '<td> <select class="input-sm" data-column="slAgendamento"> <option value="" >Todos</option>';
+            shifts.forEach(function (item) {
+                avaliacaAmostraSelectShifts += '<option value="' + item.Id + '">' + item.Description + '</option>';
+            });
+            avaliacaAmostraSelectShifts += '</select ></td>';
+
+            $.ajax({
+                url: '@Url.Content("~")' + 'api/AgendamentoApi/Get/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    MontaNovaLinhaAgendamento(null);
+                    data.forEach(function (item) {
+                        MontaNovaLinhaAgendamento(item, false);
+                    });
+                    console.log(data);
+                },
+                error: function (request, error) {
+                    alert("Request: " + JSON.stringify(request));
+                }
+            });
+        });
+
+        $("[data-column=inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        $("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
+        $("#tabelaAgendamento tbody").html("");
+    }
+
+    function LimpaCampos() {
+        $("[data-column=inpInicio]").val("");
+        $("[data-column=inpTermino]").val("");
+    }
+
+
+    function DeletaLinha(data, linha) {
+        $(linha).html('tr').remove();
+    }
+
+    function ContadorLinhas() {
+        debugger
+        var tamanho = $("#tabelaAgendamento tbody").find('tr').length;
+
+        if (tamanho <= 1) {
+            $(botaoAgendamento).removeClass('btn-success').addClass('btn-default');
+            $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', false);
+        } else {
+            $(botaoAgendamento).removeClass('btn-default').addClass('btn-success');
+            $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', true);
+        }
+    }
+
+    function MontaNovaLinhaAgendamento(data) {
+        $("#tabelaAgendamento tbody").append("<tr>"
+            + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpTermino" /></td>'
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpAvaliacao" /></td>'
+            + avaliacaAmostraSelectShifts
+            + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
+            + '<td>  <button type="button" title="Adicionar na lista" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
+            + "</tr>");
+
+        $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+
+        if (data != null && data != undefined) {
+            $("#tabelaAgendamento tbody tr:last").data(data);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpInicio]').val(data.Inicio);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpTermino]').val(data.Fim);
+            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpAvaliacao]').val(data.Av);
+            $("#tabelaAgendamento tbody tr:last").find("#btnSalvarAgendamento").removeClass('btn-primary fa fa-plus').addClass('btn-success fa fa-pencil-square-o').text('').addClass('hidden');
+            $("#tabelaAgendamento tbody tr:last").find(".btnDeletarAgendamento").removeClass('hidden');
+            $("#tabelaAgendamento tbody tr:last").find("[data-column=slAgendamento]").val(data.Shift_Id);
+
+            if (data.Id > 0) {
+                $("#tabelaAgendamento tbody tr:last").find('[data-column=inpId]').val(data.Id);
+            }
+        }
+    }
+
+
+    function EditaLinha(data, linha) {
+        if (!!data && data.Id > 0) {
+            $(linha).data(data);
+            $(linha).find('[data-column=inpInicio]').val(data.Inicio);
+            $(linha).find('[data-column=inpTermino]').val(data.Fim);
+            $(linha).find('[data-column=inpAvaliacao]').val(data.Av);
+            $(linha).find('[data-column=inpId]').val(data.Id);
+            $(linha).find("#btnSalvarAgendamento").removeClass('btn-primary fa fa-plus').addClass('btn-success fa fa-pencil-square-o').text('');
+            $(linha).find(".btnDeletarAgendamento").removeClass('hidden');
+            $(linha).find("[data-column=slAgendamento]").val(data.Shift_Id);
+        }
+    }
+
+    function deletarRegistro(data) {
+        var linha = $(data).parents('tr');
+        var form = {
+            Inicio: $(linha).data()['Inicio'],
+            Fim: $(linha).data()['Fim'],
+            Av: $(linha).data()['Av'],
+            Shift_Id: $(linha).data()['Shift_Id'],
+            ParEvaluation_Id: $(linha).data()['ParEvaluation_Id'],
+            Id: $(linha).data()['Id'],
+            IsDeletar: !$(linha).data()['IsDeletar']
+        };
+        $(linha).data(form);
+        $(linha).find(".btnDeletarAgendamento").removeClass('btn-danger').addClass('btn-default');
+        @*$.ajax({
+            url: '@Url.Content("~")' + 'api/AgendamentoApi/Delete',
+            type: 'DELETE',
+            data: form,
+            dataType: 'json',
+            success: function (data) {
+                DeletaLinha(data, linha);
+                ContadorLinhas();
+                openMessageModal("Registro deletado com sucesso",null);
+            },
+            error: function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });*@
+    }
+
+    $("#modalAgendamento").on('click', "#btnSalvar", function () {
+        var listaTabelaAgendamento = [];
+        var contadorErros = 0;
+        listaTabelaAgendamento = $("#tabelaAgendamento tbody tr").not(':first');
+        if ($("#tabelaAgendamento tbody tr").find("[data-column=inpInicio]").val() !== '' || $("#tabelaAgendamento tbody tr").find("[data-column=inpTermino]").val() !== '' || $("#tabelaAgendamento tbody tr").find("[data-column=inpAvaliacao]").val() !== '') {
+            openMessageModal('Dados não inseridos na lista, adicione antes de salvar!', null);
+        }
+        else if (listaTabelaAgendamento.length <= 0) {
+            openMessageModal('Nenhum registro inserido na lista!', null);
+        } else {
+                listaTabelaAgendamento.each(function (index, item) {
+                    form = {
+                        Inicio: $(item).find("[data-column=inpInicio]").val(),
+                        Fim: $(item).find("[data-column=inpTermino]").val(),
+                        Av: $(item).find("[data-column=inpAvaliacao]").val(),
+                        Shift_Id: $(item).find("[data-column=slAgendamento]").val(),
+                        ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
+                        Id: $(item).find("[data-column=inpId]").val(),
+                        IsDeletar: $(item).data("IsDeletar")
+                    };
+                    var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
+                    var linha = $(this).parent().parent();
+                    if (!form.IsDeletar && (!frequenciaIsValid(formato, parseInt(form.Inicio), parseInt(form.Fim))
+                        || $('#tabelaAgendamento tbody tr').find('[data-column=inpAvaliacao]').hasClass('alert-danger')
+                        || form.Av > valorAvaliacao)) {
+                        contadorErros += 1;
+                    } else {
+                        listaAgendamento.push(form);
+                    }
+
+                });
+                if (contadorErros <= 0) {
+                    $.ajax({
+                        url: '@Url.Content("~")' + 'api/AgendamentoApi/Post',
+                        type: 'POST',
+                        data: JSON.stringify(listaAgendamento),
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            listaAgendamento = [];
+                            $('#tabelaAgendamento tbody tr').not(':first').remove();
+                            data.forEach(function (item) {
+                                MontaNovaLinhaAgendamento(item, false);
+                            });
+
+                            openMessageModal("Dados salvos com sucesso", null);
+                            $('#modalAgendamento').modal('hide');
+                            ContadorLinhas();
+                        },
+                        error: function (request, error) {
+                            listaAgendamento = [];
+                            ContadorLinhas();
+                            alert("Request: " + JSON.stringify(request));
+                        }
+                    });
+                } else {
+                    openMessageModal("Dados informados inválidos. Verifique e salve as alterações!", null);
+                }
+             }
+    });
+
+    $("#modalAgendamento").on('input', '[data-column=inpAvaliacao]', function () {
+        let tabela = $('#tabelaAgendamento tbody tr').not(':first');
+        $(tabela).find('[data-column=inpAvaliacao]').each(function (i, o) {
+            var self = o;
+            var avaliacao = $(self).parents("tr").find('[data-column=inpAvaliacao]').val();
+            var turno = $(self).parents("tr").find('[data-column=slAgendamento]').val();
+
+            let isDuplicated = $.grep(tabela, (o) => {
+                return avaliacao == $(o).find('[data-column=inpAvaliacao]').val()
+                    && turno == $(o).find('[data-column=slAgendamento]').val();
+            });
+            $(self).removeClass('alert-danger');
+
+            if (avaliacao > valorAvaliacao) {
+                $(self).addClass('alert-danger');
+            } else {
+                $(self).removeClass('alert-danger');
+            }
+            if (isDuplicated.length > 1) {
+                $(self).addClass('alert-danger');
+            }
+
+        });
+    });
+
+    $("#modalAgendamento").on('change', '[data-column=slAgendamento]', function () {
+        debugger
+        let tabela = $('#tabelaAgendamento tbody tr').not(':first');
+        $(tabela).find('[data-column=inpAvaliacao]').each(function (i, o) {
+            var self = o;
+            var avaliacao = $(self).parents("tr").find('[data-column=inpAvaliacao]').val();
+            var turno = $(self).parents("tr").find('[data-column=slAgendamento]').val();
+
+            let isDuplicated = $.grep(tabela, (o) => {
+                return avaliacao == $(o).find('[data-column=inpAvaliacao]').val()
+                    && turno == $(o).find('[data-column=slAgendamento]').val();
+            });
+            $(self).removeClass('alert-danger');
+            if (isDuplicated.length > 1) {
+                $(self).addClass('alert-danger');
+            }
+
+        });
+    });
+
+    $("#modalAgendamento").on('input', '[data-column="inpInicio"] , [data-column="inpTermino"]', function () {
+        var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
+        switch (formato) {
+            case "Diario":
+                if ($(this).val() > 24) {
+                    $(this).addClass('alert-danger');
+                    break;
+                } else {
+                    $(this).removeClass('alert-danger');
+                    break;
+                }
+            case "Semanal":
+                if ($(this).val() > 7) {
+                    $(this).addClass('alert-danger');
+                    break;
+                } else {
+                    $(this).removeClass('alert-danger');
+                    break;
+                }
+            case "Quinzenal":
+                if ($(this).val() > 15) {
+                    $(this).addClass('alert-danger');
+                    break;
+                } else {
+                    $(this).removeClass('alert-danger');
+                    break;
+                }
+            case "Mensal":
+                if ($(this).val() > 31) {
+                    $(this).addClass('alert-danger');
+                    break;
+                } else {
+                    $(this).removeClass('alert-danger');
+                    break;
+                }
+            case "Turno":
+                break;
+            default:
+        }
+    });
+
+    $("#modalAgendamento").on('click', "#btnSalvarAgendamento", function () {
+
+        var linha = $(this).parent().parent();
+        var inicio = $(linha).find('[data-column=inpInicio]').val();
+        var termino = $(linha).find('[data-column=inpTermino]').val();
+        var avaliacao = $(linha).find('[data-column=inpAvaliacao]').val();
+        var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
+        var turno = $('[data-column="slAgendamento"] :selected').val();
+
+        //Validar preenchido
+        if (!camposIsValid(avaliacao, inicio, termino, turno)) {
+            return false;
+        }
+
+        if (!frequenciaIsValid(formato, parseInt(inicio), parseInt(termino))) {
+            openMessageModal("Intervalo de frequência inválido", null);
+            return false;
+        }
+
+        var isEdit = !!$(this).parents('tr').data()['Id'];
+        if (valorAvaliacao >= $(linha).find("[data-column=inpAvaliacao]").val()) {
+
+            var form = {
+                Inicio: $(linha).find("[data-column=inpInicio]").val(),
+                Fim: $(linha).find("[data-column=inpTermino]").val(),
+                Av: $(linha).find("[data-column=inpAvaliacao]").val(),
+                Shift_Id: $(linha).find("[data-column=slAgendamento]").val(),
+                ParEvaluation_Id: $(linha).find("[data-column=inpAvaliacaoId]").val(),
+                Id: $(linha).find("[data-column=inpId]").val()
+            };
+            MontaNovaLinhaAgendamento(form, isEdit);
+            $(linha).find('input:enabled').val('');
+
+
+        } else {
+            openMessageModal('Valor da avaliação maior do que o permitido!', null);
+        }
+    });
+
+    function frequenciaIsValid(formato, inicio, fim) {
+        debugger
+        switch (formato) {
+            case "Diario":
+                if(fim < 0 || inicio < 0 || fim > 24 || inicio > 24 || inicio > fim)
+                    return false;
+                else
+                    return true;
+            case "Semanal":
+                if(fim < 1 || inicio < 1 || fim > 7 || inicio > 7 || inicio > fim)
+                    return false;
+                else
+                    return true;
+            case "Quinzenal":
+                if(fim < 1 || inicio < 1 || fim > 15 || inicio > 15 || inicio > fim)
+                    return false;
+                else
+                    return true;
+            case "Mensal":
+                if(fim < 1 || inicio < 1 || fim > 31 || inicio > 31 || inicio > fim)
+                    return false;
+                else
+                    return true;
+            case "Turno":
+                break;
+            default:
+        }
+    }
+
+    function camposIsValid(avaliacao, inicio, termino, turno) {
+        debugger
+        if (avaliacao == null || avaliacao == undefined || avaliacao < 0 || avaliacao === "") {
+            openMessageModal("O campo Avaliação deve ser preechido", null);
+            return false;
+        }
+
+        if (inicio == null || inicio == undefined || inicio < 0 || inicio === "") {
+            openMessageModal("O campo Inicio deve ser preechido", null);
+            return false;
+        }
+
+        if (termino == null || termino == undefined || termino < 0 || termino === "") {
+            openMessageModal("O campo Fim deve ser preechido", null);
+            return false;
+        }
+
+        let tabela = $('#tabelaAgendamento tbody tr').not(':first');
+
+        let isDuplicated = $.grep(tabela, (o) => {
+            return turno == $(o).find('[data-column="slAgendamento"] :selected').val() &&
+                avaliacao == $(o).find('[data-column=inpAvaliacao]').val();
+
+        }).length > 0;
+
+        if (isDuplicated) {
+            openMessageModal("Já existe um agendamento para esta avaliação ou turno", null);
+            return false;
+        }
+        return true;
+    }
+
+</script>
