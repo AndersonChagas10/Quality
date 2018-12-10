@@ -372,12 +372,6 @@ namespace Dominio
                 .Property(e => e.WeiDefects)
                 .HasPrecision(30, 8);
 
-            modelBuilder.Entity<ConsolidationLevel2>()
-                .HasMany(e => e.CollectionLevel2)
-                .WithRequired(e => e.ConsolidationLevel2)
-                .HasForeignKey(e => e.ConsolidationLevel2_Id)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Defect>()
                 .Property(e => e.Defects)
                 .HasPrecision(30, 8);
@@ -788,12 +782,6 @@ namespace Dominio
             modelBuilder.Entity<ParLataImagens>()
                 .Property(e => e.FileName)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<ParLevel1>()
-                .HasMany(e => e.CollectionLevel2)
-                .WithRequired(e => e.ParLevel1)
-                .HasForeignKey(e => e.ParLevel1_Id)
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ParLevel1>()
                 .HasMany(e => e.ConsolidationLevel1)
