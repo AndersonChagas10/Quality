@@ -1,7 +1,9 @@
 ﻿using ADOFactory;
+using Dominio;
 using DTO.DTO;
 using Newtonsoft.Json.Linq;
 using SGQDBContext;
+using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -178,6 +180,50 @@ namespace SgqSystem.Controllers.Api
         public static string GetWebConfigSettings(string key)
         {
             return System.Configuration.ConfigurationManager.AppSettings[key];
+        }
+
+        protected string getAprovadorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        {
+            var SQL = $@"SELECT top 1
+        Aprovador
+        FROM ReportXUserSgq RXU      
+        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+        AND RXU.ParLevel1_Id = {form.level1Id}
+        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+        Order by RXU.Parcompany_Id desc";
+
+            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+        }
+
+        protected string getElaboradorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        {
+            var SQL = $@"SELECT top 1
+    	Elaborador
+        FROM ReportXUserSgq RXU
+        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+        AND RXU.ParLevel1_Id = {form.level1Id}
+        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+        Order by RXU.Parcompany_Id desc";
+
+            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+        }
+
+        protected string getNomeRelatorio(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        {
+            var SQL = $@"SELECT top 1
+    	NomeRelatorio
+        FROM ReportXUserSgq RXU
+        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+        AND RXU.ParLevel1_Id = {form.level1Id}
+        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+        Order by RXU.Parcompany_Id desc";
+
+            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+        }
+
+        protected string getSiglaUnidade(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+        {
+            return dbSgq.ParCompany.Where(r => r.Id == form.unitId && r.IsActive).Select(r => r.Initials).FirstOrDefault();
         }
 
     }

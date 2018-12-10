@@ -182,44 +182,44 @@ ORDER BY em_coluna.Sequential";
             return query;
         }
 
-        private string getAprovadorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
-        {
-            var SQL = $@"SELECT top 1
-        Aprovador
-        FROM ReportXUserSgq RXU      
-        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
-        AND RXU.ParLevel1_Id = {form.level1Id}
-        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
-        Order by RXU.Parcompany_Id desc";
+     //   private string getAprovadorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+     //   {
+     //       var SQL = $@"SELECT top 1
+     //   Aprovador
+     //   FROM ReportXUserSgq RXU      
+     //   WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+     //   AND RXU.ParLevel1_Id = {form.level1Id}
+     //   AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+     //   Order by RXU.Parcompany_Id desc";
 
-            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
-        }
+     //       return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+     //   }
 
-        private string getElaboradorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
-        {
-            var SQL = $@"SELECT top 1
-    	Elaborador
-        FROM ReportXUserSgq RXU
-        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
-        AND RXU.ParLevel1_Id = {form.level1Id}
-        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
-        Order by RXU.Parcompany_Id desc";
+     //   private string getElaboradorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+     //   {
+     //       var SQL = $@"SELECT top 1
+    	//Elaborador
+     //   FROM ReportXUserSgq RXU
+     //   WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+     //   AND RXU.ParLevel1_Id = {form.level1Id}
+     //   AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+     //   Order by RXU.Parcompany_Id desc";
 
-            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
-        }
+     //       return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+     //   }
 
-        private string getNomeRelatorio(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
-        {
-            var SQL = $@"SELECT top 1
-    	NomeRelatorio
-        FROM ReportXUserSgq RXU
-        WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
-        AND RXU.ParLevel1_Id = {form.level1Id}
-        AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
-        Order by RXU.Parcompany_Id desc";
+     //   private string getNomeRelatorio(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
+     //   {
+     //       var SQL = $@"SELECT top 1
+    	//NomeRelatorio
+     //   FROM ReportXUserSgq RXU
+     //   WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
+     //   AND RXU.ParLevel1_Id = {form.level1Id}
+     //   AND RXU.ItemMenu_Id = {form.ItemMenu_Id}
+     //   Order by RXU.Parcompany_Id desc";
 
-            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
-        }
+     //       return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+     //   }
 
     }
 
