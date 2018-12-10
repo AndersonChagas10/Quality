@@ -18,15 +18,18 @@ namespace SgqSystem.Controllers.Api.SIF
         {
             var retorno = GetHeadersValues(form);
 
-            using (var db = new SgqDbDevEntities())
+            if (retorno != null)
             {
-                retorno.Aprovador = getAprovadorName(form, db);
+                using (var db = new SgqDbDevEntities())
+                {
+                    retorno.Aprovador = getAprovadorName(form, db);
 
-                retorno.Elaborador = getElaboradorName(form, db);
+                    retorno.Elaborador = getElaboradorName(form, db);
 
-                retorno.NomeRelatorio = getNomeRelatorio(form, db);
+                    retorno.NomeRelatorio = getNomeRelatorio(form, db);
 
-                retorno.SiglaUnidade = getSiglaUnidade(form, db);
+                    retorno.SiglaUnidade = getSiglaUnidade(form, db);
+                }
             }
 
             return retorno;
