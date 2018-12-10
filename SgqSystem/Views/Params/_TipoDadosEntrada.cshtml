@@ -423,6 +423,7 @@
             }
         },
         veifyAdd: function (isEdit) {
+            debugger
             var seletorTato = !!isEdit ? isEdit : level3Value.level;
             /*Valida se pode criar o objeto*/
 
@@ -435,13 +436,16 @@
                     return false;
                 }
             } // Intervalo ou Calculado.
-            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Intervalos || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_IntervalosTexto || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Calculado) {
+            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Intervalos
+                || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_IntervalosTexto
+                || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Calculado) {
                 if ($('#' + seletorTato + ' #selectUnidadeDeMedidas :selected').val() <= 0) {
                     openMessageModal(Resources('required_field_was_not_filled'), Resources('select_the_measurement_unit'));
                     return false;
                 }
             } // Escala Likert - Intervalo Minutos
-            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_IntervaloMinutos) {
+            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_EscalaLikert
+                || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_IntervaloMinutos) {
                 if ($('#' + seletorTato + ' #parLevel3Value_IntervalMin').val().length <= 0) {
                     openMessageModal(Resources('required_field_was_not_filled'), Resources('min_interval'));
                     return false;
@@ -451,9 +455,18 @@
                     return false;
                 }
             } // Resultado
-            else if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Resultado) {
+            else if (parseInt($('#' + seletorTato + ' #selectTipoInput :selected').val()) == eTipoDado_Resultado) {
+            
+                if ($('#' + seletorTato + ' #parLevel3Value_IntervalMin').val().length <= 0) {
+                    openMessageModal(Resources('required_field_was_not_filled'), "Limite Inferior");
+                    return false;
+                }
+                if ($('#' + seletorTato + ' #parLevel3Value_IntervalMax').val().length <= 0) {
+                    openMessageModal(Resources('required_field_was_not_filled'), "Limite Superior");
+                    return false;
+                }
                 if ($('#' + seletorTato + ' #parLevel3Value_DynamicValue').val().length <= 0) {
-                    openMessageModal(Resources('required_field_was_not_filled'), Resources('dynamic_value'));
+                    openMessageModal(Resources('required_field_was_not_filled'), "Equação");
                     return false;
                 }
             }
@@ -689,6 +702,7 @@
                 }
 
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
+                debugger
                 if (parseInt(object.IntervalMin) > parseInt(object.IntervalMax)) {
                     openMessageModal("Valor do Limite Superior menor que o Limite Inferior", null);
                 } else {
