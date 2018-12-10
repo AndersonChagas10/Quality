@@ -10,13 +10,24 @@ using System.Web.Http;
 namespace SgqSystem.Controllers.Api.SIF
 {
     [RoutePrefix("api/AcompanhamentoEmbarque")]
-    public class AcompanhamentoEmbarqueApiController : ApiController
+    public class AcompanhamentoEmbarqueApiController : BaseApiController
     {
         [HttpPost]
         [Route("Get")]
         public Retorno Get([FromBody] FormularioParaRelatorioViewModel form)
         {
             var retorno = GetHeadersValues(form);
+
+            using (var db = new SgqDbDevEntities())
+            {
+                retorno.Aprovador = getAprovadorName(form, db);
+
+                retorno.Elaborador = getElaboradorName(form, db);
+
+                retorno.NomeRelatorio = getNomeRelatorio(form, db);
+
+                retorno.SiglaUnidade = getSiglaUnidade(form, db);
+            }
 
             return retorno;
         }
@@ -255,6 +266,7 @@ ORDER BY L3G.Name DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
                 return coletas;
             }
         }
+
     }
 
     public class Retorno
@@ -289,6 +301,10 @@ ORDER BY L3G.Name DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
         public string LacreNumero { get; set; }
         public string Placa { get; set; }
         public string Instrucao { get; set; }
+        public string Aprovador { get; set; }
+        public string Elaborador { get; set; }
+        public string NomeRelatorio { get; set; }
+        public string SiglaUnidade { get; set; }
 
         public List<Coleta> Coletas { get; set; }
 

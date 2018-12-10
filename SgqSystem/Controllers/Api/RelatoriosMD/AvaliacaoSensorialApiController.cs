@@ -10,7 +10,7 @@ using System.Web.Http;
 namespace SgqSystem.Controllers.Api.RelatoriosMD
 {
     [RoutePrefix("api/AvaliacaoSensorial")]
-    public class AvaliacaoSensorialApiController : ApiController
+    public class AvaliacaoSensorialApiController : BaseApiController
     {
 
         [HttpPost]
@@ -24,6 +24,17 @@ namespace SgqSystem.Controllers.Api.RelatoriosMD
             GetColetaValues(form, ref retorno);
 
             retorno.Shift = form.shift;
+
+            using (var db = new SgqDbDevEntities())
+            {
+                retorno.Aprovador = getAprovadorName(form, db);
+
+                retorno.Elaborador = getElaboradorName(form, db);
+
+                retorno.NomeRelatorio = getNomeRelatorio(form, db);
+
+                retorno.SiglaUnidade = getSiglaUnidade(form, db);
+            }
 
             return retorno;
         }
@@ -128,6 +139,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosMD
             public List<Cabecalho> Cabecalhos { get; set; }
             public List<Coleta> Coletas { get; set; }
             public int Shift { get; set; }
+            public string Aprovador { get; set; }
+            public string Elaborador { get; set; }
+            public string NomeRelatorio { get; set; }
+            public string SiglaUnidade { get; set; }
         }
 
         public class Coleta
