@@ -1815,7 +1815,7 @@ namespace SgqSystem.Services
             }
             key += "-" + CollectionDate.ToString("yyyyMMdd");
 
-            if (Reaudit)
+            if (Reaudit == true && ConsolidationLevel1.ParLevel1_Id != 3)
             {
                 key += "-r" + ReauditNumber;
             }
