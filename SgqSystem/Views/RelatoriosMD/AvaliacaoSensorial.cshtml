@@ -44,7 +44,7 @@
 
                 <div id="loader"></div>
 
-                <div class="portlet light bordered">
+                <div class="portlet light bordered" hidden>
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
@@ -169,6 +169,7 @@
             $('#unitId').children('option:first').remove();
             $('#level1Id').children('option:first').remove();
             $('#level2Id').children('option:first').remove();
+            $('#shift').children('option:first').remove();
 
             $('#level1Id').prop("disabled", true);
             $('#level1Id').select2("destroy");
@@ -185,6 +186,7 @@
             formControl.showLevel1();
             formControl.showUnit();
             formControl.showShift();
+            formControl.showNumeroAvaliacao();
 
             $('#showLevel1 > div:nth-child(3)').hide();
 
@@ -194,7 +196,7 @@
 
             });
 
-            //$('.portlet').hide();
+            $('.portlet').hide();
 
             $('#tipoVisao').trigger('change');
 
@@ -202,13 +204,15 @@
 
         function Send(toggle) {
 
+            $('#level1Id').trigger("change");
+
+            $('#shift').trigger("change");
+
             if (formIsValid()) {
 
                 $btn.button('loading');
 
                 $('.portlet').hide();
-
-                $('#level1Id').trigger("change");
 
                 EasyAjax(urlGet, enviar, GeraRelatorio, "loader", toggle);
 
@@ -229,34 +233,36 @@
 
                 $('.portlet').show();
 
+                $('.cabecalho2').remove();
+
                 PreencherCabecalho(obj.Cabecalhos);
 
                 $('#shiftId').html(obj.Shift);
 
-                //let tamanhoAmostra = Math.max.apply(null, [...new Set(obj.Coletas.map(obj => obj.Amostra))]);
-
-                //for (i = 0; i <= tamanhoAmostra; i = i + 9) {
-
-                //    let inicio = i;
-                //    let fim = i + 9;
-
-                //    if (fim > r.Coletas.length) {
-                //        fim = r.Coletas.length;
-                //    }
-
-                //    let coletas = r.Coletas.filter((obj) => obj.Amostra > inicio && obj.Amostra < fim)
-
-                let conteudoTabela = "";
+                let tamanhoAmostra = Math.max.apply(null, [...new Set(obj.Coletas.map(obj => obj.Amostra))]);
                 
-                conteudoTabela += PreencherAmostras(obj.Coletas);
+                for (let i = 0; i <= tamanhoAmostra; i = i + 9) {
 
-                conteudoTabela += PreencherCorpo(obj.Coletas);
+                    let inicio = i;
+                    let fim = i + 9;
 
-                conteudoTabela += PreencherPontuacaoGeral(obj.Coletas);
+                    if (fim > obj.Coletas.length) {
+                        fim = obj.Coletas.length;
+                    }
 
-                $('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>').insertAfter($('#contentBody > table:last'));
+                    let coletas = obj.Coletas.filter((obj) => obj.Amostra > inicio && obj.Amostra < fim)
 
-                //}
+                    let conteudoTabela = "";
+
+                    conteudoTabela += PreencherAmostras(coletas);
+
+                    conteudoTabela += PreencherCorpo(coletas);
+
+                    conteudoTabela += PreencherPontuacaoGeral(coletas);
+
+                    $('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>').insertAfter($('#contentBody > table:last'));
+
+                }
 
                 $('.portlet').show();
             }
@@ -296,9 +302,9 @@
             $('#produto').html(produto.join(" ,"));
         }
 
-        function PreencherAmostras(coletas) {
+        function PreencherAmostras(coletas) {            
 
-            let tamanhoAmostra = Math.max.apply(null, [...new Set(coletas.map(obj => obj.Amostra))]);
+            let amostras = [...new Set(coletas.map(obj => obj.Amostra))];
 
             //let maxInterval = coletas.map(r => r.Interval).map(r => r.split(",").map(Number).length).reduce((a, b) => { return Math.max(a, b) })
 
@@ -307,10 +313,10 @@
             let trAmostra =`<tr>
                                 <td colspan="${maxInterval + 2}">Amostras (lotes)</td>`;
 
-            for (var i = 1; i <= tamanhoAmostra; i++) {
-                trAmostra += `<td>${i}</td>`;
-            }
-
+            amostras.forEach((item) => {
+                trAmostra += `<td>${item}</td>`;
+            });
+                
             trAmostra += "</tr>";
 
             return trAmostra;
@@ -346,7 +352,7 @@
 
                 let coletasByLevel3 = array.filter(item => item.ParLevel3_Id == level3);
 
-                let coletas = array.filter(item => item.ParLevel3_Id == level3 && item.Interval) 
+                let coletas = array.filter(item => item.ParLevel3_Id == level3 && item.Interval)
 
                 //let Interval = "";
 
@@ -370,7 +376,7 @@
 
                 //    conteudoTabela += `<td colspan="${maxInterval}"></td>`;;
                 //}
-                  
+
                 coletasByLevel3.forEach((item) => {
 
                     let td;
@@ -381,7 +387,7 @@
                         } else {
                             td = `<td>${item.Value} %</td>`;
                         }
-                        
+
                     } else {
                         td = `<td>N/A</td>`;
                     }
@@ -400,7 +406,7 @@
 
         function PreencherPontuacaoGeral(array) {
 
-            let qtdeAmostras = Math.max.apply(null, [...new Set(array.map(obj => obj.Amostra))]);
+            let amostras = [...new Set(array.map(obj => obj.Amostra))]
 
             let arrPontuacaoGeralByAmostra = [];
 
@@ -410,15 +416,15 @@
 
             array = array.filter(r => r.ParLevel3InputType_Id != 10);
 
-            for (var i = 1; i <= qtdeAmostras; i++) {
-                debugger
+            amostras.forEach((item) => {
+
                 let arrValueByAmostra = [];
 
-                arrValueByAmostra = array.filter(o => o.Amostra == i).map(o => o.Value);
+                arrValueByAmostra = array.filter(o => o.Amostra == item).map(o => o.Value);
 
                 arrPontuacaoGeralByAmostra.push(CalculaPontuacaoGeral(arrValueByAmostra));
 
-            }
+            });
 
             let tr = `<tr><td colspan="${maxInterval + 2}">Índice de Qualidade do Produto</td>`;
 
@@ -509,11 +515,20 @@
                 GuardJs.exibirMensagemAlerta(Resources("select_the_level2"));
                 return false;
 
-            } else if (enviar['unitId'] == null || enviar['unitId'] == undefined || enviar['unitId'] == "" || enviar['unitId'] <= 0) {
+            } else if (enviar['shift'] == null || enviar['shift'] == undefined || enviar['shift'] == "" || enviar['shift'] <= 0)
+            {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_shift"));
+                return false;
+
+            }else if (enviar['unitId'] == null || enviar['unitId'] == undefined || enviar['unitId'] == "" || enviar['unitId'] <= 0) {
                 GuardJs.exibirMensagemAlerta(Resources("select_the_unit_first"));
                 return false;
 
-            } else {
+            } else if (!enviar.avaliacao) {
+                GuardJs.exibirMensagemAlerta("O campo Número da Avaliação é obrigatório");
+                return false;
+            }
+            else {
                 return true;
             }
 

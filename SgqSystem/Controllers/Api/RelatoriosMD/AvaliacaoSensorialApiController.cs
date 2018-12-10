@@ -51,7 +51,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosMD
                         and c2.ParLevel2_Id = { form.level2Id }
                         AND c2.UnitId = { form.unitId }
                         AND C2.Shift = { form.shift }
-                        AND c2.EvaluationNumber = 1
+                        AND c2.EvaluationNumber = { form.avaliacao }
                         AND CAST(c2.CollectionDate AS DATE) = '{ form._dataInicioSQL }'
                         --AND C2XHF.ParFieldType_Id <> 2";
 
@@ -109,7 +109,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosMD
                     AND c2.ParLevel2_Id = { form.level2Id }
                     AND c2.UnitId = { form.unitId }
                     AND C2.Shift = { form.shift }
-                    AND c2.EvaluationNumber = 1
+                    AND c2.EvaluationNumber = { form.avaliacao }
                     --AND C2XHF.ParFieldType_Id = 2
                     ORDER BY L3G.Name DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC, DynamicValue";
 

@@ -261,380 +261,377 @@
 
     <script>
 
-            var $btn = $('#btnSend');
-            $('button').button({ loadingText: '@Resources.Resource.loading...' });
-            var urlGet = '@Html.Raw(Url.Action("Get", "api/AcompanhamentoEmbarque"))';
-            exibeTodosLevels = false;
-            let elaborador = "";
-            let aprovador = "";
-            let nomeRelatorio = "";
-            var siglaUnidade = "";
+        var $btn = $('#btnSend');
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+        var urlGet = '@Html.Raw(Url.Action("Get", "api/AcompanhamentoEmbarque"))';
+        exibeTodosLevels = false;
+        let elaborador = "";
+        let aprovador = "";
+        let nomeRelatorio = "";
+        var siglaUnidade = "";
 
-            $(document).ready(function () {
+        $(document).ready(function () {
 
-                closeLeftSidebar();
+            closeLeftSidebar();
 
-                $(".sidebar-toggler").removeClass("hide");
-                $(".page-sidebar-wrapper").removeClass("hide");
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
 
-                $('#simpleCallendar input[type="text"]').val(start.format());
+            $('#simpleCallendar input[type="text"]').val(start.format());
 
-                $('#unitId').children('option:first').remove();
-                $('#level1Id').children('option:first').remove();
+            $('#unitId').children('option:first').remove();
+            $('#level1Id').children('option:first').remove();
 
-                $('#level1Id').prop("disabled", true);
-                $('#level1Id').select2("destroy");
+            $('#level1Id').prop("disabled", true);
+            $('#level1Id').select2("destroy");
 
-                setTimeout(function () {
+            setTimeout(function () {
 
-                    //$('#level1Id option[value="number:83"]').attr('selected', 'selected'); //Numero do Indicador na JBS
-                    $('#level1Id option[value="number:68"]').attr('selected', 'selected'); //Numero Indicador na GRT
-                    $('#level1Id').trigger("change");
-                    $('select').select2();
+                //$('#level1Id option[value="number:83"]').attr('selected', 'selected'); //Numero do Indicador na JBS
+                $('#level1Id option[value="number:68"]').attr('selected', 'selected'); //Numero Indicador na GRT
+                $('#level1Id').trigger("change");
+                $('select').select2();
 
-                }, 2000);
+            }, 2000);
 
-                $('#showLevel1 > div:nth-child(3)').hide();
+            $('#showLevel1 > div:nth-child(3)').hide();
 
-                $("#btnSend").click(function (e) {
+            $("#btnSend").click(function (e) {
 
-                    Send(true);
+                Send(true);
 
-                });
+            });
+
+            $('.portlet').hide();
+
+
+            formControl.showSimpleDate();
+            formControl.showLevel1();
+            formControl.showUnit();
+            formControl.showNumeroAvaliacao();
+
+        });
+
+        function Send(toggle) {
+
+            $('#divMensagemAlerta').hide();
+
+            if (formIsValid()) {
+
+                $btn.button('loading');
 
                 $('.portlet').hide();
 
+                $('#level1Id').trigger("change");
 
-                formControl.showSimpleDate();
-                formControl.showLevel1();
-                formControl.showUnit();
-                formControl.showNumeroAvaliacao();
+                EasyAjax(urlGet, enviar, GerarRelatorio, "loader", toggle);
+            }
+        }
 
-            });
+        function GerarRelatorio(r) {
 
-            function Send(toggle) {
+            $('.cabecalho2').remove();
 
-                $('#divMensagemAlerta').hide();
-
-                if (formIsValid()) {
-
-                    $btn.button('loading');
-
-                    $('.portlet').hide();
-
-                    $('#level1Id').trigger("change");
-
-                    EasyAjax(urlGet, enviar, GerarRelatorio, "loader", toggle);
-                }
+            if (!r) {
+                GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
+                return false;
             }
 
-            function GerarRelatorio(r) {
+            PreencherCabecalho(r);
 
-                $('.cabecalho2').remove();
+            let tamanhoAmostra = Math.max.apply(null, [...new Set(r.Coletas.map(obj => obj.Amostra))]);
+            
+            for (i = 0; i <= tamanhoAmostra; i = i + 9) {
 
-                if (!r) {
-                    GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
-                    return false;
+                let inicio = i;
+                let fim = i + 9;
+
+                if (fim > r.Coletas.length) {
+                    fim = r.Coletas.length;
                 }
 
-                PreencherCabecalho(r);
-
-                let tamanhoAmostra = Math.max.apply(null, [...new Set(r.Coletas.map(obj => obj.Amostra))]);
-                
-                for (i = 0; i <= tamanhoAmostra; i = i + 9) {
-
-                    let inicio = i;
-                    let fim = i + 9;
-
-                    if (fim > r.Coletas.length) {
-                        fim = r.Coletas.length;
-                    }
-
-                    let coletas = r.Coletas.filter((obj) => obj.Amostra > inicio && obj.Amostra < fim)
-
-                    let conteudoTabela = "";
-
-                    conteudoTabela += PreencherCabecalho2(coletas);
-
-                    conteudoTabela += PreencherConteudo(coletas);
-
-                    debugger
-
-                    //$('#cabecalho2').append('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>');
-                    $('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>').insertAfter($('#contentBody > table:last'));
-                }
-               
-                $('.portlet').show();
-            }
-
-            function PreencherCabecalho(r) {
-
-                $("#CollectionDate").html(new Date(r.CollectionDate).toLocaleDateString());
-                $("#ParCompanyName").html(r.ParCompanyName);
-                $("#SifNumber").html(r.SifNumber);
-                $("#TipoVeiculo").html(r.TipoVeiculo);
-                $("#Pedido").html(r.Pedido);
-                $("#NomeUsuario").html(r.NomeUsuario);
-                $("#TermografoIsPresente").html(r.TermografoIsPresente ? "Sim" : "Não");
-                $("#Termografo_Id").html(r.Termografo_Id);
-                $("#TemperaturaMax").html(r.TemperaturaMax);
-                $("#TemperaturaMin").html(r.TemperaturaMin);
-                $("#TipoEmbalagem").html(r.TipoEmbalagem);
-                $("#TipoCarga").html(r.TipoCarga);
-                $("#Transportador").html(r.Transportador);
-                $("#NomeMotorista").html(r.NomeMotorista);
-                $("#ParLevel2_Name").html(r.ParLevel2_Name);
-                $("#NumeroNotaFiscal").html(r.NumeroNotaFiscal);
-                $("#LacreNumero").html(r.LacreNumero);
-                $("#Placa").html(r.Placa);
-                $("#Instrucao").html(r.Instrucao);
-
-            }
-
-            function PreencherCabecalho2(array) {
-
-                let produtos = [...new Set(array.map(item => item.Produto))];
-                let produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
-
-                let lstObjProduto = [];
-
-                produtos.forEach((item, index) => {
-                    lstObjProduto.push({ "Produto": produtos[index], "Produto_Id": produtos_Id[index] })
-                });
-
-
-                let linhaAmostra =
-                    `<tr id="trAmostra" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
-                        <td colspan="3"><strong>Amostras</strong></td>`;
-
-                let terceiraLinha =
-                    `<tr>
-                        <td>Data</td>`;
-
-                let segundaLinha = `<tr>`;
-
-                let primeiraLinha = `<tr>
-                                        <td rowspan="3" colspan="2">Caracteristicas da Qualidade</td>
-                                        <td rowspan="2">Padrão</td>`;
-
-                lstObjProduto.forEach((item) => {
-
-                    let amostrasPorProduto = array.filter((coleta) => { return coleta.Produto == item.Produto });
-
-                    let numeroAmostras = [...new Set(amostrasPorProduto.map(item => item.Amostra))];
-
-                    let dataAmostras = [...new Set(amostrasPorProduto.map(item => item.CollectionDate))];
-
-                    numeroAmostras.forEach((amostra, index) => {
-
-                        let colspanAmostraEData = 1;
-
-                        if (numeroAmostras.length < 2) {
-                            colspanAmostraEData = 2;
-                        }
-
-                        terceiraLinha += "<td colspan=" + colspanAmostraEData + ">" + new Date(dataAmostras[index]).toLocaleDateString() + "</td>";
-
-                        linhaAmostra += "<td colspan=" + colspanAmostraEData + "><strong> " + amostra + "</strong></td>";
-
-                    });
-
-                    let colspanMax = Math.ceil(numeroAmostras.length / 2);
-                    let colspanMin = Math.floor(numeroAmostras.length / 2);
-
-                    segundaLinha += `<td colspan="${colspanMin}">Produto:</td>
-                                    <td colspan="${colspanMax}">${item.Produto}</td>`;
-
-
-                    primeiraLinha += `<td colspan="${colspanMin}">Cod:</td>
-                                      <td colspan="${colspanMax}">${item.Produto_Id}</td>`;
-
-                });
-
-                primeiraLinha += `</tr>`;
-
-                segundaLinha += `</tr>`;
-
-                terceiraLinha += "</tr>";
-
-                linhaAmostra += "</tr>"
-
-                let segundoCabecalho = primeiraLinha + segundaLinha + terceiraLinha + linhaAmostra;
-
-                return segundoCabecalho;
-            }
-
-            function PreencherConteudo(array) {
-
-                let levels3_Id = [...new Set(array.map(item => item.ParLevel3_Id))];
-                let levels3 = [...new Set(array.map(item => item.ParLevel3))];
+                let coletas = r.Coletas.filter((obj) => obj.Amostra > inicio && obj.Amostra < fim)
 
                 let conteudoTabela = "";
-                let level3Group;
 
-                levels3_Id.forEach((level3, index) => {
+                conteudoTabela += PreencherCabecalho2(coletas);
 
-                    //Tabela com o rowspan
+                conteudoTabela += PreencherConteudo(coletas);
 
-                    //newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
+                $('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>').insertAfter($('#contentBody > table:last'));
+            }
+           
+            $('.portlet').show();
+        }
 
-                    //let qtdeLevel3Group = array.filter(item => item.Level3Group == newLevel3Group).map((value) => { return value.ParLevel3 }).filter((value, index, self) => { return self.indexOf(value) === index; }).length
+        function PreencherCabecalho(r) {
 
-                    //if (newLevel3Group && level3Group != newLevel3Group) {
-                    //    conteudoTabela +=
-                    //        `<tr>
-                    //            <td rowspan="${qtdeLevel3Group}"> ${newLevel3Group} </td>
-                    //            <td colspan="2">${levels3[index]}</td>`;
-                    //    level3Group = newLevel3Group;
-                    //} else if (!newLevel3Group) {
-                    //    conteudoTabela +=
-                    //        `<tr>
-                    //            <td colspan="3">${levels3[index]}</td>`;
-                    //} else {
-                    //    conteudoTabela +=
-                    //        `<tr>
-                    //            <td colspan="2">${levels3[index]}</td>`;
-                    //}
+            $("#CollectionDate").html(new Date(r.CollectionDate).toLocaleDateString());
+            $("#ParCompanyName").html(r.ParCompanyName);
+            $("#SifNumber").html(r.SifNumber);
+            $("#TipoVeiculo").html(r.TipoVeiculo);
+            $("#Pedido").html(r.Pedido);
+            $("#NomeUsuario").html(r.NomeUsuario);
+            $("#TermografoIsPresente").html(r.TermografoIsPresente ? "Sim" : "Não");
+            $("#Termografo_Id").html(r.Termografo_Id);
+            $("#TemperaturaMax").html(r.TemperaturaMax);
+            $("#TemperaturaMin").html(r.TemperaturaMin);
+            $("#TipoEmbalagem").html(r.TipoEmbalagem);
+            $("#TipoCarga").html(r.TipoCarga);
+            $("#Transportador").html(r.Transportador);
+            $("#NomeMotorista").html(r.NomeMotorista);
+            $("#ParLevel2_Name").html(r.ParLevel2_Name);
+            $("#NumeroNotaFiscal").html(r.NumeroNotaFiscal);
+            $("#LacreNumero").html(r.LacreNumero);
+            $("#Placa").html(r.Placa);
+            $("#Instrucao").html(r.Instrucao);
 
-                    //Tabela sem rowspan
+        }
 
-                    newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
+        function PreencherCabecalho2(array) {
 
-                    if (!newLevel3Group) {
+            let produtos = [...new Set(array.map(item => item.Produto))];
+            let produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
 
-                        conteudoTabela +=
-                            `<tr>
-                                <td colspan="3">${levels3[index]}</td>`;
+            let lstObjProduto = [];
 
-                    } else {
+            produtos.forEach((item, index) => {
+                lstObjProduto.push({ "Produto": produtos[index], "Produto_Id": produtos_Id[index] })
+            });
 
-                        conteudoTabela +=
-                            `<tr>
-                                <td> ${newLevel3Group} </td>
-                                <td colspan="2">${levels3[index]}</td>`;
+
+            let linhaAmostra =
+                `<tr id="trAmostra" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
+                    <td colspan="3"><strong>Amostras</strong></td>`;
+
+            let terceiraLinha =
+                `<tr>
+                    <td>Data</td>`;
+
+            let segundaLinha = `<tr>`;
+
+            let primeiraLinha = `<tr>
+                                    <td rowspan="3" colspan="2">Caracteristicas da Qualidade</td>
+                                    <td rowspan="2">Padrão</td>`;
+
+            lstObjProduto.forEach((item) => {
+
+                let amostrasPorProduto = array.filter((coleta) => { return coleta.Produto == item.Produto });
+
+                let numeroAmostras = [...new Set(amostrasPorProduto.map(item => item.Amostra))];
+
+                let dataAmostras = [...new Set(amostrasPorProduto.map(item => item.CollectionDate))];
+
+                numeroAmostras.forEach((amostra, index) => {
+
+                    let colspanAmostraEData = 1;
+
+                    if (numeroAmostras.length < 2) {
+                        colspanAmostraEData = 2;
                     }
 
+                    terceiraLinha += "<td colspan=" + colspanAmostraEData + ">" + new Date(dataAmostras[index]).toLocaleDateString() + "</td>";
 
-                    let Produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
+                    linhaAmostra += "<td colspan=" + colspanAmostraEData + "><strong> " + amostra + "</strong></td>";
 
-                    Produtos_Id.forEach((produto) => {
+                });
 
-                        let colspanStatus = 1;
+                let colspanMax = Math.ceil(numeroAmostras.length / 2);
+                let colspanMin = Math.floor(numeroAmostras.length / 2);
 
-                        let coletasByLevel3 = array.filter(item => item.Produto_Id == produto && item.ParLevel3_Id == level3);
+                segundaLinha += `<td colspan="${colspanMin}">Produto:</td>
+                                <td colspan="${colspanMax}">${item.Produto}</td>`;
 
-                        if (coletasByLevel3.length < 2) {
-                            colspanStatus = 2;
-                        }
 
-                        coletasByLevel3.forEach((item) => {
+                primeiraLinha += `<td colspan="${colspanMin}">Cod:</td>
+                                  <td colspan="${colspanMax}">${item.Produto_Id}</td>`;
 
-                            let td;
+            });
 
-                            if (!item.IsNotEvaluate) {
+            primeiraLinha += `</tr>`;
 
-                                if (item.IsConform) {
-                                    td = `<td colspan="${colspanStatus}">0</td>`;
+            segundaLinha += `</tr>`;
 
-                                } else {
-                                    td = `<td colspan="${colspanStatus}">1</td>`;
+            terceiraLinha += "</tr>";
 
-                                }
+            linhaAmostra += "</tr>"
+
+            let segundoCabecalho = primeiraLinha + segundaLinha + terceiraLinha + linhaAmostra;
+
+            return segundoCabecalho;
+        }
+
+        function PreencherConteudo(array) {
+
+            let levels3_Id = [...new Set(array.map(item => item.ParLevel3_Id))];
+            let levels3 = [...new Set(array.map(item => item.ParLevel3))];
+
+            let conteudoTabela = "";
+            let level3Group;
+
+            levels3_Id.forEach((level3, index) => {
+
+                //Tabela com o rowspan
+
+                //newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
+
+                //let qtdeLevel3Group = array.filter(item => item.Level3Group == newLevel3Group).map((value) => { return value.ParLevel3 }).filter((value, index, self) => { return self.indexOf(value) === index; }).length
+
+                //if (newLevel3Group && level3Group != newLevel3Group) {
+                //    conteudoTabela +=
+                //        `<tr>
+                //            <td rowspan="${qtdeLevel3Group}"> ${newLevel3Group} </td>
+                //            <td colspan="2">${levels3[index]}</td>`;
+                //    level3Group = newLevel3Group;
+                //} else if (!newLevel3Group) {
+                //    conteudoTabela +=
+                //        `<tr>
+                //            <td colspan="3">${levels3[index]}</td>`;
+                //} else {
+                //    conteudoTabela +=
+                //        `<tr>
+                //            <td colspan="2">${levels3[index]}</td>`;
+                //}
+
+                //Tabela sem rowspan
+
+                newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
+
+                if (!newLevel3Group) {
+
+                    conteudoTabela +=
+                        `<tr>
+                            <td colspan="3">${levels3[index]}</td>`;
+
+                } else {
+
+                    conteudoTabela +=
+                        `<tr>
+                            <td> ${newLevel3Group} </td>
+                            <td colspan="2">${levels3[index]}</td>`;
+                }
+
+
+                let Produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
+
+                Produtos_Id.forEach((produto) => {
+
+                    let colspanStatus = 1;
+
+                    let coletasByLevel3 = array.filter(item => item.Produto_Id == produto && item.ParLevel3_Id == level3);
+
+                    if (coletasByLevel3.length < 2) {
+                        colspanStatus = 2;
+                    }
+
+                    coletasByLevel3.forEach((item) => {
+
+                        let td;
+
+                        if (!item.IsNotEvaluate) {
+
+                            if (item.IsConform) {
+                                td = `<td colspan="${colspanStatus}">0</td>`;
 
                             } else {
-                                td = `<td colspan="${colspanStatus}">N/A</td>`;
+                                td = `<td colspan="${colspanStatus}">1</td>`;
+
                             }
 
-                            conteudoTabela += td;
+                        } else {
+                            td = `<td colspan="${colspanStatus}">N/A</td>`;
+                        }
 
-                        });
+                        conteudoTabela += td;
 
                     });
 
-                    conteudoTabela += `</tr>`;
-
                 });
 
-                return conteudoTabela
+                conteudoTabela += `</tr>`;
 
-            }
-
-            function formIsValid() {
-
-                if (!enviar.level1Id > 0) {
-                    GuardJs.exibirMensagemAlerta(Resources("select_the_level1"));
-                    return false;
-                }
-
-                if (!enviar.level2Id) {
-                    GuardJs.exibirMensagemAlerta(Resources("select_the_level2"));
-                    return false;
-                }
-
-                if (!enviar.unitId) {
-                    GuardJs.exibirMensagemAlerta(Resources("select_the_unit_first"));
-                    return false;
-                }
-
-                if (!enviar.avaliacao) {
-                    GuardJs.exibirMensagemAlerta("O campo Número da Avaliação é obrigatório");
-                    return false;
-                }
-
-                return true;
-            }
-
-            $('body').on('click', '#btnPrint', function () {
-
-                if (elaborador == null) {
-                    elaborador = "";
-                }
-
-                if (aprovador == null) {
-                    aprovador = "";
-                }
-
-                if (nomeRelatorio == null) {
-                    nomeRelatorio = "";
-                }
-
-                PrepararImpressao(
-                    nomeRelatorio,
-                    elaborador + " - " + "/" + siglaUnidade,
-                    aprovador + " - " + "/" + siglaUnidade,
-                    "RGQ-504-GQU-001/05 Aprov. Em 02/05/2018",
-                    'contentBody',
-                    "../Imagens/logo-jbs.png",
-                    "../Imagens/logo-gq.png");
             });
 
-            function PrepararImpressao(titulo, elaborador, aprovador, codigoRodape, idBody, imagemCabecalhoLeft, imagemCabecalhoRight) {
+            return conteudoTabela
 
-                $('#printTitulo').html(titulo);
-                $("#printElaborador").html(elaborador);
-                $("#printAprovador").html(aprovador);
-                $("#printCodigoRodape").html(codigoRodape);
-                $("#printImagemCabecalhoLeft").attr('src', imagemCabecalhoLeft);
-                $("#printImagemCabecalhoRight").attr('src', imagemCabecalhoRight);
+        }
 
-                printGRT.Inicializar({
+        function formIsValid() {
 
-                    headerHtml: document.getElementById('contentHeader').innerHTML,
-                    bodyHtml: document.getElementById(idBody).innerHTML,
-                    footerHtml: document.getElementById('contentFooter').innerHTML,
-                    numberMarginRight: 25,
-                    numberMarginBottom: 25,
-                    renderTableMargin: 0,
-                    pageMarginHeader: "25px 25px 10px 25px",
-                    pageMarginFooter: "10px 25px 25px 25px",
-                    pageMarginBody: "0 25px 0 25px"
-
-                });
-
-                printGRT.Imprimir();
-
-                $('#divRenderPrint').remove();
+            if (!enviar.level1Id > 0) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_level1"));
+                return false;
             }
+
+            if (!enviar.level2Id) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_level2"));
+                return false;
+            }
+
+            if (!enviar.unitId) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_unit_first"));
+                return false;
+            }
+
+            if (!enviar.avaliacao) {
+                GuardJs.exibirMensagemAlerta("O campo Número da Avaliação é obrigatório");
+                return false;
+            }
+
+            return true;
+        }
+
+        $('body').on('click', '#btnPrint', function () {
+
+            if (elaborador == null) {
+                elaborador = "";
+            }
+
+            if (aprovador == null) {
+                aprovador = "";
+            }
+
+            if (nomeRelatorio == null) {
+                nomeRelatorio = "";
+            }
+
+            PrepararImpressao(
+                nomeRelatorio,
+                elaborador + " - " + "/" + siglaUnidade,
+                aprovador + " - " + "/" + siglaUnidade,
+                "RGQ-504-GQU-001/05 Aprov. Em 02/05/2018",
+                'contentBody',
+                "../Imagens/logo-jbs.png",
+                "../Imagens/logo-gq.png");
+        });
+
+        function PrepararImpressao(titulo, elaborador, aprovador, codigoRodape, idBody, imagemCabecalhoLeft, imagemCabecalhoRight) {
+
+            $('#printTitulo').html(titulo);
+            $("#printElaborador").html(elaborador);
+            $("#printAprovador").html(aprovador);
+            $("#printCodigoRodape").html(codigoRodape);
+            $("#printImagemCabecalhoLeft").attr('src', imagemCabecalhoLeft);
+            $("#printImagemCabecalhoRight").attr('src', imagemCabecalhoRight);
+
+            printGRT.Inicializar({
+
+                headerHtml: document.getElementById('contentHeader').innerHTML,
+                bodyHtml: document.getElementById(idBody).innerHTML,
+                footerHtml: document.getElementById('contentFooter').innerHTML,
+                numberMarginRight: 25,
+                numberMarginBottom: 25,
+                renderTableMargin: 0,
+                pageMarginHeader: "25px 25px 10px 25px",
+                pageMarginFooter: "10px 25px 25px 25px",
+                pageMarginBody: "0 25px 0 25px"
+
+            });
+
+            printGRT.Imprimir();
+
+            $('#divRenderPrint').remove();
+        }
 
     </script>
 }
