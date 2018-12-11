@@ -75,6 +75,7 @@ namespace SgqSystem.Controllers.Api.SIF
                     var Instrucao = new List<string>();
                     var NumeroNotaFiscal = new List<string>();
                     var TipoCarga = new List<string>();
+                    var TipoProduto = new List<string>();
                     var TipoEmbalagem = new List<string>();
                     var TemperaturaMin = new List<string>();
                     var TemperaturaMax = new List<string>();
@@ -168,8 +169,11 @@ namespace SgqSystem.Controllers.Api.SIF
                             case 1178: //Notas Fiscais
                                 NumeroNotaFiscal.Add(item.Value);
                                 break;
-                            case 1181: //Tipo de produto
+                            case 1179: //Tipo de Carga
                                 TipoCarga.Add(item.Value);
+                                break;
+                            case 1181: //Tipo de produto
+                                TipoProduto.Add(item.Value);
                                 break;
                             case 1180: //Tipo de embalagem
                                 TipoEmbalagem.Add(item.Value);
