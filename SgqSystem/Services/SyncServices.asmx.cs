@@ -3933,12 +3933,14 @@ function aplicaCorAoInput(input) {
     });
 
     var value = $(input).val();
-    var color = arr[value][0];
-    var valueText = arr[value][1];
+	if(!(typeof(arr[value]) == 'undefined')){
+            var color = arr[value][0];
+            var valueText = arr[value][1];
 
-    $(input).parents('li').attr('value', valueText);
-    $(input).parents('li').css('background-color', color);
-}
+            $(input).parents('li').attr('value', valueText);
+            $(input).parents('li').css('background-color', color);
+        }
+    }
 
 function validaValoresValidosEscalaLikert(input) {
 
@@ -3946,6 +3948,7 @@ function validaValoresValidosEscalaLikert(input) {
         || parseInt($(input).attr('max')) < $(input).val()){
 		$(input).val('');
 		$(input).parents('li').css('background-color', '');
+		$(input).trigger('input');
     }
 
 }
