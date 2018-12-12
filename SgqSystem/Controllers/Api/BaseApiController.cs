@@ -226,5 +226,25 @@ namespace SgqSystem.Controllers.Api
             return dbSgq.ParCompany.Where(r => r.Id == form.unitId && r.IsActive).Select(r => r.Initials).FirstOrDefault();
         }
 
+        protected string GetDicionarioEstatico(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                return null;
+            }
+
+            try
+            {
+                using (var db = new SgqDbDevEntities())
+                {
+                    return db.DicionarioEstatico.Where(r => r.Key == key).FirstOrDefault().Value;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
     }
 }

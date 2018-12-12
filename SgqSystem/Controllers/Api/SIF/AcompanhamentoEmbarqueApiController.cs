@@ -63,7 +63,6 @@ namespace SgqSystem.Controllers.Api.SIF
                 {
                     var retorno = new Retorno();
 
-
                     var TipoVeiculo = new List<string>();
                     var Transportador = new List<string>();
                     var Placa = new List<string>();
@@ -79,7 +78,6 @@ namespace SgqSystem.Controllers.Api.SIF
                     var TipoEmbalagem = new List<string>();
                     var TemperaturaMin = new List<string>();
                     var TemperaturaMax = new List<string>();
-
 
                     foreach (var item in headerFieldsValues)
                     {
@@ -145,13 +143,13 @@ namespace SgqSystem.Controllers.Api.SIF
                             case 1169: //Nome do motorista
                                 NomeMotorista.Add(item.Value);
                                 break;
-                            case 1170: //Lacre número
+                            case 1170: //Lacre número - Duplicado
                                 LacreNumero.Add(item.Value);
                                 break;
                             case 1172: //Lacre número
                                 LacreNumero.Add(item.Value);
                                 break;
-                            case 1171: //Termógrafo número
+                            case 1171: //Termógrafo número - Duplicado
                                 Termografo_Id.Add(item.Value);
                                 break;
                             case 1173: //Termógrafo número
