@@ -341,7 +341,7 @@
 
             let tamanhoAmostra = Math.max.apply(null, [...new Set(r.Coletas.map(obj => obj.Amostra))]);
             
-            for (let i = 0; i <= tamanhoAmostra; i = i + 9) {
+            for (let i = 0; i < tamanhoAmostra; i = i + 9) {
 
                 let inicio = i;
                 let fim = i + 9;
