@@ -290,7 +290,7 @@
         }
 
         let DicionarioEstatico = @Html.Raw(Json.Encode(ViewBag.DicionarioEstatico));
-        debugger
+        
         function getDicionario(key){
             return DicionarioEstatico.filter(obj => obj.Key == key)[0].Value
         }

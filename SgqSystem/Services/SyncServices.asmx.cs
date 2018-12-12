@@ -4055,6 +4055,31 @@ function calcularSensorial(list){
             }
 
 
+            try
+            {
+
+                using (var db = new SgqDbDevEntities())
+                {
+
+                    var listaDicionario = db.DicionarioEstatico.ToList();
+
+                    supports += $@"<script>
+                                var listaDicionarios = " + System.Web.Helpers.Json.Encode(listaDicionario) + @";
+                                           
+                                function getDicionario(key){
+                                    return listaDicionarios.filter(obj => obj.Key == key)[0].Value
+                                }
+
+                                </script> ";
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+
+
             //string resource = GetResource();
 
 
@@ -6748,12 +6773,12 @@ function calcularSensorial(list){
                 input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|", paramns));
 
                 //INSERE O MIN MAX
-                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" :  parLevel3.IntervalMin.ToString("G29");
-                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" :  parLevel3.IntervalMax.ToString("G29");
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : parLevel3.IntervalMax.ToString("G29");
 
                 string valorCompleto = "";
 
-                valorCompleto ="<strong>Escalas: </strong>" + valorMinimo + " a " + valorMaximo;
+                valorCompleto = "<strong>Escalas: </strong>" + valorMinimo + " a " + valorMaximo;
 
                 labels = html.div(outerhtml: valorCompleto, classe: "levelName");
             }//Resultado
@@ -7594,7 +7619,7 @@ function calcularSensorial(list){
                     selected = " selected";
                 }
 
-                options += "<option" + selected + " value=\"" + p.Id + "\">" + p.Name+ "</option>";
+                options += "<option" + selected + " value=\"" + p.Id + "\">" + p.Name + "</option>";
             }
 
             if (!string.IsNullOrEmpty(options))
