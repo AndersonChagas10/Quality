@@ -341,7 +341,7 @@
 
             let tamanhoAmostra = Math.max.apply(null, [...new Set(r.Coletas.map(obj => obj.Amostra))]);
             
-            for (i = 0; i <= tamanhoAmostra; i = i + 9) {
+            for (let i = 0; i <= tamanhoAmostra; i = i + 9) {
 
                 let inicio = i;
                 let fim = i + 9;
@@ -350,7 +350,7 @@
                     fim = r.Coletas.length;
                 }
 
-                let coletas = r.Coletas.filter((obj) => obj.Amostra > inicio && obj.Amostra < fim)
+                let coletas = r.Coletas.filter((obj) => obj.Amostra > inicio && obj.Amostra <= fim)
 
                 let conteudoTabela = "";
 
