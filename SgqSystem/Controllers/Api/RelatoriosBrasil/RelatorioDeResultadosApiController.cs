@@ -4977,34 +4977,7 @@ FROM (SELECT
             { whereDepartment }
             { whereShift }            
             { whereCriticalLevel }
-			AND EXISTS 
-				(SELECT L3.ID AS ParLevel3_Id, MIN(PCL.ID) AS ParCriticalLevel_id
-					FROM ParLevel3 L3
-					LEFT JOIN ParLevel3Level2 L32
-						ON L3.ID = L32.ParLevel3_Id
-					LEFT JOIN ParLevel2 L2
-						ON L32.ParLevel2_Id = L2.Id
-					LEFT JOIN ParLevel3Level2Level1 L321
-						ON L32.id = L321.ParLevel3Level2_Id
-					LEFT JOIN ParLevel1 L1
-						ON L321.ParLevel1_Id = L1.ID
-					LEFT JOIN ParLevel1XCluster L1xC
-						ON L1.ID = L1xC.ParLevel1_Id
-						AND C2.CollectionDate >= L1xC.EffectiveDate
-					LEFT JOIN ParCriticalLevel PCL
-						ON L1xC.ParCriticalLevel_Id = PCL.Id
-					WHERE 1=1
-					AND L1xC.IsActive = 1
-					AND PCL.IsActive  = 1
-					AND L1.IsActive   = 1
-					AND L2.IsActive   = 1
-					AND L3.IsActive   = 1
-
-					AND L321.Active = 1
-					AND L32.IsActive = 1
-
-					AND L3.ID = R3.ParLevel3_Id
-				GROUP BY L3.ID HAVING MIN(PCL.ID)=3)   
+			
             GROUP BY --IND.Id
             		--,IND.Name
             		--,MON.Id
@@ -5015,106 +4988,9 @@ FROM (SELECT
             		--,UNI.Id
             HAVING SUM(R3.WeiDefects) > 0
             AND SUM(R3.Defects) > 0
-			AND SUM(R3.WeiEvaluation) >= 10
             ";
 
-            queryGraficoTarefasAcumuladas += $@"
-            UNION ALL
-            SELECT
-            
-            	--IND.Id AS Indicador_id
-               --,IND.Name AS IndicadorName
-               --,MON.Id AS Monitoramento_Id
-               --,MON.Name AS MonitoramentoName
-                TAR.ID AS Tarefa_Id
-               ,TAR.NAME AS TarefaName
-			   ,IIF(count(distinct C2.UnitId) = 1,MAX(C2.UnitId),0) Unidade_Id
-			   ,(SELECT TOP 1 Name FROM ParLevel1 WHERE ID = IIF(count(distinct C2.UnitId) = 1,MAX(C2.UnitId),0)) UnidadeName
-			   ,IIF(count(distinct C2.ParLevel1_Id) = 1 AND count(distinct C2.ParLevel2_Id) = 1,MAX(C2.ParLevel1_Id),0) Indicador_id
-			   ,(SELECT TOP 1 Name FROM ParLevel1 WHERE id = IIF(count(distinct C2.ParLevel1_Id) = 1 AND count(distinct C2.ParLevel2_Id) = 1,MAX(C2.ParLevel1_Id),0)) IndicadorName
-			   ,IIF(count(distinct C2.ParLevel1_Id) = 1 AND count(distinct C2.ParLevel2_Id) = 1,MAX(C2.ParLevel2_Id),0) Monitoramento_Id
-			   ,(SELECT TOP 1 Name FROM ParLevel1 WHERE id = IIF(count(distinct C2.ParLevel1_Id) = 1 AND count(distinct C2.ParLevel2_Id) = 1,MAX(C2.ParLevel2_Id),0)) MonitoramentoName
-               ,CASE 
-						WHEN CAST(SUM(R3.WeiDefects) AS INT) = 0 OR CAST(SUM(R3.WeiEvaluation) AS INT) = 0 
-						THEN 0 
-						WHEN CAST(SUM(R3.WeiDefects) AS INT)>CAST(SUM(R3.WeiEvaluation) AS INT)
-						THEN 100
-						ELSE ISNULL(NULLIF(SUM(R3.WeiDefects),0) / NULLIF(SUM(R3.WeiEvaluation),0),0) * 100 
-				END  AS [PROC]
-        	,SUM(R3.WeiEvaluation)
-        	 AS [AV]
-        	, SUM(R3.WeiDefects)
-        	 AS [NC]
 
-            FROM Result_Level3 R3 (NOLOCK)
-            INNER JOIN CollectionLevel2 C2 (NOLOCK)
-            	ON C2.Id = R3.CollectionLevel2_Id
-            INNER JOIN ConsolidationLevel2 CL2 (NOLOCK)
-            	ON CL2.Id = C2.ConsolidationLevel2_Id
-            INNER JOIN ConsolidationLevel1 CL1 (NOLOCK)
-            	ON CL1.Id = CL2.ConsolidationLevel1_Id
-            INNER JOIN ParCompany UNI (NOLOCK)
-            	ON UNI.Id = CL1.UnitId
-            INNER JOIN ParLevel1 IND (NOLOCK)
-            	ON IND.Id = CL1.ParLevel1_Id
-            INNER JOIN ParLevel2 MON (NOLOCK)
-            	ON MON.Id = CL2.ParLevel2_Id
-            INNER JOIN ParLevel3 TAR (NOLOCK)
-            	ON TAR.Id = R3.ParLevel3_Id
-            WHERE 1 = 1 
-            { whereLevel1 }
-            { whereUnit }
-            AND CL2.UnitId in ({WunidadeAcesso}) 
-            AND C2.ParLevel1_Id != 43
-            AND C2.ParLevel1_Id != 42
-			AND IND.IsActive = 1
-			AND MON.IsActive = 1
-			AND TAR.IsActive = 1
-            AND CL2.ConsolidationDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
-            { whereGroupLevel1 }
-            { whereDepartment }
-            { whereShift }            
-            { whereCriticalLevel }
-			AND NOT EXISTS 
-				(SELECT L3.ID AS ParLevel3_Id, MIN(PCL.ID) AS ParCriticalLevel_id
-					FROM ParLevel3 L3
-					LEFT JOIN ParLevel3Level2 L32
-						ON L3.ID = L32.ParLevel3_Id
-					LEFT JOIN ParLevel2 L2
-						ON L32.ParLevel2_Id = L2.Id
-					LEFT JOIN ParLevel3Level2Level1 L321
-						ON L32.id = L321.ParLevel3Level2_Id
-					LEFT JOIN ParLevel1 L1
-						ON L321.ParLevel1_Id = L1.ID
-					LEFT JOIN ParLevel1XCluster L1xC
-						ON L1.ID = L1xC.ParLevel1_Id
-						AND C2.CollectionDate >= L1xC.EffectiveDate
-					LEFT JOIN ParCriticalLevel PCL
-						ON L1xC.ParCriticalLevel_Id = PCL.Id
-					WHERE 1=1
-					AND L1xC.IsActive = 1
-					AND PCL.IsActive  = 1
-					AND L1.IsActive   = 1
-					AND L2.IsActive   = 1
-					AND L3.IsActive   = 1
-
-					AND L321.Active = 1
-					AND L32.IsActive = 1
-
-					AND L3.ID = R3.ParLevel3_Id
-				GROUP BY L3.ID HAVING MIN(PCL.ID)!=3)   
-
-            GROUP BY --IND.Id
-            		--,IND.Name
-            		--,MON.Id
-            		--,MON.Name
-            		 TAR.ID
-            		,TAR.NAME
-            		--,UNI.Name
-            		--,UNI.Id
-            HAVING SUM(R3.WeiDefects) > 0
-            AND SUM(R3.Defects) > 0
-            ORDER BY 9 DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
