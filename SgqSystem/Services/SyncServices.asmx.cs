@@ -529,6 +529,8 @@ namespace SgqSystem.Services
                         if (result.Length > 49)
                         {
                             cluster = result[49];
+                            if (string.IsNullOrEmpty(cluster))
+                                cluster = parCluster_Id;
                         }
 
                         if (result.Length > 50)
@@ -1807,7 +1809,7 @@ namespace SgqSystem.Services
             }
             key += "-" + CollectionDate.ToString("yyyyMMdd");
 
-            if (Reaudit)
+            if (Reaudit == true && ConsolidationLevel1.ParLevel1_Id != 3)
             {
                 key += "-r" + ReauditNumber;
             }
@@ -2549,6 +2551,9 @@ namespace SgqSystem.Services
             string consolidation = getConsolidation(unidadeId, dataConsolidation, 0);
             return consolidation;
         }
+
+        
+
         [WebMethod]
         public string reciveDataByLevel1(string ParCompany_Id, string data, string ParLevel1_Id)
         {
@@ -3039,6 +3044,7 @@ namespace SgqSystem.Services
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
                          ConsolidationLevel2_Id
+                         --Sequential, Side
 
                          /*coletas semanal */
                          INSERT INTO #COLETA																																														  
@@ -3090,6 +3096,7 @@ namespace SgqSystem.Services
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
                          ConsolidationLevel2_Id
+                         --Sequential, Side
 
                          /*coletas quinzenal */
                          INSERT INTO #COLETA																																														  
@@ -3141,6 +3148,7 @@ namespace SgqSystem.Services
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
                          ConsolidationLevel2_Id
+                         --Sequential, Side
 
                          /*coletas mensal */
                          INSERT INTO #COLETA																																														  
@@ -3192,6 +3200,7 @@ namespace SgqSystem.Services
                          Period, 																																															  
                          CAST(CollectionDate AS DATE),																																											  
                          ConsolidationLevel2_Id
+                         --Sequential, Side
 
                          SELECT
 
@@ -3823,6 +3832,47 @@ $(document).ready(function(){
                             });
 });
                               </script> ";
+
+            try
+            {
+                SGQDBContext.Generico listaProdutos = new Generico(db);
+                var listaProdutosJSON = listaProdutos.getProdutos();
+
+                supports += @" <script>
+                                var listaProdutosJson = " + System.Web.Helpers.Json.Encode(listaProdutosJSON) + @";
+                                           
+                                function buscarProduto(a,valor){
+
+                                    for (var j=0; j < listaProdutosJson.length;j++) {
+                                        if (listaProdutosJson[j].id == valor) {
+
+		                                    $(a).next().html(listaProdutosJson[j].nome);
+                    
+                                            return;
+                                        }		                                               
+                                    }
+                                    //$(a).val('');
+                                    $(a).next().html('');
+                                }
+
+                                function validaProduto(a,valor){
+                                    for (var j=0; j < listaProdutosJson.length; j++) {
+                                        if (listaProdutosJson[j].id == valor) {
+
+		                                    //alert(listaProdutosJson[j].nome);
+                    
+                                            return;
+                                        }
+                                                                                                       
+                                    }
+                                    $(a).val('');
+                                }
+                                </script> ";
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             //string resource = GetResource();
 
@@ -5403,45 +5453,6 @@ $(document).ready(function(){
                         /* Se for produto que digito o código e busco em uma lista*/
                         if (header.ParHeaderField_Description == "Produto")
                         {
-                            SGQDBContext.Generico listaProdutos = new Generico(db);
-                            var listaProdutosJSON = listaProdutos.getProdutos();
-
-                            form_control = " <script> " +
-                                           "   var listaProdutosJson = " + System.Web.Helpers.Json.Encode(listaProdutosJSON) +
-
-                                           " </script>                                           ";
-
-                            form_control += @" <script>
-                                             function buscarProduto(a,valor){
-
-                                                for (var j=0; j < listaProdutosJson.length; j++) {
-                                                   if (listaProdutosJson[j].id == valor) {
-
-		                                                $(a).next().html(listaProdutosJson[j].nome);
-                    
-                                                      return;
-                                                   }		                                               
-                                                }
-                                                //$(a).val('');
-                                                $(a).next().html('');
-                                            }
-
-                                            function validaProduto(a,valor){
-                                                for (var j=0; j < listaProdutosJson.length; j++) {
-                                                   if (listaProdutosJson[j].id == valor) {
-
-		                                                //alert(listaProdutosJson[j].nome);
-                    
-                                                      return;
-                                                   }
-                                                                                                       
-                                                }
-                                                $(a).val('');
-                                            }
-                                            </script> ";
-
-
-
                             form_control += " <input class=\"form-control input-sm \" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" onkeyup=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \"  >";
                             form_control += " <label class=\"productNamelabel\"></label>";
                             //form_control += "<script>$(\"#cb" + header.ParHeaderField_Id + "\").inputmask('number');</script>";
