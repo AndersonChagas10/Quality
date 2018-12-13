@@ -14,6 +14,9 @@ using SgqSystem.Jobs;
 using SgqSystem.Helpers;
 using System.Web.Http;
 using System.Threading.Tasks;
+using System.Linq;
+using Dominio;
+using System.Collections.Generic;
 
 namespace SgqSystem
 {
@@ -42,7 +45,7 @@ namespace SgqSystem
                 {
                     using (var db = new Dominio.SgqDbDevEntities())
                     {
-                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace =(eventArgs.ExceptionObject as Exception).ToClient() });
+                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = (eventArgs.ExceptionObject as Exception).ToClient() });
                         db.SaveChanges();
                     }
                 });
@@ -63,9 +66,10 @@ namespace SgqSystem
             //else if (GlobalConfig.Ytoara)
             //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaYTOARA" + GlobalConfig.Ambient];
 
-#if DEBUG
+            #if DEBUG
             //TelemetryConfiguration.Active.DisableTelemetry = true;
-#endif
+
+            #endif
 
             if (GlobalConfig.LanguageBrasil)
             {
@@ -77,6 +81,10 @@ namespace SgqSystem
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
             }
+
+            //DicionarioEstatico
+            SetDicionarioEstatico();
+
         }
 
         private static void SetGlobalConfigAmbient()
@@ -134,6 +142,46 @@ namespace SgqSystem
             //TelemetryConfiguration.Active.DisableTelemetry = true;
         }
 
+        private static void SetDicionarioEstatico()
+        {
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+
+                System.Diagnostics.Debugger.Break();
+
+                var dicionariosKeys = db.DicionarioEstatico.Select(r => r.Key).ToList();
+
+                var DicionariosInserir = new List<DicionarioEstatico>();
+
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "TipoVeiculo", Value = "1166", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho tipo de veículo" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "Transportador", Value = "1167", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Transportador" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "Placa", Value = "1168", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Placa" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "NomeMotorista", Value = "1169", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Nome do Motorista" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "LacreNumero", Value = "1172", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Número do Lacre" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "Termografo_Id", Value = "1171", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Termografo" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "SifNumber", Value = "1173", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero do SIF" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "Pedido", Value = "1175", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero do Pedido" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "Instrucao", Value = "1177", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero da Instrução" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "NumeroNotaFiscal", Value = "1178", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero da Nota Fiscal" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "TipoCarga", Value = "1179", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero do Tipo de Carga" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "TipoProduto", Value = "1181", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero do tipo de Produto" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "TipoEmbalagem", Value = "1180", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero do tipo de embalagem" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "TemperaturaMin", Value = "1182", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Temperatura Minima" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "TemperaturaMax", Value = "1183", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Temperatura Maxima" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "PlanilhaRecebimentoCDs_Id", Value = "68", ControllerName = "AcompanhamentoEmbarque.cshtml", Descricao = "Id do Indicador Planilia de Recebimentos CDs" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "DataProducao", Value = "1197", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Data de Produção" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "Produto", Value = "1196", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Produto" });
+
+                var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys);
+
+                if (add != null)
+                {
+                    db.DicionarioEstatico.AddRange(DicionariosInserir.Where(r => add.Contains(r.Key)));
+                    db.SaveChanges();
+                }
+
+            }
+        }
     }
 
 }

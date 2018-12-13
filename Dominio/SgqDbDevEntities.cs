@@ -243,6 +243,7 @@ namespace Dominio
         public virtual DbSet<CollectionLevel2XMotivoAtraso> CollectionLevel2XMotivoAtraso { get; set; }
         public virtual DbSet<ParEvaluationSchedule> ParEvaluationSchedule { get; set; }
         public virtual DbSet<MotivoAtraso> MotivoAtraso { get; set; }
+        public virtual DbSet<DicionarioEstatico> DicionarioEstatico { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
