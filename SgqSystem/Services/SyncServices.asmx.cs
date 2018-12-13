@@ -3851,6 +3851,8 @@ function removerHF(a){
     });
 }
 
+
+var mediaPesoHB = 0;
 $(document).ready(function(){
     $('body').on('input', 'input.interval:visible, input.likert:visible', function(){
 
@@ -3899,6 +3901,63 @@ $(document).ready(function(){
 			}
 		});
     });
+
+    $('body').on('click','.level2',function(){
+	    var self = this;
+	    PesoHB(self);
+    });
+
+    function PesoHB(self){
+	    var level1 = $(_level1).attr('id').split('98789');
+	    if(level1[1] == 71){
+		    var id = $(self).attr('id');
+		    var cluster_level2 = id.split('98789');
+		    if(cluster_level2.length > 0)
+			    id = cluster_level2[1];
+		
+		    if(id == 482){
+			    setTimeout(
+				    function(){
+					    console.log('AQUI VC FAZ AS REGRAS DO HAMBURGUER');
+
+
+                        var minimo = parseInt($('#1378.level3').attr('intervalmin'));
+                if (mediaPesoHB == 0 || parseInt($('span.sampleCurrent:visible').text()) == 1)
+                    mediaPesoHB = 0;
+
+                var tara = parseInt($('#cb1198').val());
+                if (isNaN(tara))
+                    tara = 0;
+					
+					    $('.level3List .calculoPesoHB').remove();
+                var ultimoLevel3 = $('.level3List .level3:last').clone();
+					    $(ultimoLevel3).addClass('calculoPesoHB');
+					    $(ultimoLevel3).find('.col-xs-4 .levelName').text('Média peso HB');
+					    $(ultimoLevel3).find('.col-xs-3 .levelName').text('Min: ' + (minimo + tara) + 'g');
+					    $(ultimoLevel3).find('.col-xs-3.counters').addClass('medicaCalculoPesoHB').text('Média: ' + mediaPesoHB + 'g');
+					    $(ultimoLevel3).find('.col-xs-2').html('');
+					
+					    $('.level3List').off('blur', '#cb1198');
+					    $('.level3List').on('blur', '#cb1198', function(){
+                    PesoHB(self);
+                });
+					
+					    $('.level3List').off('change', '#cb1199');
+					    $('.level3List').on('change', '#cb1199', function(){
+                    var text = $(this).find(':selected').text();
+						    //Nº Amostrar
+						    $(_level2).attr('sample', text);
+						    $('span.sampleTotal:visible').text(text);
+                    PesoHB(self);
+                });
+					
+					    $('.level3List').append(ultimoLevel3);
+            }
+			    ,500);
+		    }
+        }
+    }
+
 });
 
 function validaNumeroEscalaLikert(evt, that)
