@@ -284,8 +284,15 @@
     <script>
 
         var ResourcesFile = @Html.Raw(Json.Encode(ViewBag.Resources));
+
         function Resources(key){
             return $.grep(ResourcesFile , function(a) { return a.Key == key})[0].Value
+        }
+
+        let DicionarioEstatico = @Html.Raw(Json.Encode(ViewBag.DicionarioEstatico));
+        
+        function getDicionario(key){
+            return DicionarioEstatico.filter(obj => obj.Key == key)[0].Value
         }
 
         /*Muda select2 para PADRÂO BR*/
