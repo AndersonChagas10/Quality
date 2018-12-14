@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.close</button>
+                <button type="button" class="btn btn-default non-printable">@Resources.Resource.close</button>
                 <button type="button" onclick="SaveHeaderField()" class="btn btn-default non-printable">@Resources.Resource.save</button>
             </div>
         </div>
@@ -289,23 +289,38 @@
                     }, 100);
 
                     $('#resultsApontamentos tbody').on('click', 'button#edit', function (data) {
-
-                        var data = table.row($(this).parents('tr')).data();
+                        debugger
+                        var data = table.row($(this).parents('tr')).data();                 
 
                         $.post(urlEdit + "/" + data.ResultLevel3Id, function (r) {
+                            debugger
+                            if (r != null) {
+                                $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                                $('#myModal #ResultLevel3_Id').val(r.Id);
 
-                            $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
-                            $('#myModal #ResultLevel3_Id').val(r.Id);
-
-                            $('#myModal #changeConform').empty();
-                            $('#myModal #changeConform').append($(r.showGeneric));
-
-                            InitiMasksDefaults();
-                        });
+                                $('#myModal #changeConform').empty();
+                                $('#myModal #changeConform').append($(r.showGeneric));
+                                $("#botaoSalvar").show();
+                                InitiMasksDefaults();
+                            } else {
+                                $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                                $("#myModal #Level3Name").append("<div class='alert alert-warning' id='mensagemErro'>O item selecionado possui vínculos de resultado. A edição esta desabilitada.</div>");
+                                $("#botaoSalvar").hide();
+                               
+                            }
+                        })
+                    });
+                    $("#botaoFecharModal").on('click', function () {
+                        debugger
+                        //$('#myModal #changeConform').empty();
+                        //$('#myModal #changeConform').remove();
+                        $("#myModal #mensagemErro").remove();
+                        //$("#myModal #mensagemErro").text("");
+                        //$("#myModal #mensagemErro").removeClass('alert-warning');
                     });
 
                     $('#resultsApontamentos tbody').on('click', 'button#editHeader', function (data) {
-
+                        debugger
                         var data = table.row($(this).parents('tr')).data();
 
                         escondeMensagemVazio();
@@ -323,7 +338,6 @@
                                 r.forEach(function (o) {
 
                                     let html = "";
-
                                     switch (o.HeaderField.ParFieldType_Id) {
                                         case 1:
                                             html =
@@ -568,8 +582,7 @@
         }
 
 
-        function SalvarResultLevel3() {
-
+        function SalvarResultLevel3() { 
             var dadosResultLevel3 = {};
 
             if ($('#sample') != undefined) {
@@ -597,15 +610,21 @@
                     dadosResultLevel3.IsNotEvaluate = true;
                 }
             }
-
-            $.post(urlSave, dadosResultLevel3, function (r, x, e) {
-                openMessageModal(Resources('done'), Resources('registry_alter_success')); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
-            }).fail(function (r, x, e) {
-                console.log(r);
-                console.log(x);
-                console.log(e);
-                openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
-            });
+            debugger
+            if (parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text()) && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text())) {
+                $.post(urlSave, dadosResultLevel3, function (r, x, e) {
+                    $("#myModal").modal('hide');
+                    openMessageModal(Resources('done'), Resources('registry_alter_success')); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
+                }).fail(function (r, x, e) {
+                    console.log(r);
+                    console.log(x);
+                    console.log(e);
+                    openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
+                });
+            } else { 
+                $("#botaoSalvar").removeAttr('data-dismiss')
+                openMessageModal("Valor inserido fora do intervalo permitido!",null);
+            }
         }
 
         function ValidaDadosParaEnvio() {
@@ -652,7 +671,7 @@
             let isValid = false;
 
             $('form#divEdit input, form#divEdit select').each(function (i, o) {
-
+                debugger
                 let CollectionLevel2XParHeaderField_Id = $(o).attr("CollectionLevel2XParHeaderField_Id");
                 let CollectionLevel2_Id = $(o).attr("CollectionLevel2_Id");
                 let ParHeaderField_Id = $(o).attr("ParHeaderField_Id");

@@ -102,33 +102,71 @@ namespace SgqSystem.Controllers.Api
         [Route("Edit/{id}")]
         public Result_Level3DTO EditResultLevel3(int id)
         {
-            var retorno = Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(id));
-            retorno.IntervalMin = retorno.IntervalMin == "-9999999999999.9000000000" ? "Sem limite mínimo" : retorno.IntervalMin;
-            retorno.IntervalMax = retorno.IntervalMax == "9999999999999.9000000000" ? "Sem limite Máximo" : retorno.IntervalMax;
-            return retorno;
+            var parLevel3Value = new ParLevel3Value();
+            bool possuiVinculosResultado = false;
+            using (var databaseSgq = new SgqDbDevEntities())
+            {
+                //select* from Result_Level3 rl3
+                //left join ParLevel3Value pl3v on rl3.ParLevel3_Id = pl3v.ParLevel3_Id
+                //where rl3.CollectionLevel2_Id = 31567 and pl3v.ParLevel3InputType_Id = 10
+                //and pl3v.DynamicValue like('%1360%')
+
+                var resultlevel3 = databaseSgq.Result_Level3.Where(x => x.Id == id).FirstOrDefault();
+
+                var resultlevel3Final = databaseSgq.Result_Level3
+                   .Join(databaseSgq.ParLevel3Value, pl3v => pl3v.ParLevel3_Id, rl3 => rl3.ParLevel3_Id, (rl3, pl3v) => new { rl3, pl3v })
+                   .Where(x => x.rl3.CollectionLevel2_Id == resultlevel3.CollectionLevel2_Id
+                   && x.pl3v.ParLevel3InputType_Id == 10 
+                   && (x.pl3v.DynamicValue.Contains("{" + resultlevel3.ParLevel3_Id.ToString() + "}")
+                   || x.pl3v.DynamicValue.Contains("{" + resultlevel3.ParLevel3_Id.ToString() + "?}"))
+                   && x.pl3v.IsActive).ToList();
+
+                if (resultlevel3Final.Count > 0)
+                    possuiVinculosResultado = true;
+            }
+            if (!possuiVinculosResultado)
+            {
+                var retorno = Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(id));
+                retorno.IntervalMin = retorno.IntervalMin == "-9999999999999.9000000000" ? "Sem limite mínimo" : retorno.IntervalMin;
+                retorno.IntervalMax = retorno.IntervalMax == "9999999999999.9000000000" ? "Sem limite Máximo" : retorno.IntervalMax;
+                return retorno;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         [HttpPost]
         [Route("Save")]
         public Result_Level3DTO SaveResultLevel3([FromBody] Result_Level3DTO resultLevel3)
         {
+            var parLevel3Value = new ParLevel3Value();
+            using (var databaseSgq = new SgqDbDevEntities())
+            {
+                var resultlevel3 = databaseSgq.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
+                var parLevel3 = databaseSgq.ParLevel3.Where(x => x.Id == resultlevel3.ParLevel3_Id).FirstOrDefault();
+                parLevel3Value = databaseSgq.ParLevel3Value.Where(x => x.ParLevel3_Id == parLevel3.Id).FirstOrDefault();
+                var parInputTypeValues = databaseSgq.ParInputTypeValues.Where(x => x.ParLevel3Value_Id == parLevel3Value.Id && resultLevel3.Value == x.Intervalo.ToString()).FirstOrDefault();
+                if(parLevel3Value.ParLevel3InputType_Id == 8)
+                    resultLevel3.ValueText = parInputTypeValues.Valor.ToString();
 
+            }
             var query = resultLevel3.CreateUpdate();
-
             try
             {
                 db.Database.ExecuteSqlCommand(query);
-                var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);                
+                var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);
 
                 ConsolidacaoEdicao(resultLevel3.Id);
-
+                return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
             }
             catch (System.Exception e)
             {
                 throw e;
             }
 
-            return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
+
         }
 
         [HttpPost]
@@ -173,7 +211,7 @@ namespace SgqSystem.Controllers.Api
                     resultLevel3.ParLevel3.ParLevel3Value = databaseSgq.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultLevel3.ParLevel3_Id && r.IsActive == true).ToList();
                     resultLevel3.CollectionLevel2 = databaseSgq.CollectionLevel2.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.CollectionLevel2_Id);
                 }
-
+                
                 return resultLevel3;
             }
 
@@ -219,7 +257,6 @@ namespace SgqSystem.Controllers.Api
                 {
                     texto += ValueText;
                 }
-
 
                 //bool isBEA = false;
                 //string WeiEvaluateBEA = "@WeiEvaluation";
@@ -511,7 +548,6 @@ namespace SgqSystem.Controllers.Api
                         }
                         else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
                         {
-
                             var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
                             var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
                             var valorDefinido = Guard.ConverteValorCalculado(_Value);
@@ -530,6 +566,14 @@ namespace SgqSystem.Controllers.Api
                         {
                             var valueText = string.IsNullOrEmpty(ValueText);
                             return valueText ? "1" : "0";
+                        }
+                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(x => x.ParLevel3InputType_Id == 8) != null) //Likert
+                        {
+                            var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
+                            var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
+                            var valorDefinido = Guard.ConverteValorCalculado(_Value);
+                            var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
+                            return dentroDoRange ? "1" : "0";
                         }
 
                         //Verifica "Todos"
@@ -766,9 +810,9 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                 return "<div>" +
                             //"<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
-                            "<label for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + IntervalMax +
+                            "<label  for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + "<label id='intervalMax'>" + IntervalMax + "</label>" +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + IntervalMin +
+                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + "<label id='intervalMin'>" + IntervalMin + "</label>" +
                             "<br>" +
                             "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + Value +
                             "<br>" +
@@ -1138,11 +1182,15 @@ namespace SgqSystem.Controllers.Api
                         //Atribui a quantidade de cabeçalhos                       
                         select.CollectionLevel2XParHeaderField_Id = resultado.Id;
                         select.ValueSelected = resultado.Value;
-                        resultHeaderField.Add(new Select() { CollectionLevel2 = select.CollectionLevel2,
+                        resultHeaderField.Add(new Select()
+                        {
+                            CollectionLevel2 = select.CollectionLevel2,
                             CollectionLevel2XParHeaderField_Id = select.CollectionLevel2XParHeaderField_Id,
                             HeaderField = select.HeaderField,
-                            Values = select.Values, ValueSelected = 
-                            select.ValueSelected });
+                            Values = select.Values,
+                            ValueSelected =
+                            select.ValueSelected
+                        });
                     }
                 }
                 else
