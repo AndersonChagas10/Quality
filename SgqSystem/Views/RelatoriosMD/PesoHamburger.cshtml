@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Peso Hamburger";
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+        <div id="formBodyContent">
+
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+            <div class="col-xs-12">
+
+                <div id="loader"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+
+        $(document).ready(function () {
+
+            var $btn = $('#btnSend');
+            $('button').button({ loadingText: '@Resources.Resource.loading...' });
+            exibeTodosLevels = false; //Variavel global para não exibir os monitoramentos sem que selecione o indicador
+
+
+            closeLeftSidebar();
+
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+
+
+            $("#btnSend").click(function (e) {
+
+                Send(true);
+
+            });
+
+        });
+
+        function Send(toggle) {
+
+            if (formIsValid()) {
+
+                $btn.button('loading');
+
+                EasyAjax(urlGet, enviar, GeraRelatorio, "loader", toggle);
+
+            }
+        }
+
+        function GeraRelatorio(obj) {
+
+        }
+
+    </script>
+
+}
