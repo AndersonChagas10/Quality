@@ -45,6 +45,7 @@
     <Compile Include="ConsolidationLevel1.cs" />
     <Compile Include="ConsolidationLevel2.cs" />
     <Compile Include="CorrectiveAction.cs" />
+    <Compile Include="DicionarioEstatico.cs" />
     <Compile Include="ErrorLog.cs" />
     <Compile Include="DatabaseLog.cs" />
     <Compile Include="Defect.cs" />

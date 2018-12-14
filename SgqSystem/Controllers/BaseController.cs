@@ -83,6 +83,11 @@ namespace SgqSystem.Controllers
                 ViewBag.Resources = resourceManager.GetResourceSet(
                     Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
 
+                using (var db = new SgqDbDevEntities())
+                {
+                    ViewBag.DicionarioEstatico = db.DicionarioEstatico.ToList();
+                }
+
             }
             catch (Exception)
             {

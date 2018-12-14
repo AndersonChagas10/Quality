@@ -3899,7 +3899,88 @@ $(document).ready(function(){
 			}
 		});
     });
+
+    $('body').on('click','.level2',function(){
+	    var self = this;
+	    PesoHB(self);
+    });
 });
+
+var mediaPesoHB = [];
+
+function CalculoMediaPesoHB(){
+    var sum = 0;
+    for( var i = 0; i < mediaPesoHB.length; i++ ){
+        sum += parseInt( mediaPesoHB[i] ); //don't forget to add the base
+    }
+
+    if(mediaPesoHB.length == 0){
+        return 0;
+    }
+
+    return sum/mediaPesoHB.length;
+}
+
+function ResetaCorMediaPesoHB(timeout){
+    timeout = timeout ? timeout : 100;
+    setTimeout(function(){
+		if(CalculoMediaPesoHB() < parseInt($('#1378.level3').attr('intervalmin'))){
+			$('.level3List .calculoPesoHB').addClass('lightred');
+		}else{
+			$('.level3List .calculoPesoHB').removeClass('lightred');
+		}
+	}, timeout);
+}
+
+function PesoHB(self){
+	var level1 = $(_level1).attr('id').split('98789');
+	if(level1[1] == 71){
+		var id = $(self).attr('id');
+		var cluster_level2 = id.split('98789');
+		if(cluster_level2.length > 0)
+			id = cluster_level2[1];
+		
+		if(id == 482){
+			setTimeout(
+				function(){
+					console.log('AQUI VC FAZ AS REGRAS DO HAMBURGUER');
+
+
+                    var minimo = parseInt($('#1378.level3').attr('intervalmin'));
+
+            var tara = parseInt($('#cb1198').val());
+            if (isNaN(tara))
+                tara = 0;
+					
+					$('.level3List .calculoPesoHB').remove();
+            var ultimoLevel3 = $('.level3List .level3:last').clone();
+					$(ultimoLevel3).addClass('calculoPesoHB');
+					$(ultimoLevel3).find('.col-xs-4 .levelName').text('Média peso HB');
+					$(ultimoLevel3).find('.col-xs-3 .levelName').text('Min: ' + (minimo + tara) + 'g');
+					$(ultimoLevel3).find('.col-xs-3.counters').addClass('medicaCalculoPesoHB').text('Média: ' + CalculoMediaPesoHB() + 'g');
+					$(ultimoLevel3).find('.col-xs-2').html('');
+					
+					$('.level3List').off('blur', '#cb1198');
+					$('.level3List').on('blur', '#cb1198', function(){
+                PesoHB(self);
+            });
+					
+					$('.level3List').off('change', '#cb1199');
+					$('.level3List').on('change', '#cb1199', function(){
+                var text = $(this).find(':selected').text();
+						//Nº Amostrar
+						$(_level2).attr('sample', text);
+						$('span.sampleTotal:visible').text(text);
+                PesoHB(self);
+            });
+					
+					$('.level3List').append(ultimoLevel3);
+                    ResetaCorMediaPesoHB(400);
+        }
+			,100);
+		}
+    }
+}
 
 function validaNumeroEscalaLikert(evt, that)
 {
@@ -3933,12 +4014,14 @@ function aplicaCorAoInput(input) {
     });
 
     var value = $(input).val();
-    var color = arr[value][0];
-    var valueText = arr[value][1];
+	if(!(typeof(arr[value]) == 'undefined')){
+            var color = arr[value][0];
+            var valueText = arr[value][1];
 
-    $(input).parents('li').attr('value', valueText);
-    $(input).parents('li').css('background-color', color);
-}
+            $(input).parents('li').attr('value', valueText);
+            $(input).parents('li').css('background-color', color);
+        }
+    }
 
 function validaValoresValidosEscalaLikert(input) {
 
@@ -3946,6 +4029,7 @@ function validaValoresValidosEscalaLikert(input) {
         || parseInt($(input).attr('max')) < $(input).val()){
 		$(input).val('');
 		$(input).parents('li').css('background-color', '');
+		$(input).trigger('input');
     }
 
 }
@@ -4053,6 +4137,31 @@ function calcularSensorial(list){
             {
 
             }
+
+
+            try
+            {
+
+                using (var db = new SgqDbDevEntities())
+                {
+
+                    var listaDicionario = db.DicionarioEstatico.ToList();
+
+                    supports += $@"<script>
+                                var listaDicionarios = " + System.Web.Helpers.Json.Encode(listaDicionario) + @";
+                                           
+                                function getDicionario(key){
+                                    return listaDicionarios.filter(obj => obj.Key == key)[0].Value
+                                }
+
+                                </script> ";
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
 
 
             //string resource = GetResource();
@@ -6748,12 +6857,12 @@ function calcularSensorial(list){
                 input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|", paramns));
 
                 //INSERE O MIN MAX
-                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" :  parLevel3.IntervalMin.ToString("G29");
-                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" :  parLevel3.IntervalMax.ToString("G29");
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : parLevel3.IntervalMax.ToString("G29");
 
                 string valorCompleto = "";
 
-                valorCompleto ="<strong>Escalas: </strong>" + valorMinimo + " a " + valorMaximo;
+                valorCompleto = "<strong>Escalas: </strong>" + valorMinimo + " a " + valorMaximo;
 
                 labels = html.div(outerhtml: valorCompleto, classe: "levelName");
             }//Resultado
@@ -7594,7 +7703,7 @@ function calcularSensorial(list){
                     selected = " selected";
                 }
 
-                options += "<option" + selected + " value=\"" + p.Id + "\">" + p.Name+ "</option>";
+                options += "<option" + selected + " value=\"" + p.Id + "\">" + p.Name + "</option>";
             }
 
             if (!string.IsNullOrEmpty(options))
