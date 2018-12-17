@@ -18,5 +18,12 @@ namespace SgqSystem.Controllers.RelatoriosMD
         {
             return View();
         }
+
+        // GET: RelatoriosMD
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult PesoHamburger()
+        {
+            return View();
+        }
     }
 }

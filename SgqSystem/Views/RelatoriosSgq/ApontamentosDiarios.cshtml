@@ -303,6 +303,7 @@
                                 $("#botaoSalvar").show();
                                 InitiMasksDefaults();
                             } else {
+                                $('#myModal #changeConform').empty();
                                 $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
                                 $("#myModal #Level3Name").append("<div class='alert alert-warning' id='mensagemErro'>O item selecionado possui vínculos de resultado. A edição esta desabilitada.</div>");
                                 $("#botaoSalvar").hide();
@@ -310,14 +311,12 @@
                             }
                         })
                     });
-                    $("#botaoFecharModal").on('click', function () {
-                        debugger
-                        //$('#myModal #changeConform').empty();
-                        //$('#myModal #changeConform').remove();
+                    $('#myModal').on('hidden.bs.modal', function () {
                         $("#myModal #mensagemErro").remove();
-                        //$("#myModal #mensagemErro").text("");
-                        //$("#myModal #mensagemErro").removeClass('alert-warning');
-                    });
+                    })
+                    //$("#botaoFecharModal").on('click', function () {
+                    //    $("#myModal #mensagemErro").remove();
+                    //});
 
                     $('#resultsApontamentos tbody').on('click', 'button#editHeader', function (data) {
                         debugger

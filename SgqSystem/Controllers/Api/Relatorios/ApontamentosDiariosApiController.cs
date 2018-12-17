@@ -101,15 +101,10 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]
         [Route("Edit/{id}")]
         public Result_Level3DTO EditResultLevel3(int id)
-        {
-            var parLevel3Value = new ParLevel3Value();
+        { 
             bool possuiVinculosResultado = false;
             using (var databaseSgq = new SgqDbDevEntities())
             {
-                //select* from Result_Level3 rl3
-                //left join ParLevel3Value pl3v on rl3.ParLevel3_Id = pl3v.ParLevel3_Id
-                //where rl3.CollectionLevel2_Id = 31567 and pl3v.ParLevel3InputType_Id = 10
-                //and pl3v.DynamicValue like('%1360%')
 
                 var resultlevel3 = databaseSgq.Result_Level3.Where(x => x.Id == id).FirstOrDefault();
 
@@ -1023,6 +1018,8 @@ namespace SgqSystem.Controllers.Api
                             else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 4).IsNotNull())
                                 return mountHtmlCalculado();
                             else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 5).IsNotNull())
+                                return mountHtmlTexto();
+                            else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 10).IsNotNull())
                                 return mountHtmlTexto();
 
                     return string.Empty;
