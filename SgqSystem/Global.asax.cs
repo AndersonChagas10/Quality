@@ -171,6 +171,10 @@ namespace SgqSystem
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "PlanilhaRecebimentoCDs_Id", Value = "68", ControllerName = "AcompanhamentoEmbarque.cshtml", Descricao = "Id do Indicador Planilia de Recebimentos CDs" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "DataProducao", Value = "1197", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Data de Produção" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "Produto", Value = "1196", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Produto" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "IdIndicadorPesoHB", Value = "71", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Produto" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "IdTarefaPesoHB", Value = "1378", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Produto" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "IdCabecalhoTaraPesoHB", Value = "cb1198", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Produto" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "IdCabecalhoQuantidadeAmostraPesoHB", Value = "cb1199", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Produto" });
 
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys);
 
