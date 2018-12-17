@@ -3934,21 +3934,19 @@ function ResetaCorMediaPesoHB(timeout){
 
 function PesoHB(self){
 	var level1 = $(_level1).attr('id').split('98789');
-	if(level1[1] == 71){
+	if(level1[1] == parseInt(getDicionario('IdIndicadorPesoHB'))){
 		var id = $(self).attr('id');
 		var cluster_level2 = id.split('98789');
 		if(cluster_level2.length > 0)
 			id = cluster_level2[1];
 		
-		if(id == 482){
 			setTimeout(
 				function(){
 					console.log('AQUI VC FAZ AS REGRAS DO HAMBURGUER');
 
 
-                    var minimo = parseInt($('#1378.level3').attr('intervalmin'));
-
-            var tara = parseInt($('#cb1198').val());
+                    var minimo = parseInt($('#'+getDicionario('IdTarefaPesoHB')+'.level3').attr('intervalmin'));
+            var tara = parseInt($('#'+getDicionario('IdCabecalhoTaraPesoHB')).val());
             if (isNaN(tara))
                 tara = 0;
 					
@@ -3960,13 +3958,13 @@ function PesoHB(self){
 					$(ultimoLevel3).find('.col-xs-3.counters').addClass('medicaCalculoPesoHB').text('Média: ' + CalculoMediaPesoHB() + 'g');
 					$(ultimoLevel3).find('.col-xs-2').html('');
 					
-					$('.level3List').off('blur', '#cb1198');
-					$('.level3List').on('blur', '#cb1198', function(){
+					$('.level3List').off('blur', '#'+getDicionario('IdCabecalhoTaraPesoHB'));
+					$('.level3List').on('blur', '#'+getDicionario('IdCabecalhoTaraPesoHB'), function(){
                 PesoHB(self);
             });
 					
-					$('.level3List').off('change', '#cb1199');
-					$('.level3List').on('change', '#cb1199', function(){
+					$('.level3List').off('change', '#'+getDicionario('IdCabecalhoQuantidadeAmostraPesoHB'));
+					$('.level3List').on('change', '#'+getDicionario('IdCabecalhoQuantidadeAmostraPesoHB'), function(){
                 var text = $(this).find(':selected').text();
 						//Nº Amostrar
 						$(_level2).attr('sample', text);
@@ -3976,9 +3974,9 @@ function PesoHB(self){
 					
 					$('.level3List').append(ultimoLevel3);
                     ResetaCorMediaPesoHB(400);
-        }
+}
 			,100);
-		}
+		
     }
 }
 
@@ -4151,7 +4149,8 @@ function calcularSensorial(list){
                                 var listaDicionarios = " + System.Web.Helpers.Json.Encode(listaDicionario) + @";
                                            
                                 function getDicionario(key){
-                                    return listaDicionarios.filter(obj => obj.Key == key)[0].Value
+                                    var valor = $.grep(listaDicionarios, function(obj){ return obj.Key == key });
+                                    return (valor && valor.length > 0) ? valor[0].Value : '';
                                 }
 
                                 </script> ";
