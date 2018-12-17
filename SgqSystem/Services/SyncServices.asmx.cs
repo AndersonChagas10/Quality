@@ -3924,7 +3924,7 @@ function CalculoMediaPesoHB(){
 function ResetaCorMediaPesoHB(timeout){
     timeout = timeout ? timeout : 100;
     setTimeout(function(){
-		if(CalculoMediaPesoHB() < parseInt($('#1378.level3').attr('intervalmin'))){
+		if(CalculoMediaPesoHB() < parseInt($('#'+getDicionario('IdTarefaPesoHB')+'.level3').attr('intervalmin'))){
 			$('.level3List .calculoPesoHB').addClass('lightred');
 		}else{
 			$('.level3List .calculoPesoHB').removeClass('lightred');
