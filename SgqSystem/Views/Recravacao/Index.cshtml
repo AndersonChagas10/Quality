@@ -512,7 +512,7 @@
                                         </span>
                                         <span class="label validate"
                                               ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEscareacao)"
-                                              ng-class="{bgWhite:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEscareacao(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed:bgRedEscareacao(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
+                                              ng-class="{bgWhite:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow:(lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEscareacao($index + 1,lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) , bgRed:bgRedEscareacao($index + 1, lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)], lataEmLataDetalhe) }">
                                             <span>{{lataEmLataDetalhe.ResultValue[ParLevel3.Id][($index +1)]}}</span>
                                         </span>
                                         @*5 Texto*@
@@ -606,13 +606,14 @@
                                             </td>
                                         </tr>
                                         <tr ng-repeat="ParLevel3 in linhaSelecionada.ListParlevel3 | orderBy :sorterFunc track by $index" ng-class="{level3NameDestacado:(ParLevel3.Id ==  idOVERLAP)}">
-                                            <td style="border:1px solid #cccccc; padding:2px; font-weight:bold; text-align:left!important;">{{ParLevel3.Name}} <span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight:100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span></td>
+                                            <td style="border:1px solid #cccccc; padding:2px; font-weight:bold; text-align:left!important;">{{ParLevel3.Name}}<span ng-if="ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name || ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText" style="font-size:10px!important;font-weight:100 !important;">({{ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Name}}{{ParLevel3.ParLevel3Value_OuterList[0].UnidadeMedidaText}})</span></td>
                                             <td style="border:1px solid #cccccc; padding:2px; max-width:65px;"
                                                 ng-repeat="NumberOfPoints in range(linhaSelecionada.TipoDeLata.NumberOfPoints) track by $index"
                                                 ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
                                                 colspan="{{( ((ParLevel3.IsPointLess == false) && (ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1'))  ? linhaSelecionada.TipoDeLata.NumberOfPoints :1)}}">
 
                                                 <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura && ParLevel3.Id != idEscareacao))">
+                                                    @*cai nesse if para montar a linha*@
                                                     <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
                                                         <input style="width:100%;"
                                                                type="text"
@@ -632,7 +633,7 @@
                                                            ng-model="lataSelecionada.ResultValue[ParLevel3.Id][1]" />
                                                 </span>
 
-                                                <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET) && ParLevel3.Id != idEspessura  && ParLevel3.Id != idEscareacao)">
+                                                <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET) && ParLevel3.Id != idEspessura  && ParLevel3.Id != idEscareacao )">
                                                     <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
                                                         <input style="width:100%;"
                                                                type="text"
@@ -679,9 +680,9 @@
                                                     <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
                                                         <input style="width:100%;"
                                                                type="text"
-                                                               title="{{lataSelecionada.escareacaoTT}}"
+                                                               title="{{escareacaoTT($index + 1)}}"
                                                                ng-model="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)]"
-                                                               ng-class="{decimal:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax < 10), decimal2:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax >= 10), percentage:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0),bgYellow:(linhaSelecionada.latas[index].ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEscareacao(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)],linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) , bgRed:bgRedEscareacao(linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)],linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) }"
+                                                               ng-class="{decimal:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax < 10), decimal2:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10 && ParLevel3.ParLevel3Value[0].IntervalMax >= 10), percentage:(ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:(lataSelecionada.ResultValue[ParLevel3.Id][($index +1)].length == 0),bgYellow:(linhaSelecionada.latas[index].ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen:bgGreenEscareacao($index + 1,linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)],linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) , bgRed:bgRedEscareacao($index + 1, linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)].ResultValue[ParLevel3.Id][($index +1)],linhaSelecionada.latas[linhaSelecionada.latas.indexOf(this.lataSelecionada)]) }"
                                                                ng-disabled="lataSelecionada.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
                                                                id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
                                                                ng-change="calcularEspessura(lataSelecionada)"
@@ -1103,91 +1104,8 @@
                 vm.na = 'bgYellow'
                 vm.nc = 'bgRed'
                 vm.conform = 'bgGreen'
-
-
-                vm.escareacaoTT = function () {
-                    let lata = vm.lataSelecionada
-                    if (lata.ResultValue)
-                        if (lata.ResultValue[vm.idAltura.toString()])
-                            lata.escareacaoTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)},  ${''}`
-                            //lata.escareacaoTT = `Lim. Inferior ((2*EC)+(3*ET))=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))=${lata["limSuperiorEspessura"]}`
-                        else
-                            lata.escareacaoTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)},  ${''}`
-                }
-
-                vm.bgGreenEscareacao = function (value, item) {
-                    let lata = item
-                    if (lata)
-                        if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idAltura.toString()] && Object.values(lata.ResultValue[vm.idAltura.toString()])[0].length > 0) {
-                                let valorEt = Object.values(lata.ResultValue[vm.idAltura.toString()])
-                                lata["limInferiorEspessura"] = math.eval(`((${valorEt[0]}))`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt[0]}))`)
-
-                                vm.escareacaoTT()
-                                if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
-                                    return true
-                            } else
-                                return false
-                }
-                vm.bgRedEscareacao = function (value, item) {
-                    let lata = item
-                    if (lata)
-                        if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idAltura.toString()] && Object.values(lata.ResultValue[vm.idAltura.toString()])[0].length > 0) {
-                                let valorEt = Object.values(lata.ResultValue[vm.idAltura.toString()])
-                                lata["limInferiorEspessura"] = math.eval(`((${valorEt[0]}))`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt[0]}))`)
-
-                                vm.escareacaoTT()
-                                if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
-                                    return true
-                            } else
-                                return false
-                }
-
-                vm.espessuraTT = function () {
-                    let lata = vm.lataSelecionada
-                    if (lata.ResultValue)
-                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()])
-                            lata.espessuraTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)}, lim. superior ${parseFloat(lata["limSuperiorEspessura"]).toFixed(2)}`
-                            //lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))+0.23=${lata["limSuperiorEspessura"]}`
-                        else
-                            lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05, lim. superior ((2*EC)+(3*ET))+0.23`
-                }
-                vm.bgGreenEspessura = function (value, item) {
-                    let lata = item
-                    if (lata)
-                        if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && Object.values(lata.ResultValue[vm.idEC.toString()])[0].length > 0 && Object.values(lata.ResultValue[vm.idET.toString()])[0].length > 0) {
-                                let valorEc = Object.values(lata.ResultValue[vm.idEC.toString()])
-                                let valorEt = Object.values(lata.ResultValue[vm.idET.toString()])
-                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.05`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.23`)
-                                vm.espessuraTT()
-
-                                if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
-                                    return true
-                            } else
-                                return false
-                }
-                vm.bgRedEspessura = function (value, item) {
-                    let lata = item
-                    if (lata)
-                        if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()] && Object.values(lata.ResultValue[vm.idEC.toString()])[0].length > 0 && Object.values(lata.ResultValue[vm.idET.toString()])[0].length > 0) {
-                                let valorEc = Object.values(lata.ResultValue[vm.idEC.toString()])
-                                let valorEt = Object.values(lata.ResultValue[vm.idET.toString()])
-                                lata["limInferiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.05`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt[0]})+(3*${valorEc[0]}))+0.23`)
-                                vm.espessuraTT()
-
-                                if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
-                                    return true
-                            } else
-                                return false
-                }
-
+                
+                
                 //timer
                 var intervalId;
                 vm.counter = 0;
@@ -1338,42 +1256,46 @@
                 vm.valorEt
                 vm.valorEc
 
-                vm.escareacaoTT = function () {
+                vm.escareacaoTT = function (ponto) {
+                    //aqui cai
                     let lata = vm.lataSelecionada
-                    if (lata.ResultValue)
-                        if (lata.ResultValue[vm.idAltura.toString()])
-                            lata.escareacaoTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)},  ${''}`
+                    
+                    if (lata && lata.ResultValue)
+                        if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()][ponto])
+                            return `Lim. Inferior ${parseFloat(lata["limInferiorEspessura" + ponto ]).toFixed(2)},  ${''}`
                             //lata.escareacaoTT = `Lim. Inferior ((2*EC)+(3*ET))=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))=${lata["limSuperiorEspessura"]}`
                         else
-                            lata.escareacaoTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"]).toFixed(2)},  ${''}`
+                            lata.escareacaoTT = `Lim. Inferior ${parseFloat(lata["limInferiorEspessura"  + ponto ]).toFixed(2)},  ${''}`
                 }
 
-                vm.bgGreenEscareacao = function (value, item) {
+                vm.bgGreenEscareacao = function (ponto, value, item) {
+                    debugger
                     let lata = item
                     if (lata)
                         if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idAltura.toString()] && Object.values(lata.ResultValue[vm.idAltura.toString()])[0].length > 0) {
-                                let valorEt = Object.values(lata.ResultValue[vm.idAltura.toString()])
-                                lata["limInferiorEspessura"] = math.eval(`((${valorEt[0]}))`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt[0]}))`)
-
+                            if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()][ponto]) {
+                                let valorEt = lata.ResultValue[vm.idAltura.toString()][ponto];
+                                lata["limInferiorEspessura" + ponto] = math.eval(`((${valorEt}))`);
+                                lata["limSuperiorEspessura" + ponto] = math.eval(`((2000*${valorEt}))`);
+                                
                                 vm.escareacaoTT()
-                                if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                if ((value != null) && (lata["limInferiorEspessura" + ponto] <= value && value <= lata["limSuperiorEspessura" + ponto]))
                                     return true
                             } else
                                 return false
                 }
-                vm.bgRedEscareacao = function (value, item) {
+                vm.bgRedEscareacao = function (ponto, value, item) {
+                    
                     let lata = item
                     if (lata)
                         if (lata.ResultValue)
-                            if (lata.ResultValue[vm.idAltura.toString()] && Object.values(lata.ResultValue[vm.idAltura.toString()])[0].length > 0) {
-                                let valorEt = Object.values(lata.ResultValue[vm.idAltura.toString()])
-                                lata["limInferiorEspessura"] = math.eval(`((${valorEt[0]}))`)
-                                lata["limSuperiorEspessura"] = math.eval(`((2000*${valorEt[0]}))`)
+                            if (lata.ResultValue[vm.idAltura.toString()] && lata.ResultValue[vm.idAltura.toString()][ponto]) {
+                                let valorEt = lata.ResultValue[vm.idAltura.toString()][ponto];
+                                lata["limInferiorEspessura" + ponto] = math.eval(`((${valorEt}))`)
+                                lata["limSuperiorEspessura" + ponto] = math.eval(`((2000*${valorEt}))`)
 
                                 vm.escareacaoTT()
-                                if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                if ((value != null) && !(lata["limInferiorEspessura" + ponto] <= value && value <= lata["limSuperiorEspessura" + ponto]))
                                     return true
                             } else
                                 return false
@@ -2737,10 +2659,10 @@
                     if (vm.dev) {
                         vm.idEC = 1660
                         vm.idET = 1659
-                        vm.idEspessura = 1250
-                        vm.idOVERLAP = 1663
-                        vm.idEscareacao = 1656
-                        vm.idAltura = 1251
+                        vm.idEspessura = 1224
+                        vm.idOVERLAP = 1319
+                        vm.idEscareacao = 1314
+                        vm.idAltura = 1310
                     } if (vm.jbsBrasil) {
                         vm.idEC = 1660
                         vm.idET = 1659
