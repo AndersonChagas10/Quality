@@ -428,10 +428,10 @@
                     </tr>
                     <tr></tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Elaborador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Elaborador) {{seletedLinha.userFinish.FullName}}</td>
+                        <td style="font-size: 11px;"><strong>Elaborador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Elaborador)</td>
                     </tr>
                     <tr>
-                        <td style="font-size: 11px;"><strong>Aprovador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Aprovador) {{seletedLinha.userValidacao.FullName}}</td>
+                        <td style="font-size: 11px;"><strong>Aprovador:</strong> @Html.Raw(ViewBag.ReportXUserSgq.Aprovador)</td>
                     </tr>
                 </table>
             </div>
@@ -482,8 +482,9 @@
             <th>AÇÃO PREVENTIVA (4)</th>
         </tr>*@
                                 <tr>
-                                    <td class="tbodyTd">
-                                        {{acoes.AddDate}}
+                                    <td rowspan="2" class="tbodyTd">
+                                        <strong>HORÁRIO DA PARADA:&nbsp;</strong>{{acoes.correctiveAction.HorarioDeParada | date:"HH:mm"}}
+                                        @*{{acoes.AddDate}}*@
                                     </td>
                                     <td class="tbodyTd">
                                         {{acoes.correctiveAction.DescriptionFailure}}
@@ -496,9 +497,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <strong>HORÁRIO DA PARADA:&nbsp;</strong>{{acoes.correctiveAction.HorarioDeParada | date:"HH:mm"}}
-                                    </td>
+                                    @*<td>
+                                        
+                                    </td>*@
                                     <td>
                                         <strong>VISTO </strong>{{acoes.correctiveAction.Assinatura.Name}}
 
