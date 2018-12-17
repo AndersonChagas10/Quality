@@ -4012,18 +4012,18 @@ function aplicaCorAoInput(input) {
     });
 
     var value = $(input).val();
-	if(!(typeof(arr[value]) == 'undefined')){
+	if(!(typeof(arr[value]) == 'undefined') && !(typeof(arr[value][0]) == 'undefined')){
             var color = arr[value][0];
             var valueText = arr[value][1];
 
             $(input).parents('li').attr('value', valueText);
             $(input).parents('li').css('background-color', color);
-        }
     }
+}
 
 function validaValoresValidosEscalaLikert(input) {
 
-    if(parseInt($(input).attr('min')) > $(input).val()
+    if((!(typeof($(input).val()) == 'undefined') && $(input).val().length <= 0) || parseInt($(input).attr('min')) > $(input).val()
         || parseInt($(input).attr('max')) < $(input).val()){
 		$(input).val('');
 		$(input).parents('li').css('background-color', '');
