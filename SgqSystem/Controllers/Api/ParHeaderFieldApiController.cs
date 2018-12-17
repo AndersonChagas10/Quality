@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api
 {
     [HandleApi()]
     [RoutePrefix("api/ParHeader")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ParHeaderFieldApiController : ApiController
     {
         public partial class CollectionHeaderField
@@ -76,16 +78,16 @@ namespace SgqSystem.Controllers.Api
 
         [HttpGet]
         [Route("GetListParMultipleValuesXParCompany/{unitId}/{level1_id}")]
-        public IEnumerable<ParMultipleValuesXParCompany> GetListParMultipleValuesXParCompany(int UnitId, string level1_id, String Date)
+        public IEnumerable<ParMultipleValuesXParCompany> GetListParMultipleValuesXParCompany(int UnitId, string level1_id)
         {
 
-            return GetListParMultipleValuesXParCompany(UnitId, Date);
+            return GetListParMultipleValuesXParCompany(UnitId);
 
         }
 
         [HttpGet]
         [Route("GetListParMultipleValuesXParCompany/{unitId}")]
-        public IEnumerable<ParMultipleValuesXParCompany> GetListParMultipleValuesXParCompany(int UnitId, String Date)
+        public IEnumerable<ParMultipleValuesXParCompany> GetListParMultipleValuesXParCompany(int UnitId)
         {
 
             var SelectQuery =
