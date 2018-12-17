@@ -482,8 +482,9 @@
             <th>AÇÃO PREVENTIVA (4)</th>
         </tr>*@
                                 <tr>
-                                    <td class="tbodyTd">
-                                        {{acoes.AddDate}}
+                                    <td rowspan="2" class="tbodyTd">
+                                        <strong>HORÁRIO DA PARADA:&nbsp;</strong>{{acoes.correctiveAction.HorarioDeParada | date:"HH:mm"}}
+                                        @*{{acoes.AddDate}}*@
                                     </td>
                                     <td class="tbodyTd">
                                         {{acoes.correctiveAction.DescriptionFailure}}
@@ -496,9 +497,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <strong>HORÁRIO DA PARADA:&nbsp;</strong>{{acoes.correctiveAction.HorarioDeParada | date:"HH:mm"}}
-                                    </td>
+                                    @*<td>
+                                        
+                                    </td>*@
                                     <td>
                                         <strong>VISTO </strong>{{acoes.correctiveAction.Assinatura.Name}}
 
