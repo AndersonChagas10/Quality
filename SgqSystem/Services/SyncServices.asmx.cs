@@ -3955,6 +3955,11 @@ function PesoHB(self){
 					$(ultimoLevel3).addClass('calculoPesoHB');
 					$(ultimoLevel3).find('.col-xs-4 .levelName').text('Média peso HB');
 					$(ultimoLevel3).find('.col-xs-3 .levelName').text('Min: ' + (minimo + tara) + 'g');
+
+
+                    if(parseInt($('span.sampleCurrent:visible').text()) <= 1)
+                        mediaPesoHB = [];
+
 					$(ultimoLevel3).find('.col-xs-3.counters').addClass('medicaCalculoPesoHB').text('Média: ' + CalculoMediaPesoHB() + 'g');
 					$(ultimoLevel3).find('.col-xs-2').html('');
 					
