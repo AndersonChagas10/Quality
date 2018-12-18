@@ -4988,6 +4988,7 @@ FROM (SELECT
             		--,UNI.Id
             HAVING SUM(R3.WeiDefects) > 0
             AND SUM(R3.Defects) > 0
+            ORDER BY 9 DESC
             ";
 
 

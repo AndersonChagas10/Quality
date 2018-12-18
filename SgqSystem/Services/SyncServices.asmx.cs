@@ -3924,7 +3924,7 @@ function CalculoMediaPesoHB(){
 function ResetaCorMediaPesoHB(timeout){
     timeout = timeout ? timeout : 100;
     setTimeout(function(){
-		if(CalculoMediaPesoHB() < parseInt($('#1378.level3').attr('intervalmin'))){
+		if(CalculoMediaPesoHB() < parseInt($('#'+getDicionario('IdTarefaPesoHB')+'.level3').attr('intervalmin'))){
 			$('.level3List .calculoPesoHB').addClass('lightred');
 		}else{
 			$('.level3List .calculoPesoHB').removeClass('lightred');
@@ -3955,6 +3955,11 @@ function PesoHB(self){
 					$(ultimoLevel3).addClass('calculoPesoHB');
 					$(ultimoLevel3).find('.col-xs-4 .levelName').text('Média peso HB');
 					$(ultimoLevel3).find('.col-xs-3 .levelName').text('Min: ' + (minimo + tara) + 'g');
+
+
+                    if(parseInt($('span.sampleCurrent:visible').text()) <= 1)
+                        mediaPesoHB = [];
+
 					$(ultimoLevel3).find('.col-xs-3.counters').addClass('medicaCalculoPesoHB').text('Média: ' + CalculoMediaPesoHB() + 'g');
 					$(ultimoLevel3).find('.col-xs-2').html('');
 					
@@ -4012,18 +4017,18 @@ function aplicaCorAoInput(input) {
     });
 
     var value = $(input).val();
-	if(!(typeof(arr[value]) == 'undefined')){
+	if(!(typeof(arr[value]) == 'undefined') && !(typeof(arr[value][0]) == 'undefined')){
             var color = arr[value][0];
             var valueText = arr[value][1];
 
             $(input).parents('li').attr('value', valueText);
             $(input).parents('li').css('background-color', color);
-        }
     }
+}
 
 function validaValoresValidosEscalaLikert(input) {
 
-    if(parseInt($(input).attr('min')) > $(input).val()
+    if((!(typeof($(input).val()) == 'undefined') && $(input).val().length <= 0) || parseInt($(input).attr('min')) > $(input).val()
         || parseInt($(input).attr('max')) < $(input).val()){
 		$(input).val('');
 		$(input).parents('li').css('background-color', '');
