@@ -512,7 +512,7 @@
                 }
 
 
-                let Produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
+                let Produtos_Id = [...new Set(array.map(item => item.Produto_Id))];                
 
                 Produtos_Id.forEach((produto) => {
 
@@ -520,31 +520,66 @@
 
                     let coletasByLevel3 = array.filter(item => item.Produto_Id == produto && item.ParLevel3_Id == level3);
 
-                    if (coletasByLevel3.length < 2) {
+                    let arrayPorProduto = array.filter(item => item.Produto_Id)
+
+                    let tamanhoMaximoAmostraPorProduto = Math.max(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
+
+                    let tamanhoMinimoAmostraPorProduto = Math.min(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
+
+                    if (coletasByLevel3.length < 2 && tamanhoMaximoAmostraPorProduto < 2) {
                         colspanStatus = 2;
                     }
 
-                    coletasByLevel3.forEach((item) => {
+                    for (let i = tamanhoMinimoAmostraPorProduto; i <= tamanhoMaximoAmostraPorProduto; i++) {
 
                         let td;
 
-                        if (!item.IsNotEvaluate) {
+                        let item = coletasByLevel3.filter(item => item.Amostra == i);
 
-                            if (item.IsConform) {
-                                td = `<td colspan="${colspanStatus}">0</td>`;
+                        if (item.length) {
+
+                            if (!item.IsNotEvaluate) {
+
+                                if (item.IsConform) {
+                                    td = `<td colspan="${colspanStatus}">0</td>`;
+
+                                } else {
+                                    td = `<td colspan="${colspanStatus}">1</td>`;
+
+                                }
 
                             } else {
-                                td = `<td colspan="${colspanStatus}">1</td>`;
-
+                                td = `<td colspan="${colspanStatus}">N/A</td>`;
                             }
-
                         } else {
-                            td = `<td colspan="${colspanStatus}">N/A</td>`;
+                            td = `<td colspan="${colspanStatus}"></td>`;
                         }
 
                         conteudoTabela += td;
 
-                    });
+                    }
+
+                    //coletasByLevel3.forEach((item) => {
+
+                        //let td;
+
+                        //if (!item.IsNotEvaluate) {
+
+                        //    if (item.IsConform) {
+                        //        td = `<td colspan="${colspanStatus}">0</td>`;
+
+                        //    } else {
+                        //        td = `<td colspan="${colspanStatus}">1</td>`;
+
+                        //    }
+
+                        //} else {
+                        //    td = `<td colspan="${colspanStatus}">N/A</td>`;
+                        //}
+
+                        //conteudoTabela += td;
+
+                    //});
 
                 });
 
