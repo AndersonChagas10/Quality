@@ -9,7 +9,6 @@ namespace Dominio
     public partial class AreasParticipantes
     {
         [Key]
-        [StringLength(12)]
         public decimal nCdCaracteristica { get; set; }
 
         [Required(AllowEmptyStrings = true)]

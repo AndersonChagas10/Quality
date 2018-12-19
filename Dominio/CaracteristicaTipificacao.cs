@@ -15,7 +15,6 @@ namespace Dominio
         }
 
         [Key]
-        [StringLength(10)]
         public decimal nCdCaracteristica { get; set; }
 
         [Required(AllowEmptyStrings = true)]
