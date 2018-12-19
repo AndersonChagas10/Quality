@@ -22,15 +22,20 @@ namespace Dominio
         public int? ParLevel3_Id { get; set; }
 
         public bool IsActive { get; set; }
-
+        
+        [ForeignKey("ParCounter_Id")]
         public virtual ParCounter ParCounter { get; set; }
 
+        [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }
 
+        [ForeignKey("ParLevel2_Id")]
         public virtual ParLevel2 ParLevel2 { get; set; }
 
+        [ForeignKey("ParLevel3_Id")]
         public virtual ParLevel3 ParLevel3 { get; set; }
 
+        [ForeignKey("ParLocal_Id")]
         public virtual ParLocal ParLocal { get; set; }
     }
 }

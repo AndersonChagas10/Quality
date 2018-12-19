@@ -13,9 +13,11 @@ namespace Dominio
         public int? Result_Level3_Id { get; set; }
 
         [Column(TypeName = "text")]
+        [Required(AllowEmptyStrings = true)]
         public string Photo_Thumbnaills { get; set; }
 
         [Column(TypeName = "text")]
+        [Required(AllowEmptyStrings = true)]
         public string Photo { get; set; }
 
         public double? Latitude { get; set; }

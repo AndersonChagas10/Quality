@@ -17,8 +17,10 @@ namespace Dominio
 
         public bool Active { get; set; }
 
+        [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 
+        [ForeignKey("ParStructure_Id")]
         public virtual ParStructure ParStructure { get; set; }
     }
 }

@@ -39,6 +39,7 @@ namespace Dominio
         public DateTime Level02CollectionDate { get; set; }
 
         [Column(TypeName = "text")]
+        [Required(AllowEmptyStrings = true)]
         public string Level02HeaderJson { get; set; }
 
         [Column(TypeName = "text")]
@@ -46,6 +47,7 @@ namespace Dominio
         public string Level03ResultJSon { get; set; }
 
         [Column(TypeName = "text")]
+        [Required(AllowEmptyStrings = true)]
         public string CorrectiveActionJson { get; set; }
 
         public bool Reaudit { get; set; }

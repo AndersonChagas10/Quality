@@ -36,6 +36,7 @@ namespace Dominio
 
         public bool? IsDefaultOption { get; set; }
 
+        [ForeignKey("ParHeaderField_Id")]
         public virtual ParHeaderField ParHeaderField { get; set; }
     }
 }

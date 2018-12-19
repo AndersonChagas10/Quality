@@ -23,16 +23,21 @@ namespace Dominio
         public decimal? EvaluationNumber { get; set; }
 
         [StringLength(30)]
+        [Required(AllowEmptyStrings = true)]
         public string EvaluationInterval { get; set; }
 
         public bool? IsActive { get; set; }
 
+        [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 
+        [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }
 
+        [ForeignKey("ParLevel2_Id")]
         public virtual ParLevel2 ParLevel2 { get; set; }
 
+        [ForeignKey("ParLevel3_Id")]
         public virtual ParLevel3 ParLevel3 { get; set; }
     }
 }

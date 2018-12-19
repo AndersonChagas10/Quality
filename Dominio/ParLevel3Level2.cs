@@ -28,15 +28,18 @@ namespace Dominio
 
         public int? ParCompany_Id { get; set; }
 
+        [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 
+        [ForeignKey("ParLevel2_Id")]
         public virtual ParLevel2 ParLevel2 { get; set; }
 
+        [ForeignKey("ParLevel3_Id")]
         public virtual ParLevel3 ParLevel3 { get; set; }
 
+        [ForeignKey("ParLevel3Group_Id")]
         public virtual ParLevel3Group ParLevel3Group { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Level2Level1> ParLevel3Level2Level1 { get; set; }
     }
 }

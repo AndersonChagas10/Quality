@@ -32,10 +32,13 @@ namespace Dominio
 
         public bool? ExibirReincidencia { get; set; }
 
+        [ForeignKey("Monitoramento")]
         public virtual Monitoramentos Monitoramentos { get; set; }
 
+        [ForeignKey("Tarefa")]
         public virtual Tarefas Tarefas { get; set; }
 
+        [ForeignKey("Unidade")]
         public virtual Unidades Unidades { get; set; }
     }
 }

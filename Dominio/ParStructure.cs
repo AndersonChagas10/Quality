@@ -30,9 +30,11 @@ namespace Dominio
 
         public bool Active { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParCompanyXStructure> ParCompanyXStructure { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+        [ForeignKey("ParStructureGroup_Id")]
         public virtual ParStructureGroup ParStructureGroup { get; set; }
     }
 }

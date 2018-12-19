@@ -32,6 +32,7 @@ namespace Dominio
 
         public bool IsActive { get; set; }
 
+        [ForeignKey("ParClusterGroup_Id")]
         public virtual ParClusterGroup ParClusterGroup { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
