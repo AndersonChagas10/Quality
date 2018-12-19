@@ -1348,25 +1348,25 @@ namespace Dominio
             //    .Property(e => e.Identificador)
             //    .IsUnicode(false);
 
-            modelBuilder.Entity<VerificacaoTipificacaoResultados>()
-                .Property(e => e.Chave)
-                .IsUnicode(false);
+            //modelBuilder.Entity<VerificacaoTipificacaoResultados>()
+            //    .Property(e => e.Chave)
+            //    .IsUnicode(false);
 
-            modelBuilder.Entity<VerificacaoTipificacaoValidacao>()
-                .Property(e => e.cIdentificadorTipificacao)
-                .IsUnicode(false);
+            //modelBuilder.Entity<VerificacaoTipificacaoValidacao>()
+            //    .Property(e => e.cIdentificadorTipificacao)
+            //    .IsUnicode(false);
 
-            modelBuilder.Entity<VolumeCepDesossa>()
-                .Property(e => e.Departamento)
-                .IsUnicode(false);
+            //modelBuilder.Entity<VolumeCepDesossa>()
+            //    .Property(e => e.Departamento)
+            //    .IsUnicode(false);
 
-            modelBuilder.Entity<VolumeCepRecortes>()
-                .Property(e => e.Departamento)
-                .IsUnicode(false);
+            //modelBuilder.Entity<VolumeCepRecortes>()
+            //    .Property(e => e.Departamento)
+            //    .IsUnicode(false);
 
-            modelBuilder.Entity<VolumePcc1b>()
-                .Property(e => e.Departamento)
-                .IsUnicode(false);
+            //modelBuilder.Entity<VolumePcc1b>()
+            //    .Property(e => e.Departamento)
+            //    .IsUnicode(false);
 
             //modelBuilder.Entity<VolumePcc1b>()
             //    .Property(e => e.Meta)
@@ -1392,21 +1392,21 @@ namespace Dominio
             //    .Property(e => e.Nivel3)
             //    .HasPrecision(11, 8);
 
-            modelBuilder.Entity<VolumeVacuoGRD>()
-                .Property(e => e.Departamento)
-                .IsUnicode(false);
+            //modelBuilder.Entity<VolumeVacuoGRD>()
+            //    .Property(e => e.Departamento)
+            //    .IsUnicode(false);
 
-            modelBuilder.Entity<VTVerificacaoTipificacaoValidacao>()
-                .Property(e => e.cIdentificadorTipificacao)
-                .IsUnicode(false);
+            //modelBuilder.Entity<VTVerificacaoTipificacaoValidacao>()
+            //    .Property(e => e.cIdentificadorTipificacao)
+            //    .IsUnicode(false);
 
             //modelBuilder.Entity<ResultLevel2HeaderField>()
             //    .Property(e => e.PunishmentValue)
             //    .HasPrecision(10, 5);
 
-            modelBuilder.Entity<RoleJBS>()
-                .Property(e => e.Role)
-                .IsFixedLength();
+            //modelBuilder.Entity<RoleJBS>()
+            //    .Property(e => e.Role)
+            //    .IsFixedLength();
         }
 
         public System.Data.Entity.DbSet<Dominio.ParVinculoPeso> ParGroupParLevel1XParLevel3 { get; set; }
