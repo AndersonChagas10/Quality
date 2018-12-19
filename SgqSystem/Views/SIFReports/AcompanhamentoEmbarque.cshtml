@@ -1,7 +1,9 @@
 ﻿@{
+                /**/
 
-    ViewBag.Title = "SIF Embarque";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+
+                ViewBag.Title = "SIF Embarque";
+                Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
@@ -340,7 +342,7 @@
             PreencherCabecalho(r);
 
             let tamanhoAmostra = Math.max.apply(null, [...new Set(r.Coletas.map(obj => obj.Amostra))]);
-            
+
             for (let i = 0; i < tamanhoAmostra; i = i + 9) {
 
                 let inicio = i;
@@ -360,7 +362,7 @@
 
                 $('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>').insertAfter($('#contentBody > table:last'));
             }
-           
+
             $('.portlet').show();
         }
 
@@ -512,7 +514,7 @@
                 }
 
 
-                let Produtos_Id = [...new Set(array.map(item => item.Produto_Id))];                
+                let Produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
 
                 Produtos_Id.forEach((produto) => {
 
@@ -520,13 +522,13 @@
 
                     let coletasByLevel3 = array.filter(item => item.Produto_Id == produto && item.ParLevel3_Id == level3);
 
-                    let arrayPorProduto = array.filter(item => item.Produto_Id)
+                    let arrayPorProduto = array.filter(item => item.Produto_Id == produto)
 
                     let tamanhoMaximoAmostraPorProduto = Math.max(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
 
                     let tamanhoMinimoAmostraPorProduto = Math.min(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
 
-                    if (coletasByLevel3.length < 2 && tamanhoMaximoAmostraPorProduto < 2) {
+                    if (coletasByLevel3.length < 2 && (tamanhoMaximoAmostraPorProduto - tamanhoMinimoAmostraPorProduto) < 1) {
                         colspanStatus = 2;
                     }
 
