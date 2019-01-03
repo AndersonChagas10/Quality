@@ -337,6 +337,11 @@
             return false;
         }
 
+        elaborador = r.Elaborador;
+        aprovador = r.Aprovador;
+        nomeRelatorio = r.NomeRelatorio;
+        siglaUnidade = $('#unitId :selected').text();
+
         PreencherCabecalho(r);
 
         let tamanhoAmostra = Math.max.apply(null, [...new Set(r.Coletas.map(obj => obj.Amostra))]);
@@ -426,9 +431,9 @@
 
                 let colspanAmostraEData = 1;
 
-                if (numeroAmostras.length < 2) {
-                    colspanAmostraEData = 2;
-                }
+                //if (numeroAmostras.length < 2) {
+                //    colspanAmostraEData = 2;
+                //}
 
                 terceiraLinha += "<td colspan=" + colspanAmostraEData + ">" + new Date(dataAmostras[index]).toLocaleDateString() + "</td>";
 
@@ -436,15 +441,19 @@
 
             });
 
-            let colspanMax = Math.ceil(numeroAmostras.length / 2);
-            let colspanMin = Math.floor(numeroAmostras.length / 2);
+            //let colspanMax = Math.ceil(numeroAmostras.length / 2);
+            //let colspanMin = Math.floor(numeroAmostras.length / 2);
 
-            segundaLinha += `<td colspan="${colspanMin}">Produto:</td>
-                                <td colspan="${colspanMax}">${item.Produto}</td>`;
+            //segundaLinha += `<td colspan="${colspanMin}">Produto:</td>
+            //                    <td colspan="${colspanMax}">${item.Produto}</td>`;
 
 
-            primeiraLinha += `<td colspan="${colspanMin}">Cod:</td>
-                                  <td colspan="${colspanMax}">${item.Produto_Id}</td>`;
+            //primeiraLinha += `<td colspan="${colspanMin}">Cod:</td>
+            //                      <td colspan="${colspanMax}">${item.Produto_Id}</td>`;
+
+            segundaLinha += `<td colspan="${numeroAmostras.length}">Produto: ${item.Produto}</td>`;
+
+            primeiraLinha += `<td colspan="${numeroAmostras.length}">Cod: ${item.Produto_Id}</td>`;
 
         });
 
@@ -526,9 +535,9 @@
 
                 let tamanhoMinimoAmostraPorProduto = Math.min(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
 
-                if (coletasByLevel3.length < 2 && (tamanhoMaximoAmostraPorProduto - tamanhoMinimoAmostraPorProduto) < 1) {
-                    colspanStatus = 2;
-                }
+                //if (coletasByLevel3.length < 2 && (tamanhoMaximoAmostraPorProduto - tamanhoMinimoAmostraPorProduto) < 1) {
+                //    colspanStatus = 2;
+                //}
 
                 for (let i = tamanhoMinimoAmostraPorProduto; i <= tamanhoMaximoAmostraPorProduto; i++) {
 
