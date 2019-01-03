@@ -54,8 +54,10 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
 
+        [ForeignKey("ConsolidationLevel1_Id")]
         public virtual ConsolidationLevel1 ConsolidationLevel1 { get; set; }
 
+        [ForeignKey("ParLevel2_Id")]
         public virtual ParLevel2 ParLevel2 { get; set; }
     }
 }

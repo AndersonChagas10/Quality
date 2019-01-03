@@ -22,6 +22,7 @@ namespace Dominio
 
         public DateTime? DataAlteracao { get; set; }
 
+        [ForeignKey("Operacao")]
         public virtual Operacoes Operacoes { get; set; }
     }
 }

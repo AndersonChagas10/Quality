@@ -34,6 +34,7 @@ namespace Dominio
 
         public string ParCompanyName { get; set; }
 
+        [ForeignKey("Unidade")]
         public virtual Unidades Unidades { get; set; }
     }
 }

@@ -18,8 +18,10 @@ namespace Dominio
 
         public int? ParCompany_Id { get; set; }
 
+        [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }
 
+        [ForeignKey("ParLevel3Level2_Id")]
         public virtual ParLevel3Level2 ParLevel3Level2 { get; set; }
     }
 }

@@ -42,17 +42,16 @@ namespace Dominio
 
         public bool CheckBox { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2XParHeaderField> CollectionLevel2XParHeaderField { get; set; }
 
+        [ForeignKey("ParFieldType_Id")]
         public virtual ParFieldType ParFieldType { get; set; }
 
+        [ForeignKey("ParLevelDefinition_Id")]
         public virtual ParLevelDefiniton ParLevelDefiniton { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParMultipleValues> ParMultipleValues { get; set; }
     }
 }

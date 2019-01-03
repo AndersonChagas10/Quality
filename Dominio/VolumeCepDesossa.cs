@@ -40,8 +40,10 @@ namespace Dominio
         [ForeignKey("Shift_Id")]
         public virtual Shift Shift { get; set; }
 
+        [ForeignKey("ParCompany_id")]
         public virtual ParCompany ParCompany { get; set; }
 
+        [ForeignKey("ParLevel1_id")]
         public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }

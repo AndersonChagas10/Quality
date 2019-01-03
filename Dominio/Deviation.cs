@@ -39,6 +39,7 @@ namespace Dominio
 
         public int? EmailContent_Id { get; set; }
 
+        [ForeignKey("EmailContent_Id")]
         public virtual EmailContent EmailContent { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace Dominio
         public decimal nCdPerfil { get; set; }
 
         [StringLength(100)]
+        [Required(AllowEmptyStrings = true)]
         public string cNmPerfil { get; set; }
     }
 }

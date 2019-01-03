@@ -24,6 +24,7 @@ namespace Dominio
 
         public bool? Status { get; set; }
 
+        [ForeignKey("UnidadeId")]
         public virtual Unidades Unidades { get; set; }
     }
 }

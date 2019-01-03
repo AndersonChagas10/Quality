@@ -26,9 +26,9 @@ namespace Dominio
 
         public bool IsActive { get; set; }
 
+        [ForeignKey("ParLevel2_Id")]
         public virtual ParLevel2 ParLevel2 { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Level2> ParLevel3Level2 { get; set; }
     }
 }

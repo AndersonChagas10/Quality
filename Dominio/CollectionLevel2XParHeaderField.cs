@@ -26,10 +26,13 @@ namespace Dominio
 
         public int? Sample { get; set; }
 
+        [ForeignKey("CollectionLevel2_Id")]
         public virtual CollectionLevel2 CollectionLevel2 { get; set; }
 
+        [ForeignKey("ParFieldType_Id")]
         public virtual ParFieldType ParFieldType { get; set; }
 
+        [ForeignKey("ParHeaderField_Id")]
         public virtual ParHeaderField ParHeaderField { get; set; }
     }
 }

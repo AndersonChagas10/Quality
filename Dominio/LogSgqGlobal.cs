@@ -13,22 +13,30 @@ namespace Dominio
 
         public DateTime? addDate { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
         public string Level { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
         public string Call_Site { get; set; }
 
         public string Exception_Type { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
         public string Exception_Message { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
         public string Stack_Trace { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
         public string Additional_Info { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
         public string Object { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
         public string email { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
         public string Second_Log_Path { get; set; }
     }
 }

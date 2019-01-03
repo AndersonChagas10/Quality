@@ -23,8 +23,10 @@ namespace Dominio
         [StringLength(100)]
         public string HeaderFieldGroup { get; set; }
 
+        [ForeignKey("ParHeaderField_Id")]
         public virtual ParHeaderField ParHeaderField { get; set; }
 
+        [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }

@@ -46,8 +46,10 @@ namespace Dominio
 
         public bool? HasPhoto { get; set; }
 
+        [ForeignKey("CollectionLevel2_Id")]
         public virtual CollectionLevel2 CollectionLevel2 { get; set; }
 
+        [ForeignKey("ParLevel3_Id")]
         public virtual ParLevel3 ParLevel3 { get; set; }
     }
 }
