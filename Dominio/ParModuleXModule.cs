@@ -16,9 +16,9 @@ namespace Dominio
         public int ParModuleChild_Id { get; set; }
 
         [ForeignKey("ParModuleChild_Id")]
-        public virtual ParModule ParModule { get; set; }
+        public virtual ParModule ParModuleChild { get; set; }
 
         [ForeignKey("ParModuleParent_Id")]
-        public virtual ParModule ParModule1 { get; set; }
+        public virtual ParModule ParModuleParent { get; set; }
     }
 }
