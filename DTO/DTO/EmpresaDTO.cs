@@ -13,5 +13,8 @@ namespace DTO.DTO
         public string Nome { get; set; }
 
         public string Role { get; set; }
+
+        public string Perfil { get; set; }
+
     }
 }
