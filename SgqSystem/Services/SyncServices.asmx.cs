@@ -3051,7 +3051,8 @@ namespace SgqSystem.Services
  	                        ReauditLevel int null,																																												  
  	                        Sequential int null,																																												  
  	                        Side int null,				  																																								  
- 	                        Id int null
+ 	                        Id int null,
+                            HoraPrimeiraAvaliacao varchar(20)
                          )																																																		  
                          /*coletas diárias */																																													  
                          INSERT INTO #COLETA																																														  
@@ -3070,14 +3071,19 @@ namespace SgqSystem.Services
                          (select max(sample) from CollectionLevel2 WITH (NOLOCK) where ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id and EvaluationNumber = MAX(cl2.EvaluationNumber)) as SampleLast,								  
  																																																		  
  	                        MAX(Phase) AS Phase,
-                             MAX(StartPhaseEvaluation) AS StartPhaseEvaluation,
-                             MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
+                            MAX(StartPhaseEvaluation) AS StartPhaseEvaluation,
+                            MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  
  	                        MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
  	                        MAX(Sequential) Sequential,				  																																						  
  	                        MAX(Side) Side,				  																																						  
- 	                        MIN(CL2.Id) AS ID
-
+ 	                        MIN(CL2.Id) AS ID,
+                            (SELECT
+                        	    MIN(cast(CollectionDate as time))
+                        	    FROM CollectionLevel2 WITH (NOLOCK)
+                        	    WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
+                        	    AND EvaluationNumber = 1
+                                AND [Sample] = 1) AS HoraPrimeiraAvaliacao
 
                          from CollectionLevel2 CL2   WITH(NOLOCK)
 
@@ -3128,8 +3134,13 @@ namespace SgqSystem.Services
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
  	                        MAX(Sequential) Sequential,																																										
  	                        MAX(Side) Side,  																																										  
- 	                        MIN(CL2.Id) AS ID
-
+ 	                        MIN(CL2.Id) AS ID,
+                            (SELECT
+                        	    MIN(cast(CollectionDate as time))
+                        	    FROM CollectionLevel2 WITH (NOLOCK)
+                        	    WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
+                        	    AND EvaluationNumber = 1
+                                AND [Sample] = 1) AS HoraPrimeiraAvaliacao
 
                          from CollectionLevel2 CL2   WITH(NOLOCK)
 
@@ -3180,8 +3191,13 @@ namespace SgqSystem.Services
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
  	                        MAX(Sequential) Sequential,		 																																					  
  	                        MAX(Side) Side,																																										  
- 	                        MIN(CL2.Id) AS ID
-
+ 	                        MIN(CL2.Id) AS ID,
+                            (SELECT
+                        	    MIN(cast(CollectionDate as time))
+                        	    FROM CollectionLevel2 WITH (NOLOCK)
+                        	    WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
+                        	    AND EvaluationNumber = 1
+                                AND [Sample] = 1) AS HoraPrimeiraAvaliacao
 
                          from CollectionLevel2 CL2 WITH(NOLOCK)
 
@@ -3232,8 +3248,13 @@ namespace SgqSystem.Services
  	                        MAX(ReauditLevel) ReauditLevel,																																										  
  	                        MAX(Sequential) Sequential,																																							  
  	                        MAX(Side) Side,																																										  
- 	                        MIN(CL2.Id) AS ID
-
+ 	                        MIN(CL2.Id) AS ID,
+                            (SELECT
+                        	    MIN(cast(CollectionDate as time))
+                        	    FROM CollectionLevel2 WITH (NOLOCK)
+                        	    WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
+                        	    AND EvaluationNumber = 1
+                                AND [Sample] = 1) AS HoraPrimeiraAvaliacao
 
                          from CollectionLevel2 CL2 WITH(NOLOCK)
 
@@ -3262,8 +3283,6 @@ namespace SgqSystem.Services
                          --Sequential, Side
 
                          SELECT
-
-
 
                          '<div class=""Resultlevel2""																																												  
                           AlertLevelL1 = ""' + ISNULL(REPLACE(CAST(CDL1.AtualAlert AS VARCHAR),'.',','),'NULL') + '""
@@ -3306,7 +3325,8 @@ namespace SgqSystem.Services
                           isreaudit = ""' + ISNULL(REPLACE(CAST(CDL2.ReauditIs AS VARCHAR),'1','true'),'NULL') + '""
                           more3defectsEvaluate = ""0""
                           CollectionLevel2_ID_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Id) AS VARCHAR),'.',','),'NULL') + '""
-                          CollectionLevel2_Period_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Period) AS VARCHAR),'.',','),'NULL') + '"" >
+                          CollectionLevel2_Period_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Period) AS VARCHAR),'.',','),'NULL') + '"" 
+                          HoraPrimeiraAvaliacao = ""' + ISNULL(Level2Result.HoraPrimeiraAvaliacao,'NULL') +'"" >
                           ' + @RESPOSTA + '
                           </div> '  AS retorno																																													  
 
@@ -3348,7 +3368,8 @@ namespace SgqSystem.Services
                          Level2Result.EvaluateLast,																																												  
                          Level2Result.SampleLast,																																												  
                          Level2Result.Sequential,																																												  
-                         Level2Result.Side,																																												  
+                         Level2Result.Side,
+                         Level2Result.HoraPrimeiraAvaliacao,
                          CDL2.ReauditNumber,																																														  
                          CDL2.ReauditIs,
                          CDL1.AtualAlert
