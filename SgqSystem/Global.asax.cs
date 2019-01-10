@@ -147,8 +147,6 @@ namespace SgqSystem
             using (var db = new Dominio.SgqDbDevEntities())
             {
 
-                System.Diagnostics.Debugger.Break();
-
                 var dicionariosKeys = db.DicionarioEstatico.Select(r => r.Key).ToList();
 
                 var DicionariosInserir = new List<DicionarioEstatico>();

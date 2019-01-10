@@ -38,7 +38,6 @@
     $(document).ready(function () {
 
         if ($("#Agendamento").val() !== "") {
-            debugger
             var tipoFrequencia = $("#Agendamento").val();
             if (tipoFrequencia.indexOf("|") < 0) {
 
@@ -71,7 +70,6 @@
         });
 
         $("#tipoFrequencia").on('change', function () {
-            debugger
             if ($("#tipoFrequencia :selected").text() === "Diario com Frequencia") {
                 $("#tabelaAgendamento").attr('hidden', 'hidden');
                 $("#divIntervalo").removeAttr('hidden');
@@ -80,7 +78,6 @@
                 $("#divIntervalo").attr('hidden', 'hidden');
                 MontarTabelaVolume();
                 $("#tabelaAgendamento").removeAttr('hidden');
-
             }
         });
     });
@@ -90,6 +87,7 @@
         var listaAgendamentoSeparados = [];
         $("#tabelaAgendamento tbody").html("");
         var quantidadeAvaliacoes = $("#Avaliacoes").val();
+        var listaAgendamentosCarregados = agendamentosCarregados.split("|");
         for (var i = 1; i <= quantidadeAvaliacoes; i++) {
             $("#tabelaAgendamento tbody").append("<tr>"
                 + '<td><input data-column="inpValorAvaliacao" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
@@ -101,10 +99,8 @@
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpValorAvaliacao]').val(i);
 
         }
-
-        if (agendamentosCarregados !== "") {
-
-            var listaAgendamentosCarregados = agendamentosCarregados.split("|");
+    
+        if (agendamentosCarregados !== "" && agendamentosCarregados.indexOf('|') > 0) {
 
             for (var j = 0; j < listaAgendamentosCarregados.length; j++) {
                 listaAgendamentoSeparados.push(listaAgendamentosCarregados[j].split('-'));
@@ -118,9 +114,9 @@
     }
 
 
-    function preencheAgendamento() {
+    function preencheAgendamento(e) {
+        e.preventDefault();
         if ($("#tipoFrequencia :selected").text() === "Diario com Frequencia") {
-            debugger
             if ($("#intervalo").val() !== "")
                 $("#Agendamento").val($("#intervalo").val());
             else {
@@ -130,6 +126,8 @@
         } else {
             var listaTabelaAgendamento = $("#tabelaAgendamento tbody tr");
             var listaAvaliacaoInicioFim = [];
+            var contadorErros = [];
+            var contador = 0;
 
             listaTabelaAgendamento.each(function (index, item) {
                 var form = [];
@@ -137,10 +135,20 @@
                 form.push($(item).find("[data-column=inpValorAvaliacao]").val()
                     , $(item).find("[data-column=inpInicio]").val()
                     , $(item).find("[data-column=inpFim]").val());
-
+                contador++;
+                if (parseInt($(item).find("[data-column=inpInicio]").val()) > parseInt($(item).find("[data-column=inpFim]").val())
+                    || $(item).find("[data-column=inpInicio]").val() === "" || $(item).find("[data-column=inpFim]").val() === "") {                  
+                    contadorErros.push(contador);
+                }
                 listaAvaliacaoInicioFim.push(form.join('-'));
             });
-            $("#Agendamento").val(listaAvaliacaoInicioFim.join('|'));
+
+            if (contadorErros === 0)
+                $("#Agendamento").val(listaAvaliacaoInicioFim.join('|'));
+            else {
+                openMessageModal("As seguintes Avaliações possuem valores inválidos: " + contadorErros, null);
+                return false;
+            }
         }
     }
 
