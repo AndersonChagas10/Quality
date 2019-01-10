@@ -1,0 +1,147 @@
+﻿
+
+<div id="cadastroIntervalos" class="hidden">
+    <div class="form-group">
+        @Html.Label("Tipo de Frequencia", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-offset-2 col-md-10">
+
+            <select id="tipoFrequencia" name="tipoFrequencia" class="form-control valid">
+                <option value="Diario com Intervalo" id="diarioFrequencia">Diario com Frequencia</option>
+                <option value="Diario" id="diario">Diario</option>
+            </select>
+
+        </div>
+    </div>
+
+    <div class="form-group" id="divIntervalo">
+        @Html.Label("Intervalo em minutos", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input id="intervalo" type="time" min="0" class="notAllowNegative" />
+        </div>
+    </div>
+
+    <table id="tabelaAgendamento" style="max-width: 100%" hidden="hidden" class="table table-condensed no-margin margin-top">
+        <thead>
+            <tr>
+                <th id="headAvaliacao">Avaliação</th>
+                <th id="headInicio">Início</th>
+                <th id="headFim">Fim</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+<script>
+    var listaAvaliacaoInicioFim = [];
+    $(document).ready(function () {
+
+        if ($("#Agendamento").val() !== "") {
+            debugger
+            var tipoFrequencia = $("#Agendamento").val();
+            if (tipoFrequencia.indexOf("|") < 0) {
+
+                $("#cadastroIntervalos").removeClass('hidden');
+                $("#tabelaAgendamento").attr('hidden', 'hidden');
+                $("#divIntervalo").removeAttr('hidden');
+                $("#tabelaAgendamento tbody").html("");
+
+                $("#tipoFrequencia").val("Diario com Intervalo");
+                $("#intervalo").val($("#Agendamento").val());
+
+            } else {
+                $("#cadastroIntervalos").removeClass('hidden');
+                $("#divIntervalo").attr('hidden', 'hidden');
+                $("#tabelaAgendamento").removeAttr('hidden');
+                $("#tipoFrequencia").val("Diario");
+                MontarTabelaVolume();
+
+            }
+        }
+
+        $("#ParCompany_id, #HorasTrabalhadasPorDia").on('blur', function () {
+            if ($("#ParCompany_id :selected").text() !== "" && $("#HorasTrabalhadasPorDia").val() !== "") {
+                $("#cadastroIntervalos").removeClass('hidden');
+                if ($("#tipoFrequencia :selected").text() === "Diario")
+                    MontarTabelaVolume();
+            } else {
+                $("#cadastroIntervalos").addClass('hidden');
+            }
+        });
+
+        $("#tipoFrequencia").on('change', function () {
+            debugger
+            if ($("#tipoFrequencia :selected").text() === "Diario com Frequencia") {
+                $("#tabelaAgendamento").attr('hidden', 'hidden');
+                $("#divIntervalo").removeAttr('hidden');
+                $("#tabelaAgendamento tbody").html("");
+            } else {
+                $("#divIntervalo").attr('hidden', 'hidden');
+                MontarTabelaVolume();
+                $("#tabelaAgendamento").removeAttr('hidden');
+
+            }
+        });
+    });
+
+    function MontarTabelaVolume() {
+        var agendamentosCarregados = $("#Agendamento").val();
+        var listaAgendamentoSeparados = [];
+        $("#tabelaAgendamento tbody").html("");
+        var quantidadeAvaliacoes = $("#Avaliacoes").val();
+        for (var i = 1; i <= quantidadeAvaliacoes; i++) {
+            $("#tabelaAgendamento tbody").append("<tr>"
+                + '<td><input data-column="inpValorAvaliacao" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
+                + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
+                + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpFim" /></td>'
+                + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
+                + "</tr>");
+
+            $("#tabelaAgendamento tbody tr:last").find('[data-column=inpValorAvaliacao]').val(i);
+
+        }
+
+        if (agendamentosCarregados !== "") {
+
+            var listaAgendamentosCarregados = agendamentosCarregados.split("|");
+
+            for (var j = 0; j < listaAgendamentosCarregados.length; j++) {
+                listaAgendamentoSeparados.push(listaAgendamentosCarregados[j].split('-'));
+            }
+            for (var x = 0; x < listaAgendamentoSeparados.length; x++) {
+                $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpValorAvaliacao]').val(listaAgendamentoSeparados[x][0]);
+                $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpInicio]').val(listaAgendamentoSeparados[x][1]);
+                $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpFim]').val(listaAgendamentoSeparados[x][2]);
+            }
+        }
+    }
+
+
+    function preencheAgendamento() {
+        if ($("#tipoFrequencia :selected").text() === "Diario com Frequencia") {
+            debugger
+            if ($("#intervalo").val() !== "")
+                $("#Agendamento").val($("#intervalo").val());
+            else {
+                openMessageModal("Valor do campo intervalo não pode ser nulo!", null);
+                return false;
+            }
+        } else {
+            var listaTabelaAgendamento = $("#tabelaAgendamento tbody tr");
+            var listaAvaliacaoInicioFim = [];
+
+            listaTabelaAgendamento.each(function (index, item) {
+                var form = [];
+                //[AVALIACAO,INICIO,FIM]
+                form.push($(item).find("[data-column=inpValorAvaliacao]").val()
+                    , $(item).find("[data-column=inpInicio]").val()
+                    , $(item).find("[data-column=inpFim]").val());
+
+                listaAvaliacaoInicioFim.push(form.join('-'));
+            });
+            $("#Agendamento").val(listaAvaliacaoInicioFim.join('|'));
+        }
+    }
+
+</script>

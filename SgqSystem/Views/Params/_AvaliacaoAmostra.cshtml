@@ -62,7 +62,7 @@
                         </tr>
                     </tbody>
                 </table>
-                @Html.Partial("_Agendamento") 
+                @Html.Partial("_Agendamento")
             </div>
         </div>
     </div>
@@ -261,6 +261,7 @@
                         }else{
                             o['ParLevel1_Name'] = "@Resources.Resource.all";
                         }
+                        debugger
                         if (o.TemAgendamento) {
                             o['agendamento'] = '<button type="button" id="agendamento" class="btn btn-success btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
 

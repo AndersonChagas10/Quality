@@ -43,6 +43,7 @@
                                     @Html.AntiForgeryToken()
 
                                     <div class="form-horizontal">
+
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                                         @{ Html.EnableClientValidation(false); }
@@ -121,15 +122,18 @@
                                             </div>
                                         </div>
 
+                                      
+                                                @Html.Partial("_AgendamentoVolumes")
+                                                @Html.HiddenFor(model => model.Agendamento, new { @id = "Agendamento" })
+
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Salvar" onclick="habilitar()" class="btn btn-primary" />
+                                                <input type="submit" value="Salvar" data-column="dataAgendamento" onclick="habilitar()" class="btn btn-primary" />
                                                 @Html.ActionLink("Voltar para Volume de CEP Desossa", "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>
                                 }
-
                             </div>
                         </div>
                     </div>
@@ -227,6 +231,8 @@
 
         $('#Avaliacoes').attr('disabled', false);
         $('#Amostras').attr('disabled', false);
+
+        preencheAgendamento();
     }
 
     function applyMath() {
