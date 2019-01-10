@@ -191,9 +191,12 @@
                                             </div>
                                         </div>
 
+                                        @Html.Partial("_AgendamentoVolumes")
+                                        @Html.HiddenFor(model => model.Agendamento, new { @id = "Agendamento" })
+
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Salvar" class="btn btn-primary" />
+                                                <input type="submit" value="Salvar" onclick="preencheAgendamento()" class="btn btn-primary" />
                                                 @Html.ActionLink("Voltar para Volume de CEP Matéria Prima", "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>

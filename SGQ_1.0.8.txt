@@ -70,3 +70,28 @@ create table DicionarioEstatico(
 )
 
 GO
+
+IF NOT EXISTS (SELECT * FROM ParFrequency WHERE Name = 'Diario com Intervalo')
+	begin
+		insert into ParFrequency(Name,[Description],AddDate, AlterDate, IsActive) 
+		values('Diario com Intervalo','Diario com Intervalo',GETDATE(),NULL,1)
+	end
+
+GO
+IF COL_LENGTH('PARLEVEL1XMODULE','ParCluster_Id') IS NULL
+    BEGIN
+	
+		ALTER TABLE VolumeCepDesossa
+			add Agendamento VARCHAR(255) NULL;
+
+		ALTER TABLE ParEvaluationSchedule
+			ALTER COLUMN Inicio VARCHAR(5) NOT NULL;
+
+		ALTER TABLE ParEvaluationSchedule
+			ALTER COLUMN Fim VARCHAR(5) NOT NULL;
+
+		ALTER TABLE ParEvaluationSchedule
+			add Intervalo VARCHAR(5) NULL;
+    END
+
+GO
