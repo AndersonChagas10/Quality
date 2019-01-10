@@ -4,6 +4,7 @@ using DTO;
 using DTO.DTO;
 using SGQDBContext;
 using SgqSystem.Handlres;
+using SgqSystem.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -27,22 +28,27 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        public IHttpActionResult Insert(Result_Level3_PhotosDTO ResultPhoto)
+        public IHttpActionResult Insert([FromBody] List<Result_Level3_PhotosDTO> Fotos)
         {
             //, int Level1Id, int Level2Id, int Level3Id, int Evaluation, int Sample, string Date
             string quebraProcesso = "98789";
 
-            string parCluster_Id_parLevel1_id = ResultPhoto.Level1Id.ToString().Replace(quebraProcesso, "|"); //"Cluster|Indicador"
-            string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : "0";
-            string parLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
+            for(int i = 0; i < Fotos.Count; i++)
+            {
+                var ResultPhoto = Fotos[i];
 
-            string parCluster_Id_parLevel2_id = ResultPhoto.Level2Id.ToString().Replace(quebraProcesso, "|");
-            string parLevel2_Id = parCluster_Id_parLevel2_id.Split('|').Length > 1 ? parCluster_Id_parLevel2_id.Split('|')[1] : parCluster_Id_parLevel2_id.Split('|')[0];
+                string parCluster_Id_parLevel1_id = ResultPhoto.Level1Id.ToString().Replace(quebraProcesso, "|"); //"Cluster|Indicador"
+                string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : "0";
+                string parLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
 
-            ResultPhoto.Level1Id = Convert.ToInt32(parLevel1_Id);
-            ResultPhoto.Level2Id = Convert.ToInt32(parLevel2_Id);
+                string parCluster_Id_parLevel2_id = ResultPhoto.Level2Id.ToString().Replace(quebraProcesso, "|");
+                string parLevel2_Id = parCluster_Id_parLevel2_id.Split('|').Length > 1 ? parCluster_Id_parLevel2_id.Split('|')[1] : parCluster_Id_parLevel2_id.Split('|')[0];
 
-            string sqlResulLevel3 = @"SELECT R.Id FROM Result_Level3 R                                     
+                ResultPhoto.Level1Id = Convert.ToInt32(parLevel1_Id);
+                ResultPhoto.Level2Id = Convert.ToInt32(parLevel2_Id);
+                ResultPhoto.Photo_Thumbnaills = ResultPhoto.Photo;
+
+                string sqlResulLevel3 = @"SELECT R.Id FROM Result_Level3 R                                     
                             LEFT JOIN CollectionLevel2 C                                      
                             ON R.CollectionLevel2_Id = C.Id                                
                             WHERE                                                         
@@ -55,75 +61,76 @@ namespace SgqSystem.Controllers.Api
                             C.Shift = @Shift AND                                           
                             C.Period = @Period AND                                           
                             C.CollectionDate BETWEEN @CollectionDate+' 00:00' AND @CollectionDate+' 23:59'";
-                        
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
+
+                try
                 {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand(sqlResulLevel3, connection))
+                    using (SqlConnection connection = new SqlConnection(conexao))
                     {
-                        command.Parameters.Add("@Evaluation", SqlDbType.Int).Value = ResultPhoto.Evaluation;
-                        command.Parameters.Add("@Sample", SqlDbType.Int).Value = ResultPhoto.Sample;
-                        command.Parameters.Add("@Level1Id", SqlDbType.Int).Value = ResultPhoto.Level1Id;
-                        command.Parameters.Add("@Level2Id", SqlDbType.Int).Value = ResultPhoto.Level2Id;
-                        command.Parameters.Add("@Level3Id", SqlDbType.Int).Value = ResultPhoto.Level3Id;
-                        command.Parameters.Add("@UnitId", SqlDbType.Int).Value = ResultPhoto.UnitId;
-                        command.Parameters.Add("@Period", SqlDbType.Int).Value = ResultPhoto.Period;
-                        command.Parameters.Add("@Shift", SqlDbType.Int).Value = ResultPhoto.Shift;
-                        command.Parameters.Add("@CollectionDate", SqlDbType.NVarChar).Value = DateFormatToAnother(ResultPhoto.ResultDate, "MMddyyyy", "yyyy-MM-dd");
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        connection.Open();
+                        using (SqlCommand command = new SqlCommand(sqlResulLevel3, connection))
                         {
-                            while (reader.Read())
+                            command.Parameters.Add("@Evaluation", SqlDbType.Int).Value = ResultPhoto.Evaluation;
+                            command.Parameters.Add("@Sample", SqlDbType.Int).Value = ResultPhoto.Sample;
+                            command.Parameters.Add("@Level1Id", SqlDbType.Int).Value = ResultPhoto.Level1Id;
+                            command.Parameters.Add("@Level2Id", SqlDbType.Int).Value = ResultPhoto.Level2Id;
+                            command.Parameters.Add("@Level3Id", SqlDbType.Int).Value = ResultPhoto.Level3Id;
+                            command.Parameters.Add("@UnitId", SqlDbType.Int).Value = ResultPhoto.UnitId;
+                            command.Parameters.Add("@Period", SqlDbType.Int).Value = ResultPhoto.Period;
+                            command.Parameters.Add("@Shift", SqlDbType.Int).Value = ResultPhoto.Shift;
+                            command.Parameters.Add("@CollectionDate", SqlDbType.NVarChar).Value = DateFormatToAnother(ResultPhoto.ResultDate, "MMddyyyy", "yyyy-MM-dd");
+                            using (SqlDataReader reader = command.ExecuteReader())
                             {
-                                for (int i = 0; i < reader.FieldCount; i++)
+                                while (reader.Read())
                                 {
-                                    ResultPhoto.Result_Level3_Id = reader.GetInt32(i);
+                                    for (int j = 0; j < reader.FieldCount; j++)
+                                    {
+                                        ResultPhoto.Result_Level3_Id = reader.GetInt32(j);
+                                    }
                                 }
                             }
                         }
+                        connection.Close();
                     }
-                    connection.Close();
                 }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.ToClient());
+                }
 
-            if(ResultPhoto.Result_Level3_Id == 0)
-            {
-                return Ok("ResultLevel3Id não encontrado.");
-            }
+                if (ResultPhoto.Result_Level3_Id == 0)
+                {
+                    return Ok(new { message = "ResultLevel3Id não encontrado.", count = i });
+                }
 
-            string sql = @"INSERT INTO Result_Level3_Photos(Result_Level3_Id, Photo_Thumbnaills, Photo, Latitude, Longitude) 
+                string sql = @"INSERT INTO Result_Level3_Photos(Result_Level3_Id, Photo_Thumbnaills, Photo, Latitude, Longitude) 
                             VALUES(@Result_Level3_Id, @Photo_Thumbnaills, @Photo, @Latitude, @Longitude)";
 
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
+                try
                 {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (SqlConnection connection = new SqlConnection(conexao))
                     {
-                        command.Parameters.Add("@Result_Level3_Id", SqlDbType.BigInt).Value = ResultPhoto.Result_Level3_Id;
-                        command.Parameters.Add("@Photo_Thumbnaills", SqlDbType.NText).Value = ResultPhoto.Photo_Thumbnaills;
-                        command.Parameters.Add("@Photo", SqlDbType.NText).Value = ResultPhoto.Photo;
-                        command.Parameters.Add("@Latitude", SqlDbType.Float).Value = ResultPhoto.Latitude;
-                        command.Parameters.Add("@Longitude", SqlDbType.Float).Value = ResultPhoto.Longitude;
+                        connection.Open();
+                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        {
+                            command.Parameters.Add("@Result_Level3_Id", SqlDbType.BigInt).Value = ResultPhoto.Result_Level3_Id;
+                            command.Parameters.Add("@Photo_Thumbnaills", SqlDbType.NText).Value = ResultPhoto.Photo_Thumbnaills;
+                            command.Parameters.Add("@Photo", SqlDbType.NText).Value = ResultPhoto.Photo;
+                            command.Parameters.Add("@Latitude", SqlDbType.Float).Value = ResultPhoto.Latitude;
+                            command.Parameters.Add("@Longitude", SqlDbType.Float).Value = ResultPhoto.Longitude;
 
-                        command.CommandType = CommandType.Text;
-                        command.ExecuteNonQuery();
+                            command.CommandType = CommandType.Text;
+                            command.ExecuteNonQuery();
+                        }
+                        connection.Close();
                     }
-                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.ToClient());
                 }
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
 
-            return Ok("Fotos inseridas com sucesso.");
+            return Ok(new { message = "Fotos inseridas com sucesso.", count = Fotos.Count });
 
         }
 
