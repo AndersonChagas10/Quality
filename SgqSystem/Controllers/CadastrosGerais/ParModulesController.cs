@@ -32,7 +32,8 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EnableCreate = (db.ParModule.Count() - (parModule.ParModuleXModule1.Count()+1)) > 0;
+            parModule.ParModuleXModuleParent = db.ParModuleXModule.Where(x => x.ParModuleParent_Id == parModule.Id).ToList();
+            ViewBag.EnableCreate = (db.ParModule.Count() - (parModule.ParModuleXModuleParent.Count()+1)) > 0;
             return View(parModule);
         }
 

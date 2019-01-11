@@ -9,11 +9,6 @@ namespace Dominio
     [Table("ParStructure")]
     public partial class ParStructure : BaseModel
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ParStructure()
-        {
-            ParCompanyXStructure = new HashSet<ParCompanyXStructure>();
-        }
 
         public int Id { get; set; }
 
@@ -30,9 +25,7 @@ namespace Dominio
 
         public bool Active { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParCompanyXStructure> ParCompanyXStructure { get; set; }
-
+        [ForeignKey("ParStructureGroup_Id")]
         public virtual ParStructureGroup ParStructureGroup { get; set; }
     }
 }

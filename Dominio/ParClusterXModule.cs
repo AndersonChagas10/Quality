@@ -21,8 +21,10 @@ namespace Dominio
 
         public DateTime? EffectiveDate { get; set; }
 
+        [ForeignKey("ParCluster_Id")]
         public virtual ParCluster ParCluster { get; set; }
 
+        [ForeignKey("ParModule_Id")]
         public virtual ParModule ParModule { get; set; }
     }
 }

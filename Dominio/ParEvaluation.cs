@@ -23,8 +23,10 @@ namespace Dominio
 
         public int? ParCluster_Id { get; set; }
 
+        [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 
+        [ForeignKey("ParLevel2_Id")]
         public virtual ParLevel2 ParLevel2 { get; set; }
     }
 }

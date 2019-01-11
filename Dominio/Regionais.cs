@@ -15,6 +15,7 @@ namespace Dominio
 
         public int Id { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
         public string Nome { get; set; }
 
     }

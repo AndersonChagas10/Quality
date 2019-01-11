@@ -44,10 +44,10 @@ namespace SgqSystem.Controllers.Api.SIF
                     		else C2XHF.Value 
                     	end as 'Value'
                     	,C2XHF.ParHeaderField_Id as Id
-                    from CollectionLevel2XParHeaderField C2XHF
-                    inner join CollectionLevel2 c2 on c2.id = C2XHF.CollectionLevel2_Id
-                    inner join ParHeaderField phf on phf.Id = C2XHF.ParHeaderField_Id
-                    left join ParMultipleValues pmv on C2XHF.value = cast(PMV.Id as varchar(500))
+                    from CollectionLevel2XParHeaderField C2XHF WITH (NOLOCK)
+                    inner join CollectionLevel2 c2 WITH (NOLOCK) on c2.id = C2XHF.CollectionLevel2_Id
+                    inner join ParHeaderField phf WITH (NOLOCK) on phf.Id = C2XHF.ParHeaderField_Id
+                    left join ParMultipleValues pmv WITH (NOLOCK) on C2XHF.value = cast(PMV.Id as varchar(500))
                     where c2.parlevel1_id = { form.level1Id } 
                     	and c2.ParLevel2_Id = { form.level2Id }
                         and c2.UnitId = { form.unitId }
@@ -234,35 +234,77 @@ namespace SgqSystem.Controllers.Api.SIF
 
         private List<Coleta> GetColetas(FormularioParaRelatorioViewModel form)
         {
+
             var sql = $@"SELECT
-	pd.nCdProduto as Produto_Id
-   ,pd.cNmProduto as Produto
+	pd.nCdProduto AS Produto_Id
+   ,pd.cNmProduto AS Produto
    ,c2.CollectionDate
    ,p2.Id AS ParLevel2_Id
    ,p2.Name AS ParLevel2
-   ,c2.EvaluationNumber as Avaliacao
-   ,c2.Sample as Amostra
+   ,c2.EvaluationNumber AS Avaliacao
+   ,c2.Sample AS Amostra
    ,r3.ParLevel3_Id
-   ,r3.ParLevel3_Name as ParLevel3
-   ,L3G.Name as Level3Group
+   ,r3.ParLevel3_Name AS ParLevel3
+   ,(SELECT TOP 1
+			name
+		FROM ParLevel3Group WITH (NOLOCK)
+		WHERE id = (SELECT TOP 1
+				ParLevel3Group_Id
+			FROM ParLevel3Level2Level1 P321 WITH (NOLOCK)
+			INNER JOIN ParLevel3Level2 P32 WITH (NOLOCK)
+				ON P32.Id = P321.ParLevel3Level2_Id
+			WHERE 1 = 1
+			AND P321.ParLevel1_Id = c2.parLevel1_Id
+			AND r3.ParLevel3_Id = P32.ParLevel3_Id
+			AND P32.IsActive = 1
+			AND P321.Active = 1
+			AND c2.ParLevel2_Id = P32.ParLevel2_Id
+			AND (c2.UnitId = P32.ParCompany_Id
+			OR P32.ParCompany_Id IS NULL)
+			AND (c2.UnitId = P321.ParCompany_Id
+			OR P321.ParCompany_Id IS NULL)
+			ORDER BY P32.ParCompany_Id DESC, P321.ParCompany_Id DESC))
+	AS Level3Group
    ,r3.Id
    ,r3.IsConform
    ,r3.IsNotEvaluate
-FROM CollectionLevel2 C2
-	INNER JOIN CollectionLevel2XParHeaderField C2XHF ON c2.Id = C2XHF.CollectionLevel2_Id
-	INNER JOIN Produto pd ON C2XHF.value = CAST(pd.nCdProduto AS VARCHAR(500))
-	INNER JOIN Result_Level3 R3 ON R3.CollectionLevel2_Id = c2.Id
-	INNER JOIN parlevel2 P2 ON c2.ParLevel2_Id = p2.Id
-	INNER JOIN ParLevel3Level2 L3L2 ON r3.ParLevel3_Id = L3L2.ParLevel3_Id and c2.ParLevel2_Id = L3L2.ParLevel2_Id and (c2.UnitId = L3L2.ParCompany_Id or L3L2.ParCompany_Id is null)
-	LEFT JOIN ParLevel3Group L3G on L3G.Id = L3L2.ParLevel3Group_Id
+FROM CollectionLevel2 C2 WITH (NOLOCK)
+INNER JOIN CollectionLevel2XParHeaderField C2XHF WITH (NOLOCK)
+	ON c2.Id = C2XHF.CollectionLevel2_Id
+INNER JOIN Produto pd WITH (NOLOCK)
+	ON C2XHF.value = CAST(pd.nCdProduto AS VARCHAR(500))
+INNER JOIN Result_Level3 R3 WITH (NOLOCK)
+	ON R3.CollectionLevel2_Id = c2.Id
+INNER JOIN parlevel2 P2 WITH (NOLOCK)
+	ON c2.ParLevel2_Id = p2.Id
 WHERE 1 = 1
-	AND CAST(c2.CollectionDate AS DATE) = '{form._dataInicioSQL}'
-	AND c2.parlevel1_id = { form.level1Id }
-	AND c2.ParLevel2_Id = { form.level2Id }
-    AND c2.UnitId = { form.unitId }
-    AND c2.EvaluationNumber = { form.avaliacao }
- 	AND C2XHF.ParFieldType_Id = 2
-ORDER BY L3G.Name DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
+AND CAST(c2.CollectionDate AS DATE) = '{form._dataInicioSQL}'
+AND c2.parlevel1_id = { form.level1Id }
+AND c2.ParLevel2_Id = { form.level2Id }
+AND c2.UnitId = { form.unitId }
+AND c2.EvaluationNumber = { form.avaliacao }
+AND C2XHF.ParFieldType_Id = 2
+ORDER BY (SELECT TOP 1
+		name
+	FROM ParLevel3Group WITH (NOLOCK)
+	WHERE id = (SELECT TOP 1
+			ParLevel3Group_Id
+		FROM ParLevel3Level2Level1 P321 WITH (NOLOCK)
+		INNER JOIN ParLevel3Level2 P32 WITH (NOLOCK)
+			ON P32.Id = P321.ParLevel3Level2_Id
+		WHERE 1 = 1
+		AND P321.ParLevel1_Id = c2.parLevel1_Id
+		AND r3.ParLevel3_Id = P32.ParLevel3_Id
+		AND P32.IsActive = 1
+		AND P321.Active = 1
+		AND c2.ParLevel2_Id = P32.ParLevel2_Id
+		AND (c2.UnitId = P32.ParCompany_Id
+		OR P32.ParCompany_Id IS NULL)
+		AND (c2.UnitId = P321.ParCompany_Id
+		OR P321.ParCompany_Id IS NULL)
+		ORDER BY P32.ParCompany_Id DESC, P321.ParCompany_Id DESC))
+DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
+
 
             using (var db = new SgqDbDevEntities())
             {

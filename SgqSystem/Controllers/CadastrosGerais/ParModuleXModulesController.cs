@@ -18,7 +18,7 @@ namespace SgqSystem.Controllers
         // GET: ParModuleXModules
         public async Task<ActionResult> Index()
         {
-            var parModuleXModule = db.ParModuleXModule.Include(p => p.ParModule).Include(p => p.ParModule1);
+            var parModuleXModule = db.ParModuleXModule.Include(p => p.ParModuleChild).Include(p => p.ParModuleParent);
             return View(await parModuleXModule.ToListAsync());
         }
 

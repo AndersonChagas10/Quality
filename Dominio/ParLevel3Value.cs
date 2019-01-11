@@ -37,20 +37,28 @@ namespace Dominio
         [StringLength(100)]
         public string DynamicValue { get; set; }
 
+        [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 
+        [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }
 
+        [ForeignKey("ParCompany_Id")]
         public virtual ParLevel2 ParLevel2 { get; set; }
 
+        [ForeignKey("ParLevel3_Id")]
         public virtual ParLevel3 ParLevel3 { get; set; }
 
+        [ForeignKey("ParLevel3BoolFalse_Id")]
         public virtual ParLevel3BoolFalse ParLevel3BoolFalse { get; set; }
 
+        [ForeignKey("ParLevel3BoolTrue_Id")]
         public virtual ParLevel3BoolTrue ParLevel3BoolTrue { get; set; }
 
+        [ForeignKey("ParLevel3InputType_Id")]
         public virtual ParLevel3InputType ParLevel3InputType { get; set; }
 
+        [ForeignKey("ParMeasurementUnit_Id")]
         public virtual ParMeasurementUnit ParMeasurementUnit { get; set; }
     }
 }

@@ -32,12 +32,16 @@ namespace Dominio
 
         public int? Unidade { get; set; }
 
+        [ForeignKey("Departamento")]
         public virtual Departamentos Departamentos { get; set; }
 
+        [ForeignKey("Operacao")]
         public virtual Operacoes Operacoes { get; set; }
 
+        [ForeignKey("Tarefa")]
         public virtual Tarefas Tarefas { get; set; }
 
+        [ForeignKey("Unidade")]
         public virtual Unidades Unidades { get; set; }
     }
 }

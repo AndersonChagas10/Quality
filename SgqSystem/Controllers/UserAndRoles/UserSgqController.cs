@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.Mvc;
 using SgqSystem.Secirity;
 using DTO;
+using System.Data.Entity.SqlServer;
 
 namespace SgqSystem.Controllers
 {
@@ -87,6 +88,8 @@ namespace SgqSystem.Controllers
 
             List<ParCompanyXUserSgq> parCompanyXUserSgq = db.ParCompanyXUserSgq.Where(x => x.UserSgq_Id == idUsuario).ToList();
 
+            var Perfis = db.Perfil.ToList();
+
             var model = new UserViewModel()
             {
                 Id = userSgq.Id,
@@ -97,7 +100,7 @@ namespace SgqSystem.Controllers
                 Password = userSgq.Password,
                 Phone = userSgq.Phone,
                 ParCompany_Id = userSgq.ParCompany_Id,
-                Empresa = parCompanyXUserSgq != null ? (from comp in parCompanyXUserSgq select new EmpresaDTO { Role = comp.Role, Nome = comp.ParCompany.Name }).ToList() : new List<EmpresaDTO>()
+                Empresa = parCompanyXUserSgq != null ? (from comp in parCompanyXUserSgq select new EmpresaDTO { Role = comp.Role, Nome = comp.ParCompany.Name, Perfil = string.IsNullOrEmpty(comp.Role) ? "" : Perfis.FirstOrDefault(x => x.nCdPerfil.ToString() == comp.Role).cNmPerfil }).ToList() : new List<EmpresaDTO>()
             };
 
             return View(model);

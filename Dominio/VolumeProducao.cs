@@ -64,10 +64,13 @@ namespace Dominio
 
         public DateTime? DataAlteracao { get; set; }
 
+        [ForeignKey("Departamento")]
         public virtual Departamentos Departamentos { get; set; }
 
+        [ForeignKey("Operacao")]
         public virtual Operacoes Operacoes { get; set; }
 
+        [ForeignKey("Unidade")]
         public virtual Unidades Unidades { get; set; }
     }
 }
