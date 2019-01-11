@@ -85,7 +85,7 @@
     function abrirModalAgendamento(linha) {
         debugger
         var obj = $(linha).parents('tr').data();
-        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
+        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "@Resources.Resource.diary_with_interval") {
             $("#tabelaAgendamentoIntervalo").attr('style', '');
             $("#tabelaAgendamento").attr('hidden', 'hidden');
         } else {
@@ -99,7 +99,7 @@
 
         BuscarTurnos(id);
 
-        if (!$("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
+        if (!$("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "@Resources.Resource.diary_with_interval") {
             $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
             $("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
             $("#tabelaAgendamento tbody").html("");
@@ -125,12 +125,12 @@
                 dataType: 'json',
                 success: function (data) {
                     debugger
-                    if (!($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo"))
+                    if (!($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "@Resources.Resource.diary_with_interval"))
                         MontaNovaLinhaAgendamento(null);
                     else
                          MontaNovaLinhaAgendamentoIntervalo(null);
                     data.forEach(function (item) {
-                        if (!($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo"))
+                        if (!($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "@Resources.Resource.diary_with_interval"))
                             MontaNovaLinhaAgendamento(item, false);
                         else
                             MontaNovaLinhaAgendamentoIntervalo(item, false);
@@ -274,9 +274,9 @@
         listaTabelaAgendamentoIntervalo = $("#tabelaAgendamentoIntervalo tbody tr").not(':first');
 
         if ($("#tabelaAgendamentoIntervalo tbody tr").find("[data-column=inpIntervalo]").val() !== '') {
-            openMessageModal('Dados não inseridos na lista, adicione antes de salvar!', null);
+            openMessageModal('@Resources.Resource.data_not_entered_on_list', null);
         } else if (listaTabelaAgendamentoIntervalo.length <= 0) {
-            openMessageModal('Nenhum registro inserido na lista!', null);
+            openMessageModal('@Resources.Resource.no_data_in_list', null);
         } else {
             listaTabelaAgendamentoIntervalo.each(function (index, item) {
                 debugger
@@ -313,7 +313,7 @@
                             MontaNovaLinhaAgendamentoIntervalo(item, false);
                         });
 
-                        openMessageModal("Dados salvos com sucesso", null);
+                        openMessageModal("@Resources.Resource.saved_successfully", null);
                         $('#modalAgendamento').modal('hide');
                         ContadorLinhasIntervalo();
                     },
@@ -324,7 +324,7 @@
                     }
                 });
             } else {
-                openMessageModal("Dados informados inválidos. Verifique e salve as alterações!", null);
+                openMessageModal("@Resources.Resource.invalid_reported_data", null);
             }
         }
     }
@@ -332,7 +332,7 @@
 
     $("#modalAgendamento").on('click', "#btnSalvar", function () {
         debugger
-        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
+        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "@Resources.Resource.diary_with_interval") {
             SalvarAgendamentoIntervalo();
         } else {
         var listaTabelaAgendamento = [];
@@ -342,10 +342,10 @@
         if ($("#tabelaAgendamento tbody tr").find("[data-column=inpInicio]").val() !== ''
             || $("#tabelaAgendamento tbody tr").find("[data-column=inpTermino]").val() !== ''
             || $("#tabelaAgendamento tbody tr").find("[data-column=inpAvaliacao]").val() !== '') {
-            openMessageModal('Dados não inseridos na lista, adicione antes de salvar!', null);
+            openMessageModal('@Resources.Resource.data_not_entered_on_list', null);
         }
         else if (listaTabelaAgendamento.length <= 0) {
-            openMessageModal('Nenhum registro inserido na lista!', null);
+            openMessageModal('@Resources.Resource.no_data_in_list', null);
         } else {
                 listaTabelaAgendamento.each(function (index, item) {
                     form = {
@@ -382,7 +382,7 @@
                                 MontaNovaLinhaAgendamento(item, false);
                             });
 
-                            openMessageModal("Dados salvos com sucesso", null);
+                            openMessageModal("@Resources.Resource.saved_successfully", null);
                             $('#modalAgendamento').modal('hide');
                             ContadorLinhas();
                         },
@@ -393,7 +393,7 @@
                         }
                     });
                 } else {
-                    openMessageModal("Dados informados inválidos. Verifique e salve as alterações!", null);
+                    openMessageModal("@Resources.Resource.invalid_reported_data", null);
                 }
              }
         }
@@ -493,7 +493,7 @@
 
         //Validar preenchido
         if (intervalo == null || intervalo == undefined || intervalo < 0 || intervalo === "") {
-            openMessageModal("O campo Intervalo deve ser preechido", null);
+            openMessageModal("@Resources.Resource.range_need_value", null);
             return false;
         }
 
@@ -528,7 +528,7 @@
         }
 
         if (!frequenciaIsValid(formato, parseInt(inicio), parseInt(termino))) {
-            openMessageModal("Intervalo de frequência inválido", null);
+            openMessageModal("@Resources.Resource.invalid_range", null);
             return false;
         }
 
@@ -537,8 +537,7 @@
             if (valorAvaliacao >= $(linha).find("[data-column=inpAvaliacao]").val()) {
 
                 var form = {
-                    Inicio: $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() !== "Diario com Intervalo" ? $(linha).find("[data-column=inpInicio]").val() : $(linha).find("[data-column=inpIntervalo]").val(),
-                    //Inicio: $(linha).find("[data-column=inpInicio]").val(),
+                    Inicio: $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() !== "@Resources.Resource.diary_with_interval" ? $(linha).find("[data-column=inpInicio]").val() : $(linha).find("[data-column=inpIntervalo]").val(),
                     Fim: $(linha).find("[data-column=inpTermino]").val(),
                     Av: $(linha).find("[data-column=inpAvaliacao]").val(),
                     Shift_Id: $(linha).find("[data-column=slAgendamento]").val(),
@@ -550,7 +549,7 @@
 
 
             } else {
-                openMessageModal('Valor da avaliação maior do que o permitido!', null);
+                openMessageModal('@Resources.Resource.valuation_value_greater', null);
             }
 
     });
@@ -610,7 +609,7 @@
         }).length > 0;
 
         if (isDuplicated) {
-            openMessageModal("Já existe um agendamento para esta avaliação ou turno", null);
+            openMessageModal("@Resources.Resource.schedule_already_hava_data ", null);
             return false;
         }
         return true;

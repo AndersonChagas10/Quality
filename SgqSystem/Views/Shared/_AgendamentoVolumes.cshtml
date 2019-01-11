@@ -2,44 +2,44 @@
 
 <div id="cadastroIntervalos" class="hidden">
     <div class="form-group">
-        @Html.Label("Tipo de Frequencia", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-offset-2 col-md-10">
-
-            <select id="tipoFrequencia" name="tipoFrequencia" class="form-control valid">
-                <option value="Diario com Intervalo" id="diarioFrequencia">Diario com Frequencia</option>
-                <option value="Diario" id="diario">Diario</option>
-            </select>
-
-        </div>
-    </div>
-
-    <div class="form-group" id="divIntervalo">
-        @Html.Label("Intervalo em minutos", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label(Resources.Resource.frequency_type, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <input id="intervalo" type="time" min="0" class="notAllowNegative" />
+            <select id="tipoFrequencia" name="tipoFrequencia" class="form-control valid">
+                <option value="Diario com Intervalo" id="diarioFrequencia">@Resources.Resource.diary_with_interval</option>
+                <option value="Diario" id="diario">@Resources.Resource.diary</option>
+            </select>
         </div>
     </div>
-
-    <table id="tabelaAgendamento" style="max-width: 100%" hidden="hidden" class="table table-condensed no-margin margin-top">
-        <thead>
-            <tr>
-                <th id="headAvaliacao">Avaliação</th>
-                <th id="headInicio">Início</th>
-                <th id="headFim">Fim</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <div class="form-group" id="divIntervalo">
+        @Html.Label("Intervalo", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input id="intervalo" type="time" min="0" class=" form-control notAllowNegative" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10 pull-right">
+            <table id="tabelaAgendamento" style="max-width: 100%" hidden="hidden" class="table table-condensed no-margin margin-top">
+                <thead>
+                    <tr>
+                        <th id="headAvaliacao">Avaliação</th>
+                        <th id="headInicio">Início</th>
+                        <th id="headFim">Fim</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 
 <script>
     var listaAvaliacaoInicioFim = [];
     $(document).ready(function () {
-
+        debugger
         if ($("#Agendamento").val() !== "") {
             var tipoFrequencia = $("#Agendamento").val();
-            if (tipoFrequencia.indexOf("|") < 0) {
+            if (tipoFrequencia.indexOf("-") < 0) {
 
                 $("#cadastroIntervalos").removeClass('hidden');
                 $("#tabelaAgendamento").attr('hidden', 'hidden');
@@ -70,7 +70,7 @@
         });
 
         $("#tipoFrequencia").on('change', function () {
-            if ($("#tipoFrequencia :selected").text() === "Diario com Frequencia") {
+            if ($("#tipoFrequencia :selected").text() === "@Resources.Resource.diary_with_interval") {
                 $("#tabelaAgendamento").attr('hidden', 'hidden');
                 $("#divIntervalo").removeAttr('hidden');
                 $("#tabelaAgendamento tbody").html("");
@@ -83,6 +83,7 @@
     });
 
     function MontarTabelaVolume() {
+        debugger
         var agendamentosCarregados = $("#Agendamento").val();
         var listaAgendamentoSeparados = [];
         $("#tabelaAgendamento tbody").html("");
@@ -91,36 +92,42 @@
         for (var i = 1; i <= quantidadeAvaliacoes; i++) {
             $("#tabelaAgendamento tbody").append("<tr>"
                 + '<td><input data-column="inpValorAvaliacao" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
-                + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
-                + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpFim" /></td>'
+                + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
+                + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpFim" /></td>'
                 + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
                 + "</tr>");
 
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpValorAvaliacao]').val(i);
 
         }
-    
-        if (agendamentosCarregados !== "" && agendamentosCarregados.indexOf('|') > 0) {
+        debugger
+        if (agendamentosCarregados !== "" && agendamentosCarregados.indexOf('|') > 0 || agendamentosCarregados.length === 5) {
 
             for (var j = 0; j < listaAgendamentosCarregados.length; j++) {
                 listaAgendamentoSeparados.push(listaAgendamentosCarregados[j].split('-'));
             }
             for (var x = 0; x < listaAgendamentoSeparados.length; x++) {
-                $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpValorAvaliacao]').val(listaAgendamentoSeparados[x][0]);
-                $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpInicio]').val(listaAgendamentoSeparados[x][1]);
-                $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpFim]').val(listaAgendamentoSeparados[x][2]);
+                if (x === 0 && $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpValorAvaliacao]').val() !== "1") {
+                    $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpValorAvaliacao]').val(listaAgendamentoSeparados[x][0]);
+                    $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpInicio]').val(listaAgendamentoSeparados[x][1]);
+                    $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpFim]').val(listaAgendamentoSeparados[x][2]);
+                } else {
+                    $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpInicio]').val(listaAgendamentoSeparados[x][1]);
+                    $("#tabelaAgendamento tbody tr:nth(" + x + ")").find('[data-column=inpFim]').val(listaAgendamentoSeparados[x][2]);
+                }
             }
         }
     }
 
 
     function preencheAgendamento(e) {
-        e.preventDefault();
-        if ($("#tipoFrequencia :selected").text() === "Diario com Frequencia") {
+        debugger
+        if ($("#tipoFrequencia :selected").text() === "@Resources.Resource.diary_with_interval") {
             if ($("#intervalo").val() !== "")
                 $("#Agendamento").val($("#intervalo").val());
             else {
-                openMessageModal("Valor do campo intervalo não pode ser nulo!", null);
+                e.preventDefault();
+                openMessageModal('@Resources.Resource.interval_null_value', null);
                 return false;
             }
         } else {
@@ -131,25 +138,47 @@
 
             listaTabelaAgendamento.each(function (index, item) {
                 var form = [];
-                //[AVALIACAO,INICIO,FIM]
+                //campo agendamento é montado da seguinte forma: [AVALIACAO,INICIO,FIM | AVALIACAO,INICIO,FIM]
                 form.push($(item).find("[data-column=inpValorAvaliacao]").val()
                     , $(item).find("[data-column=inpInicio]").val()
                     , $(item).find("[data-column=inpFim]").val());
                 contador++;
-                if (parseInt($(item).find("[data-column=inpInicio]").val()) > parseInt($(item).find("[data-column=inpFim]").val())
-                    || $(item).find("[data-column=inpInicio]").val() === "" || $(item).find("[data-column=inpFim]").val() === "") {                  
+                if (!validaAgendamento(item)) {
                     contadorErros.push(contador);
                 }
                 listaAvaliacaoInicioFim.push(form.join('-'));
             });
 
-            if (contadorErros === 0)
+            if (contadorErros.length === 0)
                 $("#Agendamento").val(listaAvaliacaoInicioFim.join('|'));
             else {
-                openMessageModal("As seguintes Avaliações possuem valores inválidos: " + contadorErros, null);
+                e.preventDefault();
+                openMessageModal('@Resources.Resource.invalid_rating_values' + ' ' + contadorErros, null);
                 return false;
             }
         }
     }
+
+    function validaAgendamento(item) {
+        if (parseInt($(item).find("[data-column=inpInicio]").val()) > parseInt($(item).find("[data-column=inpFim]").val())
+            || $(item).find("[data-column=inpInicio]").val() === "" || $(item).find("[data-column=inpFim]").val() === ""
+            || parseInt($(item).find("[data-column=inpInicio]").val()) < 0 || parseInt($(item).find("[data-column=inpFim]").val()) < 0) {
+            return false;
+        }
+
+        if (parseInt($(item).find("[data-column=inpInicio]").val()) > 24 || parseInt($(item).find("[data-column=inpFim]").val()) > 24) {
+            return false;
+        }
+        return true;
+    }
+
+    $("#cadastroIntervalos").on('input', '[data-column="inpInicio"] , [data-column="inpFim"]', function () {
+        if (parseInt($(this).val()) > 24) {
+            $(this).addClass('alert-danger');
+            return false;
+        } else {
+            $(this).removeClass('alert-danger');
+        }
+    });
 
 </script>

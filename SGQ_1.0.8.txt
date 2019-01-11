@@ -94,12 +94,24 @@ IF COL_LENGTH('VolumeVacuoGRD','Agendamento') IS NULL
 GO
 
 ALTER TABLE ParEvaluationSchedule
-  ALTER COLUMN Inicio VARCHAR(5) NOT NULL;
+ALTER COLUMN Inicio VARCHAR(5) NULL;
+
 GO
 
 ALTER TABLE ParEvaluationSchedule
-  ALTER COLUMN Fim VARCHAR(5) NOT NULL;
+ALTER COLUMN Fim VARCHAR(5) NULL;
+
+GO
+IF COL_LENGTH('ParEvaluationSchedule','Intervalo') IS NULL
+    BEGIN	
+		ALTER TABLE ParEvaluationSchedule
+			add Intervalo VARCHAR(5) NULL;
+    END
 GO
 
-ALTER TABLE ParEvaluationSchedule
-  add Intervalo VARCHAR(5) NULL;
+IF COL_LENGTH('VolumeCepRecortes','Agendamento') IS NULL
+    BEGIN	
+		ALTER TABLE VolumeCepRecortes
+			add Agendamento VARCHAR(255) NULL;
+    END
+GO

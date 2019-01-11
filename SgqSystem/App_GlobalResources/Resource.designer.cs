@@ -1501,6 +1501,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data not entered in the list, add before saving!.
+        /// </summary>
+        internal static string data_not_entered_on_list {
+            get {
+                return ResourceManager.GetString("data_not_entered_on_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is not saved data. Do want to continue?.
         /// </summary>
         internal static string data_not_saved_continue {
@@ -1839,6 +1848,24 @@ namespace Resources {
         internal static string df {
             get {
                 return ResourceManager.GetString("df", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diary.
+        /// </summary>
+        internal static string diary {
+            get {
+                return ResourceManager.GetString("diary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diary with Interval.
+        /// </summary>
+        internal static string diary_with_interval {
+            get {
+                return ResourceManager.GetString("diary_with_interval", resourceCulture);
             }
         }
         
@@ -2487,6 +2514,15 @@ namespace Resources {
         internal static string frequency_popover {
             get {
                 return ResourceManager.GetString("frequency_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frequency Type.
+        /// </summary>
+        internal static string frequency_type {
+            get {
+                return ResourceManager.GetString("frequency_type", resourceCulture);
             }
         }
         
@@ -3148,6 +3184,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interval  field value can not be null!.
+        /// </summary>
+        internal static string interval_null_value {
+            get {
+                return ResourceManager.GetString("interval_null_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid evaluations number.
         /// </summary>
         internal static string invalid_evaluations_number {
@@ -3162,6 +3207,33 @@ namespace Resources {
         internal static string invalid_password {
             get {
                 return ResourceManager.GetString("invalid_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid frequency range.
+        /// </summary>
+        internal static string invalid_range {
+            get {
+                return ResourceManager.GetString("invalid_range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following Ratings have invalid values: .
+        /// </summary>
+        internal static string invalid_rating_values {
+            get {
+                return ResourceManager.GetString("invalid_rating_values", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid data reported. Check and save changes!.
+        /// </summary>
+        internal static string invalid_reported_data {
+            get {
+                return ResourceManager.GetString("invalid_reported_data", resourceCulture);
             }
         }
         
@@ -4624,6 +4696,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No record inserted in the list!.
+        /// </summary>
+        internal static string no_data_in_list {
+            get {
+                return ResourceManager.GetString("no_data_in_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data to send.
         /// </summary>
         internal static string no_data_to_send {
@@ -5443,6 +5524,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Range field must be filled in.
+        /// </summary>
+        internal static string range_need_value {
+            get {
+                return ResourceManager.GetString("range_need_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reactivate.
         /// </summary>
         internal static string reactivate {
@@ -6024,6 +6114,15 @@ namespace Resources {
         internal static string saving_the_level3 {
             get {
                 return ResourceManager.GetString("saving_the_level3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is already a schedule for this evaluation or shift.
+        /// </summary>
+        internal static string schedule_already_hava_data {
+            get {
+                return ResourceManager.GetString("schedule_already_hava_data", resourceCulture);
             }
         }
         
@@ -7500,6 +7599,15 @@ namespace Resources {
         internal static string validation {
             get {
                 return ResourceManager.GetString("validation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valuation value greater than allowed!.
+        /// </summary>
+        internal static string valuation_value_greater {
+            get {
+                return ResourceManager.GetString("valuation_value_greater", resourceCulture);
             }
         }
         
