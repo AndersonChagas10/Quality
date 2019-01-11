@@ -2253,4 +2253,40 @@
   <data name="scheduling" xml:space="preserve">
     <value>Scheduling</value>
   </data>
+  <data name="data_not_entered_on_list" xml:space="preserve">
+    <value>Data not entered in the list, add before saving!</value>
+  </data>
+  <data name="diary" xml:space="preserve">
+    <value>Diary</value>
+  </data>
+  <data name="diary_with_interval" xml:space="preserve">
+    <value>Diary with Interval</value>
+  </data>
+  <data name="frequency_type" xml:space="preserve">
+    <value>Frequency Type</value>
+  </data>
+  <data name="interval_null_value" xml:space="preserve">
+    <value>Interval field value can not be null!</value>
+  </data>
+  <data name="invalid_range" xml:space="preserve">
+    <value>Invalid frequency range.</value>
+  </data>
+  <data name="invalid_rating_values" xml:space="preserve">
+    <value>The following Ratings have invalid values: </value>
+  </data>
+  <data name="invalid_reported_data" xml:space="preserve">
+    <value>Invalid data reported. Check and save changes!</value>
+  </data>
+  <data name="no_data_in_list" xml:space="preserve">
+    <value>No record inserted in the list!</value>
+  </data>
+  <data name="range_need_value" xml:space="preserve">
+    <value>The Range field must be filled in.</value>
+  </data>
+  <data name="schedule_already_hava_data" xml:space="preserve">
+    <value>There is already a schedule for this evaluation or shift</value>
+  </data>
+  <data name="valuation_value_greater" xml:space="preserve">
+    <value>Valuation value greater than allowed!</value>
+  </data>
 </root>
