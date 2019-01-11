@@ -33,9 +33,11 @@ namespace SgqSystem.Controllers.Api
         {
             foreach (var item in listaAgendamento)
             {
-                //if (item.Inicio.ToString().Contains(":")) {
-                //    return null;
-                //}
+                if (item.Intervalo != null)
+                {
+                    item.Inicio = null;
+                    item.Fim = null;
+                }
 
                 if (item.isDeletar && item.Id > 0)
                 {
