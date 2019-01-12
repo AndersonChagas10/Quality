@@ -70,3 +70,16 @@ create table DicionarioEstatico(
 )
 
 GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3XParDepartment' AND xtype='U')
+CREATE TABLE ParLevel3XParDepartment(
+	[Id] [int] IDENTITY(1,1) NOT NULL primary key,
+	[ParDepartment_Id] [int] NOT NULL FOREIGN KEY REFERENCES ParDepartment(Id),
+	[ParLevel1_Id] [int] NULL FOREIGN KEY REFERENCES ParLevel1(Id),
+	[ParLevel2_Id] [int] NULL FOREIGN KEY REFERENCES ParLevel2(Id),
+	[ParLevel3_Id] [int] NULL FOREIGN KEY REFERENCES ParLevel3(Id),
+	[ParCompany_Id] [int] NULL FOREIGN KEY REFERENCES ParCompany(Id),
+	[AddDate] [datetime] NOT NULL,
+	[AlterDate] [datetime] NULL,
+	[IsActive] [bit] NOT NULL DEFAULT ((1))
+)

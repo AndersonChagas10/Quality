@@ -492,7 +492,10 @@ namespace Data.Repositories
         /// </summary>
         /// <param name="paramLevel3"></param>
         /// <param name="paramLevel3Value"></param>
-        public void SaveParLevel3(ParLevel3 paramLevel3, List<ParLevel3Value> listParamLevel3Value, List<ParLevel3EvaluationSample> listParLevel3EvaluationSample, List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos, int level1Id)
+        public void SaveParLevel3(ParLevel3 paramLevel3, List<ParLevel3Value> listParamLevel3Value, 
+            List<ParLevel3EvaluationSample> listParLevel3EvaluationSample, 
+            List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos, 
+            int level1Id, List<ParLevel3XParDepartment> listSaveParLevel3XDepartment)
         {
             using (var ts = db.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
@@ -508,6 +511,10 @@ namespace Data.Repositories
                     if (listParLevel3EvaluationSample.Count() > 0)
                         AddUpdateParLevel3EvaluationSample(listParLevel3EvaluationSample, paramLevel3.Id);
 
+                if (listSaveParLevel3XDepartment != null)
+                    if (listSaveParLevel3XDepartment.Count() > 0)
+                        AddUpdateParLevel3XDepartment(listSaveParLevel3XDepartment, paramLevel3.Id);
+                
                 if (listParRelapse != null)
                     foreach (var parRelapse in listParRelapse)
                         SaveReincidenciaLevel3(parRelapse, paramLevel3.Id);
@@ -576,7 +583,7 @@ namespace Data.Repositories
 
             db.SaveChanges();
         }
-        
+
         public void AddUpdateParLevel3EvaluationSample(List<ParLevel3EvaluationSample> paramLevel3EvaluationSample, int ParLevel3_Id)
         {
             paramLevel3EvaluationSample.ForEach(r => r.ParLevel3_Id = ParLevel3_Id);
@@ -592,6 +599,29 @@ namespace Data.Repositories
                 {
                     Guard.verifyDate(i, "AlterDate");
                     db.ParLevel3EvaluationSample.Attach(i);
+                    db.Entry(i).State = EntityState.Modified;
+                    db.Entry(i).Property(e => e.AddDate).IsModified = false;
+                }
+            }
+
+            db.SaveChanges();
+        }
+
+        public void AddUpdateParLevel3XDepartment(List<ParLevel3XParDepartment> paramLevel3XParDepartment, int ParLevel3_Id)
+        {
+            paramLevel3XParDepartment.ForEach(r => r.ParLevel3_Id = ParLevel3_Id);
+
+            if (paramLevel3XParDepartment.Any(r => r.Id == 0))
+            {
+                db.ParLevel3XParDepartment.AddRange(paramLevel3XParDepartment.Where(r => r.Id == 0));
+            }
+
+            if (paramLevel3XParDepartment.Any(r => r.Id > 0))
+            {
+                foreach (var i in paramLevel3XParDepartment.Where(r => r.Id > 0))
+                {
+                    Guard.verifyDate(i, "AlterDate");
+                    db.ParLevel3XParDepartment.Attach(i);
                     db.Entry(i).State = EntityState.Modified;
                     db.Entry(i).Property(e => e.AddDate).IsModified = false;
                 }

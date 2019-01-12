@@ -124,6 +124,7 @@
     <Compile Include="ParLevel3.cs" />
     <Compile Include="ParLevel3BoolFalse.cs" />
     <Compile Include="ParLevel3BoolTrue.cs" />
+    <Compile Include="ParLevel3XParDepartment.cs" />
     <Compile Include="ParLevel3EvaluationSample.cs" />
     <Compile Include="ParLevel3Group.cs" />
     <Compile Include="ParLevel3InputType.cs" />
