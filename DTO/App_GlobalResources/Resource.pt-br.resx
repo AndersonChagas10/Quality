@@ -2274,4 +2274,10 @@
   <data name="valuation_value_greater" xml:space="preserve">
     <value>Valor da avaliação maior do que o permitido!</value>
   </data>
+  <data name="end" xml:space="preserve">
+    <value>Fim</value>
+  </data>
+  <data name="start" xml:space="preserve">
+    <value>Início</value>
+  </data>
 </root>

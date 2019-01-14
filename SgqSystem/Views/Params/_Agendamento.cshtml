@@ -98,8 +98,8 @@
         var id = parseInt(obj.evaluationId);
 
         BuscarTurnos(id);
-
-        if (!$("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "@Resources.Resource.diary_with_interval") {
+        debugger
+        if (!$("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === '@Resources.Resource.diary_with_interval') {
             $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
             $("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
             $("#tabelaAgendamento tbody").html("");
@@ -107,6 +107,22 @@
             $("[data-column=inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
             $("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
             $("#tabelaAgendamentoIntervalo tbody").html("");
+        }
+        $("#tabelaAgendamentoIntervalo tbody").html("");
+        $("#tabelaAgendamento tbody").html("");
+    }
+
+
+    function EditaLinha(data, linha) {
+        if (!!data && data.Id > 0) {
+            $(linha).data(data);
+            $(linha).find('[data-column=inpInicio]').val(data.Inicio);
+            $(linha).find('[data-column=inpTermino]').val(data.Fim);
+            $(linha).find('[data-column=inpAvaliacao]').val(data.Av);
+            $(linha).find('[data-column=inpId]').val(data.Id);
+            $(linha).find("#btnSalvarAgendamento").removeClass('btn-primary fa fa-plus').addClass('btn-success fa fa-pencil-square-o').text('');
+            $(linha).find(".btnDeletarAgendamento").removeClass('hidden');
+            $(linha).find("[data-column=slAgendamento]").val(data.Shift_Id);
         }
     }
 
@@ -586,17 +602,17 @@
     function camposIsValid(avaliacao, inicio, termino, turno) {
         debugger
         if (avaliacao == null || avaliacao == undefined || avaliacao < 0 || avaliacao === "") {
-            openMessageModal("O campo Avaliação deve ser preechido", null);
+            openMessageModal('@Resources.Resource.required_field_was_not_filled'+ " "+ '@Resources.Resource.evaluation', null);
             return false;
         }
 
         if (inicio == null || inicio == undefined || inicio < 0 || inicio === "") {
-            openMessageModal("O campo Inicio deve ser preechido", null);
+            openMessageModal('@Resources.Resource.required_field_was_not_filled'+ " "+ '@Resources.Resource.start', null);
             return false;
         }
 
         if (termino == null || termino == undefined || termino < 0 || termino === "") {
-            openMessageModal("O campo Fim deve ser preechido", null);
+            openMessageModal('@Resources.Resource.required_field_was_not_filled'+ " "+ '@Resources.Resource.end', null);
             return false;
         }
 

@@ -1798,6 +1798,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End.
+        /// </summary>
+        internal static string end {
+            get {
+                return ResourceManager.GetString("end", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter.
         /// </summary>
         internal static string enter {
@@ -5682,6 +5691,15 @@ namespace Resources {
         internal static string standard {
             get {
                 return ResourceManager.GetString("standard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string start {
+            get {
+                return ResourceManager.GetString("start", resourceCulture);
             }
         }
         
