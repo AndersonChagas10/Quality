@@ -17,8 +17,10 @@ namespace Dominio
 
         public string Role { get; set; }
 
+        [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 
+        [ForeignKey("UserSgq_Id")]
         public virtual UserSgq UserSgq { get; set; }
     }
 }

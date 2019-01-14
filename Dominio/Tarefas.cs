@@ -59,19 +59,19 @@ namespace Dominio
 
         public bool? InformarPesagem { get; set; }
 
+        [ForeignKey("Departamento")]
         public virtual Departamentos Departamentos { get; set; }
 
+        [ForeignKey("Operacao")]
         public virtual Operacoes Operacoes { get; set; }
 
+        [ForeignKey("Produto")]
         public virtual Produtos Produtos { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TarefaAmostras> TarefaAmostras { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TarefaAvaliacoes> TarefaAvaliacoes { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TarefaMonitoramentos> TarefaMonitoramentos { get; set; }
     }
 }

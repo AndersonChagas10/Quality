@@ -26,8 +26,10 @@ namespace Dominio
 
         public int? CurrentEvaluation { get; set; }
 
+        [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 
+        [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }

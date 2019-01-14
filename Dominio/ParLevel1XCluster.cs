@@ -25,10 +25,13 @@ namespace Dominio
 
         public DateTime? EffectiveDate { get; set; }
 
+        [ForeignKey("ParCluster_Id")]
         public virtual ParCluster ParCluster { get; set; }
 
+        [ForeignKey("ParCriticalLevel_Id")]
         public virtual ParCriticalLevel ParCriticalLevel { get; set; }
 
+        [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }

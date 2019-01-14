@@ -24,8 +24,10 @@ namespace Dominio
         [Column(TypeName = "date")]
         public DateTime? ValidoApartirDe { get; set; }
 
+        [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 
+        [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }

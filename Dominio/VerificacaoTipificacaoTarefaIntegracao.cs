@@ -15,6 +15,7 @@ namespace Dominio
 
         public int CaracteristicaTipificacaoId { get; set; }
 
+        [ForeignKey("TarefaId")]
         public virtual Monitoramentos Monitoramentos { get; set; }
     }
 }

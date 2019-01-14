@@ -2994,7 +2994,7 @@ namespace SgqSystem.Services
 
                           AND cast(C2.CollectionDate as Date) BETWEEN
                           CASE
-                          WHEN(L2.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario
+                          WHEN(L2.ParFrequency_Id) IN(1, 2, 3, 10) THEN @datadiario
                           WHEN(L2.ParFrequency_Id) IN(4) THEN @datasemanal
                           WHEN(L2.ParFrequency_Id) IN(5) THEN @dataquinzenal
                           WHEN(L2.ParFrequency_Id) IN(6) THEN @datamensal
@@ -3097,7 +3097,7 @@ namespace SgqSystem.Services
 
 
                          where unitid = @unidade
-                         and p2.ParFrequency_Id in (1, 2, 3)
+                         and p2.ParFrequency_Id in (1, 2, 3, 10)
                          and CAST(CollectionDate AS DATE) between @datadiario and @data
 
 
@@ -3976,6 +3976,11 @@ function PesoHB(self){
 					$(ultimoLevel3).addClass('calculoPesoHB');
 					$(ultimoLevel3).find('.col-xs-4 .levelName').text('Média peso HB');
 					$(ultimoLevel3).find('.col-xs-3 .levelName').text('Min: ' + (minimo + tara) + 'g');
+
+
+                    if(parseInt($('span.sampleCurrent:visible').text()) <= 1)
+                        mediaPesoHB = [];
+
 					$(ultimoLevel3).find('.col-xs-3.counters').addClass('medicaCalculoPesoHB').text('Média: ' + CalculoMediaPesoHB() + 'g');
 					$(ultimoLevel3).find('.col-xs-2').html('');
 					
@@ -4372,6 +4377,9 @@ function calcularSensorial(list){
                 List<string> frequencia = new List<string>();
                 using (var conexaoEF = new SgqDbDevEntities())
                 {
+
+                    var parFrequency_Id = conexaoEF.ParLevel2.Find(parLevel2_Id).ParFrequency_Id;
+
                     foreach (var item in conexaoEF.ParEvaluationSchedule
                         .Where(x => (x.ParEvaluation.ParLevel1_Id == parLevel1_Id || x.ParEvaluation.ParLevel1_Id == null)
                         && x.ParEvaluation.ParLevel2_Id == parLevel2_Id
@@ -4379,9 +4387,18 @@ function calcularSensorial(list){
                         && (x.Shift_Id == shift_Id || x.Shift_Id == null))
                         .OrderByDescending(x => new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList())
                     {
-                        frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
+                        if (parFrequency_Id != 10)
+                        {
+                            frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
+                        }
+                        else
+                        {
+                            frequencia.Add($"{item.Intervalo}");
+                        }
+
                     }
                 }
+
                 return string.Join("|", frequencia);
             }
             catch (Exception Ex)

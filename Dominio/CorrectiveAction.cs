@@ -45,14 +45,19 @@ namespace Dominio
 
         public int? EmailContent_Id { get; set; }
 
+        [ForeignKey("CollectionLevel02Id")]
         public virtual CollectionLevel2 CollectionLevel2 { get; set; }
 
+        [ForeignKey("EmailContent_Id")]
         public virtual EmailContent EmailContent { get; set; }
 
+        [ForeignKey("AuditorId")]
         public virtual UserSgq UserSgq { get; set; }
 
+        [ForeignKey("TechinicalId")]
         public virtual UserSgq UserSgq1 { get; set; }
 
+        [ForeignKey("SlaughterId")]
         public virtual UserSgq UserSgq2 { get; set; }
     }
 }

@@ -39,13 +39,13 @@ namespace SgqSystem
 
             #region LOG
             System.Data.Entity.Database.SetInitializer<Dominio.SgqDbDevEntities>(null);
-            AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) =>
+            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
             {
                 Task.Run(() =>
                 {
                     using (var db = new Dominio.SgqDbDevEntities())
                     {
-                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = (eventArgs.ExceptionObject as Exception).ToClient() });
+                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = eventArgs.Exception.ToClient() });
                         db.SaveChanges();
                     }
                 });
