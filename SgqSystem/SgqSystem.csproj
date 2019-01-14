@@ -561,6 +561,7 @@
     <Compile Include="Services\ServiceLevel2.cs" />
     <Compile Include="Services\SGQDBContext.cs" />
     <Compile Include="Services\SGQDBContext_YTOARA.cs" />
+    <Compile Include="Services\SyncModel\ParLevel3XParDepartmentSyncModel.cs" />
     <Compile Include="Services\SyncServices.asmx.cs">
       <DependentUpon>SyncServices.asmx</DependentUpon>
       <SubType>Component</SubType>

@@ -521,6 +521,7 @@ namespace SgqSystem.Services
                         string reprocesso = null;
                         string cluster = parCluster_Id;
                         string motivoAtraso_Id = null;
+                        string parDepartment_Id = null;
 
                         if (result.Length > 47)
                         {
@@ -539,6 +540,11 @@ namespace SgqSystem.Services
                         if (result.Length > 50)
                         {
                             motivoAtraso_Id = result[50];
+                        }
+
+                        if (result.Length > 51)
+                        {
+                            parDepartment_Id = result[51];
                         }
 
                         //Gera o Cabeçalho do Level02
@@ -575,6 +581,7 @@ namespace SgqSystem.Services
                         level02HeaderJSon += ";" + reprocesso; //[30]
                         level02HeaderJSon += ";" + cluster; //[31]
                         level02HeaderJSon += ";" + motivoAtraso_Id; //[32]
+                        level02HeaderJSon += ";" + parDepartment_Id; //[33]
 
                         //level02HeaderJSon += ";" + alertaAtual;
 
@@ -4187,10 +4194,7 @@ function calcularSensorial(list){
 
             }
 
-
-
-            //string resource = GetResource();
-
+            supports += new SyncModel.ParLevel3XParDepartmentSyncModel().ToHtml(ParCompany_Id);
 
             return APPMain + supports;// + resource;
         }
@@ -4545,7 +4549,21 @@ function calcularSensorial(list){
                         <div class=""body font16""> <div class=""txtMessage""></div>
                             { selectMotivo }
                         <div class=""foot""><button id=""btnAtrasoOk"" class=""btn btn-lg marginRight30 btn-primary pull-right btnMessage""> OK </button></div>
-                    </div>";
+                    </div>
+                </div>";
+
+            #endregion
+
+            #region Tarefa (level3) por Departamento
+
+            string messageSelecionarLevel3PorDepartamento =
+                $@"<div class=""messageSelecionarDepartamento padding20"" style=""display:none;"">
+                        <h1 class=""head"">{ Resources.Resource.select_the_department }</h1>
+                        <div class=""body font16""> <div class=""txtMessage""></div>
+                            <select id=""selectSelecionarDepartamento"" class=""form-control"" style=""width: 600px;""></select>
+                        <div class=""foot""><button id=""btnAtrasoOk"" class=""btn btn-lg marginRight30 btn-primary pull-right btnMessage""> OK </button></div>
+                    </div>
+                </div>";
 
             #endregion
 
@@ -4643,6 +4661,7 @@ function calcularSensorial(list){
                            message +
                            messageConfirm +
                            messageMotivoAtraso +
+                           messageSelecionarLevel3PorDepartamento +
                            debug +
                            listaParLevel3Vinculado;
         }
