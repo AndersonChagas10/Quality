@@ -1258,6 +1258,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Diary with Interval.
+        /// </summary>
+        internal static string daily_with_interval {
+            get {
+                return ResourceManager.GetString("daily_with_interval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data.
         /// </summary>
         internal static string data {
@@ -1632,15 +1641,6 @@ namespace Resources {
         internal static string diary {
             get {
                 return ResourceManager.GetString("diary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Diary with Interval.
-        /// </summary>
-        internal static string diary_with_interval {
-            get {
-                return ResourceManager.GetString("diary_with_interval", resourceCulture);
             }
         }
         
@@ -2770,7 +2770,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The following Ratings have invalid values: .
+        ///   Looks up a localized string similar to Fill in the start and end fields of the evaluations:.
         /// </summary>
         internal static string invalid_rating_values {
             get {

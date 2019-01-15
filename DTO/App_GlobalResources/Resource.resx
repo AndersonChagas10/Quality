@@ -2259,7 +2259,7 @@
   <data name="diary" xml:space="preserve">
     <value>Diary</value>
   </data>
-  <data name="diary_with_interval" xml:space="preserve">
+  <data name="daily_with_interval" xml:space="preserve">
     <value>Diary with Interval</value>
   </data>
   <data name="frequency_type" xml:space="preserve">
@@ -2272,7 +2272,7 @@
     <value>Invalid frequency range.</value>
   </data>
   <data name="invalid_rating_values" xml:space="preserve">
-    <value>The following Ratings have invalid values: </value>
+    <value>Fill in the start and end fields of the evaluations:</value>
   </data>
   <data name="invalid_reported_data" xml:space="preserve">
     <value>Invalid data reported. Check and save changes!</value>

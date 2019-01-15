@@ -2698,10 +2698,10 @@
     <value>Dados não inseridos na lista, adicione antes de salvar!</value>
   </data>
   <data name="diary" xml:space="preserve">
-    <value>Diario</value>
+    <value>Diário</value>
   </data>
-  <data name="diary_with_interval" xml:space="preserve">
-    <value>Diario com Intervalo</value>
+  <data name="daily_with_interval" xml:space="preserve">
+    <value>Diário com Intervalo</value>
   </data>
   <data name="frequency_type" xml:space="preserve">
     <value>Tipo de Frequencia</value>
@@ -2713,7 +2713,7 @@
     <value>intervalo de frequência inválido.</value>
   </data>
   <data name="invalid_rating_values" xml:space="preserve">
-    <value>As seguintes Avaliações possuem valores inválidos: </value>
+    <value>Preencha os campos início e fim das avalições:</value>
   </data>
   <data name="invalid_reported_data" xml:space="preserve">
     <value>Dados informados inválidos. Verifique e salve as alterações!</value>
