@@ -1,40 +1,64 @@
-﻿
+﻿<div class="modal fade" id="modalAgendamento" role="dialog">
+    <div class="modal-dialog modal-lg vertical-align-center">
+        <div class="modal-content">
+            <div class="modal-header modal-header-gray">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Agendamento</h4>
+            </div>
+            <div class="modal-body">
+                <div id="cadastroIntervalos" class="hidden">
+                    <div class="form-group">
+                        @Html.Label(Resources.Resource.frequency_type, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <select id="tipoFrequencia" name="tipoFrequencia" class="form-control valid">
+                                <option value="Diario com Intervalo" id="diarioFrequencia">@Resources.Resource.diary_with_interval</option>
+                                <option value="Diario" id="diario">@Resources.Resource.diary</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divIntervalo">
+                        @Html.Label("Intervalo", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <input id="intervalo" type="time" min="0" class=" form-control notAllowNegative" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10 pull-right">
+                            <table id="tabelaAgendamento" style="max-width: 100%" hidden="hidden" class="table table-condensed no-margin margin-top">
+                                <thead>
+                                    <tr>
+                                        <th id="headAvaliacao">Avaliação</th>
+                                        <th id="headInicio">Início</th>
+                                        <th id="headFim">Fim</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSalvar" onclick="preencheAgendamento(event)" class="btn btn-success">Salvar</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">Fechar</button>
+            </div>
+        </div>
 
-<div id="cadastroIntervalos" class="hidden">
-    <div class="form-group">
-        @Html.Label(Resources.Resource.frequency_type, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <select id="tipoFrequencia" name="tipoFrequencia" class="form-control valid">
-                <option value="Diario com Intervalo" id="diarioFrequencia">@Resources.Resource.diary_with_interval</option>
-                <option value="Diario" id="diario">@Resources.Resource.diary</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group" id="divIntervalo">
-        @Html.Label("Intervalo", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <input id="intervalo" type="time" min="0" class=" form-control notAllowNegative" />
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-10 pull-right">
-            <table id="tabelaAgendamento" style="max-width: 100%" hidden="hidden" class="table table-condensed no-margin margin-top">
-                <thead>
-                    <tr>
-                        <th id="headAvaliacao">Avaliação</th>
-                        <th id="headInicio">Início</th>
-                        <th id="headFim">Fim</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
     </div>
 </div>
 
 
+
+
+
+
+
+
 <script>
     var listaAvaliacaoInicioFim = [];
+
+  
+
     $(document).ready(function () {
         debugger
         if ($("#Agendamento").val() !== "") {
@@ -59,13 +83,12 @@
             }
         }
 
-        $("#ParCompany_id, #HorasTrabalhadasPorDia").on('blur', function () {
-            if ($("#ParCompany_id :selected").text() !== "" && $("#HorasTrabalhadasPorDia").val() !== "") {
-                $("#cadastroIntervalos").removeClass('hidden');
-                if ($("#tipoFrequencia :selected").text() === "Diario")
-                    MontarTabelaVolume();
+        $("#ParCompany_id, #HorasTrabalhadasPorDia").on('input', function () {
+            debugger
+            if ($('#HorasTrabalhadasPorDia').val() !== "") {
+                $("#btnModalAgendamento").removeClass('hidden');
             } else {
-                $("#cadastroIntervalos").addClass('hidden');
+                $("#btnModalAgendamento").addClass('hidden');
             }
         });
 
@@ -81,6 +104,17 @@
             }
         });
     });
+
+    function AbrirModal() {
+        if ($("#ParCompany_id :selected").text() !== "" && $("#HorasTrabalhadasPorDia").val() !== "") {
+            $("#cadastroIntervalos").removeClass('hidden');
+            if ($("#tipoFrequencia :selected").text() === "Diario")
+                MontarTabelaVolume();
+        } else {
+            $("#cadastroIntervalos").addClass('hidden');
+        }
+        $('#modalAgendamento').modal('show');
+    }
 
     function MontarTabelaVolume() {
         debugger
@@ -157,6 +191,7 @@
                 return false;
             }
         }
+        $('#modalAgendamento').modal('hide');
     }
 
     function validaAgendamento(item) {
