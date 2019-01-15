@@ -146,8 +146,6 @@ namespace SgqSystem.Controllers
             if (cepDesossa.QtdadeFamiliaProduto == null)
                 ModelState.AddModelError("QtdadeFamiliaProduto", "O campo \"Número de famílias cadastradas\" precisa ser preenchido.");
 
-            if (cepDesossa.Agendamento == null)
-                ModelState.AddModelError("Agendamento", "O campo \"Intervalo\" precisa ser preenchido.");
         }
 
         private void ReturnError(VolumeCepDesossa obj)
@@ -175,10 +173,13 @@ namespace SgqSystem.Controllers
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 2), "Id", "Name", cepDesossa.ParLevel1_id);
             GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(cepDesossa);
 
-            if (cepDesossa.Agendamento.IndexOf("|") < 0)
-                cepDesossa.Frequencia = "Diario";
-            else
-                cepDesossa.Frequencia = "DiarioIntervalo";
+            if (cepDesossa.Agendamento != null)
+            {
+                if (cepDesossa.Agendamento.IndexOf("|") < 0)
+                    cepDesossa.Frequencia = "Diario";
+                else
+                    cepDesossa.Frequencia = "DiarioIntervalo";
+            }
 
             return View(cepDesossa);
         }

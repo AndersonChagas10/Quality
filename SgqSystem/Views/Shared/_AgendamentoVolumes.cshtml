@@ -9,7 +9,7 @@
                 <div id="cadastroIntervalos" class="hidden">
                     <div class="form-group">
                         @Html.Label(Resources.Resource.frequency_type, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        <div class="col-md-7">
                             <select id="tipoFrequencia" name="tipoFrequencia" class="form-control valid">
                                 <option value="Diario com Intervalo" id="diarioFrequencia">@Resources.Resource.diary_with_interval</option>
                                 <option value="Diario" id="diario">@Resources.Resource.diary</option>
@@ -18,12 +18,12 @@
                     </div>
                     <div class="form-group" id="divIntervalo">
                         @Html.Label("Intervalo", htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        <div class="col-md-7">
                             <input id="intervalo" type="time" min="0" class=" form-control notAllowNegative" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-10 pull-right">
+                        <div class="col-md-10">
                             <table id="tabelaAgendamento" style="max-width: 100%" hidden="hidden" class="table table-condensed no-margin margin-top">
                                 <thead>
                                     <tr>
@@ -157,13 +157,7 @@
     function preencheAgendamento(e) {
         debugger
         if ($("#tipoFrequencia :selected").text() === "@Resources.Resource.diary_with_interval") {
-            if ($("#intervalo").val() !== "")
-                $("#Agendamento").val($("#intervalo").val());
-            else {
-                e.preventDefault();
-                openMessageModal('@Resources.Resource.interval_null_value', null);
-                return false;
-            }
+            $("#Agendamento").val($("#intervalo").val());
         } else {
             var listaTabelaAgendamento = $("#tabelaAgendamento tbody tr");
             var listaAvaliacaoInicioFim = [];
@@ -196,7 +190,6 @@
 
     function validaAgendamento(item) {
         if (parseInt($(item).find("[data-column=inpInicio]").val()) > parseInt($(item).find("[data-column=inpFim]").val())
-            || $(item).find("[data-column=inpInicio]").val() === "" || $(item).find("[data-column=inpFim]").val() === ""
             || parseInt($(item).find("[data-column=inpInicio]").val()) < 0 || parseInt($(item).find("[data-column=inpFim]").val()) < 0) {
             return false;
         }

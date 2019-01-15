@@ -1,9 +1,11 @@
 ﻿@model Dominio.VolumeCepRecortes
 
 @{
-    var ValorNbr = Model.NBR ?? 0;
-    var adicaoEdicao = "Edição";
-    ViewBag.Title = "CEP Matéria Prima - Volume";
+                /**/
+
+                var ValorNbr = Model.NBR ?? 0;
+                var adicaoEdicao = "Edição";
+                ViewBag.Title = "CEP Matéria Prima - Volume";
 }
 
 
@@ -279,11 +281,7 @@
 
     $(document).ready(function () {
 
-        if ($("#Agendamento").val() !== "")
-            $("#btnModalAgendamento").removeClass('hidden');
-        else
-            $("#btnModalAgendamento").addClass('hidden');
-
+        $("#btnModalAgendamento").removeClass('hidden');
 
         $('#QtdadeFamiliaProduto').val("");
 
