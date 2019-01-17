@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <div id="cadastroIntervalos" class="hidden">
                     <div class="form-group">
-                        @Html.Label(Resources.Resource.frequency_type, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.Label(Resources.Resource.frequency_type, htmlAttributes: new { @class = "control-label col-md-4" })
                         <div class="col-md-7">
                             <select id="tipoFrequencia" name="tipoFrequencia" class="form-control valid">
                                 <option value="Diario com Intervalo" id="diarioFrequencia">@Resources.Resource.daily_with_interval</option>
@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="form-group" id="divIntervalo">
-                        @Html.Label("Intervalo", htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.Label("Intervalo", htmlAttributes: new { @class = "control-label col-md-4" })
                         <div class="col-md-7">
                             <input id="intervalo" type="time" min="0" class=" form-control notAllowNegative" />
                         </div>
@@ -47,13 +47,6 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
 <script>
     var listaAvaliacaoInicioFim = [];
     var perfilUsuario = getCookie('webControlCookie')[6].split("=")[1].split(",");
@@ -61,55 +54,67 @@
     $("#ParCompany_id, #HorasTrabalhadasPorDia").on('input', function () {
         debugger
         if ($('#HorasTrabalhadasPorDia').val() !== "" && perfilUsuario.indexOf("Admin") >= 0) {
-            $("#btnModalAgendamento").removeClass('hidden');
+            //$("#btnModalAgendamento").removeClass('hidden');
+            $("#divbotaoAgendamento").removeClass('hidden');
+            MontarTabelaVolume();
         } else {
-            $("#btnModalAgendamento").addClass('hidden');
+            //$("#btnModalAgendamento").addClass('hidden');
+            $("#divbotaoAgendamento").addClass('hidden');
         }
     });
 
     $(document).ready(function () {
         debugger
-        if ($("#Agendamento").val() !== "") {
-            var tipoFrequencia = $("#Agendamento").val();
-            if (tipoFrequencia.indexOf("-") < 0) {
+        setTimeout(function () {
+            if (perfilUsuario.indexOf("Admin") >= 0) {
+                if ($("#Agendamento").val() !== "") {
 
-                $("#cadastroIntervalos").removeClass('hidden');
-                $("#tabelaAgendamento").attr('hidden', 'hidden');
-                $("#divIntervalo").removeAttr('hidden');
-                $("#tabelaAgendamento tbody").html("");
+                    var tipoFrequencia = $("#Agendamento").val();
+                    $("#divbotaoAgendamento").removeClass('hidden');
+                    if (tipoFrequencia.indexOf("-") < 0) {
 
-                $("#tipoFrequencia").val("Diario com Intervalo");
-                $("#intervalo").val($("#Agendamento").val());
+                        $("#cadastroIntervalos").removeClass('hidden');
+                        $("#tabelaAgendamento").attr('hidden', 'hidden');
+                        $("#divIntervalo").removeAttr('hidden');
+                        $("#tabelaAgendamento tbody").html("");
 
+                        $("#tipoFrequencia").val("Diario com Intervalo");
+                        $("#intervalo").val($("#Agendamento").val());
+
+                    } else {
+                        $("#cadastroIntervalos").removeClass('hidden');
+                        $("#divIntervalo").attr('hidden', 'hidden');
+                        $("#tabelaAgendamento").removeAttr('hidden');
+                        $("#tipoFrequencia").val("Diario");
+                        MontarTabelaVolume();
+
+                    }
+                }
+
+                $("#tipoFrequencia").on('change', function () {
+                    debugger
+                    if ($("#tipoFrequencia :selected").text() === "Diário com Intervalo") {
+                        $("#tabelaAgendamento").attr('hidden', 'hidden');
+                        $("#divIntervalo").removeAttr('hidden');
+                        $("#tabelaAgendamento tbody").html("");
+                    } else {
+                        $("#divIntervalo").attr('hidden', 'hidden');
+                        MontarTabelaVolume();
+                        $("#tabelaAgendamento").removeAttr('hidden');
+                    }
+                });
             } else {
-                $("#cadastroIntervalos").removeClass('hidden');
-                $("#divIntervalo").attr('hidden', 'hidden');
-                $("#tabelaAgendamento").removeAttr('hidden');
-                $("#tipoFrequencia").val("Diario");
-                MontarTabelaVolume();
-
+                $("#divbotaoAgendamento").addClass('hidden');
             }
-        }
-
-
-        $("#tipoFrequencia").on('change', function () {
-            debugger
-            if ($("#tipoFrequencia :selected").text() === "Diário com Intervalo") {
-                $("#tabelaAgendamento").attr('hidden', 'hidden');
-                $("#divIntervalo").removeAttr('hidden');
-                $("#tabelaAgendamento tbody").html("");
-            } else {
-                $("#divIntervalo").attr('hidden', 'hidden');
-                MontarTabelaVolume();
-                $("#tabelaAgendamento").removeAttr('hidden');
-            }
-        });
+        }, 0);
+        
     });
 
     function AbrirModal() {
+        debugger
         if ($("#ParCompany_id :selected").text() !== "" && $("#HorasTrabalhadasPorDia").val() !== "") {
             $("#cadastroIntervalos").removeClass('hidden');
-            if ($("#tipoFrequencia :selected").text() === "Diario")
+            if ($("#tipoFrequencia :selected").text() === "Diário")
                 MontarTabelaVolume();
         } else {
             $("#cadastroIntervalos").addClass('hidden');
@@ -163,6 +168,7 @@
             var listaTabelaAgendamento = $("#tabelaAgendamento tbody tr");
             var listaAvaliacaoInicioFim = [];
             var contadorErros = [];
+            var contadorErrosInicioFim = [];
             var contador = 0;
 
             listaTabelaAgendamento.each(function (index, item) {
@@ -175,12 +181,19 @@
                 if (!validaAgendamento(item)) {
                     contadorErros.push(contador);
                 }
+                if (!validaInicioFim(item)) {
+                    contadorErrosInicioFim.push(contador);
+                }
                 listaAvaliacaoInicioFim.push(form.join('-'));
             });
 
-            if (contadorErros.length === 0)
+            if (contadorErros.length === 0 && contadorErrosInicioFim.length === 0)
                 $("#Agendamento").val(listaAvaliacaoInicioFim.join('|'));
-            else {
+            else if (contadorErrosInicioFim.length > 0) {
+                e.preventDefault();
+                openMessageModal('O campo Início é maior que o campo Fim das Avaliações:' + ' ' + contadorErrosInicioFim, null);
+                return false;
+            }else {
                 e.preventDefault();
                 openMessageModal('@Resources.Resource.invalid_rating_values' + ' ' + contadorErros, null);
                 return false;
@@ -190,8 +203,7 @@
     }
 
     function validaAgendamento(item) {
-        if (parseInt($(item).find("[data-column=inpInicio]").val()) > parseInt($(item).find("[data-column=inpFim]").val())
-            || parseInt($(item).find("[data-column=inpInicio]").val()) < 0 || parseInt($(item).find("[data-column=inpFim]").val()) < 0) {
+        if (parseInt($(item).find("[data-column=inpInicio]").val()) < 0 || parseInt($(item).find("[data-column=inpFim]").val()) < 0) {
             return false;
         }
 
@@ -209,6 +221,16 @@
 
         return true;
     }
+
+    function validaInicioFim(item) {
+
+        if (parseInt($(item).find("[data-column=inpInicio]").val()) > parseInt($(item).find("[data-column=inpFim]").val())) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     $("#cadastroIntervalos").on('input', '[data-column="inpInicio"] , [data-column="inpFim"]', function () {
         if (parseInt($(this).val()) > 24) {

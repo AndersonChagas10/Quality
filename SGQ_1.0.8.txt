@@ -93,13 +93,17 @@ IF COL_LENGTH('VolumeVacuoGRD','Agendamento') IS NULL
     END
 GO
 
-ALTER TABLE ParEvaluationSchedule
-ALTER COLUMN Inicio VARCHAR(5) NULL;
+if  exists (select DATA_TYPE from Information_Schema.COLUMNS where TABLE_NAME = 'ParEvaluationSchedule' and COLUMN_NAME = 'Fim' and DATA_TYPE = 'int')
+ BEGIN
+	ALTER table ParEvaluationSchedule  alter COLUMN Fim VARCHAR(5) NULL;
+ END
 
-GO
+ GO
 
-ALTER TABLE ParEvaluationSchedule
-ALTER COLUMN Fim VARCHAR(5) NULL;
+ if  exists (select DATA_TYPE from Information_Schema.COLUMNS where TABLE_NAME = 'ParEvaluationSchedule' and COLUMN_NAME = 'Inicio' and DATA_TYPE = 'int')
+ BEGIN
+	ALTER table ParEvaluationSchedule  alter COLUMN Inicio VARCHAR(5) NULL;
+ END
 
 GO
 IF COL_LENGTH('ParEvaluationSchedule','Intervalo') IS NULL

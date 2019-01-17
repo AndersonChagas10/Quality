@@ -2248,7 +2248,7 @@
     <value>Diário com Intervalo</value>
   </data>
   <data name="frequency_type" xml:space="preserve">
-    <value>Tipo de Frequencia</value>
+    <value>Tipo de Frequência</value>
   </data>
   <data name="interval_null_value" xml:space="preserve">
     <value>Valor do campo intervalo não pode ser nulo!</value>

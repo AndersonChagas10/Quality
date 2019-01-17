@@ -75,7 +75,7 @@
     var botaoAgendamento = '';
     var valorAvaliacao = '';
     var listaAgendamento = [];
-    var listaAgendamentoIntervalo = []; 
+    var listaAgendamentoIntervalo = [];
 
     $("#modalAgendamento").on('close', function(){
         console.log('model fechado');
@@ -85,7 +85,7 @@
     function abrirModalAgendamento(linha) {
         debugger
         var obj = $(linha).parents('tr').data();
-        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "@Resources.Resource.diary_with_interval") {
+        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
             $("#tabelaAgendamentoIntervalo").attr('style', '');
             $("#tabelaAgendamento").attr('hidden', 'hidden');
         } else {
@@ -99,7 +99,7 @@
 
         BuscarTurnos(id);
         debugger
-        if (!$("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === '@Resources.Resource.diary_with_interval') {
+        if (!$("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === 'Diario com Intervalo') {
             $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
             $("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
             $("#tabelaAgendamento tbody").html("");
@@ -141,12 +141,12 @@
                 dataType: 'json',
                 success: function (data) {
                     debugger
-                    if (!($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "@Resources.Resource.diary_with_interval"))
+                    if (!($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo"))
                         MontaNovaLinhaAgendamento(null);
                     else
                          MontaNovaLinhaAgendamentoIntervalo(null);
                     data.forEach(function (item) {
-                        if (!($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "@Resources.Resource.diary_with_interval"))
+                        if (!($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo"))
                             MontaNovaLinhaAgendamento(item, false);
                         else
                             MontaNovaLinhaAgendamentoIntervalo(item, false);
@@ -226,8 +226,8 @@
         debugger
         $("#tabelaAgendamento tbody").append("<tr>"
             + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
-            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
-            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpTermino" /></td>'
+            + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
+            + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpTermino" /></td>'
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpAvaliacao" /></td>'
             + avaliacaAmostraSelectShifts
             + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
@@ -322,7 +322,7 @@
                     data: JSON.stringify(listaAgendamentoIntervalo),
                     dataType: 'json',
                     contentType: "application/json; charset=utf-8",
-                    success: function (data) {    
+                    success: function (data) {
                         listaAgendamentoIntervalo = [];
                         $('#tabelaAgendamentoIntervalo tbody tr').not(':first').remove();
                         data.forEach(function (item) {
@@ -348,7 +348,7 @@
 
     $("#modalAgendamento").on('click', "#btnSalvar", function () {
         debugger
-        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "@Resources.Resource.diary_with_interval") {
+        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
             SalvarAgendamentoIntervalo();
         } else {
         var listaTabelaAgendamento = [];
@@ -553,7 +553,7 @@
             if (valorAvaliacao >= $(linha).find("[data-column=inpAvaliacao]").val()) {
 
                 var form = {
-                    Inicio: $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() !== "@Resources.Resource.diary_with_interval" ? $(linha).find("[data-column=inpInicio]").val() : $(linha).find("[data-column=inpIntervalo]").val(),
+                    Inicio: $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() !== "Diario com Intervalo" ? $(linha).find("[data-column=inpInicio]").val() : $(linha).find("[data-column=inpIntervalo]").val(),
                     Fim: $(linha).find("[data-column=inpTermino]").val(),
                     Av: $(linha).find("[data-column=inpAvaliacao]").val(),
                     Shift_Id: $(linha).find("[data-column=slAgendamento]").val(),
