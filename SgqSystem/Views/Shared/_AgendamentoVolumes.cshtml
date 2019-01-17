@@ -51,46 +51,42 @@
     var listaAvaliacaoInicioFim = [];
     var perfilUsuario = getCookie('webControlCookie')[6].split("=")[1].split(",");
 
+    //verifica se tem valor nos campos e habilita o botao de agendamento
     $("#ParCompany_id, #HorasTrabalhadasPorDia").on('input', function () {
-        debugger
         if ($('#HorasTrabalhadasPorDia').val() !== "" && perfilUsuario.indexOf("Admin") >= 0) {
-            //$("#btnModalAgendamento").removeClass('hidden');
             $("#divbotaoAgendamento").removeClass('hidden');
             MontarTabelaVolume();
         } else {
-            //$("#btnModalAgendamento").addClass('hidden');
             $("#divbotaoAgendamento").addClass('hidden');
         }
     });
 
-    $(document).ready(function () {
-        debugger
+    $(document).ready(function () { 
         setTimeout(function () {
             if (perfilUsuario.indexOf("Admin") >= 0) {
-                if ($("#Agendamento").val() !== "") {
-
-                    var tipoFrequencia = $("#Agendamento").val();
+                var tipoFrequencia = $("#Agendamento").val();
+                if ($("#Avaliacoes").val() !== "")
                     $("#divbotaoAgendamento").removeClass('hidden');
-                    if (tipoFrequencia.indexOf("-") < 0) {
 
-                        $("#cadastroIntervalos").removeClass('hidden');
-                        $("#tabelaAgendamento").attr('hidden', 'hidden');
-                        $("#divIntervalo").removeAttr('hidden');
-                        $("#tabelaAgendamento tbody").html("");
+                if (tipoFrequencia.indexOf("-") < 0) {
 
-                        $("#tipoFrequencia").val("Diario com Intervalo");
-                        $("#intervalo").val($("#Agendamento").val());
+                    $("#cadastroIntervalos").removeClass('hidden');
+                    $("#tabelaAgendamento").attr('hidden', 'hidden');
+                    $("#divIntervalo").removeAttr('hidden');
+                    $("#tabelaAgendamento tbody").html("");
 
-                    } else {
-                        $("#cadastroIntervalos").removeClass('hidden');
-                        $("#divIntervalo").attr('hidden', 'hidden');
-                        $("#tabelaAgendamento").removeAttr('hidden');
-                        $("#tipoFrequencia").val("Diario");
-                        MontarTabelaVolume();
+                    $("#tipoFrequencia").val("Diario com Intervalo");
+                    $("#intervalo").val($("#Agendamento").val());
 
-                    }
+                } else {
+                    $("#cadastroIntervalos").removeClass('hidden');
+                    $("#divIntervalo").attr('hidden', 'hidden');
+                    $("#tabelaAgendamento").removeAttr('hidden');
+                    $("#tipoFrequencia").val("Diario");
+                    MontarTabelaVolume();
+
                 }
-                $("#divbotaoAgendamento").removeClass('hidden');
+
                 $("#tipoFrequencia").on('change', function () {
                     debugger
                     if ($("#tipoFrequencia :selected").text() === "Diário com Intervalo") {
@@ -111,7 +107,6 @@
     });
 
     function AbrirModal() {
-        debugger
         if ($("#ParCompany_id :selected").text() !== "" && $("#HorasTrabalhadasPorDia").val() !== "") {
             $("#cadastroIntervalos").removeClass('hidden');
             if ($("#tipoFrequencia :selected").text() === "Diário")
@@ -123,7 +118,6 @@
     }
 
     function MontarTabelaVolume() {
-        debugger
         var agendamentosCarregados = $("#Agendamento").val();
         var listaAgendamentoSeparados = [];
         $("#tabelaAgendamento tbody").html("");
@@ -140,7 +134,6 @@
             $("#tabelaAgendamento tbody tr:last").find('[data-column=inpValorAvaliacao]').val(i);
 
         }
-        debugger
         if (agendamentosCarregados !== "" && agendamentosCarregados.indexOf('|') > 0 || agendamentosCarregados.length === 5) {
 
             for (var j = 0; j < listaAgendamentosCarregados.length; j++) {
@@ -161,7 +154,6 @@
 
 
     function preencheAgendamento(e) {
-        debugger
         if ($("#tipoFrequencia :selected").text() === "Diário com Intervalo") {
             $("#Agendamento").val($("#intervalo").val());
         } else {
