@@ -9,7 +9,7 @@
                 <div id="cadastroIntervalos" class="hidden">
                     <div class="form-group">
                         @Html.Label(Resources.Resource.frequency_type, htmlAttributes: new { @class = "control-label col-md-4" })
-                        <div class="col-md-7">
+                        <div class="col-md-4">
                             <select id="tipoFrequencia" name="tipoFrequencia" class="form-control valid">
                                 <option value="Diario com Intervalo" id="diarioFrequencia">@Resources.Resource.daily_with_interval</option>
                                 <option value="Diario" id="diario">@Resources.Resource.diary</option>
@@ -18,7 +18,7 @@
                     </div>
                     <div class="form-group" id="divIntervalo">
                         @Html.Label("Intervalo", htmlAttributes: new { @class = "control-label col-md-4" })
-                        <div class="col-md-7">
+                        <div class="col-md-4">
                             <input id="intervalo" type="time" min="0" class=" form-control notAllowNegative" />
                         </div>
                     </div>
