@@ -574,22 +574,22 @@
         debugger
         switch (formato) {
             case "Diario":
-                if(fim < 0 || inicio < 0 || fim > 24 || inicio > 24 || inicio > fim)
+                if(fim < 0 || inicio < 0 || fim > 24 || inicio > 24)
                     return false;
                 else
                     return true;
             case "Semanal":
-                if(fim < 1 || inicio < 1 || fim > 7 || inicio > 7 || inicio > fim)
+                if(fim < 1 || inicio < 1 || fim > 7 || inicio > 7)
                     return false;
                 else
                     return true;
             case "Quinzenal":
-                if(fim < 1 || inicio < 1 || fim > 15 || inicio > 15 || inicio > fim)
+                if(fim < 1 || inicio < 1 || fim > 15 || inicio > 15)
                     return false;
                 else
                     return true;
             case "Mensal":
-                if(fim < 1 || inicio < 1 || fim > 31 || inicio > 31 || inicio > fim)
+                if(fim < 1 || inicio < 1 || fim > 31 || inicio > 31)
                     return false;
                 else
                     return true;
