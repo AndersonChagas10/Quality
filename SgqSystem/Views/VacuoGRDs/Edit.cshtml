@@ -165,10 +165,7 @@
 
     $(document).ready(function () {
 
-        if ($("#Agendamento").val() !== "")
-            $("#btnModalAgendamento").removeClass('hidden');
-        else
-            $("#btnModalAgendamento").addClass('hidden');
+        $("#btnModalAgendamento").removeClass('hidden');    
 
         $('#QtdadeFamiliaProduto').val("");
 
@@ -213,9 +210,12 @@
 
     function habilitar() {
 
-        $('#Avaliacoes').attr('disabled', false)
-        $('#Amostras').attr('disabled', false)
-        $('#Data').attr('disabled', false)
+        $('#Avaliacoes').attr('disabled', false);
+        $('#Amostras').attr('disabled', false);
+        $('#Data').attr('disabled', false);
+
+        preencheAgendamento(event);
+
     }
 
     $('#HorasTrabalhadasPorDia').on('blur, keyup', function () {
