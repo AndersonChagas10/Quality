@@ -25,7 +25,7 @@
                 $('.carousel-indicators').empty();
                 $('.carousel-inner').empty()
                 for (var i = 0; i < pictures.length; i++) {
-                    var item = $('<div class="item"><img height="490"/></div>');
+                    var item = $('<div class="item"><img style="margin:0px auto" height="490"/></div>');
                     var indicator = $('<li data-target="#imageCarousel" data-slide-to="' + i + '"></li>');
                     if (i == 0) {
                         item.addClass('active');
