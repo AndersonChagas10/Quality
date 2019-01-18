@@ -110,7 +110,10 @@
                                             </td>
                                             <td>
                                                 @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                @if (item.Data.Value.Date >= DateTime.Now.Date)
+                                                {
+                                                    @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                }
                                             </td>
                                         </tr>
                                     }

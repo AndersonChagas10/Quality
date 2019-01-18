@@ -200,9 +200,18 @@ namespace SgqSystem.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             VolumePcc1b pcc1b = db.VolumePcc1b.Find(id);
-            db.VolumePcc1b.Remove(pcc1b);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+
+            if (pcc1b.Data.Value.Date >= DateTime.Now.Date)
+            {
+                db.VolumePcc1b.Remove(pcc1b);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError("ParLevel1", "Este volume possui uma data retroativa, sua exclusão está desabilitada!");
+                return View(pcc1b);
+            }
         }
 
         protected override void Dispose(bool disposing)
