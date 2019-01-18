@@ -44,6 +44,9 @@ namespace Dominio
 
         public int? Shift_Id { get; set; }
 
+        [NotMapped]
+        public bool IsRetroativo { get; set; }
+
         [ForeignKey("Shift_Id")]
         public virtual Shift Shift { get; set; }
 

@@ -209,7 +209,7 @@ namespace SgqSystem.Controllers
             }
             else
             {
-                ModelState.AddModelError("ParLevel1", "Este volume possui uma data retroativa, sua exclusão está desabilitada!");
+                pcc1b.IsRetroativo = true;              
                 return View(pcc1b);
             }
         }

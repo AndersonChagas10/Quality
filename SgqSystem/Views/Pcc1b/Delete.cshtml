@@ -53,7 +53,11 @@
                                 </h4>
                                 <br />
                                 <div>
+                                    @if (Model.IsRetroativo)
+                                    {
+                                        <h3 class="alert alert-danger">Volume com data retroativa, a exclusão está bloqueada.</h3>
 
+                                    }
                                     @using (Html.BeginForm())
                                     {
                                         @Html.AntiForgeryToken()
