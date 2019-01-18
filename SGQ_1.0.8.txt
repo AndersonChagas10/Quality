@@ -83,3 +83,14 @@ CREATE TABLE ParLevel3XParDepartment(
 	[AlterDate] [datetime] NULL,
 	[IsActive] [bit] NOT NULL DEFAULT ((1))
 )
+
+GO
+ 
+ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParDepartment' AND xtype='U')
+ create table CollectionLevel2XParDepartment (
+	Id int primary key identity not null,
+	AddDate datetime not null,
+	AlterDate datetime,
+	CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
+	ParDepartment_Id int not null foreign key references ParDepartment(Id)
+)

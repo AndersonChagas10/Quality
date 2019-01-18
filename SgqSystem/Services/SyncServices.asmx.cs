@@ -827,6 +827,7 @@ namespace SgqSystem.Services
                     string monitoramentoultimoalerta = "0";
 
                     string motivoAtraso_Id = null;
+                    string parDepartment_Id = null;
 
                     //using (var transacao = new TransactionScope())
                     //{
@@ -979,10 +980,16 @@ namespace SgqSystem.Services
                         motivoAtraso_Id = arrayHeader[32];
                     }
 
+                    if (arrayHeader.Length > 33)
+                    {
+                        parDepartment_Id = arrayHeader[33];
+                    }
+
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
-                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey, cluster, motivoAtraso_Id);
+                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, 
+                                                defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey, cluster, motivoAtraso_Id, parDepartment_Id);
 
                     if (arrayHeader.Length > 30)
                     {
@@ -1769,7 +1776,8 @@ namespace SgqSystem.Services
                                            string StartPhase, int Evaluation, int Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
                                            string Duplicated, string haveReaudit, int reauditLevel, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
-                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation, string endphaseevaluation, string hashKey = null, string cluster = null, string motivoAtraso_Id = null)
+                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation, 
+                                           string endphaseevaluation, string hashKey = null, string cluster = null, string motivoAtraso_Id = null, string parDepartment_Id = null)
         {
 
             var buscaParLevel1HashKey = "SELECT TOP 1 Hashkey FROM ParLevel1 WHERE id = " + ConsolidationLevel1.ParLevel1_Id.ToString();
@@ -1910,6 +1918,13 @@ namespace SgqSystem.Services
                             if (motivoAtrasoId > 0)
                             {
                                 InsertCollectionLevel2XMotivoAtraso(i, motivoAtraso_Id);
+                            }
+
+                            int parDepartmentId = 0;
+                            Int32.TryParse(parDepartment_Id, out parDepartmentId);
+                            if (parDepartmentId > 0)
+                            {
+                                InsertCollectionLevel2XParDepartment(i, parDepartment_Id);
                             }
 
                             return i;
@@ -2194,7 +2209,47 @@ namespace SgqSystem.Services
             }
         }
 
-        #endregion
+        public void InsertCollectionLevel2XParDepartment(int CollectionLevel2_Id, string parDepartment_Id)
+        {
+            var IsUpdate = false;
+            var sql = "";
+
+            using (var db = new SgqDbDevEntities())
+            {
+                IsUpdate = db.CollectionLevel2XParDepartment.Any(r => r.CollectionLevel2_Id == CollectionLevel2_Id);
+            }
+
+            if (IsUpdate)
+            {
+                sql = $@"UPDATE CollectionLevel2XParDepartment set [ParDepartment_Id] = { parDepartment_Id }, [AlterDate] = GETDATE() 
+                WHERE [CollectionLevel2_Id] = { CollectionLevel2_Id }";
+            }
+            else
+            {
+                sql = $@"INSERT INTO CollectionLevel2XParDepartment ([CollectionLevel2_Id], [MotivoAtraso_Id], [AddDate]) 
+                VALUES ('{ CollectionLevel2_Id }', { parDepartment_Id } , GETDATE())";
+            }
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        Convert.ToInt32(command.ExecuteScalar());
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+#endregion
 
         #region Collection Level03
         /// <summary>
@@ -8624,39 +8679,6 @@ function calcularSensorial(list){
             }
 
         }
-
-        #region StatusColeta
-
-        [WebMethod]
-        public void InsertStatusColeta(ListaCollectionsLevel2XMotivosAtraso listaCollectionsLevel2XMotivosAtraso)
-        {
-            try
-            {
-                using (var conexaoEF = new SgqDbDevEntities())
-                {
-
-                    if (listaCollectionsLevel2XMotivosAtraso != null && listaCollectionsLevel2XMotivosAtraso.DadosIsValid())
-                    {
-                        foreach (var item in listaCollectionsLevel2XMotivosAtraso.CollectionsLevel2XMotivosAtraso)
-                        {
-                            if (item.IsValid())
-                            {
-                                conexaoEF.CollectionLevel2XMotivoAtraso.Add(item);
-                            }
-                        }
-                    }
-
-                    conexaoEF.SaveChanges();
-                }
-            }
-            catch (Exception Ex)
-            {
-                throw;
-            }
-        }
-
-        #endregion
-
     }
 }
 
