@@ -3121,6 +3121,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please input a valid date.
+        /// </summary>
+        internal static string input_a_valid_date {
+            get {
+                return ResourceManager.GetString("input_a_valid_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inserir.
         /// </summary>
         internal static string insert {
@@ -3144,6 +3153,15 @@ namespace Resources {
         internal static string insert_technical_signature {
             get {
                 return ResourceManager.GetString("insert_technical_signature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid date.
+        /// </summary>
+        internal static string invalid_date {
+            get {
+                return ResourceManager.GetString("invalid_date", resourceCulture);
             }
         }
         

@@ -2238,4 +2238,10 @@
   <data name="scheduling" xml:space="preserve">
     <value>Agendamento</value>
   </data>
+  <data name="input_a_valid_date" xml:space="preserve">
+    <value>Digite uma data válida</value>
+  </data>
+  <data name="invalid_date" xml:space="preserve">
+    <value>Data inválida</value>
+  </data>
 </root>

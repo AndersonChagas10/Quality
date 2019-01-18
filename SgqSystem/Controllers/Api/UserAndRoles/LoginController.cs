@@ -1,4 +1,5 @@
 ﻿using SgqSystem.Handlres;
+using System;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -10,29 +11,20 @@ namespace SgqSystem.Controllers.Api.Login
     public class LoginController : ApiController
     {
         [HttpGet]
-        //[HttpPost]
-        [Route("Logado")]
-        public string Logado()
+        [Route("Logado/{dataApp?}")]
+        public string Logado(DateTime? dataApp = null)
         {
-            //string mensagem = "noDataBase";
-            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            //try
-            //{
-            //    using (SqlConnection connection = new SqlConnection(conexao))
-            //    {
-            //        connection.Open();
-            return "onLine";
-            //    }
-            //}
-            //catch (SqlException ex)
-            //{
+            if (dataApp != null)
+            {
+                var dataServer = DateTime.Now;
 
-            //    return mensagem;
-            //}
-            //catch (Exception ex)
-            //{
-            //    return mensagem;
-            //}
+                if (dataApp < dataServer.AddHours(-30))
+                {
+                    return "dataInvalida";
+                }
+            }
+
+            return "onLine";
         }
 
         // Route /status to this controller

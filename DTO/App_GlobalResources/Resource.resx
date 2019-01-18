@@ -2253,4 +2253,10 @@
   <data name="scheduling" xml:space="preserve">
     <value>Scheduling</value>
   </data>
+  <data name="input_a_valid_date" xml:space="preserve">
+    <value>Please input a valid date</value>
+  </data>
+  <data name="invalid_date" xml:space="preserve">
+    <value>Invalid date</value>
+  </data>
 </root>
