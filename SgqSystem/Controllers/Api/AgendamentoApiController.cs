@@ -33,6 +33,12 @@ namespace SgqSystem.Controllers.Api
         {
             foreach (var item in listaAgendamento)
             {
+                if (item.Intervalo != null)
+                {
+                    item.Inicio = null;
+                    item.Fim = null;
+                }
+
                 if (item.isDeletar && item.Id > 0)
                 {
                     Delete(item);

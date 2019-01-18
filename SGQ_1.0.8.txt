@@ -70,3 +70,56 @@ create table DicionarioEstatico(
 )
 
 GO
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.8 Criação das colunas necessarias para o cadastro de agendamento nos volumes',GetDate()) 
+
+GO
+
+IF NOT EXISTS (SELECT * FROM ParFrequency WHERE Name = 'Diario com Intervalo')
+	begin
+		insert into ParFrequency(Name,[Description],AddDate, AlterDate, IsActive) 
+		values('Diario com Intervalo','Diario com Intervalo',GETDATE(),NULL,1)
+	end
+
+GO
+IF COL_LENGTH('VolumeCepDesossa','Agendamento') IS NULL
+    BEGIN	
+		ALTER TABLE VolumeCepDesossa
+			add Agendamento VARCHAR(255) NULL;
+
+    END
+GO
+
+IF COL_LENGTH('VolumeVacuoGRD','Agendamento') IS NULL
+    BEGIN	
+		ALTER TABLE VolumeVacuoGRD
+			add Agendamento VARCHAR(255) NULL;
+    END
+GO
+
+if  exists (select DATA_TYPE from Information_Schema.COLUMNS where TABLE_NAME = 'ParEvaluationSchedule' and COLUMN_NAME = 'Fim' and DATA_TYPE = 'int')
+ BEGIN
+	ALTER table ParEvaluationSchedule  alter COLUMN Fim VARCHAR(5) NULL;
+ END
+
+ GO
+
+ if  exists (select DATA_TYPE from Information_Schema.COLUMNS where TABLE_NAME = 'ParEvaluationSchedule' and COLUMN_NAME = 'Inicio' and DATA_TYPE = 'int')
+ BEGIN
+	ALTER table ParEvaluationSchedule  alter COLUMN Inicio VARCHAR(5) NULL;
+ END
+
+GO
+IF COL_LENGTH('ParEvaluationSchedule','Intervalo') IS NULL
+    BEGIN	
+		ALTER TABLE ParEvaluationSchedule
+			add Intervalo VARCHAR(5) NULL;
+    END
+GO
+
+IF COL_LENGTH('VolumeCepRecortes','Agendamento') IS NULL
+    BEGIN	
+		ALTER TABLE VolumeCepRecortes
+			add Agendamento VARCHAR(255) NULL;
+    END
+GO

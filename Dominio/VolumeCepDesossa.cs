@@ -37,6 +37,11 @@ namespace Dominio
 
         public int? Shift_Id { get; set; }
 
+        public string Agendamento { get; set; }
+
+        [NotMapped]
+        public string Frequencia { get; set; }
+
         [ForeignKey("Shift_Id")]
         public virtual Shift Shift { get; set; }
 

@@ -2700,4 +2700,46 @@
   <data name="invalid_date" xml:space="preserve">
     <value>Data inválida</value>
   </data>
+  <data name="data_not_entered_on_list" xml:space="preserve">
+    <value>Dados não inseridos na lista, adicione antes de salvar!</value>
+  </data>
+  <data name="diary" xml:space="preserve">
+    <value>Diário</value>
+  </data>
+  <data name="daily_with_interval" xml:space="preserve">
+    <value>Diário com Intervalo</value>
+  </data>
+  <data name="frequency_type" xml:space="preserve">
+    <value>Tipo de Frequência</value>
+  </data>
+  <data name="interval_null_value" xml:space="preserve">
+    <value>Valor do campo intervalo não pode ser nulo!</value>
+  </data>
+  <data name="invalid_range" xml:space="preserve">
+    <value>intervalo de frequência inválido.</value>
+  </data>
+  <data name="invalid_rating_values" xml:space="preserve">
+    <value>Preencha os campos início e fim das avalições:</value>
+  </data>
+  <data name="invalid_reported_data" xml:space="preserve">
+    <value>Dados informados inválidos. Verifique e salve as alterações!</value>
+  </data>
+  <data name="no_data_in_list" xml:space="preserve">
+    <value>Nenhum registro inserido na lista!</value>
+  </data>
+  <data name="range_need_value" xml:space="preserve">
+    <value>O campo Intervalo deve ser preenchido.</value>
+  </data>
+  <data name="schedule_already_hava_data" xml:space="preserve">
+    <value>Já existe um agendamento para esta avaliação ou turno</value>
+  </data>
+  <data name="valuation_value_greater" xml:space="preserve">
+    <value>Valor da avaliação maior do que o permitido!</value>
+  </data>
+  <data name="end" xml:space="preserve">
+    <value>Fim</value>
+  </data>
+  <data name="start" xml:space="preserve">
+    <value>Início</value>
+  </data>
 </root>

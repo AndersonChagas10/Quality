@@ -99,7 +99,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id,Shift_Id")] VolumeCepDesossa cepDesossa)
+        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id,Shift_Id,Agendamento")] VolumeCepDesossa cepDesossa)
         {
             GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(cepDesossa);
             ValidaCepDesossa(cepDesossa);
@@ -145,6 +145,7 @@ namespace SgqSystem.Controllers
 
             if (cepDesossa.QtdadeFamiliaProduto == null)
                 ModelState.AddModelError("QtdadeFamiliaProduto", "O campo \"Número de famílias cadastradas\" precisa ser preenchido.");
+
         }
 
         private void ReturnError(VolumeCepDesossa obj)
@@ -172,6 +173,14 @@ namespace SgqSystem.Controllers
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 2), "Id", "Name", cepDesossa.ParLevel1_id);
             GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(cepDesossa);
 
+            if (cepDesossa.Agendamento != null)
+            {
+                if (cepDesossa.Agendamento.IndexOf("|") < 0)
+                    cepDesossa.Frequencia = "Diario";
+                else
+                    cepDesossa.Frequencia = "DiarioIntervalo";
+            }
+
             return View(cepDesossa);
         }
 
@@ -180,7 +189,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id,Shift_Id")] VolumeCepDesossa cepDesossa)
+        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id,Shift_Id,Agendamento")] VolumeCepDesossa cepDesossa)
         {
             GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(cepDesossa);
             ValidaCepDesossa(cepDesossa);
