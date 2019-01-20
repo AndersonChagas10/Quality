@@ -94,3 +94,25 @@ GO
 	CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
 	ParDepartment_Id int not null foreign key references ParDepartment(Id)
 )
+
+GO
+
+ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel2XParDepartment' AND xtype='U')
+ create table ConsolidationLevel2XParDepartment (
+	Id int primary key identity not null,
+	AddDate datetime not null,
+	AlterDate datetime,
+	ConsolidationLevel2_Id int foreign key references ConsolidationLevel2(Id),
+	ParDepartment_Id int not null foreign key references ParDepartment(Id)
+)
+
+GO
+
+ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel1XParDepartment' AND xtype='U')
+ create table ConsolidationLevel1XParDepartment (
+	Id int primary key identity not null,
+	AddDate datetime not null,
+	AlterDate datetime,
+	ConsolidationLevel1_Id int foreign key references ConsolidationLevel1(Id),
+	ParDepartment_Id int not null foreign key references ParDepartment(Id)
+)

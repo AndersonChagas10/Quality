@@ -2326,7 +2326,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
         {
             db = _db;
         }
-        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period, string cluster)
+        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period, string cluster, int parDepartment_Id)
         {
             try
             {
@@ -2334,12 +2334,15 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             SELECT CL1.* FROM ConsolidationLevel1 cl1 with (nolock) 
                             LEFT JOIN ConsolidationLevel1XCluster C1C
                             ON C1C.ConsolidationLevel1_Id = Cl1.Id
+                            LEFT JOIN ConsolidationLevel1XParDepartment C1PD
+                            ON C1PD.ConsolidationLevel1_Id = Cl1.Id
                             WHERE UnitId = '" + ParCompany_Id + "' " +
                             "AND ParLevel1_Id= '" + ParLevel1_Id + "' " +
                             "AND SHIFT = " + Shift + " " +
                             "and period = " + Period + " " +
                             "AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + @"'
-                             AND (C1C.ParCluster_Id = " + cluster + " OR C1C.ParCluster_Id IS NULL)";
+                             AND (C1C.ParCluster_Id = " + cluster + " OR C1C.ParCluster_Id IS NULL)" + @"
+                             AND (C1PD.ParDepartment_Id = " + parDepartment_Id + " OR C1PD.ParDepartment_Id IS NULL)";
 
                 //SqlConnection db = new SqlConnection(conexao);
 
@@ -2413,7 +2416,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             }
         }
 
-        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id, string cluster)
+        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id, string cluster, int parDepartment_Id)
         {
             try
             {
@@ -2434,10 +2437,13 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             FROM ConsolidationLevel2 c2 with (nolock)
                             LEFT JOIN ConsolidationLevel2XCluster C2C
                             ON C2C.ConsolidationLevel2_id = c2.Id
+                            LEFT JOIN ConsolidationLevel2XParDepartment C2PD
+                            ON C2PD.ConsolidationLevel2_id = c2.Id
                             WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
                             " AND ParLevel2_Id= '" + ParLevel2_Id + "' " +
                             " AND UnitId='" + ParCompany_Id + "'" +
-                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)";
+                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)" +
+                            " AND (C2PD.ParDepartment_Id = '" + parDepartment_Id + "' OR C2PD.ParDepartment_Id IS NULL)";
 
 
 
@@ -2456,7 +2462,9 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             }
         }
 
-        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id, int reaudit, string reauditNumber, string cluster)
+        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, 
+            int ConsolidationLevel1_Id, int ParLevel2_Id, int reaudit, 
+            string reauditNumber, string cluster, int parDepartment_Id)
         {
             try
             {
@@ -2479,12 +2487,15 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             FROM ConsolidationLevel2 c2 with (nolock) 
                             LEFT JOIN ConsolidationLevel2XCluster C2C
                             ON C2C.ConsolidationLevel2_id = c2.Id
+                            LEFT JOIN ConsolidationLevel2XParDepartment C2PD
+                            ON C2PD.ConsolidationLevel2_id = c2.Id
                             WHERE c2.ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
                             "AND c2.ParLevel2_Id= '" + ParLevel2_Id + "' " +
                             "AND c2.UnitId='" + ParCompany_Id + "' " +
                             "AND c2.ReauditIs=" + reaudit + " " +
                             "and c2.reauditnumber=" + reauditNumber + " " +
-                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)";
+                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)" +
+                            " AND (C2PD.ParDepartment_Id = '" + parDepartment_Id + "' OR C2PD.ParDepartment_Id IS NULL)";
 
 
                 ConsolidationLevel2 obj = null;
