@@ -1,13 +1,16 @@
-﻿using Dominio;
+﻿using AutoMapper;
+using Dominio;
 using DTO.DTO.Params;
 using DTO.Helpers;
 using Helper;
+using Newtonsoft.Json;
 using SgqSystem.Secirity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace SgqSystem.Controllers
 {
@@ -27,7 +30,7 @@ namespace SgqSystem.Controllers
     public class ParLevel2ControlCompanyController : BaseController
     {
         private SgqDbDevEntities db;
-       
+
         public ParLevel2ControlCompanyController()
         {
             db = new SgqDbDevEntities();
@@ -63,10 +66,10 @@ namespace SgqSystem.Controllers
                 var lastDateDaControlCompany = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
                 var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDateDaControlCompany && r.ParCompany_Id == null).Select(r => r.ParLevel2);
                 var level2VinculadosAoLevel1Selecionado = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == id).Select(r => r.ParLevel3Level2.ParLevel2).Distinct().ToList();
-               
+
                 ViewBag.ParLevel2Todos = level2VinculadosAoLevel1Selecionado;
                 ViewBag.ParLevel2Ids = level2Comporativo?.Select(r => r.Id);
-                ViewBag.level2Number = db.ParLevel1.FirstOrDefault(r=>r.Id == id).Level2Number;
+                ViewBag.level2Number = db.ParLevel1.FirstOrDefault(r => r.Id == id).Level2Number;
             }
             else
             {
@@ -103,5 +106,49 @@ namespace SgqSystem.Controllers
             }
             return PartialView("_ControlCompanySelectBoxLevel2UserCompany");
         }
+
+
+        public ActionResult List()
+        {
+
+            var sql = $@"SELECT TOP 200
+            	IIF(PC.Name IS NULL, 'Sim', 'Não') AS IsCorporativo
+               ,PC.Name AS ParCompany
+               ,P1.Name AS ParLevel1
+               ,P2CC.InitDate AS InitDate
+               ,STUFF((SELECT DISTINCT
+            			', ' + P2.Name
+            		FROM ParLevel2ControlCompany P2CC2 WITH (NOLOCK)
+            		LEFT JOIN ParLevel1 P1 WITH (NOLOCK) ON P1.Id = P2CC2.ParLevel1_Id
+            		LEFT JOIN Parlevel2 P2 WITH (NOLOCK) ON P2.Id = P2CC2.ParLevel2_Id
+            		LEFT JOIN ParCompany PC WITH (NOLOCK) ON PC.Id = P2CC2.ParCompany_Id
+            		WHERE P2CC2.InitDate = P2CC.InitDate
+            		FOR XML PATH (''))
+            	, 1, 1, '') AS ParLevel2
+            FROM ParLevel2ControlCompany P2CC WITH (NOLOCK)
+            LEFT JOIN ParLevel1 P1 WITH (NOLOCK) ON P1.Id = P2CC.ParLevel1_Id
+            LEFT JOIN Parlevel2 P2 WITH (NOLOCK) ON P2.Id = P2CC.ParLevel2_Id
+            LEFT JOIN ParCompany PC WITH (NOLOCK) ON PC.Id = P2CC.ParCompany_Id
+            GROUP BY P2CC.InitDate
+            		,P1.Name
+            		,PC.Name
+            ORDER BY P2CC.InitDate DESC";
+
+            var retorno = db.Database.SqlQuery<RetornoListaFamilias>(sql).ToList();
+
+            return View(retorno);
+        }
+
     }
+
+
+    public class RetornoListaFamilias
+    {
+        public string IsCorporativo { get; set; }
+        public string ParCompany { get; set; }
+        public string ParLevel1 { get; set; }
+        public string ParLevel2 { get; set; }
+        public DateTime InitDate { get; set; }
+    }
+
 }

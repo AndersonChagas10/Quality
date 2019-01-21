@@ -1,0 +1,68 @@
+﻿@model IEnumerable<SgqSystem.Controllers.RetornoListaFamilias>
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <h1 class="page-title">
+            @Resources.Resource.family_list
+        </h1>
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="#">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.family_list</span>
+                </li>
+            </ul>
+            <div class="page-toolbar"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="formBodyContent" class="col-xs-12" style="margin-left:auto; margin-right:auto;">
+                    <table id="tableFamilia" class="table"></table>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        var dados = @Html.Raw(Json.Encode(Model));
+
+        if (dados.length > 0)
+            dados.forEach(function (o, i) {
+                dados[i].InitDate = new Date(o.InitDate.match(/\d+/)[0] * 1).toLocaleDateString();
+            });
+
+        datatableGRT.Inicializar({
+
+            idTabela: "tableFamilia",
+            listaDeDados: dados,
+            colunaDosDados: [
+                { title: Resources("initial_date"), mData: "InitDate" },
+                { title: Resources("unit"), mData: "ParCompany" },
+                { title: "Corporativo", mData: "IsCorporativo" },
+                { title: Resources("level1"), mData: "ParLevel1" },
+                { title: Resources("level2"), mData: "ParLevel2" },
+                //{ title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm btn-link" data-target="#modalHistorico" >' + Resources("edit") + '</button>', "orderable": false },
+            ],
+            numeroLinhasNaTabela: 100,
+            aplicarResponsividade: true,
+            tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+            loadingRecords: true,
+            destroy: true,
+            info: true,
+            initComplete: function () {},
+            createdRow: function (row, data, index) { }
+        });
+    });
+
+</script>
+

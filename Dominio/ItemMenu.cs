@@ -18,15 +18,12 @@ namespace Dominio
         public string Name { get; set; }
 
         [StringLength(255)]
-        [Required(AllowEmptyStrings = true)]
         public string Icon { get; set; }
 
         [StringLength(255)]
-        [Required(AllowEmptyStrings = true)]
         public string Url { get; set; }
 
         [StringLength(255)]
-        [Required(AllowEmptyStrings = true)]
         public string Resource { get; set; }
 
         public bool? IsActive { get; set; }
