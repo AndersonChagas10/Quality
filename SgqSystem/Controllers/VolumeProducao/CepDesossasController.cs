@@ -88,7 +88,7 @@ namespace SgqSystem.Controllers
 
         private void GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(VolumeCepDesossa model)
         {
-            var naoCorporativas = CommonData.GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContext, 2);
+            var naoCorporativas = CommonData.GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContext, 2, model.ParCompany_id);
             var corporativos = CommonData.GetNumeroDeFamiliasCorporativo(HttpContext, 2);
             model.QtdadeFamiliaProduto = corporativos + naoCorporativas;
             model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == 2).Id;

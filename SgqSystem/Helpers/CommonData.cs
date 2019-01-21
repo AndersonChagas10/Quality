@@ -17,7 +17,7 @@ namespace SgqSystem.Helpers
 {
     public static class CommonData
     {
-        public static int GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContextBase filterContext, int hashKey)
+        public static int GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContextBase filterContext, int hashKey, int? ParCompany_Id)
         {
             using (var db = new SgqDbDevEntities())
             {
@@ -28,7 +28,7 @@ namespace SgqSystem.Helpers
                 var existeAlgum = new List<ParLevel2ControlCompany>();
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    existeAlgum = factory.SearchQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is not null and ParLevel1_Id = " + level1.Id).ToList();
+                    existeAlgum = factory.SearchQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id = " + ParCompany_Id + " and isActive = 1 and ParLevel1_Id = " + level1.Id).ToList();
                 }
 
                 if (existeAlgum != null && existeAlgum.Count() > 0)
@@ -55,7 +55,7 @@ namespace SgqSystem.Helpers
                 var existeAlgum = new List<ParLevel2ControlCompany>();
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
-                    existeAlgum = factory.SearchQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is null and ParLevel1_Id = " + level1.Id).ToList();
+                    existeAlgum = factory.SearchQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is null and isActive = 1 and ParLevel1_Id = " + level1.Id).ToList();
                 }
 
                 if (existeAlgum != null && existeAlgum.Count() > 0)
