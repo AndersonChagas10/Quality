@@ -38,19 +38,19 @@ namespace SgqSystem
             GlobalConfig.VerifyConfig("DefaultConnection");
 
             #region LOG
-            System.Data.Entity.Database.SetInitializer<Dominio.SgqDbDevEntities>(null);
-            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
-            {
-                Task.Run(() =>
-                {
-                    using (var db = new Dominio.SgqDbDevEntities())
-                    {
-                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = eventArgs.Exception.ToClient() });
-                        db.SaveChanges();
-                    }
-                });
+            //System.Data.Entity.Database.SetInitializer<Dominio.SgqDbDevEntities>(null);
+            //AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+            //{
+            //    Task.Run(() =>
+            //    {
+            //        using (var db = new Dominio.SgqDbDevEntities())
+            //        {
+            //            db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = eventArgs.Exception.ToClient() });
+            //            db.SaveChanges();
+            //        }
+            //    });
 
-            };
+            //};
             #endregion
 
             SetGlobalConfigAmbient();

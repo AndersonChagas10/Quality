@@ -8,6 +8,7 @@ namespace Dominio
     using System.Threading;
     using Newtonsoft.Json;
     using System.Data.Entity.ModelConfiguration.Conventions;
+    using Helper;
 
     public partial class SgqDbDevEntities : DbContext
     {
@@ -76,10 +77,10 @@ namespace Dominio
                 Type t = entity.Entity.GetType();
                 foreach (var propInfo in t.GetProperties())
                 {
-                    if (!propInfo.PropertyType.IsInterface)
+                    object valor = propInfo.GetValue(entity.Entity, null);
+                    Type tipo = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
+                    if (tipo.IsPrimitiveAndNullableType())
                     {
-                        object valor = propInfo.GetValue(entity.Entity, null);
-                        Type tipo = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
                         object valorConvertido = (valor == null) ? null : Convert.ChangeType(valor, tipo);
                         propInfo.SetValue(objeto, valorConvertido, null);
                     }
