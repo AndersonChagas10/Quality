@@ -36,17 +36,25 @@
 
         var dados = @Html.Raw(Json.Encode(Model));
 
-        if (dados.length > 0)
-            dados.forEach(function (o, i) {
-                dados[i].InitDate = new Date(o.InitDate.match(/\d+/)[0] * 1).toLocaleDateString();
-            });
+        //if (dados.length > 0)
+        //    dados.forEach(function (o, i) {
+        //        dados[i].InitDate = new Date(o.InitDate.match(/\d+/)[0] * 1).toLocaleDateString();
+        //    });
 
         datatableGRT.Inicializar({
 
             idTabela: "tableFamilia",
             listaDeDados: dados,
             colunaDosDados: [
-                { title: Resources("initial_date"), mData: "InitDate" },
+                {
+                    title: Resources("initial_date"),
+                    mData: null,
+                    render: function (data) {
+                        debugger
+                        const html = "<span style='display:none'>" + new Date(data.InitDate.match(/\d+/)[0] * 1).toJSON() + "</span>" + new Date(data.InitDate.match(/\d+/)[0] * 1).toLocaleDateString();
+                        return html;
+                    }
+                },
                 { title: Resources("unit"), mData: "ParCompany" },
                 { title: "Corporativo", mData: "IsCorporativo" },
                 { title: Resources("level1"), mData: "ParLevel1" },
