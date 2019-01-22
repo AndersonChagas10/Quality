@@ -1,4 +1,5 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@using DTO 
 @{
     ViewBag.Title = Resources.Resource.daily_report; /* Trocado */
     var url = Url.Action("Index", "Home");
@@ -60,7 +61,7 @@
         var url1 = '@Html.Raw(@urlGrafico1)';
         var urlGetPanelResultSet = '@Html.Raw(@urlGetPanelResultSet)';
         var urlGetPorcLevel3 = '@Html.Raw(@urlGetPorcLevel3)';
-
+        var isBrasil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
         var $btn = $('#btnSend');
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -174,7 +175,6 @@
 
 
         function GraficoInicialLeTodosLevel1(data) {
-
             var valoresX = MapeiaValorParaHC(data, "Level1Name")//["Lins", "Barretos", "Etc.."]
             var valoresXX = MapeiaValorParaHC(data, "Level1Name")//["Lins", "Barretos", "Etc.."]
             var meta = MapeiaValorParaHC(data, "Meta")
@@ -230,7 +230,6 @@
         }
 
         function GraficoTendencia(data, idDiv, titulo, subtitulo, dtInicio, dtFim) {
-            //console.log(data);
             var valoresX = MapeiaValorParaHC(data, "Level1Name")
             var meta = MapeiaValorParaHC(data, "Meta")
             var totalNC = MapeiaValorParaHC(data, "NC")
@@ -313,6 +312,14 @@
                 }
 
                 inicio.setDate(inicio.getDate() + 1)
+            }
+            
+            if(isBrasil) {
+                Highcharts.setOptions({
+                    lang: {
+                        shortMonths: ['Jan', 'Feb', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    }
+                });
             }
 
             $('#' + idDiv).highcharts({
