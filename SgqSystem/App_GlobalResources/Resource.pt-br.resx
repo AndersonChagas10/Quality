@@ -2742,4 +2742,7 @@
   <data name="start" xml:space="preserve">
     <value>Início</value>
   </data>
+  <data name="family_list" xml:space="preserve">
+    <value>Lista de Famílias</value>
+  </data>
 </root>
