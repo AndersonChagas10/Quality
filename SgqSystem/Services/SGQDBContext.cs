@@ -2341,8 +2341,12 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             "AND SHIFT = " + Shift + " " +
                             "and period = " + Period + " " +
                             "AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + @"'
-                             AND (C1C.ParCluster_Id = " + cluster + " OR C1C.ParCluster_Id IS NULL)" + @"
-                             AND (C1PD.ParDepartment_Id = " + parDepartment_Id + " OR C1PD.ParDepartment_Id IS NULL)";
+                             AND (C1C.ParCluster_Id = " + cluster + " OR C1C.ParCluster_Id IS NULL)";
+
+                string departmentWhere = " AND C1PD.ParDepartment_Id IS NULL";
+                if (parDepartment_Id > 0)
+                    departmentWhere = " AND C1PD.ParDepartment_Id = '" + parDepartment_Id + "'";
+                sql += departmentWhere;
 
                 //SqlConnection db = new SqlConnection(conexao);
 
@@ -2421,7 +2425,6 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             try
             {
                 string sql = @"
-
                             SELECT c2.Id, 
                             ConsolidationLevel1_Id, 
                             UnitId, 
@@ -2442,10 +2445,12 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
                             " AND ParLevel2_Id= '" + ParLevel2_Id + "' " +
                             " AND UnitId='" + ParCompany_Id + "'" +
-                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)" +
-                            " AND (C2PD.ParDepartment_Id = '" + parDepartment_Id + "' OR C2PD.ParDepartment_Id IS NULL)";
+                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)";
 
-
+                string departmentWhere = " AND C2PD.ParDepartment_Id IS NULL";
+                if (parDepartment_Id > 0)
+                    departmentWhere = " AND C2PD.ParDepartment_Id = '" + parDepartment_Id + "'";
+                sql += departmentWhere;
 
                 ConsolidationLevel2 obj = null;
                 using (Factory factory = new Factory("DefaultConnection"))
@@ -2494,9 +2499,12 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             "AND c2.UnitId='" + ParCompany_Id + "' " +
                             "AND c2.ReauditIs=" + reaudit + " " +
                             "and c2.reauditnumber=" + reauditNumber + " " +
-                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)" +
-                            " AND (C2PD.ParDepartment_Id = '" + parDepartment_Id + "' OR C2PD.ParDepartment_Id IS NULL)";
+                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)";
 
+                string departmentWhere = " AND C2PD.ParDepartment_Id IS NULL";
+                if (parDepartment_Id > 0)
+                    departmentWhere = " AND C2PD.ParDepartment_Id = '" + parDepartment_Id + "'";
+                sql += departmentWhere;
 
                 ConsolidationLevel2 obj = null;
                 using (Factory factory = new Factory("DefaultConnection"))

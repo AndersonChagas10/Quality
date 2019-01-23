@@ -31,7 +31,13 @@ namespace SgqSystem.Services.SyncModel
                 pl3pd.ParCompany_Id
                 FROM ParLevel3XParDepartment pl3pd
                 LEFT JOIN ParDepartment pd ON pd.Id = pl3pd.ParDepartment_Id
-                WHERE pl3pd.IsActive = 1 AND pl3pd.ParCompany_Id = {parCompany_Id}";
+                WHERE pl3pd.IsActive = 1 AND pl3pd.ParCompany_Id = {parCompany_Id}
+                GROUP BY pl3pd.ParDepartment_Id, 
+                pd.Name,  
+                pl3pd.ParLevel1_Id,
+                pl3pd.ParLevel2_Id,
+                pl3pd.ParLevel3_Id,
+                pl3pd.ParCompany_Id";
 
             List<ParLevel3XParDepartmentSyncModel> listParLevel3XParDepartmentSyncModel = new List<ParLevel3XParDepartmentSyncModel>();
             using (Factory factory = new Factory("DefaultConnection"))

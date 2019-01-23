@@ -826,8 +826,7 @@ namespace SgqSystem.Services
                     string avaliacaoultimoalerta = "0";
                     string monitoramentoultimoalerta = "0";
 
-                    string motivoAtraso_Id = null;
-                    string parDepartment_Id = null;
+                    string motivoAtraso_Id = null; ;
 
                     //using (var transacao = new TransactionScope())
                     //{
@@ -913,6 +912,7 @@ namespace SgqSystem.Services
                     isemptylevel3 = BoolConverter(isemptylevel3);
 
                     string cluster = DefaultValueReturn(arrayHeader[31], null);
+                    string parDepartment_Id = DefaultValueReturn(arrayHeader[33], null);
 
                     string haveReaudit = BoolConverter(c.haveReaudit.ToString());
 
@@ -1682,6 +1682,9 @@ namespace SgqSystem.Services
 
                             InsertConsolidationLevel2XCluster(i, cluster);
 
+                            if(parDepartment_Id > 0)
+                                InsertConsolidationLevel2XParDepartment(i, parDepartment_Id);
+
                             if (reaudit)
                                 return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id, 1, reauditNumber.ToString(), cluster, parDepartment_Id);
                             else
@@ -1756,7 +1759,7 @@ namespace SgqSystem.Services
         }
 
 
-        public int InsertConsolidationLevel2XParDepartment(int consolidationLevel2_Id, string parDepartment_Id)
+        public int InsertConsolidationLevel2XParDepartment(int consolidationLevel2_Id, int parDepartment_Id)
         {
             var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
 
@@ -2008,9 +2011,6 @@ namespace SgqSystem.Services
                             if (id == "0")
                             {
                                 InsertCollectionLevel2XCluster(i, cluster);
-
-                                if (parDepartment_Id > 0)
-                                    InsertCollectionLevel2XParDepartment(i, parDepartment_Id);
                             }
 
                             int motivoAtrasoId = 0;
@@ -2334,7 +2334,7 @@ namespace SgqSystem.Services
             }
             else
             {
-                sql = $@"INSERT INTO CollectionLevel2XParDepartment ([CollectionLevel2_Id], [MotivoAtraso_Id], [AddDate]) 
+                sql = $@"INSERT INTO CollectionLevel2XParDepartment ([CollectionLevel2_Id], [ParDepartment_Id], [AddDate]) 
                 VALUES ('{ CollectionLevel2_Id }', { parDepartment_Id } , GETDATE())";
             }
 
