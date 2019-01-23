@@ -51,7 +51,7 @@
                     <table id="tabelaAgendamentoIntervalo" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
                         <thead>
                             <tr>
-                                <th>Tipo de Frequência</th>
+                                <th class="col-md-4">Tipo de Frequência</th>
                                 <th id="headIntervalo">Intervalo</th>
                                 <th>@Resources.Resource.shift</th>
                                 <th>@Resources.Resource.action</th>
@@ -218,7 +218,8 @@
     }
 
     function MontaNovaLinhaAgendamento(data) {
-        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() == "Diario") {
+        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario"
+            || $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
             $("#tabelaAgendamento tbody").append("<tr>"
                 + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
                 + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
