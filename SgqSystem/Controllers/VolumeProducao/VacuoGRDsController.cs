@@ -20,7 +20,7 @@ namespace SgqSystem.Controllers
         private void GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(VolumeVacuoGRD model, int hashKey)
         {
             hashKey = 3;
-            var naoCorporativas = CommonData.GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContext, hashKey);
+            var naoCorporativas = CommonData.GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContext, hashKey, model.ParCompany_id);
             var corporativos = CommonData.GetNumeroDeFamiliasCorporativo(HttpContext, hashKey);
             model.QtdadeFamiliaProduto = corporativos + naoCorporativas;
             model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == hashKey).Id;

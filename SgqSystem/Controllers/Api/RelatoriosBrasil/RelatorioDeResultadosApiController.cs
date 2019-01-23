@@ -3318,11 +3318,19 @@ ORDER BY 3
 
         #endregion
 
-        private static string GetUserUnits(int User)
+        private static string GetUserUnits(int UserId)
         {
             using (var db = new SgqDbDevEntities())
             {
-                return string.Join(",", db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == User).Select(r => r.ParCompany_Id).ToList());
+
+                if (db.UserSgq.Find(UserId).ShowAllUnits == true)
+                {
+                    return string.Join(",", db.ParCompany.Where(r => r.IsActive).Select(r => r.Id).ToList());
+                }
+                else
+                {
+                    return string.Join(",", db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == UserId).Select(r => r.ParCompany_Id).ToList());
+                }
             }
         }
 
@@ -5019,7 +5027,7 @@ FROM (SELECT
                 D.queryDimensao = $@" CONVERT(VARCHAR(7),{nomeColuna},120) ";
                 D.nomeAlias = $@" AS [MES] ";
             }
-            else 
+            else
             {
                 D.queryDimensao = $@"{ nomeColuna } ";
                 D.nomeAlias = $@" AS [DATE] ";
@@ -5033,7 +5041,7 @@ FROM (SELECT
     public class RelatorioResultadosPeriodo
     {
         public DateTime Data { get; set; }
-        public string Regional {get; set; }
+        public string Regional { get; set; }
         public int Unidade { get; set; }
         public int Indicador { get; set; }
         public int Monitoramento { get; set; }

@@ -1860,6 +1860,7 @@
     <Content Include="Views\Pcc1b\_AgendamentoVolume.cshtml" />
     <Content Include="Views\Params\_AgendamentoDiarioComIntervalo.cshtml" />
     <Content Include="Views\Shared\_AgendamentoVolumes.cshtml" />
+    <Content Include="Views\ParLevel2ControlCompany\List.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1954,7 +1955,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:57506/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
