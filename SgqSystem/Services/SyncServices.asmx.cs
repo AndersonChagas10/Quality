@@ -4687,7 +4687,10 @@ function calcularSensorial(list){
                                        buttons +
                                        footer(),
                              classe: "App hide",
-                             tags: "breadmainlevel=\"" + CommonData.getResource("slaughter").Value.ToString() + "\" culture=\"" + culture + "\" turningtime=\"03:00\"" + "\" local=\"" + local + "\" "
+                             tags: "breadmainlevel=\"" + CommonData.getResource("slaughter").Value.ToString()
+                             + "\" culture=\"" + culture + "\" turningtime=\"03:00\" serverdate =\"" + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy HH:mm") + "\""
+                             + "\" local=\"" + local
+                             + "\" "
                            ) +
                            correctiveAction() +
                            viewModal +
