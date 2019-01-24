@@ -187,7 +187,7 @@
         debugger
         var tamanho = $("#tabelaAgendamentoIntervalo tbody").find('tr').length;
 
-        if (tamanho <= 1) {
+        if (tamanho <= 0) {
             $(botaoAgendamento).removeClass('btn-success').addClass('btn-default');
             $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', false);
         } else {
@@ -197,18 +197,20 @@
     }
 
     function MontaNovaLinhaAgendamentoIntervalo(data) {
-        debugger
-        $("#tabelaAgendamentoIntervalo tbody").append("<tr>"
-            + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
-            + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpIntervalo" /></td>'
-            + avaliacaAmostraSelectShifts
-            + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
-            + '<td>  <button type="button" title="Adicionar na lista" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamentoIntervalo"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
-            + "</tr>");
-
-        $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        debugger      
+        if ($("#tabelaAgendamentoIntervalo tbody tr").length == 0) {
+            $("#tabelaAgendamentoIntervalo tbody").append("<tr>"
+                + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
+                + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpIntervalo" /></td>'
+                + avaliacaAmostraSelectShifts
+                + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
+                + '<td> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
+                + "</tr>");
+            $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        }
 
         if (data != null && data != undefined) {
+
             $("#tabelaAgendamentoIntervalo tbody tr:last").data(data);
 
             $("#tabelaAgendamentoIntervalo tbody tr:last").find('[data-column=inpIntervalo]').val(data.Intervalo);
@@ -219,20 +221,34 @@
             if (data.Id > 0) {
                 $("#tabelaAgendamentoIntervalo tbody tr:last").find('[data-column=inpId]').val(data.Id);
             }
+        } else {
+
+            $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
         }
     }
 
     function MontaNovaLinhaAgendamento(data) {
-        debugger
-        $("#tabelaAgendamento tbody").append("<tr>"
-            + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
-            + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
-            + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpTermino" /></td>'
-            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpAvaliacao" /></td>'
-            + avaliacaAmostraSelectShifts
-            + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
-            + '<td>  <button type="button" title="Adicionar na lista" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
-            + "</tr>");
+        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario") {
+            $("#tabelaAgendamento tbody").append("<tr>"
+                + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
+                + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
+                + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpTermino" /></td>'
+                + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpAvaliacao" /></td>'
+                + avaliacaAmostraSelectShifts
+                + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
+                + '<td>  <button type="button" title="Adicionar na lista" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
+                + "</tr>");
+        } else {
+            $("#tabelaAgendamento tbody").append("<tr>"
+                + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
+                + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
+                + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpTermino" /></td>'
+                + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpAvaliacao" /></td>'
+                + avaliacaAmostraSelectShifts
+                + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
+                + '<td>  <button type="button" title="Adicionar na lista" class="btn btn-primary btn-sm fa fa-plus"" id="btnSalvarAgendamento"></button> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
+                + "</tr>");
+        }
 
 
         $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
@@ -254,6 +270,7 @@
 
 
     function deletarRegistro(data) {
+        debugger
         var linha = $(data).parents('tr');
         var form = {
             Inicio: $(linha).data()['Inicio'],
@@ -267,33 +284,13 @@
         };
         $(linha).data(form);
         $(linha).find(".btnDeletarAgendamento").removeClass('btn-danger').addClass('btn-default');
-        @* $.ajax({
-            url: '@Url.Content("~")' + 'api/AgendamentoApi/Delete',
-            type: 'DELETE',
-            data: form,
-            dataType: 'json',
-            success: function (data) {
-                DeletaLinha(data, linha);
-                ContadorLinhas();
-                openMessageModal("Registro deletado com sucesso", null);
-            },
-            error: function (request, error) {
-                alert("Request: " + JSON.stringify(request));
-            }
-        });*@
     }
 
     function SalvarAgendamentoIntervalo() {
         debugger
         var listaTabelaAgendamentoIntervalo = [];
         var contadorErros = 0;
-        listaTabelaAgendamentoIntervalo = $("#tabelaAgendamentoIntervalo tbody tr").not(':first');
-
-        if ($("#tabelaAgendamentoIntervalo tbody tr").find("[data-column=inpIntervalo]").val() !== '') {
-            openMessageModal('@Resources.Resource.data_not_entered_on_list', null);
-        } else if (listaTabelaAgendamentoIntervalo.length <= 0) {
-            openMessageModal('@Resources.Resource.no_data_in_list', null);
-        } else {
+        listaTabelaAgendamentoIntervalo = $("#tabelaAgendamentoIntervalo tbody tr");
             listaTabelaAgendamentoIntervalo.each(function (index, item) {
                 debugger
                 form = {
@@ -324,7 +321,7 @@
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         listaAgendamentoIntervalo = [];
-                        $('#tabelaAgendamentoIntervalo tbody tr').not(':first').remove();
+                        $('#tabelaAgendamentoIntervalo tbody tr').remove();
                         data.forEach(function (item) {
                             MontaNovaLinhaAgendamentoIntervalo(item, false);
                         });
@@ -342,7 +339,6 @@
             } else {
                 openMessageModal("@Resources.Resource.invalid_reported_data", null);
             }
-        }
     }
 
 
@@ -375,6 +371,10 @@
                     };
                     var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
                     var linha = $(this).parent().parent();
+                    //Validar preenchido
+                    if (form.Inicio === "" || form.Fim === "" || form.Av === "" || parseInt(form.Av) === 0) {
+                        contadorErros += 1;
+                    }
                     if (!form.IsDeletar && (!frequenciaIsValid(formato, parseInt(form.Inicio), parseInt(form.Fim))
                         || $('#tabelaAgendamento tbody tr').find('[data-column=inpAvaliacao]').hasClass('alert-danger')
                         || form.Av > valorAvaliacao)) {
@@ -600,8 +600,7 @@
     }
 
     function camposIsValid(avaliacao, inicio, termino, turno) {
-        debugger
-        if (avaliacao == null || avaliacao == undefined || avaliacao < 0 || avaliacao === "") {
+        if (avaliacao == null || avaliacao == undefined || avaliacao <= 0 || avaliacao === "") {
             openMessageModal('@Resources.Resource.required_field_was_not_filled'+ " "+ '@Resources.Resource.evaluation', null);
             return false;
         }
