@@ -1343,6 +1343,7 @@
     <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
@@ -1857,7 +1858,6 @@
     <Content Include="Views\RelatoriosMD\AvaliacaoSensorial.cshtml" />
     <Content Include="Views\SIFReports\AcompanhamentoEmbarque.cshtml" />
     <Content Include="Views\RelatoriosMD\PesoHamburger.cshtml" />
-    <Content Include="Views\Pcc1b\_AgendamentoVolume.cshtml" />
     <Content Include="Views\Params\_AgendamentoDiarioComIntervalo.cshtml" />
     <Content Include="Views\Shared\_AgendamentoVolumes.cshtml" />
     <Content Include="Views\ParLevel2ControlCompany\List.cshtml" />
