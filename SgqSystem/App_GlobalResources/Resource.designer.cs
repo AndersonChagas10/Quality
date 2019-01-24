@@ -3229,24 +3229,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid date.
-        /// </summary>
-        internal static string invalid_date {
-            get {
-                return ResourceManager.GetString("invalid_date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Interval  field value can not be null!.
-        /// </summary>
-        internal static string interval_null_value {
-            get {
-                return ResourceManager.GetString("interval_null_value", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Invalid evaluations number.
         /// </summary>
         internal static string invalid_evaluations_number {
