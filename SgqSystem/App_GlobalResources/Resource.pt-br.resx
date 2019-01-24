@@ -2695,7 +2695,7 @@
     <value>Agendamento</value>
   </data>
   <data name="input_a_valid_date" xml:space="preserve">
-    <value>Digite uma data válida</value>
+    <value>Por favor, insira uma data válida!</value>
   </data>
   <data name="invalid_date" xml:space="preserve">
     <value>Data inválida</value>
@@ -2744,5 +2744,8 @@
   </data>
   <data name="family_list" xml:space="preserve">
     <value>Lista de Famílias</value>
+  </data>
+  <data name="cant_change_date_greater_than_current" xml:space="preserve">
+    <value>Não foi possivel realizar a alteração, devido a data ser maior que a data atual</value>
   </data>
 </root>

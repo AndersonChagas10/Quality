@@ -763,6 +763,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to make a change because the date is greater than the current date.
+        /// </summary>
+        internal static string cant_change_date_greater_than_current {
+            get {
+                return ResourceManager.GetString("cant_change_date_greater_than_current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The evaluations are not completed. Do you want to continue?.
         /// </summary>
         internal static string ca_evaluations_not_completed {
@@ -3175,7 +3184,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please input a valid date.
+        ///   Looks up a localized string similar to Please, input a valid date.
         /// </summary>
         internal static string input_a_valid_date {
             get {

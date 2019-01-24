@@ -2707,7 +2707,7 @@
     <value>Scheduling</value>
   </data>
   <data name="input_a_valid_date" xml:space="preserve">
-    <value>Please input a valid date</value>
+    <value>Please, input a valid date</value>
   </data>
   <data name="invalid_date" xml:space="preserve">
     <value>Invalid date</value>
@@ -2756,5 +2756,8 @@
   </data>
   <data name="family_list" xml:space="preserve">
     <value>Family List</value>
+  </data>
+  <data name="cant_change_date_greater_than_current" xml:space="preserve">
+    <value>Failed to make a change because the date is greater than the current date</value>
   </data>
 </root>
