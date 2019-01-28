@@ -51,10 +51,10 @@
                     <table id="tabelaAgendamentoIntervalo" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
                         <thead>
                             <tr>
-                                <th>Tipo de Frequência</th>
-                                <th id="headIntervalo">Intervalo</th>
-                                <th>@Resources.Resource.shift</th>
-                                <th>@Resources.Resource.action</th>
+                                <th class="col-md-4">Tipo de Frequência</th>
+                                <th class="col-md-4" id="headIntervalo">Intervalo</th>
+                                <th class="col-md-4">@Resources.Resource.shift</th>
+                                <th id="acao" class="hidden col-md-4">@Resources.Resource.action</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -199,6 +199,7 @@
     function MontaNovaLinhaAgendamentoIntervalo(data) {
         debugger      
         if ($("#tabelaAgendamentoIntervalo tbody tr").length == 0) {
+            $("#tabelaAgendamentoIntervalo thead tr:last").find("#acao").addClass('hidden');
             $("#tabelaAgendamentoIntervalo tbody").append("<tr>"
                 + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
                 + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpIntervalo" /></td>'
@@ -210,7 +211,7 @@
         }
 
         if (data != null && data != undefined) {
-
+            $("#tabelaAgendamentoIntervalo thead tr:last").find("#acao").removeClass('hidden');
             $("#tabelaAgendamentoIntervalo tbody tr:last").data(data);
 
             $("#tabelaAgendamentoIntervalo tbody tr:last").find('[data-column=inpIntervalo]').val(data.Intervalo);
