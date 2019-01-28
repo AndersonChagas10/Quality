@@ -132,8 +132,6 @@ else
             var idComp = $('#company :selected').val() > 0 ? $('#company :selected').val() : 0;
             var data = $('#datafamilia').val();
 
-            $('#company').trigger("change");
-
             $.post(urlChangeLevel2UserCompany, { "id": id, "companyId": idComp, "dataInit": data }, function (r) {
 
                 $('#MonEmpresa').remove();
