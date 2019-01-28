@@ -1,4 +1,5 @@
 ﻿@using SgqSystem.Helpers
+@model SgqSystem.Controllers.RetornoListaFamilias
 @{
     ViewBag.Title = Resources.Resource.family;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -60,7 +61,8 @@
 
                                             <tr class="rowTabelaFamilia">
                                                 <td style="width: 30%;" class="colTabelaFamilia">@Html.Label("Empresa:")</td>
-                                                <td class="colTabelaFamilia" align="center">@Html.DropDownList("company", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
+                                                <td class="colTabelaFamilia" align="center">@Html.DropDownList("company", new SelectList(ViewBag.listaFamilias, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
+
                                             </tr>
 
                                             <tr class="rowTabelaFamilia">
@@ -114,6 +116,7 @@
 
             $('#company').parents('tr').hide();
             $('#level2SelecionadoPorCompany').parents('tr').hide();
+
 
         });
 
@@ -169,114 +172,119 @@ else
 
     var $btn = $('#send');
 
-    var formOriginal = $('#tblFamilia > tbody').clone();
-    var urlSend = '@Html.Raw(@urlSend)';
-    var urlChangeLevel2 = '@Html.Raw(@urlChangeLevel2)';
-    var urlChangeLevel2UserCompany = '@Html.Raw(@urlChangeLevel2UserCompany)';
-    var urlChangeDate = '@Html.Raw(@urlChangeDate)';
+        @if (ViewBag.UnidadeUsuario != null)
+        {
+            <text>$('#company').val(@Html.Raw(ViewBag.UnidadeUsuario[0].Id));</text>
+        }
+
+            var formOriginal = $('#tblFamilia > tbody').clone();
+            var urlSend = '@Html.Raw(@urlSend)';
+            var urlChangeLevel2 = '@Html.Raw(@urlChangeLevel2)';
+            var urlChangeLevel2UserCompany = '@Html.Raw(@urlChangeLevel2UserCompany)';
+            var urlChangeDate = '@Html.Raw(@urlChangeDate)';
 
     $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
-    function send() {
+            function send() {
 
-        var data = {};
-        data["listLevel2Corporativos"] = $('#level2').val();
-        data["Id"] = $('#level1 :selected').val();
-        data["level2Number"] = $('#level2Number').val();
-        data["level2PorCompany"] = $('#level2SelecionadoPorCompany').val();
-        data["CompanyControl_Id"] = $('#company :selected').val();
-        data["DataInit"] = $('#datafamilia').val();
+                var data = {};
+                data["listLevel2Corporativos"] = $('#level2').val();
+                data["Id"] = $('#level1 :selected').val();
+                data["level2Number"] = $('#level2Number').val();
+                data["level2PorCompany"] = $('#level2SelecionadoPorCompany').val();
+                data["CompanyControl_Id"] = $('#company :selected').val();
+                data["DataInit"] = $('#datafamilia').val();
 
-        if (data["Id"] == undefined)
-            data["Id"] = $("#company :selected").val();
+                if (data["Id"] == undefined)
+                    data["Id"] = $("#company :selected").val();
 
         $btn.button('loading');
-
-        $.post(urlSend, data, function (r) {
+                debugger
+                $.post(urlSend, data, function (r) {
             $btn.button('reset');
-            openMessageModal('Feito!', '');
-        });
+                    openMessageModal('Feito!', '');
+                });
 
-    }
+        }
 
-    function selectData() {
+        function selectData() {
         $('#level1').val("").trigger("change");
         $('#level2').val("").trigger("change");
-    }
+        }
 
     $(document).ready(function () {
 
         $('#level1').on('change', selectLevel2);
 
         $('#company').on('change', function () {
-            if ($('#level1').val() > 0) {
+                if ($('#level1').val() > 0) {
                 $('#level1').trigger("change");
-            }
-        });
+                }
+            });
 
         $('#level1').select2()
         $('#level2').select2({ allowClear: true, placeholder: "" })
 
         $('body > div > div.page-header.navbar.navbar-fixed-top > div > div.page-logo > div').click();
 
-        var start = moment();
-        var end = moment();
+            var start = moment();
+            var end = moment();
 
         //Start config datepickerrange simple
         $('input[name="datefilter"]').daterangepicker({
-            singleDatePicker: true,
+                singleDatePicker: true,
             autoUpdateInput: false,
             autoApply: true,
             showDropdowns: true,
             startDate: start,
             endDate: end,
             locale: {
-                cancelLabel: 'Clear'
+                    cancelLabel: 'Clear'
             }
-        }, function (start, end, label) {
-            selectData();
-        });
+            }, function (start, end, label) {
+                selectData();
+            });
 
 
         $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
             $(this).val(picker.startDate.format());
-        });
+            });
 
         $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
             $(this).val('');
-            enviar['startDate'] = "";
-            enviar['endDate'] = "";
-        });
+                enviar['startDate'] = "";
+                enviar['endDate'] = "";
+            });
 
         $('input[name="datefilter"]').val(start.format('DD/MM/YYYY'));
-        //End config datepickerrange simple
+            //End config datepickerrange simple
 
-        closeLeftSidebar();
+            closeLeftSidebar();
 
-        closeLoader();
+            closeLoader();
 
-    })
+        })
 
     $(document).ajaxStart(function () {
-        openLoader("@Resources.Resource.please_wait" + "...");
-    });
+            openLoader("@Resources.Resource.please_wait" + "...");
+        });
 
     $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
 
         $btn.button('reset');
-        closeLoader();
+            closeLoader();
 
-        try {
-            console.log(xhr.responseJSON.Message)
-        } catch (e) {
+            try {
+                console.log(xhr.responseJSON.Message)
+            } catch (e) {
 
-        }
+            }
 
-        openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), e.responseJSON.Message);
-    });
+            openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), e.responseJSON.Message);
+        });
 
     $(document).ajaxStop(function () {
-        closeLoader();
-    });
+            closeLoader();
+        });
 
 </script>
