@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
@@ -53,7 +54,22 @@ namespace SgqSystem.Controllers
                 lastDateDaControlCompany = DateTime.Now;
 
             ViewBag.dataInit = lastDateDaControlCompany;
+
+            PreencheViewBagEmpresasVinculadas();
+
             return View();
+        }
+
+        public void PreencheViewBagEmpresasVinculadas()
+        {
+            var userId = 0;
+            HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
+            if (!string.IsNullOrEmpty(cookie.Values["userId"]))
+                int.TryParse(cookie.Values["userId"].ToString(), out userId);
+
+            UserSgq userLogado = db.UserSgq.FirstOrDefault(r => r.Id == userId);
+
+            ViewBag.listaFamilias = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == userId).Select(r => r.ParCompany).ToList().OrderBy(r => r.Name).GroupBy(r => r.Id).Select(group => group.First()).ToList();
         }
 
         public ActionResult ChangeLevel2(int id, string dataInit)
@@ -136,6 +152,13 @@ namespace SgqSystem.Controllers
 
             var retorno = db.Database.SqlQuery<RetornoListaFamilias>(sql).ToList();
 
+            var idUsuario = Guard.GetUsuarioLogado_Id(ControllerContext.HttpContext);
+
+            var userSgq = db.UserSgq.Where(x => x.Id == idUsuario).FirstOrDefault();
+
+            List<ParCompanyXUserSgq> parCompanyXUserSgq = db.ParCompanyXUserSgq.Where(x => x.UserSgq_Id == idUsuario).ToList();
+
+
             return View(retorno);
         }
 
@@ -149,6 +172,8 @@ namespace SgqSystem.Controllers
         public string ParLevel1 { get; set; }
         public string ParLevel2 { get; set; }
         public DateTime InitDate { get; set; }
+
+        public string EmpresaPadrao { get; set; }
     }
 
 }
