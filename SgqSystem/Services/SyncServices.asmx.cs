@@ -4314,7 +4314,9 @@ function calcularSensorial(list){
                         .Where(x => (x.ParEvaluation.ParLevel1_Id == parLevel1_Id || x.ParEvaluation.ParLevel1_Id == null)
                         && x.ParEvaluation.ParLevel2_Id == parLevel2_Id
                         && (x.ParEvaluation.ParCompany_Id == company_Id || x.ParEvaluation.ParCompany_Id == null)
-                        && (x.Shift_Id == shift_Id || x.Shift_Id == null))
+                        && (x.Shift_Id == shift_Id || x.Shift_Id == null)
+                        && x.ParEvaluation.IsActive
+                        && x.IsActive)
                         .OrderByDescending(x => new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList())
                     {
                         if (parFrequency_Id != 10)
