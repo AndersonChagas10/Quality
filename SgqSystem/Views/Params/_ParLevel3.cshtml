@@ -40,11 +40,14 @@
 
                     @if (Model.paramsDto.parLevel3Dto.hasVinculo && Session["IsRecravacao"] != null && (bool)Session["IsRecravacao"])
                     {
-                        <tr class="row" style="display:none;">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
-                        </tr>
                         <tr class="row showAsReencravation">
                             @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.OrderColumn, new { @class = "form-control" }), @Html.Label(Resources.Resource.OrderColumn), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
                         </tr>
                     }
 
@@ -68,8 +71,8 @@
                 }
 
                 @*<div id="reincidencia">
-            @Html.Partial("_ReincidenciaXLevel", Model)
-        </div>*@
+                        @Html.Partial("_ReincidenciaXLevel", Model)
+                    </div>*@
                 @Html.HiddenFor(r => r.paramsDto.parLevel3Dto.hasVinculo)
 
                 @if (Model.paramsDto.parLevel3Dto.hasVinculo)
@@ -81,7 +84,7 @@
 
                     @Html.Partial("_Peso", Model)
                 }
-                
+
                 <button type="button" id="btnSaveNewLevel3" data-loading-text="@Resources.Resource.saving_the_level3" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-danger margin-button">@Resources.Resource.save_level3</button>
             </div>
         </div>
@@ -648,9 +651,9 @@
 
         $('[data-toggle="popover"]').popover();
 
-        if (typeof (level3Value) !== 'undefined') 
+        if (typeof (level3Value) !== 'undefined')
             level3Value.carregaDadosDoDb();
-        
+
         $('[data-toggle="popover"]').popover();
 
         ///initialize form
