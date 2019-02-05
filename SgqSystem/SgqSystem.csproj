@@ -1869,6 +1869,7 @@
     <Folder Include="App_Data\Uploads\" />
     <Folder Include="Arquivos\uploads\" />
     <Folder Include="obj\" />
+    <Folder Include="Scripts\appColeta\" />
     <Folder Include="Scripts\BootStrapRecravacao\" />
     <Folder Include="Scripts\i18n\" />
     <Folder Include="Views\Base\" />

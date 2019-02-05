@@ -5389,11 +5389,11 @@ function calcularSensorial(list){
                     {
                         frequencia = GetEvaluationScheduleVolume(ParLevel1, parlevel2, ParCompany_Id, Shift_Id, dateCollect);
 
-                        if (frequencia!= null)
+                        if (frequencia != null)
                         {
                             parlevel2.ParFrequency_Id = frequencia.Contains("-") ? 3 : 10;
                         }
-                       
+
                     }
                     else
                     {
@@ -7223,6 +7223,7 @@ function calcularSensorial(list){
                 formOuterHtml +=
                     html.button(label: CommonData.getResource("enter_offline").Value.ToString(), id: "btnLoginOffline", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>") +
                     html.button(label: CommonData.getResource("enter_online").Value.ToString(), id: "btnLoginOnline", classe: "btn-lg btn-default btn-sm btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>");
+
             }
             else
             {
@@ -7230,6 +7231,7 @@ function calcularSensorial(list){
                     html.button(label: CommonData.getResource("enter").Value.ToString(), id: "btnLoginOnline", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>") +
                     html.button(label: CommonData.getResource("enter_offline").Value.ToString(), id: "btnLoginOffline", classe: "btn-lg btn-primary btn-block hide marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>");
             }
+
             formOuterHtml +=
                                   html.div(id: "messageError", classe: "alert alert-danger hide", tags: "role=\"alert\"",
                                            outerhtml: html.span(classe: "icon-remove-sign") + "<strong>Erro! </strong>" + html.span(id: "mensagemErro")) +
@@ -7254,6 +7256,10 @@ function calcularSensorial(list){
                                     , classe: "form-signin");
 
             #endregion
+
+            string divChangeServer =
+                html.div(style: "max-width:320px; margin: 0 auto; padding-right:15px; padding-left:15px",
+                outerhtml: html.button(label: "Atualizar o APP", id: "btnChangeHost", classe: "btn-lg btn-default btn-sm btn-block"));
 
             #region foot
 
@@ -7310,12 +7316,12 @@ function calcularSensorial(list){
             #endregion
 
             return html.div(
-                                outerhtml: head +
-                                           form +
-                                           foot
-
-                                , classe: "login"
-                            );
+                outerhtml: head +
+                form +
+                divChangeServer +
+                foot, 
+                classe: "login"
+                );
         }
 
         #region Users
