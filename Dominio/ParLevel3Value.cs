@@ -43,7 +43,7 @@ namespace Dominio
         [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }
 
-        [ForeignKey("ParCompany_Id")]
+        [ForeignKey("ParLevel2_Id")]
         public virtual ParLevel2 ParLevel2 { get; set; }
 
         [ForeignKey("ParLevel3_Id")]
