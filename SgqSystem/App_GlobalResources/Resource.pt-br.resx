@@ -2748,4 +2748,7 @@
   <data name="cant_change_date_greater_than_current" xml:space="preserve">
     <value>Não foi possivel realizar a alteração, devido a data ser maior que a data atual</value>
   </data>
+  <data name="filtered_report_between_dates" xml:space="preserve">
+    <value>Relatório filtrado entre as datas:</value>
+  </data>
 </root>
