@@ -123,3 +123,8 @@ IF COL_LENGTH('VolumeCepRecortes','Agendamento') IS NULL
 			add Agendamento VARCHAR(255) NULL;
     END
 GO
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('20190207_AlterarTamanhoColunaDynamicValue',GetDate())
+
+ALTER TABLE ParLevel3Value
+ALTER COLUMN DynamicValue varchar(900) null
