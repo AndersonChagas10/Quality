@@ -289,11 +289,11 @@
                     }, 100);
 
                     $('#resultsApontamentos tbody').on('click', 'button#edit', function (data) {
-                        debugger
+                        
                         var data = table.row($(this).parents('tr')).data();                 
 
                         $.post(urlEdit + "/" + data.ResultLevel3Id, function (r) {
-                            debugger
+                            
                             if (r != null) {
                                 $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
                                 $('#myModal #ResultLevel3_Id').val(r.Id);
@@ -319,7 +319,7 @@
                     //});
 
                     $('#resultsApontamentos tbody').on('click', 'button#editHeader', function (data) {
-                        debugger
+                        
                         var data = table.row($(this).parents('tr')).data();
 
                         escondeMensagemVazio();
@@ -376,7 +376,7 @@
                                                 html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 itemHeaderField" name="">
                                                         <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
                                                             <label class="font-small labelHeaderField">${o.HeaderField.Name}</label>
-                                                            <input class="form-control input-sm produto" type="number" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}" onkeyup="buscarProduto(this, $(this).val());" onchange="validaProduto(this, $(this).val());">
+                                                            <input class="form-control input-sm produto" type="number" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderField_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderField.Id}" ParHeaderField_Name="${o.HeaderField.Name}" ParFieldType_Id="${o.HeaderField.ParFieldType_Id}" value="${o.ValueSelected}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" IsRequired="${o.HeaderField.IsRequired}" onkeyup="buscarProduto(this, $(this).val());" onchange="validaProduto(this, $(this).val());" onmouseup="buscarProduto(this, $(this).val());">
                                                             <label class="productNamelabel" title=""></label>
                                                         </div>
                                                     </div>`;
@@ -609,7 +609,7 @@
                     dadosResultLevel3.IsNotEvaluate = true;
                 }
             }
-            debugger
+            
             if (parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text()) && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text())) {
                 $.post(urlSave, dadosResultLevel3, function (r, x, e) {
                     $("#myModal").modal('hide');
@@ -670,7 +670,7 @@
             let isValid = false;
 
             $('form#divEdit input, form#divEdit select').each(function (i, o) {
-                debugger
+                
                 let CollectionLevel2XParHeaderField_Id = $(o).attr("CollectionLevel2XParHeaderField_Id");
                 let CollectionLevel2_Id = $(o).attr("CollectionLevel2_Id");
                 let ParHeaderField_Id = $(o).attr("ParHeaderField_Id");
