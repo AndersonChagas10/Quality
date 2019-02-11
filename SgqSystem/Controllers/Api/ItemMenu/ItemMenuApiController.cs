@@ -29,36 +29,30 @@ namespace SgqSystem.Controllers.Api
         [Route("UpdateItensMenu")]
         public bool UpdateItensMenu(ListaItemMenu ItensMenu)
         {
-
             //Setar todos ItemMenu_Id para null antes de salvar
 
             using (var db = new SgqDbDevEntities())
             {
-                var sql = $@"UPDATE ItemMenu set ItemMenu_Id = null";
+                var listaItemMenu = db.ItemMenu.ToList();
 
-                db.Database.ExecuteSqlCommand(sql);
-                db.SaveChanges();
-            }
-
-            using (var db = new SgqDbDevEntities())
-            {
-                foreach (var itemMenu in ItensMenu.ItensMenu)
+                foreach (var itemMenu in listaItemMenu)
                 {
-                    if (itemMenu.Id > 0) //0 = Id_Root
+                    var itemMenuPresenteNaEstrutura = ItensMenu.ItensMenu.FirstOrDefault(x => x.Id == itemMenu.Id);
+                    if (itemMenuPresenteNaEstrutura != null) //0 = Id_Root
                     {
-
-                        itemMenu.AlterDate = DateTime.Now;
-                        itemMenu.Name = "Gambs"; //Gambzinha para não dizer que o "Name" é obrigatório, porém não será alterado
-                        db.ItemMenu.Attach(itemMenu);
-                        db.Entry(itemMenu).Property(x => x.ItemMenu_Id).IsModified = true;
-                        db.Entry(itemMenu).Property(x => x.AlterDate).IsModified = true;
-                        
+                        itemMenu.ItemMenu_Id = itemMenuPresenteNaEstrutura.ItemMenu_Id;
                     }
+                    else
+                    {
+                        itemMenu.ItemMenu_Id = null;
+                    }
+                    itemMenu.AlterDate = DateTime.Now;
+                    db.Entry(itemMenu).Property(x => x.ItemMenu_Id).IsModified = true;
+                    db.Entry(itemMenu).Property(x => x.AlterDate).IsModified = true;
                 }
 
                 db.SaveChanges();
             }
-
             return true;
         }
 
