@@ -2280,4 +2280,7 @@
   <data name="start" xml:space="preserve">
     <value>Início</value>
   </data>
+  <data name="filtered_report_between_dates" xml:space="preserve">
+    <value>Relatório filtrado entre as datas:</value>
+  </data>
 </root>

@@ -161,7 +161,7 @@
 
                 }
             });
-
+            
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
                     {
@@ -181,6 +181,19 @@
                         exportOptions: {
                             columns: ':visible'
                         }
+                    },
+                    {
+                        text: '@Resources.Resource.print',
+                        extend: 'print',
+                        orientation: 'landscape',
+                        title: '@Resources.Resource.filtered_report_between_dates' + $("#reportrange").text(),
+                        customize: function (win) {
+                            $(win.document.body).css('font-size', '10pt'); 
+                            $(win.document.body).find('h1').css('text-align', 'left');
+                            $(win.document.body).find('h1').text('&Relatório Scorecard');//tem o & pois na impressao tira o primeiro caracter
+                            $(win.document.body).find('h1').css('margin-bottom', '35px');
+                        },
+
                     },
                 ]
             });
