@@ -37,7 +37,6 @@
             -webkit-print-color-adjust: exact !important;
         }
     }
-
 </style>
 
 <div class="page-content-wrapper">
@@ -126,6 +125,12 @@
                                         </div>
                                         <span class="value" id="NomeUsuario"></span>
                                     </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Data Do Carregamento:
+                                        </div>
+                                        <span class="value" id="DataCarregamento"></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -136,7 +141,7 @@
                                     </td>
                                     <td>
                                         <div class="titleTd">
-                                            Numero:
+                                            Termografo Numero:
                                         </div>
                                         <span class="value" id="Termografo_Id"></span>
                                     </td>
@@ -160,9 +165,15 @@
                                     </td>
                                     <td>
                                         <div class="titleTd">
-                                            Transportador:
+                                            Tipo do Produto:
                                         </div>
-                                        <span class="value" id="Transportador"></span>
+                                        <span class="value" id="TipoProduto"></span>
+                                    </td>
+                                    <td>
+                                        <div class="titleTd">
+                                            Transportadora:
+                                        </div>
+                                        <span class="value" id="Transportadora"></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -174,7 +185,7 @@
                                     </td>
                                     <td>
                                         <div class="titleTd">
-                                            Monitoramento (Verificar nome correto):
+                                            Monitoramento:
                                         </div>
                                         <span class="value" id="ParLevel2_Name"></span>
                                     </td>
@@ -192,11 +203,11 @@
                                     </td>
                                     <td>
                                         <div class="titleTd">
-                                            Placa:
+                                            Placa do Veículo:
                                         </div>
-                                        <span class="value" id="Placa"></span>
+                                        <span class="value" id="PlacaDoVeiculo"></span>
                                     </td>
-                                    <td>
+                                    <td colspan="2">
                                         <div class="titleTd">
                                             Instrução:
                                         </div>
@@ -257,9 +268,9 @@
 
 @section Scripts{
 
-<script src="~/Scripts/Print/printGRT.js"></script>
+    <script src="~/Scripts/Print/printGRT.js"></script>
 
-<script>
+    <script>
 
     var $btn = $('#btnSend');
     $('button').button({ loadingText: '@Resources.Resource.loading...' });
@@ -371,6 +382,19 @@
 
     function PreencherCabecalho(r) {
 
+        let data = [];
+
+        if (r.DataCarregamento) {
+
+            r.DataCarregamento.split(",").forEach((item) => {
+                 data.push(new Date(item + " 00:00").toLocaleDateString())
+            });
+
+            r.DataCarregamento = data.join(",");
+        }
+
+
+
         $("#CollectionDate").html(new Date(r.CollectionDate).toLocaleDateString());
         $("#ParCompanyName").html(r.ParCompanyName);
         $("#SifNumber").html(r.SifNumber);
@@ -383,13 +407,15 @@
         $("#TemperaturaMin").html(r.TemperaturaMin);
         $("#TipoEmbalagem").html(r.TipoEmbalagem);
         $("#TipoCarga").html(r.TipoCarga);
-        $("#Transportador").html(r.Transportador);
+        $("#Transportadora").html(r.Transportadora);
         $("#NomeMotorista").html(r.NomeMotorista);
         $("#ParLevel2_Name").html(r.ParLevel2_Name);
         $("#NumeroNotaFiscal").html(r.NumeroNotaFiscal);
         $("#LacreNumero").html(r.LacreNumero);
-        $("#Placa").html(r.Placa);
+        $("#PlacaDoVeiculo").html(r.PlacaDoVeiculo);
         $("#Instrucao").html(r.Instrucao);
+        $('#TipoProduto').html(r.TipoProduto);
+        $('#DataCarregamento').html(r.DataCarregamento);
 
     }
 
@@ -550,10 +576,16 @@
                         if (!item.IsNotEvaluate) {
 
                             if (item.IsConform) {
-                                td = `<td colspan="${colspanStatus}">0</td>`;
+                                if (item.ParLevel3_Id == 1577)
+                                    td = `<td colspan="${colspanStatus}">"${item.Value}"ºC</td>`;
+                                else
+                                    td = `<td colspan="${colspanStatus}">C</td>`;
 
                             } else {
-                                td = `<td colspan="${colspanStatus}">1</td>`;
+                                if (item.ParLevel3_Id == 1577)
+                                    td = `<td colspan="${colspanStatus}" style="background-color:#c3c3c3">${item.Value}ºC</td>`;
+                                else
+                                    td = `<td colspan="${colspanStatus}" style="background-color:#c3c3c3">NC</td>`;
 
                             }
 
@@ -678,5 +710,5 @@
         $('#divRenderPrint').remove();
     }
 
-</script>
+    </script>
 }

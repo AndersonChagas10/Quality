@@ -64,34 +64,37 @@ namespace SgqSystem.Controllers.Api.SIF
                     var retorno = new Retorno();
 
                     var TipoVeiculo = new List<string>();
-                    var Transportador = new List<string>();
-                    var Placa = new List<string>();
+                    var Transportadora = new List<string>();
+                    var PlacaDoVeiculo = new List<string>();
                     var NomeMotorista = new List<string>();
                     var LacreNumero = new List<string>();
                     var Termografo_Id = new List<string>();
                     var SifNumber = new List<string>();
                     var Pedido = new List<string>();
+                    var DataCarregamento = new List<string>();
                     var Instrucao = new List<string>();
                     var NumeroNotaFiscal = new List<string>();
                     var TipoCarga = new List<string>();
-                    var TipoProduto = new List<string>();
                     var TipoEmbalagem = new List<string>();
+                    var TipoProduto = new List<string>();
                     var TemperaturaMin = new List<string>();
                     var TemperaturaMax = new List<string>();
+
 
                     foreach (var item in headerFieldsValues)
                     {
 
                         switch (item.Id)
                         {
+                            //JBS
                             case 198: //Tipo de veículo
                                 TipoVeiculo.Add(item.Value);
                                 break;
                             case 199://Transportadora
-                                Transportador.Add(item.Value);
+                                Transportadora.Add(item.Value);
                                 break;
                             case 200: //Placa do veículo
-                                Placa.Add(item.Value);
+                                PlacaDoVeiculo.Add(item.Value);
                                 break;
                             case 201: //Nome do motorista
                                 NomeMotorista.Add(item.Value);
@@ -108,6 +111,9 @@ namespace SgqSystem.Controllers.Api.SIF
                             case 205: //Pedido
                                 Pedido.Add(item.Value);
                                 break;
+                            case 206: //Data do carregamento
+                                DataCarregamento.Add(item.Value);
+                                break;
                             case 207: //Instrução
                                 Instrucao.Add(item.Value);
                                 break;
@@ -120,8 +126,8 @@ namespace SgqSystem.Controllers.Api.SIF
                             case 210: //Tipo de embalagem
                                 TipoEmbalagem.Add(item.Value);
                                 break;
-                            case 211: //Tipo de veículo
-                                TipoVeiculo.Add(item.Value);
+                            case 211: //Tipo de produto
+                                TipoProduto.Add(item.Value);
                                 break;
                             case 212: //Termógrafo - T° mín
                                 TemperaturaMin.Add(item.Value);
@@ -131,26 +137,21 @@ namespace SgqSystem.Controllers.Api.SIF
                                 break;
 
 
+                                ////GRT
                                 //case 1166: //Tipo de veículo
                                 //    TipoVeiculo.Add(item.Value);
                                 //    break;
                                 //case 1167://Transportadora
-                                //    Transportador.Add(item.Value);
+                                //    Transportadora.Add(item.Value);
                                 //    break;
                                 //case 1168: //Placa do veículo
-                                //    Placa.Add(item.Value);
+                                //    PlacaDoVeiculo.Add(item.Value);
                                 //    break;
                                 //case 1169: //Nome do motorista
                                 //    NomeMotorista.Add(item.Value);
                                 //    break;
-                                //case 1170: //Lacre número - Duplicado
-                                //    LacreNumero.Add(item.Value);
-                                //    break;
                                 //case 1172: //Lacre número
                                 //    LacreNumero.Add(item.Value);
-                                //    break;
-                                //case 1171: //Termógrafo número - Duplicado
-                                //    Termografo_Id.Add(item.Value);
                                 //    break;
                                 //case 1173: //Termógrafo número
                                 //    Termografo_Id.Add(item.Value);
@@ -160,6 +161,9 @@ namespace SgqSystem.Controllers.Api.SIF
                                 //    break;
                                 //case 1175: //Pedido
                                 //    Pedido.Add(item.Value);
+                                //    break;
+                                //case 1176: //Data do Carregamento
+                                //    DataCarregamento.Add(item.Value);
                                 //    break;
                                 //case 1177: //Instrução
                                 //    Instrucao.Add(item.Value);
@@ -187,8 +191,8 @@ namespace SgqSystem.Controllers.Api.SIF
                     }
 
                     retorno.TipoVeiculo = string.Join(" ,", TipoVeiculo);
-                    retorno.Transportador = string.Join(" ,", Transportador);
-                    retorno.Placa = string.Join(" ,", Placa);
+                    retorno.Transportadora = string.Join(" ,", Transportadora);
+                    retorno.PlacaDoVeiculo = string.Join(" ,", PlacaDoVeiculo);
                     retorno.NomeMotorista = string.Join(" ,", NomeMotorista);
                     retorno.LacreNumero = string.Join(" ,", LacreNumero);
                     retorno.Termografo_Id = string.Join(" ,", Termografo_Id);
@@ -198,8 +202,10 @@ namespace SgqSystem.Controllers.Api.SIF
                     retorno.NumeroNotaFiscal = string.Join(" ,", NumeroNotaFiscal);
                     retorno.TipoCarga = string.Join(" ,", TipoCarga);
                     retorno.TipoEmbalagem = string.Join(" ,", TipoEmbalagem);
+                    retorno.TipoProduto = string.Join(" ,", TipoProduto);
                     retorno.TemperaturaMin = string.Join(" ,", TemperaturaMin);
                     retorno.TemperaturaMax = string.Join(" ,", TemperaturaMax);
+                    retorno.DataCarregamento = string.Join(" ,", DataCarregamento);
 
                     retorno.ParCompanyName = db.ParCompany.Find(form.unitId).Name;
 
@@ -268,6 +274,7 @@ namespace SgqSystem.Controllers.Api.SIF
    ,r3.Id
    ,r3.IsConform
    ,r3.IsNotEvaluate
+   ,r3.Value
 FROM CollectionLevel2 C2 WITH (NOLOCK)
 INNER JOIN CollectionLevel2XParHeaderField C2XHF WITH (NOLOCK)
 	ON c2.Id = C2XHF.CollectionLevel2_Id
@@ -341,17 +348,19 @@ DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
         public string TemperaturaMin { get; set; }
         public string TipoEmbalagem { get; set; }
         public string TipoCarga { get; set; }
-        public string Transportador { get; set; }
+        public string Transportadora { get; set; }
         public string NomeMotorista { get; set; }
         public string ParLevel2_Name { get; set; }
         public string NumeroNotaFiscal { get; set; }
         public string LacreNumero { get; set; }
-        public string Placa { get; set; }
+        public string PlacaDoVeiculo { get; set; }
         public string Instrucao { get; set; }
         public string Aprovador { get; set; }
         public string Elaborador { get; set; }
         public string NomeRelatorio { get; set; }
         public string SiglaUnidade { get; set; }
+        public string DataCarregamento { get; set; }
+        public string TipoProduto { get; set; }
 
         public List<Coleta> Coletas { get; set; }
 
@@ -379,6 +388,7 @@ DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
         public int Id { get; set; }
         public bool IsConform { get; set; }
         public bool IsNotEvaluate { get; set; }
+        public string Value { get; set; }
     }
 
 }
