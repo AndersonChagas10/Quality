@@ -137,55 +137,55 @@ namespace SgqSystem.Controllers.Api.SIF
                                 break;
 
 
-                                ////GRT
-                                //case 1166: //Tipo de veículo
-                                //    TipoVeiculo.Add(item.Value);
-                                //    break;
-                                //case 1167://Transportadora
-                                //    Transportadora.Add(item.Value);
-                                //    break;
-                                //case 1168: //Placa do veículo
-                                //    PlacaDoVeiculo.Add(item.Value);
-                                //    break;
-                                //case 1169: //Nome do motorista
-                                //    NomeMotorista.Add(item.Value);
-                                //    break;
-                                //case 1172: //Lacre número
-                                //    LacreNumero.Add(item.Value);
-                                //    break;
-                                //case 1173: //Termógrafo número
-                                //    Termografo_Id.Add(item.Value);
-                                //    break;
-                                //case 1174: //SIF ou Nome
-                                //    SifNumber.Add(item.Value);
-                                //    break;
-                                //case 1175: //Pedido
-                                //    Pedido.Add(item.Value);
-                                //    break;
-                                //case 1176: //Data do Carregamento
-                                //    DataCarregamento.Add(item.Value);
-                                //    break;
-                                //case 1177: //Instrução
-                                //    Instrucao.Add(item.Value);
-                                //    break;
-                                //case 1178: //Notas Fiscais
-                                //    NumeroNotaFiscal.Add(item.Value);
-                                //    break;
-                                //case 1179: //Tipo de Carga
-                                //    TipoCarga.Add(item.Value);
-                                //    break;
-                                //case 1181: //Tipo de produto
-                                //    TipoProduto.Add(item.Value);
-                                //    break;
-                                //case 1180: //Tipo de embalagem
-                                //    TipoEmbalagem.Add(item.Value);
-                                //    break;
-                                //case 1182: //Termógrafo - T° mín
-                                //    TemperaturaMin.Add(item.Value);
-                                //    break;
-                                //case 1183: //Termógrafo - T° máx   
-                                //    TemperaturaMax.Add(item.Value);
-                                //    break;
+                            ////GRT
+                            //case 1166: //Tipo de veículo
+                            //    TipoVeiculo.Add(item.Value);
+                            //    break;
+                            //case 1167://Transportadora
+                            //    Transportadora.Add(item.Value);
+                            //    break;
+                            //case 1168: //Placa do veículo
+                            //    PlacaDoVeiculo.Add(item.Value);
+                            //    break;
+                            //case 1169: //Nome do motorista
+                            //    NomeMotorista.Add(item.Value);
+                            //    break;
+                            //case 1172: //Lacre número
+                            //    LacreNumero.Add(item.Value);
+                            //    break;
+                            //case 1173: //Termógrafo número
+                            //    Termografo_Id.Add(item.Value);
+                            //    break;
+                            //case 1174: //SIF ou Nome
+                            //    SifNumber.Add(item.Value);
+                            //    break;
+                            //case 1175: //Pedido
+                            //    Pedido.Add(item.Value);
+                            //    break;
+                            //case 1176: //Data do Carregamento
+                            //    DataCarregamento.Add(item.Value);
+                            //    break;
+                            //case 1177: //Instrução
+                            //    Instrucao.Add(item.Value);
+                            //    break;
+                            //case 1178: //Notas Fiscais
+                            //    NumeroNotaFiscal.Add(item.Value);
+                            //    break;
+                            //case 1179: //Tipo de Carga
+                            //    TipoCarga.Add(item.Value);
+                            //    break;
+                            //case 1181: //Tipo de produto
+                            //    TipoProduto.Add(item.Value);
+                            //    break;
+                            //case 1180: //Tipo de embalagem
+                            //    TipoEmbalagem.Add(item.Value);
+                            //    break;
+                            //case 1182: //Termógrafo - T° mín
+                            //    TemperaturaMin.Add(item.Value);
+                            //    break;
+                            //case 1183: //Termógrafo - T° máx   
+                            //    TemperaturaMax.Add(item.Value);
+                            //    break;
                         }
 
                     }
@@ -275,6 +275,30 @@ namespace SgqSystem.Controllers.Api.SIF
    ,r3.IsConform
    ,r3.IsNotEvaluate
    ,r3.Value
+   ,(SELECT TOP 1
+			clxhf.value
+		FROM CollectionLevel2XParHeaderField clxhf
+		WHERE clxhf.CollectionLevel2_Id = C2.Id
+		AND clxhf.ParHeaderField_Id = 216) --1186)
+	AS SIF
+   ,(SELECT TOP 1
+			iif(clxhf.value is null, null, cast(clxhf.value as Date))
+		FROM CollectionLevel2XParHeaderField clxhf
+		WHERE clxhf.CollectionLevel2_Id = C2.Id
+		AND clxhf.ParHeaderField_Id = 218) --1188)
+	AS DataValidade
+   ,(SELECT TOP 1
+			iif(clxhf.value is null, null, cast(clxhf.value as date))
+		FROM CollectionLevel2XParHeaderField clxhf
+		WHERE clxhf.CollectionLevel2_Id = C2.Id
+		AND clxhf.ParHeaderField_Id = 217) --1187)
+	AS DataProducao
+   ,(SELECT TOP 1
+			clxhf.value
+		FROM CollectionLevel2XParHeaderField clxhf
+		WHERE clxhf.CollectionLevel2_Id = C2.Id
+		AND clxhf.ParHeaderField_Id = 215) --1185)
+	AS CB
 FROM CollectionLevel2 C2 WITH (NOLOCK)
 INNER JOIN CollectionLevel2XParHeaderField C2XHF WITH (NOLOCK)
 	ON c2.Id = C2XHF.CollectionLevel2_Id
@@ -389,6 +413,9 @@ DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
         public bool IsConform { get; set; }
         public bool IsNotEvaluate { get; set; }
         public string Value { get; set; }
+        public string SIF { get; set; }
+        public DateTime DataValidade { get; set; }
+        public DateTime DataProducao { get; set; }
+        public string CB { get; set; }
     }
-
 }
