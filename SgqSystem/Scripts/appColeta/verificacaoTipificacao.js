@@ -290,7 +290,3 @@ function getAllVF(){
         loginVerificacaoKeys();
     });
 }
-
-function renanCaraDeMaca(){
-	navigator.notification.alert("O código funciona muito bem, obrigado", function(){});
-}

@@ -1,41 +1,42 @@
 var level3Photos = [];
 var level3PhotoTemp = {};
-var algumaFotoEstaSendoEnviada = false; 
+var algumaFotoEstaSendoEnviada = false;
 
-function displayPhotoButtons(){
-	if(permiteTirarFotos == true){	
-	
-		if(device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows"){
+function displayPhotoButtons() {
+    if (permiteTirarFotos == true) {
 
-			var level1 = $('.level1.selected');
-			var level2 = $('.level2.selected');
-		
-			$('.level3:visible, .panel-group:visible .panel:visible .level3').each(function(index, element) {
-		
-				if(level1.attr('hastakephoto') == 'true' 
-					|| level2.attr('hastakephoto') == 'true' 
-					|| $(element).attr('hastakephoto') == 'true'){
-		
-					$(element).find('.levelName').parent().removeClass('col-xs-4').addClass('col-xs-3');
-					var btn = $(element).find('.camera-button');
-					if(btn.length == 0){
-						btn = $('<div class="col-xs-1"><button class="btn btn-sm btn-danger camera-button"><i class="fa fa-camera"></i></button></div>');
-						$(element).append(btn);
-					}
-				}
-				
-			}, this);
+        if (device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows") {
 
-		}    
-	}
+            var level1 = $('.level1.selected');
+            var level2 = $('.level2.selected');
+
+            $('.level3:visible, .panel-group:visible .panel:visible .level3').each(function (index, element) {
+
+                if (level1.attr('hastakephoto') == 'true'
+                    || level2.attr('hastakephoto') == 'true'
+                    || $(element).attr('hastakephoto') == 'true') {
+
+                    $(element).find('.levelName').parent().removeClass('col-xs-4').addClass('col-xs-3');
+                    var btn = $(element).find('.camera-button');
+                    if (btn.length == 0) {
+                        btn = $('<div class="col-xs-1"><button class="btn btn-sm btn-danger camera-button"><i class="fa fa-camera"></i></button></div>');
+                        $(element).append(btn);
+                    }
+                }
+
+            }, this);
+
+        }
+    }
 }
 
-function cameraSuccess(data){
+function cameraSuccess(data) {
 
     $('.message, .overlay').hide();
-    
-    level3PhotoTemp.path = data;   
-    
+	
+    //level3PhotoTemp.path = data;
+    level3PhotoTemp.photo = data;
+
     //Insere valor padrão zerado
     level3PhotoTemp.latitude = 0;
     level3PhotoTemp.longitude = 0;
@@ -47,9 +48,9 @@ function cameraSuccess(data){
 function hasPhoto(level1id, level2id, level3id, evaluation, sample, date, unitid, period, shift) {
     var temp = [];
 
-    level3Photos.forEach(function(obj) {
-        if(obj.level1id == level1id 
-            && obj.level2id == level2id 
+    level3Photos.forEach(function (obj) {
+        if (obj.level1id == level1id
+            && obj.level2id == level2id
             && obj.level3id == level3id
             && obj.evaluation == evaluation
             && obj.unitid == unitid
@@ -60,36 +61,41 @@ function hasPhoto(level1id, level2id, level3id, evaluation, sample, date, unitid
         )
             temp.push(obj);
     }, this);
-    
-    if(temp.length == 0){
+
+    if (temp.length == 0) {
         return false;
-    }else{
+    } else {
         return true;
     }
 }
 
-function cameraError(e){
+function cameraError(e) {
     console.log("camera error");
 }
 
 var cameraOptions = {
-    targetWidth: 640,
-    targetHeight: 480,
+	quality : 75,
+	destinationType : Camera.DestinationType.DATA_URL,
+    targetWidth: 2048,
+    targetHeight: 1152,
     correctOrientation: true //Corrects Android orientation quirks
 };
 
-$(document).on('click', '.camera-button', function(e){
+$(document).on('click', '.camera-button', function (e) {
 
     //openMessageModal("Conectando ao GPS...", null);
-
+    //openMessageModal(!!_level2 + '-' + $(_level2).attr('sampleCurrent') + '--' +
+    //    parseInt($(_level2).attr('sampleCurrent')) + '---' + $(_level2).attr('samplecurrent')
+    //    , null);
+	
     level3PhotoTemp = {
-        level1id : $('.level1.selected').attr('id'),
-        level2id : $('.level2.selected').attr('id'),
-        level3id : $(this).parent().parent().attr('id'),
+        level1id: $('.level1.selected').attr('id'),
+        level2id: $('.level2.selected').attr('id'),
+        level3id: $(this).parent().parent().attr('id'),
         //evaluation: parseInt($('.evaluateCurrent:visible').text()),
         //sample: parseInt($('.sampleCurrent:visible').text()),
-        evaluation: !!$(_level2).attr('evaluateCurrent') ? parseInt($(_level2).attr('evaluateCurrent')) : 0,
-        sample: !!$(_level2).attr('sampleCurrent') ? parseInt($(_level2).attr('sampleCurrent')) : 0,
+        evaluation: !!$(_level2).attr('evaluateCurrent') ? parseInt($(_level2).attr('evaluateCurrent')) : 1,
+        sample: !!$(_level2).attr('sampleCurrent') ? parseInt($(_level2).attr('sampleCurrent'))+1 : 1,
         date: getCollectionDate(),
         unitid: $('.App').attr('unidadeid'),
         period: $('.App').attr('period'),
@@ -98,24 +104,26 @@ $(document).on('click', '.camera-button', function(e){
     };
 
     //getLatLong();
-	abrirCamera();
+    abrirCamera();
 
 });
 
-function sendResultLevel3Photo(){
-    var listaFotosSalvas = level3Photos.filter(function(o,i){ return o.isactive == true });
-	if(listaFotosSalvas.length > 0){
-        if(algumaFotoEstaSendoEnviada != true){
-            algumaFotoEstaSendoEnviada = true;
-            var listaFotos = preparaFotos(listaFotosSalvas);
-            enviaFotos(listaFotos);
+function sendResultLevel3Photo() {
+    setTimeout(function () {
+        var listaFotosSalvas = level3Photos.filter(function (o, i) { return o.isactive == true });
+        if (listaFotosSalvas.length > 0) {
+            if (algumaFotoEstaSendoEnviada != true) {
+                algumaFotoEstaSendoEnviada = true;
+                var listaFotos = preparaFotos(listaFotosSalvas);
+                enviaFotos(listaFotos);
+            }
         }
-	}
+    }, 1000);
 }
 
-function preparaFotos(listaFotosSalvas){
+function preparaFotos(listaFotosSalvas) {
     var listaFotos = [];
-    for(i = 0; i < (listaFotosSalvas.length > 5 ? 5 : listaFotosSalvas.length); i++){
+    for (i = 0; i < (listaFotosSalvas.length > 2 ? 2 : listaFotosSalvas.length); i++) {
         var temp = listaFotosSalvas[i];
         listaFotos.push(
             {
@@ -140,29 +148,32 @@ function preparaFotos(listaFotosSalvas){
     return listaFotos;
 }
 
-function salvaFoto(level3PhotoTemp){
-    var canvasPhoto  = document.createElement("canvas");
+function salvaFoto(level3PhotoTemp) {
+    var canvasPhoto = document.createElement("canvas");
     var contextPhoto = canvasPhoto.getContext('2d');
 
     var img = new Image();
     img.src = level3PhotoTemp.path;
-
-    img.onload = function (e)
-    {
+    /*img.onload = function (e) {
         canvasPhoto.height = this.height;
-        canvasPhoto.width = this.width;        
-        contextPhoto.drawImage(img, 0, 0); 
-        
+        canvasPhoto.width = this.width;
+        contextPhoto.drawImage(img, 0, 0);
+
         level3PhotoTemp.photo = canvasPhoto.toDataURL();
 
         level3Photos.push(level3PhotoTemp);
         _writeFile("level3Photos.json", level3Photos);
-    
-        $('.level3[id='+level3PhotoTemp.level3id+']').find('.camera-button').removeClass('btn-danger').addClass('btn-default');
-    }
+
+        $('.level3[id=' + level3PhotoTemp.level3id + ']').find('.camera-button').removeClass('btn-danger').addClass('btn-default');
+    }*/
+	
+	level3Photos.push(level3PhotoTemp);
+	_writeFile("level3Photos.json", level3Photos);
+		
+	$('.level3[id=' + level3PhotoTemp.level3id + ']').find('.camera-button').removeClass('btn-danger').addClass('btn-default');
 }
 
-function enviaFotos(listaFotos){
+function enviaFotos(listaFotos) {
     $.ajax({
         data: JSON.stringify(listaFotos),
         contentType: "application/json; charset=utf-8",
@@ -170,14 +181,14 @@ function enviaFotos(listaFotos){
         type: 'POST',
         success: function (data) {
             algumaFotoEstaSendoEnviada = false;
-            if(data.count > 0){
+            if (data.count > 0) {
                 level3Photos.splice(0, data.count);
                 _writeFile("level3Photos.json", level3Photos);
                 sendResultLevel3Photo();
             }
         },
         error: function (e) {
-            setTimeout(function() {
+            setTimeout(function () {
                 sendResultLevel3Photo();
             }, 20000);
             algumaFotoEstaSendoEnviada = false;
@@ -185,25 +196,25 @@ function enviaFotos(listaFotos){
     });
 }
 
-function resetaBotaoCamera(){
+function resetaBotaoCamera() {
     $('.camera-button').removeClass('btn-default').addClass('btn-danger');
 }
 
-function ativaFotosSalvasRelacionadasAColeta(){
+function ativaFotosSalvasRelacionadasAColeta() {
     var listaFotosAtualizadas = []
-    level3Photos.forEach(function(o,i){ 
-        o.isactive = true; 
-        listaFotosAtualizadas.push(o) 
+    level3Photos.forEach(function (o, i) {
+        o.isactive = true;
+        listaFotosAtualizadas.push(o)
     });
     level3Photos = listaFotosAtualizadas;
 }
 
-function removeFotosNaoSalvas(){
+function removeFotosNaoSalvas() {
     resetaBotaoCamera();
     var listaFotosAtualizadas = []
-    level3Photos.forEach(function(o,i){ 
+    level3Photos.forEach(function (o, i) {
         //Adiciona fotos que estão ativas, ou seja, foram salvas
-        if(o.isactive == true)
+        if (o.isactive == true)
             listaFotosAtualizadas.push(o);
     });
     level3Photos = listaFotosAtualizadas;

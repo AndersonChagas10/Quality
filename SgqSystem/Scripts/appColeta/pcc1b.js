@@ -264,33 +264,36 @@ $(document).on('click', '.level3Group.PCC1B .painel .btn', function (e) {
         //cria a tabela
         var tabelaResultadoSIFPCC1b = "<table border=1 align=center style='border: 1px solid #b8b8b8;'><tr><td style='padding:0px 10px; font-weight:bold; text-align:center'>Quarto</td><td style='padding:0px 10px; font-weight:bold; text-align:center'>Sequencial</td><td style='padding:0px 10px; font-weight:bold; text-align:center'>Banda</td><td style='padding:0px 10px; font-weight:bold; text-align:center'>Resultado</td></tr>";
            
-       
-        //Preenche a tabela com os dados
-        $(resultadoPCC1bSIF).each(
-            function(i,o){ 
-                var resultadodefeitosPCC1b = "";
-                if($(o).attr("resultado") == 1){
-                    resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center; background: red; color: white;'>x</td>"
-               
-                }else if ($(o).attr("resultado") == 2){
-                    resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center; background: black; color: black;'></td>"
-               
-                }else{
-                    resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center;'>o</td>";
-               
-                }
-                tabelaResultadoSIFPCC1b += "<tr>";
-                tabelaResultadoSIFPCC1b += "<td style='padding:0px 10px; text-align: center;'>" + $(o).attr("monitoramento") + "</td>";
-                tabelaResultadoSIFPCC1b += "<td style='padding:0px 10px; text-align: center;'>" + $(o).attr("sequential") + "</td>";
-                tabelaResultadoSIFPCC1b += "<td style='padding:0px 10px; text-align: center;'>" + $(o).attr("side") + "</td>";
-                tabelaResultadoSIFPCC1b += resultadodefeitosPCC1b;
-                tabelaResultadoSIFPCC1b += "</tr>"; 
-            })
+       if(typeof(resultadoPCC1bSIF) != 'undefined'){
+           
+            //Preenche a tabela com os dados
+            $(resultadoPCC1bSIF).each(
+                function(i,o){ 
+                    var resultadodefeitosPCC1b = "";
+                    if($(o).attr("resultado") == 1){
+                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center; background: red; color: white;'>x</td>"
+                
+                    }else if ($(o).attr("resultado") == 2){
+                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center; background: black; color: black;'></td>"
+                
+                    }else{
+                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center;'>o</td>";
+                
+                    }
+                    tabelaResultadoSIFPCC1b += "<tr>";
+                    tabelaResultadoSIFPCC1b += "<td style='padding:0px 10px; text-align: center;'>" + $(o).attr("monitoramento") + "</td>";
+                    tabelaResultadoSIFPCC1b += "<td style='padding:0px 10px; text-align: center;'>" + $(o).attr("sequential") + "</td>";
+                    tabelaResultadoSIFPCC1b += "<td style='padding:0px 10px; text-align: center;'>" + $(o).attr("side") + "</td>";
+                    tabelaResultadoSIFPCC1b += resultadodefeitosPCC1b;
+                    tabelaResultadoSIFPCC1b += "</tr>"; 
+                })
 
-        tabelaResultadoSIFPCC1b += "</table>"; 
+            tabelaResultadoSIFPCC1b += "</table>"; 
 
-        //coloca na tela o relatório do SIF do PCC1b
-        $(".relatorioSIFPCC1b").html("<h3><strong>Apontamentos do Indicador PCC1b</strong></h3> <br>" + tabelaResultadoSIFPCC1b)
+            //coloca na tela o relatório do SIF do PCC1b
+            $(".relatorioSIFPCC1b").html("<h3><strong>Apontamentos do Indicador PCC1b</strong></h3> <br>" + tabelaResultadoSIFPCC1b)
+
+        }
 
     }
     
@@ -395,6 +398,6 @@ function sincronizarResultadoPCC1B(){
         //Se der erro, irá liberar para sincronizar novamente após 2 minutos
         setTimeout(function() {
             sincronizando = false;
-        }, 120000);
+        }, 20000);
     }
 }

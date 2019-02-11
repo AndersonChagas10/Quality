@@ -93,9 +93,10 @@ function dateReturn() {
     var c = getCollectionDate();
     
     if(c){
-        date.setDate(parseInt(c.slice(2, 4)));
+        
         date.setMonth(parseInt(c.slice(0, 2)) - 1);
         date.setFullYear(parseInt(c.slice(4, 8)));
+	date.setDate(parseInt(c.slice(2, 4)));
     }    
     
     //Se tiver turno que troca no outro dia depois da meia noite verifica aqui
