@@ -627,36 +627,25 @@ namespace Dominio.Services
                         throw new Exception("Erro ao buscar dados de roles do ERP da JBS", e);
                     }
 
-                    foreach (var upe in usuarioPerfilEmpresaSgqBr.ToList())
+                    var parCompanySgqGlobal = allCompanySgqGlobal.FirstOrDefault(r => r.IntegrationId == usuarioPerfilEmpresaSgqBr.FirstOrDefault().nCdEmpresa);
+                    
+                    if (parCompanySgqGlobal != null)
                     {
-
-                        var perfilSgqBr = db.Perfil.FirstOrDefault(r => r.nCdPerfil == upe.nCdPerfil).nCdPerfil.ToString();
-
-                        var parCompanySgqGlobal = allCompanySgqGlobal.FirstOrDefault(r => r.IntegrationId == upe.nCdEmpresa);
-
-                        if (parCompanySgqGlobal != null)
+                        if (!rolesUserSgqByCompany.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))
                         {
-                            if (rolesUserSgqByCompany.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr))/*Se existe no global e existe no ERP*/
+
+                            var perfilSgqBr = db.Perfil.FirstOrDefault(r => r.nCdPerfil == usuarioPerfilEmpresaSgqBr.FirstOrDefault().nCdPerfil).nCdPerfil.ToString();
+
+                            var adicionaRoleGlobal = new ParCompanyXUserSgq()
                             {
+                                ParCompany_Id = parCompanySgqGlobal.Id,
+                                UserSgq_Id = userDto.Id,
+                                Role = perfilSgqBr
+                            };
 
-                            }
-                            else if (!rolesUserSgqByCompany.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))/*Se não existe no global*/
-                            {
-
-                                var adicionaRoleGlobal = new ParCompanyXUserSgq()
-                                {
-                                    ParCompany_Id = parCompanySgqGlobal.Id,
-                                    UserSgq_Id = userDto.Id,
-                                    Role = perfilSgqBr
-                                };
-
-                                _baseParCompanyXUserSgq.AddOrUpdate(adicionaRoleGlobal);
-
-                            }
+                            _baseParCompanyXUserSgq.AddOrUpdate(adicionaRoleGlobal);
                         }
-
                     }
-
                     try
                     {
                         //var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll();
