@@ -185,7 +185,7 @@
                                     </td>
                                     <td>
                                         <div class="titleTd">
-                                            Monitoramento (Verificar nome correto):
+                                            Monitoramento:
                                         </div>
                                         <span class="value" id="ParLevel2_Name"></span>
                                     </td>
@@ -382,6 +382,19 @@
 
     function PreencherCabecalho(r) {
 
+        let data = [];
+
+        if (r.DataCarregamento) {
+
+            r.DataCarregamento.split(",").forEach((item) => {
+                 data.push(new Date(item + " 00:00").toLocaleDateString())
+            });
+
+            r.DataCarregamento = data.join(",");
+        }
+
+
+
         $("#CollectionDate").html(new Date(r.CollectionDate).toLocaleDateString());
         $("#ParCompanyName").html(r.ParCompanyName);
         $("#SifNumber").html(r.SifNumber);
@@ -402,7 +415,7 @@
         $("#PlacaDoVeiculo").html(r.PlacaDoVeiculo);
         $("#Instrucao").html(r.Instrucao);
         $('#TipoProduto').html(r.TipoProduto);
-        $('#DataCarregamento').html(new Date(r.DataCarregamento).toLocaleDateString());
+        $('#DataCarregamento').html(r.DataCarregamento);
 
     }
 
