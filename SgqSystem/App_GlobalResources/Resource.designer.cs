@@ -2473,7 +2473,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filtered Report between dates.
+        ///   Looks up a localized string similar to Scorecard report filtered between dates:.
         /// </summary>
         internal static string filtered_report_between_dates {
             get {
