@@ -52,7 +52,7 @@
 
                 <div id="loader"></div>
 
-                <div class="portlet light bordered">
+                <div class="portlet light bordered" style="display:none">
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
@@ -427,7 +427,36 @@
         let lstObjProduto = [];
 
         produtos.forEach((item, index) => {
-            lstObjProduto.push({ "Produto": produtos[index], "Produto_Id": produtos_Id[index] })
+
+            let arrDataValidade = [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.DataValidade))];
+            let arrDataProducao = [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.DataProducao))];
+
+            let arrDataValidadeNew = [];
+            let arrDataProducaoNew = [];
+
+            if (arrDataValidade.length > 0) {
+
+                arrDataValidade.forEach((item) => {
+                    arrDataValidadeNew.push(new Date(item).toLocaleDateString())
+                });
+
+            }
+
+            if (arrDataProducao.length > 0) {
+                arrDataValidade.forEach((item) => {
+                    arrDataProducaoNew.push(new Date(item).toLocaleDateString())
+                });
+            }
+
+
+            lstObjProduto.push({
+                "Produto": produtos[index],
+                "Produto_Id": produtos_Id[index],
+                "SIF": [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.SIF))].join(','),
+                "DataValidade": arrDataValidadeNew.join(','),
+                "DataProducao": arrDataProducaoNew.join(','),
+                "CB": [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.CB))].join(','),
+            })
         });
 
 
@@ -435,22 +464,28 @@
             `<tr id="trAmostra" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
                     <td colspan="3"><strong>Amostras</strong></td>`;
 
-        let terceiraLinha =
+        let linhaData =
             `<tr>
                     <td>Data</td>`;
+
+        let linhaSIF = `<tr>`;
+
+        let linhaDataValidade = `<tr>`;
+
+        let linhaDataProducao = `<tr>`;
+
+        let linhaCB = `<tr>`;
 
         let segundaLinha = `<tr>`;
 
         let primeiraLinha = `<tr>
-                                    <td rowspan="3" colspan="2">Caracteristicas da Qualidade</td>
-                                    <td rowspan="2">Padrão</td>`;
+                                    <td rowspan="7" colspan="2">Caracteristicas da Qualidade</td>
+                                    <td rowspan="6">Padrão</td>`;
 
         lstObjProduto.forEach((item) => {
 
             let amostrasPorProduto = array.filter((coleta) => { return coleta.Produto == item.Produto });
-
             let numeroAmostras = [...new Set(amostrasPorProduto.map(item => item.Amostra))];
-
             let dataAmostras = [...new Set(amostrasPorProduto.map(item => item.CollectionDate))];
 
             numeroAmostras.forEach((amostra, index) => {
@@ -461,8 +496,7 @@
                 //    colspanAmostraEData = 2;
                 //}
 
-                terceiraLinha += "<td colspan=" + colspanAmostraEData + ">" + new Date(dataAmostras[index]).toLocaleDateString() + "</td>";
-
+                linhaData += "<td colspan=" + colspanAmostraEData + ">" + new Date(dataAmostras[index]).toLocaleDateString() + "</td>";
                 linhaAmostra += "<td colspan=" + colspanAmostraEData + "><strong> " + amostra + "</strong></td>";
 
             });
@@ -477,21 +511,25 @@
             //primeiraLinha += `<td colspan="${colspanMin}">Cod:</td>
             //                      <td colspan="${colspanMax}">${item.Produto_Id}</td>`;
 
+            linhaSIF += `<td colspan="${numeroAmostras.length}">SIF: ${item.SIF}</td>`;
+            linhaDataValidade += `<td colspan="${numeroAmostras.length}">Data de Validade: ${item.DataValidade}</td>`;
+            linhaDataProducao += `<td colspan="${numeroAmostras.length}">Data de Produção: ${item.DataProducao}</td>`;
+            linhaCB += `<td colspan="${numeroAmostras.length}">CB: ${item.CB}</td>`;
             segundaLinha += `<td colspan="${numeroAmostras.length}">Produto: ${item.Produto}</td>`;
-
             primeiraLinha += `<td colspan="${numeroAmostras.length}">Cod: ${item.Produto_Id}</td>`;
 
         });
 
+        linhaSIF += `</tr>`;
+        linhaDataValidade += `</tr>`;
+        linhaDataProducao += `</tr>`;
+        linhaCB += `</tr>`;
         primeiraLinha += `</tr>`;
-
         segundaLinha += `</tr>`;
-
-        terceiraLinha += "</tr>";
-
+        linhaData += "</tr>";
         linhaAmostra += "</tr>"
 
-        let segundoCabecalho = primeiraLinha + segundaLinha + terceiraLinha + linhaAmostra;
+        let segundoCabecalho = primeiraLinha + segundaLinha + linhaSIF + linhaDataValidade + linhaDataProducao + linhaCB + linhaData + linhaAmostra;
 
         return segundoCabecalho;
     }
