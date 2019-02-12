@@ -272,58 +272,61 @@
 
     <script>
 
-    var $btn = $('#btnSend');
-    $('button').button({ loadingText: '@Resources.Resource.loading...' });
-    var urlGet = '@Html.Raw(Url.Action("Get", "api/AcompanhamentoEmbarque"))';
-    exibeTodosLevels = false;
-    let elaborador = "";
-    let aprovador = "";
-    let nomeRelatorio = "";
-    var siglaUnidade = "";
+        var $btn = $('#btnSend');
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+        var urlGet = '@Html.Raw(Url.Action("Get", "api/AcompanhamentoEmbarque"))';
+        exibeTodosLevels = false;
+        let elaborador = "";
+        let aprovador = "";
+        let nomeRelatorio = "";
+        var siglaUnidade = "";
+        const quantidadeColunas = 8;
+        const headerFieldTemperatura_Id = 1577;
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        closeLeftSidebar();
 
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
+            closeLeftSidebar();
 
-        $('#simpleCallendar input[type="text"]').val(start.format());
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
 
-        $('#unitId').children('option:first').remove();
-        $('#level1Id').children('option:first').remove();
+            $('#simpleCallendar input[type="text"]').val(start.format());
 
-        $('#level1Id').prop("disabled", true);
-        $('#level1Id').select2("destroy");
+            $('#unitId').children('option:first').remove();
+            $('#level1Id').children('option:first').remove();
 
-        setTimeout(function () {
+            $('#level1Id').prop("disabled", true);
+            $('#level1Id').select2("destroy");
 
-            $('#level1Id option[value="number:89"]').attr('selected', 'selected'); //Numero do Indicador na JBS
-            //$('#level1Id option[value="number:68"]').attr('selected', 'selected'); //Numero Indicador na GRT
-            $('#level1Id').trigger("change");
-            $('select').select2();
+            setTimeout(function () {
 
-        }, 2000);
+                $('#level1Id option[value="number:89"]').attr('selected', 'selected'); //Numero do Indicador na JBS
+                //$('#level1Id option[value="number:68"]').attr('selected', 'selected'); //Numero Indicador na GRT
+                $('#level1Id').trigger("change");
+                $('select').select2();
 
-        $('#showLevel1 > div:nth-child(3)').hide();
+            }, 2000);
 
-        $("#btnSend").click(function (e) {
+            $('#showLevel1 > div:nth-child(3)').hide();
 
-            Send(true);
+            $("#btnSend").click(function (e) {
+
+                Send(true);
+
+            });
+
+            $('.portlet').hide();
+
+
+            formControl.showSimpleDate();
+            formControl.showLevel1();
+            formControl.showUnit();
+            formControl.showNumeroAvaliacao();
 
         });
 
-        $('.portlet').hide();
-
-
-        formControl.showSimpleDate();
-        formControl.showLevel1();
-        formControl.showUnit();
-        formControl.showNumeroAvaliacao();
-
-    });
-
-    function Send(toggle) {
+        function Send(toggle) {
 
         $('#divMensagemAlerta').hide();
 
@@ -339,48 +342,48 @@
         }
     }
 
-    function GerarRelatorio(r) {
+        function GerarRelatorio(r) {
 
-        $('.cabecalho2').remove();
+            $('.cabecalho2').remove();
 
-        if (!r) {
-            GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
-            return false;
-        }
-
-        elaborador = r.Elaborador;
-        aprovador = r.Aprovador;
-        nomeRelatorio = r.NomeRelatorio;
-        siglaUnidade = $('#unitId :selected').text();
-
-        PreencherCabecalho(r);
-
-        let tamanhoAmostra = Math.max.apply(null, [...new Set(r.Coletas.map(obj => obj.Amostra))]);
-
-        for (let i = 0; i < tamanhoAmostra; i = i + 9) {
-
-            let inicio = i;
-            let fim = i + 9;
-
-            if (fim > r.Coletas.length) {
-                fim = r.Coletas.length;
+            if (!r) {
+                GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
+                return false;
             }
 
-            let coletas = r.Coletas.filter((obj) => obj.Amostra > inicio && obj.Amostra <= fim)
+            elaborador = r.Elaborador;
+            aprovador = r.Aprovador;
+            nomeRelatorio = r.NomeRelatorio;
+            siglaUnidade = $('#unitId :selected').text();
 
-            let conteudoTabela = "";
+            PreencherCabecalho(r);
 
-            conteudoTabela += PreencherCabecalho2(coletas);
+            let tamanhoAmostra = Math.max.apply(null, [...new Set(r.Coletas.map(obj => obj.Amostra))]);
 
-            conteudoTabela += PreencherConteudo(coletas);
+            for (let i = 0; i < tamanhoAmostra; i = i + quantidadeColunas) {
 
-            $('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>').insertAfter($('#contentBody > table:last'));
+                let inicio = i;
+                let fim = i + quantidadeColunas;
+
+                if (fim > r.Coletas.length) {
+                    fim = r.Coletas.length;
+                }
+
+                let coletas = r.Coletas.filter((obj) => obj.Amostra > inicio && obj.Amostra <= fim)
+
+                let conteudoTabela = "";
+
+                conteudoTabela += PreencherCabecalho2(coletas);
+
+                conteudoTabela += PreencherConteudo(coletas);
+
+                $('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>').insertAfter($('#contentBody > table:last'));
+            }
+
+            $('.portlet').show();
         }
 
-        $('.portlet').show();
-    }
-
-    function PreencherCabecalho(r) {
+        function PreencherCabecalho(r) {
 
         let data = [];
 
@@ -392,8 +395,6 @@
 
             r.DataCarregamento = data.join(",");
         }
-
-
 
         $("#CollectionDate").html(new Date(r.CollectionDate).toLocaleDateString());
         $("#ParCompanyName").html(r.ParCompanyName);
@@ -419,334 +420,334 @@
 
     }
 
-    function PreencherCabecalho2(array) {
+        function PreencherCabecalho2(array) {
 
-        let produtos = [...new Set(array.map(item => item.Produto))];
-        let produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
+            let produtos = [...new Set(array.map(item => item.Produto))];
+            let produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
 
-        let lstObjProduto = [];
+            let lstObjProduto = [];
 
-        produtos.forEach((item, index) => {
+            produtos.forEach((item, index) => {
 
-            let arrDataValidade = [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.DataValidade))];
-            let arrDataProducao = [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.DataProducao))];
+                let arrDataValidade = [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.DataValidade))];
+                let arrDataProducao = [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.DataProducao))];
 
-            let arrDataValidadeNew = [];
-            let arrDataProducaoNew = [];
+                let arrDataValidadeNew = [];
+                let arrDataProducaoNew = [];
 
-            if (arrDataValidade.length > 0) {
+                if (arrDataValidade.length > 0) {
 
-                arrDataValidade.forEach((item) => {
-                    arrDataValidadeNew.push(new Date(item).toLocaleDateString())
-                });
-
-            }
-
-            if (arrDataProducao.length > 0) {
-                arrDataValidade.forEach((item) => {
-                    arrDataProducaoNew.push(new Date(item).toLocaleDateString())
-                });
-            }
-
-
-            lstObjProduto.push({
-                "Produto": produtos[index],
-                "Produto_Id": produtos_Id[index],
-                "SIF": [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.SIF))].join(','),
-                "DataValidade": arrDataValidadeNew.join(','),
-                "DataProducao": arrDataProducaoNew.join(','),
-                "CB": [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.CB))].join(','),
-            })
-        });
-
-
-        let linhaAmostra =
-            `<tr id="trAmostra" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
-                    <td colspan="3"><strong>Amostras</strong></td>`;
-
-        let linhaData =
-            `<tr>
-                    <td>Data</td>`;
-
-        let linhaSIF = `<tr>`;
-
-        let linhaDataValidade = `<tr>`;
-
-        let linhaDataProducao = `<tr>`;
-
-        let linhaCB = `<tr>`;
-
-        let segundaLinha = `<tr>`;
-
-        let primeiraLinha = `<tr>
-                                    <td rowspan="7" colspan="2">Caracteristicas da Qualidade</td>
-                                    <td rowspan="6">Padrão</td>`;
-
-        lstObjProduto.forEach((item) => {
-
-            let amostrasPorProduto = array.filter((coleta) => { return coleta.Produto == item.Produto });
-            let numeroAmostras = [...new Set(amostrasPorProduto.map(item => item.Amostra))];
-            let dataAmostras = [...new Set(amostrasPorProduto.map(item => item.CollectionDate))];
-
-            numeroAmostras.forEach((amostra, index) => {
-
-                let colspanAmostraEData = 1;
-
-                //if (numeroAmostras.length < 2) {
-                //    colspanAmostraEData = 2;
-                //}
-
-                linhaData += "<td colspan=" + colspanAmostraEData + ">" + new Date(dataAmostras[index]).toLocaleDateString() + "</td>";
-                linhaAmostra += "<td colspan=" + colspanAmostraEData + "><strong> " + amostra + "</strong></td>";
-
-            });
-
-            //let colspanMax = Math.ceil(numeroAmostras.length / 2);
-            //let colspanMin = Math.floor(numeroAmostras.length / 2);
-
-            //segundaLinha += `<td colspan="${colspanMin}">Produto:</td>
-            //                    <td colspan="${colspanMax}">${item.Produto}</td>`;
-
-
-            //primeiraLinha += `<td colspan="${colspanMin}">Cod:</td>
-            //                      <td colspan="${colspanMax}">${item.Produto_Id}</td>`;
-
-            linhaSIF += `<td colspan="${numeroAmostras.length}">SIF: ${item.SIF}</td>`;
-            linhaDataValidade += `<td colspan="${numeroAmostras.length}">Data de Validade: ${item.DataValidade}</td>`;
-            linhaDataProducao += `<td colspan="${numeroAmostras.length}">Data de Produção: ${item.DataProducao}</td>`;
-            linhaCB += `<td colspan="${numeroAmostras.length}">CB: ${item.CB}</td>`;
-            segundaLinha += `<td colspan="${numeroAmostras.length}">Produto: ${item.Produto}</td>`;
-            primeiraLinha += `<td colspan="${numeroAmostras.length}">Cod: ${item.Produto_Id}</td>`;
-
-        });
-
-        linhaSIF += `</tr>`;
-        linhaDataValidade += `</tr>`;
-        linhaDataProducao += `</tr>`;
-        linhaCB += `</tr>`;
-        primeiraLinha += `</tr>`;
-        segundaLinha += `</tr>`;
-        linhaData += "</tr>";
-        linhaAmostra += "</tr>"
-
-        let segundoCabecalho = primeiraLinha + segundaLinha + linhaSIF + linhaDataValidade + linhaDataProducao + linhaCB + linhaData + linhaAmostra;
-
-        return segundoCabecalho;
-    }
-
-    function PreencherConteudo(array) {
-
-        let levels3_Id = [...new Set(array.map(item => item.ParLevel3_Id))];
-        let levels3 = [...new Set(array.map(item => item.ParLevel3))];
-
-        let conteudoTabela = "";
-        let level3Group;
-
-        levels3_Id.forEach((level3, index) => {
-
-            //Tabela com o rowspan
-
-            //newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
-
-            //let qtdeLevel3Group = array.filter(item => item.Level3Group == newLevel3Group).map((value) => { return value.ParLevel3 }).filter((value, index, self) => { return self.indexOf(value) === index; }).length
-
-            //if (newLevel3Group && level3Group != newLevel3Group) {
-            //    conteudoTabela +=
-            //        `<tr>
-            //            <td rowspan="${qtdeLevel3Group}"> ${newLevel3Group} </td>
-            //            <td colspan="2">${levels3[index]}</td>`;
-            //    level3Group = newLevel3Group;
-            //} else if (!newLevel3Group) {
-            //    conteudoTabela +=
-            //        `<tr>
-            //            <td colspan="3">${levels3[index]}</td>`;
-            //} else {
-            //    conteudoTabela +=
-            //        `<tr>
-            //            <td colspan="2">${levels3[index]}</td>`;
-            //}
-
-            //Tabela sem rowspan
-
-            newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
-
-            if (!newLevel3Group) {
-
-                conteudoTabela +=
-                    `<tr>
-                            <td colspan="3">${levels3[index]}</td>`;
-
-            } else {
-
-                conteudoTabela +=
-                    `<tr>
-                            <td> ${newLevel3Group} </td>
-                            <td colspan="2">${levels3[index]}</td>`;
-            }
-
-
-            let Produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
-
-            Produtos_Id.forEach((produto) => {
-
-                let colspanStatus = 1;
-
-                let coletasByLevel3 = array.filter(item => item.Produto_Id == produto && item.ParLevel3_Id == level3);
-
-                let arrayPorProduto = array.filter(item => item.Produto_Id == produto)
-
-                let tamanhoMaximoAmostraPorProduto = Math.max(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
-
-                let tamanhoMinimoAmostraPorProduto = Math.min(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
-
-                //if (coletasByLevel3.length < 2 && (tamanhoMaximoAmostraPorProduto - tamanhoMinimoAmostraPorProduto) < 1) {
-                //    colspanStatus = 2;
-                //}
-
-                for (let i = tamanhoMinimoAmostraPorProduto; i <= tamanhoMaximoAmostraPorProduto; i++) {
-
-                    let td;
-
-                    let item = coletasByLevel3.filter(item => item.Amostra == i)[0];
-
-                    if (item) {
-
-                        if (!item.IsNotEvaluate) {
-
-                            if (item.IsConform) {
-                                if (item.ParLevel3_Id == 1577)
-                                    td = `<td colspan="${colspanStatus}">"${item.Value}"ºC</td>`;
-                                else
-                                    td = `<td colspan="${colspanStatus}">C</td>`;
-
-                            } else {
-                                if (item.ParLevel3_Id == 1577)
-                                    td = `<td colspan="${colspanStatus}" style="background-color:#c3c3c3">${item.Value}ºC</td>`;
-                                else
-                                    td = `<td colspan="${colspanStatus}" style="background-color:#c3c3c3">NC</td>`;
-
-                            }
-
-                        } else {
-                            td = `<td colspan="${colspanStatus}">N/A</td>`;
-                        }
-                    } else {
-                        td = `<td colspan="${colspanStatus}"></td>`;
-                    }
-
-                    conteudoTabela += td;
+                    arrDataValidade.forEach((item) => {
+                        arrDataValidadeNew.push(new Date(item).toLocaleDateString())
+                    });
 
                 }
 
-                //coletasByLevel3.forEach((item) => {
+                if (arrDataProducao.length > 0) {
+                    arrDataValidade.forEach((item) => {
+                        arrDataProducaoNew.push(new Date(item).toLocaleDateString())
+                    });
+                }
 
-                //let td;
 
-                //if (!item.IsNotEvaluate) {
+                lstObjProduto.push({
+                    "Produto": produtos[index],
+                    "Produto_Id": produtos_Id[index],
+                    "SIF": [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.SIF))].join(','),
+                    "DataValidade": arrDataValidadeNew.join(','),
+                    "DataProducao": arrDataProducaoNew.join(','),
+                    "CB": [...new Set(array.filter((item) => item.Produto_Id == produtos_Id[index]).map((item) => item.CB))].join(','),
+                })
+            });
 
-                //    if (item.IsConform) {
-                //        td = `<td colspan="${colspanStatus}">0</td>`;
 
-                //    } else {
-                //        td = `<td colspan="${colspanStatus}">1</td>`;
+            let linhaAmostra =
+                `<tr id="trAmostra" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
+                        <td colspan="3"><strong>Amostras</strong></td>`;
 
-                //    }
+            let linhaData =
+                `<tr>
+                        <td>Data</td>`;
 
-                //} else {
-                //    td = `<td colspan="${colspanStatus}">N/A</td>`;
-                //}
+            let linhaSIF = `<tr>`;
 
-                //conteudoTabela += td;
+            let linhaDataValidadeEProducao = `<tr>`;
 
-                //});
+            //let linhaDataProducao = `<tr>`;
+
+            let linhaCB = `<tr>`;
+
+            let segundaLinha = `<tr>`;
+
+            let primeiraLinha = `<tr>
+                                        <td rowspan="6" colspan="2">Caracteristicas da Qualidade</td>
+                                        <td rowspan="5">Padrão</td>`;
+
+            lstObjProduto.forEach((item) => {
+
+                let amostrasPorProduto = array.filter((coleta) => { return coleta.Produto == item.Produto });
+                let numeroAmostras = [...new Set(amostrasPorProduto.map(item => item.Amostra))];
+                let dataAmostras = [...new Set(amostrasPorProduto.map(item => item.CollectionDate))];
+
+                numeroAmostras.forEach((amostra, index) => {
+
+                    let colspanAmostraEData = 1;
+
+                    //if (numeroAmostras.length < 2) {
+                    //    colspanAmostraEData = 2;
+                    //}
+
+                    linhaData += "<td colspan=" + colspanAmostraEData + ">" + new Date(dataAmostras[index]).toLocaleDateString() + "</td>";
+                    linhaAmostra += "<td colspan=" + colspanAmostraEData + "><strong> " + amostra + "</strong></td>";
+
+                });
+
+                //let colspanMax = Math.ceil(numeroAmostras.length / 2);
+                //let colspanMin = Math.floor(numeroAmostras.length / 2);
+
+                //segundaLinha += `<td colspan="${colspanMin}">Produto:</td>
+                //                    <td colspan="${colspanMax}">${item.Produto}</td>`;
+
+
+                //primeiraLinha += `<td colspan="${colspanMin}">Cod:</td>
+                //                      <td colspan="${colspanMax}">${item.Produto_Id}</td>`;
+
+                linhaSIF += `<td colspan="${numeroAmostras.length}">SIF: ${item.SIF}</td>`;
+                linhaDataValidadeEProducao += `<td colspan="${numeroAmostras.length}">Data de Validade: ${item.DataValidade} | Data de Produção: ${item.DataProducao}</td>`;
+                //linhaDataProducao += `<td colspan="${numeroAmostras.length}">Data de Produção: ${item.DataProducao}</td>`;
+                linhaCB += `<td colspan="${numeroAmostras.length}">CB: ${item.CB}</td>`;
+                segundaLinha += `<td colspan="${numeroAmostras.length}">Produto: ${item.Produto}</td>`;
+                primeiraLinha += `<td colspan="${numeroAmostras.length}">Cod: ${item.Produto_Id}</td>`;
 
             });
 
-            conteudoTabela += `</tr>`;
+            linhaSIF += `</tr>`;
+            linhaDataValidadeEProducao += `</tr>`;
+            //linhaDataProducao += `</tr>`;
+            linhaCB += `</tr>`;
+            primeiraLinha += `</tr>`;
+            segundaLinha += `</tr>`;
+            linhaData += "</tr>";
+            linhaAmostra += "</tr>"
 
+            let segundoCabecalho = primeiraLinha + segundaLinha + linhaSIF + linhaDataValidadeEProducao + linhaCB + linhaData + linhaAmostra;
+
+            return segundoCabecalho;
+        }
+
+        function PreencherConteudo(array) {
+
+            let levels3_Id = [...new Set(array.map(item => item.ParLevel3_Id))];
+            let levels3 = [...new Set(array.map(item => item.ParLevel3))];
+
+            let conteudoTabela = "";
+            let level3Group;
+
+            levels3_Id.forEach((level3, index) => {
+
+                //Tabela com o rowspan
+
+                //newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
+
+                //let qtdeLevel3Group = array.filter(item => item.Level3Group == newLevel3Group).map((value) => { return value.ParLevel3 }).filter((value, index, self) => { return self.indexOf(value) === index; }).length
+
+                //if (newLevel3Group && level3Group != newLevel3Group) {
+                //    conteudoTabela +=
+                //        `<tr>
+                //            <td rowspan="${qtdeLevel3Group}"> ${newLevel3Group} </td>
+                //            <td colspan="2">${levels3[index]}</td>`;
+                //    level3Group = newLevel3Group;
+                //} else if (!newLevel3Group) {
+                //    conteudoTabela +=
+                //        `<tr>
+                //            <td colspan="3">${levels3[index]}</td>`;
+                //} else {
+                //    conteudoTabela +=
+                //        `<tr>
+                //            <td colspan="2">${levels3[index]}</td>`;
+                //}
+
+                //Tabela sem rowspan
+
+                newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
+
+                if (!newLevel3Group) {
+
+                    conteudoTabela +=
+                        `<tr>
+                                <td colspan="3">${levels3[index]}</td>`;
+
+                } else {
+
+                    conteudoTabela +=
+                        `<tr>
+                                <td> ${newLevel3Group} </td>
+                                <td colspan="2">${levels3[index]}</td>`;
+                }
+
+
+                let Produtos_Id = [...new Set(array.map(item => item.Produto_Id))];
+
+                Produtos_Id.forEach((produto) => {
+
+                    let colspanStatus = 1;
+
+                    let coletasByLevel3 = array.filter(item => item.Produto_Id == produto && item.ParLevel3_Id == level3);
+
+                    let arrayPorProduto = array.filter(item => item.Produto_Id == produto)
+
+                    let tamanhoMaximoAmostraPorProduto = Math.max(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
+
+                    let tamanhoMinimoAmostraPorProduto = Math.min(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
+
+                    //if (coletasByLevel3.length < 2 && (tamanhoMaximoAmostraPorProduto - tamanhoMinimoAmostraPorProduto) < 1) {
+                    //    colspanStatus = 2;
+                    //}
+
+                    for (let i = tamanhoMinimoAmostraPorProduto; i <= tamanhoMaximoAmostraPorProduto; i++) {
+
+                        let td;
+
+                        let item = coletasByLevel3.filter(item => item.Amostra == i)[0];
+
+                        if (item) {
+
+                            if (!item.IsNotEvaluate) {
+
+                                if (item.IsConform) {
+                                    if (item.ParLevel3_Id == headerFieldTemperatura_Id)
+                                        td = `<td colspan="${colspanStatus}">"${item.Value}"ºC</td>`;
+                                    else
+                                        td = `<td colspan="${colspanStatus}">C</td>`;
+
+                                } else {
+                                    if (item.ParLevel3_Id == headerFieldTemperatura_Id)
+                                        td = `<td colspan="${colspanStatus}" style="background-color:#c3c3c3">${item.Value}ºC</td>`;
+                                    else
+                                        td = `<td colspan="${colspanStatus}" style="background-color:#c3c3c3">NC</td>`;
+
+                                }
+
+                            } else {
+                                td = `<td colspan="${colspanStatus}">N/A</td>`;
+                            }
+                        } else {
+                            td = `<td colspan="${colspanStatus}"></td>`;
+                        }
+
+                        conteudoTabela += td;
+
+                    }
+
+                    //coletasByLevel3.forEach((item) => {
+
+                    //let td;
+
+                    //if (!item.IsNotEvaluate) {
+
+                    //    if (item.IsConform) {
+                    //        td = `<td colspan="${colspanStatus}">0</td>`;
+
+                    //    } else {
+                    //        td = `<td colspan="${colspanStatus}">1</td>`;
+
+                    //    }
+
+                    //} else {
+                    //    td = `<td colspan="${colspanStatus}">N/A</td>`;
+                    //}
+
+                    //conteudoTabela += td;
+
+                    //});
+
+                });
+
+                conteudoTabela += `</tr>`;
+
+            });
+
+            return conteudoTabela
+
+        }
+
+        function formIsValid() {
+
+            if (!enviar.level1Id > 0) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_level1"));
+                return false;
+            }
+
+            if (!enviar.level2Id) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_level2"));
+                return false;
+            }
+
+            if (!enviar.unitId) {
+                GuardJs.exibirMensagemAlerta(Resources("select_the_unit_first"));
+                return false;
+            }
+
+            if (!enviar.avaliacao) {
+                GuardJs.exibirMensagemAlerta("O campo Número da Avaliação é obrigatório");
+                return false;
+            }
+
+            return true;
+        }
+
+        $('body').on('click', '#btnPrint', function () {
+
+            if (elaborador == null) {
+                elaborador = "";
+            }
+
+            if (aprovador == null) {
+                aprovador = "";
+            }
+
+            if (nomeRelatorio == null) {
+                nomeRelatorio = "";
+            }
+
+            PrepararImpressao(
+                nomeRelatorio,
+                elaborador + " - " + "/" + siglaUnidade,
+                aprovador + " - " + "/" + siglaUnidade,
+                "",
+                //"RGQ-504-GQU-001/05 Aprov. Em 02/05/2018",
+                'contentBody',
+                "../Imagens/logo-jbs.png",
+                "../Imagens/logo-gq.png");
         });
 
-        return conteudoTabela
+        function PrepararImpressao(titulo, elaborador, aprovador, codigoRodape, idBody, imagemCabecalhoLeft, imagemCabecalhoRight) {
 
-    }
+            $('#printTitulo').html(titulo);
+            $("#printElaborador").html(elaborador);
+            $("#printAprovador").html(aprovador);
+            $("#printCodigoRodape").html(codigoRodape);
+            $("#printImagemCabecalhoLeft").attr('src', imagemCabecalhoLeft);
+            $("#printImagemCabecalhoRight").attr('src', imagemCabecalhoRight);
 
-    function formIsValid() {
+            printGRT.Inicializar({
 
-        if (!enviar.level1Id > 0) {
-            GuardJs.exibirMensagemAlerta(Resources("select_the_level1"));
-            return false;
+                headerHtml: document.getElementById('contentHeader').innerHTML,
+                bodyHtml: document.getElementById(idBody).innerHTML,
+                footerHtml: document.getElementById('contentFooter').innerHTML,
+                numberMarginRight: 25,
+                numberMarginBottom: 25,
+                renderTableMargin: 0,
+                pageMarginHeader: "25px 25px 10px 25px",
+                pageMarginFooter: "10px 25px 25px 25px",
+                pageMarginBody: "0 25px 0 25px"
+
+            });
+
+            printGRT.Imprimir();
+
+            $('#divRenderPrint').remove();
         }
-
-        if (!enviar.level2Id) {
-            GuardJs.exibirMensagemAlerta(Resources("select_the_level2"));
-            return false;
-        }
-
-        if (!enviar.unitId) {
-            GuardJs.exibirMensagemAlerta(Resources("select_the_unit_first"));
-            return false;
-        }
-
-        if (!enviar.avaliacao) {
-            GuardJs.exibirMensagemAlerta("O campo Número da Avaliação é obrigatório");
-            return false;
-        }
-
-        return true;
-    }
-
-    $('body').on('click', '#btnPrint', function () {
-
-        if (elaborador == null) {
-            elaborador = "";
-        }
-
-        if (aprovador == null) {
-            aprovador = "";
-        }
-
-        if (nomeRelatorio == null) {
-            nomeRelatorio = "";
-        }
-
-        PrepararImpressao(
-            nomeRelatorio,
-            elaborador + " - " + "/" + siglaUnidade,
-            aprovador + " - " + "/" + siglaUnidade,
-            "",
-            //"RGQ-504-GQU-001/05 Aprov. Em 02/05/2018",
-            'contentBody',
-            "../Imagens/logo-jbs.png",
-            "../Imagens/logo-gq.png");
-    });
-
-    function PrepararImpressao(titulo, elaborador, aprovador, codigoRodape, idBody, imagemCabecalhoLeft, imagemCabecalhoRight) {
-
-        $('#printTitulo').html(titulo);
-        $("#printElaborador").html(elaborador);
-        $("#printAprovador").html(aprovador);
-        $("#printCodigoRodape").html(codigoRodape);
-        $("#printImagemCabecalhoLeft").attr('src', imagemCabecalhoLeft);
-        $("#printImagemCabecalhoRight").attr('src', imagemCabecalhoRight);
-
-        printGRT.Inicializar({
-
-            headerHtml: document.getElementById('contentHeader').innerHTML,
-            bodyHtml: document.getElementById(idBody).innerHTML,
-            footerHtml: document.getElementById('contentFooter').innerHTML,
-            numberMarginRight: 25,
-            numberMarginBottom: 25,
-            renderTableMargin: 0,
-            pageMarginHeader: "25px 25px 10px 25px",
-            pageMarginFooter: "10px 25px 25px 25px",
-            pageMarginBody: "0 25px 0 25px"
-
-        });
-
-        printGRT.Imprimir();
-
-        $('#divRenderPrint').remove();
-    }
 
     </script>
 }
