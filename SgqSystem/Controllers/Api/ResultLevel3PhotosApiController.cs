@@ -46,6 +46,7 @@ namespace SgqSystem.Controllers.Api
 
                 ResultPhoto.Level1Id = Convert.ToInt32(parLevel1_Id);
                 ResultPhoto.Level2Id = Convert.ToInt32(parLevel2_Id);
+                ResultPhoto.Photo = "data:image/png;base64," + ResultPhoto.Photo;
                 ResultPhoto.Photo_Thumbnaills = ResultPhoto.Photo;
 
                 string sqlResulLevel3 = @"SELECT R.Id FROM Result_Level3 R                                     

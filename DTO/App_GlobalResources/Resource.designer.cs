@@ -2140,6 +2140,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filtered Report between dates.
+        /// </summary>
+        internal static string filtered_report_between_dates {
+            get {
+                return ResourceManager.GetString("filtered_report_between_dates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alert Triggered.
         /// </summary>
         internal static string fired {
@@ -2707,15 +2716,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please input a valid date.
-        /// </summary>
-        internal static string input_a_valid_date {
-            get {
-                return ResourceManager.GetString("input_a_valid_date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Inserir.
         /// </summary>
         internal static string insert {
@@ -2748,15 +2748,6 @@ namespace Resources {
         internal static string interval_null_value {
             get {
                 return ResourceManager.GetString("interval_null_value", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid date.
-        /// </summary>
-        internal static string invalid_date {
-            get {
-                return ResourceManager.GetString("invalid_date", resourceCulture);
             }
         }
         

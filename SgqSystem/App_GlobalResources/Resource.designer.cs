@@ -2473,6 +2473,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filtered Report between dates.
+        /// </summary>
+        internal static string filtered_report_between_dates {
+            get {
+                return ResourceManager.GetString("filtered_report_between_dates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Final date.
         /// </summary>
         internal static string final_date {

@@ -45,8 +45,8 @@
 
                                 <h4>
                                     Deseja excluir o
-                                    volume de produção de <b>@</b>
-                                    do dia <b><div style="display:inline;">@</div></b>
+                                    volume de produção de <b>@Html.DisplayFor(model => model.ParLevel1.Name)</b>
+                                    do dia <b><div style="display:inline;">@data</div></b>
                                     da unidade  de <b>@Html.DisplayFor(model => model.ParCompany.Name)</b>
                                     , no @Resources.Resource.shift <b>@Html.DisplayFor(model => model.Shift.Description)</b>?
                                 </h4>

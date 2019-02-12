@@ -34,7 +34,6 @@ namespace Dominio
 
         public int? ParLevel2_Id { get; set; }
 
-        [StringLength(100)]
         public string DynamicValue { get; set; }
 
         [ForeignKey("ParCompany_Id")]

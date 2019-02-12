@@ -2,6 +2,7 @@
 using Dominio;
 using DTO;
 using DTO.Helpers;
+using Newtonsoft.Json;
 using SgqSystem.Helpers;
 using SgqSystem.Services;
 using System;
@@ -223,6 +224,46 @@ namespace SgqSystem.Controllers.Api.App
         //    }
         //    return retorno;
         //}
+
+        [HttpGet]
+        [Route("GetFiles")]
+        public string GetFiles()
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
+            string searchPattern = "*.*";
+            string[] MyFiles = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories)
+                .Where(file => file.ToLower().EndsWith("js") || file.ToLower().EndsWith("css")).ToArray();
+
+            var obj = new List<Dictionary<string, string>>();
+
+            foreach (var url in MyFiles)
+            {
+                var conteudo = System.IO.File.ReadAllText(url).ToString();
+                var nomeArquivo = Path.GetFileName(url);
+
+                var file = new Dictionary<string, string>();
+
+                file.Add(nomeArquivo, conteudo);
+                obj.Add(file);
+            }
+
+            return JsonConvert.SerializeObject(obj);
+        }
+
+        [HttpGet]
+        [Route("GetAPP")]
+        public string GetAPP()
+        {
+            var html = new Html();
+
+            var teste = new SyncServices();
+
+            string login = teste.GetLoginAPP();
+
+            string resource = teste.GetResource();
+
+            return login + resource;
+        }
 
         #region Nova Proposta Get Tela
 
