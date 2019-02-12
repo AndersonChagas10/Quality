@@ -604,60 +604,66 @@ namespace Dominio.Services
                 {
                     IEnumerable<UsuarioPerfilEmpresa> usuarioPerfilEmpresaSgqBr;
                     IEnumerable<ParCompanyXUserSgq> rolesUserSgqByCompany;
-                    IEnumerable<ParCompany> allCompanySgqGlobal;
 
                     try
                     {
                         usuarioPerfilEmpresaSgqBr = db.UsuarioPerfilEmpresa.Where(r => r.nCdUsuario == usuarioSgqBr.nCdUsuario);
 
-                        rolesUserSgqByCompany = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id);
-
                         #region Força deletar todos os vinculos com unidades e atualizar os mesmos //Porque isso?
 
-                        _baseParCompanyXUserSgq.RemoveAll(rolesUserSgqByCompany);
+                        rolesUserSgqByCompany = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == userDto.Id).ToList();
+
+                        foreach (var u in rolesUserSgqByCompany)
+                        {
+                            db.ParCompanyXUserSgq.Remove(u);
+                        }
+                        db.SaveChanges();
 
                         rolesUserSgqByCompany = new List<ParCompanyXUserSgq>();
 
                         #endregion
-
-                        allCompanySgqGlobal = _baseParCompany.GetAll();
                     }
                     catch (Exception e)
                     {
                         throw new Exception("Erro ao buscar dados de roles do ERP da JBS", e);
                     }
 
-                    var parCompanySgqGlobal = allCompanySgqGlobal.FirstOrDefault(r => r.IntegrationId == usuarioPerfilEmpresaSgqBr.FirstOrDefault().nCdEmpresa);
-                    
-                    if (parCompanySgqGlobal != null)
+                    var listaDePerfis = db.Perfil.ToList();
+                    foreach (var upe in usuarioPerfilEmpresaSgqBr.ToList())
                     {
-                        if (!rolesUserSgqByCompany.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))
+                        var perfilSgqBr = listaDePerfis.FirstOrDefault(r => r.nCdPerfil == upe.nCdPerfil).nCdPerfil.ToString();
+
+                        var parCompanySgqGlobal = db.ParCompany.FirstOrDefault(r => r.IntegrationId == upe.nCdEmpresa);
+
+                        if (parCompanySgqGlobal != null)
                         {
-
-                            var perfilSgqBr = db.Perfil.FirstOrDefault(r => r.nCdPerfil == usuarioPerfilEmpresaSgqBr.FirstOrDefault().nCdPerfil).nCdPerfil.ToString();
-
-                            var adicionaRoleGlobal = new ParCompanyXUserSgq()
+                            if (!rolesUserSgqByCompany.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))/*Se não existe no global*/
                             {
-                                ParCompany_Id = parCompanySgqGlobal.Id,
-                                UserSgq_Id = userDto.Id,
-                                Role = perfilSgqBr
-                            };
-
-                            _baseParCompanyXUserSgq.AddOrUpdate(adicionaRoleGlobal);
+                                var adicionaRoleGlobal = new ParCompanyXUserSgq()
+                                {
+                                    ParCompany_Id = parCompanySgqGlobal.Id,
+                                    UserSgq_Id = userDto.Id,
+                                    Role = perfilSgqBr
+                                };
+                                db.ParCompanyXUserSgq.Add(adicionaRoleGlobal);
+                            }
                         }
                     }
+                    db.SaveChanges();
+
                     try
                     {
-                        //var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll();
-                        var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id);
-                        var todosOsPerfisSgqBrAssociados = db.Perfil.Where(r => usuarioPerfilEmpresaSgqBr.Any(upe => upe.nCdPerfil == r.nCdPerfil));
-                        if (todosOsPerfisSgqBrAssociados != null)
+                        var todosOsPerfisSgqBrAssociados = listaDePerfis.Where(r => usuarioPerfilEmpresaSgqBr.Any(upe => upe.nCdPerfil == r.nCdPerfil)).ToList();
+                        if (todosOsPerfisSgqBrAssociados.Count > 0)
                         {
-                            existentesSomenteSgqGlobal = existentesSomenteSgqGlobal.Where(r => todosOsPerfisSgqBrAssociados.Any(t => !(t.nCdPerfil.ToString() == r.Role)));
+                            var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id && (todosOsPerfisSgqBrAssociados.Any(t => !(t.nCdPerfil.ToString() == r.Role)))).ToList();
 
-                            foreach (var removerPerfilSgqGlobal in existentesSomenteSgqGlobal)/*remove se existir no global e nao existir no br*/
-                                _baseParCompanyXUserSgq.Remove(removerPerfilSgqGlobal);
+                            foreach (var removerPerfilSgqGlobal in existentesSomenteSgqGlobal)
+                            {/*remove se existir no global e nao existir no br*/
+                                db.ParCompanyXUserSgq.Remove(removerPerfilSgqGlobal);
+                            }
                         }
+                        db.SaveChanges();
                     }
                     catch (Exception e)
                     {
