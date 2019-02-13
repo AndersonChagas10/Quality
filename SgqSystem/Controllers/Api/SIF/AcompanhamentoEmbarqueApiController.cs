@@ -339,6 +339,7 @@ DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
 
             using (var db = new SgqDbDevEntities())
             {
+                db.Database.CommandTimeout = 300;
                 var coletas = db.Database.SqlQuery<Coleta>(sql).ToList();
 
                 return coletas;
