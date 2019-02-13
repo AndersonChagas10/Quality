@@ -409,6 +409,7 @@
     <Compile Include="Controllers\ImportacaoExcelController.cs" />
     <Compile Include="Controllers\Integracao\IntegracaoController.cs" />
     <Compile Include="Controllers\ItemMenu\ItemMenuController.cs" />
+    <Compile Include="Controllers\NovidadesController.cs" />
     <Compile Include="Controllers\Params\EmailConfigEUAController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
@@ -1863,6 +1864,7 @@
     <Content Include="Views\Shared\_AgendamentoVolumes.cshtml" />
     <Content Include="Views\ParLevel2ControlCompany\List.cshtml" />
     <Content Include="Views\Faq\Index.cshtml" />
+    <Content Include="Views\Novidades\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

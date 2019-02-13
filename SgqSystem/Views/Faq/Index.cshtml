@@ -27,16 +27,16 @@
                 <div class="col-md-3 col-xs-3 form-group">
                     <ul>
                         <li>
-                            <strong>Relatorio</strong>
+                            <strong>Integração de usuários</strong>
                             <ul>
                                 <li>
-                                    <a data-target="#pergunta1">1.0 Como gerar o relatorio diario</a>
+                                    <a href="#pt1" data-target="#pergunta1">Não tenho acesso ao ERP e gostaria de acessar o SGQ. Como faço?</a>
                                 </li>
                                 <li>
-                                    <a data-target="#pergunta2">1.1 Como imprimir o relatorio diario</a>
+                                    <a href="#pt2" data-target="#pergunta2">Como consigo logar pela primeira vez no SGQ com meu usuário?</a>
                                 </li>
                                 <li>
-                                    <a data-target="#pergunta3">1.2 Como ficar rico com o relatorio diario</a>
+                                    <a href="#pt3" data-target="#pergunta3">Troquei de unidade, e gostaria de acessar o SGQ com o usuário da minha unidade atual?</a>
                                 </li>
                             </ul>
                         </li>
@@ -47,106 +47,391 @@
                             <strong>Parametrização</strong>
                             <ul>
                                 <li>
-                                    1.0 Como vincular um indicador com o monitoramento
+                                    <a href="#ptParam1" data-target="#perguntaParam1">Não consigo fazer nenhuma alteração na parametrização, pois está desabilitado, como prosseguir?</a>
                                 </li>
                                 <li>
-                                    1.1 Como funciona o agendamento
+                                    <a href="#ptParam2" data-target="#perguntaParam2">Fiz uma alteração no indicador/monitoramento/tarefa, porém não surtiu efeito na coleta, o que devo fazer?</a>
+                                </li>
+                                <li>
+                                    <a href="#ptParam3" data-target="#perguntaParam3">Quando altero processo de uma unidade, os indicadores e pontos retroativos também estão sendo alterados?</a>
+                                </li>
+                                <li>
+                                    <a href="#ptParam4" data-target="#perguntaParam4">O que é um alerta?</a>
+                                </li>
+                                <li>
+                                    <a href="#ptParam5" data-target="#perguntaParam5">Foi realizado lançamento de CEP Vácuo GRD e uma determinada tarefa contabilizou sem Vácuo GRD e Vácuo Refile, porém era para contabilizar somente para uma?</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <strong>Volumes</strong>
+                            <ul>
+                                <li>
+                                    <a href="#ptVol1" data-target="#perguntaVol1">Indicador PCC 1b não está sendo exibido na coleta, como prosseguir?</a>
+                                </li>
+                                <li>
+                                    <a href="#ptVol2" data-target="#perguntaVol2">Como cadastrar o volume para PCC 1B após a 00h?</a>
+                                </li>
+                                <li>
+                                    <a href="#ptVol3" data-target="#perguntaVol3">Lancei todas as amostras e está permitindo lançar novamente, o que houve?</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <strong>Familias</strong>
+                            <ul>
+                                <li>
+                                    <a href="#ptFam1" data-target="#perguntaFam1">Cadastrei um monitoramento no cadastro de família, e não está exibindo na coleta, o que devo fazer?</a>
+                                </li>
+                                <li>
+                                    <a href="#ptFam2" data-target="#perguntaFam2">Não estou conseguindo remover um monitoramento do cadastro de família, por que?</a>
+                                </li>
+                                <li>
+                                    <a href="#ptFam3" data-target="#perguntaFam3">Não estou conseguindo carregar os monitoramentos no cadastro de família, como funciona?</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <strong>Coleta</strong>
+                            <ul>
+                                <li>
+                                    <a href="#ptCol1" data-target="#perguntaCol1">Não está trazendo na coleta o Indicador Vácuo Refile, por que isso ocorre?</a>
+                                </li>
+                                <li>
+                                    <a href="#ptCol2" data-target="#perguntaCol2">Alguns indicadores não estão travando após o lançamento. O mesmo deveria estar ficando cinza e travando o acesso para evitar outros lançamentos durante a semana, por que isso ocorre?</a>
+                                </li>
+                                <li>
+                                    <a href="#ptCol3" data-target="#perguntaCol3">Estou fazendo os lançamentos, porém os mesmos não estão contabilizando, o que aconteceu?</a>
+                                </li>
+                                <li>
+                                    <a href="#ptCol4" data-target="#perguntaCol4">A internet da minha unidade está muito lenda e demora para sincronizar, como proceder?</a>
+                                </li>
+                                <li>
+                                    <a href="#ptCol5" data-target="#perguntaCol5">Na unidade do Tablet está exibindo uma unidade diferente da minha unidade, geralmente exibe Lins, o que houve?</a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                 </div>
+
                 <div class="panel-group col-md-9  col-xs-9 pull-right" id="faqAccordion">
-                    <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
+                    <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
 
                         <h2 class="panel-title">
-                            <a href="#" class="ing">Relatorio</a>
+                            <a href="#" class="ing">Integração de usuários</a>
                         </h2>
                     </div>
 
-                    <div class="panel panel-default ">
+                    <div id="pt1" class="panel panel-default ">
                         <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pergunta1">
                             <h4 class="panel-title">
-                                <a href="#" id="" class="ing">Q: 1.0 Como gerar o relatorio diario?</a>
+                                <a href="#" id="" class="ing">Não tenho acesso ao ERP e gostaria de acessar o SGQ. Como faço?</a>
                             </h4>
                         </div>
                         <div id="pergunta1" class="panel-collapse collapse" style="height: 0px;">
                             <div class="panel-body">
-                                <h5><span class="label label-primary">Answer</span></h5>
-                                <p>
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five <a href="http://jquery2dotnet.com/" class="label label-success">http://jquery2dotnet.com/</a> centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                </p>
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Por favor, peça a Camila Prata para que ela crie seu usuário no ERP</p>
                             </div>
                         </div>
                     </div>
-                    <div class="panel panel-default ">
+
+                    <div id="pt2" class="panel panel-default ">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pergunta2">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Q: 1.1 Como imprimir o relatorio diario?</a>
+                                <a href="#" class="ing">Como consigo logar pela primeira vez no SGQ com meu usuário?</a>
                             </h4>
                         </div>
                         <div id="pergunta2" class="panel-collapse collapse" style="height: 0px;">
                             <div class="panel-body">
-                                <h5><span class="label label-primary">Answer</span></h5>
-                                <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Se já houver cadastro no ERP, basta logar no SGQ com seu usuário com a senha: 123</p>
                             </div>
                         </div>
                     </div>
-                    <div class="panel panel-default ">
+
+                    <div id="pt3" class="panel panel-default ">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pergunta3">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Q: 1.2 Como ficar rico com o relatorio diario?</a>
+                                <a href="#" class="ing">Troquei de unidade, e gostaria de acessar o SGQ com o usuário da minha unidade atual?</a>
                             </h4>
                         </div>
                         <div id="pergunta3" class="panel-collapse collapse" style="height: 0px;">
                             <div class="panel-body">
-                                <h5><span class="label label-primary">Answer</span></h5>
-                                <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Basta acessar o SGQ com seu novo usuário, entrar em “Perfil de Usuário” e no campo “Empresa”, trocar para a atual.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
+
+                    </br>
+
+                    <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
 
                         <h2 class="panel-title">
                             <a href="#" class="ing">Parametrização</a>
                         </h2>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
-                            <h4 class="panel-title">
-                                <a href="#" class="ing">Q: 1.0 Como vincular um indicador com o monitoramento</a>
-                            </h4>
-                        </div>
-                        <div id="question0" class="panel-collapse collapse" style="height: 0px;">
-                            <div class="panel-body">
-                                <h5><span class="label label-primary">Answer</span></h5>
-                                <p>
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five <a href="http://jquery2dotnet.com/" class="label label-success">http://jquery2dotnet.com/</a> centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
-                            <h4 class="panel-title">
-                                <a href="#" class="ing">Q: 1.1 Como funciona o agendamento</a>
-                            </h4>
-                        </div>
-                        <div id="question0" class="panel-collapse collapse" style="height: 0px;">
-                            <div class="panel-body">
-                                <h5><span class="label label-primary">Answer</span></h5>
-                                <p>
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five <a href="http://jquery2dotnet.com/" class="label label-success">http://jquery2dotnet.com/</a> centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--/panel-group-->
 
+                    <div id="ptParam1" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaParam1">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Não consigo fazer nenhuma alteração na parametrização, pois está desabilitado, como prosseguir?</a>
+                            </h4>
+                        </div>
+                        <div id="perguntaParam1" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Se o seu usuário não possui acesso a tela de parametrização, deve-se contatar a Camila Prata, pois ela é a responsável por todas as alterações na Parametrização.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptParam2" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaParam2">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Fiz uma alteração no indicador/monitoramento/tarefa, porém não surtiu efeito na coleta, o que devo fazer?</a>
+                            </h4>
+                        </div>
+                        <div id="perguntaParam2" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Após feita alteração em qualquer nível (indicador, monitoramento ou tarefa), deve-se ser salva-las, e em seguida “Atualizar a parametrização” da sua unidade.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptParam3" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaParam3">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Quando altero processo de uma unidade, os indicadores e pontos retroativos também estão sendo alterados?</a>
+                            </h4>
+                        </div>
+                        <div id="perguntaParam3" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Sim, ao alterar o processo, imediatamente os indicadores vinculados ao processo, serão alterados.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptParam4" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaParam4">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">O que é um alerta?</a>
+                            </h4>
+                        </div>
+                        <div id="perguntaParam4" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Alerta irá ser disparado sempre quando o indicador exceder a meta ou a quantidade de Não Conformidades.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptParam5" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaParam5">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Foi realizado lançamento de CEP Vácuo GRD e uma determinada tarefa contabilizou sem Vácuo GRD e Vácuo Refile, porém era para contabilizar somente para uma?</a>
+                            </h4>
+                        </div>
+                        <div id="perguntaParam5" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Verificar se na parametrização essa tarefa está vinculada nos dois monitoramentos, caso esteja cantatar a Camila Prata, para realizar a alteração necessária.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    </br>
+
+                    <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
+
+                        <h2 class="panel-title">
+                            <a href="#" class="ing">Volumes</a>
+                        </h2>
+                    </div>
+
+                    <div id="ptvol1" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaVol1">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Indicador PCC 1b não está sendo exibido na coleta, como prosseguir?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaVol1" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Para os indicadores por volume serem visualizados na coleta, devem ter sido cadastrados na tela de cadastro de volumes, assim como PCC 1B, deve-se ser lançado todos os dias, após isso, não esquecer de atualizar a parametrização da unidade.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptvol2" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaVol2">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Como cadastrar o volume para PCC 1B após a 00h?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaVol2" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Após a 00:00h, se cadastrado um novo volume para PCC 1B só se aplicará as 03:00 da manhã, antes das 03:00 da manhã, pegará o volume do dia anterior.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptvol3" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaVol3">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Lancei todas as amostras e está permitindo lançar novamente, o que houve?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaVol3" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Este é um problema de cache, limpe o cache do seu navegador e sincronize o tablet.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    </br>
+
+                    <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
+
+                        <h2 class="panel-title">
+                            <a href="#" class="ing">Familias</a>
+                        </h2>
+                    </div>
+
+                    <div id="ptFam1" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaFam1">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Cadastrei um monitoramento no cadastro de família, e não está exibindo na coleta, o que devo fazer?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaFam1" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Há três pontos, certifique-se que o monitoramento está ativo, em seguida veja se cadastrou o novo monitoramento para a data atual, e em seguida não esqueça de atualizar a parametrização da sua unidade.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptFam2" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaFam2">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Não estou conseguindo remover um monitoramento do cadastro de família, por que?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaFam2" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Se o monitoramento pertencer ao grupo de monitoramentos da empresa, somente a Camila Prata pode fazer essa alteração/remoção.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptFam3" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaFam3">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Não estou conseguindo carregar os monitoramentos no cadastro de família, como funciona?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaFam3" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Deve-se incluir a data e em seguida sua empresa, só assim conseguirá prosseguir e incluir/alterar os monitoramentos.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    </br>
+
+                    <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
+
+                        <h2 class="panel-title">
+                            <a href="#" class="ing">Coleta</a>
+                        </h2>
+                    </div>
+
+                    <div id="ptCol1" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol1">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Não está trazendo na coleta o Indicador Vácuo Refile, por que isso ocorre?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol1" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>O indicador Vácuo Refile é coletado através do indicador Vácuo GRD, pois Vácuo Refile é filho do Indicador Vácuo GRD, sendo assim ele não exibirá na coleta, apenas GRD.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptCol2" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol2">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Alguns indicadores não estão travando após o lançamento. O mesmo deveria estar ficando cinza e travando o acesso para evitar outros lançamentos durante a semana, por que isso ocorre?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol2" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Caso a frequência dos indicadores for diária, ficará habilitado para coleta todos os dias, se for semanal, por exemplo, após feita a coleta irá bloquear e deixar a linha cinza.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptCol3" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol3">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">Estou fazendo os lançamentos, porém os mesmos não estão contabilizando, o que aconteceu?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol3" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Há dois pontos, verificar se a internet da sua unidade está estável, certifique-se que o tablet foi sincronizado antes e depois de terminar as coletas. Se mesmo assim continuar ocorrendo, deve-se fazer a limpeza de cache do navegador.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptCol4" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol4">
+                            <h4 class="panel-title">
+                                <a href="#" class="ing">A internet da minha unidade está muito lenda e demora para sincronizar, como proceder?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol4" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>No canto direito da tela, existe uma opção de sincronizar resultados, ou seja, ao ir coletando se clicar nesse botão, ele irá enviar os dados, sendo assim não acumulará os dados.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
