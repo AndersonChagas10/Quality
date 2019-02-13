@@ -215,7 +215,7 @@
                             columns: ':visible'
                         },
                         orientation: 'landscape',
-                        title: '@Resources.Resource.filtered_report_between_dates' + $("#reportrange").text(),
+                        title: '@Resources.Resource.filtered_report_between_dates' + $("#reportrange").text() + "/ " + "Módulo: " + $("#select2-ModuloId-container").text() + " / "+ "Unidade: " + $("#select2-unitId-container").text(),
                         customize: function (win) {
                             $(win.document.body).css('font-size', '45pt'); 
                             $(win.document.body).find('h1').css('text-align', 'left');
