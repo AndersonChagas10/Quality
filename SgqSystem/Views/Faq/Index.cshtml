@@ -27,114 +27,53 @@
                 <div class="col-md-3 col-xs-3 form-group">
                     <ul>
                         <li>
-                            <strong>Integração de usuários</strong>
-                            <ul>
-                                <li>
-                                    <a href="#pt1" data-target="#pergunta1">Não tenho acesso ao ERP e gostaria de acessar o SGQ. Como faço?</a>
-                                </li>
-                                <li>
-                                    <a href="#pt2" data-target="#pergunta2">Como consigo logar pela primeira vez no SGQ com meu usuário?</a>
-                                </li>
-                                <li>
-                                    <a href="#pt3" data-target="#pergunta3">Troquei de unidade, e gostaria de acessar o SGQ com o usuário da minha unidade atual?</a>
-                                </li>
-                            </ul>
+                            <strong><a class="scrollPerguntas" data-href="#IntUsuarios">Integração de usuários</a></strong>
                         </li>
                     </ul>
 
                     <ul>
                         <li>
-                            <strong>Parametrização</strong>
-                            <ul>
-                                <li>
-                                    <a href="#ptParam1" data-target="#perguntaParam1">Não consigo fazer nenhuma alteração na parametrização, pois está desabilitado, como prosseguir?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptParam2" data-target="#perguntaParam2">Fiz uma alteração no indicador/monitoramento/tarefa, porém não surtiu efeito na coleta, o que devo fazer?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptParam3" data-target="#perguntaParam3">Quando altero processo de uma unidade, os indicadores e pontos retroativos também estão sendo alterados?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptParam4" data-target="#perguntaParam4">O que é um alerta?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptParam5" data-target="#perguntaParam5">Foi realizado lançamento de CEP Vácuo GRD e uma determinada tarefa contabilizou sem Vácuo GRD e Vácuo Refile, porém era para contabilizar somente para uma?</a>
-                                </li>
-                            </ul>
+                            <strong><a class="scrollPerguntas" data-href="#Parametrizacao">Parametrização</a></strong>
                         </li>
                     </ul>
 
                     <ul>
                         <li>
-                            <strong>Volumes</strong>
-                            <ul>
-                                <li>
-                                    <a href="#ptVol1" data-target="#perguntaVol1">Indicador PCC 1b não está sendo exibido na coleta, como prosseguir?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptVol2" data-target="#perguntaVol2">Como cadastrar o volume para PCC 1B após a 00h?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptVol3" data-target="#perguntaVol3">Lancei todas as amostras e está permitindo lançar novamente, o que houve?</a>
-                                </li>
-                            </ul>
+                            <strong><a class="scrollPerguntas" data-href="#Volumes">Volumes</a></strong>
                         </li>
                     </ul>
 
                     <ul>
                         <li>
-                            <strong>Familias</strong>
-                            <ul>
-                                <li>
-                                    <a href="#ptFam1" data-target="#perguntaFam1">Cadastrei um monitoramento no cadastro de família, e não está exibindo na coleta, o que devo fazer?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptFam2" data-target="#perguntaFam2">Não estou conseguindo remover um monitoramento do cadastro de família, por que?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptFam3" data-target="#perguntaFam3">Não estou conseguindo carregar os monitoramentos no cadastro de família, como funciona?</a>
-                                </li>
-                            </ul>
+                            <strong><a class="scrollPerguntas" data-href="#Familias">Familias</a></strong>
                         </li>
                     </ul>
 
                     <ul>
                         <li>
-                            <strong>Coleta</strong>
-                            <ul>
-                                <li>
-                                    <a href="#ptCol1" data-target="#perguntaCol1">Não está trazendo na coleta o Indicador Vácuo Refile, por que isso ocorre?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptCol2" data-target="#perguntaCol2">Alguns indicadores não estão travando após o lançamento. O mesmo deveria estar ficando cinza e travando o acesso para evitar outros lançamentos durante a semana, por que isso ocorre?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptCol3" data-target="#perguntaCol3">Estou fazendo os lançamentos, porém os mesmos não estão contabilizando, o que aconteceu?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptCol4" data-target="#perguntaCol4">A internet da minha unidade está muito lenda e demora para sincronizar, como proceder?</a>
-                                </li>
-                                <li>
-                                    <a href="#ptCol5" data-target="#perguntaCol5">Na unidade do Tablet está exibindo uma unidade diferente da minha unidade, geralmente exibe Lins, o que houve?</a>
-                                </li>
-                            </ul>
+                            <strong><a class="scrollPerguntas" data-href="#Coleta">Coleta</a></strong>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <strong><a class="scrollPerguntas" data-href="#Relatorio">Relatórios</a></strong>
                         </li>
                     </ul>
                 </div>
 
                 <div class="panel-group col-md-9  col-xs-9 pull-right" id="faqAccordion">
-                    <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
+                    <div id="integracao" class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
 
                         <h2 class="panel-title">
-                            <a href="#" class="ing">Integração de usuários</a>
+                            <a id="IntUsuarios" class="ing">Integração de usuários</a>
                         </h2>
                     </div>
 
                     <div id="pt1" class="panel panel-default ">
                         <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pergunta1">
                             <h4 class="panel-title">
-                                <a href="#" id="" class="ing">Não tenho acesso ao ERP e gostaria de acessar o SGQ. Como faço?</a>
+                                <a id="" class="ing">Não tenho acesso ao ERP e gostaria de acessar o SGQ. Como faço?</a>
                             </h4>
                         </div>
                         <div id="pergunta1" class="panel-collapse collapse" style="height: 0px;">
@@ -148,7 +87,7 @@
                     <div id="pt2" class="panel panel-default ">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pergunta2">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Como consigo logar pela primeira vez no SGQ com meu usuário?</a>
+                                <a class="ing">Como consigo logar pela primeira vez no SGQ com meu usuário?</a>
                             </h4>
                         </div>
                         <div id="pergunta2" class="panel-collapse collapse" style="height: 0px;">
@@ -162,7 +101,7 @@
                     <div id="pt3" class="panel panel-default ">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#pergunta3">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Troquei de unidade, e gostaria de acessar o SGQ com o usuário da minha unidade atual?</a>
+                                <a class="ing">Troquei de unidade, e gostaria de acessar o SGQ com o usuário da minha unidade atual?</a>
                             </h4>
                         </div>
                         <div id="pergunta3" class="panel-collapse collapse" style="height: 0px;">
@@ -178,14 +117,14 @@
                     <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
 
                         <h2 class="panel-title">
-                            <a href="#" class="ing">Parametrização</a>
+                            <a id="Parametrizacao" class="ing">Parametrização</a>
                         </h2>
                     </div>
 
                     <div id="ptParam1" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaParam1">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Não consigo fazer nenhuma alteração na parametrização, pois está desabilitado, como prosseguir?</a>
+                                <a class="ing">Não consigo fazer nenhuma alteração na parametrização, pois está desabilitado, como prosseguir?</a>
                             </h4>
                         </div>
                         <div id="perguntaParam1" class="panel-collapse collapse" style="height: 0px;">
@@ -199,7 +138,7 @@
                     <div id="ptParam2" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaParam2">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Fiz uma alteração no indicador/monitoramento/tarefa, porém não surtiu efeito na coleta, o que devo fazer?</a>
+                                <a class="ing">Fiz uma alteração no indicador/monitoramento/tarefa, porém não surtiu efeito na coleta, o que devo fazer?</a>
                             </h4>
                         </div>
                         <div id="perguntaParam2" class="panel-collapse collapse" style="height: 0px;">
@@ -213,7 +152,7 @@
                     <div id="ptParam3" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaParam3">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Quando altero processo de uma unidade, os indicadores e pontos retroativos também estão sendo alterados?</a>
+                                <a class="ing">Quando altero processo de uma unidade, os indicadores e pontos retroativos também estão sendo alterados?</a>
                             </h4>
                         </div>
                         <div id="perguntaParam3" class="panel-collapse collapse" style="height: 0px;">
@@ -227,7 +166,7 @@
                     <div id="ptParam4" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaParam4">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">O que é um alerta?</a>
+                                <a class="ing">O que é um alerta?</a>
                             </h4>
                         </div>
                         <div id="perguntaParam4" class="panel-collapse collapse" style="height: 0px;">
@@ -241,7 +180,7 @@
                     <div id="ptParam5" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaParam5">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Foi realizado lançamento de CEP Vácuo GRD e uma determinada tarefa contabilizou sem Vácuo GRD e Vácuo Refile, porém era para contabilizar somente para uma?</a>
+                                <a class="ing">Foi realizado lançamento de CEP Vácuo GRD e uma determinada tarefa contabilizou sem Vácuo GRD e Vácuo Refile, porém era para contabilizar somente para uma?</a>
                             </h4>
                         </div>
                         <div id="perguntaParam5" class="panel-collapse collapse" style="height: 0px;">
@@ -257,14 +196,14 @@
                     <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
 
                         <h2 class="panel-title">
-                            <a href="#" class="ing">Volumes</a>
+                            <a id="Volumes" class="ing">Volumes</a>
                         </h2>
                     </div>
 
                     <div id="ptvol1" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaVol1">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Indicador PCC 1b não está sendo exibido na coleta, como prosseguir?</a>
+                                <a class="ing">Indicador PCC 1b não está sendo exibido na coleta, como prosseguir?</a>
                             </h4>
                         </div>
 
@@ -279,7 +218,7 @@
                     <div id="ptvol2" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaVol2">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Como cadastrar o volume para PCC 1B após a 00h?</a>
+                                <a class="ing">Como cadastrar o volume para PCC 1B após a 00h?</a>
                             </h4>
                         </div>
 
@@ -294,7 +233,7 @@
                     <div id="ptvol3" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaVol3">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Lancei todas as amostras e está permitindo lançar novamente, o que houve?</a>
+                                <a class="ing">Lancei todas as amostras e está permitindo lançar novamente, o que houve?</a>
                             </h4>
                         </div>
 
@@ -311,14 +250,14 @@
                     <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
 
                         <h2 class="panel-title">
-                            <a href="#" class="ing">Familias</a>
+                            <a id="Familias" class="ing">Familias</a>
                         </h2>
                     </div>
 
                     <div id="ptFam1" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaFam1">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Cadastrei um monitoramento no cadastro de família, e não está exibindo na coleta, o que devo fazer?</a>
+                                <a class="ing">Cadastrei um monitoramento no cadastro de família, e não está exibindo na coleta, o que devo fazer?</a>
                             </h4>
                         </div>
 
@@ -333,7 +272,7 @@
                     <div id="ptFam2" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaFam2">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Não estou conseguindo remover um monitoramento do cadastro de família, por que?</a>
+                                <a class="ing">Não estou conseguindo remover um monitoramento do cadastro de família, por que?</a>
                             </h4>
                         </div>
 
@@ -348,7 +287,7 @@
                     <div id="ptFam3" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaFam3">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Não estou conseguindo carregar os monitoramentos no cadastro de família, como funciona?</a>
+                                <a class="ing">Não estou conseguindo carregar os monitoramentos no cadastro de família, como funciona?</a>
                             </h4>
                         </div>
 
@@ -365,14 +304,14 @@
                     <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
 
                         <h2 class="panel-title">
-                            <a href="#" class="ing">Coleta</a>
+                            <a id="Coleta" class="ing">Coleta</a>
                         </h2>
                     </div>
 
                     <div id="ptCol1" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol1">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Não está trazendo na coleta o Indicador Vácuo Refile, por que isso ocorre?</a>
+                                <a class="ing">Não está trazendo na coleta o Indicador Vácuo Refile, por que isso ocorre?</a>
                             </h4>
                         </div>
 
@@ -387,7 +326,7 @@
                     <div id="ptCol2" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol2">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Alguns indicadores não estão travando após o lançamento. O mesmo deveria estar ficando cinza e travando o acesso para evitar outros lançamentos durante a semana, por que isso ocorre?</a>
+                                <a class="ing">Alguns indicadores não estão travando após o lançamento. O mesmo deveria estar ficando cinza e travando o acesso para evitar outros lançamentos durante a semana, por que isso ocorre?</a>
                             </h4>
                         </div>
 
@@ -402,7 +341,7 @@
                     <div id="ptCol3" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol3">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">Estou fazendo os lançamentos, porém os mesmos não estão contabilizando, o que aconteceu?</a>
+                                <a class="ing">Estou fazendo os lançamentos, porém os mesmos não estão contabilizando, o que aconteceu?</a>
                             </h4>
                         </div>
 
@@ -417,7 +356,7 @@
                     <div id="ptCol4" class="panel panel-default">
                         <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol4">
                             <h4 class="panel-title">
-                                <a href="#" class="ing">A internet da minha unidade está muito lenda e demora para sincronizar, como proceder?</a>
+                                <a class="ing">A internet da minha unidade está muito lenda e demora para sincronizar, como proceder?</a>
                             </h4>
                         </div>
 
@@ -429,9 +368,203 @@
                         </div>
                     </div>
 
+                    <div id="ptCol5" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol5">
+                            <h4 class="panel-title">
+                                <a class="ing">Na unidade do Tablet está exibindo uma unidade diferente da minha unidade, geralmente exibe Lins, o que houve?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol5" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Ocorre devido a lentidão da internet, nesse caso sempre verificar no canto inferior da tela, ao lado do nome do usuário logado, a unidade conectada, o sistema valida a unidade por esse campo.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptCol6" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol6">
+                            <h4 class="panel-title">
+                                <a class="ing">Meu tablet está com a data de ontem e não atualiza para os lançamentos.</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol6" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Faça o procedimento de limpeza de cache do seu navegador, após feito, faça a sincronização do tablet.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptCol7" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol7">
+                            <h4 class="panel-title">
+                                <a class="ing">Fiz uns lançamentos incorretos e gostaria de exclui-los, como proceder?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol7" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Em apontamentos diários, é possível editar uma coleta, para conforme e não conforme, e também colocar como Não avaliado, quando selecionado a opção de Não Avaliado, não contabilizará essa coleta.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptCol8" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol8">
+                            <h4 class="panel-title">
+                                <a class="ing">A monitora realizou todos os lançamentos e foram sincronizados só que hoje pela manhã quando fomos verificar o scorecard do dia anterior as informações sumiram, o que pode ter ocorrido?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol8" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Certifique-se que ao finalizar as coletas, os tablets sejam sincronizados, para garantir, ao finalizar clique no botão direito da tela “Sincronizar Resultados”.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptCol9" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol9">
+                            <h4 cla class="ing">
+                                Modifiquei um indicador incluindo outras tarefas, e não está sendo exibidas na coleta essa alteração, o que pode ter ocorrido?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol9" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Se a coleta já foi iniciada, não se aplicará a alteração, após finalizada, sincronizada a coleta, passará a exibir com as alterações.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptCol10" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol10">
+                            <h4 class="panel-title">
+                                <a class="ing">Está aparecendo que já foi finalizado o lançamento de um indicador diário, como posso verificar?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol10" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Entre no relatório de apontamentos diários, e verifique a data da coleta, o monitor pode ter confundido e lançado com datas divergentes. </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptCol11" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol11">
+                            <h4 class="panel-title">
+                                <a class="ing">Na coleta ao clicar no indicador exibe a mensagem “O número de avaliações desse indicador foi completado” e não consigo fazer os lançamentos, como proceder?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol11" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Essa mensagem é lançada quando todas avaliações já foram feitas para determinado indicador, para visualizar as avaliações, é só visualizar os relatórios disponíveis no SGQ, como por exemplo Apontamentos diários.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptCol12" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaCol12">
+                            <h4 class="panel-title">
+                                <a class="ing">Para um indicador foi emitido o primeiro alerta e o segundo normalmente, quando foi pra estourar o terceiro alerta o mesmo voltou para o primeiro alerta, o que pode ter acontecido?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaCol12" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Esse tipo de ocasião ocorre quando há troca de tablet durante a coleta sem a sincronização dos resultados, com isso, volta a disparar o primeiro alerta.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    </br>
+
+                    <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion">
+
+                        <h2 class="panel-title">
+                            <a id="Relatorio" class="ing">Relatórios</a>
+                        </h2>
+                    </div>
+
+                    <div id="ptRel1" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaRel1">
+                            <h4 class="panel-title">
+                                <a class="ing">Meus lançamentos não estão sendo exibidos no relatório diário, o que houve?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaRel1" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>O relatório diário só exibe os indicadores que passaram da meta determinada, caso contrário não exibirá, para melhor visualização dos lançamentos acesse o relatório de apontamentos diários.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptRel2" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaRel2">
+                            <h4 class="panel-title">
+                                <a class="ing">O indicador está aparecendo no relatório diário como lançado sendo que, os monitores não lançaram e quando eu entro na coleta de dados está como ZERADO. O que realmente está acontecendo?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaRel2" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Verifique se a coleta que está exibindo como lançado foi feita para o turno correto, para visualizar o turno correto, e maios detalhes, acesso o relatório de apontamentos diários.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ptRel3" class="panel panel-default">
+                        <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#perguntaRel3">
+                            <h4 class="panel-title">
+                                <a class="ing">Relatórios com resultados divergentes, no relatório de Não conformidades aparecem 2 NC e no relatório de Apontamentos Diários aparecem 4, por que?</a>
+                            </h4>
+                        </div>
+
+                        <div id="perguntaRel3" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <h5><span class="label label-primary">Resposta</span></h5>
+                                <p>Verifique se o tipo de consolidação é por soma de peças, se sim, no relatório de não conformidades trará as não conformidades somadas no determinado monitoramento e no apontamento diário, trás as não conformidades por tarefas.</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        $(".scrollPerguntas").click(function (e) {
+
+            debugger
+            if ($(this).attr('data-href') !== "") {
+
+                e.preventDefault();
+
+                var hash = $(this).attr('data-href');
+                window.location.hash = "";
+                $('html, body').animate({
+                    scrollTop: $(hash).offset().top - 80
+                }, 500, function () {
+
+                   // window.location.hash = hash;
+                });
+            }
+        });
+    </script>
 
 

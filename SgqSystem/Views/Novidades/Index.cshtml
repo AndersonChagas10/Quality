@@ -21,7 +21,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
-                    <h4> <strong><label>FAQ</label></strong></h4>
+                    <h4> <strong><label>Novidades</label></strong></h4>
                 </div>
                 <div class="col-md-3 col-xs-3 form-group">
                     <ul>
@@ -29,13 +29,13 @@
                             <strong>Versões</strong>
                             <ul>
                                 <li>
-                                    <a href="#" data-target="#">1.0.3</a>
+                                    <a class="scrollLog" data-href="#v103">1.0.3</a>
                                 </li>
                                 <li>
-                                    <a href="#" data-target="#">1.0.4</a>
+                                    <a class="scrollLog" data-href="#v104">1.0.4</a>
                                 </li>
                                 <li>
-                                    <a data-target="#">1.0.5</a>
+                                    <a class="scrollLog" data-href="#v105">1.0.5</a>
                                 </li>
                             </ul>
                         </li>
@@ -44,7 +44,7 @@
                 <div class="panel-group col-md-9  col-xs-9 pull-right" id="faqAccordion">
                     <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
                         <h2 class="panel-title">
-                            <a href="#" class="ing">Versão 1.0.3 - Adicionado</a>
+                            <a id="v103" class="ing">Versão 1.0.3 - Adicionado</a>
                         </h2>
                     </div>
 
@@ -110,7 +110,7 @@
                 <div class="panel-group col-md-9  col-xs-9 pull-right" id="faqAccordion">
                     <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
                         <h2 class="panel-title">
-                            <a href="#" class="ing">Versão 1.0.4 - Adicionado</a>
+                            <a id="v104" class="ing">Versão 1.0.4 - Adicionado</a>
                         </h2>
                     </div>
 
@@ -193,7 +193,7 @@
                 <div class="panel-group col-md-9  col-xs-9 pull-right" id="faqAccordion">
                     <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
                         <h2 class="panel-title">
-                            <a href="#" class="ing">Versão 1.0.5 - Adicionado</a>
+                            <a id="v105" class="ing">Versão 1.0.5 - Adicionado</a>
                         </h2>
                     </div>
 
@@ -363,7 +363,25 @@
         </div>
     </div>
 </div>
+<script>
+    $(".scrollLog").click(function (e) {
 
+            debugger
+            if ($(this).attr('data-href') !== "") {
+
+                e.preventDefault();
+
+                var hash = $(this).attr('data-href');
+                window.location.hash = "";
+                $('html, body').animate({
+                    scrollTop: $(hash).offset().top - 80
+                }, 500, function () {
+
+                   // window.location.hash = hash;
+                });
+            }
+        });
+</script>
 
 
 
