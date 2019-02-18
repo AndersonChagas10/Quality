@@ -19,7 +19,7 @@
                     <div class="form-group" id="divIntervalo">
                         @Html.Label("Intervalo", htmlAttributes: new { @class = "control-label col-md-4" })
                         <div class="col-md-4">
-                            <input id="intervalo" type="time" min="0" class=" form-control notAllowNegative" />
+                            <input id="intervalo" type="time" min="0" class="form-control notAllowNegative limparCampos" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -39,6 +39,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" id="btnLimpaCampos" onclick="LimparCampos(event)" class="btn btn-warning">Limpar campos</button>
                 <button type="button" id="btnSalvar" onclick="preencheAgendamento(event)" class="btn btn-success">Salvar</button>
                 <button type="button" data-dismiss="modal" class="btn btn-default">Fechar</button>
             </div>
@@ -61,7 +62,7 @@
         }
     });
 
-    $(document).ready(function () { 
+    $(document).ready(function () {
         setTimeout(function () {
             if (perfilUsuario.indexOf("Admin") >= 0) {
                 var tipoFrequencia = $("#Agendamento").val();
@@ -104,6 +105,8 @@
             }
         }, 0);
 
+
+
     });
 
     function AbrirModal() {
@@ -126,8 +129,8 @@
         for (var i = 1; i <= quantidadeAvaliacoes; i++) {
             $("#tabelaAgendamento tbody").append("<tr>"
                 + '<td><input data-column="inpValorAvaliacao" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
-                + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpInicio" /></td>'
-                + '<td><input type="time" min="0" class="input-sm notAllowNegative" data-column="inpFim" /></td>'
+                + '<td><input type="time" min="0" class="input-sm notAllowNegative limparCampos" data-column="inpInicio" /></td>'
+                + '<td><input type="time" min="0" class="input-sm notAllowNegative limparCampos" data-column="inpFim" /></td>'
                 + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
                 + "</tr>");
 
@@ -150,6 +153,10 @@
                 }
             }
         }
+    }
+    function LimparCampos(e) {
+            e.preventDefault();
+            $('.limparCampos').val('');
     }
 
 

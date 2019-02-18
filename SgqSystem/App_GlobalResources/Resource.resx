@@ -2761,6 +2761,6 @@
     <value>Failed to make a change because the date is greater than the current date</value>
   </data>
   <data name="filtered_report_between_dates" xml:space="preserve">
-    <value>Filtered Report between dates</value>
+    <value>Scorecard report filtered between dates:</value>
   </data>
 </root>

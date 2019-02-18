@@ -271,13 +271,13 @@ $(document).on('click', '.level3Group.PCC1B .painel .btn', function (e) {
                 function(i,o){ 
                     var resultadodefeitosPCC1b = "";
                     if($(o).attr("resultado") == 1){
-                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center; background: red; color: white;'>x</td>"
+                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center; background: red; color: white;'>NC</td>"
                 
                     }else if ($(o).attr("resultado") == 2){
-                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center; background: black; color: black;'></td>"
+                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center; background: black; color: white;'>NA</td>"
                 
                     }else{
-                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center;'>o</td>";
+                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center;'>C</td>";
                 
                     }
                     tabelaResultadoSIFPCC1b += "<tr>";
@@ -346,9 +346,9 @@ function updateDefectsCounters(){
     
     var totalNC = nctraseiro + ncdianteiro;
 
-    $('.totalnc:visible').text(totalNC);
-    $('.ncdianteiro:visible').text(ncdianteiro);
-    $('.nctraseiro:visible').text(nctraseiro);
+    $('.painelLevel03:visible .totalnc').text(totalNC);
+    $('.painelLevel03:visible .ncdianteiro').text(ncdianteiro);
+    $('.painelLevel03:visible .nctraseiro').text(nctraseiro);
 
     $('.level1.selected').attr('totaldefeitos', totalNC);
 }

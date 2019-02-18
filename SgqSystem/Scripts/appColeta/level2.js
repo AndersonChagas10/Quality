@@ -749,6 +749,10 @@ function atualizaCorAgendamento() {
 
                                     horaMinutoPrimeiraAv = horaPrimeiraAv.split(":");
 
+                                    if(typeof(horaMinutoPrimeiraAv) == 'undefined' || !horaMinutoPrimeiraAv){
+                                        return;
+                                    }
+
                                     var horaAv = parseInt(horaMinutoPrimeiraAv[0]);
                                     var minutoAv = parseInt(horaMinutoPrimeiraAv[1]);
 

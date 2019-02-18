@@ -2296,6 +2296,6 @@
     <value>Start</value>
   </data>
   <data name="filtered_report_between_dates" xml:space="preserve">
-    <value>Filtered Report between dates</value>
+    <value>Scorecard report filtered between dates:</value>
   </data>
 </root>

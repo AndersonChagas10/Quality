@@ -982,7 +982,7 @@
     <value>Troca de unidade</value>
   </data>
   <data name="unsyncronized_data" xml:space="preserve">
-    <value>There's still unsync data</value>
+    <value>Ainda há dados não sincronizados</value>
   </data>
   <data name="user_information_error_try_again" xml:space="preserve">
     <value>Não foi possível verificar as informações do usuário, tente novamente</value>
@@ -2281,6 +2281,6 @@
     <value>Início</value>
   </data>
   <data name="filtered_report_between_dates" xml:space="preserve">
-    <value>Relatório filtrado entre as datas:</value>
+    <value>Relatório Scorecard filtrado entre as datas:</value>
   </data>
 </root>
