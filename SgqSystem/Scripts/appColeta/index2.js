@@ -947,6 +947,10 @@ $(document).on('change', '#selectParCompany', function (e) {
     if ($('.level02Result[sync=false]:first').length == 0)
         ping(changeCompany_OnLine, changeUnit_OffLine);
     else {
+
+        //forçar sincronização e fazer a troca apos sincronizar
+        $('#btnSync').trigger('click');
+
         $('#selectParCompany').val($('#selectParCompany').attr('parcompany_id'));
         openMessageModal(getResource("unsyncronized_data"), null);
         return false;
