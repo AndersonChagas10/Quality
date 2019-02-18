@@ -146,10 +146,10 @@ function abreOApp(valor) {
 function getAPPOnLine() {
     $.ajax({
         type: 'POST'
-        , url: urlPreffix + '/Services/SyncServices.asmx/getAPP'
+        , url: urlPreffix + '/Services/SyncServices.asmx/getAPP2'
         //, contentType: 'application/json; charset=utf-8'
         //, dataType: 'json'
-        ,dataType: "xml"
+        , dataType: "xml"
         //,contentType: "text/xml; charset=\"utf-8\""
         , data: "version="+versao
         , async: false //blocks window close

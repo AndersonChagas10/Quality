@@ -20,6 +20,7 @@ using System.Data;
 using System.Text;
 using ADOFactory;
 using Dominio;
+using System.Web.Http;
 
 namespace SgqSystem.Services
 {
@@ -27,7 +28,7 @@ namespace SgqSystem.Services
     /// Summary description for SyncServices
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
-    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [WebServiceBinding(ConformsTo = WsiProfiles.None)]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
 
     [System.ComponentModel.ToolboxItem(false)]
@@ -3725,8 +3726,15 @@ namespace SgqSystem.Services
 
         #region App
         [WebMethod]
-        public string getAPP(string version)
+        public string getAPP(/*string version*/)
         {
+            return getAPP2("");
+        }
+
+        [WebMethod]
+        public string getAPP2(string version)
+        {
+            //var version = "2.0.47";
             string forcaAtualizacao = "";
             if (!version.Contains("2.0.47"))
                 forcaAtualizacao = @"<script>

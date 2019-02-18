@@ -793,16 +793,19 @@ function atualizaCorAgendamento() {
 
                                 if (avaliacaoAtual == avVigente) {
                                     av = avVigente;
-                                    ini = new Date().setHours(mapeamento[1].split(':')[0], mapeamento[1].split(':')[1], 0, 0);
-                                    fim = new Date().setHours(mapeamento[2].split(':')[0], mapeamento[2].split(':')[1], 0, 0);
-
-                                    //se o fim for para o outro dia, ou seja, menor que o inicio, soma um dia
-                                    if(fim < ini)
-                                        fim = new Date(fim).setDate(new Date().getDate() + 1);
+                                    ini = mapeamento[1];
+                                    fim = mapeamento[2];
 
                                     //diario (controle por horario)
                                     if (frequenciaId == 3) {
                                         var hour = new Date().getTime();
+
+                                        ini = new Date().setHours(mapeamento[1].split(':')[0], mapeamento[1].split(':')[1], 0, 0);
+                                        fim = new Date().setHours(mapeamento[2].split(':')[0], mapeamento[2].split(':')[1], 0, 0);
+    
+                                        //se o fim for para o outro dia, ou seja, menor que o inicio, soma um dia
+                                        if(fim < ini)
+                                            fim = new Date(fim).setDate(new Date().getDate() + 1);
 
                                         //danger  = 4 
                                         //warning = 3
