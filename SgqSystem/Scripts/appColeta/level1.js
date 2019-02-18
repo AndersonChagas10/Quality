@@ -77,7 +77,7 @@ function level1Show(inicio, cluster) {
                     $('#btnSync').click();
             } else {
                 mensagemSyncHide();
-                reciveResults();
+                    reciveResults();
             }
 
             getCollectionPhase();
@@ -420,7 +420,7 @@ function abrirCluster(cluster) {
     clusterAtivo = cluster.id
     clusterAtivoName = $(cluster).attr('parcluster_name')
     $('.main').html(clusterAtivoName)
-    level1Show(true, clusterAtivo)
+    level1Show(false, clusterAtivo)   
 }
 
 function voltarCluster() {

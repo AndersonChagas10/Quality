@@ -483,6 +483,8 @@ function openLevel3(level2) {
     }
 
     removeFotosNaoSalvas();
+    
+    $('input').val('').trigger('input');
 
 }
 
@@ -1034,7 +1036,6 @@ $(document).on('click', '.level3 .btnNotAvaliable', function (e) {
 
 function saveResultLevel3() {
 
-
     var level1 = $(_level1).attr('id').split('98789');
     if (level1[1] == parseInt(getDicionario('IdIndicadorPesoHB'))) {
 
@@ -1065,11 +1066,11 @@ function saveResultLevel3() {
     var level2 = $('.level2.selected');
 
 
-    if (level1.attr('id').replace('98789', '|').split('|').length < 2) {
+    if (!level1.attr('id') || level1.attr('id').replace('98789', '|').split('|').length < 2) {
         level1.attr('id', clusterAtivo.toString() + '98789' + level1.attr('id'))
     }
 
-    if (level2.attr('id').replace('98789', '|').split('|').length < 2) {
+    if (!level2.attr('id') || level2.attr('id').replace('98789', '|').split('|').length < 2) {
         level2.attr('id', clusterAtivo.toString() + '98789' + level2.attr('id'))
     }
 

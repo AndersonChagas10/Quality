@@ -4,7 +4,7 @@
 //var urlPreffix = "http://192.168.25.5/SgqSystem";
 //var urlPreffix = "https://sgqtest.jbssa.com/HMLUSA"; //usa hom
 //var urlPreffix = "http://10.160.99.89/sgqprodtolleson";
-//var urlPreffix = "http://192.168.25.200/Sgq_1_0_8";
+var urlPreffix = "http://192.168.25.200/Sgq_1_0_8";
 //var urlPreffix = "http://mtzsvmqschml01/SGQ";
 //var urlPreffix = "http://192.168.25.200/SgqUsa";
 //var urlPreffix = "http://192.168.25.200/SGQYtoara";

@@ -699,11 +699,24 @@ function ping(callbackOnLine, callbackOffLine) {
 }
 
 var timeoutSendResults;
-function sendResultsTimeout() {
-    timeoutSendResults = setTimeout(function (e) {
-        ping(sendResultsOnLine, sendResultsOnLine);
-    }, 60000);
+var tempoSemaforo = 1;
 
+setInterval(function () {
+    tempoSemaforo++;
+    if (tempoSemaforo >= 25)
+        sendResultsTimeout();
+}, 1000)
+
+function sendResultsTimeout() {
+
+    if (tempoSemaforo > 20) {
+        tempoSemaforo = 0;
+
+        timeoutSendResults = setTimeout(function (e) {
+            // ping(sendResultsOnLine, sendResultsOnLine);
+            sendResultsOnLine();
+        }, 2000);
+    }
 }
 
 //variavel para controle de tempo de logout
@@ -735,6 +748,8 @@ function alteraDataRetroativaOnline() {
 
     var message = getResource("inform_retroactive_date");
 
+    $('#inputDate').val("");
+
     $('#passMessageComfirm').addClass('hide');
     $('#inputDate').removeClass('hide');
 
@@ -752,7 +767,7 @@ function alteraDataRetroativaOnline() {
         var dataRetroativa = new Date(convertDate($('#inputDate').val()));
 
         if (!retroactiveDateIsValid(dataRetroativa)) {
-            openMessageModal(getResource("cant_change_date_greater_than_current"),getResource("input_a_valid_date"));
+            openMessageModal(getResource("cant_change_date_greater_than_current"), getResource("input_a_valid_date"));
             return false;
         }
 
@@ -801,7 +816,6 @@ function retroactiveDateIsValid(dataRetroativa) {
 
     } else {
         return false;
-
     }
 }
 

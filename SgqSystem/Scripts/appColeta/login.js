@@ -188,7 +188,7 @@ function initialLogin() {
     //mostrar link http se desenvolvimento
     if (urlPreffix.indexOf('QualityAssurance') < 0) { $('.urlPrefix').text(urlPreffix); }
 
-    //aqui pode conter o sync ou depois que mostrar o level01
+    //aqui pode conter o sync ou depois que mostrar o level01  
     level1Show(true, clusterAtivo);
 
     $('#btnLoginOffline').text(textbtnLoginOffline);

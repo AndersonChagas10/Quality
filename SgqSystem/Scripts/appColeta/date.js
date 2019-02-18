@@ -2,9 +2,9 @@ function yyyyMMdd() {
     var date = new Date();
     var c = getCollectionDate();    
     if(c){
-        date.setDate(parseInt(c.slice(2, 4)));
         date.setMonth(parseInt(c.slice(0, 2)) - 1);
         date.setFullYear(parseInt(c.slice(4, 8)));
+        date.setDate(parseInt(c.slice(2, 4)));
     }  
 
     var alterTurningDate = turningTimeCheck(date);
@@ -96,7 +96,7 @@ function dateReturn() {
         
         date.setMonth(parseInt(c.slice(0, 2)) - 1);
         date.setFullYear(parseInt(c.slice(4, 8)));
-	date.setDate(parseInt(c.slice(2, 4)));
+	    date.setDate(parseInt(c.slice(2, 4)));
     }    
     
     //Se tiver turno que troca no outro dia depois da meia noite verifica aqui
@@ -303,9 +303,9 @@ function getCollectionDateFormat() {
     var c = getCollectionDate();
     
     if(c){
-        date.setDate(parseInt(c.slice(2, 4)));
         date.setMonth(parseInt(c.slice(0, 2)) - 1);
         date.setFullYear(parseInt(c.slice(4, 8)));
+        date.setDate(parseInt(c.slice(2, 4)));
     }   
 
     return date;
