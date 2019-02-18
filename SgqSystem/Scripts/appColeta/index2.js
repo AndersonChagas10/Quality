@@ -147,18 +147,19 @@ function getAPPOnLine() {
     $.ajax({
         type: 'POST'
         , url: urlPreffix + '/Services/SyncServices.asmx/getAPP'
-        , contentType: 'application/json; charset=utf-8'
-        , dataType: 'json'
-        //, data: { "unidadeId": $('.App').attr('unidadeid') }
-        , data: "{" + "}"
+        //, contentType: 'application/json; charset=utf-8'
+        //, dataType: 'json'
+        ,dataType: "xml"
+        //,contentType: "text/xml; charset=\"utf-8\""
+        , data: "version="+versao
         , async: false //blocks window close
         , success: function (data, status) {
 
             getMotivoAtraso();
 
-            var Login = $(data.d);
-            appendDevice(Login, $('body'));
-            _writeFile("loginpage.txt", data.d);
+            var Login = $(data).text();
+            appendDevice($(Login), $('body'));
+            _writeFile("loginpage.txt", Login);
 
             loadMainSetup();
 
@@ -173,7 +174,6 @@ function getAPPOnLine() {
             $('#shift').trigger('change');
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-
         }
     });
 }

@@ -3725,15 +3725,24 @@ namespace SgqSystem.Services
 
         #region App
         [WebMethod]
-        public string getAPP()
+        public string getAPP(string version)
         {
-            var html = new Html();
+            string forcaAtualizacao = "";
+            if (!version.Contains("2.0.47"))
+                forcaAtualizacao = @"<script>
+setTimeout(function(){
+    navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
+    cleanArquivos, 
+    'Atualização', 
+    'OK');
+},500);
+</script>";
 
             string login = GetLoginAPP();
 
             string resource = GetResource();
 
-            return login + resource;
+            return login + resource + forcaAtualizacao;
         }
 
         [WebMethod]

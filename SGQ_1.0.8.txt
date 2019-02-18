@@ -74,11 +74,13 @@ GO
 Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.8 Criação das colunas necessarias para o cadastro de agendamento nos volumes',GetDate()) 
 
 GO
+SET IDENTITY_INSERT ParFrequency ON 
+GO
 
 IF NOT EXISTS (SELECT * FROM ParFrequency WHERE Name = 'Diario com Intervalo')
 	begin
-		insert into ParFrequency(Name,[Description],AddDate, AlterDate, IsActive) 
-		values('Diario com Intervalo','Diario com Intervalo',GETDATE(),NULL,1)
+		insert into ParFrequency(Id,Name,[Description],AddDate, AlterDate, IsActive) 
+		values(10,'Diario com Intervalo','Diario com Intervalo',GETDATE(),NULL,1)
 	end
 
 GO
