@@ -4317,7 +4317,7 @@ function calcularSensorial(list){
             return sample;
         }
 
-        public string GetEvaluationSchedule(int parLevel1_Id, int parLevel2_Id, int company_Id, int shift_Id)
+        public string GetEvaluationSchedule(int parLevel1_Id, int parLevel2_Id, int company_Id, int shift_Id, int cluster_id)
         {
             try
             {
@@ -4332,6 +4332,7 @@ function calcularSensorial(list){
                         && x.ParEvaluation.ParLevel2_Id == parLevel2_Id
                         && (x.ParEvaluation.ParCompany_Id == company_Id || x.ParEvaluation.ParCompany_Id == null)
                         && (x.Shift_Id == shift_Id || x.Shift_Id == null)
+                        && x.ParEvaluation.ParCluster_Id == cluster_id
                         && x.ParEvaluation.IsActive
                         && x.IsActive)
                         .OrderByDescending(x => new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList())
@@ -5416,7 +5417,7 @@ function calcularSensorial(list){
                     }
                     else
                     {
-                        frequencia = GetEvaluationSchedule(ParLevel1.ParLevel1_Id, parlevel2.ParLevel2_id, ParCompany_Id, Shift_Id);
+                        frequencia = GetEvaluationSchedule(ParLevel1.ParLevel1_Id, parlevel2.ParLevel2_id, ParCompany_Id, Shift_Id, ParLevel1.ParCluster_Id);
                     }
 
 
