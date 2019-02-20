@@ -360,7 +360,7 @@ namespace SgqSystem.Controllers.Api
                     {
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)
                                 return "0";
                         }
                         catch (Exception e)
@@ -413,7 +413,7 @@ namespace SgqSystem.Controllers.Api
 
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)
                                 return "0";
                         }
                         catch (Exception e)
@@ -454,7 +454,7 @@ namespace SgqSystem.Controllers.Api
 
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6)) != null)//TEXTO
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//TEXTO
                                 return "1";
                         }
                         catch (Exception e)
@@ -528,7 +528,7 @@ namespace SgqSystem.Controllers.Api
                     if (isQueryEdit)
                     {
 
-                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//BINARIO
+                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//BINARIO
                         {
                             return IsConform.GetValueOrDefault() ? "1" : "0";
                         }
@@ -572,7 +572,7 @@ namespace SgqSystem.Controllers.Api
                         }
 
                         //Verifica "Todos"
-                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//BINARIO
+                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//BINARIO
                         {
                             return IsConform.GetValueOrDefault() ? "1" : "0";
                         }
@@ -625,7 +625,7 @@ namespace SgqSystem.Controllers.Api
                     var defects = 0M;
                     if (isQueryEdit)
                     {
-                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
+                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//é um BINARIO
                         {
                             defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                         }
@@ -647,7 +647,7 @@ namespace SgqSystem.Controllers.Api
                         }
 
                         //Todos
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
+                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//é um BINARIO
                         {
                             defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                         }
@@ -701,7 +701,7 @@ namespace SgqSystem.Controllers.Api
                     var defects = 0M;
                     if (isQueryEdit)
                     {
-                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
+                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//é um BINARIO
                         {
                             defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                         }
@@ -724,7 +724,7 @@ namespace SgqSystem.Controllers.Api
 
                         //Se for Nulo
 
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
+                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//é um BINARIO
                         {
                             defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                         }
@@ -1009,7 +1009,7 @@ namespace SgqSystem.Controllers.Api
                                 else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 5)).IsNotNull())
                                     return mountHtmlTexto();
                             }
-                            else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull())
+                            else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)).IsNotNull())
                                 return mountHtmlConform();
                             else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 2).IsNotNull())
                                 return mountHtmlNumeroDefeitos();
