@@ -7330,7 +7330,7 @@ function calcularSensorial(list){
                 outerhtml: head +
                 form +
                 divChangeServer +
-                foot, 
+                foot,
                 classe: "login"
                 );
         }
@@ -8727,6 +8727,53 @@ function calcularSensorial(list){
 
         #endregion
 
+        [WebMethod]
+        public int GetLastSampleByCollectionLevel2(string ParLevel1_Id, string ParLevel2_Id, string UnitId, string EvaluationNumber, string Shift, DateTime CollectionDate)
+        {
+
+            if (string.IsNullOrEmpty(ParLevel1_Id) ||
+                string.IsNullOrEmpty(ParLevel2_Id) ||
+                string.IsNullOrEmpty(UnitId) ||
+                string.IsNullOrEmpty(EvaluationNumber) ||
+                string.IsNullOrEmpty(Shift) ||
+                string.IsNullOrEmpty(CollectionDate.ToString()))
+            {
+                return 0;
+            }
+
+            var lista1 = ParLevel1_Id.Replace(quebraProcesso, "|").Split('|');
+            var lista2 = ParLevel2_Id.Replace(quebraProcesso, "|").Split('|');
+
+            int parCluster_Id = lista1.Length > 1 ? Int32.Parse(lista1[0]) : 0;
+
+            int parlevel1_id = lista1.Length > 1 ? Int32.Parse(lista1[1]) : Int32.Parse(lista1[0]);
+            int parlevel2_id = lista2.Length > 1 ? Int32.Parse(lista2[1]) : Int32.Parse(lista2[0]);
+
+
+            var sql = $@"
+                    SELECT
+                    	IIF(MAX(cl.Sample) IS NULL, 0, MAX(cl.Sample)) AS Sample
+                    FROM CollectionLevel2 cl with (nolock)
+                    INNER JOIN ParLevel1XCluster plx with (nolock)
+                    	ON plx.ParLevel1_Id = cl.ParLevel1_Id
+                    		AND plx.IsActive = 1
+                    WHERE 1 = 1
+                    AND cl.ParLevel1_Id = { parlevel1_id }
+                    AND cl.ParLevel2_Id = { parlevel2_id }
+                    AND cl.UnitId = { UnitId }
+                    AND cl.EvaluationNumber = { EvaluationNumber }
+                    AND plx.ParCluster_Id = { parCluster_Id }
+                    AND cl.Shift = { Shift }
+                    AND CAST(cl.CollectionDate AS DATE) = '{ CollectionDate.ToString("yyyMMdd") }'";
+
+            using (var db = new SgqDbDevEntities())
+            {
+
+                var retorno = db.Database.SqlQuery<int>(sql).FirstOrDefault();
+
+                return retorno;
+            }
+        }
     }
 }
 
