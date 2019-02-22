@@ -248,12 +248,13 @@
             }
                 /*Tipos de dados L3*/
             else if ($(e).parents('#tableLevel3Value').length) {
+                debugger
                 crudNxN.modalAlterarLevel3Value(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
 
                     if (level3Value.veifyAdd('crudNxNEdit')) {//
                         var editado = level3Value.getObjAdd('crudNxNEdit', obj);//
-                        if (parseInt(editado.IntervalMin) <= parseInt(editado.IntervalMax)) {
+                        if ((parseInt(editado.IntervalMin) <= parseInt(editado.IntervalMax)) || editado.ParLevel3InputType_Id == 12) {
                             $(e).parents('tr').removeData();
                             $(e).parents('tr').data(editado);
                             $($(e).parents('tr').find('td')[0]).html(editado.ParLevel3InputType_Name)//
@@ -341,7 +342,7 @@
                 $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
                 $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
 
-            } else if (obj.ParLevel3InputType_Id == 1 || obj.ParLevel3InputType_Id == 6) {
+            } else if (obj.ParLevel3InputType_Id == 1 || obj.ParLevel3InputType_Id == 6 || obj.ParLevel3InputType_Id == 12) {
 
                 divDeEdicao = $('.ParBinarios').clone();
                 $(divDeEdicao).show();
