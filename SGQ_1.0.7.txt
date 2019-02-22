@@ -1,5 +1,113 @@
 
+
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.6_InsercaoReportXUserSgq',GetDate());
+
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='ReportXUserSgq' AND xtype='U')
+drop table ReportXUserSgq
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ReportXUserSgq' AND xtype='U')
+create table ReportXUserSgq(
+	Id int not null identity primary key,
+	AddDate Date not null,
+	AlterDate Date,
+	ItemMenu_Id int not null FOREIGN KEY REFERENCES ItemMenu(Id),
+	Elaborador varchar(100) null,
+	Aprovador varchar(100) null,
+	CodigoRelatorio varchar(100) null,
+	ParLevel1_Id int not null FOREIGN key REFERENCES ParLevel1(Id),
+	ParCompany_Id int FOREIGN key REFERENCES ParCompany(Id),
+	IsActive bit not null
+)
+
+GO
+
 Insert into MigrationHistory (Name, AddDate) VALUES ('20180927_1600_AdicionarParCluster_Id_na_PARLEVEL1XMODULE',GetDate())
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+BEGIN
+	SET ANSI_NULLS ON
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+BEGIN
+	SET QUOTED_IDENTIFIER ON
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+BEGIN
+	CREATE TABLE [dbo].[ParLevel1XModule](
+		[Id] [int] IDENTITY(1,1) NOT NULL,
+		[ParLevel1_Id] [int] NOT NULL,
+		[ParModule_Id] [int] NOT NULL,
+		[Points] [decimal](38, 5) NOT NULL,
+		[AddDate] [datetime2](7) NOT NULL,
+		[AlterDate] [datetime2](7) NULL,
+		[IsActive] [bit] NOT NULL CONSTRAINT [DF_ParLevel1Module_Active]  DEFAULT ((1)),
+		[EffectiveDateStart] [datetime] NULL DEFAULT ('2000-01-01'),
+		[EffectiveDateEnd] [datetime] NULL DEFAULT ('2000-01-01'),
+		[ParCluster_Id] [int] NULL,
+	 CONSTRAINT [PK_ParLevel1Module] PRIMARY KEY CLUSTERED 
+	(
+		[Id] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+BEGIN
+
+	ALTER TABLE [dbo].[ParLevel1XModule]  WITH CHECK ADD  CONSTRAINT [FK_ParLevel1XModule_ParCluster] FOREIGN KEY([ParCluster_Id])
+	REFERENCES [dbo].[ParCluster] ([Id])
+	
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+BEGIN
+	ALTER TABLE [dbo].[ParLevel1XModule] CHECK CONSTRAINT [FK_ParLevel1XModule_ParCluster]
+	
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+BEGIN
+	ALTER TABLE [dbo].[ParLevel1XModule]  WITH CHECK ADD  CONSTRAINT [FK_ParLevel1XModule_ParLevel1] FOREIGN KEY([ParLevel1_Id])
+	REFERENCES [dbo].[ParLevel1] ([Id])
+	
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+BEGIN
+
+	ALTER TABLE [dbo].[ParLevel1XModule] CHECK CONSTRAINT [FK_ParLevel1XModule_ParLevel1]
+	
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+BEGIN
+	ALTER TABLE [dbo].[ParLevel1XModule]  WITH CHECK ADD  CONSTRAINT [FK_ParLevel1XModule_ParModule] FOREIGN KEY([ParModule_Id])
+	REFERENCES [dbo].[ParModule] ([Id])
+	
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+BEGIN
+	ALTER TABLE [dbo].[ParLevel1XModule] CHECK CONSTRAINT [FK_ParLevel1XModule_ParModule]
+	
+  END 
 
 GO
 
