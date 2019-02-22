@@ -128,10 +128,11 @@ function updateCounters(level2, level3Group) {
     // if (level1.attr('hasgrouplevel2') == 'true' && level1.attr('isreaudit') == 'true' && currenteSample > 1)
     //     currenteSample-- ;
     var sampleInf = level2.attr('sample') == 0 ? '&infin;' : level2.attr('sample');
+    var evaluateInf = level2.attr('evaluate') == 0 ? '&infin;' : level2.attr('evaluate');
 
     level3Group.children('.painelLevel03').children('div').children('div').children('label').children('.evaluateCurrent').text(currentEvaluate);
     level3Group.children('.painelLevel03').children('div').children('div').children('label').children('.sampleCurrent').text(currenteSample);
-    level3Group.children('.painelLevel03').children('div').children('div').children('label').children('.evaluateTotal').text(level2.attr('evaluate'));
+    level3Group.children('.painelLevel03').children('div').children('div').children('label').children('.evaluateTotal').html(evaluateInf);
     level3Group.children('.painelLevel03').children('div').children('div').children('label').children('.sampleTotal').html(sampleInf);
 
     if (level1.attr('hasgrouplevel2') == 'true') {
