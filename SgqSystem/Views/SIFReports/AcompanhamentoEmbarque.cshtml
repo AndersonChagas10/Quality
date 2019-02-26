@@ -30,11 +30,19 @@
         /*white-space: nowrap;*/
     }
 
+    .img-responsive {
+        width: 100%;
+    }
+
     @@media print {
 
         #trAmostra {
             background-color: #c3c3c3 !important;
             -webkit-print-color-adjust: exact !important;
+        }
+
+        .img-responsive {
+            width: 100%;
         }
     }
 </style>
@@ -301,8 +309,8 @@
 
             setTimeout(function () {
 
-                $('#level1Id option[value="number:89"]').attr('selected', 'selected'); //Numero do Indicador na JBS
-                //$('#level1Id option[value="number:68"]').attr('selected', 'selected'); //Numero Indicador na GRT
+                //$('#level1Id option[value="number:89"]').attr('selected', 'selected'); //Numero do Indicador na JBS
+                $('#level1Id option[value="number:68"]').attr('selected', 'selected'); //Numero Indicador na GRT
                 $('#level1Id').trigger("change");
                 $('select').select2();
 
@@ -379,6 +387,17 @@
 
                 $('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>').insertAfter($('#contentBody > table:last'));
             }
+
+            //Fotos
+            if (r.Fotos.length > 0) {
+
+                var tabelas = PreencherFotos(r.Fotos);
+
+                $(tabelas).insertAfter($('#contentBody > table:last'));
+            }
+
+
+
 
             $('.portlet').show();
         }
@@ -694,6 +713,61 @@
             }
 
             return true;
+        }
+
+        function PreencherFotos(array) {
+
+            let html = "";
+            let contador = 0;
+            let qtdeFotosPorLinha = 3;
+
+            while(contador <= array.length) {
+
+                html += FazerTabelaFotos(array.slice(contador, (contador + qtdeFotosPorLinha)))
+
+                contador = (contador + qtdeFotosPorLinha);
+            }
+
+            return html;
+        }
+
+        function FazerTabelaFotos(array) {
+         
+            let amostras = array.map((item) => { return item.Amostra });
+            let produtos = array.map((item) => { return item.Produto });
+            let tarefas = array.map((item) => { return item.ParLevel3 });
+            let fotos = array.map((item) => { return item.Photo });
+
+            let tabela = '<table class="table table-bordered">';
+
+            tabela += '<tr>';
+
+            amostras.forEach((item) => {
+                tabela += `<td>Amostra: ${item}</td>`;
+            });
+
+            tabela += '</tr><tr>';
+
+            produtos.forEach((item) => {
+                tabela += `<td>Produto: ${item}</td>`;
+            });
+
+            tabela += '</tr><tr>';
+
+            tarefas.forEach((item) => {
+                tabela += `<td>Tarefa: ${item}</td>`;
+            });
+
+            tabela += '</tr><tr>';
+
+            fotos.forEach((item) => {
+                tabela += `<td><img src="${item}" class="img-responsive"/></td>`;
+            });
+
+            tabela += '</tr></table">'
+
+            return tabela
+
         }
 
         $('body').on('click', '#btnPrint', function () {
