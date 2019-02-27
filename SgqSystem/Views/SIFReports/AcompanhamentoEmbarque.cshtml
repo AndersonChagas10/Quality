@@ -17,17 +17,14 @@
 
     #tabelaEsquerda tbody tr td {
         font-size: 8px;
-        /*white-space: nowrap;*/
     }
 
     #tabelaDireita tbody tr td {
         font-size: 8px;
-        /*white-space: nowrap;*/
     }
 
     .cabecalho2 tbody tr td {
         font-size: 8px;
-        /*white-space: nowrap;*/
     }
 
     .img-responsive {
@@ -392,11 +389,7 @@
 
             //Fotos
             if (r.Fotos.length > 0) {
-
-                //var tabelas = PreencherFotos(r.Fotos);
                 PreencherFotos(r.Fotos);
-
-                //$(tabelas).insertAfter($('#contentBody > table:last'));
             }
 
             $('.portlet').show();
@@ -455,7 +448,6 @@
                 let arrDataProducaoNew = [];
 
                 if (arrDataValidade.length > 0) {
-
                     arrDataValidade.forEach((item) => {
                         arrDataValidadeNew.push(new Date(item).toLocaleDateString())
                     });
@@ -463,7 +455,7 @@
                 }
 
                 if (arrDataProducao.length > 0) {
-                    arrDataValidade.forEach((item) => {
+                    arrDataProducao.forEach((item) => {
                         arrDataProducaoNew.push(new Date(item).toLocaleDateString())
                     });
                 }
@@ -492,8 +484,6 @@
 
             let linhaDataValidadeEProducao = `<tr>`;
 
-            //let linhaDataProducao = `<tr>`;
-
             let linhaCB = `<tr>`;
 
             let segundaLinha = `<tr>`;
@@ -512,28 +502,13 @@
 
                     let colspanAmostraEData = 1;
 
-                    //if (numeroAmostras.length < 2) {
-                    //    colspanAmostraEData = 2;
-                    //}
-
                     linhaData += "<td colspan=" + colspanAmostraEData + ">" + new Date(dataAmostras[index]).toLocaleDateString() + "</td>";
                     linhaAmostra += "<td colspan=" + colspanAmostraEData + "><strong> " + amostra + "</strong></td>";
 
                 });
 
-                //let colspanMax = Math.ceil(numeroAmostras.length / 2);
-                //let colspanMin = Math.floor(numeroAmostras.length / 2);
-
-                //segundaLinha += `<td colspan="${colspanMin}">Produto:</td>
-                //                    <td colspan="${colspanMax}">${item.Produto}</td>`;
-
-
-                //primeiraLinha += `<td colspan="${colspanMin}">Cod:</td>
-                //                      <td colspan="${colspanMax}">${item.Produto_Id}</td>`;
-
                 linhaSIF += `<td colspan="${numeroAmostras.length}">SIF: ${item.SIF}</td>`;
                 linhaDataValidadeEProducao += `<td colspan="${numeroAmostras.length}">Data de Validade: ${item.DataValidade} | Data de Produção: ${item.DataProducao}</td>`;
-                //linhaDataProducao += `<td colspan="${numeroAmostras.length}">Data de Produção: ${item.DataProducao}</td>`;
                 linhaCB += `<td colspan="${numeroAmostras.length}">CB: ${item.CB}</td>`;
                 segundaLinha += `<td colspan="${numeroAmostras.length}">Produto: ${item.Produto}</td>`;
                 primeiraLinha += `<td colspan="${numeroAmostras.length}">Cod: ${item.Produto_Id}</td>`;
@@ -542,7 +517,6 @@
 
             linhaSIF += `</tr>`;
             linhaDataValidadeEProducao += `</tr>`;
-            //linhaDataProducao += `</tr>`;
             linhaCB += `</tr>`;
             primeiraLinha += `</tr>`;
             segundaLinha += `</tr>`;
@@ -803,7 +777,6 @@
                 elaborador + " - " + "/" + siglaUnidade,
                 aprovador + " - " + "/" + siglaUnidade,
                 "",
-                //"RGQ-504-GQU-001/05 Aprov. Em 02/05/2018",
                 'contentBody',
                 "../Imagens/logo-jbs.png",
                 "../Imagens/logo-gq.png");
