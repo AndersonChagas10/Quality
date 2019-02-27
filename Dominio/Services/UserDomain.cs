@@ -600,52 +600,53 @@ namespace Dominio.Services
                 if (usuarioSgqBr != null)
                 {
                     IEnumerable<UsuarioPerfilEmpresa> usuarioPerfilEmpresaSgqBr;
-                    IEnumerable<ParCompanyXUserSgq> rolesSgqGlobal;
-                    IEnumerable<ParCompany> allCompanySgqGlobal;
+                    IEnumerable<ParCompanyXUserSgq> rolesUserSgqByCompany;
 
                     try
                     {
                         usuarioPerfilEmpresaSgqBr = db.UsuarioPerfilEmpresa.Where(r => r.nCdUsuario == usuarioSgqBr.nCdUsuario);
-                        rolesSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id);
 
-                        #region Força deletar todos os vinculos com unidades e atualizar os mesmos
-                        _baseParCompanyXUserSgq.RemoveAll(rolesSgqGlobal);
-                        rolesSgqGlobal = new List<ParCompanyXUserSgq>();
+                        #region Força deletar todos os vinculos com unidades e atualizar os mesmos //Porque isso?
+
+                        rolesUserSgqByCompany = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == userDto.Id).ToList();
+
+                        foreach (var u in rolesUserSgqByCompany)
+                        {
+                            db.ParCompanyXUserSgq.Remove(u);
+                        }
+                        db.SaveChanges();
+
+                        rolesUserSgqByCompany = new List<ParCompanyXUserSgq>();
+
                         #endregion
-
-                        allCompanySgqGlobal = _baseParCompany.GetAll();
                     }
                     catch (Exception e)
                     {
                         throw new Exception("Erro ao buscar dados de roles do ERP da JBS", e);
                     }
 
+                    var listaDePerfis = db.Perfil.ToList();
                     foreach (var upe in usuarioPerfilEmpresaSgqBr.ToList())
                     {
+                        var perfilSgqBr = listaDePerfis.FirstOrDefault(r => r.nCdPerfil == upe.nCdPerfil).nCdPerfil.ToString();
 
-                        var perfilSgqBr = db.Perfil.FirstOrDefault(r => r.nCdPerfil == upe.nCdPerfil).nCdPerfil.ToString();
-                        var parCompanySgqGlobal = allCompanySgqGlobal.FirstOrDefault(r => r.IntegrationId == upe.nCdEmpresa);
+                        var parCompanySgqGlobal = db.ParCompany.FirstOrDefault(r => r.IntegrationId == upe.nCdEmpresa);
+
                         if (parCompanySgqGlobal != null)
                         {
-                            if (rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr))/*Se existe no global e existe no ERP*/
+                            if (!rolesUserSgqByCompany.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))/*Se não existe no global*/
                             {
-
-                            }
-                            else if (!rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))/*Se não existe no global*/
-                            {
-
                                 var adicionaRoleGlobal = new ParCompanyXUserSgq()
                                 {
                                     ParCompany_Id = parCompanySgqGlobal.Id,
                                     UserSgq_Id = userDto.Id,
                                     Role = perfilSgqBr
                                 };
-                                _baseParCompanyXUserSgq.AddOrUpdate(adicionaRoleGlobal);
-
+                                db.ParCompanyXUserSgq.Add(adicionaRoleGlobal);
                             }
                         }
-
                     }
+                    db.SaveChanges();
 
                     try
                     {
@@ -738,7 +739,7 @@ namespace Dominio.Services
             DateTime dateTime = DateTime.ParseExact(date, format, null);
             return dateTime;
         }
-
+        
         #endregion
 
     }
