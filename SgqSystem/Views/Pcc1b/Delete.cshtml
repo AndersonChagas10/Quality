@@ -44,13 +44,25 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
 
-                                <h4>
-                                    Deseja excluir o
-                                    volume de produção de <b>@Html.DisplayFor(model => model.ParLevel1.Name)</b>
-                                    do dia <b><div style="display:inline;"> @data </div></b>
-                                    da unidade  de <b>@Html.DisplayFor(model => model.ParCompany.Name)</b>
-                                    , no @Resources.Resource.shift <b>@Html.DisplayFor(model => model.Shift.Description)</b>?
-                                </h4>
+                                @if (Model.Data >= DateTime.Now.Date)
+                                {
+                                    <h4>
+                                        Deseja excluir o
+                                        volume de produção de <b>@Html.DisplayFor(model => model.ParLevel1.Name)</b>
+                                        do dia <b><div style="display:inline;"> @data </div></b>
+                                        da unidade de <b>@Html.DisplayFor(model => model.ParCompany.Name)</b>
+                                        , no @Resources.Resource.shift <b>@Html.DisplayFor(model => model.Shift.Description)</b>?
+                                    </h4>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-danger">
+                                        <h4>
+                                            <strong>Atenção!</strong>
+                                            Não é mais possivel excluir volumes com datas retroativas
+                                        <h4>
+                                    </div>
+                                }
                                 <br />
                                 <div>
 
@@ -59,7 +71,10 @@
                                         @Html.AntiForgeryToken()
 
                                         <div class="form-actions no-color">
-                                            <input type="submit" value="Sim, pode excluir" class="btn btn-danger" />
+                                            @if (Model.Data >= DateTime.Now.Date)
+                                            {
+                                                <input type="submit" value="Sim, pode excluir" class="btn btn-danger" />
+                                            }
                                             @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
                                         </div>
                                     }

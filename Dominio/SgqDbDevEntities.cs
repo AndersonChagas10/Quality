@@ -7,6 +7,7 @@ namespace Dominio
     using System.Threading.Tasks;
     using System.Threading;
     using Newtonsoft.Json;
+    using Helper;
 
     public partial class SgqDbDevEntities : DbContext
     {
@@ -68,16 +69,17 @@ namespace Dominio
             && !(x.Entity is Deviation)
             && !(x.State == EntityState.Detached || x.State == EntityState.Unchanged)
             ).ToList();
+
             foreach (var entity in entities)
             {
                 object objeto = Activator.CreateInstance(entity.Entity.GetType());
                 Type t = entity.Entity.GetType();
                 foreach (var propInfo in t.GetProperties())
                 {
-                    if (!propInfo.PropertyType.IsClass && !propInfo.PropertyType.IsGenericType)
+                    object valor = propInfo.GetValue(entity.Entity, null);
+                    Type tipo = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
+                    if (tipo.IsPrimitiveAndNullableType())
                     {
-                        object valor = propInfo.GetValue(entity.Entity, null);
-                        Type tipo = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
                         object valorConvertido = (valor == null) ? null : Convert.ChangeType(valor, tipo);
                         propInfo.SetValue(objeto, valorConvertido, null);
                     }
