@@ -917,6 +917,8 @@ namespace Data.Repositories
 
         public void AddUpdateParLevel3Level2(List<ParLevel3Level2> paramParLevel3Level2, int? level1Id = null)
         {
+
+            
             db.Configuration.ValidateOnSaveEnabled = false;
             if (level1Id.IsNull())
                 throw new Exception("é necessário selectionar um level1 antes de criar um novo vinculo de peso para o level3.");
@@ -943,7 +945,14 @@ namespace Data.Repositories
 
                     if (i.IsActive == false)
                     {
-                        var inativarParLevel3Level2 = db.ParLevel3Level2.Include("ParLevel3Level2Level1").FirstOrDefault(r => r.Id == i.Id).ParLevel3Level2Level1.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id);
+                        var listaIndicadoresVinculados = db.ParLevel3Level2.Include("ParLevel3Level2Level1").FirstOrDefault(r => r.Id == i.Id).ParLevel3Level2Level1.Where(r => r.Active).ToList();
+
+                        var inativarParLevel3Level2 = listaIndicadoresVinculados.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id);
+                        if (level1Id > 0)
+                        {
+                            inativarParLevel3Level2 = listaIndicadoresVinculados.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id & r.ParLevel1_Id == level1Id);
+                        }
+                     
                         if (inativarParLevel3Level2.IsNotNull())
                         {
                             inativarParLevel3Level2.Active = false;
@@ -951,6 +960,10 @@ namespace Data.Repositories
                             db.ParLevel3Level2Level1.Attach(inativarParLevel3Level2);
                             db.Entry(inativarParLevel3Level2).State = EntityState.Modified;
                             db.Entry(inativarParLevel3Level2).Property(e => e.AddDate).IsModified = false;
+                            if (listaIndicadoresVinculados.Count > 1 || !listaIndicadoresVinculados.Any(r => r.ParLevel1_Id == level1Id))
+                            {
+                                db.Entry(inativarParLevel3Level2.ParLevel3Level2).State = EntityState.Unchanged;
+                            }
 
                             var inativarParLevel2Level1 = db.ParLevel2Level1.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id && r.ParLevel2_Id == i.ParLevel2_Id && r.ParLevel1_Id == inativarParLevel3Level2.ParLevel1_Id);
                             if (inativarParLevel2Level1.IsNotNull())
@@ -962,12 +975,20 @@ namespace Data.Repositories
                                 db.Entry(inativarParLevel2Level1).Property(e => e.AddDate).IsModified = false;
                             }
                         }
+                        else
+                        {
+                            i.IsActive = true;
+                            if (listaIndicadoresVinculados.Count == 0)
+                            {
+                                i.IsActive = false;
+                            }
+                        }
 
                         db.SaveChanges();
                     }
 
 
-                }
+                    }
             }
             //}
 
