@@ -722,7 +722,7 @@
             let maxWidth = ""
 
             if (array.length < qtdeFotosPorLinha) {
-                let maxWidthValue = (100 / qtdeFotosPorLinha);
+                let maxWidthValue = ((100 * array.length) / qtdeFotosPorLinha);
                 maxWidth = "max-width:" + maxWidthValue + "%";
             }
 
