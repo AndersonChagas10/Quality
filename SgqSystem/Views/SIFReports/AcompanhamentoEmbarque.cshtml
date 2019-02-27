@@ -35,7 +35,6 @@
     }
 
     @@media print {
-
         #trAmostra {
             background-color: #c3c3c3 !important;
             -webkit-print-color-adjust: exact !important;
@@ -226,6 +225,7 @@
 
                             <hr />
                             <br />
+
                             <div class="avoid-page-break">
                                 <div class="">
                                     <table border="0" cellspacing="0" cellpadding="1" style="width:100%;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">
@@ -354,6 +354,8 @@
 
             $('.cabecalho2').remove();
 
+            $('div.avoid-page-break.photos').remove();
+
             if (!r) {
                 GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
                 return false;
@@ -391,13 +393,11 @@
             //Fotos
             if (r.Fotos.length > 0) {
 
-                var tabelas = PreencherFotos(r.Fotos);
+                //var tabelas = PreencherFotos(r.Fotos);
+                PreencherFotos(r.Fotos);
 
-                $(tabelas).insertAfter($('#contentBody > table:last'));
+                //$(tabelas).insertAfter($('#contentBody > table:last'));
             }
-
-
-
 
             $('.portlet').show();
         }
@@ -717,28 +717,42 @@
 
         function PreencherFotos(array) {
 
-            let html = "";
+            //let html = "";
             let contador = 0;
             let qtdeFotosPorLinha = 3;
 
             while(contador <= array.length) {
 
-                html += FazerTabelaFotos(array.slice(contador, (contador + qtdeFotosPorLinha)))
+                let html = FazerTabelaFotos(array.slice(contador, (contador + qtdeFotosPorLinha)), qtdeFotosPorLinha);
+
+                html = '<div class="avoid-page-break photos">' + html + '</div>';
+
+                if (contador == 0)
+                    $(html).insertAfter($('#contentBody > table:last'));
+                else 
+                    $(html).insertAfter($('#contentBody > div.avoid-page-break.photos:last'));
 
                 contador = (contador + qtdeFotosPorLinha);
             }
 
-            return html;
+            //return html;
         }
 
-        function FazerTabelaFotos(array) {
-         
+        function FazerTabelaFotos(array, qtdeFotosPorLinha) {
+
             let amostras = array.map((item) => { return item.Amostra });
             let produtos = array.map((item) => { return item.Produto });
             let tarefas = array.map((item) => { return item.ParLevel3 });
             let fotos = array.map((item) => { return item.Photo });
 
-            let tabela = '<table class="table table-bordered">';
+            let maxWidth = ""
+
+            if (array.length < qtdeFotosPorLinha) {
+                let maxWidthValue = (100 / qtdeFotosPorLinha);
+                maxWidth = "max-width:" + maxWidthValue + "%";
+            }
+
+            let tabela = '<table class="table table-bordered" style="' + maxWidth + '">';
 
             tabela += '<tr>';
 
