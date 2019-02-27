@@ -1,4 +1,5 @@
 ﻿using ADOFactory;
+using DTO;
 using DTO.Helpers;
 using Helper;
 using PlanoAcaoCore.Acao;
@@ -204,8 +205,16 @@ namespace PlanoAcaoCore
                     return "-";
 
                 if (!string.IsNullOrEmpty(_StatusName))
-                    if (_StatusName.Contains("Concluido") || _StatusName.Contains("Concluído") || _StatusName.Contains("Cancelado"))
-                        return "Finalizado";
+                    if (GlobalConfig.LanguageBrasil)
+                    {
+                        if (_StatusName.Contains("Concluido") || _StatusName.Contains("Concluído") || _StatusName.Contains("Cancelado"))
+                            return "Finalizado";
+                    }
+                    else
+                    {
+                        if (_StatusName.Contains("Done") || _StatusName.Contains("Canceled"))
+                            return "Finished";
+                    }
 
                 var agora = DateTime.Now.Date;
                 //if (QuandoFim >= agora && QuandoFim <= agora)
@@ -217,32 +226,27 @@ namespace PlanoAcaoCore
 
         public void IsValid()
         {
-            Pa_Status status;
-
             var dataInicio = this._QuandoInicio == null ? DateTime.Now : DateTime.ParseExact(this._QuandoInicio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
             if (Id <= 0)
             {
-                
+
                 if (dataInicio.Date > DateTime.Now.Date)
                 {
-                    status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Não iniciado"));
+                    Status = (int)Enum.Enums.Status.NaoIniciado;
                 }
                 else
                 {
-                    status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Em Andamento"));
+                    Status = (int)Enum.Enums.Status.EmAndamento;
                 }
 
-                Status = status.Id;
             }
             else
             {
 
                 if (dataInicio.Date > DateTime.Now.Date)
                 {
-                    status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Não iniciado"));
-
-                    Status = status.Id;
+                    Status = (int)Enum.Enums.Status.NaoIniciado;
                 }
 
                 var old = Pa_Acao.Get(Id);
@@ -259,15 +263,15 @@ namespace PlanoAcaoCore
             {
                 if (UnidadeDeMedida_Id == 1)
                 {
-                    QuantoCusta = NumericExtensions.CustomParseDecimal(_QuantoCusta.Replace("R$ ","")).GetValueOrDefault();
+                    QuantoCusta = NumericExtensions.CustomParseDecimal(_QuantoCusta.Replace("R$ ", "")).GetValueOrDefault();
                 }
                 else
                 {
-                    QuantoCusta = decimal.Parse(_QuantoCusta.Replace(".",","));
+                    QuantoCusta = decimal.Parse(_QuantoCusta.Replace(".", ","));
                 }
-                
+
             }
-                
+
             if (!string.IsNullOrEmpty(_QuandoFim))
                 QuandoFim = Guard.ParseDateToSqlV2(_QuandoFim, Guard.CultureCurrent.BR);
             else
