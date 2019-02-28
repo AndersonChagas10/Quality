@@ -101,7 +101,7 @@ namespace SgqSystem.Controllers.Params
                     
                     ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name = CommonData.getResource(ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name).Value.ToString();
                     //ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name = ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name;
-                    
+                   
                 }
 
             return PartialView("_ParLevel1", ViewModel);/*Retorna View com Model ParLevel1 encontrado no DB.*/

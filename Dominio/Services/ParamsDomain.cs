@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System;
 using System.Data;
 using ADOFactory;
+using DTO.DTO;
 
 namespace Dominio.Services
 {
@@ -64,6 +65,7 @@ namespace Dominio.Services
         private IBaseRepository<ParCompany> _baseRepoParCompany;
         private IBaseRepository<Equipamentos> _baseRepoEquipamentos;
         private IBaseRepository<ParScoreType> _baseRepoParScore;
+        private IBaseRepository<RotinaIntegracao> _baseRotinaIntegracao;
         private IParLevel3Repository _repoParLevel3;
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
@@ -111,6 +113,7 @@ namespace Dominio.Services
                             IBaseRepository<Equipamentos> baseRepoEquipamentos,
                             IBaseRepositoryNoLazyLoad<ParLevel2Level1> baseRepoParLevel2Level1,
                             IBaseRepository<ParScoreType> baseRepoParScore,
+                            IBaseRepository<RotinaIntegracao> baseRotinaIntegracao,
                             IBaseRepositoryNoLazyLoad<ParLevel3Level2Level1> baseRepoParLevel3Level2Level1NNL
             )
         {
@@ -158,6 +161,8 @@ namespace Dominio.Services
             _baseRepoParLevel3Level2 = baseRepoParLevel3Level2;
             _baseRepoParLevel3Level2Level1 = baseRepoParLevel3Level2Level1;
             _repoParLevel3 = repoParLevel3;
+            _baseRotinaIntegracao = baseRotinaIntegracao;
+
 
             db.Configuration.LazyLoadingEnabled = false;
         }
@@ -177,6 +182,7 @@ namespace Dominio.Services
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);//ParLevel1
             List<ParGoal> listParGoal = Mapper.Map<List<ParGoal>>(paramsDto.parLevel1Dto.listParGoalLevel1);
+            List<ParLevel1XRotinaIntegracao> listRotinaIntegracaoXParLevel1 = Mapper.Map<List<ParLevel1XRotinaIntegracao>>(paramsDto.parLevel1Dto.listParLevel1XRotinaIntegracao);
             List<ParRelapse> listaReincidencia = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel1Dto.listParRelapseDto);//Reincidencia do Level1
             List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);//Cabeçalhos do Level1
             List<ParCounterXLocal> ListaParCounterLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.parLevel1Dto.listParCounterXLocal);//Contadores do Level1
@@ -192,12 +198,13 @@ namespace Dominio.Services
 
             /*Inativar*/
             List<int> removerHeadField = paramsDto.parLevel1Dto.removerParHeaderField;
+            List<int> removerVinculoRotina = paramsDto.parLevel1Dto.removerVinculoRotina;
 
             try
             {
                 /*Enviando para repository salvar, envia todos, pois como existe transaction, faz rolback de tudo se der erro.*/
                 _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField
-                                            , ListaParCounterLocal, listNonCoformitRule, listaReincidencia, listParGoal);
+                                            , ListaParCounterLocal, listNonCoformitRule, listaReincidencia, listParGoal, listRotinaIntegracaoXParLevel1, removerVinculoRotina);
 
                 if (DTO.GlobalConfig.Brasil)
                 {
@@ -246,6 +253,7 @@ namespace Dominio.Services
 
             var parlevel1 = _baseRepoParLevel1.GetById(idParLevel1);
             var counter = parlevel1.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+            var rotina = parlevel1.ParLevel1XRotinaIntegracao.Where(x => x.IsActive).ToList();
             var goal = parlevel1.ParGoal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
             var cluster = parlevel1.ParLevel1XCluster.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
             var listL3L2L1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").AsNoTracking().Where(r => r.Active == true && r.ParLevel1_Id == idParLevel1).ToList();
@@ -255,11 +263,13 @@ namespace Dominio.Services
             var level2List = _baseRepoParLevel2NLL.GetAll().Where(r => r.IsActive == true);
 
             #endregion
-
+             
             #region DTO
 
             parlevel1Dto = Mapper.Map<ParLevel1DTO>(parlevel1);
             parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(counter);/*Contadores*/
+            //parlevel1Dto.RotinaIntegracao = Mapper.Map<List<RotinaIntegracaoDTO>>(rotina);/*rotinas*/
+            parlevel1Dto.listParLevel1XRotinaIntegracao = Mapper.Map<List<ParLevel1XRotinaIntegracaoDTO>>(rotina);/*rotina integração vinculo*/
             parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(goal);/*Meta*/
             parlevel1Dto.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(cluster);/*Clusters*/
             parlevel1Dto.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(listL3L2L1);/*Level 2 e 3 vinculados*/
@@ -722,6 +732,7 @@ namespace Dominio.Services
 
                 var DdlparCompany = Mapper.Map<List<ParCompanyDTO>>(_baseRepoParCompany.GetAllAsNoTracking());
                 var DdlScoretype = Mapper.Map<List<ParScoreTypeDTO>>(_baseRepoParScore.GetAllAsNoTracking());
+                var DdlRotina = Mapper.Map<List<RotinaIntegracaoDTO>>(_baseRotinaIntegracao.GetAllAsNoTracking());
 
                 var retorno = new ParamsDdl();
 
@@ -733,7 +744,8 @@ namespace Dominio.Services
 
                 retorno.SetDdls(DdlParConsolidation, DdlFrequency, DdlparCluster, DdlparLevelDefinition, DdlParFieldType, DdlParDepartment, DdlParCounter_Level1,
                                 DdlParLocal_Level1, DdlParCounter_Level2, DdlParLocal_Level2, DdlParNotConformityRule, DdlParLevel3InputType, DdlParMeasurementUnit,
-                                DdlParLevel3BoolFalse, DdlParLevel3BoolTrue, DdlparCrit, DdlparCompany, DdlScoretype);
+                                DdlParLevel3BoolFalse, DdlParLevel3BoolTrue, DdlparCrit, DdlparCompany, DdlRotina, DdlScoretype);
+
                 return retorno;
             }
         }

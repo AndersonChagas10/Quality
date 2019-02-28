@@ -50,7 +50,8 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlSetor { get; set; }
         public IEnumerable<SelectListItem> DdlTipoCorte { get; set; }
         public IEnumerable<SelectListItem> DdlSetoresBPF { get; set; }
-        
+        public IEnumerable<SelectListItem> DdlRotina { get; set; }
+
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
@@ -89,12 +90,14 @@ namespace DTO.DTO.Params
                             List<ParLevel3BoolTrueDTO> ddlParLevel3BoolTrue,
                             List<ParCriticalLevelDTO> ddlparCrit,
                             List<ParCompanyDTO> ddlParCompany,
+                            List<RotinaIntegracaoDTO> ddlrotina,
                              List<ParScoreTypeDTO> ddlScoretype
                             )
         {
            
 
             DdlParCompany = Guard.CreateDropDownList(ddlParCompany.OrderBy(r => r.Name));
+            DdlRotina = Guard.CreateDropDownList(ddlrotina.Where(r => r.IsActive));
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation.Where(r => r.IsActive == true).OrderBy(r => r.Name));
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency.OrderBy(r => r.Name));
             //DdlparLevel1 = Guard.CreateDropDownList(ddlparLevel1);
