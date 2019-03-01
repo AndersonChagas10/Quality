@@ -31,6 +31,11 @@
         width: 100%;
     }
 
+    .photos .table td {
+        font-size: 10px;
+        min-width: 200px;
+    }
+
     @@media print {
         #trAmostra {
             background-color: #c3c3c3 !important;
@@ -39,6 +44,10 @@
 
         .img-responsive {
             width: 100%;
+        }
+
+        .photos .table td {
+            font-size: 10px;
         }
     }
 </style>
@@ -306,8 +315,7 @@
 
             setTimeout(function () {
 
-                //$('#level1Id option[value="number:89"]').attr('selected', 'selected'); //Numero do Indicador na JBS
-                $('#level1Id option[value="number:68"]').attr('selected', 'selected'); //Numero Indicador na GRT
+                $('#level1Id option[value="number:' + getDicionario('PlanilhaRecebimentoCDs_Id') + '"]').attr('selected', 'selected');
                 $('#level1Id').trigger("change");
                 $('select').select2();
 
@@ -538,30 +546,6 @@
 
             levels3_Id.forEach((level3, index) => {
 
-                //Tabela com o rowspan
-
-                //newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
-
-                //let qtdeLevel3Group = array.filter(item => item.Level3Group == newLevel3Group).map((value) => { return value.ParLevel3 }).filter((value, index, self) => { return self.indexOf(value) === index; }).length
-
-                //if (newLevel3Group && level3Group != newLevel3Group) {
-                //    conteudoTabela +=
-                //        `<tr>
-                //            <td rowspan="${qtdeLevel3Group}"> ${newLevel3Group} </td>
-                //            <td colspan="2">${levels3[index]}</td>`;
-                //    level3Group = newLevel3Group;
-                //} else if (!newLevel3Group) {
-                //    conteudoTabela +=
-                //        `<tr>
-                //            <td colspan="3">${levels3[index]}</td>`;
-                //} else {
-                //    conteudoTabela +=
-                //        `<tr>
-                //            <td colspan="2">${levels3[index]}</td>`;
-                //}
-
-                //Tabela sem rowspan
-
                 newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
 
                 if (!newLevel3Group) {
@@ -592,10 +576,6 @@
                     let tamanhoMaximoAmostraPorProduto = Math.max(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
 
                     let tamanhoMinimoAmostraPorProduto = Math.min(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
-
-                    //if (coletasByLevel3.length < 2 && (tamanhoMaximoAmostraPorProduto - tamanhoMinimoAmostraPorProduto) < 1) {
-                    //    colspanStatus = 2;
-                    //}
 
                     for (let i = tamanhoMinimoAmostraPorProduto; i <= tamanhoMaximoAmostraPorProduto; i++) {
 
@@ -631,28 +611,6 @@
                         conteudoTabela += td;
 
                     }
-
-                    //coletasByLevel3.forEach((item) => {
-
-                    //let td;
-
-                    //if (!item.IsNotEvaluate) {
-
-                    //    if (item.IsConform) {
-                    //        td = `<td colspan="${colspanStatus}">0</td>`;
-
-                    //    } else {
-                    //        td = `<td colspan="${colspanStatus}">1</td>`;
-
-                    //    }
-
-                    //} else {
-                    //    td = `<td colspan="${colspanStatus}">N/A</td>`;
-                    //}
-
-                    //conteudoTabela += td;
-
-                    //});
 
                 });
 
@@ -703,7 +661,7 @@
 
                 if (contador == 0)
                     $(html).insertAfter($('#contentBody > table:last'));
-                else 
+                else
                     $(html).insertAfter($('#contentBody > div.avoid-page-break.photos:last'));
 
                 contador = (contador + qtdeFotosPorLinha);
@@ -722,7 +680,7 @@
             let maxWidth = ""
 
             if (array.length < qtdeFotosPorLinha) {
-                let maxWidthValue = (100 / qtdeFotosPorLinha);
+                let maxWidthValue = ((100 * array.length) / qtdeFotosPorLinha);
                 maxWidth = "max-width:" + maxWidthValue + "%";
             }
 
