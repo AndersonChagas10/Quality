@@ -390,6 +390,7 @@ namespace Dominio.Services
             /*Todos os Vinculos com este level2 / level3.*/
             var vinculosComOLevel2 = parLevel2.ParLevel3Level2.Where(r => r.IsActive == true);/*Vinculo L3 L2*/
 
+
             /*Se houver level 1 selecionado na tela filtro somente os que estão vinculados com level2 / Level3, e tem id do level 1 em ParLevel3Level2level1*/
             if (level1Id > 0)
             {
@@ -561,7 +562,7 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="IdParLevel2"></param>
         /// <returns></returns>
-        public ParamsDTO GetLevel3(int idParLevel3, int? idParLevel2 = 0)
+        public ParamsDTO GetLevel3(int idParLevel3, int? idParLevel2 = 0, int? idParlevel1 = 0)
         {
 
             #region Query / Parametros
@@ -572,7 +573,13 @@ namespace Dominio.Services
             var relapse = parlevel3.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
             var group = db.ParLevel3Group.Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList();
             var level3Level2 = parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3 && r.IsActive == true).OrderByDescending(r => r.IsActive);
-            var level3Value = parlevel3.ParLevel3Value.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
+
+            if (idParlevel1 > 0)
+            {
+                //level3Level2 = parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3 && r.IsActive == true).OrderByDescending(r => r.IsActive);
+                level3Level2 = parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3 && r.IsActive == true && r.ParLevel3Level2Level1.Any(c => c.ParLevel1_Id == idParlevel1 && c.Active == true)).OrderByDescending(r => r.IsActive);
+            }
+        var level3Value = parlevel3.ParLevel3Value.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
             var parlevel3Reencravacao = db.ParLevel3Value_Outer.Where(r => r.IsActive && r.ParLevel3_Id == parlevel3.Id).ToList();// (string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1", parlevel3.Id)).ToList();
             var level3EvaluationSample = parlevel3.ParLevel3EvaluationSample.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
 
