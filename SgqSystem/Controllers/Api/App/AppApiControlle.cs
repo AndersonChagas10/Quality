@@ -27,13 +27,15 @@ namespace SgqSystem.Controllers.Api.App
     /// 
     /// </summary>
     [RoutePrefix("api/AppParams")]
-    public class AppParamsApiController : BaseApiController
+    public class AppParamsApiController : BaseApiController, IDisposable
     {
         SgqDbDevEntities db;
+        private List<Shift> listaDeShift;
 
         public AppParamsApiController()
         {
             db = new SgqDbDevEntities();
+            listaDeShift = db.Shift.ToList();
         }
 
         /// <summary>
@@ -100,7 +102,7 @@ namespace SgqSystem.Controllers.Api.App
             GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.PROCESSANDO;
             GlobalConfig.PaginaDoTablet[UnitId].DataInicio = DateTime.Now;
 
-            var shifts = db.Shift.ToList();
+            var shifts = this.listaDeShift;
             shifts.Insert(0, new Shift());
 
             using (var service = new SyncServices())
@@ -119,7 +121,8 @@ namespace SgqSystem.Controllers.Api.App
                         }
                         else/*Se nao existir cria*/
                         {
-                            GlobalConfig.PaginaDoTablet.Add(UnitId, new HtmlDoTablet() {
+                            GlobalConfig.PaginaDoTablet.Add(UnitId, new HtmlDoTablet()
+                            {
                                 DataFim = DateTime.Now,
                                 DataInicio = DateTime.Now,
                                 //Status = HtmlDoTablet.StatusType.SUCESSO
@@ -129,7 +132,7 @@ namespace SgqSystem.Controllers.Api.App
 
                         this.SaveFile(UnitId, atualizado, shift.Id);
 
-                        if(shifts.Count - 1 == i)
+                        if (shifts.Count - 1 == i)
                         {
                             GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.SUCESSO;
                         }
@@ -383,7 +386,11 @@ namespace SgqSystem.Controllers.Api.App
 
         #endregion
 
-
+        public void Dispose()
+        {
+            db.Dispose();
+            Dispose(true);
+        }
     }
 
 
