@@ -1,0 +1,12 @@
+
+
+
+GO
+
+IF NOT EXISTS (SELECT * FROM ParLevel3InputType  WHERE Name = 'Binário Obrigatório')
+	begin
+		insert into ParFrequency(Id,Name,[Description],AddDate, AlterDate, IsActive, Sampling) 
+		values(12,'Binário Obrigatório','Binário Obrigatório',GETDATE(),NULL,1,NULL)
+	end
+
+GO

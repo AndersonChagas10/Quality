@@ -1715,6 +1715,7 @@
 
                     setTimeout(function () { contadorAJAX_historico = 0; }, 500);
 
+                    enviar["unitId"] = "";
 
                     $('#grafico5').empty();
 
@@ -1726,11 +1727,15 @@
                         enviar["ParametroTableCol"].push(paramCol);
                     }
 
+                   
+
                     EasyAjax(urlGrafico3, enviar, CallbackGrafico3, "grafico3");
                 }
 
             } else {
                 $('#grafico5').empty();
+
+                enviar["unitId"] = "";
 
                 if (enviar["ParametroTableRow"][1] != undefined) {
                     enviar["ParametroTableRow"][1] = paramRow;
