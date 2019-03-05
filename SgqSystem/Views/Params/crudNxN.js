@@ -112,7 +112,6 @@
         //vinculo rotina integração
         else if ($(e).parents('#level1_rotina_accordion').length || $(e).parents('#level2_rotina_accordion').length) {
             crudNxN.modalAlterarVinculoRotina(obj);//
-            debugger
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
                 var editado = crudNxN.retornaObjetoAlteradoRotina(obj);//
                 $(e).parents('tr').removeData();

@@ -590,7 +590,7 @@
                                                     data-headerfield-id="@parLevel1XHeaderField.ParHeaderField.Id"
                                                     data-headerfieldgroup="@parLevel1XHeaderField.HeaderFieldGroup">
                                                     <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8 || parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9)
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9|| parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 10)
                                                     {
                                                     <td>@parLevel1XHeaderField.ParHeaderField.Name &nbsp;(Id: @parLevel1XHeaderField.ParHeaderField.Description)</td>
                                                     }
@@ -708,7 +708,7 @@
                                                         </td>
                                                     }
 
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8)
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9)
                                                     {
 
                                                         <td>
@@ -717,7 +717,7 @@
 
                                                         </td>
                                                     }
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9)
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 10)
                                                     {
 
                                                         <td>
@@ -1071,10 +1071,10 @@
                 //case 8: //Informacoes
                   //  Cabecalhos.ShowInformacoes();
                    // break;
-                case 8: //Informacoes
+                case 9: //Informacoes
                     Cabecalhos.ShowParametro();
                     break;
-                case 9: //Informacoes
+                case 10: //Informacoes
                     Cabecalhos.ShowDinamico();
                     break;
                 default:
