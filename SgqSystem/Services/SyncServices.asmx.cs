@@ -1216,6 +1216,7 @@ namespace SgqSystem.Services
         [WebMethod]
         public string RetornaQueryRotina(string rotina_Id, string parametro)
         {
+            var idRotina = Convert.ToInt32(rotina_Id);
             var rotinaSelecionada = dbEf.RotinaIntegracao.Where(x => x.Id == idRotina).FirstOrDefault();
 
             var query = rotinaSelecionada.query.Split('=');
