@@ -21,6 +21,8 @@ using System.Text;
 using ADOFactory;
 using Dominio;
 using System.Web.Http;
+using System.Text.RegularExpressions;
+using SgqSystem.Controllers.Api;
 
 namespace SgqSystem.Services
 {
@@ -1211,6 +1213,22 @@ namespace SgqSystem.Services
             }
         }
 
+        [WebMethod]
+        public string RetornaQueryRotina(string rotina_Id, string parametro)
+        {
+            var idRotina = int.Parse("3");
+            parametro = "1";
+
+            var rotinaSelecionada = dbEf.RotinaIntegracao.Where(x => x.Id == idRotina).FirstOrDefault();
+
+            var query = rotinaSelecionada.query.Split('=');
+
+            //string expRegex = "{.*?}";
+            //Match m = Regex.Match(rotinaSelecionada.query, expRegex);
+            //var value = m.Value.Replace("{", "").Replace("}", "");
+            return rotinaSelecionada.query.Replace(query[1].Replace('{' + query[0] + '}', query[1]), "'" + parametro + "'");
+        }
+
         public int updateConsolidationLevel2(int ConsolidationLevel2_Id, string AlertLevel, string LastEvaluationAlert, string LastLevel2Alert, SGQDBContext.CollectionLevel2Consolidation CollectionLevel2Consolidation)
         {
             //verificar se não vai sobreescrever informação com tablet antigo
@@ -1226,6 +1244,7 @@ namespace SgqSystem.Services
             }
 
             int LastEvaluationAlertCheck = 0;
+
 
             if (LastEvaluationAlert == "NULL")
             {
