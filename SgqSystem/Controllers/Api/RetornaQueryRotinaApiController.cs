@@ -1,5 +1,6 @@
 ﻿using ADOFactory;
 using Dominio;
+using Newtonsoft.Json.Linq;
 using SgqSystem.Handlres;
 using SgqSystem.Services;
 using System;
@@ -22,17 +23,26 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("RetornaQueryRotina")]
-        public Object RetornaQueryRotina(string rotina_Id, string parametro)
+        public Object RetornaQueryRotina(JToken body)
         {
             var service = new SyncServices();
             var retornoRotinaNinja = new Object();
 
-            var retorno = service.RetornaQueryRotina(rotina_Id, parametro);
-            using (Factory factory = new Factory("DefaultConnection"))
+            Teste myDeserializedObjList = (Teste)Newtonsoft.Json.JsonConvert.DeserializeObject(body.ToString(), typeof(Teste));
+
+            var retorno = service.RetornaQueryRotina(myDeserializedObjList.IdRotina, myDeserializedObjList.Params[0].Values.FirstOrDefault());
+            using (Factory factory = new Factory("defaultconnection"))
             {
                 retornoRotinaNinja = QueryNinja(db, retorno).FirstOrDefault();
             }
+
             return retornoRotinaNinja;
         }
+    }
+
+    public class Teste
+    {
+        public string IdRotina { get; set; }
+        public List<Dictionary<string, string>> Params { get; set; }
     }
 }
