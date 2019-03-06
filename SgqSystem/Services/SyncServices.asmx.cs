@@ -1216,10 +1216,12 @@ namespace SgqSystem.Services
         [WebMethod]
         public string RetornaQueryRotina(string rotina_Id, string parametro)
         {
-            var idRotina = Convert.ToInt32(rotina_Id);
+
+            var idRotina = Convert.ToInt32("3");
             var rotinaSelecionada = dbEf.RotinaIntegracao.Where(x => x.Id == idRotina).FirstOrDefault();
 
-            var query = rotinaSelecionada.query.Split('=');
+            char[] separatingChars = { '=', '{', '}' };
+            var query = rotinaSelecionada.query.Split(separatingChars, System.StringSplitOptions.RemoveEmptyEntries);
 
             //string expRegex = "{.*?}";
             //Match m = Regex.Match(rotinaSelecionada.query, expRegex);
