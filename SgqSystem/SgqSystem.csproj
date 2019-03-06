@@ -930,6 +930,7 @@
     <Content Include="Scripts\appColeta\resource.js" />
     <Content Include="Scripts\appColeta\rightBar.js" />
     <Content Include="Scripts\appColeta\role.js" />
+    <Content Include="Scripts\appColeta\rotinaHeaderField.js" />
     <Content Include="Scripts\appColeta\scriptfile.js" />
     <Content Include="Scripts\appColeta\sync.js" />
     <Content Include="Scripts\appColeta\tempSave.js" />
