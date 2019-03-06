@@ -14,7 +14,7 @@ using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api
 {
-   
+
     [HandleApi()]
     [RoutePrefix("api/RetornaQueryRotinaApi")]
     public class RetornaQueryRotinaApiController : BaseApiController
@@ -28,7 +28,7 @@ namespace SgqSystem.Controllers.Api
             var service = new SyncServices();
             var retornoRotinaNinja = new Object();
 
-            Teste myDeserializedObjList = (Teste)Newtonsoft.Json.JsonConvert.DeserializeObject(body.ToString(), typeof(Teste));
+            Rotina myDeserializedObjList = (Rotina)Newtonsoft.Json.JsonConvert.DeserializeObject(body.ToString(), typeof(Rotina));
 
             var retorno = service.RetornaQueryRotina(myDeserializedObjList.IdRotina, myDeserializedObjList.Params);
             if (!string.IsNullOrEmpty(retorno))
@@ -40,12 +40,13 @@ namespace SgqSystem.Controllers.Api
             }
 
             return retornoRotinaNinja;
-        }
-    }
 
-    public class Teste
-    {
-        public string IdRotina { get; set; }
-        public List<Dictionary<string, string>> Params { get; set; }
+        }
+
+        class Rotina
+        {
+            public string IdRotina { get; set; }
+            public List<Dictionary<string, string>> Params { get; set; }
+        }
     }
 }
