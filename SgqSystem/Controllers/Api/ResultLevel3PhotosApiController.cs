@@ -63,7 +63,7 @@ namespace SgqSystem.Controllers.Api
                     imageFile.Write(bytes, 0, bytes.Length);
                     imageFile.Flush();
                 }
-                ResultPhoto.Photo = basePath;
+                ResultPhoto.Photo = path;
                 ResultPhoto.Photo_Thumbnaills = ResultPhoto.Photo;
                 #endregion
 
