@@ -179,6 +179,7 @@ namespace Dominio
         public virtual DbSet<ParLevel3Value> ParLevel3Value { get; set; }
         public virtual DbSet<ParLevel3Value_Outer> ParLevel3Value_Outer { get; set; }
         public virtual DbSet<ParLevelDefiniton> ParLevelDefiniton { get; set; }
+        public virtual DbSet<ParLevel3XParDepartment> ParLevel3XParDepartment { get; set; }
         public virtual DbSet<ParLocal> ParLocal { get; set; }
         public virtual DbSet<ParMeasurementUnit> ParMeasurementUnit { get; set; }
         public virtual DbSet<ParModule> ParModule { get; set; }
@@ -243,6 +244,7 @@ namespace Dominio
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1Type> ParGroupParLevel1Type { get; set; }
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1XParLevel1> ParGroupParLevel1XParLevel1 { get; set; }
         public virtual DbSet<CollectionLevel2XMotivoAtraso> CollectionLevel2XMotivoAtraso { get; set; }
+        public virtual DbSet<CollectionLevel2XParDepartment> CollectionLevel2XParDepartment { get; set; }
         public virtual DbSet<ParEvaluationSchedule> ParEvaluationSchedule { get; set; }
         public virtual DbSet<MotivoAtraso> MotivoAtraso { get; set; }
         public virtual DbSet<DicionarioEstatico> DicionarioEstatico { get; set; }
