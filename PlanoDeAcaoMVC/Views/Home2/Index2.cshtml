@@ -3492,7 +3492,11 @@
             });
 
             let PercentualTotal = Math.floor(Data.reduce((soma, obj) => soma + obj.y, 0) / Categories.length);
-            $('#percentualConclusao').html(PercentualTotal + " %");
+
+            if (PercentualTotal)
+                $('#percentualConclusao').html(PercentualTotal + " %");
+            else
+                $('#percentualConclusao').html("0 %");
 
         }
 

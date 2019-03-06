@@ -1,5 +1,6 @@
 ﻿using ADOFactory;
 using AutoMapper;
+using DTO;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
@@ -80,7 +81,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return obj;
         }
 
-       
+
         private int GetStatusAcao(PlanoAcaoEF.Pa_Acompanhamento acompanhamento, PlanoAcaoEF.Pa_Acao acao)
         {
             switch (acompanhamento.Status_Id)
@@ -98,7 +99,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                     if (DateTime.Now.Date >= acao.QuandoInicio && DateTime.Now.Date <= acao.QuandoFim)
                     {
-                        return (int)Enums.Status.EmAndamento;           
+                        return (int)Enums.Status.EmAndamento;
                     }
                     else if (DateTime.Now.Date > acao.QuandoFim)
                     {
@@ -122,8 +123,10 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("SaveFTA")]
         public FTA SaveFTA(FTA obj)
         {
-
-            obj.Panejamento_Id = 128; //Mock do ID Tático Genérico que vinculas as Ações
+            if (GlobalConfig.Brasil)
+                obj.Panejamento_Id = 128; //Mock do ID Tático Genérico que vinculas as Ações
+            else
+                obj.Panejamento_Id = 3;
 
             try
             {
