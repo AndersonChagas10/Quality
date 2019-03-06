@@ -30,10 +30,13 @@ namespace SgqSystem.Controllers.Api
 
             Teste myDeserializedObjList = (Teste)Newtonsoft.Json.JsonConvert.DeserializeObject(body.ToString(), typeof(Teste));
 
-            var retorno = service.RetornaQueryRotina(myDeserializedObjList.IdRotina, myDeserializedObjList.Params[0].Values.FirstOrDefault());
-            using (Factory factory = new Factory("defaultconnection"))
+            var retorno = service.RetornaQueryRotina(myDeserializedObjList.IdRotina, myDeserializedObjList.Params);
+            if (!string.IsNullOrEmpty(retorno))
             {
-                retornoRotinaNinja = QueryNinja(db, retorno).FirstOrDefault();
+                using (Factory factory = new Factory("defaultconnection"))
+                {
+                    retornoRotinaNinja = QueryNinja(db, retorno).FirstOrDefault();
+                }
             }
 
             return retornoRotinaNinja;

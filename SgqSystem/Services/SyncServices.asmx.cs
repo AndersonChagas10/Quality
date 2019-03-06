@@ -1214,19 +1214,22 @@ namespace SgqSystem.Services
         }
 
         [WebMethod]
-        public string RetornaQueryRotina(string rotina_Id, string parametro)
+        public string RetornaQueryRotina(string rotina_Id, List<Dictionary<string, string>> parametro)
         {
+            var query = "";
+            if (parametro.Count > 0 && parametro[0].Count > 0)
+            {
+                var idRotina = Convert.ToInt32(rotina_Id);
 
-            var idRotina = Convert.ToInt32("3");
-            var rotinaSelecionada = dbEf.RotinaIntegracao.Where(x => x.Id == idRotina).FirstOrDefault();
-
-            char[] separatingChars = { '=', '{', '}' };
-            var query = rotinaSelecionada.query.Split(separatingChars, System.StringSplitOptions.RemoveEmptyEntries);
-
-            //string expRegex = "{.*?}";
-            //Match m = Regex.Match(rotinaSelecionada.query, expRegex);
-            //var value = m.Value.Replace("{", "").Replace("}", "");
-            return rotinaSelecionada.query.Replace(query[1].Replace('{' + query[0] + '}', query[1]), "'" + parametro + "'");
+                var rotinaSelecionada = dbEf.RotinaIntegracao.Where(x => x.Id == idRotina).FirstOrDefault();
+        
+                for (int i = 0; i < parametro[0].Count; i++)
+                {
+                    query = rotinaSelecionada.query.Replace('{' + parametro[0].ElementAt(i).Key + '}', parametro[0].ElementAt(i).Value);
+                    rotinaSelecionada.query = query;
+                }
+            }
+            return query;
         }
 
         public int updateConsolidationLevel2(int ConsolidationLevel2_Id, string AlertLevel, string LastEvaluationAlert, string LastLevel2Alert, SGQDBContext.CollectionLevel2Consolidation CollectionLevel2Consolidation)
