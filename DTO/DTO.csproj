@@ -104,6 +104,7 @@
     <Compile Include="DTO\DefectDTO.cs" />
     <Compile Include="DTO\ItemMenuDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3XDepartmentDTO.cs" />
+    <Compile Include="DTO\Params\ParLevel1XRotinaIntegracaoDTO.cs" />
     <Compile Include="DTO\Params\ParModuleDTO.cs" />
     <Compile Include="DTO\ParClusterXModulesDTO.cs" />
     <Compile Include="DTO\RecravacaoSugestaoDTO.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="DTO\RoleSGQDTO.cs" />
     <Compile Include="DTO\RoleUserSgqDTO.cs" />
     <Compile Include="DTO\RoleUserSgqXItemMenuDTO.cs" />
+    <Compile Include="DTO\Params\RotinaIntegracaoDTO.cs" />
     <Compile Include="DTO\ScreenComponentDTO.cs" />
     <Compile Include="DTO\EmpresaDTO.cs" />
     <Compile Include="DTO\UserSgqDTO.cs" />

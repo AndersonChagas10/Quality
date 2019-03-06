@@ -1,11 +1,11 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Repositories;
 using DTO.Helpers;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System;
-using System.Data;
 
 namespace Data.Repositories
 {
@@ -31,7 +31,7 @@ namespace Data.Repositories
 
         #region ParLevel1
 
-        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> reincidencia, List<ParGoal> listParGoal)
+        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> reincidencia, List<ParGoal> listParGoal, List<ParLevel1XRotinaIntegracao> listRotinaIntegracaoXParLevel1, List<int> removerVinculoRotina)
         {
             using (var ts = db.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
@@ -58,10 +58,17 @@ namespace Data.Repositories
                     foreach (var nonCoformitRule in listNonCoformitRule)
                         SaveNonConformityRule(nonCoformitRule, paramLevel1.Id);
 
+                //Vinculo rotina integrações
+                if (listRotinaIntegracaoXParLevel1 != null)
+                    foreach (var vinculoRotina in listRotinaIntegracaoXParLevel1)
+                        SaveVinculoRotina(vinculoRotina, paramLevel1.Id);
+
                 //Reincidencia
                 if (reincidencia != null)
                     foreach (var parRelapse in reincidencia)
                         SaveReincidencia(parRelapse, paramLevel1.Id);
+
+                InativaVinculoRotina(paramLevel1, removerVinculoRotina);
 
                 //Header Fields
                 if (listaParHeadField != null)
@@ -85,6 +92,22 @@ namespace Data.Repositories
 
                 ts.Commit();
             }
+        }
+
+        private void SaveVinculoRotina(ParLevel1XRotinaIntegracao vinculoRotina, int id)
+        {
+            vinculoRotina.ParLevel1_Id = id;
+
+            if (vinculoRotina.Id == 0)
+            {
+                db.ParLevel1XRotinaIntegracao.Add(vinculoRotina);
+            }
+            else
+            {
+                db.Entry(vinculoRotina).State = EntityState.Modified;
+                db.Entry(vinculoRotina).Property(e => e.AddDate).IsModified = false;
+            }
+            db.SaveChanges();
         }
 
         #region Auxiliares do level1
@@ -757,6 +780,32 @@ namespace Data.Repositories
                         }
 
                     }
+                }
+            }
+        }
+
+
+        private void InativaVinculoRotina(ParLevel1 paramLevel1, List<int> removerVinculoRotina)
+        {
+            if (removerVinculoRotina != null)
+            {
+                foreach (var idvinculo in removerVinculoRotina)
+                {
+                    var objetos = db.ParLevel1XRotinaIntegracao
+                        .AsNoTracking()
+                        .Where(r => r.Id == idvinculo)
+                        .ToList();
+
+                    foreach (var marcarObjetoInativo in objetos)
+                    {
+                        marcarObjetoInativo.IsActive = false;
+                        Guard.verifyDate(marcarObjetoInativo, "AlterDate");
+                        db.ParLevel1XRotinaIntegracao.Attach(marcarObjetoInativo);
+                        db.Entry(marcarObjetoInativo).State = EntityState.Modified;
+                        db.Entry(marcarObjetoInativo).Property(e => e.AddDate).IsModified = false;
+                        db.SaveChanges();
+                    }
+
                 }
             }
         }

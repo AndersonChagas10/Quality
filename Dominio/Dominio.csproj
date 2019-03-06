@@ -118,6 +118,7 @@
     <Compile Include="ParLevel1XCluster.cs" />
     <Compile Include="ParLevel1XHeaderField.cs" />
     <Compile Include="ParLevel1XModule.cs" />
+    <Compile Include="ParLevel1XRotinaIntegracao.cs" />
     <Compile Include="ParLevel2.cs" />
     <Compile Include="ParLevel2ControlCompany.cs" />
     <Compile Include="ParLevel2Level1.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="RoleType.cs" />
     <Compile Include="RoleUserSgq.cs" />
     <Compile Include="RoleUserSgqXItemMenu.cs" />
+    <Compile Include="RotinaIntegracao.cs" />
     <Compile Include="ScreenComponent.cs" />
     <Compile Include="Services\DefectDomain.cs" />
     <Compile Include="Services\CompanyDomain.cs" />

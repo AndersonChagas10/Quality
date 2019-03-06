@@ -21,6 +21,8 @@ using System.Text;
 using ADOFactory;
 using Dominio;
 using System.Web.Http;
+using System.Text.RegularExpressions;
+using SgqSystem.Controllers.Api;
 
 namespace SgqSystem.Services
 {
@@ -1228,6 +1230,25 @@ namespace SgqSystem.Services
             }
         }
 
+        [WebMethod]
+        public string RetornaQueryRotina(string rotina_Id, List<Dictionary<string, string>> parametro)
+        {
+            var query = "";
+            if (parametro.Count > 0 && parametro[0].Count > 0)
+            {
+                var idRotina = Convert.ToInt32(rotina_Id);
+
+                var rotinaSelecionada = dbEf.RotinaIntegracao.Where(x => x.Id == idRotina).FirstOrDefault();
+        
+                for (int i = 0; i < parametro[0].Count; i++)
+                {
+                    query = rotinaSelecionada.query.Replace('{' + parametro[0].ElementAt(i).Key + '}', parametro[0].ElementAt(i).Value);
+                    rotinaSelecionada.query = query;
+                }
+            }
+            return query;
+        }
+
         public int updateConsolidationLevel2(int ConsolidationLevel2_Id, string AlertLevel, string LastEvaluationAlert, string LastLevel2Alert, SGQDBContext.CollectionLevel2Consolidation CollectionLevel2Consolidation)
         {
             //verificar se não vai sobreescrever informação com tablet antigo
@@ -1243,6 +1264,7 @@ namespace SgqSystem.Services
             }
 
             int LastEvaluationAlertCheck = 0;
+
 
             if (LastEvaluationAlert == "NULL")
             {
@@ -5969,7 +5991,7 @@ function calcularSensorial(list){
             ParLevel2List = headerList +
                             ParLevel2List;
 
-            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.ParLevel1_Id), ParFieldTypeDB, html, ParCompany_id: ParCompany_Id);
+            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.ParLevel1_Id), ParFieldTypeDB, html, ParLevel1_Id: ParLevel1.ParLevel1_Id, ParCompany_id: ParCompany_Id);
 
 
             //if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
@@ -6027,13 +6049,31 @@ function calcularSensorial(list){
         public string GetHeaderHtml(IEnumerable<ParLevelHeader> list, SGQDBContext.ParFieldType ParFieldTypeDB, Html html, int ParLevel1_Id = 0, int ParLevel2_Id = 0, ParLevelHeader ParLevelHeaderDB = null, int ParCompany_id = 0)
         {
             string retorno = "";
-
-
-
-
-
-
             int id = 0;
+
+            #region BotoesDeBusca
+
+            var rotinasIntegracaoXLevel1 = dbEf.ParLevel1XRotinaIntegracao.Where(x => x.ParLevel1_Id == ParLevel1_Id).Select(x => x.RotinaIntegracao_Id);
+            var rotinasIntegracao = dbEf.RotinaIntegracao.Where(x => rotinasIntegracaoXLevel1.Contains(x.Id)).ToList();
+            var botoes = "";
+
+            foreach (var botao in rotinasIntegracao)
+            {
+
+                botoes += $@"<input type=""button"" class=""btn btn-primary"" value=""{ botao.Name }"" data-id-rotina=""{ botao.Id }"" data-headerFields=""{ botao.Parametro }"" onclick=""getRotina(this);"">";
+
+                retorno += html.div(
+                        outerhtml: botoes,
+                        classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                        style: "padding-right: 4px !important; padding-left: 4px !important;"
+                        );
+
+            }
+
+            if (rotinasIntegracao.Count > 0)
+                retorno += "<br><br>";
+
+            #endregion
 
             foreach (var header in list) //LOOP7
             {
@@ -6051,8 +6091,6 @@ function calcularSensorial(list){
                 var duplicar = header.duplicate;
 
                 var duplicaHeader = duplicar ? "  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <div style='display: inline-table' hfg=\"" + header.HeaderFieldGroup + "\" onclick='clonarHF(this);'><i class='fa fa-plus' aria-hidden='true'></i></div>     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     <div style='display: inline-table' onclick='removerHF(this);'><i class='fa fa-minus' aria-hidden='true'></i></div>" : "";
-
-
 
                 var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>"
                     + duplicaHeader;
@@ -6162,7 +6200,6 @@ function calcularSensorial(list){
                         form_control = "<input class=\"form-control input-sm \" type=\"date\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
                         form_control += " <label class=\"\"></label>";
                         break;
-
                     //Hora
                     case 7:
                         form_control = "<input class=\"form-control input-sm \" type=\"time\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
@@ -6173,23 +6210,34 @@ function calcularSensorial(list){
                         form_control = "<br><div id=\"info" + header.ParHeaderField_Id + "\" style=\"display: none;background: RGBA(0,0,0,0.35);position: fixed;z-index: 999999;width: 100%;height: 100%;top: 0;left: 0;\"><div style=\"color: white; font-size: 16px; background: #5353c6;position: fixed; width: 100% ;height: 200px ; margin: 80px 0 0 0; padding: 10px 20px 20px 20px;\"><div style=\"float:right; cursor: pointer;\" class=\"btn btn-default\" onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"none\";'>X</div><br><br>" + header.ParHeaderField_Description + "</div></div><button style=\"padding-left: 5px;padding-right: 5px; padding-bottom: 0px; padding-top: 0px;\" onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"block\"' class='btn btn-default headerInformacao' ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\"><i class=\"fa fa-info-circle \" aria-hidden=\"true\" style=\"float:right; color:#17175c;font-size: 28px;\" title=\"" + header.ParHeaderField_Description + "\" ></i></button>";
                         form_control += " <label class=\"\"></label>";
                         break;
+                    //Parâmetro
+                    case 9:
+                        form_control = $@"<input class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-param=""{ header.ParHeaderField_Description }"">";
+                        form_control += $@"<label class=""""></label>";
+                        break;
+                    //Dinâmico
+                    case 10:
+                        form_control = $@"<input class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-din=""{ header.ParHeaderField_Description }"" readonly>";
+                        form_control += $@"<label class=""""></label>";
+                        break;
+
                 }
 
                 //Incrementar valor para o pai do elemento para Ytoara.
                 id = id + 1;
 
                 var form_group = html.div(
-                                            outerhtml: label + form_control,
-                                            classe: "form-group header",
-                                            tags: header.IsRequired == 1 ? "required" : "",
-                                            style: "margin-bottom: 4px;"
-                                            );
+                        outerhtml: label + form_control,
+                        classe: "form-group header",
+                        tags: header.IsRequired == 1 ? "required" : "",
+                        style: "margin-bottom: 4px;"
+                        );
 
                 retorno += html.div(
-                                            outerhtml: form_group,
-                                            classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
-                                            style: "padding-right: 4px !important; padding-left: 4px !important;height:90px !important"
-                                            );
+                        outerhtml: form_group,
+                        classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                        style: "padding-right: 4px !important; padding-left: 4px !important;height:90px !important"
+                        );
 
 
                 #endregion

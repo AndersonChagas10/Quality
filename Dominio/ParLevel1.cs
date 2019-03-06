@@ -125,6 +125,11 @@ namespace Dominio
 
         public virtual ICollection<ParCounterXLocal> ParCounterXLocal { get; set; }
 
+        [NotMapped]
+        public List<RotinaIntegracao> RotinaIntegracao { get; set; }
+        
+        public virtual ICollection<ParLevel1XRotinaIntegracao> ParLevel1XRotinaIntegracao { get; set; }
+
         [ForeignKey("ParFrequency_Id")]
         public virtual ParFrequency ParFrequency { get; set; }
 

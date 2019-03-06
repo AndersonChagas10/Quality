@@ -108,6 +108,10 @@ namespace SgqSystem.Mappers
 
                 x.AddProfile<RoleUserSgqXItemMenuMapperProfile>();
 
+                x.AddProfile<RotinaIntegracaoMapperProfile>();
+
+                x.AddProfile<ParLevel1XRotinaIntegracaoMapperProfile>();
+
 
                 ///*PA............*/
                 //x.AddProfile<AcompanhamentoTarefaProfile>();

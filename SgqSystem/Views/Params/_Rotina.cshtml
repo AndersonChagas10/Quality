@@ -1,0 +1,144 @@
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+
+@using SgqSystem.Helpers
+
+@{
+    var level = Model.levelControl;
+    var id = "level" + Model.levelControl + "_rotina_accordion";
+    var id2 = "#level" + Model.levelControl + "_rotina_accordion";
+    var id3 = "#level" + Model.levelControl + "_rotina_collapse";
+    var id4 = "level" + Model.levelControl + "_rotina_collapse";
+    var click = "RotinaL" + Model.levelControl + ".adiciona()";
+}
+
+@*Contadores*@
+<div class="panel-group accordion" id="@id">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a id="rotinaCollapse" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="@id2" href="@id3" aria-expanded="false"> Rotina</a>
+            </h4>
+        </div>
+        <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+                <table id="camposRotina" class="table-erp">
+                    <tbody>
+                        <tr class="row">
+                            @*@if (Model.levelControl == 1)
+                                {*@
+                            @Table.GerarColuna(CommonData.ParCounterList(@Html, "rotina", Model.paramsDdl.DdlRotina, new { @class = "form-control input-erp input-sm" }), @Html.Label("Rotina"), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColunaButton(@Html.TextBoxFor(m => m.rotinaIngracaoDTO.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, null, "Nome vinculo rotina"
+        , button: "<button type=\"button\" id=\"btnSaveVinculoRotina\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                            @*}
+                                 else if (Model.levelControl == 2)
+                                 {
+                                     @Table.GerarColuna(CommonData.ParCounterList(@Html, "parCounter", Model.paramsDdl.DdlParCounter_Level2, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
+                                     @Table.GerarColunaButton(CommonData.ParLocalList(@Html, "parLocal", Model.paramsDdl.DdlParLocal_Level2, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top
+                                , button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                 }*@
+
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="tableRotinas" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Rotina:">
+                    <thead>
+                        <tr>
+                            <th>Rotina</th>
+                            <th>Nome Vinculo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
+    var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
+    function atribuiLevelDivCounter (){
+
+        var levelDomain;
+        var listSalvo;
+        levelDomain = "newLevel1Modal";
+        listSalvo = paramsDto.parLevel1Dto.listParLevel1XRotinaIntegracao;
+        RotinaL1 = getCounterObject(levelDomain, listSalvo);
+        RotinaL1.carregaDadosDoDb();
+    }
+
+    atribuiLevelDivCounter();
+    function getCounterObject(levelDomain, listSalvo) {
+        debugger
+        return {
+            /*Setup*/
+            levelControl: levelControl,
+            idTable: 'tableRotinas',
+            level: levelDomain,
+            listObjSalvo: listSalvo,
+            tdsNames: ['Rotina', 'Name', 'btn'],
+            getObjAdd: function(){
+                return {/*Objeto*/
+                    Name: $('#' + this.level + ' #rotinaIngracaoDTO_Name').val(),
+                    RotinaIntegracao_Id: $('#' + this.level + ' #rotina :selected').val(),
+                    Rotina: $('#' + this.level + ' #rotina :selected').text(),
+                    ParLevel1_Id: paramsDto.parLevel1Dto.Id,
+                    IsActive: true,
+                };
+            },
+            veifyAdd: function () {
+                debugger
+                /*Valida se pode criar o objeto*/
+                if ($('#' + this.level + ' #rotina :selected').val() <= 0){
+                    openMessageModal("Selecione um rotina!");
+                    return false;
+                }
+
+                return true;
+            },
+            incluiNoObjetoParaSubmit: function(dados){
+                debugger
+                var level = this.levelControl;
+                $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
+
+                    var o = $(obj).data();
+
+                    if((o.Id != null || o.Id != undefined) && o.Id > 0){
+                        dados["paramsDto.parLevel" + level + "Dto.listParLevel1XRotinaIntegracao[" + c + "].Id"] = o.Id;
+                    }
+                    debugger
+                    dados["paramsDto.parLevel" + level + "Dto.listParLevel1XRotinaIntegracao[" + c + "].Name"] = o.Name;
+                    dados["paramsDto.parLevel" + level + "Dto.listParLevel1XRotinaIntegracao[" + c + "].RotinaIntegracao_Id"] = o.RotinaIntegracao_Id;
+                    dados["paramsDto.parLevel" + level + "Dto.listParLevel1XRotinaIntegracao[" + c + "].ParLevel1_Id"] = o.ParLevel1_Id;
+                    dados["paramsDto.parLevel" + level + "Dto.listParLevel1XRotinaIntegracao[" + c + "].IsActive"] = o.IsActive;
+
+                });
+
+            },
+            carregaDadosDoDb: function () {
+                debugger
+                var id = this.level + ' #' + this.idTable;
+                var tdNamess = this.tdsNames;
+                if( this.listObjSalvo != null){ /*Carrega regras de NC*/
+                    this.listObjSalvo.forEach(function (o, c) {
+                        o["Name"] = o.Name;
+                        o["Rotina"] = o.RotinaIntegracao.Name;
+                        crudNxN.adiciona(o, id, tdNamess);
+
+                    });
+                }
+            },
+            /*Fim Setup*/
+            adiciona: function () {
+                if(this.veifyAdd()){
+                    var object = this.getObjAdd();
+                    crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
+                }
+            },
+        };
+    }
+
+</script>

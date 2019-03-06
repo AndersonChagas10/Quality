@@ -1,7 +1,7 @@
 ﻿var crudNxN = {
 
     adiciona: function (o, idTable, tdsName) {
-        debugger
+
         var tr = "";
         var objData = {};
 
@@ -67,8 +67,7 @@
         reloadPopovers();
     },
     btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers alterar" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
-    funcEdit: function (e) {
-        debugger1  
+    funcEdit: function (e) {      
         $('#crudNxNEdit > div > div > div.modal-body').empty();
         $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').off('click');
         var obj = $(e).parents('tr').data();
@@ -110,6 +109,20 @@
                 $('#crudNxNEdit').modal('hide');
             });
         }
+        //vinculo rotina integração
+        else if ($(e).parents('#level1_rotina_accordion').length || $(e).parents('#level2_rotina_accordion').length) {
+            crudNxN.modalAlterarVinculoRotina(obj);//
+            $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
+                var editado = crudNxN.retornaObjetoAlteradoRotina(obj);//
+                $(e).parents('tr').removeData();
+                $(e).parents('tr').data(editado);
+                $($(e).parents('tr').find('td')[0]).html(editado.NcNumber)//
+                $($(e).parents('tr').find('td')[1]).html(editado.EffectiveLength)//
+                $($(e).parents('tr').find('td')[2]).html(editado.parFrequencyName)//
+                $('#crudNxNEdit').modal('hide');
+            });
+        }
+
         else if ($(e).parents('#level1_cluster_accordion').length) {
           
             crudNxN.modalAlterarCluster(obj);//
@@ -220,10 +233,26 @@
         $('#crudNxNEdit #inputVigencia').val(obj.EffectiveLength);/*Preenche*/
 
     },
+    modalAlterarVinculoRotina: function (obj) {
+        debugger
+        var divDeEdicao = $('#camposRotina').clone();
+        $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+        $('#crudNxNEdit #myModalLabel').html($('#tableRotinas').attr('nameModal'));
+
+        $('#crudNxNEdit #Name').val(obj.Name);/*Preenche*/
+        //$('#crudNxNEdit #rotina').val(obj.r);/*Preenche*/
+
+    },
     retornaObjetoAlteradoReincidencia: function (obj) {
         /*Valida se pode criar o objeto*/
         ReincidenciaL1.veifyAdd('crudNxNEdit')
         ReincidenciaL1.getObjAdd('crudNxNEdit', obj);
+        return obj;
+    },
+    retornaObjetoAlteradoRotina: function (obj) {
+        /*Valida se pode criar o objeto*/
+        RotinaL1.veifyAdd('crudNxNEdit');
+        RotinaL1.getObjAdd('crudNxNEdit', obj);
         return obj;
     },
 

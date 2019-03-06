@@ -158,7 +158,8 @@ namespace DTO.DTO.Params
         public ParNotConformityRuleXLevelDTO parNotConformityRuleXLevelDto { get; set; }
         public List<ParLevel1XHeaderFieldDTO> parLevel1HeaderFieldDto { get; set; }
         public List<ParNotConformityRuleXLevelDTO> listParNotConformityRuleXLevelDto { get; set; }
-
+        public List<ParLevel1XRotinaIntegracaoDTO> listParLevel1XRotinaIntegracao { get; set; }
+        //public List<RotinaIntegracaoDTO> RotinaIntegracao { get; set; }
         #region Props utilizadas para alteração
 
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
@@ -231,6 +232,7 @@ namespace DTO.DTO.Params
         #region Control Company 
 
         public List<int> removerParHeaderField { get; set; }
+        public List<int> removerVinculoRotina { get; set; }
         public List<int> listLevel2Corporativos { get; set; }
         public List<int> level2PorCompany { get; set; }
         public Nullable<int> level2Number { get; set; }

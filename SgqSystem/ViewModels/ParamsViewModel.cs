@@ -1,4 +1,5 @@
-﻿using DTO.DTO.Params;
+﻿using DTO.DTO;
+using DTO.DTO.Params;
 using System.Collections.Generic;
 
 namespace SgqSystem.ViewModels
@@ -42,6 +43,8 @@ namespace SgqSystem.ViewModels
         #endregion
 
         public ParamsDTO paramsDto { get; set; }
+
+        public RotinaIntegracaoDTO rotinaIngracaoDTO { get; set; }
 
         public ParamsDdl paramsDdl { get; set; }
 

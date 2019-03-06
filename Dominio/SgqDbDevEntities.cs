@@ -238,6 +238,7 @@ namespace Dominio
         public virtual DbSet<ParLevel1XModule> ParLevel1XModule { get; set; }
         public virtual DbSet<ImportFormat> ImportFormat { get; set; }
         public virtual DbSet<ImportFormatItem> ImportFormatItem { get; set; }
+        public virtual DbSet<RotinaIntegracao> RotinaIntegracao { get; set; }
         public virtual DbSet<ReportXUserSgq> ReportXUserSgq { get; set; }
         public virtual DbSet<ParInputTypeValues> ParInputTypeValues { get; set; }
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1> ParGroupParLevel1 { get; set; }
@@ -248,6 +249,8 @@ namespace Dominio
         public virtual DbSet<ParEvaluationSchedule> ParEvaluationSchedule { get; set; }
         public virtual DbSet<MotivoAtraso> MotivoAtraso { get; set; }
         public virtual DbSet<DicionarioEstatico> DicionarioEstatico { get; set; }
+        public virtual DbSet<ParLevel1XRotinaIntegracao> ParLevel1XRotinaIntegracao { get; set; }
+        
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
