@@ -43,15 +43,15 @@
     {
         string html = "";
         string target = "";
-        var url = MontaURL(item.Url,ref target);
+        var url = MontaURL(item.Url, ref target);
         html += "<li class='nav-item'>";
         if (item.ListaFilho.Count > 0)
         {
             html += $@"<a href = '{url}' target='{target}' class='nav-link nav-toggle'>
-                {RetornaIcone(item)}
-                <span class='title'>{item.Name}</span>
-                <span class='arrow'></span>
-            </a>";
+            {RetornaIcone(item)}
+            <span class='title'>{item.Name}</span>
+            <span class='arrow'></span>
+        </a>";
             html += $@"<ul class='sub-menu'>";
             foreach (var filho in item.ListaFilho)
             {
@@ -62,9 +62,9 @@
         else
         {
             html += $@"<a href = '{url}' target='{target}' class='nav-link nav-toggle'>
-                {RetornaIcone(item)}
-                <span class='title'>{item.Name}</span>
-            </a>";
+            {RetornaIcone(item)}
+            <span class='title'>{item.Name}</span>
+        </a>";
         }
         html += "</li>";
         return html;
@@ -114,16 +114,16 @@
                         <span class="title">Regras e Acessos</span>
                         <span class="arrow"></span>
                     </a><ul class="sub-menu">
-                            <li class="nav-item">
-                                <a href="@Html.Raw(Url.Action("Index", "ItemMenu"))" target="" class="nav-link nav-toggle">
-                                    <span class="title">Menus</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="@Html.Raw(Url.Action("EstruturaMenus", "ItemMenu"))" target="" class="nav-link nav-toggle">
-                                    <span class="title">Estrutura Menus</span>
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("Index", "ItemMenu"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Menus</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("EstruturaMenus", "ItemMenu"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Estrutura Menus</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="@Html.Raw(Url.Action("Index", "RoleUserSgq"))" target="" class="nav-link nav-toggle">
                                 <span class="title">Regras</span>
@@ -132,6 +132,24 @@
                     </ul>
                 </li>
             }
+            <li class="nav-item">
+                <a href="javascript:;" target="" class="nav-link nav-toggle">
+                    <i class="fa fa-question"></i>
+                    <span class="title">Ajuda</span>
+                    <span class="arrow"></span>
+                </a><ul class="sub-menu">
+                    <li class="nav-item">
+                        <a href="@Html.Raw(Url.Action("Index", "Faq"))" target="" class="nav-link nav-toggle">
+                            <span class="title">FAQ</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Html.Raw(Url.Action("Index", "Novidades"))" target="" class="nav-link nav-toggle">
+                            <span class="title">ChangeLog</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>

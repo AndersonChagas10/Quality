@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -401,6 +401,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\MotivoAtrasoController.cs" />
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
+    <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
     <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
@@ -409,6 +410,7 @@
     <Compile Include="Controllers\ImportacaoExcelController.cs" />
     <Compile Include="Controllers\Integracao\IntegracaoController.cs" />
     <Compile Include="Controllers\ItemMenu\ItemMenuController.cs" />
+    <Compile Include="Controllers\NovidadesController.cs" />
     <Compile Include="Controllers\Params\EmailConfigEUAController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
@@ -1915,6 +1917,8 @@
     <Content Include="Views\Params\_AgendamentoDiarioComIntervalo.cshtml" />
     <Content Include="Views\Shared\_AgendamentoVolumes.cshtml" />
     <Content Include="Views\ParLevel2ControlCompany\List.cshtml" />
+    <Content Include="Views\Faq\Index.cshtml" />
+    <Content Include="Views\Novidades\Index.cshtml" />
     <Content Include="Views\RotinaIntegracao\Index.cshtml" />
     <Content Include="Views\RotinaIntegracao\Create.cshtml" />
     <Content Include="Views\RotinaIntegracao\Edit.cshtml" />
