@@ -743,55 +743,7 @@ namespace Dominio.Services
             DateTime dateTime = DateTime.ParseExact(date, format, null);
             return dateTime;
         }
-
-        //Codigo para integração de role
-
-        //private void AtualizaTabelaRoles()
-        //{
-        //    try
-        //    {
-        //        var funcoesUsuario = db.Database.SqlQuery<string>("select distinct Funcao from Usuarios").ToList();
-
-        //        var newRolesToInsert = db.RoleUserSgq.Where(r => !funcoesUsuario.Contains(r.Name)).ToList();
-
-        //        if (newRolesToInsert.Count > 0)
-        //        {
-        //            db.RoleUserSgq.AddRange(newRolesToInsert);
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //    }       
-        //}
-
-        //private void AtualizaRolesDoUsuarios(string userName, int userId)
-        //{
-
-        //    try
-        //    {
-        //        var funcaoUsuario = db.Database.SqlQuery<string>($@"select Funcao from Usuarios where Usuario = { userName }").FirstOrDefault().Trim();
-
-        //        var rolesUsuario = db.UserSgq.Where(r => r.Id == userId).FirstOrDefault().Role.Split(',').Select(r => r.Trim()).ToList();
-
-        //        if (!string.IsNullOrEmpty(funcaoUsuario) && !rolesUsuario.Any(r => r == funcaoUsuario))
-        //        {
-        //            rolesUsuario.Add(funcaoUsuario);
-
-        //            var usuario = db.UserSgq.Find(userId);
-
-        //            usuario.Role = string.Join(",", rolesUsuario);
-
-        //            db.SaveChanges();
-        //        }
-
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //    }
-        //}
-
+        
         #endregion
 
     }

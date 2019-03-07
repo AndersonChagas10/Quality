@@ -484,7 +484,7 @@ function openLevel3(level2) {
 
     removeFotosNaoSalvas();
     
-    $('input').val('').trigger('input');
+    $('.level3 input').val('').trigger('input');
 
 }
 
