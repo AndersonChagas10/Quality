@@ -8,9 +8,9 @@ function getRotina(that) {
     var headerFieldsParams = $(that).attr('data-headerfields').split('|');
     var $btn = $(that);
     var headerFieldsList = [];
-
+    
     headerFieldsParams.forEach(function (headerFieldParam) {
-
+        
         var self = $('input[data-param=' + headerFieldParam + ']').parents('.header');
         var key = [headerFieldParam];
         var value = $('input[data-param=' + headerFieldParam + ']').val();
@@ -31,9 +31,10 @@ function getRotina(that) {
     if (headerFieldsList.length > 0) {
 
         var obj = {
+            IdUsuario: $('.App').attr('userid'),
             IdRotina: $(that).attr('data-id-rotina'),
             Params: headerFieldsList
-        }
+        };
 
         getDynamicValues(obj, $btn);
     }
@@ -59,7 +60,7 @@ function getDynamicValues(obj, $btn) {
             openMessageModal(getResource("error"), getResource("unable_to_complete_data_request"));
 
         },
-        complete: function () {
+        complete: function(){
             $btn.button('reset');
         }
 
