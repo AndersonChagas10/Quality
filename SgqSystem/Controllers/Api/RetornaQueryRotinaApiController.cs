@@ -26,9 +26,9 @@ namespace SgqSystem.Controllers.Api
             var retornoRotinaNinja = new Object();
             var idUsuario = 0;
 
-
             Teste myDeserializedObjList = (Teste)Newtonsoft.Json.JsonConvert.DeserializeObject(body.ToString(), typeof(Teste));
             RotinaIntegracao rotinaSelecionada;
+
             if (!string.IsNullOrEmpty(myDeserializedObjList.IdUsuario))
             {
                 idUsuario = Convert.ToInt32(myDeserializedObjList.IdUsuario);
@@ -36,7 +36,7 @@ namespace SgqSystem.Controllers.Api
                 empresaPadrao = db.ParCompany.Where(x => x.Id == usuarioLogado.ParCompany_Id).FirstOrDefault();
             }
 
-            var retorno = RetornaQueryRotina(myDeserializedObjList.IdRotina, myDeserializedObjList.Params, out rotinaSelecionada);
+            var queryFormatada = RetornaQueryRotina(myDeserializedObjList.IdRotina, myDeserializedObjList.Params, out rotinaSelecionada);
 
             PropriedadesConexaoDB propriedadesConexao = new PropriedadesConexaoDB
             {
@@ -50,12 +50,12 @@ namespace SgqSystem.Controllers.Api
             if(rotinaSelecionada.InitialCatalog.Contains('{') && rotinaSelecionada.InitialCatalog.Contains('}'))
                 rotinaSelecionada.InitialCatalog = MapearValoresDinamicos(rotinaSelecionada.InitialCatalog, propriedadesConexao);
 
-            if (!string.IsNullOrEmpty(retorno))
+            if (!string.IsNullOrEmpty(queryFormatada))
             {
 
                 using (Factory factory = new Factory(rotinaSelecionada.DataSource, rotinaSelecionada.InitialCatalog, rotinaSelecionada.Password, rotinaSelecionada.User))
                 {
-                    retornoRotinaNinja = QueryNinja(db, retorno).FirstOrDefault();
+                    retornoRotinaNinja = QueryNinja(db, queryFormatada).FirstOrDefault();
                 }
             }
 
