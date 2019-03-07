@@ -1,11 +1,11 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Repositories;
 using DTO.Helpers;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System;
-using System.Data;
 
 namespace Data.Repositories
 {
@@ -31,7 +31,7 @@ namespace Data.Repositories
 
         #region ParLevel1
 
-        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> reincidencia, List<ParGoal> listParGoal)
+        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> reincidencia, List<ParGoal> listParGoal, List<ParLevel1XRotinaIntegracao> listRotinaIntegracaoXParLevel1, List<int> removerVinculoRotina)
         {
             using (var ts = db.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
@@ -58,10 +58,17 @@ namespace Data.Repositories
                     foreach (var nonCoformitRule in listNonCoformitRule)
                         SaveNonConformityRule(nonCoformitRule, paramLevel1.Id);
 
+                //Vinculo rotina integrações
+                if (listRotinaIntegracaoXParLevel1 != null)
+                    foreach (var vinculoRotina in listRotinaIntegracaoXParLevel1)
+                        SaveVinculoRotina(vinculoRotina, paramLevel1.Id);
+
                 //Reincidencia
                 if (reincidencia != null)
                     foreach (var parRelapse in reincidencia)
                         SaveReincidencia(parRelapse, paramLevel1.Id);
+
+                InativaVinculoRotina(paramLevel1, removerVinculoRotina);
 
                 //Header Fields
                 if (listaParHeadField != null)
@@ -85,6 +92,22 @@ namespace Data.Repositories
 
                 ts.Commit();
             }
+        }
+
+        private void SaveVinculoRotina(ParLevel1XRotinaIntegracao vinculoRotina, int id)
+        {
+            vinculoRotina.ParLevel1_Id = id;
+
+            if (vinculoRotina.Id == 0)
+            {
+                db.ParLevel1XRotinaIntegracao.Add(vinculoRotina);
+            }
+            else
+            {
+                db.Entry(vinculoRotina).State = EntityState.Modified;
+                db.Entry(vinculoRotina).Property(e => e.AddDate).IsModified = false;
+            }
+            db.SaveChanges();
         }
 
         #region Auxiliares do level1
@@ -492,7 +515,10 @@ namespace Data.Repositories
         /// </summary>
         /// <param name="paramLevel3"></param>
         /// <param name="paramLevel3Value"></param>
-        public void SaveParLevel3(ParLevel3 paramLevel3, List<ParLevel3Value> listParamLevel3Value, List<ParLevel3EvaluationSample> listParLevel3EvaluationSample, List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos, int level1Id)
+        public void SaveParLevel3(ParLevel3 paramLevel3, List<ParLevel3Value> listParamLevel3Value, 
+            List<ParLevel3EvaluationSample> listParLevel3EvaluationSample, 
+            List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos, 
+            int level1Id, List<ParLevel3XParDepartment> listSaveParLevel3XDepartment)
         {
             using (var ts = db.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
@@ -508,6 +534,10 @@ namespace Data.Repositories
                     if (listParLevel3EvaluationSample.Count() > 0)
                         AddUpdateParLevel3EvaluationSample(listParLevel3EvaluationSample, paramLevel3.Id);
 
+                if (listSaveParLevel3XDepartment != null)
+                    if (listSaveParLevel3XDepartment.Count() > 0)
+                        AddUpdateParLevel3XDepartment(listSaveParLevel3XDepartment, paramLevel3.Id);
+                
                 if (listParRelapse != null)
                     foreach (var parRelapse in listParRelapse)
                         SaveReincidenciaLevel3(parRelapse, paramLevel3.Id);
@@ -576,7 +606,7 @@ namespace Data.Repositories
 
             db.SaveChanges();
         }
-        
+
         public void AddUpdateParLevel3EvaluationSample(List<ParLevel3EvaluationSample> paramLevel3EvaluationSample, int ParLevel3_Id)
         {
             paramLevel3EvaluationSample.ForEach(r => r.ParLevel3_Id = ParLevel3_Id);
@@ -592,6 +622,29 @@ namespace Data.Repositories
                 {
                     Guard.verifyDate(i, "AlterDate");
                     db.ParLevel3EvaluationSample.Attach(i);
+                    db.Entry(i).State = EntityState.Modified;
+                    db.Entry(i).Property(e => e.AddDate).IsModified = false;
+                }
+            }
+
+            db.SaveChanges();
+        }
+
+        public void AddUpdateParLevel3XDepartment(List<ParLevel3XParDepartment> paramLevel3XParDepartment, int ParLevel3_Id)
+        {
+            paramLevel3XParDepartment.ForEach(r => r.ParLevel3_Id = ParLevel3_Id);
+
+            if (paramLevel3XParDepartment.Any(r => r.Id == 0))
+            {
+                db.ParLevel3XParDepartment.AddRange(paramLevel3XParDepartment.Where(r => r.Id == 0));
+            }
+
+            if (paramLevel3XParDepartment.Any(r => r.Id > 0))
+            {
+                foreach (var i in paramLevel3XParDepartment.Where(r => r.Id > 0))
+                {
+                    Guard.verifyDate(i, "AlterDate");
+                    db.ParLevel3XParDepartment.Attach(i);
                     db.Entry(i).State = EntityState.Modified;
                     db.Entry(i).Property(e => e.AddDate).IsModified = false;
                 }
@@ -727,6 +780,32 @@ namespace Data.Repositories
                         }
 
                     }
+                }
+            }
+        }
+
+
+        private void InativaVinculoRotina(ParLevel1 paramLevel1, List<int> removerVinculoRotina)
+        {
+            if (removerVinculoRotina != null)
+            {
+                foreach (var idvinculo in removerVinculoRotina)
+                {
+                    var objetos = db.ParLevel1XRotinaIntegracao
+                        .AsNoTracking()
+                        .Where(r => r.Id == idvinculo)
+                        .ToList();
+
+                    foreach (var marcarObjetoInativo in objetos)
+                    {
+                        marcarObjetoInativo.IsActive = false;
+                        Guard.verifyDate(marcarObjetoInativo, "AlterDate");
+                        db.ParLevel1XRotinaIntegracao.Attach(marcarObjetoInativo);
+                        db.Entry(marcarObjetoInativo).State = EntityState.Modified;
+                        db.Entry(marcarObjetoInativo).Property(e => e.AddDate).IsModified = false;
+                        db.SaveChanges();
+                    }
+
                 }
             }
         }
@@ -917,6 +996,8 @@ namespace Data.Repositories
 
         public void AddUpdateParLevel3Level2(List<ParLevel3Level2> paramParLevel3Level2, int? level1Id = null)
         {
+
+            
             db.Configuration.ValidateOnSaveEnabled = false;
             if (level1Id.IsNull())
                 throw new Exception("é necessário selectionar um level1 antes de criar um novo vinculo de peso para o level3.");
@@ -943,7 +1024,14 @@ namespace Data.Repositories
 
                     if (i.IsActive == false)
                     {
-                        var inativarParLevel3Level2 = db.ParLevel3Level2.Include("ParLevel3Level2Level1").FirstOrDefault(r => r.Id == i.Id).ParLevel3Level2Level1.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id);
+                        var listaIndicadoresVinculados = db.ParLevel3Level2.Include("ParLevel3Level2Level1").FirstOrDefault(r => r.Id == i.Id).ParLevel3Level2Level1.Where(r => r.Active).ToList();
+
+                        var inativarParLevel3Level2 = listaIndicadoresVinculados.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id);
+                        if (level1Id > 0)
+                        {
+                            inativarParLevel3Level2 = listaIndicadoresVinculados.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id & r.ParLevel1_Id == level1Id);
+                        }
+                     
                         if (inativarParLevel3Level2.IsNotNull())
                         {
                             inativarParLevel3Level2.Active = false;
@@ -951,6 +1039,10 @@ namespace Data.Repositories
                             db.ParLevel3Level2Level1.Attach(inativarParLevel3Level2);
                             db.Entry(inativarParLevel3Level2).State = EntityState.Modified;
                             db.Entry(inativarParLevel3Level2).Property(e => e.AddDate).IsModified = false;
+                            if (listaIndicadoresVinculados.Count > 1 || !listaIndicadoresVinculados.Any(r => r.ParLevel1_Id == level1Id))
+                            {
+                                db.Entry(inativarParLevel3Level2.ParLevel3Level2).State = EntityState.Unchanged;
+                            }
 
                             var inativarParLevel2Level1 = db.ParLevel2Level1.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id && r.ParLevel2_Id == i.ParLevel2_Id && r.ParLevel1_Id == inativarParLevel3Level2.ParLevel1_Id);
                             if (inativarParLevel2Level1.IsNotNull())
@@ -962,12 +1054,20 @@ namespace Data.Repositories
                                 db.Entry(inativarParLevel2Level1).Property(e => e.AddDate).IsModified = false;
                             }
                         }
+                        else
+                        {
+                            i.IsActive = true;
+                            if (listaIndicadoresVinculados.Count == 0)
+                            {
+                                i.IsActive = false;
+                            }
+                        }
 
                         db.SaveChanges();
                     }
 
 
-                }
+                    }
             }
             //}
 

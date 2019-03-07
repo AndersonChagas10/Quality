@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Dominio.RotinaIntegracao>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Rotina Integração</span>
+                </li>
+            </ul>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">Rotina Integração</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <p>
+                                    @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
+                                </p>
+                                <table class="table" id="">
+                                    <thead>
+                                        <tr>
+                                            <th> Data Source </th>
+                                            <th> Initial Catalog</th>
+                                            <th> User </th>
+                                            <th> Query </th>
+                                            <th> Parametro </th>
+                                            <th> Nome </th>
+                                            <th> Está ativo </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DataSource)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.InitialCatalog)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.query)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Parametro)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.IsActive)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+

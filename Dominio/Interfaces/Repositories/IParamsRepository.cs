@@ -4,7 +4,7 @@ namespace Dominio.Interfaces.Repositories
 {
     public interface IParamsRepository
     {
-        void SaveParLevel1(ParLevel1 saveParamLevel1, List<ParHeaderField> listaParHEadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> listaReincidencia, List<ParGoal> listParGoal);
+        void SaveParLevel1(ParLevel1 saveParamLevel1, List<ParHeaderField> listaParHEadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> listaReincidencia, List<ParGoal> listParGoal, List<ParLevel1XRotinaIntegracao> listRotinaIntegracaoXParLevel1, List<int> removervinculoRotina);
 
         void SaveParLevel2(ParLevel2 saveParamLevel2, List<ParLevel3Group> listaParLevel3Group, List<ParCounterXLocal> listParCounterXLocal, List<ParNotConformityRuleXLevel> saveParamNotConformityRuleXLevel, List<ParEvaluation> saveParamEvaluation, List<ParSample> saveParamSample, List<ParRelapse> listParRelapse);
 
@@ -19,7 +19,7 @@ namespace Dominio.Interfaces.Repositories
         void SaveParCompany(ParCompany paramCompany);
 
         void SaveParLevel3Level2(ParLevel3Level2 paramLevel3Level2);
-        void SaveParLevel3(ParLevel3 saveParamLevel3, List<ParLevel3Value> listSaveParamLevel3Value, List<ParLevel3EvaluationSample> listParLevel3EvaluationSample, List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos, int level1Id);
+        void SaveParLevel3(ParLevel3 saveParamLevel3, List<ParLevel3Value> listSaveParamLevel3Value, List<ParLevel3EvaluationSample> listParLevel3EvaluationSample, List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos, int level1Id, List<ParLevel3XParDepartment> listSaveParLevel3XDepartment);
         void ExecuteSql(string sql);
         ParLevel2XHeaderField SaveParHeaderLevel2(ParLevel2XHeaderField parLevel2XHeaderField);
 

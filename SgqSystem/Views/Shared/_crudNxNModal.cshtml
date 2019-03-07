@@ -123,7 +123,6 @@
             /*RegraNc*/
             if ($(e).parents('#level1_nc_accordion').length || $(e).parents('#level2_nc_accordion').length || $(e).parents('#level3_nc_accordion').length) {
                 crudNxN.modalAlterarRegraNc(obj);
-                console.log(obj);
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
 
                         var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
@@ -142,6 +141,17 @@
                 crudNxN.modalAlterarContadores(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
                     var editado = crudNxN.retornaObjetoAlteradoContadores(obj);//
+                    $(e).parents('tr').removeData();
+                    $(e).parents('tr').data(editado);
+                    $($(e).parents('tr').find('td')[0]).html(editado.ParCounterName)//
+                    $($(e).parents('tr').find('td')[1]).html(editado.ParLocalName)//
+                    $('#crudNxNEdit').modal('hide');
+                });
+            }
+            else if ($(e).parents('#level1_rotina_accordion').length || $(e).parents('#level2_rotina_accordion').length || $(e).parents('#level3_rotina_accordion').length) {
+                crudNxN.modalAlterarVinculoRotina(obj);//
+                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
+                    var editado = crudNxN.retornaObjetoAlteradoRotina(obj);//
                     $(e).parents('tr').removeData();
                     $(e).parents('tr').data(editado);
                     $($(e).parents('tr').find('td')[0]).html(editado.ParCounterName)//
@@ -248,12 +258,13 @@
             }
                 /*Tipos de dados L3*/
             else if ($(e).parents('#tableLevel3Value').length) {
+                debugger
                 crudNxN.modalAlterarLevel3Value(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
 
                     if (level3Value.veifyAdd('crudNxNEdit')) {//
                         var editado = level3Value.getObjAdd('crudNxNEdit', obj);//
-                        if (parseInt(editado.IntervalMin) <= parseInt(editado.IntervalMax)) {
+                        if ((parseInt(editado.IntervalMin) <= parseInt(editado.IntervalMax)) || editado.ParLevel3InputType_Id == 12) {
                             $(e).parents('tr').removeData();
                             $(e).parents('tr').data(editado);
                             $($(e).parents('tr').find('td')[0]).html(editado.ParLevel3InputType_Name)//
@@ -341,7 +352,7 @@
                 $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
                 $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
 
-            } else if (obj.ParLevel3InputType_Id == 1 || obj.ParLevel3InputType_Id == 6) {
+            } else if (obj.ParLevel3InputType_Id == 1 || obj.ParLevel3InputType_Id == 6 || obj.ParLevel3InputType_Id == 12) {
 
                 divDeEdicao = $('.ParBinarios').clone();
                 $(divDeEdicao).show();
@@ -443,6 +454,15 @@
         },
         /*Avaliação e Amostra L2*/
         modalAlterarAvAmL2: function (obj) {
+            debugger
+
+            if ((obj.sampleNumber + '').indexOf('infin') >= 0) 
+                obj.sampleNumber = 0;
+            
+            if ((obj.evaluationNumber + '').indexOf('infin') >= 0) 
+                obj.evaluationNumber = 0;
+            
+
             var divDeEdicao = $('#level2_AvAmostra_accordion > div  table.table-erp').clone();
 
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
@@ -577,6 +597,17 @@
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
         },
+
+        modalAlterarVinculoRotina: function (obj) {
+            debugger
+            var divDeEdicao = $('#camposRotina').clone();
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+            $('#crudNxNEdit #myModalLabel').html($('#tableRotinas').attr('nameModal'));
+            $('#crudNxNEdit #rotinaIngracaoDTO_Name').val(obj.Name);/*Preenche*/
+            $('#crudNxNEdit #rotina').val(obj.RotinaIntegracao_Id);/*Preenche*/
+
+            $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+        },
         retornaObjetoAlteradoContadores: function (obj) {
 
             /*Valida se pode criar o objeto*/
@@ -614,6 +645,22 @@
             /*Valida se pode criar o objeto*/
             ReincidenciaL1.veifyAdd('crudNxNEdit')
             ReincidenciaL1.getObjAdd('crudNxNEdit', obj);
+            return obj;
+        },
+        retornaObjetoAlteradoRotina: function (obj) {
+            /*Valida se pode criar o objeto*/
+            if ($('#crudNxNEdit #rotina :selected').val() <= 0) {
+                alert("Por favor selecione uma rotina.");
+                return;
+            }
+
+            if ($('#crudNxNEdit #rotinaIngracaoDTO_Name').val() === "") {
+                alert("Por favor insira um nome para o vinculo.");
+                return;
+            }
+            obj.RotinaIntegracao_Id = $('#crudNxNEdit #rotina :selected').val();
+            obj.Name = $('#crudNxNEdit #rotinaIngracaoDTO_Name').val();
+
             return obj;
         },
 

@@ -66,7 +66,7 @@ function wMessage(elemento, message) {
 
 function openMessageModal(title, content, tipo, button) {
 
-    if($(".level2Group:visible").length > 0){        
+    if ($(".level2Group:visible").length > 0) {
         $('.btnAreaSaveConfirm').addClass('hide');
         $('.btnAreaSave').removeAttr('disabled');
     }
@@ -82,7 +82,7 @@ function openMessageModal(title, content, tipo, button) {
 
     mensagem.children('.head').html(title);
     mensagem.children('.body').html(content);
-    
+
     $('.btnMessage').removeClass('hide').show();
 
     mensagem.fadeIn("fast", function (e) {
@@ -92,7 +92,7 @@ function openMessageModal(title, content, tipo, button) {
 
 function openMessageConfirm(title, content, callback) {
 
-    if($(".level2Group:visible").length > 0){        
+    if ($(".level2Group:visible").length > 0) {
         $('.btnAreaSaveConfirm').addClass('hide');
         $('.btnAreaSave').removeAttr('disabled');
     }
@@ -130,6 +130,57 @@ function openMessageConfirmAtraso(callback) {
     });
 }
 
+function openMessageConfirmGeneric(title, content, callback, inputType, that) {
+
+    if (!inputType)
+        inputType = 'text'
+
+    var modalConfirm = $('.messageConfirm, .overlay');
+
+    modalConfirm.children('.head').html(title);
+    modalConfirm.children('.body').children('.txtMessage').html(content);
+    modalConfirm.children('.body').append('<input type="' + inputType + '" id="txtMessageComfirm" min="1" class="form-control input-sm" style="max-width: 160px;">')
+
+    $('#passMessageComfirm').hide();
+    $('#btnMessageYes').removeClass('hide');
+    $('#btnMessageNo').removeClass('hide');
+
+    $("#txtMessageComfirm").off().on('keydown', function (e) {
+
+        if (!((e.keyCode > 95 && e.keyCode < 106)
+            || (e.keyCode > 48 && e.keyCode < 58)
+            || e.keyCode == 8)) {
+            event.preventDefault();
+        }
+
+    });
+
+    modalConfirm.fadeIn("fast");
+
+    $('#btnMessageYes').off().on('click', function () {
+
+        modalConfirm.fadeOut("fast", function (e) { });
+
+        if ($('#txtMessageComfirm').val())
+            callback(that, $('#txtMessageComfirm').val());
+        else
+            callback();
+
+        $('#txtMessageComfirm').remove();
+        $('#passMessageComfirm').show();
+    });
+
+    $('#btnMessageNo').off().on('click', function () {
+        modalConfirm.fadeOut("fast", function (e) {
+            $('#passMessageComfirm').removeClass('hide');
+            $('#inputDate').addClass('hide');
+            $('#txtMessageComfirm').remove();
+            $('#passMessageComfirm').show();
+        });
+    });
+
+}
+
 function openMessageSelecionarLevel3PorDepartamento(callback) {
 
     var mensagem = $('.messageSelecionarDepartamento, .overlay');
@@ -144,7 +195,7 @@ function openMessageSelecionarLevel3PorDepartamento(callback) {
 
 function openMessageCA(title, content, callback) {
 
-    if($(".level2Group:visible").length > 0){        
+    if ($(".level2Group:visible").length > 0) {
         $('.btnAreaSaveConfirm').addClass('hide');
         $('.btnAreaSave').removeAttr('disabled');
     }
@@ -158,10 +209,10 @@ function openMessageCA(title, content, callback) {
     $('#btnMessageNo').removeClass('hide');
 
     mensagem.fadeIn("fast");
-	
-	mensagem.off("fast");
-	$('#btnMessageYes').off('click');
-	$('#btnMessageNo').off('click');
+
+    mensagem.off("fast");
+    $('#btnMessageYes').off('click');
+    $('#btnMessageNo').off('click');
 
     $('#btnMessageYes').click(function () {
         mensagem.fadeOut("fast", function (e) {
@@ -178,7 +229,7 @@ function openSyncModal(title, content) {
 
     var mensagem = $('.message, .overlay');
     mensagem.children('.head').html(title);
-    mensagem.children('.body').html(getResource("synchronizing")+"... ");
+    mensagem.children('.body').html(getResource("synchronizing") + "... ");
     //"<span class='perc'> 0</span> / " + ($('.level02Result[sync=false]').parents('.level01Result').length));
     //$('#btnMessageOk').addClass('hide');
 
@@ -208,10 +259,9 @@ $(document).on('click', '#btnMessageOk', function (e) {
 
     $('.overlay').hide();
     mensagem.fadeOut("fast");
-    if($('.alertRed').length > 0)
-        if($('.alertRed')[0].style.display != "none"){
-            if(acaoCorretivaObrigatoria)
-            {
+    if ($('.alertRed').length > 0)
+        if ($('.alertRed')[0].style.display != "none") {
+            if (acaoCorretivaObrigatoria) {
                 correctiveActionOpen(_level1.id, getCollectionDate(), $('.App').attr('shift'), $('.App').attr('period'));
                 $('.modal-close-ca').hide();
             }
@@ -225,102 +275,102 @@ function statusMessage(message) {
     }, 10000);
 }
 
-function getAlertMessage(tipoAlerta, alertaAtual, defeitosL1, metaTolerancia, defeitosLevel2, metaavaliacao){
-    
-    if($('.App').attr('local') == "brasil"){
-        
+function getAlertMessage(tipoAlerta, alertaAtual, defeitosL1, metaTolerancia, defeitosLevel2, metaavaliacao) {
+
+    if ($('.App').attr('local') == "brasil") {
+
         if (tipoAlerta == "a1" || tipoAlerta == "a2" || tipoAlerta == "a4") {
-            switch(alertaAtual){
-                case 0: 
-                    return "Foi excedida a "+(alertaAtual+1)+"ª meta tolerância* ("+defeitosL1+" pontos NC de "+metaTolerancia+" pontos permitidos). <br /><br />"+
-                            "O Supervisor da área será notificado e deverá tomar ações corretivas. <br /><br />"+
-                            "* "+(alertaAtual+1)+"ª meta tolerância corresponde a "+(alertaAtual+1)+" terço da meta do indicador transformada em pontos.";
+            switch (alertaAtual) {
+                case 0:
+                    return "Foi excedida a " + (alertaAtual + 1) + "ª meta tolerância* (" + defeitosL1 + " pontos NC de " + metaTolerancia + " pontos permitidos). <br /><br />" +
+                        "O Supervisor da área será notificado e deverá tomar ações corretivas. <br /><br />" +
+                        "* " + (alertaAtual + 1) + "ª meta tolerância corresponde a " + (alertaAtual + 1) + " terço da meta do indicador transformada em pontos.";
                     break;
-                case 1: 
-                    return "Foi excedida a "+(alertaAtual+1)+"ª meta tolerância* ("+defeitosL1+" pontos NC de "+metaTolerancia+" pontos permitidos) e meta avaliação** ("+defeitosLevel2+" pontos NC de "+metaavaliacao+" pontos permitidos por avaliação).<br /><br />"+
-                            "O Supervisor e o Gerente da área serão notificados e deverão tomar ações corretivas. <br /><br />"+
-                            "* "+(alertaAtual+1)+"ª meta tolerância corresponde a "+(alertaAtual+1)+" terços da meta do indicador transformada em pontos.<br />"+
-                            "** Meta avaliação corresponde ao número de pontos permitidos por avaliação e é calculada através da divisão da meta do indicador transformada em pontos pelo número de avaliações por monitoramento.";
+                case 1:
+                    return "Foi excedida a " + (alertaAtual + 1) + "ª meta tolerância* (" + defeitosL1 + " pontos NC de " + metaTolerancia + " pontos permitidos) e meta avaliação** (" + defeitosLevel2 + " pontos NC de " + metaavaliacao + " pontos permitidos por avaliação).<br /><br />" +
+                        "O Supervisor e o Gerente da área serão notificados e deverão tomar ações corretivas. <br /><br />" +
+                        "* " + (alertaAtual + 1) + "ª meta tolerância corresponde a " + (alertaAtual + 1) + " terços da meta do indicador transformada em pontos.<br />" +
+                        "** Meta avaliação corresponde ao número de pontos permitidos por avaliação e é calculada através da divisão da meta do indicador transformada em pontos pelo número de avaliações por monitoramento.";
                     break;
-                case 2: 
-                    return "Foi excedida a "+(alertaAtual+1)+"ª meta tolerância* ("+defeitosL1+" pontos NC de "+metaTolerancia+" pontos permitidos) e meta avaliação** ("+defeitosLevel2+" pontos NC de "+metaavaliacao+" pontos permitidos por avaliação).<br /><br />"+
-                            "O Supervisor, o Gerente e o Diretor da área serão notificados e deverão tomar ações corretivas. <br /><br />"+
-                            "* "+(alertaAtual+1)+"ª meta tolerância corresponde a meta do indicador transformada em pontos.<br />"+
-                            "** Meta avaliação corresponde ao número de pontos permitidos por avaliação e é calculada através da divisão da meta do indicador transformada em pontos pelo número de avaliações por monitoramento.";
+                case 2:
+                    return "Foi excedida a " + (alertaAtual + 1) + "ª meta tolerância* (" + defeitosL1 + " pontos NC de " + metaTolerancia + " pontos permitidos) e meta avaliação** (" + defeitosLevel2 + " pontos NC de " + metaavaliacao + " pontos permitidos por avaliação).<br /><br />" +
+                        "O Supervisor, o Gerente e o Diretor da área serão notificados e deverão tomar ações corretivas. <br /><br />" +
+                        "* " + (alertaAtual + 1) + "ª meta tolerância corresponde a meta do indicador transformada em pontos.<br />" +
+                        "** Meta avaliação corresponde ao número de pontos permitidos por avaliação e é calculada através da divisão da meta do indicador transformada em pontos pelo número de avaliações por monitoramento.";
                     break;
                 default:
-                    return "Foi excedida a "+(alertaAtual+1)+"ª meta tolerância* ("+defeitosL1+" pontos NC de "+metaTolerancia+" pontos permitidos) e meta avaliação** ("+defeitosLevel2+" pontos NC de "+metaavaliacao+" pontos permitidos por avaliação).<br /><br />"+
-                            "O Supervisor e o Gerente da área serão notificados e deverão tomar ações corretivas. <br /><br />"+
-                            "* "+(alertaAtual+1)+"ª meta tolerância corresponde a "+(alertaAtual+1)+" terços da meta do indicador transformada em pontos.<br />"+
-                            "** Meta avaliação corresponde ao número de pontos permitidos por avaliação e é calculada através da divisão da meta do indicador transformada em pontos pelo número de avaliações por monitoramento.";
+                    return "Foi excedida a " + (alertaAtual + 1) + "ª meta tolerância* (" + defeitosL1 + " pontos NC de " + metaTolerancia + " pontos permitidos) e meta avaliação** (" + defeitosLevel2 + " pontos NC de " + metaavaliacao + " pontos permitidos por avaliação).<br /><br />" +
+                        "O Supervisor e o Gerente da área serão notificados e deverão tomar ações corretivas. <br /><br />" +
+                        "* " + (alertaAtual + 1) + "ª meta tolerância corresponde a " + (alertaAtual + 1) + " terços da meta do indicador transformada em pontos.<br />" +
+                        "** Meta avaliação corresponde ao número de pontos permitidos por avaliação e é calculada através da divisão da meta do indicador transformada em pontos pelo número de avaliações por monitoramento.";
 
             }
         } else if (tipoAlerta == "a3") {
-            switch(alertaAtual){
-                case 0: 
-                    return "Foi excedida a primeira meta tolerância* ("+defeitosL1+"% NC de "+metaTolerancia+"% meta indicador).<br /><br />"+
-                            "O Supervisor da área será notificado e deverá tomar ações corretivas. <br /><br />"+
-                            "* "+(alertaAtual+1)+"ª meta tolerância corresponde a "+(alertaAtual+1)+" terço da meta do indicador.";
+            switch (alertaAtual) {
+                case 0:
+                    return "Foi excedida a primeira meta tolerância* (" + defeitosL1 + "% NC de " + metaTolerancia + "% meta indicador).<br /><br />" +
+                        "O Supervisor da área será notificado e deverá tomar ações corretivas. <br /><br />" +
+                        "* " + (alertaAtual + 1) + "ª meta tolerância corresponde a " + (alertaAtual + 1) + " terço da meta do indicador.";
                     break;
-                case 1: 
-                    return "Foi excedida a segunda meta tolerância* ("+defeitosL1+"% NC de "+metaTolerancia+"% meta indicador). <br /><br />"+
-                            "O Supervisor e o Gerente da área serão notificados e deverão tomar ações corretivas. <br /><br />"+
-                            "* "+(alertaAtual+1)+"ª meta tolerância corresponde a "+(alertaAtual+1)+" terços da meta do indicador.";
+                case 1:
+                    return "Foi excedida a segunda meta tolerância* (" + defeitosL1 + "% NC de " + metaTolerancia + "% meta indicador). <br /><br />" +
+                        "O Supervisor e o Gerente da área serão notificados e deverão tomar ações corretivas. <br /><br />" +
+                        "* " + (alertaAtual + 1) + "ª meta tolerância corresponde a " + (alertaAtual + 1) + " terços da meta do indicador.";
                     break;
-                case 2: 
-                    return "Foi excedida a "+(alertaAtual+1)+"ª meta tolerância* ("+defeitosL1+"% NC de "+metaTolerancia+"% meta indicador).<br /><br />"+
-                            "O Supervisor, o Gerente e o Diretor da área serão notificados e deverão tomar ações corretivas. <br /><br />"+
-                            "* "+(alertaAtual+1)+"ª meta tolerância corresponde a meta do indicador.";
+                case 2:
+                    return "Foi excedida a " + (alertaAtual + 1) + "ª meta tolerância* (" + defeitosL1 + "% NC de " + metaTolerancia + "% meta indicador).<br /><br />" +
+                        "O Supervisor, o Gerente e o Diretor da área serão notificados e deverão tomar ações corretivas. <br /><br />" +
+                        "* " + (alertaAtual + 1) + "ª meta tolerância corresponde a meta do indicador.";
                     break;
-                default: 
-                    return "Foi excedida a "+(alertaAtual+1)+"ª meta tolerância* ("+defeitosL1+"% NC de "+metaTolerancia+"% meta indicador).<br /><br />"+
-                            "O Supervisor e o Gerente da área serão notificados e deverão tomar ações corretivas. <br /><br />"+
-                            "* "+(alertaAtual+1)+"ª meta tolerância corresponde a "+(alertaAtual+1)+" terços da meta do indicador.";
-                    
+                default:
+                    return "Foi excedida a " + (alertaAtual + 1) + "ª meta tolerância* (" + defeitosL1 + "% NC de " + metaTolerancia + "% meta indicador).<br /><br />" +
+                        "O Supervisor e o Gerente da área serão notificados e deverão tomar ações corretivas. <br /><br />" +
+                        "* " + (alertaAtual + 1) + "ª meta tolerância corresponde a " + (alertaAtual + 1) + " terços da meta do indicador.";
+
             }
         } else {
             return "Número de não conformidades excedido."
         }
 
-    } else if($('.App').attr('local') == "eua"){
+    } else if ($('.App').attr('local') == "eua") {
 
         if (tipoAlerta == "a1" || tipoAlerta == "a2" || tipoAlerta == "a4") {
-            switch(alertaAtual){
-                case 0: 
-                    return "The first tolerance goal was exceeded ("+defeitosL1+" NC points of "+metaTolerancia+" allowed points). <br /><br />"+
-                            "The supervisor will be notified and will take corrective actions.";
+            switch (alertaAtual) {
+                case 0:
+                    return "The first tolerance goal was exceeded (" + defeitosL1 + " NC points of " + metaTolerancia + " allowed points). <br /><br />" +
+                        "The supervisor will be notified and will take corrective actions.";
                     break;
-                case 1: 
-                    return "The second tolerance goal was exceeded ("+defeitosL1+" NC points of "+metaTolerancia+" allowed points) and the evaluation goal ("+defeitosLevel2+" NC points of "+metaavaliacao+" allowed points per evaluation).<br /><br />"+
-                            "The supervidor and the area manager will be notified and will take corrective actions.";
+                case 1:
+                    return "The second tolerance goal was exceeded (" + defeitosL1 + " NC points of " + metaTolerancia + " allowed points) and the evaluation goal (" + defeitosLevel2 + " NC points of " + metaavaliacao + " allowed points per evaluation).<br /><br />" +
+                        "The supervidor and the area manager will be notified and will take corrective actions.";
                     break;
-                case 2: 
-                    return "The third tolerance goal was exceeded ("+defeitosL1+" NC points de "+metaTolerancia+" allowed points) and the evaluation goal ("+defeitosLevel2+" NC points of "+metaavaliacao+" allowed points per evaluation).<br /><br />"+
-                            "The supervisor, the manager and the area manager will be notified and will take corrective actions.";
+                case 2:
+                    return "The third tolerance goal was exceeded (" + defeitosL1 + " NC points de " + metaTolerancia + " allowed points) and the evaluation goal (" + defeitosLevel2 + " NC points of " + metaavaliacao + " allowed points per evaluation).<br /><br />" +
+                        "The supervisor, the manager and the area manager will be notified and will take corrective actions.";
                     break;
                 default:
-                    return "The fourth tolerance goal was exceeded ("+defeitosL1+" NC points de "+metaTolerancia+" allowed points) and the evaluation goal ("+defeitosLevel2+" NC points of "+metaavaliacao+" allowed points per evaluation).<br /><br />"+
-                            "The supervisor and the area manager will be notified and will take corrective actions.";
+                    return "The fourth tolerance goal was exceeded (" + defeitosL1 + " NC points de " + metaTolerancia + " allowed points) and the evaluation goal (" + defeitosLevel2 + " NC points of " + metaavaliacao + " allowed points per evaluation).<br /><br />" +
+                        "The supervisor and the area manager will be notified and will take corrective actions.";
 
             }
         } else if (tipoAlerta == "a3") {
-            switch(alertaAtual){
-                case 0: 
-                    return "The first tolerance goal was exceeded ("+defeitosL1+"% of NC "+metaTolerancia+"% indicator goal).<br /><br />"+
-                            "The supervisor will be notified and will take corrective actions.";
+            switch (alertaAtual) {
+                case 0:
+                    return "The first tolerance goal was exceeded (" + defeitosL1 + "% of NC " + metaTolerancia + "% indicator goal).<br /><br />" +
+                        "The supervisor will be notified and will take corrective actions.";
                     break;
-                case 1: 
-                    return "The second tolerance goal was exceeded ("+defeitosL1+"% of NC "+metaTolerancia+"% indicator goal). <br /><br />"+
-                            "The supervidor and the area manager will be notified and will take corrective actions.";
+                case 1:
+                    return "The second tolerance goal was exceeded (" + defeitosL1 + "% of NC " + metaTolerancia + "% indicator goal). <br /><br />" +
+                        "The supervidor and the area manager will be notified and will take corrective actions.";
                     break;
-                case 2: 
-                    return "The third tolerance goal was exceeded ("+defeitosL1+"% of NC "+metaTolerancia+"% indicator goal).<br /><br />"+
-                            "The supervisor, the manager and the area manager will be notified and will take corrective actions.";
+                case 2:
+                    return "The third tolerance goal was exceeded (" + defeitosL1 + "% of NC " + metaTolerancia + "% indicator goal).<br /><br />" +
+                        "The supervisor, the manager and the area manager will be notified and will take corrective actions.";
                     break;
-                default: 
-                    return "The fourth tolerance goal was exceeded ("+defeitosL1+"% of NC "+metaTolerancia+"% indicator goal).<br /><br />"+
-                            "The supervisor and the area manager will be notified and will take corrective actions.";
-                    
+                default:
+                    return "The fourth tolerance goal was exceeded (" + defeitosL1 + "% of NC " + metaTolerancia + "% indicator goal).<br /><br />" +
+                        "The supervisor and the area manager will be notified and will take corrective actions.";
+
             }
         } else {
             return "The number of not conformities is exceeded."
@@ -328,6 +378,6 @@ function getAlertMessage(tipoAlerta, alertaAtual, defeitosL1, metaTolerancia, de
 
     }
 
-    
-    
+
+
 }

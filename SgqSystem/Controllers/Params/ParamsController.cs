@@ -101,7 +101,7 @@ namespace SgqSystem.Controllers.Params
                     
                     ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name = CommonData.getResource(ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name).Value.ToString();
                     //ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name = ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name;
-                    
+                   
                 }
 
             return PartialView("_ParLevel1", ViewModel);/*Retorna View com Model ParLevel1 encontrado no DB.*/
@@ -135,7 +135,7 @@ namespace SgqSystem.Controllers.Params
             return PartialView("_ParLevel2", ViewModel);/*Retorna View com Model ParLevel2 encontrado no DB.*/
         }
 
-        public ActionResult GetParLevel3ById(int id, int? idParLevel2 = 0)
+        public ActionResult GetParLevel3ById(int id, int? idParLevel2 = 0, int? idParLevel1 = 0)
         {
             ViewBag.Role = VerificarRole();
 
@@ -144,7 +144,7 @@ namespace SgqSystem.Controllers.Params
                 return PartialView("_ParLevel3", ViewModel);
 
             var viewModelPreenchido = ViewModel;
-            viewModelPreenchido.paramsDto = _paramDomain.GetLevel3(id, idParLevel2);
+            viewModelPreenchido.paramsDto = _paramDomain.GetLevel3(id, idParLevel2, idParLevel1);
             return PartialView("_ParLevel3", viewModelPreenchido); /*Retorna View com Model ParLevel3 encontrado no DB.*/
         }
 

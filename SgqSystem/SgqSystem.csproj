@@ -378,6 +378,7 @@
     <Compile Include="Controllers\Api\LanguageController.cs" />
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
+    <Compile Include="Controllers\Api\RetornaQueryRotinaApiController.cs" />
     <Compile Include="Controllers\Api\SelectVinculado\SelectVinculadoApiController.cs" />
     <Compile Include="Controllers\Api\ShiftApiController.cs" />
     <Compile Include="Controllers\Api\SIF\AcompanhamentoEmbarqueApiController.cs" />
@@ -436,6 +437,7 @@
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\Relatorios\SIFReportsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ReportXUserSgqController.cs" />
+    <Compile Include="Controllers\RotinaIntegracaoController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
@@ -492,6 +494,7 @@
     <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
     <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3XParDepartmentMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel2XHeaderFieldMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel2Level1MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
@@ -539,10 +542,12 @@
     <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
     <Compile Include="Mappers\ParClusterXModuleMapperProfile.cs" />
     <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
+    <Compile Include="Mappers\ParLevel1XRotinaIntegracaoMapperProfile.cs" />
     <Compile Include="Mappers\ResultLevel3MapperProfile.cs" />
     <Compile Include="Mappers\RoleMapperProfile.cs" />
     <Compile Include="Mappers\RoleUserSgqMapperProfile.cs" />
     <Compile Include="Mappers\RoleUserSgqXItemMenuMapperProfile.cs" />
+    <Compile Include="Mappers\RotinaIntegracaoMapperProfile.cs" />
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />
@@ -560,6 +565,7 @@
     <Compile Include="Services\ServiceLevel2.cs" />
     <Compile Include="Services\SGQDBContext.cs" />
     <Compile Include="Services\SGQDBContext_YTOARA.cs" />
+    <Compile Include="Services\SyncModel\ParLevel3XParDepartmentSyncModel.cs" />
     <Compile Include="Services\SyncServices.asmx.cs">
       <DependentUpon>SyncServices.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -926,6 +932,7 @@
     <Content Include="Scripts\appColeta\resource.js" />
     <Content Include="Scripts\appColeta\rightBar.js" />
     <Content Include="Scripts\appColeta\role.js" />
+    <Content Include="Scripts\appColeta\rotinaHeaderField.js" />
     <Content Include="Scripts\appColeta\scriptfile.js" />
     <Content Include="Scripts\appColeta\sync.js" />
     <Content Include="Scripts\appColeta\tempSave.js" />
@@ -1904,9 +1911,15 @@
     <Content Include="Views\RelatoriosMD\AvaliacaoSensorial.cshtml" />
     <Content Include="Views\SIFReports\AcompanhamentoEmbarque.cshtml" />
     <Content Include="Views\RelatoriosMD\PesoHamburger.cshtml" />
+    <Content Include="Views\Params\_ParLevel3XDepartment.cshtml" />
     <Content Include="Views\Params\_AgendamentoDiarioComIntervalo.cshtml" />
     <Content Include="Views\Shared\_AgendamentoVolumes.cshtml" />
     <Content Include="Views\ParLevel2ControlCompany\List.cshtml" />
+    <Content Include="Views\RotinaIntegracao\Index.cshtml" />
+    <Content Include="Views\RotinaIntegracao\Create.cshtml" />
+    <Content Include="Views\RotinaIntegracao\Edit.cshtml" />
+    <Content Include="Views\RotinaIntegracao\Delete.cshtml" />
+    <Content Include="Views\Params\_Rotina.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2001,7 +2014,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem/</IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
