@@ -463,9 +463,9 @@ function completeLevel2(level2, evaluateCurrent, evaluateTotal) {
     var avaliacao = parseInt($(level2).attr('evaluate'));
     var amostra = parseInt($(level2).attr('sample'));
 
-    var isInfinityAvaliation = !!(avaliacao == 0 && amostra == 0);
+    var isInfinityAvaliation = !!(avaliacao == 0 || amostra == 0);
 
-    if (!isInfinityAvaliation && evaluateCurrent > evaluateTotal) {
+    if (!isInfinityAvaliation && (evaluateCurrent > evaluateTotal)) {
         //Completa o level2 Selecionado.
         level02Complete(level2);
     }
