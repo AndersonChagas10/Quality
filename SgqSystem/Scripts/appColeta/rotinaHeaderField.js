@@ -1,56 +1,70 @@
 function getRotina(that) {
 
-    var headerFields_Ids = $(that).attr('data-headerfields').split('|');
+    if (!online) {
+        openMessageModal(getResource("warning"), getResource("you_are_not_online"));
+        return false;
+    }
 
+    var headerFieldsParams = $(that).attr('data-headerfields').split('|');
+    var $btn = $(that);
     var headerFieldsList = [];
+    
+    headerFieldsParams.forEach(function (headerFieldParam) {
+        
+        var self = $('input[data-param=' + headerFieldParam + ']').parents('.header');
+        var key = [headerFieldParam];
+        var value = $('input[data-param=' + headerFieldParam + ']').val();
+        var isRequired = $(self).prop('required');
 
-    headerFields_Ids.forEach(function (headerFieldId) {
+        if (isRequired && !value) {
 
-        var key = [headerFieldId];
-        var value = $('input[data-param=' + headerFieldId + ']').val();
+            $(self).addClass("has-warning");
+            openMessageModal(getResource("warning"), getResource("fill_header_fields"));
+            return;
 
-        if (key && value) {
-            var headerFieldsSend = { [headerFieldId]: $('input[data-param=' + headerFieldId + ']').val() };
-            headerFieldsList.push(headerFieldsSend);
+        } else if (value) {
+
+            headerFieldsList.push({ [key]: value });
         }
-
     });
 
     if (headerFieldsList.length > 0) {
 
         var obj = {
+            IdUsuario: $('.App').attr('userid'),
             IdRotina: $(that).attr('data-id-rotina'),
             Params: headerFieldsList
-        }
+        };
 
-        getDynamicValues(obj);
-
-    } else {
-
-        openMessageModal("Prencha o cabeçalho", "Preencha o cabeçalho para buscar os dados");
-
+        getDynamicValues(obj, $btn);
     }
-
 }
 
-function getDynamicValues(obj) {
+function getDynamicValues(obj, $btn) {
+
+    $btn.button('loading');
 
     $.ajax({
         data: obj,
         url: urlPreffix + '/api/RetornaQueryRotinaApi/RetornaQueryRotina',
         type: 'POST',
         success: function (data) {
-            debugger
+
             if (data)
                 setDynamicValues(data);
 
         },
-        timeout: 600000,
+        timeout: 10000,
         error: function () {
 
-        }
-    });
+            openMessageModal(getResource("error"), getResource("unable_to_complete_data_request"));
 
+        },
+        complete: function(){
+            $btn.button('reset');
+        }
+
+    });
 }
 
 function setDynamicValues(obj) {
