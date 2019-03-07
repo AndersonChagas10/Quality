@@ -619,6 +619,17 @@ namespace Dominio.Services
                         }
                         db.SaveChanges();
 
+=========
+
+                        rolesUserSgqByCompany = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == userDto.Id).ToList();
+
+                        foreach (var u in rolesUserSgqByCompany)
+                        {
+                            db.ParCompanyXUserSgq.Remove(u);
+                        }
+                        db.SaveChanges();
+
+>>>>>>>>> Temporary merge branch 2
                         rolesUserSgqByCompany = new List<ParCompanyXUserSgq>();
 
                         #endregion
