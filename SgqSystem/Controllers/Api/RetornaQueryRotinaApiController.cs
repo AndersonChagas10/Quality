@@ -26,7 +26,7 @@ namespace SgqSystem.Controllers.Api
             var retornoRotinaNinja = new Object();
             var idUsuario = 0;
 
-            Teste myDeserializedObjList = (Teste)Newtonsoft.Json.JsonConvert.DeserializeObject(body.ToString(), typeof(Teste));
+            Rotina myDeserializedObjList = (Rotina)Newtonsoft.Json.JsonConvert.DeserializeObject(body.ToString(), typeof(Rotina));
             RotinaIntegracao rotinaSelecionada;
 
             if (!string.IsNullOrEmpty(myDeserializedObjList.IdUsuario))
@@ -60,13 +60,13 @@ namespace SgqSystem.Controllers.Api
             return retornoRotinaNinja;
         }
 
-        private string MapearValoresDinamicos(string dataSource, Object pessego)
+        private string MapearValoresDinamicos(string dataSource, Object propriedadesConexao)
         {
             if (dataSource.Contains('{') && dataSource.Contains('}'))
             {
                 var propriedadeNomeComparar = dataSource.Replace("{", "").Replace("}", "").ToUpperInvariant();
 
-                var retornoValorDinamico = pessego.GetType().GetProperty(propriedadeNomeComparar).GetValue(pessego);
+                var retornoValorDinamico = propriedadesConexao.GetType().GetProperty(propriedadeNomeComparar).GetValue(propriedadesConexao);
 
                 return retornoValorDinamico.ToString();
             }
@@ -96,7 +96,7 @@ namespace SgqSystem.Controllers.Api
         }
     }
 
-    public class Teste
+    public class Rotina
     {
         public string IdRotina { get; set; }
         public string IdUsuario { get; set; }
