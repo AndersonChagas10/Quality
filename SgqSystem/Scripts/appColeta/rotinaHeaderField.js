@@ -7,12 +7,11 @@ function getRotina(that) {
 
     var headerFieldsParams = $(that).attr('data-headerfields').split('|');
     var $btn = $(that);
-    var headerFieldsList = [];
-    
+    var headerFieldsList = {};
+
     headerFieldsParams.forEach(function (headerFieldParam) {
-        
+
         var self = $('input[data-param=' + headerFieldParam + ']').parents('.header');
-        var key = [headerFieldParam];
         var value = $('input[data-param=' + headerFieldParam + ']').val();
         var isRequired = $(self).prop('required');
 
@@ -24,17 +23,17 @@ function getRotina(that) {
 
         } else if (value) {
 
-            headerFieldsList.push({ [key]: value });
+            headerFieldsList[headerFieldParam] = value;
         }
     });
 
-    if (headerFieldsList.length > 0) {
+    if (Object.keys(headerFieldsList).length > 0) {
 
         var obj = {
             IdUsuario: $('.App').attr('userid'),
             IdRotina: $(that).attr('data-id-rotina'),
             Params: headerFieldsList
-        };
+        }
 
         getDynamicValues(obj, $btn);
     }
@@ -45,9 +44,10 @@ function getDynamicValues(obj, $btn) {
     $btn.button('loading');
 
     $.ajax({
-        data: obj,
+        data: JSON.stringify(obj),
         url: urlPreffix + '/api/RetornaQueryRotinaApi/RetornaQueryRotina',
         type: 'POST',
+        contentType: "application/json; charset=utf-8",
         success: function (data) {
 
             if (data)
@@ -60,7 +60,7 @@ function getDynamicValues(obj, $btn) {
             openMessageModal(getResource("error"), getResource("unable_to_complete_data_request"));
 
         },
-        complete: function(){
+        complete: function () {
             $btn.button('reset');
         }
 

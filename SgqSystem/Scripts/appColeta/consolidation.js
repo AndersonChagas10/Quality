@@ -57,7 +57,7 @@ function updateLevel2Consolidation(
 
     var level2ResultList = $('.Resultlevel2[Level1Id=' + $('.level1.selected').attr('id') + '][UnitId="' + $('.App').attr('unidadeid') + '"][Shift="' + $('.App').attr('shift') + '"][Period="' + $('.App').attr('period') + '"][CollectionDate="' + getCollectionDate() + '"]');
 
-    if (evaluateCurrent <= 1) {       
+    if (evaluateCurrent <= 1) {
         var horaAtual = new Date().getHours() + ":" + new Date().getMinutes();
         level2ResultList.attr('horaprimeiraavaliacao', horaAtual);
     }
@@ -323,17 +323,21 @@ function level2ConsolidationUpdate(level1) {
             evaluateCurrent = level1.attr('lastevaluate');
         }
 
-        if (sampleCurrent >= sampleTotal && partialSave != true) {
+        if (sampleTotal != 0 && sampleCurrent >= sampleTotal && partialSave != true) {
             sampleCurrent = 0;
             evaluateCurrent++;
         }
-        else if (partialSave == true) {
+        else if (sampleTotal != 0 && partialSave == true) {
             evaluateCurrent = parseInt($(this).attr('evaluation'));
             sampleCurrent = parseInt($(this).attr('sample'));
         }
 
         completeLevel2(level2, evaluateCurrent, evaluateTotal);
-        updateEvaluateSample(level2, level3Group, evaluateCurrent, sampleCurrent, defects);
+
+        var isInfinityAv = ($(level2).attr('evaluate') == 0 && $(level2).attr('sample') == 0)
+
+        if (!isInfinityAv)
+            updateEvaluateSample(level2, level3Group, evaluateCurrent, sampleCurrent, defects);
 
         if ($(this).attr('havereaudit') == "true") {
             if ($(this).attr('reauditlevel') == "1") {

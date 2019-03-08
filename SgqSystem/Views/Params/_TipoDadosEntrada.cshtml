@@ -230,6 +230,7 @@
     var eTipoDado_IntervalosTexto = 9;
     var eTipoDado_Resultado = 10;
     var eTipoDado_Observacao = 11;
+    var eTipoDado_BinarioObrigatorio = 12;
     var eTipoDado_Recravacao = 99;
 
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
@@ -295,7 +296,7 @@
                 parLevel3Value_DynamicValue = "";
             }
 
-            if (selectTipoInput == eTipoDado_Binario || selectTipoInput == eTipoDado_BinarioComTexto) {
+            if (selectTipoInput == eTipoDado_Binario || selectTipoInput == eTipoDado_BinarioComTexto || selectTipoInput == eTipoDado_BinarioObrigatorio) {
                 selectUnidadeDeMedidasName = "";
                 parLevel3Value_IntervalMin = "";
                 parLevel3Value_IntervalMax = "";
@@ -359,7 +360,6 @@
             }
 
             if (isEdit != undefined) {
-
                 obj.ParCompany_Name = companyName;
                 obj.ParCompany_Id = companyValue;
                 obj.IsActive = true;
@@ -427,7 +427,7 @@
             var seletorTato = !!isEdit ? isEdit : level3Value.level;
             /*Valida se pode criar o objeto*/
 
-            if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Binario || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_BinarioComTexto) { // Binario
+            if ($('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_Binario || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_BinarioComTexto || $('#' + seletorTato + ' #selectTipoInput :selected').val() == eTipoDado_BinarioObrigatorio) { // Binario
                 if ($('#' + seletorTato + ' #selectConforme :selected').val() <= 0) {
                     openMessageModal(Resources('required_field_was_not_filled'), Resources('select_positive_value_for_binary_field'));
                     return false;
@@ -580,7 +580,7 @@
                         o["ParLevel2_Name"] = "@Resources.Resource.all";
                     //console.log(o["ParLevel2_Name"]);
                     //console.log(o["ParLevel1_Name"]);
-                    if (o.ParLevel3InputType_Id == eTipoDado_Binario || o.ParLevel3InputType_Id == eTipoDado_BinarioComTexto) {
+                    if (o.ParLevel3InputType_Id == eTipoDado_Binario || o.ParLevel3InputType_Id == eTipoDado_BinarioComTexto || o.ParLevel3InputType_Id == eTipoDado_BinarioObrigatorio) {
                         o["ParLevel3BoolFalse_Name"] = o.ParLevel3BoolFalse.Name;
                         o["ParLevel3BoolTrue_Name"] = o.ParLevel3BoolTrue.Name;
                         o["ParMeasurementUnit_Name"] = "";
@@ -703,27 +703,29 @@
 
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
                 debugger
-                if (parseInt(object.IntervalMin) > parseInt(object.IntervalMax)) {
-                    openMessageModal("Valor do Limite Superior menor que o Limite Inferior", null);
-                } else {
-                    if (object.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
-                        $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers likert" onclick="mensagemAlerta()" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                if (object.ParLevel3InputType_Id != 12 && object.ParLevel3InputType_Id != 1 && object.ParLevel3InputType_Id != 6) {
+                    if (parseInt(object.IntervalMin) > parseInt(object.IntervalMax)) {
+                        openMessageModal("Valor do Limite Superior menor que o Limite Inferior", null);
+                    } else {
+                        if (object.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
+                            $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers likert" onclick="mensagemAlerta()" data-toggle="popover"><i class="fa fa-cog"></i></button>')
+                        }
+
+                        $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id'] option:first").val());
+                        $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").change();
+
+                        $("#parLevel1Select2TipoDadosEntrada").val($("#parLevel1Select2TipoDadosEntrada option:first").val());
+                        $("#parLevel2Select2TipoDadosEntrada").val($("#parLevel2Select2TipoDadosEntrada option:first").val());
+                        $("#avAmCompany").val($("#avAmCompany option:first").val());
+
+
+                        $("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id'] option:first").val());
+                        $("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id'] option:first").val());
+                        $("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id']").val($("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id'] option:first").val());
+                        $("input[name='paramsDto.parLevel3Value.IntervalMin']").val('');
+                        $("input[name='paramsDto.parLevel3Value.IntervalMax']").val('');
+                        $("input[name='paramsDto.parLevel3Value.DynamicValue']").val('');
                     }
-
-                    $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id'] option:first").val());
-                    $("select[name='paramsDto.parLevel3Value.ParLevel3InputType_Id']").change();
-
-                    $("#parLevel1Select2TipoDadosEntrada").val($("#parLevel1Select2TipoDadosEntrada option:first").val());
-                    $("#parLevel2Select2TipoDadosEntrada").val($("#parLevel2Select2TipoDadosEntrada option:first").val());
-                    $("#avAmCompany").val($("#avAmCompany option:first").val());
-
-
-                    $("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolTrue_Id'] option:first").val());
-                    $("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id']").val($("select[name='paramsDto.parLevel3Value.ParLevel3BoolFalse_Id'] option:first").val());
-                    $("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id']").val($("select[name='paramsDto.parLevel3Value.ParMeasurementUnit_Id'] option:first").val());
-                    $("input[name='paramsDto.parLevel3Value.IntervalMin']").val('');
-                    $("input[name='paramsDto.parLevel3Value.IntervalMax']").val('');
-                    $("input[name='paramsDto.parLevel3Value.DynamicValue']").val('');
                 }
             } 
         },
@@ -907,7 +909,7 @@
         }
 
         //Binários
-        if (tipoSelecionado == eTipoDado_Binario || tipoSelecionado == eTipoDado_BinarioComTexto) {
+        if (tipoSelecionado == eTipoDado_Binario || tipoSelecionado == eTipoDado_BinarioComTexto || tipoSelecionado == eTipoDado_BinarioObrigatorio) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();

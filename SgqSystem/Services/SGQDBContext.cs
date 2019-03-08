@@ -553,6 +553,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                 throw ex;
             }
         }
+
         public IEnumerable<ParLevel2> getLevel2ByIdLevel1(SGQDBContext.ParLevel1 parLevel1, DateTime dateCollection, int ParCompany_Id)
         {
 
@@ -595,33 +596,80 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             }
             else
             {
-
-                string sql = "\n SELECT '" + parLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit,PL2.ParFrequency_id  " +
-                         "\n FROM ParLevel3Level2 P32                                      " +
-                         "\n INNER JOIN ParLevel3Level2Level1 P321                         " +
-                         "\n ON P321.ParLevel3Level2_Id = P32.Id and p321.active = 1                           " +
-                         "\n INNER JOIN ParLevel2 PL2                                      " +
-                         "\n ON PL2.Id = P32.ParLevel2_Id                                  " +
-                         "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
-                         "\n ON AL.ParLevel2_Id = PL2.Id     AND AL.IsActive = 1                                                                                             " +
-                        "\n WHERE P321.ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "'              " +
-                         "\n AND PL2.IsActive = 1  AND P32.IsActive = 1 AND P321.Active = 1                                        " +
-                         "\n AND " +
-                         "\n  (select sum(a) from " +
-                         "\n ( " +
-                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
-                         "\n union all " +
-                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
-                         "\n ) temAv) > 0 " +
-                         "\n AND " +
-                         "\n  (select sum(a) from " +
-                         "\n ( " +
-                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
-                         "\n union all " +
-                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
-                         "\n ) temAm) > 0 " +
-                         "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto                 " +
-                         "\n ";
+                string sql = $@"
+                        SELECT
+                        	'{ parLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id
+                           ,PL2.Id AS ParLevel2_Id
+                           ,PL2.Name AS Name
+                           ,PL2.HasSampleTotal
+                           ,PL2.HasTakePhoto
+                           ,PL2.IsEmptyLevel3
+                           ,AL.ParNotConformityRule_id
+                           ,AL.value
+                           ,AL.IsReaudit
+                           ,PL2.ParFrequency_Id
+                        FROM ParLevel3Level2 P32
+                        INNER JOIN ParLevel3Level2Level1 P321
+                        	ON P321.ParLevel3Level2_Id = P32.Id
+                        		AND P321.Active = 1
+                        INNER JOIN ParLevel2 PL2
+                        	ON PL2.Id = P32.ParLevel2_Id
+                        LEFT JOIN ParNotConformityRuleXLevel AL
+                        	ON AL.ParLevel2_Id = PL2.Id
+                        		AND AL.IsActive = 1
+                        WHERE P321.ParLevel1_Id = '{ parLevel1.ParLevel1_Id }'
+                        AND PL2.IsActive = 1
+                        AND P32.IsActive = 1
+                        AND P321.Active = 1
+                        AND (SELECT
+                        		SUM(a)
+                        	FROM (SELECT
+                        			number AS a
+                        		FROM ParEvaluation(nolock)
+                        		WHERE IsActive = 1
+                        		AND ParLevel2_Id = PL2.Id
+                        		AND ParCompany_Id = { ParCompany_Id }
+                        		AND ParLevel1_Id = {parLevel1.ParLevel1_Id}
+                        		AND ParCluster_Id = {parLevel1.ParCluster_Id}
+                        		UNION ALL
+                        		SELECT
+                        			number AS a
+                        		FROM ParEvaluation(nolock)
+                        		WHERE IsActive = 1
+                        		AND ParLevel2_Id = PL2.Id
+                        		AND ParCompany_Id IS NULL
+                        		AND ParLevel1_Id = {parLevel1.ParLevel1_Id}
+                        		AND ParCluster_Id = {parLevel1.ParCluster_Id}) temAv)
+                        >= 0
+                        AND (SELECT
+                        		SUM(a)
+                        	FROM (SELECT
+                        			number AS a
+                        		FROM ParSample(nolock)
+                        		WHERE IsActive = 1
+                        		AND ParLevel2_Id = PL2.Id
+                        		AND ParCompany_Id = { ParCompany_Id }
+                        		AND ParLevel1_Id = {parLevel1.ParLevel1_Id}
+                        		AND ParCluster_Id = {parLevel1.ParCluster_Id}
+                        		UNION ALL
+                        		SELECT
+                        			number AS a
+                        		FROM ParSample(nolock)
+                        		WHERE IsActive = 1
+                        		AND ParLevel2_Id = PL2.Id
+                        		AND ParCompany_Id IS NULL
+                        		AND ParLevel1_Id = {parLevel1.ParLevel1_Id}
+                        		AND ParCluster_Id = {parLevel1.ParCluster_Id}) temAm)
+                        >= 0
+                        GROUP BY PL2.Id
+                        		,PL2.Name
+                        		,PL2.HasSampleTotal
+                        		,PL2.IsEmptyLevel3
+                        		,AL.ParNotConformityRule_Id
+                        		,AL.IsReaudit
+                        		,AL.value
+                        		,PL2.ParFrequency_Id
+                        		,PL2.HasTakePhoto";
 
                 List<ParLevel2> parLevel2List = new List<ParLevel2>();
 
@@ -633,6 +681,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                 return parLevel2List;
             }
         }
+
     }
 
     public partial class ParLevel2Evaluate
@@ -2326,7 +2375,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
         {
             db = _db;
         }
-        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period, string cluster)
+        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period, string cluster, int parDepartment_Id)
         {
             try
             {
@@ -2334,12 +2383,19 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             SELECT CL1.* FROM ConsolidationLevel1 cl1 with (nolock) 
                             LEFT JOIN ConsolidationLevel1XCluster C1C
                             ON C1C.ConsolidationLevel1_Id = Cl1.Id
+                            LEFT JOIN ConsolidationLevel1XParDepartment C1PD
+                            ON C1PD.ConsolidationLevel1_Id = Cl1.Id
                             WHERE UnitId = '" + ParCompany_Id + "' " +
                             "AND ParLevel1_Id= '" + ParLevel1_Id + "' " +
                             "AND SHIFT = " + Shift + " " +
                             "and period = " + Period + " " +
                             "AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + @"'
                              AND (C1C.ParCluster_Id = " + cluster + " OR C1C.ParCluster_Id IS NULL)";
+
+                string departmentWhere = " AND C1PD.ParDepartment_Id IS NULL";
+                if (parDepartment_Id > 0)
+                    departmentWhere = " AND C1PD.ParDepartment_Id = '" + parDepartment_Id + "'";
+                sql += departmentWhere;
 
                 //SqlConnection db = new SqlConnection(conexao);
 
@@ -2413,12 +2469,11 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             }
         }
 
-        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id, string cluster)
+        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id, string cluster, int parDepartment_Id)
         {
             try
             {
                 string sql = @"
-
                             SELECT c2.Id, 
                             ConsolidationLevel1_Id, 
                             UnitId, 
@@ -2434,12 +2489,17 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             FROM ConsolidationLevel2 c2 with (nolock)
                             LEFT JOIN ConsolidationLevel2XCluster C2C
                             ON C2C.ConsolidationLevel2_id = c2.Id
+                            LEFT JOIN ConsolidationLevel2XParDepartment C2PD
+                            ON C2PD.ConsolidationLevel2_id = c2.Id
                             WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
                             " AND ParLevel2_Id= '" + ParLevel2_Id + "' " +
                             " AND UnitId='" + ParCompany_Id + "'" +
                             " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)";
 
-
+                string departmentWhere = " AND C2PD.ParDepartment_Id IS NULL";
+                if (parDepartment_Id > 0)
+                    departmentWhere = " AND C2PD.ParDepartment_Id = '" + parDepartment_Id + "'";
+                sql += departmentWhere;
 
                 ConsolidationLevel2 obj = null;
                 using (Factory factory = new Factory("DefaultConnection"))
@@ -2456,7 +2516,9 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             }
         }
 
-        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id, int reaudit, string reauditNumber, string cluster)
+        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, 
+            int ConsolidationLevel1_Id, int ParLevel2_Id, int reaudit, 
+            string reauditNumber, string cluster, int parDepartment_Id)
         {
             try
             {
@@ -2479,6 +2541,8 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             FROM ConsolidationLevel2 c2 with (nolock) 
                             LEFT JOIN ConsolidationLevel2XCluster C2C
                             ON C2C.ConsolidationLevel2_id = c2.Id
+                            LEFT JOIN ConsolidationLevel2XParDepartment C2PD
+                            ON C2PD.ConsolidationLevel2_id = c2.Id
                             WHERE c2.ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
                             "AND c2.ParLevel2_Id= '" + ParLevel2_Id + "' " +
                             "AND c2.UnitId='" + ParCompany_Id + "' " +
@@ -2486,6 +2550,10 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             "and c2.reauditnumber=" + reauditNumber + " " +
                             " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)";
 
+                string departmentWhere = " AND C2PD.ParDepartment_Id IS NULL";
+                if (parDepartment_Id > 0)
+                    departmentWhere = " AND C2PD.ParDepartment_Id = '" + parDepartment_Id + "'";
+                sql += departmentWhere;
 
                 ConsolidationLevel2 obj = null;
                 using (Factory factory = new Factory("DefaultConnection"))

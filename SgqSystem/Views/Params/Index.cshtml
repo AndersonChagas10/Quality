@@ -845,6 +845,8 @@
                     level3Value.incluiNoObjetoParaSubmit(dados);
                 if(typeof AvAm3 != "undefined")
                     AvAm3.incluiNoObjetoParaSubmit(dados);
+                if(typeof ParLevel3XDepartment != "undefined")
+                    ParLevel3XDepartment.incluiNoObjetoParaSubmit(dados);
 
                 dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
                 dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
@@ -877,7 +879,7 @@
                     $btn.button('loading');
 
                     if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
-                        indexParamsLevel3.GetLevel3(objetoReturn.paramsDto.parLevel3Dto.Id, $('#paramsDto_parLevel2Dto_Id').val(), true);
+                        indexParamsLevel3.GetLevel3(objetoReturn.paramsDto.parLevel3Dto.Id, $('#paramsDto_parLevel2Dto_Id').val(), $('#parLevel1Select2 :selected').val(), true);
                         openMessageModal("@Resources.Resource.alert", statusmessage);
                     }
 
@@ -931,20 +933,21 @@
             closeConfirm();
             var valorSelecionado = $('#parLevel3Select2 option:selected').val();
             var valorSelecionadoLevel2 = $('#parLevel2Select2 :selected').val();
+            var valorSelecionadoLevel1 = $('#parLevel1Select2 :selected').val();
 
             if (valorSelecionado == "") {
                 indexParamsLevel3.resetForm();
             } else {
-                indexParamsLevel3.GetLevel3(valorSelecionado, valorSelecionadoLevel2);
+                indexParamsLevel3.GetLevel3(valorSelecionado, valorSelecionadoLevel2, valorSelecionadoLevel1);
             }
 
             indexParamsLevel3.resetValidacao();
 
             initialFormLevel3 = $($('form')[2]).clone();
         },/*Executa ao selecionar um level3*/
-        GetLevel3: function(valorSelecionado, valorSelecionadoLevel2, isSave) {
+        GetLevel3: function (valorSelecionado, valorSelecionadoLevel2, valorSelecionadoLevel1, isSave ) {
             //openLoader(indexParamsLevel3.loading_the_level3);
-            $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
+            $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2, idParLevel1: valorSelecionadoLevel1 }, function (obj, responseText, xhr) {
                 //closeLoader();
                 if (obj != null) {
                     $('#ParLevel3').empty();
