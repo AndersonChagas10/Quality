@@ -44,11 +44,9 @@ namespace SgqSystem.Controllers.Api
                 DBSERVER = empresaPadrao.DBServer
             };
 
-            if (rotinaSelecionada.DataSource.Contains('{') && rotinaSelecionada.DataSource.Contains('}'))
-                rotinaSelecionada.DataSource = MapearValoresDinamicos(rotinaSelecionada.DataSource, propriedadesConexao);
+            rotinaSelecionada.DataSource = MapearValoresDinamicos(rotinaSelecionada.DataSource, propriedadesConexao);
 
-            if(rotinaSelecionada.InitialCatalog.Contains('{') && rotinaSelecionada.InitialCatalog.Contains('}'))
-                rotinaSelecionada.InitialCatalog = MapearValoresDinamicos(rotinaSelecionada.InitialCatalog, propriedadesConexao);
+            rotinaSelecionada.InitialCatalog = MapearValoresDinamicos(rotinaSelecionada.InitialCatalog, propriedadesConexao);
 
             if (!string.IsNullOrEmpty(queryFormatada))
             {
@@ -64,12 +62,17 @@ namespace SgqSystem.Controllers.Api
 
         private string MapearValoresDinamicos(string dataSource, Object pessego)
         {
+            if (dataSource.Contains('{') && dataSource.Contains('}'))
+            {
+                var propriedadeNomeComparar = dataSource.Replace("{", "").Replace("}", "").ToUpperInvariant();
 
-            var propriedadeNomeComparar = dataSource.Replace("{", "").Replace("}", "").ToUpperInvariant();
+                var retornoValorDinamico = pessego.GetType().GetProperty(propriedadeNomeComparar).GetValue(pessego);
 
-            var retornoValorDinamico = pessego.GetType().GetProperty(propriedadeNomeComparar).GetValue(pessego);
+                return retornoValorDinamico.ToString();
+            }
+            else
+                return dataSource;
 
-            return retornoValorDinamico.ToString();
         }
 
         public string RetornaQueryRotina(string rotina_Id, List<Dictionary<string, string>> parametro, out RotinaIntegracao rotinaSelecionada)
