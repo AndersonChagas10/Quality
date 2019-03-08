@@ -1,16 +1,19 @@
 ﻿function openLevel2(level1) {
+
     tempHDL2 = 0;
+
     if ($('.level2Group').length == 0) {
         openMessageModal(getResource("warning"), getResource("no_families_level"));
         return;
     }
 
-    if (parseInt($(level1).attr('volumealertaindicador')) == 0 && !$(level1).hasClass('VF')) {
+    if (parseInt($(level1).attr('volumealertaindicador')) == 0 && !$(level1).hasClass('VF') && $(level1).attr('hasalert') == "true") {
         openMessageModal(getResource("warning"), getResource("no_volumn_level"));
         return;
     }
 
     var periodo = parseInt($('.App').attr('period'));
+
     if (periodo > 1) {
         periodo--;
         var rn = getReauditTempPeriodo(periodo)
@@ -47,7 +50,6 @@
 
     var minEvaluateCurrent = null;
     var avaliacao = 0;
-
     var _level2List;
 
     if (_level2 && ultL2Temp == false) {
@@ -55,8 +57,10 @@
     } else {
         _level2List = level2Group.find('.level2').length;
     }
+
     var maior = 0;
     var totalDeAvaliacoes = 0;
+
     for (var i = 0; i < _level2List; i++) {
 
         var level2;
@@ -65,7 +69,17 @@
         else
             level2 = level2Group.find($('.level2')[i]);
 
-        updateCounterLinhaLevel2(level1, level2)
+        updateCounterLinhaLevel2(level1, level2);
+
+        setAvaliationClick(level2);
+
+        setAvaliationInfitity(level2);
+
+        setSampleInfitity(level2);
+
+        if (parseInt($(level2).attr('evaluatecurrent')))
+            setAvaliationAndSampleLvl2Line(level2);
+
         level2.removeAttr('isreaudit');
 
         var defLineL2;
@@ -206,7 +220,7 @@
     ReauditByHeader.SetupReaudit(level1.attr('id'));
 
     atualizaCorAgendamento();
-    
+
 }
 
 $(document).on('click', '.level2Group .level2', function (e) {
@@ -215,17 +229,31 @@ $(document).on('click', '.level2Group .level2', function (e) {
     //Verifica os cabeçalhos obrigatórios antes de abrir o nível 3
     if (validHeader()) {
 
-        if ($('.level1.selected').attr('islimitedevaluetionnumber') == "true" &&
-            (parseInt($(this).attr('evaluatecurrent')) > parseInt($(this).attr('evaluate'))
-                || $('.level1.selected').attr('hasgrouplevel2') == "true" && parseInt($('.level1.selected').attr('lastevaluate')) > parseInt($(this).attr('evaluate')))
-            && $(this).attr('isreaudit') != "true" && $('.level1.selected').attr('isreaudit') != "true") {
+        //É avaliação infinita
+        var isInfinityAvaliation = !!(parseInt($(this).attr('evaluate')) == 0 && parseInt($(this).attr('sample')) == 0);
+
+        //Se a av for 0, força inserir um número de Avaliação
+        if (isInfinityAvaliation && !parseInt($(this).attr('evaluatecurrent'))) {
+
+            if ($(this).next().hasClass('changeAvNumber')) {
+                $(this).next().trigger('click');
+            }
+
+            return;
+        }
+
+        if (!isInfinityAvaliation &&
+            $('.level1.selected').attr('islimitedevaluetionnumber') == "true" &&
+            (parseInt($(this).attr('evaluatecurrent')) > parseInt($(this).attr('evaluate')) || $('.level1.selected').attr('hasgrouplevel2') == "true" && parseInt($('.level1.selected').attr('lastevaluate')) > parseInt($(this).attr('evaluate'))) &&
+            $(this).attr('isreaudit') != "true" &&
+            $('.level1.selected').attr('isreaudit') != "true") {
 
             openMessageModal(getResource('warning'), getResource('number_of_evaluation_completed'));
 
             return;
         }
 
-        if ($('.level1.selected.VF').length > 0
+        if (isInfinityAvaliation && $('.level1.selected.VF').length > 0
             && parseInt($('.level2Group:visible .sampleCurrentTotal').text()) >= parseInt($(this).attr('sample'))) {
             openMessageModal(getResource('warning'), getResource('number_of_evaluation_completed'));
             return;
@@ -431,7 +459,13 @@ function saveLevel02(Level01Id, Level02Id, unidadeId, date, dateTime, auditorId,
 }
 
 function completeLevel2(level2, evaluateCurrent, evaluateTotal) {
-    if (evaluateCurrent > evaluateTotal) {
+
+    var avaliacao = parseInt($(level2).attr('evaluate'));
+    var amostra = parseInt($(level2).attr('sample'));
+
+    var isInfinityAvaliation = !!(avaliacao == 0 || amostra == 0);
+
+    if (!isInfinityAvaliation && (evaluateCurrent > evaluateTotal)) {
         //Completa o level2 Selecionado.
         level02Complete(level2);
     }
@@ -655,6 +689,12 @@ $(document).on('click', '.btnAreaSaveConfirm', function (e) {
 
 });
 
+$(document).on('click', '.level2Group .changeAvNumber', function (e) {
+
+    openMessageConfirmGeneric('Alterar número da avaliação', 'Número: ', getAvaliationNumber, 'number', $(this));
+
+});
+
 //Atualizar o contador geral do indicador
 function GetUpdateCounter() {
     $('#total_defects').find('span').text(defectsLevel2Total);
@@ -749,7 +789,7 @@ function atualizaCorAgendamento() {
 
                                     horaMinutoPrimeiraAv = horaPrimeiraAv.split(":");
 
-                                    if(typeof(horaMinutoPrimeiraAv) == 'undefined' || !horaMinutoPrimeiraAv){
+                                    if (typeof (horaMinutoPrimeiraAv) == 'undefined' || !horaMinutoPrimeiraAv) {
                                         return;
                                     }
 

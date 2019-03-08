@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -401,6 +401,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\MotivoAtrasoController.cs" />
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
+    <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
     <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
@@ -409,6 +410,7 @@
     <Compile Include="Controllers\ImportacaoExcelController.cs" />
     <Compile Include="Controllers\Integracao\IntegracaoController.cs" />
     <Compile Include="Controllers\ItemMenu\ItemMenuController.cs" />
+    <Compile Include="Controllers\NovidadesController.cs" />
     <Compile Include="Controllers\Params\EmailConfigEUAController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
@@ -494,6 +496,7 @@
     <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
     <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3XParDepartmentMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel2XHeaderFieldMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel2Level1MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
@@ -564,6 +567,7 @@
     <Compile Include="Services\ServiceLevel2.cs" />
     <Compile Include="Services\SGQDBContext.cs" />
     <Compile Include="Services\SGQDBContext_YTOARA.cs" />
+    <Compile Include="Services\SyncModel\ParLevel3XParDepartmentSyncModel.cs" />
     <Compile Include="Services\SyncServices.asmx.cs">
       <DependentUpon>SyncServices.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -1909,9 +1913,12 @@
     <Content Include="Views\RelatoriosMD\AvaliacaoSensorial.cshtml" />
     <Content Include="Views\SIFReports\AcompanhamentoEmbarque.cshtml" />
     <Content Include="Views\RelatoriosMD\PesoHamburger.cshtml" />
+    <Content Include="Views\Params\_ParLevel3XDepartment.cshtml" />
     <Content Include="Views\Params\_AgendamentoDiarioComIntervalo.cshtml" />
     <Content Include="Views\Shared\_AgendamentoVolumes.cshtml" />
     <Content Include="Views\ParLevel2ControlCompany\List.cshtml" />
+    <Content Include="Views\Faq\Index.cshtml" />
+    <Content Include="Views\Novidades\Index.cshtml" />
     <Content Include="Views\RotinaIntegracao\Index.cshtml" />
     <Content Include="Views\RotinaIntegracao\Create.cshtml" />
     <Content Include="Views\RotinaIntegracao\Edit.cshtml" />

@@ -40,6 +40,7 @@
     <Compile Include="CollectionHtml.cs" />
     <Compile Include="CollectionJson.cs" />
     <Compile Include="CollectionLevel2.cs" />
+    <Compile Include="CollectionLevel2XParDepartment.cs" />
     <Compile Include="CollectionLevel2XMotivoAtraso.cs" />
     <Compile Include="CollectionLevel2XParHeaderField.cs" />
     <Compile Include="ConsolidationLevel1.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="ParLevel3.cs" />
     <Compile Include="ParLevel3BoolFalse.cs" />
     <Compile Include="ParLevel3BoolTrue.cs" />
+    <Compile Include="ParLevel3XParDepartment.cs" />
     <Compile Include="ParLevel3EvaluationSample.cs" />
     <Compile Include="ParLevel3Group.cs" />
     <Compile Include="ParLevel3InputType.cs" />
@@ -189,7 +191,6 @@
     <Compile Include="VerificacaoTipificacaoTarefaIntegracao.cs" />
     <Compile Include="VerificacaoTipificacaoV2.cs" />
     <Compile Include="VerificacaoTipificacaoValidacao.cs" />
-    <Compile Include="ViewModel\ListaCollectionsLevel2XMotivosAtraso.cs" />
     <Compile Include="VolumeCepDesossa.cs" />
     <Compile Include="VolumeCepRecortes.cs" />
     <Compile Include="VolumePcc1b.cs" />
@@ -269,6 +270,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModel\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
