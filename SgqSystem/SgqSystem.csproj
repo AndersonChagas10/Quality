@@ -407,6 +407,9 @@
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
     <Compile Include="Controllers\Params\ParClusterGroupsController.cs" />
+    <Compile Include="Controllers\Params\ParCompany2Controller.cs" />
+    <Compile Include="Controllers\Params\ParCompany2XClusterController.cs" />
+    <Compile Include="Controllers\Params\ParCompany2XStructureController.cs" />
     <Compile Include="Controllers\ParClusterXModulesController.cs" />
     <Compile Include="Controllers\ParGroupParLevel1Controller.cs" />
     <Compile Include="Controllers\ParGroupParLevel1TypeController.cs" />
@@ -1839,6 +1842,21 @@
     <Content Include="Views\Recravacao\Retroativo.cshtml" />
     <Content Include="Views\Recravacao\PrintRetroativa.cshtml" />
     <Content Include="Views\Recravacao\PrintAcaoCorretivaRetroativa.cshtml" />
+    <Content Include="Views\ParCompany2\Create.cshtml" />
+    <Content Include="Views\ParCompany2\Delete.cshtml" />
+    <Content Include="Views\ParCompany2\Details.cshtml" />
+    <Content Include="Views\ParCompany2\Edit.cshtml" />
+    <Content Include="Views\ParCompany2\Index.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Create.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Delete.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Details.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Edit.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Index.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Create.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Delete.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Details.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Edit.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
