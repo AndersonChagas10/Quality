@@ -5851,7 +5851,7 @@ function calcularSensorial(list){
             foreach (var botao in rotinasIntegracao)
             {
 
-                botoes += $@"<input type=""button"" class=""btn btn-primary"" value=""{ botao.Name }"" data-id-rotina=""{ botao.Id }"" data-headerFields=""{ botao.Parametro }"" onclick=""getRotina(this);"">";
+                botoes += $@"<button type=""button"" class=""btn btn-primary"" data-id-rotina=""{ botao.Id }"" data-headerFields=""{ botao.Parametro }"" onclick=""getRotina(this);"" data-loading-text=""<i class='fa fa-spinner fa-spin'></i> { Resources.Resource.loading }..."">{ botao.Name }</button>";
 
                 retorno += html.div(
                         outerhtml: botoes,

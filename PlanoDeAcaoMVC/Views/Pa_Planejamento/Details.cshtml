@@ -1,5 +1,16 @@
 ﻿@model PlanoAcaoCore.Pa_Planejamento
+@{
+    var classMeansureUnit = "";
 
+    if (Model.UnidadeDeMedida_Id == 1)
+    {
+        classMeansureUnit = "money";
+    }
+    else if (Model.UnidadeDeMedida_Id == 2)
+    {
+        classMeansureUnit = "percent";
+    }
+}
 
 <div class="panel-group accordion">
     <div class="panel panel-default">
@@ -185,112 +196,112 @@
             </div>
         </div>
     </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamentoAcaoDetails">
-            <table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display table table-striped showAsEstrategy" cellspacing="0" style="width: 100%;">
-                <tbody>
-                    <tr>
-                        <td style="width: 24%;">
-                            @Html.Raw(Resources.Resource.management)
-                        </td>
-                        <td style="width: 60%;">
-                            @Html.DisplayFor(model => model.Gerencia)
-                        </td>
-                        <td style="width: 16%;"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Raw(Resources.Resource.coordination)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Coordenacao)
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Raw(Resources.Resource.project_initiative)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Iniciativa)
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Raw(Resources.Resource.indicators_project_initiative)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.IndicadoresDeProjeto)
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Raw(Resources.Resource.management_objective)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.ObjetivoGerencial)
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Raw(Resources.Resource.value_of)
-                        </td>
-                        <td class="money">
-                            @Html.DisplayFor(model => model.ValorDe)
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Raw(Resources.Resource.value_for)
-                        </td>
-                        <td class="money">
-                            @Html.DisplayFor(model => model.ValorPara)
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Raw(Resources.Resource.unit_measurement)
-                        </td>
-                        <td>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamentoAcaoDetails">
+        <table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display table table-striped showAsEstrategy" cellspacing="0" style="width: 100%;">
+            <tbody>
+                <tr>
+                    <td style="width: 24%;">
+                        @Html.Raw(Resources.Resource.management)
+                    </td>
+                    <td style="width: 60%;">
+                        @Html.DisplayFor(model => model.Gerencia)
+                    </td>
+                    <td style="width: 16%;"></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Raw(Resources.Resource.coordination)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Coordenacao)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Raw(Resources.Resource.project_initiative)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Iniciativa)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Raw(Resources.Resource.indicators_project_initiative)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.IndicadoresDeProjeto)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Raw(Resources.Resource.management_objective)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.ObjetivoGerencial)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Raw(Resources.Resource.value_of)
+                    </td>
+                    <td class="@classMeansureUnit">
+                        @Html.DisplayFor(model => model.ValorDe)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Raw(Resources.Resource.value_for)
+                    </td>
+                    <td class="@classMeansureUnit">
+                        @Html.DisplayFor(model => model.ValorPara)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Raw(Resources.Resource.unit_measurement)
+                    </td>
+                    <td>
 
-                            @Html.DisplayFor(model => model._UnidadeDeMedida_Id.Name)
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Raw(Resources.Resource.start_date_project_initiative)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.DataInicio)
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Raw(Resources.Resource.date_end_project_initiative)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.DataFim)
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Raw(Resources.Resource.responsible_project_initiative)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Responsavel_Projeto_Quem.Name)
-                        </td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                        @Html.DisplayFor(model => model._UnidadeDeMedida_Id.Name)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Raw(Resources.Resource.start_date_project_initiative)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.DataInicio)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Raw(Resources.Resource.date_end_project_initiative)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.DataFim)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Raw(Resources.Resource.responsible_project_initiative)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Responsavel_Projeto_Quem.Name)
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 }
 <br />
 
@@ -299,7 +310,11 @@
     $(document).ready(function () {
         $('td.money').each(function (i, e) {
             $(e).text('R$ ' + $(e).text());
-        })
+        });
+
+        $('td.percent').each(function (i, e) {
+            $(e).text($(e).text() + ' %');
+        });
     });
 
 </script>
