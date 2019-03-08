@@ -66,7 +66,6 @@ function level1Show(inicio, cluster) {
         configureZoom();
     }
 
-
     sendTotalAvaliacoesPorIndicadorPorAvaliacao(loadTotalAvaliacoesPorIndicadorPorAvaliacao());
 
     if (inicio == true && connectionServer == true) {
@@ -150,7 +149,6 @@ function level1Show(inicio, cluster) {
 
     ReauditByHeader.CurrentReauditNumber = 0;
     ReauditByHeader.triggerReaudit = false;
-
 
 }
 

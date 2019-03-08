@@ -8,9 +8,9 @@ function getRotina(that) {
     var headerFieldsParams = $(that).attr('data-headerfields').split('|');
     var $btn = $(that);
     var headerFieldsList = {};
-
+    
     headerFieldsParams.forEach(function (headerFieldParam) {
-
+        
         var self = $('input[data-param=' + headerFieldParam + ']').parents('.header');
         var value = $('input[data-param=' + headerFieldParam + ']').val();
         var isRequired = $(self).prop('required');
@@ -23,7 +23,7 @@ function getRotina(that) {
 
         } else if (value) {
 
-            headerFieldsList[headerFieldParam] = value;
+			headerFieldsList[headerFieldParam] = value;
         }
     });
 
@@ -34,7 +34,7 @@ function getRotina(that) {
             IdRotina: $(that).attr('data-id-rotina'),
             Params: headerFieldsList
         }
-
+       
         getDynamicValues(obj, $btn);
     }
 }
@@ -67,14 +67,15 @@ function getDynamicValues(obj, $btn) {
     });
 }
 
+
+
 function setDynamicValues(obj) {
-
-    Object.entries(obj).forEach(function ([key, value]) {
-
+	
+	$.each(obj,function(key,value){
+		
         var input = $('input[data-din=' + key + ']');
-
+		
         if (input)
             $(input).val(value);
-
-    });
+	})
 }
