@@ -1230,25 +1230,6 @@ namespace SgqSystem.Services
             }
         }
 
-        [WebMethod]
-        public string RetornaQueryRotina(string rotina_Id, List<Dictionary<string, string>> parametro)
-        {
-            var query = "";
-            if (parametro.Count > 0 && parametro[0].Count > 0)
-            {
-                var idRotina = Convert.ToInt32(rotina_Id);
-
-                var rotinaSelecionada = dbEf.RotinaIntegracao.Where(x => x.Id == idRotina).FirstOrDefault();
-        
-                for (int i = 0; i < parametro[0].Count; i++)
-                {
-                    query = rotinaSelecionada.query.Replace('{' + parametro[0].ElementAt(i).Key + '}', parametro[0].ElementAt(i).Value);
-                    rotinaSelecionada.query = query;
-                }
-            }
-            return query;
-        }
-
         public int updateConsolidationLevel2(int ConsolidationLevel2_Id, string AlertLevel, string LastEvaluationAlert, string LastLevel2Alert, SGQDBContext.CollectionLevel2Consolidation CollectionLevel2Consolidation)
         {
             //verificar se não vai sobreescrever informação com tablet antigo
@@ -6053,21 +6034,18 @@ function calcularSensorial(list){
 
             #region BotoesDeBusca
 
-            var rotinasIntegracaoXLevel1 = dbEf.ParLevel1XRotinaIntegracao.Where(x => x.ParLevel1_Id == ParLevel1_Id).Select(x => x.RotinaIntegracao_Id);
-            var rotinasIntegracao = dbEf.RotinaIntegracao.Where(x => rotinasIntegracaoXLevel1.Contains(x.Id)).ToList();
-            var botoes = "";
+            var rotinasIntegracaoXLevel1 = dbEf.ParLevel1XRotinaIntegracao.Where(x => x.ParLevel1_Id == ParLevel1_Id && x.IsActive).Select(x => x.RotinaIntegracao_Id);
+            var rotinasIntegracao = dbEf.RotinaIntegracao.Where(x => rotinasIntegracaoXLevel1.Contains(x.Id) && x.IsActive).ToList();
 
             foreach (var botao in rotinasIntegracao)
             {
-
-                botoes += $@"<button type=""button"" class=""btn btn-primary"" data-id-rotina=""{ botao.Id }"" data-headerFields=""{ botao.Parametro }"" onclick=""getRotina(this);"" data-loading-text=""<i class='fa fa-spinner fa-spin'></i> { Resources.Resource.loading }..."">{ botao.Name }</button>";
+                var botoes = $@"<button type=""button"" class=""btn btn-primary"" data-id-rotina=""{ botao.Id }"" data-headerFields=""{ botao.Parametro }"" onclick=""getRotina(this);"" data-loading-text=""<i class='fa fa-spinner fa-spin'></i> { Resources.Resource.loading }..."">{ botao.Name }</button>";
 
                 retorno += html.div(
                         outerhtml: botoes,
                         classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
                         style: "padding-right: 4px !important; padding-left: 4px !important;"
                         );
-
             }
 
             if (rotinasIntegracao.Count > 0)
