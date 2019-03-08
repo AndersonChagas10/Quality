@@ -75,20 +75,20 @@ namespace SgqSystem.Controllers.Api
 
         }
 
-        public string RetornaQueryRotina(string rotina_Id, List<Dictionary<string, string>> parametro, out RotinaIntegracao rotinaSelecionada)
+        public string RetornaQueryRotina(string rotina_Id, Dictionary<string, string> parametro, out RotinaIntegracao rotinaSelecionada)
         {
             var query = "";
             rotinaSelecionada = null;
 
-            if (parametro.Count > 0 && parametro[0].Count > 0)
+            if (parametro.Count > 0)
             {
                 var idRotina = Convert.ToInt32(rotina_Id);
 
                 rotinaSelecionada = db.RotinaIntegracao.Where(x => x.Id == idRotina).FirstOrDefault();
 
-                for (int i = 0; i < parametro[0].Count; i++)
+                for (int i = 0; i < parametro.Count; i++)
                 {
-                    query = rotinaSelecionada.query.Replace('{' + parametro[0].ElementAt(i).Key + '}', parametro[0].ElementAt(i).Value);
+                    query = rotinaSelecionada.query.Replace('{' + parametro.ElementAt(i).Key + '}', parametro.ElementAt(i).Value);
                     rotinaSelecionada.query = query;
                 }
             }
@@ -100,7 +100,7 @@ namespace SgqSystem.Controllers.Api
     {
         public string IdRotina { get; set; }
         public string IdUsuario { get; set; }
-        public List<Dictionary<string, string>> Params { get; set; }
+        public Dictionary<string, string> Params { get; set; }
     }
 
     public class PropriedadesConexaoDB
