@@ -17,6 +17,7 @@ using Newtonsoft.Json.Linq;
 using System.Data.Entity;
 using System.Net.Http;
 using ADOFactory;
+using SgqSystem.Helpers;
 
 namespace SgqSystem.Mail
 {
@@ -262,7 +263,6 @@ namespace SgqSystem.Mail
         /// </summary>
         public static void CreateMailSgqAppDeviation()
         {
-
             using (var db = new SgqDbDevEntities())
             {
                 try
@@ -305,7 +305,7 @@ namespace SgqSystem.Mail
                 }
                 catch (Exception e)
                 {
-                    new CreateLog(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviation]", e));
+                    new CreateLog(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviation] - " + e.ToClient(), e));
                 }
 
                 //return db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
@@ -418,18 +418,20 @@ namespace SgqSystem.Mail
         /// <param name="companyId"></param>
         private static string DestinatariosSGQJBSBR(EmailContent m, int nivel, int companyId)
         {
-            using (var dbLegado = new SgqDbDevEntities())
+            try
             {
-                //Alertas de nivel 4 acima enviam para Nivel 2 da tabela DesvioNiveis
-                if (nivel > 3)
-                    nivel = 2;
+                using (var dbLegado = new SgqDbDevEntities())
+                {
+                    //Alertas de nivel 4 acima enviam para Nivel 2 da tabela DesvioNiveis
+                    if (nivel > 3)
+                        nivel = 2;
 
-                //var query = "\n SELECT Email FROM UserSgq" +
-                //            "\n WHERE Id in (SELECT UserSgq_Id FROM ParCompanyXUserSgq WHERE ParCompany_Id = " + companyId + " AND [Role] IN (SELECT Nivel FROM desvioNiveis WHERE Desvio = " + nivel + "))" +
-                //            "\n  AND Email IS NOT NULL" +
-                //            "\n  AND Email <> ''";
+                    //var query = "\n SELECT Email FROM UserSgq" +
+                    //            "\n WHERE Id in (SELECT UserSgq_Id FROM ParCompanyXUserSgq WHERE ParCompany_Id = " + companyId + " AND [Role] IN (SELECT Nivel FROM desvioNiveis WHERE Desvio = " + nivel + "))" +
+                    //            "\n  AND Email IS NOT NULL" +
+                    //            "\n  AND Email <> ''";
 
-                var query = @"SELECT U.Email FROM UserSgq U
+                    var query = @"SELECT U.Email FROM UserSgq U
                             INNER JOIN ParCompanyXUserSgq UU
                             ON UU.UserSgq_Id = U.id
                             INNER JOIN ParCompanyXStructure UniReg
@@ -451,22 +453,28 @@ namespace SgqSystem.Mail
 
                                 WHEN U.ID = 1872 THEN 2
 
-                            ELSE(SELECT ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @") END
+                            ELSE(SELECT top 1 ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @") END
                             AND U.Id NOT IN (" + System.Configuration.ConfigurationManager.AppSettings["UsuariosComEmailBloqueado"] + ")"; //Tirar Célia e Mariana da JBS
 
-                var listaEmails = dbLegado.Database.SqlQuery<string>(query).ToList();
-                if (listaEmails != null && listaEmails.Count() > 0)
-                {
-                    listaEmails = listaEmails.Distinct().ToList();
-                    return string.Join(",", listaEmails.ToArray());
+                    var listaEmails = dbLegado.Database.SqlQuery<string>(query).ToList();
+                    if (listaEmails != null && listaEmails.Count() > 0)
+                    {
+                        listaEmails = listaEmails.Distinct().ToList();
+                        return string.Join(",", listaEmails.ToArray());
+                    }
+                    else
+                    {
+                        //Caso não existam emails cadastrados
+                        //Preenche send status e não vai para a lista de envio.
+                        m.SendStatus = "Não existem destinatários para este email.";
+                        return string.Empty;
+                    }
                 }
-                else
-                {
-                    //Caso não existam emails cadastrados
-                    //Preenche send status e não vai para a lista de envio.
-                    m.SendStatus = "Não existem destinatários para este email.";
-                    return string.Empty;
-                }
+            }
+            catch (Exception e)
+            {
+                new CreateLog(new Exception("Ocorreu um erro em: [DestinatariosSGQJBSBR] - " + e.ToClient(), e));
+                throw e;
             }
         }
 
