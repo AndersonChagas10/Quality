@@ -453,7 +453,7 @@ namespace SgqSystem.Mail
 
                                 WHEN U.ID = 1872 THEN 2
 
-                            ELSE(SELECT top 1 ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @") END
+                            ELSE(SELECT top 1 ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @" and Active = 1) END
                             AND U.Id NOT IN (" + System.Configuration.ConfigurationManager.AppSettings["UsuariosComEmailBloqueado"] + ")"; //Tirar Célia e Mariana da JBS
 
                     var listaEmails = dbLegado.Database.SqlQuery<string>(query).ToList();
