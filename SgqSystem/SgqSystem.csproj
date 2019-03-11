@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -400,7 +400,6 @@
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VTVerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\MotivoAtrasoController.cs" />
-    <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
@@ -460,7 +459,6 @@
     <Compile Include="Controllers\UserAndRoles\UserAuthenticationController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\UserController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
-    <Compile Include="Controllers\Charts\ChartsController.cs" />
     <Compile Include="Controllers\Params\ParamsController.cs" />
     <Compile Include="Controllers\Params\ParClustersController.cs" />
     <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
@@ -1739,7 +1737,6 @@
     <Content Include="Views\RelatoriosSgq\ApontamentosDiarios.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidade.cshtml" />
     <Content Include="Views\RelatoriosSgq\ExemploRelatorio.cshtml" />
-    <Content Include="Views\ExemploInput\Index.cshtml" />
     <Content Include="Views\Example\TiposDeInputSgq.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea.cshtml" />
     <Content Include="Views\RelatoriosSgq\GetTable.cshtml" />
@@ -1934,15 +1931,6 @@
     <Folder Include="obj\" />
     <Folder Include="Scripts\BootStrapRecravacao\" />
     <Folder Include="Scripts\i18n\" />
-    <Folder Include="Views\Base\" />
-    <Folder Include="Views\EspecificarMonitoramentos\" />
-    <Folder Include="Views\MensagemAtraso\" />
-    <Folder Include="Views\RelatorioController\" />
-    <Folder Include="Views\RoleApi\" />
-    <Folder Include="Views\ScorecardConfig\" />
-    <Folder Include="Views\TipificacaoViewModel\" />
-    <Folder Include="Views\UserSgqApi\" />
-    <Folder Include="Views\VTVerificacaoTipificacaoAPI\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>
