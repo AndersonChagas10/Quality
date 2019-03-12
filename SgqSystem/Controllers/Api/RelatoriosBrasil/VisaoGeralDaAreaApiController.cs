@@ -113,7 +113,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                                               ELSE 0
 
                                               END END
-                                          > 70 THEN
+                                          -- > 70 THEN
+                                          > 0 THEN
                                                 CASE WHEN Level1Id = 43 THEN case when SUM(NC) = 0 then 1 when (AVG(META) / SUM(NC)) > 1 then 1 else AVG(META) / SUM(NC) end * 100 ELSE 
                                                 CASE WHEN SUM(AV) > 0 THEN
                                                           CASE WHEN TIPOINDICADOR = 1 THEN
@@ -193,7 +194,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                                               ELSE 0
 
                                               END END
-                                          > 70 THEN
+                                          -- > 70 THEN
+                                          > 0 THEN
                                                 CASE WHEN Level1Id = 43 THEN case when SUM(NC) = 0 then 1 when (AVG(META) / SUM(NC)) > 1 then 1 else AVG(META) / SUM(NC) end * 100 ELSE 
                                                 CASE WHEN SUM(AV) > 0 THEN
                                                           CASE WHEN TIPOINDICADOR = 1 THEN
@@ -1894,7 +1896,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             _list = new List<VisaoGeralDaAreaResultSet>();

@@ -27,13 +27,15 @@ namespace SgqSystem.Controllers.Api.App
     /// 
     /// </summary>
     [RoutePrefix("api/AppParams")]
-    public class AppParamsApiController : BaseApiController
+    public class AppParamsApiController : BaseApiController, IDisposable
     {
         SgqDbDevEntities db;
+        private List<Shift> listaDeShift;
 
         public AppParamsApiController()
         {
             db = new SgqDbDevEntities();
+            listaDeShift = db.Shift.ToList();
         }
 
         /// <summary>
@@ -100,13 +102,14 @@ namespace SgqSystem.Controllers.Api.App
             GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.PROCESSANDO;
             GlobalConfig.PaginaDoTablet[UnitId].DataInicio = DateTime.Now;
 
-            var shifts = db.Shift.ToList();
+            var shifts = this.listaDeShift;
             shifts.Insert(0, new Shift());
 
             using (var service = new SyncServices())
             {
-                foreach (var shift in shifts)
+                for (int i = 0; i < shifts.Count; i++)
                 {
+                    var shift = shifts[i];
                     var atualizado = service.getAPPLevels(56, UnitId, DateTime.Now, shift.Id);/*Cria tela atualizada*/
 
                     try
@@ -114,15 +117,25 @@ namespace SgqSystem.Controllers.Api.App
                         if (GlobalConfig.PaginaDoTablet[UnitId] != null)/*Se ja existir atualiza*/
                         {
                             GlobalConfig.PaginaDoTablet[UnitId].DataFim = DateTime.Now;
-                            GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.SUCESSO;
+                            //GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.SUCESSO;
                         }
                         else/*Se nao existir cria*/
                         {
-                            GlobalConfig.PaginaDoTablet.Add(UnitId, new HtmlDoTablet() { DataFim = DateTime.Now, DataInicio = DateTime.Now, Status = HtmlDoTablet.StatusType.SUCESSO });
+                            GlobalConfig.PaginaDoTablet.Add(UnitId, new HtmlDoTablet()
+                            {
+                                DataFim = DateTime.Now,
+                                DataInicio = DateTime.Now,
+                                //Status = HtmlDoTablet.StatusType.SUCESSO
+                            });
                             GlobalConfig.ParamsDisponiveis += UnitId.ToString();
                         }
 
                         this.SaveFile(UnitId, atualizado, shift.Id);
+
+                        if (shifts.Count - 1 == i)
+                        {
+                            GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.SUCESSO;
+                        }
                     }
                     catch (Exception e)
                     {
@@ -373,7 +386,11 @@ namespace SgqSystem.Controllers.Api.App
 
         #endregion
 
-
+        public void Dispose()
+        {
+            db.Dispose();
+            Dispose(true);
+        }
     }
 
 

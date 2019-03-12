@@ -3905,11 +3905,13 @@ $(document).ready(function(){
         }
 
         [WebMethod]
-        public string getAPPLevelsVolume(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId, int Shift_Id)
+        //public string getAPPLevelsVolume(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId, string Shift_Id)
+        public string getAPPLevelsVolume(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
         {
             string APPMain = string.Empty;
 
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, Shift_Id, true);
+            //APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, Shift_Id, true);
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, 0, true);
 
             return APPMain;// + resource;
         }
