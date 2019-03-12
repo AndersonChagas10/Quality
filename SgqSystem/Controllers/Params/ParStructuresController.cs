@@ -47,7 +47,7 @@ namespace SgqSystem.Controllers.Params
         [HttpGet]
         public ActionResult Create()
         {
-            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup, "Id", "Name");
+            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active), "Id", "Name");
 
             var listStrunct = db.ParStructure.Where(x => x.Active).ToList();
             listStrunct.Insert(0, new ParStructure() { Id = 0, Name = Resources.Resource.select });
@@ -72,7 +72,7 @@ namespace SgqSystem.Controllers.Params
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup, "Id", "Name", parStructure.ParStructureGroup_Id);
+            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active), "Id", "Name", parStructure.ParStructureGroup_Id);
             return View(parStructure);
         }
 
@@ -88,7 +88,7 @@ namespace SgqSystem.Controllers.Params
             {
                 return HttpNotFound();
             }
-            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup, "Id", "Name", parStructure.ParStructureGroup_Id);
+            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active), "Id", "Name", parStructure.ParStructureGroup_Id);
             var listStrunct = db.ParStructure.Where(x => x.Active && x.Id != id).ToList();
             listStrunct.Insert(0, new ParStructure() { Id = 0, Name = Resources.Resource.select });
 
@@ -110,7 +110,7 @@ namespace SgqSystem.Controllers.Params
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup, "Id", "Name", parStructure.ParStructureGroup_Id);
+            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active), "Id", "Name", parStructure.ParStructureGroup_Id);
             ViewBag.ParStructureParentList = db.ParStructure.Where(x => x.Active && x.Id != parStructure.Id).ToList();
             return View("Index");
         }

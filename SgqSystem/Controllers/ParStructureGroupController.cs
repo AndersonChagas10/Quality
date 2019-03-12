@@ -16,7 +16,7 @@ namespace SgqSystem.Controllers
         // GET: ParStructureGroup
         public ActionResult Index()
         {
-            return View(db.ParStructureGroup.Where(x => x.Active).ToList());
+            return View(db.ParStructureGroup.ToList());
         }
 
         // GET: ParStructureGroup/Create
