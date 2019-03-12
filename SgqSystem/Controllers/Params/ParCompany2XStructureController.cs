@@ -56,7 +56,6 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,ParStructure_Id,ParCompany_Id")] ParCompanyXStructure parCompanyXStructure)
         {
-            ValidaVinculo(parCompanyXStructure);
             if (ModelState.IsValid)
             {
                 parCompanyXStructure.Active = true;
@@ -69,13 +68,6 @@ namespace SgqSystem.Controllers
             var listlinkedCompany = db.ParCompanyXStructure.Where(m => m.ParCompany_Id == parCompanyXStructure.ParCompany_Id).ToList();
             ViewBag.ParStructure_Id = new SelectList(db.ParStructure.Where(m => !listlinkedCompany.Any(u => u.ParCompany_Id == m.Id)), "Id", "Name", parCompanyXStructure.ParCompany_Id);
             return View(parCompanyXStructure);
-        }
-
-        private void ValidaVinculo(ParCompanyXStructure parCompanyXStructure)
-        {
-            var empresa = db.ParCompany.Where(x => x.Id == parCompanyXStructure.ParCompany_Id).FirstOrDefault();
-            if(parCompanyXStructure.ParCompany_Id == empresa.Id)
-                ModelState.AddModelError("ParCompany_Id", "ja existe um vinculo para esta empresa");
         }
 
         // GET: ParCompany2XStructure/Edit/5
