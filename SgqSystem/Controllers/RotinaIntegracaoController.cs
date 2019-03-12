@@ -19,7 +19,7 @@ namespace SgqSystem.Controllers
         // GET: RotinaIntegracao
         public ActionResult Index()
         {
-            return View(db.RotinaIntegracao.Where(x => x.IsActive).ToList());
+            return View(db.RotinaIntegracao.ToList());
         }
 
         // GET: RotinaIntegracao/Create
@@ -34,7 +34,7 @@ namespace SgqSystem.Controllers
         {
             try
             {
-                ValidaItemMenu(rotinaIntegracao);
+                ValidaRotina(rotinaIntegracao);
 
                 if (!ModelState.IsValid)
                    return View(rotinaIntegracao);
@@ -74,7 +74,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(RotinaIntegracao rotinaIntegracao)
         {
-            ValidaItemMenu(rotinaIntegracao);
+            ValidaRotina(rotinaIntegracao);
            
             if (ModelState.IsValid)
             {
@@ -111,7 +111,7 @@ namespace SgqSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        private void ValidaItemMenu(RotinaIntegracao rotinaIntegracao)
+        private void ValidaRotina(RotinaIntegracao rotinaIntegracao)
         {
             if (string.IsNullOrEmpty(rotinaIntegracao.Name))
             {

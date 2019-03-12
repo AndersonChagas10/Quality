@@ -49,7 +49,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.DataSource, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.DataSource)
+                                                @Html.EditorFor(model => model.DataSource, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.DataSource, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -58,7 +58,7 @@
                                             @Html.LabelFor(model => model.InitialCatalog, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
-                                                    @Html.EditorFor(model => model.InitialCatalog)
+                                                    @Html.EditorFor(model => model.InitialCatalog, new { htmlAttributes = new { @class = "form-control" } })
                                                     @Html.ValidationMessageFor(model => model.InitialCatalog, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -68,7 +68,7 @@
                                             @Html.LabelFor(model => model.User, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
-                                                    @Html.EditorFor(model => model.User)
+                                                    @Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control" } })
                                                     @Html.ValidationMessageFor(model => model.User, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -78,7 +78,7 @@
                                             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
-                                                    @Html.EditorFor(model => model.Password)
+                                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
                                                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -88,7 +88,7 @@
                                             @Html.LabelFor(model => model.query, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
-                                                    @Html.EditorFor(model => model.query)
+                                                    @Html.EditorFor(model => model.query, new { htmlAttributes = new { @class = "form-control" } })
                                                     @Html.ValidationMessageFor(model => model.query, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -98,7 +98,7 @@
                                             @Html.LabelFor(model => model.Parametro, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
-                                                    @Html.EditorFor(model => model.Parametro)
+                                                    @Html.EditorFor(model => model.Parametro, new { htmlAttributes = new { @class = "form-control" } })
                                                     @Html.ValidationMessageFor(model => model.Parametro, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -108,14 +108,14 @@
                                             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
-                                                    @Html.EditorFor(model => model.Name)
+                                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                                                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.IsActive,Resources.Resource.active, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.IsActive)

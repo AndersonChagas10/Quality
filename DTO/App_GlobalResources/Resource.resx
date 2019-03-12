@@ -2298,4 +2298,7 @@
   <data name="filtered_report_between_dates" xml:space="preserve">
     <value>Scorecard report filtered between dates:</value>
   </data>
+  <data name="active" xml:space="preserve">
+    <value>Is Active?</value>
+  </data>
 </root>
