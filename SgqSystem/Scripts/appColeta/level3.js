@@ -932,13 +932,15 @@ $(document).on('click', '#btnAllNC', function (e) {
         defectsRemove = notconform.length;
     }
 
-    var conform = $('.level3Group:visible .level3.boolean').children('.counters').children('span.response:not([value="0"])').parent().parent();
+    //var conform = $('.level3Group:visible .level3.boolean').children('.counters').children('span.response:not([value="0"])').parent().parent();
 
-    notconform.removeClass('lightred').removeAttr('notconform').children('.counters').children('span.response').attr('value', '1');
-    conform.addClass('lightred').attr('notConform', 'notCorform').children('.counters').children('span.response').attr('value', '0');
+    //notconform.removeClass('lightred').removeAttr('notconform').children('.counters').children('span.response').attr('value', '1');
+    //conform.addClass('lightred').attr('notConform', 'notCorform').children('.counters').children('span.response').attr('value', '0');
 
-    notconform.children('.counters').children('span.response').text(notconform.children('.counters').children('span.response:first').attr('booltruename'));
-    conform.children('.counters').children('span.response').text(conform.children('.counters').children('span.response:first').attr('boolfalsename'));
+    //notconform.children('.counters').children('span.response').text(notconform.children('.counters').children('span.response:first').attr('booltruename'));
+    //conform.children('.counters').children('span.response').text(conform.children('.counters').children('span.response:first').attr('boolfalsename'));
+
+    $('.level3 a').click();
 
     var level02 = $('.level2.selected');
 
