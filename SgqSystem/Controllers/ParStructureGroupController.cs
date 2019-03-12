@@ -52,7 +52,7 @@ namespace SgqSystem.Controllers
         {
             ParStructureGroup parStructureGroup = db.ParStructureGroup.Find(id);
 
-            var listaFilhos = db.ParStructureGroup.Where(x => x.Active).ToList();
+            var listaFilhos = db.ParStructureGroup.Where(x => x.Active && x.Id != id).ToList();
             listaFilhos.Insert(0, new ParStructureGroup() { Id = 0, Name = "Selecione" });
             ViewBag.ParStructureGroupParent_Id = new SelectList(listaFilhos, "Id", "Name", parStructureGroup.ParStructureGroupParent_Id);
 

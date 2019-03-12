@@ -42,17 +42,21 @@ namespace SgqSystem.Controllers
         {
             ViewBag.ParCompanyId = parCompanyId;
             var listlinkedCompany = db.ParCompanyXStructure.Where(m=> m.ParCompany_Id == parCompanyId).Select(m=>m.ParCompany_Id).ToList();
-            ViewBag.ParStructure_Id = new SelectList(db.ParStructure.Where(m=> !listlinkedCompany.Contains(m.Id) && m.Id != parCompanyId).Select(m=>m).ToList(), "Id", "Name");
+            var listaDeEmpresasSalvas = db.ParCompanyXStructure.Where(x => x.ParCompany_Id == parCompanyId && x.Active == true).Select(m => m.ParStructure_Id).ToList();
+
+            ViewBag.ParStructure_Id = new SelectList(db.ParStructure.Where(m=> !listaDeEmpresasSalvas.Contains(m.Id)).Select(m=>m).ToList(), "Id", "Name");
+
             return View(new ParCompanyXStructure() { ParCompany_Id = parCompanyId });
         }
 
         // POST: ParCompany2XStructure/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost] 
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,ParStructure_Id,ParCompany_Id")] ParCompanyXStructure parCompanyXStructure)
         {
+            ValidaVinculo(parCompanyXStructure);
             if (ModelState.IsValid)
             {
                 parCompanyXStructure.Active = true;
@@ -61,9 +65,17 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Details","ParCompany2",new { id = parCompanyXStructure.ParCompany_Id });
             }
 
+            //var listlinkedCompany = db.ParCompanyXStructure.Where(m => m.ParCompany_Id == parCompanyXStructure.ParCompany_Id).ToList();
             var listlinkedCompany = db.ParCompanyXStructure.Where(m => m.ParCompany_Id == parCompanyXStructure.ParCompany_Id).ToList();
             ViewBag.ParStructure_Id = new SelectList(db.ParStructure.Where(m => !listlinkedCompany.Any(u => u.ParCompany_Id == m.Id)), "Id", "Name", parCompanyXStructure.ParCompany_Id);
             return View(parCompanyXStructure);
+        }
+
+        private void ValidaVinculo(ParCompanyXStructure parCompanyXStructure)
+        {
+            var empresa = db.ParCompany.Where(x => x.Id == parCompanyXStructure.ParCompany_Id).FirstOrDefault();
+            if(parCompanyXStructure.ParCompany_Id == empresa.Id)
+                ModelState.AddModelError("ParCompany_Id", "ja existe um vinculo para esta empresa");
         }
 
         // GET: ParCompany2XStructure/Edit/5

@@ -44,6 +44,7 @@ namespace SgqSystem.Controllers.Params
         }
 
         // GET: ParStructures/Create
+        [HttpGet]
         public ActionResult Create()
         {
             ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup, "Id", "Name");
@@ -88,7 +89,7 @@ namespace SgqSystem.Controllers.Params
                 return HttpNotFound();
             }
             ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup, "Id", "Name", parStructure.ParStructureGroup_Id);
-            var listStrunct = db.ParStructure.Where(x => x.Active).ToList();
+            var listStrunct = db.ParStructure.Where(x => x.Active && x.Id != id).ToList();
             listStrunct.Insert(0, new ParStructure() { Id = 0, Name = Resources.Resource.select });
 
             ViewBag.ParStructureParentList = listStrunct;

@@ -1,4 +1,7 @@
 ﻿@model Dominio.ParStructure
+@{
+    ViewBag.Title = Resources.Resource.edit;
+}
 
 <div class="page-content-wrapper">
     <div class="page-content">
@@ -11,7 +14,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.new_structure</span>
+                    <span>@Resources.Resource.edit @Resources.Resource.structure </span>
                 </li>
             </ul>
             <div class="page-toolbar"></div>
@@ -60,7 +63,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParStructureParent_Id, Resources.Resource.structure + " Pai", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParStructureParent_Id, "É filho de", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParStructureParent_Id", new SelectList(ViewBag.ParStructureParentList, "Id", "Name"), htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParStructureParent_Id, "", new { @class = "text-danger" })
