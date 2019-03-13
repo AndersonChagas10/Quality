@@ -1282,7 +1282,7 @@ namespace SgqSystem.Controllers
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             //Nomes das colunas do corpo da tabela de dados central
@@ -1876,7 +1876,7 @@ namespace SgqSystem.Controllers
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             //Nomes das colunas do corpo da tabela de dados central
@@ -2526,7 +2526,7 @@ namespace SgqSystem.Controllers
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             //Nomes das colunas do corpo da tabela de dados central
@@ -3188,7 +3188,7 @@ namespace SgqSystem.Controllers
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             //Nomes das colunas do corpo da tabela de dados central
@@ -3860,7 +3860,7 @@ namespace SgqSystem.Controllers
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             //Nomes das colunas do corpo da tabela de dados central
@@ -4521,7 +4521,7 @@ namespace SgqSystem.Controllers
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             //Nomes das colunas do corpo da tabela de dados central
@@ -5335,7 +5335,7 @@ namespace SgqSystem.Controllers
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             whereCol = $@" AND S.ParCompany_Id IN (SELECT Id FROM ParCompany WHERE IsActive = 1 AND Initials = '{form.ParametroTableCol[0]}') ";
@@ -7358,7 +7358,7 @@ namespace SgqSystem.Controllers
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             //Nomes das colunas do corpo da tabela de dados central
@@ -8021,7 +8021,7 @@ namespace SgqSystem.Controllers
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
 
@@ -8475,7 +8475,7 @@ namespace SgqSystem.Controllers
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND P1.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
 
