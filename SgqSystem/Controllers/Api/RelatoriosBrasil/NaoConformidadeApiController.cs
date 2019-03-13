@@ -86,7 +86,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id = {form.criticalLevelId} ";
+                    //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var query = $@"
@@ -277,7 +278,11 @@ INSERT INTO #AMOSTRATIPO4
 		                	ON PCC.ParCluster_Id = PC.Id
 		                LEFT JOIN ParClusterGroup PCG
 		                	ON PC.ParClusterGroup_Id = PCG.Id
-                		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                        LEFT JOIN ParLevel1XCluster PLC
+							ON dbo.grtFN_getParLevel1XCluster(ConsolidationDate,CL1.ParLevel1_Id,Unitid,3) = PLC.ID
+                		WHERE 1=1
+                        AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                        
                         
                         { whereDepartment }
                         { whereShift }
@@ -328,7 +333,7 @@ INSERT INTO #AMOSTRATIPO4
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id = { form.criticalLevelId }"; //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var query = @"
@@ -546,6 +551,8 @@ INSERT INTO #AMOSTRATIPO4
             			LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
             				ON A4.UNIDADE = UNI.Id
             				AND A4.INDICADOR = IND.ID
+                        LEFT JOIN ParLevel1XCluster PLC
+							ON dbo.grtFN_getParLevel1XCluster(CL1.ConsolidationDate,CL1.ParLevel1_Id,CL1.Unitid,3) = PLC.ID
             			WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
             			AND UNI.Name = '" + form.unitName + @"'
                         " + whereDepartment + @"
@@ -1167,7 +1174,7 @@ INSERT INTO #AMOSTRATIPO4
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id = { form.criticalLevelId }"; //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var query = $@"
@@ -1389,6 +1396,8 @@ FROM (SELECT
 		--  	ON CL2.ParLevel2_id = L2.Id
 		--  INNER JOIN ParDepartment D WITH (NOLOCK)
 		--  	ON L2.ParDepartment_Id = D.Id
+        LEFT JOIN ParLevel1XCluster PLC
+			ON dbo.grtFN_getParLevel1XCluster(CL1.ConsolidationDate,CL1.ParLevel1_Id,CL1.Unitid,3) = PLC.ID
 		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		AND UNI.Name = '{form.unitName }'
         {whereDepartment}
@@ -1564,6 +1573,8 @@ FROM (SELECT
                             AND A4.DATA = CL1.ConsolidationDate
                             AND A4.[SHIFT] = CL1.[SHIFT]
                             AND A4.[PERIOD] = CL1.[PERIOD]
+                        LEFT JOIN ParLevel1XCluster PLC
+			                ON dbo.grtFN_getParLevel1XCluster(CL1.ConsolidationDate,CL1.ParLevel1_Id,CL1.Unitid,3) = PLC.ID
             			WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
             			AND UNI.Name = '" + form.unitName + @"'
                         " + whereDepartment_Todos + @"

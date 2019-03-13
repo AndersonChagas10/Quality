@@ -352,10 +352,22 @@ function openLevel3(level2) {
     }
 
     //painelClone.find('input, select').attr('disabled', 'disabled'); //DESABILITA O CAMPO DE CABEÇALHO DO MONITORAMENTO
-    painelClone.find('input, select');
+    //painelClone.find('input, select');
     painelClone.find("div").removeClass("header");
 
-    beforeDevice(painelClone, $('.painelLevel03:visible'));
+	$('.painelLevel03:visible').prepend(painelClone);
+	
+	/*Paleativo permanente para os tipos de cabeçalho do tipo data. Algum bug
+	que precisou fazer a gambiarra abaixo para conseguir setar o valor corretamente*/
+	$('.painelLevel03:visible').find('input[type="date"]').each(function (i, e) {
+		var element = $('.painelLevel03:visible')
+		.find('input[parheaderfield_id="'+$(e).attr('parheaderfield_id')+'"]')
+		element.attr('type',"text");
+		element.attr('value',$(e).val());
+		element.attr('type',"date");
+	});
+		
+    //beforeDevice(painelClone, $('.painelLevel03:visible'));
 
     $('#period').attr('disabled', 'disabled');
     $('input.defects').val(0);
@@ -485,6 +497,9 @@ function openLevel3(level2) {
     removeFotosNaoSalvas();
 
     $('.level3 input').val('').trigger('input');
+
+    if ($('#btnAllNA').text() == 'Todos A')
+        $('#btnAllNA').trigger('click');
 
 }
 
@@ -917,13 +932,15 @@ $(document).on('click', '#btnAllNC', function (e) {
         defectsRemove = notconform.length;
     }
 
-    var conform = $('.level3Group:visible .level3.boolean').children('.counters').children('span.response:not([value="0"])').parent().parent();
+    //var conform = $('.level3Group:visible .level3.boolean').children('.counters').children('span.response:not([value="0"])').parent().parent();
 
-    notconform.removeClass('lightred').removeAttr('notconform').children('.counters').children('span.response').attr('value', '1');
-    conform.addClass('lightred').attr('notConform', 'notCorform').children('.counters').children('span.response').attr('value', '0');
+    //notconform.removeClass('lightred').removeAttr('notconform').children('.counters').children('span.response').attr('value', '1');
+    //conform.addClass('lightred').attr('notConform', 'notCorform').children('.counters').children('span.response').attr('value', '0');
 
-    notconform.children('.counters').children('span.response').text(notconform.children('.counters').children('span.response:first').attr('booltruename'));
-    conform.children('.counters').children('span.response').text(conform.children('.counters').children('span.response:first').attr('boolfalsename'));
+    //notconform.children('.counters').children('span.response').text(notconform.children('.counters').children('span.response:first').attr('booltruename'));
+    //conform.children('.counters').children('span.response').text(conform.children('.counters').children('span.response:first').attr('boolfalsename'));
+
+    $('.level3 a').click();
 
     var level02 = $('.level2.selected');
 
@@ -1315,7 +1332,7 @@ function saveResultLevel3() {
                     var value = $(self).val().replace(",", ".");
                     var id = $(self).attr('parheaderfield_id');
 
-                    if (value != "0") {
+                    if (value != undefined && value != "") {
                         var hashkey = $(self).children('option:selected').attr('hashkey');
                         if (!!hashkey && $(self).attr('parfieldtype_id') == "1") {
                             value = hashkey;
