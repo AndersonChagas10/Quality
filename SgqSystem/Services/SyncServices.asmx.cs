@@ -5964,7 +5964,7 @@ function calcularSensorial(list){
                         break;
                     //Numérico
                     case 5:
-                        form_control = "<input class=\"form-control input-sm \" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
+                        form_control = "<input class=\"form-control input-sm numeric\" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
                         form_control += " <label class=\"\"></label>";
                         break;
                     //Data
