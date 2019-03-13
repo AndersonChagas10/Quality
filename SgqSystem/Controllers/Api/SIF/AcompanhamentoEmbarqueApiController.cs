@@ -86,106 +86,106 @@ namespace SgqSystem.Controllers.Api.SIF
 
                         switch (item.Id)
                         {
-                            //JBS
-                            case 198: //Tipo de veículo
-                                TipoVeiculo.Add(item.Value);
-                                break;
-                            case 199://Transportadora
-                                Transportadora.Add(item.Value);
-                                break;
-                            case 200: //Placa do veículo
-                                PlacaDoVeiculo.Add(item.Value);
-                                break;
-                            case 201: //Nome do motorista
-                                NomeMotorista.Add(item.Value);
-                                break;
-                            case 202: //Lacre número
-                                LacreNumero.Add(item.Value);
-                                break;
-                            case 203: //Termógrafo número
-                                Termografo_Id.Add(item.Value);
-                                break;
-                            case 204: //SIF ou Nome
-                                SifNumber.Add(item.Value);
-                                break;
-                            case 205: //Pedido
-                                Pedido.Add(item.Value);
-                                break;
-                            case 206: //Data do carregamento
-                                DataCarregamento.Add(item.Value);
-                                break;
-                            case 207: //Instrução
-                                Instrucao.Add(item.Value);
-                                break;
-                            case 208: //Notas Fiscais
-                                NumeroNotaFiscal.Add(item.Value);
-                                break;
-                            case 209: //Tipo de produto
-                                TipoCarga.Add(item.Value);
-                                break;
-                            case 210: //Tipo de embalagem
-                                TipoEmbalagem.Add(item.Value);
-                                break;
-                            case 211: //Tipo de produto
-                                TipoProduto.Add(item.Value);
-                                break;
-                            case 212: //Termógrafo - T° mín
-                                TemperaturaMin.Add(item.Value);
-                                break;
-                            case 213: //Termógrafo - T° máx   
-                                TemperaturaMax.Add(item.Value);
-                                break;
-
-
-                            ////GRT
-                            //case 1166: //Tipo de veículo
+                            ////JBS
+                            //case 198: //Tipo de veículo
                             //    TipoVeiculo.Add(item.Value);
                             //    break;
-                            //case 1167://Transportadora
+                            //case 199://Transportadora
                             //    Transportadora.Add(item.Value);
                             //    break;
-                            //case 1168: //Placa do veículo
+                            //case 200: //Placa do veículo
                             //    PlacaDoVeiculo.Add(item.Value);
                             //    break;
-                            //case 1169: //Nome do motorista
+                            //case 201: //Nome do motorista
                             //    NomeMotorista.Add(item.Value);
                             //    break;
-                            //case 1172: //Lacre número
+                            //case 202: //Lacre número
                             //    LacreNumero.Add(item.Value);
                             //    break;
-                            //case 1173: //Termógrafo número
+                            //case 203: //Termógrafo número
                             //    Termografo_Id.Add(item.Value);
                             //    break;
-                            //case 1174: //SIF ou Nome
+                            //case 204: //SIF ou Nome
                             //    SifNumber.Add(item.Value);
                             //    break;
-                            //case 1175: //Pedido
+                            //case 205: //Pedido
                             //    Pedido.Add(item.Value);
                             //    break;
-                            //case 1176: //Data do Carregamento
+                            //case 206: //Data do carregamento
                             //    DataCarregamento.Add(item.Value);
                             //    break;
-                            //case 1177: //Instrução
+                            //case 207: //Instrução
                             //    Instrucao.Add(item.Value);
                             //    break;
-                            //case 1178: //Notas Fiscais
+                            //case 208: //Notas Fiscais
                             //    NumeroNotaFiscal.Add(item.Value);
                             //    break;
-                            //case 1179: //Tipo de Carga
+                            //case 209: //Tipo de produto
                             //    TipoCarga.Add(item.Value);
                             //    break;
-                            //case 1181: //Tipo de produto
-                            //    TipoProduto.Add(item.Value);
-                            //    break;
-                            //case 1180: //Tipo de embalagem
+                            //case 210: //Tipo de embalagem
                             //    TipoEmbalagem.Add(item.Value);
                             //    break;
-                            //case 1182: //Termógrafo - T° mín
+                            //case 211: //Tipo de produto
+                            //    TipoProduto.Add(item.Value);
+                            //    break;
+                            //case 212: //Termógrafo - T° mín
                             //    TemperaturaMin.Add(item.Value);
                             //    break;
-                            //case 1183: //Termógrafo - T° máx   
+                            //case 213: //Termógrafo - T° máx   
                             //    TemperaturaMax.Add(item.Value);
                             //    break;
+
+
+                            //GRT
+                            case 1166: //Tipo de veículo
+                                TipoVeiculo.Add(item.Value);
+                                break;
+                            case 1167://Transportadora
+                                Transportadora.Add(item.Value);
+                                break;
+                            case 1168: //Placa do veículo
+                                PlacaDoVeiculo.Add(item.Value);
+                                break;
+                            case 1169: //Nome do motorista
+                                NomeMotorista.Add(item.Value);
+                                break;
+                            case 1172: //Lacre número
+                                LacreNumero.Add(item.Value);
+                                break;
+                            case 1173: //Termógrafo número
+                                Termografo_Id.Add(item.Value);
+                                break;
+                            case 1174: //SIF ou Nome
+                                SifNumber.Add(item.Value);
+                                break;
+                            case 1175: //Pedido
+                                Pedido.Add(item.Value);
+                                break;
+                            case 1176: //Data do Carregamento
+                                DataCarregamento.Add(item.Value);
+                                break;
+                            case 1177: //Instrução
+                                Instrucao.Add(item.Value);
+                                break;
+                            case 1178: //Notas Fiscais
+                                NumeroNotaFiscal.Add(item.Value);
+                                break;
+                            case 1179: //Tipo de Carga
+                                TipoCarga.Add(item.Value);
+                                break;
+                            case 1181: //Tipo de produto
+                                TipoProduto.Add(item.Value);
+                                break;
+                            case 1180: //Tipo de embalagem
+                                TipoEmbalagem.Add(item.Value);
+                                break;
+                            case 1182: //Termógrafo - T° mín
+                                TemperaturaMin.Add(item.Value);
+                                break;
+                            case 1183: //Termógrafo - T° máx   
+                                TemperaturaMax.Add(item.Value);
+                                break;
                         }
 
                     }
@@ -415,8 +415,8 @@ DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
         public bool IsNotEvaluate { get; set; }
         public string Value { get; set; }
         public string SIF { get; set; }
-        public DateTime DataValidade { get; set; }
-        public DateTime DataProducao { get; set; }
+        public DateTime? DataValidade { get; set; }
+        public DateTime? DataProducao { get; set; }
         public string CB { get; set; }
     }
 }
