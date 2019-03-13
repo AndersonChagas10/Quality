@@ -332,7 +332,7 @@ namespace SgqSystem.Controllers
                                           MAX(PontosAtingidos) PontosAtingidos
                                           -- CASE WHEN CASE WHEN SUM(PontosIndicador) = 0 OR SUM(PontosIndicador) IS NULL THEN 0 ELSE SUM(PontosAtingidos) / SUM(PontosIndicador) END < 0.7 THEN 0 ELSE SUM(PontosAtingidos) END PontosAtingidos
                                           FROM ParStructure Reg
-                                          LEFT JOIN ParCompanyXStructure CS
+                                          LEFT JOIN (SELECT * FROM ParCompanyXStructure WHERE ACTIVE = 1) CS
                                           ON CS.ParStructure_Id = Reg.Id
                                           left join ParCompany C
                                           on C.Id = CS.ParCompany_Id
