@@ -282,9 +282,9 @@
 
 @section Scripts{
 
-<script src="~/Scripts/Print/printGRT.js"></script>
+    <script src="~/Scripts/Print/printGRT.js"></script>
 
-<script>
+    <script>
 
         var $btn = $('#btnSend');
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
@@ -396,7 +396,7 @@
             }
 
             //Fotos
-            if (r.Fotos.length > 0) {
+            if (r.Fotos && r.Fotos.length > 0) {
                 PreencherFotos(r.Fotos);
             }
 
@@ -486,19 +486,11 @@
 
             let linhaData =
                 `<tr>
-                        <td>Data</td>`;
-
-            let linhaSIF = `<tr>`;
-
-            let linhaDataValidadeEProducao = `<tr>`;
-
-            let linhaCB = `<tr>`;
-
-            let segundaLinha = `<tr>`;
+                        <td colspan="3">Data</td>`;
 
             let primeiraLinha = `<tr>
-                                        <td rowspan="6" colspan="2">Caracteristicas da Qualidade</td>
-                                        <td rowspan="5">Padrão</td>`;
+                                        <td rowspan="1" colspan="2">Caracteristicas da Qualidade</td>
+                                        <td rowspan="1">Padrão</td>`;
 
             lstObjProduto.forEach((item) => {
 
@@ -515,23 +507,22 @@
 
                 });
 
-                linhaSIF += `<td colspan="${numeroAmostras.length}">SIF: ${item.SIF}</td>`;
-                linhaDataValidadeEProducao += `<td colspan="${numeroAmostras.length}">Data de Validade: ${item.DataValidade} | Data de Produção: ${item.DataProducao}</td>`;
-                linhaCB += `<td colspan="${numeroAmostras.length}">CB: ${item.CB}</td>`;
-                segundaLinha += `<td colspan="${numeroAmostras.length}">Produto: ${item.Produto}</td>`;
-                primeiraLinha += `<td colspan="${numeroAmostras.length}">Cod: ${item.Produto_Id}</td>`;
+                primeiraLinha += `<td colspan="${numeroAmostras.length}">
 
+                Cod: ${item.Produto_Id} <br>
+                Produto: ${item.Produto} <br>
+                SIF: ${item.SIF} <br>
+                CB: ${item.CB} <br>
+                Data de Validade: ${item.DataValidade} <br>
+                Data de Produção: ${item.DataProducao} <br>
+
+                </td>`
             });
 
-            linhaSIF += `</tr>`;
-            linhaDataValidadeEProducao += `</tr>`;
-            linhaCB += `</tr>`;
-            primeiraLinha += `</tr>`;
-            segundaLinha += `</tr>`;
             linhaData += "</tr>";
-            linhaAmostra += "</tr>"
+            linhaAmostra += "</tr>";
 
-            let segundoCabecalho = primeiraLinha + segundaLinha + linhaSIF + linhaDataValidadeEProducao + linhaCB + linhaData + linhaAmostra;
+            let segundoCabecalho = primeiraLinha + linhaData + linhaAmostra;
 
             return segundoCabecalho;
         }
@@ -573,11 +564,9 @@
 
                     let arrayPorProduto = array.filter(item => item.Produto_Id == produto)
 
-                    let tamanhoMaximoAmostraPorProduto = Math.max(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
+                    let amostrasPorProduto = [...new Set(arrayPorProduto.map(item => item.Amostra))].filter((value, index, self) => { return self.indexOf(value) === index });
 
-                    let tamanhoMinimoAmostraPorProduto = Math.min(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
-
-                    for (let i = tamanhoMinimoAmostraPorProduto; i <= tamanhoMaximoAmostraPorProduto; i++) {
+                    amostrasPorProduto.forEach((i) => {
 
                         let td;
 
@@ -610,7 +599,7 @@
 
                         conteudoTabela += td;
 
-                    }
+                    });
 
                 });
 
@@ -649,7 +638,6 @@
 
         function PreencherFotos(array) {
 
-            //let html = "";
             let contador = 0;
             let qtdeFotosPorLinha = 3;
 
@@ -667,7 +655,6 @@
                 contador = (contador + qtdeFotosPorLinha);
             }
 
-            //return html;
         }
 
         function FazerTabelaFotos(array, qtdeFotosPorLinha) {
@@ -768,5 +755,5 @@
             $('#divRenderPrint').remove();
         }
 
-</script>
+    </script>
 }
