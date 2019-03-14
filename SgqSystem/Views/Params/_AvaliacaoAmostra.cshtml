@@ -50,12 +50,12 @@
 
                             @Html.HiddenFor(r => r.paramsDto.parEvaluationDto.Id)
                             @Table.GerarColuna(@Html.TextBox("avaliacao", 0, htmlAttributes: new { @id = "avaliacao", @class = "form-control input-sm", type = "number", min = "0" })
-                                , @Html.Label(Resources.Resource.evaluation)
+                                , @Html.Label(Resources.Resource.evaluation + " O valor 0 representa um valor ilimitado de Avaliações")
                                 , Table.PosicaoLabel.top)
 
                             @Html.HiddenFor(r => r.paramsDto.parSampleDto.Id)
                             @Table.GerarColunaButton(@Html.TextBox("amostra", 0, htmlAttributes: new { @id = "amostra", @class = "form-control input-sm", type = "number", min = "0" })
-                                , @Html.Label(Resources.Resource.samples_per_evaluation)
+                                , @Html.Label(Resources.Resource.samples_per_evaluation +" O valor 0 representa um valor ilimitado de Avaliações")
                                 , Table.PosicaoLabel.top
                                 , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
 
@@ -71,7 +71,6 @@
 
 
 <script>
-
     //function changeCompanyAvAm() {
 
     var levelControl = @Html.Raw(Json.Encode(@Model.levelControl))
@@ -102,7 +101,7 @@
             idTable: 'tableAvAm',//
             tdsNames: ['companyName', 'ParLevel1_Name', 'ParCluster_Name','evaluationNumber', 'sampleNumber', 'agendamento','btn'],
             getObjAdd: function (isEdit, obj) {
-                debugger
+        
                 if(isEdit != undefined){
                     var compId = $('#' + isEdit + ' #avAmCompany :selected').val();
                     var compName = $('#' + isEdit + ' #avAmCompany :selected').text();
@@ -132,8 +131,8 @@
                     if(ParCluster_Id == "-1"){
                         ParCluster_Name = "@Resources.Resource.all"
                     }
-
-                    return {/*Objeto*/
+                    debugger
+                    return {/*Objeto*/     
                         sampleNumber     :  $('#' + this.level + ' #amostra').val(),
                         evaluationNumber    : $('#' + this.level + ' #avaliacao').val(),
                         companyId  :  compId,
@@ -226,7 +225,7 @@
                     if((o.evaluationId != null || o.evaluationId != undefined) && o.evaluationId > 0){
                         dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].evaluationId"] = o.evaluationId;
                     }
-
+        
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].ParLevel1_Id"] = o.ParLevel1_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].ParCluster_Id"] = o.ParCluster_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].sampleNumber"] = o.sampleNumber;
@@ -243,7 +242,8 @@
                 var tdNamess = this.tdsNames;
 
                 if( this.listObjSalvo != null){ /*Carrega regras de NC*/
-                    this.listObjSalvo.forEach(function(o, c){
+                    this.listObjSalvo.forEach(function (o, c) {
+                        debugger
                         if(o.companyId != null && o.companyId != "-1"){
                                 o['companyName'] = $('#avAmCompany option[value=' + o.companyId + ']').text();
                         }else{
@@ -261,7 +261,7 @@
                         }else{
                             o['ParLevel1_Name'] = "@Resources.Resource.all";
                         }
-                        debugger
+         
                         if (o.TemAgendamento) {
                             o['agendamento'] = '<button type="button" id="agendamento" class="btn btn-success btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
 
@@ -269,6 +269,14 @@
                         } else {
                             o['agendamento'] = '<button type="button" id="agendamento"  class="btn btn-default btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
                         }
+
+                        if (o.evaluationNumber == 0) {
+                            o['evaluationNumber'] = '<span>&infin;</span>'
+                        } 
+
+                        if (o.sampleNumber == 0) {
+                            o['sampleNumber'] = '<span>&infin;</span>'
+                        } 
 
                         crudNxN.adiciona(o,  id, tdNamess);
                     });

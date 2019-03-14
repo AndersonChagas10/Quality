@@ -17,24 +17,37 @@
 
     #tabelaEsquerda tbody tr td {
         font-size: 8px;
-        /*white-space: nowrap;*/
     }
 
     #tabelaDireita tbody tr td {
         font-size: 8px;
-        /*white-space: nowrap;*/
     }
 
     .cabecalho2 tbody tr td {
         font-size: 8px;
-        /*white-space: nowrap;*/
+    }
+
+    .img-responsive {
+        width: 100%;
+    }
+
+    .photos .table td {
+        font-size: 10px;
+        min-width: 200px;
     }
 
     @@media print {
-
         #trAmostra {
             background-color: #c3c3c3 !important;
             -webkit-print-color-adjust: exact !important;
+        }
+
+        .img-responsive {
+            width: 100%;
+        }
+
+        .photos .table td {
+            font-size: 10px;
         }
     }
 </style>
@@ -218,6 +231,7 @@
 
                             <hr />
                             <br />
+
                             <div class="avoid-page-break">
                                 <div class="">
                                     <table border="0" cellspacing="0" cellpadding="1" style="width:100%;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:10px;">
@@ -301,8 +315,7 @@
 
             setTimeout(function () {
 
-                $('#level1Id option[value="number:89"]').attr('selected', 'selected'); //Numero do Indicador na JBS
-                //$('#level1Id option[value="number:68"]').attr('selected', 'selected'); //Numero Indicador na GRT
+                $('#level1Id option[value="number:' + getDicionario('PlanilhaRecebimentoCDs_Id') + '"]').attr('selected', 'selected');
                 $('#level1Id').trigger("change");
                 $('select').select2();
 
@@ -346,6 +359,8 @@
 
             $('.cabecalho2').remove();
 
+            $('div.avoid-page-break.photos').remove();
+
             if (!r) {
                 GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"));
                 return false;
@@ -378,6 +393,11 @@
                 conteudoTabela += PreencherConteudo(coletas);
 
                 $('<table class="table table-bordered cabecalho2"><tbody>' + conteudoTabela + '</tbody></table>').insertAfter($('#contentBody > table:last'));
+            }
+
+            //Fotos
+            if (r.Fotos && r.Fotos.length > 0) {
+                PreencherFotos(r.Fotos);
             }
 
             $('.portlet').show();
@@ -436,7 +456,6 @@
                 let arrDataProducaoNew = [];
 
                 if (arrDataValidade.length > 0) {
-
                     arrDataValidade.forEach((item) => {
                         arrDataValidadeNew.push(new Date(item).toLocaleDateString())
                     });
@@ -444,7 +463,7 @@
                 }
 
                 if (arrDataProducao.length > 0) {
-                    arrDataValidade.forEach((item) => {
+                    arrDataProducao.forEach((item) => {
                         arrDataProducaoNew.push(new Date(item).toLocaleDateString())
                     });
                 }
@@ -467,21 +486,11 @@
 
             let linhaData =
                 `<tr>
-                        <td>Data</td>`;
-
-            let linhaSIF = `<tr>`;
-
-            let linhaDataValidadeEProducao = `<tr>`;
-
-            //let linhaDataProducao = `<tr>`;
-
-            let linhaCB = `<tr>`;
-
-            let segundaLinha = `<tr>`;
+                        <td colspan="3">Data</td>`;
 
             let primeiraLinha = `<tr>
-                                        <td rowspan="6" colspan="2">Caracteristicas da Qualidade</td>
-                                        <td rowspan="5">Padrão</td>`;
+                                        <td rowspan="1" colspan="2">Caracteristicas da Qualidade</td>
+                                        <td rowspan="1">Padrão</td>`;
 
             lstObjProduto.forEach((item) => {
 
@@ -493,44 +502,27 @@
 
                     let colspanAmostraEData = 1;
 
-                    //if (numeroAmostras.length < 2) {
-                    //    colspanAmostraEData = 2;
-                    //}
-
                     linhaData += "<td colspan=" + colspanAmostraEData + ">" + new Date(dataAmostras[index]).toLocaleDateString() + "</td>";
                     linhaAmostra += "<td colspan=" + colspanAmostraEData + "><strong> " + amostra + "</strong></td>";
 
                 });
 
-                //let colspanMax = Math.ceil(numeroAmostras.length / 2);
-                //let colspanMin = Math.floor(numeroAmostras.length / 2);
+                primeiraLinha += `<td colspan="${numeroAmostras.length}">
 
-                //segundaLinha += `<td colspan="${colspanMin}">Produto:</td>
-                //                    <td colspan="${colspanMax}">${item.Produto}</td>`;
+                Cod: ${item.Produto_Id} <br>
+                Produto: ${item.Produto} <br>
+                SIF: ${item.SIF} <br>
+                CB: ${item.CB} <br>
+                Data de Validade: ${item.DataValidade} <br>
+                Data de Produção: ${item.DataProducao} <br>
 
-
-                //primeiraLinha += `<td colspan="${colspanMin}">Cod:</td>
-                //                      <td colspan="${colspanMax}">${item.Produto_Id}</td>`;
-
-                linhaSIF += `<td colspan="${numeroAmostras.length}">SIF: ${item.SIF}</td>`;
-                linhaDataValidadeEProducao += `<td colspan="${numeroAmostras.length}">Data de Validade: ${item.DataValidade} | Data de Produção: ${item.DataProducao}</td>`;
-                //linhaDataProducao += `<td colspan="${numeroAmostras.length}">Data de Produção: ${item.DataProducao}</td>`;
-                linhaCB += `<td colspan="${numeroAmostras.length}">CB: ${item.CB}</td>`;
-                segundaLinha += `<td colspan="${numeroAmostras.length}">Produto: ${item.Produto}</td>`;
-                primeiraLinha += `<td colspan="${numeroAmostras.length}">Cod: ${item.Produto_Id}</td>`;
-
+                </td>`
             });
 
-            linhaSIF += `</tr>`;
-            linhaDataValidadeEProducao += `</tr>`;
-            //linhaDataProducao += `</tr>`;
-            linhaCB += `</tr>`;
-            primeiraLinha += `</tr>`;
-            segundaLinha += `</tr>`;
             linhaData += "</tr>";
-            linhaAmostra += "</tr>"
+            linhaAmostra += "</tr>";
 
-            let segundoCabecalho = primeiraLinha + segundaLinha + linhaSIF + linhaDataValidadeEProducao + linhaCB + linhaData + linhaAmostra;
+            let segundoCabecalho = primeiraLinha + linhaData + linhaAmostra;
 
             return segundoCabecalho;
         }
@@ -544,30 +536,6 @@
             let level3Group;
 
             levels3_Id.forEach((level3, index) => {
-
-                //Tabela com o rowspan
-
-                //newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
-
-                //let qtdeLevel3Group = array.filter(item => item.Level3Group == newLevel3Group).map((value) => { return value.ParLevel3 }).filter((value, index, self) => { return self.indexOf(value) === index; }).length
-
-                //if (newLevel3Group && level3Group != newLevel3Group) {
-                //    conteudoTabela +=
-                //        `<tr>
-                //            <td rowspan="${qtdeLevel3Group}"> ${newLevel3Group} </td>
-                //            <td colspan="2">${levels3[index]}</td>`;
-                //    level3Group = newLevel3Group;
-                //} else if (!newLevel3Group) {
-                //    conteudoTabela +=
-                //        `<tr>
-                //            <td colspan="3">${levels3[index]}</td>`;
-                //} else {
-                //    conteudoTabela +=
-                //        `<tr>
-                //            <td colspan="2">${levels3[index]}</td>`;
-                //}
-
-                //Tabela sem rowspan
 
                 newLevel3Group = [...new Set(array.filter(item => item.ParLevel3_Id == level3).map(item => item.Level3Group))][0];
 
@@ -596,15 +564,9 @@
 
                     let arrayPorProduto = array.filter(item => item.Produto_Id == produto)
 
-                    let tamanhoMaximoAmostraPorProduto = Math.max(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
+                    let amostrasPorProduto = [...new Set(arrayPorProduto.map(item => item.Amostra))].filter((value, index, self) => { return self.indexOf(value) === index });
 
-                    let tamanhoMinimoAmostraPorProduto = Math.min(...[...new Set(arrayPorProduto.map(item => item.Amostra))]);
-
-                    //if (coletasByLevel3.length < 2 && (tamanhoMaximoAmostraPorProduto - tamanhoMinimoAmostraPorProduto) < 1) {
-                    //    colspanStatus = 2;
-                    //}
-
-                    for (let i = tamanhoMinimoAmostraPorProduto; i <= tamanhoMaximoAmostraPorProduto; i++) {
+                    amostrasPorProduto.forEach((i) => {
 
                         let td;
 
@@ -637,29 +599,7 @@
 
                         conteudoTabela += td;
 
-                    }
-
-                    //coletasByLevel3.forEach((item) => {
-
-                    //let td;
-
-                    //if (!item.IsNotEvaluate) {
-
-                    //    if (item.IsConform) {
-                    //        td = `<td colspan="${colspanStatus}">0</td>`;
-
-                    //    } else {
-                    //        td = `<td colspan="${colspanStatus}">1</td>`;
-
-                    //    }
-
-                    //} else {
-                    //    td = `<td colspan="${colspanStatus}">N/A</td>`;
-                    //}
-
-                    //conteudoTabela += td;
-
-                    //});
+                    });
 
                 });
 
@@ -696,6 +636,73 @@
             return true;
         }
 
+        function PreencherFotos(array) {
+
+            let contador = 0;
+            let qtdeFotosPorLinha = 3;
+
+            while(contador <= array.length) {
+
+                let html = FazerTabelaFotos(array.slice(contador, (contador + qtdeFotosPorLinha)), qtdeFotosPorLinha);
+
+                html = '<div class="avoid-page-break photos">' + html + '</div>';
+
+                if (contador == 0)
+                    $(html).insertAfter($('#contentBody > table:last'));
+                else
+                    $(html).insertAfter($('#contentBody > div.avoid-page-break.photos:last'));
+
+                contador = (contador + qtdeFotosPorLinha);
+            }
+
+        }
+
+        function FazerTabelaFotos(array, qtdeFotosPorLinha) {
+
+            let amostras = array.map((item) => { return item.Amostra });
+            let produtos = array.map((item) => { return item.Produto });
+            let tarefas = array.map((item) => { return item.ParLevel3 });
+            let fotos = array.map((item) => { return item.Photo });
+
+            let maxWidth = ""
+
+            if (array.length < qtdeFotosPorLinha) {
+                let maxWidthValue = ((100 * array.length) / qtdeFotosPorLinha);
+                maxWidth = "max-width:" + maxWidthValue + "%";
+            }
+
+            let tabela = '<table class="table table-bordered" style="' + maxWidth + '">';
+
+            tabela += '<tr>';
+
+            amostras.forEach((item) => {
+                tabela += `<td>Amostra: ${item}</td>`;
+            });
+
+            tabela += '</tr><tr>';
+
+            produtos.forEach((item) => {
+                tabela += `<td>Produto: ${item}</td>`;
+            });
+
+            tabela += '</tr><tr>';
+
+            tarefas.forEach((item) => {
+                tabela += `<td>Tarefa: ${item}</td>`;
+            });
+
+            tabela += '</tr><tr>';
+
+            fotos.forEach((item) => {
+                tabela += `<td><img src="${item}" class="img-responsive"/></td>`;
+            });
+
+            tabela += '</tr></table">'
+
+            return tabela
+
+        }
+
         $('body').on('click', '#btnPrint', function () {
 
             if (elaborador == null) {
@@ -715,7 +722,6 @@
                 elaborador + " - " + "/" + siglaUnidade,
                 aprovador + " - " + "/" + siglaUnidade,
                 "",
-                //"RGQ-504-GQU-001/05 Aprov. Em 02/05/2018",
                 'contentBody',
                 "../Imagens/logo-jbs.png",
                 "../Imagens/logo-gq.png");

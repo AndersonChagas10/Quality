@@ -48,6 +48,8 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3EvaluationSample> ParLevel3EvaluationSample { get; set; }
 
+        public virtual ICollection<ParLevel3XParDepartment> ParLevel3XParDepartment { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Level2> ParLevel3Level2 { get; set; }
 

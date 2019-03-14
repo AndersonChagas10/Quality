@@ -130,3 +130,4 @@ Insert into MigrationHistory (Name, AddDate) VALUES ('20190207_AlterarTamanhoCol
 
 ALTER TABLE ParLevel3Value
 ALTER COLUMN DynamicValue varchar(900) null
+GO

@@ -9,12 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api
 {
-    
+
     [HandleApi()]
     [RoutePrefix("api/ResultLevel3Photos")]
     public class ResultLevel3PhotosApiController : ApiController
@@ -24,7 +25,7 @@ namespace SgqSystem.Controllers.Api
 
         public ResultLevel3PhotosApiController()
         {
-            
+
         }
 
         [HttpPost]
@@ -33,7 +34,7 @@ namespace SgqSystem.Controllers.Api
             //, int Level1Id, int Level2Id, int Level3Id, int Evaluation, int Sample, string Date
             string quebraProcesso = "98789";
 
-            for(int i = 0; i < Fotos.Count; i++)
+            for (int i = 0; i < Fotos.Count; i++)
             {
                 var ResultPhoto = Fotos[i];
 
@@ -46,8 +47,25 @@ namespace SgqSystem.Controllers.Api
 
                 ResultPhoto.Level1Id = Convert.ToInt32(parLevel1_Id);
                 ResultPhoto.Level2Id = Convert.ToInt32(parLevel2_Id);
-                ResultPhoto.Photo = "data:image/png;base64," + ResultPhoto.Photo;
+
+                #region Upload Photos
+                var bytes = Convert.FromBase64String(ResultPhoto.Photo);
+
+                var basePath = System.Configuration.ConfigurationManager.AppSettings["StorageRoot"] ?? "~";
+                if (basePath.Equals("~"))
+                {
+                    basePath = @AppDomain.CurrentDomain.BaseDirectory;
+                }
+
+                var path = Path.Combine(basePath, "photos", parLevel1_Id + parLevel2_Id + DateTime.Now.ToString("yyyyMMddHHssmm")) + ".png";
+                using (var imageFile = new FileStream(path, FileMode.Create))
+                {
+                    imageFile.Write(bytes, 0, bytes.Length);
+                    imageFile.Flush();
+                }
+                ResultPhoto.Photo = path;
                 ResultPhoto.Photo_Thumbnaills = ResultPhoto.Photo;
+                #endregion
 
                 string sqlResulLevel3 = @"SELECT R.Id FROM Result_Level3 R                                     
                             LEFT JOIN CollectionLevel2 C                                      
@@ -168,7 +186,7 @@ namespace SgqSystem.Controllers.Api
                 return DateTime.MinValue.ToString(anotherFormat);
             }
         }
-        
+
     }
 
 }

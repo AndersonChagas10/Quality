@@ -271,13 +271,13 @@ $(document).on('click', '.level3Group.PCC1B .painel .btn', function (e) {
                 function(i,o){ 
                     var resultadodefeitosPCC1b = "";
                     if($(o).attr("resultado") == 1){
-                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center; background: red; color: white;'>NC</td>"
+                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center; background: red; color: white;'>1</td>"
                 
                     }else if ($(o).attr("resultado") == 2){
                         resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center; background: black; color: white;'>NA</td>"
                 
                     }else{
-                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center;'>C</td>";
+                        resultadodefeitosPCC1b = "<td style='padding:0px 10px; text-align: center;'>0</td>";
                 
                     }
                     tabelaResultadoSIFPCC1b += "<tr>";

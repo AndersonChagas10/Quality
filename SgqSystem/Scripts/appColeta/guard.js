@@ -80,7 +80,7 @@ function beforeDevice(obj, beforeTo) {
 //limpeza da tag body adaptado para windows
 function bodyEmpty() {
     var extendedSplashScreen = $('.extendedSplashScreen');
-    if(extendedSplashScreen.length == 0){
+    if (extendedSplashScreen.length == 0) {
         extendedSplashScreen = $('.msgSync').not('.overlay'); //pega a mensagem de atualização para a tela não ficar em branco
     }
     $('body').empty();
@@ -142,7 +142,7 @@ function isInsideFrequency(currentDate, currentFrequency, effective, period, shi
     periodCount = (periodCount == undefined ? 0 : periodCount);
     shiftCount = (shiftCount == undefined ? 0 : shiftCount);
 
-    
+
     if (!currentDate || typeof currentDate === 'string' || !currentDate instanceof Date) {
         console.log("isInsideFrequency function error: invalid Date");
         return false;
@@ -157,19 +157,19 @@ function isInsideFrequency(currentDate, currentFrequency, effective, period, shi
     var currentShift = parseInt($('.App').attr('shift'));
 
     var diff = diffDate(startDate, endDate);
-    if(diff < 1){
+    if (diff < 1) {
         diff = 0;
     }
 
-    if(currentFrequency == 1){// Por período
-        if(effective >= periodCount) {
+    if (currentFrequency == 1) {// Por período
+        if (effective >= periodCount) {
             return true;
         } else {
             return false;
         }
     }
-    else if(currentFrequency == 2){// Por turno
-        if(effective > shiftCount) {
+    else if (currentFrequency == 2) {// Por turno
+        if (effective > shiftCount) {
             return true;
         } else {
             return false;
@@ -183,12 +183,12 @@ function isInsideFrequency(currentDate, currentFrequency, effective, period, shi
     }
 }
 
-function diffDate(date1, date2){
-    return Math.abs(date2 - date1)/1000/60/60/24;
+function diffDate(date1, date2) {
+    return Math.abs(date2 - date1) / 1000 / 60 / 60 / 24;
 }
 
-function insertAt(word, index, string) { 
-    if(word)
+function insertAt(word, index, string) {
+    if (word)
         return word.substr(0, index) + string + word.substr(index);
     else
         return '';
@@ -203,7 +203,7 @@ function MakeObject2(element, ListName, objectReturn) {
 
         if (object == undefined) { return; }
 
-        if($(object).is('div') == false) { return; }
+        if ($(object).is('div') == false) { return; }
 
         var temp = {};
         var el = object;
@@ -221,6 +221,36 @@ function MakeObject2(element, ListName, objectReturn) {
     });
 }
 
+var keyUpNumericInProcess = false;
+
+$(document).on('keydown', 'input.numeric', function (event) {
+    if (keyUpNumericInProcess) {
+        event.preventDefault();
+    } else {
+        keyUpNumericInProcess = true;
+    }
+});
+
+$(document).on('keyup', 'input.numeric', function (event) {
+    ReplaceNegative(event, this);
+});
+
+function ReplaceNegative(event, element) {
+
+    var $$this = $(element).val().replace(',', '.');
+
+    var isNumber = !isNaN($$this);
+
+    if (!isNumber && ($$this != "-")) {
+        $(element).val($(element).attr('data-lastvalue'));
+    } else {
+        $(element).attr('data-lastvalue', $$this)
+    }
+
+    keyUpNumericInProcess = false;
+}
+
+
 // function validateNumber(event) {
 //     var key = window.event ? event.keyCode : event.which;
 //     if (event.keyCode === 8 || event.keyCode === 44) {
@@ -228,7 +258,7 @@ function MakeObject2(element, ListName, objectReturn) {
 //             return true;
 //         else
 //             return false;
-            
+
 //         return true;
 //     } else if ( key < 48 || key > 57 ) {
 //         return false;
@@ -236,7 +266,7 @@ function MakeObject2(element, ListName, objectReturn) {
 //         return true;
 //     }
 // };
-    
+
 // function validateVirgula(event) {    
 //     var key = window.event ? event.keyCode : event.which;
 //     if(event.target.value.indexOf(',') == event.target.value.length -1){

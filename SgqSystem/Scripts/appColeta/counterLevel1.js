@@ -87,7 +87,7 @@ function getCompletedLevel1(parLevel1, shift, period,unidade){
     });
 
     var list = $.grep(counterLevel1, function(o) {
-        if(o.parlevel1 == parLevel1 && o.shift == shift && o.period == period && o.evaluated >= o.total){
+        if(o.parlevel1 == parLevel1 && o.shift == shift && o.period == period && o.evaluated >= o.total && o.total != 0){
             return o;
         }
     });

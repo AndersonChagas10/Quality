@@ -17,12 +17,6 @@ namespace Dominio
 
         public int MotivoAtraso_Id { get; set; }
 
-        /*[ForeignKey("CollectionLevel2_Id")]
-        public virtual CollectionLevel2 CollectionLevel2 { get; set; }
-
-        [ForeignKey("MotivoAtraso_Id")]
-        public virtual MotivoAtraso MotivoAtraso { get; set; }*/
-
         public bool IsValid()
         {
             if (CollectionLevel2_Id <= 0 || MotivoAtraso_Id <= 0)
