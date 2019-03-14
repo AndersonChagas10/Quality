@@ -32,7 +32,7 @@
             return isValid;
         },
         adiciona: function (o, idTable, tdsName) {
-
+            debugger
 
 
 
@@ -149,13 +149,14 @@
                 });
             }
             else if ($(e).parents('#level1_rotina_accordion').length || $(e).parents('#level2_rotina_accordion').length || $(e).parents('#level3_rotina_accordion').length) {
+                debugger
                 crudNxN.modalAlterarVinculoRotina(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
                     var editado = crudNxN.retornaObjetoAlteradoRotina(obj);//
                     $(e).parents('tr').removeData();
                     $(e).parents('tr').data(editado);
-                    $($(e).parents('tr').find('td')[0]).html(editado.ParCounterName)//
-                    $($(e).parents('tr').find('td')[1]).html(editado.ParLocalName)//
+                    $($(e).parents('tr').find('td')[0]).html(editado.Rotina).prop('disabled', true);
+                    $($(e).parents('tr').find('td')[1]).html(editado.Name)//
                     $('#crudNxNEdit').modal('hide');
                 });
             }
@@ -563,6 +564,7 @@
             $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch();
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+            return obj;
 
         },
         retornaObjetoAlteradoRegraNc: function (obj) {
@@ -604,7 +606,7 @@
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
             $('#crudNxNEdit #myModalLabel').html($('#tableRotinas').attr('nameModal'));
             $('#crudNxNEdit #rotinaIngracaoDTO_Name').val(obj.Name);/*Preenche*/
-            $('#crudNxNEdit #rotina').val(obj.RotinaIntegracao_Id);/*Preenche*/
+            $('#crudNxNEdit #rotina').val(obj.RotinaIntegracao_Id).prop('disabled', true);/*Preenche*/
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
         },
@@ -649,6 +651,7 @@
         },
         retornaObjetoAlteradoRotina: function (obj) {
             /*Valida se pode criar o objeto*/
+            debugger
             if ($('#crudNxNEdit #rotina :selected').val() <= 0) {
                 alert("Por favor selecione uma rotina.");
                 return;
@@ -660,6 +663,8 @@
             }
             obj.RotinaIntegracao_Id = $('#crudNxNEdit #rotina :selected').val();
             obj.Name = $('#crudNxNEdit #rotinaIngracaoDTO_Name').val();
+            //obj.Retornos = $('#crudNxNEdit #Retornos').val();
+            //obj.Parametro = $('#crudNxNEdit #Parametro').val();
 
             return obj;
         },

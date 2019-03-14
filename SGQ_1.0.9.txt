@@ -95,3 +95,13 @@ GO
 
 IF NOT EXISTS (SELECT * FROM ParFieldType  WHERE Name = 'Dinâmico')
 insert into ParFieldType(Id,Name, description, addDate, IsActive) values (10,'Dinâmico ', 'Dinâmico ', GetDate(), 1)
+
+GO
+
+IF COL_LENGTH('RotinaIntegracao','Retornos') IS NULL
+    BEGIN	
+		ALTER TABLE RotinaIntegracao ADD Retornos varchar(250);
+    END
+
+
+
