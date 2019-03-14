@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Dominio.ParCompanyXStructure>
+
+<div class="portlet light bordered">
+    <div class="portlet-title tabbable-line">
+        <div class="caption">
+            <i class="icon-share font-dark"></i>
+            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.structure X @Resources.Resource.company</span>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="setup_tab">
+             
+                    <p>
+                        @Html.ActionLink(Resources.Resource.create, "Create", "ParCompany2XStructure", new { parCompanyId = ViewBag.ParCompanyId }, new { @class = "btn btn-primary" })
+                    </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Resources.Resource.linked
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model.Where(x=>x.Active == true).ToList())
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ParStructure.Name)
+                            </td>
+                            <td>
+                                @*@Html.ActionLink(Resources.Resource.edit, "Edit", "ParModuleXModules", new { id = item.Id }, new { @class = "btn btn-success" })*@
+                                @*@Html.ActionLink(Resources.Resource.details, "Details", "ParModuleXModules", new { id = item.Id }, new { @class = "btn btn-info" })*@
+                                @Html.ActionLink(Resources.Resource.delete, "Delete", "ParCompany2XStructure", new { id = item.Id }, new { @class = "btn btn-danger" })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

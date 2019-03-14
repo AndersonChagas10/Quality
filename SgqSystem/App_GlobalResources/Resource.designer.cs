@@ -3247,6 +3247,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Integration Id.
+        /// </summary>
+        internal static string integration_id {
+            get {
+                return ResourceManager.GetString("integration_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid evaluations number.
         /// </summary>
         internal static string invalid_evaluations_number {

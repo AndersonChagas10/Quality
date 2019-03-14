@@ -2754,4 +2754,7 @@
   <data name="select_reason_out_of_date" xml:space="preserve">
     <value>Qual a motivo de estar fazendo a coleta fora do prazo?</value>
   </data>
+  <data name="integration_id" xml:space="preserve">
+    <value>Id Integração</value>
+  </data>
 </root>
