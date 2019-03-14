@@ -20,10 +20,10 @@ function openLevel3(level2) {
 
     mockCFFSmp = 0;
 
-    if ($(level2).find('.btn-default').length > 0) {
+    /*if ($(level2).find('.btn-default').length > 0) {
         openMessageModal('Por Favor, aguardar a liberação para realizar a coleta', 'Coleta bloqueada por estar fora do prazo agendado de coleta.')
         return;
-    }
+    }*/
 
     abrirDepartamentoNoLevel3();
 
@@ -355,18 +355,18 @@ function openLevel3(level2) {
     //painelClone.find('input, select');
     painelClone.find("div").removeClass("header");
 
-	$('.painelLevel03:visible').prepend(painelClone);
-	
-	/*Paleativo permanente para os tipos de cabeçalho do tipo data. Algum bug
+    $('.painelLevel03:visible').prepend(painelClone);
+
+    /*Paleativo permanente para os tipos de cabeçalho do tipo data. Algum bug
 	que precisou fazer a gambiarra abaixo para conseguir setar o valor corretamente*/
-	$('.painelLevel03:visible').find('input[type="date"]').each(function (i, e) {
-		var element = $('.painelLevel03:visible')
-		.find('input[parheaderfield_id="'+$(e).attr('parheaderfield_id')+'"]')
-		element.attr('type',"text");
-		element.attr('value',$(e).val());
-		element.attr('type',"date");
-	});
-		
+    $('.painelLevel03:visible').find('input[type="date"]').each(function (i, e) {
+        var element = $('.painelLevel03:visible')
+		.find('input[parheaderfield_id="' + $(e).attr('parheaderfield_id') + '"]')
+        element.attr('type', "text");
+        element.attr('value', $(e).val());
+        element.attr('type', "date");
+    });
+
     //beforeDevice(painelClone, $('.painelLevel03:visible'));
 
     $('#period').attr('disabled', 'disabled');
@@ -482,7 +482,7 @@ function openLevel3(level2) {
 
     configVinculoAvAm();
 
-    if ($(level2).attr('data-atraso') == "true") {
+    if ($(level2).attr('data-motivo') == "true") {
 
         openMessageConfirmAtraso(function () {
 
@@ -1846,81 +1846,81 @@ function saveResultLevel3() {
     setEndPhase(level02Save);
 
     var controle = false;
-        if (parseInt(sampleCurrent) == parseInt(sampleTotal)) {
+    if (parseInt(sampleCurrent) == parseInt(sampleTotal)) {
 
-            if (level1.attr('hasgrouplevel2') != "true") {
-                evaluateCurrent = evaluateCurrent + 1;
+        if (level1.attr('hasgrouplevel2') != "true") {
+            evaluateCurrent = evaluateCurrent + 1;
+        }
+        if (level1.attr('hasgrouplevel2') == "true" && level2.attr('id') == $('.level2:visible:last').attr('id')) {
+            evaluateCurrent = evaluateCurrent + 1;
+        }
+
+        if (evaluateCurrent > evaluateTotal && level1.attr('islimitedevaluetionnumber') == "true" &&
+            level1.attr('hasgrouplevel2') == "true") {
+            level1.attr('hascompleteevaluation', 'true');
+            if (level1.attr('isreaudit'))
+                level1.attr('lastevaluate', level1.attr('reauditevaluation'));
+        }
+        sampleCurrent = 0;
+        level01Save.attr('completedsample', 'completedsample');
+        level01Save.attr('totalevaluate', evaluateCurrent);
+        level2.attr('evaluatecurrent', evaluateCurrent);
+        updateEvaluateSample(level2, $('.level3Group[level2id=' + $('.level2.selected').attr('id') + ']'), evaluateCurrent, sampleCurrent);
+        resetLevel3($('.level3Group[level2id=' + $('.level2.selected').attr('id') + ']'));
+        createFileResult();
+
+        if (isPartialSave == true) {
+
+            if (sampleCurrentTemp == 0)
+                level2.removeAttr('evaluatecurrent').removeAttr('samplecurrent');
+        }
+        else {
+            if (level2.attr('isreaudit') != "true") {
+                completeLevel2(level2, evaluateCurrent, evaluateTotal);
+
+                if ($('.level1.selected').attr('isreaudit') != 'true' && level2.attr('isreaudit') != 'true')
+                    setEvaluatedCounterLevel1(parseInt($('.level1.selected').attr('id')), parseInt(level2.attr('id')), evaluateCurrentTemp, parseInt($('.App').attr('shift')), parseInt($('.App').attr('period')));
+
+            } else {
+                var reauditevaluation = parseInt(level2.attr('reauditevaluation')) + 1;
+                level2.attr('reauditevaluation', reauditevaluation);
             }
-            if (level1.attr('hasgrouplevel2') == "true" && level2.attr('id') == $('.level2:visible:last').attr('id')) {
-                evaluateCurrent = evaluateCurrent + 1;
+        }
+        var evalAux = evaluateCurrent;
+
+        if (evalAux > evaluateTotal && level1.attr('hasgrouplevel2') == 'true') {
+            createFileResultConsolidation();
+            $('#btnAllNA').text('Todos N/A');
+            controle = true;
+            //level1Show();
+        }
+        if (level2.attr('isreaudit') == 'true' && defects == 0 && evaluateCurrent > level2.attr('evaluate')) {
+            if (isNaN(level2.attr('reauditnumber')) == false) {
+                var rnum = parseInt(level2.attr('reauditnumber')) + 1;
+                $('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2[id=' + level2.attr('id') + ']').attr('reauditnumber', rnum);
+                console.log($('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2[id=' + level2.attr('id') + ']').attr('reauditnumber'));
             }
+            level2.attr('havereaudit', 'false');
+        }
 
-            if (evaluateCurrent > evaluateTotal && level1.attr('islimitedevaluetionnumber') == "true" &&
-                level1.attr('hasgrouplevel2') == "true") {
-                level1.attr('hascompleteevaluation', 'true');
-                if (level1.attr('isreaudit'))
-                    level1.attr('lastevaluate', level1.attr('reauditevaluation'));
-            }
-            sampleCurrent = 0;
-            level01Save.attr('completedsample', 'completedsample');
-            level01Save.attr('totalevaluate', evaluateCurrent);
-            level2.attr('evaluatecurrent', evaluateCurrent);
-            updateEvaluateSample(level2, $('.level3Group[level2id=' + $('.level2.selected').attr('id') + ']'), evaluateCurrent, sampleCurrent);
-            resetLevel3($('.level3Group[level2id=' + $('.level2.selected').attr('id') + ']'));
-            createFileResult();
+        if (level1.attr('hasgrouplevel2') == "true" && level2.attr('id') == $('.level2:visible:last').attr('id')) {
+            openLevel2(level1);
+        }
 
-            if (isPartialSave == true) {
-
-                if (sampleCurrentTemp == 0)
-                    level2.removeAttr('evaluatecurrent').removeAttr('samplecurrent');
-                }
-                else {
-                if (level2.attr('isreaudit') != "true") {
-                    completeLevel2(level2, evaluateCurrent, evaluateTotal);
-
-                    if ($('.level1.selected').attr('isreaudit') != 'true' && level2.attr('isreaudit') != 'true')
-                        setEvaluatedCounterLevel1(parseInt($('.level1.selected').attr('id')), parseInt(level2.attr('id')), evaluateCurrentTemp, parseInt($('.App').attr('shift')), parseInt($('.App').attr('period')));
-
-                } else {
-                    var reauditevaluation = parseInt(level2.attr('reauditevaluation')) + 1;
-                    level2.attr('reauditevaluation', reauditevaluation);
-                }
-            }
-            var evalAux = evaluateCurrent;
-
-            if (evalAux > evaluateTotal && level1.attr('hasgrouplevel2') == 'true') {
-                createFileResultConsolidation();
-                $('#btnAllNA').text('Todos N/A');
-                controle = true;
-                //level1Show();
-            }
-            if (level2.attr('isreaudit') == 'true' && defects == 0 && evaluateCurrent > level2.attr('evaluate')) {
-                if (isNaN(level2.attr('reauditnumber')) == false) {
-                    var rnum = parseInt(level2.attr('reauditnumber')) + 1;
-                    $('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2[id=' + level2.attr('id') + ']').attr('reauditnumber', rnum);
-                    console.log($('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2[id=' + level2.attr('id') + ']').attr('reauditnumber'));
-                }
-                level2.attr('havereaudit', 'false');
-            }
-
-            if (level1.attr('hasgrouplevel2') == "true" && level2.attr('id') == $('.level2:visible:last').attr('id')) {
+        if (level1.attr('hasgrouplevel2') != "true") {
+            if (level1.attr('editlevel2') != "true") {
                 openLevel2(level1);
-            }
-
-            if (level1.attr('hasgrouplevel2') != "true") {
-                if (level1.attr('editlevel2') != "true") {
+                scrollClick(parseInt(_level2.id));
+            } else {
+                if (ultL2Temp) {
                     openLevel2(level1);
                     scrollClick(parseInt(_level2.id));
-                } else {
-                    if (ultL2Temp) {
-                        openLevel2(level1);
-                        scrollClick(parseInt(_level2.id));
-                    }
                 }
             }
         }
-        else if ($(_level1).attr('ispartialsave') == "true")
-            openLevel2(level1);
+    }
+    else if ($(_level1).attr('ispartialsave') == "true")
+        openLevel2(level1);
 
     var level3GroupVisible = $('.level3Group[level2id=' + $('.level2.selected').attr('id') + ']');
 
@@ -2037,7 +2037,7 @@ $(document).on('input', '.interval input, .calculado input, .defects input', fun
     var depois = $(parentElement).find('.depois').val();
 
 
-    
+
 
     if (antes != undefined) {
         parentElement.attr('value', antes + "|" + depois);

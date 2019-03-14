@@ -2751,4 +2751,7 @@
   <data name="filtered_report_between_dates" xml:space="preserve">
     <value>Relatório Scorecard filtrado entre as datas:</value>
   </data>
+  <data name="select_reason_out_of_date" xml:space="preserve">
+    <value>Qual a motivo de estar fazendo a coleta fora do prazo?</value>
+  </data>
 </root>

@@ -206,7 +206,7 @@
     ReauditByHeader.SetupReaudit(level1.attr('id'));
 
     atualizaCorAgendamento();
-    
+
 }
 
 $(document).on('click', '.level2Group .level2', function (e) {
@@ -749,7 +749,7 @@ function atualizaCorAgendamento() {
 
                                     horaMinutoPrimeiraAv = horaPrimeiraAv.split(":");
 
-                                    if(typeof(horaMinutoPrimeiraAv) == 'undefined' || !horaMinutoPrimeiraAv){
+                                    if (typeof (horaMinutoPrimeiraAv) == 'undefined' || !horaMinutoPrimeiraAv) {
                                         return;
                                     }
 
@@ -802,9 +802,9 @@ function atualizaCorAgendamento() {
 
                                         ini = new Date().setHours(mapeamento[1].split(':')[0], mapeamento[1].split(':')[1], 0, 0);
                                         fim = new Date().setHours(mapeamento[2].split(':')[0], mapeamento[2].split(':')[1], 0, 0);
-    
+
                                         //se o fim for para o outro dia, ou seja, menor que o inicio, soma um dia
-                                        if(fim < ini)
+                                        if (fim < ini)
                                             fim = new Date(fim).setDate(new Date().getDate() + 1);
 
                                         //danger  = 4 
@@ -880,18 +880,19 @@ function atualizaCorAgendamento() {
                     //default = 1
 
                     $(o).find("[data-semaforo]").remove();
-                    $(o).attr('data-atraso', false);
+                    $(o).attr('data-motivo', false);
 
                     if ($(o).attr('completed') != "completed") {
 
                         if (situacao.indexOf("4") >= 0) {
                             $(o).append("<div data-semaforo class='btn btn-danger pull-right'>&nbsp</div>");
-                            $(o).attr('data-atraso', true);
+                            $(o).attr('data-motivo', true);
                         } else if (situacao.indexOf("3") >= 0) {
                             $(o).append("<div data-semaforo class='btn btn-warning pull-right'>&nbsp</div>");
                         } else if (situacao.indexOf("2") >= 0) {
                             $(o).append("<div data-semaforo class='btn btn-success pull-right'>&nbsp</div>");
                         } else if (situacao.indexOf("1") >= 0) {
+                            $(o).attr('data-motivo', true);
                             $(o).append("<div data-semaforo class='btn btn-default pull-right'>&nbsp</div>");
                         }
                     }

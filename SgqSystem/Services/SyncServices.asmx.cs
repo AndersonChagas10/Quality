@@ -4614,7 +4614,7 @@ function calcularSensorial(list){
 
             string messageMotivoAtraso =
                 $@"<div class=""messageMotivoAtraso padding20"" style=""display:none;"">
-                        <h1 class=""head"">{ CommonData.getResource("LateReason").Value.ToString() }</h1>
+                        <h1 class=""head"">{ CommonData.getResource("select_reason_out_of_date").Value.ToString() }</h1>
                         <div class=""body font16""> <div class=""txtMessage""></div>
                             { selectMotivo }
                         <div class=""foot""><button id=""btnAtrasoOk"" class=""btn btn-lg marginRight30 btn-primary pull-right btnMessage""> OK </button></div>
