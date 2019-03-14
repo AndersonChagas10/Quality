@@ -34,5 +34,8 @@ namespace Dominio
         public virtual ICollection<ParCompanyXStructure> ParCompanyXStructure { get; set; }
 
         public virtual ParStructureGroup ParStructureGroup { get; set; }
+
+        [NotMapped]
+        public virtual ParStructure ParStructureParent { get; set; }
     }
 }
