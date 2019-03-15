@@ -842,8 +842,6 @@ function validaCamposLevel3(tipo) {
 
             var chave = $('.App').attr('unidadeid') + "" + $(".level3Group.VF").attr('level1id') + "" + $('.sequencial:visible').val() + "" + $('.banda:visible').val() + "" + yyyyMMdd();
 
-
-
             $('.VerificacaoTipificacaoResultados div[chave=' + chave + ']').remove();
 
             $(".level3.VF .items").children("div:visible").each(function (index, self) {
@@ -893,17 +891,25 @@ function validaCamposLevel3(tipo) {
             return;
         }
 
-        var that = $(this);
+        //TODO fazer foreach com validação no campo binario Obrigatorio
+        if (level3IsValid()) {
 
-        that.addClass('disabled');
+            var that = $(this);
 
-        $('.level3').find('.value').text("");
-        $('.level3').find('.valueDecimal').text("");
+            that.addClass('disabled');
 
-        retorno = acoesSalvar(1);
-        that.removeClass('disabled');
+            $('.level3').find('.value').text("");
+            $('.level3').find('.valueDecimal').text("");
 
-        showDebugAlertas();
+            retorno = acoesSalvar(1);
+            that.removeClass('disabled');
+
+            showDebugAlertas();
+
+        } else {
+
+            return false;
+        }
 
     } else {
         if (tipo == 1) {
@@ -931,6 +937,29 @@ function validaCamposLevel3(tipo) {
         }
     }
     return retorno;
+}
+
+function level3IsValid() {
+
+    //Caso for binario obrigatorio, não for coleta parcial e não tiver sido coletado retorna false
+    var isValid = true;
+
+    var isNotPartialSave = ($(_level1).attr('ispartialsave') == "false");
+
+    $('.level3:visible').each(function (index, self) {
+
+        var isBinarioObrigatorio = !!($(self).find('span.response').attr('boolnullname'));
+        var value = $(self).find('span.response').attr('value');
+
+        if (isNotPartialSave && isBinarioObrigatorio && value == '') {
+
+            openMessageModal("Alerta", "Existem campos binários que são obrigatórios");
+            isValid = false;
+        }
+
+    });
+
+    return isValid;
 }
 
 $(document).on('click', '#btnAllNC', function (e) {
@@ -2183,7 +2212,7 @@ $(document).on('click', '.level3.boolean a, .level3.boolean .counters', function
     //acho que demvemos fazer um atrivuto direto no level03 para nao ficar tentando executar para todos
     if (response.length) {
 
-        //valida se é binarioObrigatorio
+        //valida se é binario Obrigatorio
         if (response.attr('boolnullname')) {
 
             if (response.attr('value') == '1') {
