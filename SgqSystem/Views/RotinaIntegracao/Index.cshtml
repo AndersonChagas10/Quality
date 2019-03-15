@@ -40,12 +40,13 @@
                                 <table class="table" id="">
                                     <thead>
                                         <tr>
+                                            <th> Nome </th>
                                             <th> Data Source </th>
                                             <th> Initial Catalog</th>
                                             <th> User </th>
                                             <th> Query </th>
                                             <th> Parametro </th>
-                                            <th> Nome </th>
+                                            <th> Retorno </th>
                                             <th> Está ativo </th>
                                         </tr>
                                     </thead>
@@ -53,6 +54,9 @@
                                         @foreach (var item in Model)
                                         {
                                         <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.DataSource)
                                             </td>
@@ -69,7 +73,7 @@
                                                 @Html.DisplayFor(modelItem => item.Parametro)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Name)
+                                                @Html.DisplayFor(modelItem => item.Retornos)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.IsActive)

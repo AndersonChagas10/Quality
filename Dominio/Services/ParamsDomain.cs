@@ -254,6 +254,7 @@ namespace Dominio.Services
             var parlevel1 = _baseRepoParLevel1.GetById(idParLevel1);
             var counter = parlevel1.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
             var rotina = parlevel1.ParLevel1XRotinaIntegracao.Where(x => x.IsActive).ToList();
+            var todasRotinas = _baseRotinaIntegracao.GetAllAsNoTracking().Where(x => x.IsActive);
             var goal = parlevel1.ParGoal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
             var cluster = parlevel1.ParLevel1XCluster.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
             var listL3L2L1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").AsNoTracking().Where(r => r.Active == true && r.ParLevel1_Id == idParLevel1).ToList();
@@ -268,7 +269,7 @@ namespace Dominio.Services
 
             parlevel1Dto = Mapper.Map<ParLevel1DTO>(parlevel1);
             parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(counter);/*Contadores*/
-            //parlevel1Dto.RotinaIntegracao = Mapper.Map<List<RotinaIntegracaoDTO>>(rotina);/*rotinas*/
+            parlevel1Dto.listaRotinas = Mapper.Map<List<RotinaIntegracaoDTO>>(todasRotinas);/*rotinas*/
             parlevel1Dto.listParLevel1XRotinaIntegracao = Mapper.Map<List<ParLevel1XRotinaIntegracaoDTO>>(rotina);/*rotina integração vinculo*/
             parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(goal);/*Meta*/
             parlevel1Dto.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(cluster);/*Clusters*/

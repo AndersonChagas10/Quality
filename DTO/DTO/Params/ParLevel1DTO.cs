@@ -159,7 +159,7 @@ namespace DTO.DTO.Params
         public List<ParLevel1XHeaderFieldDTO> parLevel1HeaderFieldDto { get; set; }
         public List<ParNotConformityRuleXLevelDTO> listParNotConformityRuleXLevelDto { get; set; }
         public List<ParLevel1XRotinaIntegracaoDTO> listParLevel1XRotinaIntegracao { get; set; }
-        //public List<RotinaIntegracaoDTO> RotinaIntegracao { get; set; }
+        public List<RotinaIntegracaoDTO> listaRotinas { get; set; }
         #region Props utilizadas para alteração
 
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }

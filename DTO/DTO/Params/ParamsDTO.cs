@@ -31,7 +31,8 @@ namespace DTO.DTO.Params
         public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
         public ParLevel1XHeaderFieldDTO parLevel1HeaderFieldDto { get; set; }
         public ParLevel2XHeaderFieldDTO parLevel2HeaderFieldDto { get; set; }
-        
+        public List<RotinaIntegracaoDTO> listaRotina { get; set; }
+
 
 
         /*Fim Ja implementados */

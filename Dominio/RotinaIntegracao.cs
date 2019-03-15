@@ -22,5 +22,6 @@ namespace Dominio
         [Column("Nome")]
         public string Name { get; set; }
         public bool IsActive { get; set; }
+        public string Retornos { get; set; }
     }
 }
