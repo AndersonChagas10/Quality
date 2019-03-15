@@ -345,6 +345,13 @@ namespace SgqSystem.Services
             return binario;
         }
 
+        public string campoBinarioObrigatorio(string id, string booltrueName, string boolfalseName, string classe = null, string boolnullName = "")
+        {
+            string binario = $@"<span class=""pull-right marginRight30 response"" value="""" booltrueName=""{ booltrueName }"" boolfalseName=""{ boolfalseName }"" boolnullName=""{ boolnullName }"">{ boolnullName }""</span>";
+
+            return binario;
+        }
+
         public string campoIntervalo(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
 
         {
@@ -485,7 +492,7 @@ namespace SgqSystem.Services
             return intervalo;
         }
 
-        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null, 
+        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null,
             string idRandomico = null, string paramns = null)
         {
             //var idRandomico = "valor_range_" + new Random().Next(999999);
@@ -578,9 +585,9 @@ namespace SgqSystem.Services
                              bool reaudit = false, bool correctiveaction = false, bool phase = false,
                              bool HasSampleTotal = false, bool IsEmptyLevel3 = false, string level1Group_Id = "",
                              int RuleId = 0, string RuleValue = null, decimal AlertValue = 0, int ParFrequency_Id = 0,
-                             bool HasTakePhoto = false, 
+                             bool HasTakePhoto = false,
                              //Frequencia
-                             string FrequenciaTipo = "", string FrequenciaValor = "", 
+                             string FrequenciaTipo = "", string FrequenciaValor = "",
                              string FrequenciaMensagemInativo = "")
         {
 
@@ -616,7 +623,7 @@ namespace SgqSystem.Services
                            outerhtml: span(outerhtml: label, classe: "levelName")
                        );
         }
-        public string level3(SGQDBContext.ParLevel3 parLevel3, string input, 
+        public string level3(SGQDBContext.ParLevel3 parLevel3, string input,
             string classe = null, string labelsInputs = null)
         {
             //Coloca botão de não avaliado ParLevel3
@@ -635,9 +642,9 @@ namespace SgqSystem.Services
             if (parLevel3.ParLevel3InputType_Id == 11)
                 peso = "0";
 
-            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") 
-                + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") 
-                + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id 
+            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".")
+                + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".")
+                + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id
                 + "\" hastakephoto=\"" + parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
 
 
