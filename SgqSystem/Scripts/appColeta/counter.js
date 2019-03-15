@@ -315,19 +315,21 @@ function setAvaliationClick(level2) {
     }
 }
 
-function setAvaliationInfitity(level2) {
+function setAvaliationLevel2(level2) {
 
     var avaliationNumber = level2.attr('evaluate');
 
+    level2.next().find('.evaluateTotal').html(avaliationNumber);
     if (avaliationNumber == 0)
         level2.next().find('.evaluateTotal').html('&infin;');
 
 }
 
-function setSampleInfitity(level2) {
+function setSampleLevel2(level2) {
 
     var sampleNumber = level2.attr('sample');
 
+    level2.next().find('.sampleXEvaluateTotal').html(sampleNumber);
     if (sampleNumber == 0)
         level2.next().find('.sampleXEvaluateTotal').html('&infin;');
 }

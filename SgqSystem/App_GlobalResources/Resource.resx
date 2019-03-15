@@ -2763,6 +2763,12 @@
   <data name="filtered_report_between_dates" xml:space="preserve">
     <value>Scorecard report filtered between dates:</value>
   </data>
+  <data name="select_reason_out_of_date" xml:space="preserve">
+    <value>What is the reason for out of date collection?</value>
+  </data>
+  <data name="integration_id" xml:space="preserve">
+    <value>Integration Id</value>
+  </data>
   <data name="active" xml:space="preserve">
     <value>Is Active?</value>
   </data>

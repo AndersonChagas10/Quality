@@ -224,9 +224,9 @@ function MakeObject2(element, ListName, objectReturn) {
 var keyUpNumericInProcess = false;
 
 $(document).on('keydown', 'input.numeric', function (event) {
-    if (keyUpNumericInProcess) {
+    if(keyUpNumericInProcess){
         event.preventDefault();
-    } else {
+    }else{
         keyUpNumericInProcess = true;
     }
 });
@@ -236,16 +236,16 @@ $(document).on('keyup', 'input.numeric', function (event) {
 });
 
 function ReplaceNegative(event, element) {
-
-    var $$this = $(element).val().replace(',', '.');
-
+	
+    var $$this = $(element).val().replace(',','.');
+	
     var isNumber = !isNaN($$this);
-
-    if (!isNumber && ($$this != "-")) {
-        $(element).val($(element).attr('data-lastvalue'));
-    } else {
-        $(element).attr('data-lastvalue', $$this)
-    }
+	
+	if(!isNumber && ($$this != "-")){
+		$(element).val($(element).attr('data-lastvalue'));
+	}else{
+		$(element).attr('data-lastvalue',$$this)
+	}
 
     keyUpNumericInProcess = false;
 }

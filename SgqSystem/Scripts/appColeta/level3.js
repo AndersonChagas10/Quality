@@ -20,10 +20,10 @@ function openLevel3(level2) {
 
     mockCFFSmp = 0;
 
-    if ($(level2).find('.btn-default').length > 0) {
+    /*if ($(level2).find('.btn-default').length > 0) {
         openMessageModal('Por Favor, aguardar a liberação para realizar a coleta', 'Coleta bloqueada por estar fora do prazo agendado de coleta.')
         return;
-    }
+    }*/
 
     abrirDepartamentoNoLevel3();
 
@@ -482,7 +482,7 @@ function openLevel3(level2) {
 
     configVinculoAvAm();
 
-    if ($(level2).attr('data-atraso') == "true") {
+    if ($(level2).attr('data-motivo') == "true") {
 
         openMessageConfirmAtraso(function () {
 

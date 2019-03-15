@@ -403,6 +403,7 @@
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
+    <Compile Include="Controllers\ParStructureGroupController.cs" />
     <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
     <Compile Include="Controllers\ImportFormat\ImportFormatItemsController.cs" />
     <Compile Include="Controllers\ImportFormat\ImportFormatsController.cs" />
@@ -424,6 +425,10 @@
     <Compile Include="Controllers\CadastrosGerais\ParLevel1XModuleController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParModulesController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParModuleXModulesController.cs" />
+    <Compile Include="Controllers\Params\ParCompany2Controller.cs" />
+    <Compile Include="Controllers\Params\ParCompany2XClusterController.cs" />
+    <Compile Include="Controllers\Params\ParCompany2XStructureController.cs" />
+    <Compile Include="Controllers\Params\ParStructuresController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoJsonController.cs" />
     <Compile Include="Controllers\RelatoriosMD\RelatoriosMDController.cs" />
@@ -1921,6 +1926,29 @@
     <Content Include="Views\RotinaIntegracao\Edit.cshtml" />
     <Content Include="Views\RotinaIntegracao\Delete.cshtml" />
     <Content Include="Views\Params\_Rotina.cshtml" />
+    <Content Include="Views\ParStructureGroup\Index.cshtml" />
+    <Content Include="Views\ParStructureGroup\Create.cshtml" />
+    <Content Include="Views\ParStructureGroup\Edit.cshtml" />
+    <Content Include="Views\ParCompany2\Create.cshtml" />
+    <Content Include="Views\ParCompany2\Delete.cshtml" />
+    <Content Include="Views\ParCompany2\Details.cshtml" />
+    <Content Include="Views\ParCompany2\Edit.cshtml" />
+    <Content Include="Views\ParCompany2\Index.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Create.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Delete.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Details.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Edit.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Index.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Create.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Delete.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Details.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Edit.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Index.cshtml" />
+    <Content Include="Views\ParStructures\Create.cshtml" />
+    <Content Include="Views\ParStructures\Delete.cshtml" />
+    <Content Include="Views\ParStructures\Details.cshtml" />
+    <Content Include="Views\ParStructures\Edit.cshtml" />
+    <Content Include="Views\ParStructures\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
