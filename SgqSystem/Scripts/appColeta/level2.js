@@ -73,9 +73,9 @@
 
         setAvaliationClick(level2);
 
-        setAvaliationInfitity(level2);
+        setAvaliationLevel2(level2);
 
-        setSampleInfitity(level2);
+        setSampleLevel2(level2);
 
         if (parseInt($(level2).attr('evaluatecurrent')))
             setAvaliationAndSampleLvl2Line(level2);
@@ -842,9 +842,9 @@ function atualizaCorAgendamento() {
 
                                         ini = new Date().setHours(mapeamento[1].split(':')[0], mapeamento[1].split(':')[1], 0, 0);
                                         fim = new Date().setHours(mapeamento[2].split(':')[0], mapeamento[2].split(':')[1], 0, 0);
-    
+
                                         //se o fim for para o outro dia, ou seja, menor que o inicio, soma um dia
-                                        if(fim < ini)
+                                        if (fim < ini)
                                             fim = new Date(fim).setDate(new Date().getDate() + 1);
 
                                         //danger  = 4 

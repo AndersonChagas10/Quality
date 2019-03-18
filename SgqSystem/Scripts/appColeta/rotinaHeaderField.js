@@ -8,9 +8,10 @@ function getRotina(that) {
     var headerFieldsParams = $(that).attr('data-headerfields').split('|');
     var $btn = $(that);
     var headerFieldsList = {};
-    
+    var headerFieldsParamsClean = $(that).attr('data-headerfieldsClean').split('|')
+
     headerFieldsParams.forEach(function (headerFieldParam) {
-        
+
         var self = $('input[data-param=' + headerFieldParam + ']').parents('.header');
         var value = $('input[data-param=' + headerFieldParam + ']').val();
         var isRequired = $(self).prop('required');
@@ -21,9 +22,9 @@ function getRotina(that) {
             openMessageModal(getResource("warning"), getResource("fill_header_fields"));
             return;
 
-        } else if (value) {
+        } else {
 
-			headerFieldsList[headerFieldParam] = value;
+            headerFieldsList[headerFieldParam] = value;
         }
     });
 
@@ -32,9 +33,10 @@ function getRotina(that) {
         var obj = {
             IdUsuario: $('.App').attr('userid'),
             IdRotina: $(that).attr('data-id-rotina'),
-            Params: headerFieldsList
+            Params: headerFieldsList,
+            HeaderFieldsParamsClean: headerFieldsParamsClean
         }
-       
+
         getDynamicValues(obj, $btn);
     }
 }
@@ -52,12 +54,16 @@ function getDynamicValues(obj, $btn) {
 
             if (data)
                 setDynamicValues(data);
+            else
+                cleanInputHeaderFields(obj);
+
 
         },
         timeout: 10000,
         error: function () {
 
             openMessageModal(getResource("error"), getResource("unable_to_complete_data_request"));
+            cleanInputHeaderFields(obj);
 
         },
         complete: function () {
@@ -67,15 +73,25 @@ function getDynamicValues(obj, $btn) {
     });
 }
 
-
-
 function setDynamicValues(obj) {
-	
-	$.each(obj,function(key,value){
-		
+
+    $.each(obj, function (key, value) {
+
         var input = $('input[data-din=' + key + ']');
-		
+
         if (input)
             $(input).val(value);
-	})
+    });
+}
+
+function cleanInputHeaderFields(obj) {
+
+    if (obj.HeaderFieldsParamsClean && obj.HeaderFieldsParamsClean.length > 0)
+        obj.HeaderFieldsParamsClean.forEach(function (key, i) {
+
+            var input = $('input[data-din=' + key + ']');
+
+            if (input)
+                $(input).val("");
+        });
 }
