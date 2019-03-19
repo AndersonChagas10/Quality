@@ -149,11 +149,11 @@ namespace SgqSystem.Controllers
             {
                 if (pai.Hash != null)
                 {
-                    parDepartment.Hash = pai.Hash + "|" + pai.Parent_Id;
+                    parDepartment.Hash = pai.Hash + "|" + pai.Id;
                 }
                 else
                 {
-                    parDepartment.Hash = pai.Parent_Id.ToString();
+                    parDepartment.Hash = pai.Id.ToString();
                 }
             }
             else

@@ -118,13 +118,13 @@ function openMessageConfirm(title, content, callback) {
     });
 }
 
-function openMessageConfirmAtraso(callback) {
+function openMessageConfirmAtraso(callback, type) {
 
-    var mensagem = $('.messageMotivoAtraso, .overlay');
+    var mensagem = $('.messageParReasonType' + type + ', .overlay');
 
     mensagem.fadeIn("fast");
 
-    $('.messageMotivoAtraso #btnAtrasoOk').click(function () {
+    $('.messageParReasonType'+type+' #btnAtrasoOk').click(function () {
         mensagem.fadeOut("fast");
         callback();
     });

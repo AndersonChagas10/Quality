@@ -3229,6 +3229,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Integration Id.
+        /// </summary>
+        internal static string integration_id {
+            get {
+                return ResourceManager.GetString("integration_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Interval  field value can not be null!.
         /// </summary>
         internal static string interval_null_value {
@@ -3243,15 +3252,6 @@ namespace Resources {
         internal static string invalid_date {
             get {
                 return ResourceManager.GetString("invalid_date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Integration Id.
-        /// </summary>
-        internal static string integration_id {
-            get {
-                return ResourceManager.GetString("integration_id", resourceCulture);
             }
         }
         
@@ -5619,6 +5619,24 @@ namespace Resources {
         internal static string real {
             get {
                 return ResourceManager.GetString("real", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason.
+        /// </summary>
+        internal static string reason {
+            get {
+                return ResourceManager.GetString("reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason Type.
+        /// </summary>
+        internal static string reason_type {
+            get {
+                return ResourceManager.GetString("reason_type", resourceCulture);
             }
         }
         

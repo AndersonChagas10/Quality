@@ -2769,4 +2769,10 @@
   <data name="integration_id" xml:space="preserve">
     <value>Integration Id</value>
   </data>
+  <data name="reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="reason_type" xml:space="preserve">
+    <value>Reason Type</value>
+  </data>
 </root>

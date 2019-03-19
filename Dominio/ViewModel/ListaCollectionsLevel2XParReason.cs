@@ -8,7 +8,7 @@ namespace Dominio
 {
     public class ListaCollectionsLevel2XMotivosAtraso
     {
-        public List<CollectionLevel2XMotivoAtraso> CollectionsLevel2XMotivosAtraso { get; set; }
+        public List<CollectionLevel2XParReason> CollectionsLevel2XMotivosAtraso { get; set; }
 
         public bool DadosIsValid()
         {

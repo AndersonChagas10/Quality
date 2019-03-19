@@ -242,17 +242,18 @@
                             }
                         },
                         {
-                            title: "@Resources.Resource.IsLate", mData: "IsLate", mRender: function (data, type, full) {
+                            title: "@Resources.Resource.reason", mData: "ParReasonType", mRender: function (data, type, full) {
 
-                                if (data == 0) {
+                                return data;
+                                @*if (data == 0) {
                                     return '@Resources.Resource.no'
                                 } else {
-                                return '@Resources.Resource.yes'
-                                }
+                                    return '@Resources.Resource.yes'
+                                }*@
 
                             }
                         },
-                        { title: "@Resources.Resource.LateReason", mData: "MotivoAtraso", "width": "50%" },
+                        { title: "@Resources.Resource.reason", mData: "ParReason", "width": "50%" },
 
                     ];
 

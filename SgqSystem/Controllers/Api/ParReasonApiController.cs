@@ -10,17 +10,17 @@ using System.Web.Http.Cors;
 namespace SgqSystem.Controllers.Api
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [RoutePrefix("api/MotivoAtraso")]
-    public class MotivoAtrasoApiController : BaseApiController
+    [RoutePrefix("api/ParReason")]
+    public class ParReasonApieController : BaseApiController
     {
 
         [HttpGet]
         [Route("Get")]
-        public List<MotivoAtraso> Get()
+        public List<ParReason> Get()
         {
             using (var db = new SgqDbDevEntities())
             {
-                return db.MotivoAtraso.Where(r => r.IsActive).ToList();
+                return db.ParReason.Where(r => r.IsActive).ToList();
             }
         }
 

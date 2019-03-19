@@ -358,7 +358,7 @@
     <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
     <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
     <Compile Include="Controllers\Api\ParInputTypeValuesApiController.cs" />
-    <Compile Include="Controllers\Api\MotivoAtrasoApiController.cs" />
+    <Compile Include="Controllers\Api\ParReasonApiController.cs" />
     <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
@@ -398,7 +398,7 @@
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VTVerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\CadastrosGerais\MotivoAtrasoController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
@@ -1896,11 +1896,11 @@
     <Content Include="Views\ParVinculoPeso\Index.cshtml" />
     <Content Include="Views\Integracao\Index.cshtml" />
     <Content Include="Views\Params\_EscalaLikert.cshtml" />
-    <Content Include="Views\MotivoAtraso\Create.cshtml" />
-    <Content Include="Views\MotivoAtraso\Delete.cshtml" />
-    <Content Include="Views\MotivoAtraso\Details.cshtml" />
-    <Content Include="Views\MotivoAtraso\Edit.cshtml" />
-    <Content Include="Views\MotivoAtraso\Index.cshtml" />
+    <Content Include="Views\ParReason\Create.cshtml" />
+    <Content Include="Views\ParReason\Delete.cshtml" />
+    <Content Include="Views\ParReason\Details.cshtml" />
+    <Content Include="Views\ParReason\Edit.cshtml" />
+    <Content Include="Views\ParReason\Index.cshtml" />
     <Content Include="Views\Params\_Agendamento.cshtml" />
     <Content Include="Views\RecravacaoJson\Index.cshtml" />
     <Content Include="Views\Recravacao\Retroativo.cshtml" />

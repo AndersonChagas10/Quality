@@ -2289,4 +2289,10 @@
   <data name="integration_id" xml:space="preserve">
     <value>Id Integração</value>
   </data>
+  <data name="reason" xml:space="preserve">
+    <value>Motivo</value>
+  </data>
+  <data name="reason_type" xml:space="preserve">
+    <value>Tipo Motivo</value>
+  </data>
 </root>
