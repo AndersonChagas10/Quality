@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option or rebuild the Visual Studio project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -3238,6 +3238,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Integration Id.
+        /// </summary>
+        internal static string integration_id {
+            get {
+                return ResourceManager.GetString("integration_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Interval  field value can not be null!.
         /// </summary>
         internal static string interval_null_value {
@@ -3252,15 +3261,6 @@ namespace Resources {
         internal static string invalid_date {
             get {
                 return ResourceManager.GetString("invalid_date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Integration Id.
-        /// </summary>
-        internal static string integration_id {
-            get {
-                return ResourceManager.GetString("integration_id", resourceCulture);
             }
         }
         
@@ -4791,6 +4791,15 @@ namespace Resources {
         internal static string no_data_to_show {
             get {
                 return ResourceManager.GetString("no_data_to_show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No department.
+        /// </summary>
+        internal static string no_department {
+            get {
+                return ResourceManager.GetString("no_department", resourceCulture);
             }
         }
         

@@ -2772,4 +2772,7 @@
   <data name="active" xml:space="preserve">
     <value>Is Active?</value>
   </data>
+  <data name="no_department" xml:space="preserve">
+    <value>No department</value>
+  </data>
 </root>
