@@ -2,6 +2,8 @@
 @using SgqSystem.Helpers
 
 @{
+    /**/
+
     var level = "3";
     var id = "level" + level + "_ParLevel3XDepartment_accordion";
     var id2 = "#level" + level + "__ParLevel3XDepartment_accordion";
@@ -171,57 +173,57 @@
             function verify(data){
                 return (data == 0 || data == -1 || data == null) ? 1 : 0;
             }
-            /*Verifica Unidade*/
-            console.log('#' + seletorTato + ' @id3 #parCompanySelectParLevel3XDepartment :selected');
+
+            //console.log('#' + seletorTato + ' @id3 #parCompanySelectParLevel3XDepartment :selected');
             var companySelected = $('#' + seletorTato + ' @id3 #parCompanySelectParLevel3XDepartment :selected').val();//
             var parLevel1Selected = $(' #parLevel1SelectParLevel3XDepartment :selected').val();
             var parLevel2Selected = $(' #parLevel2SelectParLevel3XDepartment :selected').val();
-            var parDepartmentSelected = $(' #parLevel3SelectParDepartment :selected').val();
-            var display = $('#' + seletorTato + ' @id3 #parCompanySelectParLevel3XDepartment :selected').text();//
-            var exist = $.grep($('#tableParLevel3XDepartment  tbody  tr  td:nth-child(1)'), function(o, c){
+            var parDepartmentSelected = $('#parDepartmentSelectParLevel3XDepartment :selected').val();
+            var display = $('#' + seletorTato + ' @id3 #parCompanySelectParLevel3XDepartment :selected').text();
+
+            var exist = false;
+
+            $.each($('#tableParLevel3XDepartment  tbody  tr  td:nth-child(1)'), function (i, o) {
 
                 var count = 0;
+                //verifica se existe unidade
                 if(companySelected == -1){
                     count += verify($(o).parent().data().ParCompany_Id);
-                    console.log(1);
                 }else{
                     count += $(o).parent().data().ParCompany_Id == companySelected ? 1 : 0;
-                    console.log(2);
                 }
 
+                //verifica se existe indicador
                 if(parLevel1Selected == -1){
                     count += verify($(o).parent().data().ParLevel1_Id);
-                    console.log(3);
                 }else{
                     count += $(o).parent().data().ParLevel1_Id == parLevel1Selected ? 1 : 0;
-                    console.log(4);
                 }
 
+                //verifica se existe monitoramento
                 if(parLevel2Selected == -1){
                     count += verify($(o).parent().data().ParLevel2_Id);
-                    console.log(5);
                 }else{
                     count += $(o).parent().data().ParLevel2_Id == parLevel2Selected ? 1 : 0;
-                    console.log(6);
                 }
 
+                //verifica se existe departamento
                 if(parDepartmentSelected == -1){
                     count += verify($(o).parent().data().ParDepartment_Id);
-                    console.log(5);
                 }else{
                     count += $(o).parent().data().ParDepartment_Id == parDepartmentSelected ? 1 : 0;
-                    console.log(6);
                 }
 
+                //caso exista um com os memos valores
                 if(count == 4)
-                    return true;
-                return false;
+                    exist = true;
+
             });
 
-            if(!!isEdit){/*Edição*/
+            if (!!isEdit) {/*Edição*/
 
             } else {/*Inclusão*/
-                if(exist.length){
+                if(exist){
 
                     if(companySelected == -1)
                         display= "@Resources.Resource.all";
@@ -311,6 +313,9 @@
             if(this.veifyAdd()){
                 var object = this.getObjAdd();
                 crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
+
+                //remover tosos os botoes de editar
+                //$('#tableParLevel3XDepartment .btn-success').remove();
 
                 $("#parLevel1SelectParLevel3XDepartment").val($("#parLevel1SelectParLevel3XDepartment option:first").val());
                 $("#parLevel2SelectParLevel3XDepartment").val($("#parLevel2SelectParLevel3XDepartment option:first").val());
