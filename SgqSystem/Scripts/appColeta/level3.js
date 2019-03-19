@@ -2835,7 +2835,7 @@ function abrirDepartamentoNoLevel3() {
             });*/
 
             var optionsDepartamento = [];
-            optionsDepartamento.push('<option value="0">' + getResource('select') + '</option>');
+            optionsDepartamento.push('<option value="0">' + getResource('no_department') + '</option>');
             $(listLevel3ComDepartamento).each(function (i, o) {
                 var option = '<option value="' + o.ParDepartment_Id + '">' + o.ParDepartment_Name + '</option>';
                 if (optionsDepartamento.indexOf(option) < 0)
