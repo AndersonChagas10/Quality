@@ -234,7 +234,7 @@
     var eTipoDado_Recravacao = 99;
 
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
-    debugger
+    
     var level3Value = {
         /*Setup*/
         levelControl: 3,
@@ -347,7 +347,7 @@
             }
 
             if (selectTipoInput == eTipoDado_Resultado) {
-                debugger
+                
                 selectUnidadeDeMedidasName = "";
                 selectNaoConforme = "";
                 selectConforme = "";
@@ -423,7 +423,7 @@
             }
         },
         veifyAdd: function (isEdit) {
-            debugger
+            
             var seletorTato = !!isEdit ? isEdit : level3Value.level;
             /*Valida se pode criar o objeto*/
 
@@ -642,7 +642,7 @@
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = o.DynamicValue;
                     }
-                    debugger
+                    
                     if ((o.ParLevel1_Id == null
                         || o.ParLevel1_Id == "-1"
                         || o.ParLevel1_Id == $('#parLevel1Select2 :selected').val())
@@ -688,7 +688,7 @@
         },
         /*Fim Setup*/
         adiciona: function (e) {
-            debugger
+            
             if (level3Value.veifyAdd()) {
                 var object = level3Value.getObjAdd();
 
@@ -702,7 +702,7 @@
                 }
 
                 crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
-                debugger
+                
                 if (object.ParLevel3InputType_Id != 12 && object.ParLevel3InputType_Id != 1 && object.ParLevel3InputType_Id != 6) {
                     if (parseInt(object.IntervalMin) > parseInt(object.IntervalMax)) {
                         openMessageModal("Valor do Limite Superior menor que o Limite Inferior", null);
@@ -790,7 +790,7 @@
         }
 
         //else if (!$("#parLevel3Value_IntervalMin").val() == "" && $("#parLevel3Value_IntervalMax").val() == "") {
-        //    debugger
+        //    
         //    var options =
         //        "<option value='0'>" +
         //            Resources('acceptable_value_equal_or_greater_than')
@@ -805,7 +805,7 @@
         //}
 
         //else if (!$("#parLevel3Value_IntervalMin").val() == "" && !$("#parLevel3Value_IntervalMax").val() == "") {
-        //    debugger
+        //    
         //    var options =
         //        "<option value='0'>"
         //            + Resources('value_is_acceptable_between')

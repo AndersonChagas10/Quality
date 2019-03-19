@@ -6,7 +6,7 @@
         var objData = {};
 
         if (o["IsActive"] == true) {
-            tr += "<tr pos=" + crudNxN.inifnito + ">"
+            tr += "<tr pos=" + crudNxN.inifnito + ">";
         } else {
             tr += "<tr pos=" + crudNxN.inifnito + " class='inativeTr'>";
         }
@@ -26,8 +26,7 @@
             tr += '<td>' + o[oo] + '</td>';
         });
 
-        tr += '</tr>'
-        $(tr)
+        tr += '</tr>';
         $('#' + idTable + ' > tbody').append($(tr).data(o));
         crudNxN.verificaSeMostraTable(idTable);
         reloadPopovers();
@@ -84,7 +83,7 @@
                 $('#crudNxNEdit').modal('hide');
             });
         }
-            /*Contadores*/
+        /*Contadores*/
         else if ($(e).parents('#level1_counter_accordion').length || $(e).parents('#level2_counter_accordion').length || $(e).parents('#level3_counter_accordion').length) {
             crudNxN.modalAlterarContadores(obj);//
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -96,7 +95,7 @@
                 $('#crudNxNEdit').modal('hide');
             });
         }
-            /*Reincidencia*/
+        /*Reincidencia*/
         else if ($(e).parents('#level1_reincidencia_accordion').length || $(e).parents('#level2_reincidencia_accordion').length || $(e).parents('#level3_reincidencia_accordion').length) {
             crudNxN.modalAlterarReincidencia(obj);//
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -122,7 +121,6 @@
                 $('#crudNxNEdit').modal('hide');
             });
         }
-
         else if ($(e).parents('#level1_cluster_accordion').length) {
           
             crudNxN.modalAlterarCluster(obj);//
@@ -151,6 +149,7 @@
                 $('#crudNxNEdit').modal('hide');
             });
         }
+
         $('#crudNxNEdit').modal();
 
     },
@@ -234,7 +233,7 @@
 
     },
     modalAlterarVinculoRotina: function (obj) {
-        debugger
+        
         var divDeEdicao = $('#camposRotina').clone();
         $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
         $('#crudNxNEdit #myModalLabel').html($('#tableRotinas').attr('nameModal'));
@@ -285,9 +284,8 @@
     },
     retornaObjetoAlteradoGroupLevel2: function (obj) {
         /*Valida se pode criar o objeto*/
-        GroupL2.veifyAdd('crudNxNEdit')
+        GroupL2.veifyAdd('crudNxNEdit');
         GroupL2.getObjAdd('crudNxNEdit', obj);
         return obj;
-    },
-
+    }
 }

@@ -1045,7 +1045,7 @@
             } else {
                 Cabecalhos.ShowLinkEvaluation(false);
             }
-            debugger
+            
             switch (escolhaSelecionada) {
                 case 1: //Multipla Escolha
                     Cabecalhos.ShowMutiplaEscolha();
@@ -1240,7 +1240,7 @@
             example += '<td> <label> &nbsp; </label></td>'; //padrão em branco quando insere;
             example += '<td>' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
 
-            debugger
+            
             $('#tableCabecalhosPreview').append(example);
 
             /*Limpa formulario Header*/
@@ -1288,7 +1288,7 @@
 
         },
         IncluirBinario: function (e) {
-            debugger
+            
             if(binary == false){
 
                 /*Valida se os campos estão preenchidos*/
@@ -1476,7 +1476,7 @@
                 $('#salvarCabecalho2').fadeIn();
         },
         SalvaBinario: function () {
-            debugger
+            
             var fieldType = $('#parFieldType option:selected').val();
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
@@ -1486,7 +1486,7 @@
             /*Cria preview*/
             example += '<td>';
             Cabecalhos.ParBinario.forEach(function (o, c) {
-                debugger
+                
                 example += o.Name;
                 var a = c == 0 ? 'checked = "checked"' : '';
                 var b = c == 0 ? "true" : "false";
@@ -1536,13 +1536,13 @@
 
         //TEXTO
         ShowTexto: function () {
-            debugger
+            
             $('#btnIncluirTexto').show();
             $('#objTexto').show();
             $('#btnIncluirCabecalho input').hide();
         },
         IncluirSalvarTexto: function (isData) {
-            debugger
+            
             if($('#headerLevel option:selected').val() == -1){
                 openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
                 //alert('Selecione o Nivel do Cabecalho')
@@ -1560,7 +1560,7 @@
             var nivelCabecalho = $('#headerLevel option:selected').val();
             var tipo = $('#parFieldType option:selected').val();
             var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
-            debugger
+            
             if ($('#objDinamicoName').val() != "")
                 var idDinamico = $('#objDinamicoName').val();
             else
@@ -1947,7 +1947,7 @@
         listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto)),
         tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'btn'],
         adiciona: function () {
-            debugger
+            
             /*Valida se pode criar o objeto*/
             if ($("#tableRegraNc").find('td:first').text() == "") {
                 if ($('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val() <= 0) {
@@ -1961,7 +1961,7 @@
             }
             var regraNaoConformidade;
             var exist = $.grep($('#tableRegraNc  tbody  tr  td:nth-child(1)'), function (o, c) {//
-                debugger
+                
                 var count = 0;
                 if ($(o).text() == $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text()) {
                     count++;
@@ -1976,12 +1976,12 @@
                 return false;
             });
 
-            debugger
+            
             if (false) {/*Edição*/ //!!isEdit
 
             } else {/*Inclusão*/
                 if (exist.length) {
-                    debugger
+                    
                     @*if (regraNaoConformidade == -1)
                         display = "@Resources.Resource.all";*@
                     openMessageModal(Resources('not_conformities_rules_exist') + " " + regraNaoConformidade + ".", "")

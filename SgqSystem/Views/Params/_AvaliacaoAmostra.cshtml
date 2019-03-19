@@ -131,7 +131,7 @@
                     if(ParCluster_Id == "-1"){
                         ParCluster_Name = "@Resources.Resource.all"
                     }
-                    debugger
+                    
                     return {/*Objeto*/     
                         sampleNumber     :  $('#' + this.level + ' #amostra').val(),
                         evaluationNumber    : $('#' + this.level + ' #avaliacao').val(),
@@ -243,7 +243,7 @@
 
                 if( this.listObjSalvo != null){ /*Carrega regras de NC*/
                     this.listObjSalvo.forEach(function (o, c) {
-                        debugger
+                        
                         if(o.companyId != null && o.companyId != "-1"){
                                 o['companyName'] = $('#avAmCompany option[value=' + o.companyId + ']').text();
                         }else{

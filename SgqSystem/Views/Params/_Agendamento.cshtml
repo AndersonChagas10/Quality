@@ -83,7 +83,7 @@
     });
 
     function abrirModalAgendamento(linha) {
-        debugger
+        
         var obj = $(linha).parents('tr').data();
         if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
             $("#tabelaAgendamentoIntervalo").attr('style', '');
@@ -98,7 +98,7 @@
         var id = parseInt(obj.evaluationId);
 
         BuscarTurnos(id);
-        debugger
+        
         if (!$("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === 'Diario com Intervalo') {
             $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
             $("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
@@ -140,7 +140,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    debugger
+                    
                     if (!($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo"))
                         MontaNovaLinhaAgendamento(null);
                     else
@@ -184,7 +184,7 @@
     }
 
     function ContadorLinhasIntervalo() {
-        debugger
+        
         var tamanho = $("#tabelaAgendamentoIntervalo tbody").find('tr').length;
 
         if (tamanho <= 0) {
@@ -197,7 +197,7 @@
     }
 
     function MontaNovaLinhaAgendamentoIntervalo(data) {
-        debugger      
+              
         if ($("#tabelaAgendamentoIntervalo tbody tr").length == 0) {
             $("#tabelaAgendamentoIntervalo thead tr:last").find("#acao").addClass('hidden');
             $("#tabelaAgendamentoIntervalo tbody").append("<tr>"
@@ -271,7 +271,7 @@
 
 
     function deletarRegistro(data) {
-        debugger
+        
         var linha = $(data).parents('tr');
         var form = {
             Inicio: $(linha).data()['Inicio'],
@@ -288,12 +288,12 @@
     }
 
     function SalvarAgendamentoIntervalo() {
-        debugger
+        
         var listaTabelaAgendamentoIntervalo = [];
         var contadorErros = 0;
         listaTabelaAgendamentoIntervalo = $("#tabelaAgendamentoIntervalo tbody tr");
             listaTabelaAgendamentoIntervalo.each(function (index, item) {
-                debugger
+                
                 form = {
                     Inicio: "",
                     Fim: "",
@@ -344,7 +344,7 @@
 
 
     $("#modalAgendamento").on('click', "#btnSalvar", function () {
-        debugger
+        
         if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
             SalvarAgendamentoIntervalo();
         } else {
@@ -442,7 +442,7 @@
     });
 
     $("#modalAgendamento").on('change', '[data-column=slAgendamento]', function () {
-        debugger
+        
         let tabela = $('#tabelaAgendamento tbody tr').not(':first');
         $(tabela).find('[data-column=inpAvaliacao]').each(function (i, o) {
             var self = o;
@@ -515,7 +515,7 @@
         }
 
         var isEdit = !!$(this).parents('tr').data()['Id'];
-        debugger
+        
         var form = {
             Inicio: $(linha).find("[data-column=inpInicio]").val(),
             Intervalo: $(linha).find("[data-column=inpIntervalo]").val(),
@@ -531,7 +531,7 @@
 
 
     $("#modalAgendamento").on('click', "#btnSalvarAgendamento", function () {
-        debugger
+        
         var linha = $(this).parent().parent();
         var inicio = $(linha).find('[data-column=inpInicio]').val();
         var termino = $(linha).find('[data-column=inpTermino]').val();
@@ -550,7 +550,7 @@
         }
 
         var isEdit = !!$(this).parents('tr').data()['Id'];
-        debugger
+        
             if (valorAvaliacao >= $(linha).find("[data-column=inpAvaliacao]").val()) {
 
                 var form = {
@@ -572,7 +572,7 @@
     });
 
     function frequenciaIsValid(formato, inicio, fim) {
-        debugger
+        
         switch (formato) {
             case "Diario":
                 if(fim < 0 || inicio < 0 || fim > 24 || inicio > 24)

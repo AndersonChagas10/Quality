@@ -74,7 +74,7 @@
 
     atribuiLevelDivCounter();
     function getCounterObject(levelDomain, listSalvo) {
-        debugger
+        
         return {
             /*Setup*/
             levelControl: levelControl,
@@ -96,7 +96,7 @@
                 };
             },
             veifyAdd: function () {
-                debugger
+                
                 /*Valida se pode criar o objeto*/
                 if ($('#' + this.level + ' #rotina :selected').val() <= 0){
                     openMessageModal("Selecione um rotina!");
@@ -125,7 +125,7 @@
 
             },
             carregaDadosDoDb: function () {
-                debugger
+                
                 var id = this.level + ' #' + this.idTable;
                 var tdNamess = this.tdsNames;
                 if( this.listObjSalvo != null){ 

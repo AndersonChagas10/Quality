@@ -199,7 +199,7 @@ else
                     data["Id"] = $("#company :selected").val();
 
         $btn.button('loading');
-                debugger
+                
                 $.post(urlSend, data, function (r) {
             $btn.button('reset');
                     openMessageModal('Feito!', '');
