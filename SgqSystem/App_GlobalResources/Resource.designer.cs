@@ -1960,6 +1960,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The department name already exists..
+        /// </summary>
+        internal static string duplicated_department {
+            get {
+                return ResourceManager.GetString("duplicated_department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration of Validation.
         /// </summary>
         internal static string duration_of_validation {

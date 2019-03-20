@@ -40,10 +40,7 @@ namespace SgqSystem.Controllers
         // GET: ParDepartments/Create
         public ActionResult Create()
         {
-            var listaFilhos = db.ParDepartment.ToList();
-            listaFilhos.Insert(0, new ParDepartment() { Id = 0, Name = "Selecione" });
-            ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", -1);
-
+            MontaLista(new ParDepartment());
             return View();
         }
 
@@ -58,6 +55,7 @@ namespace SgqSystem.Controllers
             if (parDepartment.Parent_Id <= 0)
                 parDepartment.Parent_Id = null;
 
+            DepartamentoDuplicado(parDepartment);
             if (ModelState.IsValid)
             {
                 db.ParDepartment.Add(parDepartment);
@@ -65,6 +63,7 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Index");
             }
 
+            MontaLista(parDepartment);
             return View(parDepartment);
         }
 
@@ -92,6 +91,7 @@ namespace SgqSystem.Controllers
         public ActionResult Edit([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id")] ParDepartment parDepartment)
         {
             MontaHash(parDepartment);
+            DepartamentoDuplicado(parDepartment);
             if (ModelState.IsValid)
             {
                 db.Entry(parDepartment).State = EntityState.Modified;
@@ -166,10 +166,18 @@ namespace SgqSystem.Controllers
         {
             ViewBag.TemFilhos = db.ParDepartment.Any(x => x.Parent_Id == parDepartment.Id && x.Active);
 
-            var listaFilhos = db.ParDepartment.Where(x=>x.Active).ToList();
+            var listaFilhos = db.ParDepartment.Where(x => x.Active).ToList();
             listaFilhos.Insert(0, new ParDepartment() { Id = 0, Name = "Selecione" });
             listaFilhos.Remove(parDepartment);
             ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", parDepartment.Parent_Id);
+        }
+
+        private void DepartamentoDuplicado(ParDepartment parDepartment)
+        {
+            if(db.ParDepartment.Any(x=>x.Name == parDepartment.Name && x.Id != parDepartment.Id))
+            {
+                ModelState.AddModelError("", Resources.Resource.duplicated_department);
+            }
         }
     }
 }

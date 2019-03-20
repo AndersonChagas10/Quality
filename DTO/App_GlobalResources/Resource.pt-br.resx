@@ -2283,9 +2283,6 @@
   <data name="filtered_report_between_dates" xml:space="preserve">
     <value>Relatório Scorecard filtrado entre as datas:</value>
   </data>
-  <data name="select_reason_out_of_date" xml:space="preserve">
-    <value>Qual a motivo de estar fazendo a coleta fora do prazo?</value>
-  </data>
   <data name="integration_id" xml:space="preserve">
     <value>Id Integração</value>
   </data>
@@ -2294,5 +2291,11 @@
   </data>
   <data name="reason_type" xml:space="preserve">
     <value>Tipo Motivo</value>
+  </data>
+  <data name="select_reason_out_of_date" xml:space="preserve">
+    <value>Selecione o motivo de estar fazendo a coleta fora do prazo?</value>
+  </data>
+  <data name="duplicated_department" xml:space="preserve">
+    <value>Nome do departamento informado já existe.</value>
   </data>
 </root>
