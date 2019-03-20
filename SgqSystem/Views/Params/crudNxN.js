@@ -77,9 +77,9 @@
                 var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
                 $(e).parents('tr').removeData();
                 $(e).parents('tr').data(editado);
-                $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name)
-                $($(e).parents('tr').find('td')[1]).html(editado.Value)
-                $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable)
+                $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name);
+                $($(e).parents('tr').find('td')[1]).html(editado.Value);
+                $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable);
                 $('#crudNxNEdit').modal('hide');
             });
         }
@@ -87,11 +87,11 @@
         else if ($(e).parents('#level1_counter_accordion').length || $(e).parents('#level2_counter_accordion').length || $(e).parents('#level3_counter_accordion').length) {
             crudNxN.modalAlterarContadores(obj);//
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-                var editado = crudNxN.retornaObjetoAlteradoContadores(obj);//
+                var editado = crudNxN.retornaObjetoAlteradoContadores(obj);
                 $(e).parents('tr').removeData();
                 $(e).parents('tr').data(editado);
-                $($(e).parents('tr').find('td')[0]).html(editado.ParCounterName)//
-                $($(e).parents('tr').find('td')[1]).html(editado.ParLocalName)//
+                $($(e).parents('tr').find('td')[0]).html(editado.ParCounterName);
+                $($(e).parents('tr').find('td')[1]).html(editado.ParLocalName);
                 $('#crudNxNEdit').modal('hide');
             });
         }
@@ -99,12 +99,12 @@
         else if ($(e).parents('#level1_reincidencia_accordion').length || $(e).parents('#level2_reincidencia_accordion').length || $(e).parents('#level3_reincidencia_accordion').length) {
             crudNxN.modalAlterarReincidencia(obj);//
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-                var editado = crudNxN.retornaObjetoAlteradoReincidencia(obj);//
+                var editado = crudNxN.retornaObjetoAlteradoReincidencia(obj);
                 $(e).parents('tr').removeData();
                 $(e).parents('tr').data(editado);
-                $($(e).parents('tr').find('td')[0]).html(editado.NcNumber)//
-                $($(e).parents('tr').find('td')[1]).html(editado.EffectiveLength)//
-                $($(e).parents('tr').find('td')[2]).html(editado.parFrequencyName)//
+                $($(e).parents('tr').find('td')[0]).html(editado.NcNumber);
+                $($(e).parents('tr').find('td')[1]).html(editado.EffectiveLength);
+                $($(e).parents('tr').find('td')[2]).html(editado.parFrequencyName);
                 $('#crudNxNEdit').modal('hide');
             });
         }
@@ -112,12 +112,12 @@
         else if ($(e).parents('#level1_rotina_accordion').length || $(e).parents('#level2_rotina_accordion').length) {
             crudNxN.modalAlterarVinculoRotina(obj);//
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-                var editado = crudNxN.retornaObjetoAlteradoRotina(obj);//
+                var editado = crudNxN.retornaObjetoAlteradoRotina(obj);
                 $(e).parents('tr').removeData();
                 $(e).parents('tr').data(editado);
-                $($(e).parents('tr').find('td')[0]).html(editado.NcNumber)//
-                $($(e).parents('tr').find('td')[1]).html(editado.EffectiveLength)//
-                $($(e).parents('tr').find('td')[2]).html(editado.parFrequencyName)//
+                $($(e).parents('tr').find('td')[0]).html(editado.NcNumber);
+                $($(e).parents('tr').find('td')[1]).html(editado.EffectiveLength);
+                $($(e).parents('tr').find('td')[2]).html(editado.parFrequencyName);
                 $('#crudNxNEdit').modal('hide');
             });
         }
@@ -128,24 +128,24 @@
                 
                 /*Valida se pode criar o objeto*/
                 if (ClusterL1.veifyAdd('crudNxNEdit')) {
-                    var editado = crudNxN.retornaObjetoAlteradoCluster(obj);//
+                    var editado = crudNxN.retornaObjetoAlteradoCluster(obj);
                     $(e).parents('tr').removeData();
                     $(e).parents('tr').data(editado);
-                    $($(e).parents('tr').find('td')[0]).html(editado.Cluster_Name)//
-                    $($(e).parents('tr').find('td')[1]).html(editado.ParCriticalLevel_Name)//
-                    $($(e).parents('tr').find('td')[2]).html(editado.EffectiveDate)//
-                    $($(e).parents('tr').find('td')[3]).html(editado.Points)//
+                    $($(e).parents('tr').find('td')[0]).html(editado.Cluster_Name);
+                    $($(e).parents('tr').find('td')[1]).html(editado.ParCriticalLevel_Name);
+                    $($(e).parents('tr').find('td')[2]).html(editado.EffectiveDate);
+                    $($(e).parents('tr').find('td')[3]).html(editado.Points);
                     $('#crudNxNEdit').modal('hide');
                 }
             });
         }
         else if ($(e).parents('#level2_GroupLevel_accordion').length) {
-            crudNxN.modalAlterarGroupLevel2(obj);//
+            crudNxN.modalAlterarGroupLevel2(obj);
             $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-                var editado = crudNxN.retornaObjetoAlteradoGroupLevel2(obj);//
+                var editado = crudNxN.retornaObjetoAlteradoGroupLevel2(obj);
                 $(e).parents('tr').removeData();
                 $(e).parents('tr').data(editado);
-                $($(e).parents('tr').find('td')[0]).html(editado.Name)//
+                $($(e).parents('tr').find('td')[0]).html(editado.Name);
                 $('#crudNxNEdit').modal('hide');
             });
         }

@@ -23,21 +23,41 @@ namespace SgqSystem.Services.SyncModel
         public IEnumerable<ParLevel3XParDepartmentSyncModel> GetList(int parCompany_Id)
         {
 
-            string sql = $@"SELECT pl3pd.ParDepartment_Id, 
-                pd.Name as ParDepartment_Name,  
-                pl3pd.ParLevel1_Id,
-                pl3pd.ParLevel2_Id,
-                pl3pd.ParLevel3_Id,
-                pl3pd.ParCompany_Id
-                FROM ParLevel3XParDepartment pl3pd
-                LEFT JOIN ParDepartment pd ON pd.Id = pl3pd.ParDepartment_Id
-                WHERE pl3pd.IsActive = 1 AND pl3pd.ParCompany_Id = {parCompany_Id}
-                GROUP BY pl3pd.ParDepartment_Id, 
-                pd.Name,  
-                pl3pd.ParLevel1_Id,
-                pl3pd.ParLevel2_Id,
-                pl3pd.ParLevel3_Id,
-                pl3pd.ParCompany_Id";
+            //string sql = $@"SELECT pl3pd.ParDepartment_Id, 
+            //    pd.Name as ParDepartment_Name,  
+            //    pl3pd.ParLevel1_Id,
+            //    pl3pd.ParLevel2_Id,
+            //    pl3pd.ParLevel3_Id,
+            //    pl3pd.ParCompany_Id
+            //    FROM ParLevel3XParDepartment pl3pd
+            //    LEFT JOIN ParDepartment pd ON pd.Id = pl3pd.ParDepartment_Id
+            //    WHERE pl3pd.IsActive = 1 AND pl3pd.ParCompany_Id = {parCompany_Id}
+            //    GROUP BY pl3pd.ParDepartment_Id, 
+            //    pd.Name,  
+            //    pl3pd.ParLevel1_Id,
+            //    pl3pd.ParLevel2_Id,
+            //    pl3pd.ParLevel3_Id,
+            //    pl3pd.ParCompany_Id";
+
+            string sql = $@"SELECT DISTINCT
+                       	pl3pd.ParDepartment_Id
+                          ,pd.Name AS ParDepartment_Name
+                          ,pl3pd.ParLevel1_Id
+                          ,pl3pd.ParLevel2_Id
+                          ,pl3pd.ParLevel3_Id
+                          ,{ parCompany_Id } as ParCompany_Id
+                       FROM ParLevel3XParDepartment pl3pd
+                       LEFT JOIN ParDepartment pd
+                       	ON pd.Id = pl3pd.ParDepartment_Id
+                       WHERE pl3pd.IsActive = 1
+                       AND (pl3pd.ParCompany_Id = 8
+                       OR pl3pd.ParCompany_Id IS NULL)
+                       GROUP BY pl3pd.ParDepartment_Id
+                       		,pd.Name
+                       		,pl3pd.ParLevel1_Id
+                       		,pl3pd.ParLevel2_Id
+                       		,pl3pd.ParLevel3_Id
+                       		,pl3pd.ParCompany_Id";
 
             List<ParLevel3XParDepartmentSyncModel> listParLevel3XParDepartmentSyncModel = new List<ParLevel3XParDepartmentSyncModel>();
             using (Factory factory = new Factory("DefaultConnection"))
