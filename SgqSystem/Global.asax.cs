@@ -176,6 +176,7 @@ namespace SgqSystem
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "DataValidade", Value = "218", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Data de Validade" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "DataProducaoEmbarque", Value = "217", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Data de Produção" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "CB", Value = "215", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Data de CB" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "CodigoProduto", Value = "214", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Código Produto" });
 
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "DataProducao", Value = "1197", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Data de Produção" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "Produto", Value = "1196", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Produto" });

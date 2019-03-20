@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using SgqSystem.Controllers.Photo;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -442,15 +443,16 @@ DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
                     	RL3.ParLevel3_Id as ParLevel3_Id ,
                     	RL3.ParLevel3_Name as ParLevel3 ,
                     	CL2.Sample as Amostra ,
-                    	RL3P.Photo as Photo
+                        RL3P.Photo as Photo,
+                    	RL3P.Id as Result_Level3_Photos_Id
                     from CollectionLevel2 CL2
                     Inner Join Result_Level3 RL3 with (nolock) on CL2.Id = RL3.CollectionLevel2_Id
                     Inner Join Result_Level3_Photos RL3P with (nolock) on RL3P.Result_Level3_Id = RL3.Id
                     inner join CollectionLevel2XParHeaderField CL2XPHF with (nolock) on CL2.Id = CL2XPHF.CollectionLevel2_Id
                     Inner join Produto P with (nolock) on P.nCdProduto = CL2XPHF.Value
                     where 1 = 1
-                    AND CL2XPHF.ParHeaderField_Id = 1184 --214
-                    AND CL2.ParLevel1_Id = 68 --89
+                    AND CL2XPHF.ParHeaderField_Id = {GetDicionarioEstatico("CodigoProduto")}
+                    AND CL2.ParLevel1_Id = {GetDicionarioEstatico("PlanilhaRecebimentoCDs_Id")}
                     AND CAST(CL2.CollectionDate AS DATE) = '{form._dataInicioSQL}'
                     AND CL2.parlevel1_id = { form.level1Id }
                     AND CL2.ParLevel2_Id = { form.level2Id }
@@ -551,5 +553,6 @@ DESC, c2.EvaluationNumber, c2.Sample, C2.CollectionDate DESC";
         public string ParLevel3 { get; set; }
         public int Amostra { get; set; }
         public string Photo { get; set; }
+        public int Result_Level3_Photos_Id { get; set; }
     }
 }

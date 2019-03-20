@@ -663,6 +663,7 @@
             let produtos = array.map((item) => { return item.Produto });
             let tarefas = array.map((item) => { return item.ParLevel3 });
             let fotos = array.map((item) => { return item.Photo });
+            let result_Level3_Photos_Ids = array.map((item) => { return item.Result_Level3_Photos_Id });
 
             let maxWidth = ""
 
@@ -693,8 +694,8 @@
 
             tabela += '</tr><tr>';
 
-            fotos.forEach((item) => {
-                tabela += `<td><img src="${item}" class="img-responsive"/></td>`;
+            result_Level3_Photos_Ids.forEach((item) => {
+                tabela += `<td><img src="@Url.Action("Get","Photo")/${item}" class="img-responsive"/></td>`;
             });
 
             tabela += '</tr></table">'
