@@ -6,7 +6,7 @@ var tdefAv;
 var tdef3;
 var propertyObjAnteriorDef3, tempHDL2;
 var ParReasonSelected_Id = null;
-var ParReasonType_Id = null //Antecipado = 0, Atrasado = 1, N/A = 3
+var ParReasonType_Id = null //Antecipado = 1, Atrasado = 2, N/A = 3
 var parDepartmentSelected_Id = null;
 
 function HourToMinutes(hour) {
@@ -1946,10 +1946,10 @@ function saveResultLevel3() {
                     scrollClick(parseInt(_level2.id));
                 }
             }
-        }
+        } else if ($(_level1).attr('ispartialsave') == "true")
+            openLevel2(level1);
     }
-    else if ($(_level1).attr('ispartialsave') == "true")
-        openLevel2(level1);
+
 
     var level3GroupVisible = $('.level3Group[level2id=' + $('.level2.selected').attr('id') + ']');
 

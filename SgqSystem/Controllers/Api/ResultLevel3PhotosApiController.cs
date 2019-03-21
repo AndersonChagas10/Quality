@@ -57,7 +57,7 @@ namespace SgqSystem.Controllers.Api
                     basePath = @AppDomain.CurrentDomain.BaseDirectory;
                 }
 
-                var path = Path.Combine(basePath, "photos", parLevel1_Id + parLevel2_Id + DateTime.Now.ToString("yyyyMMddHHssmm")) + ".png";
+                var path = Path.Combine(basePath, "photos", parLevel1_Id + parLevel2_Id + ResultPhoto.Level3Id + '-' + i + DateTime.Now.ToString("yyyyMMddHHssmm")) + ".png";
                 using (var imageFile = new FileStream(path, FileMode.Create))
                 {
                     imageFile.Write(bytes, 0, bytes.Length);

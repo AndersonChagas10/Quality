@@ -2772,4 +2772,7 @@
   <data name="no_department" xml:space="preserve">
     <value>Sem departamento</value>
   </data>
+  <data name="zero_represents_infinity" xml:space="preserve">
+    <value>O valor 0 representa um valor ilimitado de Avaliações ou Amostras</value>
+  </data>
 </root>

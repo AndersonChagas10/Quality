@@ -547,9 +547,9 @@ namespace SgqSystem.Services
                             ParReasonType_Id = result[51];
                         }
 
-                        if (result.Length > 51)
+                        if (result.Length > 52)
                         {
-                            parDepartment_Id = result[51];
+                            parDepartment_Id = result[52];
                         }
 
                         //Gera o Cabeçalho do Level02
@@ -998,9 +998,9 @@ namespace SgqSystem.Services
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
-                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, 
-                                                avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, 
-                                                defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, 
+                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation,
+                                                avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult,
+                                                defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation,
                                                 hashKey, cluster, ParReason_Id, ParReasonType_Id, parDepartmentId);
 
                     if (arrayHeader.Length > 30)
@@ -1887,7 +1887,7 @@ namespace SgqSystem.Services
                                            string StartPhase, int Evaluation, int Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
                                            string Duplicated, string haveReaudit, int reauditLevel, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
-                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, 
+                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3,
                                            string startphaseevaluation, string endphaseevaluation, string hashKey = null, string cluster = null,
                                            string ParReason_Id = null, string ParReasonType_Id = null, int? parDepartment_Id = null)
         {
@@ -4793,7 +4793,7 @@ function calcularSensorial(list){
 
             selectMotivo.Append(@"<select id=""slcMotivo"" class=""form-control"" style=""width: 600px;"">");
 
-            foreach (var item in listMotivo.Where(x=>x.ParReasonType_Id == 1))
+            foreach (var item in listMotivo.Where(x => x.ParReasonType_Id == 1))
                 selectMotivo.Append($@"<option value=""{ item.Id }"">{item.Motivo}</option>");
 
             selectMotivo.Append(@"</select>");
@@ -8880,22 +8880,17 @@ function calcularSensorial(list){
 
         #endregion
 
+        #region StatusColeta
+
         [WebMethod]
-        public int GetLastSampleByCollectionLevel2(string ParLevel1_Id, string ParLevel2_Id, string UnitId, string EvaluationNumber, string Shift, DateTime CollectionDate)
+        public void InsertStatusColeta(ListaCollectionsLevel2XMotivosAtraso listaCollectionsLevel2XMotivosAtraso)
         {
-
-            if (string.IsNullOrEmpty(ParLevel1_Id) ||
-    string.IsNullOrEmpty(ParLevel2_Id) ||
-    string.IsNullOrEmpty(UnitId) ||
-    string.IsNullOrEmpty(EvaluationNumber) ||
-    string.IsNullOrEmpty(Shift) ||
-    string.IsNullOrEmpty(CollectionDate.ToString()))
+            try
             {
-                return 0;
-            }
+                using (var conexaoEF = new SgqDbDevEntities())
+                {
 
-
-            if (listaCollectionsLevel2XMotivosAtraso != null && listaCollectionsLevel2XMotivosAtraso.DadosIsValid())
+                    if (listaCollectionsLevel2XMotivosAtraso != null && listaCollectionsLevel2XMotivosAtraso.DadosIsValid())
                     {
                         foreach (var item in listaCollectionsLevel2XMotivosAtraso.CollectionsLevel2XMotivosAtraso)
                         {
@@ -8905,6 +8900,34 @@ function calcularSensorial(list){
                             }
                         }
                     }
+
+                    conexaoEF.SaveChanges();
+                }
+            }
+            catch (Exception Ex)
+            {
+                throw;
+            }
+        }
+
+        
+
+        #endregion
+
+        [WebMethod]
+        public int GetLastSampleByCollectionLevel2(string ParLevel1_Id, string ParLevel2_Id, string UnitId, string EvaluationNumber, string Shift, DateTime CollectionDate)
+        {
+
+            if (string.IsNullOrEmpty(ParLevel1_Id) ||
+                string.IsNullOrEmpty(ParLevel2_Id) ||
+                string.IsNullOrEmpty(UnitId) ||
+                string.IsNullOrEmpty(EvaluationNumber) ||
+                string.IsNullOrEmpty(Shift) ||
+                string.IsNullOrEmpty(CollectionDate.ToString()))
+            {
+                return 0;
+            }
+
 
             var lista1 = ParLevel1_Id.Replace(quebraProcesso, "|").Split('|');
             var lista2 = ParLevel2_Id.Replace(quebraProcesso, "|").Split('|');

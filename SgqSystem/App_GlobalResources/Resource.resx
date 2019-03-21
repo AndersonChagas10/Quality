@@ -2784,4 +2784,7 @@
   <data name="no_department" xml:space="preserve">
     <value>No department</value>
   </data>
+  <data name="zero_represents_infinity" xml:space="preserve">
+    <value>The value 0 respresents a infinity value by evaluation and sample</value>
+  </data>
 </root>

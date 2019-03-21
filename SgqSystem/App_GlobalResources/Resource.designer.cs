@@ -8035,6 +8035,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value 0 respresents a infinity value by evaluation and sample.
+        /// </summary>
+        internal static string zero_represents_infinity {
+            get {
+                return ResourceManager.GetString("zero_represents_infinity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to en-us.
         /// </summary>
         internal static string _language {
