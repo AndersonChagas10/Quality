@@ -310,7 +310,7 @@ function setAvaliationClick(level2) {
     var sampleNumber = level2.attr('sample');
 
     //Se for 0 nos dois, ele é do tipo dinâmico que o usuário irá inserir na mão a quantidade
-    if (avaliationNumber == 0 && sampleNumber == 0) {
+    if (avaliationNumber == 0 || sampleNumber == 0) {
         level2.next().addClass('changeAvNumber');
     }
 }
