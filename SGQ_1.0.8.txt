@@ -3,12 +3,62 @@ Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.8CreateTabelaMotiv
 
 GO
 
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MotivoAtraso' AND xtype='U')
-Create Table MotivoAtraso (   
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReasonType' AND xtype='U')
+create table ParReasonType(
+	Id int not null identity primary key,
+	Name varchar(20) NOT NULL,
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1
+)
+
+GO
+SET IDENTITY_INSERT ParReasonType ON 
+GO
+
+IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Antecipado')
+	begin
+		insert into ParReasonType(Id,Name,AddDate, AlterDate, IsActive) 
+		values(1,'Antecipado',GETDATE(),NULL,1)
+	end
+
+GO
+
+IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Atrasado')
+	begin
+		insert into ParReasonType(Id,Name,AddDate, AlterDate, IsActive) 
+		values(2,'Atrasado',GETDATE(),NULL,1)
+	end
+
+GO
+
+IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Não Avaliado')
+	begin
+		insert into ParReasonType(Id,Name,AddDate, AlterDate, IsActive) 
+		values(3,'Não Avaliado',GETDATE(),NULL,1)
+	end
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReason' AND xtype='U')
+Create Table ParReason (   
 	Id int not null identity PRIMARY KEY,
 	Motivo varchar(250) not null,
 	AddDate datetime not null,
 	AlterDate datetime,
+	IsActive bit not null default 1,
+	ParReasonType_Id int not null FOREIGN key REFERENCES ParReasonType(Id),
+)
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReasonXReasonType' AND xtype='U')
+create table ParReasonXReasonType(
+	Id int not null identity primary key,
+	ParReason_Id int not null FOREIGN key REFERENCES ParReason(Id),
+	ParReasonType_Id int not null FOREIGN key REFERENCES ParReasonType(Id),
+	AddDate datetime not null,
+	AlterDate datetime null,
 	IsActive bit not null default 1
 )
 
@@ -29,13 +79,14 @@ Create Table ParEvaluationSchedule (
 
 GO
  
- IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XMotivoAtraso' AND xtype='U')
- create table CollectionLevel2XMotivoAtraso (
+ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParReason' AND xtype='U')
+ create table CollectionLevel2XParReason (
 	Id int primary key identity not null,
 	AddDate datetime not null,
 	AlterDate datetime,
 	CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
-	MotivoAtraso_Id int not null foreign key references MotivoAtraso(Id)
+	ParReason_Id int not null foreign key references ParReason(Id),
+	ParReasonType_Id int not null foreign key references ParReasonType(Id)
 )
 
 GO

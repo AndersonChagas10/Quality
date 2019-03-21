@@ -1717,6 +1717,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The department name already exists..
+        /// </summary>
+        internal static string duplicated_department {
+            get {
+                return ResourceManager.GetString("duplicated_department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration of Validation.
         /// </summary>
         internal static string duration_of_validation {
@@ -2752,20 +2761,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Interval field value can not be null!.
-        /// </summary>
-        internal static string interval_null_value {
-            get {
-                return ResourceManager.GetString("interval_null_value", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Integration Id.
         /// </summary>
         internal static string integration_id {
             get {
                 return ResourceManager.GetString("integration_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interval field value can not be null!.
+        /// </summary>
+        internal static string interval_null_value {
+            get {
+                return ResourceManager.GetString("interval_null_value", resourceCulture);
             }
         }
         
@@ -4593,6 +4602,24 @@ namespace Resources {
         internal static string ready {
             get {
                 return ResourceManager.GetString("ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason.
+        /// </summary>
+        internal static string reason {
+            get {
+                return ResourceManager.GetString("reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason Type.
+        /// </summary>
+        internal static string reason_type {
+            get {
+                return ResourceManager.GetString("reason_type", resourceCulture);
             }
         }
         

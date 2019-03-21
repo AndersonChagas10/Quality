@@ -48,7 +48,7 @@ namespace DTO.ResultSet
         public string Processo { get; set; }
 
         public bool IsLate { get; set; }
-        public string MotivoAtraso { get; set; }
+        public string ParReason { get; set; }
 
         public string Select(DataCarrierFormulario form)
         {
@@ -161,7 +161,8 @@ namespace DTO.ResultSet
 				 as Type,
                  PC.Name as Processo
 	            ,CASE WHEN MA.Motivo IS NULL THEN 0 ELSE 1 END AS IsLate
-	            ,ma.Motivo as MotivoAtraso
+	            ,ma.Motivo as ParReason
+	            ,PRT.Name as ParReasonType
                  FROM #CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     
                  ON UN.Id = c2.UnitId                  
@@ -209,10 +210,12 @@ namespace DTO.ResultSet
 				 ON C2XC.CollectionLevel2_Id = C2.Id
 				 LEFT JOIN ParCluster PC
 				 ON PC.Id = C2XC.ParCluster_Id
-                 LEFT JOIN CollectionLevel2XMotivoAtraso CL2MA
+                 LEFT JOIN CollectionLevel2XParReason CL2MA
                  ON CL2MA.CollectionLevel2_Id = C2.Id
-                 LEFT JOIN MotivoAtraso MA
-                 ON MA.Id = CL2MA.MotivoAtraso_Id
+                 LEFT JOIN ParReason MA
+                 ON MA.Id = CL2MA.ParReason_Id
+                 LEFT JOIN ParReasonType PRT
+                 ON PRT.Id = MA.ParReasonType_Id
                  WHERE 1=1 
                   -- AND C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
                   {sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3 } ";

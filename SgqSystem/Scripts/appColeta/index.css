@@ -516,7 +516,7 @@ body > .App > div.container {
 {
     background-color: #ee8888 !important;
 }
-.messageConfirm, .messageMotivoAtraso, .messageSelecionarDepartamento
+.messageConfirm, .messageParReason, .messageSelecionarDepartamento
 {
     top: 200px;
     min-height: 200px;

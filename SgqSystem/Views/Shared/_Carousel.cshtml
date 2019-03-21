@@ -21,7 +21,7 @@
         setPicturesBase64: function (pictures) {
             //console.log(pictures)
             if (pictures.length > 0) {
-                console.log('Images: ' + pictures.length)
+                //console.log('Images: ' + pictures.length)
                 $('.carousel-indicators').empty();
                 $('.carousel-inner').empty()
                 for (var i = 0; i < pictures.length; i++) {
@@ -31,7 +31,8 @@
                         item.addClass('active');
                         indicator.addClass('active');
                     }
-                    item.children('img').attr('src', pictures[i]);
+                    item.children('img').attr('src', '@Url.Action("Get","Photo")/'+pictures[i]);
+                    //item.children('img').attr('src', pictures[i]);
                     $('.carousel-inner').append(item);
                     $('.carousel-indicators').append(indicator);
                 }

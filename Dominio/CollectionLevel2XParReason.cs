@@ -8,18 +8,21 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    public class CollectionLevel2XMotivoAtraso : BaseModel
+    public class CollectionLevel2XParReason : BaseModel
     {
         [Key]
         public int Id { get; set; }
 
         public int CollectionLevel2_Id { get; set; }
 
-        public int MotivoAtraso_Id { get; set; }
+        public int ParReason_Id { get; set; }
+
+        public int ParReasonType_Id { get; set; }
+
 
         public bool IsValid()
         {
-            if (CollectionLevel2_Id <= 0 || MotivoAtraso_Id <= 0)
+            if (CollectionLevel2_Id <= 0 || ParReason_Id <= 0 || ParReasonType_Id <= 0)
             {
                 return false;
             }

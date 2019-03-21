@@ -10,110 +10,113 @@ using Dominio;
 
 namespace SgqSystem.Controllers
 {
-    public class MotivoAtrasoController : BaseController
+    public class ParReasonController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
-        // GET: MotivoAtrasoes
+        // GET: ParReasones
         public ActionResult Index()
         {
-            return View(db.MotivoAtraso.ToList());
+            return View(db.ParReason.ToList());
         }
 
-        // GET: MotivoAtrasoes/Details/5
+        // GET: ParReasones/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MotivoAtraso motivoAtraso = db.MotivoAtraso.Find(id);
-            if (motivoAtraso == null)
+            ParReason ParReason = db.ParReason.Find(id);
+            if (ParReason == null)
             {
                 return HttpNotFound();
             }
-            return View(motivoAtraso);
+            return View(ParReason);
         }
 
-        // GET: MotivoAtrasoes/Create
+        // GET: ParReasones/Create
         public ActionResult Create()
         {
+            ViewBag.ParReasonType_Id = new SelectList(db.ParReasonType.ToList(), "Id", "Name");
             return View();
         }
 
-        // POST: MotivoAtrasoes/Create
+        // POST: ParReasones/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Motivo,IsActive,AddDate,AlterDate")] MotivoAtraso motivoAtraso)
+        public ActionResult Create([Bind(Include = "Id,Motivo,IsActive,AddDate,AlterDate,ParReasonType_Id")] ParReason ParReason)
         {
             if (ModelState.IsValid)
             {
-                motivoAtraso.AlterDate = null;
-                motivoAtraso.AddDate = DateTime.Now;
-                db.MotivoAtraso.Add(motivoAtraso);
+                ParReason.AlterDate = null;
+                ParReason.AddDate = DateTime.Now;
+                db.ParReason.Add(ParReason);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(motivoAtraso);
+            ViewBag.ParReasonType_Id = new SelectList(db.ParReasonType.ToList(), "Id", "Name",ParReason.ParReasonType_Id);
+            return View(ParReason);
         }
 
-        // GET: MotivoAtrasoes/Edit/5
+        // GET: ParReasones/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MotivoAtraso motivoAtraso = db.MotivoAtraso.Find(id);
-            if (motivoAtraso == null)
+            ParReason ParReason = db.ParReason.Find(id);
+            if (ParReason == null)
             {
                 return HttpNotFound();
             }
-            return View(motivoAtraso);
+            ViewBag.ParReasonType_Id = new SelectList(db.ParReasonType.ToList(), "Id", "Name", ParReason.ParReasonType_Id);
+            return View(ParReason);
         }
 
-        // POST: MotivoAtrasoes/Edit/5
+        // POST: ParReasones/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Motivo,IsActive,AddDate,AlterDate")] MotivoAtraso motivoAtraso)
+        public ActionResult Edit([Bind(Include = "Id,Motivo,IsActive,AddDate,AlterDate,ParReasonType_Id")] ParReason ParReason)
         {
             if (ModelState.IsValid)
             {
-                motivoAtraso.AlterDate = DateTime.Now;
-                db.Entry(motivoAtraso).State = EntityState.Modified;
+                ParReason.AlterDate = DateTime.Now;
+                db.Entry(ParReason).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(motivoAtraso);
+            ViewBag.ParReasonType_Id = new SelectList(db.ParReasonType.ToList(), "Id", "Name", ParReason.ParReasonType_Id);
+            return View(ParReason);
         }
 
-        // GET: MotivoAtrasoes/Delete/5
+        // GET: ParReasones/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MotivoAtraso motivoAtraso = db.MotivoAtraso.Find(id);
-            if (motivoAtraso == null)
+            ParReason ParReason = db.ParReason.Find(id);
+            if (ParReason == null)
             {
                 return HttpNotFound();
             }
-            return View(motivoAtraso);
+            return View(ParReason);
         }
 
-        // POST: MotivoAtrasoes/Delete/5
+        // POST: ParReasones/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            MotivoAtraso motivoAtraso = db.MotivoAtraso.Find(id);
-            db.MotivoAtraso.Remove(motivoAtraso);
+            ParReason ParReason = db.ParReason.Find(id);
+            db.ParReason.Remove(ParReason);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
