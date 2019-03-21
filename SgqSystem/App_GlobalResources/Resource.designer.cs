@@ -1969,6 +1969,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The department name already exists..
+        /// </summary>
+        internal static string duplicated_department {
+            get {
+                return ResourceManager.GetString("duplicated_department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration of Validation.
         /// </summary>
         internal static string duration_of_validation {
@@ -5641,6 +5650,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reason.
+        /// </summary>
+        internal static string reason {
+            get {
+                return ResourceManager.GetString("reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason Type.
+        /// </summary>
+        internal static string reason_type {
+            get {
+                return ResourceManager.GetString("reason_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reaudit.
         /// </summary>
         internal static string reaudit {
@@ -8004,6 +8031,15 @@ namespace Resources {
         internal static string you_need_to_be_connected {
             get {
                 return ResourceManager.GetString("you_need_to_be_connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value 0 respresents a infinity value by evaluation and sample.
+        /// </summary>
+        internal static string zero_represents_infinity {
+            get {
+                return ResourceManager.GetString("zero_represents_infinity", resourceCulture);
             }
         }
         

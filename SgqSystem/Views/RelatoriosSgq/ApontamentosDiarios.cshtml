@@ -260,20 +260,22 @@
                             }
                         },
                         {
-                            title: "@Resources.Resource.IsLate", mData: "IsLate", mRender: function (data, type, full) {
+                            title: "@Resources.Resource.reason_type", mData: "ParReasonType", mRender: function (data, type, full) {
 
-                                if (data) {
-                                    return '@Resources.Resource.yes'
-                                } else {
+                                return data;
+                                @*if (data == 0) {
                                     return '@Resources.Resource.no'
-                                }
+                                } else {
+                                    return '@Resources.Resource.yes'
+                                }*@
 
                             }
                         },
-                        { title: "@Resources.Resource.LateReason", mData: "MotivoAtraso", "width": "50%" },
+                        { title: "@Resources.Resource.reason", mData: "ParReason", "width": "50%" },
                         {
                             title: "@Resources.Resource.photo", mData: "ResultLevel3Id", "width": "50%", mRender: function (data, type, full) {
-                                return "<img data-toggle='modal' data-target='#imageModal' height='60' id='imgResult" + data +"'></img>";
+                                return full.HasPhoto ?
+        "<button class='btn btn-info btn-sm' data-toggle='modal' data-target='#imageModal' data-photo='"+data+"' height='60' id='imgResult" + data +"'>@Resources.Resource.photo</button>" : '';
                             }
                         }
                     ];
@@ -289,11 +291,11 @@
                     }, 100);
 
                     $('#resultsApontamentos tbody').on('click', 'button#edit', function (data) {
-                        
-                        var data = table.row($(this).parents('tr')).data();                 
+
+                        var data = table.row($(this).parents('tr')).data();
 
                         $.post(urlEdit + "/" + data.ResultLevel3Id, function (r) {
-                            
+
                             if (r != null) {
                                 $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
                                 $('#myModal #ResultLevel3_Id').val(r.Id);
@@ -307,7 +309,7 @@
                                 $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
                                 $("#myModal #Level3Name").append("<div class='alert alert-warning' id='mensagemErro'>O item selecionado possui vínculos de resultado. A edição esta desabilitada.</div>");
                                 $("#botaoSalvar").hide();
-                               
+
                             }
                         })
                     });
@@ -319,7 +321,7 @@
                     //});
 
                     $('#resultsApontamentos tbody').on('click', 'button#editHeader', function (data) {
-                        
+
                         var data = table.row($(this).parents('tr')).data();
 
                         escondeMensagemVazio();
@@ -526,62 +528,38 @@
                     initComplete: initDatatable,
                     createdRow: function (row, data, index)
                     {
-                        $(window).scroll(function () {
-                            if ($(row).is(':visible')
-                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('checked')
-                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('isChecking')
-                            )
-                                GetImagePreview($(row).find('#imgResult' + data.ResultLevel3Id), data.ResultLevel3Id);
-                        });
                     }
                 });
             }
 
         }
 
-        function GetImagePreview(Img, ResultLevel3Id) {
-            Img.addClass('hide');
-            Img.after('<i class="fa fa-spinner fa-pulse"></i>');
-            Img.attr('isChecking', true);
-            $.get(urlPhotoPreview + "/" + ResultLevel3Id, function (result1) {
-                Img.siblings('i').remove();
-                Img.removeClass('hide');
-                Img.attr('checked', true);
-                Img.removeAttr('isChecking');
-                if (result1) {
-                    Img.attr('src', result1);
-                    Img.click(function (o) {
-                        console.log(o);
+        $('body').on('click','[data-photo]',function(){
 
-                        $('#imageModal .modal-loading, #imageModal .modal-title-loading').removeClass('hide');
-                        $('#imageModal .modal-body, #imageModal .modal-title').addClass('hide');
-
-                        $.get(urlPhotos + "/" + ResultLevel3Id, function (photos) {
-                            if (photos.length > 0) {
-                                var _photos = [];
-                                $.grep(photos, function (o) {
-                                    if (o) _photos.push(o.Photo);
-                                });
-                                $.get(urlGetCarousel, function (carousel) {
-                                    $('#imageModal .modal-body').html(carousel);
-                                    carouselMain.setPicturesBase64(_photos);
-
-                                    $('#imageModal .modal-loading, #imageModal .modal-title-loading').addClass('hide');
-                                    $('#imageModal .modal-body').removeClass('hide');
-                                    //$('#imageModal .modal-body, #imageModal .modal-title').removeClass('hide');
-                                });
-
-                                $('#latitudeModal').text(photos[0].Latitude);
-                                $('#longitudeModal').text(photos[0].Longitude);
-                            }
-                        });
+            var rl3_id = $(this).attr('data-photo');
+            $.get(urlPhotos + "/" + rl3_id, function (photos) {
+                if (photos.length > 0) {
+                    var _photos = [];
+                    $.grep(photos, function (o) {
+                        if (o) _photos.push(o.ID);
+                        //if (o) _photos.push(o.Photo);
                     });
+                    $.get(urlGetCarousel, function (carousel) {
+                        $('#imageModal .modal-body').html(carousel);
+                        carouselMain.setPicturesBase64(_photos);
+
+                        $('#imageModal .modal-loading, #imageModal .modal-title-loading').addClass('hide');
+                        $('#imageModal .modal-body').removeClass('hide');
+                        //$('#imageModal .modal-body, #imageModal .modal-title').removeClass('hide');
+                    });
+
+                    $('#latitudeModal').text(photos[0].Latitude);
+                    $('#longitudeModal').text(photos[0].Longitude);
                 }
             });
-        }
+        });
 
-
-        function SalvarResultLevel3() { 
+        function SalvarResultLevel3() {
             var dadosResultLevel3 = {};
 
             if ($('#sample') != undefined) {
@@ -609,7 +587,7 @@
                     dadosResultLevel3.IsNotEvaluate = true;
                 }
             }
-            
+
             if (parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text()) && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text())) {
                 $.post(urlSave, dadosResultLevel3, function (r, x, e) {
                     $("#myModal").modal('hide');
@@ -620,7 +598,7 @@
                     console.log(e);
                     openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
                 });
-            } else { 
+            } else {
                 $("#botaoSalvar").removeAttr('data-dismiss')
                 openMessageModal("Valor inserido fora do intervalo permitido!",null);
             }
@@ -670,7 +648,7 @@
             let isValid = false;
 
             $('form#divEdit input, form#divEdit select').each(function (i, o) {
-                
+
                 let CollectionLevel2XParHeaderField_Id = $(o).attr("CollectionLevel2XParHeaderField_Id");
                 let CollectionLevel2_Id = $(o).attr("CollectionLevel2_Id");
                 let ParHeaderField_Id = $(o).attr("ParHeaderField_Id");

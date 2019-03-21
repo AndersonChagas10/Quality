@@ -61,7 +61,7 @@ function initializeSync(time) {
 
 function preparing(showMessage) {
 
-    if (terminouDeEnviar){
+    if (terminouDeEnviar) {
         mensagemSyncHide();
         return;
     }
@@ -77,7 +77,7 @@ function preparing(showMessage) {
 var terminouDeEnviar = false;
 function send(autoSend, callbackPCC1B, sendImediato) {
 
-    if (terminouDeEnviar){
+    if (terminouDeEnviar) {
         mensagemSyncHide();
         return;
     } else {
@@ -97,7 +97,7 @@ function send(autoSend, callbackPCC1B, sendImediato) {
 
         var level02 = $(this);
         var level01 = level02.parents('.level01Result');
-        var atrasado = false;
+        var hasReason = false;
 
         level02Result += level01.attr('level01id');//[0]
         level02Result += ";" + level01.attr('datetime');//[1]
@@ -126,7 +126,9 @@ function send(autoSend, callbackPCC1B, sendImediato) {
         var level03Result = $(this).children('.level03Result');
         var resultLevel03 = "";
 
-        var motivoAtraso_Id = null;
+        var ParReason_Id = null;
+        var ParReasonType_Id = null;
+
         var parDepartment_Id = null;
 
         level03Result.each(function (e) {
@@ -208,9 +210,10 @@ function send(autoSend, callbackPCC1B, sendImediato) {
                 level02Result += ";" + '0';
             }
 
-            if (level03.attr('motivoAtrasoId')) {
-                atrasado = true;
-                motivoAtraso_Id = level03.attr('motivoAtrasoId');
+            if (level03.attr('ParReasonId')) {
+                hasReason = true;
+                ParReason_Id = level03.attr('ParReasonId');
+                ParReasonType_Id = level03.attr('ParReasonType_Id');
             }
 
             if (level03.attr('parDepartmentId')) {
@@ -279,9 +282,11 @@ function send(autoSend, callbackPCC1B, sendImediato) {
             level02Result += ";";
         }
 
-        if (atrasado) {
-            level02Result += ";" + motivoAtraso_Id; //[50]
+        if (hasReason) {
+            level02Result += ";" + ParReason_Id; //[50]
+            level02Result += ";" + ParReasonType_Id; //[50]
         } else {
+            level02Result += ";";
             level02Result += ";";
         }
 
@@ -408,12 +413,12 @@ function consolidation() {
 }
 function reciveResults() {
     ping();
-    
+
     if ($('.level02Result[sync=false]').length == 0) {
         ping(sendCorrectiveActionOnLine, sendResultsTimeout);
         sendResultLevel3Photo();
     }
-    
+
     setTimeout(function (e) {
         if (connectionServer == true) {
             menssagemSync(getResource("synchronizing") + "...", getResource("receiving_data")); // Mostra o modal informando que est� verificando as coletas

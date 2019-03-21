@@ -523,7 +523,8 @@ namespace SgqSystem.Services
                         string endphaseevaluation = "0";
                         string reprocesso = null;
                         string cluster = parCluster_Id;
-                        string motivoAtraso_Id = null;
+                        string ParReason_Id = null;
+                        string ParReasonType_Id = null;
                         string parDepartment_Id = null;
 
                         if (result.Length > 47)
@@ -542,12 +543,13 @@ namespace SgqSystem.Services
 
                         if (result.Length > 50)
                         {
-                            motivoAtraso_Id = result[50];
+                            ParReason_Id = result[50];
+                            ParReasonType_Id = result[51];
                         }
 
-                        if (result.Length > 51)
+                        if (result.Length > 52)
                         {
-                            parDepartment_Id = result[51];
+                            parDepartment_Id = result[52];
                         }
 
                         //Gera o Cabeçalho do Level02
@@ -583,8 +585,9 @@ namespace SgqSystem.Services
                         level02HeaderJSon += ";" + endphaseevaluation; //[29]
                         level02HeaderJSon += ";" + reprocesso; //[30]
                         level02HeaderJSon += ";" + cluster; //[31]
-                        level02HeaderJSon += ";" + motivoAtraso_Id; //[32]
-                        level02HeaderJSon += ";" + parDepartment_Id; //[33]
+                        level02HeaderJSon += ";" + ParReason_Id; //[32]
+                        level02HeaderJSon += ";" + ParReasonType_Id; //[33]
+                        level02HeaderJSon += ";" + parDepartment_Id; //[34]
 
                         //level02HeaderJSon += ";" + alertaAtual;
 
@@ -829,7 +832,8 @@ namespace SgqSystem.Services
                     string avaliacaoultimoalerta = "0";
                     string monitoramentoultimoalerta = "0";
 
-                    string motivoAtraso_Id = null; ;
+                    string ParReason_Id = null;
+                    string ParReasonType_Id = null;
 
                     //using (var transacao = new TransactionScope())
                     //{
@@ -980,7 +984,8 @@ namespace SgqSystem.Services
 
                     if (arrayHeader.Length > 32)
                     {
-                        motivoAtraso_Id = arrayHeader[32];
+                        ParReason_Id = arrayHeader[32];
+                        ParReasonType_Id = arrayHeader[33];
                     }
 
                     if (arrayHeader.Length > 33)
@@ -993,9 +998,10 @@ namespace SgqSystem.Services
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
-                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult,
-                                                defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey, cluster, motivoAtraso_Id,
-                                                parDepartmentId);
+                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation,
+                                                avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult,
+                                                defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation,
+                                                hashKey, cluster, ParReason_Id, ParReasonType_Id, parDepartmentId);
 
                     if (arrayHeader.Length > 30)
                     {
@@ -1881,8 +1887,9 @@ namespace SgqSystem.Services
                                            string StartPhase, int Evaluation, int Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
                                            string Duplicated, string haveReaudit, int reauditLevel, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
-                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation,
-                                           string endphaseevaluation, string hashKey = null, string cluster = null, string motivoAtraso_Id = null, int? parDepartment_Id = null)
+                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3,
+                                           string startphaseevaluation, string endphaseevaluation, string hashKey = null, string cluster = null,
+                                           string ParReason_Id = null, string ParReasonType_Id = null, int? parDepartment_Id = null)
         {
 
             var buscaParLevel1HashKey = "SELECT TOP 1 Hashkey FROM ParLevel1 WHERE id = " + ConsolidationLevel1.ParLevel1_Id.ToString();
@@ -2017,11 +2024,11 @@ namespace SgqSystem.Services
                                 InsertCollectionLevel2XCluster(i, cluster);
                             }
 
-                            int motivoAtrasoId = 0;
-                            Int32.TryParse(motivoAtraso_Id, out motivoAtrasoId);
-                            if (motivoAtrasoId > 0)
+                            int ParReasonId = 0;
+                            Int32.TryParse(ParReason_Id, out ParReasonId);
+                            if (ParReasonId > 0)
                             {
-                                InsertCollectionLevel2XMotivoAtraso(i, motivoAtraso_Id);
+                                InsertCollectionLevel2XParReason(i, ParReason_Id, ParReasonType_Id);
                             }
 
                             if (parDepartment_Id > 0)
@@ -2281,25 +2288,26 @@ namespace SgqSystem.Services
             }
         }
 
-        public void InsertCollectionLevel2XMotivoAtraso(int CollectionLevel2_Id, string MotivoAtraso_Id)
+        public void InsertCollectionLevel2XParReason(int CollectionLevel2_Id, string ParReason_Id, string ParReasonType_Id)
         {
             var IsUpdate = false;
             var sql = "";
 
             using (var db = new SgqDbDevEntities())
             {
-                IsUpdate = db.CollectionLevel2XMotivoAtraso.Any(r => r.CollectionLevel2_Id == CollectionLevel2_Id);
+                IsUpdate = db.CollectionLevel2XParReason.Any(r => r.CollectionLevel2_Id == CollectionLevel2_Id);
             }
 
             if (IsUpdate)
             {
-                sql = $@"UPDATE CollectionLevel2XMotivoAtraso set [MotivoAtraso_Id] = { MotivoAtraso_Id }, [AlterDate] = GETDATE() 
+                sql = $@"UPDATE CollectionLevel2XParReason set [ParReason_Id] = { ParReason_Id }, 
+                    [ParReasonType_Id] = { ParReasonType_Id }, [AlterDate] = GETDATE() 
                 WHERE [CollectionLevel2_Id] = { CollectionLevel2_Id }";
             }
             else
             {
-                sql = $@"INSERT INTO CollectionLevel2XMotivoAtraso ([CollectionLevel2_Id], [MotivoAtraso_Id], [AddDate]) 
-                VALUES ('{ CollectionLevel2_Id }', { MotivoAtraso_Id } , GETDATE())";
+                sql = $@"INSERT INTO CollectionLevel2XParReason ([CollectionLevel2_Id], [ParReason_Id], [ParReasonType_Id], [AddDate]) 
+                VALUES ('{ CollectionLevel2_Id }', { ParReason_Id }, { ParReasonType_Id } , GETDATE())";
             }
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -4777,21 +4785,38 @@ function calcularSensorial(list){
                                         "</div>         " +
                                         "";
 
-            #region MotivoAtraso
+            #region ParReason
 
-            var listMotivo = dbEf.MotivoAtraso.Where(r => r.IsActive).ToList();
+            var listMotivo = dbEf.ParReason.Where(r => r.IsActive).ToList();
 
             StringBuilder selectMotivo = new StringBuilder();
 
             selectMotivo.Append(@"<select id=""slcMotivo"" class=""form-control"" style=""width: 600px;"">");
 
-            foreach (var item in listMotivo)
+            foreach (var item in listMotivo.Where(x => x.ParReasonType_Id == 1))
                 selectMotivo.Append($@"<option value=""{ item.Id }"">{item.Motivo}</option>");
 
             selectMotivo.Append(@"</select>");
 
-            string messageMotivoAtraso =
-                $@"<div class=""messageMotivoAtraso padding20"" style=""display:none;"">
+            string messageParReasonType1 =
+                $@"<div class=""messageParReason messageParReasonType1 padding20"" style=""display:none;"">
+                        <h1 class=""head"">{ CommonData.getResource("select_reason_out_of_date").Value.ToString() }</h1>
+                        <div class=""body font16""> <div class=""txtMessage""></div>
+                            { selectMotivo }
+                        <div class=""foot""><button id=""btnAtrasoOk"" class=""btn btn-lg marginRight30 btn-primary pull-right btnMessage""> OK </button></div>
+                    </div></div>";
+
+
+            selectMotivo = new StringBuilder();
+            selectMotivo.Append(@"<select id=""slcMotivo"" class=""form-control"" style=""width: 600px;"">");
+
+            foreach (var item in listMotivo.Where(x => x.ParReasonType_Id == 2))
+                selectMotivo.Append($@"<option value=""{ item.Id }"">{item.Motivo}</option>");
+
+            selectMotivo.Append(@"</select>");
+
+            string messageParReasonType2 =
+                $@"<div class=""messageParReason messageParReasonType2 padding20"" style=""display:none;"">
                         <h1 class=""head"">{ CommonData.getResource("select_reason_out_of_date").Value.ToString() }</h1>
                         <div class=""body font16""> <div class=""txtMessage""></div>
                             { selectMotivo }
@@ -4910,7 +4935,8 @@ function calcularSensorial(list){
                            modalPCC1B +
                            message +
                            messageConfirm +
-                           messageMotivoAtraso +
+                           messageParReasonType1 +
+                           messageParReasonType2 +
                            messageSelecionarLevel3PorDepartamento +
                            debug +
                            listaParLevel3Vinculado;
@@ -8854,6 +8880,40 @@ function calcularSensorial(list){
 
         #endregion
 
+        #region StatusColeta
+
+        [WebMethod]
+        public void InsertStatusColeta(ListaCollectionsLevel2XMotivosAtraso listaCollectionsLevel2XMotivosAtraso)
+        {
+            try
+            {
+                using (var conexaoEF = new SgqDbDevEntities())
+                {
+
+                    if (listaCollectionsLevel2XMotivosAtraso != null && listaCollectionsLevel2XMotivosAtraso.DadosIsValid())
+                    {
+                        foreach (var item in listaCollectionsLevel2XMotivosAtraso.CollectionsLevel2XMotivosAtraso)
+                        {
+                            if (item.IsValid())
+                            {
+                                conexaoEF.CollectionLevel2XParReason.Add(item);
+                            }
+                        }
+                    }
+
+                    conexaoEF.SaveChanges();
+                }
+            }
+            catch (Exception Ex)
+            {
+                throw;
+            }
+        }
+
+        
+
+        #endregion
+
         [WebMethod]
         public int GetLastSampleByCollectionLevel2(string ParLevel1_Id, string ParLevel2_Id, string UnitId, string EvaluationNumber, string Shift, DateTime CollectionDate)
         {
@@ -8867,6 +8927,7 @@ function calcularSensorial(list){
             {
                 return 0;
             }
+
 
             var lista1 = ParLevel1_Id.Replace(quebraProcesso, "|").Split('|');
             var lista2 = ParLevel2_Id.Replace(quebraProcesso, "|").Split('|');

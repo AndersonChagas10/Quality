@@ -2769,10 +2769,22 @@
   <data name="integration_id" xml:space="preserve">
     <value>Integration Id</value>
   </data>
+  <data name="reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="reason_type" xml:space="preserve">
+    <value>Reason Type</value>
+  </data>
+  <data name="duplicated_department" xml:space="preserve">
+    <value>The department name already exists.</value>
+  </data>
   <data name="active" xml:space="preserve">
     <value>Is Active?</value>
   </data>
   <data name="no_department" xml:space="preserve">
     <value>No department</value>
+  </data>
+  <data name="zero_represents_infinity" xml:space="preserve">
+    <value>The value 0 respresents a infinity value by evaluation and sample</value>
   </data>
 </root>

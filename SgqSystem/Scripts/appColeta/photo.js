@@ -177,7 +177,7 @@ function enviaFotos(listaFotos) {
     $.ajax({
         data: JSON.stringify(listaFotos),
         contentType: "application/json; charset=utf-8",
-        url: urlPreffix + '/api/ResultLevel3PhotosApi',
+        url: urlPreffix + '/api/ResultLevel3Photos',
         type: 'POST',
         success: function (data) {
             algumaFotoEstaSendoEnviada = false;

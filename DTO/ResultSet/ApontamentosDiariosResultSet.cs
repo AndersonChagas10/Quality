@@ -50,7 +50,10 @@ public class ApontamentosDiariosResultSet
     public int? ParLevel3InputType_Id { get; set; }
 
     public bool IsLate { get; set; }
-    public string MotivoAtraso { get; set; }
+    public string ParReason { get; set; }
+    public string ParReasonType { get; set; }
+
+    public bool HasPhoto { get; set; }
 
     public string Select(DataCarrierFormulario form)
     {
@@ -304,7 +307,9 @@ public class ApontamentosDiariosResultSet
 						 AND PL3V.IsActive = 1
 				 order by PL3V.id DESC,PL3V.parcompany_id DESC, PL3V.ParLevel2_Id DESC,PL3V.ParLevel1_Id DESC) as ParLevel3InputType_Id
 	            ,CASE WHEN MA.Motivo IS NULL THEN 0 ELSE 1 END AS IsLate
-	            ,ma.Motivo as MotivoAtraso
+	            ,CASE WHEN (SELECT TOP 1 Id FROM Result_Level3_Photos RL3P WHERE RL3P.Result_Level3_Id = R3.Id) IS NOT NULL THEN 1 ELSE 0 END AS HasPhoto
+	            ,ma.Motivo as ParReason
+	            ,PRT.Name as ParReasonType
                  FROM #CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     
                  ON UN.Id = c2.UnitId                  
@@ -329,10 +334,12 @@ public class ApontamentosDiariosResultSet
 				 ON C2XC.CollectionLevel2_Id = C2.Id
 				 LEFT JOIN ParCluster PC
 				 ON PC.Id = C2XC.ParCluster_Id
-                 LEFT JOIN CollectionLevel2XMotivoAtraso CL2MA
+                 LEFT JOIN CollectionLevel2XParReason CL2MA
                  ON CL2MA.CollectionLevel2_Id = C2.Id
-                 LEFT JOIN MotivoAtraso MA
-                 ON MA.Id = CL2MA.MotivoAtraso_Id
+                 LEFT JOIN ParReason MA
+                 ON MA.Id = CL2MA.ParReason_Id
+                 LEFT JOIN ParReasonType PRT
+                 ON PRT.Id = MA.ParReasonType_Id
                  WHERE 1=1 
                   
                   { sqlLevel3 } 

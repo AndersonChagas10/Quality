@@ -50,15 +50,18 @@
 
                             @Html.HiddenFor(r => r.paramsDto.parEvaluationDto.Id)
                             @Table.GerarColuna(@Html.TextBox("avaliacao", 0, htmlAttributes: new { @id = "avaliacao", @class = "form-control input-sm", type = "number", min = "0" })
-                                , @Html.Label(Resources.Resource.evaluation + " O valor 0 representa um valor ilimitado de Avaliações")
+                                , @Html.Label(Resources.Resource.evaluation)
                                 , Table.PosicaoLabel.top)
 
                             @Html.HiddenFor(r => r.paramsDto.parSampleDto.Id)
                             @Table.GerarColunaButton(@Html.TextBox("amostra", 0, htmlAttributes: new { @id = "amostra", @class = "form-control input-sm", type = "number", min = "0" })
-                                , @Html.Label(Resources.Resource.samples_per_evaluation +" O valor 0 representa um valor ilimitado de Avaliações")
+                                , @Html.Label(Resources.Resource.samples_per_evaluation)
                                 , Table.PosicaoLabel.top
                                 , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
 
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="color:red">@Resources.Resource.zero_represents_infinity</td>
                         </tr>
                     </tbody>
                 </table>

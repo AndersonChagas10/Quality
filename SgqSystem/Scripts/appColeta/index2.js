@@ -155,7 +155,7 @@ function getAPPOnLine() {
         , async: false //blocks window close
         , success: function (data, status) {
 
-            getMotivoAtraso();
+            getParReason();
 
             var Login = $(data).text();
             appendDevice($(Login), $('body'));
@@ -1035,15 +1035,15 @@ function pinga(url) {
     return resp;
 }
 
-var motivoAtraso = [];
-function getMotivoAtraso() {
+var ParReason = [];
+function getParReason() {
     $.ajax({
         type: 'GET'
-        , url: urlPreffix + '/api/MotivoAtraso/Get'
+        , url: urlPreffix + '/api/ParReason/Get'
         , contentType: 'application/json; charset=utf-8'
         , dataType: 'json'
         , success: function (data, status) {
-            motivoAtraso = data;
+            ParReason = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 

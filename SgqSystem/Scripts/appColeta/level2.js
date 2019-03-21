@@ -736,6 +736,7 @@ function updateDefLineL2(level1, level2) {
 }
 
 function atualizaCorAgendamento() {
+    ParReasonType_Id = null;
     setTimeout(function () {
         $('.level2[frequenciavalor]:visible').each(
             function (i, o) {
@@ -921,18 +922,21 @@ function atualizaCorAgendamento() {
 
                     $(o).find("[data-semaforo]").remove();
                     $(o).attr('data-motivo', false);
+                    $(o).attr('data-reasontype', 0);
 
                     if ($(o).attr('completed') != "completed") {
 
                         if (situacao.indexOf("4") >= 0) {
                             $(o).append("<div data-semaforo class='btn btn-danger pull-right'>&nbsp</div>");
-                            //$(o).attr('data-motivo', true);
+                            $(o).attr('data-reasontype', 2);
+                            $(o).attr('data-motivo', true);
                         } else if (situacao.indexOf("3") >= 0) {
                             $(o).append("<div data-semaforo class='btn btn-warning pull-right'>&nbsp</div>");
                         } else if (situacao.indexOf("2") >= 0) {
                             $(o).append("<div data-semaforo class='btn btn-success pull-right'>&nbsp</div>");
                         } else if (situacao.indexOf("1") >= 0) {
-                            //$(o).attr('data-motivo', true);
+                            $(o).attr('data-motivo', true);
+                            $(o).attr('data-reasontype', 1);
                             $(o).append("<div data-semaforo class='btn btn-default pull-right'>&nbsp</div>");
                         }
                     }
