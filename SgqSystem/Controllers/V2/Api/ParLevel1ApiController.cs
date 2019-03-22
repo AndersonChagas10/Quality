@@ -13,9 +13,7 @@ namespace SgqSystem.Controllers.V2.Api
     [RoutePrefix("api/ParLevel1Api")]
     public class ParLevel1ApiController : BaseApiController
     {
-        //private SgqDbDevEntities db = new SgqDbDevEntities();
 
-        // GET: api/ParLevel1Api
         [HttpGet]
         [Route("Get")]
         public IHttpActionResult GetParLevel1()
@@ -28,13 +26,13 @@ namespace SgqSystem.Controllers.V2.Api
                 parLevel1Selects.ParLevels1 = db.ParLevel1.ToList();
                 parLevel1Selects.ParClusters = db.ParCluster.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParHeaderFields = db.ParHeaderField.Where(x => x.IsActive).ToList();
+                parLevel1Selects.ParFieldTypes = db.ParFieldType.Where(x => x.IsActive).ToList();
+                parLevel1Selects.ParLevelDefinitons = db.ParLevelDefiniton.Where(x => x.IsActive).ToList();
             }
 
             return Ok(parLevel1Selects);
         }
 
-        // GET: api/ParLevel1Api/5
-        //[ResponseType(typeof(ParLevel1Result))]
         [HttpGet]
         [Route("Get/{id}")]
         public IHttpActionResult GetParLevel1(int id)
@@ -53,101 +51,169 @@ namespace SgqSystem.Controllers.V2.Api
                 }
 
                 parlevel1Result.Parlevel1 = parLevel1;
-                parlevel1Result.ParLevel1XCluster = db.ParLevel1XCluster.Where(x => x.ParLevel1_Id == parLevel1.Id && x.IsActive).ToList();
+                parlevel1Result.ParLevel1XClusters = db.ParLevel1XCluster.Where(x => x.ParLevel1_Id == parLevel1.Id && x.IsActive).ToList();
                 parlevel1Result.ParLevel1XHeaderFields = db.ParLevel1XHeaderField.Where(x => x.ParLevel1_Id == parLevel1.Id && x.IsActive).ToList();
+                parlevel1Result.ParHeaderFields = db.ParHeaderField.Where(x => x.IsActive && parlevel1Result.ParLevel1XHeaderFields.Select(xx => xx.ParHeaderField_Id).Contains(x.Id)).ToList();
             }
 
             return Ok(parlevel1Result);
         }
 
-        // PUT: api/ParLevel1Api/5
-        //[ResponseType(typeof(void))]
-        [HttpPut]
-        [Route("Put")]
-        public IHttpActionResult PutParLevel1(ParLevel1 parLevel1)
+        [HttpPost]
+        [Route("PostParLevel1")]
+        public IHttpActionResult PostParLevel1(ParLevel1Result parLevel1Result)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-
-            //if (id != parLevel1.Id)
-            //{
-            //    return BadRequest();
-            //}
-
-            using (SgqDbDevEntities db = new SgqDbDevEntities())
-            {
-
-                db.Entry(parLevel1).State = EntityState.Modified;
-
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    //if (!ParLevel1Exists(id))
-                    //{
-                    //    return NotFound();
-                    //}
-                    //else
-                    //{
-                    //    throw;
-                    //}
-                }
-            }
+            SaveOrUpdateParLevel1(parLevel1Result.Parlevel1);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/ParLevel1Api
-        //[ResponseType(typeof(ParLevel1))]
         [HttpPost]
-        [Route("Post")]
-        public IHttpActionResult PostParLevel1(ParLevel1 parLevel1)
+        [Route("PostParHeaderField")]
+        public IHttpActionResult PostParHeaderField(ParLevel1Result parLevel1Result)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            SaveOrUpdateParHeaderField(parLevel1Result.ParHeaderFields);
 
-            using (SgqDbDevEntities db = new SgqDbDevEntities())
-            {
-                db.ParLevel1.Add(parLevel1);
-                db.SaveChanges();
-            }
-
-            return CreatedAtRoute("DefaultApi", new { id = parLevel1.Id }, parLevel1);
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        //// DELETE: api/ParLevel1Api/5
-        //[ResponseType(typeof(ParLevel1))]
-        //public IHttpActionResult DeleteParLevel1(int id)
-        //{
-        //    ParLevel1 parLevel1 = db.ParLevel1.Find(id);
-        //    if (parLevel1 == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost]
+        [Route("PostParLevel1XHeaderField")]
+        public IHttpActionResult PostParLevel1XHeaderField(ParLevel1Result parLevel1Result)
+        {
+            SaveOrUpdateParLevel1XHeaderField(parLevel1Result.ParLevel1XHeaderFields, parLevel1Result.Parlevel1.Id);
 
-        //    db.ParLevel1.Remove(parLevel1);
-        //    db.SaveChanges();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
 
-        //    return Ok(parLevel1);
-        //}
+        [HttpPost]
+        [Route("PostParLevel1XCluster")]
+        public IHttpActionResult PostParLevel1XCluster(ParLevel1Result parLevel1Result)
+        {
+            SaveOrUpdateParLevel1XCluster(parLevel1Result.ParLevel1XClusters, parLevel1Result.Parlevel1.Id);
 
-        protected override void Dispose(bool disposing)
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        private bool SaveOrUpdateParLevel1(ParLevel1 parLevel1)
+        {
+            if (parLevel1.Id > 0)//Alter
+            {
+                using (SgqDbDevEntities db = new SgqDbDevEntities())
+                {
+
+                    db.Entry(parLevel1).State = EntityState.Modified;
+                    parLevel1.AlterDate = DateTime.Now;
+
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+                }
+            }
+            else //Insert
+            {
+                using (SgqDbDevEntities db = new SgqDbDevEntities())
+                {
+                    parLevel1.AddDate = DateTime.Now;
+
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool SaveOrUpdateParHeaderField(List<ParHeaderField> ParHeaderFields)
         {
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
-
-                if (disposing)
+                try
                 {
-                    db.Dispose();
+                    db.ParHeaderField.AddRange(ParHeaderFields.Where(x => x.Id <= 0));//add
+                    //Colocar o AddDate
+
+                    foreach (var parHeaderField in db.ParHeaderField.Where(x => x.Id > 0)) //update
+                    {
+                        db.Entry(parHeaderField).State = EntityState.Modified;
+                        parHeaderField.AlterDate = DateTime.Now;
+                    }
+
+                    db.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    return false;
                 }
 
-                base.Dispose(disposing);
+                return true;
+            }
+        }
+
+        private bool SaveOrUpdateParLevel1XHeaderField(List<ParLevel1XHeaderField> parLevel1XHeaderFielsdAdd, int parLevel_Id)
+        {
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    //Update todos para isActive = false
+                    var parLevel1XHeaderFields = db.ParLevel1XHeaderField.Where(x => x.ParLevel1_Id == parLevel_Id);
+                    foreach (var parLevel1XHeaderField in parLevel1XHeaderFields)
+                    {
+                        parLevel1XHeaderField.AlterDate = DateTime.Now;
+                        parLevel1XHeaderField.IsActive = false;
+                    }
+
+                    //Insere novos relacionamentos
+                    db.ParLevel1XHeaderField.AddRange(parLevel1XHeaderFielsdAdd);
+                }
+                catch (Exception)
+                {
+
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        private bool SaveOrUpdateParLevel1XCluster(List<ParLevel1XCluster> ParLevel1XClustersAdd, int parLevel_Id)
+        {
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    //Update todos para isActive = false
+                    var parLevel1XClusters = db.ParLevel1XCluster.Where(x => x.ParLevel1_Id == parLevel_Id);
+                    foreach (var parLevel1XHeaderField in parLevel1XClusters)
+                    {
+                        parLevel1XHeaderField.AlterDate = DateTime.Now;
+                        parLevel1XHeaderField.IsActive = false;
+                    }
+
+                    //Insere novos relacionamentos
+                    db.ParLevel1XCluster.AddRange(ParLevel1XClustersAdd);
+                }
+                catch (Exception)
+                {
+
+                    return false;
+                }
+
+                return true;
             }
         }
 
@@ -164,8 +230,8 @@ namespace SgqSystem.Controllers.V2.Api
         {
             public ParLevel1 Parlevel1 { get; set; }
             public List<ParLevel1XHeaderField> ParLevel1XHeaderFields { get; set; }
-            public List<ParLevel1XCluster> ParLevel1XCluster { get; set; }
-
+            public List<ParLevel1XCluster> ParLevel1XClusters { get; set; }
+            public List<ParHeaderField> ParHeaderFields { get; set; }
         }
 
         public class ParLevel1Selects
@@ -173,6 +239,8 @@ namespace SgqSystem.Controllers.V2.Api
             public List<ParLevel1> ParLevels1 { get; set; }
             public List<ParHeaderField> ParHeaderFields { get; set; }
             public List<ParCluster> ParClusters { get; set; }
+            public List<ParFieldType> ParFieldTypes { get; set; }
+            public List<ParLevelDefiniton> ParLevelDefinitons { get; set; }
         }
     }
 }
