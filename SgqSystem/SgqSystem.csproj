@@ -1952,6 +1952,19 @@
     <Content Include="Views\ParStructures\Index.cshtml" />
     <Content Include="Views\ParamsV2\Index.cshtml" />
     <Content Include="Views\ParamsV2\ParL1Geral.cshtml" />
+    <Content Include="Views\ParamsV2\ParL1Avancados.cshtml" />
+    <Content Include="Views\ParamsV2\ParL1Cabecalho.cshtml" />
+    <Content Include="Views\ParamsV2\ParL1Processo.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2Geral.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2Avancados.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2Avam.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2Cabecalho.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2Contador.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3Geral.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3Avancados.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3Avam.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3TipoDadoEntrada.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3VincularPeso.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
