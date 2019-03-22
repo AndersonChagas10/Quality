@@ -82,6 +82,9 @@ namespace SgqSystem
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
             }
 
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
+
             //DicionarioEstatico
             SetDicionarioEstatico();
 
@@ -91,6 +94,7 @@ namespace SgqSystem
         {
             GlobalConfig.Ambient = System.Configuration.ConfigurationManager.AppSettings["BuildEm"];
             GlobalConfig.Producao = System.Configuration.ConfigurationManager.AppSettings["Producao"] == "SIM";
+
         }
 
         /// <summary>
