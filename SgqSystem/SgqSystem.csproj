@@ -445,6 +445,8 @@
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
+    <Compile Include="Controllers\V2\Api\ParLevel2ApiController.cs" />
+    <Compile Include="Controllers\V2\Api\ParLevel3ApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParLevel1ApiController.cs" />
     <Compile Include="Controllers\V2\Params\ParamsV2Controller.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
