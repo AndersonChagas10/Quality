@@ -1,4 +1,40 @@
-﻿<div class="page-content-wrapper">
+﻿<style>
+    .tab-pane {
+        display: none;
+    }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+    .nav-b-0 {
+        margin-bottom: 0px;
+    }
+
+    .tab-content.border {
+        border-left: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-top: 0px;
+    }
+
+        .tab-content.border a {
+            font-size: 20px;
+            padding: 15px;
+        }
+
+    .tab-content h4 {
+        display: block;
+        background: #eee;
+        text-align: center;
+        margin: 0px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+</style>
+
+
+<div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
         <!-- BEGIN PAGE HEADER-->
@@ -28,5 +64,198 @@
         <!-- END PAGE BAR -->
 
         @Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")
+
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="nav nav-tabs nav-b-0">
+                    <li class="active col-sm-3">
+                        <a data-toggle="tab" href="#l1">
+                            Indicador (Level 1)
+                            <select class="input input-lg">
+                                <option>Selecione o indicador</option>
+                            </select>
+                        </a>
+                    </li>
+                    <li class="col-sm-3">
+                        <a data-toggle="tab" href="#l2">
+                            Monitoramento (Level 2)
+                            <select class="input input-lg">
+                                <option>Selecione o monitoramento</option>
+                            </select>
+                        </a>
+                    </li>
+                    <li class="col-sm-3">
+                        <a data-toggle="tab" href="#l3">
+                            Tarefa (Level 3)
+                            <select class="input input-lg">
+                                <option>Selecione a tarefa</option>
+                            </select>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content border">
+                    <div class="col-sm-12">
+                        <div id="l1" class="tab-pane fade in active">
+                            <h3 class="jumbotron text-center">Indicador XYZ</h3>
+                            <div class="col-xs-3">
+                                <!-- required for floating -->
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs tabs-left">
+                                    <li class="active">
+                                        <a href="#l1_geral" data-toggle="tab">
+                                            Informações gerais
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l1_avancados" data-toggle="tab">
+                                            Itens avançados
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l1_campocabecalho" data-toggle="tab">
+                                            Campos de cabeçalhos
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l1_processo" data-toggle="tab">
+                                            Processos
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-9">
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="l1_geral">
+                                        @Html.Partial("ParL1Geral")
+                                    </div>
+                                    <div class="tab-pane" id="l1_avancados">
+                                        <h4>Itens Avançados</h4>
+                                    </div>
+                                    <div class="tab-pane" id="l1_campocabecalho">
+                                        <h4>Campos de Cabeçalho</h4>
+                                    </div>
+                                    <div class="tab-pane" id="l1_processo">
+                                        <h4>Processos Ativos</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="l2" class="tab-pane fade">
+                            <h3 class="jumbotron text-center">Monitoramento XYZ</h3>
+                            <div class="col-xs-3">
+                                <!-- required for floating -->
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs tabs-left">
+                                    <li class="active">
+                                        <a href="#l2_geral" data-toggle="tab">
+                                            Informações gerais
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l2_avancados" data-toggle="tab">
+                                            Itens avançados
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l2_avam" data-toggle="tab">
+                                            Avaliação e Amostra
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l2_cabecalho" data-toggle="tab">
+                                            Cabeçalhos no monitoramento
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l2_contador" data-toggle="tab">
+                                            Contadores
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-9">
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="l2_geral">
+                                        <h4>Informações Gerais</h4>
+                                    </div>
+                                    <div class="tab-pane" id="l2_avancados">
+                                        <h4>Itens Avançados</h4>
+                                    </div>
+                                    <div class="tab-pane" id="l2_avam">
+                                        <h4>Avaliação e Amostra</h4>
+                                    </div>
+                                    <div class="tab-pane" id="l2_cabecalho">
+                                        <h4>Cabeçalhos no monitoramento</h4>
+                                    </div>
+                                    <div class="tab-pane" id="l2_contador">
+                                        <h4>Contadores</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="l3" class="tab-pane fade">
+                            <h3 class="jumbotron text-center">Tarefa XYZ</h3>
+                            <div class="col-xs-3">
+                                <!-- required for floating -->
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs tabs-left">
+                                    <li class="active">
+                                        <a href="#l3_geral" data-toggle="tab">
+                                            Informações gerais
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l3_avancados" data-toggle="tab">
+                                            Itens avançados
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l3_avam" data-toggle="tab">
+                                            Avaliação e Amostra
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l3_tipo_dado_entrada" data-toggle="tab">
+                                            Tipo dados de entrada
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l3_peso" data-toggle="tab">
+                                            Vincular Peso
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-9">
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="l3_geral">
+                                        <h4>Informações Gerais</h4>
+                                    </div>
+                                    <div class="tab-pane" id="l3_avancados">
+                                        <h4>Itens Avançados</h4>
+                                    </div>
+                                    <div class="tab-pane" id="l3_avam">
+                                        <h4>Avaliação e Amostra</h4>
+                                    </div>
+                                    <div class="tab-pane" id="l3_tipo_dado_entrada">
+                                        <h4>Tipo dados de entrada</h4>
+                                    </div>
+                                    <div class="tab-pane" id="l3_peso">
+                                        <h4>Vincular Peso</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+        </div>
     </div>
-</div>

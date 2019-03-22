@@ -1950,6 +1950,7 @@
     <Content Include="Views\ParStructures\Edit.cshtml" />
     <Content Include="Views\ParStructures\Index.cshtml" />
     <Content Include="Views\ParamsV2\Index.cshtml" />
+    <Content Include="Views\ParamsV2\ParL1Geral.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
