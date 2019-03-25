@@ -17,7 +17,7 @@ namespace SgqSystem.Controllers
         // GET: ParReasones
         public ActionResult Index()
         {
-            return View(db.ParReason.ToList());
+            return View(db.ParReason.Include(x=>x.ParReasonType).ToList());
         }
 
         // GET: ParReasones/Details/5
