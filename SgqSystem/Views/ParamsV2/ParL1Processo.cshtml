@@ -5,29 +5,96 @@
     <br />
     <div class="row">
 
-        <div class="col-sm-6">
+        <div class="col-sm-3">
 
             <div class="form-group">
-                <label for="selectL1Cluster">Cluster:</label>
+                <label for="selectL1Cluster">Processo:</label>
                 <select id="selectL1Cluster" class="input input-lg col-sm-12"></select>
             </div>
 
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-3">
 
             <div class="form-group">
-                <label for="name">Nome:</label>
+                <label for="name">Grupo:</label>
+                <select id="selectL1CriticalLevel" class="input input-lg col-sm-12"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-3">
+
+            <div class="form-group">
+                <label for="name">Data Vigente:</label>
                 <input type="text" class="form-control" id="name" name="name">
+            </div>
+
+        </div>
+
+        <div class="col-sm-2">
+
+            <div class="form-group">
+                <label for="name">Pontos:</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+
+        </div>
+
+        <div class="col-sm-1">
+
+            <div class="form-group">
+                <label></label>
+                <button class="form-control btn btn-primary">+</button>
             </div>
 
         </div>
 
         <div class="col-sm-12">
 
-            <button class="btn btn-primary pull-right btn-lg btn-block">Salvar</button>
+            <table id="tableParL1Processo" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-sm-3">
+                            Nome
+                        </th>
+                        <th class="col-sm-3">
+                            Grupo
+                        </th>
+                        <th class="col-sm-3">
+                            Data Vigencia
+                        </th>
+                        <th class="col-sm-2">
+                            Pontos
+                        </th>
+                        <th class="col-sm-1">
+                            
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
 
         </div>
     </div>
 
 </form>
+
+<script>
+    var parL1Processo = {
+        load: function (parLevel1XCluster) {
+
+            $('table#tableParL1Processo tbody').html('');
+            $(parLevel1XCluster).each(function (i, o) {
+                var html = '<tr>';
+                html += '<td>' + o.ParCluster.Name + '</td>';
+                html += '<td>' + o.ParCriticalLevel.Name + '</td>';
+                html += '<td>' + o.EffectiveDate + '</td>';
+                html += '<td>' + o.Points + '</td>';
+                html += '<td>' + o.Points + '</td>';
+                html += '</tr>';
+                $('table#tableParL1Processo tbody').append(html);
+            });
+        }
+    };
+</script>

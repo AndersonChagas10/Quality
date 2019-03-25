@@ -404,6 +404,8 @@
                 success: function (data) {
                     console.table(data);
                     preencheCampos('l1', '', data.Parlevel1)
+                    debugger
+                    parL1Processo.load(data.Parlevel1.ParLevel1XCluster);
                 },
                 error: function (request, error) {
                     alert("Request: " + JSON.stringify(request));
@@ -472,9 +474,10 @@
             contentType: "application/json",
             success: function (data) {
 
-                preencheSelect('selectL1Cluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster', setObjToSend);
-                preencheSelect('selectParConsolidation', 'Name', 'Id', data.ParConsolidationTypes, 'Selecione o tipo de Consolidação', setObjToSend);
-                preencheSelect('selectParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência', setObjToSend);
+                preencheSelect('selectL1CriticalLevel', 'Name', 'Id', data.ParCriticalLevels, 'Selecione o Grupo');
+                preencheSelect('selectL1Cluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
+                preencheSelect('selectParConsolidation', 'Name', 'Id', data.ParConsolidationTypes, 'Selecione o tipo de Consolidação');
+                preencheSelect('selectParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
                 preencheSelect('selectParScoreType', 'Name', 'Id', data.ParScoreTypes, 'Selecione o tipo de Score');
 
             },
@@ -482,12 +485,6 @@
                 alert("Request: " + JSON.stringify(request));
             }
         });
-
-    }
-
-    let setObjToSend = function () {
-
-        objToSend[$(this).prop('id')] = $(this).val();
 
     }
 
