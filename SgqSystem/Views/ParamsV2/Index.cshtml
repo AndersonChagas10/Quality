@@ -373,8 +373,8 @@
 
         if (element.is('input')) {
 
-            if (element.attr('type') == "checkbox") {
-                element.attr('checked', value);
+            if (element.prop('type') == "checkbox") {
+                element.prop('checked', value);
             } else {
                 element.val(value);
             }
@@ -472,9 +472,9 @@
             contentType: "application/json",
             success: function (data) {
 
-                preencheSelect('selectL1Cluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster', setObjToSend);
-                preencheSelect('selectParConsolidation', 'Name', 'Id', data.ParConsolidationTypes, 'Selecione o tipo de Consolidação', setObjToSend);
-                preencheSelect('selectParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência', setObjToSend);
+                preencheSelect('selectL1Cluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
+                preencheSelect('selectParConsolidation', 'Name', 'Id', data.ParConsolidationTypes, 'Selecione o tipo de Consolidação');
+                preencheSelect('selectParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
                 preencheSelect('selectParScoreType', 'Name', 'Id', data.ParScoreTypes, 'Selecione o tipo de Score');
 
             },
@@ -482,12 +482,6 @@
                 alert("Request: " + JSON.stringify(request));
             }
         });
-
-    }
-
-    let setObjToSend = function () {
-
-        objToSend[$(this).prop('id')] = $(this).val();
 
     }
 
@@ -514,14 +508,15 @@
         switch (saveLevel) {
 
             case 1:
-
-                formdata = $('#ParL1Geral').serializeArray().concat($('#ParL1Avancados').serializeArray());
+                formdata = $('#ParL1Geral').serializeFormToObjetc();
                 saveUrl = '@Url.Action("PostParLevel1", "api/ParLevel1Api")';
-
                 break;
 
             case 2:
+                formdata = $('#ParL1Avancados').serializeFormToObjetc();
+                saveUrl = '@Url.Action("PostParLevel1Avancados", "api/ParLevel1Api")';    
                 break;
+
             case 3:
                 break;
             case 4:
@@ -532,21 +527,18 @@
             default:
         }
 
-        let data = {};
-
-        $(formdata).each(function (index, obj) {
-            data[obj.name] = obj.value;
-        });
-
+        
         //fazer metodo para chamar o ajax para salvar
         $.ajax({
             url: saveUrl,
             type: 'POST',
             dataType: "json",
-            data: JSON.stringify(data),
+            data: JSON.stringify(formdata),
             contentType: "application/json",
             success: function (data) {
                 openMessageModal("Feito", "Dados Salvos");
+                $('#selectL1').trigger('change');
+
             },
             error: function (request, error) {
                 alert("Request: " + JSON.stringify(request));

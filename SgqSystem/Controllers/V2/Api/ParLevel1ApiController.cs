@@ -89,6 +89,16 @@ namespace SgqSystem.Controllers.V2.Api
         }
 
         [HttpPost]
+        [Route("PostParLevel1Avancados")]
+        public IHttpActionResult PostParLevel1Avancados(ParLevel1 parLevel1)
+        {
+            SaveOrUpdateParLevel1(parLevel1, true);
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+        
+
+        [HttpPost]
         [Route("PostParHeaderField")]
         public IHttpActionResult PostParHeaderField(ParLevel1Result parLevel1Result)
         {
@@ -115,7 +125,7 @@ namespace SgqSystem.Controllers.V2.Api
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        private bool SaveOrUpdateParLevel1(ParLevel1 parLevel1)
+        private bool SaveOrUpdateParLevel1(ParLevel1 parLevel1, bool isAvancado = false)
         {
             if (parLevel1.Id > 0)//Alter
             {
@@ -125,17 +135,22 @@ namespace SgqSystem.Controllers.V2.Api
 
                     var parLevel1Old = db.ParLevel1.Find(parLevel1.Id);
 
-                    parLevel1Old.Name = parLevel1.Name;
-                    parLevel1Old.Description = parLevel1.Description;
-                    parLevel1Old.ParConsolidationType_Id = parLevel1.ParConsolidationType_Id;
-                    parLevel1Old.ParFrequency_Id = parLevel1.ParFrequency_Id;
-                    parLevel1Old.ParScoreType_Id = parLevel1.ParScoreType_Id;
-                    parLevel1Old.IsLimitedEvaluetionNumber = parLevel1.IsLimitedEvaluetionNumber;
-                    parLevel1Old.HasTakePhoto = parLevel1.HasTakePhoto;
-                    parLevel1Old.IsActive = parLevel1.IsActive;
-                    parLevel1Old.AlterDate = DateTime.Now;
+                    if (isAvancado)
+                    {
+                        parLevel1Old.IsLimitedEvaluetionNumber = parLevel1.IsLimitedEvaluetionNumber;
+                        parLevel1Old.HasTakePhoto = parLevel1.HasTakePhoto;
+                        parLevel1Old.IsActive = parLevel1.IsActive;
+                    }
+                    else
+                    {
+                        parLevel1Old.Name = parLevel1.Name;
+                        parLevel1Old.Description = parLevel1.Description;
+                        parLevel1Old.ParConsolidationType_Id = parLevel1.ParConsolidationType_Id;
+                        parLevel1Old.ParFrequency_Id = parLevel1.ParFrequency_Id;
+                        parLevel1Old.ParScoreType_Id = parLevel1.ParScoreType_Id;
+                    }
 
-                    //db.Entry(parLevel1Old).State = EntityState.Modified;
+                    parLevel1Old.AlterDate = DateTime.Now;
                     
                     try
                     {
@@ -152,6 +167,8 @@ namespace SgqSystem.Controllers.V2.Api
                 using (SgqDbDevEntities db = new SgqDbDevEntities())
                 {
                     parLevel1.AddDate = DateTime.Now;
+
+                    db.ParLevel1.Add(parLevel1);
 
                     try
                     {
