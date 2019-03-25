@@ -38,6 +38,8 @@ namespace SgqSystem.Controllers.V2.Api
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
+                
+                parLevel1Selects.ParCriticalLevels = db.ParCriticalLevel.Where(x => x.IsActive == true).ToList();
                 parLevel1Selects.ParClusters = db.ParCluster.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParConsolidationTypes = db.ParConsolidationType.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParScoreTypes = db.ParScoreType.Where(x => x.IsActive).ToList();
@@ -70,7 +72,10 @@ namespace SgqSystem.Controllers.V2.Api
                 }
 
                 parlevel1Result.Parlevel1 = parLevel1;
-                parlevel1Result.ParLevel1XClusters = db.ParLevel1XCluster.Where(x => x.ParLevel1_Id == parLevel1.Id && x.IsActive).ToList();
+                parlevel1Result.ParLevel1XClusters = db.ParLevel1XCluster
+                    .Include(x=>x.ParCluster)
+                    .Include(x=>x.ParCriticalLevel)
+                    .Where(x => x.ParLevel1_Id == parLevel1.Id && x.IsActive).ToList();
                 parlevel1Result.ParLevel1XHeaderFields = db.ParLevel1XHeaderField.Where(x => x.ParLevel1_Id == parLevel1.Id && x.IsActive).ToList();
                 var headerFieldsId = parlevel1Result.ParLevel1XHeaderFields.Select(xx => xx.ParHeaderField_Id).ToList();
                 parlevel1Result.ParHeaderFields = db.ParHeaderField.Where(x => x.IsActive && headerFieldsId.Contains(x.Id)).ToList();
@@ -288,6 +293,7 @@ namespace SgqSystem.Controllers.V2.Api
             public List<ParLevel1> ParLevels1 { get; set; }
             public List<ParHeaderField> ParHeaderFields { get; set; }
             public List<ParCluster> ParClusters { get; set; }
+            public List<ParCriticalLevel> ParCriticalLevels { get; set; }
             public List<ParFieldType> ParFieldTypes { get; set; }
             public List<ParLevelDefiniton> ParLevelDefinitons { get; set; }
             public List<ParConsolidationType> ParConsolidationTypes { get; set; }
