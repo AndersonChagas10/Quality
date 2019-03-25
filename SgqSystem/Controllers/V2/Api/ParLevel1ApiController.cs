@@ -23,11 +23,30 @@ namespace SgqSystem.Controllers.V2.Api
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
+                //parLevel1Selects.ParLevels1 = db.Database.SqlQuery<ParLevel1ViewModel>("Select * from ParLevel1").ToList();
                 parLevel1Selects.ParLevels1 = db.ParLevel1.ToList();
+            }
+
+            return Ok(parLevel1Selects);
+        }
+
+        [Route("GetSelectsL1")]
+        public IHttpActionResult GetSelectsParLevel1()
+        {
+            ParLevel1Selects parLevel1Selects = new ParLevel1Selects();
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
                 parLevel1Selects.ParClusters = db.ParCluster.Where(x => x.IsActive).ToList();
-                parLevel1Selects.ParHeaderFields = db.ParHeaderField.Where(x => x.IsActive).ToList();
-                parLevel1Selects.ParFieldTypes = db.ParFieldType.Where(x => x.IsActive).ToList();
-                parLevel1Selects.ParLevelDefinitons = db.ParLevelDefiniton.Where(x => x.IsActive).ToList();
+                parLevel1Selects.ParConsolidationTypes = db.ParConsolidationType.Where(x => x.IsActive).ToList();
+                parLevel1Selects.ParScoreTypes = db.ParScoreType.Where(x => x.IsActive).ToList();
+                parLevel1Selects.ParFrequencies = db.ParFrequency.Where(x => x.IsActive).ToList();
+                //Tabelas
+                //parLevel1Selects.ParHeaderFields = db.ParHeaderField.Where(x => x.IsActive).ToList();
+                //parLevel1Selects.ParFieldTypes = db.ParFieldType.Where(x => x.IsActive).ToList();
+                //parLevel1Selects.ParLevelDefinitons = db.ParLevelDefiniton.Where(x => x.IsActive).ToList();
+
             }
 
             return Ok(parLevel1Selects);
@@ -53,7 +72,8 @@ namespace SgqSystem.Controllers.V2.Api
                 parlevel1Result.Parlevel1 = parLevel1;
                 parlevel1Result.ParLevel1XClusters = db.ParLevel1XCluster.Where(x => x.ParLevel1_Id == parLevel1.Id && x.IsActive).ToList();
                 parlevel1Result.ParLevel1XHeaderFields = db.ParLevel1XHeaderField.Where(x => x.ParLevel1_Id == parLevel1.Id && x.IsActive).ToList();
-                parlevel1Result.ParHeaderFields = db.ParHeaderField.Where(x => x.IsActive && parlevel1Result.ParLevel1XHeaderFields.Select(xx => xx.ParHeaderField_Id).Contains(x.Id)).ToList();
+                var headerFieldsId = parlevel1Result.ParLevel1XHeaderFields.Select(xx => xx.ParHeaderField_Id).ToList();
+                parlevel1Result.ParHeaderFields = db.ParHeaderField.Where(x => x.IsActive && headerFieldsId.Contains(x.Id)).ToList();
             }
 
             return Ok(parlevel1Result);
@@ -61,9 +81,9 @@ namespace SgqSystem.Controllers.V2.Api
 
         [HttpPost]
         [Route("PostParLevel1")]
-        public IHttpActionResult PostParLevel1(ParLevel1Result parLevel1Result)
+        public IHttpActionResult PostParLevel1(ParLevel1 parLevel1)
         {
-            SaveOrUpdateParLevel1(parLevel1Result.Parlevel1);
+            SaveOrUpdateParLevel1(parLevel1);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -101,10 +121,22 @@ namespace SgqSystem.Controllers.V2.Api
             {
                 using (SgqDbDevEntities db = new SgqDbDevEntities())
                 {
+                    db.Configuration.LazyLoadingEnabled = false;
 
-                    db.Entry(parLevel1).State = EntityState.Modified;
-                    parLevel1.AlterDate = DateTime.Now;
+                    var parLevel1Old = db.ParLevel1.Find(parLevel1.Id);
 
+                    parLevel1Old.Name = parLevel1.Name;
+                    parLevel1Old.Description = parLevel1.Description;
+                    parLevel1Old.ParConsolidationType_Id = parLevel1.ParConsolidationType_Id;
+                    parLevel1Old.ParFrequency_Id = parLevel1.ParFrequency_Id;
+                    parLevel1Old.ParScoreType_Id = parLevel1.ParScoreType_Id;
+                    parLevel1Old.IsLimitedEvaluetionNumber = parLevel1.IsLimitedEvaluetionNumber;
+                    parLevel1Old.HasTakePhoto = parLevel1.HasTakePhoto;
+                    parLevel1Old.IsActive = parLevel1.IsActive;
+                    parLevel1Old.AlterDate = DateTime.Now;
+
+                    //db.Entry(parLevel1Old).State = EntityState.Modified;
+                    
                     try
                     {
                         db.SaveChanges();
@@ -241,6 +273,22 @@ namespace SgqSystem.Controllers.V2.Api
             public List<ParCluster> ParClusters { get; set; }
             public List<ParFieldType> ParFieldTypes { get; set; }
             public List<ParLevelDefiniton> ParLevelDefinitons { get; set; }
+            public List<ParConsolidationType> ParConsolidationTypes { get; set; }
+            public List<ParFrequency> ParFrequencies { get; set; }
+            public List<ParScoreType> ParScoreTypes { get; set; }
+        }
+
+        public class ParLevel1ViewModel
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public int ParConsolidationType_Id { get; set; }
+            public int ParFrequency_Id { get; set; }
+            public int? ParScoreType_Id { get; set; }
+            public bool IsLimitedEvaluetionNumber { get; set; }
+            public bool HasTakePhoto { get; set; }
+            public bool IsActive { get; set; }
         }
     }
 }

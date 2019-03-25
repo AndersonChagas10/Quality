@@ -102,15 +102,11 @@
 
 
 <div class="page-content-wrapper">
-    <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
-        <!-- BEGIN PAGE HEADER-->
-        <!-- BEGIN PAGE TITLE-->
         <h1 class="page-title">
             @Resources.Resource.customization
         </h1>
-        <!-- END PAGE TITLE-->
-        <!-- BEGIN PAGE BAR -->
+
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
@@ -121,14 +117,7 @@
                     <span>@Resources.Resource.customization</span>
                 </li>
             </ul>
-            @*<div class="page-toolbar">
-                    <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                    </div>
-                </div>*@
         </div>
-        <!-- END PAGE BAR -->
 
         @Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")
 
@@ -160,8 +149,6 @@
                         <div id="l1" class="tab-pane fade in active">
                             <h3 class="jumbotron text-center" data-name="Name"></h3>
                             <div class="col-xs-3">
-                                <!-- required for floating -->
-                                <!-- Nav tabs -->
                                 <ul class="nav nav-tabs tabs-left">
                                     <li class="active">
                                         <a href="#l1_geral" data-toggle="tab">
@@ -186,8 +173,7 @@
                                 </ul>
                             </div>
                             <div class="col-xs-9">
-                                <!-- Tab panes -->
-                                <div class="tab-content">
+                                <div class="tab-content">                                   
                                     <div class="tab-pane active" id="l1_geral">
                                         @Html.Partial("ParL1Geral")
                                     </div>
@@ -207,8 +193,6 @@
                         <div id="l2" class="tab-pane fade">
                             <h3 class="jumbotron text-center" data-name="Name"></h3>
                             <div class="col-xs-3">
-                                <!-- required for floating -->
-                                <!-- Nav tabs -->
                                 <ul class="nav nav-tabs tabs-left">
                                     <li class="active">
                                         <a href="#l2_geral" data-toggle="tab">
@@ -238,7 +222,6 @@
                                 </ul>
                             </div>
                             <div class="col-xs-9">
-                                <!-- Tab panes -->
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="l2_geral">
                                         @Html.Partial("ParL2Geral")
@@ -262,8 +245,6 @@
                         <div id="l3" class="tab-pane fade">
                             <h3 class="jumbotron text-center" data-name="Name"></h3>
                             <div class="col-xs-3">
-                                <!-- required for floating -->
-                                <!-- Nav tabs -->
                                 <ul class="nav nav-tabs tabs-left">
                                     <li class="active">
                                         <a href="#l3_geral" data-toggle="tab">
@@ -293,7 +274,6 @@
                                 </ul>
                             </div>
                             <div class="col-xs-9">
-                                <!-- Tab panes -->
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="l3_geral">
                                         @Html.Partial("ParL3Geral")
@@ -317,108 +297,104 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
 <script>
+
+    let objToSend = {};
+
+    let setSelectLevel1 = function (data) {
+        preencheSelect('selectL1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
+        getSelectsL1();
+    }
+
+    let setSelectLevel2 = function (data) {
+        preencheSelect('selectL2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento', preencheL2);
+        //getSelectsL2();
+    }
+
+    let setSelectLevel3 = function (data) {
+        preencheSelect('selectL3', 'Name', 'Id', data.ParLevels3, 'Selecione o Tarefa', preencheL3);
+        //getSelectsL3();
+    }
+
     $(document).ready(function () {
-        $.ajax({
-            url: '@Url.Action("Get", "api/ParLevel1Api")',
-            type: 'Get',
-            dataType: "json",
-            data: {},
-            contentType: "application/json",
-            success: function (data) {
-                //Preenche indicador
-                preencheSelect('selectL1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
-                preencheSelect('selectL1Cluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
-            },
-            error: function (request, error) {
-                alert("Request: " + JSON.stringify(request));
-            }
-        });
 
-        $.ajax({
-            url: '@Url.Action("Get", "api/ParLevel2Api")',
-            type: 'Get',
-            dataType: "json",
-            data: {},
-            contentType: "application/json",
-            success: function (data) {
-                //Preenche monitoramento
-                preencheSelect('selectL2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento', preencheL2);
-            },
-            error: function (request, error) {
-                alert("Request: " + JSON.stringify(request));
-            }
-        });
+        getGenericAjax('@Url.Action("Get", "api/ParLevel1Api")', 'Get', setSelectLevel1);
 
-        $.ajax({
-            url: '@Url.Action("Get", "api/ParLevel3Api")',
-            type: 'Get',
-            dataType: "json",
-            data: {},
-            contentType: "application/json",
-            success: function (data) {
-                //Preenche tarefa
-                preencheSelect('selectL3', 'Name', 'Id', data.ParLevels3, 'Selecione o Tarefa', preencheL3);
-            },
-            error: function (request, error) {
-                alert("Request: " + JSON.stringify(request));
-            }
-        });
+        getGenericAjax('@Url.Action("Get", "api/ParLevel2Api")', 'Get', setSelectLevel2);
+
+        getGenericAjax('@Url.Action("Get", "api/ParLevel3Api")', 'Get', setSelectLevel3);
+
     });
 
-    function preencheSelect(id, name, value, list, defaultText, callBack) {
-        $(`select#${id}`).empty();
+    let preencheSelect = function (id, name, value, list, defaultText, callBack) {
 
+        $(`select#${id}`).empty();
         $(`select#${id}`).append(`<option value="0">${defaultText}</option>`);
+
         $(list).each(function (i, o) {
             $(`select#${id}`).append(`<option value="${o[value]}">${o[name]}</option>`);
         });
 
         if (callBack)
             $(`select#${id}`).off('change').on('change', callBack);
+
         $(`select#${id}`).select2();
     }
 
-    function preencheCampos(div_id, prefix, obj) {
+    let preencheCampos = function (div_id, prefix, obj) {
+
         $(Object.keys(obj)).each(function (i, o) {
+
             var element = $(`#${div_id} [name="${prefix}${o}"]`);
             preencheValores(element, obj[o]);
             element = $(`#${div_id} [data-name="${prefix}${o}"]`);
             preencheValores(element, obj[o]);
+
         });
+
     }
 
-    function apagaCampos(div_id) {
+    let apagaCampos = function (div_id) {
+
         $(`#${div_id} input`).val('');
         $(`#${div_id} select`).val(0);
         $(`#${div_id} select`).trigger('change');
         $(`#${div_id} textarea`).html('');
         $(`#${div_id} input[type='checkbox']`).removeAttr('checked');
         $(`#${div_id} [data-name]`).text('');
+
     }
 
-    function preencheValores(element, value) {
+    let preencheValores = function (element, value) {
+
         if (element.is('input')) {
+
             if (element.attr('type') == "checkbox") {
                 element.attr('checked', value);
             } else {
                 element.val(value);
             }
+
         } else if (element.is('select')) {
+
             element.val(value);
             element.trigger('change');
+
         } else {
+
             element.text(value);
+
         }
     }
 
-    function preencheL1(e) {
+    let preencheL1 = function (e) {
+
         if (parseInt($(this).val()) > 0) {
+
             $.ajax({
                 url: `@Url.Action("Get", "api/ParLevel1Api")/${$(this).val()}`,
                 type: 'Get',
@@ -433,13 +409,16 @@
                     alert("Request: " + JSON.stringify(request));
                 }
             });
+
         } else {
             apagaCampos('l1');
         }
     }
 
-    function preencheL2(e) {
+    let preencheL2 = function (e) {
+
         if (parseInt($(this).val()) > 0) {
+
             $.ajax({
                 url: `@Url.Action("Get", "api/ParLevel2Api")/${$(this).val()}`,
                 type: 'Get',
@@ -454,13 +433,16 @@
                     alert("Request: " + JSON.stringify(request));
                 }
             });
+
         } else {
             apagaCampos('l2');
         }
     }
 
-    function preencheL3(e) {
+    let preencheL3 = function (e) {
+
         if (parseInt($(this).val()) > 0) {
+
             $.ajax({
                 url: `@Url.Action("Get", "api/ParLevel3Api")/${$(this).val()}`,
                 type: 'Get',
@@ -468,17 +450,108 @@
                 data: {},
                 contentType: "application/json",
                 success: function (data) {
-                    console.table(data);
                     preencheCampos('l3', '', data.Parlevel3)
                 },
                 error: function (request, error) {
                     alert("Request: " + JSON.stringify(request));
                 }
             });
+
         } else {
             apagaCampos('l3');
         }
     }
 
-    //http://localhost/SgqSystem/api/ParLevel1Api/Get
+    let getSelectsL1 = function () {
+
+        $.ajax({
+            url: '@Url.Action("GetSelectsL1", "api/ParLevel1Api")',
+            type: 'Get',
+            dataType: "json",
+            data: {},
+            contentType: "application/json",
+            success: function (data) {
+
+                preencheSelect('selectL1Cluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster', setObjToSend);
+                preencheSelect('selectParConsolidation', 'Name', 'Id', data.ParConsolidationTypes, 'Selecione o tipo de Consolidação', setObjToSend);
+                preencheSelect('selectParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência', setObjToSend);
+                preencheSelect('selectParScoreType', 'Name', 'Id', data.ParScoreTypes, 'Selecione o tipo de Score');
+
+            },
+            error: function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+
+    }
+
+    let setObjToSend = function () {
+
+        objToSend[$(this).prop('id')] = $(this).val();
+
+    }
+
+    let getGenericAjax = function (url, type, callback) {
+
+        $.ajax({
+            url: url,
+            type: type,
+            dataType: "json",
+            data: {},
+            contentType: "application/json",
+            success: callback,
+            error: function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+    }
+
+    let save = function (saveLevel) {
+
+        var saveUrl = "";
+        var formdata = {};
+
+        switch (saveLevel) {
+
+            case 1:
+
+                formdata = $('#ParL1Geral').serializeArray().concat($('#ParL1Avancados').serializeArray());
+                saveUrl = '@Url.Action("PostParLevel1", "api/ParLevel1Api")';
+
+                break;
+
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+
+            default:
+        }
+
+        let data = {};
+
+        $(formdata).each(function (index, obj) {
+            data[obj.name] = obj.value;
+        });
+
+        //fazer metodo para chamar o ajax para salvar
+        $.ajax({
+            url: saveUrl,
+            type: 'POST',
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function (data) {
+                openMessageModal("Feito", "Dados Salvos");
+            },
+            error: function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+    }
+
 </script>

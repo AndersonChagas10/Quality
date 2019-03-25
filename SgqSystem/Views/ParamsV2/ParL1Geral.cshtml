@@ -4,10 +4,12 @@
 
     <br />
     <div class="row">
+
         <div class="col-sm-6">
 
             <div class="form-group">
-                <label for="Name">Nome:</label>
+                <label>Nome:</label>
+                <input type="text" class="form-control" id="Id" name="Id" style="display:none">
                 <input type="text" class="form-control" id="Name" name="Name">
             </div>
 
@@ -16,7 +18,7 @@
         <div class="col-sm-6">
 
             <div class="form-group">
-                <label for="Description">Descrição:</label>
+                <label>Descrição:</label>
                 <input type="text" class="form-control" id="Description" name="Description">
             </div>
 
@@ -25,8 +27,16 @@
         <div class="col-sm-6">
 
             <div class="form-group">
-                <label for="ParConsolidationType_Id">Tipo de consolidação:</label>
-                <input type="text" class="form-control" id="ParConsolidationType_Id" name="ParConsolidationType_Id">
+                <label>Tipo de consolidação:</label>
+                <select class="form-control" id="selectParConsolidation" name="ParConsolidationType_Id"></select>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label>Frequencia:</label>
+                <select class="form-control" id="selectParFrequency" name="ParFrequency_Id"></select>
             </div>
 
         </div>
@@ -34,24 +44,15 @@
         <div class="col-sm-6">
 
             <div class="form-group">
-                <label for="ParFrequency_Id">Frequencia:</label>
-                <input type="text" class="form-control" id="ParFrequency_Id" name="ParFrequency_Id">
-            </div>
-
-        </div>
-
-        <div class="col-sm-6">
-
-            <div class="form-group">
-                <label for="ParScoreType">Tipo scorecard:</label>
-                <input type="text" class="form-control" id="ParScoreType" name="ParScoreType">
+                <label>Tipo scorecard:</label>
+                <select class="form-control" id="selectParScoreType" name="ParScoreType_Id"></select>
             </div>
 
         </div>
 
         <div class="col-sm-12">
 
-            <button class="btn btn-primary pull-right btn-lg btn-block">Salvar</button>
+            <button class="btn btn-primary pull-right btn-lg btn-block" onclick="save(1);">Salvar</button>
 
         </div>
     </div>
