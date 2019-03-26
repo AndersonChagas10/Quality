@@ -32,6 +32,19 @@
         padding-top: 20px;
         padding-bottom: 20px;
     }
+
+    .isDisabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+        .isDisabled > a {
+            color: currentColor;
+            display: inline-block; /* For IE11/ MS Edge bug */
+            pointer-events: none;
+            text-decoration: none;
+        }
+
 </style>
 
 <style>
@@ -151,22 +164,22 @@
                             <div class="col-xs-3">
                                 <ul class="nav nav-tabs tabs-left">
                                     <li class="active">
-                                        <a href="#l1_geral" data-toggle="tab">
+                                        <a href="#l1_geral" data-toggle="tab" id="informacoesGerais">
                                             Informações gerais
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#l1_avancados" data-toggle="tab">
+                                        <a href="#l1_avancados" data-toggle="tab" id="itensAvancados">
                                             Itens avançados
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#l1_campocabecalho" data-toggle="tab">
+                                        <a href="#l1_campocabecalho" data-toggle="tab" id="camposCabecalhos">
                                             Campos de cabeçalhos
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#l1_processo" data-toggle="tab">
+                                        <a href="#l1_processo" data-toggle="tab" id="processos">
                                             Processos
                                         </a>
                                     </li>
@@ -328,6 +341,8 @@
 
         getGenericAjax('@Url.Action("Get", "api/ParLevel3Api")', 'Get', setSelectLevel3);
 
+        verifyItensParLevel1();
+
     });
 
     let preencheSelect = function (id, name, value, list, defaultText, callBack) {
@@ -387,7 +402,6 @@
         } else {
 
             element.text(value);
-
         }
     }
 
@@ -396,6 +410,7 @@
         if (parseInt($(this).val()) > 0) {
 
             $.ajax({
+
                 url: `@Url.Action("Get", "api/ParLevel1Api")/${$(this).val()}`,
                 type: 'Get',
                 dataType: "json",
@@ -403,17 +418,19 @@
                 contentType: "application/json",
                 success: function (data) {
                     console.table(data);
-                    preencheCampos('l1', '', data.Parlevel1)
-                    debugger
+                    preencheCampos('l1', '', data.Parlevel1)                    
                     parL1Processo.load(data.Parlevel1.ParLevel1XCluster);
+                    verifyItensParLevel1();
                 },
                 error: function (request, error) {
                     alert("Request: " + JSON.stringify(request));
                 }
+
             });
 
         } else {
             apagaCampos('l1');
+            verifyItensParLevel1();
         }
     }
 
@@ -485,7 +502,6 @@
                 alert("Request: " + JSON.stringify(request));
             }
         });
-
     }
 
     let getGenericAjax = function (url, type, callback) {
@@ -510,26 +526,29 @@
 
         switch (saveLevel) {
 
-            case 1:
+            case 1: //Itens Gerais
                 formdata = $('#ParL1Geral').serializeFormToObjetc();
                 saveUrl = '@Url.Action("PostParLevel1", "api/ParLevel1Api")';
                 break;
 
-            case 2:
+            case 2: //Itens Avançados
                 formdata = $('#ParL1Avancados').serializeFormToObjetc();
                 saveUrl = '@Url.Action("PostParLevel1Avancados", "api/ParLevel1Api")';    
                 break;
 
-            case 3:
+            case 3: //Campos Cabeçalhod
+
                 break;
-            case 4:
+
+            case 4: //Processos
+
                 break;
+
             case 5:
                 break;
 
             default:
         }
-
         
         //fazer metodo para chamar o ajax para salvar
         $.ajax({
@@ -547,6 +566,41 @@
                 alert("Request: " + JSON.stringify(request));
             }
         });
+    }
+  
+    let enableItensParLevel1 = function () {
+
+        $('#itensAvancados').prop('disabled', false);
+        $('#itensAvancados').removeClass('isDisabled');
+
+        $('#camposCabecalhos').prop('disabled', false);
+        $('#camposCabecalhos').removeClass('isDisabled');
+
+        $('#processos').prop('disabled', false);
+        $('#processos').removeClass('isDisabled');
+
+    }
+
+    let disableItensParLevel1 = function () {
+
+        $('#itensAvancados').prop('disabled', true);
+        $('#itensAvancados').addClass('isDisabled');
+
+        $('#camposCabecalhos').prop('disabled', true);
+        $('#camposCabecalhos').addClass('isDisabled');
+
+        $('#processos').prop('disabled', true);
+        $('#processos').addClass('isDisabled');
+
+        $('#informacoesGerais').trigger('click');
+    }
+
+    let verifyItensParLevel1 = function () {
+        if (parseInt($('#Id').val()) > 0) {
+            enableItensParLevel1();
+        } else {
+            disableItensParLevel1();
+        }
     }
 
 </script>

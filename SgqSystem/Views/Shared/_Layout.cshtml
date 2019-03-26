@@ -519,8 +519,8 @@
                         o[this.name] = [o[this.name]];
                     }
 
-                    if (this.attr('type') == 'checkbox' || this.attr('type') == 'radio') {
-                        o[this.name].push(this.prop('checked'));
+                    if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
+                        o[this.name].push($(this).prop('checked'));
                     } else {
                         o[this.name].push(this.value || '');
                     }
@@ -528,7 +528,7 @@
                 } else {
 
                     if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
-                        o[this.name] = this.prop('checked');
+                        o[this.name] = $(this).prop('checked');
                     } else {
                         o[this.name] = this.value || '';
                     }

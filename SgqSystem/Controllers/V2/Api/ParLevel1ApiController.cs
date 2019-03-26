@@ -23,7 +23,6 @@ namespace SgqSystem.Controllers.V2.Api
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
-                //parLevel1Selects.ParLevels1 = db.Database.SqlQuery<ParLevel1ViewModel>("Select * from ParLevel1").ToList();
                 parLevel1Selects.ParLevels1 = db.ParLevel1.ToList();
             }
 
@@ -143,8 +142,7 @@ namespace SgqSystem.Controllers.V2.Api
                     if (isAvancado)
                     {
                         parLevel1Old.IsLimitedEvaluetionNumber = parLevel1.IsLimitedEvaluetionNumber;
-                        parLevel1Old.HasTakePhoto = parLevel1.HasTakePhoto;
-                        parLevel1Old.IsActive = parLevel1.IsActive;
+                        parLevel1Old.HasTakePhoto = parLevel1.HasTakePhoto;                       
                     }
                     else
                     {
@@ -153,6 +151,8 @@ namespace SgqSystem.Controllers.V2.Api
                         parLevel1Old.ParConsolidationType_Id = parLevel1.ParConsolidationType_Id;
                         parLevel1Old.ParFrequency_Id = parLevel1.ParFrequency_Id;
                         parLevel1Old.ParScoreType_Id = parLevel1.ParScoreType_Id;
+                        parLevel1Old.IsActive = parLevel1.IsActive;
+
                     }
 
                     parLevel1Old.AlterDate = DateTime.Now;
@@ -279,7 +279,6 @@ namespace SgqSystem.Controllers.V2.Api
             }
         }
 
-        //Criar um model para os retornos das classes
         public class ParLevel1Result
         {
             public ParLevel1 Parlevel1 { get; set; }
@@ -301,17 +300,17 @@ namespace SgqSystem.Controllers.V2.Api
             public List<ParScoreType> ParScoreTypes { get; set; }
         }
 
-        public class ParLevel1ViewModel
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public string Description { get; set; }
-            public int ParConsolidationType_Id { get; set; }
-            public int ParFrequency_Id { get; set; }
-            public int? ParScoreType_Id { get; set; }
-            public bool IsLimitedEvaluetionNumber { get; set; }
-            public bool HasTakePhoto { get; set; }
-            public bool IsActive { get; set; }
-        }
+        //public class ParLevel1ViewModel
+        //{
+        //    public int Id { get; set; }
+        //    public string Name { get; set; }
+        //    public string Description { get; set; }
+        //    public int ParConsolidationType_Id { get; set; }
+        //    public int ParFrequency_Id { get; set; }
+        //    public int? ParScoreType_Id { get; set; }
+        //    public bool IsLimitedEvaluetionNumber { get; set; }
+        //    public bool HasTakePhoto { get; set; }
+        //    public bool IsActive { get; set; }
+        //}
     }
 }
