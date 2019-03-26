@@ -7,6 +7,8 @@
 
         <div class="col-sm-3">
 
+            <input type="hidden" name="ParLevel1_Id"/>
+
             <div class="form-group">
                 <label for="ParCluster_Id">Processo:</label>
                 <select id="selectL1Cluster" class="input input-lg col-sm-12"
@@ -102,6 +104,8 @@
                 $('table#tableParL1Processo tbody tr:last').data(o);
             });
 
+            $('table#tableParL1Processo').off('click');
+
             $('table#tableParL1Processo').on('click', '[data-edit]', function (e) {
                 var obj = $(this).parents('tr').data();
 
@@ -126,19 +130,19 @@
 
             $('#ParL1Processo [data-form]').on('click', '[data-edit],[data-add]', function (e) {
                 openLoader();
-                var saveUrl = "";
                 var obj = $('#ParL1Processo [data-form]').data();
                 var formdata = $('#ParL1Processo [data-form]').serializeFormToObjetc();
 
                 if (Object.keys(obj).length > 0)
                     atualizaValoresDoObjeto(obj, formdata);
+                else
+                    obj = formdata;//bugando
 
-                debugger
                 $.ajax({
-                    url: saveUrl,
+                    url: '@Url.Action("PostParLevel1XCluster", "api/ParLevel1Api")',
                     type: 'POST',
                     dataType: "json",
-                    data: JSON.stringify(formdata),
+                    data: JSON.stringify(obj),
                     contentType: "application/json",
                     success: function (data) {
                         openMessageModal("Feito", "Dados Salvos");
