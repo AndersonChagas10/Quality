@@ -124,7 +124,10 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParLevel1XCluster")]
         public IHttpActionResult PostParLevel1XCluster(ParLevel1XCluster parLevel1XCluster)
         {
-            SaveOrUpdateParLevel1XCluster(parLevel1XCluster);
+            if (!SaveOrUpdateParLevel1XCluster(parLevel1XCluster))
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -269,14 +272,26 @@ namespace SgqSystem.Controllers.V2.Api
                 try
                 {
                     if (parLevel1XClusters.Id > 0)
-                        db.Entry(parLevel1XClusters).State = EntityState.Modified;
+                    {
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var parLevel1XClusterToUpdate = db.ParLevel1XCluster.Find(parLevel1XClusters.Id);
+                        parLevel1XClusterToUpdate.IsActive = parLevel1XClusters.IsActive;
+                        parLevel1XClusterToUpdate.ParCluster_Id = parLevel1XClusters.ParCluster_Id;
+                        parLevel1XClusterToUpdate.ParCriticalLevel_Id = parLevel1XClusters.ParCriticalLevel_Id;
+                        parLevel1XClusterToUpdate.Points = parLevel1XClusters.Points;
+                        parLevel1XClusterToUpdate.ValidoApartirDe = parLevel1XClusters.ValidoApartirDe;
+                        parLevel1XClusterToUpdate.EffectiveDate = parLevel1XClusters.EffectiveDate;
+                        db.Entry(parLevel1XClusterToUpdate).State = EntityState.Modified;
+                    }
                     else
+                    {
                         db.ParLevel1XCluster.Add(parLevel1XClusters);
+                    }
 
                     db.SaveChanges();
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 
                     return false;

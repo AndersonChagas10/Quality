@@ -7,7 +7,8 @@
 
         <div class="col-sm-3">
 
-            <input type="hidden" name="ParLevel1_Id"/>
+            <input type="hidden" name="ParLevel1_Id" data-id />
+            <input type="hidden" name="IsActive" value="true" data-notnull />
 
             <div class="form-group">
                 <label for="ParCluster_Id">Processo:</label>
@@ -31,7 +32,7 @@
 
             <div class="form-group">
                 <label for="EffectiveDate">Data Vigente:</label>
-                <input type="text" class="form-control" id="EffectiveDate" name="EffectiveDate">
+                <input type="date" class="form-control" id="EffectiveDate" name="EffectiveDate">
             </div>
 
         </div>
@@ -67,13 +68,13 @@
                         <th class="col-sm-3">
                             Grupo
                         </th>
-                        <th class="col-sm-3">
+                        <th class="col-sm-2">
                             Data Vigencia
                         </th>
                         <th class="col-sm-2">
                             Pontos
                         </th>
-                        <th class="col-sm-1">
+                        <th class="col-sm-2">
 
                         </th>
                     </tr>
@@ -96,48 +97,15 @@
                 var html = '<tr>';
                 html += '<td>' + o.ParCluster.Name + '</td>';
                 html += '<td>' + o.ParCriticalLevel.Name + '</td>';
-                html += '<td>' + o.EffectiveDate + '</td>';
+                html += '<td>' + new Date(o.EffectiveDate).toLocaleDateString() + '</td>';
                 html += '<td>' + o.Points + '</td>';
-                html += '<td><button class="btn btn-sm btn-success" data-edit>Editar</button></td>';
+                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
                 $('table#tableParL1Processo tbody').append(html);
-                $('table#tableParL1Processo tbody tr:last').data(o);
+                $('table#tableParL1Processo tbody tr:last').data('sgq', o);
             });
 
-            $('table#tableParL1Processo').off('click');
-
-            $('table#tableParL1Processo').on('click', '[data-edit]', function (e) {
-                var obj = $(this).parents('tr').data();
-
-                apagaCampos('ParL1Processo');
-
-                debugger
-                preencheCampos('ParL1Processo [data-form]', '', obj);
-                $('#ParL1Processo [data-form]').data(obj);
-                $('#ParL1Processo [data-form]').addClass('alert alert-success');
-                $('#ParL1Processo [data-form] [data-action] [data-add]').addClass('hide');
-
-                $('#ParL1Processo [data-form] [data-action]')
-                    .append('<button class="form-control btn btn-success" data-edit>Editar</button>');
-                $('#ParL1Processo [data-form] [data-action]')
-                    .append('<button class="form-control btn btn-danger" data-cancel>x</button>');
-
-            });
-
-            $('#ParL1Processo [data-form]').on('click', '[data-cancel]', function (e) {
-                apagaCampos('ParL1Processo');
-            });
-
-            $('#ParL1Processo [data-form]').on('click', '[data-edit],[data-add]', function (e) {
-                openLoader();
-                var obj = $('#ParL1Processo [data-form]').data();
-                var formdata = $('#ParL1Processo [data-form]').serializeFormToObjetc();
-
-                if (Object.keys(obj).length > 0)
-                    atualizaValoresDoObjeto(obj, formdata);
-                else
-                    obj = formdata;//bugando
-
+            function Save(obj) {
                 $.ajax({
                     url: '@Url.Action("PostParLevel1XCluster", "api/ParLevel1Api")',
                     type: 'POST',
@@ -156,6 +124,53 @@
                         console.log(error)
                     }
                 });
+            }
+
+            $('#ParL1Processo').off('click');
+
+            //Adicionar os dados no data-form
+            $('#ParL1Processo').on('click', '[data-table-edit]', function (e) {
+                var obj = $(this).parents('tr').data('sgq');
+
+                apagaCampos('ParL1Processo');
+
+                debugger
+                preencheCampos('ParL1Processo [data-form]', '', obj);
+                $('#ParL1Processo [data-form]').data('sgq', obj);
+                $('#ParL1Processo [data-form]').addClass('alert alert-success');
+                $('#ParL1Processo [data-form] [data-action] [data-add]').addClass('hide');
+
+                $('#ParL1Processo [data-form] [data-action]')
+                    .append('<button class="form-control btn btn-success" data-edit>Editar</button>');
+                $('#ParL1Processo [data-form] [data-action]')
+                    .append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+
+            });
+
+            //Adicionar os dados no data-form
+            $('#ParL1Processo').on('click', '[data-table-delete]', function (e) {
+                var obj = $(this).parents('tr').data('sgq');
+                obj.IsActive = false;
+                Save(obj);
+
+            });
+
+            $('#ParL1Processo').on('click', '[data-cancel]', function (e) {
+                apagaCampos('ParL1Processo');
+            });
+
+            //Salvar o campo editado ou cria um novo
+            $('#ParL1Processo').on('click', '[data-edit],[data-add]', function (e) {
+                openLoader();
+                var obj = $('#ParL1Processo [data-form]').data('sgq');
+                var formdata = $('#ParL1Processo [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined'))
+                    atualizaValoresDoObjeto(obj, formdata);
+                else
+                    obj = formdata;
+
+                Save(obj);
             });
 
 

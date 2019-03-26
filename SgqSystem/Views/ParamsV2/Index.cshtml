@@ -371,17 +371,20 @@
 
         $(Object.keys(obj)).each(function (i, o) {
 
-            var element = $(`#${div_id} [name="${prefix}${o}"]`);
+            var element = $(`#${div_id} [name="${prefix}${o}"]:not([data-id])`);
             preencheValores(element, obj[o]);
-            element = $(`#${div_id} [data-name="${prefix}${o}"]`);
+            element = $(`#${div_id} [data-name="${prefix}${o}"]:not([data-id])`);
             preencheValores(element, obj[o]);
 
         });
 
+    debugger
+        $(`#${div_id} input[data-id]`).val(obj.Id);
+
     }
 
     let apagaCampos = function (div_id) {
-        $(`#${div_id} input`).val('');
+        $(`#${div_id} input:not([data-id],[data-notnull])`).val('');
         $(`#${div_id} select`).val(0);
         $(`#${div_id} select`).trigger('change');
         $(`#${div_id} textarea`).html('');
@@ -391,7 +394,7 @@
         $(`#${div_id} [data-form]`).find('[data-cancel]').remove();
         $(`#${div_id} [data-form]`).find('[data-edit]').remove();
         $(`#${div_id} [data-form]`).find('[data-add]').removeClass('hide');
-        $(`#${div_id} [data-form]`).removeData();
+        $(`#${div_id} [data-form]`).removeData('sgq');
     }
 
     let preencheValores = function (element, value) {
@@ -429,7 +432,7 @@
                 contentType: "application/json",
                 success: function (data) {
                     console.table(data);
-                    preencheCampos('l1', '', data.Parlevel1)                    
+                    preencheCampos('l1', '', data.Parlevel1)
                     parL1Processo.load(data.Parlevel1.ParLevel1XCluster);
                     verifyItensParLevel1();
                     closeLoader();
