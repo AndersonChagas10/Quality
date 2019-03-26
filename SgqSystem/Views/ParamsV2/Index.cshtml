@@ -1,4 +1,8 @@
 ﻿<style>
+    button{
+        cursor: pointer;
+    }
+
     .tab-pane {
         display: none;
     }
@@ -45,9 +49,6 @@
             text-decoration: none;
         }
 
-</style>
-
-<style>
     .switch {
         position: relative;
         display: inline-block;
@@ -316,8 +317,6 @@
 
 <script>
 
-    let objToSend = {};
-
     let setSelectLevel1 = function (data) {
         preencheSelect('selectL1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
         getSelectsL1();
@@ -378,12 +377,12 @@
 
         });
 
-    debugger
         $(`#${div_id} input[data-id]`).val(obj.Id);
 
     }
 
     let apagaCampos = function (div_id) {
+
         $(`#${div_id} input:not([data-id],[data-notnull])`).val('');
         $(`#${div_id} select`).val(0);
         $(`#${div_id} select`).trigger('change');
@@ -421,6 +420,7 @@
     let preencheL1 = function (e) {
 
         if (parseInt($(this).val()) > 0) {
+
             openLoader();
 
             $.ajax({
@@ -442,7 +442,6 @@
                     openMessageModal("Ocorreu um erro", JSON.stringify(request));
                     console.log(error)
                 }
-
             });
 
         } else {
@@ -553,7 +552,7 @@
                 saveUrl = '@Url.Action("PostParLevel1Avancados", "api/ParLevel1Api")';    
                 break;
 
-            case 3: //Campos Cabeçalhod
+            case 3: //Campos Cabeçalho
 
                 break;
 
