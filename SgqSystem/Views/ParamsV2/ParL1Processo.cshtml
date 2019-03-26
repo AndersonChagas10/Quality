@@ -1,15 +1,16 @@
-﻿<h4>Informações Gerais</h4>
+﻿<h4>Processos</h4>
 
-<form id="ParL1Geral">
+<form id="ParL1Processo">
 
     <br />
-    <div class="row">
+    <div class="row" data-form>
 
         <div class="col-sm-3">
 
             <div class="form-group">
-                <label for="selectL1Cluster">Processo:</label>
-                <select id="selectL1Cluster" class="input input-lg col-sm-12"></select>
+                <label for="ParCluster_Id">Processo:</label>
+                <select id="selectL1Cluster" class="input input-lg col-sm-12"
+                        name="ParCluster_Id"></select>
             </div>
 
         </div>
@@ -17,8 +18,9 @@
         <div class="col-sm-3">
 
             <div class="form-group">
-                <label for="name">Grupo:</label>
-                <select id="selectL1CriticalLevel" class="input input-lg col-sm-12"></select>
+                <label for="ParCriticalLevel_Id">Grupo:</label>
+                <select id="selectL1CriticalLevel" class="input input-lg col-sm-12"
+                        name="ParCriticalLevel_Id"></select>
             </div>
 
         </div>
@@ -26,8 +28,8 @@
         <div class="col-sm-3">
 
             <div class="form-group">
-                <label for="name">Data Vigente:</label>
-                <input type="text" class="form-control" id="name" name="name">
+                <label for="EffectiveDate">Data Vigente:</label>
+                <input type="text" class="form-control" id="EffectiveDate" name="EffectiveDate">
             </div>
 
         </div>
@@ -35,21 +37,23 @@
         <div class="col-sm-2">
 
             <div class="form-group">
-                <label for="name">Pontos:</label>
-                <input type="text" class="form-control" id="name" name="name">
+                <label for="Points">Pontos:</label>
+                <input type="text" class="form-control" id="Points" name="Points">
             </div>
 
         </div>
 
         <div class="col-sm-1">
 
-            <div class="form-group">
+            <div class="form-group" data-action>
                 <label></label>
-                <button class="form-control btn btn-primary">+</button>
+                <button class="form-control btn btn-primary" data-add>+</button>
             </div>
 
         </div>
+    </div>
 
+    <div class="row">
         <div class="col-sm-12">
 
             <table id="tableParL1Processo" class="table table-striped table-hover">
@@ -68,7 +72,7 @@
                             Pontos
                         </th>
                         <th class="col-sm-1">
-                            
+
                         </th>
                     </tr>
                 </thead>
@@ -83,6 +87,7 @@
 <script>
     var parL1Processo = {
         load: function (parLevel1XCluster) {
+            apagaCampos('ParL1Processo');
 
             $('table#tableParL1Processo tbody').html('');
             $(parLevel1XCluster).each(function (i, o) {
@@ -91,10 +96,65 @@
                 html += '<td>' + o.ParCriticalLevel.Name + '</td>';
                 html += '<td>' + o.EffectiveDate + '</td>';
                 html += '<td>' + o.Points + '</td>';
-                html += '<td>' + o.Points + '</td>';
+                html += '<td><button class="btn btn-sm btn-success" data-edit>Editar</button></td>';
                 html += '</tr>';
                 $('table#tableParL1Processo tbody').append(html);
+                $('table#tableParL1Processo tbody tr:last').data(o);
             });
-        }
+
+            $('table#tableParL1Processo').on('click', '[data-edit]', function (e) {
+                var obj = $(this).parents('tr').data();
+
+                apagaCampos('ParL1Processo');
+
+                debugger
+                preencheCampos('ParL1Processo [data-form]', '', obj);
+                $('#ParL1Processo [data-form]').data(obj);
+                $('#ParL1Processo [data-form]').addClass('alert alert-success');
+                $('#ParL1Processo [data-form] [data-action] [data-add]').addClass('hide');
+
+                $('#ParL1Processo [data-form] [data-action]')
+                    .append('<button class="form-control btn btn-success" data-edit>Editar</button>');
+                $('#ParL1Processo [data-form] [data-action]')
+                    .append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+
+            });
+
+            $('#ParL1Processo [data-form]').on('click', '[data-cancel]', function (e) {
+                apagaCampos('ParL1Processo');
+            });
+
+            $('#ParL1Processo [data-form]').on('click', '[data-edit],[data-add]', function (e) {
+                openLoader();
+                var saveUrl = "";
+                var obj = $('#ParL1Processo [data-form]').data();
+                var formdata = $('#ParL1Processo [data-form]').serializeFormToObjetc();
+
+                if (Object.keys(obj).length > 0)
+                    atualizaValoresDoObjeto(obj, formdata);
+
+                debugger
+                $.ajax({
+                    url: saveUrl,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(formdata),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Feito", "Dados Salvos");
+                        $('#selectL1').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
+            });
+
+
+        },
     };
 </script>

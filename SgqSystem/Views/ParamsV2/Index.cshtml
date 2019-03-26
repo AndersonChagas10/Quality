@@ -345,6 +345,13 @@
         $(`select#${id}`).select2();
     }
 
+    let atualizaValoresDoObjeto = function (oldValues, newValues) {
+        $(Object.keys(newValues)).each(function (i, o) {
+            if (typeof (oldValues[o]) != 'undefined')
+                oldValues[o] = newValues[o];
+        });
+    }
+
     let preencheCampos = function (div_id, prefix, obj) {
 
         $(Object.keys(obj)).each(function (i, o) {
@@ -359,14 +366,17 @@
     }
 
     let apagaCampos = function (div_id) {
-
         $(`#${div_id} input`).val('');
         $(`#${div_id} select`).val(0);
         $(`#${div_id} select`).trigger('change');
         $(`#${div_id} textarea`).html('');
         $(`#${div_id} input[type='checkbox']`).removeAttr('checked');
         $(`#${div_id} [data-name]`).text('');
-
+        $(`#${div_id} [data-form]`).removeClass('alert alert-success');
+        $(`#${div_id} [data-form]`).find('[data-cancel]').remove();
+        $(`#${div_id} [data-form]`).find('[data-edit]').remove();
+        $(`#${div_id} [data-form]`).find('[data-add]').removeClass('hide');
+        $(`#${div_id} [data-form]`).data({});
     }
 
     let preencheValores = function (element, value) {
@@ -394,6 +404,7 @@
     let preencheL1 = function (e) {
 
         if (parseInt($(this).val()) > 0) {
+            openLoader();
 
             $.ajax({
                 url: `@Url.Action("Get", "api/ParLevel1Api")/${$(this).val()}`,
@@ -406,9 +417,12 @@
                     preencheCampos('l1', '', data.Parlevel1)
                     debugger
                     parL1Processo.load(data.Parlevel1.ParLevel1XCluster);
+                    closeLoader();
                 },
                 error: function (request, error) {
-                    alert("Request: " + JSON.stringify(request));
+                    closeLoader();
+                    openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                    console.log(error)
                 }
             });
 
