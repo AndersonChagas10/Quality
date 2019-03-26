@@ -37,7 +37,7 @@ namespace SgqSystem.Controllers.V2.Api
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
-                
+
                 parLevel1Selects.ParCriticalLevels = db.ParCriticalLevel.Where(x => x.IsActive == true).ToList();
                 parLevel1Selects.ParClusters = db.ParCluster.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParConsolidationTypes = db.ParConsolidationType.Where(x => x.IsActive).ToList();
@@ -72,8 +72,8 @@ namespace SgqSystem.Controllers.V2.Api
 
                 parlevel1Result.Parlevel1 = parLevel1;
                 parlevel1Result.ParLevel1XClusters = db.ParLevel1XCluster
-                    .Include(x=>x.ParCluster)
-                    .Include(x=>x.ParCriticalLevel)
+                    .Include(x => x.ParCluster)
+                    .Include(x => x.ParCriticalLevel)
                     .Where(x => x.ParLevel1_Id == parLevel1.Id && x.IsActive).ToList();
                 parlevel1Result.ParLevel1XHeaderFields = db.ParLevel1XHeaderField.Where(x => x.ParLevel1_Id == parLevel1.Id && x.IsActive).ToList();
                 var headerFieldsId = parlevel1Result.ParLevel1XHeaderFields.Select(xx => xx.ParHeaderField_Id).ToList();
@@ -100,7 +100,7 @@ namespace SgqSystem.Controllers.V2.Api
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-        
+
 
         [HttpPost]
         [Route("PostParHeaderField")]
@@ -142,7 +142,7 @@ namespace SgqSystem.Controllers.V2.Api
                     if (isAvancado)
                     {
                         parLevel1Old.IsLimitedEvaluetionNumber = parLevel1.IsLimitedEvaluetionNumber;
-                        parLevel1Old.HasTakePhoto = parLevel1.HasTakePhoto;                       
+                        parLevel1Old.HasTakePhoto = parLevel1.HasTakePhoto;
                     }
                     else
                     {
@@ -156,7 +156,7 @@ namespace SgqSystem.Controllers.V2.Api
                     }
 
                     parLevel1Old.AlterDate = DateTime.Now;
-                    
+
                     try
                     {
                         db.SaveChanges();
@@ -215,51 +215,89 @@ namespace SgqSystem.Controllers.V2.Api
             }
         }
 
-        private bool SaveOrUpdateParLevel1XHeaderField(List<ParLevel1XHeaderField> parLevel1XHeaderFielsdAdd, int parLevel_Id)
+        private bool SaveOrUpdateParLevel1XHeaderField(List<ParLevel1XHeaderField> ParLevel1XHeaderFields, int parLevel_Id)
         {
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 try
                 {
+                    db.Configuration.LazyLoadingEnabled = false;
+
                     //Update todos para isActive = false
                     var parLevel1XHeaderFields = db.ParLevel1XHeaderField.Where(x => x.ParLevel1_Id == parLevel_Id);
-                    foreach (var parLevel1XHeaderField in parLevel1XHeaderFields)
+
+                    foreach (var parLevel1XHeaderField in ParLevel1XHeaderFields)
                     {
-                        parLevel1XHeaderField.AlterDate = DateTime.Now;
-                        parLevel1XHeaderField.IsActive = false;
+                        if (parLevel1XHeaderField.Id > 0) //Update ou Inactive
+                        {
+                            var parLevel1XHeaderFieldToModfy = parLevel1XHeaderFields.Where(x => x.Id == parLevel1XHeaderField.Id).First();
+
+                            parLevel1XHeaderFieldToModfy.IsActive = parLevel1XHeaderField.IsActive;
+                            parLevel1XHeaderFieldToModfy.ParHeaderField_Id = parLevel1XHeaderField.ParHeaderField_Id;
+                            parLevel1XHeaderFieldToModfy.IsRequired = parLevel1XHeaderField.IsRequired;
+                            parLevel1XHeaderFieldToModfy.DefaultSelected = parLevel1XHeaderField.DefaultSelected;
+                            parLevel1XHeaderFieldToModfy.HeaderFieldGroup = parLevel1XHeaderFieldToModfy.HeaderFieldGroup;
+                            parLevel1XHeaderFieldToModfy.AlterDate = DateTime.Now;
+
+                        }
+                        else //Insert
+                        {
+                            parLevel1XHeaderField.AddDate = DateTime.Now;
+                            db.ParLevel1XHeaderField.Add(parLevel1XHeaderField);
+
+                        }
                     }
 
-                    //Insere novos relacionamentos
-                    db.ParLevel1XHeaderField.AddRange(parLevel1XHeaderFielsdAdd);
+                    db.SaveChanges();
                 }
                 catch (Exception)
                 {
 
-                    return false;
+                   return false;
                 }
 
                 return true;
             }
         }
 
-        private bool SaveOrUpdateParLevel1XCluster(List<ParLevel1XCluster> ParLevel1XClustersAdd, int parLevel_Id)
+        private bool SaveOrUpdateParLevel1XCluster(List<ParLevel1XCluster> ParLevel1XClusters, int parLevel_Id)
         {
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 try
                 {
+                    db.Configuration.LazyLoadingEnabled = false;
                     //Update todos para isActive = false
                     var parLevel1XClusters = db.ParLevel1XCluster.Where(x => x.ParLevel1_Id == parLevel_Id);
-                    foreach (var parLevel1XHeaderField in parLevel1XClusters)
+
+                    foreach (var parLevel1XCluster in ParLevel1XClusters)
                     {
-                        parLevel1XHeaderField.AlterDate = DateTime.Now;
-                        parLevel1XHeaderField.IsActive = false;
+                        if (parLevel1XCluster.Id > 0) //Update ou Inactive
+                        {
+                            var parLevel1XClusterToModfy = parLevel1XClusters.Where(x => x.Id == parLevel1XCluster.Id).First();
+
+                            parLevel1XClusterToModfy.IsActive = parLevel1XCluster.IsActive;
+                            parLevel1XClusterToModfy.ParCluster_Id = parLevel1XCluster.ParCluster_Id;
+                            parLevel1XClusterToModfy.ParCriticalLevel_Id = parLevel1XCluster.ParCriticalLevel_Id;
+                            parLevel1XClusterToModfy.ParLevel1_Id = parLevel1XCluster.ParLevel1_Id;
+                            parLevel1XClusterToModfy.Points = parLevel1XCluster.Points;
+                            parLevel1XClusterToModfy.ValidoApartirDe = parLevel1XCluster.ValidoApartirDe;
+                            parLevel1XClusterToModfy.EffectiveDate = parLevel1XCluster.EffectiveDate;
+                            parLevel1XClusterToModfy.AlterDate = DateTime.Now;
+
+                        }
+                        else //Insert
+                        {
+                            parLevel1XCluster.AddDate = DateTime.Now;
+                            db.ParLevel1XCluster.Add(parLevel1XCluster);
+
+                        }
                     }
 
-                    //Insere novos relacionamentos
-                    db.ParLevel1XCluster.AddRange(ParLevel1XClustersAdd);
+                    db.SaveChanges();
+
                 }
                 catch (Exception)
                 {
