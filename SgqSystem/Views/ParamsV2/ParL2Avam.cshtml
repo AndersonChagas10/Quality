@@ -116,7 +116,7 @@
             $(list).each(function (i, o) {
                 
                 var html = '<tr>';
-                html += '<td>' + o.ParCompany_Id + '</td>';
+                html += '<td>' + valorDoSelect('select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
                 html += '<td>' + o.ParLevel1_Id + '</td>';
                 html += '<td>' + o.ParCluster_Id + '</td>';
                 html += '<td>' + o.Number + '</td>';

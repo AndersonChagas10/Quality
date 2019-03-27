@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     ViewBag.Title = "Nova parametrização";
 }
 
@@ -228,10 +228,10 @@
                                         </a>
                                     </li>
                                     @*<li>
-                                        <a href="#l2_cabecalho" data-toggle="tab">
-                                            Cabeçalhos no monitoramento
-                                        </a>
-                                    </li>*@
+                                            <a href="#l2_cabecalho" data-toggle="tab">
+                                                Cabeçalhos no monitoramento
+                                            </a>
+                                        </li>*@
                                     <li>
                                         <a href="#l2_contador" data-toggle="tab">
                                             Contadores
@@ -251,8 +251,8 @@
                                         @Html.Partial("ParL2Avam")
                                     </div>
                                     @*<div class="tab-pane" id="l2_cabecalho">
-                                        @Html.Partial("ParL2Cabecalho")
-                                    </div>*@
+                                            @Html.Partial("ParL2Cabecalho")
+                                        </div>*@
                                     <div class="tab-pane" id="l2_contador">
                                         @Html.Partial("ParL2Contador")
                                     </div>
@@ -354,7 +354,7 @@
     let preencheSelect = function (id, name, value, list, defaultText, callBack) {
 
         $(`select#${id}`).empty();
-        $(`select#${id}`).append(`<option value="0">${defaultText}</option>`);
+        $(`select#${id}`).append(`<option value="0" selected>${defaultText}</option>`);
 
         $(list).each(function (i, o) {
             $(`select#${id}`).append(`<option value="${o[value]}">${o[name]}</option>`);
@@ -368,8 +368,12 @@
 
     let atualizaValoresDoObjeto = function (oldValues, newValues) {
         $(Object.keys(newValues)).each(function (i, o) {
-            if (typeof (oldValues[o]) != 'undefined')
+            if (typeof (oldValues[o]) != 'undefined') {
                 oldValues[o] = newValues[o];
+                if (o.lastIndexOf('_Id') == (o.length - 3) && parseInt(newValues[o]) <= 0) {
+                    oldValues[o] = null;
+                }
+            }
         });
     }
 
@@ -384,7 +388,7 @@
 
         });
 
-        if(preencheId == true)
+        if (preencheId == true)
             $(`#${div_id} input[data-id]`).val(obj.Id);
 
     }
@@ -421,6 +425,9 @@
 
         } else if (element.is('select')) {
 
+            debugger
+            if (value == null)
+                value = 0;
             element.val(value);
             element.trigger('change');
 
@@ -525,7 +532,7 @@
             data: {},
             contentType: "application/json",
             success: function (data) {
-                
+
                 preencheSelect('selectL1CriticalLevel', 'Name', 'Id', data.ParCriticalLevels, 'Selecione o Grupo');
                 preencheSelect('selectL1Cluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectParConsolidation', 'Name', 'Id', data.ParConsolidationTypes, 'Selecione o tipo de Consolidação');
@@ -536,7 +543,7 @@
 
                 preencheSelect('selectL2AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL2ParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione...');
-                
+
 
             },
             error: function (request, error) {
@@ -621,12 +628,19 @@
         $('ul.nav[data-levels="' + id + '"] a[href="#' + id + '_geral"]').trigger('click');
     }
 
-    let verifyTabs = function (select,id) {
-        if (parseInt($('select#'+select).val()) > 0) {
+    let verifyTabs = function (select, id) {
+        if (parseInt($('select#' + select).val()) > 0) {
             enableTabs(id);
         } else {
             disableTabs(id);
         }
+    }
+
+    let valorDoSelect = function (seletor, valor, valorPadrao) {
+        var text = $(seletor + " option[value=" + valor + "]").text();
+        if (!!text)
+            return text;
+        return valorPadrao;
     }
 
 </script>
