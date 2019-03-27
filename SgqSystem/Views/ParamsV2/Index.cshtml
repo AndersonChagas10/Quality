@@ -163,7 +163,7 @@
                         <div id="l1" class="tab-pane fade in active">
                             <h3 class="jumbotron text-center" data-name="Name"></h3>
                             <div class="col-xs-3">
-                                <ul class="nav nav-tabs tabs-left">
+                                <ul class="nav nav-tabs tabs-left" data-levels="l1">
                                     <li class="active">
                                         <a href="#l1_geral" data-toggle="tab" id="informacoesGerais">
                                             Informações gerais
@@ -207,7 +207,7 @@
                         <div id="l2" class="tab-pane fade">
                             <h3 class="jumbotron text-center" data-name="Name"></h3>
                             <div class="col-xs-3">
-                                <ul class="nav nav-tabs tabs-left">
+                                <ul class="nav nav-tabs tabs-left" data-levels="l2">
                                     <li class="active">
                                         <a href="#l2_geral" data-toggle="tab">
                                             Informações gerais
@@ -259,7 +259,7 @@
                         <div id="l3" class="tab-pane fade">
                             <h3 class="jumbotron text-center" data-name="Name"></h3>
                             <div class="col-xs-3">
-                                <ul class="nav nav-tabs tabs-left">
+                                <ul class="nav nav-tabs tabs-left" data-levels="l3">
                                     <li class="active">
                                         <a href="#l3_geral" data-toggle="tab">
                                             Informações gerais
@@ -340,7 +340,9 @@
 
         getGenericAjax('@Url.Action("Get", "api/ParLevel3Api")', 'Get', setSelectLevel3);
 
-        verifyItensParLevel1();
+        verifyTabs('selectL1', 'l1');
+        verifyTabs('selectL2', 'l2');
+        verifyTabs('selectL3', 'l3');
 
     });
 
@@ -424,6 +426,9 @@
 
     let preencheL1 = function (e) {
 
+        apagaCampos('l1');
+        verifyTabs('selectL1', 'l1');
+
         if (parseInt($(this).val()) > 0) {
 
             openLoader();
@@ -440,7 +445,7 @@
                     preencheCampos('l1', '', data.Parlevel1)
                     parL1Processo.load(data.Parlevel1.ParLevel1XCluster);
                     parL1Cabecalho.load(data.ParLevel1XHeaderFields);
-                    verifyItensParLevel1();
+                    verifyTabs('selectL1', 'l1');
                     closeLoader();
                 },
                 error: function (request, error) {
@@ -450,13 +455,13 @@
                 }
             });
 
-        } else {
-            apagaCampos('l1');
-            verifyItensParLevel1();
         }
     }
 
     let preencheL2 = function (e) {
+
+        apagaCampos('l2');
+        verifyTabs('selectL2', 'l2');
 
         if (parseInt($(this).val()) > 0) {
 
@@ -469,18 +474,20 @@
                 success: function (data) {
                     console.table(data);
                     preencheCampos('l2', '', data.Parlevel2)
+                    verifyTabs('selectL2', 'l2');
                 },
                 error: function (request, error) {
                     alert("Request: " + JSON.stringify(request));
                 }
             });
 
-        } else {
-            apagaCampos('l2');
         }
     }
 
     let preencheL3 = function (e) {
+
+        apagaCampos('l3');
+        verifyTabs('selectL3', 'l3');
 
         if (parseInt($(this).val()) > 0) {
 
@@ -492,14 +499,13 @@
                 contentType: "application/json",
                 success: function (data) {
                     preencheCampos('l3', '', data.Parlevel3)
+                    verifyTabs('selectL3', 'l3');
                 },
                 error: function (request, error) {
                     alert("Request: " + JSON.stringify(request));
                 }
             });
 
-        } else {
-            apagaCampos('l3');
         }
     }
 
@@ -592,38 +598,23 @@
         });
     }
 
-    let enableItensParLevel1 = function () {
+    let enableTabs = function (id) {
 
-        $('#itensAvancados').prop('disabled', false);
-        $('#itensAvancados').removeClass('isDisabled');
-
-        $('#camposCabecalhos').prop('disabled', false);
-        $('#camposCabecalhos').removeClass('isDisabled');
-
-        $('#processos').prop('disabled', false);
-        $('#processos').removeClass('isDisabled');
-
+        $('ul.nav[data-levels="' + id + '"] a:not([href="#' + id + '_geral"])').prop('disabled', false)
+        $('ul.nav[data-levels="' + id + '"] a:not([href="#' + id + '_geral"])').removeClass('isDisabled')
     }
 
-    let disableItensParLevel1 = function () {
-
-        $('#itensAvancados').prop('disabled', true);
-        $('#itensAvancados').addClass('isDisabled');
-
-        $('#camposCabecalhos').prop('disabled', true);
-        $('#camposCabecalhos').addClass('isDisabled');
-
-        $('#processos').prop('disabled', true);
-        $('#processos').addClass('isDisabled');
-
-        $('#informacoesGerais').trigger('click');
+    let disableTabs = function (id) {
+        $('ul.nav[data-levels="' + id + '"] a:not([href="#' + id + '_geral"])').prop('disabled', true)
+        $('ul.nav[data-levels="' + id + '"] a:not([href="#' + id + '_geral"])').addClass('isDisabled')
+        $('ul.nav[data-levels="' + id + '"] a[href="#' + id + '_geral"]').trigger('click');
     }
 
-    let verifyItensParLevel1 = function () {
-        if (parseInt($('#Id').val()) > 0) {
-            enableItensParLevel1();
+    let verifyTabs = function (select,id) {
+        if (parseInt($('select#'+select).val()) > 0) {
+            enableTabs(id);
         } else {
-            disableItensParLevel1();
+            disableTabs(id);
         }
     }
 
