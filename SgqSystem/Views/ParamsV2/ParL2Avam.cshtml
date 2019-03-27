@@ -1,1 +1,199 @@
 ﻿<h4>Avaliação e Amostra</h4>
+
+<form id="ParL2Avam">
+
+    <br />
+    <div class="row" data-form>
+
+        <div class="col-sm-4">
+
+            <input type="hidden" name="ParLevel2_Id" data-id />
+            <input type="hidden" name="IsActive" value="true" data-notnull />
+
+            <div class="form-group">
+                <label for="ParCompany_Id">Empresa:</label>
+                <select id="selectL2ParCompany" class="input input-lg col-sm-12"
+                        name="ParCompany_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label for="ParLevel1_Id">Indicador:</label>
+                <select id="selectL1ParLevel1" class="input input-lg col-sm-12"
+                        name="ParLevel1_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label for="ParCluster_Id">Processo:</label>
+                <select id="selectL2AvamCluster" class="input input-lg col-sm-12"
+                        name="ParCluster_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label for="Number">Avaliação:</label>
+                <input type="text" class="form-control" id="Number" name="Number">
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label for="Sample">Amostras por Avaliação:</label>
+                <input type="text" class="form-control" id="Sample" name="Sample">
+            </div>
+
+        </div>
+
+        <div class="col-sm-1">
+
+            <div class="form-group" data-action>
+                <label></label>
+                <button class="form-control btn btn-primary" data-add>+</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="tableParL2Avam" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-sm-2">
+                            Empresa
+                        </th>
+                        <th class="col-sm-2">
+                            Indicador
+                        </th>
+                        <th class="col-sm-2">
+                            Processo
+                        </th>
+                        <th class="col-sm-2">
+                            Avaliação
+                        </th>
+                        <th class="col-sm-2">
+                            Amostra
+                        </th>
+                        <th class="col-sm-2">
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    var parL2Avam = {
+
+        //paramtros
+        id: 'ParL2Avam',
+        urlSave: '@Url.Action("PostParEvaluation", "api/ParLevel2Api")',
+
+        load: function (list) {
+
+            let id = this.id;
+            let urlSave = this.urlSave;
+
+            apagaCampos(id);
+
+            $('table#table' + id + ' tbody').html('');
+            $(list).each(function (i, o) {
+                
+                var html = '<tr>';
+                html += '<td>' + o.ParCompany_Id + '</td>';
+                html += '<td>' + o.ParLevel1_Id + '</td>';
+                html += '<td>' + o.ParCluster_Id + '</td>';
+                html += '<td>' + o.Number + '</td>';
+                html += '<td>' + o.Sample + '</td>';
+                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
+                html += '</tr>';
+
+                $('table#table' + id + ' tbody').append(html);
+                $('table#table' + id + ' tbody tr:last').data('sgq', o);
+
+            });
+
+            function Save(obj) {
+                
+                $.ajax({
+                    url: urlSave,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Feito", "Dados Salvos");
+                        $('#selectL2').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
+            }
+
+            $('#' + id).off('click');
+
+            //Adicionar os dados no data-form
+            $('#' + id).on('click', '[data-table-edit]', function (e) {
+
+                var obj = $(this).parents('tr').data('sgq');
+
+                apagaCampos(id);
+                preencheCampos(id + ' [data-form]', '', obj);
+
+                $('#' + id + ' [data-form]').data('sgq', obj);
+                $('#' + id + ' [data-form]').addClass('alert alert-success');
+                $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
+
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+
+            });
+
+            //Adicionar os dados no data-form
+            $('#' + id).on('click', '[data-table-delete]', function (e) {
+                var obj = $(this).parents('tr').data('sgq');
+                obj.IsActive = false;
+                Save(obj);
+            });
+
+            $('#' + id).on('click', '[data-cancel]', function (e) {
+                apagaCampos(id);
+            });
+
+            //Salvar o campo editado ou cria um novo
+            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+                openLoader();
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined'))
+                    atualizaValoresDoObjeto(obj, formdata);
+                else
+                    obj = formdata;
+
+                Save(obj);
+            });
+        },
+    };
+</script>

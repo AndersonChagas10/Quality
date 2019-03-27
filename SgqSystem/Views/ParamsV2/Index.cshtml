@@ -1,4 +1,8 @@
-﻿<style>
+﻿@{ 
+    ViewBag.Title = "Nova parametrização";
+}
+
+<style>
     button {
         cursor: pointer;
     }
@@ -223,11 +227,11 @@
                                             Avaliação e Amostra
                                         </a>
                                     </li>
-                                    <li>
+                                    @*<li>
                                         <a href="#l2_cabecalho" data-toggle="tab">
                                             Cabeçalhos no monitoramento
                                         </a>
-                                    </li>
+                                    </li>*@
                                     <li>
                                         <a href="#l2_contador" data-toggle="tab">
                                             Contadores
@@ -246,9 +250,9 @@
                                     <div class="tab-pane" id="l2_avam">
                                         @Html.Partial("ParL2Avam")
                                     </div>
-                                    <div class="tab-pane" id="l2_cabecalho">
+                                    @*<div class="tab-pane" id="l2_cabecalho">
                                         @Html.Partial("ParL2Cabecalho")
-                                    </div>
+                                    </div>*@
                                     <div class="tab-pane" id="l2_contador">
                                         @Html.Partial("ParL2Contador")
                                     </div>
@@ -319,6 +323,7 @@
 
     let setSelectLevel1 = function (data) {
         preencheSelect('selectL1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
+        preencheSelect('selectL1ParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
         getSelectsL1();
     }
 
@@ -368,7 +373,7 @@
         });
     }
 
-    let preencheCampos = function (div_id, prefix, obj) {
+    let preencheCampos = function (div_id, prefix, obj, preencheId) {
 
         $(Object.keys(obj)).each(function (i, o) {
 
@@ -379,7 +384,8 @@
 
         });
 
-        $(`#${div_id} input[data-id]`).val(obj.Id);
+        if(preencheId == true)
+            $(`#${div_id} input[data-id]`).val(obj.Id);
 
     }
 
@@ -442,7 +448,7 @@
                 contentType: "application/json",
                 success: function (data) {
 
-                    preencheCampos('l1', '', data.Parlevel1)
+                    preencheCampos('l1', '', data.Parlevel1, true)
                     parL1Processo.load(data.Parlevel1.ParLevel1XCluster);
                     parL1Cabecalho.load(data.ParLevel1XHeaderFields);
                     verifyTabs('selectL1', 'l1');
@@ -473,7 +479,8 @@
                 contentType: "application/json",
                 success: function (data) {
                     console.table(data);
-                    preencheCampos('l2', '', data.Parlevel2)
+                    preencheCampos('l2', '', data.Parlevel2, true)
+                    parL2Avam.load(data.Parlevel2.ParEvaluation);
                     verifyTabs('selectL2', 'l2');
                 },
                 error: function (request, error) {
@@ -498,7 +505,7 @@
                 data: {},
                 contentType: "application/json",
                 success: function (data) {
-                    preencheCampos('l3', '', data.Parlevel3)
+                    preencheCampos('l3', '', data.Parlevel3, true)
                     verifyTabs('selectL3', 'l3');
                 },
                 error: function (request, error) {
@@ -526,6 +533,10 @@
                 preencheSelect('selectParScoreType', 'Name', 'Id', data.ParScoreTypes, 'Selecione o tipo de Score');
                 preencheSelect('selectL1ParLevelDefiniton', 'Name', 'Id', data.ParLevelDefinitons, 'Selecione...');
                 preencheSelect('selectL1ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione...');
+
+                preencheSelect('selectL2AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
+                preencheSelect('selectL2ParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione...');
+                
 
             },
             error: function (request, error) {

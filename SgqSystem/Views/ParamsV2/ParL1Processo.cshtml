@@ -95,6 +95,7 @@
         load: function (parLevel1XCluster) {
 
             let id = this.id;
+            let urlSave = this.urlSave;
 
             apagaCampos(id);
 
@@ -118,7 +119,7 @@
             function Save(obj) {
 
                 $.ajax({
-                    url: this.urlSave,
+                    url: urlSave,
                     type: 'POST',
                     dataType: "json",
                     data: JSON.stringify(obj),
