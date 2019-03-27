@@ -1,1 +1,197 @@
 ﻿<h4>Campos de Cabeçalho</h4>
+
+<form id="ParL1Cabecalho">
+
+    <br />
+    <div class="row" data-form>
+
+        <div class="col-sm-3">
+
+            <input type="hidden" name="ParLevel1_Id" data-id />
+            <input type="hidden" name="IsActive" value="true" data-notnull />
+
+            <div class="form-group">
+                <label for="ParCluster_Id">Nível do campo:</label>
+                <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12" name="ParLevelDefiniton_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-3">
+
+            <div class="form-group">
+                <label for="ParCriticalLevel_Id">Tipo:</label>
+                <select id="selectL1ParFieldType" class="input input-lg col-sm-12" name="ParFieldType_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-3">
+
+            <div class="form-group">
+                <label for="EffectiveDate">Nome do campo:</label>
+                <input type="text" class="form-control" id="Name" name="Name">
+            </div>
+
+        </div>
+
+        <div class="col-sm-2">
+
+            <div class="form-group">
+                <label for="Points">Link com a avaliação :</label>
+                <br />
+                <div class="">
+                    <label class="switch">
+                        <input type="checkbox" name="LinkNumberEvaluation">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-1">
+
+            <div class="form-group" data-action>
+                <label></label>
+                <button class="form-control btn btn-primary" data-add>+</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="tableParL1Cabecalho" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-sm-3">
+                            Nível do campo
+                        </th>
+                        <th class="col-sm-3">
+                            Nome
+                        </th>
+                        <th class="col-sm-2">
+                            Tipo
+                        </th>
+                        <th class="col-sm-2">
+                            Vizualização
+                        </th>
+                        <th class="col-sm-2">
+                            Obrigatório
+                        </th>
+                        <th class="col-sm-2">
+                            padrão
+                        </th>
+                        <th class="col-sm-2">
+                            Ação
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    var parL1Cabecalho = {
+
+        //paramtros
+        id: 'ParL1Cabecalho',
+        urlSave: '@Url.Action("PostParHeaderField", "api/ParLevel1Api")',
+
+        load: function (ParLevel1XHeaderFields) {
+
+            let id = this.id;
+
+            apagaCampos(id);
+
+            $('table#table' + id + ' tbody').html('');
+
+            $(ParLevel1XHeaderFields).each(function (i, o) {
+
+                var html = '<tr>';
+                html += '<td>' + o.ParHeaderField.ParLevelDefiniton.Name + '</td>';
+                html += '<td>' + o.ParHeaderField.Name + '</td>';
+                html += '<td>' + o.ParHeaderField.ParFieldType.Name + '</td>';
+                html += '<td></td>';
+                html += '<td>' + o.IsRequired + '</td>';
+                html += '<td></td>';
+                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
+                html += '</tr>';
+
+                $('table#table' + id + ' tbody').append(html);
+                $('table#table' + id + ' tbody tr:last').data('sgq', o);
+
+            });
+
+            function Save(obj) {
+
+                $.ajax({
+                    url: this.urlSave,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Feito", "Dados Salvos");
+                        $('#selectL1').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
+            }
+
+            $('#' + id).off('click');
+
+            //Adicionar os dados no data-form
+            $('#' + id).on('click', '[data-table-edit]', function (e) {
+
+                var obj = $(this).parents('tr').data('sgq');
+
+                apagaCampos(id);
+                preencheCampos(id + ' [data-form]', '', obj);
+
+                $('#' + id + ' [data-form]').data('sgq', obj);
+                $('#' + id + ' [data-form]').addClass('alert alert-success');
+                $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
+
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+
+            });
+
+            //Adicionar os dados no data-form
+            $('#' + id).on('click', '[data-table-delete]', function (e) {
+                var obj = $(this).parents('tr').data('sgq');
+                obj.IsActive = false;
+                Save(obj);
+            });
+
+            $('#' + id).on('click', '[data-cancel]', function (e) {
+                apagaCampos(id);
+            });
+
+            //Salvar o campo editado ou cria um novo
+            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+                openLoader();
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined'))
+                    atualizaValoresDoObjeto(obj, formdata);
+                else
+                    obj = formdata;
+
+                Save(obj);
+            });
+        },
+    };
+</script>
