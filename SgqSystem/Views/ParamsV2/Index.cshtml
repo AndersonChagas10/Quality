@@ -1,5 +1,5 @@
 ﻿<style>
-    button{
+    button {
         cursor: pointer;
     }
 
@@ -187,7 +187,7 @@
                                 </ul>
                             </div>
                             <div class="col-xs-9">
-                                <div class="tab-content">                                   
+                                <div class="tab-content">
                                     <div class="tab-pane active" id="l1_geral">
                                         @Html.Partial("ParL1Geral")
                                     </div>
@@ -402,7 +402,12 @@
 
             if (element.prop('type') == "checkbox") {
                 element.prop('checked', value);
-            } else {
+            }
+            else if (element.prop('type') == "date") {
+                if (value)
+                    element.val(value.split("T")[0]);
+            }
+            else {
                 element.val(value);
             }
 
@@ -549,7 +554,7 @@
 
             case 2: //Itens Avançados
                 formdata = $('#ParL1Avancados').serializeFormToObjetc();
-                saveUrl = '@Url.Action("PostParLevel1Avancados", "api/ParLevel1Api")';    
+                saveUrl = '@Url.Action("PostParLevel1Avancados", "api/ParLevel1Api")';
                 break;
 
             case 3: //Campos Cabeçalho
@@ -565,7 +570,7 @@
 
             default:
         }
-        
+
         //fazer metodo para chamar o ajax para salvar
         $.ajax({
             url: saveUrl,
@@ -583,7 +588,7 @@
             }
         });
     }
-  
+
     let enableItensParLevel1 = function () {
 
         $('#itensAvancados').prop('disabled', false);

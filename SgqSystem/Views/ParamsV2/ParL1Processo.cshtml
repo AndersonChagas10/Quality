@@ -89,16 +89,16 @@
     var parL1Processo = {
 
         //paramtros
-        idProcesso: 'ParL1Processo',
+        id: 'ParL1Processo',
         urlSave: '@Url.Action("PostParLevel1XCluster", "api/ParLevel1Api")',
 
         load: function (parLevel1XCluster) {
 
-            let idProcesso = this.idProcesso;
+            let id = this.id;
 
-            apagaCampos(idProcesso);
+            apagaCampos(id);
 
-            $('table#table' + idProcesso + ' tbody').html('');
+            $('table#table' + id + ' tbody').html('');
           
             $(parLevel1XCluster).each(function (i, o) {
 
@@ -110,8 +110,8 @@
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
 
-                $('table#table' + idProcesso + ' tbody').append(html);
-                $('table#table' + idProcesso + ' tbody tr:last').data('sgq', o);
+                $('table#table' + id + ' tbody').append(html);
+                $('table#table' + id + ' tbody tr:last').data('sgq', o);
 
             });
 
@@ -137,41 +137,41 @@
                 });
             }
 
-            $('#' + idProcesso).off('click');
+            $('#' + id).off('click');
 
             //Adicionar os dados no data-form
-            $('#' + idProcesso).on('click', '[data-table-edit]', function (e) {
+            $('#' + id).on('click', '[data-table-edit]', function (e) {
 
                 var obj = $(this).parents('tr').data('sgq');
 
-                apagaCampos(idProcesso);               
-                preencheCampos(idProcesso + ' [data-form]', '', obj);
+                apagaCampos(id);               
+                preencheCampos(id + ' [data-form]', '', obj);
 
-                $('#' + idProcesso + ' [data-form]').data('sgq', obj);
-                $('#' + idProcesso + ' [data-form]').addClass('alert alert-success');
-                $('#' + idProcesso + ' [data-form] [data-action] [data-add]').addClass('hide');
+                $('#' + id + ' [data-form]').data('sgq', obj);
+                $('#' + id + ' [data-form]').addClass('alert alert-success');
+                $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
 
-                $('#' + idProcesso + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
-                $('#' + idProcesso + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
 
             });
 
             //Adicionar os dados no data-form
-            $('#' + idProcesso).on('click', '[data-table-delete]', function (e) {
+            $('#' + id).on('click', '[data-table-delete]', function (e) {
                 var obj = $(this).parents('tr').data('sgq');
                 obj.IsActive = false;
                 Save(obj);
             });
 
-            $('#' + idProcesso).on('click', '[data-cancel]', function (e) {
-                apagaCampos(idProcesso);
+            $('#' + id).on('click', '[data-cancel]', function (e) {
+                apagaCampos(id);
             });
 
             //Salvar o campo editado ou cria um novo
-            $('#' + idProcesso).on('click', '[data-edit],[data-add]', function (e) {
+            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
                 openLoader();
-                var obj = $('#' + idProcesso + ' [data-form]').data('sgq');
-                var formdata = $('#' + idProcesso + ' [data-form]').serializeFormToObjetc();
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
                 if (!(typeof (obj) == 'undefined'))
                     atualizaValoresDoObjeto(obj, formdata);
