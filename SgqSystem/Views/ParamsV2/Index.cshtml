@@ -327,12 +327,14 @@
         preencheSelect('selectL1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
         preencheSelect('selectL2AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
         preencheSelect('selectL3AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
+        preencheSelect('selectL3PesoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
         getSelectsL1();
     }
 
     let setSelectLevel2 = function (data) {
         preencheSelect('selectL2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento', preencheL2);
         preencheSelect('selectL3AvamParLevel2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento', preencheL2);
+        preencheSelect('selectL3PesoParLevel2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento', preencheL2);
         //getSelectsL2();
     }
 
@@ -518,6 +520,7 @@
                 success: function (data) {
                     preencheCampos('l3', '', data.Parlevel3, true)
                     parL3Avam.load(data.Parlevel3.ParLevel3EvaluationSample);
+                    ParL3Peso.load(data.Parlevel3.ParVinculoPeso);
                     verifyTabs('selectL3', 'l3');
                 },
                 error: function (request, error) {
@@ -551,6 +554,13 @@
 
                 preencheSelect('selectL3AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL3AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione...');
+
+
+                preencheSelect('selectL3PesoPesoCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
+                preencheSelect('selectL3PesoParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione...');
+                preencheSelect('selectL3PesoCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
+                preencheSelect('selectL3PesoParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione...');
+                preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione o Cluster');
 
 
             },

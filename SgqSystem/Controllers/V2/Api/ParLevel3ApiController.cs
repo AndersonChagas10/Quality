@@ -52,10 +52,15 @@ namespace SgqSystem.Controllers.V2.Api
                 }
 
                 parlevel3Result.Parlevel3 = parLevel3;
-                parlevel3Result.Parlevel3.ParLevel3EvaluationSample = 
+                parlevel3Result.Parlevel3.ParLevel3EvaluationSample =
                     db.ParLevel3EvaluationSample
                     .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
                     .ToList();
+                parlevel3Result.Parlevel3.ParVinculoPeso =
+                    db.ParVinculoPeso
+                    .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
+                    .ToList();
+                
             }
 
             return Ok(parlevel3Result);
@@ -116,6 +121,59 @@ namespace SgqSystem.Controllers.V2.Api
                     {
                         parLevel3EvaluationSample.EvaluationInterval = "";
                         db.ParLevel3EvaluationSample.Add(parLevel3EvaluationSample);
+                    }
+
+                    db.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("PostParVinculoPeso")]
+        public IHttpActionResult PostParVinculoPeso(ParVinculoPeso parVinculoPeso)
+        {
+            if (!SaveOrUpdateParVinculoPeso(parVinculoPeso))
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+
+        private bool SaveOrUpdateParVinculoPeso(ParVinculoPeso parVinculoPeso)
+        {
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (parVinculoPeso.Id > 0)
+                    {
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var parVinculoPesoOld = db.ParVinculoPeso.Find(parVinculoPeso.Id);
+                        parVinculoPesoOld.Peso = parVinculoPeso.Peso;
+                        parVinculoPesoOld.ParCompany_Id = parVinculoPeso.ParCompany_Id;
+                        parVinculoPesoOld.ParDepartment_Id = parVinculoPeso.ParDepartment_Id;
+                        parVinculoPesoOld.ParLevel1_Id = parVinculoPeso.ParLevel1_Id;
+                        parVinculoPesoOld.ParLevel2_Id = parVinculoPeso.ParLevel2_Id;
+                        parVinculoPesoOld.ParLevel3_Id = parVinculoPeso.ParLevel3_Id;
+                        parVinculoPesoOld.ParGroupParLevel1_Id = parVinculoPeso.ParGroupParLevel1_Id;
+                        parVinculoPesoOld.IsActive = parVinculoPeso.IsActive;
+                    }
+                    else
+                    {
+                        parVinculoPeso.Name = "";
+                        db.ParVinculoPeso.Add(parVinculoPeso);
                     }
 
                     db.SaveChanges();
