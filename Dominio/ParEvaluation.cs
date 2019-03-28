@@ -17,6 +17,8 @@ namespace Dominio
 
         public int Number { get; set; }
 
+        public int? Sample { get; set; }
+
         public bool IsActive { get; set; }
 
         public int? ParLevel1_Id { get; set; }

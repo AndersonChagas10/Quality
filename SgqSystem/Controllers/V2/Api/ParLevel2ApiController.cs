@@ -51,6 +51,7 @@ namespace SgqSystem.Controllers.V2.Api
                 }
 
                 parlevel1Result.Parlevel2 = parLevel2;
+                parlevel1Result.Parlevel2.ParEvaluation = db.ParEvaluation.Where(x => x.IsActive && x.ParLevel2_Id == parLevel2.Id).ToList();
             }
 
             return Ok(parlevel1Result);
@@ -73,6 +74,57 @@ namespace SgqSystem.Controllers.V2.Api
         public class ParLevel2Selects
         {
             public List<ParLevel2> ParLevels2 { get; set; }
+        }
+
+
+        [HttpPost]
+        [Route("PostParEvaluation")]
+        public IHttpActionResult PostParEvaluation(ParEvaluation parEvaluation)
+        {
+            if (!SaveOrUpdateParEvaluation(parEvaluation))
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+
+        private bool SaveOrUpdateParEvaluation(ParEvaluation parEvaluation)
+        {
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (parEvaluation.Id > 0)
+                    {
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var parEvaluationOld = db.ParEvaluation.Find(parEvaluation.Id);
+                        parEvaluationOld.Number = parEvaluation.Number;
+                        parEvaluationOld.Sample = parEvaluation.Sample;
+                        parEvaluationOld.ParLevel1_Id = parEvaluation.ParLevel1_Id;
+                        parEvaluationOld.ParLevel2_Id = parEvaluation.ParLevel2_Id;
+                        parEvaluationOld.ParCluster_Id = parEvaluation.ParCluster_Id;
+                        parEvaluationOld.ParCompany_Id = parEvaluation.ParCompany_Id;
+                        parEvaluationOld.IsActive = parEvaluation.IsActive;
+                    }
+                    else
+                    {
+                        db.ParEvaluation.Add(parEvaluation);
+                    }
+
+                    db.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+
+                    return false;
+                }
+
+                return true;
+            }
         }
 
     }

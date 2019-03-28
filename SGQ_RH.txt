@@ -1,0 +1,7 @@
+Insert into MigrationHistory (Name, AddDate) VALUES ('Criar_ParLevel2EvaluationSample',GetDate())
+
+
+IF COL_LENGTH('ParEvaluation','Sample') IS NULL
+    BEGIN	
+		ALTER TABLE ParEvaluation ADD Sample int null;
+    END

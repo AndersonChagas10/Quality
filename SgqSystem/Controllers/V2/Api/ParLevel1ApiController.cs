@@ -49,6 +49,9 @@ namespace SgqSystem.Controllers.V2.Api
                 parLevel1Selects.ParFieldTypes = db.ParFieldType.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParLevelDefinitons = db.ParLevelDefiniton.Where(x => x.IsActive).ToList();
 
+                //Avam
+                parLevel1Selects.ParCompanys = db.ParCompany.Where(x => x.IsActive).ToList();
+
             }
 
             return Ok(parLevel1Selects);
@@ -356,6 +359,8 @@ namespace SgqSystem.Controllers.V2.Api
             public List<ParConsolidationType> ParConsolidationTypes { get; set; }
             public List<ParFrequency> ParFrequencies { get; set; }
             public List<ParScoreType> ParScoreTypes { get; set; }
+
+            public List<ParCompany> ParCompanys { get; set; }
         }
 
         public class SaveParHeaderField {
