@@ -325,12 +325,14 @@
 
     let setSelectLevel1 = function (data) {
         preencheSelect('selectL1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
-        preencheSelect('selectL1ParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
+        preencheSelect('selectL2AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
+        preencheSelect('selectL3AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador', preencheL1);
         getSelectsL1();
     }
 
     let setSelectLevel2 = function (data) {
         preencheSelect('selectL2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento', preencheL2);
+        preencheSelect('selectL3AvamParLevel2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento', preencheL2);
         //getSelectsL2();
     }
 
@@ -515,6 +517,7 @@
                 contentType: "application/json",
                 success: function (data) {
                     preencheCampos('l3', '', data.Parlevel3, true)
+                    parL3Avam.load(data.Parlevel3.ParLevel3EvaluationSample);
                     verifyTabs('selectL3', 'l3');
                 },
                 error: function (request, error) {
@@ -544,7 +547,10 @@
                 preencheSelect('selectL1ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione...');
 
                 preencheSelect('selectL2AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
-                preencheSelect('selectL2ParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione...');
+                preencheSelect('selectL2AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione...');
+
+                preencheSelect('selectL3AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
+                preencheSelect('selectL3AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione...');
 
 
             },

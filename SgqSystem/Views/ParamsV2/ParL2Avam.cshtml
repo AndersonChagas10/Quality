@@ -12,7 +12,7 @@
 
             <div class="form-group">
                 <label for="ParCompany_Id">Empresa:</label>
-                <select id="selectL2ParCompany" class="input input-lg col-sm-12"
+                <select id="selectL2AvamParCompany" class="input input-lg col-sm-12"
                         name="ParCompany_Id"></select>
             </div>
 
@@ -22,7 +22,7 @@
 
             <div class="form-group">
                 <label for="ParLevel1_Id">Indicador:</label>
-                <select id="selectL1ParLevel1" class="input input-lg col-sm-12"
+                <select id="selectL2AvamParLevel1" class="input input-lg col-sm-12"
                         name="ParLevel1_Id"></select>
             </div>
 
@@ -116,9 +116,9 @@
             $(list).each(function (i, o) {
                 
                 var html = '<tr>';
-                html += '<td>' + valorDoSelect('select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
-                html += '<td>' + o.ParLevel1_Id + '</td>';
-                html += '<td>' + o.ParCluster_Id + '</td>';
+                html += '<td>' + valorDoSelect('#ParL2Avam select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL2Avam select[name="ParLevel1_Id"]', o.ParLevel1_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL2Avam select[name="ParCluster_Id"]', o.ParCluster_Id, 'Todos') + '</td>';
                 html += '<td>' + o.Number + '</td>';
                 html += '<td>' + o.Sample + '</td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';

@@ -27,7 +27,7 @@ namespace SgqSystem.Controllers.V2.Api
                 db.Configuration.LazyLoadingEnabled = false;
                 parLevel3Selects.ParLevels3 = db.ParLevel3.ToList();
                 parLevel3Selects.ParFieldTypes = db.ParFieldType.Where(x => x.IsActive).ToList();
-            }
+           }
 
             return Ok(parLevel3Selects);
         }
@@ -52,6 +52,10 @@ namespace SgqSystem.Controllers.V2.Api
                 }
 
                 parlevel3Result.Parlevel3 = parLevel3;
+                parlevel3Result.Parlevel3.ParLevel3EvaluationSample = 
+                    db.ParLevel3EvaluationSample
+                    .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
+                    .ToList();
             }
 
             return Ok(parlevel3Result);
@@ -75,6 +79,56 @@ namespace SgqSystem.Controllers.V2.Api
         {
             public List<ParLevel3> ParLevels3 { get; set; }
             public List<ParFieldType> ParFieldTypes { get; set; }
+        }
+
+        [HttpPost]
+        [Route("PostParEvaluationSample")]
+        public IHttpActionResult PostParEvaluation(ParLevel3EvaluationSample parLevel3EvaluationSample)
+        {
+            if (!SaveOrUpdateParLevel3EvaluationSample(parLevel3EvaluationSample))
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+
+        private bool SaveOrUpdateParLevel3EvaluationSample(ParLevel3EvaluationSample parLevel3EvaluationSample)
+        {
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (parLevel3EvaluationSample.Id > 0)
+                    {
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var parEvaluationOld = db.ParLevel3EvaluationSample.Find(parLevel3EvaluationSample.Id);
+                        parEvaluationOld.EvaluationNumber = parLevel3EvaluationSample.EvaluationNumber;
+                        parEvaluationOld.SampleNumber = parLevel3EvaluationSample.SampleNumber;
+                        parEvaluationOld.ParLevel1_Id = parLevel3EvaluationSample.ParLevel1_Id;
+                        parEvaluationOld.ParLevel2_Id = parLevel3EvaluationSample.ParLevel2_Id;
+                        parEvaluationOld.ParCompany_Id = parLevel3EvaluationSample.ParCompany_Id;
+                        parEvaluationOld.IsActive = parLevel3EvaluationSample.IsActive;
+                    }
+                    else
+                    {
+                        parLevel3EvaluationSample.EvaluationInterval = "";
+                        db.ParLevel3EvaluationSample.Add(parLevel3EvaluationSample);
+                    }
+
+                    db.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+
+                    return false;
+                }
+
+                return true;
+            }
         }
     }
 }
