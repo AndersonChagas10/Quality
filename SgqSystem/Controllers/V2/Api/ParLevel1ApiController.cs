@@ -80,7 +80,8 @@ namespace SgqSystem.Controllers.V2.Api
                 var headerFieldsId = parlevel1Result.ParLevel1XHeaderFields.Select(xx => xx.ParHeaderField_Id).ToList();
                 parlevel1Result.ParHeaderFields = db.ParHeaderField.Where(x => x.IsActive && headerFieldsId.Contains(x.Id))
                     .Include(x => x.ParLevelDefiniton)
-                    .Include(x => x.ParFieldType).ToList();
+                    .Include(x => x.ParFieldType)
+                    .Include(x => x.ParMultipleValues).ToList();
             }
 
             return Ok(parlevel1Result);
@@ -227,12 +228,13 @@ namespace SgqSystem.Controllers.V2.Api
                     else
                     {
                         parHeaderField.AddDate = DateTime.Now;
+                        parHeaderField.Description = "";
                         db.ParHeaderField.Add(parHeaderField);
                     }
 
                     db.SaveChanges();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return 0;
                 }
