@@ -187,10 +187,12 @@
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
-                if (!(typeof (obj) == 'undefined'))
-                    atualizaValoresDoObjeto(obj, formdata);
-                else
-                    obj = formdata;
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
 
                 Save(obj);
             });

@@ -3,13 +3,14 @@
 <form id="ParL1Geral">
 
     <br />
-    <div class="row">
+    <div class="row" data-form>
+
+        <input type="hidden" name="Id"/>
 
         <div class="col-sm-6">
 
             <div class="form-group">
                 <label>Nome:</label>
-                <input type="text" class="form-control" id="Id" name="Id" style="display:none">
                 <input type="text" class="form-control" id="Name" name="Name">
             </div>
 
@@ -65,7 +66,7 @@
 
         <div class="col-sm-12">
 
-            <button class="btn btn-primary pull-right btn-lg btn-block" onclick="save(1);">Salvar</button>
+            <button class="btn btn-primary pull-right btn-lg btn-block" data-add>Salvar</button>
 
         </div>
     </div>
@@ -73,32 +74,59 @@
 </form>
 
 <script>
-    @*$("body").on("submit", "form#ParL1Geral", function (event) {
-        var form = [];
-        $($(this).find('input')).each(function (i, o) {
-            form.push(
-                {
-                    "Identificador": $(o).attr('name'),
-                    "MEPropriedadeXGadget_Id": $(o).attr('data-prop-gadget'),
-                    "MEParametroXCubo_Id": $(o).attr('data-param-cubo'),
-                    "Valore": $(o).val(),
-                }
-            );
-        });
+    var ParL1Geral = {
 
-        $.ajax({
-            url: '@Url.Action("PostValues", "api/MESketchXGadgets")',
-            type: 'Post',
-            dataType: "json",
-            data: JSON.stringify(form),
-            contentType: "application/json",
-            success: function (data) {
-                alert('cadastro realizado com sucesso');
-            },
-            error: function (request, error) {
-                alert("Request: " + JSON.stringify(request));
+        //paramtros
+        id: 'ParL1Geral',
+        urlSave: '@Url.Action("PostParLevel1", "api/ParLevel1Api")',
+
+        set: function (obj) {
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+        },
+
+        load: function () {
+
+            let id = this.id;
+            let urlSave = this.urlSave;
+
+            function Save(obj) {
+
+                $.ajax({
+                    url: urlSave,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Feito", "Dados Salvos");
+                        $('#selectL1').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
             }
-        });
-        event.preventDefault();
-    });*@
+
+            //Salvar o campo editado ou cria um novo
+            $('#' + id).on('click', '[data-add]', function (e) {
+                openLoader();
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                Save(obj);
+            });
+        },
+    };
+    ParL1Geral.load();
 </script>

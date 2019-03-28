@@ -78,6 +78,55 @@ namespace SgqSystem.Controllers.V2.Api
 
 
         [HttpPost]
+        [Route("PostParLevel2")]
+        public IHttpActionResult PostParLevel2(ParLevel2 parLevel2)
+        {
+            if (!SaveOrUpdateParLevel2(parLevel2))
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+
+        private bool SaveOrUpdateParLevel2(ParLevel2 parLevel2)
+        {
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (parLevel2.Id > 0)
+                    {
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var parLevel2Old = db.ParLevel2.Find(parLevel2.Id);
+                        parLevel2Old.Name = parLevel2.Name;
+                        parLevel2Old.Description = parLevel2.Description;
+                        parLevel2Old.ParFrequency_Id = parLevel2.ParFrequency_Id;
+                        parLevel2Old.IsActive = parLevel2.IsActive;
+                        parLevel2Old.HasGroupLevel3 = parLevel2.HasGroupLevel3;
+                        parLevel2Old.HasTakePhoto = parLevel2.HasTakePhoto;
+                    }
+                    else
+                    {
+                        db.ParLevel2.Add(parLevel2);
+                    }
+
+                    db.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        [HttpPost]
         [Route("PostParEvaluation")]
         public IHttpActionResult PostParEvaluation(ParEvaluation parEvaluation)
         {

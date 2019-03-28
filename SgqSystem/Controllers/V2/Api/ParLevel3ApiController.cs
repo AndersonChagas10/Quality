@@ -60,7 +60,11 @@ namespace SgqSystem.Controllers.V2.Api
                     db.ParVinculoPeso
                     .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
                     .ToList();
-                
+                parlevel3Result.Parlevel3.ParLevel3Value =
+                    db.ParLevel3Value
+                    .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
+                    .ToList();
+
             }
 
             return Ok(parlevel3Result);
@@ -84,6 +88,54 @@ namespace SgqSystem.Controllers.V2.Api
         {
             public List<ParLevel3> ParLevels3 { get; set; }
             public List<ParFieldType> ParFieldTypes { get; set; }
+        }
+
+
+        [HttpPost]
+        [Route("PostParLevel3")]
+        public IHttpActionResult PostParLevel3(ParLevel3 parLevel3)
+        {
+            if (!SaveOrUpdateParLevel3(parLevel3))
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+
+        private bool SaveOrUpdateParLevel3(ParLevel3 parLevel3)
+        {
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (parLevel3.Id > 0)
+                    {
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var parLevel2Old = db.ParLevel3.Find(parLevel3.Id);
+                        parLevel2Old.Name = parLevel3.Name;
+                        parLevel2Old.Description = parLevel3.Description;
+                        parLevel2Old.IsActive = parLevel3.IsActive;
+                        parLevel2Old.HasTakePhoto = parLevel3.HasTakePhoto;
+                    }
+                    else
+                    {
+                        db.ParLevel3.Add(parLevel3);
+                    }
+
+                    db.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+
+                    return false;
+                }
+
+                return true;
+            }
         }
 
         [HttpPost]
@@ -174,6 +226,61 @@ namespace SgqSystem.Controllers.V2.Api
                     {
                         parVinculoPeso.Name = "";
                         db.ParVinculoPeso.Add(parVinculoPeso);
+                    }
+
+                    db.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        [HttpPost]
+        [Route("PostParTipoDado")]
+        public IHttpActionResult PostParTipoDado(ParLevel3Value parLevel3Value)
+        {
+            if (!SaveOrUpdateParLevel3Value(parLevel3Value))
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+
+        private bool SaveOrUpdateParLevel3Value(ParLevel3Value parLevel3Value)
+        {
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (parLevel3Value.Id > 0)
+                    {
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var parVinculoPesoOld = db.ParLevel3Value.Find(parLevel3Value.Id);
+                        parVinculoPesoOld.ParLevel3InputType_Id = parLevel3Value.ParLevel3InputType_Id;
+                        parVinculoPesoOld.ParCompany_Id = parLevel3Value.ParCompany_Id;
+                        parVinculoPesoOld.ParLevel1_Id = parLevel3Value.ParLevel1_Id;
+                        parVinculoPesoOld.ParLevel2_Id = parLevel3Value.ParLevel2_Id;
+                        parVinculoPesoOld.ParLevel3_Id = parLevel3Value.ParLevel3_Id;
+                        parVinculoPesoOld.ParLevel3BoolTrue_Id = parLevel3Value.ParLevel3BoolTrue_Id;
+                        parVinculoPesoOld.ParLevel3BoolFalse_Id = parLevel3Value.ParLevel3BoolFalse_Id;
+                        parVinculoPesoOld.ParMeasurementUnit_Id = parLevel3Value.ParMeasurementUnit_Id;
+                        parVinculoPesoOld.IntervalMin = parLevel3Value.IntervalMin;
+                        parVinculoPesoOld.IntervalMax = parLevel3Value.IntervalMax;
+                        parVinculoPesoOld.DynamicValue = parLevel3Value.DynamicValue;
+                        parVinculoPesoOld.IsActive = parLevel3Value.IsActive;
+                    }
+                    else
+                    {
+                        db.ParLevel3Value.Add(parLevel3Value);
                     }
 
                     db.SaveChanges();
