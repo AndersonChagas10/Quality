@@ -143,14 +143,17 @@ namespace SgqSystem.Controllers.V2.Api
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        //Estava fazendo isso, não sei se está certo
         [HttpPost]
-        [Route("PostParLevel1XHeaderField")]
-        public IHttpActionResult PostParLevel1XHeaderField(ParLevel1XHeaderField parLevel1XHeaderField)
+        [Route("PostParHeaderField2")]
+        public IHttpActionResult PostParLevel1XHeaderField(ParHeaderField parHeaderField)
         {
-            SaveOrUpdateParLevel1XHeaderField(parLevel1XHeaderField, 0, 0);
+            SaveOrUpdateParHeaderField(parHeaderField);
+            SaveOrUpdateParMultipleValues(parHeaderField);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+        //fim
 
         [HttpPost]
         [Route("PostParLevel1XCluster")]
@@ -349,7 +352,7 @@ namespace SgqSystem.Controllers.V2.Api
             }
         }
 
-        private bool SaveParMultipleValues(ParHeaderField parHeaderField)
+        private bool SaveOrUpdateParMultipleValues(ParHeaderField parHeaderField)
         {
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {

@@ -344,6 +344,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+                
                 openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
@@ -362,7 +363,7 @@
                         obj['ParMultipleValues'].push($(o).data('sgq'))
                     });
 
-                Save({ ParLevel1_Id: $('#Id').val(), ParHeaderField: obj });
+                Save(obj);
             });
 
             this.showTableParMultipleValues();
