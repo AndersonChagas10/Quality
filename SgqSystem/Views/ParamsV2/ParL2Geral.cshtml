@@ -1,9 +1,9 @@
 ﻿<h4>Informações Gerais</h4>
 
-<form id="ParL1Geral">
+<form id="ParL2Geral">
 
     <br />
-    <div class="row">
+    <div class="row" data-form>
         <div class="col-sm-6">
 
             <div class="form-group">
@@ -46,9 +46,67 @@
 
         <div class="col-sm-12">
 
-            <button class="btn btn-primary pull-right btn-lg btn-block">Salvar</button>
+            <button class="btn btn-primary pull-right btn-lg btn-block" data-add>Salvar</button>
 
         </div>
     </div>
 
 </form>
+
+<script>
+    var ParL2Geral = {
+
+        //paramtros
+        id: 'ParL2Geral',
+        urlSave: '@Url.Action("PostParLevel2", "api/ParLevel2Api")',
+
+        set: function (obj) {
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+        },
+
+        load: function () {
+
+            let id = this.id;
+            let urlSave = this.urlSave;
+
+            function Save(obj) {
+
+                $.ajax({
+                    url: urlSave,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Feito", "Dados Salvos");
+                        $('#selectL2').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
+            }
+
+            //Salvar o campo editado ou cria um novo
+            $('#' + id).on('click', '[data-add]', function (e) {
+                openLoader();
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                Save(obj);
+            });
+        },
+    };
+    ParL2Geral.load();
+</script>

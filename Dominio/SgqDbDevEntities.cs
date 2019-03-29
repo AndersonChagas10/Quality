@@ -1417,6 +1417,6 @@ namespace Dominio
             //    .IsFixedLength();
         }
 
-        public System.Data.Entity.DbSet<Dominio.ParVinculoPeso> ParGroupParLevel1XParLevel3 { get; set; }
+        public System.Data.Entity.DbSet<Dominio.ParVinculoPeso> ParVinculoPeso { get; set; }
     }
 }

@@ -52,6 +52,17 @@ namespace SgqSystem.Controllers.V2.Api
                 //Avam
                 parLevel1Selects.ParCompanys = db.ParCompany.Where(x => x.IsActive).ToList();
 
+                //Tipo dado entrada
+                parLevel1Selects.ParLevel3InputTypes = db.ParLevel3InputType.Where(x => x.IsActive).ToList();
+                parLevel1Selects.ParLevel3BoolFalses = db.ParLevel3BoolFalse.Where(x => x.IsActive).ToList();
+                parLevel1Selects.ParLevel3BoolTrues = db.ParLevel3BoolTrue.Where(x => x.IsActive).ToList();
+                parLevel1Selects.ParMeasurementUnits = db.ParMeasurementUnit.Where(x => x.IsActive).ToList();
+
+
+                //Peso
+                parLevel1Selects.ParDepartments = db.ParDepartment.Where(x => x.Active).ToList();
+                parLevel1Selects.ParGroupParLevel1s = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
+
             }
 
             return Ok(parLevel1Selects);
@@ -410,6 +421,15 @@ namespace SgqSystem.Controllers.V2.Api
             public List<ParScoreType> ParScoreTypes { get; set; }
 
             public List<ParCompany> ParCompanys { get; set; }
+            public List<ParDepartment> ParDepartments { get; set; }
+            public List<ParGroupParLevel1> ParGroupParLevel1s { get; set; }
+
+            public List<ParLevel3InputType> ParLevel3InputTypes { get; set; }
+            public List<ParLevel3BoolTrue> ParLevel3BoolTrues { get; set; }
+            public List<ParLevel3BoolFalse> ParLevel3BoolFalses { get; set; }
+            public List<ParMeasurementUnit> ParMeasurementUnits { get; set; }
+
+
         }
 
         public class SaveParHeaderField
