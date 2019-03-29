@@ -93,7 +93,12 @@ namespace SgqSystem.Controllers.V2.Api
 
                 foreach (var item in parLevel1.ParLevel1XHeaderField)
                 {
-                    item.ParHeaderField = db.ParHeaderField.Where(x => x.IsActive == true && x.Id == item.ParHeaderField_Id).Include(x => x.ParLevelDefiniton).Include(x => x.ParFieldType).FirstOrDefault();               
+                    item.ParHeaderField = db.ParHeaderField
+                        .Where(x => x.IsActive == true && x.Id == item.ParHeaderField_Id)
+                        .Include(x => x.ParLevelDefiniton)
+                        .Include(x => x.ParFieldType)
+                        .FirstOrDefault();
+                    item.ParHeaderField.ParMultipleValues = db.ParMultipleValues.Where(x => x.IsActive && x.ParHeaderField_Id == item.Id).ToList();
                 }
 
                 if (parLevel1 == null)
@@ -124,7 +129,6 @@ namespace SgqSystem.Controllers.V2.Api
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-
         [HttpPost]
         [Route("PostParHeaderField")]
         public IHttpActionResult PostParHeaderField(ParLevel1XHeaderField saveParHeaderField)
@@ -139,21 +143,10 @@ namespace SgqSystem.Controllers.V2.Api
                 SaveOrUpdateParHeaderField(saveParHeaderField.ParHeaderField);
                 SaveOrUpdateParLevel1XHeaderField(null, saveParHeaderField.ParHeaderField.Id, saveParHeaderField.ParLevel1_Id);
             }
+            SaveOrUpdateParMultipleValues(saveParHeaderField.ParHeaderField);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-
-        //Estava fazendo isso, não sei se está certo
-        [HttpPost]
-        [Route("PostParHeaderField2")]
-        public IHttpActionResult PostParLevel1XHeaderField(ParHeaderField parHeaderField)
-        {
-            SaveOrUpdateParHeaderField(parHeaderField);
-            SaveOrUpdateParMultipleValues(parHeaderField);
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-        //fim
 
         [HttpPost]
         [Route("PostParLevel1XCluster")]
@@ -251,7 +244,8 @@ namespace SgqSystem.Controllers.V2.Api
                     else
                     {
                         parHeaderField.AddDate = DateTime.Now;
-                        parHeaderField.Description = "";
+                        parHeaderField.Description = parHeaderField.Description ?? "";
+                        parHeaderField.IsActive = true;
                         db.ParHeaderField.Add(parHeaderField);
                     }
 
@@ -296,7 +290,7 @@ namespace SgqSystem.Controllers.V2.Api
                             AddDate = DateTime.Now,
                             IsActive = true,
                             ParHeaderField_Id = parHeaderField_Id,
-                            ParLevel1_Id = parLevel1_Id
+                            ParLevel1_Id = parLevel1_Id,
                         };
 
                         db.ParLevel1XHeaderField.Add(parLevel1XHeaderField);

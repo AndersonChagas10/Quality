@@ -7,6 +7,7 @@
 
         <div class="col-sm-3">
 
+            <input type="hidden" name="ParHeaderField_Id" />
             <input type="hidden" name="ParLevel1_Id" data-id />
             <input type="hidden" name="Id" />
             <input type="hidden" name="IsActive" value="true" data-notnull />
@@ -35,15 +36,6 @@
             </div>
 
         </div>
-
-        @*<div class="col-sm-1">
-
-                <div class="form-group" data-action>
-                    <label></label>
-                    <button class="form-control btn btn-primary" data-add>+</button>
-                </div>
-
-            </div>*@
 
         <div id="allObjCamposCabecalho" class="col-sm-12">
 
@@ -116,81 +108,10 @@
                 </table>
             </div>
 
-            <div id="objTexto" style="display:none;">
-                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Texto" id="btnIncluirTexto" onclick="" style="display: none;">
-                <button class="form-control btn btn-primary" data-add>Salvar</button>
-            </div>
+            <div id="objWithDescription" style="display:none;">
 
-
-            <div id="objNumerico" style="display:none;">
-                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Numerico" id="btnIncluirNumerico" onclick="" style="display: none;">
-                <button class="form-control btn btn-primary" data-add>Salvar</button>
-            </div>
-
-
-            <div id="objData" style="display:none;">
-                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Data" id="btnIncluirData" onclick="" style="display: none;">
-                <button class="form-control btn btn-primary" data-add>Salvar</button>
-            </div>
-
-
-            <div id="objHora" style="display:none;">
-                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Hora" id="btnIncluirHora" onclick="" style="display: none;">
-                <button class="form-control btn btn-primary" data-add>Salvar</button>
-            </div>
-
-
-            <div id="objIntegracoes" style="display:none;">
-                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Integrações" id="btn ntegracoes" onclick="">
-            </div>
-
-
-            <div id="objParametro" style="display:none;" class="margin-top">
-                <table id="tblParametro">
-                    <tbody>
-                        <tr class="row">
-                            <td class="td-erp " style="">
-                                <label for="ID">ID</label>
-                                <div class="input-group">
-                                    <input class="form-control input-sm text-box single-line" id="objParametroName" name="objParametroName" style="max-width: 200px;" type="text" value="">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary btn-sm" type="button" id="btnIncluirParametro" onclick="">
-                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="objDinamico" style="display:none;" class="margin-top">
-                <table id="tblDinamico">
-                    <tbody>
-                        <tr class="row">
-                            <td class="td-erp " style="">
-                                <label for="ID">ID</label>
-                                <div class="input-group">
-                                    <input class="form-control input-sm text-box single-line" id="objDinamicoName" name="objDinamicoName" style="max-width: 200px;" type="text" value="">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary btn-sm" type="button" id="btnIncluirDinamico" onclick="">
-                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="objInformacoes" style="display:none;">
-
-                <label for="Valor_do_Texto">Valor do Texto</label>:
-                <input type="text" id="objInformacoesTextValue">
-                <button class="form-control btn btn-primary" data-add>Salvar</button>
+                <label for="Description">Valor</label>:
+                <input type="text" name="Description">
 
             </div>
 
@@ -209,6 +130,9 @@
                     </thead>
                     <tbody></tbody>
                 </table>
+            </div>
+
+            <div id="divBtnSalvar">
                 <button class="form-control btn btn-primary" data-add>Salvar</button>
             </div>
         </div>
@@ -263,10 +187,10 @@
 
             apagaCampos(id);
 
-            $('table#table' + id + ' tbody').html('');           
+            $('table#table' + id + ' tbody').html('');
 
             $(ParLevel1XHeaderFields).each(function (i, o) {
-             
+
                 let previewHeaderField = getPreviewHeaderField(o.ParHeaderField);
                 let defaultSelected = "";
 
@@ -322,9 +246,22 @@
                 apagaCampos(id);
                 preencheCampos(id + ' [data-form]', '', obj);
 
+                debugger
+
+                $('#' + id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderField.ParLevelDefinition_Id);
+                $('#' + id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
+
+                $('#' + id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParHeaderField.ParFieldType_Id);
+                $('#' + id + ' [data-form] select[name="ParFieldType_Id"]').trigger('change')
+
+                $('#' + id + ' [data-form] input[name="Name"]').val(obj.ParHeaderField.Name);
+                $('#' + id + ' [data-form] input[name="Description"]').val(obj.ParHeaderField.Description);
+
                 $('#' + id + ' [data-form]').data('sgq', obj);
                 $('#' + id + ' [data-form]').addClass('alert alert-success');
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
+
+                parL1Cabecalho.insertTable(obj);
 
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
@@ -344,7 +281,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-                
+
                 openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
@@ -356,12 +293,13 @@
                     obj = atualizaValoresDoObjeto(obj, formdata);
                 }
 
-                obj['ParMultipleValues'] = [];
-
-                if ($('#camposCabecalhoIncluidos tbody tr').length > 0)
-                    $('#camposCabecalhoIncluidos tbody tr').each(function (i, o) {
-                        obj['ParMultipleValues'].push($(o).data('sgq'))
-                    });
+                debugger
+                if (typeof (obj['ParHeaderField']) == 'undefined')
+                    obj['ParHeaderField'] = {};
+                obj['ParHeaderField']['Name'] = formdata.Name;
+                obj['ParHeaderField']['Description'] = formdata.Description;
+                obj['ParHeaderField']['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
+                obj['ParHeaderField']['ParFieldType_Id'] = formdata.ParFieldType_Id;
 
                 Save(obj);
             });
@@ -374,13 +312,20 @@
             let arrToInsert = [];
             let $Renan;
 
+            var obj = $('#' + this.id + ' [data-form]').data('sgq');
+
+            if (typeof (obj['ParHeaderField']) == 'undefined')
+                obj['ParHeaderField'] = {};
+            if (typeof (obj['ParHeaderField']['ParMultipleValues']) == 'undefined')
+                obj['ParHeaderField']['ParMultipleValues'] = [];
+
             switch (parFieldType_Id) {
 
                 case 1: // Multipla Escolha
 
                     $Renan = $('#tblOpcaoMultiplaEscolha');
 
-                    arrToInsert.push({
+                    obj['ParHeaderField']['ParMultipleValues'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParL1Cabecalho #Name').val(),
                         Id: 0,
@@ -388,7 +333,8 @@
                         Description: '',
                         PunishmentValue: $Renan.find('#objMultiplaEscolhaPunishmentValue').val(),
                         Conformity: 0,
-                        IsDefaultOption: 0
+                        IsDefaultOption: 0,
+                        IsActive: true
                     });
 
                     break;
@@ -397,7 +343,7 @@
 
                     $Renan = $('#tblOpcaoMultiplaEscolha');
 
-                    arrToInsert.push({
+                    obj['ParHeaderField']['ParMultipleValues'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParL1Cabecalho #Name').val(),
                         Id: 0,
@@ -405,10 +351,11 @@
                         Description: '',
                         PunishmentValue: $Renan.find('#objBinarioPunishmentValue1').val(),
                         Conformity: 1,
-                        IsDefaultOption: 0
+                        IsDefaultOption: 0,
+                        IsActive: true
                     });
 
-                    arrToInsert.push({
+                    obj['ParHeaderField']['ParMultipleValues'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParL1Cabecalho #Name').val(),
                         Name: $Renan.find('#objBinarioPunishmentName2').val(),
@@ -416,7 +363,8 @@
                         Description: '',
                         PunishmentValue: $Renan.find('#objBinarioPunishmentValue2').val(),
                         Conformity: 0,
-                        IsDefaultOption: 0
+                        IsDefaultOption: 0,
+                        IsActive: true
                     });
 
                     break;
@@ -424,27 +372,30 @@
                 default:
             }
 
-            this.insertTable(arrToInsert);
+            this.insertTable(obj);
 
         },
 
-        insertTable: function (arrToInsert) {
+        insertTable: function (obj) {
 
-            let table = "";
+            $('#camposCabecalhoIncluidos tbody').empty();
 
-            arrToInsert.forEach((o) => {
-
-                table += `<tr>
-                            <td>${o.ParLevelDefiniton}</td>
-                            <td>${o.ParHeaderField}</td>
+            let parLevelDefiniton = obj.ParHeaderField.ParLevelDefiniton.Name;
+            let parHeaderField = obj.ParHeaderField.Name;
+            let multipleValues = obj['ParHeaderField']['ParMultipleValues'];
+            multipleValues.forEach((o, i) => {
+                if (o.IsActive) {
+                    let table = `<tr>
+                            <td>${parLevelDefiniton}</td>
+                            <td>${parHeaderField}</td>
                             <td>${o.PunishmentValue}</td>
                             <td>${o.Name}</td>
                             <td>${o.IsDefaultOption}</td>
-                            <td><button type="button" class="btn btn-danger btn-xs" name="" onclick="parL1Cabecalho.excludeTable()"><i class="fa fa-times"></i></button></td>
+                            <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="parL1Cabecalho.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
                           </tr>`;
 
-                $('#camposCabecalhoIncluidos tbody').append(table);
-                $('#camposCabecalhoIncluidos tbody tr:last').data('sgq', o);
+                    $('#camposCabecalhoIncluidos tbody').append(table);
+                }
             });
 
             this.showTableParMultipleValues();
@@ -460,9 +411,10 @@
 
         },
 
-        excludeTable: function () {
-            var obj = $(this).parents('tr').data('sgq');
-            obj.IsActive = false;
+        excludeTable: function (i) {
+            var obj = $('#' + this.id + ' [data-form]').data('sgq');
+            obj['ParHeaderField']['ParMultipleValues'][i].IsActive = false;
+            this.insertTable(obj);
         }
 
     };
@@ -479,7 +431,7 @@
                 let options = '<option>Selecione...</option>';
 
                 headerField.ParMultipleValues.forEach((o) => {
-                    options += `<option value="${ o.Id }" ${(o.IsDefaultOption ? "selected" : "")}>${o.Name}</option>`;
+                    options += `<option value="${o.Id}" ${(o.IsDefaultOption ? "selected" : "")}>${o.Name}</option>`;
                 });
 
                 input = '<select class="form-control">' + options + '</select>';
@@ -540,46 +492,22 @@
                 $('#objMultiplaEscolha').show();
                 break;
 
-            case 2:	// Integrações
-                $('#objIntegracoes').show();
-                break;
-
             case 3:	// Binario
                 $('#objBinario').show();
                 break;
 
-            case 4:	// Texto
-                $('#objTexto').show();
-                //Inserir direto
-                break;
-
-            case 5:	// Numerico
-                $('#objNumerico').show();
-                //Inserir direto
-                break;
-
-            case 6:	// Data
-                $('#objData').show();
-                //Inserir direto
-                break;
-
-            case 7:	// Hora
-                $('#objHora').show();
-                //Inserir direto
-                break;
-
             case 8:	// Informações
-                $('#objInformacoes').show();
+                $('#objWithDescription').show();
                 //Inserir direto
                 break;
 
             case 9:	// Parâmetro
-                $('#objParametro').show();
+                $('#objWithDescription').show();
                 //Inserir direto
                 break;
 
             case 10: //Dinâmico
-                $('#objDinamico').show();
+                $('#objWithDescription').show();
                 //Inserir direto
                 break;
 
@@ -588,18 +516,12 @@
 
     });
 
-    let hideAllOptions = function(){
+    let hideAllOptions = function () {
 
         $('#objMultiplaEscolha').hide();
         $('#objBinario').hide();
-        $('#objTexto').hide();
-        $('#objNumerico').hide();
-        $('#objData').hide();
-        $('#objHora').hide();
-        $('#objIntegracoes').hide();
-        $('#objParametro').hide();
-        $('#objDinamico').hide();
         $('#objInformacoes').hide();
+        $('#objWithDescription').hide();
 
     }
 
