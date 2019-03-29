@@ -8,6 +8,7 @@
         <div class="col-sm-3">
 
             <input type="hidden" name="ParLevel1_Id" data-id />
+            <input type="hidden" name="Id" />
             <input type="hidden" name="IsActive" value="true" data-notnull />
 
             <div class="form-group">
@@ -35,14 +36,14 @@
 
         </div>
 
-        <div class="col-sm-1">
+        @*<div class="col-sm-1">
 
-            <div class="form-group" data-action>
-                <label></label>
-                <button class="form-control btn btn-primary" data-add>+</button>
-            </div>
+                <div class="form-group" data-action>
+                    <label></label>
+                    <button class="form-control btn btn-primary" data-add>+</button>
+                </div>
 
-        </div>
+            </div>*@
 
         <div id="allObjCamposCabecalho" class="col-sm-12">
 
@@ -50,14 +51,35 @@
                 <table id="tblOpcaoMultiplaEscolha">
                     <tbody>
                         <tr class="row">
-                            <td class="td-erp " colspan="0" style=""><label for="Op__o">Opção</label> <div><input class="form-control input-sm text-box single-line" id="objMultiplaEscolhaName" name="objMultiplaEscolhaName" style="max-width: 200px;" type="text" value=""></div><span id="multiplaEscolhaNameCabecalho" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Opção deve ser preenchido para o Cabeçalho.</span></span></td>
-                            <td class="td-erp " style=""><label for="Valor_da_puni__o">Valor da punição</label> <div class="input-group"><input class="form-control input-sm notAllowNegative text-box single-line" id="objMultiplaEscolhaPunishmentValue" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value=""><span class="input-group-btn"><button class="btn btn-primary btn-sm" type="button" id="btnIncluirMultiplaEscolha" onclick="Cabecalhos.IncluirMultiplaEscolha();"><i class="fa fa-plus" aria-hidden="true"></i></button></span></div><span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span></span></td>
+                            <td class="td-erp " colspan="0" style="">
+                                <label for="Op__o">Opção</label>
+                                <div>
+                                    <input class="form-control input-sm text-box single-line" id="objMultiplaEscolhaName" name="objMultiplaEscolhaName" style="max-width: 200px;" type="text" value="">
+                                </div>
+                                <span id="multiplaEscolhaNameCabecalho" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true">
+                                    <span for="" class="">O campo Opção deve ser preenchido para o Cabeçalho.</span>
+                                </span>
+                            </td>
+                            <td class="td-erp " style="">
+                                <label for="Valor_da_puni__o">Valor da punição</label>
+                                <div class="input-group">
+                                    <input class="form-control input-sm notAllowNegative text-box single-line" id="objMultiplaEscolhaPunishmentValue" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL1Cabecalho.prepareToInsert(1);">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true">
+                                    <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
+                                </span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div id="objBinario" style="">
+            <div id="objBinario" style="display:none;">
                 <table id="tblBinario">
                     <tbody>
                         <tr class="row">
@@ -87,7 +109,7 @@
                                 <span id="punishmentValueCabecalho2" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
                             </td>
                             <td>
-                                <button class="btn btn-primary btn-sm margin-button" type="button" id="btnIncluirCluster" onclick="Cabecalhos.IncluirBinario();"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                <button class="btn btn-primary btn-sm margin-button" type="button" id="" onclick=""><i class="fa fa-plus" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -95,28 +117,31 @@
             </div>
 
             <div id="objTexto" style="display:none;">
-
-                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Texto" id="btnIncluirTexto" onclick="Cabecalhos.IncluirSalvarTexto();" style="display: none;">
+                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Texto" id="btnIncluirTexto" onclick="" style="display: none;">
+                <button class="form-control btn btn-primary" data-add>Salvar</button>
             </div>
 
 
             <div id="objNumerico" style="display:none;">
-                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Numerico" id="btnIncluirNumerico" onclick="Cabecalhos.IncluirSalvarNumerico();" style="display: none;">
+                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Numerico" id="btnIncluirNumerico" onclick="" style="display: none;">
+                <button class="form-control btn btn-primary" data-add>Salvar</button>
             </div>
 
 
             <div id="objData" style="display:none;">
-                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Data" id="btnIncluirData" onclick="Cabecalhos.IncluirSalvarTexto(true);" style="display: none;">
+                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Data" id="btnIncluirData" onclick="" style="display: none;">
+                <button class="form-control btn btn-primary" data-add>Salvar</button>
             </div>
 
 
             <div id="objHora" style="display:none;">
-                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Hora" id="btnIncluirHora" onclick="Cabecalhos.IncluirSalvarTexto(true);" style="display: none;">
+                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Hora" id="btnIncluirHora" onclick="" style="display: none;">
+                <button class="form-control btn btn-primary" data-add>Salvar</button>
             </div>
 
 
             <div id="objIntegracoes" style="display:none;">
-                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Integrações" id="btn ntegracoes" onclick="Cabecalhos.IncluirSalvarIntegracoes(true);">
+                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Integrações" id="btn ntegracoes" onclick="">
             </div>
 
 
@@ -124,9 +149,18 @@
                 <table id="tblParametro">
                     <tbody>
                         <tr class="row">
-                            <td class="td-erp " style=""><label for="ID">ID</label> <div class="input-group"><input class="form-control input-sm text-box single-line" id="objParametroName" name="objParametroName" style="max-width: 200px;" type="text" value=""><span class="input-group-btn"><button class="btn btn-primary btn-sm" type="button" id="btnIncluirParametro" onclick="Cabecalhos.IncluirSalvarTexto();"><i class="fa fa-plus" aria-hidden="true"></i></button></span></div></td>
+                            <td class="td-erp " style="">
+                                <label for="ID">ID</label>
+                                <div class="input-group">
+                                    <input class="form-control input-sm text-box single-line" id="objParametroName" name="objParametroName" style="max-width: 200px;" type="text" value="">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary btn-sm" type="button" id="btnIncluirParametro" onclick="">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </td>
                         </tr>
-
                     </tbody>
                 </table>
             </div>
@@ -135,7 +169,17 @@
                 <table id="tblDinamico">
                     <tbody>
                         <tr class="row">
-                            <td class="td-erp " style=""><label for="ID">ID</label> <div class="input-group"><input class="form-control input-sm text-box single-line" id="objDinamicoName" name="objDinamicoName" style="max-width: 200px;" type="text" value=""><span class="input-group-btn"><button class="btn btn-primary btn-sm" type="button" id="btnIncluirDinamico" onclick="Cabecalhos.IncluirSalvarTexto();"><i class="fa fa-plus" aria-hidden="true"></i></button></span></div></td>
+                            <td class="td-erp " style="">
+                                <label for="ID">ID</label>
+                                <div class="input-group">
+                                    <input class="form-control input-sm text-box single-line" id="objDinamicoName" name="objDinamicoName" style="max-width: 200px;" type="text" value="">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary btn-sm" type="button" id="btnIncluirDinamico" onclick="">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </td>
                         </tr>
 
                     </tbody>
@@ -144,42 +188,30 @@
 
             <div id="objInformacoes" style="display:none;">
 
-                <label for="Valor_do_Texto">Valor do Texto</label>: <input type="text" id="objInformacoesTextValue">
-
-                <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir campo Informação" id="btnIncluirInformacao" onclick="Cabecalhos.IncluirInformacoes();">
+                <label for="Valor_do_Texto">Valor do Texto</label>:
+                <input type="text" id="objInformacoesTextValue">
+                <button class="form-control btn btn-primary" data-add>Salvar</button>
 
             </div>
 
-            <div id="divCamposCabecalhoIncluidos" style="display:none;">
-                <div id="camposCabecalhoIncluidos_wrapper" class="dataTables_wrapper">
-                    <table id="camposCabecalhoIncluidos" class="dataTable" role="grid">
-                        <thead>
-                            <tr role="row"><th class="dt-center sorting_asc" tabindex="0" aria-controls="camposCabecalhoIncluidos" rowspan="1" colspan="1" aria-label="Nível do campo: activate to sort column descending" style="width: 0px;" aria-sort="ascending">Nível do campo</th><th class="dt-center sorting" tabindex="0" aria-controls="camposCabecalhoIncluidos" rowspan="1" colspan="1" aria-label="Nome: activate to sort column ascending" style="width: 0px;">Nome</th><th class="dt-center sorting" tabindex="0" aria-controls="camposCabecalhoIncluidos" rowspan="1" colspan="1" aria-label="Vinculado: activate to sort column ascending" style="width: 0px;">Vinculado</th><th class="dt-center sorting" tabindex="0" aria-controls="camposCabecalhoIncluidos" rowspan="1" colspan="1" aria-label="Tipo: activate to sort column ascending" style="width: 0px;">Tipo</th><th class="dt-center sorting" tabindex="0" aria-controls="camposCabecalhoIncluidos" rowspan="1" colspan="1" aria-label="Opções: activate to sort column ascending" style="width: 0px;">Opções</th><th class="dt-center sorting" tabindex="0" aria-controls="camposCabecalhoIncluidos" rowspan="1" colspan="1" aria-label="Valor: activate to sort column ascending" style="width: 0px;">Valor</th><th class="options dt-center sorting" tabindex="0" aria-controls="camposCabecalhoIncluidos" rowspan="1" colspan="1" aria-label=": activate to sort column ascending" style="width: 120px;"></th></tr>
-                        </thead>
-                        <tbody><tr class="odd"><td valign="top" colspan="7" class="dataTables_empty">No data available in table</td></tr></tbody>
-                        <tfoot>
-                            <tr><th class="dt-center" rowspan="1" colspan="1"></th><th class="dt-center" rowspan="1" colspan="1"></th><th class="dt-center" rowspan="1" colspan="1"></th><th class="dt-center" rowspan="1" colspan="1"></th><th class="dt-center" rowspan="1" colspan="1"></th><th class="dt-center" rowspan="1" colspan="1"></th><th class="dt-center" rowspan="1" colspan="1"></th></tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-
-            <div style="width: 100%; float: left;" id="btnIncluirCabecalho">
-                <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold; display: none;">
-                <div id="salvarCabecalho1Div" style="display: none;">
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1"><div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-off bootstrap-switch-small bootstrap-switch-id-paramsDto_parLevel1Dto_IsRequiredMultipleValue"><div class="bootstrap-switch-container"><span class="bootstrap-switch-handle-on bootstrap-switch-primary">S</span><span class="bootstrap-switch-label">&nbsp;</span><span class="bootstrap-switch-handle-off bootstrap-switch-default">N</span><input class="check-box" data-val="true" data-val-required="O campo IsRequiredMultipleValue é obrigatório." id="paramsDto_parLevel1Dto_IsRequiredMultipleValue" name="paramsDto.parLevel1Dto.IsRequiredMultipleValue" type="checkbox" value="true" style="display: none;"></div></div><input name="paramsDto.parLevel1Dto.IsRequiredMultipleValue" type="hidden" value="false" style="display: none;"></div><div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"><label class="padding-left" for="">É Obrigatório: </label></div>
-                    <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho1" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold; display: none;">
-                </div>
-                <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho2" value="Salvar Binario " onclick=";" style="font-size: small; padding: 10px; font-weight: bold; display: none;">
-                <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho3" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold; display: none;">
-            </div>
-
-            <div id="cabecalhoPreviewEDICAO" class="table">
-                <div id="alteracao" style="padding: 8px;">
-                </div>
+            <div id="divCamposCabecalhoIncluidos" style="display:none">
+                <table id="camposCabecalhoIncluidos" class="table" role="grid">
+                    <thead>
+                        <tr role="row">
+                            <th>Nível do campo</th>
+                            <th>Nome</th>
+                            @*<th>Vinculado</th>*@
+                            <th>Tipo</th>
+                            <th>Opções</th>
+                            <th>Valor</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <button class="form-control btn btn-primary" data-add>Salvar</button>
             </div>
         </div>
-
     </div>
 
     <div class="row">
@@ -231,10 +263,10 @@
 
             apagaCampos(id);
 
-            $('table#table' + id + ' tbody').html('');
+            $('table#table' + id + ' tbody').html('');           
 
             $(ParLevel1XHeaderFields).each(function (i, o) {
-
+             
                 let previewHeaderField = getPreviewHeaderField(o.ParHeaderField);
                 let defaultSelected = "";
 
@@ -303,7 +335,7 @@
             $('#' + id).on('click', '[data-table-delete]', function (e) {
                 var obj = $(this).parents('tr').data('sgq');
                 obj.IsActive = false;
-                Save({ ParLevel1_Id: $('#Id').val(), ParHeaderField: obj });
+                Save(obj);
             });
 
             $('#' + id).on('click', '[data-cancel]', function (e) {
@@ -321,12 +353,118 @@
                 else
                     obj = formdata;
 
+                obj['ParMultipleValues'] = [];
+
+                if ($('#camposCabecalhoIncluidos tbody tr').length > 0)
+                    $('#camposCabecalhoIncluidos tbody tr').each(function (i, o) {
+                        obj['ParMultipleValues'].push($(o).data('sgq'))
+                    });
+
                 Save({ ParLevel1_Id: $('#Id').val(), ParHeaderField: obj });
             });
+
+            this.showTableParMultipleValues();
         },
+
+        prepareToInsert: function (parFieldType_Id) {
+
+            let arrToInsert = [];
+            let $Renan;
+
+            switch (parFieldType_Id) {
+
+                case 1: // Multipla Escolha
+
+                    $Renan = $('#tblOpcaoMultiplaEscolha');
+
+                    arrToInsert.push({
+                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
+                        ParHeaderField: $('#ParL1Cabecalho #Name').val(),
+                        Id: 0,
+                        Name: $Renan.find('#objMultiplaEscolhaName').val(),
+                        Description: '',
+                        PunishmentValue: $Renan.find('#objMultiplaEscolhaPunishmentValue').val(),
+                        Conformity: 0,
+                        IsDefaultOption: 0
+                    });
+
+                    break;
+
+                case 3:	// Binario
+
+                    $Renan = $('#tblOpcaoMultiplaEscolha');
+
+                    arrToInsert.push({
+                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
+                        ParHeaderField: $('#ParL1Cabecalho #Name').val(),
+                        Id: 0,
+                        Name: $Renan.find('#objBinarioPunishmentName1').val(),
+                        Description: '',
+                        PunishmentValue: $Renan.find('#objBinarioPunishmentValue1').val(),
+                        Conformity: 1,
+                        IsDefaultOption: 0
+                    });
+
+                    arrToInsert.push({
+                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
+                        ParHeaderField: $('#ParL1Cabecalho #Name').val(),
+                        Name: $Renan.find('#objBinarioPunishmentName2').val(),
+                        Id: 0,
+                        Description: '',
+                        PunishmentValue: $Renan.find('#objBinarioPunishmentValue2').val(),
+                        Conformity: 0,
+                        IsDefaultOption: 0
+                    });
+
+                    break;
+
+                default:
+            }
+
+            this.insertTable(arrToInsert);
+
+        },
+
+        insertTable: function (arrToInsert) {
+
+            let table = "";
+
+            arrToInsert.forEach((o) => {
+
+                table += `<tr>
+                            <td>${o.ParLevelDefiniton}</td>
+                            <td>${o.ParHeaderField}</td>
+                            <td>${o.PunishmentValue}</td>
+                            <td>${o.Name}</td>
+                            <td>${o.IsDefaultOption}</td>
+                            <td><button type="button" class="btn btn-danger btn-xs" name="" onclick="parL1Cabecalho.excludeTable()"><i class="fa fa-times"></i></button></td>
+                          </tr>`;
+
+                $('#camposCabecalhoIncluidos tbody').append(table);
+                $('#camposCabecalhoIncluidos tbody tr:last').data('sgq', o);
+            });
+
+            this.showTableParMultipleValues();
+        },
+
+        showTableParMultipleValues: function () {
+
+            if ($('#camposCabecalhoIncluidos tbody tr').length) {
+                $('#divCamposCabecalhoIncluidos').show();
+            } else {
+                $('#divCamposCabecalhoIncluidos').hide();
+            }
+
+        },
+
+        excludeTable: function () {
+            var obj = $(this).parents('tr').data('sgq');
+            obj.IsActive = false;
+        }
+
     };
 
-    let getPreviewHeaderField = function (headerField) {      
+    let getPreviewHeaderField = function (headerField) {
 
         let input = "";
 
@@ -367,8 +505,8 @@
                 break;
 
             case 8:	// Informações
-                break;   
-            
+                break;
+
             case 10: //Dinâmico
                 input = '<input type="text" class="form-control" disabled />';
                 break;
@@ -385,8 +523,81 @@
 
     }
 
-    $('#selectL1ParFieldType').on("click", function () {
+    $('#selectL1ParFieldType').on("change", function () {
+
+        hideAllOptions();
+
+        //limpar arr ParMultipleValues?
+
+        let parFieldType_Id = parseInt($(this).val());
+
+        switch (parFieldType_Id) {
+
+            case 1: // Multipla Escolha
+                $('#objMultiplaEscolha').show();
+                break;
+
+            case 2:	// Integrações
+                $('#objIntegracoes').show();
+                break;
+
+            case 3:	// Binario
+                $('#objBinario').show();
+                break;
+
+            case 4:	// Texto
+                $('#objTexto').show();
+                //Inserir direto
+                break;
+
+            case 5:	// Numerico
+                $('#objNumerico').show();
+                //Inserir direto
+                break;
+
+            case 6:	// Data
+                $('#objData').show();
+                //Inserir direto
+                break;
+
+            case 7:	// Hora
+                $('#objHora').show();
+                //Inserir direto
+                break;
+
+            case 8:	// Informações
+                $('#objInformacoes').show();
+                //Inserir direto
+                break;
+
+            case 9:	// Parâmetro
+                $('#objParametro').show();
+                //Inserir direto
+                break;
+
+            case 10: //Dinâmico
+                $('#objDinamico').show();
+                //Inserir direto
+                break;
+
+            default:
+        }
 
     });
+
+    let hideAllOptions = function(){
+
+        $('#objMultiplaEscolha').hide();
+        $('#objBinario').hide();
+        $('#objTexto').hide();
+        $('#objNumerico').hide();
+        $('#objData').hide();
+        $('#objHora').hide();
+        $('#objIntegracoes').hide();
+        $('#objParametro').hide();
+        $('#objDinamico').hide();
+        $('#objInformacoes').hide();
+
+    }
 
 </script>

@@ -117,7 +117,6 @@
     .select2 {
         width: 100% !important;
     }
-
 </style>
 
 
@@ -427,7 +426,6 @@
 
         } else if (element.is('select')) {
 
-            debugger
             if (value == null)
                 value = 0;
             element.val(value);
@@ -455,11 +453,11 @@
                 dataType: "json",
                 data: {},
                 contentType: "application/json",
-                success: function (data) {
-
-                    preencheCampos('l1', '', data.Parlevel1, true)
-                    parL1Processo.load(data.Parlevel1.ParLevel1XCluster);
-                    parL1Cabecalho.load(data.ParLevel1XHeaderFields);
+                success: function (ParLevel1) {
+                    debugger
+                    preencheCampos('l1', '', ParLevel1, true)
+                    parL1Processo.load(ParLevel1.ParLevel1XCluster);
+                    parL1Cabecalho.load(ParLevel1.ParLevel1XHeaderField);
                     verifyTabs('selectL1', 'l1');
                     closeLoader();
                 },
