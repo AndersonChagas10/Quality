@@ -100,7 +100,7 @@ namespace SgqSystem.Controllers.V2.Api
                 return StatusCode(HttpStatusCode.BadRequest);
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(parLevel3.Id);
         }
 
 

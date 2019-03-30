@@ -25,10 +25,17 @@
         <div class="col-sm-6">
 
             <div class="form-group">
-                <label for="ParFrequency_Id">Frequencia:</label>
-                <input type="text" class="form-control" id="ParFrequency_Id" name="ParFrequency_Id">
+                <label>Departamento:</label>
+                <select class="form-control" id="selectL3GeralParDepartment" name="ParDepartment_Id"></select>
             </div>
+        </div>
 
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label>Frequencia:</label>
+                <select class="form-control" id="selectL3GeralParFrequency" name="ParFrequency_Id"></select>
+            </div>
         </div>
 
         <div class="col-sm-6">
@@ -54,6 +61,7 @@
 </form>
 
 <script>
+    var lastIdL2 = 0;
     var ParL2Geral = {
 
         //paramtros
@@ -64,13 +72,19 @@
             $('#' + this.id + ' [data-form]').data('sgq', obj);
         },
 
+        afterCreate: function (data) {
+            setSelectLevel2(data);
+            $('#selectL2').val(lastIdL2);
+            $('#selectL2').trigger('change');
+        },
+
         load: function () {
 
             let id = this.id;
             let urlSave = this.urlSave;
 
             function Save(obj) {
-
+                var hasId = obj.Id;
                 $.ajax({
                     url: urlSave,
                     type: 'POST',
@@ -78,8 +92,12 @@
                     data: JSON.stringify(obj),
                     contentType: "application/json",
                     success: function (data) {
+                        lastIdL2 = parseInt(data);
                         openMessageModal("Feito", "Dados Salvos");
-                        $('#selectL2').trigger('change');
+                        if (parseInt(hasId) <= 0 || isNaN(parseInt(hasId)))
+                            getGenericAjax('@Url.Action("Get", "api/ParLevel2Api")', 'Get', ParL2Geral.afterCreate);
+                        else
+                            $('#selectL2').trigger('change');
                         closeLoader();
 
                     },

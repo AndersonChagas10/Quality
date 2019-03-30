@@ -85,8 +85,7 @@ namespace SgqSystem.Controllers.V2.Api
             {
                 return StatusCode(HttpStatusCode.BadRequest);
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(parLevel2.Id);
         }
 
 

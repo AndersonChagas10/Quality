@@ -118,7 +118,7 @@ namespace SgqSystem.Controllers.V2.Api
         {
             SaveOrUpdateParLevel1(parLevel1);
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(parLevel1.Id);
         }
 
         [HttpPost]

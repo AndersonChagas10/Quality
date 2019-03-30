@@ -45,6 +45,7 @@
 </form>
 
 <script>
+    var lastIdL3 = 0;
     var ParL3Geral = {
 
         //paramtros
@@ -55,13 +56,19 @@
             $('#' + this.id + ' [data-form]').data('sgq', obj);
         },
 
+        afterCreate: function (data) {
+            setSelectLevel3(data);
+            $('#selectL3').val(lastIdL3);
+            $('#selectL3').trigger('change');
+        },
+
         load: function () {
 
             let id = this.id;
             let urlSave = this.urlSave;
 
             function Save(obj) {
-
+                var hasId = obj.Id;
                 $.ajax({
                     url: urlSave,
                     type: 'POST',
@@ -69,8 +76,12 @@
                     data: JSON.stringify(obj),
                     contentType: "application/json",
                     success: function (data) {
+                        lastIdL3 = parseInt(data);
                         openMessageModal("Feito", "Dados Salvos");
-                        $('#selectL3').trigger('change');
+                        if (parseInt(hasId) <= 0 || isNaN(parseInt(hasId)))
+                            getGenericAjax('@Url.Action("Get", "api/ParLevel3Api")', 'Get', ParL3Geral.afterCreate);
+                        else
+                            $('#selectL3').trigger('change');
                         closeLoader();
 
                     },
