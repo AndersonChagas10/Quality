@@ -97,8 +97,9 @@ namespace SgqSystem.Controllers.V2.Api
                         .Where(x => x.IsActive == true && x.Id == item.ParHeaderField_Id)
                         .Include(x => x.ParLevelDefiniton)
                         .Include(x => x.ParFieldType)
+                        .Include(x=>x.ParMultipleValues)
                         .FirstOrDefault();
-                    item.ParHeaderField.ParMultipleValues = db.ParMultipleValues.Where(x => x.IsActive && x.ParHeaderField_Id == item.Id).ToList();
+                    item.ParHeaderField.ParMultipleValues = item.ParHeaderField.ParMultipleValues.Where(x => x.IsActive).ToList();
                 }
 
                 if (parLevel1 == null)
@@ -358,27 +359,29 @@ namespace SgqSystem.Controllers.V2.Api
                         {
                             if (parMultipleValue.Id > 0)
                             {
-                                db.Configuration.LazyLoadingEnabled = false;
-                                var parMultipleValueToUpdate = db.ParMultipleValues.Find(parHeaderField.Id);
-                                parMultipleValueToUpdate.Name = parMultipleValue.Name;
-                                parMultipleValueToUpdate.Description = parMultipleValue.Description;
-                                parMultipleValueToUpdate.IsActive = parMultipleValue.IsActive;
-                                parMultipleValueToUpdate.AlterDate = DateTime.Now;
-                                parMultipleValueToUpdate.IsDefaultOption = parMultipleValue.IsDefaultOption;
-                                parMultipleValueToUpdate.ParHeaderField_Id = parHeaderField.Id;
-                                parMultipleValueToUpdate.PunishmentValue = parMultipleValue.PunishmentValue;
+                                //db.Configuration.LazyLoadingEnabled = false;
+                                //var parMultipleValueToUpdate = db.ParMultipleValues.Find(parHeaderField.Id);
+                                //parMultipleValueToUpdate.Name = parMultipleValue.Name;
+                                //parMultipleValueToUpdate.Description = parMultipleValue.Description;
+                                //parMultipleValueToUpdate.IsActive = parMultipleValue.IsActive;
+                                //parMultipleValueToUpdate.AlterDate = DateTime.Now;
+                                //parMultipleValueToUpdate.IsDefaultOption = parMultipleValue.IsDefaultOption;
+                                //parMultipleValueToUpdate.ParHeaderField_Id = parHeaderField.Id;
+                                //parMultipleValueToUpdate.PunishmentValue = parMultipleValue.PunishmentValue;
+                                parMultipleValue.ParHeaderField = null;
+                                db.Entry(parMultipleValue).State = EntityState.Modified;
+                                db.SaveChanges();
                             }
                             else
                             {
+                                parMultipleValue.ParHeaderField_Id = parHeaderField.Id;
                                 parMultipleValue.AddDate = DateTime.Now;
                                 parMultipleValue.Description = "";
                                 db.ParMultipleValues.Add(parMultipleValue);
                             }
                         }
+                        db.SaveChanges();
                     }
-
-
-                    db.SaveChanges();
                 }
                 catch (Exception ex)
                 {

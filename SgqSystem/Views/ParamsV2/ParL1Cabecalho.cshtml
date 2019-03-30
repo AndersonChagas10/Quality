@@ -101,7 +101,7 @@
                                 <span id="punishmentValueCabecalho2" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
                             </td>
                             <td>
-                                <button class="btn btn-primary btn-sm margin-button" type="button" id="" onclick=""><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                <button class="btn btn-primary btn-sm margin-button" type="button" onclick="parL1Cabecalho.prepareToInsert(3);"><i class="fa fa-plus" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -153,7 +153,7 @@
                             Tipo
                         </th>
                         <th class="col-sm-2">
-                            Vizualização
+                            Visualização
                         </th>
                         <th class="col-sm-1">
                             Obrigatório
@@ -186,11 +186,13 @@
             let urlSave = this.urlSave;
 
             apagaCampos(id);
+            parL1Cabecalho.reloadTable();
 
             $('table#table' + id + ' tbody').html('');
 
             $(ParLevel1XHeaderFields).each(function (i, o) {
 
+                debugger
                 let previewHeaderField = getPreviewHeaderField(o.ParHeaderField);
                 let defaultSelected = "";
 
@@ -244,6 +246,7 @@
                 var obj = $(this).parents('tr').data('sgq');
 
                 apagaCampos(id);
+                parL1Cabecalho.reloadTable();
                 preencheCampos(id + ' [data-form]', '', obj);
 
                 debugger
@@ -277,6 +280,7 @@
 
             $('#' + id).on('click', '[data-cancel]', function (e) {
                 apagaCampos(id);
+                parL1Cabecalho.reloadTable();
             });
 
             //Salvar o campo editado ou cria um novo
@@ -293,18 +297,22 @@
                     obj = atualizaValoresDoObjeto(obj, formdata);
                 }
 
-                debugger
-                if (typeof (obj['ParHeaderField']) == 'undefined')
-                    obj['ParHeaderField'] = {};
-                obj['ParHeaderField']['Name'] = formdata.Name;
-                obj['ParHeaderField']['Description'] = formdata.Description;
-                obj['ParHeaderField']['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
-                obj['ParHeaderField']['ParFieldType_Id'] = formdata.ParFieldType_Id;
-
+                obj = parL1Cabecalho.prepareParHeaderField(obj);
                 Save(obj);
             });
 
             this.showTableParMultipleValues();
+        },
+
+        prepareParHeaderField: function (obj) {
+            var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
+            if (typeof (obj['ParHeaderField']) == 'undefined')
+                obj['ParHeaderField'] = {};
+            obj['ParHeaderField']['Name'] = formdata.Name;
+            obj['ParHeaderField']['Description'] = formdata.Description;
+            obj['ParHeaderField']['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
+            obj['ParHeaderField']['ParFieldType_Id'] = formdata.ParFieldType_Id;
+            return obj;
         },
 
         prepareToInsert: function (parFieldType_Id) {
@@ -314,6 +322,8 @@
 
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
+            if (typeof (obj) == 'undefined')
+                obj = {};
             if (typeof (obj['ParHeaderField']) == 'undefined')
                 obj['ParHeaderField'] = {};
             if (typeof (obj['ParHeaderField']['ParMultipleValues']) == 'undefined')
@@ -341,7 +351,11 @@
 
                 case 3:	// Binario
 
-                    $Renan = $('#tblOpcaoMultiplaEscolha');
+                    obj['ParHeaderField']['ParMultipleValues'].forEach((o, i) => {
+                        o.IsActive = false;
+                    });
+
+                    $Renan = $('#tblBinario');
 
                     obj['ParHeaderField']['ParMultipleValues'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
@@ -378,10 +392,19 @@
 
         insertTable: function (obj) {
 
+            obj = parL1Cabecalho.prepareParHeaderField(obj);
             $('#camposCabecalhoIncluidos tbody').empty();
 
-            let parLevelDefiniton = obj.ParHeaderField.ParLevelDefiniton.Name;
-            let parHeaderField = obj.ParHeaderField.Name;
+            let parHeaderField = "";
+            let parLevelDefiniton = "";
+
+            try{
+                parHeaderField = obj.ParHeaderField.Name;
+                parLevelDefiniton = obj.ParHeaderField.ParLevelDefiniton.Name;
+            } catch (e) {
+                parHeaderField = obj['ParHeaderField']['ParMultipleValues'][0].ParHeaderField;
+                parLevelDefiniton = obj['ParHeaderField']['ParMultipleValues'][0].ParLevelDefiniton;
+            }
             let multipleValues = obj['ParHeaderField']['ParMultipleValues'];
             multipleValues.forEach((o, i) => {
                 if (o.IsActive) {
@@ -409,6 +432,10 @@
                 $('#divCamposCabecalhoIncluidos').hide();
             }
 
+        },
+
+        reloadTable: function () {
+            $('#camposCabecalhoIncluidos tbody').empty();
         },
 
         excludeTable: function (i) {
