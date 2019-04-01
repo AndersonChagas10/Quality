@@ -132,9 +132,14 @@
                 </table>
             </div>
 
-            <div id="divBtnSalvar">
+            <div id="divBtnSalvar" class="col-sm-6">
                 <button class="form-control btn btn-primary" data-add>Salvar</button>
             </div>
+
+            <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+            </div>
+
         </div>
     </div>
 
@@ -249,8 +254,6 @@
                 parL1Cabecalho.reloadTable();
                 preencheCampos(id + ' [data-form]', '', obj);
 
-                
-
                 $('#' + id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderField.ParLevelDefinition_Id);
                 $('#' + id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
 
@@ -263,6 +266,7 @@
                 $('#' + id + ' [data-form]').data('sgq', obj);
                 $('#' + id + ' [data-form]').addClass('alert alert-success');
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
+                $('#' + id + ' #divBtnCancelar').show();
 
                 parL1Cabecalho.insertTable(obj);
 
@@ -327,7 +331,12 @@
                 });
 
                 Save(obj);
-            });           
+            });
+
+            $('#' + id).on('click', ' [data-add-cancel] ', function () {
+                $('#selectL1').trigger('change');
+                $(this).parent().hide();
+            });
 
             this.showTableParMultipleValues();
         },
