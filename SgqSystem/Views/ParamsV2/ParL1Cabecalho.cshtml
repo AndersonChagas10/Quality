@@ -192,7 +192,7 @@
 
             $(ParLevel1XHeaderFields).each(function (i, o) {
 
-                debugger
+                
                 let previewHeaderField = getPreviewHeaderField(o.ParHeaderField);
                 let defaultSelected = "";
 
@@ -249,7 +249,7 @@
                 parL1Cabecalho.reloadTable();
                 preencheCampos(id + ' [data-form]', '', obj);
 
-                debugger
+                
 
                 $('#' + id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderField.ParLevelDefinition_Id);
                 $('#' + id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
@@ -300,6 +300,25 @@
                 obj = parL1Cabecalho.prepareParHeaderField(obj);
                 Save(obj);
             });
+
+            $('#' + id).on('change', '[name="HasTakePhoto"]', function () {
+
+                var obj = $(this).parents('tr').data('sgq');
+                
+                obj.IsRequired = !!$(this).prop('checked');
+
+                Save(obj);
+            });
+
+            $('#' + id).on('click', '.defaultSelected', function () {
+
+                var obj = $(this).parents('tr').data('sgq');
+                let defaultSelected = parseInt($(this).parents('tr').find('select :selected').val());
+
+                obj.DefaultSelected = defaultSelected ? defaultSelected : null;
+
+                Save(obj);
+            });           
 
             this.showTableParMultipleValues();
         },
@@ -501,7 +520,7 @@
 
     let getDefaultSelected = function () {
 
-        return `<button type="button" onclick="" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>`;
+        return `<button type="button" onclick="" class="btn btn-default btn-sm defaultSelected"><i class="fa fa-check" aria-hidden="true"></i></button>`;
 
     }
 
