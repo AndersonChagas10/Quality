@@ -313,9 +313,18 @@
             $('#' + id).on('click', '.defaultSelected', function () {
 
                 var obj = $(this).parents('tr').data('sgq');
-                let defaultSelected = parseInt($(this).parents('tr').find('select :selected').val());
+                
+                let parMultipleValues_Id = parseInt($(this).parents('tr').find('select :selected').val());
 
-                obj.DefaultSelected = defaultSelected ? defaultSelected : null;
+                parMultipleValues_Id = parMultipleValues_Id ? parMultipleValues_Id : null;
+
+                obj.ParHeaderField.ParMultipleValues.forEach((o, i, a) => {
+                    a[i].IsDefaultOption = 0;
+
+                    if (o.Id == parMultipleValues_Id) {
+                        a[i].IsDefaultOption = 1;
+                    }
+                });
 
                 Save(obj);
             });           
