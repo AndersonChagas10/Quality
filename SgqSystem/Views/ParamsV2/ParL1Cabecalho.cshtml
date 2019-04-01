@@ -194,6 +194,7 @@
             parL1Cabecalho.reloadTable();
 
             $('table#table' + id + ' tbody').html('');
+            $('#selectL1ParFieldType').prop("disabled", false);
 
             $(ParLevel1XHeaderFields).each(function (i, o) {
 
@@ -262,8 +263,8 @@
 
                 $('#' + id + ' [data-form] input[name="Name"]').val(obj.ParHeaderField.Name);
                 $('#' + id + ' [data-form] input[name="Description"]').val(obj.ParHeaderField.Description);
-
-                $('#' + id + ' [data-form]').data('sgq', obj);
+                
+                $('#' + id + ' [data-form]').data('sgq', obj);               
                 $('#' + id + ' [data-form]').addClass('alert alert-success');
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
                 $('#' + id + ' #divBtnCancelar').show();
@@ -442,7 +443,10 @@
                 parHeaderField = obj['ParHeaderField']['ParMultipleValues'][0].ParHeaderField;
                 parLevelDefiniton = obj['ParHeaderField']['ParMultipleValues'][0].ParLevelDefiniton;
             }
+
             let multipleValues = obj['ParHeaderField']['ParMultipleValues'];
+            let blockParFieldType = false;
+
             multipleValues.forEach((o, i) => {
                 if (o.IsActive) {
                     let table = `<tr>
@@ -455,8 +459,13 @@
                           </tr>`;
 
                     $('#camposCabecalhoIncluidos tbody').append(table);
+
+                    blockParFieldType = true;
                 }
             });
+
+            if (blockParFieldType)
+                $('#selectL1ParFieldType').prop("disabled", true);
 
             this.showTableParMultipleValues();
         },
@@ -477,8 +486,21 @@
 
         excludeTable: function (i) {
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
-            obj['ParHeaderField']['ParMultipleValues'][i].IsActive = false;
-            this.insertTable(obj);
+
+            if (obj) {
+                if (obj.ParHeaderField.ParFieldType.Id == 3)//Se for binário, exclui todos os ParMultipleValues
+                    obj.ParHeaderField.ParMultipleValues.forEach((o, i, a) => {
+                        a[i].IsActive = false;
+                    });
+                else
+                    obj['ParHeaderField']['ParMultipleValues'][i].IsActive = false;
+
+                this.insertTable(obj);
+
+            } else {
+                $('#camposCabecalhoIncluidos tbody').empty();
+                $('#divCamposCabecalhoIncluidos').hide();
+            }            
         }
 
     };
