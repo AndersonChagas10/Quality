@@ -20,26 +20,27 @@ function openParDepartment() {
     
 }
 
-function listarParDepartment(id, parent_Id){
+function listarParDepartment(id){
 	
 	_readFile("parDepartment.txt", function(data){
 					
 		data = JSON.parse(data);
 		
-		id = ((!!id && id.length > 0)? id.substring(parseInt(id.lastIndexOf('-')+1)):id);
+		var department = {};
 		
 		var htmlParDepartment = ""
 		$(data).each(function( i,o ) {
+			if(parseInt(id) > 0 && id == o.Id){
+				department = o;
+			}
 			if((id > 0 && id == o.Parent_Id) || ((id == 0 || id == null) && (o.Parent_Id == 0 || o.Parent_Id == null))){
-				var p_id = (!!parent_Id && parent_Id.length > 0 ? (parent_Id + "-"):"") + o.Parent_Id;
-				htmlParDepartment += `<button type="button" class="list-group-item col-xs-12" data-par-department-id="${o.Id}" data-par-department-parend-id="${p_id}">${o.Name}
+				htmlParDepartment += `<button type="button" class="list-group-item col-xs-12" data-par-department-id="${o.Id}" data-par-department-parend-id="${o.Parent_Id}">${o.Name}
 					<span class="badge">14</span>
 				</button>`;
 			}
 		});
 		
-		parent_Id = (!!parent_Id && parent_Id.lastIndexOf('-') > 0 ? parent_Id.substring(0,parent_Id.lastIndexOf('-')) :parent_Id);
-		var voltar = id > 0 ? `<a onclick="listarParDepartment(${parent_Id},${parent_Id})">Voltar</a>` : "";
+		var voltar = !!department.Id ? `<a onclick="listarParDepartment(${department.Parent_Id})">Voltar</a>` : "";
 		
 		html = `
 		${getHeader()}
@@ -69,7 +70,5 @@ function listarParDepartment(id, parent_Id){
 }
 
 $('body').on('click','[data-par-department-id]',function(e){
-	debugger
-	listarParDepartment($(this).attr('data-par-department-id'),
-	$(this).attr('data-par-department-parend-id'));
+	listarParDepartment($(this).attr('data-par-department-id'));
 });
