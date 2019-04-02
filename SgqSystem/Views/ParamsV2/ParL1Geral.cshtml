@@ -11,7 +11,7 @@
 
             <div class="form-group">
                 <label>Nome:</label>
-                <input type="text" class="form-control" id="Name" name="Name">
+                <input type="text" class="form-control required" id="Name" name="Name">
             </div>
 
         </div>
@@ -20,7 +20,7 @@
 
             <div class="form-group">
                 <label>Descrição:</label>
-                <input type="text" class="form-control" id="Description" name="Description">
+                <input type="text" class="form-control required" id="Description" name="Description">
             </div>
 
         </div>
@@ -29,7 +29,7 @@
 
             <div class="form-group">
                 <label>Tipo de consolidação:</label>
-                <select class="form-control" id="selectParConsolidation" name="ParConsolidationType_Id"></select>
+                <select class="form-control required" id="selectParConsolidation" name="ParConsolidationType_Id"></select>
             </div>
         </div>
 
@@ -37,7 +37,7 @@
 
             <div class="form-group">
                 <label>Frequencia:</label>
-                <select class="form-control" id="selectParFrequency" name="ParFrequency_Id"></select>
+                <select class="form-control required" id="selectParFrequency" name="ParFrequency_Id"></select>
             </div>
 
         </div>
@@ -124,6 +124,11 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-add]', function (e) {
+
+                if (!formIsValid(id)) {
+                    return false
+                }
+
                 openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();

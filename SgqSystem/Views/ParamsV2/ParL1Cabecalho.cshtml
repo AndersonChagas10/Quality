@@ -14,7 +14,7 @@
 
             <div class="form-group">
                 <label for="ParCluster_Id">Nível do campo:</label>
-                <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12" name="ParLevelDefinition_Id"></select>
+                <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12 required" name="ParLevelDefinition_Id"></select>
             </div>
 
         </div>
@@ -23,7 +23,7 @@
 
             <div class="form-group">
                 <label for="ParCriticalLevel_Id">Tipo:</label>
-                <select id="selectL1ParFieldType" class="input input-lg col-sm-12" name="ParFieldType_Id"></select>
+                <select id="selectL1ParFieldType" class="input input-lg col-sm-12 required" name="ParFieldType_Id"></select>
             </div>
 
         </div>
@@ -32,7 +32,7 @@
 
             <div class="form-group">
                 <label for="EffectiveDate">Nome do campo:</label>
-                <input type="text" class="form-control" id="Name" name="Name" autocomplete="off">
+                <input type="text" class="form-control required" id="Name" name="Name" autocomplete="off">
             </div>
 
         </div>
@@ -46,23 +46,23 @@
                             <td class="td-erp " colspan="0" style="">
                                 <label for="Op__o">Opção</label>
                                 <div>
-                                    <input class="form-control input-sm text-box single-line" id="objMultiplaEscolhaName" name="objMultiplaEscolhaName" style="max-width: 200px;" type="text" value="">
+                                    <input class="form-control input-sm text-box single-line required" id="objMultiplaEscolhaName" name="objMultiplaEscolhaName" style="max-width: 200px;" type="text" value="">
                                 </div>
-                                <span id="multiplaEscolhaNameCabecalho" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true">
+                                <span id="multiplaEscolhaNameCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
                                     <span for="" class="">O campo Opção deve ser preenchido para o Cabeçalho.</span>
                                 </span>
                             </td>
                             <td class="td-erp " style="">
                                 <label for="Valor_da_puni__o">Valor da punição</label>
                                 <div class="input-group">
-                                    <input class="form-control input-sm notAllowNegative text-box single-line" id="objMultiplaEscolhaPunishmentValue" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
+                                    <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValue" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL1Cabecalho.prepareToInsert(1);">
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                         </button>
                                     </span>
                                 </div>
-                                <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true">
+                                <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
                                     <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
                                 </span>
                             </td>
@@ -82,23 +82,23 @@
                         <tr class="row" id="positivo">
                             <td class="td-erp"><label for="Positivo">Positivo</label> </td>
                             <td>
-                                <input type="text" id="objBinarioPunishmentName1" class="form-control input-sm">
-                                <span id="punishmentNameCabecalho1" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
+                                <input type="text" id="objBinarioPunishmentName1" class="form-control input-sm required">
+                                <span id="punishmentNameCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
                             <td>
-                                <input type="number" id="objBinarioPunishmentValue1" class="form-control input-sm" value="0">
-                                <span id="punishmentValueCabecalho1" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
+                                <input type="number" id="objBinarioPunishmentValue1" class="form-control input-sm required" value="0">
+                                <span id="punishmentValueCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
                             </td>
                         </tr>
                         <tr class="row" id="negativo">
                             <td class="td-erp"><label for="Negativo">Negativo</label> </td>
                             <td>
-                                <input type="text" id="objBinarioPunishmentName2" class="form-control input-sm">
-                                <span id="punishmentNameCabecalho2" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
+                                <input type="text" id="objBinarioPunishmentName2" class="form-control input-sm required">
+                                <span id="punishmentNameCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
                             <td>
-                                <input type="number" id="objBinarioPunishmentValue2" class="form-control input-sm" value="0">
-                                <span id="punishmentValueCabecalho2" style="Display:none" class="text - danger field - validation - error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
+                                <input type="number" id="objBinarioPunishmentValue2" class="form-control input-sm required" value="0">
+                                <span id="punishmentValueCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
                             </td>
                             <td>
                                 <button class="btn btn-primary btn-sm margin-button" type="button" onclick="parL1Cabecalho.prepareToInsert(3);"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -111,7 +111,7 @@
             <div id="objWithDescription" style="display:none;">
 
                 <label for="Description">Valor</label>:
-                <input type="text" name="Description">
+                <input type="text" name="Description" class="required">
 
             </div>
 
@@ -132,14 +132,17 @@
                 </table>
             </div>
 
-            <div id="divBtnSalvar" class="col-sm-6">
-                <button class="form-control btn btn-primary" data-add>Salvar</button>
-            </div>
+            <div class="row">
+                <div class="td-erp">
+                    <div id="divBtnSalvar" class="col-sm-6">
+                        <button class="form-control btn btn-primary" data-add>Salvar</button>
+                    </div>
 
-            <div id="divBtnCancelar" class="col-sm-6" style="display:none">
-                <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
 
@@ -198,7 +201,7 @@
 
             $(ParLevel1XHeaderFields).each(function (i, o) {
 
-                
+
                 let previewHeaderField = getPreviewHeaderField(o.ParHeaderField);
                 let defaultSelected = "";
 
@@ -263,8 +266,8 @@
 
                 $('#' + id + ' [data-form] input[name="Name"]').val(obj.ParHeaderField.Name);
                 $('#' + id + ' [data-form] input[name="Description"]').val(obj.ParHeaderField.Description);
-                
-                $('#' + id + ' [data-form]').data('sgq', obj);               
+
+                $('#' + id + ' [data-form]').data('sgq', obj);
                 $('#' + id + ' [data-form]').addClass('alert alert-success');
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
                 $('#' + id + ' #divBtnCancelar').show();
@@ -291,7 +294,6 @@
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
 
-                openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
@@ -303,13 +305,20 @@
                 }
 
                 obj = parL1Cabecalho.prepareParHeaderField(obj);
-                Save(obj);
+
+                if (optionIsValid(obj, id)) {
+
+                    openLoader();
+                    Save(obj);
+
+                }
+
             });
 
             $('#' + id).on('change', '[name="HasTakePhoto"]', function () {
 
                 var obj = $(this).parents('tr').data('sgq');
-                
+
                 obj.IsRequired = !!$(this).prop('checked');
 
                 Save(obj);
@@ -318,7 +327,7 @@
             $('#' + id).on('click', '.defaultSelected', function () {
 
                 var obj = $(this).parents('tr').data('sgq');
-                
+
                 let parMultipleValues_Id = parseInt($(this).parents('tr').find('select :selected').val());
 
                 parMultipleValues_Id = parMultipleValues_Id ? parMultipleValues_Id : null;
@@ -355,17 +364,25 @@
 
         prepareToInsert: function (parFieldType_Id) {
 
-            let arrToInsert = [];
+            debugger
+
+            if (!formIsValid(this.id)) {
+                return false;
+            }
+
             let $Renan;
 
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (typeof (obj) == 'undefined')
                 obj = {};
+
             if (typeof (obj['ParHeaderField']) == 'undefined')
                 obj['ParHeaderField'] = {};
+
             if (typeof (obj['ParHeaderField']['ParMultipleValues']) == 'undefined')
                 obj['ParHeaderField']['ParMultipleValues'] = [];
+
 
             switch (parFieldType_Id) {
 
@@ -424,24 +441,32 @@
                 default:
             }
 
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+
             this.insertTable(obj);
 
         },
 
         insertTable: function (obj) {
 
+            //pega os dados do form e transforma em obj
             obj = parL1Cabecalho.prepareParHeaderField(obj);
+
             $('#camposCabecalhoIncluidos tbody').empty();
 
             let parHeaderField = "";
             let parLevelDefiniton = "";
 
             try{
+
                 parHeaderField = obj.ParHeaderField.Name;
                 parLevelDefiniton = obj.ParHeaderField.ParLevelDefiniton.Name;
+
             } catch (e) {
+
                 parHeaderField = obj['ParHeaderField']['ParMultipleValues'][0].ParHeaderField;
                 parLevelDefiniton = obj['ParHeaderField']['ParMultipleValues'][0].ParLevelDefiniton;
+
             }
 
             let multipleValues = obj['ParHeaderField']['ParMultipleValues'];
@@ -488,7 +513,7 @@
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (obj) {
-                if (obj.ParHeaderField.ParFieldType.Id == 3)//Se for binário, exclui todos os ParMultipleValues
+                if (obj.ParHeaderField.ParFieldType.Id == 3) //Se for binário, exclui todos os ParMultipleValues
                     obj.ParHeaderField.ParMultipleValues.forEach((o, i, a) => {
                         a[i].IsActive = false;
                     });
@@ -500,7 +525,7 @@
             } else {
                 $('#camposCabecalhoIncluidos tbody').empty();
                 $('#divCamposCabecalhoIncluidos').hide();
-            }            
+            }
         }
 
     };

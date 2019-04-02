@@ -8,7 +8,7 @@
 
             <div class="form-group">
                 <label for="Name">Nome:</label>
-                <input type="text" class="form-control" id="Name" name="Name">
+                <input type="text" class="form-control required" id="Name" name="Name">
             </div>
 
         </div>
@@ -17,7 +17,7 @@
 
             <div class="form-group">
                 <label for="Description">Descrição:</label>
-                <input type="text" class="form-control" id="Description" name="Description">
+                <input type="text" class="form-control required" id="Description" name="Description">
             </div>
 
         </div>
@@ -95,6 +95,11 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-add]', function (e) {
+
+                if (!formIsValid(id)) {
+                    return false
+                }
+
                 openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();

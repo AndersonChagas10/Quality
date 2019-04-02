@@ -12,8 +12,7 @@
 
             <div class="form-group">
                 <label for="ParCompany_Id">Empresa:</label>
-                <select id="selectL2AvamParCompany" class="input input-lg col-sm-12"
-                        name="ParCompany_Id"></select>
+                <select id="selectL2AvamParCompany" class="input input-lg col-sm-12 required" name="ParCompany_Id"></select>
             </div>
 
         </div>
@@ -22,8 +21,7 @@
 
             <div class="form-group">
                 <label for="ParLevel1_Id">Indicador:</label>
-                <select id="selectL2AvamParLevel1" class="input input-lg col-sm-12"
-                        name="ParLevel1_Id"></select>
+                <select id="selectL2AvamParLevel1" class="input input-lg col-sm-12 required" name="ParLevel1_Id"></select>
             </div>
 
         </div>
@@ -32,8 +30,7 @@
 
             <div class="form-group">
                 <label for="ParCluster_Id">Processo:</label>
-                <select id="selectL2AvamCluster" class="input input-lg col-sm-12"
-                        name="ParCluster_Id"></select>
+                <select id="selectL2AvamCluster" class="input input-lg col-sm-12 required" name="ParCluster_Id"></select>
             </div>
 
         </div>
@@ -42,7 +39,7 @@
 
             <div class="form-group">
                 <label for="Number">Avaliação:</label>
-                <input type="text" class="form-control" id="Number" name="Number">
+                <input type="text" class="form-control required" id="Number" name="Number">
             </div>
 
         </div>
@@ -51,7 +48,7 @@
 
             <div class="form-group">
                 <label for="Sample">Amostras por Avaliação:</label>
-                <input type="text" class="form-control" id="Sample" name="Sample">
+                <input type="text" class="form-control required" id="Sample" name="Sample">
             </div>
 
         </div>
@@ -183,6 +180,11 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+
+                if (!formIsValid(id)) {
+                    return false
+                }
+
                 openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();

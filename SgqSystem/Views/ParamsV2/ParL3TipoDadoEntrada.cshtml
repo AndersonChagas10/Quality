@@ -12,7 +12,7 @@
 
             <div class="form-group">
                 <label for="ParLevel3InputType_Id">Tipo do dado:</label>
-                <select id="selectL3TipoDadoParLevel3InputType" class="input input-lg col-sm-12"
+                <select id="selectL3TipoDadoParLevel3InputType" class="input input-lg col-sm-12 required"
                         name="ParLevel3InputType_Id"></select>
             </div>
 
@@ -22,7 +22,7 @@
 
             <div class="form-group">
                 <label for="ParLevel1_Id">Indicador:</label>
-                <select id="selectL3TipoDadoParLevel1" class="input input-lg col-sm-12"
+                <select id="selectL3TipoDadoParLevel1" class="input input-lg col-sm-12 required"
                         name="ParLevel1_Id"></select>
             </div>
 
@@ -32,7 +32,7 @@
 
             <div class="form-group">
                 <label for="ParLevel2_Id">Monitorador:</label>
-                <select id="selectL3TipoDadoParLevel2" class="input input-lg col-sm-12"
+                <select id="selectL3TipoDadoParLevel2" class="input input-lg col-sm-12 required"
                         name="ParLevel2_Id"></select>
             </div>
 
@@ -41,7 +41,7 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label for="ParCompany_Id">Empresa:</label>
-                <select id="selectL3TipoDadoParCompany" class="input input-lg col-sm-12"
+                <select id="selectL3TipoDadoParCompany" class="input input-lg col-sm-12 required"
                         name="ParCompany_Id"></select>
             </div>
         </div>
@@ -50,7 +50,7 @@
 
             <div class="form-group">
                 <label for="ParLevel3BoolTrue_Id">Valor positivo:</label>
-                <select id="selectL3TipoDadoParLevel3BoolTrue" class="input input-lg col-sm-12"
+                <select id="selectL3TipoDadoParLevel3BoolTrue" class="input input-lg col-sm-12 required"
                         name="ParLevel3BoolTrue_Id"></select>
             </div>
 
@@ -60,7 +60,7 @@
 
             <div class="form-group">
                 <label for="ParLevel3BoolFalse_Id">Valor negativo:</label>
-                <select id="selectL3TipoDadoParLevel3BoolFalse" class="input input-lg col-sm-12"
+                <select id="selectL3TipoDadoParLevel3BoolFalse" class="input input-lg col-sm-12 required"
                         name="ParLevel3BoolFalse_Id"></select>
             </div>
 
@@ -70,7 +70,7 @@
 
             <div class="form-group">
                 <label for="ParMeasurementUnit_Id">Unidade de medida:</label>
-                <select id="selectL3TipoDadoParMeasurementUnit" class="input input-lg col-sm-12"
+                <select id="selectL3TipoDadoParMeasurementUnit" class="input input-lg col-sm-12 required"
                         name="ParMeasurementUnit_Id"></select>
             </div>
 
@@ -80,7 +80,7 @@
 
             <div class="form-group">
                 <label for="IntervalMin">Limite inferior:</label>
-                <input type="text" class="form-control" id="IntervalMin" name="IntervalMin">
+                <input type="text" class="form-control required" id="IntervalMin" name="IntervalMin">
             </div>
 
         </div>
@@ -89,7 +89,7 @@
 
             <div class="form-group">
                 <label for="IntervalMax">Limite superior:</label>
-                <input type="text" class="form-control" id="IntervalMax" name="IntervalMax">
+                <input type="text" class="form-control required" id="IntervalMax" name="IntervalMax">
             </div>
 
         </div>
@@ -98,7 +98,7 @@
 
             <div class="form-group">
                 <label for="DynamicValue">Equação:</label>
-                <input type="text" class="form-control" id="DynamicValue" name="DynamicValue">
+                <input type="text" class="form-control required" id="DynamicValue" name="DynamicValue">
             </div>
 
         </div>
@@ -238,6 +238,11 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+
+                if (!formIsValid(id)) {
+                    return false
+                }
+
                 openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();

@@ -116,6 +116,10 @@
     .select2 {
         width: 100% !important;
     }
+
+    .control-label .required, .form-group .required {
+        color: black !important;
+    }
 </style>
 
 
@@ -327,7 +331,7 @@
         preencheSelect('selectL3AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
         preencheSelect('selectL3PesoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
         preencheSelect('selectL3TipoDadoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
-        getSelectsL1();
+        getSelectsL1();       
     }
 
     let setSelectLevel2 = function (data) {
@@ -457,6 +461,9 @@
 
         apagaCampos('l1');
         verifyTabs('selectL1', 'l1');
+        setFormToDefault('ParL1Geral');
+        setFormToDefault('ParL1Cabecalho');
+        setFormToDefault('ParL1Processo');
 
         if (parseInt($(this).val()) > 0) {
 
@@ -470,7 +477,7 @@
                 data: {},
                 contentType: "application/json",
                 success: function (ParLevel1) {
-                    
+
                     preencheCampos('l1', '', ParLevel1, true)
                     ParL1Geral.set(ParLevel1);
                     ParL1Avancados.set(ParLevel1);
@@ -495,6 +502,8 @@
 
         apagaCampos('l2');
         verifyTabs('selectL2', 'l2');
+        setFormToDefault('ParL2Geral');
+        setFormToDefault('ParL2Avam');
 
         if (parseInt($(this).val()) > 0) {
 
@@ -687,6 +696,71 @@
         if (!!text)
             return text;
         return valorPadrao;
+    }
+
+    let formIsValid = function (id) {
+        
+        let isValid = true;
+
+        $('#' + id + ' input.required:visible').each((i, o) => {
+
+            $(o).css('background-color', "");
+
+            if (!$(o).val()) {
+                $(o).css('background-color', 'rgba(255, 0, 0, 0.27)');
+                isValid = false;
+            }
+
+        });
+
+        $('#' + id + ' select.required:visible').each((i, o) => {
+
+            $(o).next().find('.select2-selection').css('background-color', "");
+
+            if (!parseInt($('option:selected', o).val())) {
+                $(o).next().find('.select2-selection').css('background-color', 'rgba(255, 0, 0, 0.27)');
+                isValid = false;
+            }
+
+        });
+
+        if (!isValid) {
+            openMessageModal("Alerta", "Os campos obrigatórios devem ser preenchidos");
+        }
+
+        return isValid;
+    }
+
+    let setFormToDefault = function (id) {
+
+        $('#' + id + ' input.required').each((i, o) => {
+            $(o).css('background-color', "");
+        });
+
+        $('#' + id + ' select.required').each((i, o) => {
+            $(o).next().find('.select2-selection').css('background-color', "");
+        });
+    }
+
+    let optionIsValid = function (obj, id) {
+        
+        let isValid = true;
+
+        //se for binário o multipla escolha valida pela quantidade de parMultipleValues
+        if (obj.ParHeaderField.ParFieldType_Id == 1 || obj.ParHeaderField.ParFieldType_Id == 3) {
+
+            if (!obj.ParHeaderField.ParMultipleValues || obj.ParHeaderField.ParMultipleValues.length <= 0) {
+                openMessageModal("Alerta", "Favor Inserir opções antes de salvar");
+                isValid = false;
+            }
+
+        } else if (!formIsValid(id)){
+
+            isValid = false;
+
+        }
+
+        return isValid;
     }
 
 </script>

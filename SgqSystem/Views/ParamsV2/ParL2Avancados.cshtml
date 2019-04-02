@@ -87,6 +87,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-add]', function (e) {
+
                 openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
