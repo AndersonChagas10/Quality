@@ -137,7 +137,6 @@ body > .App > div.container {
 .login > .foot
 {
     margin-top:50px;
-    background-image: url("img/grtjbslogo.png");
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
@@ -200,14 +199,7 @@ body > .App > div.container {
 {
     width: 200px !important;
 }
-.level03Group .panel-group .level03
-{
-    padding-bottom: 10px;
-}
-.level03Group .panel-group .level03
-{
-    padding-bottom: 10px;
-}
+
 .response{    
     cursor: pointer;
 }
@@ -261,14 +253,6 @@ body > .App > div.container {
 .marginRight100
 {
     margin-right: 100px;
-}
-.btnCA{
-    z-index: 9999;
-    position:fixed;
-    right:15px;
-    bottom:20px;
-    margin-right:75px;
-    border-radius: 0 !important;
 }
 .red
 {
@@ -337,15 +321,6 @@ body > .App > div.container {
 {
 	background-color: #ffff99 !important;
 	color: #000 !important;
-}
-.caModal {
-    position:absolute;
-    width: 90%;
-    height:90%;
-    margin: auto;
-    z-index:999;
-    overflow-y:auto;
-    padding: 5px;
 }
 .panel-body{
     padding: 0px !important;
@@ -686,49 +661,8 @@ position: absolute;
     top:0;
     right:0;
 }
-.levelNameDebug{
-	font-size:xx-small;
-	color:black;
-}
-.navbar-header{
-    width: 100%;
-    padding: 0px !important;
-}
-.navbar-brand{
-    margin: 0px !important;
-    margin-left: 18px !important;
-    padding: 15px 15px 4px 4px !important;
-}
-.navbar-header .iconReturn{
-    margin: 0px !important;
-    font-size: 16px !important;
-}
-.navbar-header select{
-    height: 50px !important;
-    padding: 0px !important;
-    padding-left: 4px !important;
-    margin: 0px !important;
-}
-.navbar-header div.iconMoreMenu{
-    height: 50px !important;
-    padding-right: 12px !important;
-    padding-top: 8px !important;
-}
 .zooms {
     position: fixed;
     left: 50%;
     bottom: 0px;
-}
-.list-group.header-checkbox{
-    position: fixed;
-    left: 50%;
-    margin-left: -25%;
-    top: 10%;
-    background-color: #fff;
-    width: 50%;
-    z-index: 9999;
-    border: 1px solid #333;
-}
-.header-checkbox .list-group-item {
-    cursor: pointer;
 }
