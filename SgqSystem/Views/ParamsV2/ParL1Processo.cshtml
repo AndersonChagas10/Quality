@@ -12,8 +12,7 @@
 
             <div class="form-group">
                 <label for="ParCluster_Id">Processo:</label>
-                <select id="selectL1Cluster" class="input input-lg col-sm-12"
-                        name="ParCluster_Id"></select>
+                <select id="selectL1Cluster" class="input input-lg col-sm-12 required" name="ParCluster_Id"></select>
             </div>
 
         </div>
@@ -22,8 +21,7 @@
 
             <div class="form-group">
                 <label for="ParCriticalLevel_Id">Grupo:</label>
-                <select id="selectL1CriticalLevel" class="input input-lg col-sm-12"
-                        name="ParCriticalLevel_Id"></select>
+                <select id="selectL1CriticalLevel" class="input input-lg col-sm-12 required" name="ParCriticalLevel_Id"></select>
             </div>
 
         </div>
@@ -32,7 +30,7 @@
 
             <div class="form-group">
                 <label for="EffectiveDate">Data Vigente:</label>
-                <input type="date" class="form-control" id="EffectiveDate" name="EffectiveDate">
+                <input type="date" class="form-control required" id="EffectiveDate" name="EffectiveDate">
             </div>
 
         </div>
@@ -41,7 +39,7 @@
 
             <div class="form-group">
                 <label for="Points">Pontos:</label>
-                <input type="text" class="form-control" id="Points" name="Points">
+                <input type="text" class="form-control required" id="Points" name="Points">
             </div>
 
         </div>
@@ -170,6 +168,11 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+
+                if (!formIsValid(id)) {
+                    return false
+                }
+
                 openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
