@@ -502,6 +502,8 @@
 
         apagaCampos('l2');
         verifyTabs('selectL2', 'l2');
+        setFormToDefault('ParL2Geral');
+        setFormToDefault('ParL2Avam');
 
         if (parseInt($(this).val()) > 0) {
 
@@ -738,6 +740,27 @@
         $('#' + id + ' select.required').each((i, o) => {
             $(o).next().find('.select2-selection').css('background-color', "");
         });
+    }
+
+    let optionIsValid = function (obj, id) {
+        
+        let isValid = true;
+
+        //se for binário o multipla escolha valida pela quantidade de parMultipleValues
+        if (obj.ParHeaderField.ParFieldType_Id == 1 || obj.ParHeaderField.ParFieldType_Id == 3) {
+
+            if (!obj.ParHeaderField.ParMultipleValues || obj.ParHeaderField.ParMultipleValues.length <= 0) {
+                openMessageModal("Alerta", "Favor Inserir opções antes de salvar");
+                isValid = false;
+            }
+
+        } else if (!formIsValid(id)){
+
+            isValid = false;
+
+        }
+
+        return isValid;
     }
 
 </script>

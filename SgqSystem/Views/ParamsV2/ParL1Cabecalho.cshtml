@@ -294,10 +294,6 @@
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
 
-                if (!formIsValid(id))
-                    return false;
-
-                openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
@@ -309,7 +305,14 @@
                 }
 
                 obj = parL1Cabecalho.prepareParHeaderField(obj);
-                Save(obj);
+
+                if (optionIsValid(obj, id)) {
+
+                    openLoader();
+                    Save(obj);
+
+                }
+
             });
 
             $('#' + id).on('change', '[name="HasTakePhoto"]', function () {
@@ -361,21 +364,25 @@
 
         prepareToInsert: function (parFieldType_Id) {
 
+            debugger
+
             if (!formIsValid(this.id)) {
                 return false;
             }
 
-            let arrToInsert = [];
             let $Renan;
 
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (typeof (obj) == 'undefined')
                 obj = {};
+
             if (typeof (obj['ParHeaderField']) == 'undefined')
                 obj['ParHeaderField'] = {};
+
             if (typeof (obj['ParHeaderField']['ParMultipleValues']) == 'undefined')
                 obj['ParHeaderField']['ParMultipleValues'] = [];
+
 
             switch (parFieldType_Id) {
 
@@ -434,24 +441,32 @@
                 default:
             }
 
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+
             this.insertTable(obj);
 
         },
 
         insertTable: function (obj) {
 
+            //pega os dados do form e transforma em obj
             obj = parL1Cabecalho.prepareParHeaderField(obj);
+
             $('#camposCabecalhoIncluidos tbody').empty();
 
             let parHeaderField = "";
             let parLevelDefiniton = "";
 
             try{
+
                 parHeaderField = obj.ParHeaderField.Name;
                 parLevelDefiniton = obj.ParHeaderField.ParLevelDefiniton.Name;
+
             } catch (e) {
+
                 parHeaderField = obj['ParHeaderField']['ParMultipleValues'][0].ParHeaderField;
                 parLevelDefiniton = obj['ParHeaderField']['ParMultipleValues'][0].ParLevelDefiniton;
+
             }
 
             let multipleValues = obj['ParHeaderField']['ParMultipleValues'];
