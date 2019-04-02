@@ -242,7 +242,9 @@ namespace SgqSystem.Controllers.Api.App
         [Route("GetFiles")]
         public string GetFiles()
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
+            
+                
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta\\"+ System.Configuration.ConfigurationManager.AppSettings["AppFiles"];
             string searchPattern = "*.*";
             string[] MyFiles = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories)
                 .Where(file => file.ToLower().EndsWith("js") || file.ToLower().EndsWith("css")).ToArray();

@@ -5,3 +5,13 @@ IF COL_LENGTH('ParEvaluation','Sample') IS NULL
     BEGIN	
 		ALTER TABLE ParEvaluation ADD Sample int null;
     END
+
+
+	
+
+IF COL_LENGTH('ParLevel2','ParDepartment_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParLevel2 
+		ALTER COLUMN ParDepartment_Id int null;
+    END
+
