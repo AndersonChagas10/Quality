@@ -198,9 +198,10 @@
 
             $('table#table' + id + ' tbody').html('');
             $('#selectL1ParFieldType').prop("disabled", false);
+            $('#tableParL1Cabecalho [data-table-edit]').prop('disabled', false);
+            $('#tableParL1Cabecalho [data-table-delete]').prop('disabled', false);
 
             $(ParLevel1XHeaderFields).each(function (i, o) {
-
 
                 let previewHeaderField = getPreviewHeaderField(o.ParHeaderField);
                 let defaultSelected = "";
@@ -276,6 +277,9 @@
 
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+
+                $('#tableParL1Cabecalho [data-table-edit]').prop('disabled', true);
+                $('#tableParL1Cabecalho [data-table-delete]').prop('disabled', true);
 
             });
 
@@ -368,7 +372,7 @@
 
             if (!formIsValid(this.id)) {
                 return false;
-            }
+            }           
 
             let $Renan;
 
@@ -382,7 +386,6 @@
 
             if (typeof (obj['ParHeaderField']['ParMultipleValues']) == 'undefined')
                 obj['ParHeaderField']['ParMultipleValues'] = [];
-
 
             switch (parFieldType_Id) {
 
@@ -406,9 +409,13 @@
 
                 case 3:	// Binario
 
-                    obj['ParHeaderField']['ParMultipleValues'].forEach((o, i) => {
-                        o.IsActive = false;
-                    });
+                    if ($.grep(obj['ParHeaderField']['ParMultipleValues'], function (o, i) {
+                        return o.IsActive == true;
+                    }).length > 0) {
+                        debugger
+                        openMessageModal("Alerta", "Já existem opções inseridas para este campo de cabeçalho")
+                        return false;
+                    }
 
                     $Renan = $('#tblBinario');
 
@@ -491,6 +498,8 @@
 
             if (blockParFieldType)
                 $('#selectL1ParFieldType').prop("disabled", true);
+            else
+                $('#selectL1ParFieldType').prop("disabled", false);
 
             this.showTableParMultipleValues();
         },
