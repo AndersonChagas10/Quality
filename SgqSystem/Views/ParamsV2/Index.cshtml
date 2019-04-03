@@ -164,6 +164,11 @@
                             <select id="selectL3" class="input input-lg"></select>
                         </a>
                     </li>
+                    <li class="col-sm-3">
+                        <button id="btnVincular" class="btn btn-warning" style="height: 42px;position: relative;bottom: -16px;right: 0px;width: 150px; cursor:pointer" title="Vincular todos os níveis selecionados">
+                            <span class="glyphicon glyphicon-link"></span>
+                        </button>
+                    </li>
                 </ul>
 
                 <div class="tab-content border">
@@ -823,5 +828,58 @@
 
         return isValid;
     }
+
+    $('#btnVincular').on('click', function (e) {
+
+        let idLevel1 = $('#selectL1').val();
+        let idLevel2 = $('#selectL2').val();
+        let idLevel3 = $('#selectL3').val();
+        let userId = getCookie('webControlCookie')[0].split('=')[1]
+
+        if (idLevel1 <= 0) {
+            openMessageModal(Resources("alert"), Resources("select_audit_first"));
+            return;
+        }
+
+        if (idLevel2 <= 0) {
+            openMessageModal(Resources("alert"), Resources("select_monitoring_first"));
+            return;
+        }
+
+        if (idLevel3 <= 0) {
+            openMessageModal(Resources("alert"), Resources("select_task_first"));
+            return;
+        }
+
+        $.ajax({
+            url: `@Url.Action("AddVinculoL1L2", "api/ParamsApi")/${idLevel1}/${idLevel2}/${idLevel3}/${userId}`,
+            type: 'Get',
+            dataType: "json",
+            data: {},
+            contentType: "application/json",
+            success: function (data) {
+
+                //if (obj != null) {
+                //    var ids = $.map(obj, function (val, index) {
+
+                //        var str = val.Id;
+
+                //        return str;
+
+                //    }).join(", ");
+
+                openMessageModal(Resources("done"), Resources("monitoring_task_linked_indicator_successfully"));
+
+                    //$('#desVinculoLevel1').show();
+                    //UpdateSelect2Level2(idLevel1);
+                    //UpdateSelect2Level3(idLevel2, undefined, function(){$('#parLevel3Select2').trigger('change');});
+                //}
+            }
+            //initialFormLevel3 = $($('form')[2]).clone();
+        }).fail(function (e, h, x) {
+            //$('#desVinculoLevel1').hide();
+            openMessageModal(Resources("alert"), e.responseJSON.Message);
+        });
+    });
 
 </script>
