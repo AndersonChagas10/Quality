@@ -23,7 +23,7 @@ namespace SgqSystem.Controllers.V2.Api
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
-                parLevel1Selects.ParLevels1 = db.ParLevel1.ToList();
+                parLevel1Selects.ParLevels1 = db.ParLevel1.ToList();               
             }
 
             return Ok(parLevel1Selects);
@@ -108,10 +108,11 @@ namespace SgqSystem.Controllers.V2.Api
                 }
 
             }
-
+    
             return Ok(parLevel1);
         }
 
+        //Salvar ou Editar
         [HttpPost]
         [Route("PostParLevel1")]
         public IHttpActionResult PostParLevel1(ParLevel1 parLevel1)
@@ -429,7 +430,7 @@ namespace SgqSystem.Controllers.V2.Api
             public List<ParLevel3BoolFalse> ParLevel3BoolFalses { get; set; }
             public List<ParMeasurementUnit> ParMeasurementUnits { get; set; }
 
-
+            public IEnumerable<SelectListItem> SelectLevel2Vinculados { get; set; }
         }
 
         public class SaveParHeaderField
@@ -438,6 +439,22 @@ namespace SgqSystem.Controllers.V2.Api
             public int ParLevel1_Id { get; set; }
             public ParHeaderField ParHeaderField { get; set; }
 
+        }
+
+
+        public class SelectListItem
+        {
+            public bool Disabled { get; set; }
+            public SelectListGroup Group { get; set; }
+            public bool Selected { get; set; }
+            public string Text { get; set; }
+            public string Value { get; set; }
+        }
+
+        public class SelectListGroup
+        {
+            public bool Disabled { get; set; }
+            public string Name { get; set; }
         }
 
         //public class ParLevel1ViewModel

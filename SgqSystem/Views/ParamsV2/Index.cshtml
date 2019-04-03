@@ -331,7 +331,7 @@
         preencheSelect('selectL3AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
         preencheSelect('selectL3PesoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
         preencheSelect('selectL3TipoDadoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
-        getSelectsL1();       
+        getSelectsL1();
     }
 
     let setSelectLevel2 = function (data) {
@@ -343,7 +343,7 @@
     }
 
     let setSelectLevel3 = function (data) {
-        preencheSelect('selectL3', 'Name', 'Id', data.ParLevels3, 'Selecione o Tarefa', preencheL3);
+        preencheSelect('selectL3', 'Name', 'Id', data.ParLevels3, 'Selecione a Tarefa', preencheL3);
         //getSelectsL3();
     }
 
@@ -366,7 +366,27 @@
         $(`select#${id}`).empty();
         $(`select#${id}`).append(`<option value="0" selected>${defaultText}</option>`);
 
-        $(list).each(function (i, o) {
+        let listVinculados = $.grep(list, (item) => { return (item.GroupName != "" && item.GroupName != undefined) });
+        let listNaoVinculados = $.grep(list, (item) => { return (item.GroupName == undefined || item.GroupName == "") });
+
+        if (listVinculados && listVinculados.length > 0) {
+
+            [... new Set(listVinculados.map(x => x.GroupName))].forEach((groupName) => {
+
+                $(`select#${id}`).append('<optgroup label="' + groupName + '">');
+
+                listVinculados.filter(x => x.GroupName == groupName).forEach((o) => {
+
+                    $(`select#${id}`).append(`<option value="${o[value]}">${o[name]}</option>`);
+
+                });
+
+                $(`select#${id}`).append('</optgroup>');
+
+            });
+        }
+
+        $(listNaoVinculados).each(function (i, o) {
             $(`select#${id}`).append(`<option value="${o[value]}">${o[name]}</option>`);
         });
 
@@ -495,6 +515,27 @@
                 }
             });
 
+            $.ajax({
+
+                url: `@Url.Action("GetParLevel2Vinculados", "api/ParLevel2Api")/${$(this).val()}`,
+                type: 'Get',
+                dataType: "json",
+                data: {},
+                contentType: "application/json",
+                success: function (data) {
+
+                    preencheSelect('selectL2', 'Text', 'Value', data.Options, 'Selecione o Monitoramento', preencheL2);
+                },
+                error: function (request, error) {
+                    closeLoader();
+                    openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                    console.log(error)
+                }
+            });
+
+        } else {
+            getGenericAjax('@Url.Action("Get", "api/ParLevel2Api")', 'Get', setSelectLevel2);
+            getGenericAjax('@Url.Action("Get", "api/ParLevel3Api")', 'Get', setSelectLevel3);
         }
     }
 
@@ -526,6 +567,26 @@
                 }
             });
 
+            debugger
+            $.ajax({
+
+                url: `@Url.Action("GetParLevel3Vinculados", "api/ParLevel3Api")/${$('#selectL1 :selected').val()}/${$(this).val()}`,
+                type: 'Get',
+                dataType: "json",
+                data: {},
+                contentType: "application/json",
+                success: function (data) {
+
+                    preencheSelect('selectL3', 'Text', 'Value', data.Options, 'Selecione a Tarefa', preencheL3);
+                },
+                error: function (request, error) {
+                    closeLoader();
+                    openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                    console.log(error)
+                }
+            });
+        } else {
+            getGenericAjax('@Url.Action("Get", "api/ParLevel3Api")', 'Get', setSelectLevel3);
         }
     }
 
@@ -699,7 +760,7 @@
     }
 
     let formIsValid = function (id) {
-        
+
         let isValid = true;
 
         $('#' + id + ' input.required:visible').each((i, o) => {
@@ -743,7 +804,7 @@
     }
 
     let optionIsValid = function (obj, id) {
-        
+
         let isValid = true;
 
         //se for binário o multipla escolha valida pela quantidade de parMultipleValues
