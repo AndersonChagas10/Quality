@@ -247,6 +247,7 @@ namespace Dominio
         public virtual DbSet<ParReasonType> ParReasonType { get; set; }
         public virtual DbSet<ParReason> ParReason { get; set; }
         public virtual DbSet<DicionarioEstatico> DicionarioEstatico { get; set; }
+        public virtual DbSet<IntegracaoSistemica> IntegracaoSistemica { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

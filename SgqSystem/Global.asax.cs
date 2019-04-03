@@ -54,10 +54,13 @@ namespace SgqSystem
             #endregion
 
             SetGlobalConfigAmbient();
+            ThreadPool.QueueUserWorkItem(IntegrationJobFactory.ExecuteIntegrationJobFunction);
+
 
             ThreadPool.QueueUserWorkItem(MailJob.SendMailJobFunction);
             ThreadPool.QueueUserWorkItem(MandalaJob.PreencherListaMandala);
             ThreadPool.QueueUserWorkItem(ReProcessJsonJob.ReProcessJsonJobFunction);
+            
 
             //if (GlobalConfig.Brasil)
             //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR" + GlobalConfig.Ambient];
@@ -66,10 +69,10 @@ namespace SgqSystem
             //else if (GlobalConfig.Ytoara)
             //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaYTOARA" + GlobalConfig.Ambient];
 
-            #if DEBUG
+#if DEBUG
             //TelemetryConfiguration.Active.DisableTelemetry = true;
 
-            #endif
+#endif
 
             if (GlobalConfig.LanguageBrasil)
             {

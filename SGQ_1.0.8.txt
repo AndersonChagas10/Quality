@@ -40,6 +40,10 @@ IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Não Avaliado')
 
 GO
 
+SET IDENTITY_INSERT ParReasonType OFF
+
+GO
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReason' AND xtype='U')
 Create Table ParReason (   
 	Id int not null identity PRIMARY KEY,
@@ -135,6 +139,10 @@ IF NOT EXISTS (SELECT * FROM ParFrequency WHERE Name = 'Diario com Intervalo')
 	end
 
 GO
+
+SET IDENTITY_INSERT ParFrequency OFF
+
+GO
 IF COL_LENGTH('VolumeCepDesossa','Agendamento') IS NULL
     BEGIN	
 		ALTER TABLE VolumeCepDesossa
@@ -177,7 +185,25 @@ IF COL_LENGTH('VolumeCepRecortes','Agendamento') IS NULL
     END
 GO
 
-Insert into MigrationHistory (Name, AddDate) VALUES ('20190207_AlterarTamanhoColunaDynamicValue',GetDate())
 
-ALTER TABLE ParLevel3Value
-ALTER COLUMN DynamicValue varchar(900) null
+IF not Exists (select 1 from MigrationHistory where Name = '20190207_AlterarTamanhoColunaDynamicValue')
+BEGIN
+	Insert into MigrationHistory (Name, AddDate) VALUES ('20190207_AlterarTamanhoColunaDynamicValue',GetDate())
+
+	ALTER TABLE ParLevel3Value
+	ALTER COLUMN DynamicValue varchar(900) null
+END
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='IntegracaoSistemica' AND xtype='U')
+create table IntegracaoSistemica(
+	Id int not null identity primary key,
+	Name varchar(20) NOT NULL,
+	Configuration varchar(255) NOT NULL,
+	Script text NOT NULL,
+	TableName varchar(50) NOT NULL,
+	Intervalo int NOT NULL,
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1
+)
