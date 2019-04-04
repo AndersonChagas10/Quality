@@ -55,7 +55,8 @@ namespace SgqSystem
 
             SetGlobalConfigAmbient();
             ThreadPool.QueueUserWorkItem(IntegrationJobFactory.ExecuteIntegrationJobFunction);
-
+            ThreadPool.QueueUserWorkItem(CollectionDataJobFactory.ExecuteCollectionDataJobFunction);
+            
 
             ThreadPool.QueueUserWorkItem(MailJob.SendMailJobFunction);
             ThreadPool.QueueUserWorkItem(MandalaJob.PreencherListaMandala);

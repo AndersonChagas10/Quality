@@ -249,6 +249,8 @@ namespace Dominio
         public virtual DbSet<DicionarioEstatico> DicionarioEstatico { get; set; }
         public virtual DbSet<IntegracaoSistemica> IntegracaoSistemica { get; set; }
 
+        public virtual DbSet<IntegCollectionData> IntegCollectionData { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
