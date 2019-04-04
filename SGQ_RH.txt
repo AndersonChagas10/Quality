@@ -6,12 +6,33 @@ IF COL_LENGTH('ParEvaluation','Sample') IS NULL
 		ALTER TABLE ParEvaluation ADD Sample int null;
     END
 
-
-	
-
 IF COL_LENGTH('ParLevel2','ParDepartment_Id') IS NULL
     BEGIN	
 		ALTER TABLE ParLevel2 
 		ALTER COLUMN ParDepartment_Id int null;
     END
 
+Insert into MigrationHistory (Name, AddDate) VALUES ('Alter_ParVinculoPeso_Add_ParLevel3Group_Cargo',GetDate())
+
+IF COL_LENGTH('ParVinculoPeso','ParLevel3Group_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParVinculoPeso 
+		ADD ParLevel3Group_Id int NULL,
+		FOREIGN KEY (ParLevel3Group_Id) REFERENCES ParLevel3Group(Id);
+    END
+
+IF COL_LENGTH('ParVinculoPeso','Cargo_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParVinculoPeso 
+		ADD Cargo_Id int NULL		
+    END
+
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('Create_Cargo',GetDate())
+CREATE TABLE Cargo(
+	Id INT PRIMARY KEY IDENTITY,
+	Name VARCHAR(155) NOT NULL,
+	AddDate DATETIME2 NOT NULL,
+	AlterDate DATETIME2 NULL,
+	IsActive BIT NOT NULL DEFAULT 1
+)
