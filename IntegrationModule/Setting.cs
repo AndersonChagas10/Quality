@@ -42,7 +42,7 @@ namespace IntegrationModule
                 {
                     listScripts.Add(script.ToString());
                     script = new StringBuilder();
-                    script.Append($"INSERT INTO [{nomeTabela}] (");
+                    script.Append($"INSERT INTO {MontaNomeTabela(nomeTabela)} (");
                     script.Append(string.Join(",", retorno.FirstOrDefault().Select(x => $"[{x.Key}]")));
                     script.AppendLine(") values ");
                 }
@@ -95,7 +95,7 @@ namespace IntegrationModule
                 {
                     listScripts.Add(script.ToString());
                     script = new StringBuilder();
-                    script.Append($"INSERT INTO [{nomeTabela}] (");
+                    script.Append($"INSERT INTO {MontaNomeTabela(nomeTabela)} (");
                     script.Append(string.Join(",", retorno.FirstOrDefault().Select(x => $"[{x.Key}]")));
                     script.AppendLine(") values ");
                 }
@@ -131,6 +131,18 @@ namespace IntegrationModule
             listScripts.Add(script.ToString());
 
             return listScripts;
+        }
+
+        private string MontaNomeTabela(string nomeTabela)
+        {
+            var nome = "";
+            foreach (var item in nomeTabela.Split('.'))
+            {
+                if (!string.IsNullOrEmpty(nome))
+                    nome += ".";
+                nome += "[" + item + "]";
+            }
+            return nome;
         }
     }
 }
