@@ -20,10 +20,10 @@
     }
 
     .tab-content.border {
-        border-left: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
-        border-right: 1px solid #ddd;
-        border-top: 0px;
+        border-left: 3px solid #d9edf7;
+        border-bottom: 3px solid #d9edf7;
+        border-right: 3px solid #d9edf7;
+        border-top: 3px solid #d9edf7;
         padding-bottom: 100px;
     }
 
@@ -120,6 +120,20 @@
     .control-label .required, .form-group .required {
         color: black !important;
     }
+
+    body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(1) a {
+        background-color: #d9edf7;
+    }
+
+    body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(2) a {
+        background-color: #faebcc;
+    }
+
+    body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(3) a {
+        background-color: #ebccd1;
+    }
+
+
 </style>
 
 
@@ -879,6 +893,26 @@
         }).fail(function (e, h, x) {
             openMessageModal(Resources("alert"), e.responseJSON.Message);
         });*@
+    });
+
+    $(document).on('click', function () {
+
+        setTimeout(function () {
+            
+            if ($('#l1').hasClass('active')) {
+                $('#l1').parents('.border').css('border-color', '#d9edf7');
+            }
+
+            if ($('#l2').hasClass('active')) {
+                $('#l2').parents('.border').css('border-color', '#faebcc');
+            }
+
+            if ($('#l3').hasClass('active')) {
+                $('#l3').parents('.border').css('border-color', '#ebccd1');
+            }
+
+        }, 150);
+
     });
 
 </script>
