@@ -173,6 +173,10 @@
                     return false
                 }
 
+                if (formIsDuplicate()) {
+                    return false;
+                }
+
                 openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
@@ -186,6 +190,43 @@
 
                 Save(obj);
             });
+
+            let formIsDuplicate = function () {
+
+                //Validar se já existe na table um processo com o mesmo Processo, Grupo e Data, que o Id seja diferente do editado.
+                
+                var obj = $('#ParL1Processo [data-form]').data('sgq');
+                var formdata = $('#ParL1Processo [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                let arrParLevel1XClusters = [];
+
+                $('#tableParL1Processo tbody tr').each(function () {
+                    arrParLevel1XClusters.push($(this).data('sgq'));
+                });
+
+                let isDuplicate = arrParLevel1XClusters.filter((item) => {
+
+                    return (item.Id != obj.Id &&
+                        item.ParCluster_Id == obj.ParCluster_Id &&
+                        item.ParCriticalLevel_Id == obj.ParCriticalLevel_Id &&
+                        item.EffectiveDate.substring(0, 10) == obj.EffectiveDate.substring(0, 10));
+
+                }).length > 0;
+
+                if (isDuplicate) {
+                    openMessageModal("Alerta", "Já existe um mesmo Processo nesta data!")
+                }
+
+                return isDuplicate;
+
+            }
         },
     };
 </script>
