@@ -164,7 +164,7 @@
             $(list).each(function (i, o) {
 
                 var html = '<tr>';
-                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParDepartment_Id"]', o.ParLevel3InputType_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3InputType_Id"]', o.ParLevel3InputType_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel1_Id"]', o.ParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel2_Id"]', o.ParLevel2_Id, 'Todos') + '</td>';
@@ -232,13 +232,8 @@
             });
 
             //Salvar o campo editado ou cria um novo
-            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {               
 
-                if (!formIsValid(id)) {
-                    return false
-                }
-
-                openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
@@ -248,6 +243,21 @@
                     obj = null;
                     obj = atualizaValoresDoObjeto(obj, formdata);
                 }
+
+                if (!formIsValid(id)) {
+                    return false;
+                }
+
+                if (formIsDuplicate()) {
+                    return false;
+                }          
+
+                if (!intervalIsValid(obj)) {
+                    return false;
+                }
+
+
+                openLoader();
 
                 Save(obj);
             });           
@@ -312,6 +322,59 @@
 
             });
 
+
+            let formIsDuplicate = function () {               
+
+                var obj = $('#' + id +'  [data-form]').data('sgq');
+                var formdata = $('#' + id +' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                let ParLevel3Value = [];
+
+                $('#tableParL3TipoDado tbody tr').each(function () {
+                    ParLevel3Value.push($(this).data('sgq'));
+                });
+
+                let isDuplicate = ParLevel3Value.filter((item) => {
+
+                    return (item.Id != obj.Id &&
+                        item.ParCompany_Id == obj.ParCompany_Id &&
+                        item.ParLevel1_Id == obj.ParLevel1_Id &&
+                        item.ParLevel2_Id == obj.ParLevel2_Id);
+
+                }).length > 0;
+
+                if (isDuplicate) {
+                    openMessageModal("Alerta", "Já existe um Tipo de entrada para esta Unidade, Indicador e Monitoramento!")
+                }
+
+                return isDuplicate;
+
+            }
+
+            let intervalIsValid = function (obj) {
+
+                let isValid = true;
+
+                if (obj.ParLevel3InputType_Id == 3 ||
+                    obj.ParLevel3InputType_Id == 7 ||
+                    obj.ParLevel3InputType_Id == 8 ||
+                    obj.ParLevel3InputType_Id == 9) {
+
+                    if (parseFloat(obj.IntervalMax) < parseFloat(obj.IntervalMin)) {
+                        openMessageModal("Alerta", "O valor de  Intervalo Minímo deve ser menor que o valor Máximo");
+                        isValid = false;
+                    }
+                }
+
+                return isValid;
+            }
         },
     };
 
