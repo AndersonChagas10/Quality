@@ -35,7 +35,6 @@
     <Compile Include="BaseModel.cs" />
     <Compile Include="BkpCollection.cs" />
     <Compile Include="CaracteristicaTipificacao.cs" />
-    <Compile Include="Cargo.cs" />
     <Compile Include="ClusterDepartamentos.cs" />
     <Compile Include="Clusters.cs" />
     <Compile Include="CollectionHtml.cs" />
@@ -84,6 +83,10 @@
     <Compile Include="Metas.cs" />
     <Compile Include="MigrationHistory.cs" />
     <Compile Include="Monitoramentos.cs" />
+    <Compile Include="ParCargo.cs" />
+    <Compile Include="ParCargoXDepartment.cs" />
+    <Compile Include="ParColaborador.cs" />
+    <Compile Include="ParColaboradorXCargo.cs" />
     <Compile Include="ParReasonType.cs" />
     <Compile Include="ParReason.cs" />
     <Compile Include="NQA.cs" />

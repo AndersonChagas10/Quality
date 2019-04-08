@@ -65,8 +65,8 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label for="Cargo_Id">Cargo:</label>
-                <select id="selectL3Cargo" class="input input-lg col-sm-12" name="Cargo_Id"></select>
+                <label for="ParCargo_Id">Cargo:</label>
+                <select id="selectL3ParCargo" class="input input-lg col-sm-12" name="ParCargo_Id"></select>
             </div>
 
         </div>
@@ -151,7 +151,7 @@
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParLevel2_Id"]', o.ParLevel2_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParDepartment_Id"]', o.ParDepartment_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParGroupParLevel1_Id"]', o.ParGroupParLevel1_Id, 'Todos') + '</td>';
-                html += '<td>' + valorDoSelect('#ParL3Peso select[name="Cargo_Id"]', o.Cargo_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
                 html += '<td>' + o.Peso + '</td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';

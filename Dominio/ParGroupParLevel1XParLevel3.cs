@@ -52,7 +52,7 @@ namespace Dominio
 
         [DisplayName("Cargo")]
         //[Index(IsUnique = true)]
-        public int? Cargo_Id { get; set; }
+        public int? ParCargo_Id { get; set; }
 
         [ForeignKey("ParLevel3_Id")]
         public virtual ParLevel3 ParLevel3 { get; set; }
@@ -75,7 +75,7 @@ namespace Dominio
         [ForeignKey("ParLevel3Group_Id")]
         public virtual ParLevel3Group ParLevel3Group { get; set; }
 
-        [ForeignKey("Cargo_Id")]
-        public virtual Cargo Cargo { get; set; }
+        [ForeignKey("ParCargo_Id")]
+        public virtual ParCargo ParCargo { get; set; }
     }
 }
