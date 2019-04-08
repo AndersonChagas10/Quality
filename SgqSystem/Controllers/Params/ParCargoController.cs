@@ -16,6 +16,7 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult Index()
         {
+           
             return View(db.ParCargo.ToList());
         }
 
@@ -36,18 +37,32 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult Create()
         {
+            ViewBag.Departamentos = db.ParDepartment.ToList();
+
             return View();
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,IsActive,AddDate,AlterDate")] ParCargo parCargo)
+        public ActionResult Create([Bind(Include = "Id,Name,IsActive,AddDate,AlterDate,ParDepartment_Ids")] ParCargo parCargo)
         {
             if (ModelState.IsValid)
             {
                 parCargo.AddDate = DateTime.Now;
                 db.ParCargo.Add(parCargo);
+
+                foreach (var item in parCargo.ParDepartment_Ids)
+                {
+                    db.ParCargoXDepartment.Add(new ParCargoXDepartment()
+                    {
+                        AddDate = DateTime.Now,
+                        ParDepartment_Id = item,
+                        ParCargo_Id = parCargo.Id,
+                        IsActive = true
+                    });
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -61,23 +76,51 @@ namespace SgqSystem.Controllers.Params
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             ParCargo parCargo = db.ParCargo.Find(id);
+
             if (parCargo == null)
             {
                 return HttpNotFound();
             }
+
+            ViewBag.Departamentos = db.ParDepartment.ToList();
+
+            var parDepartment_Ids = db.ParCargoXDepartment.Where(x => x.ParCargo_Id == parCargo.Id && x.IsActive).Select(x => x.ParDepartment_Id);
+            parCargo.ParDepartment_Ids = db.ParDepartment.Where(x => parDepartment_Ids.Contains(x.Id)).Select(x => x.Id).ToArray();
+
             return View(parCargo);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,IsActive,AddDate,AlterDate")] ParCargo parCargo)
+        public ActionResult Edit([Bind(Include = "Id,Name,IsActive,AddDate,AlterDate,ParDepartment_Ids")] ParCargo parCargo)
         {
             if (ModelState.IsValid)
             {
                 parCargo.AlterDate = DateTime.Now;
                 db.Entry(parCargo).State = EntityState.Modified;
+
+                var parCargoXDepartments = db.ParCargoXDepartment.Where(x => x.ParCargo_Id == parCargo.Id && x.IsActive).ToList();
+
+                foreach (var item in parCargoXDepartments)//inativa todos os inseridos
+                {
+                    item.AlterDate = DateTime.Now;
+                    item.IsActive = false;
+                }
+
+                foreach (var item in parCargo.ParDepartment_Ids)//Insere novos
+                {
+                    db.ParCargoXDepartment.Add(new ParCargoXDepartment()
+                    {
+                        AddDate = DateTime.Now,
+                        ParDepartment_Id = item,
+                        ParCargo_Id = parCargo.Id,
+                        IsActive = true
+                    });
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

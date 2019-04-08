@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Dominio.ParCargo>
+﻿@model IEnumerable<Dominio.ParColaborador>
 
 @{
-    ViewBag.Title = "Cargos";
+    ViewBag.Title = "Index";
 }
 
 <div class="page-content-wrapper">
@@ -13,7 +13,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Cargo</span>
+                    <span>Colaboradores</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -25,7 +25,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">Cargos</span>
+                            <span class="caption-subject font-dark bold uppercase">Colaboradores</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -35,11 +35,17 @@
                                 <p>
                                     @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table" id="tabelaCargos">
+                                <table class="table" id="tabelaColaboradores">
                                     <thead>
                                         <tr>
                                             <th>
+                                                Cargo
+                                            </th>
+                                            <th>
                                                 @Resources.Resource.name
+                                            </th>
+                                            <th>
+                                                Documento
                                             </th>
                                             <th>
                                                 @Resources.Resource.is_active
@@ -48,19 +54,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         @foreach (var item in Model)
                                         {
                                             <tr>
                                                 <td>
+                                                    @Html.DisplayFor(modelItem => item.ParCargo.Name)
+                                                </td>
+                                                <td>
                                                     @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Documento)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.IsActive)
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                    @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                                                 </td>
                                             </tr>
                                         }
@@ -88,9 +98,10 @@
             null,
             null,
             null,
+            null,
             { "bSearchable": false }
         ];
 
-        $('#tabelaCargos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+        $('#tabelaColaboradores').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 </script>
