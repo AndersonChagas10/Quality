@@ -70,6 +70,39 @@ namespace SgqSystem.Controllers.V2.Api
             return Ok(parlevel3Result);
         }
 
+        [HttpGet]
+        [Route("GetParLevel3Vinculados/{ParLevel1_Id}/{ParLevel2_Id}")]
+        public IHttpActionResult GetParLevel3Vinculados(int ParLevel1_Id, int ParLevel2_Id)
+        {
+            var select = new Select();
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                select.Options = new List<Option>();
+
+                var linkedName = "Vinculado"; //"Linked"
+                var notLinkedName = "Sem vinculo";
+
+                var vinculados = db.Database.SqlQuery<Option>($@"SELECT DISTINCT L3.Id as Value, L3.Name as Text, '{linkedName}' as GroupName FROM ParLevel3 L3
+                                                                RIGHT JOIN ParLevel3Level2 L32 ON L32.ParLevel3_Id = L3.Id
+                                                                INNER JOIN ParLevel3Level2Level1 L321 ON L321.ParLevel3Level2_Id = L32.Id
+                                                                WHERE L321.ParLevel1_Id = {ParLevel1_Id} AND L32.ParLevel2_Id = {ParLevel2_Id}").ToList();
+
+                var naoVinculados = db.Database.SqlQuery<Option>($@"SELECT Id as Value, Name as Text,'{notLinkedName}' as GroupName FROM ParLevel3 
+                                                                WHERE Id NOT IN (SELECT DISTINCT L3.Id as Value FROM ParLevel3 L3
+                                                                                 RIGHT JOIN ParLevel3Level2 L32 ON L32.ParLevel3_Id = L3.Id
+                                                                                 INNER JOIN ParLevel3Level2Level1 L321 ON L321.ParLevel3Level2_Id = L32.Id
+                                                                                 WHERE L321.ParLevel1_Id = {ParLevel1_Id} AND L32.ParLevel2_Id = {ParLevel2_Id})
+                                                                ORDER BY Id").ToList();
+
+                select.Options.AddRange(vinculados);
+                select.Options.AddRange(naoVinculados);
+
+            }
+
+            return Ok(select);
+        }
+
         private bool ParLevel1Exists(int id)
         {
             using (SgqDbDevEntities db = new SgqDbDevEntities())
@@ -220,6 +253,8 @@ namespace SgqSystem.Controllers.V2.Api
                         parVinculoPesoOld.ParLevel2_Id = parVinculoPeso.ParLevel2_Id;
                         parVinculoPesoOld.ParLevel3_Id = parVinculoPeso.ParLevel3_Id;
                         parVinculoPesoOld.ParGroupParLevel1_Id = parVinculoPeso.ParGroupParLevel1_Id;
+                        parVinculoPesoOld.ParLevel3Group_Id = parVinculoPeso.ParLevel3Group_Id;
+                        parVinculoPesoOld.ParCargo_Id = parVinculoPeso.ParCargo_Id;
                         parVinculoPesoOld.IsActive = parVinculoPeso.IsActive;
                     }
                     else
@@ -294,6 +329,19 @@ namespace SgqSystem.Controllers.V2.Api
 
                 return true;
             }
+        }
+
+        public class Select
+        {
+            public List<Option> Options { get; set; }
+        }
+
+        public class Option
+        {
+            public int Value { get; set; }
+            public string Text { get; set; }
+            public string GroupName { get; set; }
+
         }
     }
 }

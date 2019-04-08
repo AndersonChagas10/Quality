@@ -6,12 +6,65 @@ IF COL_LENGTH('ParEvaluation','Sample') IS NULL
 		ALTER TABLE ParEvaluation ADD Sample int null;
     END
 
-
-	
-
 IF COL_LENGTH('ParLevel2','ParDepartment_Id') IS NULL
     BEGIN	
 		ALTER TABLE ParLevel2 
 		ALTER COLUMN ParDepartment_Id int null;
     END
 
+Insert into MigrationHistory (Name, AddDate) VALUES ('Alter_ParVinculoPeso_Add_ParLevel3Group_ParCargo',GetDate())
+
+IF COL_LENGTH('ParVinculoPeso','ParLevel3Group_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParVinculoPeso 
+		ADD ParLevel3Group_Id int NULL,
+		FOREIGN KEY (ParLevel3Group_Id) REFERENCES ParLevel3Group(Id);
+    END
+
+IF COL_LENGTH('ParVinculoPeso','ParCargo_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParVinculoPeso 
+		ADD ParCargo_Id int NULL		
+    END
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('Add_ParCargo_ParCargoXDepartment_ParColaborador_ParColaboradorXCargo',GetDate())
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParCargo' AND xtype='U')
+create table ParCargo(
+	Id int not null identity(1,1) primary key,
+	Name varchar(20) NOT NULL,
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1,
+)
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParCargoXDepartment' AND xtype='U')
+create table ParCargoXDepartment(
+	Id int not null identity(1,1) primary key,
+	ParDepartment_Id int not null FOREIGN key REFERENCES ParDepartment(Id),
+	ParCargo_Id int not null FOREIGN key REFERENCES ParCargo(Id),
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1,
+)
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParColaborador' AND xtype='U')
+create table ParColaborador(
+	Id int not null identity(1,1) primary key,
+	Name varchar(100) NOT NULL,
+	Documento varchar(100) NOT NULL,
+	ParCargo_Id int not null FOREIGN key REFERENCES ParCargo(Id),
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1,
+)
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParColaboradorXCargo' AND xtype='U')
+create table ParColaboradorXCargo(
+	Id int not null identity(1,1) primary key,
+	ParCargo_Id int not null FOREIGN key REFERENCES ParCargo(Id),
+	ParColaborador_Id int not null FOREIGN key REFERENCES ParColaborador(Id),
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1,
+)

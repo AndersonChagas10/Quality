@@ -251,7 +251,11 @@ namespace Dominio
         public virtual DbSet<ParReason> ParReason { get; set; }
         public virtual DbSet<DicionarioEstatico> DicionarioEstatico { get; set; }
         public virtual DbSet<ParLevel1XRotinaIntegracao> ParLevel1XRotinaIntegracao { get; set; }
-        
+        public virtual DbSet<ParCargo> ParCargo { get; set; }
+        public virtual DbSet<ParColaborador> ParColaborador { get; set; }
+        public virtual DbSet<ParColaboradorXCargo> ParColaboradorXCargo { get; set; }
+        public virtual DbSet<ParCargoXDepartment> ParCargoXDepartment { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

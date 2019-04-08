@@ -1,14 +1,11 @@
-﻿@model IEnumerable<Dominio.ParDepartment>
+﻿@model IEnumerable<Dominio.ParCargo>
 
 @{
-    ViewBag.Title = @Resources.Resource.departments;
+    ViewBag.Title = "Cargos";
 }
 
 <div class="page-content-wrapper">
-    <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
-        <!-- BEGIN PAGE HEADER-->
-        <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
@@ -16,26 +13,19 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.departments</span>
+                    <span>Cargo</span>
                 </li>
             </ul>
             <div class="page-toolbar">
-                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
-                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                    </div>*@
             </div>
         </div>
-        <!-- END PAGE BAR -->
-        <!-- END PAGE HEADER-->
         <div class="row">
             <div class="col-xs-12">
                 <div class="portlet light bordered">
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.departments</span>
+                            <span class="caption-subject font-dark bold uppercase">Cargos</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -45,28 +35,20 @@
                                 <p>
                                     @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table" id="tabelaDepartamentos">
+                                <table class="table" id="tabelaCargos">
                                     <thead>
                                         <tr>
                                             <th>
                                                 @Resources.Resource.name
                                             </th>
                                             <th>
-                                                @Resources.Resource.description
-                                            </th>
-                                            <th>
-                                                @Resources.Resource.linked
-                                            </th>
-                                            <th>
                                                 @Resources.Resource.is_active
                                             </th>
-                                            <th>
-                                                @Resources.Resource.action
-                                            </th>
-
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         @foreach (var item in Model)
                                         {
                                             <tr>
@@ -74,18 +56,11 @@
                                                     @Html.DisplayFor(modelItem => item.Name)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Description)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.ParDepartmentPai.Name)
-                                                </td>
-                                                <td>
-                                                    @Html.Raw(item.Active ? Resources.Resource.yes : Resources.Resource.no)
+                                                    @Html.DisplayFor(modelItem => item.IsActive)
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                    @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |*@
-                                                    @*@Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })*@
+                                                    @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                                                 </td>
                                             </tr>
                                         }
@@ -98,27 +73,24 @@
             </div>
         </div>
     </div>
-    <!-- END CONTENT BODY -->
 </div>
 
 <script>
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
-    navbarSelect("navbar4");
 
-</script>
+    $(document).ready(function () {
 
-<script>
-     $(document).ready(function () {
-         closeLeftSidebar();
-         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
-             null,
-             null,
-             null,
-             null,
-             { "bSearchable": false }
-         ];
-         $('#tabelaDepartamentos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+        closeLeftSidebar();
+
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+
+        $('#tabelaCargos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 </script>

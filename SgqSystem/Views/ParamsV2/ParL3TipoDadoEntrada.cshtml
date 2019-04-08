@@ -12,8 +12,7 @@
 
             <div class="form-group">
                 <label for="ParLevel3InputType_Id">Tipo do dado:</label>
-                <select id="selectL3TipoDadoParLevel3InputType" class="input input-lg col-sm-12 required"
-                        name="ParLevel3InputType_Id"></select>
+                <select id="selectL3TipoDadoParLevel3InputType" class="input input-lg col-sm-12 required" name="ParLevel3InputType_Id"></select>
             </div>
 
         </div>
@@ -22,8 +21,7 @@
 
             <div class="form-group">
                 <label for="ParLevel1_Id">Indicador:</label>
-                <select id="selectL3TipoDadoParLevel1" class="input input-lg col-sm-12 required"
-                        name="ParLevel1_Id"></select>
+                <select id="selectL3TipoDadoParLevel1" class="input input-lg col-sm-12 required" name="ParLevel1_Id"></select>
             </div>
 
         </div>
@@ -32,8 +30,7 @@
 
             <div class="form-group">
                 <label for="ParLevel2_Id">Monitorador:</label>
-                <select id="selectL3TipoDadoParLevel2" class="input input-lg col-sm-12 required"
-                        name="ParLevel2_Id"></select>
+                <select id="selectL3TipoDadoParLevel2" class="input input-lg col-sm-12 required" name="ParLevel2_Id"></select>
             </div>
 
         </div>
@@ -41,8 +38,7 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label for="ParCompany_Id">Empresa:</label>
-                <select id="selectL3TipoDadoParCompany" class="input input-lg col-sm-12 required"
-                        name="ParCompany_Id"></select>
+                <select id="selectL3TipoDadoParCompany" class="input input-lg col-sm-12 required" name="ParCompany_Id"></select>
             </div>
         </div>
 
@@ -50,8 +46,7 @@
 
             <div class="form-group">
                 <label for="ParLevel3BoolTrue_Id">Valor positivo:</label>
-                <select id="selectL3TipoDadoParLevel3BoolTrue" class="input input-lg col-sm-12 required"
-                        name="ParLevel3BoolTrue_Id"></select>
+                <select id="selectL3TipoDadoParLevel3BoolTrue" class="input input-lg col-sm-12 required" name="ParLevel3BoolTrue_Id"></select>
             </div>
 
         </div>
@@ -60,8 +55,7 @@
 
             <div class="form-group">
                 <label for="ParLevel3BoolFalse_Id">Valor negativo:</label>
-                <select id="selectL3TipoDadoParLevel3BoolFalse" class="input input-lg col-sm-12 required"
-                        name="ParLevel3BoolFalse_Id"></select>
+                <select id="selectL3TipoDadoParLevel3BoolFalse" class="input input-lg col-sm-12 required" name="ParLevel3BoolFalse_Id"></select>
             </div>
 
         </div>
@@ -70,8 +64,7 @@
 
             <div class="form-group">
                 <label for="ParMeasurementUnit_Id">Unidade de medida:</label>
-                <select id="selectL3TipoDadoParMeasurementUnit" class="input input-lg col-sm-12 required"
-                        name="ParMeasurementUnit_Id"></select>
+                <select id="selectL3TipoDadoParMeasurementUnit" class="input input-lg col-sm-12 required" name="ParMeasurementUnit_Id"></select>
             </div>
 
         </div>
@@ -164,12 +157,14 @@
             let urlSave = this.urlSave;
 
             apagaCampos(id);
+            setInputsInputTypeHidden();
 
             $('table#table' + id + ' tbody').html('');
+
             $(list).each(function (i, o) {
 
                 var html = '<tr>';
-                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParDepartment_Id"]', o.ParLevel3InputType_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3InputType_Id"]', o.ParLevel3InputType_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel1_Id"]', o.ParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel2_Id"]', o.ParLevel2_Id, 'Todos') + '</td>';
@@ -237,13 +232,8 @@
             });
 
             //Salvar o campo editado ou cria um novo
-            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {               
 
-                if (!formIsValid(id)) {
-                    return false
-                }
-
-                openLoader();
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
@@ -254,8 +244,156 @@
                     obj = atualizaValoresDoObjeto(obj, formdata);
                 }
 
+                if (!formIsValid(id)) {
+                    return false;
+                }
+
+                if (formIsDuplicate()) {
+                    return false;
+                }          
+
+                if (!intervalIsValid(obj)) {
+                    return false;
+                }
+
+
+                openLoader();
+
                 Save(obj);
+            });           
+
+            $('#' + id + ' #selectL3TipoDadoParLevel3InputType').on('change', function () {
+
+                setInputsInputTypeHidden();
+
+                let parLevel3InputType_Id = parseInt($(this).val());
+
+                switch (parLevel3InputType_Id) {
+
+                    case 1: //Binário
+                    case 6: //Binario Com Texto
+                    case 12: //Binário Obrigatório
+
+                        showInput('selectL3TipoDadoParLevel3BoolTrue');
+                        showInput('selectL3TipoDadoParLevel3BoolFalse');
+
+                        break;
+
+                    case 3: //Intervalos
+                    case 4: //Calculado
+                    case 9: //Intervalo com Observação
+
+                        showInput('selectL3TipoDadoParMeasurementUnit');
+                        showInput('IntervalMin');
+                        showInput('IntervalMax');
+
+                        break;
+
+                    case 7: //Intervalo em Minutos
+                    case 8: //Escala Likert
+
+                        showInput('IntervalMin');
+                        showInput('IntervalMax');
+
+                        break;
+
+                    case 2: //Número de defeitos
+
+                        showInput('IntervalMax');
+
+                        break;
+
+                    case 5: //Texto
+                    case 11: //Observação
+
+                        //Não exibe nada
+                        break;
+
+                    case 10: //Resultado
+
+                        showInput('IntervalMin');
+                        showInput('IntervalMax');
+                        showInput('DynamicValue');
+
+                        break;
+
+                    default:
+                }
+
             });
+
+
+            let formIsDuplicate = function () {               
+
+                var obj = $('#' + id +'  [data-form]').data('sgq');
+                var formdata = $('#' + id +' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                let ParLevel3Value = [];
+
+                $('#tableParL3TipoDado tbody tr').each(function () {
+                    ParLevel3Value.push($(this).data('sgq'));
+                });
+
+                let isDuplicate = ParLevel3Value.filter((item) => {
+
+                    return (item.Id != obj.Id &&
+                        item.ParCompany_Id == obj.ParCompany_Id &&
+                        item.ParLevel1_Id == obj.ParLevel1_Id &&
+                        item.ParLevel2_Id == obj.ParLevel2_Id);
+
+                }).length > 0;
+
+                if (isDuplicate) {
+                    openMessageModal("Alerta", "Já existe um Tipo de entrada para esta Unidade, Indicador e Monitoramento!")
+                }
+
+                return isDuplicate;
+
+            }
+
+            let intervalIsValid = function (obj) {
+
+                let isValid = true;
+
+                if (obj.ParLevel3InputType_Id == 3 ||
+                    obj.ParLevel3InputType_Id == 7 ||
+                    obj.ParLevel3InputType_Id == 8 ||
+                    obj.ParLevel3InputType_Id == 9) {
+
+                    if (parseFloat(obj.IntervalMax) < parseFloat(obj.IntervalMin)) {
+                        openMessageModal("Alerta", "O valor de  Intervalo Minímo deve ser menor que o valor Máximo");
+                        isValid = false;
+                    }
+                }
+
+                return isValid;
+            }
         },
     };
+
+    let setInputsInputTypeHidden = function () {
+
+        hideInput('selectL3TipoDadoParLevel3BoolTrue');
+        hideInput('selectL3TipoDadoParLevel3BoolFalse');
+        hideInput('selectL3TipoDadoParMeasurementUnit');
+        hideInput('IntervalMin');
+        hideInput('IntervalMax');
+        hideInput('DynamicValue');
+    }
+
+    let hideInput = function (id) {
+        $('#' + id).parent().parent().hide();
+    }
+
+    let showInput = function (id) {
+        $('#' + id).parent().parent().show();
+    }
+
 </script>

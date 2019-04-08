@@ -31,8 +31,6 @@ namespace SgqSystem.Controllers.V2.Api
             return Ok(parLevel2Selects);
         }
 
-        // GET: api/ParLevel1Api/5
-        //[ResponseType(typeof(ParLevel1Result))]
         [HttpGet]
         [Route("Get/{id}")]
         public IHttpActionResult GetParLevel1(int id)
@@ -55,6 +53,38 @@ namespace SgqSystem.Controllers.V2.Api
             }
 
             return Ok(parlevel1Result);
+        }
+
+        [HttpGet]
+        [Route("GetParLevel2Vinculados/{id}")]
+        public IHttpActionResult GetParLevel2Vinculados(int id)
+        {
+            var select = new Select();
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                select.Options = new List<Option>();
+
+                var linkedName = "Vinculado"; //"Linked"
+                var notLinkedName = "Sem vinculo";
+
+                var vinculados = db.Database.SqlQuery<Option>($@"SELECT DISTINCT L2.Id as Value , L2.Name as Text, '{linkedName}' as GroupName FROM ParLevel2 L2
+                                                         RIGHT JOIN ParLevel3Level2 L32 ON L32.ParLevel2_Id = L2.Id
+                                                         INNER JOIN ParLevel3Level2Level1 L321 ON L321.ParLevel3Level2_Id = L32.Id
+                                                         WHERE L321.ParLevel1_Id = { id }").ToList();
+
+                var naoVinculados = db.Database.SqlQuery<Option>($@"SELECT Id as Value, Name as Text,'{notLinkedName}' as GroupName FROM ParLevel2 WHERE Id NOT IN (SELECT DISTINCT L2.Id FROM ParLevel2 L2
+                                                         RIGHT JOIN ParLevel3Level2 L32 ON L32.ParLevel2_Id = L2.Id
+                                                         INNER JOIN ParLevel3Level2Level1 L321 ON L321.ParLevel3Level2_Id = L32.Id
+                                                         WHERE L321.ParLevel1_Id = { id })
+                                                         ORDER BY Id").ToList();
+
+                select.Options.AddRange(vinculados);
+                select.Options.AddRange(naoVinculados);
+
+            }
+
+            return Ok(select);
         }
 
         private bool ParLevel1Exists(int id)
@@ -175,5 +205,17 @@ namespace SgqSystem.Controllers.V2.Api
             }
         }
 
+        public class Select
+        {
+            public List<Option> Options { get; set; }
+        }
+
+        public class Option
+        {
+            public int Value { get; set; }
+            public string Text { get; set; }
+            public string GroupName { get; set; }
+
+        }
     }
 }

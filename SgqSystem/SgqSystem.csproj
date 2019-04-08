@@ -401,6 +401,8 @@
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
+    <Compile Include="Controllers\Params\ParCargoController.cs" />
+    <Compile Include="Controllers\Params\ParColaboradorController.cs" />
     <Compile Include="Controllers\ParStructureGroupController.cs" />
     <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
     <Compile Include="Controllers\ImportFormat\ImportFormatItemsController.cs" />
@@ -1975,6 +1977,16 @@
     <Content Include="Views\ParamsV2\ParL3Avam.cshtml" />
     <Content Include="Views\ParamsV2\ParL3TipoDadoEntrada.cshtml" />
     <Content Include="Views\ParamsV2\ParL3VincularPeso.cshtml" />
+    <Content Include="Views\ParCargo\Create.cshtml" />
+    <Content Include="Views\ParCargo\Delete.cshtml" />
+    <Content Include="Views\ParCargo\Details.cshtml" />
+    <Content Include="Views\ParCargo\Edit.cshtml" />
+    <Content Include="Views\ParCargo\Index.cshtml" />
+    <Content Include="Views\ParColaborador\Create.cshtml" />
+    <Content Include="Views\ParColaborador\Delete.cshtml" />
+    <Content Include="Views\ParColaborador\Details.cshtml" />
+    <Content Include="Views\ParColaborador\Edit.cshtml" />
+    <Content Include="Views\ParColaborador\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

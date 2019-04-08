@@ -20,10 +20,10 @@
     }
 
     .tab-content.border {
-        border-left: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
-        border-right: 1px solid #ddd;
-        border-top: 0px;
+        border-left: 3px solid #d9edf7;
+        border-bottom: 3px solid #d9edf7;
+        border-right: 3px solid #d9edf7;
+        border-top: 3px solid #d9edf7;
         padding-bottom: 100px;
     }
 
@@ -120,6 +120,20 @@
     .control-label .required, .form-group .required {
         color: black !important;
     }
+
+    body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(1) a {
+        background-color: #d9edf7;
+    }
+
+    body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(2) a {
+        background-color: #faebcc;
+    }
+
+    body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(3) a {
+        background-color: #fed5d5;
+    }
+
+
 </style>
 
 
@@ -163,6 +177,11 @@
                             Tarefa (Level 3)
                             <select id="selectL3" class="input input-lg"></select>
                         </a>
+                    </li>
+                    <li class="col-sm-3">
+                        <button id="btnVincular" class="btn btn-warning" style="height: 42px;position: relative;bottom: -16px;right: 0px;width: 150px; cursor:pointer" title="Vincular todos os níveis selecionados">
+                            <span class="glyphicon glyphicon-link"></span>
+                        </button>
                     </li>
                 </ul>
 
@@ -331,7 +350,7 @@
         preencheSelect('selectL3AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
         preencheSelect('selectL3PesoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
         preencheSelect('selectL3TipoDadoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
-        getSelectsL1();       
+        getSelectsL1();
     }
 
     let setSelectLevel2 = function (data) {
@@ -343,7 +362,7 @@
     }
 
     let setSelectLevel3 = function (data) {
-        preencheSelect('selectL3', 'Name', 'Id', data.ParLevels3, 'Selecione o Tarefa', preencheL3);
+        preencheSelect('selectL3', 'Name', 'Id', data.ParLevels3, 'Selecione a Tarefa', preencheL3);
         //getSelectsL3();
     }
 
@@ -366,7 +385,27 @@
         $(`select#${id}`).empty();
         $(`select#${id}`).append(`<option value="0" selected>${defaultText}</option>`);
 
-        $(list).each(function (i, o) {
+        let listVinculados = $.grep(list, (item) => { return (item.GroupName != "" && item.GroupName != undefined) });
+        let listNaoVinculados = $.grep(list, (item) => { return (item.GroupName == undefined || item.GroupName == "") });
+
+        if (listVinculados && listVinculados.length > 0) {
+
+            [... new Set(listVinculados.map(x => x.GroupName))].forEach((groupName) => {
+
+                $(`select#${id}`).append('<optgroup label="' + groupName + '">');
+
+                listVinculados.filter(x => x.GroupName == groupName).forEach((o) => {
+
+                    $(`select#${id}`).append(`<option value="${o[value]}">${o[name]}</option>`);
+
+                });
+
+                $(`select#${id}`).append('</optgroup>');
+
+            });
+        }
+
+        $(listNaoVinculados).each(function (i, o) {
             $(`select#${id}`).append(`<option value="${o[value]}">${o[name]}</option>`);
         });
 
@@ -495,6 +534,27 @@
                 }
             });
 
+            $.ajax({
+
+                url: `@Url.Action("GetParLevel2Vinculados", "api/ParLevel2Api")/${$(this).val()}`,
+                type: 'Get',
+                dataType: "json",
+                data: {},
+                contentType: "application/json",
+                success: function (data) {
+
+                    preencheSelect('selectL2', 'Text', 'Value', data.Options, 'Selecione o Monitoramento', preencheL2);
+                },
+                error: function (request, error) {
+                    closeLoader();
+                    openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                    console.log(error)
+                }
+            });
+
+        } else {
+            getGenericAjax('@Url.Action("Get", "api/ParLevel2Api")', 'Get', setSelectLevel2);
+            getGenericAjax('@Url.Action("Get", "api/ParLevel3Api")', 'Get', setSelectLevel3);
         }
     }
 
@@ -526,6 +586,26 @@
                 }
             });
 
+            debugger
+            $.ajax({
+
+                url: `@Url.Action("GetParLevel3Vinculados", "api/ParLevel3Api")/${$('#selectL1 :selected').val()}/${$(this).val()}`,
+                type: 'Get',
+                dataType: "json",
+                data: {},
+                contentType: "application/json",
+                success: function (data) {
+
+                    preencheSelect('selectL3', 'Text', 'Value', data.Options, 'Selecione a Tarefa', preencheL3);
+                },
+                error: function (request, error) {
+                    closeLoader();
+                    openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                    console.log(error)
+                }
+            });
+        } else {
+            getGenericAjax('@Url.Action("Get", "api/ParLevel3Api")', 'Get', setSelectLevel3);
         }
     }
 
@@ -587,11 +667,13 @@
                 preencheSelect('selectL3AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL3AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
 
-                preencheSelect('selectL3PesoPesoCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
-                preencheSelect('selectL3PesoParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a Empresa');
-                preencheSelect('selectL3PesoCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
-                preencheSelect('selectL3PesoParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento');
-                preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a função');
+                preencheSelect('selectL3PesoPesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
+                preencheSelect('selectL3PesoParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a Unidade');
+                preencheSelect('selectL3PesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
+                preencheSelect('selectL3PesoParDepartment', 'Name', 'Id', data.ParDepartments, 'Todos');
+                preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a Função');
+
+                preencheSelect('selectL3ParCargo', 'Name', 'Id', data.ParCargos, 'Selecione o Cargo');
 
                 preencheSelect('selectL3TipoDadoParLevel3InputType', 'Name', 'Id', data.ParLevel3InputTypes, 'Selecione o Tipo de dados para a coleta');
                 preencheSelect('selectL3TipoDadoParLevel3BoolFalse', 'Name', 'Id', data.ParLevel3BoolFalses, 'Valor negativo');
@@ -699,7 +781,7 @@
     }
 
     let formIsValid = function (id) {
-        
+
         let isValid = true;
 
         $('#' + id + ' input.required:visible').each((i, o) => {
@@ -743,7 +825,7 @@
     }
 
     let optionIsValid = function (obj, id) {
-        
+
         let isValid = true;
 
         //se for binário o multipla escolha valida pela quantidade de parMultipleValues
@@ -762,5 +844,75 @@
 
         return isValid;
     }
+
+    $('#btnVincular').on('click', function (e) {
+
+        $('[href="#l3"]').trigger('click');
+        $('[href="#l3_peso"]').trigger('click');
+
+        let parLevel1_Id = parseInt($("#selectL1 :selected").val());
+        let parLevel2_Id = parseInt($("#selectL2 :selected").val());
+        let parLevel3_Id = parseInt($("#selectL3 :selected").val());
+
+        $('#ParL3Peso').find('#selectL3PesoParLevel1').val(parLevel1_Id).change();
+        $('#ParL3Peso').find('#selectL3PesoParLevel2').val(parLevel2_Id).change();
+        $('#ParL3Peso').find('#selectL3PesoParLevel3').val(parLevel3_Id).change();
+
+        @*let idLevel1 = $('#selectL1').val();
+        let idLevel2 = $('#selectL2').val();
+        let idLevel3 = $('#selectL3').val();
+        let userId = getCookie('webControlCookie')[0].split('=')[1]
+
+        if (idLevel1 <= 0) {
+            openMessageModal(Resources("alert"), Resources("select_audit_first"));
+            return;
+        }
+
+        if (idLevel2 <= 0) {
+            openMessageModal(Resources("alert"), Resources("select_monitoring_first"));
+            return;
+        }
+
+        if (idLevel3 <= 0) {
+            openMessageModal(Resources("alert"), Resources("select_task_first"));
+            return;
+        }
+
+        $.ajax({
+            url: `@Url.Action("AddVinculoL1L2", "api/ParamsApi")/${idLevel1}/${idLevel2}/${idLevel3}/${userId}`,
+            type: 'Get',
+            dataType: "json",
+            data: {},
+            contentType: "application/json",
+            success: function (data) {
+
+                openMessageModal(Resources("done"), Resources("monitoring_task_linked_indicator_successfully"));
+
+            }
+
+        }).fail(function (e, h, x) {
+            openMessageModal(Resources("alert"), e.responseJSON.Message);
+        });*@
+    });
+
+    $(document).on('click', function () {
+
+        setTimeout(function () {
+            
+            if ($('#l1').hasClass('active')) {
+                $('#l1').parents('.border').css('border-color', '#d9edf7');
+            }
+
+            if ($('#l2').hasClass('active')) {
+                $('#l2').parents('.border').css('border-color', '#faebcc');
+            }
+
+            if ($('#l3').hasClass('active')) {
+                $('#l3').parents('.border').css('border-color', '#fed5d5');
+            }
+
+        }, 150);
+
+    });
 
 </script>

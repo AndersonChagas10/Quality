@@ -122,7 +122,7 @@
                             <th>Nível do campo</th>
                             <th>Nome</th>
                             @*<th>Vinculado</th>*@
-                            <th>Tipo</th>
+                            <th>Valor de Punição</th>
                             <th>Opções</th>
                             <th>Valor</th>
                             <th></th>
@@ -480,6 +480,7 @@
             let blockParFieldType = false;
 
             multipleValues.forEach((o, i) => {
+                debugger
                 if (o.IsActive) {
                     let table = `<tr>
                             <td>${parLevelDefiniton}</td>
