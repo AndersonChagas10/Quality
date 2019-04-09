@@ -1,3 +1,4 @@
 function openLogado() {
-    openParDepartment();
+    openParFrequency();
+    //openParDepartment();
 }
