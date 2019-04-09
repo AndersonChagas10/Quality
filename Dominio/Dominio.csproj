@@ -31,11 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AppViewModel\ParLevel3ValueAppViewModel.cs" />
     <Compile Include="AppViewModel\ParLevel3EvaluationSampleAppViewModel.cs" />
     <Compile Include="AppViewModel\ParLevel1AppViewModel.cs" />
     <Compile Include="AppViewModel\ParEvaluationAppViewModel.cs" />
     <Compile Include="AppViewModel\ParLevel2AppViewModel.cs" />
     <Compile Include="AppViewModel\ParLevel3AppViewModel.cs" />
+    <Compile Include="AppViewModel\ParLevel3InputTypeAppViewModel.cs" />
+    <Compile Include="AppViewModel\ParLevel3BoolTrueAppViewModel.cs" />
+    <Compile Include="AppViewModel\ParLevel3BoolFalseAppViewModel.cs" />
+    <Compile Include="AppViewModel\ParMeasurementUnitAppViewModel.cs" />
     <Compile Include="AppViewModel\ParVinculoPesoAppViewModel.cs" />
     <Compile Include="AreasParticipantes.cs" />
     <Compile Include="BaseModel.cs" />
