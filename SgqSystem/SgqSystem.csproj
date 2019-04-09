@@ -448,6 +448,7 @@
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
     <Compile Include="Controllers\V2\Api\AppColetaController.cs" />
+    <Compile Include="Controllers\V2\Api\ParFrequencyController.cs" />
     <Compile Include="Controllers\V2\Api\ParDepartmentController.cs" />
     <Compile Include="Controllers\V2\Api\ParLevel2ApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParLevel3ApiController.cs" />
