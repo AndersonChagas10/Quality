@@ -31,13 +31,7 @@ IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Atrasado')
 	end
 
 GO
-
-IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Não Avaliado')
-	begin
-		insert into ParReasonType(Id,Name,AddDate, AlterDate, IsActive) 
-		values(3,'Não Avaliado',GETDATE(),NULL,1)
-	end
-
+SET IDENTITY_INSERT ParReasonType OFF 
 GO
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReason' AND xtype='U')
@@ -134,6 +128,8 @@ IF NOT EXISTS (SELECT * FROM ParFrequency WHERE Name = 'Diario com Intervalo')
 		values(10,'Diario com Intervalo','Diario com Intervalo',GETDATE(),NULL,1)
 	end
 
+GO
+SET IDENTITY_INSERT ParFrequency OFF 
 GO
 IF COL_LENGTH('VolumeCepDesossa','Agendamento') IS NULL
     BEGIN	
