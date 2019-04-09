@@ -80,3 +80,17 @@ IF COL_LENGTH('ParVinculoPeso','ParDepartment_Id') IS NOT NULL
 BEGIN
 	ALTER TABLE ParVinculoPeso ALTER COLUMN ParDepartment_Id int NULL
 END
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParEvaluationXDepartmentXCargo' AND xtype='U')
+create table ParEvaluationXDepartmentXCargo(
+	Id int not null identity(1,1) primary key,
+	ParCargo_Id int null FOREIGN key REFERENCES ParCargo(Id),
+	ParCompany_Id int null FOREIGN key REFERENCES ParCompany(Id),
+	ParDepartment_Id int null FOREIGN key REFERENCES ParDepartment(Id),
+	Evaluation int not null,
+	Sample int not null,
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1,
+)

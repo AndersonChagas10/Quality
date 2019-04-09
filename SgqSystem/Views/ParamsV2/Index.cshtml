@@ -133,7 +133,9 @@
         background-color: #fed5d5;
     }
 
-
+    body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(4) a {
+        background-color: #ff8821;
+    }
 </style>
 
 
@@ -175,13 +177,19 @@
                     <li class="col-sm-3">
                         <a data-toggle="tab" href="#l3">
                             Tarefa (Level 3)
+                            <button id="btnVincular" class="btn btn-warning btn-sm btn-small"
+                                    style="height:18px;position: relative;cursor:pointer;padding-top: 0px;
+                                    padding-bottom: 0px;margin-bottom: 2px;" title="Vincular todos os níveis selecionados">
+                                <span class="glyphicon glyphicon-link"></span>
+                            </button>
                             <select id="selectL3" class="input input-lg"></select>
                         </a>
                     </li>
                     <li class="col-sm-3">
-                        <button id="btnVincular" class="btn btn-warning" style="height: 42px;position: relative;bottom: -16px;right: 0px;width: 150px; cursor:pointer" title="Vincular todos os níveis selecionados">
-                            <span class="glyphicon glyphicon-link"></span>
-                        </button>
+                        <a data-toggle="tab" href="#dc">
+                            Departamento X Cargo (Av e Am)
+                            <select id="selectDCDepartment" class="input input-lg"></select>
+                        </a>
                     </li>
                 </ul>
 
@@ -330,6 +338,26 @@
                                     </div>
                                     <div class="tab-pane" id="l3_peso">
                                         @Html.Partial("ParL3VincularPeso")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="dc" class="tab-pane fade">
+                            <h3 class="jumbotron text-center" data-name="Name"></h3>
+                            <div class="col-xs-3">
+                                <ul class="nav nav-tabs tabs-left" data-levels="dc">
+                                    <li>
+                                        <a href="#dc_avam" data-toggle="tab">
+                                            Avaliação e Amostra
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-9">
+                                <div class="tab-content">
+                                    <div class="tab-pane" id="dc_avam">
+                                        @Html.Partial("ParDCAvam")
                                     </div>
                                 </div>
                             </div>
@@ -640,6 +668,32 @@
         }
     }
 
+    let preencheDC = function (e) {
+
+        apagaCampos('dc');
+        verifyTabs('selectDCDepartment', 'dc');
+
+        if (parseInt($(this).val()) > 0) {
+
+            $.ajax({
+                url: `@Url.Action("Get", "api/ParEvaluationXDepartmentXCargoApi")/${$(this).val()}`,
+                type: 'Get',
+                dataType: "json",
+                data: {},
+                contentType: "application/json",
+                success: function (data) {
+                    preencheCampos('dc', '', data.ParDepartment, true)
+                    preencheSelect('selectDCAvamParCargo', 'Name', 'Id', data.ParCargo, 'Todos');
+                    parDCAvam.load(data.ParEvaluationXDepartmentXCargo);
+                },
+                error: function (request, error) {
+                    alert("Request: " + JSON.stringify(request));
+                }
+            });
+
+        }
+    }
+
     let getSelectsL1 = function () {
 
         $.ajax({
@@ -681,6 +735,10 @@
                 preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', data.ParCompanys, 'Seleciona a Empresa');
                 preencheSelect('selectL3TipoDadoParMeasurementUnit', 'Name', 'Id', data.ParMeasurementUnits, 'Selecione a unidade de medida');
 
+                preencheSelect('selectDCAvamParCompany', 'Name', 'Id', data.ParCompanys, 'Todas as empresas');
+                preencheSelect('selectDCDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento', preencheDC);
+
+                verifyTabs('selectDCDepartment', 'dc');
 
             },
             error: function (request, error) {
@@ -754,12 +812,13 @@
     }*@
 
     let enableTabs = function (id) {
-
         $('ul.nav[data-levels="' + id + '"] a:not([href="#' + id + '_geral"])').prop('disabled', false)
         $('ul.nav[data-levels="' + id + '"] a:not([href="#' + id + '_geral"])').removeClass('isDisabled')
     }
 
     let disableTabs = function (id) {
+        $('#' + id + ' .tab-pane:not([id="#' + id + '_geral"])').removeClass('active');
+        $('ul.nav[data-levels="' + id + '"] li').removeClass('active');
         $('ul.nav[data-levels="' + id + '"] a:not([href="#' + id + '_geral"])').prop('disabled', true)
         $('ul.nav[data-levels="' + id + '"] a:not([href="#' + id + '_geral"])').addClass('isDisabled')
         $('ul.nav[data-levels="' + id + '"] a[href="#' + id + '_geral"]').trigger('click');
@@ -836,7 +895,7 @@
                 isValid = false;
             }
 
-        } else if (!formIsValid(id)){
+        } else if (!formIsValid(id)) {
 
             isValid = false;
 
@@ -898,7 +957,7 @@
     $(document).on('click', function () {
 
         setTimeout(function () {
-            
+
             if ($('#l1').hasClass('active')) {
                 $('#l1').parents('.border').css('border-color', '#d9edf7');
             }
@@ -909,6 +968,10 @@
 
             if ($('#l3').hasClass('active')) {
                 $('#l3').parents('.border').css('border-color', '#fed5d5');
+            }
+
+            if ($('#dc').hasClass('active')) {
+                $('#dc').parents('.border').css('border-color', '#ff8821');
             }
 
         }, 150);
