@@ -981,9 +981,9 @@ namespace SgqSystem.Services
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
-                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, 
-                                                avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, 
-                                                defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, 
+                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation,
+                                                avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult,
+                                                defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation,
                                                 hashKey, cluster, ParReason_Id, ParReasonType_Id);
 
                     if (arrayHeader.Length > 30)
@@ -1771,7 +1771,7 @@ namespace SgqSystem.Services
                                            string StartPhase, int Evaluation, int Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
                                            string Duplicated, string haveReaudit, int reauditLevel, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
-                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, 
+                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3,
                                            string startphaseevaluation, string endphaseevaluation, string hashKey = null, string cluster = null,
                                            string ParReason_Id = null, string ParReasonType_Id = null)
         {
@@ -4352,7 +4352,7 @@ function calcularSensorial(list){
 
                     var parFrequency_Id = conexaoEF.ParLevel2.Find(parLevel2_Id).ParFrequency_Id;
 
-                    foreach (var item in conexaoEF.ParEvaluationSchedule
+                    var list = conexaoEF.ParEvaluationSchedule
                         .Where(x => (x.ParEvaluation.ParLevel1_Id == parLevel1_Id || x.ParEvaluation.ParLevel1_Id == null)
                         && x.ParEvaluation.ParLevel2_Id == parLevel2_Id
                         && (x.ParEvaluation.ParCompany_Id == company_Id || x.ParEvaluation.ParCompany_Id == null)
@@ -4360,21 +4360,25 @@ function calcularSensorial(list){
                         && x.ParEvaluation.ParCluster_Id == cluster_id
                         && x.ParEvaluation.IsActive
                         && x.IsActive)
-                        .OrderByDescending(x => new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList())
+                        .OrderByDescending(x => new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList();
+
+                    foreach (var item in list)
                     {
-                        if (parFrequency_Id != 10)
+                        if (item.ParEvaluation.ParCompany_Id == list[0].ParEvaluation.ParCompany_Id)
                         {
-                            frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
+                            if (parFrequency_Id != 10)
+                            {
+                                frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
+                            }
+                            else
+                            {
+                                frequencia.Add($"{item.Intervalo}");
+                            }
                         }
-                        else
-                        {
-                            frequencia.Add($"{item.Intervalo}");
-                        }
-
                     }
-                }
 
-                return string.Join("|", frequencia);
+                    return string.Join("|", frequencia);
+                }
             }
             catch (Exception Ex)
             {
@@ -4632,7 +4636,7 @@ function calcularSensorial(list){
 
             selectMotivo.Append(@"<select id=""slcMotivo"" class=""form-control"" style=""width: 600px;"">");
 
-            foreach (var item in listMotivo.Where(x=>x.ParReasonType_Id == 1))
+            foreach (var item in listMotivo.Where(x => x.ParReasonType_Id == 1))
                 selectMotivo.Append($@"<option value=""{ item.Id }"">{item.Motivo}</option>");
 
             selectMotivo.Append(@"</select>");
@@ -7382,7 +7386,7 @@ function calcularSensorial(list){
                 outerhtml: head +
                 form +
                 divChangeServer +
-                foot, 
+                foot,
                 classe: "login"
                 );
         }
