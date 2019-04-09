@@ -451,6 +451,7 @@
     <Compile Include="Controllers\V2\Api\ParFrequencyController.cs" />
     <Compile Include="Controllers\V2\Api\ParDepartmentController.cs" />
     <Compile Include="Controllers\V2\Api\ParLevel2ApiController.cs" />
+    <Compile Include="Controllers\V2\Api\ParEvaluationXDepartmentXCargoApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParLevel3ApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParLevel1ApiController.cs" />
     <Compile Include="Controllers\V2\Params\ParamsV2Controller.cs" />
@@ -1989,6 +1990,7 @@
     <Content Include="Views\ParColaborador\Details.cshtml" />
     <Content Include="Views\ParColaborador\Edit.cshtml" />
     <Content Include="Views\ParColaborador\Index.cshtml" />
+    <Content Include="Views\ParamsV2\ParDCAvam.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
