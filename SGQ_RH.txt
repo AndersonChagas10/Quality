@@ -68,3 +68,15 @@ create table ParColaboradorXCargo(
 	AlterDate datetime null,
 	IsActive bit not null default 1,
 )
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('Alter_ParVinculoPeso_ParCompany_Id_ParDepartment_Id_Null',GetDate())
+
+IF COL_LENGTH('ParVinculoPeso','ParCompany_Id') IS NOT NULL
+BEGIN
+	ALTER TABLE ParVinculoPeso ALTER COLUMN ParCompany_Id int NULL
+END
+
+IF COL_LENGTH('ParVinculoPeso','ParDepartment_Id') IS NOT NULL
+BEGIN
+	ALTER TABLE ParVinculoPeso ALTER COLUMN ParDepartment_Id int NULL
+END
