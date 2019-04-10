@@ -31,8 +31,7 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParCargoAppViewModel> listaParCargo;
             List<ParCargoXDepartmentAppViewModel> listaParCargoXDepartment;
 
-            List<ParEvaluationAppViewModel> listaParEvaluation;
-            List<ParLevel3EvaluationSampleAppViewModel> listaParLevel3EvaluationSample;
+            List<ParEvaluationXDepartmentXCargoAppViewModel> listaParEvaluationXDepartmentXCargoAppViewModel;
 
             List<ParLevel3ValueAppViewModel> listaParLevel3Value;
             List<ParLevel3InputTypeAppViewModel> listaParLevel3InputType;
@@ -101,43 +100,18 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => listaParVinculoPeso.Any(y => y.ParLevel3_Id == x.Id))
                     .ToList();
 
-                listaParEvaluation = db.ParEvaluation
+                listaParEvaluationXDepartmentXCargoAppViewModel = db.ParEvaluationXDepartmentXCargo
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == parCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.IsActive)
-                    .Select(x => new ParEvaluationAppViewModel()
+                    .Select(x => new ParEvaluationXDepartmentXCargoAppViewModel()
                     {
                         Id = x.Id,
-                        Number = x.Number,
-                        ParCluster_Id = x.ParCluster_Id,
                         ParCompany_Id = x.ParCompany_Id,
-                        ParLevel1_Id = x.ParLevel1_Id,
-                        ParLevel2_Id = x.ParLevel2_Id,
+                        ParDepartment_Id = x.ParDepartment_Id,
+                        ParCargo_Id = x.ParCargo_Id,
                         Sample = x.Sample
                     })
-                    .ToList()
-                    .Where(x => listaParLevel1.Any(y => y.Id == x.ParLevel1_Id))
-                    .Where(x => listaParLevel2.Any(y => y.Id == x.ParLevel2_Id))
-                    .ToList();
-
-                listaParLevel3EvaluationSample = db.ParLevel3EvaluationSample
-                    .AsNoTracking()
-                    .Where(x => x.ParCompany_Id == parCompany_Id || x.ParCompany_Id == null)
-                    .Where(x => x.IsActive == true)
-                    .Select(x => new ParLevel3EvaluationSampleAppViewModel()
-                    {
-                        Id = x.Id,
-                        EvaluationNumber = x.EvaluationNumber,
-                        SampleNumber = x.SampleNumber,
-                        ParCompany_Id = x.ParCompany_Id,
-                        ParLevel1_Id = x.ParLevel1_Id,
-                        ParLevel2_Id = x.ParLevel2_Id,
-                        ParLevel3_Id = x.ParLevel3_Id
-                    })
-                    .ToList()
-                    .Where(x => listaParLevel1.Any(y => y.Id == x.ParLevel1_Id))
-                    .Where(x => listaParLevel2.Any(y => y.Id == x.ParLevel2_Id))
-                    .Where(x => listaParLevel3.Any(y => y.Id == x.ParLevel3_Id))
                     .ToList();
 
                 listaParLevel3Value = db.ParLevel3Value
@@ -246,8 +220,7 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParLevel1,
                 listaParLevel2,
                 listaParLevel3,
-                listaParEvaluation,
-                listaParLevel3EvaluationSample,
+                listaParEvaluationXDepartmentXCargoAppViewModel,
                 listaParLevel3Value,
                 listaParLevel3InputType,
                 listaParMeasurementUnit,

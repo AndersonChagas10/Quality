@@ -35,9 +35,8 @@
     <Compile Include="AppViewModel\ParCargoAppViewModel.cs" />
     <Compile Include="AppViewModel\ParDepartmentAppViewModel.cs" />
     <Compile Include="AppViewModel\ParLevel3ValueAppViewModel.cs" />
-    <Compile Include="AppViewModel\ParLevel3EvaluationSampleAppViewModel.cs" />
     <Compile Include="AppViewModel\ParLevel1AppViewModel.cs" />
-    <Compile Include="AppViewModel\ParEvaluationAppViewModel.cs" />
+    <Compile Include="AppViewModel\ParEvaluationXDepartmentXCargoAppViewModel.cs" />
     <Compile Include="AppViewModel\ParLevel2AppViewModel.cs" />
     <Compile Include="AppViewModel\ParLevel3AppViewModel.cs" />
     <Compile Include="AppViewModel\ParLevel3InputTypeAppViewModel.cs" />
@@ -100,6 +99,7 @@
     <Compile Include="ParCargo.cs" />
     <Compile Include="ParCargoXDepartment.cs" />
     <Compile Include="ParColaborador.cs" />
+    <Compile Include="ParEvaluationXDepartmentXCargo.cs" />
     <Compile Include="ParColaboradorXCargo.cs" />
     <Compile Include="ParReasonType.cs" />
     <Compile Include="ParReason.cs" />
