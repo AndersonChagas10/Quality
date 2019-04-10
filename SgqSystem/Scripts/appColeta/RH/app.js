@@ -1,4 +1,4 @@
-var curretParCompany_Id = 1;
+var curretParCompany_Id;
 var currentParFrequency_Id;
 var parametrization = null;
 var currentParDepartment_Id;
@@ -11,7 +11,7 @@ function getAppParametrization() {
       url: urlPreffix + '/api/AppColeta/GetAppParametrization/' + curretParCompany_Id + '/' + currentParFrequency_Id,
       type: 'GET',
       success: function (data) {
-         
+
          _writeFile("appParametrization.txt", JSON.stringify(data), function () {
             parametrization = data;
             listarParDepartment(0);
@@ -23,4 +23,11 @@ function getAppParametrization() {
          $(this).html($(this).attr('data-initial-text'));
       }
    });
+}
+
+function showAllGlobalVar() {
+   console.log("ParCompany:" + curretParCompany_Id);
+   console.log("Frequencia: " + currentParFrequency_Id);
+   console.log("Departamento: " + currentParDepartment_Id);
+   console.log("Cargo: " + currentParCargo_Id);
 }

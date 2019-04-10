@@ -1,5 +1,7 @@
 function listarParCargo() {
 
+    cleanGlobalVarParCargo();
+
     if (!parametrization.listaParCargoXDepartment.length > 0) {
         return false;
     }
@@ -19,7 +21,7 @@ function listarParCargo() {
         listaParCargoFilter.forEach(function(item){
             listaParCargo.push(item);
         });
-        
+
     });
 
     var htmlParCargo = "";
@@ -53,6 +55,12 @@ function listarParCargo() {
     </div>`;
 
     $('div#app').html(html);
+
+}
+
+function cleanGlobalVarParCargo(){
+
+    currentParCargo_Id = null;
 
 }
 
