@@ -68,6 +68,6 @@ $('body').on('click', '[data-par-cargo-id]', function (e) {
 
     currentParCargo_Id = parseInt($(this).attr('data-par-cargo-id'));
 
-    //listarLevels();
+    listarParLevels();
 
 });

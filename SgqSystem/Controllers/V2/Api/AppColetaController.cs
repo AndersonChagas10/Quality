@@ -56,7 +56,8 @@ namespace SgqSystem.Controllers.V2.Api
                         ParCompany_Id = x.ParCompany_Id,
                         ParDepartment_Id = x.ParDepartment_Id,
                         ParGroupParLevel1_Id = x.ParGroupParLevel1_Id,
-                        Peso = x.Peso
+                        Peso = x.Peso,
+                        ParCargo_Id = x.ParCargo_Id
                     })
                     .ToList();
 

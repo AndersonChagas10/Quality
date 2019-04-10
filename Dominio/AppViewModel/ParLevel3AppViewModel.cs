@@ -13,5 +13,6 @@ namespace Dominio.AppViewModel
         public string Name { get; set; }
 
         public bool HasTakePhoto { get; set; }
+
     }
 }
