@@ -59,6 +59,3 @@ function starterReload() {
     $('#StarterIcon').html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>');
     $('#StarterButton').hide();
 }
-
-
-
