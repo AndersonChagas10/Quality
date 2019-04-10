@@ -1,4 +1,5 @@
 function openParFrequency() {
+
 	var html = '';
 
 	$.ajax({
@@ -17,12 +18,11 @@ function openParFrequency() {
 		}
 	});
 
-
 }
 
 function listarParFrequency() {
 
-    currentParFrequency_Id = null;
+    cleanGlobalVarParFrequency();
 
 	_readFile("parFrequency.txt", function (data) {
 
@@ -63,6 +63,12 @@ function listarParFrequency() {
 
 		$('div#app').html(html);
 	});
+}
+
+function cleanGlobalVarParFrequency(){
+    currentParDepartment_Id = null;
+    currentParCargo_Id = null;
+    currentParFrequency_Id = null;
 }
 
 $('body').on('click', '[data-par-frequency-id]', function (e) {   

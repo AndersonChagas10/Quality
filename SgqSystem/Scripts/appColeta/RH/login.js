@@ -1,7 +1,10 @@
-function openLogin(){
-	var html = '';
-	
-html = `
+function openLogin() {
+
+    cleanGlobalVarLogin();
+
+    var html = '';
+
+    html = `
 
 <div id="" class="login" name="" style="">
     <div id="" class="head" name="" style=""></div>
@@ -34,17 +37,18 @@ html = `
 
 
 `;
-	
-	$('div#app').html(html);
-	
+
+    $('div#app').html(html);
+
 }
 
-$('body').on('click','#btnLogin',function(event){
-	event.preventDefault();
-	
-	$(this).html($(this).attr('data-loading-text'));
-	
-	$.ajax({
+$('body').on('click', '#btnLogin', function (event) {
+    
+    event.preventDefault();
+
+    $(this).html($(this).attr('data-loading-text'));
+
+    $.ajax({
         data: {
             app: true,
             Name: $('#inputUserName').val(),
@@ -53,20 +57,30 @@ $('body').on('click','#btnLogin',function(event){
         url: urlPreffix + '/api/User/AuthenticationLogin',
         type: 'POST',
         success: function (data) {
-			
-			_writeFile("login.txt", JSON.stringify(data.Retorno), function () {
-				openLogado();
-			});
+
+            _writeFile("login.txt", JSON.stringify(data.Retorno), function () {
+                curretParCompany_Id = data.Retorno.ParCompany_Id;
+                openLogado();
+            });
         },
         timeout: 600000,
         error: function () {
-			$(this).html($(this).attr('data-initial-text'));
+            $(this).html($(this).attr('data-initial-text'));
         }
     });
-})
+});
 
-function logout(){
-	_writeFile("login.txt", '', function () {
-		openLogin();
-	});
+function cleanGlobalVarLogin(){
+
+    currentParFrequency_Id = null;
+    curretParCompany_Id = null;
+    currentParDepartment_Id = null;
+    currentParCargo_Id = null;
+
+}
+
+function logout() {
+    _writeFile("login.txt", '', function () {
+        openLogin();
+    });
 }
