@@ -83,6 +83,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
+            <div>@Html.Partial("_Agendamento")</div>
         </div>
     </div>
 </form>
@@ -114,7 +115,7 @@
                 html += '<td>' + valorDoSelect('#ParDCAvam select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
                 html += '<td>' + o.Evaluation + '</td>';
                 html += '<td>' + o.Sample + '</td>';
-                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
+                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button> <button class="btn btn-sm btn-info" data-table-agendamento onclick="abrirModalAgendamento($(this))"><i class="fa fa-calendar" alt="Agendamento"> </i> </button></td>';
                 html += '</tr>';
 
                 $('table#table' + id + ' tbody').append(html);
@@ -194,6 +195,13 @@
 
                 Save(obj);
             });
+            //abrir o modal de agendamento
+            //$('#' + id).on('click', '[data-table-agendamento]', function (e) {
+            //    debugger
+            //    abrirModalAgendamento();
+            //});
         },
     };
+
+
 </script>

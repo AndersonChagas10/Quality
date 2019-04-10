@@ -56,6 +56,8 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => parCargoXDepartment.Any(y => y.ParCargo_Id == x.Id))
                     .ToList();
 
+                var parEvaluationXSchedule = db.ParEvaluationSchedule.Where(x => x.ParEvaluationXDepartmentXCargo_Id == parEvaluationXDepartmentXCargo.Id).ToList();
+
             }
 
             return Ok(parEvaluationXDepartmentXCargoResult);

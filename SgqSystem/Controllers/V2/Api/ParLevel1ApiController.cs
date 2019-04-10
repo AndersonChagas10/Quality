@@ -102,7 +102,8 @@ namespace SgqSystem.Controllers.V2.Api
                         .FirstOrDefault();
                     item.ParHeaderField.ParMultipleValues = item.ParHeaderField.ParMultipleValues.Where(x => x.IsActive).ToList();
                 }
-
+                var ParFrequencyDescription = db.ParFrequency.Where(x => x.Id == parLevel1.ParFrequency_Id).FirstOrDefault();
+                parLevel1.ParFrequencyDescription = ParFrequencyDescription.Name;
                 if (parLevel1 == null)
                 {
                     return NotFound();

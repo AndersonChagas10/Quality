@@ -8,20 +8,7 @@
     }
 </style>
 
-<table id="tableAvAm" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Avaliação e Amostra:">
-    <thead>
-        <tr>
-            <th>@Resources.Resource.company</th>
-            <th>@Resources.Resource.level1</th>
-            <th>@Resources.Resource.cluster</th>
-            <th>@Resources.Resource.evaluation</th>
-            <th>@Resources.Resource.samples / @Resources.Resource.evaluation</th>
-            <th>@Resources.Resource.scheduling</th>
-            <th class="options"></th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+
 
 <div class="modal fade" id="modalAgendamento" role="dialog">
     <div class="modal-dialog modal-lg vertical-align-center">
@@ -31,9 +18,9 @@
                 <h4 class="modal-title">Agendamento</h4>
             </div>
             <div class="modal-body">
-                <input class="hidden" data-column="inpAvaliacaoId" />
+                <input class="hidden" data-column="inpAvaliacaoId" />               
                 <div style="overflow:auto;">
-                    <table id="tabelaAgendamento" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
+                    <table id="tabelaAgendamento" style="max-width: 100%;" class="table table-condensed no-margin margin-top">
                         <thead>
                             <tr>
                                 <th>Tipo de Frequência</th>
@@ -48,7 +35,7 @@
                     </table>
 
                     @*tabela de intervalo*@
-                    <table id="tabelaAgendamentoIntervalo" style="display:block !important;max-width: 100%;" class="table table-condensed no-margin margin-top">
+                    <table id="tabelaAgendamentoIntervalo" style="max-width: 100%;" class="table table-condensed no-margin margin-top">
                         <thead>
                             <tr>
                                 <th class="col-md-4">Tipo de Frequência</th>
@@ -77,6 +64,8 @@
     var listaAgendamento = [];
     var listaAgendamentoIntervalo = [];
 
+    var parEvaluationXDepartmentXCargo_Id;
+
     $("#modalAgendamento").on('close', function(){
         console.log('model fechado');
         ContadorLinhas();
@@ -85,31 +74,33 @@
     function abrirModalAgendamento(linha) {
         debugger
         var obj = $(linha).parents('tr').data();
-        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
+        parEvaluationXDepartmentXCargo_Id = obj.sgq.Id;
+        //var obj = $("#ParL1Geral  [data-form]").data('sgq');
+        if ($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id === 10) {
             $("#tabelaAgendamentoIntervalo").attr('style', '');
             $("#tabelaAgendamento").attr('hidden', 'hidden');
         } else {
             $("#tabelaAgendamento").attr('style', '');
             $("#tabelaAgendamentoIntervalo").attr('hidden', 'hidden');
-            valorAvaliacao = obj.evaluationNumber;
+            valorAvaliacao = obj.sgq.Evaluation;
         }
         botaoAgendamento = linha;
         $('#modalAgendamento').modal('show');
-        var id = parseInt(obj.evaluationId);
+        var id = parseInt(obj.sgq.Id);
 
         BuscarTurnos(id);
         
-        if (!$("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === 'Diario com Intervalo') {
-            $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
-            $("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
+        if (!$("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id === 10) {
+            $("[data-column=inpTipoAgendamento]").val($("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription);
+            $("[data-column=inpAvaliacaoId]").val(obj.sgq.Id);
             $("#tabelaAgendamento tbody").html("");
         } else {
-            $("[data-column=inpTipoAgendamento").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
-            $("[data-column=inpAvaliacaoId]").val(obj.evaluationId);
+            $("[data-column=inpTipoAgendamento").val($("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription);
+            $("[data-column=inpAvaliacaoId]").val(obj.sgq.Id);
             $("#tabelaAgendamentoIntervalo tbody").html("");
         }
-        $("#tabelaAgendamentoIntervalo tbody").html("");
-        $("#tabelaAgendamento tbody").html("");
+        //$("#tabelaAgendamentoIntervalo tbody").html("");
+        //$("#tabelaAgendamento tbody").html("");
     }
 
 
@@ -136,17 +127,17 @@
             avaliacaAmostraSelectShifts += '</select ></td>';
 
             $.ajax({
-                url: '@Url.Content("~")' + 'api/AgendamentoApi/Get/' + id,
+                url: '@Url.Content("~")' + 'api/AgendamentoApi/GetAgendamentoParamv2/' + id,
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    
-                    if (!($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo"))
+
+                    if (!($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id === 10))
                         MontaNovaLinhaAgendamento(null);
                     else
                          MontaNovaLinhaAgendamentoIntervalo(null);
                     data.forEach(function (item) {
-                        if (!($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo"))
+                        if (!($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id === 10))
                             MontaNovaLinhaAgendamento(item, false);
                         else
                             MontaNovaLinhaAgendamentoIntervalo(item, false);
@@ -197,7 +188,7 @@
     }
 
     function MontaNovaLinhaAgendamentoIntervalo(data) {
-              
+        debugger
         if ($("#tabelaAgendamentoIntervalo tbody tr").length == 0) {
             $("#tabelaAgendamentoIntervalo thead tr:last").find("#acao").addClass('hidden');
             $("#tabelaAgendamentoIntervalo tbody").append("<tr>"
@@ -207,7 +198,7 @@
                 + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
                 + '<td> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
                 + "</tr>");
-            $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+            $("[data-column=inpTipoAgendamento]").val($("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription);
         }
 
         if (data != null && data != undefined) {
@@ -224,7 +215,7 @@
             }
         } else {
 
-            $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+            $("[data-column=inpTipoAgendamento]").val($("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription);
         }
     }
 
@@ -252,7 +243,7 @@
         }
 
 
-        $("[data-column=inpTipoAgendamento]").val($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text());
+        $("[data-column=inpTipoAgendamento]").val($("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription);
 
         if (data != null && data != undefined) {
             $("#tabelaAgendamento tbody tr:last").data(data);
@@ -288,7 +279,7 @@
     }
 
     function SalvarAgendamentoIntervalo() {
-        
+        debugger
         var listaTabelaAgendamentoIntervalo = [];
         var contadorErros = 0;
         listaTabelaAgendamentoIntervalo = $("#tabelaAgendamentoIntervalo tbody tr");
@@ -302,7 +293,8 @@
                     Shift_Id: $(item).find("[data-column=slAgendamento]").val(),
                     ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
                     Id: $(item).find("[data-column=inpId]").val(),
-                    IsDeletar: $(item).data("IsDeletar")
+                    IsDeletar: $(item).data("IsDeletar"),
+                    ParEvaluationXDepartmentXCargo_Id: parEvaluationXDepartmentXCargo_Id,
                 };
                 var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
                 var linha = $(this).parent().parent();
@@ -344,8 +336,8 @@
 
 
     $("#modalAgendamento").on('click', "#btnSalvar", function () {
-        
-        if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
+
+        if ($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id === 10) {
             SalvarAgendamentoIntervalo();
         } else {
         var listaTabelaAgendamento = [];
@@ -360,6 +352,7 @@
         else if (listaTabelaAgendamento.length <= 0) {
             openMessageModal('@Resources.Resource.no_data_in_list', null);
         } else {
+            debugger
                 listaTabelaAgendamento.each(function (index, item) {
                     form = {
                         Inicio: $(item).find("[data-column=inpInicio]").val(),
@@ -368,9 +361,10 @@
                         Shift_Id: $(item).find("[data-column=slAgendamento]").val(),
                         ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
                         Id: $(item).find("[data-column=inpId]").val(),
-                        IsDeletar: $(item).data("IsDeletar")
+                        IsDeletar: $(item).data("IsDeletar"),
+                        ParEvaluationXDepartmentXCargo_Id: parEvaluationXDepartmentXCargo_Id,
                     };
-                    var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
+                    var formato = $("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription;
                     var linha = $(this).parent().parent();
                     //Validar preenchido
                     if (form.Inicio === "" || form.Fim === "" || form.Av === "" || parseInt(form.Av) === 0) {
@@ -522,8 +516,9 @@
             Fim: $(linha).find("[data-column=inpTermino]").val(),
             Av: $(linha).find("[data-column=inpAvaliacao]").val(),
             Shift_Id: $(linha).find("[data-column=slAgendamento]").val(),
-            ParEvaluation_Id: $(linha).find("[data-column=inpAvaliacaoId]").val(),
-            Id: $(linha).find("[data-column=inpId]").val()
+            ParEvaluation_Id: $("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription,
+            Id: $(linha).find("[data-column=inpId]").val(),
+            ParEvaluationXDepartmentXCargo_Id: parEvaluationXDepartmentXCargo_Id,
         };
         MontaNovaLinhaAgendamentoIntervalo(form, isEdit);
         $(linha).find('input:enabled').val('');
@@ -536,7 +531,7 @@
         var inicio = $(linha).find('[data-column=inpInicio]').val();
         var termino = $(linha).find('[data-column=inpTermino]').val();
         var avaliacao = $(linha).find('[data-column=inpAvaliacao]').val();
-        var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
+        var formato = $("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription;
         var turno = $('[data-column="slAgendamento"] :selected').val();
 
         //Validar preenchido
@@ -572,7 +567,7 @@
     });
 
     function frequenciaIsValid(formato, inicio, fim) {
-        
+        debugger
         switch (formato) {
             case "Diario":
                 if(fim < 0 || inicio < 0 || fim > 24 || inicio > 24)

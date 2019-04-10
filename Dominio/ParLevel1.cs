@@ -38,6 +38,9 @@ namespace Dominio
 
         public int ParFrequency_Id { get; set; }
 
+        [NotMapped]
+        public string ParFrequencyDescription { get; set; }
+
         [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
         [DisplayName("Indicador")]
