@@ -253,11 +253,11 @@
                                             Itens avançados
                                         </a>
                                     </li>
-                                    <li>
+                                    @*<li>
                                         <a href="#l2_avam" data-toggle="tab">
                                             Avaliação e Amostra
                                         </a>
-                                    </li>
+                                    </li>*@
                                     @*<li>
                                             <a href="#l2_cabecalho" data-toggle="tab">
                                                 Cabeçalhos no monitoramento
@@ -278,9 +278,9 @@
                                     <div class="tab-pane" id="l2_avancados">
                                         @Html.Partial("ParL2Avancados")
                                     </div>
-                                    <div class="tab-pane" id="l2_avam">
+                                    @*<div class="tab-pane" id="l2_avam">
                                         @Html.Partial("ParL2Avam")
-                                    </div>
+                                    </div>*@
                                     @*<div class="tab-pane" id="l2_cabecalho">
                                             @Html.Partial("ParL2Cabecalho")
                                         </div>*@
@@ -305,11 +305,11 @@
                                             Itens avançados
                                         </a>
                                     </li>
-                                    <li>
+                                    @*<li>
                                         <a href="#l3_avam" data-toggle="tab">
                                             Avaliação e Amostra
                                         </a>
-                                    </li>
+                                    </li>*@
                                     <li>
                                         <a href="#l3_tipo_dado_entrada" data-toggle="tab">
                                             Tipo dados de entrada
@@ -424,7 +424,7 @@
 
                 listVinculados.filter(x => x.GroupName == groupName).forEach((o) => {
 
-                    $(`select#${id}`).append(`<option value="${o[value]}">${o[name]}</option>`);
+                    $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
 
                 });
 
@@ -434,7 +434,7 @@
         }
 
         $(listNaoVinculados).each(function (i, o) {
-            $(`select#${id}`).append(`<option value="${o[value]}">${o[name]}</option>`);
+            $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
         });
 
         if (callBack)
@@ -606,7 +606,7 @@
                     preencheCampos('l2', '', data.Parlevel2, true)
                     ParL2Geral.set(data.Parlevel2);
                     ParL2Avancados.set(data.Parlevel2);
-                    parL2Avam.load(data.Parlevel2.ParEvaluation);
+                    //parL2Avam.load(data.Parlevel2.ParEvaluation);
                     verifyTabs('selectL2', 'l2');
                 },
                 error: function (request, error) {
@@ -654,7 +654,7 @@
                     preencheCampos('l3', '', data.Parlevel3, true)
                     ParL3Geral.set(data.Parlevel3);
                     ParL3Avancados.set(data.Parlevel3);
-                    parL3Avam.load(data.Parlevel3.ParLevel3EvaluationSample);
+                    //parL3Avam.load(data.Parlevel3.ParLevel3EvaluationSample);
                     ParL3Peso.load(data.Parlevel3.ParVinculoPeso);
                     ParL3TipoDado.load(data.Parlevel3.ParLevel3Value);
 
