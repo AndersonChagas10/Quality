@@ -39,6 +39,7 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParLevel3BoolTrueAppViewModel> listaParLevel3BoolTrue;
             List<ParLevel3BoolFalseAppViewModel> listaParLevel3BoolFalse;
 
+
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
@@ -76,7 +77,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParLevel2 = db.ParLevel2
                     .AsNoTracking()
-                    .Where(x=>x.ParFrequency_Id == parFrequency_Id)
+                    .Where(x => x.ParFrequency_Id == parFrequency_Id)
                     .Where(x => x.IsActive)
                     .Select(x => new ParLevel2AppViewModel()
                     {
@@ -229,7 +230,7 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParLevel3BoolFalse,
                 listaParDepartment,
                 listaParCargo,
-                listaParCargoXDepartment
+                listaParCargoXDepartment,
             });
         }
     }

@@ -15,7 +15,7 @@ function listarParCargo() {
     $(listaParCargoXDepartment).each(function (item, obj) {
 
         var listaParCargoFilter = $.grep(parametrization.listaParCargo, function (parCargo) {
-            return parCargo.Id == obj.ParCargo_Id;
+            return (parCargo.Id == obj.ParCargo_Id || obj.ParCargo_Id == null);
         });
 
         listaParCargoFilter.forEach(function(item){

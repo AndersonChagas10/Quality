@@ -1,10 +1,5 @@
 function listarParLevels() {
 
-    //Pegar os Levels vinculados
-    //Level1
-    //Level2
-    //Level3
-
     var levels = GetLevels();
 
     openColeta(levels);
@@ -110,8 +105,14 @@ function montarLevel3(level1List) {
                 });
 
                 Level3.forEach(function (level3) {
-                    
-                    level3["ParInputType"] = getInputType(level3, parLevel2, parLevel1);
+
+                    level3["ParLevel3InputType"] = getInputType(level3, parLevel2, parLevel1);
+
+                    level3["ParLevel3Value"] = getParLevel3Value(level3, parLevel2, parLevel1);
+
+                    level3["ParLevel3BoolTrue"] = getParLevel3BoolTrue(level3.ParLevel3Value);
+
+                    level3["ParLevel3BoolFalse"] = getParLevel3BoolTrue(level3.ParLevel3Value);
 
                     level3List.push(level3);
                 });
@@ -124,18 +125,39 @@ function montarLevel3(level1List) {
     });
 }
 
-function getInputType(level3, parLevel2, parLevel1) {
+function getParLevel3BoolTrue(parLevel3Value) {
+
+    if (parLevel3Value && parLevel3Value.ParLevel3BoolFalse_Id)
+        return $.grep(parametrization.listaParLevel3BoolFalse, function (item) { return item.Id == parLevel3Value.ParLevel3BoolFalse_Id })[0];
+}
+
+function getParLevel3BoolFalse(parLevel3Value) {
+
+    if (parLevel3Value && parLevel3Value.ParLevel3BoolTrue_Id)
+        return $.grep(parametrization.listaParLevel3BoolTrue, function (item) { return item.Id == parLevel3Value.ParLevel3BoolTrue_Id })[0];
+
+}
+
+function getParLevel3Value(level3, parLevel2, parLevel1) {
 
     var level3Values = $.grep(parametrization.listaParLevel3Value, function (parLevel3Value) {
-        return (parLevel3Value.ParLevel3_Id == level3.Id 
-		&& parLevel3Value.ParLevel2_Id == parLevel2.Id 
-		&& parLevel3Value.ParLevel1_Id == parLevel1.Id)
+        return (parLevel3Value.ParLevel3_Id == level3.Id && parLevel3Value.ParLevel2_Id == parLevel2.Id && parLevel3Value.ParLevel1_Id == parLevel1.Id)
     });
 
     if (level3Values && level3Values.length > 0)
 
+        return level3Values[0];
+
+}
+
+function getInputType(level3, parLevel2, parLevel1) {
+
+    var level3Values = getParLevel3Value(level3, parLevel2, parLevel1);
+
+    if (level3Values)
+
         var parLevel3InputTypes = $.grep(parametrization.listaParLevel3InputType, function (level3InputType) {
-            return (level3InputType.Id == level3Values[0].ParLevel3InputType_Id)
+            return (level3InputType.Id == level3Values.ParLevel3InputType_Id)
         });
 
     if (parLevel3InputTypes && parLevel3InputTypes.length > 0)
