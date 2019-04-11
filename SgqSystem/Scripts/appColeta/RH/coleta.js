@@ -1,6 +1,20 @@
-function openColeta() {
-
+function openColeta(levels) {
+    debugger
 	var html = '';
+	
+	var coleta = '';
+    levels.forEach(function (level1) {
+		coleta += getLevel1(level1);
+		console.log(level1.Id + " - " + level1.Name);
+		level1.ParLevel2.forEach(function (level2) {
+			coleta += getLevel2(level2);
+			console.log(level2.Id + " - " + level2.Name);
+			level2.ParLevel3.forEach(function (level3) {
+				coleta += getLevel3(level3);
+				console.log(level3.Id + " - " + level3.Name);
+			});
+		});
+	});
 	
 	html = `
 		${getHeader()}
@@ -13,6 +27,8 @@ function openColeta() {
 						<h3 class="panel-title">COLETA</h3>
 					  </div>
 					  <div class="panel-body">
+						${coleta}
+						<hr/>
 						${getBinario()}
 						${getBinarioComTexto()}
 						${getIntervalo()}
@@ -30,6 +46,18 @@ function openColeta() {
 	$('div#app').html(html);
 
 
+}
+
+function getLevel1(level1){
+	return '<div class="col-sm-12 input-lg">'+level1.Name+'</div>';
+}
+
+function getLevel2(level2){
+	return '<div class="col-sm-12 input-lg">'+level2.Name+'</div>';
+}
+
+function getLevel3(level3){
+	return '<div class="col-sm-12">'+level3.Name+'</div>';
 }
 
 function getBinario(){

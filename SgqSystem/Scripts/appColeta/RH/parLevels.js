@@ -7,6 +7,8 @@ function listarParLevels() {
 
     var levels = GetLevels();
 
+    openColeta(levels);
+
 }
 
 function GetLevels() {
@@ -125,7 +127,9 @@ function montarLevel3(level1List) {
 function getInputType(level3, parLevel2, parLevel1) {
 
     var level3Values = $.grep(parametrization.listaParLevel3Value, function (parLevel3Value) {
-        return (parLevel3Value.ParLevel3_Id == level3.Id && parLevel3Value.ParLevel2_Id == parLevel2.Id && parLevel3Value.ParLevel1_Id == parLevel1.Id)
+        return (parLevel3Value.ParLevel3_Id == level3.Id 
+		&& parLevel3Value.ParLevel2_Id == parLevel2.Id 
+		&& parLevel3Value.ParLevel1_Id == parLevel1.Id)
     });
 
     if (level3Values && level3Values.length > 0)

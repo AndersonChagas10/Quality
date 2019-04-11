@@ -951,6 +951,7 @@
     <Content Include="Scripts\appColeta\GQ\tempSave.js" />
     <Content Include="Scripts\appColeta\GQ\verificacaoTipificacao.js" />
     <Content Include="Scripts\appColeta\RH\app.js" />
+    <Content Include="Scripts\appColeta\RH\coleta.js" />
     <Content Include="Scripts\appColeta\RH\crypto.js" />
     <Content Include="Scripts\appColeta\RH\guard.js" />
     <Content Include="Scripts\appColeta\RH\index.css" />
@@ -961,6 +962,7 @@
     <Content Include="Scripts\appColeta\RH\parCargo.js" />
     <Content Include="Scripts\appColeta\RH\parDepartment.js" />
     <Content Include="Scripts\appColeta\RH\parFrequency.js" />
+    <Content Include="Scripts\appColeta\RH\parLevels.js" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
     <Content Include="Content\select2-bootstrap.min.css" />
     <Content Include="Content\select2.min.css" />
