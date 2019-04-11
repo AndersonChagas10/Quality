@@ -1,31 +1,28 @@
 function openColeta(levels) {
-   debugger
+   
    var html = '';
 
    var coleta = '';
 
    levels.forEach(function (level1) {
       coleta += getLevel1(level1);
-      //console.log(level1.Id + " - " + level1.Name);
       level1.ParLevel2.forEach(function (level2) {
          coleta += getLevel2(level2);
-         //console.log(level2.Id + " - " + level2.Name);
          level2.ParLevel3.forEach(function (level3) {
-            //coleta += getLevel3(level3);
             coleta += getInputLevel3(level3);
-            //console.log(level3.Id + " - " + level3.Name);
          });
       });
    });
 
    html = `
 		${getHeader()}
-		<div class="container-fluid">
+		<div class="container">
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="panel panel-primary">
 					  <div class="panel-heading">
-						<h3 class="panel-title">COLETA</h3>
+						<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);">Voltar</a></h3>
+						<h3 class="panel-title" style="float:rigth">Tarefa</h3>
 					  </div>
 					  <div class="panel-body">
 						${coleta}
@@ -89,7 +86,7 @@ function getInputLevel3(level3) {
       }
 
    }
-   
+
    return retorno;
 
 }
