@@ -22,7 +22,7 @@ function openColeta(levels) {
 					<div class="panel panel-primary">
 					  <div class="panel-heading">
 						<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);">Voltar</a></h3>
-						<h3 class="panel-title" style="float:rigth">Tarefa</h3>
+						<h3 class="panel-title" style="float:rigth">Coletas</h3>
 					  </div>
 					  <div class="panel-body">
 						${coleta}
