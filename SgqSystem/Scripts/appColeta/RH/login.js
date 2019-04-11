@@ -84,3 +84,7 @@ function logout() {
         openLogin();
     });
 }
+
+$(window).on('beforeunload', function(){
+    _writeFile("login.txt", '', function () {});
+});
