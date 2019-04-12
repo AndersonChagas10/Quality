@@ -358,9 +358,7 @@
             this.showTableParMultipleValues();
         },
 
-        prepareParHeaderField: function (obj) {
-
-            debugger
+        prepareParHeaderField: function (obj) {           
 
             let formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
 
@@ -376,8 +374,6 @@
         },
 
         prepareToInsert: function (parFieldType_Id) {
-
-            
 
             if (!formIsValid(this.id)) {
                 return false;
