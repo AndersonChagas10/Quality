@@ -27,6 +27,7 @@ function listarParDepartment(parDepartment_Id) {
 
 	//caso for "" quer dizer que não tem mais filhos, então abre o próximo	
 	if (htmlParDepartment == "") {
+		currentParDepartmentParent_Id = department.Parent_Id;
 		listarParCargo();
 		return;
 	}

@@ -2,7 +2,12 @@ var curretParCompany_Id;
 var currentParFrequency_Id;
 var parametrization = null;
 var currentParDepartment_Id;
+var currentParDepartmentParent_Id;
 var currentParCargo_Id;
+var globalColetasRealizadas = [];
+
+var currentTotalEvaluationValue = 0;
+var currentTotalSampleValue = 0;
 
 function getAppParametrization() {
 
