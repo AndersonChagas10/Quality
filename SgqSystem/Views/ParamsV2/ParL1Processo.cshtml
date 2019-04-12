@@ -1,4 +1,4 @@
-﻿<h4>Processos</h4>
+﻿<h3 class="titulo2">Processos</h3>
 
 <form id="ParL1Processo">
 
@@ -177,7 +177,7 @@
                     return false;
                 }
 
-                openLoader();
+                openLoader(Resources("please_wait"));
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 

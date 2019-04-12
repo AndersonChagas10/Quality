@@ -1,4 +1,4 @@
-﻿<h4>Avaliação e Amostra</h4>
+﻿<h3 class="titulo2">Avaliação e Amostra</h3>
 
 <form id="ParDCAvam">
 
@@ -97,7 +97,7 @@
 
         load: function (list) {
 
-            debugger
+            
 
             let id = this.id;
             let urlSave = this.urlSave;
@@ -181,7 +181,7 @@
                     return false
                 }
 
-                openLoader();
+                openLoader(Resources("please_wait"));
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 

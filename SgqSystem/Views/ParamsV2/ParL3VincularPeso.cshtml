@@ -1,4 +1,4 @@
-﻿<h4>Vinculo/Peso</h4>
+﻿<h3 class="titulo2">Vinculo/Peso</h3>
 
 <form id="ParL3Peso">
 
@@ -220,7 +220,7 @@
                     return false
                 }
 
-                openLoader();
+                openLoader(Resources("please_wait"));
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
