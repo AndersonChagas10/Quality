@@ -22,7 +22,7 @@
 
             <div class="form-group">
                 <label for="ParLevel1_Id">Indicador:</label>
-                <select id="selectL3AvamParLevel1" class="input input-lg col-sm-12"
+                <select id="selectL3AvamParLevel1" class="input input-lg col-sm-12 required"
                         name="ParLevel1_Id"></select>
             </div>
 
@@ -56,7 +56,7 @@
 
         </div>
 
-        <div class="col-sm-1">
+        <div class="col-sm-2">
 
             <div class="form-group" data-action>
                 <label></label>
@@ -165,13 +165,20 @@
                 $('#' + id + ' [data-form]').addClass('alert alert-success');
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
 
-                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
-                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
 
             });
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-delete]', function (e) {
+
+                var r = confirm("Deseja Excluir?");
+
+                if (r == false) {
+                    return false;
+                }
+
                 var obj = $(this).parents('tr').data('sgq');
                 obj.IsActive = false;
                 Save(obj);
