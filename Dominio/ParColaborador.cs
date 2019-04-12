@@ -12,8 +12,11 @@ namespace Dominio
     {
         [Key]
         public int Id { get; set; }
+        [Required(ErrorMessage="O Nome é obrigatório")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "O Documento é obrigatório")]
         public string Documento { get; set; }
+        [Required(ErrorMessage = "O Cargo é obrigatório")]
         public int ParCargo_Id { get; set; }
         public bool IsActive { get; set; }
 
