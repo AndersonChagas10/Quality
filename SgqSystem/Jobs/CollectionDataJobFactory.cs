@@ -37,7 +37,8 @@ namespace Jobs
             {
                 using (var db = new SgqDbDevEntities())
                 {
-                    var integCollectionData = db.IntegCollectionData.Where(x => !(x.Coletado > 0)).Take(50).ToList();
+                    
+                    var integCollectionData = db.IntegCollectionData.Where(x => !(x.Coletado > 0)).Take(1).ToList();
 
                     foreach (var item in integCollectionData)
                     {
@@ -58,7 +59,7 @@ namespace Jobs
             var coleta = new Coleta()
             {
                 ParLevel1_Id = integCollectionData.ParLevel1_id.ToString(),
-                ParLevel2_Id = integCollectionData.ParLevel1_id.ToString(),
+                ParLevel2_Id = integCollectionData.ParLevel2_id.ToString(),
                 ParCluster_Id = integCollectionData.ParCluster_id.ToString(),
                 UnidadeId = integCollectionData.ParCompany_id.ToString(),
                 Weidefects = Convert.ToInt32(integCollectionData.WeiDefects).ToString(),
@@ -75,15 +76,15 @@ namespace Jobs
                         Conform = integCollectionData.IsConform.ToString(),
                         IsnotEvaluate = integCollectionData.IsNotEvaluate.ToString(),
                         HasPhoto = "0",
-                        CollectionDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
+                        CollectionDate = integCollectionData.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
                         Defects = Convert.ToInt32(integCollectionData.Defects).ToString(),
                         WeiDefects = Convert.ToInt32(integCollectionData.WeiDefects).ToString(),
                         WeiEvaluation = Convert.ToInt32(integCollectionData.WeiEvaluation).ToString(),
                         Weight = Convert.ToInt32(integCollectionData.Weight).ToString(),
                     }
                 },
-                Level01DataCollect = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
-                Level02DataCollect = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
+                Level01DataCollect = integCollectionData.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                Level02DataCollect = integCollectionData.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 Evaluate = Convert.ToInt32(integCollectionData.Evaluation).ToString(),
                 Sample = Convert.ToInt32(integCollectionData.Sample).ToString(),
                 Defects = Convert.ToInt32(integCollectionData.Defects).ToString(),
@@ -91,7 +92,7 @@ namespace Jobs
                 Defectsresult = Convert.ToInt32(integCollectionData.Defects).ToString(),
                 Shift = "1",
                 VersaoApp = "Integração " + integCollectionData.Table_Id.ToString(),
-                HashKey = integCollectionData.Key_Integ.ToString()
+                HashKey = integCollectionData.Key_Integ.ToString(),
             };
 
             try

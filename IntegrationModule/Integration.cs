@@ -52,8 +52,14 @@ namespace IntegrationModule
                 setting.Settings["Password"],
                 setting.Settings["User"]))
             {
-                var retorno = factory.QueryNinjaADO(script);
-                scripts = setting.CreateInsertScriptOneValue(retorno, tableName);
+                try
+                {
+                    var retorno = factory.QueryNinjaADO(script);
+                    scripts = setting.CreateInsertScriptOneValue(retorno, tableName);
+                }
+                catch (Exception e)
+                {
+                }
             }
 
             using (var factory = new Factory(
@@ -64,11 +70,18 @@ namespace IntegrationModule
             {
                 foreach (var item in scripts)
                 {
-                    var sqlCommand = $"{item};SELECT CAST(1 AS int)";
-                    SqlCommand cmd = new SqlCommand(sqlCommand);
+                    try
+                    {
+                        var sqlCommand = $"{item};SELECT CAST(1 AS int)";
+                        SqlCommand cmd = new SqlCommand(sqlCommand);
 
-                    int i = factory.InsertUpdateData(cmd);
+                        int i = factory.InsertUpdateData(cmd);
 
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
                 }
             }
             return null;

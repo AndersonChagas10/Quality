@@ -207,3 +207,6 @@ create table IntegracaoSistemica(
 	AlterDate datetime null,
 	IsActive bit not null default 1
 )
+
+alter table Integ.CollectionData
+add CollectionDate Datetime not null
