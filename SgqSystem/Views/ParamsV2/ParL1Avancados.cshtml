@@ -1,4 +1,4 @@
-﻿<h4>Itens Avançados</h4>
+﻿<h3 class="titulo2">Itens Avançados</h3>
 
 <form id="ParL1Avancados">
 
@@ -8,7 +8,7 @@
         <input type="hidden" name="Id" />
         <div class="col-sm-12">
             <div class="row">
-                <div class="col-sm-1">
+                <div class="col-sm-2">
                     <div class="">
                         <!-- Rounded switch -->
                         <label class="switch">
@@ -17,13 +17,13 @@
                         </label>
                     </div>
                 </div>
-                <div class="col-sm-11">
+                <div class="col-sm-10">
                     Limitar o número de avaliações
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-1">
+                <div class="col-sm-2">
                     <div class="">
                         <!-- Rounded switch -->
                         <label class="switch">
@@ -32,7 +32,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="col-sm-11">
+                <div class="col-sm-10">
                     Permitir tirar foto nas tarefas
                 </div>
             </div>
@@ -40,7 +40,7 @@
 
         <div class="col-sm-12">
 
-            <button class="btn btn-primary pull-right btn-lg btn-block" data-add>Salvar</button>
+            <button class="btn btn-primary pull-right btn btn-block" data-add>Salvar</button>
 
         </div>
     </div>
@@ -88,7 +88,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-add]', function (e) {
-                openLoader();
+                openLoader(Resources("please_wait"));
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 

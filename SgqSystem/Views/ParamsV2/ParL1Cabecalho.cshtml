@@ -1,4 +1,4 @@
-﻿<h4>Campos de Cabeçalho</h4>
+﻿<h3 class="titulo2">Campos de Cabeçalho</h3>
 
 <form id="ParL1Cabecalho">
 
@@ -119,11 +119,8 @@
                 <table id="camposCabecalhoIncluidos" class="table" role="grid">
                     <thead>
                         <tr role="row">
-                            <th>Nível do campo</th>
-                            <th>Nome</th>
-                            @*<th>Vinculado</th>*@
-                            <th>Valor de Punição</th>
                             <th>Opções</th>
+                            <th>Valor de Punição</th>
                             <th>Valor</th>
                             <th></th>
                         </tr>
@@ -298,11 +295,15 @@
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
 
+                $('#objMultiplaEscolha').hide();
+                $('#objBinario').hide();
+
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
-
+                
                 if (!(typeof (obj) == 'undefined')) {
                     obj = atualizaValoresDoObjeto(obj, formdata);
+                    
                 } else {
                     obj = null;
                     obj = atualizaValoresDoObjeto(obj, formdata);
@@ -312,9 +313,11 @@
 
                 if (optionIsValid(obj, id)) {
 
-                    openLoader();
+                    openLoader(Resources("please_wait"));
                     Save(obj);
 
+                } else {
+                    $('#selectL1ParFieldType').trigger('change');
                 }
 
             });
@@ -355,20 +358,22 @@
             this.showTableParMultipleValues();
         },
 
-        prepareParHeaderField: function (obj) {
-            var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
+        prepareParHeaderField: function (obj) {           
+
+            let formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
+
             if (typeof (obj['ParHeaderField']) == 'undefined')
                 obj['ParHeaderField'] = {};
+
             obj['ParHeaderField']['Name'] = formdata.Name;
             obj['ParHeaderField']['Description'] = formdata.Description;
             obj['ParHeaderField']['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
             obj['ParHeaderField']['ParFieldType_Id'] = formdata.ParFieldType_Id;
+
             return obj;
         },
 
         prepareToInsert: function (parFieldType_Id) {
-
-            debugger
 
             if (!formIsValid(this.id)) {
                 return false;
@@ -412,7 +417,7 @@
                     if ($.grep(obj['ParHeaderField']['ParMultipleValues'], function (o, i) {
                         return o.IsActive == true;
                     }).length > 0) {
-                        debugger
+                        
                         openMessageModal("Alerta", "Já existem opções inseridas para este campo de cabeçalho")
                         return false;
                     }
@@ -480,14 +485,12 @@
             let blockParFieldType = false;
 
             multipleValues.forEach((o, i) => {
-                debugger
+                
                 if (o.IsActive) {
                     let table = `<tr>
-                            <td>${parLevelDefiniton}</td>
-                            <td>${parHeaderField}</td>
-                            <td>${o.PunishmentValue}</td>
                             <td>${o.Name}</td>
-                            <td>${o.IsDefaultOption}</td>
+                            <td>${o.PunishmentValue}</td>
+                            <td>${o.IsDefaultOption == true ? Resources("yes") : Resources("no")}</td>
                             <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="parL1Cabecalho.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
                           </tr>`;
 
@@ -520,6 +523,13 @@
         },
 
         excludeTable: function (i) {
+
+            var r = confirm("Deseja Excluir?");
+
+            if (r == false) {
+                return false;
+            }
+
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (obj) {
