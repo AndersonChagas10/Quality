@@ -18,6 +18,33 @@ namespace SgqSystem.Controllers.V2.Api
     [RoutePrefix("api/AppColeta")]
     public class AppColetaController : BaseApiController
     {
+        public class SimpleCollect
+        {
+            public string Evaluation { get; set; }
+            public string Sample { get; set; }
+            public string ParDepartment_Id { get; set; }
+            public string ParCargo_Id { get; set; }
+            public string ParLevel1_Id { get; set; }
+            public string ParLevel2_Id { get; set; }
+            public string ParLevel3_Id { get; set; }
+            public string IntervalMin { get; set; }
+            public string IntervalMax { get; set; }
+            public string IsConform { get; set; }
+            public string Value { get; set; }
+            public string ValueText { get; set; }
+            public string NotEvaluated { get; set; }
+            public DateTime CollectionDate { get; set; }
+            public bool IsCollected { get; set; }
+            public string HasError { get; set; }
+        }
+
+        [Route("SetCollect")]
+        public IHttpActionResult SetCollect(List<List<SimpleCollect>> listSimpleCollect)
+        {
+            
+            return Ok(listSimpleCollect);
+        }
+
         [Route("GetAppParametrization/{parCompany_Id}/{parFrequency_Id}")]
         public IHttpActionResult GetAppParametrization(int parCompany_Id, int parFrequency_Id)
         {
