@@ -27,7 +27,7 @@ namespace Jobs
             {
                 CollectionDataJobFactory.Execute();
 
-                Thread.Sleep(new Random().Next(300000, 360000));
+                Thread.Sleep(new Random().Next(50000, 80000));
             }
         }
 
@@ -38,7 +38,7 @@ namespace Jobs
                 using (var db = new SgqDbDevEntities())
                 {
                     
-                    var integCollectionData = db.IntegCollectionData.Where(x => !(x.Coletado > 0)).Take(1).ToList();
+                    var integCollectionData = db.IntegCollectionData.Where(x => !(x.Coletado > 0)).Take(20).ToList();
 
                     foreach (var item in integCollectionData)
                     {
