@@ -39,9 +39,14 @@ namespace SgqSystem.Controllers.V2.Api
         }
 
         [Route("SetCollect")]
-        public IHttpActionResult SetCollect(List<List<SimpleCollect>> listSimpleCollect)
+        public IHttpActionResult SetCollect(List<SimpleCollect> listSimpleCollect)
         {
-            
+            foreach (var amostra in listSimpleCollect)
+            {
+                //Passa isso pra coleta
+                amostra.IsCollected = true;
+            }
+
             return Ok(listSimpleCollect);
         }
 

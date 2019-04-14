@@ -418,7 +418,9 @@ function UpdateResultColeta(result){
 }
 
 function SalvarColetas(coletaJson){
-	globalColetasRealizadas.push(coletaJson);
+	for(var i = 0; i < coletaJson.length;i++){
+		globalColetasRealizadas.push(coletaJson[i]);
+	}
 }
 
 

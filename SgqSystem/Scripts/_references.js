@@ -101,6 +101,7 @@
 /// <reference path="appcoleta/rh/pardepartment.js" />
 /// <reference path="appcoleta/rh/parfrequency.js" />
 /// <reference path="appcoleta/rh/parlevels.js" />
+/// <reference path="appcoleta/rh/resultado.js" />
 /// <reference path="bootbox.min.js" />
 /// <reference path="bootstrap.js" />
 /// <reference path="bootstrap-datepicker.js" />
