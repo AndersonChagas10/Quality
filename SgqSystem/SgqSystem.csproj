@@ -495,6 +495,8 @@
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
+    <Compile Include="Jobs\CollectionDataJobFactory.cs" />
+    <Compile Include="Jobs\IntegrationJobFactory.cs" />
     <Compile Include="Jobs\MandalaJob.cs" />
     <Compile Include="Jobs\ReProcessJsonJob.cs" />
     <Compile Include="Jobs\MailJob.cs" />
@@ -2037,6 +2039,10 @@
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
       <Name>Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationModule\IntegrationModule.csproj">
+      <Project>{B6DDBEB5-490D-4D8A-B55E-4E66C283DCD4}</Project>
+      <Name>IntegrationModule</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlanoAcaoCore\PlanoAcaoCore.csproj">
       <Project>{9F15CCA3-EC01-46B6-91EC-3F408E7417BC}</Project>
