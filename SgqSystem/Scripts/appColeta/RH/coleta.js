@@ -380,6 +380,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 				ParLevel1_Id: $(data).attr('data-level1'),
 				ParLevel2_Id: $(data).attr('data-level2'),
 				ParLevel3_Id: $(data).attr('data-level3'),
+				ParCompany_Id: curretParCompany_Id,
 				IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),
 				IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),
 				IsConform: $(data).attr('data-conforme') == "1",

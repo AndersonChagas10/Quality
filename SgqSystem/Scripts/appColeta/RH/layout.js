@@ -16,12 +16,10 @@ html = `
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li><a href="#">Home</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Contact</a></li>
+              <li><a href="#" onclick="enviarColeta()">Sincronizar</a></li>
               <!--<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
                   <li><a href="#">Another action</a></li>
                   <li><a href="#">Something else here</a></li>
                   <li role="separator" class="divider"></li>
@@ -32,8 +30,8 @@ html = `
               </li>-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="./">Default <span class="sr-only">(current)</span></a></li>
-              <li><a href="../navbar-static-top/">Static top</a></li>
+              <!--<li><a href="./">Default <span class="sr-only">(current)</span></a></li>
+              <li><a href="../navbar-static-top/">Static top</a></li>-->
               <li><button href="#" class="btn btn-block btn-danger" onclick="logout()" style="color:#fff;margin:7px 7px 7px 0px;padding:6px 15px">Sair</button></li>
             </ul>
           </div><!--/.nav-collapse -->

@@ -109,7 +109,12 @@ namespace Jobs
                 }
             }catch(Exception ex)
             {
-
+                using (var db = new SgqDbDevEntities())
+                {
+                    integCollectionData.Coletado = 2;
+                    db.Entry(integCollectionData).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
 
         }

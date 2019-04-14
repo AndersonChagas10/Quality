@@ -24,6 +24,7 @@ namespace SgqSystem.Controllers.V2.Api
             public string Sample { get; set; }
             public string ParDepartment_Id { get; set; }
             public string ParCargo_Id { get; set; }
+            public string ParCompany_Id { get; set; }
             public string ParLevel1_Id { get; set; }
             public string ParLevel2_Id { get; set; }
             public string ParLevel3_Id { get; set; }
@@ -43,8 +44,59 @@ namespace SgqSystem.Controllers.V2.Api
         {
             foreach (var amostra in listSimpleCollect)
             {
-                //Passa isso pra coleta
-                amostra.IsCollected = true;
+
+                var coleta = new Coleta()
+                {
+                    ParLevel1_Id = amostra.ParLevel1_Id?.ToString(),
+                    ParLevel2_Id = amostra.ParLevel2_Id?.ToString(),
+                    ParCluster_Id = "3",
+                    UnidadeId = amostra.ParCompany_Id?.ToString(),
+                    ColetaTarefa = new List<ColetaTarefa>()
+                {
+                    new ColetaTarefa()
+                    {
+                        Level03Id = amostra.ParLevel3_Id?.ToString(),
+                        ValueConform = string.IsNullOrEmpty(amostra.Value) ? "0" : Convert.ToInt32(amostra.Value).ToString(),
+                        ValueText = amostra.ValueText?.ToString(),
+                        IntervalMin = string.IsNullOrEmpty(amostra.IntervalMin) ? "0" : Convert.ToInt32(amostra.IntervalMin).ToString(),
+                        IntervalMax = string.IsNullOrEmpty(amostra.IntervalMax) ? "0" : Convert.ToInt32(amostra.IntervalMax).ToString(),
+                        Conform = amostra.IsConform?.ToString(),
+                        IsnotEvaluate = amostra.NotEvaluated?.ToString(),
+                        HasPhoto = "0",
+                        CollectionDate = amostra.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                        Defects = "0",
+                        WeiDefects = "0",
+                        WeiEvaluation = "0",
+                        Weight = "1",
+                    }
+                },
+                    Level01DataCollect = amostra.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Level02DataCollect = amostra.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Evaluate = Convert.ToInt32(amostra.Evaluation).ToString(),
+                    Sample = Convert.ToInt32(amostra.Sample).ToString(),
+                    Weidefects = "0",
+                    Weievaluation = "0",
+                    Defects = "0",
+                    Defectsresult = "0",
+                    Cluster = "3",
+                    Shift = "1",
+                    VersaoApp = "AppColeta2",
+                    HashKey = "",
+                };
+
+                try
+                {
+                    var x = new SgqSystem.Services.SyncServices().InsertJson(coleta.ToString(), "", "", false);
+                    if (x == null)
+                    {
+                        //Passa isso pra coleta
+                        amostra.IsCollected = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
 
             return Ok(listSimpleCollect);

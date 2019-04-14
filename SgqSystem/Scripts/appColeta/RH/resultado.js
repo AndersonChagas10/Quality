@@ -29,7 +29,7 @@ function getResultEvaluationSample(parDepartment_Id, parCargo_Id){
 
 function retornaProximasColetasParaSincronizar(){
 	
-	var count = 1;
+	var count = 10;
 	var amostras = [];
 	for(var i = 0; i < globalColetasRealizadas.length;i++){
 		var amostra = globalColetasRealizadas[i];
@@ -52,7 +52,7 @@ function atualizaColetasAposSincronizacao(data){
 			&& data[i].ParLevel1_Id == globalColetasRealizadas[j].ParLevel1_Id
 			&& data[i].ParLevel2_Id == globalColetasRealizadas[j].ParLevel2_Id
 			&& data[i].ParLevel3_Id == globalColetasRealizadas[j].ParLevel3_Id
-			&& data[i].CollectionDate == globalColetasRealizadas[j].CollectionDate
+			&& data[i].CollectionDate.substr(0,10) == globalColetasRealizadas[j].CollectionDate.substr(0,10)
 			){
 				globalColetasRealizadas.splice(j,1);
 				break;
