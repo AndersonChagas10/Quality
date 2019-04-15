@@ -188,7 +188,6 @@
         load: function (ParLevel1XHeaderFields) {
 
             let id = this.id;
-            let urlSave = this.urlSave;
 
             apagaCampos(id);
             parL1Cabecalho.reloadTable();
@@ -197,6 +196,7 @@
             $('#selectL1ParFieldType').prop("disabled", false);
             $('#tableParL1Cabecalho [data-table-edit]').prop('disabled', false);
             $('#tableParL1Cabecalho [data-table-delete]').prop('disabled', false);
+            $('#tableParL1Cabecalho select,#tableParL1Cabecalho input,#tableParL1Cabecalho button').prop('disabled', false);
 
             $(ParLevel1XHeaderFields).each(function (i, o) {
 
@@ -221,140 +221,6 @@
                 $('table#table' + id + ' tbody').append(html);
                 $('table#table' + id + ' tbody tr:last').data('sgq', o);
 
-            });
-
-            function Save(obj) {
-
-                $.ajax({
-                    url: urlSave,
-                    type: 'POST',
-                    dataType: "json",
-                    data: JSON.stringify(obj),
-                    contentType: "application/json",
-                    success: function (data) {
-                        openMessageModal("Feito", "Dados Salvos");
-                        $('#selectL1').trigger('change');
-                        closeLoader();
-
-                    },
-                    error: function (request, error) {
-                        closeLoader();
-                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
-                        console.log(error)
-                    }
-                });
-            }
-
-            $('#' + id).off('click');
-
-            //Adicionar os dados no data-form
-            $('#' + id).on('click', '[data-table-edit]', function (e) {
-
-                var obj = $(this).parents('tr').data('sgq');
-
-                apagaCampos(id);
-                parL1Cabecalho.reloadTable();
-                preencheCampos(id + ' [data-form]', '', obj);
-
-                $('#' + id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderField.ParLevelDefinition_Id);
-                $('#' + id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
-
-                $('#' + id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParHeaderField.ParFieldType_Id);
-                $('#' + id + ' [data-form] select[name="ParFieldType_Id"]').trigger('change')
-
-                $('#' + id + ' [data-form] input[name="Name"]').val(obj.ParHeaderField.Name);
-                $('#' + id + ' [data-form] input[name="Description"]').val(obj.ParHeaderField.Description);
-
-                $('#' + id + ' [data-form]').data('sgq', obj);
-                $('#' + id + ' [data-form]').addClass('alert alert-success');
-                $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
-                $('#' + id + ' #divBtnCancelar').show();
-
-                parL1Cabecalho.insertTable(obj);
-
-                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
-                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
-
-                $('#tableParL1Cabecalho [data-table-edit]').prop('disabled', true);
-                $('#tableParL1Cabecalho [data-table-delete]').prop('disabled', true);
-
-            });
-
-            //Adicionar os dados no data-form
-            $('#' + id).on('click', '[data-table-delete]', function (e) {
-                var obj = $(this).parents('tr').data('sgq');
-                obj.IsActive = false;
-                Save(obj);
-            });
-
-            $('#' + id).on('click', '[data-cancel]', function (e) {
-                apagaCampos(id);
-                parL1Cabecalho.reloadTable();
-            });
-
-            //Salvar o campo editado ou cria um novo
-            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-
-                $('#objMultiplaEscolha').hide();
-                $('#objBinario').hide();
-
-                var obj = $('#' + id + ' [data-form]').data('sgq');
-                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
-                
-                if (!(typeof (obj) == 'undefined')) {
-                    obj = atualizaValoresDoObjeto(obj, formdata);
-                    obj.ParLevel1_Id = $('[data-id]').val();
-                } else {
-                    obj = null;
-                    obj = atualizaValoresDoObjeto(obj, formdata);                   
-                }               
-
-                obj = parL1Cabecalho.prepareParHeaderField(obj);
-
-                if (optionIsValid(obj, id)) {
-
-                    openLoader(Resources("please_wait"));
-                    Save(obj);
-
-                } else {
-                    $('#selectL1ParFieldType').trigger('change');
-                }
-
-            });
-
-            $('#' + id).on('change', '[name="IsRequired"]', function () {
-
-                openLoader("Salvando...");
-
-                var obj = $(this).parents('tr').data('sgq');
-
-                obj.IsRequired = !!$(this).prop('checked');
-
-                Save(obj);
-            });
-
-            $('#' + id).on('click', '.defaultSelected', function () {
-
-                var obj = $(this).parents('tr').data('sgq');
-
-                let parMultipleValues_Id = parseInt($(this).parents('tr').find('select :selected').val());
-
-                parMultipleValues_Id = parMultipleValues_Id ? parMultipleValues_Id : null;
-
-                obj.ParHeaderField.ParMultipleValues.forEach((o, i, a) => {
-                    a[i].IsDefaultOption = 0;
-
-                    if (o.Id == parMultipleValues_Id) {
-                        a[i].IsDefaultOption = 1;
-                    }
-                });
-
-                Save(obj);
-            });
-
-            $('#' + id).on('click', ' [data-add-cancel] ', function () {
-                $('#selectL1').trigger('change');
-                $(this).parent().hide();
             });
 
             this.showTableParMultipleValues();
@@ -548,9 +414,146 @@
                 $('#camposCabecalhoIncluidos tbody').empty();
                 $('#divCamposCabecalhoIncluidos').hide();
             }
-        }
+        },
+
+        Save: function (obj) {
+
+            $.ajax({
+                url: parL1Cabecalho.urlSave,
+                type: 'POST',
+                dataType: "json",
+                data: JSON.stringify(obj),
+                contentType: "application/json",
+                success: function (data) {
+                    openMessageModal("Feito", "Dados Salvos");
+                    $('#selectL1').trigger('change');
+                },
+                error: function (request, error) {
+                    openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                    console.log(error)
+                }
+
+            }).done(function () {
+                closeLoader();
+                $('#tableParL1Cabecalho select,#tableParL1Cabecalho input,#tableParL1Cabecalho button').prop('disabled', true);
+            });
+
+            }
 
     };
+
+    $('#' + parL1Cabecalho.id).off('click');
+
+    //Adicionar os dados no data-form
+    $('#' + parL1Cabecalho.id).on('click', '[data-table-edit]', function (e) {
+
+        var obj = $(this).parents('tr').data('sgq');
+
+        apagaCampos(parL1Cabecalho.id);
+        parL1Cabecalho.reloadTable();
+        preencheCampos(parL1Cabecalho.id + ' [data-form]', '', obj);
+
+        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderField.ParLevelDefinition_Id);
+        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
+
+        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParHeaderField.ParFieldType_Id);
+        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').trigger('change')
+
+        $('#' + parL1Cabecalho.id + ' [data-form] input[name="Name"]').val(obj.ParHeaderField.Name);
+        $('#' + parL1Cabecalho.id + ' [data-form] input[name="Description"]').val(obj.ParHeaderField.Description);
+
+        $('#' + parL1Cabecalho.id + ' [data-form]').data('sgq', obj);
+        $('#' + parL1Cabecalho.id + ' [data-form]').addClass('alert alert-success');
+        $('#' + parL1Cabecalho.id + ' [data-form] [data-action] [data-add]').addClass('hide');
+        $('#' + parL1Cabecalho.id + ' #divBtnCancelar').show();
+
+        parL1Cabecalho.insertTable(obj);
+
+        $('#' + parL1Cabecalho.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
+        $('#' + parL1Cabecalho.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+
+        $('#tableParL1Cabecalho select,#tableParL1Cabecalho input,#tableParL1Cabecalho button').prop('disabled', true);
+
+    });
+
+    //Adicionar os dados no data-form
+    $('#' + parL1Cabecalho.id).on('click', '[data-table-delete]', function (e) {
+        var obj = $(this).parents('tr').data('sgq');
+        obj.IsActive = false;
+        parL1Cabecalho.Save(obj);
+    });
+
+    $('#' + parL1Cabecalho.id).on('click', '[data-cancel]', function (e) {
+        apagaCampos(parL1Cabecalho.id);
+        parL1Cabecalho.reloadTable();
+    });
+
+    //Salvar o campo editado ou cria um novo
+    $('#' + parL1Cabecalho.id).on('click', '[data-edit],[data-add]', function (e) {
+
+        $('#objMultiplaEscolha').hide();
+        $('#objBinario').hide();
+
+        var obj = $('#' + parL1Cabecalho.id + ' [data-form]').data('sgq');
+        var formdata = $('#' + parL1Cabecalho.id + ' [data-form]').serializeFormToObjetc();
+
+        if (!(typeof (obj) == 'undefined')) {
+            obj = atualizaValoresDoObjeto(obj, formdata);
+            obj.ParLevel1_Id = $('[data-id]').val();
+        } else {
+            obj = null;
+            obj = atualizaValoresDoObjeto(obj, formdata);
+        }
+
+        obj = parL1Cabecalho.prepareParHeaderField(obj);
+
+        if (optionIsValid(obj, parL1Cabecalho.id)) {
+
+            openLoader(Resources("please_wait"));
+            parL1Cabecalho.Save(obj);
+
+        } else {
+            $('#selectL1ParFieldType').trigger('change');
+        }
+
+    });
+
+    $('#' + parL1Cabecalho.id).on('change', '[name="IsRequired"]', function () {
+
+        openLoader("Salvando...");
+
+        $('#' + parL1Cabecalho.id + ' input').prop('disabled', true);
+
+        var obj = $(this).parents('tr').data('sgq');
+
+        obj.IsRequired = !!$(this).prop('checked');
+
+        parL1Cabecalho.Save(obj);
+    });
+
+    $('#' + parL1Cabecalho.id).on('click', '.defaultSelected', function () {
+
+        var obj = $(this).parents('tr').data('sgq');
+
+        let parMultipleValues_Id = parseInt($(this).parents('tr').find('select :selected').val());
+
+        parMultipleValues_Id = parMultipleValues_Id ? parMultipleValues_Id : null;
+
+        obj.ParHeaderField.ParMultipleValues.forEach((o, i, a) => {
+            a[i].IsDefaultOption = 0;
+
+            if (o.Id == parMultipleValues_Id) {
+                a[i].IsDefaultOption = 1;
+            }
+        });
+
+        parL1Cabecalho.Save(obj);
+    });
+
+    $('#' + parL1Cabecalho.id).on('click', ' [data-add-cancel] ', function () {
+        $('#selectL1').trigger('change');
+        $(this).parent().hide();
+    });
 
     let getPreviewHeaderField = function (headerField) {
 
