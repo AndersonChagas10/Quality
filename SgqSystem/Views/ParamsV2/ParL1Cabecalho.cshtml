@@ -213,7 +213,7 @@
                 html += '<td>' + o.ParHeaderField.Name + '</td>';
                 html += '<td>' + o.ParHeaderField.ParFieldType.Name + '</td>';
                 html += '<td>' + previewHeaderField + '</td>';
-                html += '<td><div class=""><label class="switch"><input type="checkbox" name="HasTakePhoto"' + isChecked + ' ><span class="slider round"></span> </label></div></td>';
+                html += '<td><div class=""><label class="switch"><input type="checkbox" name="IsRequired"' + isChecked + ' ><span class="slider round"></span> </label></div></td>';
                 html += '<td>' + defaultSelected + '</input></td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
@@ -303,11 +303,11 @@
                 
                 if (!(typeof (obj) == 'undefined')) {
                     obj = atualizaValoresDoObjeto(obj, formdata);
-                    
+                    obj.ParLevel1_Id = $('[data-id]').val();
                 } else {
                     obj = null;
-                    obj = atualizaValoresDoObjeto(obj, formdata);
-                }
+                    obj = atualizaValoresDoObjeto(obj, formdata);                   
+                }               
 
                 obj = parL1Cabecalho.prepareParHeaderField(obj);
 
@@ -322,7 +322,9 @@
 
             });
 
-            $('#' + id).on('change', '[name="HasTakePhoto"]', function () {
+            $('#' + id).on('change', '[name="IsRequired"]', function () {
+
+                openLoader("Salvando...");
 
                 var obj = $(this).parents('tr').data('sgq');
 
