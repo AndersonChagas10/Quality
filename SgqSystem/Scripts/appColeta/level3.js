@@ -1555,7 +1555,7 @@ function saveResultLevel3() {
                     $('.App').attr('userid'),
                     null,
                     level3.attr('value'),
-                    level3.attr('weight'),
+                    (inputType == 8) ? "" : level3.attr('weight'),
                     punishmentvalue,
                     level3.attr('intervalmin'),
                     level3.attr('intervalmax'),

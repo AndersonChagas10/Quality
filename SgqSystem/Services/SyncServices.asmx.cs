@@ -3911,7 +3911,17 @@ function CalculoMediaPesoHB(){
         return 0;
     }
 
-    return sum/mediaPesoHB.length;
+    var media = sum/mediaPesoHB.length;
+
+    if($(_level2).attr('sample') == 20){
+        media += 0.640;
+    }else if($(_level2).attr('sample') == 32){
+        media += 0.485;
+    }else if($(_level2).attr('sample') == 80){
+        media += 0.295;
+    }
+
+    return media;
 }
 
 function ResetaCorMediaPesoHB(timeout){
