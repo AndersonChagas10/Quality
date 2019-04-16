@@ -197,6 +197,7 @@
             $('#tableParL1Cabecalho [data-table-edit]').prop('disabled', false);
             $('#tableParL1Cabecalho [data-table-delete]').prop('disabled', false);
             $('#tableParL1Cabecalho select,#tableParL1Cabecalho input,#tableParL1Cabecalho button').prop('disabled', false);
+            $('#' + id + ' #divBtnCancelar').hide();
 
             $(ParLevel1XHeaderFields).each(function (i, o) {
 
@@ -247,7 +248,7 @@
                 return false;
             }           
 
-            let $Renan;
+            let $TblParMultipeValues;
 
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
@@ -264,15 +265,15 @@
 
                 case 1: // Multipla Escolha
 
-                    $Renan = $('#tblOpcaoMultiplaEscolha');
+                    $TblParMultipeValues = $('#tblOpcaoMultiplaEscolha');
 
                     obj['ParHeaderField']['ParMultipleValues'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParL1Cabecalho #Name').val(),
                         Id: 0,
-                        Name: $Renan.find('#objMultiplaEscolhaName').val(),
+                        Name: $TblParMultipeValues.find('#objMultiplaEscolhaName').val(),
                         Description: '',
-                        PunishmentValue: $Renan.find('#objMultiplaEscolhaPunishmentValue').val(),
+                        PunishmentValue: $TblParMultipeValues.find('#objMultiplaEscolhaPunishmentValue').val(),
                         Conformity: 0,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -290,15 +291,15 @@
                         return false;
                     }
 
-                    $Renan = $('#tblBinario');
+                    $TblParMultipeValues = $('#tblBinario');
 
                     obj['ParHeaderField']['ParMultipleValues'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParL1Cabecalho #Name').val(),
                         Id: 0,
-                        Name: $Renan.find('#objBinarioPunishmentName1').val(),
+                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName1').val(),
                         Description: '',
-                        PunishmentValue: $Renan.find('#objBinarioPunishmentValue1').val(),
+                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue1').val(),
                         Conformity: 1,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -307,10 +308,10 @@
                     obj['ParHeaderField']['ParMultipleValues'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParL1Cabecalho #Name').val(),
-                        Name: $Renan.find('#objBinarioPunishmentName2').val(),
+                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName2').val(),
                         Id: 0,
                         Description: '',
-                        PunishmentValue: $Renan.find('#objBinarioPunishmentValue2').val(),
+                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue2').val(),
                         Conformity: 0,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -436,9 +437,10 @@
             }).done(function () {
                 closeLoader();
                 $('#tableParL1Cabecalho select,#tableParL1Cabecalho input,#tableParL1Cabecalho button').prop('disabled', true);
+                $('#' + id + ' #divBtnCancelar').hide();
             });
 
-            }
+        }
 
     };
 
