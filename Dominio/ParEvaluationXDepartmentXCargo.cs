@@ -29,5 +29,8 @@ namespace Dominio
 
         [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
+
+        [NotMapped]
+        public virtual List<ParEvaluationSchedule> ParEvaluationSchedule { get; set; }
     }
 }

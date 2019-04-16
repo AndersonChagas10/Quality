@@ -42,8 +42,7 @@ namespace SgqSystem.Controllers.V2.Api
                 parEvaluationXDepartmentXCargoResult.ParEvaluationXDepartmentXCargo =
                     db.ParEvaluationXDepartmentXCargo
                     .Where(x => x.IsActive == true
-                    && x.ParDepartment_Id == parEvaluationXDepartmentXCargo.Id)
-                    .ToList();
+                    && x.ParDepartment_Id == parEvaluationXDepartmentXCargo.Id).ToList();
 
                     var parCargoXDepartment = db.ParCargoXDepartment.AsNoTracking()
                     .Where(x => x.IsActive == true
@@ -56,7 +55,11 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => parCargoXDepartment.Any(y => y.ParCargo_Id == x.Id))
                     .ToList();
 
-                var parEvaluationXSchedule = db.ParEvaluationSchedule.Where(x => x.ParEvaluationXDepartmentXCargo_Id == parEvaluationXDepartmentXCargo.Id).ToList();
+                foreach (var item in parEvaluationXDepartmentXCargoResult.ParEvaluationXDepartmentXCargo)
+                {
+                    item.ParEvaluationSchedule = db.ParEvaluationSchedule.Where(x => x.ParEvaluationXDepartmentXCargo_Id == item.Id).ToList();
+                }
+                  
 
             }
 
@@ -96,14 +99,61 @@ namespace SgqSystem.Controllers.V2.Api
                         parEvaluationXDepartmentXCargoOld.Evaluation = parEvaluationXDepartmentXCargo.Evaluation;
                         parEvaluationXDepartmentXCargoOld.Sample = parEvaluationXDepartmentXCargo.Sample;
                         parEvaluationXDepartmentXCargoOld.IsActive = parEvaluationXDepartmentXCargo.IsActive;
+
+                        var parEvaluationScheduleOld = db.ParEvaluationSchedule.Where(x => x.ParEvaluationXDepartmentXCargo_Id == parEvaluationXDepartmentXCargo.Id).ToList();
+
+                        for (int i = 0; i < parEvaluationScheduleOld.Count; i++)
+                        {
+                            parEvaluationScheduleOld[i].Av = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Av;
+                            parEvaluationScheduleOld[i].Fim = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Fim;
+                            parEvaluationScheduleOld[i].Inicio = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Inicio;
+                            parEvaluationScheduleOld[i].Intervalo = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Intervalo;
+                            parEvaluationScheduleOld[i].ParEvaluation = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].ParEvaluation;
+                            parEvaluationScheduleOld[i].IsActive = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].IsActive;
+                            parEvaluationScheduleOld[i].Shift_Id = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Shift_Id;
+                            parEvaluationScheduleOld[i].isDeletar = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].isDeletar;
+                            parEvaluationScheduleOld[i].ParEvaluationXDepartmentXCargo_Id = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].ParEvaluationXDepartmentXCargo_Id;
+                            parEvaluationScheduleOld[i].Id = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Id;
+                        }
                     }
                     else
                     {
-                        db.ParEvaluationXDepartmentXCargo.Add(parEvaluationXDepartmentXCargo);
+                        var parEvaluationXDepartamentoXCargo = db.ParEvaluationXDepartmentXCargo.Add(parEvaluationXDepartmentXCargo);
+                        db.SaveChanges();
+
+                        foreach (var item in parEvaluationXDepartmentXCargo.ParEvaluationSchedule)
+                        {
+                            item.ParEvaluationXDepartmentXCargo_Id = parEvaluationXDepartamentoXCargo.Id;
+                            if (item.Intervalo != null)
+                            {
+                                item.Inicio = null;
+                                item.Fim = null;
+                            }
+
+                            if (item.isDeletar && item.Id > 0)
+                            {
+                                // Delete(item);
+                            }
+                            else if (!item.isDeletar)
+                            {
+                                item.IsActive = true;
+                                if (item.Shift_Id <= 0)
+                                    item.Shift_Id = null;
+
+                                if (item.Id > 0)
+                                {
+                                    db.Entry(item).State = EntityState.Modified;
+                                }
+                                else
+                                {
+                                    db.ParEvaluationSchedule.Add(item);
+                                }
+                                db.SaveChanges();
+
+                            }
+                        }
                     }
-
                     db.SaveChanges();
-
                 }
                 catch (Exception ex)
                 {
