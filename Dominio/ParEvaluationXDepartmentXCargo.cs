@@ -19,6 +19,8 @@ namespace Dominio
         public int Evaluation { get; set; }
         public int Sample { get; set; }
 
+        public int? ParFrequencyId { get; set; }
+
         public bool IsActive { get; set; }
 
         [ForeignKey("ParCargo_Id")]

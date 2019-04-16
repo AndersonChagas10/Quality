@@ -36,8 +36,17 @@
         <div class="col-sm-4">
 
             <div class="form-group">
+                <label>Frequencia:</label>
+                <select class="form-control required" id="selectParFrequencyAV" name="ParFrequency_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
                 <label for="Evaluation">Avaliação:</label>
-                <input type="text" class="form-control required" id="Evaluation" name="Evaluation">
+                <input type="text" class="form-control required" disabled="disabled" id="Evaluation" name="Evaluation">
             </div>
 
         </div>
@@ -90,6 +99,7 @@
                         <tr role="row">
                             <th>Empresa</th>
                             <th>Cargo</th>
+                            <th>Frequência</th>
                             <th>Avaliação</th>
                             <th>Amostra</th>
                             <th>Intervalo</th>
@@ -108,6 +118,7 @@
                         <tr role="row">
                             <th>Empresa</th>
                             <th>Cargo</th>
+                            <th>Frequência</th>
                             <th>Avaliação</th>
                             <th>Amostra</th>
                             <th>Inicio</th>
@@ -120,19 +131,19 @@
                 </table>
             </div>
 
-                <div class="row">
-                    <div class="td-erp">
-                        <div id="divBtnSalvar" class="col-sm-6">
-                            <button class="form-control btn btn-primary" data-add>Salvar</button>
-                        </div>
+            <div class="row">
+                <div class="td-erp">
+                    <div id="divBtnSalvar" class="col-sm-6">
+                        <button class="form-control btn btn-primary" data-add>Salvar</button>
+                    </div>
 
-                        <div id="divBtnCancelar" class="col-sm-6" style="display:none">
-                            <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
-                        </div>
+                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
     <div class="row">
         <div class="col-sm-12">
@@ -167,25 +178,37 @@
 
 <script>
 
+    var globalFrequency;
+    $("#selectParFrequencyAV").on('change', function () {          
+            if ($("#selectParFrequencyAV :selected").val() !== "0")
+                $("#Evaluation").prop('disabled', false);
+            else 
+            $("#Evaluation").prop('disabled', true);
+        globalFrequency = parseInt($("#selectParFrequencyAV :selected").val());
+        });
 
+
+    //$("#selectParFrequencyAV :selected").val();
+
+  
 
     $("#Evaluation").on('input', function () {
 
         valorAvaliacao = $("#Evaluation").val();
         
-        if ($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id == 10) {
+        //if ($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id == 10) {
             montaTabelaAgendamento(null);
-        } else {
-            montaTabelaAgendamento(valorAvaliacao);
-        }
+        //} else {
+        //    montaTabelaAgendamento(valorAvaliacao);
+        //}
         $('#divAgendamento').show();
     });
 
     function montaTabelaAgendamento(valorAvaliacao) {
-        var obj = $("#ParL1Geral  [data-form]").data('sgq');
-        parEvaluationXDepartmentXCargo_Id = obj.Id;
-
-        if ($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id === 10) {
+        //var obj = $("#ParL1Geral  [data-form]").data('sgq');
+        //parEvaluationXDepartmentXCargo_Id = obj.Id;
+        
+        if (parseInt($("#selectParFrequencyAV :selected").val())  === 10) {
             $("#divAgendamento").removeClass('hidden');
             $("#tabelaAgendamentoIntervalo").attr('style', '');
             $("#tabelaAgendamento").attr('hidden', 'hidden');
@@ -197,24 +220,24 @@
             $("#tabelaAgendamento").attr('hidden', false);
         }
 
-        var id = parseInt(parEvaluationXDepartmentXCargo_Id);
+        //var id = parseInt(parEvaluationXDepartmentXCargo_Id);
 
-        BuscarTurnos(id);
+        BuscarTurnos();
 
-        if ($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id === 10) {
-            $("[data-column=inpTipoAgendamento").val($("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription);
+        if (parseInt($("#selectParFrequencyAV :selected").val())  === 10) {
+            $("[data-column=inpTipoAgendamento").val($("#selectParFrequencyAV :selected").text());
             $("#tabelaAgendamentoIntervalo tbody").html("");
         } else {
-            $("[data-column=inpTipoAgendamento]").val($("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription);
+            $("[data-column=inpTipoAgendamento]").val($("#selectParFrequencyAV :selected").text());
             $("#tabelaAgendamento tbody").html("");
         }
 
-        $("[data-column=inpAvaliacaoId]").val(obj.Id);
+        //$("[data-column=inpAvaliacaoId]").val(obj.Id);
         $("#tabelaAgendamentoIntervalo tbody").html("");
         $("#tabelaAgendamento tbody").html("");
     }
 
-     function BuscarTurnos(id) {
+     function BuscarTurnos() {
              $.get('@Url.Action("Get", "api/Shift")', function (r) {
                     let shifts = r;
                  avaliacaAmostraSelectShifts = '<td> <select class="input-sm" name="turno"  data-column="slAgendamento"> <option value="" >Todos</option>';
@@ -223,7 +246,7 @@
                     });
                     avaliacaAmostraSelectShifts += '</select ></td>';
                  
-                     if ($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id === 10)
+                 if (parseInt($("#selectParFrequencyAV :selected").val()) === 10)
                          MontaNovaLinhaAgendamentoIntervalo(null);
                      else {
                          for (var i = 0; i < valorAvaliacao; i++) {
@@ -235,7 +258,7 @@
 
     function MontaNovaLinhaAgendamentoIntervalo(data) {
         if ($("#tabelaAgendamentoIntervalo tbody tr").length == 0) {
-            $("#tabelaAgendamentoIntervalo thead tr:last").find("#acao").addClass('hidden');
+           // $("#tabelaAgendamentoIntervalo thead tr:last").find("#acao").addClass('hidden');
             $("#tabelaAgendamentoIntervalo tbody").append("<tr>"
                 + '<td><input data-column="inpTipoAgendamento" name="tipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
                 + '<td><input type="time" min="0" name="intervalo" class="input-sm notAllowNegative" data-column="inpIntervalo" /></td>'
@@ -243,7 +266,7 @@
                 + '<td class="hidden"> <input data-column="inpId" name="IdAgendamento" class="hidden" /></td>'
                 + '<td> <button type="button" onclick="deletarRegistro(this)" class="btn btn-danger btn-sm fa fa-times hidden btnDeletarAgendamento"></button></td>'
                 + "</tr>");
-            $("[data-column=inpTipoAgendamento]").val($("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription);
+            $("[data-column=inpTipoAgendamento]").val($("#selectParFrequencyAV :selected").text());
         }
 
         if (data != null && data != undefined) {
@@ -260,7 +283,7 @@
             }
         } else {
 
-            $("[data-column=inpTipoAgendamento]").val($("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription);
+            $("[data-column=inpTipoAgendamento]").val($("#selectParFrequencyAV :selected").text());
         }
     }
 
@@ -277,7 +300,7 @@
             + "</tr>");      
 
 
-        $("[data-column=inpTipoAgendamento]").val($("#ParL1Geral  [data-form]").data('sgq').ParFrequencyDescription);
+        $("[data-column=inpTipoAgendamento]").val($("#selectParFrequencyAV :selected").text());
 
         if (data != null && data != undefined) {
             $("#tabelaAgendamento tbody tr:last").data(data);
@@ -300,11 +323,11 @@
        //paramtros
         id: 'ParDCAvam',
         urlSave: '@Url.Action("PostParEvaluationXDepartmentXCargo", "api/ParEvaluationXDepartmentXCargoApi")',
-
+       
         load: function (list) {
+           // $("#Evaluation").prop('disabled', true);
             let id = this.id;
             let urlSave = this.urlSave;
-
 
             apagaCampos(id);
             parDCAvam.reloadTable();
@@ -339,6 +362,8 @@
                     contentType: "application/json",
                     success: function (data) {
                         openMessageModal("Feito", "Dados Salvos");
+                        $('#divCamposCabecalhoIncluidos tbody').empty();
+                        $('#divCamposCabecalhoIncluidos2 tbody').empty();
                         $('#selectDCDepartment').trigger('change');
 
                         $('[data-column="inpIntervalo"]').val('');
@@ -371,6 +396,9 @@
                 $('#' + id + ' [data-form] select[name="ParCargo_Id"]').val(obj.ParCargo_Id);
                 $('#' + id + ' [data-form] select[name="ParCargo_Id"]').trigger('change')
 
+                $('#' + id + ' [data-form] select[name="ParFrequency_Id"]').val(obj.ParFrequencyId);
+                $('#' + id + ' [data-form] select[name="ParFrequency_Id"]').trigger('change')
+
                 $('#' + id + ' [data-form] input[name="Evaluation"]').val(obj.Evaluation);
                 $('#' + id + ' [data-form] input[name="Sample"]').val(obj.Sample);
 
@@ -386,6 +414,12 @@
 
                 $('#tableParDCAvam [data-table-edit]').prop('disabled', true);
                 $('#tableParDCAvam [data-table-delete]').prop('disabled', true);
+
+                if ($("#camposCabecalhoIncluidos tbody tr").length > 0) {
+                    $("#selectParFrequencyAV").prop('disabled', true);
+                } else {
+                    $("#selectParFrequencyAV").prop('disabled', false);
+                }
 
             });
 
@@ -403,6 +437,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+                debugger
                 parDCAvam.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
@@ -417,6 +452,11 @@
 
                 obj = parDCAvam.prepareDcAvam(obj);
 
+                if ($("#camposCabecalhoIncluidos tbody tr").length > 0) {
+                    $("#selectParFrequencyAV").prop('disabled', true);
+                } else {
+                    $("#selectParFrequencyAV").prop('disabled', false);
+                }
                 //if (optionIsValid(obj, id)) {
 
                     openLoader();
@@ -462,9 +502,9 @@
             });
 
             this.showTableParMultipleValues();
-        },
-
+        },      
         prepareDcAvam: function (obj) {
+            debugger
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};
@@ -474,17 +514,20 @@
             obj['Sample'] = formdata.Sample;
             obj['ParDepartment_Id'] = formdata.ParDepartment_Id;
             obj['IsActive'] = true;
+            obj['ParFrequencyId'] = globalFrequency;
+            //if (obj['ParFrequencyId'] == null)
+                //obj['ParFrequencyId'] = formdata.ParFrequency_Id;
             return obj;
         },
 
         prepareToInsert: function () {
-
+            
             if (!formIsValid(this.id)) {
                 return false;
             }
 
             let $Marcos;
-
+            
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (typeof (obj) == 'undefined')
@@ -497,8 +540,8 @@
                 if (obj.ParEvaluationSchedule[0]['ParEvaluationXDepartmentXCargo_Id'] != 'undefined' || obj.ParEvaluationSchedule[0]['ParEvaluationXDepartmentXCargo_Id'] != null)
                      parEvaluationXDepartmentXCargo_Id = obj.Id
 
-            debugger
-            if ($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id === 10) {
+            
+            if (parseInt($("#selectParFrequencyAV :selected").val()) === 10) {
                 $Marcos = $('#tabelaAgendamentoIntervalo');
 
                 obj['ParEvaluationSchedule'].push({
@@ -507,10 +550,11 @@
                     Inicio: "",
                     Intervalo: $Marcos.find("[data-column=inpIntervalo]").val(),
                     Shift_Id: $Marcos.find("[data-column=slAgendamento]").val(),
+                    IsActive: true,
                     ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
                     Id: $Marcos.find("[data-column=inpId]").val(),
                     IsDeletar: $Marcos.data("IsDeletar"),
-                    ParEvaluationXDepartmentXCargo_Id: parEvaluationXDepartmentXCargo_Id,
+                    ParEvaluationXDepartmentXCargo_Id: 0,
                 });
             }else{
                 $Marcos = $('#tabelaAgendamento');
@@ -520,12 +564,13 @@
                     obj['ParEvaluationSchedule'].push({
                         Inicio: $(item).find("[data-column=inpInicio]").val(),
                         Fim: $(item).find("[data-column=inpTermino]").val(),
+                        IsActive: true,
                         Av: $(item).find("[data-column=inpAvaliacao]").val(),
                         Shift_Id: $(item).find("[data-column=slAgendamento]").val(),
                         ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
                         Id: $(item).find("[data-column=inpId]").val(),
                         IsDeletar: $(item).data("IsDeletar"),
-                        ParEvaluationXDepartmentXCargo_Id: parEvaluationXDepartmentXCargo_Id,
+                        ParEvaluationXDepartmentXCargo_Id: 0,
                     });
 
                 });
@@ -540,8 +585,8 @@
         insertTable: function (obj) {
             //pega os dados do form e transforma em obj
             obj = parDCAvam.prepareDcAvam(obj);
-
-            if ($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id === 10)
+            
+            if (parseInt($("#selectParFrequencyAV :selected").val()) === 10)
                 $('#camposCabecalhoIncluidos tbody').empty();
             else
                 $('#camposCabecalhoIncluidos2 tbody').empty();
@@ -551,6 +596,7 @@
             let ParCargo = "";
             let ParCompany_Id = "";
             let ParDepartment_Id = "";
+            let ParFrequencyId = "";
 
             //try {
 
@@ -559,6 +605,7 @@
             ParCargo = obj.ParCargo_Id;
             ParCompany_Id = obj.ParCompany_Id;
             ParDepartment_Id = obj.ParDepartment_Id;
+            ParFrequencyId = obj.ParFrequencyId;
 
             //} catch (e) {
 
@@ -569,14 +616,16 @@
 
             let ParEvaluationSchedule = obj['ParEvaluationSchedule'];
             let blockParFieldType = false;
-                        
-            debugger
-            if ($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id === 10){
-                ParEvaluationSchedule.forEach((o, i) => {
-                    if (o.IsActive) {
-                        let tableAgendamento = `<tr>
+                  
+            if (ParEvaluationSchedule.length > 0) {
+                if (ParEvaluationSchedule[0].Intervalo !== null) {
+                    //if (parseInt($("#selectParFrequencyAV :selected").val()) === 10){
+                    ParEvaluationSchedule.forEach((o, i) => {
+                        if (o.IsActive) {
+                            let tableAgendamento = `<tr>
                             <td>${ParCompany_Id}</td>
                             <td>${ParCargo}</td>
+                            <td>${ParFrequencyId}</td>
                             <td>${Evaluation}</td>
                             <td>${Sample}</td>
                             <td>${o.Intervalo}</td>
@@ -587,17 +636,18 @@
                             <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="parDCAvam.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
                           </tr>`;
 
-                        $('#camposCabecalhoIncluidos tbody').append(tableAgendamento);
+                            $('#camposCabecalhoIncluidos tbody').append(tableAgendamento);
 
-                        blockParFieldType = true;
-                    }
-                });
-            }else{
-                ParEvaluationSchedule.forEach((o, i) => {
-                    if (o.IsActive) {
-                        let table = `<tr>
+                            blockParFieldType = true;
+                        }
+                    });
+                } else {
+                    ParEvaluationSchedule.forEach((o, i) => {
+                        if (o.IsActive) {
+                            let table = `<tr>
                             <td>${ParCompany_Id}</td>
                             <td>${ParCargo}</td>
+                            <td>${ParFrequencyId}</td>
                             <td>${Evaluation}</td>
                             <td>${Sample}</td>
                             <td>${o.Inicio}</td>
@@ -610,11 +660,12 @@
                             <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="parDCAvam.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
                           </tr>`;
 
-                        $('#camposCabecalhoIncluidos2 tbody').append(table);
+                            $('#camposCabecalhoIncluidos2 tbody').append(table);
 
-                        blockParFieldType = true;
-                    }
-                });
+                            blockParFieldType = true;
+                        }
+                    });
+                }
             }
 
             if (blockParFieldType)
@@ -629,20 +680,30 @@
             
             if ($('#camposCabecalhoIncluidos tbody tr').length) {
                 $('#allObjAVAgendamento #divCamposCabecalhoIncluidos').show();
+                $("#tabelaAgendamento").hide();
             } else {
                 $('#allObjAVAgendamento #divCamposCabecalhoIncluidos').hide();
             }
 
             if ($('#camposCabecalhoIncluidos2 tbody tr').length) {
                 $('#allObjAVAgendamento #divCamposCabecalhoIncluidos2').attr('style', false)
+                $("#tabelaAgendamentoIntervalo").hide();
             } else {
                 $('#allObjAVAgendamento #divCamposCabecalhoIncluidos2').hide();
+            }
+
+            if ($("#camposCabecalhoIncluidos tbody tr").length > 0) {
+                $("#selectParFrequencyAV").prop('disabled', true);
+            } else {
+                $("#selectParFrequencyAV").prop('disabled', false);
             }
 
         },
 
         reloadTable: function () {
-            
+            $('#camposCabecalhoIncluidos tbody').empty();
+            $('#camposCabecalhoIncluidos2 tbody').empty();
+            $('#divAgendamento').hide();           
             $('#tabelaAgendamentoIntervalo tbody').empty();
             $('#tabelaAgendamento tbody').empty();
             
@@ -651,7 +712,7 @@
         excludeTable: function (i) {
             
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
-
+            debugger
             if (obj) {
                 //obj.ParEvaluationSchedule.forEach((o, i, a) => {
                 //        a[i].IsActive = false;
