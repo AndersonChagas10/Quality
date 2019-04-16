@@ -25,7 +25,10 @@ namespace Jobs
             Thread.Sleep(new Random().Next(1000, 2000));
             while (true)
             {
-                CollectionDataJobFactory.Execute();
+                if (ConfigurationManager.AppSettings["CollectionDataJob"] == "on")
+                {
+                    CollectionDataJobFactory.Execute();
+                }
 
                 Thread.Sleep(new Random().Next(50000, 80000));
             }
