@@ -1078,6 +1078,8 @@ function saveResultLevel3() {
                 //força abertura da Ação Corretiva
                 correctiveActionOpenPesoHB();
             }
+
+            openMessageModal("A Quantidade Média final do peso dos Hamburguers é de:", "Média final: " + CalculoMediaPesoHB(), "", "");
 			
 			$('.level3List .calculoPesoHB').attr('id',getDicionario('IdTarefaMediaHB'));
 			$('.level3List .calculoPesoHB .medicaCalculoPesoHB').html('<input type="text" value="'+CalculoMediaPesoHB()+'" class="form-control text-center levelValue interval" style="text-align: right;" readonly="readonly">');
