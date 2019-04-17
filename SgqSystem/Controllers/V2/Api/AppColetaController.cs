@@ -40,64 +40,38 @@ namespace SgqSystem.Controllers.V2.Api
         }
 
         [Route("SetCollect")]
-        public IHttpActionResult SetCollect(List<SimpleCollect> listSimpleCollect)
+        public IHttpActionResult SetCollect(List<Collection> listSimpleCollect)
         {
-            foreach (var amostra in listSimpleCollect)
+            using (var db = new SgqDbDevEntities())
             {
 
-                var coleta = new Coleta()
-                {
-                    ParLevel1_Id = amostra.ParLevel1_Id?.ToString(),
-                    ParLevel2_Id = amostra.ParLevel2_Id?.ToString(),
-                    ParCluster_Id = "3",
-                    UnidadeId = amostra.ParCompany_Id?.ToString(),
-                    ColetaTarefa = new List<ColetaTarefa>()
-                {
-                    new ColetaTarefa()
-                    {
-                        Level03Id = amostra.ParLevel3_Id?.ToString(),
-                        ValueConform = string.IsNullOrEmpty(amostra.Value) ? "0" : Convert.ToInt32(amostra.Value).ToString(),
-                        ValueText = amostra.ValueText?.ToString(),
-                        IntervalMin = string.IsNullOrEmpty(amostra.IntervalMin) ? "0" : Convert.ToInt32(amostra.IntervalMin).ToString(),
-                        IntervalMax = string.IsNullOrEmpty(amostra.IntervalMax) ? "0" : Convert.ToInt32(amostra.IntervalMax).ToString(),
-                        Conform = amostra.IsConform?.ToString(),
-                        IsnotEvaluate = amostra.NotEvaluated?.ToString(),
-                        HasPhoto = "0",
-                        CollectionDate = amostra.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                        Defects = "0",
-                        WeiDefects = "0",
-                        WeiEvaluation = "0",
-                        Weight = "1",
-                    }
-                },
-                    Level01DataCollect = amostra.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                    Level02DataCollect = amostra.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                    Evaluate = Convert.ToInt32(amostra.Evaluation).ToString(),
-                    Sample = Convert.ToInt32(amostra.Sample).ToString(),
-                    Weidefects = "0",
-                    Weievaluation = "0",
-                    Defects = "0",
-                    Defectsresult = "0",
-                    Cluster = "3",
-                    Shift = "1",
-                    VersaoApp = "AppColeta2",
-                    HashKey = "",
-                };
-
-                try
-                {
-                    var x = new SgqSystem.Services.SyncServices().InsertJson(coleta.ToString(), "", "", false);
-                    if (x == null)
-                    {
-                        //Passa isso pra coleta
-                        amostra.IsCollected = true;
-                    }
-                }
-                catch (Exception ex)
+                foreach (var item in listSimpleCollect)
                 {
 
+                    try
+                    {
+                        //Validar para inserir?
+                        item.AddDate = DateTime.Now;
+                        db.Collection.Add(item);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
                 }
+
+                db.SaveChanges();
             }
+
+            //Fazer uma "Task" para essas funções abaixo?
+
+            //TODO: Fazer uma função que leia do banco o Collection que não foram processados, e separe os CollectionLevel2 e Result_Level3 da tabela salva
+
+            //TODO: chamar a função de SetConsolidation() para inserir os dados consolidados na CollectionLevel2
+
+            //TODO: salvar a collectionLevel2 e apos a Result_Level3 com o respectivo CollectionLevel2_Id
+
+            //TODO: update na Collection set IsProcessed = 1
 
             return Ok(listSimpleCollect);
         }
@@ -316,6 +290,30 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParCargo,
                 listaParCargoXDepartment,
             });
+        }
+
+        private CollectionLevel2 SetConsolidation(CollectionLevel2 collectionLevel2, List<Result_Level3> results_Level3)
+        {
+
+            decimal defects = 0;
+            decimal weiDefects = 0;
+            int evaluation = 0;
+            decimal weiEavaluation = 0;
+
+            foreach (var result_Level3 in results_Level3)
+            {
+                defects += result_Level3.Defects.Value;
+                weiDefects += result_Level3.WeiDefects.Value;
+                evaluation++;
+                weiEavaluation += result_Level3.Weight.Value;
+            }
+
+            collectionLevel2.Defects = defects;
+            collectionLevel2.WeiDefects = weiDefects;
+            collectionLevel2.TotalLevel3Evaluation = evaluation;
+            collectionLevel2.WeiEvaluation = weiEavaluation;
+
+            return collectionLevel2;
         }
     }
 }
