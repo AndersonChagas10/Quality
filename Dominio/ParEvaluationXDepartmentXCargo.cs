@@ -19,6 +19,8 @@ namespace Dominio
         public int Evaluation { get; set; }
         public int Sample { get; set; }
 
+        public int? ParFrequencyId { get; set; }
+
         public bool IsActive { get; set; }
 
         [ForeignKey("ParCargo_Id")]
@@ -29,5 +31,8 @@ namespace Dominio
 
         [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
+
+        [NotMapped]
+        public virtual List<ParEvaluationSchedule> ParEvaluationSchedule { get; set; }
     }
 }

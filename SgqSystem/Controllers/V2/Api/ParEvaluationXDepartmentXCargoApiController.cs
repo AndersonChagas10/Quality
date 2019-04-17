@@ -42,8 +42,7 @@ namespace SgqSystem.Controllers.V2.Api
                 parEvaluationXDepartmentXCargoResult.ParEvaluationXDepartmentXCargo =
                     db.ParEvaluationXDepartmentXCargo
                     .Where(x => x.IsActive == true
-                    && x.ParDepartment_Id == parEvaluationXDepartmentXCargo.Id)
-                    .ToList();
+                    && x.ParDepartment_Id == parEvaluationXDepartmentXCargo.Id).ToList();
 
                     var parCargoXDepartment = db.ParCargoXDepartment.AsNoTracking()
                     .Where(x => x.IsActive == true
@@ -55,6 +54,12 @@ namespace SgqSystem.Controllers.V2.Api
                     .ToList()
                     .Where(x => parCargoXDepartment.Any(y => y.ParCargo_Id == x.Id))
                     .ToList();
+
+                foreach (var item in parEvaluationXDepartmentXCargoResult.ParEvaluationXDepartmentXCargo)
+                {
+                    item.ParEvaluationSchedule = db.ParEvaluationSchedule.Where(x => x.ParEvaluationXDepartmentXCargo_Id == item.Id).ToList();
+                }
+                  
 
             }
 
@@ -94,14 +99,62 @@ namespace SgqSystem.Controllers.V2.Api
                         parEvaluationXDepartmentXCargoOld.Evaluation = parEvaluationXDepartmentXCargo.Evaluation;
                         parEvaluationXDepartmentXCargoOld.Sample = parEvaluationXDepartmentXCargo.Sample;
                         parEvaluationXDepartmentXCargoOld.IsActive = parEvaluationXDepartmentXCargo.IsActive;
+                        parEvaluationXDepartmentXCargoOld.ParFrequencyId = parEvaluationXDepartmentXCargo.ParFrequencyId;
+
+                        foreach (var item in parEvaluationXDepartmentXCargo.ParEvaluationSchedule)
+                        {
+                            item.ParEvaluationXDepartmentXCargo_Id = parEvaluationXDepartmentXCargo.Id;
+                            if (item.Intervalo != null)
+                            {
+                                item.Inicio = null;
+                                item.Fim = null;
+                            }
+                          
+                            if (item.Shift_Id <= 0)
+                                item.Shift_Id = null;
+
+                            if (item.Id > 0)
+                            {
+                                db.Entry(item).State = EntityState.Modified;
+                            }
+                            else
+                            {
+                                db.ParEvaluationSchedule.Add(item);
+                            }
+                            db.SaveChanges();
+                           
+                        }
                     }
                     else
                     {
-                        db.ParEvaluationXDepartmentXCargo.Add(parEvaluationXDepartmentXCargo);
+                        var parEvaluationXDepartamentoXCargo = db.ParEvaluationXDepartmentXCargo.Add(parEvaluationXDepartmentXCargo);
+                        db.SaveChanges();
+
+                        foreach (var item in parEvaluationXDepartmentXCargo.ParEvaluationSchedule)
+                        {
+                            item.ParEvaluationXDepartmentXCargo_Id = parEvaluationXDepartamentoXCargo.Id;
+                            if (item.Intervalo != null)
+                            {
+                                item.Inicio = null;
+                                item.Fim = null;
+                            }
+
+                            if (item.Shift_Id <= 0)
+                                item.Shift_Id = null;
+
+                            if (item.Id > 0)
+                            {
+                                db.Entry(item).State = EntityState.Modified;
+                            }
+                            else
+                            {
+                                db.ParEvaluationSchedule.Add(item);
+                            }
+                            db.SaveChanges();
+   
+                        }
                     }
-
                     db.SaveChanges();
-
                 }
                 catch (Exception ex)
                 {

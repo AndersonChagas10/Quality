@@ -1998,6 +1998,7 @@
     <Content Include="Views\ParColaborador\Edit.cshtml" />
     <Content Include="Views\ParColaborador\Index.cshtml" />
     <Content Include="Views\ParamsV2\ParDCAvam.cshtml" />
+    <Content Include="Views\ParamsV2\_Agendamento.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
