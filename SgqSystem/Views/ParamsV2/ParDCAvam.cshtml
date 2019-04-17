@@ -73,7 +73,6 @@
                             <th id="headFim">Fim</th>
                             <th id="headAvaliacao">Avaliação</th>
                             <th>@Resources.Resource.shift</th>
-                            <th>@Resources.Resource.action</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -86,7 +85,6 @@
                             <th class="col-md-4">Tipo de Frequência</th>
                             <th class="col-md-4" id="headIntervalo">Intervalo</th>
                             <th class="col-md-4">@Resources.Resource.shift</th>
-                            <th id="acao" class="hidden col-md-4">@Resources.Resource.action</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -97,12 +95,13 @@
                 <table id="camposCabecalhoIncluidos" class="table" role="grid">
                     <thead>
                         <tr role="row">
-                            <th>Empresa</th>
+                            @*<th>Empresa</th>
                             <th>Cargo</th>
-                            <th>Frequência</th>
+                            <th>Frequência</th>*@
                             <th>Avaliação</th>
                             <th>Amostra</th>
                             <th>Intervalo</th>
+                            <th>Ação</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -116,14 +115,15 @@
                 <table id="camposCabecalhoIncluidos2" class="table" role="grid">
                     <thead>
                         <tr role="row">
-                            <th>Empresa</th>
+                            @*<th>Empresa</th>
                             <th>Cargo</th>
-                            <th>Frequência</th>
+                            <th>Frequência</th>*@
                             <th>Avaliação</th>
                             <th>Amostra</th>
                             <th>Inicio</th>
                             <th>Fim</th>
                             <th>Avaliação Selecionada</th>
+                            <th>Ação</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -370,7 +370,6 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
-                debugger
                 var obj = $(this).parents('tr').data('sgq');
 
                 apagaCampos(id);
@@ -424,7 +423,6 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-                debugger
                 parDCAvam.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
@@ -610,9 +608,9 @@
                     ParEvaluationSchedule.forEach((o, i) => {
                         if (o.IsActive) {
                             let tableAgendamento = `<tr>
-                            <td>${ParCompany_Id}</td>
-                            <td>${ParCargo}</td>
-                            <td>${ParFrequencyId}</td>
+                            <td class="hide">${ParCompany_Id}</td>
+                            <td class="hide">${ParCargo}</td>
+                            <td class="hide">${ParFrequencyId}</td>
                             <td>${Evaluation}</td>
                             <td>${Sample}</td>
                             <td>${o.Intervalo}</td>
@@ -632,9 +630,9 @@
                     ParEvaluationSchedule.forEach((o, i) => {
                         if (o.IsActive) {
                             let table = `<tr>
-                            <td>${ParCompany_Id}</td>
-                            <td>${ParCargo}</td>
-                            <td>${ParFrequencyId}</td>
+                            <td class="hide">${ParCompany_Id}</td>
+                            <td class="hide">${ParCargo}</td>
+                            <td class="hide">${ParFrequencyId}</td>
                             <td>${Evaluation}</td>
                             <td>${Sample}</td>
                             <td>${o.Inicio}</td>
