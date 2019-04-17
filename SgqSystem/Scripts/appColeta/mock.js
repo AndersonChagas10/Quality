@@ -55,11 +55,11 @@ $(document).ready(function(){
                         regex.lastIndex++;
                     }
 
-                    var valor = $('li[id=""' + m[1].replace('?','') + '""] input.interval').val();
+                    var valor = $('li[id="' + m[1].replace('?','') + '"] input.interval').val();
                     if(valor)
                         resultado = resultado.replace(m[0],valor);
                     else{
-                        var valor = $('li[id=""' + m[1].replace('?','') + '""] input.likert').val();
+                        var valor = $('li[id="' + m[1].replace('?','') + '"] input.likert').val();
                         if(valor)
                             resultado = resultado.replace(m[0],valor);
                         else{
