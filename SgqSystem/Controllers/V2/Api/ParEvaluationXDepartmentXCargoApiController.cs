@@ -99,21 +99,30 @@ namespace SgqSystem.Controllers.V2.Api
                         parEvaluationXDepartmentXCargoOld.Evaluation = parEvaluationXDepartmentXCargo.Evaluation;
                         parEvaluationXDepartmentXCargoOld.Sample = parEvaluationXDepartmentXCargo.Sample;
                         parEvaluationXDepartmentXCargoOld.IsActive = parEvaluationXDepartmentXCargo.IsActive;
+                        parEvaluationXDepartmentXCargoOld.ParFrequencyId = parEvaluationXDepartmentXCargo.ParFrequencyId;
 
-                        var parEvaluationScheduleOld = db.ParEvaluationSchedule.Where(x => x.ParEvaluationXDepartmentXCargo_Id == parEvaluationXDepartmentXCargo.Id).ToList();
-
-                        for (int i = 0; i < parEvaluationScheduleOld.Count; i++)
+                        foreach (var item in parEvaluationXDepartmentXCargo.ParEvaluationSchedule)
                         {
-                            parEvaluationScheduleOld[i].Av = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Av;
-                            parEvaluationScheduleOld[i].Fim = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Fim;
-                            parEvaluationScheduleOld[i].Inicio = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Inicio;
-                            parEvaluationScheduleOld[i].Intervalo = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Intervalo;
-                            parEvaluationScheduleOld[i].ParEvaluation = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].ParEvaluation;
-                            parEvaluationScheduleOld[i].IsActive = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].IsActive;
-                            parEvaluationScheduleOld[i].Shift_Id = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Shift_Id;
-                            parEvaluationScheduleOld[i].isDeletar = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].isDeletar;
-                            parEvaluationScheduleOld[i].ParEvaluationXDepartmentXCargo_Id = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].ParEvaluationXDepartmentXCargo_Id;
-                            parEvaluationScheduleOld[i].Id = parEvaluationXDepartmentXCargo.ParEvaluationSchedule[i].Id;
+                            item.ParEvaluationXDepartmentXCargo_Id = parEvaluationXDepartmentXCargo.Id;
+                            if (item.Intervalo != null)
+                            {
+                                item.Inicio = null;
+                                item.Fim = null;
+                            }
+                          
+                            if (item.Shift_Id <= 0)
+                                item.Shift_Id = null;
+
+                            if (item.Id > 0)
+                            {
+                                db.Entry(item).State = EntityState.Modified;
+                            }
+                            else
+                            {
+                                db.ParEvaluationSchedule.Add(item);
+                            }
+                            db.SaveChanges();
+                           
                         }
                     }
                     else
@@ -130,27 +139,19 @@ namespace SgqSystem.Controllers.V2.Api
                                 item.Fim = null;
                             }
 
-                            if (item.isDeletar && item.Id > 0)
-                            {
-                                // Delete(item);
-                            }
-                            else if (!item.isDeletar)
-                            {
-                                item.IsActive = true;
-                                if (item.Shift_Id <= 0)
-                                    item.Shift_Id = null;
+                            if (item.Shift_Id <= 0)
+                                item.Shift_Id = null;
 
-                                if (item.Id > 0)
-                                {
-                                    db.Entry(item).State = EntityState.Modified;
-                                }
-                                else
-                                {
-                                    db.ParEvaluationSchedule.Add(item);
-                                }
-                                db.SaveChanges();
-
+                            if (item.Id > 0)
+                            {
+                                db.Entry(item).State = EntityState.Modified;
                             }
+                            else
+                            {
+                                db.ParEvaluationSchedule.Add(item);
+                            }
+                            db.SaveChanges();
+   
                         }
                     }
                     db.SaveChanges();

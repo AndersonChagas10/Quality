@@ -188,51 +188,41 @@
         });
 
 
-    //$("#selectParFrequencyAV :selected").val();
-
-  
-
     $("#Evaluation").on('input', function () {
 
         valorAvaliacao = $("#Evaluation").val();
         
-        //if ($("#ParL1Geral  [data-form]").data('sgq').ParFrequency_Id == 10) {
+        if (globalFrequency === 10 || globalFrequency === 3) {
             montaTabelaAgendamento(null);
-        //} else {
-        //    montaTabelaAgendamento(valorAvaliacao);
-        //}
-        $('#divAgendamento').show();
+            $('#divAgendamento').show();
+        }
     });
 
     function montaTabelaAgendamento(valorAvaliacao) {
-        //var obj = $("#ParL1Geral  [data-form]").data('sgq');
-        //parEvaluationXDepartmentXCargo_Id = obj.Id;
         
         if (parseInt($("#selectParFrequencyAV :selected").val())  === 10) {
             $("#divAgendamento").removeClass('hidden');
             $("#tabelaAgendamentoIntervalo").attr('style', '');
             $("#tabelaAgendamento").attr('hidden', 'hidden');
             $("#tabelaAgendamentoIntervalo").attr('hidden', false);
-        } else {
+        } else if (parseInt($("#selectParFrequencyAV :selected").val()) === 3){
             $("#divAgendamento").removeClass('hidden');
             $("#tabelaAgendamento").attr('style', '');
             $("#tabelaAgendamentoIntervalo").attr('hidden', 'hidden');
             $("#tabelaAgendamento").attr('hidden', false);
         }
-
-        //var id = parseInt(parEvaluationXDepartmentXCargo_Id);
+        
 
         BuscarTurnos();
 
         if (parseInt($("#selectParFrequencyAV :selected").val())  === 10) {
             $("[data-column=inpTipoAgendamento").val($("#selectParFrequencyAV :selected").text());
             $("#tabelaAgendamentoIntervalo tbody").html("");
-        } else {
+        } else if (parseInt($("#selectParFrequencyAV :selected").val()) === 3){
             $("[data-column=inpTipoAgendamento]").val($("#selectParFrequencyAV :selected").text());
             $("#tabelaAgendamento tbody").html("");
         }
-
-        //$("[data-column=inpAvaliacaoId]").val(obj.Id);
+        
         $("#tabelaAgendamentoIntervalo tbody").html("");
         $("#tabelaAgendamento tbody").html("");
     }
@@ -248,7 +238,7 @@
                  
                  if (parseInt($("#selectParFrequencyAV :selected").val()) === 10)
                          MontaNovaLinhaAgendamentoIntervalo(null);
-                     else {
+                 else if (parseInt($("#selectParFrequencyAV :selected").val()) === 3){
                          for (var i = 0; i < valorAvaliacao; i++) {
                              MontaNovaLinhaAgendamento(null);
                          }
@@ -258,7 +248,6 @@
 
     function MontaNovaLinhaAgendamentoIntervalo(data) {
         if ($("#tabelaAgendamentoIntervalo tbody tr").length == 0) {
-           // $("#tabelaAgendamentoIntervalo thead tr:last").find("#acao").addClass('hidden');
             $("#tabelaAgendamentoIntervalo tbody").append("<tr>"
                 + '<td><input data-column="inpTipoAgendamento" name="tipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
                 + '<td><input type="time" min="0" name="intervalo" class="input-sm notAllowNegative" data-column="inpIntervalo" /></td>'
@@ -325,13 +314,11 @@
         urlSave: '@Url.Action("PostParEvaluationXDepartmentXCargo", "api/ParEvaluationXDepartmentXCargoApi")',
        
         load: function (list) {
-           // $("#Evaluation").prop('disabled', true);
             let id = this.id;
             let urlSave = this.urlSave;
 
             apagaCampos(id);
             parDCAvam.reloadTable();
-            //parL1Cabecalho.reloadTable();
             $('table#table' + id + ' tbody').html('');
             $('#tableParDCAvam [data-table-edit]').prop('disabled', false);
             $('#tableParDCAvam [data-table-delete]').prop('disabled', false);
@@ -383,7 +370,7 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
-
+                debugger
                 var obj = $(this).parents('tr').data('sgq');
 
                 apagaCampos(id);
@@ -504,7 +491,6 @@
             this.showTableParMultipleValues();
         },      
         prepareDcAvam: function (obj) {
-            debugger
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};
@@ -556,7 +542,7 @@
                     IsDeletar: $Marcos.data("IsDeletar"),
                     ParEvaluationXDepartmentXCargo_Id: 0,
                 });
-            }else{
+            } else if (parseInt($("#selectParFrequencyAV :selected").val()) === 3){
                 $Marcos = $('#tabelaAgendamento');
                 listaTabelaAgendamento = $("#tabelaAgendamento tbody tr");
 
@@ -588,8 +574,9 @@
             
             if (parseInt($("#selectParFrequencyAV :selected").val()) === 10)
                 $('#camposCabecalhoIncluidos tbody').empty();
-            else
+            else if (parseInt($("#selectParFrequencyAV :selected").val()) === 3) {
                 $('#camposCabecalhoIncluidos2 tbody').empty();
+            }
 
             let Evaluation = "";
             let Sample = "";
@@ -616,9 +603,9 @@
 
             let ParEvaluationSchedule = obj['ParEvaluationSchedule'];
             let blockParFieldType = false;
-                  
+            //ParEvaluationSchedule[0].Intervalo !== null && ParEvaluationSchedule[0].IsActive
             if (ParEvaluationSchedule.length > 0) {
-                if (ParEvaluationSchedule[0].Intervalo !== null) {
+                if (ParFrequencyId === 10) {
                     //if (parseInt($("#selectParFrequencyAV :selected").val()) === 10){
                     ParEvaluationSchedule.forEach((o, i) => {
                         if (o.IsActive) {
@@ -641,7 +628,7 @@
                             blockParFieldType = true;
                         }
                     });
-                } else {
+                } else if (ParFrequencyId === 3){
                     ParEvaluationSchedule.forEach((o, i) => {
                         if (o.IsActive) {
                             let table = `<tr>
@@ -712,7 +699,7 @@
         excludeTable: function (i) {
             
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
-            debugger
+            
             if (obj) {
                 //obj.ParEvaluationSchedule.forEach((o, i, a) => {
                 //        a[i].IsActive = false;
@@ -724,9 +711,7 @@
 
             } else {
                 $('#camposCabecalhoIncluidos tbody').empty();
-                //$('#camposCabecalhoIncluidos2 tbody').empty();
                 $('#divCamposCabecalhoIncluidos').hide();
-                //$('#divCamposCabecalhoIncluidos2').hide();
             }
         }
 
