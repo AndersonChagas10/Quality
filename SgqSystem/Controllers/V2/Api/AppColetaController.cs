@@ -18,6 +18,90 @@ namespace SgqSystem.Controllers.V2.Api
     [RoutePrefix("api/AppColeta")]
     public class AppColetaController : BaseApiController
     {
+        public class SimpleCollect
+        {
+            public string Evaluation { get; set; }
+            public string Sample { get; set; }
+            public string ParDepartment_Id { get; set; }
+            public string ParCargo_Id { get; set; }
+            public string ParCompany_Id { get; set; }
+            public string ParLevel1_Id { get; set; }
+            public string ParLevel2_Id { get; set; }
+            public string ParLevel3_Id { get; set; }
+            public string IntervalMin { get; set; }
+            public string IntervalMax { get; set; }
+            public string IsConform { get; set; }
+            public string Value { get; set; }
+            public string ValueText { get; set; }
+            public string NotEvaluated { get; set; }
+            public DateTime CollectionDate { get; set; }
+            public bool IsCollected { get; set; }
+            public string HasError { get; set; }
+        }
+
+        [Route("SetCollect")]
+        public IHttpActionResult SetCollect(List<SimpleCollect> listSimpleCollect)
+        {
+            foreach (var amostra in listSimpleCollect)
+            {
+
+                var coleta = new Coleta()
+                {
+                    ParLevel1_Id = amostra.ParLevel1_Id?.ToString(),
+                    ParLevel2_Id = amostra.ParLevel2_Id?.ToString(),
+                    ParCluster_Id = "3",
+                    UnidadeId = amostra.ParCompany_Id?.ToString(),
+                    ColetaTarefa = new List<ColetaTarefa>()
+                {
+                    new ColetaTarefa()
+                    {
+                        Level03Id = amostra.ParLevel3_Id?.ToString(),
+                        ValueConform = string.IsNullOrEmpty(amostra.Value) ? "0" : Convert.ToInt32(amostra.Value).ToString(),
+                        ValueText = amostra.ValueText?.ToString(),
+                        IntervalMin = string.IsNullOrEmpty(amostra.IntervalMin) ? "0" : Convert.ToInt32(amostra.IntervalMin).ToString(),
+                        IntervalMax = string.IsNullOrEmpty(amostra.IntervalMax) ? "0" : Convert.ToInt32(amostra.IntervalMax).ToString(),
+                        Conform = amostra.IsConform?.ToString(),
+                        IsnotEvaluate = amostra.NotEvaluated?.ToString(),
+                        HasPhoto = "0",
+                        CollectionDate = amostra.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                        Defects = "0",
+                        WeiDefects = "0",
+                        WeiEvaluation = "0",
+                        Weight = "1",
+                    }
+                },
+                    Level01DataCollect = amostra.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Level02DataCollect = amostra.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Evaluate = Convert.ToInt32(amostra.Evaluation).ToString(),
+                    Sample = Convert.ToInt32(amostra.Sample).ToString(),
+                    Weidefects = "0",
+                    Weievaluation = "0",
+                    Defects = "0",
+                    Defectsresult = "0",
+                    Cluster = "3",
+                    Shift = "1",
+                    VersaoApp = "AppColeta2",
+                    HashKey = "",
+                };
+
+                try
+                {
+                    var x = new SgqSystem.Services.SyncServices().InsertJson(coleta.ToString(), "", "", false);
+                    if (x == null)
+                    {
+                        //Passa isso pra coleta
+                        amostra.IsCollected = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            return Ok(listSimpleCollect);
+        }
+
         [Route("GetAppParametrization/{parCompany_Id}/{parFrequency_Id}")]
         public IHttpActionResult GetAppParametrization(int parCompany_Id, int parFrequency_Id)
         {
@@ -39,6 +123,7 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParLevel3BoolTrueAppViewModel> listaParLevel3BoolTrue;
             List<ParLevel3BoolFalseAppViewModel> listaParLevel3BoolFalse;
 
+
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
@@ -56,7 +141,8 @@ namespace SgqSystem.Controllers.V2.Api
                         ParCompany_Id = x.ParCompany_Id,
                         ParDepartment_Id = x.ParDepartment_Id,
                         ParGroupParLevel1_Id = x.ParGroupParLevel1_Id,
-                        Peso = x.Peso
+                        Peso = x.Peso,
+                        ParCargo_Id = x.ParCargo_Id
                     })
                     .ToList();
 
@@ -75,7 +161,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParLevel2 = db.ParLevel2
                     .AsNoTracking()
-                    .Where(x=>x.ParFrequency_Id == parFrequency_Id)
+                    .Where(x => x.ParFrequency_Id == parFrequency_Id)
                     .Where(x => x.IsActive)
                     .Select(x => new ParLevel2AppViewModel()
                     {
@@ -228,7 +314,7 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParLevel3BoolFalse,
                 listaParDepartment,
                 listaParCargo,
-                listaParCargoXDepartment
+                listaParCargoXDepartment,
             });
         }
     }

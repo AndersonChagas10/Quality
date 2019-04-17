@@ -94,3 +94,12 @@ create table ParEvaluationXDepartmentXCargo(
 	AlterDate datetime null,
 	IsActive bit not null default 1,
 )
+
+ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParCargo' AND xtype='U')
+ create table CollectionLevel2XParCargo (
+	Id int primary key identity not null,
+	AddDate datetime not null,
+	AlterDate datetime,
+	CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
+	ParCargo_Id int not null foreign key references ParCargo(Id)
+)

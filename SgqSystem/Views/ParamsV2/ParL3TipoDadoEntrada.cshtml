@@ -1,4 +1,4 @@
-﻿<h4>Tipo de dados de entrada</h4>
+﻿<h3 class="titulo2">Tipo de dados de entrada</h3>
 
 <form id="ParL3TipoDado">
 
@@ -96,7 +96,7 @@
 
         </div>
 
-        <div class="col-sm-1">
+        <div class="col-sm-2">
 
             <div class="form-group" data-action>
                 <label></label>
@@ -168,9 +168,9 @@
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel1_Id"]', o.ParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel2_Id"]', o.ParLevel2_Id, 'Todos') + '</td>';
-                html += '<td>' + o.IntervalMin + '</td>';
-                html += '<td>' + o.IntervalMax + '</td>';
-                html += '<td>' + o.DynamicValue + '</td>';
+                html += '<td>' + (o.IntervalMin == null ? "" : o.IntervalMin) + '</td>';
+                html += '<td>' + (o.IntervalMax == null ? "" : o.IntervalMax) + '</td>';
+                html += '<td>' + (o.DynamicValue == null ? "" : o.DynamicValue) + '</td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
 
@@ -215,13 +215,20 @@
                 $('#' + id + ' [data-form]').addClass('alert alert-success');
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
 
-                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
-                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
 
             });
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-delete]', function (e) {
+
+                var r = confirm("Deseja Excluir?");
+
+                if (r == false) {
+                    return false;
+                }
+
                 var obj = $(this).parents('tr').data('sgq');
                 obj.IsActive = false;
                 Save(obj);
@@ -257,7 +264,7 @@
                 }
 
 
-                openLoader();
+                openLoader(Resources("please_wait"));
 
                 Save(obj);
             });           

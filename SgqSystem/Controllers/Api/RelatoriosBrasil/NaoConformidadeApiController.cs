@@ -57,9 +57,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereShift = "\n AND CL1.Shift = " + form.shift + " ";
             }
 
-            if (form.unitId > 0)
+            if (form.unitIdArr.Count() > 0)
             {
-                whereUnit = $@"AND UNI.Id = { form.unitId }";
+                whereUnit = $@"AND UNI.Id in ({ string.Join(",", form.unitIdArr) })";
             }
             else
             {

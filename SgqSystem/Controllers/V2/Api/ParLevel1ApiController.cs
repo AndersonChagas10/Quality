@@ -303,7 +303,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                     db.SaveChanges();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 
                     return false;

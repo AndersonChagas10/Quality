@@ -1,4 +1,4 @@
-﻿<h4>Informações Gerais</h4>
+﻿<h3 class="titulo2">Informações Gerais</h3>
 
 <form id="ParL2Geral">
 
@@ -33,7 +33,7 @@
         <div class="col-sm-6">
 
             <div class="form-group">
-                <label>Frequencia:</label>
+                <label>Frequência:</label>
                 <select class="form-control required" id="selectL3GeralParFrequency" name="ParFrequency_Id"></select>
             </div>
         </div>
@@ -53,7 +53,7 @@
 
         <div class="col-sm-12">
 
-            <button class="btn btn-primary pull-right btn-lg btn-block" data-add>Salvar</button>
+            <button class="btn btn-primary pull-right btn btn-block" data-add>Salvar</button>
 
         </div>
     </div>
@@ -116,7 +116,7 @@
                     return false
                 }
 
-                openLoader();
+                openLoader(Resources("please_wait"));
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 

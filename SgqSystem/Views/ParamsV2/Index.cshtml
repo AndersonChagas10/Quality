@@ -28,17 +28,18 @@
     }
 
         .tab-content.border a {
-            font-size: 20px;
+            font-size: 16px;
             padding: 15px;
         }
 
-    .tab-content h4 {
+    .tab-content h3.titulo2 {
         display: block;
         background: #eee;
         text-align: center;
         margin: 0px;
         padding-top: 20px;
         padding-bottom: 20px;
+        font-size: 20px;
     }
 
     .isDisabled {
@@ -102,6 +103,10 @@
         -webkit-transform: translateX(26px);
         -ms-transform: translateX(26px);
         transform: translateX(26px);
+    }
+
+    input label {
+        font-size: medium;
     }
 
     /* Rounded sliders */
@@ -254,10 +259,10 @@
                                         </a>
                                     </li>
                                     @*<li>
-                                        <a href="#l2_avam" data-toggle="tab">
-                                            Avaliação e Amostra
-                                        </a>
-                                    </li>*@
+                                            <a href="#l2_avam" data-toggle="tab">
+                                                Avaliação e Amostra
+                                            </a>
+                                        </li>*@
                                     @*<li>
                                             <a href="#l2_cabecalho" data-toggle="tab">
                                                 Cabeçalhos no monitoramento
@@ -279,8 +284,8 @@
                                         @Html.Partial("ParL2Avancados")
                                     </div>
                                     @*<div class="tab-pane" id="l2_avam">
-                                        @Html.Partial("ParL2Avam")
-                                    </div>*@
+                                            @Html.Partial("ParL2Avam")
+                                        </div>*@
                                     @*<div class="tab-pane" id="l2_cabecalho">
                                             @Html.Partial("ParL2Cabecalho")
                                         </div>*@
@@ -306,13 +311,13 @@
                                         </a>
                                     </li>
                                     @*<li>
-                                        <a href="#l3_avam" data-toggle="tab">
-                                            Avaliação e Amostra
-                                        </a>
-                                    </li>*@
+                                            <a href="#l3_avam" data-toggle="tab">
+                                                Avaliação e Amostra
+                                            </a>
+                                        </li>*@
                                     <li>
                                         <a href="#l3_tipo_dado_entrada" data-toggle="tab">
-                                            Tipo dados de entrada
+                                            Tipo de dados de entrada
                                         </a>
                                     </li>
                                     <li>
@@ -534,7 +539,7 @@
 
         if (parseInt($(this).val()) > 0) {
 
-            openLoader();
+            openLoader(Resources("please_wait"));
 
             $.ajax({
 
@@ -614,7 +619,7 @@
                 }
             });
 
-            debugger
+            
             $.ajax({
 
                 url: `@Url.Action("GetParLevel3Vinculados", "api/ParLevel3Api")/${$('#selectL1 :selected').val()}/${$(this).val()}`,
@@ -891,7 +896,10 @@
         //se for binário o multipla escolha valida pela quantidade de parMultipleValues
         if (obj.ParHeaderField.ParFieldType_Id == 1 || obj.ParHeaderField.ParFieldType_Id == 3) {
 
-            if (!obj.ParHeaderField.ParMultipleValues || obj.ParHeaderField.ParMultipleValues.length <= 0 || obj.ParHeaderField.ParMultipleValues.filter(item => item.IsActive == true).length == 0) {
+            if (!obj.ParHeaderField.ParMultipleValues ||
+                obj.ParHeaderField.ParMultipleValues.length <= 0 || 
+                obj.ParHeaderField.ParMultipleValues.filter(item => item.IsActive == true).length == 0 ||
+                !formIsValid(id)) {
                 openMessageModal("Alerta", "Favor Inserir opções antes de salvar");
                 isValid = false;
             }

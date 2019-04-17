@@ -14,7 +14,6 @@ using System.Globalization;
 using System.Collections;
 using DTO;
 using SgqSystem.Helpers;
-using SGQDBContextYTOARA;
 using SgqSystem.Controllers.Api.App;
 using System.Data;
 using System.Text;
@@ -45,17 +44,12 @@ namespace SgqSystem.Services
         public SqlConnection db;
         public SqlConnection SGQ_GlobalADO;
 
-        //Contexto util de dados para Ytoara
-        private SGQDBContext_YTOARA ytoaraUtil;
-
         Dominio.SgqDbDevEntities dbEf;
 
         public SyncServices()
         {
 
             conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-            ytoaraUtil = new SGQDBContext_YTOARA();
 
             if (GlobalConfig.Brasil)
             {
@@ -3189,6 +3183,20 @@ namespace SgqSystem.Services
                 WHERE ROW = @I
                 SET @I = @I + 1;
                 END
+
+                SELECT 
+					 ConsolidationLevel2_id,
+					 CollectionDate,
+					 EvaluationNumber,
+					 [Sample]
+				INTO #CollectionLevel2_HPA -- Hora Primeira Avaliação
+				FROM CollectionLevel2 WITH (NOLOCK)
+				WHERE 1=1
+				AND Unitid = @Unidade
+				AND CollectionDate BETWEEN @data AND concat(@data,' ','23:59:59') 
+				AND ParLevel2_id != 0
+
+				CREATE INDEX IDX_CollectionLevel2_HPA_ConsolidationLevel2_id ON #CollectionLevel2_HPA(ConsolidationLevel2_id,EvaluationNumber,[Sample])
                 
                 CREATE TABLE #COLETA(																																													  
                 ParLevel1_Id varchar(255) null,																																												  
@@ -3238,7 +3246,7 @@ namespace SgqSystem.Services
                 	   ,MIN(CL2.Id) AS ID
                 	   ,(SELECT
                 				MIN(CAST(CollectionDate AS TIME))
-                			FROM CollectionLevel2 WITH (NOLOCK)
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
                 			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
                 			AND EvaluationNumber = 1
                 			AND [Sample] = 1)
@@ -3288,7 +3296,7 @@ namespace SgqSystem.Services
                 	   ,MIN(CL2.Id) AS ID
                 	   ,(SELECT
                 				MIN(CAST(CollectionDate AS TIME))
-                			FROM CollectionLevel2 WITH (NOLOCK)
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
                 			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
                 			AND EvaluationNumber = 1
                 			AND [Sample] = 1)
@@ -3338,7 +3346,7 @@ namespace SgqSystem.Services
                 	   ,MIN(CL2.Id) AS ID
                 	   ,(SELECT
                 				MIN(CAST(CollectionDate AS TIME))
-                			FROM CollectionLevel2 WITH (NOLOCK)
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
                 			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
                 			AND EvaluationNumber = 1
                 			AND [Sample] = 1)
@@ -3388,7 +3396,7 @@ namespace SgqSystem.Services
                 	   ,MIN(CL2.Id) AS ID
                 	   ,(SELECT
                 				MIN(CAST(CollectionDate AS TIME))
-                			FROM CollectionLevel2 WITH (NOLOCK)
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
                 			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
                 			AND EvaluationNumber = 1
                 			AND [Sample] = 1)
@@ -6252,15 +6260,6 @@ function calcularSensorial(list){
             }
 
             return retorno;
-        }
-
-        /// <summary>
-        /// Obter tela da Ytoara com o cabeçalho
-        /// </summary>
-        /// <returns></returns>
-        public string GetHeaderYtoara()
-        {
-            return ytoaraUtil.criarHeader(ytoaraUtil.getElementoEstruturado());
         }
 
         /// <summary>

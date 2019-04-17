@@ -64,7 +64,7 @@
                                             @Html.Label(Resources.Resource.department, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.ListBoxFor(model => model.ParDepartment_Ids, new MultiSelectList(ViewBag.Departamentos, "Id", "Name"), new { @class = "form-control", @multiple = "multiple" })
-                                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                @Html.ValidationMessageFor(model => model.ParDepartment_Ids, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 

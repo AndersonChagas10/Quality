@@ -1,4 +1,4 @@
-﻿<h4>Campos de Cabeçalho</h4>
+﻿<h3 class="titulo2">Campos de Cabeçalho</h3>
 
 <form id="ParL1Cabecalho">
 
@@ -119,12 +119,9 @@
                 <table id="camposCabecalhoIncluidos" class="table" role="grid">
                     <thead>
                         <tr role="row">
-                            <th>Nível do campo</th>
-                            <th>Nome</th>
-                            @*<th>Vinculado</th>*@
-                            <th>Valor de Punição</th>
                             <th>Opções</th>
-                            <th>Valor</th>
+                            <th>Valor de Punição</th>
+                            <th>Valor Padrão</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -191,7 +188,6 @@
         load: function (ParLevel1XHeaderFields) {
 
             let id = this.id;
-            let urlSave = this.urlSave;
 
             apagaCampos(id);
             parL1Cabecalho.reloadTable();
@@ -200,6 +196,8 @@
             $('#selectL1ParFieldType').prop("disabled", false);
             $('#tableParL1Cabecalho [data-table-edit]').prop('disabled', false);
             $('#tableParL1Cabecalho [data-table-delete]').prop('disabled', false);
+            $('#tableParL1Cabecalho select,#tableParL1Cabecalho input,#tableParL1Cabecalho button').prop('disabled', false);
+            $('#' + id + ' #divBtnCancelar').hide();
 
             $(ParLevel1XHeaderFields).each(function (i, o) {
 
@@ -216,7 +214,7 @@
                 html += '<td>' + o.ParHeaderField.Name + '</td>';
                 html += '<td>' + o.ParHeaderField.ParFieldType.Name + '</td>';
                 html += '<td>' + previewHeaderField + '</td>';
-                html += '<td><div class=""><label class="switch"><input type="checkbox" name="HasTakePhoto"' + isChecked + ' ><span class="slider round"></span> </label></div></td>';
+                html += '<td><div class=""><label class="switch"><input type="checkbox" name="IsRequired"' + isChecked + ' ><span class="slider round"></span> </label></div></td>';
                 html += '<td>' + defaultSelected + '</input></td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
@@ -226,155 +224,31 @@
 
             });
 
-            function Save(obj) {
-
-                $.ajax({
-                    url: urlSave,
-                    type: 'POST',
-                    dataType: "json",
-                    data: JSON.stringify(obj),
-                    contentType: "application/json",
-                    success: function (data) {
-                        openMessageModal("Feito", "Dados Salvos");
-                        $('#selectL1').trigger('change');
-                        closeLoader();
-
-                    },
-                    error: function (request, error) {
-                        closeLoader();
-                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
-                        console.log(error)
-                    }
-                });
-            }
-
-            $('#' + id).off('click');
-
-            //Adicionar os dados no data-form
-            $('#' + id).on('click', '[data-table-edit]', function (e) {
-
-                var obj = $(this).parents('tr').data('sgq');
-
-                apagaCampos(id);
-                parL1Cabecalho.reloadTable();
-                preencheCampos(id + ' [data-form]', '', obj);
-
-                $('#' + id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderField.ParLevelDefinition_Id);
-                $('#' + id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
-
-                $('#' + id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParHeaderField.ParFieldType_Id);
-                $('#' + id + ' [data-form] select[name="ParFieldType_Id"]').trigger('change')
-
-                $('#' + id + ' [data-form] input[name="Name"]').val(obj.ParHeaderField.Name);
-                $('#' + id + ' [data-form] input[name="Description"]').val(obj.ParHeaderField.Description);
-
-                $('#' + id + ' [data-form]').data('sgq', obj);
-                $('#' + id + ' [data-form]').addClass('alert alert-success');
-                $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
-                $('#' + id + ' #divBtnCancelar').show();
-
-                parL1Cabecalho.insertTable(obj);
-
-                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
-                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
-
-                $('#tableParL1Cabecalho [data-table-edit]').prop('disabled', true);
-                $('#tableParL1Cabecalho [data-table-delete]').prop('disabled', true);
-
-            });
-
-            //Adicionar os dados no data-form
-            $('#' + id).on('click', '[data-table-delete]', function (e) {
-                var obj = $(this).parents('tr').data('sgq');
-                obj.IsActive = false;
-                Save(obj);
-            });
-
-            $('#' + id).on('click', '[data-cancel]', function (e) {
-                apagaCampos(id);
-                parL1Cabecalho.reloadTable();
-            });
-
-            //Salvar o campo editado ou cria um novo
-            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-
-                var obj = $('#' + id + ' [data-form]').data('sgq');
-                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
-
-                if (!(typeof (obj) == 'undefined')) {
-                    obj = atualizaValoresDoObjeto(obj, formdata);
-                } else {
-                    obj = null;
-                    obj = atualizaValoresDoObjeto(obj, formdata);
-                }
-
-                obj = parL1Cabecalho.prepareParHeaderField(obj);
-
-                if (optionIsValid(obj, id)) {
-
-                    openLoader();
-                    Save(obj);
-
-                }
-
-            });
-
-            $('#' + id).on('change', '[name="HasTakePhoto"]', function () {
-
-                var obj = $(this).parents('tr').data('sgq');
-
-                obj.IsRequired = !!$(this).prop('checked');
-
-                Save(obj);
-            });
-
-            $('#' + id).on('click', '.defaultSelected', function () {
-
-                var obj = $(this).parents('tr').data('sgq');
-
-                let parMultipleValues_Id = parseInt($(this).parents('tr').find('select :selected').val());
-
-                parMultipleValues_Id = parMultipleValues_Id ? parMultipleValues_Id : null;
-
-                obj.ParHeaderField.ParMultipleValues.forEach((o, i, a) => {
-                    a[i].IsDefaultOption = 0;
-
-                    if (o.Id == parMultipleValues_Id) {
-                        a[i].IsDefaultOption = 1;
-                    }
-                });
-
-                Save(obj);
-            });
-
-            $('#' + id).on('click', ' [data-add-cancel] ', function () {
-                $('#selectL1').trigger('change');
-                $(this).parent().hide();
-            });
-
             this.showTableParMultipleValues();
         },
 
-        prepareParHeaderField: function (obj) {
-            var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
+        prepareParHeaderField: function (obj) {           
+
+            let formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
+
             if (typeof (obj['ParHeaderField']) == 'undefined')
                 obj['ParHeaderField'] = {};
+
             obj['ParHeaderField']['Name'] = formdata.Name;
             obj['ParHeaderField']['Description'] = formdata.Description;
             obj['ParHeaderField']['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
             obj['ParHeaderField']['ParFieldType_Id'] = formdata.ParFieldType_Id;
+
             return obj;
         },
 
         prepareToInsert: function (parFieldType_Id) {
 
-            debugger
-
             if (!formIsValid(this.id)) {
                 return false;
             }           
 
-            let $Renan;
+            let $TblParMultipeValues;
 
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
@@ -391,15 +265,15 @@
 
                 case 1: // Multipla Escolha
 
-                    $Renan = $('#tblOpcaoMultiplaEscolha');
+                    $TblParMultipeValues = $('#tblOpcaoMultiplaEscolha');
 
                     obj['ParHeaderField']['ParMultipleValues'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParL1Cabecalho #Name').val(),
                         Id: 0,
-                        Name: $Renan.find('#objMultiplaEscolhaName').val(),
+                        Name: $TblParMultipeValues.find('#objMultiplaEscolhaName').val(),
                         Description: '',
-                        PunishmentValue: $Renan.find('#objMultiplaEscolhaPunishmentValue').val(),
+                        PunishmentValue: $TblParMultipeValues.find('#objMultiplaEscolhaPunishmentValue').val(),
                         Conformity: 0,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -412,20 +286,20 @@
                     if ($.grep(obj['ParHeaderField']['ParMultipleValues'], function (o, i) {
                         return o.IsActive == true;
                     }).length > 0) {
-                        debugger
+                        
                         openMessageModal("Alerta", "Já existem opções inseridas para este campo de cabeçalho")
                         return false;
                     }
 
-                    $Renan = $('#tblBinario');
+                    $TblParMultipeValues = $('#tblBinario');
 
                     obj['ParHeaderField']['ParMultipleValues'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParL1Cabecalho #Name').val(),
                         Id: 0,
-                        Name: $Renan.find('#objBinarioPunishmentName1').val(),
+                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName1').val(),
                         Description: '',
-                        PunishmentValue: $Renan.find('#objBinarioPunishmentValue1').val(),
+                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue1').val(),
                         Conformity: 1,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -434,10 +308,10 @@
                     obj['ParHeaderField']['ParMultipleValues'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParL1Cabecalho #Name').val(),
-                        Name: $Renan.find('#objBinarioPunishmentName2').val(),
+                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName2').val(),
                         Id: 0,
                         Description: '',
-                        PunishmentValue: $Renan.find('#objBinarioPunishmentValue2').val(),
+                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue2').val(),
                         Conformity: 0,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -480,14 +354,12 @@
             let blockParFieldType = false;
 
             multipleValues.forEach((o, i) => {
-                debugger
+                
                 if (o.IsActive) {
                     let table = `<tr>
-                            <td>${parLevelDefiniton}</td>
-                            <td>${parHeaderField}</td>
-                            <td>${o.PunishmentValue}</td>
                             <td>${o.Name}</td>
-                            <td>${o.IsDefaultOption}</td>
+                            <td>${o.PunishmentValue}</td>
+                            <td>${o.IsDefaultOption == true ? Resources("yes") : Resources("no")}</td>
                             <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="parL1Cabecalho.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
                           </tr>`;
 
@@ -520,6 +392,13 @@
         },
 
         excludeTable: function (i) {
+
+            var r = confirm("Deseja Excluir?");
+
+            if (r == false) {
+                return false;
+            }
+
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (obj) {
@@ -536,9 +415,147 @@
                 $('#camposCabecalhoIncluidos tbody').empty();
                 $('#divCamposCabecalhoIncluidos').hide();
             }
+        },
+
+        Save: function (obj) {
+
+            $.ajax({
+                url: parL1Cabecalho.urlSave,
+                type: 'POST',
+                dataType: "json",
+                data: JSON.stringify(obj),
+                contentType: "application/json",
+                success: function (data) {
+                    openMessageModal("Feito", "Dados Salvos");
+                    $('#selectL1').trigger('change');
+                },
+                error: function (request, error) {
+                    openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                    console.log(error)
+                }
+
+            }).done(function () {
+                closeLoader();
+                $('#tableParL1Cabecalho select,#tableParL1Cabecalho input,#tableParL1Cabecalho button').prop('disabled', true);
+                $('#' + id + ' #divBtnCancelar').hide();
+            });
+
         }
 
     };
+
+    $('#' + parL1Cabecalho.id).off('click');
+
+    //Adicionar os dados no data-form
+    $('#' + parL1Cabecalho.id).on('click', '[data-table-edit]', function (e) {
+
+        var obj = $(this).parents('tr').data('sgq');
+
+        apagaCampos(parL1Cabecalho.id);
+        parL1Cabecalho.reloadTable();
+        preencheCampos(parL1Cabecalho.id + ' [data-form]', '', obj);
+
+        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderField.ParLevelDefinition_Id);
+        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
+
+        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParHeaderField.ParFieldType_Id);
+        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').trigger('change')
+
+        $('#' + parL1Cabecalho.id + ' [data-form] input[name="Name"]').val(obj.ParHeaderField.Name);
+        $('#' + parL1Cabecalho.id + ' [data-form] input[name="Description"]').val(obj.ParHeaderField.Description);
+
+        $('#' + parL1Cabecalho.id + ' [data-form]').data('sgq', obj);
+        $('#' + parL1Cabecalho.id + ' [data-form]').addClass('alert alert-success');
+        $('#' + parL1Cabecalho.id + ' [data-form] [data-action] [data-add]').addClass('hide');
+        $('#' + parL1Cabecalho.id + ' #divBtnCancelar').show();
+
+        parL1Cabecalho.insertTable(obj);
+
+        $('#' + parL1Cabecalho.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
+        $('#' + parL1Cabecalho.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+
+        $('#tableParL1Cabecalho select,#tableParL1Cabecalho input,#tableParL1Cabecalho button').prop('disabled', true);
+
+    });
+
+    //Adicionar os dados no data-form
+    $('#' + parL1Cabecalho.id).on('click', '[data-table-delete]', function (e) {
+        var obj = $(this).parents('tr').data('sgq');
+        obj.IsActive = false;
+        parL1Cabecalho.Save(obj);
+    });
+
+    $('#' + parL1Cabecalho.id).on('click', '[data-cancel]', function (e) {
+        apagaCampos(parL1Cabecalho.id);
+        parL1Cabecalho.reloadTable();
+    });
+
+    //Salvar o campo editado ou cria um novo
+    $('#' + parL1Cabecalho.id).on('click', '[data-edit],[data-add]', function (e) {
+
+        $('#objMultiplaEscolha').hide();
+        $('#objBinario').hide();
+
+        var obj = $('#' + parL1Cabecalho.id + ' [data-form]').data('sgq');
+        var formdata = $('#' + parL1Cabecalho.id + ' [data-form]').serializeFormToObjetc();
+
+        if (!(typeof (obj) == 'undefined')) {
+            obj = atualizaValoresDoObjeto(obj, formdata);
+            obj.ParLevel1_Id = $('[data-id]').val();
+        } else {
+            obj = null;
+            obj = atualizaValoresDoObjeto(obj, formdata);
+        }
+
+        obj = parL1Cabecalho.prepareParHeaderField(obj);
+
+        if (optionIsValid(obj, parL1Cabecalho.id)) {
+
+            openLoader(Resources("please_wait"));
+            parL1Cabecalho.Save(obj);
+
+        } else {
+            $('#selectL1ParFieldType').trigger('change');
+        }
+
+    });
+
+    $('#' + parL1Cabecalho.id).on('change', '[name="IsRequired"]', function () {
+
+        openLoader("Salvando...");
+
+        $('#' + parL1Cabecalho.id + ' input').prop('disabled', true);
+
+        var obj = $(this).parents('tr').data('sgq');
+
+        obj.IsRequired = !!$(this).prop('checked');
+
+        parL1Cabecalho.Save(obj);
+    });
+
+    $('#' + parL1Cabecalho.id).on('click', '.defaultSelected', function () {
+
+        var obj = $(this).parents('tr').data('sgq');
+
+        let parMultipleValues_Id = parseInt($(this).parents('tr').find('select :selected').val());
+
+        parMultipleValues_Id = parMultipleValues_Id ? parMultipleValues_Id : null;
+
+        obj.ParHeaderField.ParMultipleValues.forEach((o, i, a) => {
+            a[i].IsDefaultOption = 0;
+
+            if (o.Id == parMultipleValues_Id) {
+                a[i].IsDefaultOption = 1;
+            }
+        });
+
+        parL1Cabecalho.Save(obj);
+    });
+
+    $('#' + parL1Cabecalho.id).on('click', ' [data-add-cancel] ', function () {
+        $('#selectL1').trigger('change');
+        $(this).parent().hide();
+    });
 
     let getPreviewHeaderField = function (headerField) {
 

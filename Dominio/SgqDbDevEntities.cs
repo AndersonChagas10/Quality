@@ -257,6 +257,9 @@ namespace Dominio
         public virtual DbSet<ParCargoXDepartment> ParCargoXDepartment { get; set; }
         public virtual DbSet<ParEvaluationXDepartmentXCargo> ParEvaluationXDepartmentXCargo { get; set; }
         public System.Data.Entity.DbSet<Dominio.ParVinculoPeso> ParVinculoPeso { get; set; }
+        public virtual DbSet<IntegracaoSistemica> IntegracaoSistemica { get; set; }
+
+        public virtual DbSet<IntegCollectionData> IntegCollectionData { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
