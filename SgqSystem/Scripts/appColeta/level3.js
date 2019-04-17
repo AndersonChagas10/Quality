@@ -1060,7 +1060,7 @@ function saveResultLevel3() {
     var level1 = $(_level1).attr('id').split('98789');
     if (level1[1] == parseInt(getDicionario('IdIndicadorPesoHB'))) {
 
-        mediaPesoHB.push(parseInt($('#' + getDicionario('IdTarefaPesoHB') + '.level3 input[type="text"]').val()));
+        mediaPesoHB.push(parseFloat($('#' + getDicionario('IdTarefaPesoHB') + '.level3 input[type="text"]').val().replace(',','.')));
         $('.level3List .calculoPesoHB .medicaCalculoPesoHB').text("Média: " + CalculoMediaPesoHB() + "g");
 
         if (!(typeof (ResetaCorMediaPesoHB) == "undefined"))
@@ -1078,6 +1078,12 @@ function saveResultLevel3() {
                 //força abertura da Ação Corretiva
                 correctiveActionOpenPesoHB();
             }
+			
+			$('.level3List .calculoPesoHB').attr('id',getDicionario('IdTarefaMediaHB'));
+			$('.level3List .calculoPesoHB .medicaCalculoPesoHB').html('<input type="text" value="'+CalculoMediaPesoHB()+'" class="form-control text-center levelValue interval" style="text-align: right;" readonly="readonly">');
+			
+			$('.level3Group').append($('.level3List .calculoPesoHB'));
+			
             mediaPesoHB = [];
         }
     }
