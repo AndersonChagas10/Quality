@@ -34,32 +34,31 @@ function listarParFrequency() {
 
 		$(data).each(function (i, o) {
 
-				htmlParFrequency += `<button type="button" class="list-group-item col-xs-12" data-par-frequency-id="${o.Id}">${o.Name}
-                    <span class="badge">14</span>
-                    <span class="badge"><i class="fa fa-download"></i></span>
-				</button>`;
+				htmlParFrequency += '<button type="button" class="list-group-item col-xs-12" data-par-frequency-id="'+o.Id+'">'+o.Name+
+                    '<span class="badge">14</span>'+
+                    '<span class="badge"><i class="fa fa-download"></i></span>'+
+				'</button>';
         });
         
         var voltar = "";
 
-		html = `
-		${getHeader()}
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="panel panel-primary">
-					  <div class="panel-heading">
-						<h3 class="panel-title">Renã</h3>
-					  </div>
-					  <div class="panel-body">
-						<div class="list-group">
-							${htmlParFrequency}
-						</div>
-					  </div>
-					</div>
-				</div>
-			</div>
-		</div>`;
+		html = getHeader()+
+		'<div class="container">                               '+
+		'	<div class="row">                                  '+
+		'		<div class="col-xs-12">                        '+
+		'			<div class="panel panel-primary">          '+
+		'			  <div class="panel-heading">              '+
+		'				<h3 class="panel-title">Renã</h3>      '+
+		'			  </div>                                   '+
+		'			  <div class="panel-body">                 '+
+		'				<div class="list-group">               '+
+		htmlParFrequency+
+		'				</div>                                 '+
+		'			  </div>                                   '+
+		'			</div>                                     '+
+		'		</div>                                         '+
+		'	</div>                                             '+
+		'</div>';
 
 		$('div#app').html(html);
 	});

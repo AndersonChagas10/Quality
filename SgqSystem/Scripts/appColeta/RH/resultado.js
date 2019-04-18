@@ -65,21 +65,23 @@ function atualizaColetasAposSincronizacao(data){
 function enviarColeta(){
 	
 	if(globalColetasRealizadas.length > 0){
-	
-		$.ajax({
-			data: JSON.stringify(retornaProximasColetasParaSincronizar()),
-			url: urlPreffix + '/api/AppColeta/SetCollect',
-			type: 'POST',
-			contentType: "application/json",
-			success: function (data) {
-				atualizaColetasAposSincronizacao(data);
-				enviarColeta();
-			},
-			timeout: 600000,
-			error: function () {
-			}
-		});
-		
+	    pingLogado(urlPreffix,
+            function () {
+                $.ajax({
+                    data: JSON.stringify(retornaProximasColetasParaSincronizar()),
+                    url: urlPreffix + '/api/AppColeta/SetCollect',
+                    type: 'POST',
+                    contentType: "application/json",
+                    success: function (data) {
+                        atualizaColetasAposSincronizacao(data);
+                        enviarColeta();
+                    },
+                    timeout: 600000,
+                    error: function () {
+                    }
+                });
+            },
+            function () { console.log('desconectado') });
 	}
 }
 

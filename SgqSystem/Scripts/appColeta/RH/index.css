@@ -36,6 +36,8 @@ body > .App > div.container {
     height:45px;
     width:100%;
     background:#333;
+    z-index:999;
+    color:#fff;
 }
 .App > .container, .App > .navbar > .container
 {

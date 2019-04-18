@@ -54,13 +54,14 @@ namespace SgqSystem.Controllers.V2.Api
                         //Validar para inserir?
                         item.AddDate = DateTime.Now;
                         db.Collection.Add(item);
+                        db.SaveChanges();
                     }
                     catch (Exception ex)
                     {
+                        item.HasError = true;
+                        //Registrar LOG
                     }
                 }
-
-                db.SaveChanges();
             }
 
             //Fazer uma "Task" para essas funções abaixo?
@@ -111,7 +112,12 @@ namespace SgqSystem.Controllers.V2.Api
                 }
             }
 
-            return Ok(listSimpleCollect);
+            
+            var lista = listSimpleCollect.Where(x => x.HasError == true).ToList();
+            if (lista.Count == listSimpleCollect.Count)
+                return BadRequest("Ocorreu erro em todas as tentativas de registrar as coletas.");
+
+            return Ok(listSimpleCollect.Where(x=>x.HasError != true).ToList());
         }
 
         [Route("GetAppParametrization/{parCompany_Id}/{parFrequency_Id}")]
@@ -208,7 +214,8 @@ namespace SgqSystem.Controllers.V2.Api
                         ParCompany_Id = x.ParCompany_Id,
                         ParDepartment_Id = x.ParDepartment_Id,
                         ParCargo_Id = x.ParCargo_Id,
-                        Sample = x.Sample
+                        Sample = x.Sample,
+                        Evaluation = x.Evaluation
                     })
                     .ToList();
 
