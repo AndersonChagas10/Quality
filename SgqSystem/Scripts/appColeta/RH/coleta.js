@@ -350,17 +350,17 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 	e.preventDefault();
 	
 	//Verifica se existe coleta já realizada para este cargo.
-	var result = null;
-	$(resultColeta).each(function (i, o) {
+	var coletaAgrupada = null;
+	$(coletasAgrupadas).each(function (i, o) {
 		if(o.ParCargo_Id == currentParCargo_Id 
 		&& o.ParDepartment_Id == currentParDepartment_Id){
-			result = o;
+			coletaAgrupada = o;
 		}
 	});
 	
 	//Se não existir, cria uma zerada
-	if(result == null){
-		result = {
+	if(coletaAgrupada == null){
+		coletaAgrupada = {
 			ParDepartment_Id : currentParDepartment_Id,
 			ParCargo_Id : currentParCargo_Id,
 			Evaluation : currentEvaluationSample.Evaluation,
@@ -373,8 +373,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 		var data = $(o);
 		coletaJson.push(
 			{
-				Evaluation: result.Evaluation,
-				Sample: result.Sample,
+				Evaluation: coletaAgrupada.Evaluation,
+				Sample: coletaAgrupada.Sample,
 				ParDepartment_Id: currentParDepartment_Id,
 				ParCargo_Id: currentParCargo_Id,
 				ParLevel1_Id: $(data).attr('data-level1'),
@@ -392,39 +392,38 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 		);
 	});
 	
+	//Se for a primeira, insere na lista de resultados
+	if(coletaAgrupada.Evaluation == 1 && coletaAgrupada.Sample == 1){
+		coletasAgrupadas.push(coletaAgrupada);
+	}
+	
 	//Salva a coleta realizada numa variavel global
 	SalvarColetas(coletaJson);
 	
-	//Se for a primeira, insere na lista de resultados
-	if(result.Evaluation == 1 && result.Sample == 1){
-		resultColeta.push(result);
-	}
-	
 	//Atualiza para a proxima coleta (se precisar adicionar amostra ou avaliação)
-	result = UpdateResultColeta(result);
+	coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
 	//atualiza tela de coleta e contadores
 	listarParCargo();
 });
 
-function UpdateResultColeta(result){
-	result.Sample++; //Incrementa a amostra
-	if(result.Sample > currentTotalSampleValue){
-		result.Sample = 1;
-		result.Evaluation ++;
-		if(result.Evaluation > currentTotalEvaluationValue){
+function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada){
+	coletaAgrupada.Sample++; //Incrementa a amostra
+	if(coletaAgrupada.Sample > currentTotalSampleValue){
+		coletaAgrupada.Sample = 1;
+		coletaAgrupada.Evaluation ++;
+		if(coletaAgrupada.Evaluation > currentTotalEvaluationValue){
 			//Acabou as avaliações
 		}
 	}
-	return result;
+	return coletaAgrupada;
 }
 
 function SalvarColetas(coletaJson){
 	for(var i = 0; i < coletaJson.length;i++){
 		globalColetasRealizadas.push(coletaJson[i]);
 	}
+	AtualizarArquivoDeColetas();
 }
-
-
 
 
 

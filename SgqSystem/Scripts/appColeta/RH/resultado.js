@@ -1,4 +1,4 @@
-var resultColeta = [];
+var coletasAgrupadas = [];
 /*
 {
 	ParDepartment_Id,
@@ -17,7 +17,7 @@ function getResultEvaluationSample(parDepartment_Id, parCargo_Id){
 		Sample : 1
 	};
 	
-	$(resultColeta).each(function (i, o) {
+	$(coletasAgrupadas).each(function (i, o) {
 		if(o.ParDepartment_Id == parDepartment_Id && o.ParCargo_Id == parCargo_Id){
 			obj = o;
 		}
@@ -59,6 +59,7 @@ function atualizaColetasAposSincronizacao(data){
 			}
 		}
 	}
+	AtualizarArquivoDeColetas();
 }
 
 function enviarColeta(){
@@ -80,4 +81,26 @@ function enviarColeta(){
 		});
 		
 	}
+}
+
+function AtualizarArquivoDeColetas(){
+	_writeFile("globalColetasRealizadas.txt", JSON.stringify(globalColetasRealizadas), function () {
+	});
+	
+	_writeFile("coletasAgrupadas.txt", JSON.stringify(coletasAgrupadas), function () {
+	});
+}
+
+function AtualizarVariaveisDeColetas(){
+	_readFile("globalColetasRealizadas.txt", function (content) {
+		if(typeof(content) == 'undefined')
+			content = '[]';
+			globalColetasRealizadas = JSON.parse(content);
+	});
+	
+	_readFile("coletasAgrupadas.txt", function (content) {
+		if(typeof(content) == 'undefined')
+			content = '[]';
+		coletasAgrupadas = JSON.parse(content);
+	});
 }
