@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,5 +51,8 @@ namespace Dominio
 
         //outros
         public bool? IsProcessed { get; set; }
+
+        [NotMapped]
+        public bool? HasError { get; set; }
     }
 }

@@ -94,21 +94,21 @@ function cleanGlobalVarParCargo(){
     currentParCargo_Id = null;
 }
 
-function podeRealizarColeta(_currentEvaluation, _currentTotalEvaluation){
-	_currentTotalEvaluation = _currentTotalEvaluation > 0 ? _currentTotalEvaluation : 1;
-	return !(_currentEvaluation > _currentTotalEvaluation);
+function podeRealizarColeta(_currentEvaluation, _currentTotalEvaluation) {
+    _currentTotalEvaluation = parseInt(_currentTotalEvaluation) > 0 ? _currentTotalEvaluation : 1;
+    return parseInt(_currentEvaluation) <= parseInt(_currentTotalEvaluation);
 }
 
-$('body').on('click', '[data-par-cargo-id]', function (e) {  
+$('body').off('click', '[data-par-cargo-id]').on('click', '[data-par-cargo-id]', function (e) {
 
-	currentTotalEvaluationValue = $(this).attr('data-total-evaluation');
-	currentTotalSampleValue = $(this).attr('data-total-sample');
-	var currentEvaluationValue = $(this).attr('data-current-evaluation');
-	
-	if(!podeRealizarColeta(currentEvaluationValue,currentTotalEvaluationValue)){
-		alert('Não há mais avaliações disponiveis para realização de coleta para este cargo');
-		return;
-	}
+    currentTotalEvaluationValue = $(this).attr('data-total-evaluation');
+    currentTotalSampleValue = $(this).attr('data-total-sample');
+    var currentEvaluationValue = $(this).attr('data-current-evaluation');
+
+    if (!podeRealizarColeta(currentEvaluationValue, currentTotalEvaluationValue)) {
+        alert('Não há mais avaliações disponiveis para realização de coleta para este cargo');
+        return;
+    }
 
     currentParCargo_Id = parseInt($(this).attr('data-par-cargo-id'));
 
