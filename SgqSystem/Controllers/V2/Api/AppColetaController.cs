@@ -13,10 +13,12 @@ using Dominio;
 using SgqSystem.Controllers.Api;
 using Dominio.AppViewModel;
 using ADOFactory;
+using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.V2.Api
 {
     [RoutePrefix("api/AppColeta")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AppColetaController : BaseApiController
     {
         public class SimpleCollect
@@ -53,6 +55,8 @@ namespace SgqSystem.Controllers.V2.Api
                     {
                         //Validar para inserir?
                         item.AddDate = DateTime.Now;
+                        item.Shift_Id = 1;
+                        item.Period_Id = 1;
                         db.Collection.Add(item);
                         db.SaveChanges();
                     }
@@ -83,8 +87,17 @@ namespace SgqSystem.Controllers.V2.Api
                 {
                     try
                     {
-                        db.CollectionLevel2.Add(collectionLevel2Consolidada);
-                        db.SaveChanges();
+
+                        var c = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
+                        if (c == null)
+                        {
+                            db.CollectionLevel2.Add(collectionLevel2Consolidada);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            collectionLevel2Consolidada = c;
+                        }
 
                         foreach (var resultLevel3 in resultsLevel3)
                         {
@@ -103,7 +116,8 @@ namespace SgqSystem.Controllers.V2.Api
 
                     try
                     {
-                        db.Database.ExecuteSqlCommand("UPDATE Collection set IsProcessed = 1 where Id in (" + string.Join(",", collectionsProcess_Id) + ")");
+                        if(collectionsProcess_Id.Count > 0)
+                            db.Database.ExecuteSqlCommand("UPDATE Collection set IsProcessed = 1 where Id in (" + string.Join(",", collectionsProcess_Id) + ")");
                     }
                     catch (Exception ex)
                     {
@@ -112,12 +126,12 @@ namespace SgqSystem.Controllers.V2.Api
                 }
             }
 
-            
+
             var lista = listSimpleCollect.Where(x => x.HasError == true).ToList();
             if (lista.Count == listSimpleCollect.Count)
                 return BadRequest("Ocorreu erro em todas as tentativas de registrar as coletas.");
 
-            return Ok(listSimpleCollect.Where(x=>x.HasError != true).ToList());
+            return Ok(listSimpleCollect.Where(x => x.HasError != true).ToList());
         }
 
         [Route("GetAppParametrization/{parCompany_Id}/{parFrequency_Id}")]
@@ -360,7 +374,8 @@ namespace SgqSystem.Controllers.V2.Api
             collectionLevel2.AuditorId = collectionLevel2.AuditorId == 0 ? 1 : collectionLevel2.AuditorId;
             collectionLevel2.Key = collectionLevel2.CollectionDate.ToString("yyyy-MM-dd") + "-" + collectionLevel2.UnitId + "-" +
                 collectionLevel2.ParLevel1_Id + "-" + collectionLevel2.ParLevel2_Id + "-" + collectionLevel2.Shift + "-" +
-                collectionLevel2.ParCluster_Id + "-" + collectionLevel2.ParCargo_Id + "-" + collectionLevel2.ParDepartment_Id;
+                collectionLevel2.ParCluster_Id + "-" + collectionLevel2.ParCargo_Id + "-" + collectionLevel2.ParDepartment_Id + "-" +
+                collectionLevel2.EvaluationNumber + "-" + collectionLevel2.Sample;
 
             return collectionLevel2;
         }
@@ -406,7 +421,23 @@ namespace SgqSystem.Controllers.V2.Api
         {
             var resultsLevel3 = new List<Result_Level3>();
 
-            var sql = $@"SELECT * FROM Collection WHERE Evaluation = {collectionLevel2.EvaluationNumber} AND 
+            var sql = $@"
+                    SELECT ParLevel3_Id
+                        ,Id
+                        ,Weigth
+                        ,IntervalMin
+                        ,IntervalMax
+                        ,Value
+                        ,ValueText
+                        ,IsConform
+                        ,IsNotEvaluate
+                        ,Defects
+                        ,PunishimentValue
+                        ,WeiEvaluation
+                        ,Evaluation
+                        ,WeiDefects
+                        ,HasPhoto  FROM Collection 
+                    WHERE Evaluation = {collectionLevel2.EvaluationNumber} AND 
                         Sample = {collectionLevel2.Sample} AND ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND
                         ParLevel2_Id = {collectionLevel2.ParLevel2_Id} AND Shift_Id = {collectionLevel2.Shift} AND
                         Period_Id = {collectionLevel2.Period} AND ParCompany_Id = {collectionLevel2.UnitId} AND
