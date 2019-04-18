@@ -16,28 +16,26 @@ function openColeta(levels) {
         });
     });
 
-    html = `
-		${getHeader()}
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="panel panel-primary">
-					  <div class="panel-heading">
-						<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);">Voltar</a></h3>
-						<h3 class="panel-title" style="float:rigth">Coletas</h3>
-					  </div>
-					  <div class="panel-body">
-						${getContador()}
-						<form data-form-coleta>
-							${coleta}
-							<button class="btn btn-block btn-primary input-lg col-sm-12" data-salvar style="margin-top:10px">Salvar</button>
-						</form>
-					  </div>
-               </div>
-            </div>
-			</div>
-		</div>
-		`;
+    html = getHeader()+
+		'<div class="container">                                                                                                                   '+
+		'	<div class="row">                                                                                                                      '+
+		'		<div class="col-xs-12">                                                                                                            '+
+		'			<div class="panel panel-primary">                                                                                              '+
+		'			  <div class="panel-heading">                                                                                                  '+
+		'				<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);">Voltar</a></h3>                                   '+
+		'				<h3 class="panel-title" style="float:rigth">Coletas</h3>                                                                   '+
+		'			  </div>                                                                                                                       '+
+		'			  <div class="panel-body">                                                                                                     '+
+		getContador()+
+		'				<form data-form-coleta>                                                                                                    '+
+		coleta+
+		'					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       '+
+		'				</form>                                                                                                                    '+
+		'			  </div>                                                                                                                       '+
+        '       </div>                                                                                                                             '+
+        '    </div>                                                                                                                                '+
+		'	</div>                                                                                                                                 '+
+		'</div>';
 
     $('div#app').html(html);
 
@@ -47,23 +45,23 @@ function openColeta(levels) {
 var currentEvaluationSample = {};
 function getContador() {
     currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, currentParCargo_Id);
-    return '<div class="col-sm-12 alert-info" style="padding-top:10px;padding-bottom:10px">' +
-		'	<div class="col-sm-4">       ' +
+    return '<div class="col-xs-12 alert-info" style="padding-top:10px;padding-bottom:10px">' +
+		'	<div class="col-xs-4">       ' +
 		'		Avaliação                ' +
 		'	</div>                       ' +
-		'	<div class="col-sm-4">       ' +
+		'	<div class="col-xs-4">       ' +
 		'		Amostra                  ' +
 		'	</div>                       ' +
-		'	<div class="col-sm-4">       ' +
+		'	<div class="col-xs-4">       ' +
 		'		&nbsp;                   ' +
 		'	</div>                       ' +
-		'	<div class="col-sm-4">       ' +
+		'	<div class="col-xs-4">       ' +
 		'		<strong>' + currentEvaluationSample.Evaluation + '/' + currentTotalEvaluationValue + '</strong>    ' +
 		'	</div>                       ' +
-		'	<div class="col-sm-4">       ' +
+		'	<div class="col-xs-4">       ' +
 		'		<strong>' + currentEvaluationSample.Sample + '/' + currentTotalSampleValue + '</strong>    ' +
 		'	</div>                       ' +
-		'	<div class="col-sm-4">       ' +
+		'	<div class="col-xs-4">       ' +
 		'		 &nbsp;                  ' +
 		'	</div>                       ' +
 		'	<div class="clearfix"></div> ' +
@@ -71,15 +69,15 @@ function getContador() {
 }
 
 function getLevel1(level1) {
-    return '<div class="col-sm-12 input-lg">' + level1.Name + '</div>';
+    return '<div class="col-xs-12 input-lg">' + level1.Name + '</div>';
 }
 
 function getLevel2(level2) {
-    return '<div class="col-sm-12 input-lg">' + level2.Name + '</div>';
+    return '<div class="col-xs-12 input-lg">' + level2.Name + '</div>';
 }
 
 function getLevel3(level3) {
-    return '<div class="col-sm-12">' + level3.Name + '</div>';
+    return '<div class="col-xs-12">' + level3.Name + '</div>';
 }
 
 function getInputLevel3(level3, level2, level1) {
@@ -88,7 +86,7 @@ function getInputLevel3(level3, level2, level1) {
 
     if (level3.ParLevel3InputType && level3.ParLevel3InputType.Id) {
 
-        retorno += '<div class="col-sm-12" data-linha-coleta ';
+        retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-conforme="1"';
         retorno += ' data-min="' + level3.ParLevel3Value.IntervalMin + '"';
         retorno += ' data-max="' + level3.ParLevel3Value.IntervalMax + '"';
@@ -136,140 +134,137 @@ function getInputLevel3(level3, level2, level1) {
 
 function getBinario(level3) {
 
-    var html = `
-		<div class="col-sm-4 input-sm">
-			${level3.Name}
-		</div>
-		<div class="col-sm-4 input-sm">
-		</div>
-		<div class="col-sm-3">
-			<button type="button" class="btn btn-default btn-sm btn-block" data-binario data-positivo="${level3.ParLevel3BoolTrue.Name}" data-negativo="${level3.ParLevel3BoolFalse.Name}">Conforme</button>
-		</div>
-		<div class="col-sm-1">
-			<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>
-		</div>
-		<div class="clearfix"></div>`;
+    var html = '<div class="col-xs-4 input-sm">'+
+			level3.Name+
+		'</div>                                                                                     '+
+		'<div class="col-xs-4 input-sm">                                                            '+
+		'</div>                                                                                     '+
+		'<div class="col-xs-3">                                                                     '+
+		'	<button type="button" class ="btn btn-default btn-sm btn-block"                         '+
+        '    data-binario data-positivo="'+level3.ParLevel3BoolTrue.Name+'"                          '+
+        '    data-negativo="'+level3.ParLevel3BoolFalse.Name+'">Conforme</button>                    '+
+		'</div>                                                                                     '+
+		'<div class="col-xs-1">                                                                     '+
+		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>    '+
+		'</div>                                                                                     '+
+		'<div class="clearfix"></div>';
     return html;
 }
 
 function getBinarioComTexto(level3) {
 
-    var html = `
-		<div class="col-sm-4 input-sm">
-         ${level3.Name}
-		</div>
-		<div class="col-sm-2">
-		</div>
-		<div class="col-sm-2">
-			<input type="text" class="col-sm-12 input-sm" data-texto/>
-		</div>
-		<div class="col-sm-3">
-			<button type="button" class="btn btn-default btn-sm btn-block" data-binario data-positivo="${level3.ParLevel3BoolTrue.Name}" data-negativo="${level3.ParLevel3BoolFalse.Name}">Sim</button>
-		</div>
-		<div class="col-sm-1">
-			<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>
-		</div>
-		<div class="clearfix"></div>`;
+    var html = '<div class="col-xs-4 input-sm">'+
+        level3.Name+
+		'</div>                                                                                            '+
+		'<div class="col-xs-2">                                                                            '+
+		'</div>                                                                                            '+
+		'<div class="col-xs-2">                                                                            '+
+		'	<input type="text" class="col-xs-12 input-sm" data-texto/>                                     '+
+		'</div>                                                                                            '+
+		'<div class="col-xs-3">                                                                            '+
+		'	<button type="button" class="btn btn-default btn-sm btn-block"                                 '+
+		'data-binario data-positivo="'+level3.ParLevel3BoolTrue.Name+'"                                     '+
+		'data-negativo="'+level3.ParLevel3BoolFalse.Name+'">Sim</button>                                    '+
+		'</div>                                                                                            '+
+		'<div class="col-xs-1">                                                                            '+
+		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>           '+
+		'</div>                                                                                            '+
+		'<div class="clearfix"></div>';
     return html;
 }
 
 function getIntervalo(level3) {
 
-    var html = `
-		<div class="col-sm-4 input-sm">
-         ${level3.Name}
-		</div>
-		<div class="col-sm-4 input-sm">
-			MIN: ${level3.ParLevel3Value.IntervalMin} | MAX: ${level3.ParLevel3Value.IntervalMax}
-		</div>
-		<div class="col-sm-3">
-			<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>
-			<input type="text" class="col-xs-8 input input-sm" data-valor/>
-			<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>
-		</div>
-		<div class="col-sm-1">
-			<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>
-		</div>
-		<div class="clearfix"></div>`;
+    var html = '<div class="col-xs-4 input-sm">'+
+        level3.Name+
+		'</div>                                                                                       '+
+		'<div class="col-xs-4 input-sm">                                                              '+
+		'	MIN: '+level3.ParLevel3Value.IntervalMin+' | MAX: '+level3.ParLevel3Value.IntervalMax+
+		'</div>                                                                                       '+
+		'<div class="col-xs-3">                                                                       '+
+		'	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>       '+
+		'	<input type="text" class="col-xs-8 input input-sm" data-valor/>                           '+
+		'	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>        '+
+		'</div>                                                                                       '+
+		'<div class="col-xs-1">                                                                       '+
+		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>      '+
+		'</div>                                                                                       '+
+		'<div class="clearfix"></div>';
     return html;
 }
 
 function getIntervaloComObservacao(level3) {
 
-    var html = `
-		<div class="col-sm-4 input-sm">
-         ${level3.Name}
-		</div>
-		<div class="col-sm-2 input-sm">
-			MIN: ${level3.ParLevel3Value.IntervalMin} | MAX: ${level3.ParLevel3Value.IntervalMax}
-		</div>
-		<div class="col-sm-2">
-			<input type="text" class="col-sm-12 input-sm" data-texto/>
-		</div>
-		<div class="col-sm-3">
-			<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>
-			<input type="text" class="col-xs-8 input-sm" data-valor/>
-			<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>
-		</div>
-		<div class="col-sm-1">
-			<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>
-		</div>
-		<div class="clearfix"></div>`;
+    var html = '<div class="col-xs-4 input-sm">'+
+        level3.Name+
+		'</div>'+
+		'<div class="col-xs-2 input-sm">'+
+		'	MIN: '+level3.ParLevel3Value.IntervalMin+' | MAX: '+level3.ParLevel3Value.IntervalMax+
+		'</div>                                                                                   '+
+		'<div class="col-xs-2">                                                                   '+
+		'	<input type="text" class="col-xs-12 input-sm" data-texto/>                            '+
+		'</div>                                                                                   '+
+		'<div class="col-xs-3">                                                                   '+
+		'	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>   '+
+		'	<input type="text" class="col-xs-8 input-sm" data-valor/>                             '+
+		'	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>    '+
+		'</div>                                                                                   '+
+		'<div class="col-xs-1">                                                                   '+
+		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>  '+
+		'</div>                                                                                   '+
+		'<div class="clearfix"></div>';
     return html;
 }
 
 function getObservacao(level3) {
 
-    var html = `
-		<div class="col-sm-4 input-sm">
-         ${level3.Name}
-		</div>
-		<div class="col-sm-4">
-		</div>
-		<div class="col-sm-3">
-			<input type="text" class="col-sm-12 input-sm" data-texto/>
-		</div>
-		<div class="col-sm-1">
-			<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>
-		</div>
-		<div class="clearfix"></div>`;
+    var html = '<div class="col-xs-4 input-sm">'+
+        level3.Name+
+		'</div>                                                                                      '+
+		'<div class="col-xs-4">                                                                      '+
+		'</div>                                                                                      '+
+		'<div class="col-xs-3">                                                                      '+
+		'	<input type="text" class="col-xs-12 input-sm" data-texto/>                               '+
+		'</div>                                                                                      '+
+		'<div class="col-xs-1">                                                                      '+
+		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>     '+
+		'</div>                                                                                      '+
+		'<div class="clearfix"></div>';
     return html;
 }
 
 function getTexto(level3) {
 
-    var html = `
-		<div class="col-sm-4 input-sm">
-         ${level3.Name}
-		</div>
-		<div class="col-sm-4">
-		</div>
-		<div class="col-sm-3">
-			<input type="text" class="col-sm-12 input-sm" data-valor/>
-		</div>
-		<div class="col-sm-1">
-			<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>
-		</div>
-		<div class="clearfix"></div>`;
+    var html = '<div class="col-xs-4 input-sm">'+
+        level3.Name+
+		'</div>                                                                                      '+
+		'<div class="col-xs-4">                                                                      '+
+		'</div>                                                                                      '+
+		'<div class="col-xs-3">                                                                      '+
+		'	<input type="text" class="col-xs-12 input-sm" data-valor/>                               '+
+		'</div>                                                                                      '+
+		'<div class="col-xs-1">                                                                      '+
+		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>     '+
+		'</div>                                                                                      '+
+		'<div class="clearfix"></div>';
     return html;
 }
 
 function getLikert(level3) {
 
-    var html = `
-		<div class="col-sm-4 input-sm">
-         ${level3.Name}
-		</div>
-		<div class="col-sm-4 input-sm">
-			Escala: ${level3.ParLevel3Value.IntervalMin} - ${level3.ParLevel3Value.IntervalMax}
-		</div>
-		<div class="col-sm-3">
-			<input type="text" class="col-sm-12 input-sm" data-valor/>
-		</div>
-		<div class="col-sm-1">
-			<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>
-		</div>
-		<div class="clearfix"></div>`;
+    var html = '<div class="col-xs-4 input-sm">'+
+        level3.Name+
+		'</div>                                                                                    '+
+		'<div class="col-xs-4 input-sm">                                                           '+
+		'	Escala: '+level3.ParLevel3Value.IntervalMin+' - '+level3.ParLevel3Value.IntervalMax+
+		'</div>                                                                                    '+
+		'<div class="col-xs-3">                                                                    '+
+		'	<input type="text" class="col-xs-12 input-sm" data-valor/>                             '+
+		'</div>                                                                                    '+
+		'<div class="col-xs-1">                                                                    '+
+		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>   '+
+		'</div>                                                                                    '+
+		'<div class="clearfix"></div>';
     return html;
 }
 
