@@ -36,7 +36,14 @@ html = '<nav class="navbar navbar navbar-inverse">                              
       '      </ul>                                                                                                                                                       '+
       '    </div><!--/.nav-collapse -->                                                                                                                                  '+
       '  </div><!--/.container-fluid -->                                                                                                                                 '+
-      '</nav>';
+      '</nav>'+
+    '<footer class="footer">' +
+    '<div class="container">'+
+    '<div class="col-xs-6" data-falta-sincronizar>' +
+    '(' + globalColetasRealizadas.length + ') Não sincronizadas'+
+    '</div>' +
+    '</div>' +
+'</footer>';
 	return html;
 	
 }

@@ -142,7 +142,7 @@ function getBinario(level3) {
 		'<div class="col-xs-3">                                                                     '+
 		'	<button type="button" class ="btn btn-default btn-sm btn-block"                         '+
         '    data-binario data-positivo="'+level3.ParLevel3BoolTrue.Name+'"                          '+
-        '    data-negativo="'+level3.ParLevel3BoolFalse.Name+'">Conforme</button>                    '+
+        '    data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>                    ' +
 		'</div>                                                                                     '+
 		'<div class="col-xs-1">                                                                     '+
 		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>    '+
@@ -164,7 +164,7 @@ function getBinarioComTexto(level3) {
 		'<div class="col-xs-3">                                                                            '+
 		'	<button type="button" class="btn btn-default btn-sm btn-block"                                 '+
 		'data-binario data-positivo="'+level3.ParLevel3BoolTrue.Name+'"                                     '+
-		'data-negativo="'+level3.ParLevel3BoolFalse.Name+'">Sim</button>                                    '+
+		'data-negativo="' + level3.ParLevel3BoolFalse.Name + '">'+level3.ParLevel3BoolTrue.Name+ '</button>                                    ' +
 		'</div>                                                                                            '+
 		'<div class="col-xs-1">                                                                            '+
 		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>           '+

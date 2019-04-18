@@ -73,6 +73,10 @@ namespace SgqSystem.Controllers.V2.Api
 
             //TODO: update na Collection set IsProcessed = 1
 
+            var lista = listSimpleCollect.Where(x => x.HasError == true).ToList();
+            if (lista.Count == listSimpleCollect.Count)
+                return BadRequest("Ocorreu erro em todas as tentativas de registrar as coletas.");
+
             return Ok(listSimpleCollect.Where(x=>x.HasError != true).ToList());
         }
 

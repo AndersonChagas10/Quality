@@ -43,6 +43,8 @@ function onDeviceReady() {
 	starterReload();
 	
 	$('body').prepend('<div class="" id="app"></div>');
+	$('body').css('padding-bottom','20px')
+
 	$('#btn-reload').attr('style',$('#btn-reload').attr('style')+";z-index:9999");
 	
 	
