@@ -18,7 +18,7 @@ namespace Dominio
 
         public int Id { get; set; }
 
-        public int ConsolidationLevel2_Id { get; set; }
+        public int? ConsolidationLevel2_Id { get; set; }
 
         public int ParLevel1_Id { get; set; }
 
@@ -102,6 +102,12 @@ namespace Dominio
         public int? CounterDonePhase { get; set; }
 
         public int? EndPhaseEvaluation { get; set; }
+
+        public int? ParDepartment_Id { get; set; }
+
+        public int? ParCargo_Id { get; set; }
+
+        public int? ParCluster_Id { get; set; }
 
         [ForeignKey("ConsolidationLevel2_Id")]
         public virtual ConsolidationLevel2 ConsolidationLevel2 { get; set; }
