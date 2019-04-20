@@ -62,9 +62,10 @@ function atualizaColetasAposSincronizacao(data){
 	AtualizarArquivoDeColetas();
 }
 
+var enviarColetaEmExecucao = false;
 function enviarColeta(){
-	
-	if(globalColetasRealizadas.length > 0){
+	if(enviarColetaEmExecucao == false && globalColetasRealizadas.length > 0){
+		enviarColetaEmExecucao = true;
 	    pingLogado(urlPreffix,
             function () {
                 $.ajax({
@@ -73,15 +74,20 @@ function enviarColeta(){
                     type: 'POST',
                     contentType: "application/json",
                     success: function (data) {
+						enviarColetaEmExecucao = false;
                         atualizaColetasAposSincronizacao(data);
                         enviarColeta();
                     },
                     timeout: 600000,
                     error: function () {
+						enviarColetaEmExecucao = false;
                     }
                 });
             },
-            function () { console.log('desconectado') });
+            function () { 
+				console.log('desconectado'); 
+				enviarColetaEmExecucao = false; 
+			});
 	}
 }
 

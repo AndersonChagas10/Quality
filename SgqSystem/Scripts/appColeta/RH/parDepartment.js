@@ -18,7 +18,7 @@ function listarParDepartment(parDepartment_Id) {
 
 		    htmlParDepartment += '<button type="button" class="list-group-item col-xs-12" '+
 		                'data-par-department-id="'+o.Id+'" data-par-department-parend-id="'+o.Parent_Id+'">'+o.Name+
-					'<span class="badge">14</span>'+
+					'<span class="badge">></span>'+
 				'</button>';
 
 		}
@@ -32,16 +32,16 @@ function listarParDepartment(parDepartment_Id) {
 		return;
 	}
 
-	var voltar = !!department.Id ? '<a onclick="listarParDepartment('+department.Parent_Id+');">Voltar</a>' : '<a onclick="listarParFrequency();">Voltar</a>';
+	var voltar = !!department.Id ? '<a onclick="listarParDepartment('+department.Parent_Id+');" class="btn btn-warning">Voltar</a>' : '<a onclick="listarParFrequency();" class="btn btn-warning">Voltar</a>';
 
 	html = getHeader()+
-		'<div class="container">                                           '+
-		'	<div class="row">                                              '+
+		'<div class="container-fluid">                                           '+
+		'	<div class="">                                              '+
 		'		<div class="col-xs-12">                                    '+
         '                                                                  '+
 		'			<div class="panel panel-primary">                      '+
 		'			  <div class="panel-heading">                          '+
-		'				<h3 class="panel-title">'+voltar+'</h3>            '+
+		'				<h3 class="panel-title">'+voltar+' Selecione o departamento desejado</h3>            '+
 		'			  </div>                                               '+
 		'			  <div class="panel-body">                             '+
 		'				<div class="list-group">                           '+

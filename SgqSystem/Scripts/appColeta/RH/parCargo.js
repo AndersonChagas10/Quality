@@ -65,15 +65,15 @@ function listarParCargo() {
 		}
     });
 
-    var voltar = '<a onclick="listarParDepartment('+currentParDepartmentParent_Id+');">Voltar</a>';
+    var voltar = '<a onclick="listarParDepartment('+currentParDepartmentParent_Id+');" class="btn btn-warning">Voltar</a>';
 
     html = getHeader()                                            +
-    '<div class="container">                                       '+
-    '    <div class="row">                                         '+
+    '<div class="container-fluid">                                       '+
+    '    <div class="">                                         '+
     '        <div class="col-xs-12">                               '+
     '            <div class="panel panel-primary">                 '+
     '              <div class="panel-heading">                     '+
-    '                <h3 class="panel-title">'+voltar+'</h3>        '+
+    '                <h3 class="panel-title">'+voltar+' Selecione o cargo que deseja coletar</h3>        '+
     '              </div>                                          '+
     '              <div class="panel-body">                        '+
     '                <div class="list-group">                      '+
@@ -105,7 +105,10 @@ $('body').off('click', '[data-par-cargo-id]').on('click', '[data-par-cargo-id]',
     var currentEvaluationValue = $(this).attr('data-current-evaluation');
 
     if (!podeRealizarColeta(currentEvaluationValue, currentTotalEvaluationValue)) {
-        alert('Não há mais avaliações disponiveis para realização de coleta para este cargo');
+        //alert('Não há mais avaliações disponiveis para realização de coleta para este cargo');
+		
+		openMensagem('Não há mais avaliações disponiveis para realização de coleta para este cargo','red','white');
+		closeMensagem(2000);
         return;
     }
 

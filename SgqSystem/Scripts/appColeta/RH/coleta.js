@@ -17,13 +17,12 @@ function openColeta(levels) {
     });
 
     html = getHeader()+
-		'<div class="container">                                                                                                                   '+
-		'	<div class="row">                                                                                                                      '+
+		'<div class="container-fluid">                                                                                                                   '+
+		'	<div class="">                                                                                                                      '+
 		'		<div class="col-xs-12">                                                                                                            '+
 		'			<div class="panel panel-primary">                                                                                              '+
 		'			  <div class="panel-heading">                                                                                                  '+
-		'				<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);">Voltar</a></h3>                                   '+
-		'				<h3 class="panel-title" style="float:rigth">Coletas</h3>                                                                   '+
+		'				<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   '+
 		'			  </div>                                                                                                                       '+
 		'			  <div class="panel-body">                                                                                                     '+
 		getContador()+
@@ -73,7 +72,7 @@ function getLevel1(level1) {
 }
 
 function getLevel2(level2) {
-    return '<div class="col-xs-12 input-lg">' + level2.Name + '</div>';
+    return '<div class="col-xs-12 input-lg" style="padding-left:40px">' + level2.Name + '</div>';
 }
 
 function getLevel3(level3) {
@@ -93,7 +92,7 @@ function getInputLevel3(level3, level2, level1) {
         retorno += ' data-level1="' + level1.Id + '"';
         retorno += ' data-level2="' + level2.Id + '"';
         retorno += ' data-level3="' + level3.Id + '"';
-        retorno += '>';
+        retorno += ' style="padding-left:80px">';
 
         switch (level3.ParLevel3InputType.Id) {
 

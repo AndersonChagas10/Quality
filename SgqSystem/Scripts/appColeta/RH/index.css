@@ -40,6 +40,7 @@ body > .App > div.container {
     color:#fff;
 }
 .App > .container, .App > .navbar > .container
+.App > .container-fluid, .App > .navbar > .container-fluid
 {
   max-width:100%;
   padding-left:15px;
@@ -667,4 +668,8 @@ position: absolute;
     position: fixed;
     left: 50%;
     bottom: 0px;
+}
+
+.nav-btn{
+	color:#fff;margin:7px 7px 7px 0px;padding:6px 15px
 }
