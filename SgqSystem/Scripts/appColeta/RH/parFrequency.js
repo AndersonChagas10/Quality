@@ -33,12 +33,14 @@ function listarParFrequency() {
 
 		var frequency = {};
 
-        var htmlParFrequency = "";         
+        var htmlParFrequency = "";  
 
 		$(data).each(function (i, o) {
 
-				htmlParFrequency += '<button type="button" class="list-group-item col-xs-12" data-par-frequency-id="'+o.Id+'">'+o.Name+
-                    '<span class="badge"><i class="fa fa-download"></i></span>'+
+				htmlParFrequency += '<button type="button" class="list-group-item col-xs-12" data-par-frequency-id="'+o.Id+'" '+ 
+				((currentParFrequency_Id == o.Id)? '':'style="background-color:#ddd;cursor:not-allowed"')
+				+'>'+o.Name+
+                    //'<span class="badge"><i class="fa fa-download" data-download-frequency></i></span>'+
 				'</button>';
         });
         
@@ -69,13 +71,11 @@ function listarParFrequency() {
 function cleanGlobalVarParFrequency(){
     currentParDepartment_Id = null;
     currentParCargo_Id = null;
-    currentParFrequency_Id = null;
+    //currentParFrequency_Id = null;
 }
 
-$('body').on('click', '[data-par-frequency-id]', function (e) {   
-
-    currentParFrequency_Id = parseInt($(this).attr('data-par-frequency-id'));
-
-    getAppParametrization();
-
+$('body').off('click', '[data-par-frequency-id]').on('click', '[data-par-frequency-id]', function (e) {   
+	var frequencyId = parseInt($(this).attr('data-par-frequency-id'));
+	getAppParametrization(frequencyId);
 });
+
