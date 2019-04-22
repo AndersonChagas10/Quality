@@ -186,7 +186,7 @@
         urlSave: '@Url.Action("PostParHeaderField", "api/ParLevel1Api")',
 
         load: function (ParLevel1XHeaderFields) {
-
+            debugger
             let id = this.id;
 
             apagaCampos(id);
@@ -228,7 +228,7 @@
         },
 
         prepareParHeaderField: function (obj) {           
-
+            debugger
             let formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
 
             if (typeof (obj['ParHeaderField']) == 'undefined')
@@ -329,7 +329,7 @@
         },
 
         insertTable: function (obj) {
-
+            debugger
             //pega os dados do form e transforma em obj
             obj = parL1Cabecalho.prepareParHeaderField(obj);
 
@@ -454,7 +454,7 @@
         apagaCampos(parL1Cabecalho.id);
         parL1Cabecalho.reloadTable();
         preencheCampos(parL1Cabecalho.id + ' [data-form]', '', obj);
-
+        debugger
         $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderField.ParLevelDefinition_Id);
         $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
 
@@ -492,7 +492,7 @@
 
     //Salvar o campo editado ou cria um novo
     $('#' + parL1Cabecalho.id).on('click', '[data-edit],[data-add]', function (e) {
-
+        debugger
         $('#objMultiplaEscolha').hide();
         $('#objBinario').hide();
 
@@ -524,7 +524,7 @@
 
         openLoader("Salvando...");
 
-        $('#' + parL1Cabecalho.id + ' input').prop('disabled', true);
+        //$('#' + parL1Cabecalho.id + ' input').prop('disabled', true);
 
         var obj = $(this).parents('tr').data('sgq');
 
@@ -558,7 +558,7 @@
     });
 
     let getPreviewHeaderField = function (headerField) {
-
+        debugger
         let input = "";
 
         switch (headerField.ParFieldType_Id) {
@@ -598,6 +598,7 @@
                 break;
 
             case 8:	// Informações
+                input = `<input type="text" value='${headerField.Description}' class="form-control" disabled />`;
                 break;
 
             case 10: //Dinâmico
