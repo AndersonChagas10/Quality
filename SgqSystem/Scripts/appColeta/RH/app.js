@@ -5,9 +5,25 @@ var currentParDepartment_Id;
 var currentParDepartmentParent_Id;
 var currentParCargo_Id;
 var globalColetasRealizadas = [];
+var currentLogin = {};
+var globalLoginOnline = false;
+var currentCollectDate = new Date();
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
+
+function onOpenAppColeta(){
+	_readFile("login.txt", function (data) {
+		if(typeof(data) != 'undefined' && data.length > 0)
+			currentLogin = JSON.parse(data);
+		
+		_readFile("appParametrization.txt", function (param) {
+			if(typeof(param) != 'undefined' && param.length > 0)
+				parametrization = JSON.parse(param);
+				currentParFrequency_Id = parametrization.currentParFrequency_Id;
+		});
+	});
+}
 
 function getAppParametrization(frequencyId) {
 	
@@ -16,6 +32,26 @@ function getAppParametrization(frequencyId) {
 		if(confirm('Deseja refazer o download da parametrização desta frequencia?'))
 			currentParFrequency_Id = 0;
 	}
+	
+	openMensagem('Sincronizando resultado','blue','white');
+	$.ajax({
+		data: JSON.stringify({
+			ParCompany_Id: currentLogin.ParCompanyXUserSgq[0].ParCompany.Id,
+			CollectionDate: new Date().toISOString()
+		}),
+	  url: urlPreffix + '/api/AppColeta/GetResults/',
+	  type: 'POST',
+	  contentType: "application/json",
+	  success: function (data) {
+		coletasAgrupadas = data;
+		AtualizarArquivoDeColetas();
+		closeMensagem();
+	  },
+	  timeout: 600000,
+	  error: function () {
+		closeMensagem();
+	  }
+	});
 	
 	if(frequencyId != currentParFrequency_Id){
 		currentParFrequency_Id = frequencyId;

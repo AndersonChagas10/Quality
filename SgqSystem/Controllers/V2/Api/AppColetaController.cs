@@ -86,34 +86,34 @@ namespace SgqSystem.Controllers.V2.Api
 
                     //TODO: salvar a collectionLevel2 e apos a Result_Level3 com o respectivo CollectionLevel2_Id
 
-                    try
+
+                    var collection = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
+                    if (collection == null)
                     {
+                        db.CollectionLevel2.Add(collectionLevel2Consolidada);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        collectionLevel2Consolidada = collection;
+                    }
 
-                        var collection = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
-                        if (collection == null)
-                        {
-                            db.CollectionLevel2.Add(collectionLevel2Consolidada);
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            collectionLevel2Consolidada = collection;
-                        }
-
-                        foreach (var resultLevel3 in resultsLevel3)
+                    foreach (var resultLevel3 in resultsLevel3)
+                    {
+                        try
                         {
                             resultLevel3.CollectionLevel2_Id = collectionLevel2Consolidada.Id;
                             resultLevel3.HasPhoto = resultLevel3.HasPhoto == null ? false : resultLevel3.HasPhoto;
-                            resultLevel3.ParLevel3_Name = parLevel3List.Where(x => x.Id == resultLevel3.ParLevel3_Id).Select(x => x.Name).First();
+                            resultLevel3.ParLevel3_Name = parLevel3List.Where(x => x.Id == resultLevel3.ParLevel3_Id).Select(x => x.Name).FirstOrDefault();
                             collectionsProcess_Id.Add(resultLevel3.Id);
                             db.Result_Level3.Add(resultLevel3);
-                        }
 
-                        db.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        collectionsProcess_Id.RemoveAt(collectionsProcess_Id.Count - 1);
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            collectionsProcess_Id.RemoveAt(collectionsProcess_Id.Count - 1);
+                        }
                     }
 
                     try
@@ -121,7 +121,6 @@ namespace SgqSystem.Controllers.V2.Api
                         if (collectionsProcess_Id.Count > 0)
                         {
                             db.Database.ExecuteSqlCommand("UPDATE Collection set IsProcessed = 1 where Id in (" + string.Join(",", collectionsProcess_Id) + ")");
-                            db.SaveChanges();
                         }
                     }
                     catch (Exception ex)
