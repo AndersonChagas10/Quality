@@ -41,50 +41,49 @@ function listarParCargo() {
 		if(!podeRealizarColeta(currentEvaluationSample.Evaluation,o.Evaluation.Evaluation)){
 			style = 'style="background-color:#ddd;cursor:not-allowed"';
 
-			htmlParCargo += `<button type="button" ${style} class="list-group-item col-xs-12"
-				data-par-cargo-id="${o.Id}" 
-				data-total-evaluation="${o.Evaluation.Evaluation}"
-				data-total-sample="${o.Evaluation.Sample}"
-				data-current-evaluation="${currentEvaluationSample.Evaluation}"
-				data-current-sample="${currentEvaluationSample.Sample}">
-					<div class="col-sm-4">${o.Name}</div>
-					<div class="col-sm-4">&nbsp;</div>
-					<div class="col-sm-4">&nbsp;</div>
-				</button>`;
+			htmlParCargo += '<button type="button" '+style+' class="list-group-item col-xs-12" '+
+				'data-par-cargo-id="'+o.Id+'"                                                    '+
+				'data-total-evaluation="'+o.Evaluation.Evaluation+'"                             '+
+				'data-total-sample="'+o.Evaluation.Sample+'"                                     '+
+				'data-current-evaluation="'+currentEvaluationSample.Evaluation+'"                '+
+				'data-current-sample="'+currentEvaluationSample.Sample+'">                       '+
+				'	<div class="col-xs-4">'+o.Name+'</div>                                      '+
+				'	<div class="col-xs-4">&nbsp;</div>                                         '+
+				'	<div class="col-xs-4">&nbsp;</div>                                         '+
+				'</button>';
 		}else{
-			htmlParCargo += `<button type="button" class="list-group-item col-xs-12"
-				data-par-cargo-id="${o.Id}" 
-				data-total-evaluation="${o.Evaluation.Evaluation}"
-				data-total-sample="${o.Evaluation.Sample}"
-				data-current-evaluation="${currentEvaluationSample.Evaluation}"
-				data-current-sample="${currentEvaluationSample.Sample}">
-					<div class="col-sm-4">${o.Name}</div>
-					<div class="col-sm-4">Av: ${currentEvaluationSample.Evaluation}/${o.Evaluation.Evaluation} </div>
-					<div class="col-sm-4">Am: ${currentEvaluationSample.Sample}/${o.Evaluation.Sample} </div>
-				</button>`;
+			htmlParCargo += '<button type="button" class="list-group-item col-xs-12"                                       '+
+				'data-par-cargo-id="'+o.Id+'"                                                                                '+
+				'data-total-evaluation="'+o.Evaluation.Evaluation+'"                                                         '+
+				'data-total-sample="'+o.Evaluation.Sample+'"                                                                 '+
+				'data-current-evaluation="'+currentEvaluationSample.Evaluation+'"                                            '+
+				'data-current-sample="'+currentEvaluationSample.Sample+'">                                                   '+
+				'	<div class="col-xs-4">'+o.Name+'</div>                                                                  '+
+				'	<div class="col-xs-4">Av: '+currentEvaluationSample.Evaluation+'/'+o.Evaluation.Evaluation+' </div>      '+
+                '	<div class="col-xs-4">Am: ' + currentEvaluationSample.Sample + '/' + o.Evaluation.Sample + ' </div>              ' +
+				'</button>';
 		}
     });
 
-    var voltar = `<a onclick="listarParDepartment(${currentParDepartmentParent_Id});">Voltar</a>`;
+    var voltar = '<a onclick="listarParDepartment('+currentParDepartmentParent_Id+');" class="btn btn-warning">Voltar</a>';
 
-    html = `
-    ${getHeader()}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="panel panel-primary">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">${voltar}</h3>
-                  </div>
-                  <div class="panel-body">
-                    <div class="list-group">
-                        ${htmlParCargo}
-                    </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-    </div>`;
+    html = getHeader()                                            +
+    '<div class="container-fluid">                                       '+
+    '    <div class="">                                         '+
+    '        <div class="col-xs-12">                               '+
+    '            <div class="panel panel-primary">                 '+
+    '              <div class="panel-heading">                     '+
+    '                <h3 class="panel-title">'+voltar+' Selecione o cargo que deseja coletar</h3>        '+
+    '              </div>                                          '+
+    '              <div class="panel-body">                        '+
+    '                <div class="list-group">                      '+
+    htmlParCargo+
+    '                </div>                                        '+
+    '              </div>                                          '+
+    '            </div>                                            '+
+    '        </div>                                                '+
+    '    </div>                                                    '+
+    '</div>';
 
     $('div#app').html(html);
 
@@ -94,21 +93,24 @@ function cleanGlobalVarParCargo(){
     currentParCargo_Id = null;
 }
 
-function podeRealizarColeta(_currentEvaluation, _currentTotalEvaluation){
-	_currentTotalEvaluation = _currentTotalEvaluation > 0 ? _currentTotalEvaluation : 1;
-	return !(_currentEvaluation > _currentTotalEvaluation);
+function podeRealizarColeta(_currentEvaluation, _currentTotalEvaluation) {
+    _currentTotalEvaluation = parseInt(_currentTotalEvaluation) > 0 ? _currentTotalEvaluation : 1;
+    return parseInt(_currentEvaluation) <= parseInt(_currentTotalEvaluation);
 }
 
-$('body').on('click', '[data-par-cargo-id]', function (e) {  
+$('body').off('click', '[data-par-cargo-id]').on('click', '[data-par-cargo-id]', function (e) {
 
-	currentTotalEvaluationValue = $(this).attr('data-total-evaluation');
-	currentTotalSampleValue = $(this).attr('data-total-sample');
-	var currentEvaluationValue = $(this).attr('data-current-evaluation');
-	
-	if(!podeRealizarColeta(currentEvaluationValue,currentTotalEvaluationValue)){
-		alert('Não há mais avaliações disponiveis para realização de coleta para este cargo');
-		return;
-	}
+    currentTotalEvaluationValue = $(this).attr('data-total-evaluation');
+    currentTotalSampleValue = $(this).attr('data-total-sample');
+    var currentEvaluationValue = $(this).attr('data-current-evaluation');
+
+    if (!podeRealizarColeta(currentEvaluationValue, currentTotalEvaluationValue)) {
+        //alert('Não há mais avaliações disponiveis para realização de coleta para este cargo');
+		
+		openMensagem('Não há mais avaliações disponiveis para realização de coleta para este cargo','red','white');
+		closeMensagem(2000);
+        return;
+    }
 
     currentParCargo_Id = parseInt($(this).attr('data-par-cargo-id'));
 

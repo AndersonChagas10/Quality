@@ -50,6 +50,7 @@
     <Compile Include="CaracteristicaTipificacao.cs" />
     <Compile Include="ClusterDepartamentos.cs" />
     <Compile Include="Clusters.cs" />
+    <Compile Include="Collection.cs" />
     <Compile Include="CollectionHtml.cs" />
     <Compile Include="CollectionJson.cs" />
     <Compile Include="CollectionLevel2.cs" />

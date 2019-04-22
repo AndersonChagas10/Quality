@@ -32,7 +32,7 @@ Insert into MigrationHistory (Name, AddDate) VALUES ('Add_ParCargo_ParCargoXDepa
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParCargo' AND xtype='U')
 create table ParCargo(
 	Id int not null identity(1,1) primary key,
-	Name varchar(20) NOT NULL,
+	Name varchar(50) NOT NULL,
 	AddDate datetime not null,
 	AlterDate datetime null,
 	IsActive bit not null default 1,
@@ -102,6 +102,49 @@ create table ParEvaluationXDepartmentXCargo(
 	AlterDate datetime,
 	CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
 	ParCargo_Id int not null foreign key references ParCargo(Id)
+)
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Collection' AND xtype='U')
+create table Collection (
+	Id bigint identity,
+	CollectionDate datetime,
+	AddDate datetime,
+	UserSgq_Id int,	
+	Shift_Id int,
+	Period_Id int,
+	ParCargo_Id int,
+	ParCompany_Id int,
+	ParDepartment_Id int,
+	ParCluster_Id int,
+	ParLevel1_Id int,
+	ParLevel2_Id int,
+	ParLevel3_Id int,
+	CollectionType int,
+	--Result_Level3
+	Weigth decimal(38,10),
+	IntervalMin decimal(38,10),
+	IntervalMax decimal(38,10),
+	Value int,
+	ValueText varchar(255),
+	IsNotEvaluate bit,
+	IsConform bit,
+	Defects decimal(38,10),
+	PunishimentValue decimal(38,10),
+	WeiEvaluation decimal(38,10),
+	Evaluation decimal(38,10),
+	WeiDefects decimal(38,10),
+	HasPhoto bit,
+	--CollectionLevel2
+	Sample int,
+	HaveCorrectiveAction bit,
+	Parfrequency_Id int,
+	AlertLevel int,
+	--HeaderField
+	ParHeaderField_Id int,
+	ParHeaderField_Value varchar(255),
+	--outros
+	IsProcessed bit default 0
+)
 )
 
 GO

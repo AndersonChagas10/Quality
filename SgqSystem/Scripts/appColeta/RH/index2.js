@@ -42,7 +42,11 @@ function onDeviceReady() {
 
 	starterReload();
 	
-	$('body').prepend('<div class="" id="app"></div>');
+	$('body').prepend('<div class="" id="app" style="padding-bottom:50px;"></div>');
+	$('body').css('padding-bottom','20px');
+	
+	criarMensagem();
+
 	$('#btn-reload').attr('style',$('#btn-reload').attr('style')+";z-index:9999");
 	
 	

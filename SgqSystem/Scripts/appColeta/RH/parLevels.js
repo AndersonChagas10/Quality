@@ -112,7 +112,7 @@ function montarLevel3(level1List) {
 
                     level3["ParLevel3BoolTrue"] = getParLevel3BoolTrue(level3.ParLevel3Value);
 
-                    level3["ParLevel3BoolFalse"] = getParLevel3BoolTrue(level3.ParLevel3Value);
+                    level3["ParLevel3BoolFalse"] = getParLevel3BoolFalse(level3.ParLevel3Value);
 
                     level3List.push(level3);
                 });

@@ -1,4 +1,4 @@
-var resultColeta = [];
+var coletasAgrupadas = [];
 /*
 {
 	ParDepartment_Id,
@@ -17,7 +17,7 @@ function getResultEvaluationSample(parDepartment_Id, parCargo_Id){
 		Sample : 1
 	};
 	
-	$(resultColeta).each(function (i, o) {
+	$(coletasAgrupadas).each(function (i, o) {
 		if(o.ParDepartment_Id == parDepartment_Id && o.ParCargo_Id == parCargo_Id){
 			obj = o;
 		}
@@ -59,25 +59,56 @@ function atualizaColetasAposSincronizacao(data){
 			}
 		}
 	}
+	AtualizarArquivoDeColetas();
 }
 
+var enviarColetaEmExecucao = false;
 function enviarColeta(){
-	
-	if(globalColetasRealizadas.length > 0){
-	
-		$.ajax({
-			data: JSON.stringify(retornaProximasColetasParaSincronizar()),
-			url: urlPreffix + '/api/AppColeta/SetCollect',
-			type: 'POST',
-			contentType: "application/json",
-			success: function (data) {
-				atualizaColetasAposSincronizacao(data);
-				enviarColeta();
-			},
-			timeout: 600000,
-			error: function () {
-			}
-		});
-		
+	if(enviarColetaEmExecucao == false && globalColetasRealizadas.length > 0){
+		enviarColetaEmExecucao = true;
+	    pingLogado(urlPreffix,
+            function () {
+                $.ajax({
+                    data: JSON.stringify(retornaProximasColetasParaSincronizar()),
+                    url: urlPreffix + '/api/AppColeta/SetCollect',
+                    type: 'POST',
+                    contentType: "application/json",
+                    success: function (data) {
+						enviarColetaEmExecucao = false;
+                        atualizaColetasAposSincronizacao(data);
+                        enviarColeta();
+                    },
+                    timeout: 600000,
+                    error: function () {
+						enviarColetaEmExecucao = false;
+                    }
+                });
+            },
+            function () { 
+				console.log('desconectado'); 
+				enviarColetaEmExecucao = false; 
+			});
 	}
+}
+
+function AtualizarArquivoDeColetas(){
+	_writeFile("globalColetasRealizadas.txt", JSON.stringify(globalColetasRealizadas), function () {
+	});
+	
+	_writeFile("coletasAgrupadas.txt", JSON.stringify(coletasAgrupadas), function () {
+	});
+}
+
+function AtualizarVariaveisDeColetas(){
+	_readFile("globalColetasRealizadas.txt", function (content) {
+		if(typeof(content) == 'undefined')
+			content = '[]';
+			globalColetasRealizadas = JSON.parse(content);
+	});
+	
+	_readFile("coletasAgrupadas.txt", function (content) {
+		if(typeof(content) == 'undefined')
+			content = '[]';
+		coletasAgrupadas = JSON.parse(content);
+	});
 }
