@@ -326,16 +326,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_GlobalResources\Resource.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Resource.pt-br.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.pt-br.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -640,11 +630,6 @@
     <Content Include="Angular\ClusterRegionalUnidadeCriticalLevel123.js" />
     <Content Include="Angular\Level321Chain.js" />
     <Content Include="Angular\SelectVinculado.js" />
-    <Content Include="App_GlobalResources\Resource.pt-br.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resource.pt-br.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_Readme\readme.txt" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker.min.css" />
@@ -2049,6 +2034,10 @@
       <Project>{9F15CCA3-EC01-46B6-91EC-3F408E7417BC}</Project>
       <Name>PlanoAcaoCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{7ca0c2b1-2d05-4a01-86c2-8732d8a07192}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YTOARA_DOMINIO\YTOARA_DOMINIO.csproj">
       <Project>{02cfb056-37ce-40f2-8790-0d47bc6d2b59}</Project>
       <Name>YTOARA_DOMINIO</Name>
@@ -2059,13 +2048,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_GlobalResources\Resource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
