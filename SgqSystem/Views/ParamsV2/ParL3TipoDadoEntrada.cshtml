@@ -124,6 +124,15 @@
                             Monitoramento
                         </th>
                         <th class="col-sm-1">
+                            Valor Positivo
+                        </th>
+                        <th class="col-sm-1">
+                            Valor Negativo
+                        </th>
+                        <th class="col-sm-1">
+                            Limite Superior
+                        </th>
+                        <th class="col-sm-1">
                             Intervalo Minimo
                         </th>
                         <th class="col-sm-1">
@@ -162,12 +171,17 @@
             $('table#table' + id + ' tbody').html('');
 
             $(list).each(function (i, o) {
-
+                debugger
                 var html = '<tr>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3InputType_Id"]', o.ParLevel3InputType_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel1_Id"]', o.ParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel2_Id"]', o.ParLevel2_Id, 'Todos') + '</td>';
+
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolTrue_Id"]', o.ParLevel3BoolTrue_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolFalse_Id"]', o.ParLevel3BoolFalse_Id, 'Todos') + '</td>';
+                html += '<td>' +  + '</td>';
+
                 html += '<td>' + (o.IntervalMin == null ? "" : o.IntervalMin) + '</td>';
                 html += '<td>' + (o.IntervalMax == null ? "" : o.IntervalMax) + '</td>';
                 html += '<td>' + (o.DynamicValue == null ? "" : o.DynamicValue) + '</td>';
