@@ -322,7 +322,7 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
 
 $('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', function (e) {
     var linha = $(this).parents('[data-conforme]');
-    debugger
+    
     if ($(this).val() >= $(linha).attr('data-min') && $(this).val() <= $(linha).attr('data-max')) {
         resetarLinha(linha);
         linha.attr('data-conforme', '1');
@@ -382,6 +382,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 			    ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
 			    IsNotEvaluate: $(data).attr('data-conforme-na') == "",
 			    CollectionDate: new Date().toISOString(),
+                UserSgq_Id: currentUserSGQ_Id,
 
 			    /*
 				"UserSgq_Id":1,
