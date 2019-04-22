@@ -124,7 +124,7 @@ create table Collection (
 	Weigth decimal(38,10),
 	IntervalMin decimal(38,10),
 	IntervalMax decimal(38,10),
-	Value int,
+	Value varchar(255),
 	ValueText varchar(255),
 	IsNotEvaluate bit,
 	IsConform bit,
