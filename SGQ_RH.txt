@@ -145,3 +145,20 @@ create table Collection (
 	--outros
 	IsProcessed bit default 0
 )
+)
+
+GO
+
+IF COL_LENGTH('ParEvaluationSchedule','ParEvaluation_Id') IS NOT NULL
+BEGIN
+	ALTER TABLE ParEvaluationSchedule ALTER COLUMN ParEvaluation_Id int NULL
+END
+
+GO
+
+IF COL_LENGTH('ParEvaluationXDepartmentXCargo','ParFrequencyId') IS NOT NULL
+BEGIN
+	ALTER TABLE ParEvaluationXDepartmentXCargo ADD ParFrequencyId int null;
+END
+
+

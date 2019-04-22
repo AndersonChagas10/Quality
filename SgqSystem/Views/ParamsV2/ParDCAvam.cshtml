@@ -36,7 +36,7 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label>Frequencia:</label>
+                <label>Frequência:</label>
                 <select class="form-control required" id="selectParFrequencyAV" name="ParFrequency_Id"></select>
             </div>
 
@@ -56,6 +56,17 @@
             <div class="form-group">
                 <label for="Sample">Amostras por Avaliação:</label>
                 <input type="text" class="form-control required" id="Sample" name="Sample">
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+            <label for="IsAgendamento">Possui Agendamento:</label>
+            <div class="form-group">
+
+                <label class="switch">
+                    <input id="IsAgendamento" type="checkbox" name="IsAgendamento" checked=""><span class="slider round"></span>
+                </label>
             </div>
 
         </div>
@@ -96,11 +107,12 @@
                     <thead>
                         <tr role="row">
                             @*<th>Empresa</th>
-                            <th>Cargo</th>
-                            <th>Frequência</th>*@
+                                <th>Cargo</th>
+                                <th>Frequência</th>*@
                             <th>Avaliação</th>
                             <th>Amostra</th>
                             <th>Intervalo</th>
+                            <th>Turno</th>
                             <th>Ação</th>
                             <th></th>
                         </tr>
@@ -123,6 +135,7 @@
                             <th>Inicio</th>
                             <th>Fim</th>
                             <th>Avaliação Selecionada</th>
+                            <th>Turno</th>
                             <th>Ação</th>
                             <th></th>
                         </tr>
@@ -180,26 +193,42 @@
 
     var globalFrequency;
     $("#selectParFrequencyAV").on('change', function () {
+        debugger
             if ($("#selectParFrequencyAV :selected").val() !== "0")
                 $("#Evaluation").prop('disabled', false);
             else
             $("#Evaluation").prop('disabled', true);
-        globalFrequency = parseInt($("#selectParFrequencyAV :selected").val());
-        });
+
+        globalFrequency = parseInt($("#selectParFrequencyAV :selected").val());    
+        //$('#Evaluation').trigger('input');
+    });
+
+    $("#IsAgendamento").on('click', function () {
+        debugger
+        if ($("#IsAgendamento ").prop('checked') === false) {
+            $("#divAgendamento").hide();          
+        } 
+        valorAvaliacao = $("#Evaluation").val();
+
+        $('#Evaluation').trigger('input');
+    });
 
 
     $("#Evaluation").on('input', function () {
-
+        debugger
         valorAvaliacao = $("#Evaluation").val();
 
         if (globalFrequency === 10 || globalFrequency === 3) {
-            montaTabelaAgendamento(null);
-            $('#divAgendamento').show();
+            if ($("#IsAgendamento ").prop('checked') == true && valorAvaliacao > 0) {
+                montaTabelaAgendamento(null);
+                $('#divAgendamento').show();
+
+            }           
         }
     });
 
-    function montaTabelaAgendamento(valorAvaliacao) {
-
+    function montaTabelaAgendamento() {
+        
         if (parseInt($("#selectParFrequencyAV :selected").val())  === 10) {
             $("#divAgendamento").removeClass('hidden');
             $("#tabelaAgendamentoIntervalo").attr('style', '');
@@ -247,6 +276,7 @@
              }
 
     function MontaNovaLinhaAgendamentoIntervalo(data) {
+        
         if ($("#tabelaAgendamentoIntervalo tbody tr").length == 0) {
             $("#tabelaAgendamentoIntervalo tbody").append("<tr>"
                 + '<td><input data-column="inpTipoAgendamento" name="tipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
@@ -332,7 +362,7 @@
                 html += '<td>' + o.Evaluation + '</td>';
                 html += '<td class="hide">' + o.Id + '</td>';
                 html += '<td>' + o.Sample + '</td>';
-                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button> <button class="btn btn-sm btn-info" data-table-agendamento onclick="abrirModalAgendamento($(this))"><i class="fa fa-calendar" alt="Agendamento"> </i> </button></td>';
+               html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button> </td>';
                 html += '</tr>';
 
                 $('table#table' + id + ' tbody').append(html);
@@ -352,7 +382,7 @@
                         $('#divCamposCabecalhoIncluidos tbody').empty();
                         $('#divCamposCabecalhoIncluidos2 tbody').empty();
                         $('#selectDCDepartment').trigger('change');
-
+                        $("#IsAgendamento").prop('disabled', false);
                         $('[data-column="inpIntervalo"]').val('');
                         $('[data-column="slAgendamento"]').val('');
                         closeLoader();
@@ -371,13 +401,19 @@
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
                 var obj = $(this).parents('tr').data('sgq');
-
+                debugger
                 apagaCampos(id);
                 parDCAvam.reloadTable();
                 preencheCampos(id + ' [data-form]', '', obj);
 
+                if (obj.ParCompany_Id === null)
+                    obj.ParCompany_Id = 0;
+
                 $('#' + id + ' [data-form] select[name="ParCompany_Id"]').val(obj.ParCompany_Id);
                 $('#' + id + ' [data-form] select[name="ParCompany_Id"]').trigger('change')
+
+                if (obj.ParCargo_Id === null)
+                    obj.ParCargo_Id = 0;
 
                 $('#' + id + ' [data-form] select[name="ParCargo_Id"]').val(obj.ParCargo_Id);
                 $('#' + id + ' [data-form] select[name="ParCargo_Id"]').trigger('change')
@@ -387,6 +423,10 @@
 
                 $('#' + id + ' [data-form] input[name="Evaluation"]').val(obj.Evaluation);
                 $('#' + id + ' [data-form] input[name="Sample"]').val(obj.Sample);
+                if (obj.ParEvaluationSchedule.length > 0)
+                    $('#' + id + ' [data-form] input[name="IsAgendamento"]').prop('checked', true);
+                else
+                    $('#' + id + ' [data-form] input[name="IsAgendamento"]').prop('checked', false);
 
                 $('#' + id + ' [data-form]').data('sgq', obj);
                 $('#' + id + ' [data-form]').addClass('alert alert-success');
@@ -401,10 +441,12 @@
                 $('#tableParDCAvam [data-table-edit]').prop('disabled', true);
                 $('#tableParDCAvam [data-table-delete]').prop('disabled', true);
 
-                if ($("#camposCabecalhoIncluidos tbody tr").length > 0) {
+                if ($("#camposCabecalhoIncluidos tbody tr").length > 0 || $("#camposCabecalhoIncluidos2 tbody tr").length > 0) {
                     $("#selectParFrequencyAV").prop('disabled', true);
+                    $("#IsAgendamento").prop('disabled', true);
                 } else {
                     $("#selectParFrequencyAV").prop('disabled', false);
+                    $("#IsAgendamento").prop('disabled', false);
                 }
 
             });
@@ -431,7 +473,7 @@
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
                 parDCAvam.prepareToInsert();
-
+                debugger
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
@@ -444,17 +486,19 @@
 
                 obj = parDCAvam.prepareDcAvam(obj);
 
-                if ($("#camposCabecalhoIncluidos tbody tr").length > 0) {
+                if ($("#camposCabecalhoIncluidos tbody tr").length > 0 || $("#camposCabecalhoIncluidos2 tbody tr").length > 0 ) {
                     $("#selectParFrequencyAV").prop('disabled', true);
+                    $("#IsAgendamento").prop('disabled', true);
                 } else {
                     $("#selectParFrequencyAV").prop('disabled', false);
+                    $("#IsAgendamento").prop('disabled', false);
                 }
-                //if (optionIsValid(obj, id)) {
-
+                if (obj.Sample > 0 && obj.Evaluation > 0) {
                     openLoader();
                     Save(obj);
-
-                //}
+                } else {
+                    openMessageModal("Alerta", "Os campos Avaliação e Amostra são obrigatórios.");
+                }
 
             });
 
@@ -487,10 +531,11 @@
             });
 
             $('#' + id).on('click', ' [data-add-cancel] ', function () {
-                $('#selectDCDepartment').trigger('change');
+                $('#selectDCDepartment').trigger('change');                
                 $(this).parent().hide();
                 $('#camposCabecalhoIncluidos tbody').empty();
                 $('#camposCabecalhoIncluidos2 tbody').empty();
+                $("#IsAgendamento").prop('disabled', false);
             });
 
             this.showTableParMultipleValues();
@@ -506,8 +551,6 @@
             obj['ParDepartment_Id'] = formdata.ParDepartment_Id;
             obj['IsActive'] = true;
             obj['ParFrequencyId'] = globalFrequency;
-            //if (obj['ParFrequencyId'] == null)
-                //obj['ParFrequencyId'] = formdata.ParFrequency_Id;
             return obj;
         },
 
@@ -518,7 +561,7 @@
             }
 
             let $Marcos;
-
+            debugger
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (typeof (obj) == 'undefined')
@@ -531,22 +574,23 @@
                 if (obj.ParEvaluationSchedule[0]['ParEvaluationXDepartmentXCargo_Id'] != 'undefined' || obj.ParEvaluationSchedule[0]['ParEvaluationXDepartmentXCargo_Id'] != null)
                      parEvaluationXDepartmentXCargo_Id = obj.Id
 
-
+            debugger
             if (parseInt($("#selectParFrequencyAV :selected").val()) === 10) {
                 $Marcos = $('#tabelaAgendamentoIntervalo');
-
-                obj['ParEvaluationSchedule'].push({
-                    Fim: "",
-                    Av: "",
-                    Inicio: "",
-                    Intervalo: $Marcos.find("[data-column=inpIntervalo]").val(),
-                    Shift_Id: $Marcos.find("[data-column=slAgendamento]").val(),
-                    IsActive: true,
-                    ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
-                    Id: $Marcos.find("[data-column=inpId]").val(),
-                    IsDeletar: $Marcos.data("IsDeletar"),
-                    ParEvaluationXDepartmentXCargo_Id: 0,
-                });
+                if ($('#tabelaAgendamentoIntervalo tbody tr').length > 0) {
+                    obj['ParEvaluationSchedule'].push({
+                        Fim: "",
+                        Av: "",
+                        Inicio: "",
+                        Intervalo: $Marcos.find("[data-column=inpIntervalo]").val(),
+                        Shift_Id: $Marcos.find("[data-column=slAgendamento]").val(),
+                        IsActive: true,
+                        ParEvaluation_Id: $('input[data-column="inpAvaliacaoId"]').val(),
+                        Id: $Marcos.find("[data-column=inpId]").val(),
+                        IsDeletar: $Marcos.data("IsDeletar"),
+                        ParEvaluationXDepartmentXCargo_Id: 0,
+                    });
+                }
             } else if (parseInt($("#selectParFrequencyAV :selected").val()) === 3){
                 $Marcos = $('#tabelaAgendamento');
                 listaTabelaAgendamento = $("#tabelaAgendamento tbody tr");
@@ -605,7 +649,7 @@
             //    parLevelDefiniton = obj['ParHeaderField']['ParMultipleValues'][0].ParLevelDefiniton;
 
             //}
-
+            debugger
             let ParEvaluationSchedule = obj['ParEvaluationSchedule'];
             let blockParFieldType = false;
             //ParEvaluationSchedule[0].Intervalo !== null && ParEvaluationSchedule[0].IsActive
@@ -613,7 +657,9 @@
                 if (ParFrequencyId === 10) {
                     //if (parseInt($("#selectParFrequencyAV :selected").val()) === 10){
                     ParEvaluationSchedule.forEach((o, i) => {
-                        if (o.IsActive) {
+                        if (o.IsActive && o.Intervalo != null) {
+                            if (o.Shift_Id == null)
+                                o.Shift_Id = "Todos"
                             let tableAgendamento = `<tr>
                             <td class="hide">${ParCompany_Id}</td>
                             <td class="hide">${ParCargo}</td>
@@ -621,7 +667,7 @@
                             <td>${Evaluation}</td>
                             <td>${Sample}</td>
                             <td>${o.Intervalo}</td>
-                            <td class="hide">${o.Shift_Id}</td>
+                            <td>${o.Shift_Id}</td>
                             <td class="hide">${ParDepartment_Id}</td>
                             <td class="hide">${o.ParEvaluation_Id}</td>
 
@@ -635,7 +681,9 @@
                     });
                 } else if (ParFrequencyId === 3){
                     ParEvaluationSchedule.forEach((o, i) => {
-                        if (o.IsActive) {
+                        if (o.IsActive && o.Inicio != null && o.Fim != null) {
+                            if (o.Shift_Id == null)
+                                o.Shift_Id = "Todos"
                             let table = `<tr>
                             <td class="hide">${ParCompany_Id}</td>
                             <td class="hide">${ParCargo}</td>
@@ -645,7 +693,7 @@
                             <td>${o.Inicio}</td>
                             <td>${o.Fim}</td>
                             <td>${o.Av}</td>
-                            <td class="hide">${o.Shift_Id}</td>
+                            <td>${o.Shift_Id}</td>
                             <td class="hide">${ParDepartment_Id}</td>
                             <td class="hide">${o.ParEvaluation_Id}</td>
 
@@ -713,7 +761,7 @@
                 obj['ParEvaluationSchedule'][i].IsActive = false;
 
                 this.insertTable(obj);
-
+                $("#IsAgendamento").prop('disabled', false);
             } else {
                 $('#camposCabecalhoIncluidos tbody').empty();
                 $('#divCamposCabecalhoIncluidos').hide();

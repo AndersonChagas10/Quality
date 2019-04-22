@@ -456,5 +456,68 @@ namespace SgqSystem.Controllers.V2.Api
                 return resultsLevel3;
             }
         }
+
+        [HttpPost]
+        [Route("GetResults")]
+        public IHttpActionResult GetResults(GetResultsData data)
+        {
+            var coletaAgrupada = new List<ColetaAgrupadaViewModel>();
+  
+            var sql = $@"
+                    SELECT
+                    	MAX(EvaluationNumber) Evaluation
+                       ,MAX(Sample) Sample
+                       ,ParLevel1_Id
+                       ,ParLevel2_Id
+                       ,UnitId
+                       ,Shift
+                       ,CollectionDate
+                       ,ParDepartment_Id
+                       ,ParCargo_Id
+                       ,ParCluster_Id
+                    FROM CollectionLevel2
+                    WHERE 1 = 1
+                    AND CAST(CollectionDate AS DATE) = CAST('{data.CollectionDate.ToString("yyyy-MM-dd")}' AS DATE)
+                    AND UnitId = {data.ParCompany_Id}
+                    GROUP BY ParLevel1_Id
+                    		,ParLevel2_Id
+                    		,UnitId
+                    		,Shift
+                    		,CollectionDate
+                    		,ParDepartment_Id
+                    		,ParCargo_Id
+                    		,ParCluster_Id
+                    ";
+
+            using(var factory = new Factory("DefaultConnection"))
+            {
+                coletaAgrupada = factory.SearchQuery<ColetaAgrupadaViewModel>(sql).ToList();
+            }
+
+            return Ok(coletaAgrupada.ToList());
+        }
+
+        public class GetResultsData
+        {
+            public int ParCompany_Id { get; set; }
+            public DateTime CollectionDate { get; set; }
+        }
+
+        public class ColetaAgrupadaViewModel
+        {
+            public int Evaluation { get; set; }
+            public int Sample { get; set; }
+            public int ParLevel1_Id { get; set; }
+            public int ParLevel2_Id { get; set; }
+            public int UnitId { get; set; }
+            public int AuditorId { get; set; }
+            public int Shift { get; set; }
+            public DateTime CollectionDate { get; set; }
+            public int ParDepartment_Id { get; set; }
+            public int ParCargo_Id { get; set; }
+            public int ParCluster_Id { get; set; }
+        }
+
+
     }
 }

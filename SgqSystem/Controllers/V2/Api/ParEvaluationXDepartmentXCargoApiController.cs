@@ -44,10 +44,10 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => x.IsActive == true
                     && x.ParDepartment_Id == parEvaluationXDepartmentXCargo.Id).ToList();
 
-                    var parCargoXDepartment = db.ParCargoXDepartment.AsNoTracking()
-                    .Where(x => x.IsActive == true
-                    && x.ParDepartment_Id == parEvaluationXDepartmentXCargo.Id)
-                    .ToList();
+                var parCargoXDepartment = db.ParCargoXDepartment.AsNoTracking()
+                .Where(x => x.IsActive == true
+                && x.ParDepartment_Id == parEvaluationXDepartmentXCargo.Id)
+                .ToList();
 
                 parEvaluationXDepartmentXCargoResult.ParCargo = db.ParCargo
                     .AsNoTracking()
@@ -59,7 +59,7 @@ namespace SgqSystem.Controllers.V2.Api
                 {
                     item.ParEvaluationSchedule = db.ParEvaluationSchedule.Where(x => x.ParEvaluationXDepartmentXCargo_Id == item.Id).ToList();
                 }
-                  
+
 
             }
 
@@ -101,6 +101,7 @@ namespace SgqSystem.Controllers.V2.Api
                         parEvaluationXDepartmentXCargoOld.IsActive = parEvaluationXDepartmentXCargo.IsActive;
                         parEvaluationXDepartmentXCargoOld.ParFrequencyId = parEvaluationXDepartmentXCargo.ParFrequencyId;
 
+                        //SalvarEditarAgendamento(parEvaluationXDepartmentXCargo, null);
                         foreach (var item in parEvaluationXDepartmentXCargo.ParEvaluationSchedule)
                         {
                             item.ParEvaluationXDepartmentXCargo_Id = parEvaluationXDepartmentXCargo.Id;
@@ -109,7 +110,7 @@ namespace SgqSystem.Controllers.V2.Api
                                 item.Inicio = null;
                                 item.Fim = null;
                             }
-                          
+
                             if (item.Shift_Id <= 0)
                                 item.Shift_Id = null;
 
@@ -122,36 +123,39 @@ namespace SgqSystem.Controllers.V2.Api
                                 db.ParEvaluationSchedule.Add(item);
                             }
                             db.SaveChanges();
-                           
+
                         }
                     }
                     else
                     {
-                        var parEvaluationXDepartamentoXCargo = db.ParEvaluationXDepartmentXCargo.Add(parEvaluationXDepartmentXCargo);
+                        var parEvaluationXDepartamentoXCargoSalvo = db.ParEvaluationXDepartmentXCargo.Add(parEvaluationXDepartmentXCargo);
                         db.SaveChanges();
 
-                        foreach (var item in parEvaluationXDepartmentXCargo.ParEvaluationSchedule)
+                        //SalvarEditarAgendamento(parEvaluationXDepartmentXCargo, parEvaluationXDepartamentoXCargoSalvo.Id);
+                        if (parEvaluationXDepartmentXCargo.ParEvaluationSchedule != null)
                         {
-                            item.ParEvaluationXDepartmentXCargo_Id = parEvaluationXDepartamentoXCargo.Id;
-                            if (item.Intervalo != null)
+                            foreach (var item in parEvaluationXDepartmentXCargo.ParEvaluationSchedule)
                             {
-                                item.Inicio = null;
-                                item.Fim = null;
-                            }
+                                item.ParEvaluationXDepartmentXCargo_Id = parEvaluationXDepartamentoXCargoSalvo.Id;
+                                if (item.Intervalo != null)
+                                {
+                                    item.Inicio = null;
+                                    item.Fim = null;
+                                }
 
-                            if (item.Shift_Id <= 0)
-                                item.Shift_Id = null;
+                                if (item.Shift_Id <= 0)
+                                    item.Shift_Id = null;
 
-                            if (item.Id > 0)
-                            {
-                                db.Entry(item).State = EntityState.Modified;
+                                if (item.Id > 0)
+                                {
+                                    db.Entry(item).State = EntityState.Modified;
+                                }
+                                else
+                                {
+                                    db.ParEvaluationSchedule.Add(item);
+                                }
+                                //db.SaveChanges();
                             }
-                            else
-                            {
-                                db.ParEvaluationSchedule.Add(item);
-                            }
-                            db.SaveChanges();
-   
                         }
                     }
                     db.SaveChanges();
@@ -164,6 +168,38 @@ namespace SgqSystem.Controllers.V2.Api
                 return true;
             }
         }
-        
+
+        private void SalvarEditarAgendamento(ParEvaluationXDepartmentXCargo parEvaluationXDepartmentXCargo, int? parEvaluationXDepartamentoXCargoSalvo_Id)
+        {          
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                foreach (var item in parEvaluationXDepartmentXCargo.ParEvaluationSchedule)
+                {
+                    if (!parEvaluationXDepartamentoXCargoSalvo_Id.HasValue)
+                        item.ParEvaluationXDepartmentXCargo_Id = parEvaluationXDepartmentXCargo.Id;
+                    else
+                        item.ParEvaluationXDepartmentXCargo_Id = parEvaluationXDepartamentoXCargoSalvo_Id;
+
+                    if (item.Intervalo != null)
+                    {
+                        item.Inicio = null;
+                        item.Fim = null;
+                    }
+
+                    if (item.Shift_Id <= 0)
+                        item.Shift_Id = null;
+
+                    if (item.Id > 0)
+                    {
+                        db.Entry(item).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        db.ParEvaluationSchedule.Add(item);
+                    }
+                    db.SaveChanges();
+                }
+            }
+        }
     }
 }
