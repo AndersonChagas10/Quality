@@ -387,21 +387,21 @@ namespace SgqSystem.Controllers.V2.Api
         private List<CollectionLevel2> GetCollectionsLevel2NotProcess()
         {
             var sql = $@"
-                        SELECT DISTINCT top 100
-                        	Evaluation as EvaluationNumber
-                           ,Sample
-                           ,ParLevel1_Id
-                           ,ParLevel2_Id
-                           ,Shift_Id as Shift
-                           ,Period_Id as Period
-                           ,ParCompany_Id as UnitId
-                           ,ParCargo_Id
-                           ,ParCluster_Id
-                           ,ParDepartment_Id
-                           ,IIF(UserSgq_Id is null, 0,UserSgq_Id) as AuditorId
-                           ,CAST(CollectionDate AS DATE) AS CollectionDate
-                           ,GETDATE() as StartPhaseDate
-                           ,UserSgq_Id as AuditorId
+                        SELECT DISTINCT top 100 
+                    	Evaluation as EvaluationNumber
+                       ,Sample
+                       ,ParLevel1_Id
+                       ,ParLevel2_Id
+                       ,Shift_Id as Shift
+                       ,Period_Id as Period
+                       ,ParCompany_Id as UnitId
+                       ,ParCargo_Id
+                       ,ParCluster_Id
+                       ,ParDepartment_Id
+                       ,IIF(UserSgq_Id is null, 0,UserSgq_Id) as AuditorId
+                       ,CONVERT(VARCHAR(19),IIF(DATEPART(MILLISECOND,CollectionDate)>500,DATEADD(SECOND,1,CollectionDate),CollectionDate),120) AS CollectionDate
+                       ,GETDATE() as StartPhaseDate
+                       ,UserSgq_Id as AuditorId
                         FROM Collection
                         WHERE IsProcessed = 0";
 
@@ -446,7 +446,7 @@ namespace SgqSystem.Controllers.V2.Api
                         Sample = {collectionLevel2.Sample} AND ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND
                         ParLevel2_Id = {collectionLevel2.ParLevel2_Id} AND Shift_Id = {collectionLevel2.Shift} AND
                         Period_Id = {collectionLevel2.Period} AND ParCompany_Id = {collectionLevel2.UnitId} AND
-                        cast(CollectionDate as date) = '{collectionLevel2.CollectionDate.ToString("yyyy-MM-dd")}'";
+                        CAST(CONVERT(VARCHAR(19), IIF(DATEPART(MILLISECOND, CollectionDate) > 500, DATEADD(SECOND, 1, CollectionDate), CollectionDate), 120) AS DATE) = '{collectionLevel2.CollectionDate.ToString("yyyy-MM-dd")}'";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
