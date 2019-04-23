@@ -1,25 +1,31 @@
 function openParFrequency() {
 
 	var html = '';
+	
+	_readFile("parFrequency.txt", function (data) {
+        if(globalLoginOnline){
+			openMensagem('Carregando lista de frequencia','blue','white');
+			$.ajax({
+				data: {},
+				url: urlPreffix + '/api/parFrequency',
+				type: 'GET',
+				success: function (data) {
 
-	openMensagem('Carregando lista de frequencia','blue','white');
-	$.ajax({
-		data: {},
-		url: urlPreffix + '/api/parFrequency',
-		type: 'GET',
-		success: function (data) {
-
-			_writeFile("parFrequency.txt", JSON.stringify(data), function () {
-				listarParFrequency();
+					_writeFile("parFrequency.txt", JSON.stringify(data), function () {
+						listarParFrequency();
+					});
+					closeMensagem();
+				},
+				timeout: 600000,
+				error: function () {
+					$(this).html($(this).attr('data-initial-text'));
+					closeMensagem();
+				}
 			});
-			closeMensagem();
-		},
-		timeout: 600000,
-		error: function () {
-			$(this).html($(this).attr('data-initial-text'));
-			closeMensagem();
+		}else{
+			listarParFrequency();
 		}
-	});
+    });
 
 }
 
@@ -38,9 +44,8 @@ function listarParFrequency() {
 		$(data).each(function (i, o) {
 
 				htmlParFrequency += '<button type="button" class="list-group-item col-xs-12" data-par-frequency-id="'+o.Id+'" '+ 
-				((currentParFrequency_Id == o.Id)? '':'style="background-color:#ddd;cursor:not-allowed"')
+				((currentParFrequency_Id == o.Id || !(currentParFrequency_Id > 0))? '':'style="background-color:#eee;cursor:not-allowed"')
 				+'>'+o.Name+
-                    //'<span class="badge"><i class="fa fa-download" data-download-frequency></i></span>'+
 				'</button>';
         });
         
@@ -50,7 +55,7 @@ function listarParFrequency() {
 		'<div class="container-fluid">                               '+
 		'	<div class="">                                  '+
 		'		<div class="col-xs-12">                        '+
-		'			<div class="panel panel-primary">          '+
+		'			<div class="panel panel-warning">          '+
 		'			  <div class="panel-heading">              '+
 		'				<h3 class="panel-title">Qual frequencia deseja realizar coleta?</h3>      '+
 		'			  </div>                                   '+

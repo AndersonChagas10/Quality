@@ -127,14 +127,14 @@ function montarLevel3(level1List) {
 
 function getParLevel3BoolTrue(parLevel3Value) {
 
-    if (parLevel3Value && parLevel3Value.ParLevel3BoolFalse_Id)
-        return $.grep(parametrization.listaParLevel3BoolFalse, function (item) { return item.Id == parLevel3Value.ParLevel3BoolFalse_Id })[0];
+    if (parLevel3Value && parLevel3Value.ParLevel3BoolTrue_Id)
+        return $.grep(parametrization.listaParLevel3BoolTrue, function (item) { return item.Id == parLevel3Value.ParLevel3BoolTrue_Id })[0];
 }
 
 function getParLevel3BoolFalse(parLevel3Value) {
 
-    if (parLevel3Value && parLevel3Value.ParLevel3BoolTrue_Id)
-        return $.grep(parametrization.listaParLevel3BoolTrue, function (item) { return item.Id == parLevel3Value.ParLevel3BoolTrue_Id })[0];
+    if (parLevel3Value && parLevel3Value.ParLevel3BoolFalse_Id)
+        return $.grep(parametrization.listaParLevel3BoolFalse, function (item) { return item.Id == parLevel3Value.ParLevel3BoolFalse_Id })[0];
 
 }
 

@@ -86,34 +86,34 @@ namespace SgqSystem.Controllers.V2.Api
 
                     //TODO: salvar a collectionLevel2 e apos a Result_Level3 com o respectivo CollectionLevel2_Id
 
-                    try
+
+                    var collection = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
+                    if (collection == null)
                     {
+                        db.CollectionLevel2.Add(collectionLevel2Consolidada);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        collectionLevel2Consolidada = collection;
+                    }
 
-                        var collection = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
-                        if (collection == null)
-                        {
-                            db.CollectionLevel2.Add(collectionLevel2Consolidada);
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            collectionLevel2Consolidada = collection;
-                        }
-
-                        foreach (var resultLevel3 in resultsLevel3)
+                    foreach (var resultLevel3 in resultsLevel3)
+                    {
+                        try
                         {
                             resultLevel3.CollectionLevel2_Id = collectionLevel2Consolidada.Id;
                             resultLevel3.HasPhoto = resultLevel3.HasPhoto == null ? false : resultLevel3.HasPhoto;
-                            resultLevel3.ParLevel3_Name = parLevel3List.Where(x => x.Id == resultLevel3.ParLevel3_Id).Select(x => x.Name).First();
+                            resultLevel3.ParLevel3_Name = parLevel3List.Where(x => x.Id == resultLevel3.ParLevel3_Id).Select(x => x.Name).FirstOrDefault();
                             collectionsProcess_Id.Add(resultLevel3.Id);
                             db.Result_Level3.Add(resultLevel3);
-                        }
 
-                        db.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        collectionsProcess_Id.RemoveAt(collectionsProcess_Id.Count - 1);
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            collectionsProcess_Id.RemoveAt(collectionsProcess_Id.Count - 1);
+                        }
                     }
 
                     try
@@ -121,7 +121,6 @@ namespace SgqSystem.Controllers.V2.Api
                         if (collectionsProcess_Id.Count > 0)
                         {
                             db.Database.ExecuteSqlCommand("UPDATE Collection set IsProcessed = 1 where Id in (" + string.Join(",", collectionsProcess_Id) + ")");
-                            db.SaveChanges();
                         }
                     }
                     catch (Exception ex)
@@ -388,21 +387,21 @@ namespace SgqSystem.Controllers.V2.Api
         private List<CollectionLevel2> GetCollectionsLevel2NotProcess()
         {
             var sql = $@"
-                        SELECT DISTINCT top 100
-                        	Evaluation as EvaluationNumber
-                           ,Sample
-                           ,ParLevel1_Id
-                           ,ParLevel2_Id
-                           ,Shift_Id as Shift
-                           ,Period_Id as Period
-                           ,ParCompany_Id as UnitId
-                           ,ParCargo_Id
-                           ,ParCluster_Id
-                           ,ParDepartment_Id
-                           ,IIF(UserSgq_Id is null, 0,UserSgq_Id) as AuditorId
-                           ,CAST(CollectionDate AS DATE) AS CollectionDate
-                           ,GETDATE() as StartPhaseDate
-                           ,UserSgq_Id as AuditorId
+                        SELECT DISTINCT top 100 
+                    	Evaluation as EvaluationNumber
+                       ,Sample
+                       ,ParLevel1_Id
+                       ,ParLevel2_Id
+                       ,Shift_Id as Shift
+                       ,Period_Id as Period
+                       ,ParCompany_Id as UnitId
+                       ,ParCargo_Id
+                       ,ParCluster_Id
+                       ,ParDepartment_Id
+                       ,IIF(UserSgq_Id is null, 0,UserSgq_Id) as AuditorId
+                       ,CONVERT(VARCHAR(19),IIF(DATEPART(MILLISECOND,CollectionDate)>500,DATEADD(SECOND,1,CollectionDate),CollectionDate),120) AS CollectionDate
+                       ,GETDATE() as StartPhaseDate
+                       ,UserSgq_Id as AuditorId
                         FROM Collection
                         WHERE IsProcessed = 0";
 
@@ -447,7 +446,7 @@ namespace SgqSystem.Controllers.V2.Api
                         Sample = {collectionLevel2.Sample} AND ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND
                         ParLevel2_Id = {collectionLevel2.ParLevel2_Id} AND Shift_Id = {collectionLevel2.Shift} AND
                         Period_Id = {collectionLevel2.Period} AND ParCompany_Id = {collectionLevel2.UnitId} AND
-                        cast(CollectionDate as date) = '{collectionLevel2.CollectionDate.ToString("yyyy-MM-dd")}'";
+                        CAST(CONVERT(VARCHAR(19), IIF(DATEPART(MILLISECOND, CollectionDate) > 500, DATEADD(SECOND, 1, CollectionDate), CollectionDate), 120) AS DATE) = '{collectionLevel2.CollectionDate.ToString("yyyy-MM-dd")}'";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
