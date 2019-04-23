@@ -673,3 +673,9 @@ position: absolute;
 .nav-btn{
 	color:#fff;margin:7px 7px 7px 0px;padding:6px 15px
 }
+
+@media(min-width:700px){
+	.nav-pull-right{
+		float:right;
+	}
+}

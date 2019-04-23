@@ -23,6 +23,7 @@ namespace Dominio
         [DisplayName("Departamento")]
         public string Name { get; set; }
 
+        [Display(Name = "description", ResourceType = typeof(Resources.Resource))]
         [Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
 

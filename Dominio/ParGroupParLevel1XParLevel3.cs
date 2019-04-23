@@ -50,6 +50,12 @@ namespace Dominio
         //[Index(IsUnique = true)]
         public int? ParLevel3Group_Id { get; set; }
 
+        public int? ParFrequencyId { get; set; }
+
+        public int? Evaluation { get; set; }
+
+        public int? Sample { get; set; }
+
         [DisplayName("Cargo")]
         //[Index(IsUnique = true)]
         public int? ParCargo_Id { get; set; }

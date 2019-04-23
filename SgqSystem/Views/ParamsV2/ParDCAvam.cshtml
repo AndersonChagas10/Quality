@@ -46,7 +46,7 @@
 
             <div class="form-group">
                 <label for="Evaluation">Avaliação:</label>
-                <input type="text" class="form-control required" disabled="disabled" id="Evaluation" name="Evaluation">
+                <input type="text" class="form-control required" disabled="disabled" id="ParDCAvamEvaluation" name="Evaluation">
             </div>
 
         </div>
@@ -193,30 +193,30 @@
 
     var globalFrequency;
     $("#selectParFrequencyAV").on('change', function () {
-        debugger
+        
             if ($("#selectParFrequencyAV :selected").val() !== "0")
-                $("#Evaluation").prop('disabled', false);
+                $("#ParDCAvamEvaluation").prop('disabled', false);
             else
-            $("#Evaluation").prop('disabled', true);
+                $("#ParDCAvamEvaluation").prop('disabled', true);
 
         globalFrequency = parseInt($("#selectParFrequencyAV :selected").val());    
         //$('#Evaluation').trigger('input');
     });
 
     $("#IsAgendamento").on('click', function () {
-        debugger
+        
         if ($("#IsAgendamento ").prop('checked') === false) {
             $("#divAgendamento").hide();          
         } 
-        valorAvaliacao = $("#Evaluation").val();
+        valorAvaliacao = $("#ParDCAvamEvaluation").val();
 
-        $('#Evaluation').trigger('input');
+        $('#ParDCAvamEvaluation').trigger('input');
     });
 
 
-    $("#Evaluation").on('input', function () {
-        debugger
-        valorAvaliacao = $("#Evaluation").val();
+    $("#ParDCAvamEvaluation").on('input', function () {
+        
+        valorAvaliacao = $("#ParDCAvamEvaluation").val();
 
         if (globalFrequency === 10 || globalFrequency === 3) {
             if ($("#IsAgendamento ").prop('checked') == true && valorAvaliacao > 0) {
@@ -401,7 +401,7 @@
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
                 var obj = $(this).parents('tr').data('sgq');
-                debugger
+                
                 apagaCampos(id);
                 parDCAvam.reloadTable();
                 preencheCampos(id + ' [data-form]', '', obj);
@@ -473,7 +473,7 @@
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
                 parDCAvam.prepareToInsert();
-                debugger
+                
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
@@ -561,7 +561,7 @@
             }
 
             let $Marcos;
-            debugger
+            
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (typeof (obj) == 'undefined')
@@ -574,7 +574,7 @@
                 if (obj.ParEvaluationSchedule[0]['ParEvaluationXDepartmentXCargo_Id'] != 'undefined' || obj.ParEvaluationSchedule[0]['ParEvaluationXDepartmentXCargo_Id'] != null)
                      parEvaluationXDepartmentXCargo_Id = obj.Id
 
-            debugger
+            
             if (parseInt($("#selectParFrequencyAV :selected").val()) === 10) {
                 $Marcos = $('#tabelaAgendamentoIntervalo');
                 if ($('#tabelaAgendamentoIntervalo tbody tr').length > 0) {
@@ -649,7 +649,7 @@
             //    parLevelDefiniton = obj['ParHeaderField']['ParMultipleValues'][0].ParLevelDefiniton;
 
             //}
-            debugger
+            
             let ParEvaluationSchedule = obj['ParEvaluationSchedule'];
             let blockParFieldType = false;
             //ParEvaluationSchedule[0].Intervalo !== null && ParEvaluationSchedule[0].IsActive

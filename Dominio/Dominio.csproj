@@ -289,6 +289,10 @@
       <Project>{026EFA70-BD6D-46C8-BD94-D7FCD42B9692}</Project>
       <Name>Helper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{7ca0c2b1-2d05-4a01-86c2-8732d8a07192}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

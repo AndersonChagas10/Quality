@@ -15,6 +15,11 @@ html = '<nav class="navbar navbar navbar-inverse">                              
       '    <div id="navbar" class="navbar-collapse collapse">                                                                                                            '+
       '      <ul class="nav navbar-nav">                                                                                                                                 '+
       '        <li><a href="#" onclick="sincronizar()">Sincronizar</a></li>                                                                                             '+      
+      '      </ul>                                                                                                                                                       '+
+      '      <ul class="nav navbar-nav nav-pull-right">                                                                                                                                 '+
+      '        <li class="nav-btn">'+currentLogin.FullName+'</li>'+      
+      '        <li class="nav-btn">'+currentLogin.ParCompanyXUserSgq[0].ParCompany.Name+'</li>'+      
+      '        <li class="nav-btn">'+currentCollectDate+'</li>'+      
 	  '        <li><button href="#" class="btn btn-block btn-danger" onclick="logout()" style="color:#fff;margin:7px 7px 7px 0px;padding:6px 15px">Sair</button></li>    '+
       '      </ul>                                                                                                                                                       '+
       '    </div>                                                                                                                                  '+

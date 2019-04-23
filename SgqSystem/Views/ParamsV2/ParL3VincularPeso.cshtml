@@ -80,6 +80,35 @@
 
         </div>
 
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label for="Peso">Avaliação:</label>
+                <input type="text" class="form-control required" id="Evaluation" name="Evaluation">
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label for="Peso">Amostra:</label>
+                <input type="text" class="form-control required" id="Sample" name="Sample">
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label for="Frequencia">Frequência:</label>
+                <select class="form-control required" id="selectParFrequencyAV" name="ParFrequencyId"></select>
+            </div>
+
+        </div>
+
+
+
         <div class="col-sm-2">
 
             <div class="form-group" data-action>
@@ -114,6 +143,15 @@
                             Cargo
                         </th>
                         <th class="col-sm-1">
+                            Avaliação
+                        </th>
+                        <th class="col-sm-1">
+                            Amostra
+                        </th>
+                        <th class="col-sm-1">
+                            Frequência
+                        </th>
+                        <th class="col-sm-1">
                             Peso
                         </th>
                         <th class="col-sm-2">
@@ -136,7 +174,7 @@
         urlSave: '@Url.Action("PostParVinculoPeso", "api/ParLevel3Api")',
 
         load: function (list) {
-
+            debugger
             let id = this.id;
             let urlSave = this.urlSave;
 
@@ -152,6 +190,9 @@
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParDepartment_Id"]', o.ParDepartment_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParGroupParLevel1_Id"]', o.ParGroupParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
+                html += '<td>' + o.Evaluation + '</td>';
+                html += '<td>' + o.Sample + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParFrequencyId"]', o.ParFrequencyId, 'Todos') + '</td>';
                 html += '<td>' + o.Peso + '</td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';

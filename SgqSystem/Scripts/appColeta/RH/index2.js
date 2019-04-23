@@ -30,6 +30,8 @@ function prependDevice(obj, prependTo) {
 }
 
 function onDeviceReady() {
+	
+	onOpenAppColeta();
 
 	if (device.platform == 'browser') {
 		navigator.webkitPersistentStorage.requestQuota(
