@@ -14,7 +14,6 @@ using System.Globalization;
 using System.Collections;
 using DTO;
 using SgqSystem.Helpers;
-using SGQDBContextYTOARA;
 using SgqSystem.Controllers.Api.App;
 using System.Data;
 using System.Text;
@@ -45,17 +44,12 @@ namespace SgqSystem.Services
         public SqlConnection db;
         public SqlConnection SGQ_GlobalADO;
 
-        //Contexto util de dados para Ytoara
-        private SGQDBContext_YTOARA ytoaraUtil;
-
         Dominio.SgqDbDevEntities dbEf;
 
         public SyncServices()
         {
 
             conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-            ytoaraUtil = new SGQDBContext_YTOARA();
 
             if (GlobalConfig.Brasil)
             {
@@ -5982,15 +5976,6 @@ setTimeout(function(){
             }
 
             return retorno;
-        }
-
-        /// <summary>
-        /// Obter tela da Ytoara com o cabeçalho
-        /// </summary>
-        /// <returns></returns>
-        public string GetHeaderYtoara()
-        {
-            return ytoaraUtil.criarHeader(ytoaraUtil.getElementoEstruturado());
         }
 
         /// <summary>

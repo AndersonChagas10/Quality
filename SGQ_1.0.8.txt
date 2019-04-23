@@ -36,6 +36,10 @@ SET IDENTITY_INSERT ParReasonType OFF
 
 GO
 
+SET IDENTITY_INSERT ParReasonType OFF
+
+GO
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReason' AND xtype='U')
 Create Table ParReason (   
 	Id int not null identity PRIMARY KEY,
