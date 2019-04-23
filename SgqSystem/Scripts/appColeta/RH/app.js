@@ -33,25 +33,7 @@ function getAppParametrization(frequencyId) {
 			currentParFrequency_Id = 0;
 	}
 	
-	openMensagem('Sincronizando resultado','blue','white');
-	$.ajax({
-		data: JSON.stringify({
-			ParCompany_Id: currentLogin.ParCompanyXUserSgq[0].ParCompany.Id,
-			CollectionDate: new Date().toISOString()
-		}),
-	  url: urlPreffix + '/api/AppColeta/GetResults/',
-	  type: 'POST',
-	  contentType: "application/json",
-	  success: function (data) {
-		coletasAgrupadas = data;
-		AtualizarArquivoDeColetas();
-		closeMensagem();
-	  },
-	  timeout: 600000,
-	  error: function () {
-		closeMensagem();
-	  }
-	});
+	sincronizarResultado(frequencyId);
 	
 	if(frequencyId != currentParFrequency_Id){
 		currentParFrequency_Id = frequencyId;
@@ -82,6 +64,34 @@ function getAppParametrization(frequencyId) {
 			closeMensagem();
 		});
 	}
+}
+
+function sincronizarResultado(frequencyId){
+	openMensagem('Sincronizando resultado','blue','white');
+	$.ajax({
+		data: JSON.stringify({
+			ParCompany_Id: currentLogin.ParCompanyXUserSgq[0].ParCompany.Id,
+			CollectionDate: new Date().toISOString()
+		}),
+	  url: urlPreffix + '/api/AppColeta/GetResults/',
+	  type: 'POST',
+	  contentType: "application/json",
+	  success: function (data) {
+		coletasAgrupadas = data;
+		AtualizarArquivoDeColetas();
+		closeMensagem();
+	  },
+	  timeout: 600000,
+	  error: function () {
+		closeMensagem();
+	  }
+	});
+}
+
+function sincronizarColeta(){
+	openMensagem('Iniciada sequencia forçada de sincronização','orange','white');
+	enviarColeta();
+	closeMensagem(2000);
 }
 
 function showAllGlobalVar() {

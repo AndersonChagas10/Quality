@@ -54,6 +54,7 @@ $('body').on('click', '#btnLogin', function (event) {
 		if($('#inputUserName').val() == currentLogin.Name
 		&& AES.Encrypt($('#inputPassword').val()) == currentLogin.Password){
 			globalLoginOnline = false;
+			currentParFrequency_Id = parametrization.currentParFrequency_Id;
 			loginSuccess(currentLogin);
 			return;
 		}
@@ -69,6 +70,10 @@ $('body').on('click', '#btnLogin', function (event) {
         type: 'POST',
         success: function (data) {
 
+			parametrization = null;
+            _writeFile("appParametrization.txt", '', function () {
+			 });
+			 
             _writeFile("login.txt", JSON.stringify(data.Retorno), function () {
 				globalLoginOnline = true;
 				loginSuccess(data.Retorno);
