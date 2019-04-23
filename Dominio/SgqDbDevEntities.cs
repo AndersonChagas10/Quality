@@ -40,7 +40,7 @@ namespace Dominio
                 if (entity.State == EntityState.Added)
                 {
                     ((BaseModel)entity.Entity).AddDate = DateTime.Now;
-                    ((BaseModel)entity.Entity).AlterDate = DateTime.Now;
+                    //((BaseModel)entity.Entity).AlterDate = DateTime.Now;
                 }
                 else
                 {
