@@ -1,5 +1,10 @@
 function getHeader(){
     var html = '';
+	
+	var parCompanys = $.grep(currentLogin.ParCompanyXUserSgq, function(o,i){ return o.ParCompany.Id == currentLogin.ParCompany_Id});
+	var parCompanyName = (parCompanys.length > 0 
+	&& typeof(parCompanys[0].ParCompany) != 'undefined')? parCompanys[0].ParCompany.Name : "";
+	
 
 html = '<nav class="navbar navbar navbar-inverse">                                                                                                                      '+
       '  <div class="container-fluid">                                                                                                                                   '+
@@ -14,11 +19,12 @@ html = '<nav class="navbar navbar navbar-inverse">                              
       '    </div>                                                                                                                                                        '+
       '    <div id="navbar" class="navbar-collapse collapse">                                                                                                            '+
       '      <ul class="nav navbar-nav">                                                                                                                                 '+
-      '        <li><a href="#" onclick="sincronizar()">Sincronizar</a></li>                                                                                             '+      
+      '        <li><a href="#" onclick="sincronizarColeta()">Sincronizar Coletas</a></li>                                                                                             '+     
+      '        <li><a href="#" onclick="sincronizarResultado()">Sincronizar Resultado</a></li>                                                                                             '+      
       '      </ul>                                                                                                                                                       '+
       '      <ul class="nav navbar-nav nav-pull-right">                                                                                                                                 '+
       '        <li class="nav-btn">'+currentLogin.FullName+'</li>'+      
-      '        <li class="nav-btn">'+currentLogin.ParCompanyXUserSgq[0].ParCompany.Name+'</li>'+      
+      '        <li class="nav-btn">'+parCompanyName+'</li>'+      
       '        <li class="nav-btn">'+currentCollectDate+'</li>'+      
 	  '        <li><button href="#" class="btn btn-block btn-danger" onclick="logout()" style="color:#fff;margin:7px 7px 7px 0px;padding:6px 15px">Sair</button></li>    '+
       '      </ul>                                                                                                                                                       '+
@@ -37,10 +43,4 @@ html = '<nav class="navbar navbar navbar-inverse">                              
 '</footer>';
 	return html;
 	
-}
-
-function sincronizar(){
-	openMensagem('Iniciada sequencia forçada de sincronização','orange','white');
-	enviarColeta();
-	closeMensagem(2000);
 }
