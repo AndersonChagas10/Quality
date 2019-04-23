@@ -653,13 +653,21 @@ namespace Dominio.Services
 
                     try
                     {
-                        var todosOsPerfisSgqBrAssociados = listaDePerfis.Where(r => usuarioPerfilEmpresaSgqBr.Any(upe => upe.nCdPerfil == r.nCdPerfil)).ToList();
+                        var todosOsPerfisSgqBrAssociados = listaDePerfis
+                            .Where(r => usuarioPerfilEmpresaSgqBr.Any(upe => upe.nCdPerfil == r.nCdPerfil))
+                            .Select(x=> x.nCdPerfil.ToString())
+                            .ToList();
                         if (todosOsPerfisSgqBrAssociados.Count > 0)
                         {
-                            var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id && (todosOsPerfisSgqBrAssociados.Any(t => !(t.nCdPerfil.ToString() == r.Role)))).ToList();
+                            db.Configuration.LazyLoadingEnabled = false;
+                            var existentesSomenteSgqGlobal = db.ParCompanyXUserSgq
+                                .Where(r => r.UserSgq_Id == userDto.Id 
+                                && (!todosOsPerfisSgqBrAssociados.Contains(r.Role)))
+                                .ToList();
 
                             foreach (var removerPerfilSgqGlobal in existentesSomenteSgqGlobal)
                             {/*remove se existir no global e nao existir no br*/
+                                db.ParCompanyXUserSgq.Attach(removerPerfilSgqGlobal);
                                 db.ParCompanyXUserSgq.Remove(removerPerfilSgqGlobal);
                             }
                         }
