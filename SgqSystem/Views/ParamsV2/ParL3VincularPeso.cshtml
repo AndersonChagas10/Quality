@@ -190,8 +190,10 @@
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParDepartment_Id"]', o.ParDepartment_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParGroupParLevel1_Id"]', o.ParGroupParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
-                html += '<td>' + o.Evaluation + '</td>';
-                html += '<td>' + o.Sample + '</td>';
+                var Av = o.Evaluation !== null ? o.Evaluation : 0;
+                var Am = o.Sample !== null ? o.Sample : 0;
+                html += '<td>' + Av + '</td>';
+                html += '<td>' + Am + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParFrequencyId"]', o.ParFrequencyId, 'Todos') + '</td>';
                 html += '<td>' + o.Peso + '</td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
