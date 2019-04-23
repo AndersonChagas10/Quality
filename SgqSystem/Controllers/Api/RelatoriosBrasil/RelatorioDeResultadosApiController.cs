@@ -1350,6 +1350,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereCluster = "";
             var whereStructure = "";
             var whereCriticalLevel = "";
+            var whereParCompany = "";
             var whereUnit = "";
 
             if (form.clusterGroupId > 0)
@@ -1377,6 +1378,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereCriticalLevel = $@"  AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
+            if (form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
+            {
+                whereParCompany = $@"AND S.ParCompany_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
+            }
 
 
             var where = string.Empty;
@@ -1403,9 +1408,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                   whereCluster +
                   whereStructure +
                   whereCriticalLevel +
+                  whereParCompany +
                   whereUnit +
                 @"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
                   AND C.IsActive = 1
                 GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name, S.mesData
                 
@@ -1449,6 +1455,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereCluster = "";
             var whereStructure = "";
             var whereCriticalLevel = "";
+            var whereParCompany = "";
             var whereUnit = "";
 
             if (form.clusterGroupId > 0)
@@ -1476,6 +1483,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereCriticalLevel = $@"  AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
+            if (form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
+            {
+                whereParCompany = $@"AND S.ParCompany_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
+            }
+
             var where = string.Empty;
             where += "";
 
@@ -1499,9 +1511,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                whereCluster +
                whereStructure +
                whereCriticalLevel +
+               whereParCompany +
                whereUnit +
                @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
                 AND C.IsActive = 1
                GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -1510,41 +1523,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                       ) A
                      ";
 
-            //var queryLocal =
-            //                    $@" SELECT
-            //                     '0001-01-01' [date]
-            //                       ,  0 as level1Id                
-            //                       ,'a1' as Level1Name             
-            //                       ,'a2' as ChartTitle             
-            //                       ,0 as UnidadeId               
-            //                       ,'a4' as UnidadeName            
-            //                       ,20.0 AS procentagemNc          
-            //                       ,10.0 AS Meta           
-            //                       ,50.0 as av                     
-            //                      ,case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull([PONTOS ATINGIDOS OK], 0)) / sum(isnull(PontosIndicador, 0)) * 100 end nc
-            //                      FROM(
-
-            //                      SELECT
-            //                      '0001-01-01' AS mesData,C.Initials companySigla,
-            //                      SUM(PontosIndicador) PontosIndicador,
-            //                      CASE WHEN CASE WHEN SUM(PontosIndicador) = 0 OR SUM(PontosIndicador) IS NULL THEN 0 ELSE SUM(PontosAtingidos) / SUM(PontosIndicador) END < 0.7 THEN 0 ELSE SUM(PontosAtingidos) END PontosAtingidos
-            //                      FROM ParStructure Reg
-            //                      LEFT JOIN ParCompanyXStructure CS
-            //                      ON CS.ParStructure_Id = Reg.Id
-            //                      left join ParCompany C
-            //                      on C.Id = CS.ParCompany_Id
-            //                      left join #SCORE S  
-            //                      on C.Id = S.ParCompany_Id INNER JOIN ParCompany PC ON S.ParCompany_id = pc.id
-            //                      where 1=1 AND pC.IsActive = 1  
-            //                    " + whereClusterGroup +
-            //                        whereCluster +
-            //                        whereStructure +
-            //                        whereCriticalLevel +
-
-            //                    @"GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, s.level1id
-
-            //                      ) AAA 
-            //                      GROUP BY mesData";
 
 
             #endregion
@@ -2360,7 +2338,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null" +
                     "\n group by mesData ORDER BY 10";
 
             #endregion
@@ -3940,7 +3918,7 @@ FROM (SELECT
             
             	INNER JOIN ParStructureGroup SG WITH (NOLOCK)
             		ON S.ParStructureGroup_Id = SG.ID 
-            		AND SG.ID = 2 
+            		AND SG.ID = 3 
             	
             	LEFT JOIN ParScoreType ST WITH (NOLOCK)
             		ON L1.ParConsolidationType_Id = ST.Id 
@@ -4320,7 +4298,7 @@ FROM (SELECT
             
             	INNER JOIN ParStructureGroup SG WITH (NOLOCK)
             		ON S.ParStructureGroup_Id = SG.ID 
-            		AND SG.ID = 2 
+            		AND SG.ID = 3 
             	
             	LEFT JOIN ParScoreType ST WITH (NOLOCK)
             		ON L1.ParConsolidationType_Id = ST.Id 
@@ -4665,7 +4643,7 @@ FROM (SELECT
         
         	INNER JOIN ParStructureGroup SG WITH (NOLOCK)
         		ON S.ParStructureGroup_Id = SG.ID 
-        		AND SG.ID = 2 
+        		AND SG.ID = 3 
         	
         	LEFT JOIN ParScoreType ST WITH (NOLOCK)
         		ON L1.ParConsolidationType_Id = ST.Id 

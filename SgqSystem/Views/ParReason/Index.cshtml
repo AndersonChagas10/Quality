@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Dominio.ParReason>
 
 @{
-    ViewBag.Title = Resources.Resource.LateReason;
+    ViewBag.Title = Resources.Resource.reason;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,7 +15,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.LateReason</span>
+                    <span>@Resources.Resource.reason</span>
                 </li>
             </ul>
             <div class="page-toolbar"> </div>
@@ -27,7 +27,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.LateReason</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.reason</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -40,7 +40,10 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Resources.Resource.LateReason
+                                                @Resources.Resource.reason
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.reason_type
                                             </th>
                                             <th>
                                                 @Resources.Resource.is_active
@@ -54,6 +57,9 @@
                                             <tr>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Motivo)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ParReasonType.Name)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.IsActive)
@@ -77,6 +83,7 @@
 
     $(document).ready(function () {
         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
             null,
             null,
             { "bSearchable": false }
