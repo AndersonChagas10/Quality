@@ -178,7 +178,10 @@ namespace SgqSystem.Controllers.V2.Api
                         ParDepartment_Id = x.ParDepartment_Id,
                         ParGroupParLevel1_Id = x.ParGroupParLevel1_Id,
                         Peso = x.Peso,
-                        ParCargo_Id = x.ParCargo_Id
+                        ParCargo_Id = x.ParCargo_Id,
+                        ParFrequency_Id = x.ParFrequencyId,
+                        Evaluation = x.Evaluation,
+                        Sample = x.Sample
                     })
                     .ToList();
 
