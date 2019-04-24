@@ -257,6 +257,9 @@ namespace SgqSystem.Controllers.V2.Api
                         parVinculoPesoOld.ParLevel3Group_Id = parVinculoPeso.ParLevel3Group_Id;
                         parVinculoPesoOld.ParCargo_Id = parVinculoPeso.ParCargo_Id;
                         parVinculoPesoOld.IsActive = parVinculoPeso.IsActive;
+                        parVinculoPesoOld.Sample = parVinculoPeso.Sample;
+                        parVinculoPesoOld.Evaluation = parVinculoPeso.Evaluation;
+                        parVinculoPesoOld.ParFrequencyId = parVinculoPeso.ParFrequencyId;
                     }
                     else
                     {
