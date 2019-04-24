@@ -161,6 +161,44 @@ BEGIN
 	ALTER TABLE ParEvaluationXDepartmentXCargo ADD ParFrequencyId int null;
 END
 
+GO
+
+IF COL_LENGTH('ParVinculoPeso','ParFrequencyId') IS NOT NULL
+BEGIN
+	ALTER TABLE ParVinculoPeso ADD ParFrequencyId int null 
+END
+
+GO
+
+IF COL_LENGTH('ParVinculoPeso','Evaluation') IS NOT NULL
+BEGIN
+	ALTER TABLE ParVinculoPeso ADD Evaluation int null 
+
+END
+
+GO
+
+IF COL_LENGTH('ParVinculoPeso','Evaluation') IS NOT NULL
+BEGIN
+	ALTER TABLE ParVinculoPeso ADD Evaluation int null 
+END
+
+GO
+
+IF COL_LENGTH('ParVinculoPeso','Sample') IS NOT NULL
+BEGIN	
+	ALTER TABLE ParVinculoPeso ADD Sample int null  
+END
+
+GO
+
+IF COL_LENGTH('ParLevel3','CaracteristicaDeRisco') IS NOT NULL
+BEGIN	
+	ALTER TABLE ParLevel3 ADD CaracteristicaDeRisco varchar(100) null 
+END
+
+
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3XHelp' AND xtype='U')
 create table ParLevel3XHelp (
 	Id int primary key identity not null,
