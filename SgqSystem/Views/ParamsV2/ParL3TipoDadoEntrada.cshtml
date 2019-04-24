@@ -96,6 +96,52 @@
 
         </div>
 
+        <div id="allObjLikert" class="col-sm-12">
+
+            <div id="divEscalaLikert" style="display:none;" class="margin-top">
+                <input class="hidden" data-column="inpAvaliacaoId" />
+                <table id="tabelaLikert" style="max-width: 100%;" class="table table-condensed no-margin margin-top">
+                    <thead>
+                        <tr>
+                            <th id="intervalo">Intervalo</th>
+                            <th id="valor">Valor</th>
+                            <th id="cor">Cor</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div id="divCamposLikertIncluidos" style="display:none">
+                <table id="camposLikertIncluidos" class="table" role="grid">
+                    <thead>
+                        <tr role="row">
+                            <th>Intervalo</th>
+                            <th>Valor</th>
+                            <th>Cor</th>
+                            <th>Ação</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+
+            @*<div class="row">
+                <div class="td-erp">
+                    <div id="divBtnSalvar" class="col-sm-6">
+                        <button class="form-control btn btn-primary" data-add>Salvar</button>
+                    </div>
+
+                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+
+
         <div class="col-sm-2">
 
             <div class="form-group" data-action>
@@ -150,6 +196,43 @@
 </form>
 
 <script>
+
+    //$("#selectL3TipoDadoParLevel3InputType :selected").val();
+
+    //$("#selectL3TipoDadoParLevel3InputType").on('change', function () {
+    //});
+
+    $("#IntervalMin, #IntervalMax").on('input', function () {
+        if ($("#IntervalMin").val() !== null && $("#IntervalMax").val() !== null) {
+            montaTabelaLikert(null);
+            $('#divEscalaLikert').show();
+        }
+    });
+
+    function montaTabelaLikert(data, valor) {
+
+        $("#tabelaLikert tbody").append("<tr>"
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpIntervalo" disabled="disabled" /></td>'
+            + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" /></td>'
+            + '<td><input type="color" name="favcolor" value = "#ff0000"  class="input-sm" data-column="inpCor" /></td>'
+            + '<td class="hidden"> <input data-column="inpParLevel3Value_Id" class="hidden" /></td>'
+            + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
+            + "</tr>");
+
+
+        if (data != null && data != undefined) {
+
+            $("#tabelaLikert tbody tr:last").data(data);
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpValor"]').val(data.Valor);
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpCor"]').val(data.Cor);
+            $("#tabelaLikert tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
+            $("#tabelaLikert tbody tr:last").find('[data-column=inpId]').val(data.Id);
+        } else {
+            $("#tabelaLikert tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
+            $("#tabelaLikert tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
+        }
+    }
 
     var ParL3TipoDado = {
 
