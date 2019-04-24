@@ -159,6 +159,8 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParLevel3BoolTrueAppViewModel> listaParLevel3BoolTrue;
             List<ParLevel3BoolFalseAppViewModel> listaParLevel3BoolFalse;
 
+            List<ParLevel3XHelp> listaParLevel3XHelp;
+
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -338,6 +340,18 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList();
 
+                listaParLevel3XHelp = db.ParLevel3XHelp
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    //.Select(x => new ParLevel3XHelp()
+                    //{
+                    //    Id = x.Id,
+                    //    ParLevel3_Id = x.ParLevel3_Id,
+                    //    Titulo = x.Titulo,
+                    //    Corpo = x.Corpo
+                    //})
+                    .ToList();
+
             }
 
             return Ok(new
@@ -355,6 +369,7 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParDepartment,
                 listaParCargo,
                 listaParCargoXDepartment,
+                listaParLevel3XHelp
             });
         }
 

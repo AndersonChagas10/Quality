@@ -16,25 +16,25 @@ function openColeta(levels) {
         });
     });
 
-    html = getHeader()+
-		'<div class="container-fluid">                                                                                                                   '+
-		'	<div class="">                                                                                                                      '+
-		'		<div class="col-xs-12">                                                                                                            '+
-		'			<div class="panel panel-primary">                                                                                              '+
-		'			  <div class="panel-heading">                                                                                                  '+
-		'				<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   '+
-		'			  </div>                                                                                                                       '+
-		'			  <div class="panel-body">                                                                                                     '+
-		getContador()+
-		'				<form data-form-coleta>                                                                                                    '+
-		coleta+
-		'					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       '+
-		'				</form>                                                                                                                    '+
-		'			  </div>                                                                                                                       '+
-        '       </div>                                                                                                                             '+
-        '    </div>                                                                                                                                '+
-		'	</div>                                                                                                                                 '+
-		'</div>';
+    html = getHeader() +
+        '<div class="container-fluid">                                                                                                                   ' +
+        '	<div class="">                                                                                                                      ' +
+        '		<div class="col-xs-12">                                                                                                            ' +
+        '			<div class="panel panel-primary">                                                                                              ' +
+        '			  <div class="panel-heading">                                                                                                  ' +
+        '				<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
+        '			  </div>                                                                                                                       ' +
+        '			  <div class="panel-body">                                                                                                     ' +
+        getContador() +
+        '				<form data-form-coleta>                                                                                                    ' +
+        coleta +
+        '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       ' +
+        '				</form>                                                                                                                    ' +
+        '			  </div>                                                                                                                       ' +
+        '       </div>                                                                                                                             ' +
+        '    </div>                                                                                                                                ' +
+        '	</div>                                                                                                                                 ' +
+        '</div>';
 
     $('div#app').html(html);
 
@@ -45,26 +45,26 @@ var currentEvaluationSample = {};
 function getContador() {
     currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, currentParCargo_Id);
     return '<div class="col-xs-12 alert-info" style="padding-top:10px;padding-bottom:10px">' +
-		'	<div class="col-xs-4">       ' +
-		'		Avaliação                ' +
-		'	</div>                       ' +
-		'	<div class="col-xs-4">       ' +
-		'		Amostra                  ' +
-		'	</div>                       ' +
-		'	<div class="col-xs-4">       ' +
-		'		&nbsp;                   ' +
-		'	</div>                       ' +
-		'	<div class="col-xs-4">       ' +
-		'		<strong>' + currentEvaluationSample.Evaluation + '/' + currentTotalEvaluationValue + '</strong>    ' +
-		'	</div>                       ' +
-		'	<div class="col-xs-4">       ' +
-		'		<strong>' + currentEvaluationSample.Sample + '/' + currentTotalSampleValue + '</strong>    ' +
-		'	</div>                       ' +
-		'	<div class="col-xs-4">       ' +
-		'		 &nbsp;                  ' +
-		'	</div>                       ' +
-		'	<div class="clearfix"></div> ' +
-		'</div>                          ';
+        '	<div class="col-xs-4">       ' +
+        '		Avaliação                ' +
+        '	</div>                       ' +
+        '	<div class="col-xs-4">       ' +
+        '		Amostra                  ' +
+        '	</div>                       ' +
+        '	<div class="col-xs-4">       ' +
+        '		&nbsp;                   ' +
+        '	</div>                       ' +
+        '	<div class="col-xs-4">       ' +
+        '		<strong>' + currentEvaluationSample.Evaluation + '/' + currentTotalEvaluationValue + '</strong>    ' +
+        '	</div>                       ' +
+        '	<div class="col-xs-4">       ' +
+        '		<strong>' + currentEvaluationSample.Sample + '/' + currentTotalSampleValue + '</strong>    ' +
+        '	</div>                       ' +
+        '	<div class="col-xs-4">       ' +
+        '		 &nbsp;                  ' +
+        '	</div>                       ' +
+        '	<div class="clearfix"></div> ' +
+        '</div>                          ';
 }
 
 function getLevel1(level1) {
@@ -120,7 +120,7 @@ function getInputLevel3(level3, level2, level1) {
 
             default:
                 retorno += "";
-				return '';
+                return '';
                 break;
         }
 
@@ -134,137 +134,143 @@ function getInputLevel3(level3, level2, level1) {
 
 function getBinario(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">'+
-			level3.Name+
-		'</div>                                                                                     '+
-		'<div class="col-xs-4 input-sm">                                                            '+
-		'</div>                                                                                     '+
-		'<div class="col-xs-3">                                                                     '+
-		'	<button type="button" class ="btn btn-default btn-sm btn-block"                         '+
-        '    data-binario data-positivo="'+level3.ParLevel3BoolTrue.Name+'"                          '+
+    var btnInfo = '';
+
+    if (level3.ParLevel3XHelp)
+        btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" data-info> ? </button>'
+
+    var html = '<div class="col-xs-4 input-sm">' +
+        level3.Name +
+        '</div>                                                                                     ' +
+        '<div class="col-xs-4 input-sm">                                                            ' +
+        '</div>                                                                                     ' +
+        '<div class="col-xs-3">                                                                     ' +
+        '	<button type="button" class ="btn btn-default btn-sm btn-block"                         ' +
+        '    data-binario data-positivo="' + level3.ParLevel3BoolTrue.Name + '"                          ' +
         '    data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>                    ' +
-		'</div>                                                                                     '+
-		'<div class="col-xs-1">                                                                     '+
-		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>    '+
-		'</div>                                                                                     '+
-		'<div class="clearfix"></div>';
+        '</div>                                                                                     ' +
+        '<div class="col-xs-1">                                                                     ' +
+        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>    ' +
+        btnInfo +
+        '</div>                                                                                     ' +
+        '<div class="clearfix"></div>';
     return html;
 }
 
 function getBinarioComTexto(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">'+
-        level3.Name+
-		'</div>                                                                                            '+
-		'<div class="col-xs-2">                                                                            '+
-		'</div>                                                                                            '+
-		'<div class="col-xs-2">                                                                            '+
-		'	<input type="text" class="col-xs-12 input-sm" data-texto/>                                     '+
-		'</div>                                                                                            '+
-		'<div class="col-xs-3">                                                                            '+
-		'	<button type="button" class="btn btn-default btn-sm btn-block"                                 '+
-		'data-binario data-positivo="'+level3.ParLevel3BoolTrue.Name+'"                                     '+
-		'data-negativo="' + level3.ParLevel3BoolFalse.Name + '">'+level3.ParLevel3BoolTrue.Name+ '</button>                                    ' +
-		'</div>                                                                                            '+
-		'<div class="col-xs-1">                                                                            '+
-		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>           '+
-		'</div>                                                                                            '+
-		'<div class="clearfix"></div>';
+    var html = '<div class="col-xs-4 input-sm">' +
+        level3.Name +
+        '</div>                                                                                            ' +
+        '<div class="col-xs-2">                                                                            ' +
+        '</div>                                                                                            ' +
+        '<div class="col-xs-2">                                                                            ' +
+        '	<input type="text" class="col-xs-12 input-sm" data-texto/>                                     ' +
+        '</div>                                                                                            ' +
+        '<div class="col-xs-3">                                                                            ' +
+        '	<button type="button" class="btn btn-default btn-sm btn-block"                                 ' +
+        'data-binario data-positivo="' + level3.ParLevel3BoolTrue.Name + '"                                     ' +
+        'data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>                                    ' +
+        '</div>                                                                                            ' +
+        '<div class="col-xs-1">                                                                            ' +
+        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>           ' +
+        '</div>                                                                                            ' +
+        '<div class="clearfix"></div>';
     return html;
 }
 
 function getIntervalo(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">'+
-        level3.Name+
-		'</div>                                                                                       '+
-		'<div class="col-xs-4 input-sm">                                                              '+
-		'	MIN: '+level3.ParLevel3Value.IntervalMin+' | MAX: '+level3.ParLevel3Value.IntervalMax+
-		'</div>                                                                                       '+
-		'<div class="col-xs-3">                                                                       '+
-		'	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>       '+
-		'	<input type="text" class="col-xs-8 input input-sm" data-valor/>                           '+
-		'	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>        '+
-		'</div>                                                                                       '+
-		'<div class="col-xs-1">                                                                       '+
-		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>      '+
-		'</div>                                                                                       '+
-		'<div class="clearfix"></div>';
+    var html = '<div class="col-xs-4 input-sm">' +
+        level3.Name +
+        '</div>                                                                                       ' +
+        '<div class="col-xs-4 input-sm">                                                              ' +
+        '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
+        '</div>                                                                                       ' +
+        '<div class="col-xs-3">                                                                       ' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>       ' +
+        '	<input type="text" class="col-xs-8 input input-sm" data-valor/>                           ' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>        ' +
+        '</div>                                                                                       ' +
+        '<div class="col-xs-1">                                                                       ' +
+        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>      ' +
+        '</div>                                                                                       ' +
+        '<div class="clearfix"></div>';
     return html;
 }
 
 function getIntervaloComObservacao(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">'+
-        level3.Name+
-		'</div>'+
-		'<div class="col-xs-2 input-sm">'+
-		'	MIN: '+level3.ParLevel3Value.IntervalMin+' | MAX: '+level3.ParLevel3Value.IntervalMax+
-		'</div>                                                                                   '+
-		'<div class="col-xs-2">                                                                   '+
-		'	<input type="text" class="col-xs-12 input-sm" data-texto/>                            '+
-		'</div>                                                                                   '+
-		'<div class="col-xs-3">                                                                   '+
-		'	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>   '+
-		'	<input type="text" class="col-xs-8 input-sm" data-valor/>                             '+
-		'	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>    '+
-		'</div>                                                                                   '+
-		'<div class="col-xs-1">                                                                   '+
-		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>  '+
-		'</div>                                                                                   '+
-		'<div class="clearfix"></div>';
+    var html = '<div class="col-xs-4 input-sm">' +
+        level3.Name +
+        '</div>' +
+        '<div class="col-xs-2 input-sm">' +
+        '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
+        '</div>                                                                                   ' +
+        '<div class="col-xs-2">                                                                   ' +
+        '	<input type="text" class="col-xs-12 input-sm" data-texto/>                            ' +
+        '</div>                                                                                   ' +
+        '<div class="col-xs-3">                                                                   ' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>   ' +
+        '	<input type="text" class="col-xs-8 input-sm" data-valor/>                             ' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>    ' +
+        '</div>                                                                                   ' +
+        '<div class="col-xs-1">                                                                   ' +
+        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>  ' +
+        '</div>                                                                                   ' +
+        '<div class="clearfix"></div>';
     return html;
 }
 
 function getObservacao(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">'+
-        level3.Name+
-		'</div>                                                                                      '+
-		'<div class="col-xs-4">                                                                      '+
-		'</div>                                                                                      '+
-		'<div class="col-xs-3">                                                                      '+
-		'	<input type="text" class="col-xs-12 input-sm" data-texto/>                               '+
-		'</div>                                                                                      '+
-		'<div class="col-xs-1">                                                                      '+
-		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>     '+
-		'</div>                                                                                      '+
-		'<div class="clearfix"></div>';
+    var html = '<div class="col-xs-4 input-sm">' +
+        level3.Name +
+        '</div>                                                                                      ' +
+        '<div class="col-xs-4">                                                                      ' +
+        '</div>                                                                                      ' +
+        '<div class="col-xs-3">                                                                      ' +
+        '	<input type="text" class="col-xs-12 input-sm" data-texto/>                               ' +
+        '</div>                                                                                      ' +
+        '<div class="col-xs-1">                                                                      ' +
+        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>     ' +
+        '</div>                                                                                      ' +
+        '<div class="clearfix"></div>';
     return html;
 }
 
 function getTexto(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">'+
-        level3.Name+
-		'</div>                                                                                      '+
-		'<div class="col-xs-4">                                                                      '+
-		'</div>                                                                                      '+
-		'<div class="col-xs-3">                                                                      '+
-		'	<input type="text" class="col-xs-12 input-sm" data-valor/>                               '+
-		'</div>                                                                                      '+
-		'<div class="col-xs-1">                                                                      '+
-		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>     '+
-		'</div>                                                                                      '+
-		'<div class="clearfix"></div>';
+    var html = '<div class="col-xs-4 input-sm">' +
+        level3.Name +
+        '</div>                                                                                      ' +
+        '<div class="col-xs-4">                                                                      ' +
+        '</div>                                                                                      ' +
+        '<div class="col-xs-3">                                                                      ' +
+        '	<input type="text" class="col-xs-12 input-sm" data-valor/>                               ' +
+        '</div>                                                                                      ' +
+        '<div class="col-xs-1">                                                                      ' +
+        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>     ' +
+        '</div>                                                                                      ' +
+        '<div class="clearfix"></div>';
     return html;
 }
 
 function getLikert(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">'+
-        level3.Name+
-		'</div>                                                                                    '+
-		'<div class="col-xs-4 input-sm">                                                           '+
-		'	Escala: '+level3.ParLevel3Value.IntervalMin+' - '+level3.ParLevel3Value.IntervalMax+
-		'</div>                                                                                    '+
-		'<div class="col-xs-3">                                                                    '+
-		'	<input type="text" class="col-xs-12 input-sm" data-valor/>                             '+
-		'</div>                                                                                    '+
-		'<div class="col-xs-1">                                                                    '+
-		'	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>   '+
-		'</div>                                                                                    '+
-		'<div class="clearfix"></div>';
+    var html = '<div class="col-xs-4 input-sm">' +
+        level3.Name +
+        '</div>                                                                                    ' +
+        '<div class="col-xs-4 input-sm">                                                           ' +
+        '	Escala: ' + level3.ParLevel3Value.IntervalMin + ' - ' + level3.ParLevel3Value.IntervalMax +
+        '</div>                                                                                    ' +
+        '<div class="col-xs-3">                                                                    ' +
+        '	<input type="text" class="col-xs-12 input-sm" data-valor/>                             ' +
+        '</div>                                                                                    ' +
+        '<div class="col-xs-1">                                                                    ' +
+        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>   ' +
+        '</div>                                                                                    ' +
+        '<div class="clearfix"></div>';
     return html;
 }
 
@@ -323,9 +329,9 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
 
 $('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', function (e) {
     var linha = $(this).parents('[data-conforme]');
-    
-    if (parseFloat($(this).val()) >= parseFloat($(linha).attr('data-min')) 
-		&& parseFloat($(this).val()) <= parseFloat($(linha).attr('data-max'))) {
+
+    if (parseFloat($(this).val()) >= parseFloat($(linha).attr('data-min'))
+        && parseFloat($(this).val()) <= parseFloat($(linha).attr('data-max'))) {
         resetarLinha(linha);
         linha.attr('data-conforme', '1');
     } else {
@@ -334,6 +340,23 @@ $('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', f
         linha.attr('data-conforme', '0');
     }
 });
+
+$('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
+
+    var l3Id = $(this).attr('l3id');
+
+    var l3xHelp = $.grep(parametrization.listaParLevel3XHelp, function(obj){
+        return obj.ParLevel3_Id == l3Id;
+
+    })[0];
+
+    var body = l3xHelp.Corpo;
+    var title = l3xHelp.Titulo;
+
+    openModal(title, body);
+
+});
+
 
 function resetarLinha(linha) {
     linha.attr('data-conforme', '1');
@@ -349,7 +372,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     var coletaAgrupada = null;
     $(coletasAgrupadas).each(function (i, o) {
         if (o.ParCargo_Id == currentParCargo_Id
-		&& o.ParDepartment_Id == currentParDepartment_Id) {
+            && o.ParDepartment_Id == currentParDepartment_Id) {
             coletaAgrupada = o;
         }
     });
@@ -368,23 +391,23 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
         var data = $(o);
         coletaJson.push(
-			{
-			    Evaluation: coletaAgrupada.Evaluation,
-			    Sample: coletaAgrupada.Sample,
-			    ParDepartment_Id: currentParDepartment_Id,
-			    ParCargo_Id: currentParCargo_Id,
-			    ParLevel1_Id: $(data).attr('data-level1'),
-			    ParLevel2_Id: $(data).attr('data-level2'),
-			    ParLevel3_Id: $(data).attr('data-level3'),
-			    ParCompany_Id: curretParCompany_Id,
-			    IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),
-			    IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),
-			    IsConform: $(data).attr('data-conforme') == "1",
-			    Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
-			    ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
-			    IsNotEvaluate: $(data).attr('data-conforme-na') == "",
-			    CollectionDate: new Date().toISOString(),
-				UserSgq_Id:currentLogin.Id,               
+            {
+                Evaluation: coletaAgrupada.Evaluation,
+                Sample: coletaAgrupada.Sample,
+                ParDepartment_Id: currentParDepartment_Id,
+                ParCargo_Id: currentParCargo_Id,
+                ParLevel1_Id: $(data).attr('data-level1'),
+                ParLevel2_Id: $(data).attr('data-level2'),
+                ParLevel3_Id: $(data).attr('data-level3'),
+                ParCompany_Id: curretParCompany_Id,
+                IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),
+                IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),
+                IsConform: $(data).attr('data-conforme') == "1",
+                Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
+                ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
+                IsNotEvaluate: $(data).attr('data-conforme-na') == "",
+                CollectionDate: new Date().toISOString(),
+                UserSgq_Id: currentLogin.Id,
 			    /*
 				"UserSgq_Id":1,
 				"Shift_Id":1,
@@ -403,8 +426,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 				"ParHeaderField_Id":1,
 				"ParHeaderField_Value":""
 				*/
-			}
-		);
+            }
+        );
     });
 
     //Se for a primeira, insere na lista de resultados
