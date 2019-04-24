@@ -35,7 +35,7 @@
 
     @if (IsSectionDefined("Styles"))
     {
-        @RenderSection("Styles")    ;
+        @RenderSection("Styles");
     }
     <link rel="icon" href="~/Content/Imagens/favicon.png">
 
@@ -230,10 +230,10 @@
         function openMessageModal(title, content, color) {
 
             var mensagem = $('#messageModal');
-            
-            mensagem.css('background-color','');
-            if(!!color)
-                mensagem.css('background-color',color);
+
+            mensagem.css('background-color', '');
+            if (!!color)
+                mensagem.css('background-color', color);
 
             mensagem.children('.head').html(title);
             mensagem.children('.body').html(content);
@@ -294,7 +294,7 @@
         }
 
         let DicionarioEstatico = @Html.Raw(Json.Encode(ViewBag.DicionarioEstatico));
-        
+
         function getDicionario(key){
             return DicionarioEstatico.filter(obj => obj.Key == key)[0].Value
         }
@@ -511,30 +511,46 @@
         };
 
         $.fn.serializeFormToObjetc = function () {
-            
+
             let o = {};
-            let inputs = this.find('input, select');
+            let inputs = this.find('input, select, div[contentEditable="true"]');
 
             $.each(inputs, function () {
 
-                if (o[this.name] !== undefined) {
+                let name = this.name == undefined ? $(this).attr('name') : this.name;
 
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
+                if (name != undefined) {
+
+
+
+                if (o[name] !== undefined) {
+
+                    if (!o[name].push) {
+                        o[name] = [o[name]];
                     }
 
                     if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
-                        o[this.name].push($(this).prop('checked'));
+                        o[name].push($(this).prop('checked'));
+
+                    } else if ($(this).prop('contentEditable') == 'true') {
+                        o[name] = $(this).html();
+
                     } else {
-                        o[this.name].push(this.value || '');
+                        o[name].push(this.value || '');
                     }
 
                 } else {
 
                     if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
-                        o[this.name] = $(this).prop('checked');
+                        o[name] = $(this).prop('checked');
+
+                    } else if ($(this).prop('contentEditable') == 'true') {
+                        o[name] = $(this).html();
+
                     } else {
-                        o[this.name] = this.value || '';
+                        o[name] = this.value || '';
+                    }
+
                     }
 
                 }

@@ -67,5 +67,8 @@ namespace Dominio
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Result_Level3> Result_Level3 { get; set; }
+
+        public virtual ICollection<ParLevel3XHelp> ParLevel3XHelp { get; set; }
+
     }
 }

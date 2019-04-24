@@ -1985,6 +1985,7 @@
     <Content Include="Views\ParColaborador\Index.cshtml" />
     <Content Include="Views\ParamsV2\ParDCAvam.cshtml" />
     <Content Include="Views\ParamsV2\_Agendamento.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3Ajuda.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

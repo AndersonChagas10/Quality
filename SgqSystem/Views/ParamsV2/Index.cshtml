@@ -141,6 +141,12 @@
     body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(4) a {
         background-color: #ff8821;
     }
+
+    #divAjuda {
+        height: 300px;
+        border: 1px solid #ccc;
+        overflow: auto;
+    }
 </style>
 
 
@@ -325,6 +331,11 @@
                                             Vincular Peso
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="#l3_ajuda" data-toggle="tab">
+                                            Ajuda
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-xs-9">
@@ -343,6 +354,9 @@
                                     </div>
                                     <div class="tab-pane" id="l3_peso">
                                         @Html.Partial("ParL3VincularPeso")
+                                    </div>
+                                    <div class="tab-pane" id="l3_ajuda">
+                                        @Html.Partial("ParL3Ajuda")
                                     </div>
                                 </div>
                             </div>
@@ -499,6 +513,8 @@
         $(`#${div_id} [data-form]`).find('[data-edit]').remove();
         $(`#${div_id} [data-form]`).find('[data-add]').removeClass('hide');
         $(`#${div_id} [data-form]`).removeData('sgq');
+        $(`#${div_id} div[contenteditable="true"]`).html('');
+
     }
 
     let preencheValores = function (element, value) {
@@ -520,8 +536,16 @@
 
             if (value == null)
                 value = 0;
+
             element.val(value);
             element.trigger('change');
+
+        } else if (element.is('div')) {
+
+            if (value == null)
+                value = 0;
+
+            element.html(value);
 
         } else {
 
@@ -619,7 +643,7 @@
                 }
             });
 
-            
+
             $.ajax({
 
                 url: `@Url.Action("GetParLevel3Vinculados", "api/ParLevel3Api")/${$('#selectL1 :selected').val()}/${$(this).val()}`,
@@ -662,7 +686,7 @@
                     //parL3Avam.load(data.Parlevel3.ParLevel3EvaluationSample);
                     ParL3Peso.load(data.Parlevel3.ParVinculoPeso);
                     ParL3TipoDado.load(data.Parlevel3.ParLevel3Value);
-
+                    ParL3Help.load(data.Parlevel3.ParLevel3XHelp);
                     verifyTabs('selectL3', 'l3');
                 },
                 error: function (request, error) {
@@ -897,7 +921,7 @@
         if (obj.ParHeaderField.ParFieldType_Id == 1 || obj.ParHeaderField.ParFieldType_Id == 3) {
 
             if (!obj.ParHeaderField.ParMultipleValues ||
-                obj.ParHeaderField.ParMultipleValues.length <= 0 || 
+                obj.ParHeaderField.ParMultipleValues.length <= 0 ||
                 obj.ParHeaderField.ParMultipleValues.filter(item => item.IsActive == true).length == 0 ||
                 !formIsValid(id)) {
                 openMessageModal("Alerta", "Favor Inserir opções antes de salvar");

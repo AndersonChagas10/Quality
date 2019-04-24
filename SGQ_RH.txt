@@ -161,4 +161,13 @@ BEGIN
 	ALTER TABLE ParEvaluationXDepartmentXCargo ADD ParFrequencyId int null;
 END
 
-
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3XHelp' AND xtype='U')
+create table ParLevel3XHelp (
+	Id int primary key identity not null,
+	ParLevel3_Id int not null,
+	Titulo varchar(155),
+	Corpo varchar(max),
+	AddDate datetime2 not null,
+	AlterDate datetime2,
+	IsActive bit not null default 1
+)
