@@ -491,7 +491,7 @@ namespace SgqSystem.Controllers.V2.Api
             var sql = $@"
                     SELECT
                     	MAX(EvaluationNumber) Evaluation
-                       ,MAX(Sample) Sample
+                       ,(MAX(Sample)+1) Sample
                        ,ParLevel1_Id
                        ,ParLevel2_Id
                        ,UnitId

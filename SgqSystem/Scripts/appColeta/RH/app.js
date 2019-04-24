@@ -18,9 +18,10 @@ function onOpenAppColeta() {
 			currentLogin = JSON.parse(data);
 
 		_readFile("appParametrization.txt", function (param) {
-			if (typeof (param) != 'undefined' && param.length > 0)
-				parametrization = JSON.parse(param);
-			currentParFrequency_Id = parametrization.currentParFrequency_Id;
+		    if (typeof (param) != 'undefined' && param.length > 0) {
+		        parametrization = JSON.parse(param);
+		        currentParFrequency_Id = parametrization.currentParFrequency_Id;
+		    }
 		});
 	});
 }
