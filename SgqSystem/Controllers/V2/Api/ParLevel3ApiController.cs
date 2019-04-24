@@ -64,7 +64,10 @@ namespace SgqSystem.Controllers.V2.Api
                     db.ParLevel3Value
                     .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
                     .ToList();
-
+                parlevel3Result.Parlevel3.ParLevel3XHelp =
+                    db.ParLevel3XHelp
+                    .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
+                    .ToList();
             }
 
             return Ok(parlevel3Result);
@@ -328,6 +331,50 @@ namespace SgqSystem.Controllers.V2.Api
                 catch (Exception ex)
                 {
 
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        [HttpPost]
+        [Route("PostParLevel3XHelp")]
+        public IHttpActionResult PostParLevel3XHelp(ParLevel3XHelp parLevel3XHelp)
+        {
+            if (!SaveOrUpdateParLevel3XHelp(parLevel3XHelp))
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        private bool SaveOrUpdateParLevel3XHelp(ParLevel3XHelp parLevel3XHelp)
+        {
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (parLevel3XHelp.Id > 0)
+                    {
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var parVinculoPesoOld = db.ParLevel3XHelp.Find(parLevel3XHelp.Id);
+                        parVinculoPesoOld.AlterDate = DateTime.Now;
+                        parVinculoPesoOld.IsActive = parLevel3XHelp.IsActive;
+                        parVinculoPesoOld.Titulo = parLevel3XHelp.Titulo;
+                        parVinculoPesoOld.Corpo = parLevel3XHelp.Corpo;
+                    }
+                    else
+                    {
+                        db.ParLevel3XHelp.Add(parLevel3XHelp);
+                    }
+
+                    db.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
                     return false;
                 }
 
