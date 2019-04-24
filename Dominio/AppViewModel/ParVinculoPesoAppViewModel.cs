@@ -29,5 +29,11 @@ namespace Dominio.AppViewModel
         public int? ParLevel2_Id { get; set; }
 
         public int? ParCargo_Id { get; set; }
+
+        public int? ParFrequency_Id { get; set; }
+
+        public int? Evaluation { get; set; }
+
+        public int? Sample { get; set; }
     }
 }

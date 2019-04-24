@@ -101,7 +101,7 @@ function montarLevel3(level1List) {
             level3_Ids.forEach(function (parLevel3_Id) {
 
                 var Level3 = $.grep(parametrization.listaParLevel3, function (parLevel3) {
-                    return parLevel3.Id == parLevel3_Id;
+                    return parLevel3.Id == parLevel3_Id && vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos);
                 });
 
                 Level3.forEach(function (level3) {
@@ -115,6 +115,7 @@ function montarLevel3(level1List) {
                     level3["ParLevel3BoolFalse"] = getParLevel3BoolFalse(level3.ParLevel3Value);
 
                     level3List.push(level3);
+
                 });
 
             });
@@ -123,6 +124,34 @@ function montarLevel3(level1List) {
 
         });
     });
+}
+
+function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
+
+    var parVinculo = $.grep(parVinculos, function (obj) {
+        return obj.ParLevel3_Id == parLevel3.Id &&
+            (obj.ParLevel2_Id == parLevel2.Id || obj.ParLevel2_Id == null) &&
+            (obj.ParLevel1_Id == parLevel1.Id || obj.ParLevel1_Id == null)
+    })[0];
+
+    if (!coletasAgrupadas) {
+        return true;
+    }
+
+    var x = $.grep(coletasAgrupadas, function (obj) {
+        return obj.ParCargo_Id == currentParCargo_Id &&
+            obj.ParDepartment_Id == currentParDepartment_Id
+    });
+
+    if (x.length == 0) {
+        return true;
+    }
+
+    return $.grep(x, function (obj) {
+        return (parVinculo.Evaluation == null || obj.Evaluation <= parVinculo.Evaluation) &&
+            (parVinculo.Sample == null || obj.Sample <= parVinculo.Sample)
+    }).length > 0;
+
 }
 
 function getParLevel3BoolTrue(parLevel3Value) {

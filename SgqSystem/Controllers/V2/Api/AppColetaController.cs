@@ -178,7 +178,10 @@ namespace SgqSystem.Controllers.V2.Api
                         ParDepartment_Id = x.ParDepartment_Id,
                         ParGroupParLevel1_Id = x.ParGroupParLevel1_Id,
                         Peso = x.Peso,
-                        ParCargo_Id = x.ParCargo_Id
+                        ParCargo_Id = x.ParCargo_Id,
+                        ParFrequency_Id = x.ParFrequencyId,
+                        Evaluation = x.Evaluation,
+                        Sample = x.Sample
                     })
                     .ToList();
 
@@ -376,6 +379,8 @@ namespace SgqSystem.Controllers.V2.Api
             collectionLevel2.TotalLevel3Evaluation = evaluation;
             collectionLevel2.WeiEvaluation = weiEavaluation;
             collectionLevel2.AuditorId = collectionLevel2.AuditorId == 0 ? 1 : collectionLevel2.AuditorId;
+            collectionLevel2.AlterDate = null;
+            collectionLevel2.AddDate = DateTime.Now;
             collectionLevel2.Key = collectionLevel2.CollectionDate.ToString("yyyy-MM-dd") + "-" + collectionLevel2.UnitId + "-" +
                 collectionLevel2.ParLevel1_Id + "-" + collectionLevel2.ParLevel2_Id + "-" + collectionLevel2.Shift + "-" +
                 collectionLevel2.ParCluster_Id + "-" + collectionLevel2.ParCargo_Id + "-" + collectionLevel2.ParDepartment_Id + "-" +
