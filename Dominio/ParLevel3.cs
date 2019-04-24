@@ -32,6 +32,11 @@ namespace Dominio
         [StringLength(1000)]
         public string Description { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
+        [StringLength(100)]
+        [DisplayName("Caracteristica de risco")]
+        public string CaracteristicaDeRisco { get; set; }
+
         public bool IsActive { get; set; }
 
         public bool HasTakePhoto { get; set; }
