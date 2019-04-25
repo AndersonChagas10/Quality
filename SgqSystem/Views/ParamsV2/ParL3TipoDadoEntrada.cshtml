@@ -87,6 +87,14 @@
 
         </div>
 
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label></label>
+                <button type="button" class="form-control btn btn-info" id="btnAvancado" name="avancado"> Avançado</button>
+            </div>
+
+        </div>
+
         <div class="col-sm-4">
 
             <div class="form-group">
@@ -199,11 +207,25 @@
 
     //$("#selectL3TipoDadoParLevel3InputType :selected").val();
 
-    //$("#selectL3TipoDadoParLevel3InputType").on('change', function () {
-    //});
+    $("#btnAvancado").on('click', function () {
+        if ($("#selectL3TipoDadoParLevel3InputType :selected").val() != 8) {
+            $("#IntervalMin, #IntervalMax").trigger('change');
+        }
+    });
+
+    $("#selectL3TipoDadoParLevel3InputType").on('change', function () {
+        if ($("#selectL3TipoDadoParLevel3InputType :selected").val() != 8) {
+            $("#tabelaLikert tbody").empty();
+            $('#divEscalaLikert').hide();
+            $('#divCamposLikertIncluidos').hide();
+            $("#camposLikertIncluidos tbody").empty();
+        }
+    });
 
     $("#IntervalMin, #IntervalMax").on('input', function () {
-        if ($("#IntervalMin").val() !== null && $("#IntervalMax").val() !== null) {
+        debugger
+        if (parseInt($("#IntervalMin").val()) > 0 && parseInt($("#IntervalMax").val()) > 0) {
+            $("#tabelaLikert tbody").html("");
             montaTabelaLikert(null);
             $('#divEscalaLikert').show();
         }
@@ -211,10 +233,26 @@
 
     function montaTabelaLikert(data, valor) {
 
+        for (i = parseInt($("#IntervalMin").val()); i <= parseInt($("#IntervalMax").val()); i++) {
+            var valor = i;
+            //var teste = data.find((item) => item.Intervalo == valor);
+
+            //if (teste != null) {
+            //    MontaNovaLinhaLikert(teste, valor);
+            //} else {
+
+                MontaNovaLinhaLikert(null, valor);
+            //}
+        }
+    }
+
+    function MontaNovaLinhaLikert(data, valor) {
+        $("#tabelaLikert").show();
+
         $("#tabelaLikert tbody").append("<tr>"
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpIntervalo" disabled="disabled" /></td>'
             + '<td><input type="number" min="0" class="input-sm notAllowNegative" data-column="inpValor" /></td>'
-            + '<td><input type="color" name="favcolor" value = "#ff0000"  class="input-sm" data-column="inpCor" /></td>'
+            + '<td><input type="color" name="favcolor" value = "#ff0000"  class="input-m" data-column="inpCor" /></td>'
             + '<td class="hidden"> <input data-column="inpParLevel3Value_Id" class="hidden" /></td>'
             + '<td class="hidden"> <input data-column="inpId" class="hidden" /></td>'
             + "</tr>");
@@ -226,11 +264,11 @@
             $("#tabelaLikert tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
             $("#tabelaLikert tbody tr:last").find('[data-column="inpValor"]').val(data.Valor);
             $("#tabelaLikert tbody tr:last").find('[data-column="inpCor"]').val(data.Cor);
-            $("#tabelaLikert tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
+            $("#tabelaLikert tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val();
             $("#tabelaLikert tbody tr:last").find('[data-column=inpId]').val(data.Id);
         } else {
             $("#tabelaLikert tbody tr:last").find('[data-column="inpIntervalo"]').val(valor);
-            $("#tabelaLikert tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val(ParLevel3_Id);
+            $("#tabelaLikert tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val();
         }
     }
 
@@ -251,7 +289,7 @@
             $('table#table' + id + ' tbody').html('');
 
             $(list).each(function (i, o) {
-                
+
                 var html = '<tr>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3InputType_Id"]', o.ParLevel3InputType_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
@@ -271,7 +309,7 @@
             });
 
             function Save(obj) {
-
+                debugger
                 $.ajax({
                     url: urlSave,
                     type: 'POST',
@@ -280,7 +318,10 @@
                     contentType: "application/json",
                     success: function (data) {
                         openMessageModal("Feito", "Dados Salvos");
+                        $("#divCamposLikertIncluidos").empty()
                         $('#selectL3').trigger('change');
+                        //$("#IsAgendamento").prop('disabled', false);
+
                         closeLoader();
 
                     },
@@ -300,11 +341,14 @@
                 var obj = $(this).parents('tr').data('sgq');
 
                 apagaCampos(id);
+                //parDCAvam.reloadTable();
                 preencheCampos(id + ' [data-form]', '', obj);
 
                 $('#' + id + ' [data-form]').data('sgq', obj);
                 $('#' + id + ' [data-form]').addClass('alert alert-success');
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
+
+                ParL3TipoDado.insertTable(obj);
 
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
@@ -327,10 +371,24 @@
 
             $('#' + id).on('click', '[data-cancel]', function (e) {
                 apagaCampos(id);
+                $("#tabelaLikert tbody").empty();
+                $('#divEscalaLikert').hide();
+                $('#divCamposLikertIncluidos').hide();
+                $("#camposLikertIncluidos tbody").empty();
+                
+                
+            
+                //$('#camposCabecalhoIncluidos tbody')
+                //$('#camposCabecalhoIncluidos2 tbody').empty();
+                //$('#divAgendamento').hide();
+                //$('#tabelaAgendamentoIntervalo tbody').empty();
+                //$('#tabelaAgendamento tbody').empty();
             });
 
             //Salvar o campo editado ou cria um novo
-            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {               
+            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+
+                ParL3TipoDado.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
@@ -348,7 +406,7 @@
 
                 if (formIsDuplicate()) {
                     return false;
-                }          
+                }
 
                 if (!intervalIsValid(obj)) {
                     return false;
@@ -358,7 +416,7 @@
                 openLoader(Resources("please_wait"));
 
                 Save(obj);
-            });           
+            });
 
             $('#' + id + ' #selectL3TipoDadoParLevel3InputType').on('change', function () {
 
@@ -421,7 +479,7 @@
             });
 
 
-            let formIsDuplicate = function () {               
+            let formIsDuplicate = function () {
 
                 var obj = $('#' + id +'  [data-form]').data('sgq');
                 var formdata = $('#' + id +' [data-form]').serializeFormToObjetc();
@@ -474,6 +532,163 @@
                 return isValid;
             }
         },
+
+        prepareToInsert: function () {
+            
+            //if (!formIsValid(this.id)) {
+            //    return false;
+            //}
+
+            var obj = $('#' + this.id + ' [data-form]').data('sgq');
+
+            if (typeof (obj) == 'undefined')
+                obj = {};
+
+            if (typeof (obj['ParInputTypeValues']) == 'undefined')
+                obj['ParInputTypeValues'] = [];
+
+            if (obj.ParInputTypeValues.length > 0)
+                if (obj.ParInputTypeValues[0]['ParLevel3Value_Id'] != 'undefined' || obj.ParInputTypeValues[0]['ParLevel3Value_Id'] != null)
+                    parLevel3Value_Id = obj.Id
+
+            listaTabelaLikert = $("#tabelaLikert tbody tr");
+
+            listaTabelaLikert.each(function (index, item) {
+                if ($('#tabelaLikert tbody tr').length > 0) {
+                    obj['ParInputTypeValues'].push({
+                        Intervalo: $(item).find("[data-column=inpIntervalo]").val(),
+                        Cor: $(item).find("[data-column=inpCor]").val(),
+                        Valor: $(item).find("[data-column=inpValor]").val(),
+                        IsActive: true,
+                        ParLevel3Value_Id: 0
+                    });
+                }
+            });
+
+
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+
+            this.insertTable(obj);
+
+        },
+
+        prepareTipoDado: function (obj) {
+            var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
+            if (typeof (obj) == 'undefined')
+                obj = {};
+            obj['IntervalMax'] = formdata.IntervalMax;
+            obj['IntervalMin'] = formdata.IntervalMin;
+            obj['IsActive'] = true;
+            obj['ParCompany_Id'] = formdata.ParCompany_Id;
+            obj['ParLevel1_Id'] = formdata.ParLevel1_Id;
+            obj['ParLevel3InputType_Id'] = formdata.ParLevel3InputType_Id;
+            obj['ParLevel2_Id'] = formdata.ParLevel2_Id;
+            obj['ParLevel3_Id'] = formdata.ParLevel3_Id;
+            return obj;
+        },
+
+        insertTable: function (obj) {
+            
+            //pega os dados do form e transforma em obj
+            obj = ParL3TipoDado.prepareTipoDado(obj);
+
+            //obj = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
+
+
+            $('#camposLikertIncluidos  tbody').empty();
+
+
+            let IntervalMax = "";
+            let IntervalMin = "";
+            let IsActive = "";
+            let ParCompany_Id = "";
+            let ParLevel1_Id = "";
+            let ParLevel3InputType_Id = "";
+            let ParLevel2_Id = "";
+            let ParLevel3_Id = "";
+
+            IntervalMax = obj.IntervalMax;
+            IntervalMin = obj.IntervalMin;
+            IsActive = obj.IsActive;
+            ParCompany_Id = obj.ParCompany_Id;
+            ParLevel1_Id = obj.ParLevel1_Id;
+            ParLevel3InputType_Id = obj.ParLevel3InputType_Id;
+            ParLevel2_Id = obj.ParLevel2_Id;
+            ParLevel3_Id = obj.ParLevel3_Id;
+
+            let ParInputTypeValues = obj['ParInputTypeValues'];
+            let blockParFieldType = false;
+
+            if (ParInputTypeValues.length > 0) {
+
+                ParInputTypeValues.forEach((o, i) => {
+                        if (o.IsActive) {
+                            let tableLikert = `<tr>  
+                             <td>${o.Intervalo}</td>
+                            <td>${o.Valor}</td>
+                            <td><input type="color" name="favcolor" value = "${o.Cor}"  class="input-m"/></td>
+
+                            <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="ParL3TipoDado.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
+                          </tr>`;
+
+                            $('#camposLikertIncluidos tbody').append(tableLikert);
+
+                            blockParFieldType = true;
+                        }
+                });
+            }
+
+            if (blockParFieldType)
+                $('#selectL1ParFieldType').prop("disabled", true);
+            else
+                $('#selectL1ParFieldType').prop("disabled", false);
+
+            this.showTableLikert();
+        },
+
+
+        showTableLikert: function () {
+            debugger
+            if ($('#camposLikertIncluidos tbody tr').length) {
+                $('#allObjLikert #divCamposLikertIncluidos').show();
+                $("#tabelaLikert").hide();
+            } else {
+                $('#allObjLikert #divCamposLikertIncluidos').hide();
+            }
+
+            //if ($('#camposCabecalhoIncluidos2 tbody tr').length) {
+            //    $('#allObjAVAgendamento #divCamposCabecalhoIncluidos2').attr('style', false)
+            //    $("#tabelaAgendamentoIntervalo").hide();
+            //} else {
+            //    $('#allObjAVAgendamento #divCamposCabecalhoIncluidos2').hide();
+            //}
+
+            //if ($("#camposCabecalhoIncluidos tbody tr").length > 0) {
+            //    $("ParDCAvam #selectParFrequencyAV").prop('disabled', true);
+            //} else {
+            //    $("ParDCAvam #selectParFrequencyAV").prop('disabled', false);
+            //}
+
+        },
+
+        excludeTable: function (i) {
+
+            var obj = $('#' + this.id + ' [data-form]').data('sgq');
+
+            if (obj) {
+                //obj.ParEvaluationSchedule.forEach((o, i, a) => {
+                //        a[i].IsActive = false;
+                //});
+
+                obj['ParInputTypeValues'][i].IsActive = false;
+
+                this.insertTable(obj);
+                //$("#IsAgendamento").prop('disabled', false);
+            } else {
+                $('#camposLikertIncluidos tbody').empty();
+                $('#divCamposLikertIncluidos').hide();
+            }
+        }
     };
 
     let setInputsInputTypeHidden = function () {

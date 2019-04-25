@@ -443,7 +443,7 @@
                     $("#ParDCAvam #selectParFrequencyAV").prop('disabled', true);
                     $("#IsAgendamento").prop('disabled', true);
                 } else {
-                    $("ParDCAvam #selectParFrequencyAV").prop('disabled', false);
+                    $("#ParDCAvam #selectParFrequencyAV").prop('disabled', false);
                     $("#IsAgendamento").prop('disabled', false);
                 }
 
@@ -471,7 +471,7 @@
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
                 parDCAvam.prepareToInsert();
-                
+                debugger
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
@@ -485,10 +485,10 @@
                 obj = parDCAvam.prepareDcAvam(obj);
 
                 if ($("#camposCabecalhoIncluidos tbody tr").length > 0 || $("#camposCabecalhoIncluidos2 tbody tr").length > 0 ) {
-                    $("ParDCAvam #selectParFrequencyAV").prop('disabled', true);
+                    $("#ParDCAvam #selectParFrequencyAV").prop('disabled', true);
                     $("#IsAgendamento").prop('disabled', true);
                 } else {
-                    $("ParDCAvam #selectParFrequencyAV").prop('disabled', false);
+                    $("#ParDCAvam #selectParFrequencyAV").prop('disabled', false);
                     $("#IsAgendamento").prop('disabled', false);
                 }
                 if (obj.Sample > 0 && obj.Evaluation > 0) {
@@ -573,7 +573,7 @@
                      parEvaluationXDepartmentXCargo_Id = obj.Id
 
             
-            if (parseInt($("ParDCAvam #selectParFrequencyAV :selected").val()) === 10) {
+            if (parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val()) === 10) {
                 $Marcos = $('#tabelaAgendamentoIntervalo');
                 if ($('#tabelaAgendamentoIntervalo tbody tr').length > 0) {
                     obj['ParEvaluationSchedule'].push({
@@ -589,7 +589,7 @@
                         ParEvaluationXDepartmentXCargo_Id: 0,
                     });
                 }
-            } else if (parseInt($("ParDCAvam #selectParFrequencyAV :selected").val()) === 3){
+            } else if (parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val()) === 3){
                 $Marcos = $('#tabelaAgendamento');
                 listaTabelaAgendamento = $("#tabelaAgendamento tbody tr");
 
@@ -619,9 +619,9 @@
             //pega os dados do form e transforma em obj
             obj = parDCAvam.prepareDcAvam(obj);
 
-            if (parseInt($("ParDCAvam #selectParFrequencyAV :selected").val()) === 10)
+            if (parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val()) === 10)
                 $('#camposCabecalhoIncluidos tbody').empty();
-            else if (parseInt($("ParDCAvam #selectParFrequencyAV :selected").val()) === 3) {
+            else if (parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val()) === 3) {
                 $('#camposCabecalhoIncluidos2 tbody').empty();
             }
 
@@ -647,7 +647,7 @@
             //    parLevelDefiniton = obj['ParHeaderField']['ParMultipleValues'][0].ParLevelDefiniton;
 
             //}
-            
+            debugger
             let ParEvaluationSchedule = obj['ParEvaluationSchedule'];
             let blockParFieldType = false;
             //ParEvaluationSchedule[0].Intervalo !== null && ParEvaluationSchedule[0].IsActive
@@ -731,9 +731,9 @@
             }
 
             if ($("#camposCabecalhoIncluidos tbody tr").length > 0) {
-                $("ParDCAvam #selectParFrequencyAV").prop('disabled', true);
+                $("#ParDCAvam #selectParFrequencyAV").prop('disabled', true);
             } else {
-                $("ParDCAvam #selectParFrequencyAV").prop('disabled', false);
+                $("#ParDCAvam #selectParFrequencyAV").prop('disabled', false);
             }
 
         },
