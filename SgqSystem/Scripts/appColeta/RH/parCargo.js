@@ -37,6 +37,11 @@ function listarParCargo() {
     $(listaParCargo).each(function (i, o) {
 		currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id,o.Id);
 		
+        //FIX para trabalhar de forma correta os valores 
+		//que são recebidos do backend com os resultados
+		if (currentEvaluationSample.Sample >= o.Evaluation.Sample)
+		    currentEvaluationSample.Evaluation += 1;
+
 		var style = '';
 		if(!podeRealizarColeta(currentEvaluationSample.Evaluation,o.Evaluation.Evaluation)){
 			style = 'style="background-color:#ddd;cursor:not-allowed"';

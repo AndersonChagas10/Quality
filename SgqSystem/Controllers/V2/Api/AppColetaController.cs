@@ -138,8 +138,9 @@ namespace SgqSystem.Controllers.V2.Api
             return Ok(listSimpleCollect.Where(x => x.HasError != true).ToList());
         }
 
-        [Route("GetAppParametrization/{parCompany_Id}/{parFrequency_Id}")]
-        public IHttpActionResult GetAppParametrization(int parCompany_Id, int parFrequency_Id)
+        [HttpPost]
+        [Route("GetAppParametrization")]
+        public IHttpActionResult GetAppParametrization(AppParametrization appParametrization)
         {
 
             List<ParVinculoPesoAppViewModel> listaParVinculoPeso;
@@ -159,6 +160,8 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParLevel3BoolTrueAppViewModel> listaParLevel3BoolTrue;
             List<ParLevel3BoolFalseAppViewModel> listaParLevel3BoolFalse;
 
+            List<ParLevel3XHelp> listaParLevel3XHelp;
+
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -166,7 +169,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParVinculoPeso = db.ParVinculoPeso
                     .AsNoTracking()
-                    .Where(x => x.ParCompany_Id == parCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.IsActive)
                     .Select(x => new ParVinculoPesoAppViewModel()
                     {
@@ -200,7 +203,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParLevel2 = db.ParLevel2
                     .AsNoTracking()
-                    .Where(x => x.ParFrequency_Id == parFrequency_Id)
+                    .Where(x => x.ParFrequency_Id == appParametrization.ParFrequency_Id)
                     .Where(x => x.IsActive)
                     .Select(x => new ParLevel2AppViewModel()
                     {
@@ -227,7 +230,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParEvaluationXDepartmentXCargoAppViewModel = db.ParEvaluationXDepartmentXCargo
                     .AsNoTracking()
-                    .Where(x => x.ParCompany_Id == parCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.IsActive)
                     .Select(x => new ParEvaluationXDepartmentXCargoAppViewModel()
                     {
@@ -242,7 +245,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParLevel3Value = db.ParLevel3Value
                     .AsNoTracking()
-                    .Where(x => x.ParCompany_Id == parCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.IsActive == true)
                     .Select(x => new ParLevel3ValueAppViewModel()
                     {
@@ -338,6 +341,18 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList();
 
+                listaParLevel3XHelp = db.ParLevel3XHelp
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    //.Select(x => new ParLevel3XHelp()
+                    //{
+                    //    Id = x.Id,
+                    //    ParLevel3_Id = x.ParLevel3_Id,
+                    //    Titulo = x.Titulo,
+                    //    Corpo = x.Corpo
+                    //})
+                    .ToList();
+
             }
 
             return Ok(new
@@ -355,6 +370,7 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParDepartment,
                 listaParCargo,
                 listaParCargoXDepartment,
+                listaParLevel3XHelp
             });
         }
 
@@ -476,7 +492,7 @@ namespace SgqSystem.Controllers.V2.Api
             var sql = $@"
                     SELECT
                     	MAX(EvaluationNumber) Evaluation
-                       ,MAX(Sample) Sample
+                       ,(MAX(Sample)+1) Sample
                        ,ParLevel1_Id
                        ,ParLevel2_Id
                        ,UnitId
@@ -528,6 +544,11 @@ namespace SgqSystem.Controllers.V2.Api
             public int ParCluster_Id { get; set; }
         }
 
-
+        public class AppParametrization
+        {
+            public int ParCompany_Id { get; set; }
+            public int ParFrequency_Id { get; set; }
+            public DateTime AppDate { get; set; }
+        }
     }
 }

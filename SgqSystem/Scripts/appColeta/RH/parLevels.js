@@ -114,6 +114,8 @@ function montarLevel3(level1List) {
 
                     level3["ParLevel3BoolFalse"] = getParLevel3BoolFalse(level3.ParLevel3Value);
 
+                    level3["ParLevel3XHelp"] = getParLevel3XHelp(level3);
+
                     level3List.push(level3);
 
                 });
@@ -165,6 +167,18 @@ function getParLevel3BoolFalse(parLevel3Value) {
     if (parLevel3Value && parLevel3Value.ParLevel3BoolFalse_Id)
         return $.grep(parametrization.listaParLevel3BoolFalse, function (item) { return item.Id == parLevel3Value.ParLevel3BoolFalse_Id })[0];
 
+}
+
+function getParLevel3XHelp(level3) {
+
+    var ajuda = $.grep(parametrization.listaParLevel3XHelp, function (item) {
+        return item.ParLevel3_Id == level3.Id;
+    });
+
+    if (ajuda.length > 0)
+        return ajuda
+
+    return null;
 }
 
 function getParLevel3Value(level3, parLevel2, parLevel1) {
