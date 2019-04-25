@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -444,6 +444,7 @@
     <Compile Include="Controllers\V2\Api\ParEvaluationXDepartmentXCargoApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParLevel3ApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParLevel1ApiController.cs" />
+    <Compile Include="Controllers\V2\Params\ParAlertController.cs" />
     <Compile Include="Controllers\V2\Params\ParamsV2Controller.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
@@ -1986,6 +1987,9 @@
     <Content Include="Views\ParamsV2\ParDCAvam.cshtml" />
     <Content Include="Views\ParamsV2\_Agendamento.cshtml" />
     <Content Include="Views\ParamsV2\ParL3Ajuda.cshtml" />
+    <Content Include="Views\ParAlert\Create.cshtml" />
+    <Content Include="Views\ParAlert\Edit.cshtml" />
+    <Content Include="Views\ParAlert\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
