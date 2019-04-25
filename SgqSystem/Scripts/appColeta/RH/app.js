@@ -8,6 +8,7 @@ var globalColetasRealizadas = [];
 var currentLogin = {};
 var globalLoginOnline = false;
 var currentCollectDate = new Date();
+var appIsOnline = false;
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
@@ -39,9 +40,10 @@ function getAppParametrization(frequencyId) {
         currentParFrequency_Id = frequencyId;
         openMensagem('Por favor, aguarde até que seja feito o download do planejamento selecionado', 'blue', 'white');
         $.ajax({
-            data: JSON.stringify({ ParCompany_Id: curretParCompany_Id
+            data: JSON.stringify({
+                ParCompany_Id: curretParCompany_Id
                 , ParFrequency_Id: currentParFrequency_Id
-                , AppDate: new Date().toISOString()
+                , AppDate: currentCollectDate
             }),
             type: 'POST',
             url: urlPreffix + '/api/AppColeta/GetAppParametrization',
@@ -75,7 +77,7 @@ function sincronizarResultado(frequencyId) {
     $.ajax({
         data: JSON.stringify({
             ParCompany_Id: currentLogin.ParCompanyXUserSgq[0].ParCompany.Id,
-            CollectionDate: new Date().toISOString()
+            CollectionDate: new Date(currentCollectDate).toISOString()
         }),
         url: urlPreffix + '/api/AppColeta/GetResults/',
         type: 'POST',
@@ -111,21 +113,52 @@ function openModalChangeDate() {
         '<label for="exemplo">Data: </label>' +
         '<input id="appDate" type="date" class="form-control"/>' +
         '</br>' +
-        '<button id="btnChangeDate" type="button" class="btn btn-primary" onclick="closeModal()">Alterar Data de coleta</button>' +
+        '<button id="btnChangeDate" type="button" class="btn btn-primary" onclick="changeDate(this)">Alterar Data de coleta</button> | ' +
+        '<button id="btnChangeDate" type="button" class="btn btn-primary" onclick="closeModal()">Cancelar</button>' +
         '</div>';
 
-    var script = '<script> ' +
-        '$("#btnChangeDate").off().on("click", function(){ changeDate($("#appDate").val()) })' +
-        '</script>';
-
-    openModal(html + script);
+    openModal(html);
 
 }
 
-function changeDate(appDate) {
+function changeDate(that) {
 
-    //voltar para tela de frencia
-    currentCollectDate = new Date(appDate);
+    var newDate = $(that).parent().find("#appDate").val();
 
-    console.log(currentCollectDate);
+    if (!newDate) {
+        return false;
+    }
+
+    closeModal();
+
+    if (!appIsOnline) {
+
+        openModal("Você precisa estar online para alterar a data.", "blue", "white");
+        closeModal(3000);
+        return false;
+    }
+
+    if (enviarColetaEmExecucao) {
+        openModal("Por favor, aguarde a sincronização das coletas e tente novamente.", "blue", "white");
+        closeModal(3000);
+        return false;
+    }
+
+    if (globalColetasRealizadas.length > 0) {
+
+        var titulo = "Não foi possível alterar a data.";
+        var mensagem = "Existem coeltas não sincronizadas. Deseja sincronizar os dados?";
+
+        openMessageConfirm(titulo, mensagem, sincronizarColeta, function () { }, "blue", "white");
+
+        return false;
+    }
+
+    openMensagem("Alterando data...", "blue", "White");
+    _writeFile("appParametrization.txt", '', function () { });
+
+    currentCollectDate = new Date(newDate);
+
+    openParFrequency();
+    closeModal(5000);
 }

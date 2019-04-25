@@ -59,5 +59,8 @@ namespace Dominio
 
         [ForeignKey("ParMeasurementUnit_Id")]
         public virtual ParMeasurementUnit ParMeasurementUnit { get; set; }
+
+        [NotMapped]
+        public List<ParInputTypeValues> ParInputTypeValues { get; set; }
     }
 }

@@ -477,14 +477,3 @@ function SalvarColetas(coletaJson) {
     }
     AtualizarArquivoDeColetas();
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -68,6 +68,12 @@ namespace SgqSystem.Controllers.V2.Api
                     db.ParLevel3XHelp
                     .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
                     .ToList();
+
+                foreach (var item in parlevel3Result.Parlevel3.ParLevel3Value)
+                {
+                    item.ParInputTypeValues = db.ParInputTypeValues.Where(x => x.ParLevel3Value_Id == item.Id).ToList();
+                }
+
             }
 
             return Ok(parlevel3Result);
@@ -319,10 +325,38 @@ namespace SgqSystem.Controllers.V2.Api
                         parVinculoPesoOld.IntervalMax = parLevel3Value.IntervalMax;
                         parVinculoPesoOld.DynamicValue = parLevel3Value.DynamicValue;
                         parVinculoPesoOld.IsActive = parLevel3Value.IsActive;
+
+                         foreach (var item in parLevel3Value.ParInputTypeValues)
+                        {
+                            item.ParLevel3Value_Id = parLevel3Value.Id;
+                            if (item.Id > 0)
+                            {
+                                db.Entry(item).State = EntityState.Modified;
+                            }
+                            else
+                            {
+                                db.ParInputTypeValues.Add(item);
+                            }
+                        } 
                     }
                     else
                     {
-                        db.ParLevel3Value.Add(parLevel3Value);
+                        var parLevel3ValueSalvo = db.ParLevel3Value.Add(parLevel3Value);
+                        db.SaveChanges();
+
+                        foreach (var item in parLevel3Value.ParInputTypeValues)
+                        {
+                            item.IsActive = true;
+                            item.ParLevel3Value_Id = parLevel3ValueSalvo.Id;
+                            if (item.Id > 0)
+                            {
+                                db.Entry(item).State = EntityState.Modified;
+                            }
+                            else
+                            {
+                                db.ParInputTypeValues.Add(item);
+                            }
+                        } 
                     }
 
                     db.SaveChanges();
