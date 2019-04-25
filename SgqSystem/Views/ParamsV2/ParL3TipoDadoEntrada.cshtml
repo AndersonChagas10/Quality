@@ -90,7 +90,7 @@
         <div class="col-sm-3">
             <div class="form-group">
                 <label></label>
-                <button type="button" class="form-control btn btn-info" id="btnAvancado" name="avancado"> Avançado</button>
+                <button type="button" hidden="hidden" class="form-control btn btn-info" id="btnAvancado" name="avancado"> Avançado</button>
             </div>
 
         </div>
@@ -207,9 +207,16 @@
 
     //$("#selectL3TipoDadoParLevel3InputType :selected").val();
 
+
     $("#btnAvancado").on('click', function () {
-        if ($("#selectL3TipoDadoParLevel3InputType :selected").val() != 8) {
-            $("#IntervalMin, #IntervalMax").trigger('change');
+        debugger
+        if ($("#selectL3TipoDadoParLevel3InputType :selected").val() == 8) {
+            //$("#IntervalMin, #IntervalMax").trigger('change');
+            if (parseInt($("#IntervalMin").val()) > 0 && parseInt($("#IntervalMax").val()) > 0) {
+                $("#tabelaLikert tbody").html("");
+                montaTabelaLikert(null);
+                $('#divEscalaLikert').show();
+            }
         }
     });
 
@@ -219,16 +226,22 @@
             $('#divEscalaLikert').hide();
             $('#divCamposLikertIncluidos').hide();
             $("#camposLikertIncluidos tbody").empty();
+            $("#btnAvancado").hide()
+        } else {
+            $("#btnAvancado").show()
         }
     });
 
     $("#IntervalMin, #IntervalMax").on('input', function () {
         debugger
-        if (parseInt($("#IntervalMin").val()) > 0 && parseInt($("#IntervalMax").val()) > 0) {
-            $("#tabelaLikert tbody").html("");
-            montaTabelaLikert(null);
-            $('#divEscalaLikert').show();
+        if ($("#camposLikertIncluidos tbody tr").length == 0) {
+            $("#btnAvancado").trigger('click');
         }
+        //if (parseInt($("#IntervalMin").val()) > 0 && parseInt($("#IntervalMax").val()) > 0) {
+        //    $("#tabelaLikert tbody").html("");
+        //    montaTabelaLikert(null);
+        //    $('#divEscalaLikert').show();
+        //}
     });
 
     function montaTabelaLikert(data, valor) {
@@ -318,7 +331,7 @@
                     contentType: "application/json",
                     success: function (data) {
                         openMessageModal("Feito", "Dados Salvos");
-                        $("#divCamposLikertIncluidos").empty()
+                        //$("#divCamposLikertIncluidos").empty()
                         $('#selectL3').trigger('change');
                         //$("#IsAgendamento").prop('disabled', false);
 
@@ -341,7 +354,6 @@
                 var obj = $(this).parents('tr').data('sgq');
 
                 apagaCampos(id);
-                //parDCAvam.reloadTable();
                 preencheCampos(id + ' [data-form]', '', obj);
 
                 $('#' + id + ' [data-form]').data('sgq', obj);
@@ -349,6 +361,12 @@
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
 
                 ParL3TipoDado.insertTable(obj);
+
+                if ($("#camposLikertIncluidos tbody tr").length > 0) {
+                    $("#btnAvancado").prop('disabled', true);
+                } else {
+                    $("#btnAvancado").prop('disabled', false);
+                }
 
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
@@ -375,14 +393,6 @@
                 $('#divEscalaLikert').hide();
                 $('#divCamposLikertIncluidos').hide();
                 $("#camposLikertIncluidos tbody").empty();
-                
-                
-            
-                //$('#camposCabecalhoIncluidos tbody')
-                //$('#camposCabecalhoIncluidos2 tbody').empty();
-                //$('#divAgendamento').hide();
-                //$('#tabelaAgendamentoIntervalo tbody').empty();
-                //$('#tabelaAgendamento tbody').empty();
             });
 
             //Salvar o campo editado ou cria um novo
@@ -626,9 +636,9 @@
                             let tableLikert = `<tr>  
                              <td>${o.Intervalo}</td>
                             <td>${o.Valor}</td>
-                            <td><input type="color" name="favcolor" value = "${o.Cor}"  class="input-m"/></td>
+                            <td><input disabled type="color" name="favcolor" value="${o.Cor}"  class="input-m"/></td>
 
-                            <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="ParL3TipoDado.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
+                            <td><button type="button" class="btn btn-danger btn-xs" name="" onclick="ParL3TipoDado.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
                           </tr>`;
 
                             $('#camposLikertIncluidos tbody').append(tableLikert);
@@ -676,14 +686,18 @@
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (obj) {
-                //obj.ParEvaluationSchedule.forEach((o, i, a) => {
+                //obj.ParInputTypeValues.forEach((o, i, a) => {
                 //        a[i].IsActive = false;
                 //});
-
                 obj['ParInputTypeValues'][i].IsActive = false;
 
                 this.insertTable(obj);
-                //$("#IsAgendamento").prop('disabled', false);
+                if ($("#camposLikertIncluidos tbody tr").length > 0) {
+                    $("#btnAvancado").prop('disabled', true);
+                } else {
+                    $("#btnAvancado").prop('disabled', false);
+                }
+
             } else {
                 $('#camposLikertIncluidos tbody').empty();
                 $('#divCamposLikertIncluidos').hide();
