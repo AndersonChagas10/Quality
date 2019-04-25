@@ -111,7 +111,7 @@ function openModalChangeDate() {
         '<label for="exemplo">Data: </label>' +
         '<input id="appDate" type="date" class="form-control"/>' +
         '</br>' +
-        '<button id="btnChangeDate" type="button" class="btn btn-primary">Alterar Data de coleta</button>' +
+        '<button id="btnChangeDate" type="button" class="btn btn-primary" onclick="closeModal()">Alterar Data de coleta</button>' +
         '</div>';
 
     var script = '<script> ' +

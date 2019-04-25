@@ -345,7 +345,7 @@ $('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
 
     var l3Id = $(this).attr('l3id');
 
-    var l3xHelp = $.grep(parametrization.listaParLevel3XHelp, function(obj){
+    var l3xHelp = $.grep(parametrization.listaParLevel3XHelp, function (obj) {
         return obj.ParLevel3_Id == l3Id;
 
     })[0];
@@ -353,7 +353,22 @@ $('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
     var body = l3xHelp.Corpo;
     var title = l3xHelp.Titulo;
 
-    openModal(title, body);
+    var btnClose = '<button class="btn btn-primary pull-right" onclick="closeModal()">Fechar</button>'
+    var modal = '<h4>' + title + '</h4>';
+    var corpo =
+        '<div class="container">' +
+        '<div class="row" style="overflow:auto">' +
+        modal +
+        '<hr>' +
+        '<div style="text-align:center">' +
+        body +
+        '</div>' +
+        '<hr>' +
+        btnClose +
+        '</div>' +
+        '</div>';
+
+    openModal(corpo);
 
 });
 
