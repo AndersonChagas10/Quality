@@ -162,6 +162,8 @@ namespace SgqSystem.Controllers.V2.Api
 
             List<ParLevel3XHelp> listaParLevel3XHelp;
 
+            List<ParAlert> listaParAlert;
+
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -348,13 +350,11 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParLevel3XHelp = db.ParLevel3XHelp
                     .AsNoTracking()
                     .Where(x => x.IsActive)
-                    //.Select(x => new ParLevel3XHelp()
-                    //{
-                    //    Id = x.Id,
-                    //    ParLevel3_Id = x.ParLevel3_Id,
-                    //    Titulo = x.Titulo,
-                    //    Corpo = x.Corpo
-                    //})
+                    .ToList();
+
+                listaParAlert = db.ParAlert
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
                     .ToList();
 
             }
@@ -374,7 +374,8 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParDepartment,
                 listaParCargo,
                 listaParCargoXDepartment,
-                listaParLevel3XHelp
+                listaParLevel3XHelp,
+                listaParAlert
             });
         }
 

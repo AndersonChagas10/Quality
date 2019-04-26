@@ -472,6 +472,7 @@ function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
 }
 
 function SalvarColetas(coletaJson) {
+    processAlertRole(coletaJson);
     for (var i = 0; i < coletaJson.length; i++) {
         globalColetasRealizadas.push(coletaJson[i]);
     }

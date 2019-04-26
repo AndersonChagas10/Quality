@@ -937,6 +937,7 @@
     <Content Include="Scripts\appColeta\GQ\sync.js" />
     <Content Include="Scripts\appColeta\GQ\tempSave.js" />
     <Content Include="Scripts\appColeta\GQ\verificacaoTipificacao.js" />
+    <Content Include="Scripts\appColeta\RH\alert.js" />
     <Content Include="Scripts\appColeta\RH\app.js" />
     <Content Include="Scripts\appColeta\RH\coleta.js" />
     <Content Include="Scripts\appColeta\RH\crypto.js" />
