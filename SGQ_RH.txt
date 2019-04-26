@@ -197,6 +197,8 @@ BEGIN
 	ALTER TABLE ParLevel3 ADD CaracteristicaDeRisco varchar(100) null 
 END
 
+GO
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3XHelp' AND xtype='U')
 create table ParLevel3XHelp (
 	Id int primary key identity not null,
@@ -208,7 +210,44 @@ create table ParLevel3XHelp (
 	IsActive bit not null default 1
 )
 
-IF COL_LENGTH('collectionLevel2','ParFrequency_Id') IS NOT NULL
-BEGIN
-alter table collectionLevel2 add ParFrequency_Id int foreign key (ParFrequency_Id) references ParFrequency(Id)
-END
+GO
+
+Insert into MigrationHistory (Name, AddDate) VALUES ('Criar_EstruturaDasTabelasDeAlerta',GetDate())
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParAlertType' AND xtype='U')
+create table ParAlertType(
+	Id int not null primary key,
+	Name varchar(50) NOT NULL,
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1,
+)
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParAlert' AND xtype='U')
+create table ParAlert(
+	Id int not null identity(1,1) primary key,
+	Name varchar(50) NOT NULL,
+	ParDepartment_Id int null FOREIGN key REFERENCES ParDepartment(Id),
+	ParCargo_Id int null FOREIGN key REFERENCES ParCargo(Id),
+	ParLevel1_Id int null FOREIGN key REFERENCES ParLevel1(Id),
+	ParLevel2_Id int null FOREIGN key REFERENCES ParLevel2(Id),
+	ParLevel3_Id int null FOREIGN key REFERENCES ParLevel3(Id),
+	ParCompany_Id int null FOREIGN key REFERENCES ParCompany(Id),
+	ParAlertType_Id int not null FOREIGN key REFERENCES ParAlertType(Id),
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1,
+)
+
+GO
+
+IF NOT EXISTS (SELECT * FROM ParAlertType WHERE Name = 'KO')
+	begin
+		insert into ParAlertType values (1,'KO',getdate(),null,1)
+	end
+
+GO
