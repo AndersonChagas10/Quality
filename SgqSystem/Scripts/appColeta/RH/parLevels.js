@@ -87,7 +87,8 @@ function montarLevel3(level1List) {
             var parVinculos = $.grep(parametrization.listaParVinculoPeso, function (obj) {
                 return (obj.ParDepartment_Id == currentParDepartment_Id || obj.ParDepartment_Id == null) &&
                     (obj.ParCargo_Id == currentParCargo_Id || obj.ParCargo_Id == null) &&
-                    obj.ParLevel1_Id == parLevel1.Id && obj.ParLevel2_Id == parLevel2.Id;
+                    obj.ParLevel1_Id == parLevel1.Id &&
+                    obj.ParLevel2_Id == parLevel2.Id;
             });
 
             var level3_Ids = $.map(parVinculos, function (obj) {
@@ -130,12 +131,6 @@ function montarLevel3(level1List) {
 
 function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
 
-    var parVinculo = $.grep(parVinculos, function (obj) {
-        return obj.ParLevel3_Id == parLevel3.Id &&
-            (obj.ParLevel2_Id == parLevel2.Id || obj.ParLevel2_Id == null) &&
-            (obj.ParLevel1_Id == parLevel1.Id || obj.ParLevel1_Id == null)
-    })[0];
-
     if (!coletasAgrupadas) {
         return true;
     }
@@ -148,6 +143,66 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
     if (x.length == 0) {
         return true;
     }
+
+    //Level1, Level2, Level3 e Frequencia são obrigatorios
+    //Posteriormente se não existir o retorno dos dados acima, validar um por um como null ou não
+    var parVinculo = [];
+
+    //Considerar Level1, Level2, Level3, Frequencia, Cargo, Departamento e Unidade
+    parVinculo = $.grep(parVinculos, function (obj) {
+        return obj.ParLevel3_Id == parLevel3.Id &&
+            obj.ParLevel2_Id == parLevel2.Id &&
+            obj.ParLevel1_Id == parLevel1.Id &&
+            obj.ParFrequency_Id == currentParFrequency_Id &&
+            obj.ParCargo_Id == currentParCargo_Id &&
+            obj.ParDepartment_Id == currentParDepartment_Id &&
+            obj.ParCompany_Id == currentLogin.ParCompany_Id;
+    });
+
+    //Considerar Level1, Level2, Level3, Frequencia, Cargo, Departamento e todas as Unidades
+    if (parVinculo.length == 0) {
+        parVinculo = $.grep(parVinculos, function (obj) {
+            return obj.ParLevel3_Id == parLevel3.Id &&
+                obj.ParLevel2_Id == parLevel2.Id &&
+                obj.ParLevel1_Id == parLevel1.Id &&
+                obj.ParFrequency_Id == currentParFrequency_Id &&
+                obj.ParCargo_Id == currentParCargo_Id &&
+                obj.ParDepartment_Id == currentParDepartment_Id &&
+                obj.ParCompany_Id == null;
+        });
+    }
+
+    //Considerar Level1, Level2, Level3, Frequencia, Cargo, todos Departamentos e todas as Unidades
+    if (parVinculo.length == 0) {
+        parVinculo = $.grep(parVinculos, function (obj) {
+            return obj.ParLevel3_Id == parLevel3.Id &&
+                obj.ParLevel2_Id == parLevel2.Id &&
+                obj.ParLevel1_Id == parLevel1.Id &&
+                obj.ParFrequency_Id == currentParFrequency_Id &&
+                obj.ParCargo_Id == currentParCargo_Id &&
+                obj.ParDepartment_Id == null &&
+                obj.ParCompany_Id == null;
+        });
+    }
+
+    //Considerar Level1, Level2, Level3, Frequencia, Todos os Cargos, todos Departamentos e todas as Unidades
+    if (parVinculo.length == 0) {
+        parVinculo = $.grep(parVinculos, function (obj) {
+            return obj.ParLevel3_Id == parLevel3.Id &&
+                obj.ParLevel2_Id == parLevel2.Id &&
+                obj.ParLevel1_Id == parLevel1.Id &&
+                obj.ParFrequency_Id == currentParFrequency_Id &&
+                obj.ParCargo_Id == null &&
+                obj.ParDepartment_Id == null &&
+                obj.ParCompany_Id == null;
+        });
+    }
+
+    //Level3 não possui peso
+    if (parVinculo.length == 0)
+        return false;
+    else
+        parVinculo = parVinculo[0]; // Deverá ter somente um, porém caso tiver mais do que um não irá quebrar
 
     return $.grep(x, function (obj) {
         return (parVinculo.Evaluation == null || obj.Evaluation <= parVinculo.Evaluation) &&

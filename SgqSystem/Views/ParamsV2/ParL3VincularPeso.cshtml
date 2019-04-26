@@ -84,7 +84,7 @@
 
             <div class="form-group">
                 <label for="Peso">Avaliação:</label>
-                <input type="text" class="form-control required" id="Evaluation" name="Evaluation">
+                <input type="text" class="form-control" id="Evaluation" name="Evaluation">
             </div>
 
         </div>
@@ -93,7 +93,7 @@
 
             <div class="form-group">
                 <label for="Peso">Amostra:</label>
-                <input type="text" class="form-control required" id="Sample" name="Sample">
+                <input type="text" class="form-control" id="Sample" name="Sample">
             </div>
 
         </div>
@@ -190,8 +190,8 @@
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParDepartment_Id"]', o.ParDepartment_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParGroupParLevel1_Id"]', o.ParGroupParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
-                var Av = o.Evaluation !== null ? o.Evaluation : 0;
-                var Am = o.Sample !== null ? o.Sample : 0;
+                var Av = o.Evaluation !== null ? o.Evaluation : "";
+                var Am = o.Sample !== null ? o.Sample : "";
                 html += '<td>' + Av + '</td>';
                 html += '<td>' + Am + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParFrequencyId"]', o.ParFrequencyId, 'Todos') + '</td>';
