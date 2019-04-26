@@ -197,8 +197,6 @@ BEGIN
 	ALTER TABLE ParLevel3 ADD CaracteristicaDeRisco varchar(100) null 
 END
 
-
-
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3XHelp' AND xtype='U')
 create table ParLevel3XHelp (
 	Id int primary key identity not null,
@@ -209,3 +207,8 @@ create table ParLevel3XHelp (
 	AlterDate datetime2,
 	IsActive bit not null default 1
 )
+
+IF COL_LENGTH('collectionLevel2','ParFrequency_Id') IS NOT NULL
+BEGIN
+alter table collectionLevel2 add ParFrequency_Id int foreign key (ParFrequency_Id) references ParFrequency(Id)
+END
