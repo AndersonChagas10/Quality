@@ -354,7 +354,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParAlert = db.ParAlert
                     .AsNoTracking()
-                    .Where(x => x.IsActive)
+                    .Where(x => x.IsActive && x.IsCollectAlert)
                     .ToList();
 
             }

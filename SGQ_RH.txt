@@ -238,6 +238,8 @@ create table ParAlert(
 	ParLevel3_Id int null FOREIGN key REFERENCES ParLevel3(Id),
 	ParCompany_Id int null FOREIGN key REFERENCES ParCompany(Id),
 	ParAlertType_Id int not null FOREIGN key REFERENCES ParAlertType(Id),
+	IsCollectAlert bit not null default 1,
+	HasCorrectiveAction bit not null default 0,
 	AddDate datetime not null,
 	AlterDate datetime null,
 	IsActive bit not null default 1,

@@ -85,7 +85,7 @@ namespace SgqSystem.Controllers
         public ActionResult Create()
         {
             FillViewBag();
-            return View();
+            return View(new ParAlert());
         }
 
         // POST: ParAlerts/Create

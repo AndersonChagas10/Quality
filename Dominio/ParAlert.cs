@@ -26,7 +26,11 @@ namespace Dominio
 
         public int ParAlertType_Id { get; set; }
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
+
+        public bool IsCollectAlert { get; set; } = true;
+
+        public bool HasCorrectiveAction { get; set; }
 
         [ForeignKey("ParDepartment_Id")]
         public virtual ParDepartment ParDepartment { get; set; }
