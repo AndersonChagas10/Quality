@@ -101,11 +101,13 @@
     <Compile Include="Metas.cs" />
     <Compile Include="MigrationHistory.cs" />
     <Compile Include="Monitoramentos.cs" />
+    <Compile Include="ParAlertType.cs" />
     <Compile Include="ParCargo.cs" />
     <Compile Include="ParCargoXDepartment.cs" />
     <Compile Include="ParColaborador.cs" />
     <Compile Include="ParEvaluationXDepartmentXCargo.cs" />
     <Compile Include="ParColaboradorXCargo.cs" />
+    <Compile Include="ParAlert.cs" />
     <Compile Include="ParLevel3XHelp.cs" />
     <Compile Include="ParReasonType.cs" />
     <Compile Include="ParReason.cs" />

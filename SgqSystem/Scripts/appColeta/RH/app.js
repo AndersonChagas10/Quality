@@ -9,6 +9,8 @@ var currentLogin = {};
 var globalLoginOnline = false;
 var currentCollectDate = new Date();
 var appIsOnline = false;
+var currentAlerts = [];
+var currentAlertsAgrupados = [];
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
