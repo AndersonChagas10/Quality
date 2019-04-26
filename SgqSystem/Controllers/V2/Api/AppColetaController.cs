@@ -271,6 +271,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParLevel3InputType = db.ParLevel3InputType
                     .AsNoTracking()
+                    .Where(x => x.IsActive)
                     .Select(x => new ParLevel3InputTypeAppViewModel()
                     {
                         Id = x.Id,
@@ -281,6 +282,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParMeasurementUnit = db.ParMeasurementUnit
                     .AsNoTracking()
+                    .Where(x => x.IsActive)
                     .Select(x => new ParMeasurementUnitAppViewModel()
                     {
                         Id = x.Id,
@@ -291,6 +293,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParLevel3BoolTrue = db.ParLevel3BoolTrue
                     .AsNoTracking()
+                    .Where(x => x.IsActive)
                     .Select(x => new ParLevel3BoolTrueAppViewModel()
                     {
                         Id = x.Id,
@@ -300,6 +303,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParLevel3BoolFalse = db.ParLevel3BoolFalse
                     .AsNoTracking()
+                    .Where(x => x.IsActive)
                     .Select(x => new ParLevel3BoolFalseAppViewModel()
                     {
                         Id = x.Id,
