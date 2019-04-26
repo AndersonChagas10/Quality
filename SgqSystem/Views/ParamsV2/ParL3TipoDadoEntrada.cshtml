@@ -137,16 +137,16 @@
             </div>
 
             @*<div class="row">
-                <div class="td-erp">
-                    <div id="divBtnSalvar" class="col-sm-6">
-                        <button class="form-control btn btn-primary" data-add>Salvar</button>
-                    </div>
+                    <div class="td-erp">
+                        <div id="divBtnSalvar" class="col-sm-6">
+                            <button class="form-control btn btn-primary" data-add>Salvar</button>
+                        </div>
 
-                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
-                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                        <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                            <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                        </div>
                     </div>
-                </div>
-            </div>*@
+                </div>*@
         </div>
 
 
@@ -205,57 +205,52 @@
 
 <script>
 
-    //$("#selectL3TipoDadoParLevel3InputType :selected").val();
-
-
     $("#btnAvancado").on('click', function () {
         debugger
-        if ($("#selectL3TipoDadoParLevel3InputType :selected").val() == 8) {
-            //$("#IntervalMin, #IntervalMax").trigger('change');
-            if (parseInt($("#IntervalMin").val()) > 0 && parseInt($("#IntervalMax").val()) > 0) {
-                $("#tabelaLikert tbody").html("");
-                montaTabelaLikert(null);
-                $('#divEscalaLikert').show();
+        if (!$("#divEscalaLikert").is(":visible")) {
+            if ($("#selectL3TipoDadoParLevel3InputType :selected").val() == 8) {
+
+                if (parseInt($("#IntervalMin").val()) > parseInt($("#IntervalMax").val())) {
+                    openMessageModal("Atenção", "o Intervalo minimo não pode ser maior que o Intervalo Máximo!");
+                    return false;
+                } else {
+                    $('#divEscalaLikert').show();
+                    $("#IntervalMin, #IntervalMax").trigger('input');
+                }
             }
+        } else {
+            $('#divEscalaLikert').hide();
         }
     });
 
     $("#selectL3TipoDadoParLevel3InputType").on('change', function () {
-        if ($("#selectL3TipoDadoParLevel3InputType :selected").val() != 8) {
+
+        if ($("#selectL3TipoDadoParLevel3InputType :selected").val() == 8) {
+            $("#btnAvancado").show();
+            $("#IntervalMin, #IntervalMax").off('input');
+
+            $("#IntervalMin, #IntervalMax").on('input', function () {
+
+                if (parseInt($("#IntervalMin").val()) > 0 && parseInt($("#IntervalMax").val()) > 0) {
+                    $("#tabelaLikert tbody").html("");
+                    montaTabelaLikert(null);
+                }
+            });
+
+        } else {
             $("#tabelaLikert tbody").empty();
             $('#divEscalaLikert').hide();
             $('#divCamposLikertIncluidos').hide();
             $("#camposLikertIncluidos tbody").empty();
-            $("#btnAvancado").hide()
-        } else {
-            $("#btnAvancado").show()
+            $("#btnAvancado").hide();
         }
-    });
-
-    $("#IntervalMin, #IntervalMax").on('input', function () {
-        debugger
-        if ($("#camposLikertIncluidos tbody tr").length == 0) {
-            $("#btnAvancado").trigger('click');
-        }
-        //if (parseInt($("#IntervalMin").val()) > 0 && parseInt($("#IntervalMax").val()) > 0) {
-        //    $("#tabelaLikert tbody").html("");
-        //    montaTabelaLikert(null);
-        //    $('#divEscalaLikert').show();
-        //}
     });
 
     function montaTabelaLikert(data, valor) {
-
         for (i = parseInt($("#IntervalMin").val()); i <= parseInt($("#IntervalMax").val()); i++) {
             var valor = i;
-            //var teste = data.find((item) => item.Intervalo == valor);
 
-            //if (teste != null) {
-            //    MontaNovaLinhaLikert(teste, valor);
-            //} else {
-
-                MontaNovaLinhaLikert(null, valor);
-            //}
+            MontaNovaLinhaLikert(null, valor);
         }
     }
 
@@ -322,7 +317,7 @@
             });
 
             function Save(obj) {
-                debugger
+
                 $.ajax({
                     url: urlSave,
                     type: 'POST',
@@ -331,9 +326,8 @@
                     contentType: "application/json",
                     success: function (data) {
                         openMessageModal("Feito", "Dados Salvos");
-                        //$("#divCamposLikertIncluidos").empty()
+
                         $('#selectL3').trigger('change');
-                        //$("#IsAgendamento").prop('disabled', false);
 
                         closeLoader();
 
@@ -393,11 +387,12 @@
                 $('#divEscalaLikert').hide();
                 $('#divCamposLikertIncluidos').hide();
                 $("#camposLikertIncluidos tbody").empty();
+                $("#btnAvancado").prop('disabled', false);
             });
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-
+                
                 ParL3TipoDado.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
@@ -421,6 +416,17 @@
                 if (!intervalIsValid(obj)) {
                     return false;
                 }
+
+                //debugger
+                //var itensNulos = obj.ParInputTypeValues.map(function (element) {
+                //    if (element.Valor == null)
+                //        return element;
+                //});
+                //if (itensNulos.length > 0) {
+                //    openMessageModal("Erro", "O campo Valor é obrigátorio");
+                //    //obj.ParInputTypeValues = [];
+                //    return false;
+                //}
 
 
                 openLoader(Resources("please_wait"));
@@ -488,7 +494,6 @@
 
             });
 
-
             let formIsDuplicate = function () {
 
                 var obj = $('#' + id +'  [data-form]').data('sgq');
@@ -545,10 +550,6 @@
 
         prepareToInsert: function () {
             
-            //if (!formIsValid(this.id)) {
-            //    return false;
-            //}
-
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (typeof (obj) == 'undefined')
@@ -562,7 +563,7 @@
                     parLevel3Value_Id = obj.Id
 
             listaTabelaLikert = $("#tabelaLikert tbody tr");
-
+            
             listaTabelaLikert.each(function (index, item) {
                 if ($('#tabelaLikert tbody tr').length > 0) {
                     obj['ParInputTypeValues'].push({
@@ -574,7 +575,6 @@
                     });
                 }
             });
-
 
             $('#' + this.id + ' [data-form]').data('sgq', obj);
 
@@ -598,14 +598,11 @@
         },
 
         insertTable: function (obj) {
-            
+
             //pega os dados do form e transforma em obj
             obj = ParL3TipoDado.prepareTipoDado(obj);
-
-            //obj = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
-
-
-            $('#camposLikertIncluidos  tbody').empty();
+            
+            $('#camposLikertIncluidos tbody').empty();
 
 
             let IntervalMax = "";
@@ -629,11 +626,11 @@
             let ParInputTypeValues = obj['ParInputTypeValues'];
             let blockParFieldType = false;
 
-            if (ParInputTypeValues.length > 0) {
-
+            if (ParInputTypeValues.length > 0){
                 ParInputTypeValues.forEach((o, i) => {
-                        if (o.IsActive) {
-                            let tableLikert = `<tr>  
+                    
+                    if (o.IsActive) {
+                            let tableLikert = `<tr>
                              <td>${o.Intervalo}</td>
                             <td>${o.Valor}</td>
                             <td><input disabled type="color" name="favcolor" value="${o.Cor}"  class="input-m"/></td>
@@ -658,26 +655,13 @@
 
 
         showTableLikert: function () {
-            debugger
+
             if ($('#camposLikertIncluidos tbody tr').length) {
                 $('#allObjLikert #divCamposLikertIncluidos').show();
                 $("#tabelaLikert").hide();
             } else {
                 $('#allObjLikert #divCamposLikertIncluidos').hide();
             }
-
-            //if ($('#camposCabecalhoIncluidos2 tbody tr').length) {
-            //    $('#allObjAVAgendamento #divCamposCabecalhoIncluidos2').attr('style', false)
-            //    $("#tabelaAgendamentoIntervalo").hide();
-            //} else {
-            //    $('#allObjAVAgendamento #divCamposCabecalhoIncluidos2').hide();
-            //}
-
-            //if ($("#camposCabecalhoIncluidos tbody tr").length > 0) {
-            //    $("ParDCAvam #selectParFrequencyAV").prop('disabled', true);
-            //} else {
-            //    $("ParDCAvam #selectParFrequencyAV").prop('disabled', false);
-            //}
 
         },
 
@@ -686,9 +670,6 @@
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (obj) {
-                //obj.ParInputTypeValues.forEach((o, i, a) => {
-                //        a[i].IsActive = false;
-                //});
                 obj['ParInputTypeValues'][i].IsActive = false;
 
                 this.insertTable(obj);
