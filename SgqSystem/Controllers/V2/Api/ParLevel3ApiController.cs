@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.V2.Api
@@ -27,7 +26,7 @@ namespace SgqSystem.Controllers.V2.Api
                 db.Configuration.LazyLoadingEnabled = false;
                 parLevel3Selects.ParLevels3 = db.ParLevel3.ToList();
                 parLevel3Selects.ParFieldTypes = db.ParFieldType.Where(x => x.IsActive).ToList();
-           }
+            }
 
             return Ok(parLevel3Selects);
         }
@@ -326,18 +325,23 @@ namespace SgqSystem.Controllers.V2.Api
                         parVinculoPesoOld.DynamicValue = parLevel3Value.DynamicValue;
                         parVinculoPesoOld.IsActive = parLevel3Value.IsActive;
 
-                         foreach (var item in parLevel3Value.ParInputTypeValues)
+                        foreach (var item in parLevel3Value.ParInputTypeValues)
                         {
-                            item.ParLevel3Value_Id = parLevel3Value.Id;
-                            if (item.Id > 0)
+                            if (item.Valor > 0)
                             {
-                                db.Entry(item).State = EntityState.Modified;
+                                {
+                                    item.ParLevel3Value_Id = parLevel3Value.Id;
+                                    if (item.Id > 0)
+                                    {
+                                        db.Entry(item).State = EntityState.Modified;
+                                    }
+                                    else
+                                    {
+                                        db.ParInputTypeValues.Add(item);
+                                    }
+                                }
                             }
-                            else
-                            {
-                                db.ParInputTypeValues.Add(item);
-                            }
-                        } 
+                        }
                     }
                     else
                     {
@@ -346,17 +350,20 @@ namespace SgqSystem.Controllers.V2.Api
 
                         foreach (var item in parLevel3Value.ParInputTypeValues)
                         {
-                            item.IsActive = true;
-                            item.ParLevel3Value_Id = parLevel3ValueSalvo.Id;
-                            if (item.Id > 0)
+                            if (item.Valor > 0)
                             {
-                                db.Entry(item).State = EntityState.Modified;
+                                item.IsActive = true;
+                                item.ParLevel3Value_Id = parLevel3ValueSalvo.Id;
+                                if (item.Id > 0)
+                                {
+                                    db.Entry(item).State = EntityState.Modified;
+                                }
+                                else
+                                {
+                                    db.ParInputTypeValues.Add(item);
+                                }
                             }
-                            else
-                            {
-                                db.ParInputTypeValues.Add(item);
-                            }
-                        } 
+                        }
                     }
 
                     db.SaveChanges();
