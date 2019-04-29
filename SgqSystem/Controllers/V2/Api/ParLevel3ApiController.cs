@@ -91,17 +91,36 @@ namespace SgqSystem.Controllers.V2.Api
                 var linkedName = "Vinculado"; //"Linked"
                 var notLinkedName = "Sem vinculo";
 
-                var vinculados = db.Database.SqlQuery<Option>($@"SELECT DISTINCT L3.Id as Value, L3.Name as Text, '{linkedName}' as GroupName FROM ParLevel3 L3
-                                                                RIGHT JOIN ParLevel3Level2 L32 ON L32.ParLevel3_Id = L3.Id
-                                                                INNER JOIN ParLevel3Level2Level1 L321 ON L321.ParLevel3Level2_Id = L32.Id
-                                                                WHERE L321.ParLevel1_Id = {ParLevel1_Id} AND L32.ParLevel2_Id = {ParLevel2_Id}").ToList();
+                var vinculados = db.Database.SqlQuery<Option>($@"SELECT
+                                                                DISTINCT
+                                                                	l3.Id AS Value
+                                                                   ,l3.Name AS Text
+                                                                   ,'{linkedName}' AS GroupName
+                                                                FROM ParVinculoPeso vp WITH (NOLOCK)
+                                                                INNER JOIN ParLevel3 l3 WITH (NOLOCK)
+                                                                	ON vp.ParLevel3_Id = l3.Id
+                                                                WHERE 1 = 1
+                                                                AND vp.ParLevel1_Id = {ParLevel1_Id}
+                                                                AND vp.ParLevel2_Id = {ParLevel2_Id}
+                                                                AND vp.IsActive = 1").ToList();
 
-                var naoVinculados = db.Database.SqlQuery<Option>($@"SELECT Id as Value, Name as Text,'{notLinkedName}' as GroupName FROM ParLevel3 
-                                                                WHERE Id NOT IN (SELECT DISTINCT L3.Id as Value FROM ParLevel3 L3
-                                                                                 RIGHT JOIN ParLevel3Level2 L32 ON L32.ParLevel3_Id = L3.Id
-                                                                                 INNER JOIN ParLevel3Level2Level1 L321 ON L321.ParLevel3Level2_Id = L32.Id
-                                                                                 WHERE L321.ParLevel1_Id = {ParLevel1_Id} AND L32.ParLevel2_Id = {ParLevel2_Id})
-                                                                ORDER BY Id").ToList();
+
+                var naoVinculados = db.Database.SqlQuery<Option>($@"SELECT
+                                                                	Id AS Value
+                                                                   ,Name AS Text
+                                                                   ,'{notLinkedName}' AS GroupName
+                                                                FROM ParLevel3 WITH (NOLOCK)
+                                                                WHERE Id NOT IN (SELECT
+                                                                DISTINCT
+                                                                	l3.Id
+                                                                FROM ParVinculoPeso vp WITH (NOLOCK)
+                                                                INNER JOIN ParLevel3 l3 WITH (NOLOCK)
+                                                                	ON vp.ParLevel3_Id = l3.Id
+                                                                WHERE 1 = 1
+                                                                AND vp.ParLevel1_Id = {ParLevel1_Id}
+                                                                AND vp.ParLevel2_Id = {ParLevel2_Id}
+                                                                AND vp.IsActive = 1)
+                                                                AND IsActive = 1").ToList();
 
                 select.Options.AddRange(vinculados);
                 select.Options.AddRange(naoVinculados);

@@ -68,16 +68,33 @@ namespace SgqSystem.Controllers.V2.Api
                 var linkedName = "Vinculado"; //"Linked"
                 var notLinkedName = "Sem vinculo";
 
-                var vinculados = db.Database.SqlQuery<Option>($@"SELECT DISTINCT L2.Id as Value , L2.Name as Text, '{linkedName}' as GroupName FROM ParLevel2 L2
-                                                         RIGHT JOIN ParLevel3Level2 L32 ON L32.ParLevel2_Id = L2.Id
-                                                         INNER JOIN ParLevel3Level2Level1 L321 ON L321.ParLevel3Level2_Id = L32.Id
-                                                         WHERE L321.ParLevel1_Id = { id }").ToList();
+                var vinculados = db.Database.SqlQuery<Option>($@"SELECT
+                                                                DISTINCT
+                                                                	l2.Id AS Value
+                                                                   ,l2.Name AS Text
+                                                                   ,'{linkedName}' AS 'GroupName'
+                                                                FROM ParVinculoPeso vp WITH (NOLOCK)
+                                                                INNER JOIN ParLevel2 l2 WITH (NOLOCK)
+                                                                	ON vp.ParLevel2_Id = l2.Id
+                                                                WHERE 1 = 1
+                                                                AND vp.ParLevel1_Id = {id}
+                                                                AND vp.IsActive = 1").ToList();
 
-                var naoVinculados = db.Database.SqlQuery<Option>($@"SELECT Id as Value, Name as Text,'{notLinkedName}' as GroupName FROM ParLevel2 WHERE Id NOT IN (SELECT DISTINCT L2.Id FROM ParLevel2 L2
-                                                         RIGHT JOIN ParLevel3Level2 L32 ON L32.ParLevel2_Id = L2.Id
-                                                         INNER JOIN ParLevel3Level2Level1 L321 ON L321.ParLevel3Level2_Id = L32.Id
-                                                         WHERE L321.ParLevel1_Id = { id })
-                                                         ORDER BY Id").ToList();
+                var naoVinculados = db.Database.SqlQuery<Option>($@"SELECT
+                                                                	Id AS Value
+                                                                   ,Name AS Text
+                                                                   ,'{notLinkedName}' AS GroupName
+                                                                FROM ParLevel2 WITH (NOLOCK)
+                                                                WHERE Id NOT IN (SELECT
+                                                                DISTINCT
+                                                                	l2.Id
+                                                                FROM ParVinculoPeso vp WITH (NOLOCK)
+                                                                INNER JOIN ParLevel2 l2 WITH (NOLOCK)
+                                                                	ON vp.ParLevel2_Id = l2.Id
+                                                                WHERE 1 = 1
+                                                                AND vp.ParLevel1_Id = {id}
+                                                                AND vp.IsActive = 1)
+                                                                AND IsActive = 1").ToList();
 
                 select.Options.AddRange(vinculados);
                 select.Options.AddRange(naoVinculados);
