@@ -214,7 +214,9 @@
                     openMessageModal("Atenção", "o Intervalo minimo não pode ser maior que o Intervalo Máximo!");
                     return false;
                 } else {
-                    $('#divEscalaLikert').show();
+                    if (parseInt($("#IntervalMin").val()) >= 0 && parseInt($("#IntervalMax").val()) >= 0) 
+                        $('#divEscalaLikert').show();
+
                     $("#IntervalMin, #IntervalMax").trigger('input');
                 }
             }
