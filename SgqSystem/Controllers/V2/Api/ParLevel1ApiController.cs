@@ -60,7 +60,9 @@ namespace SgqSystem.Controllers.V2.Api
 
 
                 //Peso
-                parLevel1Selects.ParDepartments = db.ParDepartment.Where(x => x.Active).ToList();
+               var listaDepartamentos = db.ParDepartment.Where(x => x.Active).ToList();
+               parLevel1Selects.ParDepartments = listaDepartamentos.Where(y => !listaDepartamentos.Any(y1 => y1.Parent_Id == y.Id)).ToList();
+
                 parLevel1Selects.ParGroupParLevel1s = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParCargos = db.ParCargo.Where(x => x.IsActive).ToList();
 
