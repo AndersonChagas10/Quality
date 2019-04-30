@@ -253,3 +253,17 @@ IF NOT EXISTS (SELECT * FROM ParAlertType WHERE Name = 'KO')
 	end
 
 GO
+
+IF COL_LENGTH('ParVinculoPeso','ParDepartment_Id') IS NOT NULL
+BEGIN	
+	ALTER TABLE ParLevel3Value ADD ParDepartment_Id int null 
+END
+
+GO
+
+IF COL_LENGTH('ParVinculoPeso','ParCargo_Id') IS NOT NULL
+BEGIN	
+	ALTER TABLE ParLevel3Value ADD ParCargo_Id int null 
+END
+
+GO

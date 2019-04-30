@@ -343,6 +343,8 @@ namespace SgqSystem.Controllers.V2.Api
                         parVinculoPesoOld.IntervalMax = parLevel3Value.IntervalMax;
                         parVinculoPesoOld.DynamicValue = parLevel3Value.DynamicValue;
                         parVinculoPesoOld.IsActive = parLevel3Value.IsActive;
+                        parVinculoPesoOld.ParCargo_Id = parLevel3Value.ParCargo_Id;
+                        parVinculoPesoOld.ParDepartment_Id = parLevel3Value.ParDepartment_Id;
 
                         foreach (var item in parLevel3Value.ParInputTypeValues)
                         {
