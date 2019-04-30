@@ -45,6 +45,25 @@
         <div class="col-sm-4">
 
             <div class="form-group">
+                <label for="ParDepartment_Id">Departamento:</label>
+                <select id="selectL3PesoParDepartment" class="input input-lg col-sm-12" name="ParDepartment_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label for="ParCargo_Id">Cargo:</label>
+                <select id="selectL3ParCargo" class="input input-lg col-sm-12" name="ParCargo_Id"></select>
+            </div>
+
+        </div>
+
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
                 <label for="ParLevel3BoolTrue_Id">Valor positivo:</label>
                 <select id="selectL3TipoDadoParLevel3BoolTrue" class="input input-lg col-sm-12 required" name="ParLevel3BoolTrue_Id"></select>
             </div>
@@ -137,16 +156,16 @@
             </div>
 
             @*<div class="row">
-                    <div class="td-erp">
-                        <div id="divBtnSalvar" class="col-sm-6">
-                            <button class="form-control btn btn-primary" data-add>Salvar</button>
-                        </div>
-
-                        <div id="divBtnCancelar" class="col-sm-6" style="display:none">
-                            <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
-                        </div>
+                <div class="td-erp">
+                    <div id="divBtnSalvar" class="col-sm-6">
+                        <button class="form-control btn btn-primary" data-add>Salvar</button>
                     </div>
-                </div>*@
+
+                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                    </div>
+                </div>
+            </div>*@
         </div>
 
 
@@ -303,6 +322,11 @@
                 var html = '<tr>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3InputType_Id"]', o.ParLevel3InputType_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
+
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParDepartment_Id"]', o.ParDepartment_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
+
+
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel1_Id"]', o.ParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel2_Id"]', o.ParLevel2_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolTrue_Id"]', o.ParLevel3BoolTrue_Id, 'Todos') + '</td>';
@@ -585,6 +609,7 @@
         },
 
         prepareTipoDado: function (obj) {
+            debugger
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};
@@ -596,6 +621,8 @@
             obj['ParLevel3InputType_Id'] = formdata.ParLevel3InputType_Id;
             obj['ParLevel2_Id'] = formdata.ParLevel2_Id;
             obj['ParLevel3_Id'] = formdata.ParLevel3_Id;
+            obj['ParDepartment_Id'] = formdata.ParDepartment_Id;
+            obj['ParCargo_Id'] = formdata.ParCargo_Id;
             return obj;
         },
 
