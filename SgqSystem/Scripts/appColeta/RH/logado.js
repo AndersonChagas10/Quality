@@ -2,6 +2,7 @@ function openLogado() {
     openParFrequency();
     //openParDepartment();
     AtualizarVariaveisDeColetas();
+    AtualizarVariaveisDeAcoesCorretivas();
 
     setInterval(function () {
         pingLogado(urlPreffix, online, offline)
@@ -26,14 +27,24 @@ function offline() {
 }
 
 function AtualizaConstantemente() {
+
     setInterval(function () {
-        $('div[data-falta-sincronizar]').text('(' + globalColetasRealizadas.length + ') Não sincronizadas');
+
+        $('div[data-falta-sincronizar]').text('(' + globalColetasRealizadas.length + ') Coletas não sincronizadas');
         $('[data-online-offline]').html(onlineOffline);
 
         if (globalColetasRealizadas.length > 0)
             $('div[data-falta-sincronizar]').addClass("btn-warning");
         else
             $('div[data-falta-sincronizar]').removeClass("btn-warning");
+
+        //Ação Corretivas
+        $('div[data-falta-sincronizar-ca]').text('(' + globalAcoesCorretivasRealizadas.length + ') Ações corretivas não sincronizadas');
+
+        if (globalAcoesCorretivasRealizadas.length > 0)
+            $('div[data-falta-sincronizar-ca]').addClass("btn-warning");
+        else
+            $('div[data-falta-sincronizar-ca]').removeClass("btn-warning");
 
     }, 300);
 }

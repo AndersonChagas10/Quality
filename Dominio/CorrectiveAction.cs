@@ -52,12 +52,12 @@ namespace Dominio
         public virtual EmailContent EmailContent { get; set; }
 
         [ForeignKey("AuditorId")]
-        public virtual UserSgq UserSgq { get; set; }
+        public virtual UserSgq Auditor { get; set; }
 
         [ForeignKey("TechinicalId")]
-        public virtual UserSgq UserSgq1 { get; set; }
+        public virtual UserSgq Techinical { get; set; }
 
         [ForeignKey("SlaughterId")]
-        public virtual UserSgq UserSgq2 { get; set; }
+        public virtual UserSgq Slaughter { get; set; }
     }
 }

@@ -93,8 +93,10 @@ function atualizaColetasAposSincronizacao(data) {
 	AtualizarArquivoDeColetas();
 }
 
+
 var enviarColetaEmExecucao = false;
 function enviarColeta() {
+
 	if (enviarColetaEmExecucao == false && globalColetasRealizadas.length > 0) {
 		enviarColetaEmExecucao = true;
 		pingLogado(urlPreffix,
@@ -119,6 +121,11 @@ function enviarColeta() {
 				console.log('desconectado');
 				enviarColetaEmExecucao = false;
 			});
+			
+	} else {
+
+		enviarAcaoCorretiva();
+		
 	}
 }
 
@@ -131,6 +138,7 @@ function AtualizarArquivoDeColetas() {
 }
 
 function AtualizarVariaveisDeColetas() {
+
 	_readFile("globalColetasRealizadas.txt", function (content) {
 		if (typeof (content) == 'undefined')
 			content = '[]';
@@ -142,4 +150,5 @@ function AtualizarVariaveisDeColetas() {
 			content = '[]';
 		coletasAgrupadas = JSON.parse(content);
 	});
+
 }

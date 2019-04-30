@@ -34,11 +34,14 @@ function getHeader() {
         '</nav>' +
         '<footer class="footer">' +
         '<div class="container-fluid">' +
-        '<div class="col-xs-3 nav-btn" data-falta-sincronizar>' +
+        '<div class="col-xs-4 nav-btn" data-falta-sincronizar>' +
         '(' + globalColetasRealizadas.length + ') Não sincronizadas' +
         '</div>' +
-        '<div class="col-xs-3">&nbsp;</div>' +
-        '<div class="col-xs-3">&nbsp;</div>' +
+        '<div class="col-xs-4 nav-btn" data-falta-sincronizar-ca>' +
+        '(' + globalAcoesCorretivasRealizadas.length + ') Não sincronizadas' +
+        '</div>' +
+        // '<div class="col-xs-3">&nbsp;</div>' +
+        // '<div class="col-xs-3">&nbsp;</div>' +
         '<div data-online-offline></div>' +
         '</div>' +
         '</footer>';

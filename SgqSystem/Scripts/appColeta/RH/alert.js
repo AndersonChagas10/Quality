@@ -1,4 +1,5 @@
 function processAlertRole(coletaJson) {
+    
     if (coletaJson.length == 0)
         return;
 
@@ -8,6 +9,7 @@ function processAlertRole(coletaJson) {
     });
 
     for (var i = 0; i < coletaJson.length; i++) {
+
         var coleta = coletaJson[i];
 
         if (coleta.IsConform)
@@ -16,9 +18,9 @@ function processAlertRole(coletaJson) {
         //retorna se existe alguem alerta vigente para este cenario
         var exists = $.grep(listaParAlertPreFiltrada, function (o, i) {
             return (o.ParCompany_Id == coleta.ParCompany_Id || o.ParCompany_Id == null)
-            && (o.ParLevel1_Id == coleta.ParLevel1_Id || o.ParLevel1_Id == null)
-            && (o.ParLevel2_Id == coleta.ParLevel2_Id || o.ParLevel2_Id == null)
-            && o.ParLevel3_Id == coleta.ParLevel3_Id
+                && (o.ParLevel1_Id == coleta.ParLevel1_Id || o.ParLevel1_Id == null)
+                && (o.ParLevel2_Id == coleta.ParLevel2_Id || o.ParLevel2_Id == null)
+                && o.ParLevel3_Id == coleta.ParLevel3_Id
                 && o.ParAlertType_Id == 1;
         });
 
@@ -44,6 +46,12 @@ function processAlertRole(coletaJson) {
                 ParLevel3_Id: coleta.ParLevel3_Id,
                 Number: numeroDeAlertas
             });
+
+            if (exists[0].HasCorrectiveAction) {
+                //Verificar se disparou alerta e se existe ação corretiva - Caso existir, abre o modal - após salvar a ação corretiva abre a função abaixo;
+                OpenCorrectiveAction(coleta);
+            }
+
             closeMensagem(3000);
         }
     }

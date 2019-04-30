@@ -5,6 +5,7 @@ var currentParDepartment_Id;
 var currentParDepartmentParent_Id;
 var currentParCargo_Id;
 var globalColetasRealizadas = [];
+var globalAcoesCorretivasRealizadas = [];
 var currentLogin = {};
 var globalLoginOnline = false;
 var currentCollectDate = new Date();
@@ -79,7 +80,7 @@ function sincronizarResultado(frequencyId) {
     $.ajax({
         data: JSON.stringify({
             ParCompany_Id: currentLogin.ParCompanyXUserSgq[0].ParCompany.Id,
-            CollectionDate: new Date(currentCollectDate).toISOString()
+            CollectionDate: convertDateToJson(currentCollectDate)
         }),
         url: urlPreffix + '/api/AppColeta/GetResults/',
         type: 'POST',

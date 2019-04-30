@@ -421,7 +421,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
                 ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
                 IsNotEvaluate: $(data).attr('data-conforme-na') == "",
-                CollectionDate: new Date().toISOString(),
+                CollectionDate: convertDateToJson(new Date()),
                 UserSgq_Id: currentLogin.Id,
 			    /*
 				"UserSgq_Id":1,
@@ -455,6 +455,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 
     //Atualiza para a proxima coleta (se precisar adicionar amostra ou avaliação)
     coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
+
+
     //atualiza tela de coleta e contadores
     listarParCargo();
 });
@@ -477,4 +479,73 @@ function SalvarColetas(coletaJson) {
         globalColetasRealizadas.push(coletaJson[i]);
     }
     AtualizarArquivoDeColetas();
+}
+
+function OpenCorrectiveAction(coleta) {
+
+    var correctiveAction = {};
+
+    //Pegar os dados correntes
+    correctiveAction.CollectionLevel2 = {
+        ParLevel1_Id: coleta.ParLevel1_Id,
+        ParLevel2_Id: coleta.ParLevel2_Id,
+        UnitId: curretParCompany_Id,
+        //Shift: 1,
+        EvaluationNumber: coleta.Evaluation,
+        Sample: coleta.Sample,
+        ParDepartment_Id: currentParDepartment_Id,
+        ParCargo_Id: currentParCargo_Id,
+        //ParCluster_Id: 1,
+        CollectionDate: convertDateToJson(new Date())
+    }
+
+    var modal = '<h4>Ação Corretiva</h4>';
+    var selectUsers = '<option value="">Selecione...</option><option value="1">Pato Donald</option>';
+
+    var body = '<div class="form-group">' +
+        '<div class="form-group col-xs-12">' +
+            '<label>Descrição da Falha:</label>' +
+            '<textarea name="DescriptionFailure" id="descriptionFailure" rows="7" class="col-sx-12 form-control"></textarea>' +
+        '</div>' +
+        '<div class="form-group col-xs-6">' +
+            '<label for="email">Slaughter :</label>' +
+            '<select name="SlaughterId" id="slaughterId" class="form-control">' + selectUsers + '</select>' +
+        '</div>' +
+        '<div class="form-group col-xs-6">' +
+            '<label for="email">Technical:</label>' +
+            '<select name="TechinicalId" id="techinicalId" class="form-control">' + selectUsers + '</select>' +       
+        '</div>';
+
+    var corpo =
+        '<div class="container">' +
+        '<div class="row" style="overflow:auto">' +
+        modal +
+        '<hr>' +
+        '<div>' +
+        body +
+        '</div>' +
+        '<hr>' +
+        '<div class="form-group col-xs-6">' +
+            '<button class="btn btn-primary" id="btnSendCA">Salvar Ação Corretiva</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+
+    openModal(corpo);
+
+    $('#btnSendCA').off().on('click', function () {
+
+        //Inserir collectionLevel2 dentro do obj
+        correctiveAction.AuditorId = currentLogin.Id;
+        correctiveAction.SlaughterId = $('#slaughterId :selected').val();
+        correctiveAction.TechinicalId = $('#techinicalId :selected').val();
+        correctiveAction.DescriptionFailure = $('#descriptionFailure').val();
+
+        //Salvar corrective action na lista de correctiveAction
+        globalAcoesCorretivasRealizadas.push(correctiveAction);
+
+        closeModal();
+
+    }); 
+
 }
