@@ -14,6 +14,7 @@ function openParFrequency() {
 				success: function (data) {
 
 					_writeFile("parFrequency.txt", JSON.stringify(data), function () {
+						listaParFrequency = data;
 						listarParFrequency();
 					});
 					closeMensagem();
@@ -80,6 +81,7 @@ function cleanGlobalVarParFrequency() {
 	currentParDepartment_Id = null;
 	currentParCargo_Id = null;
 	//currentParFrequency_Id = null;
+	currentsParDepartments_Ids = [];
 }
 
 $('body').off('click', '[data-par-frequency-id]').on('click', '[data-par-frequency-id]', function (e) {
