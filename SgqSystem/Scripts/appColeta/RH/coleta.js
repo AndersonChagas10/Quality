@@ -38,6 +38,7 @@ function openColeta(levels) {
 
     $('div#app').html(html);
 
+    setBreadcrumbs();
 
 }
 
