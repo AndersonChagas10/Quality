@@ -144,6 +144,8 @@ namespace SgqSystem.Controllers.V2.Api
         {
 
             List<ParVinculoPesoAppViewModel> listaParVinculoPeso;
+
+
             List<ParLevel1AppViewModel> listaParLevel1;
             List<ParLevel2AppViewModel> listaParLevel2;
             List<ParLevel3AppViewModel> listaParLevel3;
@@ -172,6 +174,7 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParVinculoPeso = db.ParVinculoPeso
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id || x.ParFrequencyId == null)
                     .Where(x => x.IsActive)
                     .Select(x => new ParVinculoPesoAppViewModel()
                     {
@@ -233,6 +236,7 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParEvaluationXDepartmentXCargoAppViewModel = db.ParEvaluationXDepartmentXCargo
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id || x.ParFrequencyId == null)
                     .Where(x => x.IsActive)
                     .Select(x => new ParEvaluationXDepartmentXCargoAppViewModel()
                     {
@@ -244,6 +248,22 @@ namespace SgqSystem.Controllers.V2.Api
                         Evaluation = x.Evaluation
                     })
                     .ToList();
+
+                var listaEvaluations = db.ParEvaluationSchedule
+                        .Where(y => y.IsActive);
+
+                foreach (var item in listaParEvaluationXDepartmentXCargoAppViewModel)
+                {
+                    item.ParEvaluationScheduleAppViewModel = listaEvaluations
+                        .Where(y=>y.ParEvaluationXDepartmentXCargo_Id == item.Id)
+                        .Select(y => new ParEvaluationScheduleAppViewModel()
+                        {
+                            Inicio = y.Inicio,
+                            Fim = y.Fim,
+                            Av = y.Av,
+                            Intervalo = y.Intervalo
+                        }).ToList();
+                }
 
                 listaParLevel3Value = db.ParLevel3Value
                     .AsNoTracking()

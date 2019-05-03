@@ -34,6 +34,7 @@
     <Compile Include="AppViewModel\ParCargoXDepartmentAppViewModel.cs" />
     <Compile Include="AppViewModel\ParCargoAppViewModel.cs" />
     <Compile Include="AppViewModel\ParDepartmentAppViewModel.cs" />
+    <Compile Include="AppViewModel\ParEvaluationScheduleAppViewModel.cs" />
     <Compile Include="AppViewModel\ParLevel3ValueAppViewModel.cs" />
     <Compile Include="AppViewModel\ParLevel1AppViewModel.cs" />
     <Compile Include="AppViewModel\ParEvaluationXDepartmentXCargoAppViewModel.cs" />
