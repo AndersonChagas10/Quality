@@ -502,7 +502,7 @@ namespace SgqSystem.Controllers.V2.Api
                        ,ParLevel2_Id
                        ,UnitId
                        ,Shift
-                       ,CollectionDate
+                       --,CollectionDate
                        ,ParDepartment_Id
                        ,ParCargo_Id
                        ,ParCluster_Id
@@ -514,7 +514,7 @@ namespace SgqSystem.Controllers.V2.Api
                     		,ParLevel2_Id
                     		,UnitId
                     		,Shift
-                    		,CollectionDate
+                    		--,CollectionDate
                     		,ParDepartment_Id
                     		,ParCargo_Id
                     		,ParCluster_Id

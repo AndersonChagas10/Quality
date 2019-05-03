@@ -118,6 +118,8 @@ function listarParCargo() {
 
     $('div#app').html(html);
 
+    setBreadcrumbs();
+
 }
 
 function cleanGlobalVarParCargo() {

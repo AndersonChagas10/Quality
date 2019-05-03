@@ -12,3 +12,10 @@ function stringToDate(dateString){
     //new Date(year, month, day, hours, minutes, seconds, milliseconds)
     return new Date(ano, mes, dia, hora, mimutos, segundos);
 }
+
+function convertDateToJson(date){
+
+    var newDate = new Date(date);
+
+    return new Date(newDate.setHours(newDate.getHours() - 3)).toJSON();
+}

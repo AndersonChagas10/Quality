@@ -5,12 +5,15 @@ var currentParDepartment_Id;
 var currentParDepartmentParent_Id;
 var currentParCargo_Id;
 var globalColetasRealizadas = [];
+var globalAcoesCorretivasRealizadas = [];
 var currentLogin = {};
 var globalLoginOnline = false;
 var currentCollectDate = new Date();
 var appIsOnline = false;
 var currentAlerts = [];
 var currentAlertsAgrupados = [];
+var listaParFrequency = [];
+var currentsParDepartments_Ids = [];
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
@@ -79,7 +82,7 @@ function sincronizarResultado(frequencyId) {
     $.ajax({
         data: JSON.stringify({
             ParCompany_Id: currentLogin.ParCompanyXUserSgq[0].ParCompany.Id,
-            CollectionDate: new Date(currentCollectDate).toISOString()
+            CollectionDate: convertDateToJson(currentCollectDate)
         }),
         url: urlPreffix + '/api/AppColeta/GetResults/',
         type: 'POST',
@@ -163,4 +166,69 @@ function changeDate(that) {
 
     openParFrequency();
     closeModal(5000);
+}
+
+function setBreadcrumbs() {
+
+    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="openParFrequency()">Inicio</a></li>';
+    var breadcrumbLi = "";
+    var isCurrent = true;
+
+    if (currentParCargo_Id) {
+        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParCargo, function (item) {
+            return item.Id == currentParCargo_Id;
+        })[0].Name, function () { }, isCurrent) + breadcrumbLi;
+
+        isCurrent = false;
+    }
+
+    //Aqui vou ter que pegar uma lista de Departamentos e fazer um foreach 
+    if (currentParDepartment_Id) {
+
+        var deparment = "";
+        isCurrent = false;
+
+        currentsParDepartments_Ids.forEach(function (department_Id, index) {
+
+            if (!currentParCargo_Id && (index + 1) == currentsParDepartments_Ids.length) {
+                isCurrent = true;
+            }
+
+            if (department_Id) {
+
+                deparment += getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
+                    return item.Id == department_Id;
+                })[0].Name, 'listarParDepartment(' + department_Id + ')', isCurrent);
+            }
+
+        });
+
+        breadcrumbLi = deparment + breadcrumbLi
+        isCurrent = false;
+    }
+
+
+    if (currentParFrequency_Id) {
+        breadcrumbLi = getBreadcrumb($.grep(listaParFrequency, function (item) {
+            return item.Id == currentParFrequency_Id;
+        })[0].Name, 'listarParDepartment(0)', isCurrent) + breadcrumbLi;
+
+        isCurrent = false;
+    }
+
+    breadcrumb += breadcrumbLi + '</ol>'
+
+    $('.panel-heading').prepend(breadcrumb);
+
+}
+
+function getBreadcrumb(text, link, isCurrent) {
+
+    if (isCurrent) {
+        isCurrent = false;
+
+        return '<li class="active">' + text + '</a></li>';
+    } else
+        return '<li><a onclick="' + link + '">' + text + '</a></li>';
+
 }

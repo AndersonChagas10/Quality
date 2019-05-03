@@ -6,7 +6,7 @@ IF COL_LENGTH('ParEvaluation','Sample') IS NULL
 		ALTER TABLE ParEvaluation ADD Sample int null;
     END
 
-IF COL_LENGTH('ParLevel2','ParDepartment_Id') IS NULL
+IF COL_LENGTH('ParLevel2','ParDepartment_Id') IS NOT NULL
     BEGIN	
 		ALTER TABLE ParLevel2 
 		ALTER COLUMN ParDepartment_Id int null;
@@ -145,7 +145,6 @@ create table Collection (
 	--outros
 	IsProcessed bit default 0
 )
-)
 
 GO
 
@@ -156,21 +155,21 @@ END
 
 GO
 
-IF COL_LENGTH('ParEvaluationXDepartmentXCargo','ParFrequencyId') IS NOT NULL
+IF COL_LENGTH('ParEvaluationXDepartmentXCargo','ParFrequencyId') IS NULL
 BEGIN
 	ALTER TABLE ParEvaluationXDepartmentXCargo ADD ParFrequencyId int null;
 END
 
 GO
 
-IF COL_LENGTH('ParVinculoPeso','ParFrequencyId') IS NOT NULL
+IF COL_LENGTH('ParVinculoPeso','ParFrequencyId') IS NULL
 BEGIN
 	ALTER TABLE ParVinculoPeso ADD ParFrequencyId int null 
 END
 
 GO
 
-IF COL_LENGTH('ParVinculoPeso','Evaluation') IS NOT NULL
+IF COL_LENGTH('ParVinculoPeso','Evaluation') IS NULL
 BEGIN
 	ALTER TABLE ParVinculoPeso ADD Evaluation int null 
 
@@ -178,21 +177,21 @@ END
 
 GO
 
-IF COL_LENGTH('ParVinculoPeso','Evaluation') IS NOT NULL
+IF COL_LENGTH('ParVinculoPeso','Evaluation') IS NULL
 BEGIN
 	ALTER TABLE ParVinculoPeso ADD Evaluation int null 
 END
 
 GO
 
-IF COL_LENGTH('ParVinculoPeso','Sample') IS NOT NULL
+IF COL_LENGTH('ParVinculoPeso','Sample') IS NULL
 BEGIN	
 	ALTER TABLE ParVinculoPeso ADD Sample int null  
 END
 
 GO
 
-IF COL_LENGTH('ParLevel3','CaracteristicaDeRisco') IS NOT NULL
+IF COL_LENGTH('ParLevel3','CaracteristicaDeRisco') IS NULL
 BEGIN	
 	ALTER TABLE ParLevel3 ADD CaracteristicaDeRisco varchar(100) null 
 END
@@ -254,14 +253,14 @@ IF NOT EXISTS (SELECT * FROM ParAlertType WHERE Name = 'KO')
 
 GO
 
-IF COL_LENGTH('ParVinculoPeso','ParDepartment_Id') IS NOT NULL
+IF COL_LENGTH('ParVinculoPeso','ParDepartment_Id') IS NULL
 BEGIN	
 	ALTER TABLE ParLevel3Value ADD ParDepartment_Id int null 
 END
 
 GO
 
-IF COL_LENGTH('ParVinculoPeso','ParCargo_Id') IS NOT NULL
+IF COL_LENGTH('ParVinculoPeso','ParCargo_Id') IS NULL
 BEGIN	
 	ALTER TABLE ParLevel3Value ADD ParCargo_Id int null 
 END
