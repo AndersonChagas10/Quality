@@ -77,6 +77,7 @@
             let urlSave = this.urlSave;
 
             function Save(obj) {
+                openLoader(Resources("please_wait"));
                 var hasId = obj.Id;
                 $.ajax({
                     url: urlSave,
@@ -109,7 +110,6 @@
                     return false
                 }
 
-                openLoader(Resources("please_wait"));
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 

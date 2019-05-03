@@ -79,11 +79,12 @@
         },
 
         load: function () {
-
+        
             let id = this.id;
             let urlSave = this.urlSave;
 
             function Save(obj) {
+                openLoader(Resources("please_wait"));
                 var hasId = obj.Id;
                 $.ajax({
                     url: urlSave,
@@ -92,10 +93,11 @@
                     data: JSON.stringify(obj),
                     contentType: "application/json",
                     success: function (data) {
+                        closeLoader();
                         lastIdL2 = parseInt(data);
                         openMessageModal("Feito", "Dados Salvos");
                         if (parseInt(hasId) <= 0 || isNaN(parseInt(hasId)))
-                            getGenericAjax('@Url.Action("Get", "api/ParLevel2Api")', 'Get', ParL2Geral.afterCreate);
+                            getGenericAjax('@Url.Action("Get", "api/ParLevel2Api")', 'Get', ParL2Geral.afterCreate);                      
                         else
                             $('#selectL2').trigger('change');
                         closeLoader();
@@ -116,7 +118,6 @@
                     return false
                 }
 
-                openLoader(Resources("please_wait"));
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 

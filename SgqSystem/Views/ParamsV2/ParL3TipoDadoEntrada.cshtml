@@ -38,7 +38,7 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label for="ParCompany_Id">Empresa:</label>
-                <select id="selectL3TipoDadoParCompany" class="input input-lg col-sm-12 required" name="ParCompany_Id"></select>
+                <select id="selectL3TipoDadoParCompany" class="input input-lg col-sm-12" name="ParCompany_Id"></select>
             </div>
         </div>
 
@@ -343,7 +343,7 @@
             });
 
             function Save(obj) {
-
+                openLoader(Resources("please_wait"));
                 $.ajax({
                     url: urlSave,
                     type: 'POST',
@@ -453,9 +453,6 @@
                 //    //obj.ParInputTypeValues = [];
                 //    return false;
                 //}
-
-
-                openLoader(Resources("please_wait"));
 
                 Save(obj);
             });

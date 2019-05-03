@@ -127,7 +127,7 @@
             });
 
             function Save(obj) {
-                
+                openLoader(Resources("please_wait"));
                 $.ajax({
                     url: urlSave,
                     type: 'POST',
@@ -192,7 +192,6 @@
                     return false
                 }
 
-                openLoader(Resources("please_wait"));
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 

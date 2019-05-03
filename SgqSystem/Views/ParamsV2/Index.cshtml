@@ -592,14 +592,14 @@
             });
 
             $.ajax({
-
+                
                 url: `@Url.Action("GetParLevel2Vinculados", "api/ParLevel2Api")/${$(this).val()}`,
                 type: 'Get',
                 dataType: "json",
                 data: {},
                 contentType: "application/json",
                 success: function (data) {
-
+                    closeLoader();
                     preencheSelect('selectL2', 'Text', 'Value', data.Options, 'Selecione o Monitoramento', preencheL2);
                 },
                 error: function (request, error) {
@@ -623,7 +623,7 @@
         setFormToDefault('ParL2Avam');
 
         if (parseInt($(this).val()) > 0) {
-
+            openLoader(Resources("please_wait"));
             $.ajax({
                 url: `@Url.Action("Get", "api/ParLevel2Api")/${$(this).val()}`,
                 type: 'Get',
@@ -637,12 +637,13 @@
                     ParL2Avancados.set(data.Parlevel2);
                     //parL2Avam.load(data.Parlevel2.ParEvaluation);
                     verifyTabs('selectL2', 'l2');
+                    closeLoader();
                 },
                 error: function (request, error) {
+                    closeLoader();
                     alert("Request: " + JSON.stringify(request));
                 }
             });
-
 
             $.ajax({
 
@@ -672,7 +673,7 @@
         verifyTabs('selectL3', 'l3');
 
         if (parseInt($(this).val()) > 0) {
-
+            openLoader(Resources("please_wait"));
             $.ajax({
                 url: `@Url.Action("Get", "api/ParLevel3Api")/${$(this).val()}`,
                 type: 'Get',
@@ -688,8 +689,10 @@
                     ParL3TipoDado.load(data.Parlevel3.ParLevel3Value);
                     ParL3Help.load(data.Parlevel3.ParLevel3XHelp);
                     verifyTabs('selectL3', 'l3');
+                    closeLoader();
                 },
                 error: function (request, error) {
+                    closeLoader();
                     alert("Request: " + JSON.stringify(request));
                 }
             });
@@ -703,7 +706,7 @@
         verifyTabs('selectDCDepartment', 'dc');
 
         if (parseInt($(this).val()) > 0) {
-
+            openLoader(Resources("please_wait"));
             $.ajax({
                 url: `@Url.Action("Get", "api/ParEvaluationXDepartmentXCargoApi")/${$(this).val()}`,
                 type: 'Get',
@@ -714,8 +717,10 @@
                     preencheCampos('dc', '', data.ParDepartment, true)
                     preencheSelect('selectDCAvamParCargo', 'Name', 'Id', data.ParCargo, 'Todos');
                     parDCAvam.load(data.ParEvaluationXDepartmentXCargo);
+                    closeLoader();
                 },
                 error: function (request, error) {
+                    closeLoader();
                     alert("Request: " + JSON.stringify(request));
                 }
             });
@@ -724,7 +729,7 @@
     }
 
     let getSelectsL1 = function () {
-
+        openLoader(Resources("please_wait"));
         $.ajax({
             url: '@Url.Action("GetSelectsL1", "api/ParLevel1Api")',
             type: 'Get',
@@ -751,27 +756,28 @@
                 preencheSelect('selectL3AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
 
                 preencheSelect('selectL3PesoPesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
-                preencheSelect('selectL3PesoParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a Unidade');
+                preencheSelect('selectL3PesoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3PesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
                 preencheSelect('selectL3PesoParDepartment', 'Name', 'Id', data.ParDepartments, 'Todos');
                 preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a Função');
 
-                preencheSelect('selectL3ParCargo', 'Name', 'Id', data.ParCargos, 'Selecione o Cargo');
+                preencheSelect('selectL3ParCargo', 'Name', 'Id', data.ParCargos, 'Todos');
 
                 preencheSelect('selectL3TipoDadoParLevel3InputType', 'Name', 'Id', data.ParLevel3InputTypes, 'Selecione o Tipo de dados para a coleta');
                 preencheSelect('selectL3TipoDadoParLevel3BoolFalse', 'Name', 'Id', data.ParLevel3BoolFalses, 'Valor negativo');
                 preencheSelect('selectL3TipoDadoParLevel3BoolTrue', 'Name', 'Id', data.ParLevel3BoolTrues, 'Valor positivo');
-                preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', data.ParCompanys, 'Seleciona a Empresa');
+                preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3TipoDadoParMeasurementUnit', 'Name', 'Id', data.ParMeasurementUnits, 'Selecione a unidade de medida');
 
                 preencheSelect('selectDCAvamParCompany', 'Name', 'Id', data.ParCompanys, 'Todas as empresas');
                 preencheSelect('selectDCDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento', preencheDC);
                 preencheSelect('selectParFrequencyAV', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
-
+                closeLoader();
                 verifyTabs('selectDCDepartment', 'dc');
 
             },
             error: function (request, error) {
+                closeLoader();
                 alert("Request: " + JSON.stringify(request));
             }
         });
