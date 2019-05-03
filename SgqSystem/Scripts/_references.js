@@ -92,6 +92,7 @@
 /// <reference path="appcoleta/rh/alert.js" />
 /// <reference path="appcoleta/rh/app.js" />
 /// <reference path="appcoleta/rh/coleta.js" />
+/// <reference path="appcoleta/rh/correctiveaction.js" />
 /// <reference path="appcoleta/rh/crypto.js" />
 /// <reference path="appcoleta/rh/guard.js" />
 /// <reference path="appcoleta/rh/index2.js" />
