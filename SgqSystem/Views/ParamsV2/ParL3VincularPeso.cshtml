@@ -259,6 +259,45 @@
                 Save(obj);
             });
 
+            let formIsDuplicate = function () {
+
+                var obj = $('#' + id + '  [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                let ParLevel3Value = [];
+                debugger
+                $('#tableParL3Peso tbody tr').each(function () {
+                    ParLevel3Value.push($(this).data('sgq'));
+                });
+
+                let isDuplicate = ParLevel3Value.filter((item) => {
+
+                    return (item.Id != obj.Id &&
+                        item.ParCompany_Id == obj.ParCompany_Id &&
+                        item.ParLevel1_Id == obj.ParLevel1_Id &&
+                        item.ParLevel2_Id == obj.ParLevel2_Id &&
+                        item.ParCargo_Id == obj.ParCargo_Id &&
+                        item.ParDepartment_Id == obj.ParDepartment_Id &&
+                        item.ParFrequencyId == obj.ParFrequencyId &&
+                        item.ParGroupParLevel1_Id == obj.ParGroupParLevel1_Id);
+
+                }).length > 0;
+
+                if (isDuplicate) {
+                    openMessageModal("Alerta", "Já existe um Tipo de entrada para esta Unidade, Departamento, Cargo, Frequência, Indicador e Monitoramento!")
+                }
+
+                return isDuplicate;
+
+            }
+
             $('#' + id).on('click', '[data-cancel]', function (e) {
                 apagaCampos(id);
             });
@@ -268,6 +307,10 @@
 
                 if (!formIsValid(id)) {
                     return false
+                }
+
+                if (formIsDuplicate()) {
+                    return false;
                 }
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
