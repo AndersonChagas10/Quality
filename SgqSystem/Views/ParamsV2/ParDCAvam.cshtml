@@ -492,7 +492,6 @@
                     $("#IsAgendamento").prop('disabled', false);
                 }
                 if (obj.Sample > 0 && obj.Evaluation > 0) {
-                    openLoader();
                     Save(obj);
                 } else {
                     openMessageModal("Alerta", "Os campos Avaliação e Amostra são obrigatórios.");
