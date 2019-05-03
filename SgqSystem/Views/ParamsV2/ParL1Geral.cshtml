@@ -128,8 +128,7 @@
                 if (!formIsValid(id)) {
                     return false
                 }
-
-                openLoader(Resources("please_wait"));
+                
                 var obj = $('#' + id + ' [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 

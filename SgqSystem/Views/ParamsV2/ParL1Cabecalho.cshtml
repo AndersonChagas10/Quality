@@ -418,7 +418,7 @@
         },
 
         Save: function (obj) {
-
+            openLoader(Resources("please_wait"));
             $.ajax({
                 url: parL1Cabecalho.urlSave,
                 type: 'POST',

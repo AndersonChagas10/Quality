@@ -93,7 +93,7 @@
     };
 
     function Save(obj) {
-
+        openLoader(Resources("please_wait"));
         $.ajax({
 
             url: ParL3Help.urlSave,
@@ -176,8 +176,6 @@
         if (!formIsValid(ParL3Help.id)) {
             return false
         }
-
-        openLoader(Resources("please_wait"));
 
         var obj = $('#' + ParL3Help.id + ' [data-form]').data('sgq');
         var formdata = $('#' + ParL3Help.id + ' [data-form]').serializeFormToObjetc();

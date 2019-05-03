@@ -343,7 +343,7 @@
             });
 
             function Save(obj) {
-
+                openLoader(Resources("please_wait"));
                 $.ajax({
                     url: urlSave,
                     type: 'POST',
@@ -453,9 +453,6 @@
                 //    //obj.ParInputTypeValues = [];
                 //    return false;
                 //}
-
-
-                openLoader(Resources("please_wait"));
 
                 Save(obj);
             });
