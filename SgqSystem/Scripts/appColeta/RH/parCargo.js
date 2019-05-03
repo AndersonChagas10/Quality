@@ -27,8 +27,7 @@ function listarParCargo() {
             listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
                 return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
                     parEvaluation.ParDepartment_Id == currentParDepartment_Id &&
-                    parEvaluation.ParCompany_Id == currentLogin.ParCompany_Id &&
-                    parEvaluation.parFrequency_Id == currentParFrequency_Id;
+                    parEvaluation.ParCompany_Id == currentLogin.ParCompany_Id;
             });
 
             //Caso não existir, buscar os que possuem todas as unidades
@@ -36,7 +35,6 @@ function listarParCargo() {
                 listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
                     return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
                         parEvaluation.ParDepartment_Id == currentParDepartment_Id &&
-                        parEvaluation.parFrequency_Id == currentParFrequency_Id &&
                         parEvaluation.ParCompany_Id == null
                 });
             }
@@ -46,8 +44,7 @@ function listarParCargo() {
                 listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
                     return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
                         parEvaluation.ParDepartment_Id == currentParDepartment_Id &&
-                        parEvaluation.ParCompany_Id == null &&
-                        parEvaluation.parFrequency_Id == null;
+                        parEvaluation.ParCompany_Id == null;
                 });
             }
 
