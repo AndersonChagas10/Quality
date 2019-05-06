@@ -173,12 +173,15 @@
                             Cargo
                         </th>
                         <th class="col-sm-1">
+                            Frequencia
+                        </th>
+                        <th class="col-sm-1">
                             Avaliação
                         </th>
                         <th class="col-sm-1">
                             Amostra
                         </th>
-                        <th class="col-sm-2">
+                        <th class="col-sm-1">
 
                         </th>
                     </tr>
@@ -393,6 +396,7 @@
                 html += '<td>' + valorDoSelect('#ParDCAvam select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#selectDCDepartment', o.ParDepartment_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParDCAvam select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParDCAvam select[name="ParFrequency_Id"]', o.ParFrequencyId, 'Todos') + '</td>';
                 html += '<td>' + o.Evaluation + '</td>';
                 html += '<td class="hide">' + o.Id + '</td>';
                 html += '<td>' + o.Sample + '</td>';

@@ -174,8 +174,9 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParVinculoPeso = db.ParVinculoPeso
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
-                    .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id || x.ParFrequencyId == null)
+                    .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id)
                     .Where(x => x.IsActive)
+                    .OrderByDescending(x=>x.ParCompany_Id)
                     .Select(x => new ParVinculoPesoAppViewModel()
                     {
                         Id = x.Id,
@@ -208,7 +209,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParLevel2 = db.ParLevel2
                     .AsNoTracking()
-                    .Where(x => x.ParFrequency_Id == appParametrization.ParFrequency_Id)
+                    //.Where(x => x.ParFrequency_Id == appParametrization.ParFrequency_Id)
                     .Where(x => x.IsActive)
                     .Select(x => new ParLevel2AppViewModel()
                     {
@@ -238,6 +239,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id || x.ParFrequencyId == null)
                     .Where(x => x.IsActive)
+                    .OrderByDescending(x => x.ParCompany_Id)
                     .Select(x => new ParEvaluationXDepartmentXCargoAppViewModel()
                     {
                         Id = x.Id,
@@ -269,6 +271,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.IsActive == true)
+                    .OrderByDescending(x => x.ParCompany_Id)
                     .Select(x => new ParLevel3ValueAppViewModel()
                     {
                         Id = x.Id,
