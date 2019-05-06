@@ -544,10 +544,10 @@ function level3TemVinculo(level1Id, level2Id, level3Id, avaliacao, amostra, leve
     var _level3 = level3 ? level3 : getLevel3Vinculado(level1Id, level2Id, level3Id);
 
     if (_level3) {
-        if ((_level3.EvaluationInterval.length == 0 || parseInt(_level3.EvaluationInterval) == 0) && parseInt(amostra) <= _level3.SampleNumber) {
+        if (((_level3.EvaluationInterval != null && _level3.EvaluationInterval.length == 0) || parseInt(_level3.EvaluationInterval) == 0) && parseInt(amostra) <= _level3.SampleNumber) {
             return true;
         } else {
-            if (_level3.EvaluationInterval.split(',').indexOf(amostra.toString()) >= 0
+            if ((_level3.EvaluationInterval != null && _level3.EvaluationInterval.split(',').indexOf(amostra.toString()) >= 0)
                 && avaliacao <= _level3.EvaluationNumber) {
                 return true;
             }

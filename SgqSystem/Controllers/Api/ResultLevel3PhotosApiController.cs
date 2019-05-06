@@ -17,7 +17,7 @@ namespace SgqSystem.Controllers.Api
 {
 
     [HandleApi()]
-    [RoutePrefix("api/ResultLevel3Photos")]
+    [RoutePrefix("api/ResultLevel3PhotosApi")]
     public class ResultLevel3PhotosApiController : ApiController
     {
 
@@ -57,7 +57,7 @@ namespace SgqSystem.Controllers.Api
                     basePath = @AppDomain.CurrentDomain.BaseDirectory;
                 }
 
-                var path = Path.Combine(basePath, "photos", parLevel1_Id + parLevel2_Id + DateTime.Now.ToString("yyyyMMddHHssmm")) + ".png";
+                var path = Path.Combine(basePath, "photos", parLevel1_Id + parLevel2_Id + DateTime.Now.ToString("yyyyMMddHHssmm")) + new Random().Next(1000,9999) + ".png";
                 using (var imageFile = new FileStream(path, FileMode.Create))
                 {
                     imageFile.Write(bytes, 0, bytes.Length);
@@ -118,7 +118,7 @@ namespace SgqSystem.Controllers.Api
 
                 if (ResultPhoto.Result_Level3_Id == 0)
                 {
-                    return Ok(new { message = "ResultLevel3Id não encontrado.", count = i });
+                    return Ok(new { message = "ResultLevel3Id não encontrado.", count = i+1 });
                 }
 
                 string sql = @"INSERT INTO Result_Level3_Photos(Result_Level3_Id, Photo_Thumbnaills, Photo, Latitude, Longitude) 
