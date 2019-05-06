@@ -129,8 +129,11 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         LEFT JOIN ParStructure PS
                         	ON PS.Id = UNITXSTRUCT.ParStructure_Id
                         		AND PS.ParStructureParent_Id = 1
-                        WHERE UNIT.Id IN ({unidadesUsuario})
+                        WHERE 1=1
+                        AND UNIT.Id IN ({unidadesUsuario})
                         { whereCluster }
+                        AND UNITXSTRUCT.Active = 1
+						AND PS.Active = 1
                         AND PS.Id IS NOT NULL";
 
                 using (Factory factory = new Factory("DefaultConnection"))
