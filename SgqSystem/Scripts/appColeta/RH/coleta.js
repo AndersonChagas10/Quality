@@ -7,10 +7,18 @@ function openColeta(levels) {
     var coleta = '';
 
     levels.forEach(function (level1) {
-        coleta += getLevel1(level1);
+        var hasLevel2 = false;
         level1.ParLevel2.forEach(function (level2) {
-            coleta += getLevel2(level2);
+            var hasLevel3 = false;
             level2.ParLevel3.forEach(function (level3) {
+                if (hasLevel3 == false) {
+                    if (hasLevel2 == false) {
+                        coleta += getLevel1(level1);
+                        hasLevel2 = true;
+                    }
+                    coleta += getLevel2(level2);
+                    hasLevel3 = true;
+                }
                 coleta += getInputLevel3(level3, level2, level1);
             });
         });
