@@ -560,12 +560,15 @@
         });
 
         function SalvarResultLevel3() {
+
             var dadosResultLevel3 = {};
 
             if ($('#sample') != undefined) {
+
                 if ($('#sample').val() > $('#numeroDeDefeitos').val()) {
                     openMessageModal("O numero de defeitos não pode ser maior que o numero avaliado.")
                     return;
+
                 } else {
                     dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
                 }
@@ -588,19 +591,29 @@
                 }
             }
 
-            if (parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text()) && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text())) {
+            var isInterval = (!!$("#intervalMax").length && !!$("#intervalMin").length);
+
+            if (!isInterval || (isInterval && parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text()) && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text()))) {
+
                 $.post(urlSave, dadosResultLevel3, function (r, x, e) {
+
                     $("#myModal").modal('hide');
                     openMessageModal(Resources('done'), Resources('registry_alter_success')); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
+
                 }).fail(function (r, x, e) {
+
                     console.log(r);
                     console.log(x);
                     console.log(e);
                     openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
+
                 });
+
             } else {
+
                 $("#botaoSalvar").removeAttr('data-dismiss')
-                openMessageModal("Valor inserido fora do intervalo permitido!",null);
+                openMessageModal("Valor inserido fora do intervalo permitido!", null);
+
             }
         }
 
