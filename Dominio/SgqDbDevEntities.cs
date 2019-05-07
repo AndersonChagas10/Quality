@@ -182,6 +182,7 @@ namespace Dominio
         public virtual DbSet<ParLevel3XParDepartment> ParLevel3XParDepartment { get; set; }
         public virtual DbSet<ParLocal> ParLocal { get; set; }
         public virtual DbSet<ParMeasurementUnit> ParMeasurementUnit { get; set; }
+        public virtual DbSet<ParRiskCharacteristicType> ParRiskCharacteristicType { get; set; }
         public virtual DbSet<ParModule> ParModule { get; set; }
         public virtual DbSet<ParModuleXModule> ParModuleXModule { get; set; }
         public virtual DbSet<ParMultipleValues> ParMultipleValues { get; set; }

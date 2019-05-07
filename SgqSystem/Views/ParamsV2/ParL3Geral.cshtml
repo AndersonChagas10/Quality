@@ -23,10 +23,10 @@
         </div>
 
         <div class="col-sm-6">
-
+           
             <div class="form-group">
-                <label for="CaracteristicaDeRisco">Caracteristica De risco:</label>
-                <input type="text" class="form-control required" id="CaracteristicaDeRisco" name="CaracteristicaDeRisco">
+                <label for="selectL3CaracteristicaDeRisco">Caracteristica De Risco:</label>
+                <select id="selectL3CaracteristicaDeRisco" class="input input-lg col-sm-12 required" name="ParRiskCharacteristicType_Id"></select>
             </div>
 
         </div>
@@ -119,7 +119,8 @@
                     obj = null;
                     obj = atualizaValoresDoObjeto(obj, formdata);
                 }
-
+                obj.ParRiskCharacteristicType_Id = parseInt($("#selectL3CaracteristicaDeRisco :selected").val());
+                debugger
                 Save(obj);
             });
         },

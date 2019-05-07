@@ -171,6 +171,7 @@
     <Compile Include="ParNotConformityRule.cs" />
     <Compile Include="ParNotConformityRuleXLevel.cs" />
     <Compile Include="ParRelapse.cs" />
+    <Compile Include="ParRiskCharacteristicType.cs" />
     <Compile Include="ParSample.cs" />
     <Compile Include="ParScoreType.cs" />
     <Compile Include="ParStructure.cs" />

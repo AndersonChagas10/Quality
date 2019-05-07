@@ -58,9 +58,10 @@ namespace SgqSystem.Controllers.V2.Api
                 parLevel1Selects.ParLevel3BoolTrues = db.ParLevel3BoolTrue.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParMeasurementUnits = db.ParMeasurementUnit.Where(x => x.IsActive).ToList();
 
+                parLevel1Selects.ParRiskCharacteristicTypes = db.ParRiskCharacteristicType.Where(x => x.IsActive).ToList();
 
                 //Peso
-               var listaDepartamentos = db.ParDepartment.Where(x => x.Active).ToList();
+                var listaDepartamentos = db.ParDepartment.Where(x => x.Active).ToList();
                parLevel1Selects.ParDepartments = listaDepartamentos.Where(y => !listaDepartamentos.Any(y1 => y1.Parent_Id == y.Id)).ToList();
 
                 parLevel1Selects.ParGroupParLevel1s = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
@@ -428,6 +429,7 @@ namespace SgqSystem.Controllers.V2.Api
             public List<ParCompany> ParCompanys { get; set; }
             public List<ParDepartment> ParDepartments { get; set; }
             public List<ParGroupParLevel1> ParGroupParLevel1s { get; set; }
+            public List<ParRiskCharacteristicType> ParRiskCharacteristicTypes { get; set; }
 
             public List<ParLevel3InputType> ParLevel3InputTypes { get; set; }
             public List<ParLevel3BoolTrue> ParLevel3BoolTrues { get; set; }

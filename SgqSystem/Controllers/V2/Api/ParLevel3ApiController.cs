@@ -179,7 +179,7 @@ namespace SgqSystem.Controllers.V2.Api
                         parLevel2Old.Description = parLevel3.Description;
                         parLevel2Old.IsActive = parLevel3.IsActive;
                         parLevel2Old.HasTakePhoto = parLevel3.HasTakePhoto;
-                        parLevel2Old.CaracteristicaDeRisco = parLevel3.CaracteristicaDeRisco;
+                        parLevel2Old.ParRiskCharacteristicType_Id = parLevel3.ParRiskCharacteristicType_Id;
                     }
                     else
                     {
