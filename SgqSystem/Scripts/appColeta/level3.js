@@ -1540,19 +1540,22 @@ function saveResultLevel3() {
 
             }
             else {
-                var valorDefeitoTexto = 0;
+                var temDefeito = 0;
 
                 if ($(this).hasClass('texto') && $(this).val() != "") {
-                    valorDefeitoTexto = parseFloat(1);
+                    temDefeito = 1;
                     value = 1;
                     conform = false;
-                } else if ((inputType == 7 || inputType == 6) && conform == false) {
-                    valorDefeitoTexto = parseFloat(1);
+                } else if ((inputType == 7 || inputType == 6)) {
+                    temDefeito = 0;
+                    if (conform == false) {
+                        temDefeito = 1;
+                    }
                 } else {
-                    valorDefeitoTexto = parseFloat($(this).val());
+                    temDefeito = parseFloat($(this).val());
                 }
 
-                defects += valorDefeitoTexto;
+                defects += temDefeito;
 
                 //defects += parseFloat($(this).val());
 
@@ -1568,7 +1571,7 @@ function saveResultLevel3() {
                     level3.attr('intervalmin'),
                     level3.attr('intervalmax'),
                     level3.attr('notavaliable'),
-                    valorDefeitoTexto));
+                    temDefeito));
             }
 
             //Adiciona os resultados no level2 se level3 não está cadastrado.
