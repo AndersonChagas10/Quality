@@ -192,7 +192,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         	ON UNITXSTRUCT.ParCompany_Id = UNIT.Id
                         LEFT JOIN ParStructure PS
                         	ON PS.Id = UNITXSTRUCT.ParStructure_Id
-                        		AND PS.ParStructureParent_Id = 1
+                        		-- AND PS.ParStructureParent_Id = 1
                         WHERE UNIT.Id IN ({unidadesUsuario})
                         { whereCluster }
                         { whereStructure } ";
