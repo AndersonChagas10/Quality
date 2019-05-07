@@ -62,10 +62,12 @@ namespace SgqSystem.Controllers.V2.Api
 
                 //Peso
                 var listaDepartamentos = db.ParDepartment.Where(x => x.Active).ToList();
-               parLevel1Selects.ParDepartments = listaDepartamentos.Where(y => !listaDepartamentos.Any(y1 => y1.Parent_Id == y.Id)).ToList();
+                parLevel1Selects.ParDepartments = listaDepartamentos.Where(y => !listaDepartamentos.Any(y1 => y1.Parent_Id == y.Id)).ToList();
 
                 parLevel1Selects.ParGroupParLevel1s = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParCargos = db.ParCargo.Where(x => x.IsActive).ToList();
+
+                parLevel1Selects.ParCargoXDepartments = db.ParCargoXDepartment.Where(x => x.IsActive).ToList();
 
             }
 
@@ -438,6 +440,8 @@ namespace SgqSystem.Controllers.V2.Api
 
             public IEnumerable<SelectListItem> SelectLevel2Vinculados { get; set; }
             public List<ParCargo> ParCargos { get; internal set; }
+
+            public List<ParCargoXDepartment> ParCargoXDepartments { get; set; }
         }
 
         public class SaveParHeaderField

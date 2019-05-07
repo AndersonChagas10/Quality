@@ -390,6 +390,8 @@
 </div>
 
 <script>
+    var ParCargosGlobal;
+    var ParCargoXDepartmentsGlobal;
 
     let setSelectLevel1 = function (data) {
         preencheSelect('selectL1', 'Name', 'Id', data.ParLevels1, 'Criar novo inidicador', preencheL1);
@@ -763,6 +765,9 @@
                 preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a Função');
 
                 preencheSelect('selectL3ParCargo', 'Name', 'Id', data.ParCargos, 'Todos');
+                debugger
+                ParCargosGlobal = data.ParCargos;
+                ParCargoXDepartmentsGlobal = data.ParCargoXDepartments;
 
                 preencheSelect('selectL3TipoDadoParLevel3InputType', 'Name', 'Id', data.ParLevel3InputTypes, 'Selecione o Tipo de dados para a coleta');
                 preencheSelect('selectL3TipoDadoParLevel3BoolFalse', 'Name', 'Id', data.ParLevel3BoolFalses, 'Valor negativo');
