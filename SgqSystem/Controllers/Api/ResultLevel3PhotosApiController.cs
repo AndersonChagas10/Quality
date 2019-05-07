@@ -118,7 +118,7 @@ namespace SgqSystem.Controllers.Api
 
                 if (ResultPhoto.Result_Level3_Id == 0)
                 {
-                    return Ok(new { message = "ResultLevel3Id não encontrado.", count = i+1 });
+                    return Ok(new { message = "ResultLevel3Id não encontrado.", count = i });
                 }
 
                 string sql = @"INSERT INTO Result_Level3_Photos(Result_Level3_Id, Photo_Thumbnaills, Photo, Latitude, Longitude) 
