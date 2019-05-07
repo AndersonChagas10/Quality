@@ -186,6 +186,12 @@ function enviaFotos(listaFotos) {
                 level3Photos.splice(0, data.count);
                 _writeFile("level3Photos.json", level3Photos);
                 sendResultLevel3Photo();
+            } else {
+                if (level3Photos.length > 0) {
+                    var photoTemp = level3Photos[0];
+                    level3Photos.splice(0, 1);
+                    level3Photos.push(photoTemp);
+                }
             }
         },
         error: function (e) {
