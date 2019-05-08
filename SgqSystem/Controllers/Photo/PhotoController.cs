@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Photo
 {
-    public class PhotoController : Controller
+    public class PhotoController : BaseController
     {
 
         public PhotoController()
@@ -25,7 +26,20 @@ namespace SgqSystem.Controllers.Photo
 
                 System.Net.WebClient webClient = new System.Net.WebClient();
                 string url = photo.Photo;
+
+                //Verificar se no web.config a credencial do servidor de fotos
+
+                var credentialUserServerPhoto = GetWebConfigSettings("credentialUserServerPhoto");
+                var credentialPassServerPhoto = GetWebConfigSettings("credentialPassServerPhoto");
+
+                if (credentialUserServerPhoto != null && credentialPassServerPhoto != null)
+                {
+                    webClient.UseDefaultCredentials = true;
+                    webClient.Credentials = new NetworkCredential(credentialUserServerPhoto, credentialPassServerPhoto);
+                }
+
                 byte[] bytes = webClient.DownloadData(url);
+
                 //string fileName = (url.Split('/')[url.Split('/').Length - 1]).Split('.')[0];
                 Response.ContentType = "image/png";
                 Response.AppendHeader("Content-Disposition", $"attachment; filename={photo.Result_Level3_Id}-{photo.ID}.png");
