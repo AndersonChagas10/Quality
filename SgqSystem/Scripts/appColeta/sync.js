@@ -303,13 +303,13 @@ function send(autoSend, callbackPCC1B, sendImediato) {
 
     $.ajax({
         type: 'POST'
-        , url: urlPreffix + '/Services/SyncServices.asmx/InsertJson'
+        , url: urlPreffix + '/api/SyncServiceApi/InsertJson'
         , contentType: 'application/json; charset=utf-8'
         , dataType: 'json'
         , data: '{' + "ObjResultJSon: '" + objectSend + "', deviceId: '" + device.uuid + "', autoSend: " + autoSend + ", deviceMac: ''" + '}'
         , async: true //blocks window close
         , success: function (data, status) {
-            if (data.d == "error") {
+            if (data != null && data.d == "error") {
                 //createLog(XMLHttpRequest.responseText);
                 mensagemSyncHide();
                 if (!autoSend)
@@ -381,7 +381,7 @@ function consolidation() {
     //createLog("Send Consolidation");
     $.ajax({
         type: 'POST'
-        , url: urlPreffix + '/Services/SyncServices.asmx/ProcessJson'
+        , url: urlPreffix + '/api/SyncServiceApi/ProcessJson'
         , contentType: 'application/json; charset=utf-8'
         , dataType: 'json'
         , data: '{' + "device: '" + device.uuid + "', id: 0" + '}'
@@ -443,7 +443,7 @@ function recivingData() {
         try {
             $.ajax({
                 type: 'POST'
-                , url: urlPreffix + '/Services/SyncServices.asmx/reciveData'
+                , url: urlPreffix + '/api/SyncServiceApi/reciveData'
                 , contentType: 'application/json; charset=utf-8'
                 , dataType: 'json'
                 , data: '{' + "unidadeId: '" + $('.App').attr('unidadeid') + "', data: '" + date + "'" + '}'
@@ -517,7 +517,7 @@ function recivingDataByLevel1(ParLevel1) {
     try {
         $.ajax({
             type: 'POST'
-            , url: urlPreffix + '/Services/SyncServices.asmx/reciveDataByLevel1'
+            , url: urlPreffix + '/api/SyncServiceApi/reciveDataByLevel1'
             , contentType: 'application/json; charset=utf-8'
             , dataType: 'json'
             , data: '{' + "ParCompany_Id: '" + $('.App').attr('unidadeid') + "', data: '" + date + "', ParLevel1_Id: '" + ParLevel1.attr('id') + "'" + '}'

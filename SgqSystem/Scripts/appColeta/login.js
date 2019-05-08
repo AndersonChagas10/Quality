@@ -3,12 +3,14 @@ var userlogado;
 function onlineLogin(username, password) {
     Geral.esconderMensagem();
     $.ajax({
-        data: {
+        data: JSON.stringify({
             app: true,
             Name: $('#inputUserName').val(),
             Password: AES.Encrypt($('#inputPassword').val()),
-        },
+        }),
         url: urlPreffix + '/api/User/AuthenticationLogin',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
         type: 'POST',
         success: function (data) {
             if (data.MensagemExcecao) {
@@ -85,13 +87,10 @@ function onLineLogin(data) {
 function getInfoUserById(Id) {
     Geral.esconderMensagem();
     $.ajax({
-        data: {
-            Id: Id,
-        },
-        url: urlPreffix + '/Services/SyncServices.asmx/UserSGQById',
+        url: urlPreffix + '/api/SyncServiceApi/UserSGQById?Id=' + Id,
         type: 'POST',
         success: function (data) {
-            var user = $($(data).text());
+            var user = $(data);
             userlogado = user;
             if (!user.hasClass('user')) {
                 Geral.exibirMensagemErro($(data).text());
@@ -112,10 +111,10 @@ function getInfoUserById(Id) {
 
 function getCompanyUsers(ParCompany_Id) {
     var request = $.ajax({
-        data: {
-            "ParCompany_Id": ParCompany_Id
+        url: urlPreffix + '/api/SyncServiceApi/getCompanyUsers?ParCompany_Id=' + ParCompany_Id,
+        headers: { 
+            "token": userlogado.attr('userlogin') + "|" + userlogado.attr('userpass')
         },
-        url: urlPreffix + '/Services/SyncServices.asmx/getCompanyUsers',
         type: 'POST',
         success: function (data) {
 

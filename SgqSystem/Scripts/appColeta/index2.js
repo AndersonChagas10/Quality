@@ -146,18 +146,18 @@ function abreOApp(valor) {
 function getAPPOnLine() {
     $.ajax({
         type: 'POST'
-        , url: urlPreffix + '/Services/SyncServices.asmx/getAPP2'
-        //, contentType: 'application/json; charset=utf-8'
-        //, dataType: 'json'
-        , dataType: "xml"
+        , url: urlPreffix + '/api/SyncServiceApi/getAPP2?version='+versao
+        , contentType: 'application/json; charset=utf-8'
+        , dataType: 'json'
+        //, dataType: "xml"
         //,contentType: "text/xml; charset=\"utf-8\""
-        , data: "version="+versao
+        //, data: versao
         , async: false //blocks window close
         , success: function (data, status) {
 
             getParReason();
 
-            var Login = $(data).text();
+            var Login = data;
             appendDevice($(Login), $('body'));
             _writeFile("loginpage.txt", Login);
 
@@ -367,7 +367,7 @@ function getAPPLevelsVolume() {
             "Level1ListId": listIndUpdate,
             "Shift_Id": parseInt(_shift)
         },
-        url: urlPreffix + '/Services/SyncServices.asmx/getAPPLevelsVolume',
+        url: urlPreffix + '/api/SyncServiceApi/getAPPLevelsVolume',
         type: 'POST',
         success: function (data) {
             var result = $(data);
@@ -412,12 +412,12 @@ function getAPPLevelsOnLine() {
     var UserSGQ_Id = userlogado.attr('userid');
     var ParCompany_Id = userlogado.attr('unidadeid');
 
-    var urlAppLevels = urlPreffix + '/Services/SyncServices.asmx/getAPPLevels';
+    var urlAppLevels = urlPreffix + '/api/SyncServiceApi/getAPPLevels';
 
     // if($('#local').attr('empresa') == "jbs" && $('#local').attr('local') == "brasil"){
-    //     urlAppLevels = urlPreffix + '/Services/SyncServices.asmx/getAPPLevelsModulado';
+    //     urlAppLevels = urlPreffix + '/api/SyncServiceApi/getAPPLevelsModulado';
     // }else{
-    //     urlAppLevels = urlPreffix + '/Services/SyncServices.asmx/getAPPLevels';
+    //     urlAppLevels = urlPreffix + '/api/SyncServiceApi/getAPPLevels';
     // }
 
     var request = $.ajax({
@@ -482,12 +482,12 @@ function getAPPLevels1OnLine() {
     var UserSGQ_Id = userlogado.attr('userid');
     var ParCompany_Id = userlogado.attr('unidadeid');
 
-    var urlAppLevels = urlPreffix + '/Services/SyncServices.asmx/getAPPLevels';
+    var urlAppLevels = urlPreffix + '/api/SyncServiceApi/getAPPLevels';
 
     // if($('#local').attr('empresa') == "jbs" && $('#local').attr('local') == "brasil"){
-    //     urlAppLevels = urlPreffix + '/Services/SyncServices.asmx/getAPPLevelsModulado';
+    //     urlAppLevels = urlPreffix + '/api/SyncServiceApi/getAPPLevelsModulado';
     // }else{
-    //     urlAppLevels = urlPreffix + '/Services/SyncServices.asmx/getAPPLevels';
+    //     urlAppLevels = urlPreffix + '/api/SyncServiceApi/getAPPLevels';
     // }
 
     var request = $.ajax({
@@ -969,7 +969,7 @@ function changeCompany_OnLine() {
                 "ParCompany_Id": $('#selectParCompany').val(),
             },
             //    url: urlPreffix + '/api/User/AuthenticationLogin',
-            url: urlPreffix + '/Services/SyncServices.asmx/UserCompanyUpdate',
+            url: urlPreffix + '/api/SyncServiceApi/UserCompanyUpdate',
             type: 'POST',
             success: function (data) {
 
