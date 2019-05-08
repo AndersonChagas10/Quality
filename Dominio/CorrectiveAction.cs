@@ -50,14 +50,5 @@ namespace Dominio
 
         [ForeignKey("EmailContent_Id")]
         public virtual EmailContent EmailContent { get; set; }
-
-        [ForeignKey("AuditorId")]
-        public virtual UserSgq UserSgq { get; set; }
-
-        [ForeignKey("TechinicalId")]
-        public virtual UserSgq UserSgq1 { get; set; }
-
-        [ForeignKey("SlaughterId")]
-        public virtual UserSgq UserSgq2 { get; set; }
     }
 }

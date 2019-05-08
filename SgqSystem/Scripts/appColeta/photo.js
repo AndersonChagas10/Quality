@@ -109,16 +109,17 @@ $(document).on('click', '.camera-button', function (e) {
 });
 
 function sendResultLevel3Photo() {
-    setTimeout(function () {
-        var listaFotosSalvas = level3Photos.filter(function (o, i) { return o.isactive == true });
-        if (listaFotosSalvas.length > 0) {
-            if (algumaFotoEstaSendoEnviada != true) {
-                algumaFotoEstaSendoEnviada = true;
-                var listaFotos = preparaFotos(listaFotosSalvas);
-                enviaFotos(listaFotos);
-            }
-        }
-    }, 1000);
+	if($('.level02Result[sync=false]').length == 0)
+		setTimeout(function () {
+			var listaFotosSalvas = level3Photos.filter(function (o, i) { return o.isactive == true });
+			if (listaFotosSalvas.length > 0) {
+				if (algumaFotoEstaSendoEnviada != true) {
+					algumaFotoEstaSendoEnviada = true;
+					var listaFotos = preparaFotos(listaFotosSalvas);
+					enviaFotos(listaFotos);
+				}
+			}
+		}, 1000);
 }
 
 function preparaFotos(listaFotosSalvas) {
@@ -177,7 +178,7 @@ function enviaFotos(listaFotos) {
     $.ajax({
         data: JSON.stringify(listaFotos),
         contentType: "application/json; charset=utf-8",
-        url: urlPreffix + '/api/ResultLevel3Photos',
+        url: urlPreffix + '/api/ResultLevel3PhotosApi',
         type: 'POST',
         success: function (data) {
             algumaFotoEstaSendoEnviada = false;
@@ -185,6 +186,12 @@ function enviaFotos(listaFotos) {
                 level3Photos.splice(0, data.count);
                 _writeFile("level3Photos.json", level3Photos);
                 sendResultLevel3Photo();
+            } else {
+                if (level3Photos.length > 0) {
+                    var photoTemp = level3Photos[0];
+                    level3Photos.splice(0, 1);
+                    level3Photos.push(photoTemp);
+                }
             }
         },
         error: function (e) {
