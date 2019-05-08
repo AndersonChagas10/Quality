@@ -803,20 +803,19 @@ namespace SgqSystem.Controllers.Api
             public string mountHtmlIntervalos()
             {
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
-                return "<div>" +
-                            //"<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
-                            "<label  for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + "<label id='intervalMax'>" + IntervalMax + "</label>" +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + "<label id='intervalMin'>" + IntervalMin + "</label>" +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + Value +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp " +
-                             "<input type='text' id='intervaloValor' class='form-control decimal' value=" + Value + " />" +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
-                             "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
-                        "</div>";
+                return $@"<div
+                            <label for='Conforme: '> { GetResources.getResource("max_interval").Value.ToString() }: </label> <label id='intervalMax'>{ IntervalMax }</label>
+                            <br>
+                            <label for='Conforme: '> { GetResources.getResource("min_interval").Value.ToString() }: </label> <label id='intervalMin'>{ IntervalMin }</label>
+                            <br>
+                            <label for='Conforme: '> { GetResources.getResource("current_value").Value.ToString() }: </label> { Value }
+                            <br>
+                            <label for='Conforme: '> { GetResources.getResource("new_value").Value.ToString() }: </label> &nbsp 
+                            <input type='number' id='intervaloValor' class='form-control' value={ Value } />
+                            <br>
+                            <label for='Conforme: '> { GetResources.getResource("unvalued").Value.ToString() }: </label> &nbsp 
+                            <input type='checkbox' id='IsEvaluated' { naoAvaliado } class='.check-box' />
+                        </div>";
             }
 
             //public string showConform // BINARIO 
