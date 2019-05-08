@@ -266,3 +266,28 @@ BEGIN
 END
 
 GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParRiskCharacteristicType' AND xtype='U')
+CREATE TABLE ParRiskCharacteristicType
+(
+Id INT NOT NULL IDENTITY(1,1),
+Name VARCHAR(500),
+AddDate DATETIME,
+AlterDate DATETIME,
+IsActive BIT NULL
+)
+
+GO
+
+INSERT INTO ParRiskCharacteristicType (Name,AddDate,IsActive) 
+VALUES 
+  ('1 - Vulnerabilidade',GETDATE(),1)
+, ('2 - Probabilidade',GETDATE(),1)
+
+GO
+
+
+IF COL_LENGTH('ParLevel3','ParRiskCharacteristicType_id') IS NULL
+BEGIN	
+	ALTER TABLE ParLevel3 Add ParRiskCharacteristicType_id INT
+END
