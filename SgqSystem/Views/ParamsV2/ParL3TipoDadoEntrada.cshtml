@@ -92,7 +92,7 @@
 
             <div class="form-group">
                 <label for="IntervalMin">Limite inferior:</label>
-                <input type="text" class="form-control required" id="IntervalMin" name="IntervalMin">
+                <input type="number" class="form-control required" id="IntervalMin" name="IntervalMin">
             </div>
 
         </div>
@@ -101,7 +101,7 @@
 
             <div class="form-group">
                 <label for="IntervalMax">Limite superior:</label>
-                <input type="text" class="form-control required" id="IntervalMax" name="IntervalMax">
+                <input type="number" class="form-control required" id="IntervalMax" name="IntervalMax">
             </div>
 
         </div>
@@ -225,7 +225,7 @@
 <script>
 
     $("#btnAvancado").on('click', function () {
-        debugger
+        
         if (!$("#divEscalaLikert").is(":visible")) {
             if ($("#selectL3TipoDadoParLevel3InputType :selected").val() == 8) {
 
@@ -233,7 +233,7 @@
                     openMessageModal("Atenção", "o Intervalo minimo não pode ser maior que o Intervalo Máximo!");
                     return false;
                 } else {
-                    if (parseInt($("#IntervalMin").val()) >= 0 && parseInt($("#IntervalMax").val()) >= 0) 
+                    //if (parseInt($("#IntervalMin").val()) >= 0 && parseInt($("#IntervalMax").val()) >= 0) 
                         $('#divEscalaLikert').show();
 
                     $("#IntervalMin, #IntervalMax").trigger('input');
@@ -252,10 +252,10 @@
 
             $("#IntervalMin, #IntervalMax").on('input', function () {
 
-                if (parseInt($("#IntervalMin").val()) > 0 && parseInt($("#IntervalMax").val()) > 0) {
+               // if (parseInt($("#IntervalMin").val()) >= 0 && parseInt($("#IntervalMax").val()) >= 0) {
                     $("#tabelaLikert tbody").html("");
                     montaTabelaLikert(null);
-                }
+                //}
             });
 
         } else {
@@ -606,7 +606,7 @@
         },
 
         prepareTipoDado: function (obj) {
-            debugger
+            
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};

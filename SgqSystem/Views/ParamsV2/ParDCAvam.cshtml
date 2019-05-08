@@ -195,7 +195,7 @@
 <script>
 
     $("#ParDCAvam #selectParFrequencyAV").on('change', function () {
-        debugger
+
         if ($("#ParDCAvam #selectParFrequencyAV :selected").val() === "3"
             || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "4"
             || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "5"
@@ -211,7 +211,7 @@
     });
 
     $("body").on('input', '[data-column=inpAvaliacao]', function () {
-        debugger
+
         let tabela = $('#tabelaAgendamento tbody tr');
         $(tabela).find('[data-column=inpAvaliacao]').each(function (i, o) {
             var self = o;
@@ -318,7 +318,7 @@
 
                          var somarNaTabela = 0;
                          if ($("#tabelaAgendamento tbody tr").length > 0) {
-                            
+
                              if ($("#tabelaAgendamento tbody tr").length < valorAvaliacao) {
                                  somarNaTabela = valorAvaliacao - $("#tabelaAgendamento tbody tr").length;
                                  for (var i = 0; i < somarNaTabela; i++) {
@@ -371,7 +371,7 @@
     }
 
     function MontaNovaLinhaAgendamento(data) {
-        debugger
+
         if (parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val()) === 3) {
             $("#tabelaAgendamento tbody").append("<tr>"
                 + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
@@ -413,7 +413,7 @@
     }
 
     $("body").on('input', '[data-column="inpInicio"] , [data-column="inpTermino"]', function () {
-        debugger
+
         var formato = $("#ParDCAvam #selectParFrequencyAV :selected").val();
         switch (formato) {
             case "3":
@@ -464,7 +464,7 @@
         load: function (list) {
 
             let formIsDuplicate = function () {
-                debugger
+
                 var obj = $('#' + id + '  [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
@@ -556,7 +556,7 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
-                debugger
+
                 var obj = $(this).parents('tr').data('sgq');
 
                 apagaCampos(id);
@@ -607,7 +607,7 @@
                     $("#IsAgendamento").prop('disabled', false);
                     $("#ParDCAvamEvaluation").prop('disabled', false);
                 }
-               
+
             });
 
             //Adicionar os dados no data-form
@@ -671,7 +671,7 @@
                     $("#ParDCAvam #selectParFrequencyAV").prop('disabled', false);
                     $("#IsAgendamento").prop('disabled', false);
                 }
-           
+
                 if (obj.Sample > 0 && obj.Evaluation > 0) {
                     Save(obj);
                 } else {
@@ -819,8 +819,6 @@
             let ParDepartment_Id = "";
             let ParFrequencyId = "";
 
-            //try {
-
             Evaluation = obj.Evaluation;
             Sample = obj.Sample;
             ParCargo = obj.ParCargo_Id;
@@ -828,19 +826,11 @@
             ParDepartment_Id = obj.ParDepartment_Id;
             ParFrequencyId = obj.ParFrequencyId;
 
-            //} catch (e) {
-
-            //    parHeaderField = obj['ParHeaderField']['ParMultipleValues'][0].ParHeaderField;
-            //    parLevelDefiniton = obj['ParHeaderField']['ParMultipleValues'][0].ParLevelDefiniton;
-
-            //}
-            debugger
             let ParEvaluationSchedule = obj['ParEvaluationSchedule'];
             let blockParFieldType = false;
-            //ParEvaluationSchedule[0].Intervalo !== null && ParEvaluationSchedule[0].IsActive
+
             if (ParEvaluationSchedule.length > 0) {
                 if (ParFrequencyId === 10) {
-                    //if (parseInt($("#selectParFrequencyAV :selected").val()) === 10){
                     ParEvaluationSchedule.forEach((o, i) => {
                         if (o.IsActive && o.Intervalo != null) {
                             if (o.Shift_Id == null)
@@ -942,9 +932,6 @@
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (obj) {
-                //obj.ParEvaluationSchedule.forEach((o, i, a) => {
-                //        a[i].IsActive = false;
-                //});
 
                 obj['ParEvaluationSchedule'][i].IsActive = false;
 
