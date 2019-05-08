@@ -575,12 +575,12 @@
                 data: {},
                 contentType: "application/json",
                 success: function (ParLevel1) {
-
-                    preencheCampos('l1', '', ParLevel1, true)
+                    
+                    preencheCampos('l1', '', ParLevel1, true);
                     ParL1Geral.set(ParLevel1);
                     ParL1Avancados.set(ParLevel1);
 
-                    preencheCampos('l1', '', ParLevel1, true)
+                    preencheCampos('l1', '', ParLevel1, true);
                     parL1Processo.load(ParLevel1.ParLevel1XCluster);
                     parL1Cabecalho.load(ParLevel1.ParLevel1XHeaderField);
                     verifyTabs('selectL1', 'l1');

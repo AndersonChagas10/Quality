@@ -98,11 +98,16 @@
 
             function Save(obj) {
                 var hasId = obj.Id;
+
+                var parLevel1Clonado = JSON.parse(JSON.stringify(obj));
+                parLevel1Clonado.ParLevel1XCluster = {};
+                parLevel1Clonado.ParLevel1XHeaderField = {};
+
                 $.ajax({
                     url: urlSave,
                     type: 'POST',
                     dataType: "json",
-                    data: JSON.stringify(obj),
+                    data: JSON.stringify(parLevel1Clonado),
                     contentType: "application/json",
                     success: function (data) {
                         lastIdL1 = parseInt(data);

@@ -65,12 +65,16 @@
             let urlSave = this.urlSave;
 
             function Save(obj) {
+                var parLevel1Clonado = JSON.parse(JSON.stringify(obj));
+                parLevel1Clonado.ParLevel1XCluster = {};
+                parLevel1Clonado.ParLevel1XHeaderField = {};
+
                 openLoader(Resources("please_wait"));
                 $.ajax({
                     url: urlSave,
                     type: 'POST',
                     dataType: "json",
-                    data: JSON.stringify(obj),
+                    data: JSON.stringify(parLevel1Clonado),
                     contentType: "application/json",
                     success: function (data) {
                         openMessageModal("Feito", "Dados Salvos");
@@ -97,7 +101,6 @@
                     obj = null;
                     obj = atualizaValoresDoObjeto(obj, formdata);
                 }
-
                 Save(obj);
             });
         },
