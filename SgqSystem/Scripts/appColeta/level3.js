@@ -544,10 +544,10 @@ function level3TemVinculo(level1Id, level2Id, level3Id, avaliacao, amostra, leve
     var _level3 = level3 ? level3 : getLevel3Vinculado(level1Id, level2Id, level3Id);
 
     if (_level3) {
-        if ((_level3.EvaluationInterval.length == 0 || parseInt(_level3.EvaluationInterval) == 0) && parseInt(amostra) <= _level3.SampleNumber) {
+        if (((_level3.EvaluationInterval != null && _level3.EvaluationInterval.length == 0) || parseInt(_level3.EvaluationInterval) == 0) && parseInt(amostra) <= _level3.SampleNumber) {
             return true;
         } else {
-            if (_level3.EvaluationInterval.split(',').indexOf(amostra.toString()) >= 0
+            if ((_level3.EvaluationInterval != null && _level3.EvaluationInterval.split(',').indexOf(amostra.toString()) >= 0)
                 && avaliacao <= _level3.EvaluationNumber) {
                 return true;
             }
@@ -1060,7 +1060,7 @@ function saveResultLevel3() {
     var level1 = $(_level1).attr('id').split('98789');
     if (level1[1] == parseInt(getDicionario('IdIndicadorPesoHB'))) {
 
-        mediaPesoHB.push(parseInt($('#' + getDicionario('IdTarefaPesoHB') + '.level3 input[type="text"]').val()));
+        mediaPesoHB.push(parseFloat($('#' + getDicionario('IdTarefaPesoHB') + '.level3 input[type="text"]').val().replace(',','.')));
         $('.level3List .calculoPesoHB .medicaCalculoPesoHB').text("Média: " + CalculoMediaPesoHB() + "g");
 
         if (!(typeof (ResetaCorMediaPesoHB) == "undefined"))
@@ -1078,6 +1078,14 @@ function saveResultLevel3() {
                 //força abertura da Ação Corretiva
                 correctiveActionOpenPesoHB();
             }
+
+            openMessageModal("A Quantidade Média final do peso dos Hamburguers é de:", "Média final: " + CalculoMediaPesoHB(), "", "");
+			
+			$('.level3List .calculoPesoHB').attr('id',getDicionario('IdTarefaMediaHB'));
+			$('.level3List .calculoPesoHB .medicaCalculoPesoHB').html('<input type="text" value="'+CalculoMediaPesoHB()+'" class="form-control text-center levelValue interval" style="text-align: right;" readonly="readonly">');
+			
+			$('.level3Group').append($('.level3List .calculoPesoHB'));
+			
             mediaPesoHB = [];
         }
     }
@@ -1532,19 +1540,22 @@ function saveResultLevel3() {
 
             }
             else {
-                var valorDefeitoTexto = 0;
+                var temDefeito = 0;
 
                 if ($(this).hasClass('texto') && $(this).val() != "") {
-                    valorDefeitoTexto = parseFloat(1);
+                    temDefeito = 1;
                     value = 1;
                     conform = false;
-                } else if ((inputType == 7 || inputType == 6) && conform == false) {
-                    valorDefeitoTexto = parseFloat(1);
+                } else if ((inputType == 7 || inputType == 6)) {
+                    temDefeito = 0;
+                    if (conform == false) {
+                        temDefeito = 1;
+                    }
                 } else {
-                    valorDefeitoTexto = parseFloat($(this).val());
+                    temDefeito = parseFloat($(this).val());
                 }
 
-                defects += valorDefeitoTexto;
+                defects += temDefeito;
 
                 //defects += parseFloat($(this).val());
 
@@ -1555,12 +1566,12 @@ function saveResultLevel3() {
                     $('.App').attr('userid'),
                     null,
                     level3.attr('value'),
-                    level3.attr('weight'),
+                    (inputType == 8) ? "" : level3.attr('weight'),
                     punishmentvalue,
                     level3.attr('intervalmin'),
                     level3.attr('intervalmax'),
                     level3.attr('notavaliable'),
-                    valorDefeitoTexto));
+                    temDefeito));
             }
 
             //Adiciona os resultados no level2 se level3 não está cadastrado.

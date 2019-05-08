@@ -61,6 +61,10 @@
     <Compile Include="ImportFormat.cs" />
     <Compile Include="ImportFormatItem.cs" />
     <Compile Include="Horarios.cs" />
+    <Compile Include="Integ\Coleta.cs" />
+    <Compile Include="Integ\ColetaCabecalho.cs" />
+    <Compile Include="Integ\ColetaTarefa.cs" />
+    <Compile Include="Integ\IntegCollectionData.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepositoryNoLazyLoad.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
     <Compile Include="Interfaces\Repositories\IParamsRepository.cs" />
@@ -162,6 +166,7 @@
     <Compile Include="Result_Level3_Photos.cs" />
     <Compile Include="RoleJBS.cs" />
     <Compile Include="RoleSGQ.cs" />
+    <Compile Include="IntegracaoSistemica.cs" />
     <Compile Include="RoleType.cs" />
     <Compile Include="RoleUserSgq.cs" />
     <Compile Include="RoleUserSgqXItemMenu.cs" />

@@ -1872,6 +1872,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereCluster = "";
             var whereStructure = "";
             var whereCriticalLevel = "";
+            var whereParCompany = "";
             var whereUnit = "";
 
             if (form.clusterGroupId > 0)
@@ -1899,6 +1900,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
+            if (form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
+            {
+                whereParCompany = $@"AND S.ParCompany_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
+            }
+
+
             _list = new List<VisaoGeralDaAreaResultSet>();
 
 
@@ -1916,12 +1923,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         @"
         where (pC.IsActive = 1 OR PC.ISACTIVE IS NULL) 
         
-        " + whereClusterGroup +
+        " + 
+                whereClusterGroup +
                 whereCluster +
                 whereStructure +
                 whereCriticalLevel +
+                whereParCompany +
             @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
                 AND C.IsActive = 1        
             GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
         
@@ -1945,8 +1954,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereCluster +
                 whereStructure +
                 whereCriticalLevel +
+                whereParCompany +
             @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
                 AND C.IsActive = 1
             GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
         
@@ -1990,6 +2000,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereCluster = "";
             var whereStructure = "";
             var whereCriticalLevel = "";
+            var whereParCompany = "";
             var whereUnit = "";
 
             if (form.clusterGroupId > 0)
@@ -2015,6 +2026,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@"  AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            }
+
+            if (form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
+            {
+                whereParCompany = $@"AND S.ParCompany_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
             }
 
             //_mock = new List<VisaoGeralDaAreaResultSet>();
@@ -2055,8 +2071,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          whereCluster +
                          whereStructure +
                          whereCriticalLevel +
+                         whereParCompany +
                       @"
-                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
                         AND C.IsActive = 1
                       GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -2075,8 +2092,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          whereCluster +
                          whereStructure +
                          whereCriticalLevel +
+                         whereParCompany +
                       @"
-                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
                         AND C.IsActive = 1  
                       GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -2097,8 +2115,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          whereCluster +
                          whereStructure +
                          whereCriticalLevel +
+                         whereParCompany +
                       @"
-                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2        
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
                         AND C.IsActive = 1  
                       GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -2136,6 +2155,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var whereClusterGroup = "";
             var whereCluster = "";
             var whereCriticalLevel = "";
+            var whereParCompany = "";
             var whereUnit = "";
 
             if (form.clusterGroupId > 0)
@@ -2162,6 +2182,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             {
                 whereCriticalLevel = $@"  AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
+
+            if (form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
+            {
+                whereParCompany = $@"AND S.ParCompany_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
+            }
+
 
             //_mock = new List<VisaoGeralDaAreaResultSet>();
 

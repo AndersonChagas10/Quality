@@ -57,9 +57,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereShift = "\n AND CL1.Shift = " + form.shift + " ";
             }
 
-            if (form.unitId > 0)
+            if (form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
             {
-                whereUnit = $@"AND UNI.Id = { form.unitId }";
+                whereUnit = $@"AND UNI.Id in ({ string.Join(",", form.unitIdArr) })";
             }
             else
             {
@@ -2584,7 +2584,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         
         	INNER JOIN ParStructureGroup SG WITH (NOLOCK)
         		ON S.ParStructureGroup_Id = SG.ID 
-        		AND SG.ID = 2 
+        		-- AND SG.ID = 2 
         	
         	LEFT JOIN ParScoreType ST WITH (NOLOCK)
         		ON L1.ParConsolidationType_Id = ST.Id 
