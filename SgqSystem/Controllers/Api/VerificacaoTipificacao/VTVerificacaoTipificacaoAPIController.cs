@@ -443,6 +443,8 @@ namespace SgqSystem.Controllers.Api
         [Route("GetAll/{Date}/{UnidadeId}")]
         public string GetVTVerificacaoTipificacao(String Date, int UnidadeId)
         {
+            VerifyIfIsAuthorized();
+
             string retorno = "";
             try
             {

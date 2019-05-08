@@ -18,7 +18,7 @@ namespace SgqSystem.Controllers.Api
 
     [HandleApi()]
     [RoutePrefix("api/ResultLevel3PhotosApi")]
-    public class ResultLevel3PhotosApiController : ApiController
+    public class ResultLevel3PhotosApiController : BaseApiController
     {
 
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -31,6 +31,7 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]
         public IHttpActionResult Insert([FromBody] List<Result_Level3_PhotosDTO> Fotos)
         {
+            VerifyIfIsAuthorized();
             //, int Level1Id, int Level2Id, int Level3Id, int Evaluation, int Sample, string Date
             string quebraProcesso = "98789";
 

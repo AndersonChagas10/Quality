@@ -1543,14 +1543,15 @@ function setGravaAlerta() {
 
     $.ajax({
         type: 'POST'
-        , url: urlPreffix + '/Services/SyncServices.asmx/insertDeviation'
+        , url: urlPreffix + '/api/SyncServiceApi/insertDeviation'
         , contentType: 'application/json; charset=utf-8'
+        , headers: token()
         , dataType: 'json'
         , data: "{deviations : '" + deviationsSend + "'}"
         //, data: '{' + "obj: '" + objectSend + "', collectionDate : '" + level02.attr('datetime') + "', level01Id: '" + level01.attr('level01Id') + "', level02Id: '" + level02.attr('level02id') + "', unitId: '" + level01.attr('unidadeid') + "', period: '" + level01.attr('period') + "', shift: '" + level01.attr('shift') + "', device: '123', version: '" + versao + "', ambient: '" + baseAmbiente + "'" + '}'
         , async: false //blocks window close
         , success: function (data, status) {
-            if (data.d == "error") {
+            if (data != null && data.d == "error") {
                 //createLog(XMLHttpRequest.responseText);
                 //console.log(XMLHttpRequest.responseText);
             }

@@ -49,6 +49,7 @@ function getDynamicValues(obj, $btn) {
         data: JSON.stringify(obj),
         url: urlPreffix + '/api/RetornaQueryRotinaApi/RetornaQueryRotina',
         type: 'POST',
+        headers: token(),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
 

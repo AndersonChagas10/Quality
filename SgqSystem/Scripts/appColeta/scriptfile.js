@@ -154,7 +154,7 @@ FINAL DOS METODOS QUE GERAM ALERTA
 //                //    Name: username,
 //                //    Password: password,
 //                //},
-//                url: urlPreffix + '/Services/SyncServices.asmx/getCompanyUsers',
+//                url: urlPreffix + '/api/SyncServiceApi/getCompanyUsers',
 //                data: { "ParCompany_Id": $('.App').attr('unidadeid') },
 
 //                type: 'POST',

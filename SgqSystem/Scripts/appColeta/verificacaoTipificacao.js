@@ -271,11 +271,14 @@ function loginVerificacaoKeys(){
 function getAllVF(){
     if($('.ResultsKeysVF').length == 0)
         $('.ResultsKeys').after($('<div class="ResultsKeysVF"></div>'));
-        
-    $.get(
-        urlPreffix + "/api/VTVerificacaoTipificacao/GetAll/"+getCollectionDate()+"/"+$('.App').attr('unidadeid'), 
-        function(data,status,xhr){ 
 
+    $.ajax({
+        headers: token(),
+        url: urlPreffix + "/api/VTVerificacaoTipificacao/GetAll/"+getCollectionDate()+"/"+$('.App').attr('unidadeid'),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        type: 'GET',
+        success: function (data,status,xhr) {
             if(status == "success"){
                 if(data){
                     $('.ResultsKeysVF').remove();
@@ -285,8 +288,9 @@ function getAllVF(){
             } else {
                 loginVerificacaoKeys();
             }
+        },
+        error: function (e) {
+            loginVerificacaoKeys();
         }
-    ).fail(function() {
-        loginVerificacaoKeys();
     });
 }

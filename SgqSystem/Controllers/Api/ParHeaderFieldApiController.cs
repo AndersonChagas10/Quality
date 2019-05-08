@@ -14,7 +14,7 @@ namespace SgqSystem.Controllers.Api
     [HandleApi()]
     [RoutePrefix("api/ParHeader")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class ParHeaderFieldApiController : ApiController
+    public class ParHeaderFieldApiController : BaseApiController
     {
         public partial class CollectionHeaderField
         {
@@ -44,6 +44,8 @@ namespace SgqSystem.Controllers.Api
         [Route("GetCollectionLevel2XHeaderField/{unitId}/{date}")]
         public IEnumerable<CollectionHeaderField> GetListCollectionHeaderField(int UnitId, String Date)
         {
+            VerifyIfIsAuthorized();
+
             var TransformedDate = CommonDate.TransformDateFormatToAnother(
                                                     Date, "MMddyyyy", "yyyy-MM-dd");
 
@@ -80,7 +82,7 @@ namespace SgqSystem.Controllers.Api
         [Route("GetListParMultipleValuesXParCompany/{unitId}/{level1_id}")]
         public IEnumerable<ParMultipleValuesXParCompany> GetListParMultipleValuesXParCompany(int UnitId, string level1_id)
         {
-
+            VerifyIfIsAuthorized();
             return GetListParMultipleValuesXParCompany(UnitId);
 
         }
@@ -89,6 +91,7 @@ namespace SgqSystem.Controllers.Api
         [Route("GetListParMultipleValuesXParCompany/{unitId}")]
         public IEnumerable<ParMultipleValuesXParCompany> GetListParMultipleValuesXParCompany(int UnitId)
         {
+            VerifyIfIsAuthorized();
 
             var SelectQuery =
                 @"SELECT 

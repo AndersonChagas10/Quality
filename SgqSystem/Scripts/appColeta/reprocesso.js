@@ -1,14 +1,22 @@
 var reprocessoLists = {};
 
 function getListsReprocesso(){
-    $.get(urlPreffix+"/api/Reprocesso/Get/"+$('.App').attr('unidadeid'), function(result){
-        console.log(result);
-        if(result){
-            reprocessoLists = result;
-            saveListsReprocessos();
+    $.ajax({
+        url: urlPreffix+"/api/Reprocesso/Get/"+$('.App').attr('unidadeid'),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        type: 'GET',
+        headers: token(),
+        success: function (result) {
+            console.log(result);
+            if(result){
+                reprocessoLists = result;
+                saveListsReprocessos();
+            }
+        },
+        error: function (e) {
+            loadListsReprocessos();
         }
-    }).fail(function() {
-        loadListsReprocessos();
     });
 }
 

@@ -358,20 +358,22 @@ function getAPPLevelsVolume() {
     var ParCompany_Id = userlogado.attr('unidadeid');
     var date = new Date(insertAt(insertAt(getCollectionDate(), 2, '-'), 5, '-') + " 12:00:00");
 
-    var request = $.ajax({
-        data: {
+    $.ajax({
+        data: JSON.stringify({
             "UserSgq_Id": UserSGQ_Id,
             "ParCompany_Id": ParCompany_Id,
             //"Date": new Date($.now()).toUTCString(),
             "Date": date.toUTCString(),
             "Level1ListId": listIndUpdate,
             "Shift_Id": parseInt(_shift)
-        },
+        }),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
         url: urlPreffix + '/api/SyncServiceApi/getAPPLevelsVolume',
+        headers: token(),
         type: 'POST',
         success: function (data) {
-            var result = $(data);
-            var App = $(result.text());
+            var App = $(data);
 
             AppLevelsAppend(App);
 
@@ -420,7 +422,7 @@ function getAPPLevelsOnLine() {
     //     urlAppLevels = urlPreffix + '/api/SyncServiceApi/getAPPLevels';
     // }
 
-    var request = $.ajax({
+    $.ajax({
 
         //data: {
         //    "UserSgq_Id": UserSGQ_Id,
@@ -430,6 +432,7 @@ function getAPPLevelsOnLine() {
         //},
 
         url: urlPreffix + '/api/AppParams/GetTela/' + ParCompany_Id + "/" + parseInt(_shift),
+        headers: token(),
         type: 'GET',
         success: function (data) {
             var correctiveAction = $('.correctiveAction[sync=false]');
@@ -490,7 +493,7 @@ function getAPPLevels1OnLine() {
     //     urlAppLevels = urlPreffix + '/api/SyncServiceApi/getAPPLevels';
     // }
 
-    var request = $.ajax({
+    $.ajax({
         //data: {
         //    "UserSgq_Id": UserSGQ_Id,
         //    "ParCompany_Id": ParCompany_Id,
@@ -498,6 +501,7 @@ function getAPPLevels1OnLine() {
         //    "Level1ListId": listIndUpdate
         //},
         url: urlPreffix + '/api/AppParams/GetTela/' + ParCompany_Id + "/" + parseInt($(shift).val()),
+        headers: token(),
         type: 'GET',
         success: function (data) {
             var correctiveAction = $('.correctiveAction[sync=false]');
@@ -968,6 +972,7 @@ function changeCompany_OnLine() {
                 "UserSgq_Id": userlogado.attr('userid'),
                 "ParCompany_Id": $('#selectParCompany').val(),
             },
+            headers: token(),
             //    url: urlPreffix + '/api/User/AuthenticationLogin',
             url: urlPreffix + '/api/SyncServiceApi/UserCompanyUpdate',
             type: 'POST',
@@ -1029,8 +1034,17 @@ var intervalo = setInterval(function () {
 function pinga(url) {
     console.log(count++);
     var resp;
-    $.get(url + '/api/LoginApi/Logado', function (res) {
-        resp = res;
+    
+    $.ajax({
+        url: url + '/api/LoginApi/Logado',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        type: 'GET',
+        success: function (result) {
+            resp = result;
+        },
+        error: function (e) {
+        }
     });
     return resp;
 }

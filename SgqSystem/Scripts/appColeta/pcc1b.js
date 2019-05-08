@@ -385,13 +385,17 @@ function sincronizarResultadoPCC1B(){
     if(sincronizando == false){
         try {
             sincronizando = true;
-            $.get(urlPreffix + "/api/RelatorioGenerico/reciveDataPCC1b2/" + $('.App').attr('unidadeid') + "/" + getCollectionDate().substring(4, 8) + getCollectionDate().substring(0, 2) + getCollectionDate().substring(2, 4), function (data) {
-                resultadoPCC1bSIF = data;
-
-                //Após efetuada com sucesso, habilitar sincronização após 1 minuto
-                /*setTimeout(function() {
-                    sincronizado = false;
-                }, 60000);*/
+            $.ajax({
+                url: urlPreffix + "/api/RelatorioGenerico/reciveDataPCC1b2/" + $('.App').attr('unidadeid') + "/" + getCollectionDate().substring(4, 8) + getCollectionDate().substring(0, 2) + getCollectionDate().substring(2, 4),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'GET',
+                headers: token(),
+                success: function (data) {
+                    resultadoPCC1bSIF = data;
+                },
+                error: function (e) {
+                }
             });
         } catch (e) {
         }

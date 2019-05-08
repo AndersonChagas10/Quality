@@ -11,7 +11,7 @@ namespace SgqSystem.Controllers.Api
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/ParReason")]
-    public class ParReasonApieController : BaseApiController
+    public class ParReasonApiController : BaseApiController
     {
 
         [HttpGet]

@@ -239,6 +239,8 @@ namespace SgqSystem.Controllers.Api
         [Route("InsertJson")]
         public string InsertJson([FromBody] InsertJsonClass insertJsonClass)
         {
+            VerifyIfIsAuthorized();
+
             string ObjResultJSon = insertJsonClass.ObjResultJSon;
             string deviceId = insertJsonClass.deviceId;
             string deviceMac = insertJsonClass.deviceMac;
@@ -760,6 +762,7 @@ namespace SgqSystem.Controllers.Api
         [Route("ProcessJson")]
         public string ProcessJson(string device, int id, bool filho)
         {
+            VerifyIfIsAuthorized();
 
             try
             {
@@ -2521,6 +2524,8 @@ namespace SgqSystem.Controllers.Api
         [Route("reciveData")]
         public string reciveData(string unidadeId, string data)
         {
+            VerifyIfIsAuthorized();
+
             DateTime dataConsolidation = DateCollectConvert(data);
             string consolidation = getConsolidation(unidadeId, dataConsolidation, 0);
             return consolidation;
@@ -2530,6 +2535,8 @@ namespace SgqSystem.Controllers.Api
         [Route("reciveDataByLevel1")]
         public string reciveDataByLevel1(string ParCompany_Id, string data, string ParLevel1_Id)
         {
+            VerifyIfIsAuthorized();
+
             DateTime dataConsolidation = DateCollectConvert(data);
             string consolidation = getConsolidation(ParCompany_Id, dataConsolidation, Convert.ToInt32(ParLevel1_Id));
             return consolidation;
@@ -3026,6 +3033,7 @@ setTimeout(function(){
         [Route("getAPPLevels")]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date, int Shift_Id)
         {
+            VerifyIfIsAuthorized();
 
             //Factory factory = new Factory("DefaultConnection");
             //
@@ -3124,13 +3132,24 @@ setTimeout(function(){
             return APPMain + supports;// + resource;
         }
 
+        public class GetAPPLevelsVolumeClass
+        {
+            public int UserSgq_Id { get; set; }
+            public int ParCompany_Id { get; set; }
+            public DateTime Date { get; set; }
+            public string Level1ListId { get; set; }
+            public int Shift_Id { get; set; }
+        }
+
         [HttpPost]
         [Route("getAPPLevelsVolume")]
-        public string getAPPLevelsVolume(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId, int Shift_Id)
+        public string getAPPLevelsVolume([FromBody] GetAPPLevelsVolumeClass getAPPLevelsVolumeClass)
         {
+            VerifyIfIsAuthorized();
             string APPMain = string.Empty;
 
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, Shift_Id, true);
+            APPMain = getAPPMain(getAPPLevelsVolumeClass.UserSgq_Id, getAPPLevelsVolumeClass.ParCompany_Id,
+                getAPPLevelsVolumeClass.Date, getAPPLevelsVolumeClass.Level1ListId, getAPPLevelsVolumeClass.Shift_Id, true);
 
             return APPMain;// + resource;
         }
@@ -6258,10 +6277,17 @@ setTimeout(function(){
 
         #endregion
 
+        public class InsertDeviationClass
+        {
+            public string Deviations { get; set; }
+        }
+
         [HttpPost]
         [Route("insertDeviation")]
-        public string insertDeviation(string deviations)
+        public string insertDeviation([FromBody] InsertDeviationClass insertDeviationClass)
         {
+            VerifyIfIsAuthorized();
+            string deviations = insertDeviationClass.Deviations;
 
             if (string.IsNullOrEmpty(deviations))
             {
@@ -6371,6 +6397,8 @@ setTimeout(function(){
         [Route("sendEmailAlerta")]
         public string sendEmailAlerta()
         {
+            VerifyIfIsAuthorized();
+
             string destinatarios = "antoniobrissolare@hotmail.com";
             string mensagemEstouro = "Estouro de alerta Nivel [X]";
 
@@ -6520,6 +6548,7 @@ setTimeout(function(){
         [Route("UserCompanyUpdate")]
         public string UserCompanyUpdate(string UserSgq_Id, int ParCompany_Id)
         {
+            VerifyIfIsAuthorized();
             //Adicionar o departamento
             string sql = "UPDATE UserSgq SET ParCompany_Id='" + ParCompany_Id + "' WHERE Id='" + UserSgq_Id + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -6550,13 +6579,59 @@ setTimeout(function(){
             }
         }
 
+        public class InsertCorrectiveActionClass
+        {
+            public string CollectionLevel2_Id { get; set; }
+            public string ParLevel1_Id { get; set; }
+            public string ParLevel2_Id { get; set; }
+            public string Shift { get; set; }
+            public string Period { get; set; }
+            public string ParCompany_Id { get; set; }
+            public string EvaluationNumber { get; set; }
+            public string ParFrequency_Id { get; set; }
+            public string data { get; set; }
+            public string AuditorId { get; set; }
+            public string SlaughterId { get; set; }
+            public string TechinicalId { get; set; }
+            public string DateTimeSlaughter { get; set; }
+            public string DateTimeTechinical { get; set; }
+            public string DateCorrectiveAction { get; set; }
+            public string AuditStartTime { get; set; }
+            public string DescriptionFailure { get; set; }
+            public string ImmediateCorrectiveAction { get; set; }
+            public string ProductDisposition { get; set; }
+            public string PreventativeMeasure { get; set; }
+            public string reauditnumber { get; set; }
+        }
+
         [HttpPost]
         [Route("InsertCorrectiveAction")]
-        public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id,
-            string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter,
-            string DateTimeTechinical, string DateCorrectiveAction, string AuditStartTime, string DescriptionFailure, string ImmediateCorrectiveAction,
-            string ProductDisposition, string PreventativeMeasure, string reauditnumber)
+        public string InsertCorrectiveAction([FromBody] InsertCorrectiveActionClass insertCorrectiveActionClass)
         {
+            VerifyIfIsAuthorized();
+
+            string CollectionLevel2_Id = insertCorrectiveActionClass.CollectionLevel2_Id;
+            string ParLevel1_Id = insertCorrectiveActionClass.ParLevel1_Id;
+            string ParLevel2_Id = insertCorrectiveActionClass.ParLevel2_Id;
+            string Shift = insertCorrectiveActionClass.Shift;
+            string Period = insertCorrectiveActionClass.Period;
+            string ParCompany_Id = insertCorrectiveActionClass.ParCompany_Id;
+            string EvaluationNumber = insertCorrectiveActionClass.EvaluationNumber;
+            string ParFrequency_Id = insertCorrectiveActionClass.ParFrequency_Id;
+            string data = insertCorrectiveActionClass.data;
+            string AuditorId = insertCorrectiveActionClass.AuditorId;
+            string SlaughterId = insertCorrectiveActionClass.SlaughterId;
+            string TechinicalId = insertCorrectiveActionClass.TechinicalId;
+            string DateTimeSlaughter = insertCorrectiveActionClass.DateTimeSlaughter;
+            string DateTimeTechinical = insertCorrectiveActionClass.DateTimeTechinical;
+            string DateCorrectiveAction = insertCorrectiveActionClass.DateCorrectiveAction;
+            string AuditStartTime = insertCorrectiveActionClass.AuditStartTime;
+            string DescriptionFailure = insertCorrectiveActionClass.DescriptionFailure;
+            string ImmediateCorrectiveAction = insertCorrectiveActionClass.ImmediateCorrectiveAction;
+            string ProductDisposition = insertCorrectiveActionClass.ProductDisposition;
+            string PreventativeMeasure = insertCorrectiveActionClass.PreventativeMeasure;
+            string reauditnumber = insertCorrectiveActionClass.reauditnumber;
+
             try
             {
 
@@ -6695,6 +6770,7 @@ setTimeout(function(){
         [Route("getPhaseLevel2")]
         public string getPhaseLevel2(int ParCompany_Id, string date)
         {
+            VerifyIfIsAuthorized();
 
             var ResultPhaseDB = new SGQDBContext.ResultPhase(db);
             var ResultPhaseFrequencyDB = new SGQDBContext.ResultPhaseFrequency(db);
@@ -6749,6 +6825,7 @@ setTimeout(function(){
         [Route("getResultEvaluationDefects")]
         public string getResultEvaluationDefects(int parCompany_Id, string date, int parLevel1_Id)
         {
+            VerifyIfIsAuthorized();
 
             var ResultPhaseDB = new SGQDBContext.ResultEvaluationDefects(db);
             //Instanciamos uma variável que irá 
@@ -6774,10 +6851,21 @@ setTimeout(function(){
             return PhaseResult;
         }
 
+        public class GetCollectionLevel2KeysClass
+        {
+            public string ParCompany_Id { get; set; }
+            public string date { get; set; }
+            public int ParLevel1_Id { get; set; } = 0;
+        }
+
         [HttpPost]
         [Route("getCollectionLevel2Keys")]
-        public string getCollectionLevel2Keys(string ParCompany_Id, string date, int ParLevel1_Id = 0)
+        public string getCollectionLevel2Keys([FromBody] GetCollectionLevel2KeysClass getCollectionLevel2KeysClass)
         {
+            VerifyIfIsAuthorized();
+            string ParCompany_Id = getCollectionLevel2KeysClass.ParCompany_Id;
+            string date = getCollectionLevel2KeysClass.date;
+            int ParLevel1_Id = getCollectionLevel2KeysClass.ParLevel1_Id;
 
             DateTime data = DateCollectConvert(date);
 
@@ -7253,6 +7341,73 @@ setTimeout(function(){
             {
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsolidationLevel2XCluster");
                 throw ex;
+            }
+        }
+
+        public class GetLastSampleByCollectionLevel2Class
+        {
+            public string ParLevel1_Id { get; set; }
+            public string ParLevel2_Id { get; set; }
+            public string UnitId { get; set; }
+            public string EvaluationNumber { get; set; }
+            public string Shift { get; set; }
+            public DateTime CollectionDate { get; set; }
+        }
+
+        [HttpPost]
+        [Route("GetLastSampleByCollectionLevel2")]
+        public int GetLastSampleByCollectionLevel2(GetLastSampleByCollectionLevel2Class getLastSampleByCollectionLevel2Class)
+        {
+            VerifyIfIsAuthorized();
+            string ParLevel1_Id = getLastSampleByCollectionLevel2Class.ParLevel1_Id;
+            string ParLevel2_Id = getLastSampleByCollectionLevel2Class.ParLevel2_Id;
+            string UnitId = getLastSampleByCollectionLevel2Class.UnitId;
+            string EvaluationNumber = getLastSampleByCollectionLevel2Class.EvaluationNumber;
+            string Shift = getLastSampleByCollectionLevel2Class.Shift;
+            DateTime CollectionDate = getLastSampleByCollectionLevel2Class.CollectionDate;
+
+            if (string.IsNullOrEmpty(ParLevel1_Id) ||
+                string.IsNullOrEmpty(ParLevel2_Id) ||
+                string.IsNullOrEmpty(UnitId) ||
+                string.IsNullOrEmpty(EvaluationNumber) ||
+                string.IsNullOrEmpty(Shift) ||
+                string.IsNullOrEmpty(CollectionDate.ToString()))
+            {
+                return 0;
+            }
+
+
+            var lista1 = ParLevel1_Id.Replace(quebraProcesso, "|").Split('|');
+            var lista2 = ParLevel2_Id.Replace(quebraProcesso, "|").Split('|');
+
+            int parCluster_Id = lista1.Length > 1 ? Int32.Parse(lista1[0]) : 0;
+
+            int parlevel1_id = lista1.Length > 1 ? Int32.Parse(lista1[1]) : Int32.Parse(lista1[0]);
+            int parlevel2_id = lista2.Length > 1 ? Int32.Parse(lista2[1]) : Int32.Parse(lista2[0]);
+
+
+            var sql = $@"
+                    SELECT
+                    	IIF(MAX(cl.Sample) IS NULL, 0, MAX(cl.Sample)) AS Sample
+                    FROM CollectionLevel2 cl with (nolock)
+                    INNER JOIN ParLevel1XCluster plx with (nolock)
+                    	ON plx.ParLevel1_Id = cl.ParLevel1_Id
+                    		AND plx.IsActive = 1
+                    WHERE 1 = 1
+                    AND cl.ParLevel1_Id = { parlevel1_id }
+                    AND cl.ParLevel2_Id = { parlevel2_id }
+                    AND cl.UnitId = { UnitId }
+                    AND cl.EvaluationNumber = { EvaluationNumber }
+                    AND plx.ParCluster_Id = { parCluster_Id }
+                    AND cl.Shift = { Shift }
+                    AND CAST(cl.CollectionDate AS DATE) = '{ CollectionDate.ToString("yyyMMdd") }'";
+
+            using (var db = new SgqDbDevEntities())
+            {
+
+                var retorno = db.Database.SqlQuery<int>(sql).FirstOrDefault();
+
+                return retorno;
             }
         }
     }

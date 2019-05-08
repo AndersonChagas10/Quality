@@ -171,6 +171,8 @@ namespace SgqSystem.Controllers.Api.App
         [Route("GetTela/{UnitId}/{ShiftId?}")]
         public RetornoParaTablet GetTela(int UnitId, int ShiftId = 0)
         {
+            VerifyIfIsAuthorized();
+
             var retorno = new RetornoParaTablet();
 
             var shifts = db.Shift.ToList();

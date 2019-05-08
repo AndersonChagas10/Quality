@@ -13,7 +13,7 @@ namespace SgqSystem.Controllers.Api
 {
     [HandleApi()]
     [RoutePrefix("api/Reprocesso")]
-    public class ReprocessoApiController : ApiController
+    public class ReprocessoApiController : BaseApiController
     {
         public class RetrocessoReturn
         {
@@ -99,6 +99,7 @@ namespace SgqSystem.Controllers.Api
         [HttpGet]
         public RetrocessoReturn Get(int ParCompany_Id)
         {
+            VerifyIfIsAuthorized();
 
             try
             {
