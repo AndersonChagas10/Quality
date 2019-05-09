@@ -36,7 +36,8 @@ namespace SgqSystem.Controllers.Photo
                 var credentialPassServerPhoto = GetWebConfigSettings("credentialPassServerPhoto");
                 FileStream file = null;
 
-                if (credentialUserServerPhoto != null && credentialPassServerPhoto != null)
+                if (!string.IsNullOrEmpty(credentialUserServerPhoto) 
+                    && !string.IsNullOrEmpty(credentialPassServerPhoto))
                 {
 
                     var credential = new NetworkCredential(credentialUserServerPhoto, credentialPassServerPhoto);
