@@ -7,18 +7,15 @@ function getCollectionPhase() {
         }
         var ParCompany_Id = parseInt($('.App').attr('unidadeid'));
 
-        var request = $.ajax({
-            data: {
-                "ParCompany_Id": ParCompany_Id,
-                "date": date
-            },
-            url: urlPreffix + '/Services/SyncServices.asmx/getPhaseLevel2',
+        $.ajax({
+            url: urlPreffix + '/api/SyncServiceApi/getPhaseLevel2?ParCompany_Id=' + ParCompany_Id + '&date=' + date,
+            headers: token(),
             type: 'POST',
             success: function (data) {
 
                 $('.ResultsPhase').empty();
-                appendDevice($(data).text(), $('.ResultsPhase'));
-                _writeFile('ResultsPhase.txt', $(data).text());
+                appendDevice($(data), $('.ResultsPhase'));
+                _writeFile('ResultsPhase.txt', $(data));
 
             },
             timeout: 600000,

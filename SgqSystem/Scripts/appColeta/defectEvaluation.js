@@ -10,13 +10,14 @@ function getDefectEvaluationOnline(parLevel1_Id) {
         if(isNaN(parCompany_Id))
             parCompany_Id = userlogado.attr('unidadeid');
 
-        var request = $.ajax({ 
+        $.ajax({ 
             data: {
                 "parCompany_Id": parCompany_Id,
                 "date": date,
                 "parLevel1_Id": parLevel1_Id
             },
-            url: urlPreffix + '/Services/SyncServices.asmx/getResultEvaluationDefects',
+            url: urlPreffix + '/api/SyncServiceApi/getResultEvaluationDefects',
+            headers: token(),
             type: 'POST',
             success: function (data) {
 

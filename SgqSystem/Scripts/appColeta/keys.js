@@ -43,14 +43,16 @@ function getCollectionKeys(ParCompany_Id) {
         date = dateTimeFormat();
     }
 
-    var request = $.ajax({
-        data: {
+    $.ajax({
+        data: JSON.stringify({
             "ParCompany_Id": ParCompany_Id,
             "date": date,
             "ParLevel1_Id": 0
-
-        },
-        url: urlPreffix + '/Services/SyncServices.asmx/getCollectionLevel2Keys',
+        }),
+        url: urlPreffix + '/api/SyncServiceApi/getCollectionLevel2Keys',
+        headers: token(),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
         type: 'POST',
         success: function (data) {
 

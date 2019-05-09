@@ -308,6 +308,7 @@ function send(autoSend, callbackPCC1B, sendImediato) {
         , dataType: 'json'
         , data: '{' + "ObjResultJSon: '" + objectSend + "', deviceId: '" + device.uuid + "', autoSend: " + autoSend + ", deviceMac: ''" + '}'
         , async: true //blocks window close
+        , headers: token()
         , success: function (data, status) {
             if (data != null && data.d == "error") {
                 //createLog(XMLHttpRequest.responseText);
@@ -387,8 +388,9 @@ function consolidation() {
         , data: '{' + "device: '" + device.uuid + "', id: 0" + '}'
         //, data: '{' + "obj: '" + objectSend + "', collectionDate : '" + level02.attr('datetime') + "', level01Id: '" + level01.attr('level01Id') + "', level02Id: '" + level02.attr('level02id') + "', unitId: '" + level01.attr('unidadeid') + "', period: '" + level01.attr('period') + "', shift: '" + level01.attr('shift') + "', device: '123', version: '" + versao + "', ambient: '" + baseAmbiente + "'" + '}'
         , async: false //blocks window close
+        , headers: token()
         , success: function (data, status) {
-            if (data.d == "error") {
+            if (data != null && data.d == "error") {
                 //createLog("Consolidation Error:" + XMLHttpRequest.responseText);
                 mensagemSyncHide();
                 openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
@@ -443,18 +445,19 @@ function recivingData() {
         try {
             $.ajax({
                 type: 'POST'
-                , url: urlPreffix + '/api/SyncServiceApi/reciveData'
+                , url: urlPreffix + '/api/SyncServiceApi/reciveData?unidadeId='+ $('.App').attr('unidadeid') + "&data=" + date
                 , contentType: 'application/json; charset=utf-8'
                 , dataType: 'json'
-                , data: '{' + "unidadeId: '" + $('.App').attr('unidadeid') + "', data: '" + date + "'" + '}'
+                //, data: '{' + "unidadeId: '" + $('.App').attr('unidadeid') + "', data: '" + date + "'" + '}'
                 , async: false //blocks window close
+                , headers: token()
                 , error: function (XMLHttpRequest, textStatus, errorThrown) {
                     //createLog("Reciecing Error");
                     mensagemSyncHide();
                     openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
                 }
                 , success: function (data, status) {
-                    if (data.d == "error") {
+                    if (data != null && data.d == "error") {
                         //createLog("Reciecing Error");
                         mensagemSyncHide();
                         openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
@@ -517,16 +520,17 @@ function recivingDataByLevel1(ParLevel1) {
     try {
         $.ajax({
             type: 'POST'
-            , url: urlPreffix + '/api/SyncServiceApi/reciveDataByLevel1'
+            , headers: token()
+            , url: urlPreffix + "/api/SyncServiceApi/reciveDataByLevel1?ParCompany_Id=" + $('.App').attr('unidadeid') + "&data=" + date + "&ParLevel1_Id=" + ParLevel1.attr('id')
             , contentType: 'application/json; charset=utf-8'
             , dataType: 'json'
-            , data: '{' + "ParCompany_Id: '" + $('.App').attr('unidadeid') + "', data: '" + date + "', ParLevel1_Id: '" + ParLevel1.attr('id') + "'" + '}'
+            //, data: '{' + "ParCompany_Id: '" + $('.App').attr('unidadeid') + "', data: '" + date + "', ParLevel1_Id: '" + ParLevel1.attr('id') + "'" + '}'
             , async: true //blocks window close
             , error: function (XMLHttpRequest, textStatus, errorThrown) {
                 //createLog("Reciecing By Level1 Error");
             }
             , success: function (data, status) {
-                if (data.d == "error") {
+                if (data != null && data.d == "error") {
                     //createLog("Reciecing By Level1 Error");
                 }
                 else {

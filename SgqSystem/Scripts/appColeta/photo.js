@@ -180,6 +180,7 @@ function enviaFotos(listaFotos) {
         contentType: "application/json; charset=utf-8",
         url: urlPreffix + '/api/ResultLevel3PhotosApi',
         type: 'POST',
+        headers: token(),
         success: function (data) {
             algumaFotoEstaSendoEnviada = false;
             if (data.count > 0) {

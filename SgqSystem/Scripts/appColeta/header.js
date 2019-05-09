@@ -258,15 +258,24 @@ function getHeaderResultList(){
     var date = getCollectionDate();
 
     if($('.level02Result[sync=false]').length == 0 && unitid != undefined) {
-        $.get(urlPreffix+"/api/ParHeader/GetCollectionLevel2XHeaderField/"+unitid+"/"+date, function(result){
-            headerResultList = result;
-            saveHeaderResultList();
-        }).fail(function(e) {
-            _readFile("HeaderResultList.json", function(result){
-                if(result){
-                    headerResultList = JSON.parse(result);
-                }
-            });
+        $.ajax({
+            url: urlPreffix+"/api/ParHeader/GetCollectionLevel2XHeaderField/"+unitid+"/"+date,
+            contentType: 'application/json; charset=utf-8',
+            headers: token(),
+            dataType: 'json',
+            type: 'GET',
+            success: function (data) {
+                headerResultList = data;
+                saveHeaderResultList();
+            },
+            timeout: 600000,
+            error: function (e) {
+                _readFile("HeaderResultList.json", function(result){
+                    if(result){
+                        headerResultList = JSON.parse(result);
+                    }
+                });
+            }
         });
     } else {
         _readFile("HeaderResultList.json", function(result){
@@ -283,15 +292,23 @@ function getListParMultipleValuesXParCompany(){
 
     $('.level1').each(function(index, element){
         if($('.level02Result[sync=false]').length == 0 && unitid != undefined) {
-            $.get(urlPreffix+"/api/ParHeader/GetListParMultipleValuesXParCompany/"+unitid+"/"+$(element).attr('id'), function(result){
-                listHeaders.push({level1id: $(element).attr('id'), list: result });
-                _writeFile("ListHeaders_"+$(element).attr('id')+".json", JSON.stringify(result));
-            }).fail(function(e) {
-                _readFile("ListHeaders_"+$(element).attr('id')+".json", function(result){
-                    if(result){
-                        listHeaders.push({level1id: JSON.parse(result)[0].ParLevel1_Id, list: JSON.parse(result) });
-                    }
-                });
+            $.ajax({
+                url: urlPreffix+"/api/ParHeader/GetListParMultipleValuesXParCompany/"+unitid+"/"+$(element).attr('id'),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                headers: token(),
+                type: 'GET',
+                success: function (result) {
+                    listHeaders.push({level1id: $(element).attr('id'), list: result });
+                    _writeFile("ListHeaders_"+$(element).attr('id')+".json", JSON.stringify(result));
+                },
+                error: function (e) {
+                    _readFile("ListHeaders_"+$(element).attr('id')+".json", function(result){
+                        if(result){
+                            listHeaders.push({level1id: JSON.parse(result)[0].ParLevel1_Id, list: JSON.parse(result) });
+                        }
+                    });
+                }
             });
         } else {
             _readFile("ListHeaders_"+$(element).attr('id')+".json", function(result){

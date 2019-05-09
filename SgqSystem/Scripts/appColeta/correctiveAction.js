@@ -644,7 +644,8 @@ function sendCorrectiveActionOnLine() {
             $.ajax({
                 data: dados,
                 //    url: urlPreffix + '/api/User/AuthenticationLogin',
-                url: urlPreffix + '/Services/SyncServices.asmx/InsertCorrectiveAction',
+                headers: token(),
+                url: urlPreffix + '/api/SyncServiceApi/InsertCorrectiveAction',
                 type: 'POST',
                 success: function (data) {
                     $('.Results .correctiveAction[sync=false][reauditnumber=' + correctiveAction.attr('reauditnumber') + ']').attr('sync', 'true');

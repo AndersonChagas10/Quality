@@ -342,16 +342,19 @@ function getAvaliationNumber(that, number) {
 
     //Se tiver online
     $.ajax({
-        data: {
+        data: JSON.stringify({
             "Shift": $('.App').attr('shift'),
             "ParLevel1_Id": $(_level1).attr('id'),
             "ParLevel2_Id": $(that).prev().attr('id'),
             "UnitId": parseInt($('.App').attr('unidadeid')),
             "EvaluationNumber": number,
             "CollectionDate": getCollectionDateFormat().toJSON()
-        },
-        url: urlPreffix + '/Services/SyncServices.asmx/GetLastSampleByCollectionLevel2',
+        }),
+        url: urlPreffix + '/api/SyncServiceApi/GetLastSampleByCollectionLevel2',
+        headers: token(),
         type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
         async: false,
         success: function (data) {
 

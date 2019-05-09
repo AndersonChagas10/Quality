@@ -1,7 +1,8 @@
 function setEnviaEmail() {
     $.ajax({
         type: 'POST'
-        , url: urlPreffix + '/Services/SyncServices.asmx/sendEmailAlerta'
+        , url: urlPreffix + '/api/SyncServiceApi/sendEmailAlerta'
+        , headers: token()
         , contentType: 'application/json; charset=utf-8'
         , dataType: 'json'
         //, data: '{' + "insertDeviation: '" + deviationsSend + "'" + '}'

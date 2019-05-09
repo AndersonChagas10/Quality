@@ -14,7 +14,7 @@ using System.Web.Http;
 namespace SgqSystem.Controllers.Api
 {
     [RoutePrefix("api/RelatorioGenerico")]
-    public class RelatorioGenericoApiController : ApiController
+    public class RelatorioGenericoApiController : BaseApiController
     {
 
         
@@ -95,6 +95,7 @@ namespace SgqSystem.Controllers.Api
         [Route("reciveDataPCC1b2/{unidadeId}/{data}")]
         public dynamic reciveDataPCC1b2(string unidadeId, string data)
         {
+            VerifyIfIsAuthorized();
             //DateTime dataConsolidation = DateCollectConvert(data);
             //string consolidation = getConsolidation(unidadeId, dataConsolidation, 0);
 
