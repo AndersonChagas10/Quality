@@ -34,7 +34,7 @@ namespace SgqSystem.Controllers.Photo
 
                 var credentialUserServerPhoto = GetWebConfigSettings("credentialUserServerPhoto");
                 var credentialPassServerPhoto = GetWebConfigSettings("credentialPassServerPhoto");
-                FileStream file;
+                FileStream file = null;
 
                 if (credentialUserServerPhoto != null && credentialPassServerPhoto != null)
                 {
@@ -42,23 +42,31 @@ namespace SgqSystem.Controllers.Photo
                     var credential = new NetworkCredential(credentialUserServerPhoto, credentialPassServerPhoto);
                     using (new NetworkConnection(Path.GetDirectoryName(url), credential))
                     {
-                        file = System.IO.File.OpenRead(url);
+                        if (System.IO.File.Exists(url))
+                            file = System.IO.File.OpenRead(url);
+
                     }
 
                 }
                 else
                 {
-                    file = System.IO.File.OpenRead(url);
+                    if (System.IO.File.Exists(url))
+                        file = System.IO.File.OpenRead(url);
+
                 }
 
-                byte[] bytes = new byte[file.Length];
-                file.Read(bytes, 0, bytes.Length);
+                if (file != null)
+                {
 
-                //string fileName = (url.Split('/')[url.Split('/').Length - 1]).Split('.')[0];
-                Response.ContentType = "image/png";
-                Response.AppendHeader("Content-Disposition", $"attachment; filename={photo.Result_Level3_Id}-{photo.ID}.png");
-                Response.BinaryWrite(bytes);
-                Response.End();
+                    byte[] bytes = new byte[file.Length];
+                    file.Read(bytes, 0, bytes.Length);
+
+                    Response.ContentType = "image/png";
+                    Response.AppendHeader("Content-Disposition", $"attachment; filename={photo.Result_Level3_Id}-{photo.ID}.png");
+                    Response.BinaryWrite(bytes);
+                    Response.End();
+
+                }
 
             }
         }
