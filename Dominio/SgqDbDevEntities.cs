@@ -263,6 +263,8 @@ namespace Dominio
         public virtual DbSet<ParLevel3XHelp> ParLevel3XHelp { get; set; }
         public virtual DbSet<ParAlertType> ParAlertType { get; set; }
         public virtual DbSet<ParAlert> ParAlert { get; set; }
+        public virtual DbSet<ParDepartmentXRotinaIntegracao> ParDepartmentXRotinaIntegracao { get; set; }
+        
 
         public virtual DbSet<IntegCollectionData> IntegCollectionData { get; set; }
 

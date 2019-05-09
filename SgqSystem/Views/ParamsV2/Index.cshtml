@@ -371,12 +371,20 @@
                                             Avaliação e Amostra
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="#dc_rotina" data-toggle="tab">
+                                            Rotina Integração
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-xs-9">
                                 <div class="tab-content">
                                     <div class="tab-pane" id="dc_avam">
                                         @Html.Partial("ParDCAvam")
+                                    </div>
+                                    <div class="tab-pane" id="dc_rotina">
+                                        @Html.Partial("ParDCRotina")
                                     </div>
                                 </div>
                             </div>
@@ -716,9 +724,11 @@
                 data: {},
                 contentType: "application/json",
                 success: function (data) {
+                  
                     preencheCampos('dc', '', data.ParDepartment, true)
                     preencheSelect('selectDCAvamParCargo', 'Name', 'Id', data.ParCargo, 'Todos');
                     parDCAvam.load(data.ParEvaluationXDepartmentXCargo);
+                    parDCRotina.load(data.ParDepartmentXRotinaIntegracao);
                     closeLoader();
                 },
                 error: function (request, error) {
@@ -778,6 +788,8 @@
                 preencheSelect('selectDCAvamParCompany', 'Name', 'Id', data.ParCompanys, 'Todas as empresas');
                 preencheSelect('selectDCDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento', preencheDC);
                 preencheSelect('selectParFrequencyAV', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
+                preencheSelect('selectRotina', 'Name', 'Id', data.RotinaIntegracao, 'Selecione a Rotina');
+
                 closeLoader();
                 verifyTabs('selectDCDepartment', 'dc');
 

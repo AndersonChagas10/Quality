@@ -438,6 +438,7 @@
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
     <Compile Include="Controllers\V2\Api\AppColetaController.cs" />
+    <Compile Include="Controllers\V2\Api\DepartmentXRotinaApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParFrequencyController.cs" />
     <Compile Include="Controllers\V2\Api\ParDepartmentController.cs" />
     <Compile Include="Controllers\V2\Api\ParLevel2ApiController.cs" />
@@ -1993,6 +1994,7 @@
     <Content Include="Views\ParAlert\Create.cshtml" />
     <Content Include="Views\ParAlert\Edit.cshtml" />
     <Content Include="Views\ParAlert\Index.cshtml" />
+    <Content Include="Views\ParamsV2\ParDCRotina.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
