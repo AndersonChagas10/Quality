@@ -1,8 +1,11 @@
 ﻿using Dominio;
+using SgqSystem.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -31,20 +34,32 @@ namespace SgqSystem.Controllers.Photo
 
                 var credentialUserServerPhoto = GetWebConfigSettings("credentialUserServerPhoto");
                 var credentialPassServerPhoto = GetWebConfigSettings("credentialPassServerPhoto");
+                FileStream file;
 
                 if (credentialUserServerPhoto != null && credentialPassServerPhoto != null)
                 {
-                    webClient.UseDefaultCredentials = true;
-                    webClient.Credentials = new NetworkCredential(credentialUserServerPhoto, credentialPassServerPhoto);
+
+                    var credential = new NetworkCredential(credentialUserServerPhoto, credentialPassServerPhoto);
+                    using (new NetworkConnection(Path.GetDirectoryName(url), credential))
+                    {
+                        file = System.IO.File.OpenRead(url);
+                    }
+
+                }
+                else
+                {
+                    file = System.IO.File.OpenRead(url);
                 }
 
-                byte[] bytes = webClient.DownloadData(url);
+                byte[] bytes = new byte[file.Length];
+                file.Read(bytes, 0, bytes.Length);
 
                 //string fileName = (url.Split('/')[url.Split('/').Length - 1]).Split('.')[0];
                 Response.ContentType = "image/png";
                 Response.AppendHeader("Content-Disposition", $"attachment; filename={photo.Result_Level3_Id}-{photo.ID}.png");
                 Response.BinaryWrite(bytes);
                 Response.End();
+
             }
         }
 

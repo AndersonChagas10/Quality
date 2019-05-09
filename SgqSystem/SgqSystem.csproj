@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -473,6 +473,7 @@
     <Compile Include="Helpers\CommonLog.cs" />
     <Compile Include="Helpers\GenericTable.cs" />
     <Compile Include="Helpers\HandleCultureAPI.cs" />
+    <Compile Include="Helpers\NetworkConnection.cs" />
     <Compile Include="Helpers\Table.cs" />
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Helpers\Util.cs" />

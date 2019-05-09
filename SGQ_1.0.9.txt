@@ -157,3 +157,10 @@ WHERE   schema_name = 'INTEG' )
 
 	END
 GO
+
+IF COL_LENGTH('Result_Level3_Photos','IsProcess') IS NULL
+    BEGIN	
+		ALTER table Result_Level3_Photos add IsProcess bit not null default 0
+    END
+
+GO
