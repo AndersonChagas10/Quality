@@ -307,3 +307,21 @@ CREATE TABLE ParDepartmentXRotinaIntegracao  (
   FOREIGN KEY (ParDepartment_Id) REFERENCES ParDepartment(Id),
   PRIMARY KEY (Id)
 );
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParDepartmentXHeaderField' AND xtype='U')
+CREATE TABLE ParDepartmentXHeaderField  (
+  Id int NOT NULL Identity,
+  ParDepartment_Id  int,
+  ParHeaderField_Id int,
+  AddDate datetime not null,
+  AlterDate datetime, 
+  IsActive bit not null default 1,
+  IsRequired bit null,
+  DefaultSelected bit null,
+  HeaderFieldGroup varchar(100) null,
+  FOREIGN KEY (ParHeaderField_Id) REFERENCES ParHeaderField(Id),
+  FOREIGN KEY (ParDepartment_Id) REFERENCES ParDepartment(Id),
+  PRIMARY KEY (Id)
+);

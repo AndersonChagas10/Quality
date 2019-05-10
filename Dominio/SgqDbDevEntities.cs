@@ -264,7 +264,9 @@ namespace Dominio
         public virtual DbSet<ParAlertType> ParAlertType { get; set; }
         public virtual DbSet<ParAlert> ParAlert { get; set; }
         public virtual DbSet<ParDepartmentXRotinaIntegracao> ParDepartmentXRotinaIntegracao { get; set; }
+        public virtual DbSet<ParDepartmentXHeaderField> ParDepartmentXHeaderField { get; set; }
         
+
 
         public virtual DbSet<IntegCollectionData> IntegCollectionData { get; set; }
 

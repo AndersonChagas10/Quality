@@ -376,6 +376,11 @@
                                             Rotina Integração
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="#dc_campocabecalho" data-toggle="tab">
+                                            Campo Cabeçalho
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-xs-9">
@@ -385,6 +390,9 @@
                                     </div>
                                     <div class="tab-pane" id="dc_rotina">
                                         @Html.Partial("ParDCRotina")
+                                    </div>
+                                    <div class="tab-pane" id="dc_campocabecalho">
+                                        @Html.Partial("ParDCCabecalho")
                                     </div>
                                 </div>
                             </div>
@@ -729,6 +737,7 @@
                     preencheSelect('selectDCAvamParCargo', 'Name', 'Id', data.ParCargo, 'Todos');
                     parDCAvam.load(data.ParEvaluationXDepartmentXCargo);
                     parDCRotina.load(data.ParDepartmentXRotinaIntegracao);
+                    parDCCabecalho.load(data.ParDepartmentXHeaderField);
                     closeLoader();
                 },
                 error: function (request, error) {
@@ -789,6 +798,7 @@
                 preencheSelect('selectDCDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento', preencheDC);
                 preencheSelect('selectParFrequencyAV', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
                 preencheSelect('selectRotina', 'Name', 'Id', data.RotinaIntegracao, 'Selecione a Rotina');
+                preencheSelect('selectL1ParFieldTypeDepartment', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
 
                 closeLoader();
                 verifyTabs('selectDCDepartment', 'dc');
@@ -938,7 +948,7 @@
     }
 
     let optionIsValid = function (obj, id) {
-
+        
         let isValid = true;
 
         //se for binário o multipla escolha valida pela quantidade de parMultipleValues

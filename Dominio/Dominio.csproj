@@ -106,6 +106,7 @@
     <Compile Include="ParCargo.cs" />
     <Compile Include="ParCargoXDepartment.cs" />
     <Compile Include="ParColaborador.cs" />
+    <Compile Include="ParDepartmentXHeaderField.cs" />
     <Compile Include="ParDepartmentXRotinaIntegracao.cs" />
     <Compile Include="ParEvaluationXDepartmentXCargo.cs" />
     <Compile Include="ParColaboradorXCargo.cs" />
