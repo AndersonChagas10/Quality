@@ -25,6 +25,7 @@ using System.Text;
 using SgqSystem.Controllers.Api.App;
 using System.Collections;
 using System.Web.Http.Controllers;
+using System.Data;
 
 namespace SgqSystem.Controllers.Api
 {
@@ -172,21 +173,30 @@ namespace SgqSystem.Controllers.Api
 
         protected int insertLogJson(string result, string log, string deviceId, string AppVersion, string callback)
         {
-            string sql = "INSERT INTO LogJson ([result],[log],[AddDate],[Device_Id],[AppVersion], [callback]) " +
-                         "VALUES " +
-                         "('" + result.Replace("'", "") + "', '" + log.Replace("'", "") + "', GETDATE(), '" + deviceId + "', '" + AppVersion + "', '" + callback + "')";
+
+            string sql = $@"INSERT INTO LogJson ([result],[log],[AddDate],[Device_Id],[AppVersion], [callback]) 
+                         VALUES (@Result, @Log, GETDATE(), @DeviceId, @AppVersion, @Callback)";
+
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@Result", result.Replace("'", "")));
+                        command.Parameters.Add(new SqlParameter("@Log", log.Replace("'", "")));
+                        command.Parameters.Add(new SqlParameter("@DeviceId", deviceId));
+                        command.Parameters.Add(new SqlParameter("@AppVersion", AppVersion));
+                        command.Parameters.Add(new SqlParameter("@Callback", callback));
+
                         connection.Open();
 
-
-
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
+
                         if (i > 0)
                         {
                             return i;
@@ -281,12 +291,11 @@ namespace SgqSystem.Controllers.Api
                     connection.Open();
 
                     SqlCommand command;
+
                     for (int i = 0; i < arrayObj.Length; i++)
                     {
                         //Estrai o resultado
                         string[] result = arrayObj[i].Split(';');
-
-
 
                         //4 98789 1190 //98789 é a chave que separa processo de produto
                         string parCluster_Id_parLevel1_id = result[0].Replace(quebraProcesso, "|"); //"Cluster|Indicador"
@@ -342,23 +351,42 @@ namespace SgqSystem.Controllers.Api
 
                         var ParLevel1Origin_Id = DefaultValueReturn(result[0], "0");
 
-                        string indicadorPai = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
-                                              "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
-                                              "\n  on p321.ParLevel1_Id = p1.id " +
-                                              "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
-                                              "\n  on p32.id = p321.ParLevel3Level2_Id " +
-                                              "\n  WHERE ParLevel1Origin_Id = " + ParLevel1Origin_Id +
-                                              "\n  and p1.isActive = 1 " +
-                                              "\n  and p321.Active = 1 " +
-                                              "\n  and p32.IsActive = 1" +
-                                              "\n  and p32.Parlevel2_Id = " + parLevel2_Id;
+                        //string indicadorPai = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                        //                      "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
+                        //                      "\n  on p321.ParLevel1_Id = p1.id " +
+                        //                      "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
+                        //                      "\n  on p32.id = p321.ParLevel3Level2_Id " +
+                        //                      "\n  WHERE ParLevel1Origin_Id = " + ParLevel1Origin_Id +
+                        //                      "\n  and p1.isActive = 1 " +
+                        //                      "\n  and p321.Active = 1 " +
+                        //                      "\n  and p32.IsActive = 1" +
+                        //                      "\n  and p32.Parlevel2_Id = " + parLevel2_Id;
+
+                        string indicadorPai = $@"SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
+                                              inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)
+                                              on p321.ParLevel1_Id = p1.id 
+                                              inner join ParLevel3Level2 p32  WITH (NOLOCK)
+                                              on p32.id = p321.ParLevel3Level2_Id 
+                                              WHERE ParLevel1Origin_Id = @ParLevel1Origin_Id
+                                              and p1.isActive = 1 
+                                              and p321.Active = 1 
+                                              and p32.IsActive = 1
+                                              and p32.Parlevel2_Id = @ParLevel2_Id";
+
 
 
                         List<ResultadoUmaColuna> list;
 
                         using (Factory factory = new Factory("DefaultConnection"))
                         {
-                            list = factory.SearchQuery<ResultadoUmaColuna>(indicadorPai).ToList();
+                            using (SqlCommand cmd = new SqlCommand(indicadorPai, factory.connection))
+                            {
+                                cmd.CommandType = CommandType.Text;
+                                cmd.Parameters.Add(new SqlParameter("@ParLevel1Origin_Id", ParLevel1Origin_Id));
+                                cmd.Parameters.Add(new SqlParameter("@ParLevel2_Id", parLevel2_Id));
+
+                                list = factory.SearchQuery<ResultadoUmaColuna>(cmd.CommandText).ToList();
+                            }
                         }
 
                         string level3split = result[22].Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", ""); //tiro as tags de <level3></level3>, deixando o simbolo @ para separar os elementos.
@@ -409,19 +437,36 @@ namespace SgqSystem.Controllers.Api
 
                         if (level01Id == "0")
                         {
-                            string p1Undefined = "    SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
-                                                 "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
-                                                 "\n  on p321.ParLevel1_Id = p1.id " +
-                                                 "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
-                                                 "\n  on p32.id = p321.ParLevel3Level2_Id " +
-                                                 "\n  WHERE p32.ParLevel2_Id = " + result[2] +
-                                                 "\n  and p1.isActive = 1 " +
-                                                 "\n  and p321.Active = 1 " +
-                                                 "\n  and p32.IsActive = 1";
+                            //string p1Undefined = "    SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                            //                     "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
+                            //                     "\n  on p321.ParLevel1_Id = p1.id " +
+                            //                     "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
+                            //                     "\n  on p32.id = p321.ParLevel3Level2_Id " +
+                            //                     "\n  WHERE p32.ParLevel2_Id = " + result[2] +
+                            //                     "\n  and p1.isActive = 1 " +
+                            //                     "\n  and p321.Active = 1 " +
+                            //                     "\n  and p32.IsActive = 1";
+
+                            string p1Undefined = $@"SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
+                                                inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)
+                                                on p321.ParLevel1_Id = p1.id 
+                                                inner join ParLevel3Level2 p32  WITH (NOLOCK)
+                                                on p32.id = p321.ParLevel3Level2_Id 
+                                                WHERE p32.ParLevel2_Id = @Result
+                                                and p1.isActive = 1 
+                                                and p321.Active = 1 
+                                                and p32.IsActive = 1";
 
                             using (Factory factory = new Factory("DefaultConnection"))
                             {
-                                level01Id = factory.SearchQuery<ResultadoUmaColuna>(p1Undefined).FirstOrDefault().retorno;
+                                using (SqlCommand cmd = new SqlCommand(p1Undefined, factory.connection))
+                                {
+                                    cmd.CommandType = CommandType.Text;
+                                    cmd.Parameters.Add(new SqlParameter("@Result", result[2]));
+
+                                    level01Id = factory.SearchQuery<ResultadoUmaColuna>(cmd.CommandText).FirstOrDefault().retorno;
+
+                                }
                             }
                         }
 
@@ -621,15 +666,103 @@ namespace SgqSystem.Controllers.Api
 
 
 
+                        //string sql = "INSERT INTO [dbo].[CollectionJson] " +
+                        //       "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
+                        //       "VALUES " +
+                        //       "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
+
+                        //sql += "SELECT @@IDENTITY AS 'Identity'";
+
                         string sql = "INSERT INTO [dbo].[CollectionJson] " +
-                               "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
-                               "VALUES " +
-                               "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
+                            "([Unit_Id]," +
+                            "[Shift]," +
+                            "[Period]," +
+                            "[level01_Id]," +
+                            "[Level01CollectionDate]," +
+                            "[level02_Id]," +
+                            "[Evaluate]," +
+                            "[Sample]," +
+                            "[AuditorId]," +
+                            "[Level02CollectionDate]," +
+                            "[Level02HeaderJson]," +
+                            "[Level03ResultJSon]," +
+                            "[CorrectiveActionJson]," +
+                            "[Reaudit]," +
+                            "[ReauditNumber]," +
+                            "[haveReaudit]," +
+                            "[ReauditLevel]," +
+                            "[haveCorrectiveAction]," +
+                            "[Device_Id]," +
+                            "[AppVersion]," +
+                            "[Ambient]," +
+                            "[IsProcessed]," +
+                            "[Device_Mac]," +
+                            "[AddDate]," +
+                            "[AlterDate]," +
+                            "[Key]," +
+                            "[TTP]) " +
+                            "VALUES " +
+                            "(@UnidadeId," +
+                            "@Shift," +
+                            "@Period," +
+                            "@Level1Id," +
+                            "CAST(N@Level1DataCollect AS DateTime)," +
+                            "@Level2Id," +
+                            "@Evaluate," +
+                            "@Sample, " +
+                            "@AuditorId," +
+                            "CAST(N@Level2DataCollect AS DateTime)," +
+                            "@Level2HeaderJson," +
+                            "@Level3ResultJson, " +
+                            "@CorrectiveActionJson, " +
+                            "@Reaudit, " +
+                            "@ReauditNumber, " +
+                            "@HaveReaudit, " +
+                            "@ReauditLevel," +
+                            "@HaveCorrectiveAction," +
+                            "@DeviceId," +
+                            "@VersaoApp," +
+                            "@Ambiente," +
+                            "0," +
+                            "@DeviceMac," +
+                            "GETDATE()," +
+                            "NULL," +
+                            "@Key" +
+                            ",NULL) ";
 
                         sql += "SELECT @@IDENTITY AS 'Identity'";
 
-                        command = new SqlCommand(sql, connection);
-                        var iSql = Convert.ToInt32(command.ExecuteScalar());
+                        var iSql = 0;
+
+                        using (SqlCommand cmd = new SqlCommand(sql, connection))
+                        {
+                            cmd.CommandType = CommandType.Text;
+                            cmd.Parameters.Add(new SqlParameter("@UnidadeId", unidadeId));
+                            cmd.Parameters.Add(new SqlParameter("@Shift", shift));
+                            cmd.Parameters.Add(new SqlParameter("@Period", period));
+                            cmd.Parameters.Add(new SqlParameter("@Level1Id", level01Id));
+                            cmd.Parameters.Add(new SqlParameter("@Level1DataCollect", level01DataCollect));
+                            cmd.Parameters.Add(new SqlParameter("@Level2Id", level02Id));
+                            cmd.Parameters.Add(new SqlParameter("@Evaluate", evaluate));
+                            cmd.Parameters.Add(new SqlParameter("@Sample", sample));
+                            cmd.Parameters.Add(new SqlParameter("@AuditorId", auditorId));
+                            cmd.Parameters.Add(new SqlParameter("@Level2DataCollect", level02DataCollect));
+                            cmd.Parameters.Add(new SqlParameter("@Level2HeaderJson", level02HeaderJSon));
+                            cmd.Parameters.Add(new SqlParameter("@Level3ResultJson", level03ResultJson));
+                            cmd.Parameters.Add(new SqlParameter("@CorrectiveActionJson", correctiveActionJson));
+                            cmd.Parameters.Add(new SqlParameter("@Reaudit", reaudit));
+                            cmd.Parameters.Add(new SqlParameter("@ReauditNumber", reauditNumber));
+                            cmd.Parameters.Add(new SqlParameter("@HaveReaudit", haveReaudit));
+                            cmd.Parameters.Add(new SqlParameter("@ReauditLevel", reauditlevel));
+                            cmd.Parameters.Add(new SqlParameter("@HaveCorrectiveAction", haveCorrectiveAction));
+                            cmd.Parameters.Add(new SqlParameter("@DeviceId", deviceId));
+                            cmd.Parameters.Add(new SqlParameter("@VersaoApp", versaoApp));
+                            cmd.Parameters.Add(new SqlParameter("@Ambiente", ambiente));
+                            cmd.Parameters.Add(new SqlParameter("@DeviceMac", deviceMac));
+                            cmd.Parameters.Add(new SqlParameter("@Key", key));
+
+                            iSql = Convert.ToInt32(cmd.ExecuteScalar());
+                        }
 
                         if (iSql > 0)
                         {
@@ -660,17 +793,32 @@ namespace SgqSystem.Controllers.Api
                             {
 
                                 //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
-                                string indicadorFilho = " SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) " +
-                                                      "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK) " +
-                                                      "\n  on p321.ParLevel1_Id = p1.id " +
-                                                      "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK) " +
-                                                      "\n  on p32.id = p321.ParLevel3Level2_Id " +
-                                                      "\n  WHERE ParLevel1Origin_Id = " + result[0] +
-                                                      "\n  and p1.isActive = 1 " +
-                                                      "\n  and p321.Active = 1 " +
-                                                      "\n  and p32.IsActive = 1";
+                                //string indicadorFilho = " SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) " +
+                                //                      "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK) " +
+                                //                      "\n  on p321.ParLevel1_Id = p1.id " +
+                                //                      "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK) " +
+                                //                      "\n  on p32.id = p321.ParLevel3Level2_Id " +
+                                //                      "\n  WHERE ParLevel1Origin_Id = " + result[0] +
+                                //                      "\n  and p1.isActive = 1 " +
+                                //                      "\n  and p321.Active = 1 " +
+                                //                      "\n  and p32.IsActive = 1";
 
-                                list2 = factory.SearchQuery<ResultadoUmaColuna>(indicadorFilho).ToList();
+                                string indicadorFilho = $@" SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) 
+                                                    inner join ParLevel3Level2Level1 p321  WITH (NOLOCK) 
+                                                    on p321.ParLevel1_Id = p1.id 
+                                                    inner join ParLevel3Level2 p32  WITH (NOLOCK) 
+                                                    on p32.id = p321.ParLevel3Level2_Id 
+                                                    WHERE ParLevel1Origin_Id = @Result
+                                                    and p1.isActive = 1 
+                                                    and p321.Active = 1 
+                                                    and p32.IsActive = 1";
+
+                                using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                                {
+                                    cmd.CommandType = CommandType.Text;
+                                    cmd.Parameters.Add(new SqlParameter("@Result", result[0]));
+                                    list2 = factory.SearchQuery<ResultadoUmaColuna>(cmd.CommandText).ToList();
+                                }
 
                                 for (var l = 0; l < list2.Count(); l++)
                                 {
@@ -678,30 +826,178 @@ namespace SgqSystem.Controllers.Api
                                 }
 
                                 //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
-                                string monitoramentoFilho = "select top 1 cast(p32.ParLevel2_Id as varchar) retorno " +
-                                                            "\n from parlevel3level2level1 p321 WITH (NOLOCK) " +
-                                                            "\n inner join parlevel3level2 p32 WITH (NOLOCK) " +
-                                                            "\n on p321.parlevel3level2_id = p32.id " +
-                                                            "\n where p321.Active = 1 and p321.parlevel1_id = " + indicadorFilho_id;
+                                //string monitoramentoFilho = "select top 1 cast(p32.ParLevel2_Id as varchar) retorno " +
+                                //                            "\n from parlevel3level2level1 p321 WITH (NOLOCK) " +
+                                //                            "\n inner join parlevel3level2 p32 WITH (NOLOCK) " +
+                                //                            "\n on p321.parlevel3level2_id = p32.id " +
+                                //                            "\n where p321.Active = 1 and p321.parlevel1_id = " + indicadorFilho_id;
 
-                                list2 = factory.SearchQuery<ResultadoUmaColuna>(monitoramentoFilho).ToList();
+                                string monitoramentoFilho = $@"select top 1 cast(p32.ParLevel2_Id as varchar) retorno
+                                            from parlevel3level2level1 p321 WITH (NOLOCK)
+                                            inner join parlevel3level2 p32 WITH (NOLOCK)
+                                            on p321.parlevel3level2_id = p32.id 
+                                            where p321.Active = 1 and p321.parlevel1_id = @IndicadorFilho_Id";
+
+                                using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                                {
+                                    cmd.CommandType = CommandType.Text;
+                                    cmd.Parameters.Add(new SqlParameter("@IndicadorFilho_Id", indicadorFilho_id));
+                                    list2 = factory.SearchQuery<ResultadoUmaColuna>(cmd.CommandText).ToList();
+                                }
 
                                 for (var l = 0; l < list2.Count(); l++)
                                 {
                                     monitoramentoFilho_id = list2[l].retorno.ToString();
                                 }
 
-
                             }
-                            string sql2 = "INSERT INTO [dbo].[CollectionJson] " +
-                               "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
-                               "VALUES " +
-                               "('" + unidadeId + "','" + shift + "','" + period + "','" + indicadorFilho_id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + retornoFilho + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
+
+                            //string sql2 = "INSERT INTO [dbo].[CollectionJson] " +
+                            //   "([Unit_Id]," +
+                            //   "[Shift]," +
+                            //   "[Period]," +
+                            //   "[level01_Id]," +
+                            //   "[Level01CollectionDate]," +
+                            //   "[level02_Id],[Evaluate]," +
+                            //   "[Sample]," +
+                            //   "[AuditorId]," +
+                            //   "[Level02CollectionDate]," +
+                            //   "[Level02HeaderJson]," +
+                            //   "[Level03ResultJSon]," +
+                            //   "[CorrectiveActionJson]," +
+                            //   "[Reaudit]," +
+                            //   "[ReauditNumber]," +
+                            //   "[haveReaudit]," +
+                            //   "[ReauditLevel]," +
+                            //   "[haveCorrectiveAction]," +
+                            //   "[Device_Id]," +
+                            //   "[AppVersion]," +
+                            //   "[Ambient]," +
+                            //   "[IsProcessed]," +
+                            //   "[Device_Mac]," +
+                            //   "[AddDate]," +
+                            //   "[AlterDate]," +
+                            //   "[Key]," +
+                            //   "[TTP]) " +
+                            //   "VALUES " +
+                            //   "('" + unidadeId + "'," +
+                            //   "'" + shift + "'," +
+                            //   "'" + period + "'," +
+                            //   "'" + indicadorFilho_id + "'," +
+                            //   "CAST(N'" + level01DataCollect + "' AS DateTime)," +
+                            //   "'" + level02Id + "'," +
+                            //   "'" + evaluate + "'," +
+                            //   "'" + sample + "', " +
+                            //   "'" + auditorId + "'," +
+                            //   "CAST(N'" + level02DataCollect + "' AS DateTime)," +
+                            //   "'" + level02HeaderJSon + "'," +
+                            //   "'" + retornoFilho + "', " +
+                            //   "'" + correctiveActionJson + "', " +
+                            //   "'" + reaudit + "', " +
+                            //   "'" + reauditNumber + "', " +
+                            //   "'" + haveReaudit + "', " +
+                            //   "'" + reauditlevel + "'," +
+                            //   "'" + haveCorrectiveAction + "' ," +
+                            //   "'" + deviceId + "'," +
+                            //   "'" + versaoApp + "'," +
+                            //   "'" + ambiente + "'," +
+                            //   "0," +
+                            //   "'" + deviceMac + "'," +
+                            //   "GETDATE()," +
+                            //   "NULL," +
+                            //   "'" + key + "'," +
+                            //   "NULL) ";
+
+                            string sql2 = $@"INSERT INTO [dbo].[CollectionJson] 
+                               ([Unit_Id],
+                               [Shift],
+                               [Period],
+                               [level01_Id],
+                               [Level01CollectionDate],
+                               [level02_Id],[Evaluate],
+                               [Sample],
+                               [AuditorId],
+                               [Level02CollectionDate],
+                               [Level02HeaderJson],
+                               [Level03ResultJSon],
+                               [CorrectiveActionJson],
+                               [Reaudit],
+                               [ReauditNumber],
+                               [haveReaudit],
+                               [ReauditLevel],
+                               [haveCorrectiveAction],
+                               [Device_Id],
+                               [AppVersion],
+                               [Ambient],
+                               [IsProcessed],
+                               [Device_Mac],
+                               [AddDate],
+                               [AlterDate],
+                               [Key],
+                               [TTP]) 
+                               VALUES
+                               (@UnidadeId,
+                               @Shift,
+                               @Period,
+                               @IndicadorFilhoId,
+                               CAST(N@Level1DataCollect AS DateTime),
+                               @Level2Id,
+                               @Evaluate,
+                               @Sample, 
+                               @AuditorId,
+                               CAST(N@Level2DataColletion AS DateTime),
+                               @Level2HeaderJson,
+                               @RetornoFilho,
+                               @CorrectiveActionJson,
+                               @Reaudit,
+                               @ReauditNumber, 
+                               @HaveReaudit, 
+                               @Reauditlevel,
+                               @HaveCorrectiveAction,
+                               @DeviceId,
+                               @VersaoApp,
+                               @Ambiente,
+                               0,
+                               @DeviceMac,
+                               GETDATE(),
+                               NULL,
+                               @Key,
+                               NULL)";
 
                             sql2 += "SELECT @@IDENTITY AS 'Identity'";
 
-                            command = new SqlCommand(sql2, connection);
-                            var iSql2 = Convert.ToInt32(command.ExecuteScalar());
+                            var iSql2 = 0;
+
+                            using (SqlCommand cmd = new SqlCommand(sql, connection))
+                            {
+                                cmd.CommandType = CommandType.Text;
+                                cmd.Parameters.Add(new SqlParameter("@UnidadeId", unidadeId));
+                                cmd.Parameters.Add(new SqlParameter("@Shift", shift));
+                                cmd.Parameters.Add(new SqlParameter("@Period", period));
+                                cmd.Parameters.Add(new SqlParameter("@IndicadorFilhoId", indicadorFilho_id));
+                                cmd.Parameters.Add(new SqlParameter("@Level1DataCollect", level01DataCollect));
+                                cmd.Parameters.Add(new SqlParameter("@Level2Id", level02Id));
+                                cmd.Parameters.Add(new SqlParameter("@Evaluate", evaluate));
+                                cmd.Parameters.Add(new SqlParameter("@Sample", sample));
+                                cmd.Parameters.Add(new SqlParameter("@AuditorId", auditorId));
+                                cmd.Parameters.Add(new SqlParameter("@Level2DataColletion", level02DataCollect));
+                                cmd.Parameters.Add(new SqlParameter("@Level2HeaderJson", level02HeaderJSon));
+                                cmd.Parameters.Add(new SqlParameter("@RetornoFilho", retornoFilho));
+                                cmd.Parameters.Add(new SqlParameter("@CorrectiveActionJson", correctiveActionJson));
+                                cmd.Parameters.Add(new SqlParameter("@Reaudit", reaudit));
+                                cmd.Parameters.Add(new SqlParameter("@ReauditNumber", reauditNumber));
+                                cmd.Parameters.Add(new SqlParameter("@HaveReaudit", haveReaudit));
+                                cmd.Parameters.Add(new SqlParameter("@Reauditlevel", reauditlevel));
+                                cmd.Parameters.Add(new SqlParameter("@HaveCorrectiveAction", haveCorrectiveAction));
+                                cmd.Parameters.Add(new SqlParameter("@DeviceId", deviceId));
+                                cmd.Parameters.Add(new SqlParameter("@VersaoApp", versaoApp));
+                                cmd.Parameters.Add(new SqlParameter("@Ambiente", ambiente));
+                                cmd.Parameters.Add(new SqlParameter("@DeviceMac", deviceMac));
+                                cmd.Parameters.Add(new SqlParameter("@Key", key));
+
+                                iSql2 = Convert.ToInt32(cmd.ExecuteScalar());
+                            }
+
 
                             if (iSql2 > 0)
                             {
@@ -770,30 +1066,69 @@ namespace SgqSystem.Controllers.Api
                 {
                     return "informe o device";
                 }
+
                 string query = null;
                 //Se for igual web busca de todos os dispositivos
+
                 if (device == "web")
                 {
                     query = null;
                 }
                 else
                 {
-                    query = "[Device_Id] = '" + device + "' AND";
+                    //query = "[Device_Id] = '" + device + "' AND";
+                    query = "[Device_Id] = @Device AND";
                 }
 
                 if (id > 0)
                 {
-                    query = "[Id] = '" + id + "' AND";
+                    //query = "[Id] = '" + id + "' AND";
+                    query = "[Id] = @Id AND";
                 }
 
-                string sql = "SELECT [level01_Id], [Level01CollectionDate], [level02_Id], [Level02CollectionDate], [Unit_Id],[Period], [Shift], [AppVersion], [Ambient], [Device_Id], [Device_Mac] , [Key], [Level03ResultJSon], [Id], [Level02HeaderJson], [Evaluate],[Sample],[AuditorId], [Reaudit], [CorrectiveActionJson],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[ReauditNumber]  FROM CollectionJson (nolock)  WHERE " + query + " [IsProcessed] = 0";
+                string sql = $@"SELECT [level01_Id], 
+                    [Level01CollectionDate], 
+                    [level02_Id], 
+                    [Level02CollectionDate], 
+                    [Unit_Id],
+                    [Period], 
+                    [Shift], 
+                    [AppVersion], 
+                    [Ambient], 
+                    [Device_Id], 
+                    [Device_Mac] , 
+                    [Key], 
+                    [Level03ResultJSon], 
+                    [Id], 
+                    [Level02HeaderJson], 
+                    [Evaluate],
+                    [Sample],
+                    [AuditorId], 
+                    [Reaudit],
+                    [CorrectiveActionJson],
+                    [haveReaudit],
+                    [ReauditLevel],
+                    [haveCorrectiveAction],
+                    [ReauditNumber]  FROM CollectionJson (nolock)
+                    WHERE { query } [IsProcessed] = 0";
+
+
 
 
                 var CollectionJsonDB = new SGQDBContext.CollectionJson(db);
                 var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
                 var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(db);
 
-                var collectionJson = CollectionJsonDB.getJson(sql);
+                var collectionJson = new List<SGQDBContext.CollectionJson>();
+
+                using (SqlCommand cmd = new SqlCommand(sql, new SqlConnection(conexao)))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.Add(new SqlParameter("@Device", device));
+                    cmd.Parameters.Add(new SqlParameter("@Id", id));
+
+                    collectionJson = CollectionJsonDB.getJson(cmd.CommandText).ToList();
+                }
 
                 var collectionLevel2XCollectionJsonList = new List<KeyValuePair<int, int>>();
 
@@ -1167,7 +1502,7 @@ namespace SgqSystem.Controllers.Api
 
         protected int updateJson(int CollectionJson_Id)
         {
-            string sql = "UPDATE CollectionJson SET IsProcessed=1 WHERE ID='" + CollectionJson_Id + "'";
+            string sql = "UPDATE CollectionJson SET IsProcessed=1 WHERE ID=@CollectionJsonId";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             try
             {
@@ -1175,7 +1510,12 @@ namespace SgqSystem.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@CollectionJsonId", CollectionJson_Id));
+
                         connection.Open();
+
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
                         if (i > 0)
                         {
@@ -1202,14 +1542,18 @@ namespace SgqSystem.Controllers.Api
 
         protected int updateJsonDuplicated(int CollectionJson_Id)
         {
-            string sql = "UPDATE CollectionJson SET IsProcessed=1, TTP = '2627' WHERE ID='" + CollectionJson_Id + "'";
+            string sql = "UPDATE CollectionJson SET IsProcessed=1, TTP = '2627' WHERE ID=@CollectionJsonId";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@CollectionJsonId", CollectionJson_Id));
+
                         connection.Open();
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
                         if (i > 0)
@@ -1266,7 +1610,18 @@ namespace SgqSystem.Controllers.Api
                 LastEvaluationAlert = CollectionLevel2Consolidation.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel2 SET AlertLevel=" + AlertLevel.ToString().Replace(",", ".") + ", WeiEvaluation=" + CollectionLevel2Consolidation.WeiEvaluationTotal.ToString().Replace(",", ".") + ", EvaluateTotal=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", DefectsTotal=" + CollectionLevel2Consolidation.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CollectionLevel2Consolidation.WeiDefectsTotal.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', LastLevel2Alert=" + LastLevel2Alert.ToString().Replace(",", ".") + ", EvaluatedResult='" + CollectionLevel2Consolidation.EvaluatedResult + "', DefectsResult='" + CollectionLevel2Consolidation.DefectsResult + "' WHERE ID='" + ConsolidationLevel2_Id.ToString().Replace(",", ".") + "'";
+            string sql = $@"UPDATE ConsolidationLevel2 SET AlertLevel=@AlertLevel, 
+                WeiEvaluation=@WeiEvaluation, 
+                EvaluateTotal=@EvaluateTotal, 
+                DefectsTotal=@DefectsTotal, 
+                WeiDefects=@WeiDefects, 
+                TotalLevel3Evaluation=@TotalLevel3Evaluation, 
+                TotalLevel3WithDefects=@TotalLevel3WithDefects, 
+                LastEvaluationAlert=@LastEvaluationAlert, 
+                LastLevel2Alert=@LastEvaluationAlert, 
+                EvaluatedResult=@EvaluatedResult, 
+                DefectsResult=@DefectsResult WHERE ID=@ConsolidationLevel2_Id";
+
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             try
             {
@@ -1274,6 +1629,21 @@ namespace SgqSystem.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@AlertLevel", AlertLevel.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@WeiEvaluation", CollectionLevel2Consolidation.WeiEvaluationTotal.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@EvaluateTotal", CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@DefectsTotal", CollectionLevel2Consolidation.DefectsTotal.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@WeiDefects", CollectionLevel2Consolidation.WeiDefectsTotal.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@TotalLevel3Evaluation", CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@TotalLevel3WithDefects", CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@LastEvaluationAlert", LastEvaluationAlert.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@EvaluatedResult", LastLevel2Alert.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@EvaluatedResult", CollectionLevel2Consolidation.EvaluatedResult));
+                        command.Parameters.Add(new SqlParameter("@DefectsResult", CollectionLevel2Consolidation.DefectsResult));
+                        command.Parameters.Add(new SqlParameter("@ConsolidationLevel2_Id", ConsolidationLevel2_Id.ToString().Replace(",", ".")));
+
                         connection.Open();
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
                         if (i > 0)
@@ -1318,7 +1688,20 @@ namespace SgqSystem.Controllers.Api
                 LastEvaluationAlert = CL1XCL2.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel1 SET AtualAlert=" + AlertLevel.ToString().Replace(",", ".") + ", Evaluation=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", WeiEvaluation=" + CL1XCL2.WeiEvaluation.ToString().Replace(",", ".") + ", EvaluateTotal=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", DefectsTotal=" + CL1XCL2.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CL1XCL2.WeiDefects.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CL1XCL2.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CL1XCL2.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', LastLevel2Alert=" + LastLevel2Alert.ToString().Replace(",", ".") + ", EvaluatedResult='" + CL1XCL2.EvaluatedResult.ToString().Replace(",", ",") + "', DefectsResult='" + CL1XCL2.DefectsResult.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel1_Id.ToString().Replace(",", ".") + "'";
+            string sql = $@"UPDATE ConsolidationLevel1 SET AtualAlert=@AtualAlert,
+                    Evaluation=@Evaluation,
+                    WeiEvaluation=@WeiEvaluation,
+                    EvaluateTotal=@EvaluateTotal, 
+                    DefectsTotal=@DefectsTotal, 
+                    WeiDefects=@WeiDefects, 
+                    TotalLevel3Evaluation=@TotalLevel3Evaluation, 
+                    TotalLevel3WithDefects=@TotalLevel3WithDefects, 
+                    LastEvaluationAlert=@LastEvaluationAlert,
+                    LastLevel2Alert=@LastLevel2Alert,
+                    EvaluatedResult=@EvaluatedResult, 
+                    DefectsResult=@DefectsResult 
+                    WHERE ID=@ConsolidationLevel1_Id";
+
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             try
             {
@@ -1326,6 +1709,22 @@ namespace SgqSystem.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@AtualAlert", AlertLevel.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@Evaluation", CL1XCL2.EvaluateTotal.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@WeiEvaluation", CL1XCL2.WeiEvaluation.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@EvaluateTotal", CL1XCL2.EvaluateTotal.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@DefectsTotal", CL1XCL2.DefectsTotal.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@WeiDefects", CL1XCL2.WeiDefects.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@TotalLevel3Evaluation", CL1XCL2.TotalLevel3Evaluation.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@TotalLevel3WithDefects", CL1XCL2.TotalLevel3WithDefects.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@LastEvaluationAlert", LastEvaluationAlert.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@LastLevel2Alert", LastLevel2Alert.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@EvaluatedResult", CL1XCL2.EvaluatedResult.ToString().Replace(",", ",")));
+                        command.Parameters.Add(new SqlParameter("@DefectsResult", CL1XCL2.DefectsResult.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@ConsolidationLevel1_Id", ConsolidationLevel1_Id.ToString().Replace(",", ".")));
+
                         connection.Open();
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
                         if (i > 0)
@@ -1354,16 +1753,38 @@ namespace SgqSystem.Controllers.Api
         protected int updateCorrectiveAction_CollectionLevel2_By_ParLevel1(string ParLevel1_Id, string ParCompany_Id, string dataInicio, string dataFim, string reauditnumber)
         {
 
-            string sql = "UPDATE CollectionLevel2 SET HaveCorrectiveAction=0 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id +
-                   "' AND CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' AND HaveCorrectiveAction=1 and reauditnumber='" + reauditnumber + "'";
+            //string sql = "UPDATE CollectionLevel2 SET HaveCorrectiveAction=0 WHERE " +
+            //    "ParLevel1_Id='" + ParLevel1_Id + "' AND " +
+            //    "UnitId='" + ParCompany_Id +"' AND " +
+            //    "CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND " +
+            //    "'" + dataFim + " 23:59:59' AND HaveCorrectiveAction= 1 and reauditnumber='" + reauditnumber + "'";
+
+            string sql = $@"UPDATE CollectionLevel2 SET HaveCorrectiveAction = 0 WHERE 
+                ParLevel1_Id=@ParLevel1_Id AND 
+                UnitId=@ParCompany_Id AND 
+                CollectionDate BETWEEN '@DataInicio 00:00:00' AND 
+                '@DataFim 23:59:59' AND 
+                HaveCorrectiveAction= 1 and 
+                reauditnumber=@ReauditNumber";
+
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@ParLevel1", ParLevel1_Id));
+                        command.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
+                        command.Parameters.Add(new SqlParameter("@DataInicio", dataInicio));
+                        command.Parameters.Add(new SqlParameter("@DataFim", dataFim));
+                        command.Parameters.Add(new SqlParameter("@ReauditNumber", reauditnumber));
+
                         connection.Open();
+
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
                         if (i > 0)
                         {
@@ -1390,16 +1811,28 @@ namespace SgqSystem.Controllers.Api
 
         protected int updateLevel02CorrectiveActionReaudit(string id, string correctiveAction, string reaudit)
         {
-            string sql = "UPDATE CollectionLevel02 SET HaveCorrectiveAction='" + correctiveAction + "', HaveReaudit='" + reaudit + "' WHERE ID='" + id + "'";
+            //string sql = "UPDATE CollectionLevel02 SET HaveCorrectiveAction='" + correctiveAction + "', HaveReaudit='" + reaudit + "' WHERE ID='" + id + "'";
+
+            string sql = "UPDATE CollectionLevel02 SET HaveCorrectiveAction=@HaveCorrectiveAction, HaveReaudit=@HaveReaudit WHERE ID=@Id";
+
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@HaveCorrectiveAction", correctiveAction));
+                        command.Parameters.Add(new SqlParameter("@HaveReaudit", reaudit));
+                        command.Parameters.Add(new SqlParameter("@Id", id));
+
                         connection.Open();
+
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
+
                         if (i > 0)
                         {
                             return i;
@@ -1446,11 +1879,25 @@ namespace SgqSystem.Controllers.Api
             //             Shift+","+Period+")"+
             //             "SELECT @@IDENTITY AS 'Identity'";
 
-            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate],[shift],[period]) " +
-                         "VALUES " +
-                         "('" + ParCompany_Id + "','" + 1 + "','" + ParLevel1_Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate.ToString("yyyy-MM-dd") + "')" +
-                         ", " + Shift + "," + Period + ")" +
-                         "SELECT @@IDENTITY AS 'Identity'";
+            string sql = $@"INSERT ConsolidationLevel1 ([UnitId],
+                [DepartmentId],
+                [ParLevel1_Id],
+                [AddDate],
+                [AlterDate],
+                [ConsolidationDate],
+                [shift],
+                [period]) 
+                VALUES 
+                (@ParCompany_Id, 
+                1,
+                @ParLevel1_Id, 
+                GetDate(),
+                null, 
+                CONVERT(DATE, @CollectionDate), 
+                @Shift,
+                @Period)
+
+                SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             try
@@ -1458,8 +1905,17 @@ namespace SgqSystem.Controllers.Api
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
                     connection.Open();
+
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
+                        command.Parameters.Add(new SqlParameter("@ParLevel1_Id", ParLevel1_Id));
+                        command.Parameters.Add(new SqlParameter("@CollectionDate", collectionDate.ToString("yyyy-MM-dd")));
+                        command.Parameters.Add(new SqlParameter("@Shift", Shift));
+                        command.Parameters.Add(new SqlParameter("@Period", Period));
+
                         var i = Convert.ToInt32(command.ExecuteScalar());
                         //Se o registro for inserido retorno o Id da Consolidação
                         if (i > 0)
@@ -1498,10 +1954,15 @@ namespace SgqSystem.Controllers.Api
         {
             var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
 
-            string sql = "INSERT ConsolidationLevel1XCluster ([consolidationLevel1_Id],[ParCluster_Id]) " +
-                         "VALUES " +
-                         "('" + consolidationLevel1_Id + "','" + cluster + "')" +
-                         "SELECT @@IDENTITY AS 'Identity'";
+            //string sql = "INSERT ConsolidationLevel1XCluster ([consolidationLevel1_Id],[ParCluster_Id]) " +
+            //             "VALUES " +
+            //             "('" + consolidationLevel1_Id + "','" + cluster + "')" +
+            //             "SELECT @@IDENTITY AS 'Identity'";
+
+            string sql = $@"INSERT ConsolidationLevel1XCluster ([consolidationLevel1_Id],[ParCluster_Id]) 
+             VALUES 
+             (@ConsolidationLevel1_Id, @Cluster)
+             SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             try
@@ -1509,8 +1970,13 @@ namespace SgqSystem.Controllers.Api
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
                     connection.Open();
+
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@ConsolidationLevel1_Id", consolidationLevel1_Id));
+                        command.Parameters.Add(new SqlParameter("@Cluster", cluster));
+
                         var i = Convert.ToInt32(command.ExecuteScalar());
                         //Se o registro for inserido retorno o Id da Consolidação
                         if (i > 0)
@@ -1523,6 +1989,7 @@ namespace SgqSystem.Controllers.Api
                             return 0;
                         }
                     }
+
                     if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
@@ -1576,11 +2043,30 @@ namespace SgqSystem.Controllers.Api
             //             "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)"+","+reaud + ") " +
             //             "SELECT @@IDENTITY AS 'Identity'";
 
-            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate], [ReauditIs],[ReauditNumber]) " +
-                        "VALUES  " +
-                        "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)," +
-                        reaud + "," + reauditNumber + " ) " +
-                        "SELECT @@IDENTITY AS 'Identity'";
+            //string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate], [ReauditIs],[ReauditNumber]) " +
+            //            "VALUES  " +
+            //            "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)," +
+            //            reaud + "," + reauditNumber + " ) " +
+            //            "SELECT @@IDENTITY AS 'Identity'";
+
+            string sql = $@"INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], 
+                        [ParLevel2_Id], 
+                        [UnitId], 
+                        [AddDate], 
+                        [AlterDate], 
+                        [ConsolidationDate], 
+                        [ReauditIs],
+                        [ReauditNumber]) 
+                        VALUES  
+                        (@ConsolidationLevel1_Id,
+                        @ParLevel2_Id, 
+                        @ParCompany_Id, 
+                        GETDATE(), 
+                        NULL, 
+                        CAST(N@CollectionDate AS DateTime),
+                        @Reaud,
+                        @ReauditNumber)
+                        SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             try
@@ -1589,7 +2075,17 @@ namespace SgqSystem.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@ConsolidationLevel1_Id", ConsolidationLevel1_Id));
+                        command.Parameters.Add(new SqlParameter("@ParLevel2_Id", ParLevel2_Id));
+                        command.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
+                        command.Parameters.Add(new SqlParameter("@CollectionDate", collectionDate.ToString("yyyy-MM-dd")));
+                        command.Parameters.Add(new SqlParameter("@Reaud", reaudit));
+                        command.Parameters.Add(new SqlParameter("@ReauditNumber", cluster));
+
                         connection.Open();
+
                         var i = Convert.ToInt32(command.ExecuteScalar());
                         //Se inserir corretamente, retorno o Id da Consolidação
                         if (i > 0)
@@ -1630,10 +2126,19 @@ namespace SgqSystem.Controllers.Api
         {
             var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
 
-            string sql = "INSERT ConsolidationLevel2XCluster ([consolidationLevel2_Id],[ParCluster_Id]) " +
-                         "VALUES " +
-                         "('" + consolidationLevel2_Id + "','" + cluster + "')" +
-                         "SELECT @@IDENTITY AS 'Identity'";
+            //string sql = "INSERT ConsolidationLevel2XCluster ([consolidationLevel2_Id]," +
+            //             "[ParCluster_Id]) " +
+            //             "VALUES " +
+            //             "('" + consolidationLevel2_Id + "'," +
+            //             "'" + cluster + "')" +
+            //             "SELECT @@IDENTITY AS 'Identity'";
+
+            string sql = @"INSERT ConsolidationLevel2XCluster ([consolidationLevel2_Id],
+                         [ParCluster_Id]) 
+                         VALUES 
+                         (@ConsolidationLevel2_Id,
+                         @Cluster)
+                         SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             try
@@ -1643,7 +2148,14 @@ namespace SgqSystem.Controllers.Api
                     connection.Open();
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@ConsolidationLevel2_Id", consolidationLevel2_Id));
+                        command.Parameters.Add(new SqlParameter("@Cluster", cluster));
+
+
                         var i = Convert.ToInt32(command.ExecuteScalar());
+
                         //Se o registro for inserido retorno o Id da Consolidação
                         if (i > 0)
                         {
@@ -1715,7 +2227,8 @@ namespace SgqSystem.Controllers.Api
                                                    string ParReason_Id = null, string ParReasonType_Id = null, int? parDepartment_Id = null)
         {
 
-            var buscaParLevel1HashKey = "SELECT TOP 1 Hashkey FROM ParLevel1 WHERE id = " + ConsolidationLevel1.ParLevel1_Id.ToString();
+            //var buscaParLevel1HashKey = "SELECT TOP 1 Hashkey FROM ParLevel1 WHERE id = " + ConsolidationLevel1.ParLevel1_Id.ToString();
+            var buscaParLevel1HashKey = "SELECT TOP 1 Hashkey FROM ParLevel1 WHERE id = @ParLevel1_Id";
 
             string con = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             try
@@ -1724,6 +2237,10 @@ namespace SgqSystem.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(buscaParLevel1HashKey, connection))
                     {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@ParLevel1_Id", ConsolidationLevel1.ParLevel1_Id.ToString()));
+
                         connection.Open();
 
                         var reader = command.ExecuteReader();
@@ -1802,9 +2319,97 @@ namespace SgqSystem.Controllers.Api
                 //"VALUES " +
                 //"('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "', '" + startphaseevaluation + "') ";
 
-                sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit],[ReauditLevel], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[LastLevel2Alert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3], [StartPhaseEvaluation], [EndPhaseEvaluation]) " +
-             "VALUES " +
-             "('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), GETDATE(),'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "', '" + startphaseevaluation + "', '" + endphaseevaluation + "') ";
+                //   sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit],[ReauditLevel], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[LastLevel2Alert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3], [StartPhaseEvaluation], [EndPhaseEvaluation]) " +
+                //"VALUES " +
+                //"('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), GETDATE(),'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "', '" + startphaseevaluation + "', '" + endphaseevaluation + "') ";
+
+                //   sql += " SELECT @@IDENTITY AS 'Identity' ";
+
+                //   sql = sql.Replace("'NULL'", "NULL");
+
+                sql = $@"INSERT INTO CollectionLevel2 ([Key],
+                    [ConsolidationLevel2_Id],
+                    [ParLevel1_Id],
+                    [ParLevel2_Id],
+                    [UnitId],
+                    [AuditorId],
+                    [Shift],
+                    [Period],
+                    [Phase],
+                    [ReauditIs],
+                    [ReauditNumber],
+                    [CollectionDate],
+                    [StartPhaseDate],
+                    [EvaluationNumber],
+                    [Sample],
+                    [AddDate],
+                    [AlterDate],
+                    [ConsecutiveFailureIs],
+                    [ConsecutiveFailureTotal],
+                    [NotEvaluatedIs],
+                    [Duplicated],
+                    [HaveReaudit],
+                    [ReauditLevel],
+                    [HaveCorrectiveAction],
+                    [HavePhase],
+                    [Completed],
+                    [AlertLevel],
+                    [Sequential],
+                    [Side],
+                    [WeiEvaluation],
+                    [Defects],
+                    [WeiDefects],
+                    [TotalLevel3WithDefects],
+                    [TotalLevel3Evaluation],
+                    [LastEvaluationAlert],
+                    [LastLevel2Alert],
+                    [EvaluatedResult],
+                    [DefectsResult],
+                    [IsEmptyLevel3],
+                    [StartPhaseEvaluation],
+                    [EndPhaseEvaluation]) 
+                      VALUES 
+                      (@Key,
+                      @ConsolidationLevel2_Id,
+                      @ConsolidationLevel1_ParLevel1_Id,
+                      @ConsolidationLevel2_ParLevel2_Id,
+                      @ConsolidationLevel1_UnitId,
+                      @AuditorId,
+                      @Shift,
+                      @Period,
+                      @Phase,
+                      @HaveReaudit,
+                      @ReauditNumber,
+                      CAST(N@CollectionDate AS DateTime), 
+                      GETDATE(),
+                      @Evaluation,
+                      @Sample,
+                      GETDATE(),
+                      NULL,
+                      @ConsecuticeFalireIs,
+                      @ConsecutiveFailureTotal,
+                      @NotEvaluateIs,
+                      @Duplicated, 
+                      @HaveReaudi, 
+                      @ReauditLevel, 
+                      @HaveCorrectiveAction,
+                      @HavePhase,
+                      @Completed,
+                      @AlertLevel,
+                      @sequential,
+                      @side,
+                      @WeiEvaluation,
+                      @Defects,
+                      @WeiDefects,
+                      @TotalLevel3WithDefects,
+                      @TotalLevel3evaluation,
+                      @Avaliacaoultimoalerta,
+                      @Monitoramentoultimoalerta,
+                      @Evaluatedresult,
+                      @Defectsresult,
+                      @Isemptylevel3,
+                      @Startphaseevaluation,
+                      @Endphaseevaluation)";
 
                 sql += " SELECT @@IDENTITY AS 'Identity' ";
 
@@ -1814,7 +2419,39 @@ namespace SgqSystem.Controllers.Api
             {
                 ///podemos melhorar a verificação para Id zero, id null e id not null
                 //Caso contrário  é u Update
-                sql = "UPDATE CollectionLevel2 SET NotEvaluatedIs='" + NotEvaluateIs + "', AlterDate='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', HaveReaudit='" + haveReaudit + "', ReauditLevel=" + reauditLevel + ", HaveCorrectiveAction='" + haveCorrectiveAction + "', WeiEvaluation=" + WeiEvaluation + ", Defects=" + defectsresult + ", WeiDefects=" + WeiDefects + ", TotalLevel3WithDefects=" + TotalLevel3WithDefects + ", TotalLevel3Evaluation=" + totalLevel3evaluation + ", LastEvaluationAlert=" + avaliacaoultimoalerta + ", EvaluatedResult=" + evaluatedresult + ", DefectsResult=" + defectsresult + ", IsEmptyLevel3=" + isemptylevel3 + ", StartPhaseEvaluation=" + startphaseevaluation + ", EndPhaseEvaluation=" + endphaseevaluation + " WHERE Id='" + id + "'";
+                //sql = $@"UPDATE CollectionLevel2 SET NotEvaluatedIs='" + NotEvaluateIs + "', 
+                //    AlterDate='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', 
+                //    HaveReaudit='" + haveReaudit + "', 
+                //    ReauditLevel=" + reauditLevel + ", 
+                //    HaveCorrectiveAction='" + haveCorrectiveAction + "', 
+                //    WeiEvaluation=" + WeiEvaluation + ", 
+                //    Defects=" + defectsresult + ", 
+                //    WeiDefects=" + WeiDefects + ", 
+                //    TotalLevel3WithDefects=" + TotalLevel3WithDefects + ", 
+                //    TotalLevel3Evaluation=" + totalLevel3evaluation + ", 
+                //    LastEvaluationAlert=" + avaliacaoultimoalerta + ", 
+                //    EvaluatedResult=" + evaluatedresult + ",
+                //    DefectsResult=" + defectsresult + ", 
+                //    IsEmptyLevel3=" + isemptylevel3 + ",
+                //    StartPhaseEvaluation=" + startphaseevaluation + ", 
+                //    EndPhaseEvaluation=" + endphaseevaluation + " WHERE Id='" + id + "'";
+
+                sql = $@"UPDATE CollectionLevel2 SET NotEvaluatedIs=@NotEvaluateIs, 
+                    AlterDate = @AlterDate, 
+                    HaveReaudit = @HaveReaudit , 
+                    ReauditLevel = @ReauditLevel, 
+                    HaveCorrectiveAction = @HaveCorrectiveAction, 
+                    WeiEvaluation = @WeiEvaluation, 
+                    Defects = @Defects, 
+                    WeiDefects = @WeiDefects, 
+                    TotalLevel3WithDefects = @TotalLevel3WithDefects, 
+                    TotalLevel3Evaluation = @TotalLevel3Evaluation, 
+                    LastEvaluationAlert = @LastEvaluationAlert, 
+                    EvaluatedResult = @EvaluatedResult,
+                    DefectsResult = @DefectsResult, 
+                    IsEmptyLevel3 = @IsEmptyLevel3,
+                    StartPhaseEvaluation = @StartPhaseEvaluation, 
+                    EndPhaseEvaluation = @EndPhaseEvaluation WHERE Id = @CollectionLevel2_Id";
 
                 sql += " SELECT '" + id + "' AS 'Identity'";
             }
@@ -1826,6 +2463,70 @@ namespace SgqSystem.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+                        if (id == "0")
+                        {
+                            command.CommandType = CommandType.Text;
+                            command.Parameters.Add(new SqlParameter("@Key", key));
+                            command.Parameters.Add(new SqlParameter("@ConsolidationLevel2_Id", ConsolidationLevel2.Id));
+                            command.Parameters.Add(new SqlParameter("@ConsolidationLevel1_ParLevel1_Id", ConsolidationLevel1.ParLevel1_Id));
+                            command.Parameters.Add(new SqlParameter("@ConsolidationLevel2_ParLevel2_Id", ConsolidationLevel2.ParLevel2_Id));
+                            command.Parameters.Add(new SqlParameter("@ConsolidationLevel1_UnitId", ConsolidationLevel1.UnitId));
+                            command.Parameters.Add(new SqlParameter("@AuditorId", AuditorId));
+                            command.Parameters.Add(new SqlParameter("@Shift", Shift));
+                            command.Parameters.Add(new SqlParameter("@Period", Period));
+                            command.Parameters.Add(new SqlParameter("@Phase", Phase));
+                            command.Parameters.Add(new SqlParameter("@HaveReaudit", BoolConverter(Reaudit.ToString())));
+                            command.Parameters.Add(new SqlParameter("@ReauditNumber", ReauditNumber));
+                            command.Parameters.Add(new SqlParameter("@CollectionDate", CollectionDate.ToString("yyyy-MM-dd HH:mm:ss")));
+                            command.Parameters.Add(new SqlParameter("@Evaluation", Evaluation));
+                            command.Parameters.Add(new SqlParameter("@Sample", Sample));
+                            command.Parameters.Add(new SqlParameter("@ConsecuticeFalireIs", ConsecuticeFalireIs));
+                            command.Parameters.Add(new SqlParameter("@NotEvaluateIs", NotEvaluateIs));
+                            command.Parameters.Add(new SqlParameter("@Duplicated", Duplicated));
+                            command.Parameters.Add(new SqlParameter("@HaveReaudit", haveReaudit));
+                            command.Parameters.Add(new SqlParameter("@ReauditLevel", reauditLevel));
+                            command.Parameters.Add(new SqlParameter("@HaveCorrectiveAction", haveCorrectiveAction));
+                            command.Parameters.Add(new SqlParameter("@HavePhase", HavePhase));
+                            command.Parameters.Add(new SqlParameter("@Completed", Completed));
+                            command.Parameters.Add(new SqlParameter("@AlertLevel", AlertLevel));
+                            command.Parameters.Add(new SqlParameter("@Sequential", sequential));
+                            command.Parameters.Add(new SqlParameter("@Side", side));
+                            command.Parameters.Add(new SqlParameter("@WeiEvaluation", WeiEvaluation));
+                            command.Parameters.Add(new SqlParameter("@Defects", Defects));
+                            command.Parameters.Add(new SqlParameter("@WeiDefects", WeiDefects));
+                            command.Parameters.Add(new SqlParameter("@TotalLevel3WithDefects", TotalLevel3WithDefects));
+                            command.Parameters.Add(new SqlParameter("@TotalLevel3evaluation", totalLevel3evaluation));
+                            command.Parameters.Add(new SqlParameter("@Avaliacaoultimoalerta", avaliacaoultimoalerta));
+                            command.Parameters.Add(new SqlParameter("@Monitoramentoultimoalerta", monitoramentoultimoalerta));
+                            command.Parameters.Add(new SqlParameter("@Evaluatedresult", evaluatedresult));
+                            command.Parameters.Add(new SqlParameter("@Defectsresult", defectsresult));
+                            command.Parameters.Add(new SqlParameter("@Isemptylevel3", isemptylevel3));
+                            command.Parameters.Add(new SqlParameter("@Startphaseevaluation", startphaseevaluation));
+                            command.Parameters.Add(new SqlParameter("@Endphaseevaluation", endphaseevaluation));
+                        }
+                        else
+                        {
+
+                            command.Parameters.Add(new SqlParameter("@NotEvaluateIs", NotEvaluateIs));
+                            command.Parameters.Add(new SqlParameter("@AlterDate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+                            command.Parameters.Add(new SqlParameter("@HaveReaudit", haveReaudit));
+                            command.Parameters.Add(new SqlParameter("@ReauditLevel", reauditLevel));
+                            command.Parameters.Add(new SqlParameter("@HaveCorrectiveAction", haveCorrectiveAction));
+                            command.Parameters.Add(new SqlParameter("@WeiEvaluation", WeiEvaluation));
+                            command.Parameters.Add(new SqlParameter("@Defects", defectsresult));
+                            command.Parameters.Add(new SqlParameter("@WeiDefects", WeiDefects));
+                            command.Parameters.Add(new SqlParameter("@TotalLevel3WithDefects", TotalLevel3WithDefects));
+                            command.Parameters.Add(new SqlParameter("@TotalLevel3Evaluation", totalLevel3evaluation));
+                            command.Parameters.Add(new SqlParameter("@LastEvaluationAlert", avaliacaoultimoalerta));
+                            command.Parameters.Add(new SqlParameter("@EvaluatedResult", evaluatedresult));
+                            command.Parameters.Add(new SqlParameter("@DefectsResult", defectsresult));
+                            command.Parameters.Add(new SqlParameter("@IsEmptyLevel3", isemptylevel3));
+                            command.Parameters.Add(new SqlParameter("@StartPhaseEvaluation", startphaseevaluation));
+                            command.Parameters.Add(new SqlParameter("@EndPhaseEvaluation", endphaseevaluation));
+                            command.Parameters.Add(new SqlParameter("@CollectionLevel2_Id", id));
+                        }
+
+
                         connection.Open();
 
                         //var teste = command.ExecuteScalar();
@@ -1848,7 +2549,9 @@ namespace SgqSystem.Controllers.Api
                             }
 
                             int ParReasonId = 0;
+
                             Int32.TryParse(ParReason_Id, out ParReasonId);
+
                             if (ParReasonId > 0)
                             {
                                 InsertCollectionLevel2XParReason(i, ParReason_Id, ParReasonType_Id);
@@ -1926,7 +2629,7 @@ namespace SgqSystem.Controllers.Api
         protected int ResultLevel3Delete(int CollectionLevel2_Id)
         {
 
-            string sql = "DELETE FROM Result_Level3 (nolock)  WHERE CollectionLevel2_Id=" + CollectionLevel2_Id;
+            string sql = "DELETE FROM Result_Level3 whith (nolock) WHERE CollectionLevel2_Id=@CollectionLevel2_Id";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             try
             {
@@ -1934,6 +2637,10 @@ namespace SgqSystem.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@CollectionLevel2_Id", CollectionLevel2_Id));
+
                         connection.Open();
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
                         if (i > 0)
@@ -1963,6 +2670,8 @@ namespace SgqSystem.Controllers.Api
 
             string sql = null;
             string[] arrayHeaderList = headerList.Split(';');
+
+            //Como fazer tramento de SQLInjection nisso?
             for (int i = 0; i < arrayHeaderList.Length; i++)
             {
                 var header = arrayHeaderList[i].Split(',');
@@ -1979,22 +2688,23 @@ namespace SgqSystem.Controllers.Api
                 if (ParHeaderField_Id != "undefined" && ParFieldType_Id != "undefined")
                 {
 
-                    sql += "INSERT INTO[dbo].[CollectionLevel2XParHeaderField]                                      " +
-                         "      ([CollectionLevel2_Id]                                                              " +
-                         "      ,[ParHeaderField_Id]                                                                " +
-                         "      ,[ParHeaderField_Name]                                                              " +
-                         "      ,[ParFieldType_Id]                                                                  " +
-                         "      ,[Evaluation]                                                                       " +
-                         "      ,[Sample]                                                                           " +
-                         "      ,[Value])                                                                           " +
-                         "VALUES                                                                                    " +
-                         "      ('" + CollectionLevel2Id + "'                                                       " +
-                         "      ," + ParHeaderField_Id + "                                                          " +
-                         "      ,(SELECT Name FROM ParHeaderField (nolock)  WHERE Id='" + ParHeaderField_Id + "')   " +
-                         "      ,'" + ParFieldType_Id + "'                                                          " +
-                         "      ,'" + Evaluation + "'                                                               " +
-                         "      ,'" + Sample + "'                                                                   " +
-                         "      ,'" + Value + "')                                                                   ";
+                    sql += $@"INSERT INTO[dbo].[CollectionLevel2XParHeaderField]
+                               ([CollectionLevel2_Id]
+                               ,[ParHeaderField_Id]
+                               ,[ParHeaderField_Name]
+                               ,[ParFieldType_Id]
+                               ,[Evaluation]
+                               ,[Sample]
+                               ,[Value])
+                         VALUES
+                               ('{ CollectionLevel2Id }'
+                               ,{ ParHeaderField_Id }
+                               ,(SELECT Name FROM ParHeaderField (nolock)  WHERE Id='{ ParHeaderField_Id }')
+                               ,'{ ParFieldType_Id }'
+                               ,'{ Evaluation }'
+                               ,'{ Sample }'
+                               ,'{ Value }')";
+
 
                 }
 
@@ -2051,8 +2761,7 @@ namespace SgqSystem.Controllers.Api
 
         protected int InsertCollectionLevel2XCluster(int CollectionLevel2Id, string cluster)
         {
-            string sql = "INSERT INTO CollectionLevel2XCluster ([CollectionLevel2_Id], [ParCluster_Id]) " +
-             "VALUES ('" + CollectionLevel2Id + "', '" + cluster + "')";
+            string sql = "INSERT INTO CollectionLevel2XCluster ([CollectionLevel2_Id], [ParCluster_Id]) VALUES (@CollectionLevel2Id, @Cluster)";
 
             sql += " SELECT @@IDENTITY AS 'Identity' ";
 
@@ -2063,6 +2772,10 @@ namespace SgqSystem.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@CollectionLevel2Id", CollectionLevel2Id));
+                        command.Parameters.Add(new SqlParameter("@Cluster", cluster));
+
                         connection.Open();
                         var i = Convert.ToInt32(command.ExecuteScalar());
                         return i;
@@ -2079,7 +2792,7 @@ namespace SgqSystem.Controllers.Api
         protected int InsertCollectionLevel2Object(int CollectionLevel2Id, string Reprocesso)
         {
             string sql = "INSERT INTO CollectionLevel2Object ([CollectionLevel2_Id], [Objeto], [AddDate]) " +
-             "VALUES ('" + CollectionLevel2Id + "', '" + Reprocesso + "', GETDATE()) ";
+             "VALUES (@CollectionLevel2Id, @Reprocesso, GETDATE()) ";
 
             sql += " SELECT @@IDENTITY AS 'Identity' ";
 
@@ -2090,6 +2803,10 @@ namespace SgqSystem.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@CollectionLevel2Id", CollectionLevel2Id));
+                        command.Parameters.Add(new SqlParameter("@Reprocesso", Reprocesso));
+
                         connection.Open();
                         var i = Convert.ToInt32(command.ExecuteScalar());
                         return i;
