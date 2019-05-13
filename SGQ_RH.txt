@@ -325,3 +325,11 @@ CREATE TABLE ParDepartmentXHeaderField  (
   FOREIGN KEY (ParDepartment_Id) REFERENCES ParDepartment(Id),
   PRIMARY KEY (Id)
 );
+
+GO
+
+IF COL_LENGTH('ParDepartment','ParCompany_Id') IS NULL
+BEGIN	
+	ALTER TABLE ParDepartment
+  ADD ParCompany_Id INT null REFERENCES ParCompany(Id)
+END

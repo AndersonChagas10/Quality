@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -18,6 +19,10 @@ namespace SgqSystem.Controllers
             var listaFilhos = db.ParDepartment.ToList();
             listaFilhos.Add(new ParDepartment() { Id = -1, Name = "Selecione" });
             ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", -1);
+
+            var listaUnidades = db.ParCompany.ToList();
+            listaUnidades.Add(new ParCompany() { Id = -1, Name = "Selecione" });
+            ViewBag.ParCompany_Id = new SelectList(listaUnidades, "Id", "Name", -1);
 
             return View(db.ParDepartment.ToList());
         }
@@ -49,11 +54,13 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id")] ParDepartment parDepartment)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id, ParCompany_Id")] ParDepartment parDepartment)
         {
             MontaHash(parDepartment);
             if (parDepartment.Parent_Id <= 0)
                 parDepartment.Parent_Id = null;
+
+            ValidaVinculos(parDepartment);
 
             DepartamentoDuplicado(parDepartment);
             if (ModelState.IsValid)
@@ -65,6 +72,14 @@ namespace SgqSystem.Controllers
 
             MontaLista(parDepartment);
             return View(parDepartment);
+        }
+
+        private void ValidaVinculos(ParDepartment parDepartment)
+        {
+            if (parDepartment.ParCompany_Id > 0 && parDepartment.Parent_Id > 0)
+            {
+                ModelState.AddModelError("ParCompany_Id", "Empresas vinculadas a um pai não podem ter vinculo com Unidades!");
+            }
         }
 
         // GET: ParDepartments/Edit/5
@@ -88,7 +103,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id")] ParDepartment parDepartment)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id,ParCompany_Id")] ParDepartment parDepartment)
         {
             MontaHash(parDepartment);
             DepartamentoDuplicado(parDepartment);
@@ -170,6 +185,11 @@ namespace SgqSystem.Controllers
             listaFilhos.Insert(0, new ParDepartment() { Id = 0, Name = "Selecione" });
             listaFilhos.Remove(parDepartment);
             ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", parDepartment.Parent_Id);
+
+            var listaUnidades = db.ParCompany.Where(x => x.IsActive).ToList();
+            listaUnidades.Insert(0, new ParCompany() { Id = 0, Name = "Selecione" });
+            //listaUnidades.Add(new ParCompany() { Id = -1, Name = "Selecione" });
+            ViewBag.ParCompany_Id = new SelectList(listaUnidades, "Id", "Name", parDepartment.ParCompany_Id);
         }
 
         private void DepartamentoDuplicado(ParDepartment parDepartment)
