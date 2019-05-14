@@ -26,7 +26,7 @@
 
             <div class="form-group">
                 <label>Departamento:</label>
-                <select class="form-control required" id="selectL3GeralParDepartment" name="ParDepartment_Id"></select>
+                <select class="form-control required" id="selectL2GeralParDepartment" name="ParDepartment_Id"></select>
             </div>
         </div>
 
@@ -61,6 +61,21 @@
 </form>
 
 <script>
+
+    $("#selectParCompanyGeral").on('change', function () {
+        var unidadeSelecionada = parseInt($("#selectParCompanyGeral :selected").val());
+        console.log(unidadeSelecionada);
+
+        if (unidadeSelecionada == 0) {
+            preencheSelect('selectL2GeralParDepartment', 'Name', 'Id', ParDepartmentsGlobal, 'Selecione o departamento');
+        } else {
+            var departamentosVinculados = jQuery.grep(ParDepartmentsGlobal, function (n, i) {
+               return (n.ParCompany_Id === unidadeSelecionada);
+            });
+            preencheSelect('selectL2GeralParDepartment', 'Name', 'Id', departamentosVinculados, 'Selecione o departamento');
+        }
+    });
+
     var lastIdL2 = 0;
     var ParL2Geral = {
 
@@ -81,7 +96,7 @@
         load: function () {
         
             let id = this.id;
-            let urlSave = this.urlSave;
+            let urlSave = this.urlSave;   
 
             function Save(obj) {
                 openLoader(Resources("please_wait"));

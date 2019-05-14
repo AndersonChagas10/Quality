@@ -153,6 +153,7 @@ namespace SgqSystem.Controllers.V2.Api
                         parLevel2Old.IsActive = parLevel2.IsActive;
                         parLevel2Old.HasGroupLevel3 = parLevel2.HasGroupLevel3;
                         parLevel2Old.HasTakePhoto = parLevel2.HasTakePhoto;
+                        parLevel2Old.ParDepartment_Id = parLevel2.ParDepartment_Id;
                     }
                     else
                     {

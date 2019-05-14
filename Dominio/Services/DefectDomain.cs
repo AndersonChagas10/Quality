@@ -81,7 +81,7 @@ namespace Dominio.Services
 
             var list = Mapper.Map<List<DefectDTO>>(_baseRepoDefect.GetAll().Where(r =>
                 r.ParCompany_Id == ParCompany_Id &&
-                Guard.InsideFrequency(r.Date.Date, r.ParLevel1.ParFrequency_Id)));/*Clusters*/
+                Guard.InsideFrequency(r.Date.Date, r.ParLevel1.ParFrequency_Id??0)));/*Clusters*/
 
             return list;
         }

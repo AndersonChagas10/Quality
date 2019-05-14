@@ -171,7 +171,7 @@
     $("#ParL3Peso #selectL3PesoParDepartment").on('change', function () {
         var departamentoSelecionado = parseInt($("#ParL3Peso #selectL3PesoParDepartment :selected").val());
         var cargosVinculado = [];
-        debugger
+        
         if (departamentoSelecionado === 0) {
             preencheSelect('selectL3ParCargo', 'Name', 'Id', ParCargosGlobal, 'Todos');
             cargosVinculado = [];
@@ -188,6 +188,19 @@
         }
     });
 
+    $("#selectParCompanyGeral").on('change', function () {
+        var unidadeSelecionada = parseInt($("#selectParCompanyGeral :selected").val());
+
+        if (unidadeSelecionada == 0) {
+            preencheSelect('selectL3PesoParDepartment', 'Name', 'Id', ParDepartmentsGlobal, 'Selecione o departamento');
+        } else {
+            var departamentosVinculados = jQuery.grep(ParDepartmentsGlobal, function (n, i) {
+                return (n.ParCompany_Id === unidadeSelecionada);
+            });
+            preencheSelect('selectL3PesoParDepartment', 'Name', 'Id', departamentosVinculados, 'Selecione o departamento');
+        }
+    });
+
     var ParL3Peso = {
 
         //paramtros
@@ -195,7 +208,7 @@
         urlSave: '@Url.Action("PostParVinculoPeso", "api/ParLevel3Api")',
 
         load: function (list) {
-            debugger
+            
             let id = this.id;
             let urlSave = this.urlSave;
 
@@ -293,7 +306,7 @@
                 }
 
                 let ParLevel3Value = [];
-                debugger
+                
                 $('#tableParL3Peso tbody tr').each(function () {
                     ParLevel3Value.push($(this).data('sgq'));
                 });

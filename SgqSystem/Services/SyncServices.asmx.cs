@@ -2853,7 +2853,7 @@ namespace SgqSystem.Services
         //        return "error";
         //    }
         //}
-        public static void getFrequencyDate(int ParFrequency_Id, DateTime data, ref string dataInicio, ref string dataFim)
+        public static void getFrequencyDate(int? ParFrequency_Id, DateTime data, ref string dataInicio, ref string dataFim)
         {
 
             DateTime periodoInicio = data;

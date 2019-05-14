@@ -32,7 +32,7 @@ namespace SgqSystem.Controllers.Api.App
             string dataInicio = string.Empty;
             string dataFim = string.Empty;
 
-            SyncServices.getFrequencyDate(level1.ParFrequency_Id, DateTime.Now /*MOCK DEV> OBS:PRECISA PASSaR COMO REFERENCIA PARA RETROATIVO*/, ref dataInicio, ref dataFim);
+            SyncServices.getFrequencyDate(level1.ParFrequency_Id??0, DateTime.Now /*MOCK DEV> OBS:PRECISA PASSaR COMO REFERENCIA PARA RETROATIVO*/, ref dataInicio, ref dataFim);
 
 
             var sql = "select" +

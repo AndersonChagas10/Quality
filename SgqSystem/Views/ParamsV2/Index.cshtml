@@ -169,6 +169,13 @@
         </div>
 
         @Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")
+        <div class="row">
+            <div class="col-sm-3 nav nav-tabs nav-b-0">
+                <label for="ParCompany_Id">Unidade:</label>
+                <select id="selectParCompanyGeral" class="input input-lg col-sm-6"
+                        name="ParCompany_Id"></select>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-sm-12">
@@ -275,10 +282,10 @@
                                             </a>
                                         </li>*@
                                     @*<li>
-                                        <a href="#l2_contador" data-toggle="tab">
-                                            Contadores
-                                        </a>
-                                    </li>*@
+                                            <a href="#l2_contador" data-toggle="tab">
+                                                Contadores
+                                            </a>
+                                        </li>*@
                                 </ul>
                             </div>
                             <div class="col-xs-9">
@@ -408,6 +415,7 @@
 <script>
     var ParCargosGlobal;
     var ParCargoXDepartmentsGlobal;
+    var ParDepartmentsGlobal;
 
     let setSelectLevel1 = function (data) {
         preencheSelect('selectL1', 'Name', 'Id', data.ParLevels1, 'Criar novo inidicador', preencheL1);
@@ -591,7 +599,7 @@
                 data: {},
                 contentType: "application/json",
                 success: function (ParLevel1) {
-                    
+
                     preencheCampos('l1', '', ParLevel1, true);
                     ParL1Geral.set(ParLevel1);
                     ParL1Avancados.set(ParLevel1);
@@ -610,7 +618,7 @@
             });
 
             $.ajax({
-                
+
                 url: `@Url.Action("GetParLevel2Vinculados", "api/ParLevel2Api")/${$(this).val()}`,
                 type: 'Get',
                 dataType: "json",
@@ -732,8 +740,8 @@
                 data: {},
                 contentType: "application/json",
                 success: function (data) {
-                  
-                    preencheCampos('dc', '', data.ParDepartment, true)
+
+                    preencheCampos('dc', '', data.ParDepartment, true);
                     preencheSelect('selectDCAvamParCargo', 'Name', 'Id', data.ParCargo, 'Todos');
                     parDCAvam.load(data.ParEvaluationXDepartmentXCargo);
                     parDCRotina.load(data.ParDepartmentXRotinaIntegracao);
@@ -768,11 +776,18 @@
                 preencheSelect('selectL1ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
 
                 preencheSelect('selectL3GeralParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
+
                 preencheSelect('selectL3GeralParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento');
+
+
                 preencheSelect('selectL3CaracteristicaDeRisco', 'Name', 'Id', data.ParRiskCharacteristicTypes, 'Selecione a Caracteristica de Risco');
 
                 preencheSelect('selectL2AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL2AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
+                preencheSelect('selectL2GeralParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento');
+
+                preencheSelect('selectParCompanyGeral', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
+
 
                 preencheSelect('selectL3AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL3AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
@@ -784,7 +799,8 @@
                 preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a Função');
 
                 preencheSelect('selectL3ParCargo', 'Name', 'Id', data.ParCargos, 'Todos');
-                
+
+                ParDepartmentsGlobal = data.ParDepartments;
                 ParCargosGlobal = data.ParCargos;
                 ParCargoXDepartmentsGlobal = data.ParCargoXDepartments;
 
@@ -948,7 +964,7 @@
     }
 
     let optionIsValid = function (obj, id) {
-        
+
         let isValid = true;
 
         //se for binário o multipla escolha valida pela quantidade de parMultipleValues
