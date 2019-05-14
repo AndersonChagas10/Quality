@@ -333,3 +333,19 @@ BEGIN
 	ALTER TABLE ParDepartment
   ADD ParCompany_Id INT null REFERENCES ParCompany(Id)
 END
+
+GO
+
+IF COL_LENGTH('ParLevel1','ParFrequency_Id') IS NOT NULL
+BEGIN
+	alter table ParLevel1 
+	alter column ParFrequency_Id int null
+END
+
+GO
+
+IF COL_LENGTH('ParLevel2','ParFrequency_Id') IS NOT NULL
+BEGIN
+	alter table ParLevel2 
+	alter column ParFrequency_Id int null
+END
