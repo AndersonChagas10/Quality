@@ -70,17 +70,23 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Parent_Id, @Resources.Resource.linked, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.Parent_Id, null, new { htmlAttributes = new { @class = "form-control select2" } })
+                                            <div class="col-md-6">
+                                                @Html.DropDownListFor(model => model.Parent_Id, null, new { @class = "form-control select2" })
                                                 @Html.ValidationMessageFor(model => model.Parent_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div id="infoFilho" class="col-md-6" hidden="hidden">
+                                                <p class="alert alert-info col-md-6"> Ao vincular um departamento filho o campo de Unidade ficará desabilitado </p>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParCompany_Id, "Unidade Vinculada", htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.ParCompany_Id, null, new { htmlAttributes = new { @class = "form-control" } })
+                                            <div class="col-md-6">
+                                                @Html.DropDownListFor(model => model.ParCompany_Id, null, new { @class = "form-control  select2" })
                                                 @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div id="infoVinculoUnidade" class="col-md-6" hidden="hidden">
+                                                <p class="alert alert-info col-md-6"> Ao vincular um departamento a uma Unidade o campo de Vinculo ficará desabilitado </p>
                                             </div>
                                         </div>
 
@@ -122,18 +128,25 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar4");
     $('#Parent_Id').select2();
+    $('#ParCompany_Id').select2();
 
     $("#Parent_Id, #ParCompany_Id").on('change', function () {
         debugger
         if ($("#ParCompany_Id :selected").val() == 0 && $("#Parent_Id :selected").val() == 0) {
             $("#ParCompany_Id").prop('disabled', false);
             $("#Parent_Id").prop('disabled', false);
+            $("#infoFilho").hide();
+            $("#infoVinculoUnidade").hide();
         } else if ($("#Parent_Id :selected").val() > 0) {
             $("#ParCompany_Id").prop('disabled', true);
             $("#Parent_Id").prop('disabled', false);
+            $("#infoFilho").hide();
+            $("#infoVinculoUnidade").show();
         } else {
             $("#Parent_Id").prop('disabled', true);
             $("#ParCompany_Id").prop('disabled', false);
+            $("#infoFilho").show();
+            $("#infoVinculoUnidade").hide();
         }
     });
 
@@ -144,12 +157,18 @@
         if ($("#ParCompany_Id :selected").val() == 0 && $("#Parent_Id :selected").val() == 0) {
             $("#ParCompany_Id").prop('disabled', false);
             $("#Parent_Id").prop('disabled', false);
+            $("#infoFilho").hide();
+            $("#infoVinculoUnidade").hide();
         } else if ($("#Parent_Id :selected").val() > 0) {
             $("#ParCompany_Id").prop('disabled', true);
             $("#Parent_Id").prop('disabled', false);
+            $("#infoFilho").hide();
+            $("#infoVinculoUnidade").show();
         } else {
             $("#Parent_Id").prop('disabled', true);
             $("#ParCompany_Id").prop('disabled', false);
+            $("#infoFilho").show();
+            $("#infoVinculoUnidade").hide();
         }
         closeLeftSidebar();
     });

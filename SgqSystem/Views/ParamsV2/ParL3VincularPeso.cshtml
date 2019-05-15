@@ -189,8 +189,14 @@
     });
 
     $("#selectParCompanyGeral").on('change', function () {
+        MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', null);
+    });
 
-        MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment');
+
+    $("#selectL3PesoParCompany").on('change', function () {
+        debugger
+        var empresaSelecionada = parseInt($("#selectL3PesoParCompany :selected").val());
+        MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', empresaSelecionada);
     });
 
     var ParL3Peso = {
