@@ -253,14 +253,14 @@ IF NOT EXISTS (SELECT * FROM ParAlertType WHERE Name = 'KO')
 
 GO
 
-IF COL_LENGTH('ParVinculoPeso','ParDepartment_Id') IS NULL
+IF COL_LENGTH('ParLevel3Value','ParDepartment_Id') IS NULL
 BEGIN	
 	ALTER TABLE ParLevel3Value ADD ParDepartment_Id int null 
 END
 
 GO
 
-IF COL_LENGTH('ParVinculoPeso','ParCargo_Id') IS NULL
+IF COL_LENGTH('ParLevel3Value','ParCargo_Id') IS NULL
 BEGIN	
 	ALTER TABLE ParLevel3Value ADD ParCargo_Id int null 
 END
