@@ -46,7 +46,7 @@
 
             <div class="form-group">
                 <label for="ParDepartment_Id">Departamento:</label>
-                <select id="selectL3PesoParDepartment" class="input input-lg col-sm-12" name="ParDepartment_Id"></select>
+                  <select id="selectL3TipoDadoParDepartment" class="input input-lg col-sm-12" name="ParDepartment_Id"></select>
             </div>
 
         </div>
@@ -300,6 +300,13 @@
             $("#tabelaLikert tbody tr:last").find('[data-column=inpParLevel3Value_Id]').val();
         }
     }
+
+    $("#selectL3TipoDadoParCompany").on('change', function () {
+        var empresaSelecionada = parseInt($("#selectL3TipoDadoParCompany :selected").val());
+
+        MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3TipoDadoParDepartment', empresaSelecionada);
+    
+    });
 
     var ParL3TipoDado = {
 

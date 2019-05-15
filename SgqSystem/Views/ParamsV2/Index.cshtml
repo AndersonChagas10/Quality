@@ -426,6 +426,7 @@
     var ParCargosGlobal;
     var ParCargoXDepartmentsGlobal;
     var ParDepartmentsGlobal;
+    var parCompanysGlobal;
 
     let setSelectLevel1 = function (data) {
         preencheSelect('selectL1', 'Name', 'Id', data.ParLevels1, 'Criar novo inidicador', preencheL1);
@@ -498,9 +499,15 @@
         $(`select#${id}`).select2();
     }
 
-    let MontaSelectDepartamentoVinculadoAUnidadeSelecionada = function (selectId) {
+    let MontaSelectDepartamentoVinculadoAUnidadeSelecionada = function (selectId, empresaSelecionada) {
 
-        var unidadeSelecionada = parseInt($("#selectParCompanyGeral :selected").val());
+        var unidadeSelecionada;
+        if (empresaSelecionada == null) {
+             unidadeSelecionada = parseInt($("#selectParCompanyGeral :selected").val());
+        } else {
+            unidadeSelecionada = empresaSelecionada
+        }
+
         var mensagem;
         if (selectId == 'selectL3PesoParDepartment') {
              mensagem = 'Todos';
@@ -516,7 +523,26 @@
             });
             preencheSelect(selectId, 'Name', 'Id', departamentosVinculados, mensagem);
         }
- 
+
+    }
+
+    let MontaSelectUnidades = function () {
+
+        var unidadeSelecionadaTeste = parseInt($("#selectParCompanyGeral :selected").val());
+
+        debugger
+        if (unidadeSelecionadaTeste == 0) {
+            preencheSelect('selectDCAvamParCompany', 'Name', 'Id', parCompanysGlobal, "Todos");
+            preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', parCompanysGlobal, "Todos");
+            preencheSelect('selectL3PesoParCompany', 'Name', 'Id', parCompanysGlobal, "Todos");
+        } else {
+            var unidadesVinculadas = jQuery.grep(parCompanysGlobal, function (n, i) {
+                return (n.Id === unidadeSelecionadaTeste);
+            });
+            preencheSelect('selectDCAvamParCompany', 'Name', 'Id', unidadesVinculadas, "Todos");
+            preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', unidadesVinculadas, "Todos");
+            preencheSelect('selectL3PesoParCompany', 'Name', 'Id', unidadesVinculadas, "Todos");
+        }
     }
 
     let atualizaValoresDoObjeto = function (oldValues, newValues) {
@@ -558,7 +584,6 @@
     }
 
     let apagaCampos = function (div_id) {
-
         $(`#${div_id} input:not([data-id],[data-notnull])`).val('');
         $(`#${div_id} select`).val(0);
         $(`#${div_id} select`).trigger('change');
@@ -571,7 +596,6 @@
         $(`#${div_id} [data-form]`).find('[data-add]').removeClass('hide');
         $(`#${div_id} [data-form]`).removeData('sgq');
         $(`#${div_id} div[contenteditable="true"]`).html('');
-
     }
 
     let preencheValores = function (element, value) {
@@ -817,6 +841,7 @@
                 preencheSelect('selectL2AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
                 preencheSelect('selectL2GeralParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento');
 
+                parCompanysGlobal = data.ParCompanys
                 preencheSelect('selectParCompanyGeral', 'Name', 'Id', data.ParCompanys, 'Todos');
 
 
@@ -837,6 +862,7 @@
 
                 preencheSelect('selectL3TipoDadoParLevel3InputType', 'Name', 'Id', data.ParLevel3InputTypes, 'Selecione o Tipo de dados para a coleta');
                 preencheSelect('selectL3TipoDadoParLevel3BoolFalse', 'Name', 'Id', data.ParLevel3BoolFalses, 'Valor negativo');
+                preencheSelect('selectL3TipoDadoParDepartment', 'Name', 'Id', data.ParDepartments, 'Todos');
                 preencheSelect('selectL3TipoDadoParLevel3BoolTrue', 'Name', 'Id', data.ParLevel3BoolTrues, 'Valor positivo');
                 preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3TipoDadoParMeasurementUnit', 'Name', 'Id', data.ParMeasurementUnits, 'Selecione a unidade de medida');
@@ -844,7 +870,8 @@
                 preencheSelect('selectDCAvamParCompany', 'Name', 'Id', data.ParCompanys, 'Todas as empresas');
 
                 $("#selectParCompanyGeral").on('change', function () {
-                    MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment');
+                    MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', null);
+                    MontaSelectUnidades();
                 });
                 preencheSelect('selectDCDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento', preencheDC);
 
@@ -853,6 +880,15 @@
                 preencheSelect('selectRotina', 'Name', 'Id', data.RotinaIntegracao, 'Selecione a Rotina');
                 preencheSelect('selectL1ParFieldTypeDepartment', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
 
+                //$("#selectParCompanyGeral").on('change', function () {
+                //    var unidadeSelecionadaGlobal = parseInt($("#selectParCompanyGeral :selected").val());
+                //    var departamentosVinculados = jQuery.grep(ParDepartmentsGlobal, function (n, i) {
+                //        return (n.ParCompany_Id === unidadeSelecionadaGlobal);
+                //    });
+                //    preencheSelect('selectL2GeralParDepartment', 'Name', 'Id', departamentosVinculados, "Todos");
+                //    preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', departamentosVinculados, "Todos");
+                //    preencheSelect('selectL3PesoParCompany', 'Name', 'Id', departamentosVinculados, "Todos");
+                //});
                 closeLoader();
                 verifyTabs('selectDCDepartment', 'dc');
 
