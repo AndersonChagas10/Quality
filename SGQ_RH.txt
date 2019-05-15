@@ -349,3 +349,31 @@ BEGIN
 	alter table ParLevel2 
 	alter column ParFrequency_Id int null
 END
+
+IF COL_LENGTH('collectionlevel2','ParDepartment_Id') IS NULL
+BEGIN	
+	ALTER TABLE collectionlevel2 ADD ParDepartment_Id int null references ParDepartment (id)
+END
+
+GO
+
+IF COL_LENGTH('collectionlevel2','ParCargo_Id') IS NULL
+BEGIN	
+	ALTER TABLE collectionlevel2 ADD ParCargo_Id int null references ParCargo (id)
+END
+
+GO
+
+IF COL_LENGTH('collectionlevel2','ParCluster_Id') IS NULL
+BEGIN	
+	ALTER TABLE collectionlevel2 ADD ParCluster_Id int null references ParCluster (id)
+END
+
+GO
+
+IF COL_LENGTH('collectionlevel2','ConsolidationLevel2_Id') IS NOT NULL
+BEGIN	
+	ALTER TABLE collectionlevel2 alter column ConsolidationLevel2_Id int null 
+END
+
+GO
