@@ -967,14 +967,9 @@ function changeCompany_OnLine() {
     if (ParCompany_Id_Padrao != ParCompany_Id_Selecionada) {
         menssagemSync("<i class='fa fa-spinner fa-spin'></i>" + getResource("changing_unit_preferences"));
         $.ajax({
-            data: {
-                //Name: username,
-                "UserSgq_Id": userlogado.attr('userid'),
-                "ParCompany_Id": $('#selectParCompany').val(),
-            },
             headers: token(),
             //    url: urlPreffix + '/api/User/AuthenticationLogin',
-            url: urlPreffix + '/api/SyncServiceApi/UserCompanyUpdate',
+            url: urlPreffix + '/api/SyncServiceApi/UserCompanyUpdate?ParCompany_Id=' + $('#selectParCompany').val() + '&UserSgq_Id=' + userlogado.attr('userid'),
             type: 'POST',
             success: function (data) {
 

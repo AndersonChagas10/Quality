@@ -182,7 +182,11 @@ function enviaFotos(listaFotos) {
         type: 'POST',
         headers: token(),
         success: function (data) {
+            //alert(JSON.stringify(data));
             algumaFotoEstaSendoEnviada = false;
+            if (data.count == 0)
+                data.count = 1;
+
             if (data.count > 0) {
                 level3Photos.splice(0, data.count);
                 _writeFile("level3Photos.json", level3Photos);
@@ -196,6 +200,7 @@ function enviaFotos(listaFotos) {
             }
         },
         error: function (e) {
+            //alert(JSON.stringify(e));
             setTimeout(function () {
                 sendResultLevel3Photo();
             }, 20000);

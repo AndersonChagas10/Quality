@@ -49,25 +49,6 @@ namespace SgqSystem.Controllers.Api
                 ResultPhoto.Level1Id = Convert.ToInt32(parLevel1_Id);
                 ResultPhoto.Level2Id = Convert.ToInt32(parLevel2_Id);
 
-                #region Upload Photos
-                var bytes = Convert.FromBase64String(ResultPhoto.Photo);
-
-                var basePath = System.Configuration.ConfigurationManager.AppSettings["StorageRoot"] ?? "~";
-                if (basePath.Equals("~"))
-                {
-                    basePath = @AppDomain.CurrentDomain.BaseDirectory;
-                }
-
-                var path = Path.Combine(basePath, "photos", parLevel1_Id + parLevel2_Id + ResultPhoto.Level3Id + DateTime.Now.ToString("yyyyMMddHHssmm")) + new Random().Next(1000,9999) + ".png";
-                using (var imageFile = new FileStream(path, FileMode.Create))
-                {
-                    imageFile.Write(bytes, 0, bytes.Length);
-                    imageFile.Flush();
-                }
-                ResultPhoto.Photo = path;
-                ResultPhoto.Photo_Thumbnaills = ResultPhoto.Photo;
-                #endregion
-
                 string sqlResulLevel3 = @"SELECT R.Id FROM Result_Level3 R                                     
                             LEFT JOIN CollectionLevel2 C                                      
                             ON R.CollectionLevel2_Id = C.Id                                
@@ -119,8 +100,29 @@ namespace SgqSystem.Controllers.Api
 
                 if (ResultPhoto.Result_Level3_Id == 0)
                 {
-                    return Ok(new { message = "ResultLevel3Id não encontrado.", count = i });
+                    return Ok(new { message = 
+                        "ResultLevel3Id não encontrado."+Newtonsoft.Json.JsonConvert.SerializeObject(ResultPhoto),
+                        count = i });
                 }
+
+                #region Upload Photos
+                var bytes = Convert.FromBase64String(ResultPhoto.Photo);
+
+                var basePath = System.Configuration.ConfigurationManager.AppSettings["StorageRoot"] ?? "~";
+                if (basePath.Equals("~"))
+                {
+                    basePath = @AppDomain.CurrentDomain.BaseDirectory;
+                }
+
+                var path = Path.Combine(basePath, "photos", parLevel1_Id + parLevel2_Id + ResultPhoto.Level3Id + DateTime.Now.ToString("yyyyMMddHHssmm")) + new Random().Next(1000, 9999) + ".png";
+                using (var imageFile = new FileStream(path, FileMode.Create))
+                {
+                    imageFile.Write(bytes, 0, bytes.Length);
+                    imageFile.Flush();
+                }
+                ResultPhoto.Photo = path;
+                ResultPhoto.Photo_Thumbnaills = ResultPhoto.Photo;
+                #endregion
 
                 string sql = @"INSERT INTO Result_Level3_Photos(Result_Level3_Id, Photo_Thumbnaills, Photo, Latitude, Longitude) 
                             VALUES(@Result_Level3_Id, @Photo_Thumbnaills, @Photo, @Latitude, @Longitude)";

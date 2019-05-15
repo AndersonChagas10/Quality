@@ -251,7 +251,7 @@ namespace SgqSystem.Controllers.Api
         {
             VerifyIfIsAuthorized();
 
-            string ObjResultJSon = insertJsonClass.ObjResultJSon;
+            string ObjResultJSon = insertJsonClass.ObjResultJSon.Replace("NaN","0");
             string deviceId = insertJsonClass.deviceId;
             string deviceMac = insertJsonClass.deviceMac;
             bool autoSend = insertJsonClass.autoSend;
@@ -2315,17 +2315,17 @@ namespace SgqSystem.Controllers.Api
             if (colLevel2 != null)
                 id = Convert.ToString(colLevel2.Id);
 
-            if (evaluatedresult == null || evaluatedresult == "undefined")
+            if (evaluatedresult == null || evaluatedresult == "undefined" || evaluatedresult == "NaN")
                 evaluatedresult = "0";
-            if (defectsresult == null || defectsresult == "undefined")
+            if (defectsresult == null || defectsresult == "undefined" || defectsresult == "NaN")
                 defectsresult = "0";
-            if (TotalLevel3WithDefects == null || TotalLevel3WithDefects == "undefined")
+            if (TotalLevel3WithDefects == null || TotalLevel3WithDefects == "undefined" || TotalLevel3WithDefects == "NaN")
                 TotalLevel3WithDefects = "0";
-            if (WeiDefects == null || WeiDefects == "undefined")
+            if (WeiDefects == null || WeiDefects == "undefined" || WeiDefects == "NaN")
                 WeiDefects = "0";
-            if (Defects == null || Defects == "undefined")
+            if (Defects == null || Defects == "undefined" || Defects == "NaN")
                 Defects = "0";
-            if (WeiEvaluation == null || WeiEvaluation == "undefined")
+            if (WeiEvaluation == null || WeiEvaluation == "undefined" || WeiEvaluation == "NaN")
                 WeiEvaluation = "0";
 
 

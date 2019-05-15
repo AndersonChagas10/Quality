@@ -51,8 +51,8 @@ namespace SgqSystem.Controllers.Api
 
             var sql =
                 "SELECT                                                                        " +
-                "IIF(CC.ParCluster_Id is null, C.ParLevel1_Id, CONCAT(CC.ParCluster_Id,'98789', C.ParLevel1_Id)) AS ParLevel1_Id," +
-                "IIF(CC.ParCluster_Id is null, C.ParLevel2_Id, CONCAT(CC.ParCluster_Id,'98789', C.ParLevel2_Id)) AS ParLevel2_Id," +
+                "IIF(CC.ParCluster_Id is null, CAST(C.ParLevel1_Id AS BIGINT), CONCAT(CC.ParCluster_Id,'98789', C.ParLevel1_Id)) AS ParLevel1_Id," +
+                "IIF(CC.ParCluster_Id is null, CAST(C.ParLevel2_Id AS BIGINT), CONCAT(CC.ParCluster_Id,'98789', C.ParLevel2_Id)) AS ParLevel2_Id," +
                 "C.Period AS Period,                                                           " +
                 "C.Shift AS Shift,                                                             " +
                 "CP.ParHeaderField_Id AS ParHeaderField_Id,                                    " +
