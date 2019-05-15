@@ -14,6 +14,7 @@ using SgqSystem.Controllers.Api;
 using Dominio.AppViewModel;
 using ADOFactory;
 using System.Web.Http.Cors;
+using SgqSystem.Helpers;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -75,58 +76,63 @@ namespace SgqSystem.Controllers.V2.Api
 
                 //TODO: Fazer uma função que leia do banco o Collection que não foram processados, e separe os CollectionLevel2 e Result_Level3 da tabela salva
                 var collectionsLevel2 = GetCollectionsLevel2NotProcess();
-
-                foreach (var collectionLevel2 in collectionsLevel2)
+                try
                 {
-                    var collectionsProcess_Id = new List<int>();
-                    var resultsLevel3 = GetResultLevel3NotProcess(collectionLevel2);
-
-                    //TODO: chamar a função de SetConsolidation() para inserir os dados consolidados na CollectionLevel2
-                    var collectionLevel2Consolidada = SetConsolidation(collectionLevel2, resultsLevel3);
-
-                    //TODO: salvar a collectionLevel2 e apos a Result_Level3 com o respectivo CollectionLevel2_Id
-
-
-                    var collection = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
-                    if (collection == null)
+                    foreach (var collectionLevel2 in collectionsLevel2)
                     {
-                        db.CollectionLevel2.Add(collectionLevel2Consolidada);
-                        db.SaveChanges();
-                    }
-                    else
-                    {
-                        collectionLevel2Consolidada = collection;
-                    }
+                        var collectionsProcess_Id = new List<int>();
+                        var resultsLevel3 = GetResultLevel3NotProcess(collectionLevel2);
 
-                    foreach (var resultLevel3 in resultsLevel3)
-                    {
+                        //TODO: chamar a função de SetConsolidation() para inserir os dados consolidados na CollectionLevel2
+                        var collectionLevel2Consolidada = SetConsolidation(collectionLevel2, resultsLevel3);
+
+                        //TODO: salvar a collectionLevel2 e apos a Result_Level3 com o respectivo CollectionLevel2_Id
+
+
+                        var collection = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
+                        if (collection == null)
+                        {
+                            db.CollectionLevel2.Add(collectionLevel2Consolidada);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            collectionLevel2Consolidada = collection;
+                        }
+
+                        foreach (var resultLevel3 in resultsLevel3)
+                        {
+                            try
+                            {
+                                resultLevel3.CollectionLevel2_Id = collectionLevel2Consolidada.Id;
+                                resultLevel3.HasPhoto = resultLevel3.HasPhoto == null ? false : resultLevel3.HasPhoto;
+                                resultLevel3.ParLevel3_Name = parLevel3List.Where(x => x.Id == resultLevel3.ParLevel3_Id).Select(x => x.Name).FirstOrDefault();
+                                collectionsProcess_Id.Add(resultLevel3.Id);
+                                db.Result_Level3.Add(resultLevel3);
+
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                collectionsProcess_Id.RemoveAt(collectionsProcess_Id.Count - 1);
+                            }
+                        }
+
                         try
                         {
-                            resultLevel3.CollectionLevel2_Id = collectionLevel2Consolidada.Id;
-                            resultLevel3.HasPhoto = resultLevel3.HasPhoto == null ? false : resultLevel3.HasPhoto;
-                            resultLevel3.ParLevel3_Name = parLevel3List.Where(x => x.Id == resultLevel3.ParLevel3_Id).Select(x => x.Name).FirstOrDefault();
-                            collectionsProcess_Id.Add(resultLevel3.Id);
-                            db.Result_Level3.Add(resultLevel3);
-
-                            db.SaveChanges();
+                            if (collectionsProcess_Id.Count > 0)
+                            {
+                                db.Database.ExecuteSqlCommand("UPDATE Collection set IsProcessed = 1 where Id in (" + string.Join(",", collectionsProcess_Id) + ")");
+                            }
                         }
                         catch (Exception ex)
                         {
-                            collectionsProcess_Id.RemoveAt(collectionsProcess_Id.Count - 1);
+
                         }
                     }
-
-                    try
-                    {
-                        if (collectionsProcess_Id.Count > 0)
-                        {
-                            db.Database.ExecuteSqlCommand("UPDATE Collection set IsProcessed = 1 where Id in (" + string.Join(",", collectionsProcess_Id) + ")");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
+                }catch(Exception ex)
+                {
+                    return BadRequest(ex.ToClient());
                 }
             }
 

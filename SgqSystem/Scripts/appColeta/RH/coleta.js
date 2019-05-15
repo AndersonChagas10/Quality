@@ -34,7 +34,7 @@ function openColeta(levels) {
         '			  </div>                                                                                                                       ' +
         '			  <div class="panel-body">                                                                                                     ' +
         getContador() +
-        '				<form data-form-coleta>                                                                                                    ' +
+        '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
         coleta +
         '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       ' +
         '				</form>                                                                                                                    ' +
@@ -77,15 +77,15 @@ function getContador() {
 }
 
 function getLevel1(level1) {
-    return '<div class="col-xs-12 input-lg">' + level1.Name + '</div>';
+    return '<div class="col-xs-12"><small>' + level1.Name + '</small></div>';
 }
 
 function getLevel2(level2) {
-    return '<div class="col-xs-12 input-lg" style="padding-left:40px">' + level2.Name + '</div>';
+    return '<div class="col-xs-12" style="padding-left:18px; margin:5px 0px;"><small>' + level2.Name + '</small></div>';
 }
 
 function getLevel3(level3) {
-    return '<div class="col-xs-12">' + level3.Name + '</div>';
+    return '<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px">' + level3.Name + '</div>';
 }
 
 function getInputLevel3(level3, level2, level1) {
@@ -101,7 +101,7 @@ function getInputLevel3(level3, level2, level1) {
         retorno += ' data-level1="' + level1.Id + '"';
         retorno += ' data-level2="' + level2.Id + '"';
         retorno += ' data-level3="' + level3.Id + '"';
-        retorno += ' style="padding-left:80px">';
+        retorno += ' style="padding-left:10px;">';
 
         switch (level3.ParLevel3InputType.Id) {
 
@@ -148,9 +148,8 @@ function getBinario(level3) {
     if (level3.ParLevel3XHelp)
         btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" data-info> ? </button>'
 
-    var html = '<div class="col-xs-4 input-sm">' +
-        level3.Name +
-        '</div>                                                                                     ' +
+    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>                                                                                     ' +
         '<div class="col-xs-4 input-sm">                                                            ' +
         '</div>                                                                                     ' +
         '<div class="col-xs-3">                                                                     ' +
@@ -168,9 +167,8 @@ function getBinario(level3) {
 
 function getBinarioComTexto(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">' +
-        level3.Name +
-        '</div>                                                                                            ' +
+    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>                                                                                     ' +
         '<div class="col-xs-2">                                                                            ' +
         '</div>                                                                                            ' +
         '<div class="col-xs-2">                                                                            ' +
@@ -190,9 +188,8 @@ function getBinarioComTexto(level3) {
 
 function getIntervalo(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">' +
-        level3.Name +
-        '</div>                                                                                       ' +
+    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>                                                                                     ' +
         '<div class="col-xs-4 input-sm">                                                              ' +
         '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
         '</div>                                                                                       ' +
@@ -210,9 +207,8 @@ function getIntervalo(level3) {
 
 function getIntervaloComObservacao(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">' +
-        level3.Name +
-        '</div>' +
+    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>                                                                                     ' +
         '<div class="col-xs-2 input-sm">' +
         '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
         '</div>                                                                                   ' +
@@ -233,9 +229,8 @@ function getIntervaloComObservacao(level3) {
 
 function getObservacao(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">' +
-        level3.Name +
-        '</div>                                                                                      ' +
+    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>                                                                                     ' +
         '<div class="col-xs-4">                                                                      ' +
         '</div>                                                                                      ' +
         '<div class="col-xs-3">                                                                      ' +
@@ -250,9 +245,8 @@ function getObservacao(level3) {
 
 function getTexto(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">' +
-        level3.Name +
-        '</div>                                                                                      ' +
+    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>                                                                                     ' +
         '<div class="col-xs-4">                                                                      ' +
         '</div>                                                                                      ' +
         '<div class="col-xs-3">                                                                      ' +
@@ -267,9 +261,8 @@ function getTexto(level3) {
 
 function getLikert(level3) {
 
-    var html = '<div class="col-xs-4 input-sm">' +
-        level3.Name +
-        '</div>                                                                                    ' +
+    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>                                                                                     ' +
         '<div class="col-xs-4 input-sm">                                                           ' +
         '	Escala: ' + level3.ParLevel3Value.IntervalMin + ' - ' + level3.ParLevel3Value.IntervalMax +
         '</div>                                                                                    ' +
@@ -432,7 +425,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 IsNotEvaluate: $(data).attr('data-conforme-na') == "",
                 CollectionDate: convertDateToJson(new Date()),
                 UserSgq_Id: currentLogin.Id,
-			    /*
+                /*
 				"UserSgq_Id":1,
 				"Shift_Id":1,
 				"Period_Id":1,
@@ -522,7 +515,7 @@ function OpenCorrectiveAction(coleta) {
         '</div>' +
         '<div class="form-group col-xs-6">' +
             '<label for="email">Technical:</label>' +
-            '<select name="TechinicalId" id="techinicalId" class="form-control">' + selectUsers + '</select>' +       
+            '<select name="TechinicalId" id="techinicalId" class="form-control">' + selectUsers + '</select>' +
         '</div>';
 
     var corpo =
@@ -555,6 +548,6 @@ function OpenCorrectiveAction(coleta) {
 
         closeModal();
 
-    }); 
+    });
 
 }
