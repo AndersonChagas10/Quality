@@ -168,7 +168,24 @@
             </ul>
         </div>
 
-        @Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")
+        @*@Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")*@
+
+        @*<div class="row">
+                <div class="col-sm-3">
+                    <label for="ParCompany_Id">Unidade:</label>
+                    <select id="selectParCompanyGeral" class="input input-lg col-sm-6"
+                            name="ParCompany_Id"></select>
+                </div>
+            </div>*@
+
+        <div class="row">
+            <div class="col-sm-12" style="padding:0px 30px">
+                <div class="alert alert-success">
+                    <strong>Selecione a unidade para obter um filtro das informações da parametrização</strong>
+                    <select id="selectParCompanyGeral" class="input input-lg form-control col-sm-12" name="ParCompany_Id"></select>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-sm-12">
@@ -275,10 +292,10 @@
                                             </a>
                                         </li>*@
                                     @*<li>
-                                        <a href="#l2_contador" data-toggle="tab">
-                                            Contadores
-                                        </a>
-                                    </li>*@
+                                            <a href="#l2_contador" data-toggle="tab">
+                                                Contadores
+                                            </a>
+                                        </li>*@
                                 </ul>
                             </div>
                             <div class="col-xs-9">
@@ -371,12 +388,28 @@
                                             Avaliação e Amostra
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="#dc_rotina" data-toggle="tab">
+                                            Rotina Integração
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#dc_campocabecalho" data-toggle="tab">
+                                            Campo Cabeçalho
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-xs-9">
                                 <div class="tab-content">
                                     <div class="tab-pane" id="dc_avam">
                                         @Html.Partial("ParDCAvam")
+                                    </div>
+                                    <div class="tab-pane" id="dc_rotina">
+                                        @Html.Partial("ParDCRotina")
+                                    </div>
+                                    <div class="tab-pane" id="dc_campocabecalho">
+                                        @Html.Partial("ParDCCabecalho")
                                     </div>
                                 </div>
                             </div>
@@ -390,12 +423,15 @@
 </div>
 
 <script>
+    var ParCargosGlobal;
+    var ParCargoXDepartmentsGlobal;
+    var ParDepartmentsGlobal;
 
     let setSelectLevel1 = function (data) {
         preencheSelect('selectL1', 'Name', 'Id', data.ParLevels1, 'Criar novo inidicador', preencheL1);
-        preencheSelect('selectL2AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
-        preencheSelect('selectL3AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
-        preencheSelect('selectL3PesoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
+        preencheSelect('selectL2AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indidicador');
+        preencheSelect('selectL3AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indidicador');
+        preencheSelect('selectL3PesoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indidicador');
         preencheSelect('selectL3TipoDadoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Inidicador');
         getSelectsL1();
     }
@@ -460,6 +496,27 @@
             $(`select#${id}`).off('change').on('change', callBack);
 
         $(`select#${id}`).select2();
+    }
+
+    let MontaSelectDepartamentoVinculadoAUnidadeSelecionada = function (selectId) {
+
+        var unidadeSelecionada = parseInt($("#selectParCompanyGeral :selected").val());
+        var mensagem;
+        if (selectId == 'selectL3PesoParDepartment') {
+             mensagem = 'Todos';
+        } else {
+            mensagem = 'Selecione o departamento';
+        }
+
+        if (unidadeSelecionada == 0) {
+            preencheSelect(selectId, 'Name', 'Id', ParDepartmentsGlobal, mensagem);
+        } else {
+            var departamentosVinculados = jQuery.grep(ParDepartmentsGlobal, function (n, i) {
+                return (n.ParCompany_Id === unidadeSelecionada);
+            });
+            preencheSelect(selectId, 'Name', 'Id', departamentosVinculados, mensagem);
+        }
+ 
     }
 
     let atualizaValoresDoObjeto = function (oldValues, newValues) {
@@ -574,11 +631,11 @@
                 contentType: "application/json",
                 success: function (ParLevel1) {
 
-                    preencheCampos('l1', '', ParLevel1, true)
+                    preencheCampos('l1', '', ParLevel1, true);
                     ParL1Geral.set(ParLevel1);
                     ParL1Avancados.set(ParLevel1);
 
-                    preencheCampos('l1', '', ParLevel1, true)
+                    preencheCampos('l1', '', ParLevel1, true);
                     parL1Processo.load(ParLevel1.ParLevel1XCluster);
                     parL1Cabecalho.load(ParLevel1.ParLevel1XHeaderField);
                     verifyTabs('selectL1', 'l1');
@@ -592,7 +649,7 @@
             });
 
             $.ajax({
-                
+
                 url: `@Url.Action("GetParLevel2Vinculados", "api/ParLevel2Api")/${$(this).val()}`,
                 type: 'Get',
                 dataType: "json",
@@ -600,7 +657,7 @@
                 contentType: "application/json",
                 success: function (data) {
                     closeLoader();
-                    preencheSelect('selectL2', 'Text', 'Value', data.Options, 'Selecione o Monitoramento', preencheL2);
+                    preencheSelect('selectL2', 'Text', 'Value', data.Options, 'Criar novo monitoramento', preencheL2);
                 },
                 error: function (request, error) {
                     closeLoader();
@@ -654,7 +711,7 @@
                 contentType: "application/json",
                 success: function (data) {
 
-                    preencheSelect('selectL3', 'Text', 'Value', data.Options, 'Selecione a Tarefa', preencheL3);
+                    preencheSelect('selectL3', 'Text', 'Value', data.Options, 'Criar nova tarefa', preencheL3);
                 },
                 error: function (request, error) {
                     closeLoader();
@@ -714,9 +771,12 @@
                 data: {},
                 contentType: "application/json",
                 success: function (data) {
-                    preencheCampos('dc', '', data.ParDepartment, true)
+
+                    preencheCampos('dc', '', data.ParDepartment, true);
                     preencheSelect('selectDCAvamParCargo', 'Name', 'Id', data.ParCargo, 'Todos');
                     parDCAvam.load(data.ParEvaluationXDepartmentXCargo);
+                    parDCRotina.load(data.ParDepartmentXRotinaIntegracao);
+                    parDCCabecalho.load(data.ParDepartmentXHeaderField);
                     closeLoader();
                 },
                 error: function (request, error) {
@@ -747,10 +807,18 @@
                 preencheSelect('selectL1ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
 
                 preencheSelect('selectL3GeralParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
+
                 preencheSelect('selectL3GeralParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento');
+
+
+                preencheSelect('selectL3CaracteristicaDeRisco', 'Name', 'Id', data.ParRiskCharacteristicTypes, 'Selecione a Caracteristica de Risco');
 
                 preencheSelect('selectL2AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL2AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
+                preencheSelect('selectL2GeralParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento');
+
+                preencheSelect('selectParCompanyGeral', 'Name', 'Id', data.ParCompanys, 'Todos');
+
 
                 preencheSelect('selectL3AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL3AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
@@ -763,6 +831,10 @@
 
                 preencheSelect('selectL3ParCargo', 'Name', 'Id', data.ParCargos, 'Todos');
 
+                ParDepartmentsGlobal = data.ParDepartments;
+                ParCargosGlobal = data.ParCargos;
+                ParCargoXDepartmentsGlobal = data.ParCargoXDepartments;
+
                 preencheSelect('selectL3TipoDadoParLevel3InputType', 'Name', 'Id', data.ParLevel3InputTypes, 'Selecione o Tipo de dados para a coleta');
                 preencheSelect('selectL3TipoDadoParLevel3BoolFalse', 'Name', 'Id', data.ParLevel3BoolFalses, 'Valor negativo');
                 preencheSelect('selectL3TipoDadoParLevel3BoolTrue', 'Name', 'Id', data.ParLevel3BoolTrues, 'Valor positivo');
@@ -770,8 +842,17 @@
                 preencheSelect('selectL3TipoDadoParMeasurementUnit', 'Name', 'Id', data.ParMeasurementUnits, 'Selecione a unidade de medida');
 
                 preencheSelect('selectDCAvamParCompany', 'Name', 'Id', data.ParCompanys, 'Todas as empresas');
+
+                $("#selectParCompanyGeral").on('change', function () {
+                    MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment');
+                });
                 preencheSelect('selectDCDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento', preencheDC);
+
+
                 preencheSelect('selectParFrequencyAV', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
+                preencheSelect('selectRotina', 'Name', 'Id', data.RotinaIntegracao, 'Selecione a Rotina');
+                preencheSelect('selectL1ParFieldTypeDepartment', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
+
                 closeLoader();
                 verifyTabs('selectDCDepartment', 'dc');
 

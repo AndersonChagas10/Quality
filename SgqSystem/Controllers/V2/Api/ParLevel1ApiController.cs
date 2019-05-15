@@ -58,13 +58,17 @@ namespace SgqSystem.Controllers.V2.Api
                 parLevel1Selects.ParLevel3BoolTrues = db.ParLevel3BoolTrue.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParMeasurementUnits = db.ParMeasurementUnit.Where(x => x.IsActive).ToList();
 
+                parLevel1Selects.ParRiskCharacteristicTypes = db.ParRiskCharacteristicType.Where(x => x.IsActive).ToList();
 
                 //Peso
-               var listaDepartamentos = db.ParDepartment.Where(x => x.Active).ToList();
-               parLevel1Selects.ParDepartments = listaDepartamentos.Where(y => !listaDepartamentos.Any(y1 => y1.Parent_Id == y.Id)).ToList();
+                var listaDepartamentos = db.ParDepartment.Where(x => x.Active).ToList();
+                parLevel1Selects.ParDepartments = listaDepartamentos.Where(y => !listaDepartamentos.Any(y1 => y1.Parent_Id == y.Id)).ToList();
 
                 parLevel1Selects.ParGroupParLevel1s = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParCargos = db.ParCargo.Where(x => x.IsActive).ToList();
+
+                parLevel1Selects.ParCargoXDepartments = db.ParCargoXDepartment.Where(x => x.IsActive).ToList();
+                parLevel1Selects.RotinaIntegracao = db.RotinaIntegracao.Where(x => x.IsActive).ToList();
 
             }
 
@@ -104,8 +108,8 @@ namespace SgqSystem.Controllers.V2.Api
                         .FirstOrDefault();
                     item.ParHeaderField.ParMultipleValues = item.ParHeaderField.ParMultipleValues.Where(x => x.IsActive).ToList();
                 }
-                var ParFrequencyDescription = db.ParFrequency.Where(x => x.Id == parLevel1.ParFrequency_Id).FirstOrDefault();
-                parLevel1.ParFrequencyDescription = ParFrequencyDescription.Name;
+                //var ParFrequencyDescription = db.ParFrequency.Where(x => x.Id == parLevel1.ParFrequency_Id).FirstOrDefault();
+                //parLevel1.ParFrequencyDescription = ParFrequencyDescription.Name;
                 if (parLevel1 == null)
                 {
                     return NotFound();
@@ -198,7 +202,7 @@ namespace SgqSystem.Controllers.V2.Api
                     {
                         db.SaveChanges();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         return false;
                     }
@@ -211,12 +215,12 @@ namespace SgqSystem.Controllers.V2.Api
                     parLevel1.AddDate = DateTime.Now;
 
                     db.ParLevel1.Add(parLevel1);
-
+                    
                     try
                     {
                         db.SaveChanges();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         return false;
                     }
@@ -428,6 +432,7 @@ namespace SgqSystem.Controllers.V2.Api
             public List<ParCompany> ParCompanys { get; set; }
             public List<ParDepartment> ParDepartments { get; set; }
             public List<ParGroupParLevel1> ParGroupParLevel1s { get; set; }
+            public List<ParRiskCharacteristicType> ParRiskCharacteristicTypes { get; set; }
 
             public List<ParLevel3InputType> ParLevel3InputTypes { get; set; }
             public List<ParLevel3BoolTrue> ParLevel3BoolTrues { get; set; }
@@ -436,6 +441,9 @@ namespace SgqSystem.Controllers.V2.Api
 
             public IEnumerable<SelectListItem> SelectLevel2Vinculados { get; set; }
             public List<ParCargo> ParCargos { get; internal set; }
+
+            public List<ParCargoXDepartment> ParCargoXDepartments { get; set; }
+            public List<RotinaIntegracao> RotinaIntegracao { get; set; }
         }
 
         public class SaveParHeaderField

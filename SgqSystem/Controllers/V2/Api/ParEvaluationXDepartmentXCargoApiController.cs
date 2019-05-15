@@ -19,6 +19,8 @@ namespace SgqSystem.Controllers.V2.Api
             public ParDepartment ParDepartment { get; set; }
             public List<ParEvaluationXDepartmentXCargo> ParEvaluationXDepartmentXCargo { get; set; }
             public List<ParCargo> ParCargo { get; set; }
+            public List<ParDepartmentXRotinaIntegracao> ParDepartmentXRotinaIntegracao { get; set; }
+            public List<ParDepartmentXHeaderField> ParDepartmentXHeaderField { get; set; }
         }
 
         [HttpGet]
@@ -60,7 +62,14 @@ namespace SgqSystem.Controllers.V2.Api
                     item.ParEvaluationSchedule = db.ParEvaluationSchedule.Where(x => x.ParEvaluationXDepartmentXCargo_Id == item.Id).ToList();
                 }
 
+                parEvaluationXDepartmentXCargoResult.ParDepartmentXRotinaIntegracao = db.ParDepartmentXRotinaIntegracao.Where(x => x.ParDepartment_Id == id && x.IsActive).Include(y => y.RotinaIntegracao).ToList();
 
+                parEvaluationXDepartmentXCargoResult.ParDepartmentXHeaderField = db.ParDepartmentXHeaderField.Where(x => x.ParDepartment_Id == id && x.IsActive)
+                    .Include(y => y.ParHeaderField)
+                    .Include(u => u.ParHeaderField.ParLevelDefiniton)
+                    .Include(x => x.ParHeaderField.ParMultipleValues)
+                    .Include(x => x.ParHeaderField.ParFieldType)
+                    .ToList();
             }
 
             return Ok(parEvaluationXDepartmentXCargoResult);

@@ -26,7 +26,7 @@
 
             <div class="form-group">
                 <label>Departamento:</label>
-                <select class="form-control required" id="selectL3GeralParDepartment" name="ParDepartment_Id"></select>
+                <select class="form-control required" id="selectL2GeralParDepartment" name="ParDepartment_Id"></select>
             </div>
         </div>
 
@@ -61,6 +61,12 @@
 </form>
 
 <script>
+
+    $("#selectParCompanyGeral").on('change', function () {
+
+        MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL2GeralParDepartment');
+    });
+
     var lastIdL2 = 0;
     var ParL2Geral = {
 
@@ -81,7 +87,7 @@
         load: function () {
         
             let id = this.id;
-            let urlSave = this.urlSave;
+            let urlSave = this.urlSave;   
 
             function Save(obj) {
                 openLoader(Resources("please_wait"));

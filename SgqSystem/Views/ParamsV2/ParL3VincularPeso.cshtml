@@ -38,8 +38,8 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label for="ParDepartment_Id">Departamento:</label>
-                <select id="selectL3PesoParDepartment" class="input input-lg col-sm-12" name="ParDepartment_Id"></select>
+                <label for="ParGroupParLevel1_Id">Função:</label>
+                <select id="selectL3PesoParGroupParLevel1" class="input input-lg col-sm-12 required" name="ParGroupParLevel1_Id"></select>
             </div>
 
         </div>
@@ -47,8 +47,8 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label for="ParGroupParLevel1_Id">Função:</label>
-                <select id="selectL3PesoParGroupParLevel1" class="input input-lg col-sm-12 required" name="ParGroupParLevel1_Id"></select>
+                <label for="ParDepartment_Id">Departamento:</label>
+                <select id="selectL3PesoParDepartment" class="input input-lg col-sm-12" name="ParDepartment_Id"></select>
             </div>
 
         </div>
@@ -75,7 +75,7 @@
 
             <div class="form-group">
                 <label for="Peso">Peso:</label>
-                <input type="text" class="form-control required" id="Peso" name="Peso">
+                <input type="number" class="form-control required" id="Peso" name="Peso">
             </div>
 
         </div>
@@ -84,7 +84,7 @@
 
             <div class="form-group">
                 <label for="Peso">Avaliação:</label>
-                <input type="text" class="form-control" id="Evaluation" name="Evaluation">
+                <input type="number" class="form-control" id="Evaluation" name="Evaluation">
             </div>
 
         </div>
@@ -93,7 +93,7 @@
 
             <div class="form-group">
                 <label for="Peso">Amostra:</label>
-                <input type="text" class="form-control" id="Sample" name="Sample">
+                <input type="number" class="form-control" id="Sample" name="Sample">
             </div>
 
         </div>
@@ -166,6 +166,32 @@
 </form>
 
 <script>
+    var ParCargosGlobalFiltrado;
+
+    $("#ParL3Peso #selectL3PesoParDepartment").on('change', function () {
+        var departamentoSelecionado = parseInt($("#ParL3Peso #selectL3PesoParDepartment :selected").val());
+        var cargosVinculado = [];
+        
+        if (departamentoSelecionado === 0) {
+            preencheSelect('selectL3ParCargo', 'Name', 'Id', ParCargosGlobal, 'Todos');
+            cargosVinculado = [];
+        } else {
+            ParCargosGlobalFiltrado = jQuery.grep(ParCargoXDepartmentsGlobal, function (n, i) {
+                return (n.ParDepartment_Id === departamentoSelecionado);
+            });
+
+            ParCargosGlobalFiltrado.forEach(function (item) {
+                 cargosVinculado.push(item.ParCargo);
+            });
+
+            preencheSelect('selectL3ParCargo', 'Name', 'Id', cargosVinculado, 'Todos');
+        }
+    });
+
+    $("#selectParCompanyGeral").on('change', function () {
+
+        MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment');
+    });
 
     var ParL3Peso = {
 
@@ -174,7 +200,7 @@
         urlSave: '@Url.Action("PostParVinculoPeso", "api/ParLevel3Api")',
 
         load: function (list) {
-            debugger
+            
             let id = this.id;
             let urlSave = this.urlSave;
 
@@ -272,7 +298,7 @@
                 }
 
                 let ParLevel3Value = [];
-                debugger
+                
                 $('#tableParL3Peso tbody tr').each(function () {
                     ParLevel3Value.push($(this).data('sgq'));
                 });

@@ -267,6 +267,89 @@ END
 
 GO
 
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParRiskCharacteristicType' AND xtype='U')
+CREATE TABLE ParRiskCharacteristicType
+(
+Id INT NOT NULL IDENTITY(1,1),
+Name VARCHAR(500),
+AddDate DATETIME,
+AlterDate DATETIME,
+IsActive BIT NULL
+)
+
+GO
+
+INSERT INTO ParRiskCharacteristicType (Name,AddDate,IsActive) 
+VALUES 
+  ('1 - Vulnerabilidade',GETDATE(),1)
+, ('2 - Probabilidade',GETDATE(),1)
+
+GO
+
+
+IF COL_LENGTH('ParLevel3','ParRiskCharacteristicType_id') IS NULL
+BEGIN	
+	ALTER TABLE ParLevel3 Add ParRiskCharacteristicType_id INT
+END
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParDepartmentXRotinaIntegracao' AND xtype='U')
+CREATE TABLE ParDepartmentXRotinaIntegracao  (
+  Id int NOT NULL Identity,
+  Name  varchar(100),
+  ParDepartment_Id  int,
+  AddDate datetime not null,
+  AlterDate datetime,
+  RotinaIntegracao_Id int,
+  IsActive bit not null default 1,
+  FOREIGN KEY (RotinaIntegracao_Id) REFERENCES RotinaIntegracao(Id),
+  FOREIGN KEY (ParDepartment_Id) REFERENCES ParDepartment(Id),
+  PRIMARY KEY (Id)
+);
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParDepartmentXHeaderField' AND xtype='U')
+CREATE TABLE ParDepartmentXHeaderField  (
+  Id int NOT NULL Identity,
+  ParDepartment_Id  int,
+  ParHeaderField_Id int,
+  AddDate datetime not null,
+  AlterDate datetime, 
+  IsActive bit not null default 1,
+  IsRequired bit null,
+  DefaultSelected bit null,
+  HeaderFieldGroup varchar(100) null,
+  FOREIGN KEY (ParHeaderField_Id) REFERENCES ParHeaderField(Id),
+  FOREIGN KEY (ParDepartment_Id) REFERENCES ParDepartment(Id),
+  PRIMARY KEY (Id)
+);
+
+GO
+
+IF COL_LENGTH('ParDepartment','ParCompany_Id') IS NULL
+BEGIN	
+	ALTER TABLE ParDepartment
+  ADD ParCompany_Id INT null REFERENCES ParCompany(Id)
+END
+
+GO
+
+IF COL_LENGTH('ParLevel1','ParFrequency_Id') IS NOT NULL
+BEGIN
+	alter table ParLevel1 
+	alter column ParFrequency_Id int null
+END
+
+GO
+
+IF COL_LENGTH('ParLevel2','ParFrequency_Id') IS NOT NULL
+BEGIN
+	alter table ParLevel2 
+	alter column ParFrequency_Id int null
+END
+
 IF COL_LENGTH('collectionlevel2','ParDepartment_Id') IS NULL
 BEGIN	
 	ALTER TABLE collectionlevel2 ADD ParDepartment_Id int null references ParDepartment (id)

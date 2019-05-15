@@ -31,6 +31,8 @@ namespace Dominio
        
         public string Hash { get; set; }
 
+        public int? ParCompany_Id { get; set; }
+
         [DisplayName("É filho de")]
         public int? Parent_Id { get; set; }
 
@@ -39,5 +41,8 @@ namespace Dominio
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel2> ParLevel2 { get; set; }
+
+        [ForeignKey("ParCompany_Id")]
+        public virtual ICollection<ParCompany> ParCompany { get; set; }
     }
 }
