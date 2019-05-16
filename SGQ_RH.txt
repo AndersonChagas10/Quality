@@ -279,10 +279,22 @@ IsActive BIT NULL
 
 GO
 
-INSERT INTO ParRiskCharacteristicType (Name,AddDate,IsActive) 
-VALUES 
-  ('1 - Vulnerabilidade',GETDATE(),1)
-, ('2 - Probabilidade',GETDATE(),1)
+IF NOT EXISTS (SELECT * FROM ParRiskCharacteristicType WHERE Name = '1 - Vulnerabilidade' OR
+															 Name = '2 - Probabilidade')
+	BEGIN
+		INSERT INTO 
+			ParRiskCharacteristicType (Name,AddDate,IsActive) 
+		VALUES
+			('1 - Vulnerabilidade',GETDATE(),1), ('2 - Probabilidade',GETDATE(),1);
+	END
+
+GO
+
+IF EXISTS (SELECT * FROM ParRiskCharacteristicType WHERE Name = '1 - Vulnerabilidade' OR
+														 Name = '2 - Probabilidade')
+	BEGIN
+		DELETE ParRiskCharacteristicType WHERE id >= 3;
+	END
 
 GO
 
