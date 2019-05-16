@@ -164,3 +164,10 @@ IF COL_LENGTH('Result_Level3_Photos','IsProcess') IS NULL
     END
 
 GO
+
+IF COL_LENGTH('ParLevel1XRotinaIntegracao','ParLevelDefinition_Id') IS NULL
+    BEGIN	
+		ALTER table ParLevel1XRotinaIntegracao add ParLevelDefinition_Id int not null default 1 references ParLevelDefiniton (Id)
+    END
+
+GO

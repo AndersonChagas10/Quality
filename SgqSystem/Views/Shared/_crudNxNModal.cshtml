@@ -154,6 +154,7 @@
                     $(e).parents('tr').data(editado);
                     $($(e).parents('tr').find('td')[0]).html(editado.Rotina).prop('disabled', true);
                     $($(e).parents('tr').find('td')[1]).html(editado.Name)//
+                    $($(e).parents('tr').find('td')[2]).html(editado.ParLevelDefinition_Name)//
                     $('#crudNxNEdit').modal('hide');
                 });
             }
@@ -624,6 +625,7 @@
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
             $('#crudNxNEdit #myModalLabel').html($('#tableRotinas').attr('nameModal'));
             $('#crudNxNEdit #rotinaIngracaoDTO_Name').val(obj.Name);/*Preenche*/
+            $('#crudNxNEdit #ParLevelDefinition_Id').val(obj.ParLevelDefinition_Id);/*Preenche*/
             $('#crudNxNEdit #rotina').val(obj.RotinaIntegracao_Id).prop('disabled', true);/*Preenche*/
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
@@ -681,6 +683,8 @@
             }
             obj.RotinaIntegracao_Id = $('#crudNxNEdit #rotina :selected').val();
             obj.Name = $('#crudNxNEdit #rotinaIngracaoDTO_Name').val();
+            obj.ParLevelDefinition_Id = $('#crudNxNEdit #ParLevelDefinition_Id').val();
+            obj.ParLevelDefinition_Name = $('#crudNxNEdit #ParLevelDefinition_Id option[value=' + obj.ParLevelDefinition_Id + ']').text();
             //obj.Retornos = $('#crudNxNEdit #Retornos').val();
             //obj.Parametro = $('#crudNxNEdit #Parametro').val();
 
