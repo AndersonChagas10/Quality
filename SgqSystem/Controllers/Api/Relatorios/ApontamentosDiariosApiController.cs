@@ -185,7 +185,7 @@ namespace SgqSystem.Controllers.Api
             var company_Id = level3.CollectionLevel2.UnitId;
             var level1_Id = level3.CollectionLevel2.ParLevel1_Id;
 
-            var service = new SyncServices();
+            var service = new SyncServiceApiController();
 
             service.ReconsolidationLevel3ByCollectionLevel2Id(level3.CollectionLevel2_Id.ToString());
 
@@ -1085,7 +1085,7 @@ namespace SgqSystem.Controllers.Api
                 //Reconsolida
                 if (Lsc2xhf.HeaderField.Count > 0)
                 {
-                    var syncServices = new SyncServices();
+                    var syncServices = new SyncServiceApiController();
 
                     syncServices.ReconsolidationToLevel3(Lsc2xhf.HeaderField[0].CollectionLevel2_Id.ToString());
                 }

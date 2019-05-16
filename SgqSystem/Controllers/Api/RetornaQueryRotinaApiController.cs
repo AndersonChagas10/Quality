@@ -23,7 +23,7 @@ namespace SgqSystem.Controllers.Api
         {
             VerifyIfIsAuthorized();
 
-            var service = new SyncServices();
+            var service = new SyncServiceApiController();
             var empresaPadrao = new ParCompany();
             var retornoRotinaNinja = new Object();
             var idUsuario = 0;

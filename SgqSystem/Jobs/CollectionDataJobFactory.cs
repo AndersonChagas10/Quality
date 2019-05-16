@@ -10,6 +10,8 @@ using SgqSystem.Mail;
 using System.Configuration;
 using Dominio;
 using IntegrationModule;
+using SgqSystem.Controllers.Api;
+using static SgqSystem.Controllers.Api.SyncServiceApiController;
 
 namespace Jobs
 {
@@ -100,7 +102,14 @@ namespace Jobs
 
             try
             {
-                var x = new SgqSystem.Services.SyncServices().InsertJson(coleta.ToString(), "", "", false);
+                var x = new SyncServiceApiController().InsertJson(new InsertJsonClass()
+                {
+                    ObjResultJSon = coleta.ToString(),
+                    deviceId = "",
+                    deviceMac = "",
+                    autoSend = false
+                });
+
                 if (x == null)
                 {
                     using (var db = new SgqDbDevEntities())

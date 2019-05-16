@@ -71,7 +71,7 @@ namespace SgqSystem.Controllers.Api
 
         #region Funções
 
-        protected const string quebraProcesso = "98789";
+        public const string quebraProcesso = "98789";
 
         /// <summary>
         /// Converter a Data do Tablet
@@ -2542,7 +2542,7 @@ namespace SgqSystem.Controllers.Api
             return consolidation;
         }
 
-        protected static void getFrequencyDate(int ParFrequency_Id, DateTime data, ref string dataInicio, ref string dataFim)
+        public static void getFrequencyDate(int ParFrequency_Id, DateTime data, ref string dataInicio, ref string dataFim)
         {
 
             DateTime periodoInicio = data;
@@ -3033,7 +3033,7 @@ setTimeout(function(){
         [Route("getAPPLevels")]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date, int Shift_Id)
         {
-            VerifyIfIsAuthorized();
+            //VerifyIfIsAuthorized();
 
             //Factory factory = new Factory("DefaultConnection");
             //
@@ -3154,7 +3154,7 @@ setTimeout(function(){
             return APPMain;// + resource;
         }
 
-        protected string GetResource()
+        public string GetResource()
         {
             if (GlobalConfig.LanguageBrasil)
             {
@@ -4778,7 +4778,7 @@ setTimeout(function(){
             ParLevel2List = headerList +
                             ParLevel2List;
 
-            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.ParLevel1_Id), ParFieldTypeDB, html, ParCompany_id: ParCompany_Id);
+            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.ParLevel1_Id), ParFieldTypeDB, html, ParLevel1.ParLevel1_Id, ParCompany_id: ParCompany_Id);
 
 
             //if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
@@ -4833,16 +4833,37 @@ setTimeout(function(){
             return ParLevel2List;
         }
 
-        protected string GetHeaderHtml(IEnumerable<ParLevelHeader> list, SGQDBContext.ParFieldType ParFieldTypeDB, Html html, int ParLevel1_Id = 0, int ParLevel2_Id = 0, ParLevelHeader ParLevelHeaderDB = null, int ParCompany_id = 0)
+        protected string GetHeaderHtml(IEnumerable<ParLevelHeader> list, SGQDBContext.ParFieldType ParFieldTypeDB, Html html, int ParLevel1_Id = 0, int ParLevel2_Id = 0, ParLevelHeader ParLevelHeaderDB = null, int ParCompany_id = 0, int parLevelDefinition_Id = 1)
         {
             string retorno = "";
-
-
-
-
-
-
             int id = 0;
+
+            #region BotoesDeBusca
+            var rotinasIntegracaoXLevel1 = dbEf.ParLevel1XRotinaIntegracao
+                .Where(x => x.ParLevel1_Id == ParLevel1_Id 
+                && x.IsActive 
+                && x.ParLevelDefinition_Id == parLevelDefinition_Id)
+                .Select(x => x.RotinaIntegracao_Id);
+            var rotinasIntegracao = dbEf.RotinaIntegracao.Where(x => rotinasIntegracaoXLevel1.Contains(x.Id) && x.IsActive).ToList();
+
+            foreach (var botao in rotinasIntegracao)
+            {
+                var botoes = $@"<button type=""button"" class=""btn btn-primary"" data-id-rotina=""{ botao.Id }"" 
+                                data-headerFields=""{ botao.Parametro }"" onclick=""getRotina(this);"" 
+                                data-headerFieldsClean=""{ botao.Retornos }""
+                                data-loading-text=""<i class='fa fa-spinner fa-spin'></i> { Resources.Resource.loading }..."">{ botao.Name }</button>";
+
+                retorno += html.div(
+                        outerhtml: botoes,
+                        classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                        style: "padding-right: 4px !important; padding-left: 4px !important;"
+                        );
+            }
+
+            if (rotinasIntegracao.Count > 0)
+                retorno += "<br><br>";
+
+            #endregion
 
             foreach (var header in list) //LOOP7
             {
@@ -4981,6 +5002,15 @@ setTimeout(function(){
                     case 8:
                         form_control = "<br><div id=\"info" + header.ParHeaderField_Id + "\" style=\"display: none;background: RGBA(0,0,0,0.35);position: fixed;z-index: 999999;width: 100%;height: 100%;top: 0;left: 0;\"><div style=\"color: white; font-size: 16px; background: #5353c6;position: fixed; width: 100% ;height: 200px ; margin: 80px 0 0 0; padding: 10px 20px 20px 20px;\"><div style=\"float:right; cursor: pointer;\" class=\"btn btn-default\" onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"none\";'>X</div><br><br>" + header.ParHeaderField_Description + "</div></div><button style=\"padding-left: 5px;padding-right: 5px; padding-bottom: 0px; padding-top: 0px;\" onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"block\"' class='btn btn-default headerInformacao' ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\"><i class=\"fa fa-info-circle \" aria-hidden=\"true\" style=\"float:right; color:#17175c;font-size: 28px;\" title=\"" + header.ParHeaderField_Description + "\" ></i></button>";
                         form_control += " <label class=\"\"></label>";
+                        break;
+                    case 9:
+                        form_control = $@"<input class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-param=""{ header.ParHeaderField_Description }"">";
+                        form_control += $@"<label class=""""></label>";
+                        break;
+                    //Dinâmico
+                    case 10:
+                        form_control = $@"<input class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-din=""{ header.ParHeaderField_Description }"" readonly>";
+                        form_control += $@"<label class=""""></label>";
                         break;
                 }
 
@@ -5128,7 +5158,7 @@ setTimeout(function(){
                                         );
 
                 var painelLevel3HeaderListHtml = new StringBuilder(GetHeaderHtml(
-                   ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id), ParFieldTypeDB, html, ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id, ParLevelHeaderDB, ParCompany_Id));
+                   ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id), ParFieldTypeDB, html, ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id, ParLevelHeaderDB, ParCompany_Id,2));
 
                 var painelLevel3HeaderListHtml2 = "";
                 painelLevel3HeaderListHtml2 += html.div(
@@ -5655,7 +5685,7 @@ setTimeout(function(){
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
                 var painelLevel3HeaderListHtml = new StringBuilder(GetHeaderHtml(
-                    ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id), ParFieldTypeDB, html, ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id, ParLevelHeaderDB, ParCompany_Id));
+                    ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id), ParFieldTypeDB, html, ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id, ParLevelHeaderDB, ParCompany_Id, 2));
 
                 //string HeaderLevel02 = null;
 
@@ -6072,7 +6102,7 @@ setTimeout(function(){
             return input;
         }
 
-        protected string GetLoginAPP()
+        public string GetLoginAPP()
         {
             var html = new Html();
             string head = html.div(classe: "head");
@@ -6962,7 +6992,7 @@ setTimeout(function(){
             return ResultsKeys;
         }
 
-        protected string _ReConsolidationByLevel1(int ParCompany_Id, int ParLevel1_Id, DateTime ConsolidationDate)
+        public string _ReConsolidationByLevel1(int ParCompany_Id, int ParLevel1_Id, DateTime ConsolidationDate)
         {
 
             string sql = "SELECT CL2.Id, CL2.ParLevel2_Id, CL2.ConsolidationLevel1_Id FROM ConsolidationLevel2 CL2 WITH (NOLOCK) " +
@@ -7020,7 +7050,7 @@ setTimeout(function(){
             }
         }
 
-        protected string ReconsolidationToLevel3(string collectionLevel2_Id)
+        public string ReconsolidationToLevel3(string collectionLevel2_Id)
         {
 
             try
@@ -7155,7 +7185,7 @@ setTimeout(function(){
 
         }
 
-        protected void ReconsolidationLevel3ByCollectionLevel2Id(string collectionLevel2_Id)
+        public void ReconsolidationLevel3ByCollectionLevel2Id(string collectionLevel2_Id)
         {
             try
             {
