@@ -34,6 +34,7 @@ function openColeta(levels) {
         '			  </div>                                                                                                                       ' +
         '			  <div class="panel-body">                                                                                                     ' +
         getContador() +
+        getParHeaderField() +
         '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
         coleta +
         '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       ' +
@@ -404,6 +405,9 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         };
     }
 
+    var collectionHeaderFields = getCollectionHeaderFields();
+    console.table(collectionHeaderFields);
+
     //Insere valores da coleta
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
         var data = $(o);
@@ -446,6 +450,16 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
             }
         );
     });
+
+    var cabecalhos = getCollectionHeaderFields();
+
+    if (cabecalhos) {
+        cabecalhos.forEach(function (cabecalho) {
+            //campos de cabeçalhos
+            coletaJson.push(cabecalho);
+        });
+    }
+
 
     //Se for a primeira, insere na lista de resultados
     if (coletaAgrupada.Evaluation == 1 && coletaAgrupada.Sample == 1) {
@@ -506,16 +520,16 @@ function OpenCorrectiveAction(coleta) {
 
     var body = '<div class="form-group">' +
         '<div class="form-group col-xs-12">' +
-            '<label>Descrição da Falha:</label>' +
-            '<textarea name="DescriptionFailure" id="descriptionFailure" rows="7" class="col-sx-12 form-control"></textarea>' +
+        '<label>Descrição da Falha:</label>' +
+        '<textarea name="DescriptionFailure" id="descriptionFailure" rows="7" class="col-sx-12 form-control"></textarea>' +
         '</div>' +
         '<div class="form-group col-xs-6">' +
-            '<label for="email">Slaughter :</label>' +
-            '<select name="SlaughterId" id="slaughterId" class="form-control">' + selectUsers + '</select>' +
+        '<label for="email">Slaughter :</label>' +
+        '<select name="SlaughterId" id="slaughterId" class="form-control">' + selectUsers + '</select>' +
         '</div>' +
         '<div class="form-group col-xs-6">' +
-            '<label for="email">Technical:</label>' +
-            '<select name="TechinicalId" id="techinicalId" class="form-control">' + selectUsers + '</select>' +
+        '<label for="email">Technical:</label>' +
+        '<select name="TechinicalId" id="techinicalId" class="form-control">' + selectUsers + '</select>' +
         '</div>';
 
     var corpo =
@@ -528,7 +542,7 @@ function OpenCorrectiveAction(coleta) {
         '</div>' +
         '<hr>' +
         '<div class="form-group col-xs-6">' +
-            '<button class="btn btn-primary" id="btnSendCA">Salvar Ação Corretiva</button>' +
+        '<button class="btn btn-primary" id="btnSendCA">Salvar Ação Corretiva</button>' +
         '</div>' +
         '</div>' +
         '</div>';
@@ -550,4 +564,33 @@ function OpenCorrectiveAction(coleta) {
 
     });
 
+}
+
+function getCollectionHeaderFields() {
+
+    var collectionHeaderFied = [];
+
+    $('#headerField input, select').each(function () {
+
+        $self = $(this);
+
+        //validar se os campos de cabeçalho obrigatórios foram preenchidos;
+
+        if ($self.val())
+
+            collectionHeaderFied.push({
+                ParHeaderField_Id: $self.attr("parheaderfield_id"),
+                ParHeaderField_Value: $self.val(),
+                Evaluation: currentEvaluationSample.Evaluation,
+                Sample: currentEvaluationSample.Sample,
+                ParDepartment_Id: currentParDepartment_Id,
+                ParCargo_Id: currentParCargo_Id,
+                ParCompany_Id: curretParCompany_Id,
+                CollectionDate: convertDateToJson(new Date()),
+                UserSgq_Id: currentLogin.Id,
+            });
+
+    });
+
+    return collectionHeaderFied;
 }

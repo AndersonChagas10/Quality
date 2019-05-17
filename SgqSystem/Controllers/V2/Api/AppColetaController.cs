@@ -483,7 +483,8 @@ namespace SgqSystem.Controllers.V2.Api
                        ,GETDATE() as StartPhaseDate
                        ,UserSgq_Id as AuditorId
                         FROM Collection
-                        WHERE IsProcessed = 0";
+                        WHERE IsProcessed = 0
+                        AND ParHeaderField_Id IS NULL";
 
             var collectionLevel2 = new List<CollectionLevel2>();
 
