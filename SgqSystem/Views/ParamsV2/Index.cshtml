@@ -215,7 +215,7 @@
                     </li>
                     <li class="col-sm-3">
                         <a data-toggle="tab" href="#dc">
-                            Departamento X Cargo (Av e Am)
+                            Centro de Custo X Cargo (Av e Am)
                             <select id="selectDCDepartment" class="input input-lg"></select>
                         </a>
                     </li>
@@ -428,6 +428,18 @@
     var ParDepartmentsGlobal;
     var parCompanysGlobal;
 
+    $("#btnVincular").hide();
+
+    var validaBotaoVincular = function () {
+        if (parseInt($(`#selectL1 :selected`).val()) > 0
+            && parseInt($(`#selectL2 :selected`).val()) > 0
+            && parseInt($(`#selectL3 :selected`).val()) > 0) {
+            $("#btnVincular").show();
+        } else {
+            $("#btnVincular").hide();
+        }
+    }
+
     let setSelectLevel1 = function (data) {
         preencheSelect('selectL1', 'Name', 'Id', data.ParLevels1, 'Criar novo inidicador', preencheL1);
         preencheSelect('selectL2AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indidicador');
@@ -493,8 +505,9 @@
             $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
         });
 
-        if (callBack)
+        if (callBack) {
             $(`select#${id}`).off('change').on('change', callBack);
+        }
 
         $(`select#${id}`).select2();
     }
@@ -641,6 +654,7 @@
         setFormToDefault('ParL1Geral');
         setFormToDefault('ParL1Cabecalho');
         setFormToDefault('ParL1Processo');
+        validaBotaoVincular();
 
         if (parseInt($(this).val()) > 0) {
 
@@ -702,6 +716,7 @@
         verifyTabs('selectL2', 'l2');
         setFormToDefault('ParL2Geral');
         setFormToDefault('ParL2Avam');
+        validaBotaoVincular();
 
         if (parseInt($(this).val()) > 0) {
             openLoader(Resources("please_wait"));
@@ -752,6 +767,7 @@
 
         apagaCampos('l3');
         verifyTabs('selectL3', 'l3');
+        validaBotaoVincular();
 
         if (parseInt($(this).val()) > 0) {
             openLoader(Resources("please_wait"));
@@ -1073,6 +1089,8 @@
         $('#ParL3Peso').find('#selectL3PesoParLevel2').val(parLevel2_Id).change();
         $('#ParL3Peso').find('#selectL3PesoParLevel3').val(parLevel3_Id).change();
 
+        openMessageModal(Resources("done"), Resources("monitoring_task_linked_indicator_successfully"));
+
         @*let idLevel1 = $('#selectL1').val();
         let idLevel2 = $('#selectL2').val();
         let idLevel3 = $('#selectL3').val();
@@ -1108,6 +1126,7 @@
         }).fail(function (e, h, x) {
             openMessageModal(Resources("alert"), e.responseJSON.Message);
         });*@
+        
     });
 
     $(document).on('click', function () {

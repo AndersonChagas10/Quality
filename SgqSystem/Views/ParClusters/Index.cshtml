@@ -58,6 +58,9 @@
                                             <th>
                                                 @Resources.Resource.cluster_group
                                             </th>
+                                            <th>
+                                                @Resources.Resource.is_active
+                                            </th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -73,6 +76,9 @@
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.ParClusterGroup.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IsActive)
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
@@ -104,7 +110,8 @@
              null,
              null,
              null,
-             { "bSearchable": false }
+             null,
+             { "bSearchable": false }             
          ];
          $('#tabelaProcessos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });

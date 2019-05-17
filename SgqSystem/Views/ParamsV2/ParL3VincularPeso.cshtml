@@ -47,7 +47,7 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label for="ParDepartment_Id">Departamento:</label>
+                <label for="ParDepartment_Id">Centro de Custo:</label>
                 <select id="selectL3PesoParDepartment" class="input input-lg col-sm-12" name="ParDepartment_Id"></select>
             </div>
 
@@ -80,7 +80,7 @@
 
         </div>
 
-        <div class="col-sm-4">
+        <div id="divAvaliacao" hidden="hidden" class="col-sm-4">
 
             <div class="form-group">
                 <label for="Peso">Avaliação:</label>
@@ -89,7 +89,7 @@
 
         </div>
 
-        <div class="col-sm-4">
+        <div id="divAmostra" hidden="hidden" class="col-sm-4">
 
             <div class="form-group">
                 <label for="Peso">Amostra:</label>
@@ -98,16 +98,23 @@
 
         </div>
 
-        <div class="col-sm-4">
+        <div id="divFrequencia" hidden="hidden" class="col-sm-4">
 
             <div class="form-group">
                 <label for="Frequencia">Frequência:</label>
-                <select class="form-control required" id="selectParFrequencyAV" name="ParFrequencyId"></select>
+                <select class="form-control" id="selectParFrequencyAV" name="ParFrequencyId"></select>
             </div>
 
         </div>
 
+        <div class="col-sm-2">
 
+            <div class="form-group">
+                <label></label>
+                <button id="btnAvancado" type="button" class="form-control btn btn-info">Avançado</button>
+            </div>
+
+        </div>
 
         <div class="col-sm-2">
 
@@ -134,7 +141,7 @@
                             Monitoramento
                         </th>
                         <th class="col-sm-2">
-                            Departamento
+                            Centro de Custo
                         </th>
                         <th class="col-sm-1">
                             Função
@@ -143,10 +150,10 @@
                             Cargo
                         </th>
                         <th class="col-sm-1">
-                            Avaliação
+                            Av
                         </th>
                         <th class="col-sm-1">
-                            Amostra
+                            Am
                         </th>
                         <th class="col-sm-1">
                             Frequência
@@ -199,6 +206,20 @@
         MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', empresaSelecionada);
     });
 
+    $("#ParL3Peso #btnAvancado").on('click', function () {
+        debugger
+        if (!$("#divFrequencia").is(":visible")) {
+            $("#divFrequencia").show();
+            $("#divAvaliacao").show();
+            $("#divAmostra").show();
+        } else {
+            $("#divFrequencia").hide();
+            $("#divAvaliacao").hide();
+            $("#divAmostra").hide();
+        }
+       
+    });
+
     var ParL3Peso = {
 
         //paramtros
@@ -226,7 +247,11 @@
                 var Am = o.Sample !== null ? o.Sample : "";
                 html += '<td>' + Av + '</td>';
                 html += '<td>' + Am + '</td>';
-                html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParFrequencyId"]', o.ParFrequencyId, 'Todos') + '</td>';
+                var frequencia = (o.ParFrequencyId == null ? "" : o.ParFrequencyId);
+                if(frequencia != 0)
+                    html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParFrequencyId"]', frequencia, 'Todos') + '</td>';
+                else
+                    html += '<td> </td>';
                 html += '<td>' + o.Peso + '</td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
@@ -262,7 +287,7 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
-
+                debugger
                 var obj = $(this).parents('tr').data('sgq');
 
                 apagaCampos(id);
@@ -339,6 +364,11 @@
 
                 if (!formIsValid(id)) {
                     return false
+                }
+
+                if (parseInt($("#selectParFrequencyAV :selected").val()) > 0 && ($("#Evaluation").val() == "" || $("#Sample").val() == "")) {
+                    openMessageModal("Alerta", "Ao selecionar uma Frequência os campos Avaliação e Amostra devem ser preenchidos!");
+                    return false;
                 }
 
                 if (formIsDuplicate()) {

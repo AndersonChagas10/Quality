@@ -4986,4 +4986,7 @@
   <data name="_novo1" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="costcenter" xml:space="preserve">
+    <value>Cost Center</value>
+  </data>
 </root>

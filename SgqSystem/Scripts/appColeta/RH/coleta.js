@@ -472,9 +472,16 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     //Atualiza para a proxima coleta (se precisar adicionar amostra ou avaliação)
     coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
 
+    //Mostra mensagem de que a coleta foi realizada com sucesso e fecha após 3 segundos
+    openModal("Amostra salva com sucesso!", "green", "white");
+    closeModal(3000);
 
-    //atualiza tela de coleta e contadores
-    listarParCargo();
+    if (coletaAgrupada.Sample == 1) {
+        //atualiza tela de coleta e contadores
+        listarParCargo();
+    } else {
+        listarParLevels();
+    }
 });
 
 function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {

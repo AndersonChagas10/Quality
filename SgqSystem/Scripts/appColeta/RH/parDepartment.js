@@ -49,7 +49,7 @@ function listarParDepartment(parDepartment_Id) {
 		'                                                                  ' +
 		'			<div class="panel panel-primary">                      ' +
 		'			  <div class="panel-heading">                          ' +
-		'				<h3 class="panel-title">' + voltar + ' Selecione o departamento desejado</h3>            ' +
+        '				<h3 class="panel-title">' + voltar + ' Selecione o centro de custo desejado</h3>            ' +
 		'			  </div>                                               ' +
 		'			  <div class="panel-body">                             ' +
 		'				<div class="list-group">                           ' +

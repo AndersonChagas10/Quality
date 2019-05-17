@@ -45,7 +45,7 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label for="ParDepartment_Id">Departamento:</label>
+                <label for="ParDepartment_Id">Centro de Custo:</label>
                   <select id="selectL3TipoDadoParDepartment" class="input input-lg col-sm-12" name="ParDepartment_Id"></select>
             </div>
 
@@ -191,6 +191,12 @@
                             Empresa
                         </th>
                         <th class="col-sm-2">
+                            Centro de Custo
+                        </th>
+                        <th class="col-sm-2">
+                            Cargo
+                        </th>
+                        <th class="col-sm-2">
                             Indicador
                         </th>
                         <th class="col-sm-2">
@@ -325,19 +331,18 @@
             $('table#table' + id + ' tbody').html('');
 
             $(list).each(function (i, o) {
-
+                
                 var html = '<tr>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3InputType_Id"]', o.ParLevel3InputType_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
-
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParDepartment_Id"]', o.ParDepartment_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
-
-
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel1_Id"]', o.ParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel2_Id"]', o.ParLevel2_Id, 'Todos') + '</td>';
-                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolTrue_Id"]', o.ParLevel3BoolTrue_Id, 'Todos') + '</td>';
-                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolFalse_Id"]', o.ParLevel3BoolFalse_Id, 'Todos') + '</td>';
+                var boleanoTrue = (o.ParLevel3BoolTrue_Id == null ? "0" : o.ParLevel3BoolTrue_Id);
+                var boleanoFalse = (o.ParLevel3BoolFalse_Id == null ? "0" : o.ParLevel3BoolFalse_Id);
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolTrue_Id"]', boleanoTrue, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolFalse_Id"]', boleanoFalse, 'Todos') + '</td>';
                 html += '<td>' + (o.IntervalMin == null ? "" : o.IntervalMin) + '</td>';
                 html += '<td>' + (o.IntervalMax == null ? "" : o.IntervalMax) + '</td>';
                 html += '<td>' + (o.DynamicValue == null ? "" : o.DynamicValue) + '</td>';
