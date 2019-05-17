@@ -2,7 +2,7 @@
 function stringToDate(dateString){
 
     var dia = parseInt(dateString.substr(8, 2));
-    var mes = parseInt(dateString.substr(5, 2));
+    var mes = parseInt(dateString.substr(5, 2)) - 1;
     var ano = parseInt(dateString.substr(0, 4));
 
     var hora = parseInt(dateString.substr(11, 2)) ? parseInt(dateString.substr(11, 2)) : 0;
