@@ -76,6 +76,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 //TODO: Fazer uma função que leia do banco o Collection que não foram processados, e separe os CollectionLevel2 e Result_Level3 da tabela salva
                 var collectionsLevel2 = GetCollectionsLevel2NotProcess();
+
                 try
                 {
                     foreach (var collectionLevel2 in collectionsLevel2)
@@ -130,7 +131,8 @@ namespace SgqSystem.Controllers.V2.Api
 
                         }
                     }
-                }catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     return BadRequest(ex.ToClient());
                 }
@@ -172,6 +174,9 @@ namespace SgqSystem.Controllers.V2.Api
 
             List<ParAlert> listaParAlert;
 
+            List<ParHeaderField> listaParHeaderField;
+            List<ParDepartmentXHeaderField> listaParDepartmentXHeaderField;
+            List<ParMultipleValues> listaParMultipleValues;
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -182,7 +187,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id)
                     .Where(x => x.IsActive)
-                    .OrderByDescending(x=>x.ParCompany_Id)
+                    .OrderByDescending(x => x.ParCompany_Id)
                     .Select(x => new ParVinculoPesoAppViewModel()
                     {
                         Id = x.Id,
@@ -263,7 +268,7 @@ namespace SgqSystem.Controllers.V2.Api
                 foreach (var item in listaParEvaluationXDepartmentXCargoAppViewModel)
                 {
                     item.ParEvaluationScheduleAppViewModel = listaEvaluations
-                        .Where(y=>y.ParEvaluationXDepartmentXCargo_Id == item.Id)
+                        .Where(y => y.ParEvaluationXDepartmentXCargo_Id == item.Id)
                         .Select(y => new ParEvaluationScheduleAppViewModel()
                         {
                             Inicio = y.Inicio,
@@ -386,6 +391,23 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => x.IsActive && x.IsCollectAlert)
                     .ToList();
 
+                listaParDepartmentXHeaderField = db.ParDepartmentXHeaderField
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaParHeaderField = db.ParHeaderField
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaParMultipleValues = db.ParMultipleValues
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+
+
             }
 
             return Ok(new
@@ -404,7 +426,10 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParCargo,
                 listaParCargoXDepartment,
                 listaParLevel3XHelp,
-                listaParAlert
+                listaParAlert,
+                listaParDepartmentXHeaderField,
+                listaParHeaderField,
+                listaParMultipleValues
             });
         }
 
