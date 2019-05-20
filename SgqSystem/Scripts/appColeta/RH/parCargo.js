@@ -152,7 +152,7 @@ $('body').off('click', '[data-par-cargo-id]').on('click', '[data-par-cargo-id]',
 
 function atualizaCorAgendamento(cargo,currentEvaluationSample) {
     setTimeout(function () {
-        debugger
+        
         if (cargo['Evaluation'].ParEvaluationScheduleAppViewModel.length > 0) {
 
             var av = 0;
