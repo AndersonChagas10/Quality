@@ -337,6 +337,20 @@ function setValoresLevel3Alertas(level3) {
                 defeitosPonderados = defeitos > 0 ? (defeitos * peso) + (punicao * peso) : 0;
             level3ComDefeitos = defeitosPonderados > 0 ? 1 : 0;
             break;
+        case 10:
+            if (valor >= limiteInferior && valor <= limiteSuperior) {
+                defeitos = 0;
+            }
+            else {
+                defeitos = 1;
+            }
+
+            if (isEUA)
+                defeitosPonderados = (defeitos * peso) + (punicao * peso);
+            else
+                defeitosPonderados = defeitos > 0 ? (defeitos * peso) + (punicao * peso) : 0;
+            level3ComDefeitos = defeitosPonderados > 0 ? 1 : 0;
+            break;
         default:
             defeitos = 0;
             defeitosPonderados = 0;
