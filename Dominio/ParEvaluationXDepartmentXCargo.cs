@@ -21,6 +21,9 @@ namespace Dominio
 
         public int? ParFrequencyId { get; set; }
 
+        [NotMapped]
+        public bool IsAgendamento { get; set; }
+
         public bool IsActive { get; set; }
 
         [ForeignKey("ParCargo_Id")]
