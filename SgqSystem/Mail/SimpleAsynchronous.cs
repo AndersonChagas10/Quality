@@ -575,7 +575,7 @@ namespace SgqSystem.Mail
                 var ids = db.CollectionJson.Where(r => !r.IsProcessed /*&& r.TTP == null*/).Select(r => r.Id).ToList();
                 foreach (var i in ids)
                 {
-                    using (var service = new SyncServices())
+                    using (var service = new SyncServiceApiController())
                     {
                         try
                         {

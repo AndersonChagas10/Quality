@@ -32,7 +32,7 @@ namespace SgqSystem.Controllers.Api.App
             string dataInicio = string.Empty;
             string dataFim = string.Empty;
 
-            SyncServices.getFrequencyDate(level1.ParFrequency_Id, DateTime.Now /*MOCK DEV> OBS:PRECISA PASSaR COMO REFERENCIA PARA RETROATIVO*/, ref dataInicio, ref dataFim);
+            SyncServiceApiController.getFrequencyDate(level1.ParFrequency_Id, DateTime.Now /*MOCK DEV> OBS:PRECISA PASSaR COMO REFERENCIA PARA RETROATIVO*/, ref dataInicio, ref dataFim);
 
 
             var sql = "select" +
@@ -92,7 +92,7 @@ namespace SgqSystem.Controllers.Api.App
                 string dataInicio = string.Empty;
                 string dataFim = string.Empty;
 
-                SyncServices.getFrequencyDate(level2item.ParFrequency_Id, DateTime.Now, ref dataInicio, ref dataFim);
+                SyncServiceApiController.getFrequencyDate(level2item.ParFrequency_Id, DateTime.Now, ref dataInicio, ref dataFim);
                 var rangePelaFrquenciaInicio = Guard.ParseDateToSqlV2(dataInicio, "yyyyMMdd");
                 var rangePelaFrquenciaFim = Guard.ParseDateToSqlV2(dataFim, "yyyyMMdd");
 

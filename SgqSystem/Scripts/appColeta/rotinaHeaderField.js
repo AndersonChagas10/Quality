@@ -12,8 +12,8 @@ function getRotina(that) {
 
     headerFieldsParams.forEach(function (headerFieldParam) {
 
-        var self = $('input[data-param=' + headerFieldParam + ']').parents('.header');
-        var value = $('input[data-param=' + headerFieldParam + ']').val();
+        var self = $('input[data-param=' + headerFieldParam + ']:visible').parents('.header');
+        var value = $('input[data-param=' + headerFieldParam + ']:visible').val();
         var isRequired = $(self).prop('required');
 
         if (isRequired && !value) {
@@ -78,7 +78,7 @@ function setDynamicValues(obj) {
 
     $.each(obj, function (key, value) {
 
-        var input = $('input[data-din=' + key + ']');
+        var input = $('input[data-din=' + key + ']:visible');
 
         if (input)
             $(input).val(value);
@@ -90,9 +90,11 @@ function cleanInputHeaderFields(obj) {
     if (obj.HeaderFieldsParamsClean && obj.HeaderFieldsParamsClean.length > 0)
         obj.HeaderFieldsParamsClean.forEach(function (key, i) {
 
-            var input = $('input[data-din=' + key + ']');
+            if(key.length > 0){
+                var input = $('input[data-din=' + key + ']:visible');
 
-            if (input)
-                $(input).val("");
+                if (input)
+                    $(input).val("");
+            }
         });
 }

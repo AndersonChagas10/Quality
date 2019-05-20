@@ -628,7 +628,7 @@ namespace SgqSystem.Controllers.Api
             #endregion
 
             #region Parte07
-            Services.SyncServices s = new Services.SyncServices();
+            SyncServiceApiController s = new SyncServiceApiController();
 
             //using (var db = new Factory(ipProd, bancoProd, "wordpass14t", "grjuser"))
             using (var db = new Factory(ipProd, bancoProd, "betsy1", "sa"))

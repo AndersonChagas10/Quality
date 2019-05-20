@@ -410,7 +410,7 @@ namespace SgqSystem.Controllers.Api
                                 {
                                     //if (autoSend == true)
                                     //{
-                                    SyncServices sync = new SyncServices();
+                                    SyncServiceApiController sync = new SyncServiceApiController();
                                     sync.ProcessJson(null, iSql, false);
 
                                     //}

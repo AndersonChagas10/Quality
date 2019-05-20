@@ -21,6 +21,11 @@ namespace Dominio
 
         public bool IsActive { get; set; }
 
+        public int ParLevelDefinition_Id { get; set; }
+
+        [ForeignKey("ParLevelDefinition_Id")]
+        public ParLevelDefiniton ParLevelDefinition { get; set; }
+
         [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }
 

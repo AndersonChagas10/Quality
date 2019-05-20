@@ -113,11 +113,11 @@ namespace SgqSystem.Controllers.Api
         {
             ParLevel1 parLevel1 = new ParLevel1();
 
-            string novoparLevel2IdDianteiro = parLevel2IdDianteiro.ToString().Replace(Services.SyncServices.quebraProcesso, "-");
+            string novoparLevel2IdDianteiro = parLevel2IdDianteiro.ToString().Replace(SyncServiceApiController.quebraProcesso, "-");
             string clusterDianteiro = novoparLevel2IdDianteiro.Split('-')[0];
             parLevel2IdDianteiro = Convert.ToInt32(novoparLevel2IdDianteiro.Split('-')[1]);
 
-            string novoparLevel2Id2Traseiro = parLevel2Id2Traseiro.ToString().Replace(Services.SyncServices.quebraProcesso, "-");
+            string novoparLevel2Id2Traseiro = parLevel2Id2Traseiro.ToString().Replace(SyncServiceApiController.quebraProcesso, "-");
             string clusterTraseiro = novoparLevel2Id2Traseiro.Split('-')[1];
             parLevel2Id2Traseiro = Convert.ToInt32(novoparLevel2Id2Traseiro.Split('-')[1]);
 
@@ -127,7 +127,7 @@ namespace SgqSystem.Controllers.Api
             }
                                                                                                                     
             var query =
-                "SELECT FORMAT(CollectionDate, 'MMddyyyy') as CollectionDate, cast(" + clusterDianteiro +" as varchar) + cast(" + Services.SyncServices.quebraProcesso + " as varchar) + CAST(ParLevel1_Id AS VARCHAR) ParLevel1_Id , cast(" + clusterDianteiro +" as varchar) + cast(" + Services.SyncServices.quebraProcesso + " as varchar) + CAST(ParLevel2_Id AS VARCHAR) ParLevel2_Id, UnitId,  " +
+                "SELECT FORMAT(CollectionDate, 'MMddyyyy') as CollectionDate, cast(" + clusterDianteiro +" as varchar) + cast(" + SyncServiceApiController.quebraProcesso + " as varchar) + CAST(ParLevel1_Id AS VARCHAR) ParLevel1_Id , cast(" + clusterDianteiro +" as varchar) + cast(" + SyncServiceApiController.quebraProcesso + " as varchar) + CAST(ParLevel2_Id AS VARCHAR) ParLevel2_Id, UnitId,  " +
                 "Sequential, Side, DefectsResult, [Key]  FROM CollectionLevel2                                     " +
                 "WHERE parlevel1_Id = "+ parLevel1.Id + "                                                          " +
                 "and ParLevel2_Id in ("+ parLevel2IdDianteiro + ", "+ parLevel2Id2Traseiro + ")                    " +   

@@ -3,6 +3,7 @@ using Dominio;
 using DTO;
 using DTO.Helpers;
 using Newtonsoft.Json;
+using SgqSystem.Controllers.Api;
 using SgqSystem.Helpers;
 using SgqSystem.Services;
 using System;
@@ -59,7 +60,7 @@ namespace SgqSystem.Controllers.Api.App
             var shifts = db.Shift.ToList();
             shifts.Insert(0, new Shift());
 
-            using (var service = new SyncServices())
+            using (var service = new SyncServiceApiController())
             {
                 foreach (var shift in shifts)
                 {
@@ -106,7 +107,7 @@ namespace SgqSystem.Controllers.Api.App
             var shifts = this.listaDeShift;
             shifts.Insert(0, new Shift());
 
-            using (var service = new SyncServices())
+            using (var service = new SyncServiceApiController())
             {
                 for (int i = 0; i < shifts.Count; i++)
                 {
@@ -233,7 +234,7 @@ namespace SgqSystem.Controllers.Api.App
         //[Route("UpdateListaDeUsuarios/{UnitId}")]
         //public Dictionary<int, string> UpdateListaDeUsuarios(int UnitId)
         //{
-        //    using (var service = new SyncServices())
+        //    using (var service = new SyncServiceApiController())
         //    {
         //        service.getCompanyUsers(UnitId.ToString()));
         //    }
@@ -271,7 +272,7 @@ namespace SgqSystem.Controllers.Api.App
         {
             var html = new Html();
 
-            var teste = new SyncServices();
+            var teste = new SyncServiceApiController();
 
             string login = teste.GetLoginAPP();
 

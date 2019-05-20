@@ -35,7 +35,7 @@ namespace SgqSystem.Services
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     [System.Web.Script.Services.ScriptService]
-    public class SyncServices : System.Web.Services.WebService
+    public class SyncServicesOld : System.Web.Services.WebService
     {
 
         string conexao;
@@ -46,7 +46,7 @@ namespace SgqSystem.Services
 
         Dominio.SgqDbDevEntities dbEf;
 
-        public SyncServices()
+        public SyncServicesOld()
         {
 
             conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
