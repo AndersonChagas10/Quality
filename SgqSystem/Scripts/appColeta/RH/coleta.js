@@ -386,6 +386,11 @@ function resetarLinha(linha) {
 $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
     e.preventDefault();
 
+
+    if (!HeaderFieldsIsValid()) {
+        return false;
+    }
+
     //Verifica se existe coleta já realizada para este cargo.
     var coletaAgrupada = null;
     $(coletasAgrupadas).each(function (i, o) {
@@ -406,7 +411,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     }
 
     var collectionHeaderFields = getCollectionHeaderFields();
-    console.table(collectionHeaderFields);
+    //console.table(collectionHeaderFields);
 
     //Insere valores da coleta
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
@@ -600,4 +605,33 @@ function getCollectionHeaderFields() {
     });
 
     return collectionHeaderFied;
+}
+
+function HeaderFieldsIsValid() {
+
+    retorno = true;
+
+    $('#headerField input, select').each(function () {
+
+        $self = $(this);
+
+        $self.css("background-color", "");
+
+        if ($self.attr("data-required") == "true") {
+
+            if ($self.val() == null || $self.val() == undefined || $self.val() == "") {
+                $self.css("background-color", "#ffc1c1");
+                retorno = false;
+            }
+        }
+
+    });
+
+    if (!retorno) {
+        openMensagem("Campos de cabeçalho obrigatórios não preenchidos", "blue", "white");
+        closeMensagem(2000);
+    }
+
+    return retorno;
+
 }

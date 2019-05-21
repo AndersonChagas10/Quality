@@ -12,7 +12,7 @@ function montarHeaderFields() {
 
     var headerFields = getHeaderFiledsbyDepartment();
 
-    if (headerFields.length)
+    if (headerFields && headerFields.length)
         headerFields.forEach(function (headerField) {
             html += getInputOrSelect(headerField);
         });
@@ -41,8 +41,13 @@ function getHeaderFiledsbyDepartment() {
 
         })[0];
 
-        if (headerFieldByDepartment)
+        if (headerFieldByDepartment) {
+
+            headerFieldByDepartment.IsRequired = parDepartmentXHeaderField.IsRequired;
             headerFields.push(headerFieldByDepartment);
+
+        }
+
     });
 
     return headerFields;
@@ -53,51 +58,53 @@ function getInputOrSelect(parheaderField) {
 
     var html = "";
 
+    var required = (parheaderField.IsRequired == 1 ? 'true' : 'false');
+
     switch (parheaderField.ParFieldType_Id) {
         case 1: // Multipla Escolha 
-            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;" required="">';
+            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<select class="form-control input-sm ddl" id="cb' + parheaderField.Id + '" name="cb" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldtype_Id + '" idpai="0" linknumberevaluetion="false">';
+            html += '<select class="form-control input-sm ddl" id="cb' + parheaderField.Id + '" name="cb" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldtype_Id + '" idpai="0" linknumberevaluetion="false" data-required="' + required + '"">';
             html += getParMultipleValues(parheaderField);
             html += '</select>';
             html += '</div>';
             break;
-        case 2:	//Integrações 
-            break;
+        // case 2:	//Integrações 
+        //     break;
         case 3:	//Binario 
-            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;" required="">';
+            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<select class="form-control input-sm ddl" id="cb' + parheaderField.Id + '" name="cb" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldtype_Id + '" idpai="0" linknumberevaluetion="false">';
+            html += '<select class="form-control input-sm ddl" id="cb' + parheaderField.Id + '" name="cb" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldtype_Id + '" idpai="0" linknumberevaluetion="false" data-required="' + required + '"">';
             html += getParMultipleValues(parheaderField);
             html += '</select>';
             html += '</div>';
             break;
         case 4:	//Texto 
-            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;" required="">';
+            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<input class="form-control input-sm" type="text" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '">'
+            html += '<input class="form-control input-sm" type="text" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '"">'
             html += '</div>';
             break;
         case 5:	//Numerico 
-            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;" required="">';
+            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<input class="form-control input-sm " type="number" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '">';
+            html += '<input class="form-control input-sm " type="number" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '"">';
             html += '</div>';
             break;
         case 6:	//Data 
-            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;" required="">';
+            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<input class="form-control input-sm " type="date" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '">';
+            html += '<input class="form-control input-sm " type="date" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '"">';
             html += '</div>';
             break;
         case 7:  //Hora
-            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;" required="">';
+            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<input class="form-control input-sm " type="time" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '">'
+            html += '<input class="form-control input-sm " type="time" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '"">'
             html += '</div>';
             break;
         case 8:	//Informações
-            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;" required="">';
+            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
             html += '</div>';
             break;
@@ -122,10 +129,10 @@ function getParMultipleValues(parheaderField) {
 
     if (parMultipleValues.length > 0) {
 
-        var options = "";
+        var options = '<option value="">Selecione...</option>';
 
         parMultipleValues.forEach(function (parMultipleValue) {
-            options += '<option value="' + parMultipleValue.Id + '" punishmentvalue="' + parMultipleValue.PunishmentValue + '">Truck</option>';
+            options += '<option value="' + parMultipleValue.Id + '" punishmentvalue="' + parMultipleValue.PunishmentValue + '"' + (parMultipleValue.IsDefaultOption == 1 ? " selected" : "") + '>' + parMultipleValue.Name + '</option>';
         });
 
         return options;

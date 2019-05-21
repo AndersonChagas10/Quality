@@ -52,12 +52,12 @@ namespace SgqSystem.Controllers.V2.Api
 
                 var parLevel3List = db.ParLevel3.ToList();
 
+                //Adiciona os arquivos na Collection
                 foreach (var item in listSimpleCollect)
                 {
 
                     try
                     {
-                        //Validar para inserir?
                         item.AddDate = DateTime.Now;
                         item.Shift_Id = 1;
                         item.Period_Id = 1;
@@ -74,8 +74,9 @@ namespace SgqSystem.Controllers.V2.Api
 
                 //Fazer uma "Task" para essas funções abaixo?
 
-                //TODO: Fazer uma função que leia do banco o Collection que não foram processados, e separe os CollectionLevel2 e Result_Level3 da tabela salva
+                //Pegar as collectionsLevel2 da Collection
                 var collectionsLevel2 = GetCollectionsLevel2NotProcess();
+                var headerFieldsProcess_Id = new List<int>();
 
                 try
                 {
@@ -83,14 +84,9 @@ namespace SgqSystem.Controllers.V2.Api
                     {
                         var collectionsProcess_Id = new List<int>();
                         var resultsLevel3 = GetResultLevel3NotProcess(collectionLevel2);
-
-                        //TODO: chamar a função de SetConsolidation() para inserir os dados consolidados na CollectionLevel2
                         var collectionLevel2Consolidada = SetConsolidation(collectionLevel2, resultsLevel3);
-
-                        //TODO: salvar a collectionLevel2 e apos a Result_Level3 com o respectivo CollectionLevel2_Id
-
-
                         var collection = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
+
                         if (collection == null)
                         {
                             db.CollectionLevel2.Add(collectionLevel2Consolidada);
@@ -130,6 +126,29 @@ namespace SgqSystem.Controllers.V2.Api
                         {
 
                         }
+
+                        //validar primeiro se existe o headerField Inserido
+                        //se existir header Fields para essa collectionLevel2, remove os cabeçalhos
+                        DeleteHeaderFieldIfExists(collectionLevel2Consolidada);
+
+                        //se não existir insere um novo
+                        var headerFields = GetHeaderFieldsByCollectionLevel2(collectionLevel2Consolidada);
+
+                        if (headerFields.Count > 0)
+                        {
+                            var headerFieldsIds = headerFields.Select(x => x.Id).ToList();
+
+                            try
+                            {                           
+                                db.CollectionLevel2XParHeaderField.AddRange(headerFields);
+                                db.SaveChanges();
+
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -144,6 +163,66 @@ namespace SgqSystem.Controllers.V2.Api
                 return BadRequest("Ocorreu erro em todas as tentativas de registrar as coletas.");
 
             return Ok(listSimpleCollect.Where(x => x.HasError != true).ToList());
+        }
+
+        private List<CollectionLevel2XParHeaderField> GetHeaderFieldsByCollectionLevel2(CollectionLevel2 collectionLevel2)
+        {
+            var headerFields = new List<CollectionLevel2XParHeaderField>();
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                var collectionDate = collectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss");
+
+                var sql = $@"SELECT
+                            	CL.ParHeaderField_Id
+                               ,CL.ParHeaderField_Value as Value
+                               ,PHF.ParFieldType_Id
+                               ,PHF.Name as ParHeaderField_Name
+                               ,CL.Evaluation
+                               ,CL.Sample
+                               ,CL.Id
+                               ,{collectionLevel2.Id} as CollectionLevel2_Id
+                            FROM Collection CL
+                            INNER JOIN ParHeaderField PHF on CL.ParHeaderField_Id = PHF.Id
+                            WHERE 1 =1 AND ParHeaderField_Id IS NOT NULL
+                            AND CL.UserSgq_Id = {collectionLevel2.AuditorId}
+                            AND cl.Shift_Id = {collectionLevel2.Shift}
+                            AND cl.Period_Id = {collectionLevel2.Period}
+                            AND CL.ParCargo_Id = {collectionLevel2.ParCargo_Id}
+                            AND cl.ParCompany_Id = {collectionLevel2.UnitId}
+                            AND cl.ParDepartment_Id = {collectionLevel2.ParDepartment_Id}
+                            AND cl.Evaluation = {collectionLevel2.EvaluationNumber}
+                            AND cl.Sample = {collectionLevel2.Sample}
+                            AND Cl.CollectionDate BETWEEN DATEADD(minute, -5, '{collectionDate}') and DATEADD(minute, 5, '{collectionDate}')";
+
+                headerFields = factory.SearchQuery<CollectionLevel2XParHeaderField>(sql).ToList();
+            }
+
+            return headerFields;
+        }
+
+        private void DeleteHeaderFieldIfExists(CollectionLevel2 collectionLevel2)
+        {
+            var sql = $@"delete CollectionLevel2XParHeaderField WHERE Id in(
+                         select CL2XHF.Id FROM CollectionLevel2XParHeaderField CL2XHF
+                         inner JOIN CollectionLevel2 C2 on C2.Id = CL2XHF.CollectionLevel2_Id
+                         --AND C2.UserSgq_Id = {collectionLevel2.UserSgq}
+                         AND C2.Shift = { collectionLevel2.Shift }
+                         AND C2.Period = { collectionLevel2.Period }
+                         AND C2.ParCargo_Id = { collectionLevel2.ParCargo_Id }
+                         AND C2.UnitId = { collectionLevel2.UnitId }
+                         AND C2.ParDepartment_Id = { collectionLevel2.ParDepartment_Id }
+                         AND C2.EvaluationNumber = { collectionLevel2.EvaluationNumber }
+                         AND C2.Sample = { collectionLevel2.Sample }
+                         AND CL2XHF.CollectionLevel2_Id = { collectionLevel2.Id }
+                         AND Cast(C2.CollectionDate as DATE) = Cast('{ collectionLevel2.CollectionDate.ToString("yyyy-MM-dd")}' as DATE)
+                         )";
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                factory.ExecuteSql(sql);
+            }
         }
 
         [HttpPost]
