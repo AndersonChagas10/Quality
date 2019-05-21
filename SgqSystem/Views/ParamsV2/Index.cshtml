@@ -525,7 +525,7 @@
         if (selectId == 'selectL3PesoParDepartment') {
              mensagem = 'Todos';
         } else {
-            mensagem = 'Selecione o departamento';
+            mensagem = 'Selecione o centro de custo';
         }
 
         if (unidadeSelecionada == 0) {
@@ -848,14 +848,14 @@
 
                 preencheSelect('selectL3GeralParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
 
-                preencheSelect('selectL3GeralParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento');
+                preencheSelect('selectL3GeralParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o centro de custo');
 
 
                 preencheSelect('selectL3CaracteristicaDeRisco', 'Name', 'Id', data.ParRiskCharacteristicTypes, 'Selecione a Caracteristica de Risco');
 
                 preencheSelect('selectL2AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL2AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
-                preencheSelect('selectL2GeralParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento');
+                preencheSelect('selectL2GeralParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o centro de custo');
 
                 parCompanysGlobal = data.ParCompanys
                 preencheSelect('selectParCompanyGeral', 'Name', 'Id', data.ParCompanys, 'Todos');
@@ -889,7 +889,7 @@
                     MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', null);
                     MontaSelectUnidades();
                 });
-                preencheSelect('selectDCDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o departamento', preencheDC);
+                preencheSelect('selectDCDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o centro de custo', preencheDC);
 
 
                 preencheSelect('selectParFrequencyAV', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
