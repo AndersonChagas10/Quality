@@ -22,7 +22,7 @@ namespace DTO.DTO.Params
         public int ParFrequency_Id { get; set; }
 
         [Range(0, 9999999999, ErrorMessageResourceName = "select_the_department", ErrorMessageResourceType = typeof(Resource))]
-        public int ParDepartment_Id { get; set; }
+        public int? ParDepartment_Id { get; set; }
 
         //[Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
         //[MinLength(3, ErrorMessage = "O tamanho mínimo do Nome são 3 caracteres.")]
