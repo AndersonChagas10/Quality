@@ -109,23 +109,29 @@ function getInputLevel3(level3, level2, level1) {
             case 1: //Binário
                 retorno += getBinario(level3);
                 break;
+            case 2: //Numerodedefeitos
+                retorno += getNumerodeDefeitos(level3);
+                break;
             case 6: //BinárioComTexto
                 retorno += getBinarioComTexto(level3);
                 break;
             case 3: //Intervalo
                 retorno += getIntervalo(level3);
                 break;
+            case 7: //IntervaloemMinutos
+                retorno += getIntervaloemMinutos(level3);
+                break;
             case 9: //IntervaloComObservacao
                 retorno += getIntervaloComObservacao(level3);
                 break;
             case 11: //Observacao
-                retorno += getObservacao(level3)
+                retorno += getObservacao(level3);
                 break;
             case 8: //Likert
-                retorno += getLikert(level3)
+                retorno += getLikert(level3);
                 break;
             case 5: //Texto
-                retorno += getTexto(level3)
+                retorno += getTexto(level3);
                 break;
 
             default:
@@ -206,6 +212,25 @@ function getIntervalo(level3) {
     return html;
 }
 
+function getIntervaloemMinutos(level3) {
+
+    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>                                                                                     ' +
+        '<div class="col-xs-4 input-sm">                                                              ' +
+        '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
+        '</div>                                                                                       ' +
+        '<div class="col-xs-3">                                                                       ' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>       ' +
+        '	<input type="number" class="col-xs-8 input input-sm" data-valor/>                           ' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>        ' +
+        '</div>                                                                                       ' +
+        '<div class="col-xs-1">                                                                       ' +
+        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>      ' +
+        '</div>                                                                                       ' +
+        '<div class="clearfix"></div>';
+    return html;
+}
+
 function getIntervaloComObservacao(level3) {
 
     var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
@@ -252,6 +277,22 @@ function getTexto(level3) {
         '</div>                                                                                      ' +
         '<div class="col-xs-3">                                                                      ' +
         '	<input type="text" class="col-xs-12 input-sm" data-valor/>                               ' +
+        '</div>                                                                                      ' +
+        '<div class="col-xs-1">                                                                      ' +
+        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>     ' +
+        '</div>                                                                                      ' +
+        '<div class="clearfix"></div>';
+    return html;
+}
+
+function getNumerodeDefeitos(level3) {
+
+    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>                                                                                     ' +
+        '<div class="col-xs-4">                                                                      ' +
+        '</div>                                                                                      ' +
+        '<div class="col-xs-3">                                                                      ' +
+        '	<input type="number" class="col-xs-12 input-sm" data-valor/>                               ' +
         '</div>                                                                                      ' +
         '<div class="col-xs-1">                                                                      ' +
         '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>     ' +
