@@ -61,6 +61,9 @@ namespace SgqSystem.Controllers
             if (parDepartment.Parent_Id <= 0)
                 parDepartment.Parent_Id = null;
 
+            if (parDepartment.ParCompany_Id == 0)
+                parDepartment.ParCompany_Id = null;
+
             DepartamentoDuplicado(parDepartment);
             if (ModelState.IsValid)
             {
@@ -111,12 +114,19 @@ namespace SgqSystem.Controllers
             {
                 var parCompanyDepartmentOld = db.ParDepartment.AsNoTracking().Where(x => x.Id == parDepartment.Id).Select(x => x.ParCompany_Id).FirstOrDefault();
 
-                if (parDepartment.ParCompany_Id != parCompanyDepartmentOld)
+                if (parDepartment.ParCompany_Id == 0)
+                    parDepartment.ParCompany_Id = null;
+
+                if (parDepartment.ParCompany_Id != parCompanyDepartmentOld && parDepartment.Parent_Id == null)
                     AlteraParCompanyFilhos(parDepartment);
 
                 if (ModelState.IsValid)
                 {
                     db.Entry(parDepartment).State = EntityState.Modified;
+                    
+                    if (parDepartment.Parent_Id > 0)
+                        db.Entry(parDepartment).Property(x => x.ParCompany_Id).IsModified = false;
+
                     db.SaveChanges();
 
                     return RedirectToAction("Index");
