@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -196,6 +196,9 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -224,9 +227,6 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
@@ -889,6 +889,7 @@
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_both.png" />
     <Content Include="images\sort_desc.png" />
+    <Content Include="Scripts\appColeta\mock.js" />
     <Content Include="Scripts\appColeta\alert.js" />
     <Content Include="Scripts\appColeta\alert_new.js" />
     <Content Include="Scripts\appColeta\breadCrumb.js" />
@@ -1394,7 +1395,6 @@
     <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
@@ -1415,6 +1415,7 @@
     <None Include="Properties\PublishProfiles\SgqLocal.pubxml" />
     <None Include="Properties\PublishProfiles\SGQMaster.pubxml" />
     <Content Include="Scripts\DataTables\datatablePtBr.json" />
+    <None Include="Properties\PublishProfiles\SGQRH Servidor.pubxml" />
     <None Include="Properties\PublishProfiles\SgqTablet.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSA.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSAV1.pubxml" />

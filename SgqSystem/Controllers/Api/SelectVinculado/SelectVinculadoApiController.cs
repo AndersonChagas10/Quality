@@ -128,9 +128,12 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         	ON UNITXSTRUCT.ParCompany_Id = UNIT.Id
                         LEFT JOIN ParStructure PS
                         	ON PS.Id = UNITXSTRUCT.ParStructure_Id
-                        		AND PS.ParStructureParent_Id = 1
-                        WHERE UNIT.Id IN ({unidadesUsuario})
+                        		-- AND PS.ParStructureParent_Id = 1
+                        WHERE 1=1
+                        AND UNIT.Id IN ({unidadesUsuario})
                         { whereCluster }
+                        AND UNITXSTRUCT.Active = 1
+						AND PS.Active = 1
                         AND PS.Id IS NOT NULL";
 
                 using (Factory factory = new Factory("DefaultConnection"))
@@ -189,7 +192,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         	ON UNITXSTRUCT.ParCompany_Id = UNIT.Id
                         LEFT JOIN ParStructure PS
                         	ON PS.Id = UNITXSTRUCT.ParStructure_Id
-                        		AND PS.ParStructureParent_Id = 1
+                        		-- AND PS.ParStructureParent_Id = 1
                         WHERE UNIT.Id IN ({unidadesUsuario})
                         { whereCluster }
                         { whereStructure } ";

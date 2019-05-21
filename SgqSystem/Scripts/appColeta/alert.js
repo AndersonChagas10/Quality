@@ -337,6 +337,20 @@ function setValoresLevel3Alertas(level3) {
                 defeitosPonderados = defeitos > 0 ? (defeitos * peso) + (punicao * peso) : 0;
             level3ComDefeitos = defeitosPonderados > 0 ? 1 : 0;
             break;
+        case 10:
+            if (valor >= limiteInferior && valor <= limiteSuperior) {
+                defeitos = 0;
+            }
+            else {
+                defeitos = 1;
+            }
+
+            if (isEUA)
+                defeitosPonderados = (defeitos * peso) + (punicao * peso);
+            else
+                defeitosPonderados = defeitos > 0 ? (defeitos * peso) + (punicao * peso) : 0;
+            level3ComDefeitos = defeitosPonderados > 0 ? 1 : 0;
+            break;
         default:
             defeitos = 0;
             defeitosPonderados = 0;
@@ -415,25 +429,25 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
             if (level3.attr('isnotevaluate') != 'true') {
                 var resultadoLevel3 = setValoresLevel3Alertas(level3);
 
-                level3.attr('weievaluation', resultadoLevel3[0]);
-                totalAvaliacoesPonderadas += resultadoLevel3[0];
-                totalAvaliacoesPonderadasL2 += resultadoLevel3[0];
+                level3.attr('weievaluation', (resultadoLevel3[0] > 0 ? resultadoLevel3[0] : 0));
+                totalAvaliacoesPonderadas += (resultadoLevel3[0] > 0 ? resultadoLevel3[0] : 0);
+                totalAvaliacoesPonderadasL2 += (resultadoLevel3[0] > 0 ? resultadoLevel3[0] : 0);
 
-                totalAvaliacoes += resultadoLevel3[1];
-                totalAvaliacoesL2 += resultadoLevel3[1];
+                totalAvaliacoes += (resultadoLevel3[1] > 0 ? resultadoLevel3[1] : 0);
+                totalAvaliacoesL2 += (resultadoLevel3[1] > 0 ? resultadoLevel3[1] : 0);
 
-                totalDefeitos += resultadoLevel3[2];
-                totalDefeitosL2 += resultadoLevel3[2];
-                level3.attr('defects', resultadoLevel3[2]);
-                level3.attr('weidefects', resultadoLevel3[3]);
-                totalDefeitosPonderados += resultadoLevel3[3];
-                totalDefeitosPonderadosL2 += resultadoLevel3[3];
+                totalDefeitos += (resultadoLevel3[2] > 0 ? resultadoLevel3[2] : 0);
+                totalDefeitosL2 += (resultadoLevel3[2] > 0 ? resultadoLevel3[2] : 0);
+                level3.attr('defects', (resultadoLevel3[2] > 0 ? resultadoLevel3[2] : 0));
+                level3.attr('weidefects', (resultadoLevel3[3] > 0 ? resultadoLevel3[3] : 0));
+                totalDefeitosPonderados += (resultadoLevel3[3] > 0 ? resultadoLevel3[3] : 0);
+                totalDefeitosPonderadosL2 += (resultadoLevel3[3] > 0 ? resultadoLevel3[3] : 0);
 
-                totalLevel3Avaliados += resultadoLevel3[4];
-                totalLevel3AvaliadosL2 += resultadoLevel3[4];
+                totalLevel3Avaliados += (resultadoLevel3[4] > 0 ? resultadoLevel3[4] : 0);
+                totalLevel3AvaliadosL2 += (resultadoLevel3[4] > 0 ? resultadoLevel3[4] : 0);
 
-                totalLevel3ComDefeitos += resultadoLevel3[5];
-                totalLevel3ComDefeitosL2 += resultadoLevel3[5];
+                totalLevel3ComDefeitos += (resultadoLevel3[5] > 0 ? resultadoLevel3[5] : 0);
+                totalLevel3ComDefeitosL2 += (resultadoLevel3[5] > 0 ? resultadoLevel3[5] : 0);
             }
             else {
                 level3.attr('weievaluation', "0");

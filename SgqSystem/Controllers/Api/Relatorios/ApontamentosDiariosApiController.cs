@@ -101,7 +101,7 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]
         [Route("Edit/{id}")]
         public Result_Level3DTO EditResultLevel3(int id)
-        { 
+        {
             bool possuiVinculosResultado = false;
             using (var databaseSgq = new SgqDbDevEntities())
             {
@@ -111,7 +111,7 @@ namespace SgqSystem.Controllers.Api
                 var resultlevel3Final = databaseSgq.Result_Level3
                    .Join(databaseSgq.ParLevel3Value, pl3v => pl3v.ParLevel3_Id, rl3 => rl3.ParLevel3_Id, (rl3, pl3v) => new { rl3, pl3v })
                    .Where(x => x.rl3.CollectionLevel2_Id == resultlevel3.CollectionLevel2_Id
-                   && x.pl3v.ParLevel3InputType_Id == 10 
+                   && x.pl3v.ParLevel3InputType_Id == 10
                    && (x.pl3v.DynamicValue.Contains("{" + resultlevel3.ParLevel3_Id.ToString() + "}")
                    || x.pl3v.DynamicValue.Contains("{" + resultlevel3.ParLevel3_Id.ToString() + "?}"))
                    && x.pl3v.IsActive).ToList();
@@ -143,7 +143,7 @@ namespace SgqSystem.Controllers.Api
                 var parLevel3 = databaseSgq.ParLevel3.Where(x => x.Id == resultlevel3.ParLevel3_Id).FirstOrDefault();
                 parLevel3Value = databaseSgq.ParLevel3Value.Where(x => x.ParLevel3_Id == parLevel3.Id).FirstOrDefault();
                 var parInputTypeValues = databaseSgq.ParInputTypeValues.Where(x => x.ParLevel3Value_Id == parLevel3Value.Id && resultLevel3.Value == x.Intervalo.ToString()).FirstOrDefault();
-                if(parLevel3Value.ParLevel3InputType_Id == 8)
+                if (parLevel3Value.ParLevel3InputType_Id == 8)
                     resultLevel3.ValueText = parInputTypeValues.Valor.ToString();
 
             }
@@ -206,7 +206,7 @@ namespace SgqSystem.Controllers.Api
                     resultLevel3.ParLevel3.ParLevel3Value = databaseSgq.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultLevel3.ParLevel3_Id && r.IsActive == true).ToList();
                     resultLevel3.CollectionLevel2 = databaseSgq.CollectionLevel2.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.CollectionLevel2_Id);
                 }
-                
+
                 return resultLevel3;
             }
 
@@ -803,20 +803,19 @@ namespace SgqSystem.Controllers.Api
             public string mountHtmlIntervalos()
             {
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
-                return "<div>" +
-                            //"<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
-                            "<label  for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + "<label id='intervalMax'>" + IntervalMax + "</label>" +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + "<label id='intervalMin'>" + IntervalMin + "</label>" +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + Value +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp " +
-                             "<input type='text' id='intervaloValor' class='form-control decimal' value=" + Value + " />" +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
-                             "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
-                        "</div>";
+                return $@"<div
+                            <label for='Conforme: '> { GetResources.getResource("max_interval").Value.ToString() }: </label> <label id='intervalMax'>{ IntervalMax }</label>
+                            <br>
+                            <label for='Conforme: '> { GetResources.getResource("min_interval").Value.ToString() }: </label> <label id='intervalMin'>{ IntervalMin }</label>
+                            <br>
+                            <label for='Conforme: '> { GetResources.getResource("current_value").Value.ToString() }: </label> { Value }
+                            <br>
+                            <label for='Conforme: '> { GetResources.getResource("new_value").Value.ToString() }: </label> &nbsp 
+                            <input type='number' id='intervaloValor' class='form-control' value={ Value } />
+                            <br>
+                            <label for='Conforme: '> { GetResources.getResource("unvalued").Value.ToString() }: </label> &nbsp 
+                            <input type='checkbox' id='IsEvaluated' { naoAvaliado } class='.check-box' />
+                        </div>";
             }
 
             //public string showConform // BINARIO 
@@ -990,6 +989,13 @@ namespace SgqSystem.Controllers.Api
                         "</div>";
             }
 
+            public string mountHtmlNotEditable()
+            {
+                return $@"<div>
+                            <div class='alert alert-warning' id='mensagemErro'>O item selecionado possui vínculos de resultado. A edição esta desabilitada.</div>
+                          </div>";
+            }
+
             public string showGeneric
             {
                 get
@@ -1008,6 +1014,8 @@ namespace SgqSystem.Controllers.Api
                                     return mountHtmlCalculado();
                                 else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 5)).IsNotNull())
                                     return mountHtmlTexto();
+                                else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 10)).IsNotNull())
+                                    return mountHtmlNotEditable();
                             }
                             else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull())
                                 return mountHtmlConform();
@@ -1020,7 +1028,7 @@ namespace SgqSystem.Controllers.Api
                             else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 5).IsNotNull())
                                 return mountHtmlTexto();
                             else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 10).IsNotNull())
-                                return mountHtmlTexto();
+                                return mountHtmlNotEditable();
 
                     return string.Empty;
                 }

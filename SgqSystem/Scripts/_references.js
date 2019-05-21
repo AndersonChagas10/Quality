@@ -71,6 +71,7 @@
 /// <reference path="appcoleta/level3collapse.js" />
 /// <reference path="appcoleta/login.js" />
 /// <reference path="appcoleta/message.js" />
+/// <reference path="appcoleta/mock.js" />
 /// <reference path="appcoleta/mock_modulos.js" />
 /// <reference path="appcoleta/module.js" />
 /// <reference path="appcoleta/navbar.js" />

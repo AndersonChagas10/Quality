@@ -126,14 +126,14 @@
                 console.log(obj);
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
 
-                        var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
-                        console.log("clique salvar" + editado);
-                        $(e).parents('tr').removeData();
-                        $(e).parents('tr').data(editado);
-                        $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name);
-                        $($(e).parents('tr').find('td')[1]).html(editado.Value);
-                        $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable);
-                        $('#crudNxNEdit').modal('hide');
+                    var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
+                    console.log("clique salvar" + editado);
+                    $(e).parents('tr').removeData();
+                    $(e).parents('tr').data(editado);
+                    $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name);
+                    $($(e).parents('tr').find('td')[1]).html(editado.Value);
+                    $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable);
+                    $('#crudNxNEdit').modal('hide');
 
                 });
             }
@@ -248,29 +248,40 @@
             }
                 /*Tipos de dados L3*/
             else if ($(e).parents('#tableLevel3Value').length) {
-                crudNxN.modalAlterarLevel3Value(obj);//
+                crudNxN.modalAlterarLevel3Value(obj);
+
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
 
-                    if (level3Value.veifyAdd('crudNxNEdit')) {//
-                        var editado = level3Value.getObjAdd('crudNxNEdit', obj);//
-                        if (parseInt(editado.IntervalMin) <= parseInt(editado.IntervalMax)) {
-                            $(e).parents('tr').removeData();
-                            $(e).parents('tr').data(editado);
-                            $($(e).parents('tr').find('td')[0]).html(editado.ParLevel3InputType_Name)//
-                            $($(e).parents('tr').find('td')[1]).html(editado.ParLevel1_Name)//
-                            $($(e).parents('tr').find('td')[2]).html(editado.ParLevel2_Name)//
-                            $($(e).parents('tr').find('td')[3]).html(editado.ParCompany_Name)//
-                            $($(e).parents('tr').find('td')[4]).html(editado.ParMeasurementUnit_Name)//
-                            $($(e).parents('tr').find('td')[5]).html(editado.IntervalMin)//
-                            $($(e).parents('tr').find('td')[6]).html(editado.IntervalMax)//
-                            $($(e).parents('tr').find('td')[7]).html(editado.AcceptableValueBetween_Name)//
-                            $($(e).parents('tr').find('td')[8]).html(editado.ParLevel3BoolFalse_Name)//
-                            $($(e).parents('tr').find('td')[9]).html(editado.ParLevel3BoolTrue_Name)//
-                            $('#crudNxNEdit').modal('hide');
-                        } else {
-                            openMessageModal("Valor do Limite Superior menor que o Limite Inferior", null);
+                    if (level3Value.veifyAdd('crudNxNEdit')) {
+
+                        var editado = level3Value.getObjAdd('crudNxNEdit', obj);
+
+                        if ([3, 4, 7, 8, 9, 10].indexOf(editado.ParLevel3InputType_Id) > 0) {
+                            if (isNaN(parseFloat(editado.IntervalMin)) && isNaN(parseFloat(editado.IntervalMax))) {
+                                openMessageModal("Pelo menos um limite deve ser preechido", null);
+                                return false;
+
+                            } else if (!isNaN(parseFloat(editado.IntervalMin)) && !isNaN(parseFloat(editado.IntervalMax)) && (parseFloat(editado.IntervalMin) > parseFloat(editado.IntervalMax))) {
+                                openMessageModal("Valor do Limite Superior menor que o Limite Inferior", null);
+                                return false;
+
+                            }
                         }
-                    } 
+
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.ParLevel3InputType_Name)
+                        $($(e).parents('tr').find('td')[1]).html(editado.ParLevel1_Name)
+                        $($(e).parents('tr').find('td')[2]).html(editado.ParLevel2_Name)
+                        $($(e).parents('tr').find('td')[3]).html(editado.ParCompany_Name)
+                        $($(e).parents('tr').find('td')[4]).html(editado.ParMeasurementUnit_Name)
+                        $($(e).parents('tr').find('td')[5]).html(editado.IntervalMin)
+                        $($(e).parents('tr').find('td')[6]).html(editado.IntervalMax)
+                        $($(e).parents('tr').find('td')[7]).html(editado.AcceptableValueBetween_Name)
+                        $($(e).parents('tr').find('td')[8]).html(editado.ParLevel3BoolFalse_Name)
+                        $($(e).parents('tr').find('td')[9]).html(editado.ParLevel3BoolTrue_Name)
+                        $('#crudNxNEdit').modal('hide');
+                    }
 
                 });
             }
@@ -361,7 +372,7 @@
                 $('#crudNxNEdit #parLevel3Value_IntervalMax').val(obj.IntervalMax).change().show().append();
                 $('#crudNxNEdit #parLevel3Value_DynamicValue').val(obj.DynamicValue).change().show().append();
 
-            }else if (obj.ParLevel3InputType_Id == 2) {
+            } else if (obj.ParLevel3InputType_Id == 2) {
                 divDeEdicao = $('.ParIntervalos').clone();
                 $(divDeEdicao).show();
                 $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
@@ -387,7 +398,7 @@
                 });
                 $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
                 $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
-            }else if (obj.ParLevel3InputType_Id == 8 || obj.ParLevel3InputType_Id == 7) {
+            } else if (obj.ParLevel3InputType_Id == 8 || obj.ParLevel3InputType_Id == 7) {
 
                 divDeEdicao = $('.ParIntervalos').clone();
                 $(divDeEdicao).show();
@@ -473,11 +484,11 @@
 
             $('#crudNxNEdit #parLevel1Select2AmostraLevel3').attr("disabled", true);
             //if (obj.ParLevel1_Id > 0)
-                $('#crudNxNEdit #parLevel1Select2AmostraLevel3').val(obj.ParLevel1_Id).change();
+            $('#crudNxNEdit #parLevel1Select2AmostraLevel3').val(obj.ParLevel1_Id).change();
 
             $('#crudNxNEdit #parLevel2Select2AmostraLevel3').attr("disabled", true);
             //if (obj.ParLevel2_Id > 0)
-                $('#crudNxNEdit #parLevel2Select2AmostraLevel3').val(obj.ParLevel2_Id).change();
+            $('#crudNxNEdit #parLevel2Select2AmostraLevel3').val(obj.ParLevel2_Id).change();
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tableAvAm').attr('nameModal'));

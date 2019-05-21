@@ -133,6 +133,7 @@ public class ScorecardResultSet
         string where = " WHERE 1=1 ";
 
         string Wshift = "";
+        string WshiftVolume = "";
 
         if (clusterSelected_Id > 0)
         {
@@ -142,7 +143,9 @@ public class ScorecardResultSet
         if (shift > 0)
         {
             Wshift += $@" AND CL1.Shift = {shift} ";
+            WshiftVolume += $@" AND isnull(Shift_Id,0) = {shift}";
         }
+
 
             where += "\n AND Meta Is Not Null";
 
@@ -314,7 +317,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n /* FIM DOS DADOS DA FREQUENCIA -----------------------------------------------------*/                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n SELECT TOP 1 @DIASABATE = COUNT(1), @VOLUMEPCC = SUM(Quartos) FROM VolumePcc1b  (nolock) WHERE ParCompany_id = @ParCompany_id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                    " +
+           "\n SELECT TOP 1 @DIASABATE = COUNT(1), @VOLUMEPCC = SUM(Quartos) FROM VolumePcc1b  (nolock) WHERE ParCompany_id = @ParCompany_id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL "+ WshiftVolume + "                                                                                                    " +
            "\n SELECT @DIASDEVERIFICACAO = COUNT(1) FROM(SELECT CONVERT(DATE, ConsolidationDate) DATA FROM ConsolidationLevel1 CL1 (nolock)  WHERE ParLevel1_Id = 24 AND CONVERT(DATE, ConsolidationDate) BETWEEN @DATAINICIAL AND @DATAFINAL AND CL1.UnitId = @ParCompany_Id GROUP BY CONVERT(DATE, ConsolidationDate)) VT  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n SET @AVFREQUENCIAVERIFICACAO = @DIASABATE                                                                                                                                                                                                                           " +
@@ -776,7 +779,7 @@ public class ScorecardResultSet
            "\n --       ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                  " +
            "\n LEFT JOIN ParCriticalLevel CRL   (nolock)                                                                                                                                                                                                                                     " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                                                                                                                                                                       " +
+           "\n        ON CRL.Id  = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.EffectiveDate <  @DATAFINAL)                                                                                                                                                                                                                       " +
            "\n WHERE(ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL OR L1.Id = 25)                                                                                                                                                                                          " +
            $@"   AND(C.Id = @ParCompany_Id OR(C.Id IS NULL AND L1.Id = 25 AND @CLUSTER in (SELECT DISTINCT ParCluster_Id FROM ParLevel1xCluster where IsActive = 1 AND parlevel1_id = 25 AND EffectiveDate < @DATAINICIAL)))                                                                                                                                                                                                       
            { Wshift }
@@ -910,10 +913,10 @@ public class ScorecardResultSet
            "\n --INNER JOIN ParLevel1XCluster L1C    (nolock)                                                                                                                                                                                                                                   " +
            "\n --ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id  AND L1C.IsActive = 1                                                                                                                                                                                                         " +
            "\n INNER JOIN ParCriticalLevel CRL    (nolock)                                                                                                                                                                                                                                    " +
-           "\n ON CRL.Id = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL)                                                                                                                                                                                                                                " +
+           "\n ON CRL.Id = (select top 1 ParCriticalLevel_Id from ParLevel1XCluster aaa (nolock)  where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.EffectiveDate <  @DATAFINAL)                                                                                                                                                                                                                                " +
            "\n WHERE C.Id = @ParCompany_Id                                                                                                                                                                                                                                         " +
            "\n AND L1.Id <> 25                                                                                                                                                                                                                                                     " +
-           "\n AND L1.AddDate <= @DATAFINAL                                                                                                                                                                                                                                        " +
+           "\n -- AND L1.AddDate <= @DATAFINAL                                                                                                                                                                                                                                        " +
            "\n AND L1.IsActive <> 0                                                                                                                                                                                                                                                " +
            "\n AND L1.Id NOT IN(SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC (nolock)  WHERE CCC.UnitId = @ParCompany_Id                                                                                                                                                             " +
            "\n AND CCC.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL)                                                                                                                                                                                                      " +

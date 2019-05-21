@@ -17,7 +17,7 @@ namespace SgqSystem.Controllers.Params
         // GET: ParStructures
         public ActionResult Index()
         {
-            var parStructure = db.ParStructure.Include(p => p.ParStructureGroup);
+            var parStructure = db.ParStructure.Include(p => p.ParStructureGroup).ToList();
 
             foreach (var item in parStructure)
             {
@@ -25,7 +25,7 @@ namespace SgqSystem.Controllers.Params
                     item.ParStructureParent = db.ParStructure.Find(item.ParStructureParent_Id);
             }
 
-            return View(parStructure.ToList());
+            return View(parStructure);
         }
 
         // GET: ParStructures/Details/5
