@@ -208,6 +208,28 @@
             $("#ParDCAvamEvaluation").prop('disabled', true);
             $("#IsAgendamento").prop('disabled', true);
         }
+
+
+        //altera o tipo do campo Inicio e Fim para numerico
+        if ($("#ParDCAvam #selectParFrequencyAV :selected").val() === "4"
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "5"
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "6") {
+
+            let tabelaAgendamento = $('#tabelaAgendamento tbody tr');
+
+            $(tabelaAgendamento).find('[data-column=inpInicio],[data-column=inpTermino]').each(function (i, o) {
+                $(o).attr('type', 'number');
+            });
+        } else if ($("#ParDCAvam #selectParFrequencyAV :selected").val() === "3") {
+            let tabelaAgendamento = $('#tabelaAgendamento tbody tr');
+
+            $(tabelaAgendamento).find('[data-column=inpInicio],[data-column=inpTermino]').each(function (i, o) {
+                $(o).attr('type', 'time');
+            });
+        } else {
+            $("#divAgendamento").hide();
+        }
+
     });
 
     $("body").on('input', '[data-column=inpAvaliacao]', function () {
@@ -308,7 +330,7 @@
                         avaliacaAmostraSelectShifts += '<option value="' + item.Id + '">' + item.Description + '</option>';
                     });
                     avaliacaAmostraSelectShifts += '</select ></td>';
-
+                 
                  if (parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val()) === 10)
                          MontaNovaLinhaAgendamentoIntervalo(null);
                  else if (parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val()) === 3
@@ -318,7 +340,7 @@
 
                          var somarNaTabela = 0;
                          if ($("#tabelaAgendamento tbody tr").length > 0) {
-
+                             
                              if ($("#tabelaAgendamento tbody tr").length < valorAvaliacao) {
                                  somarNaTabela = valorAvaliacao - $("#tabelaAgendamento tbody tr").length;
                                  for (var i = 0; i < somarNaTabela; i++) {
@@ -371,7 +393,7 @@
     }
 
     function MontaNovaLinhaAgendamento(data) {
-
+        
         if (parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val()) === 3) {
             $("#tabelaAgendamento tbody").append("<tr>"
                 + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
@@ -578,6 +600,9 @@
                 $('#' + id + ' [data-form] select[name="ParFrequency_Id"]').val(obj.ParFrequencyId);
                 $('#' + id + ' [data-form] select[name="ParFrequency_Id"]').trigger('change')
 
+                $('#' + id + ' [data-form] select[name="IsAgendamento"]').val(obj.IsAgendamento);
+                //$('#' + id + ' [data-form] select[name="IsAgendamento"]').trigger('change')
+
                 $('#' + id + ' [data-form] input[name="Evaluation"]').val(obj.Evaluation);
                 $('#' + id + ' [data-form] input[name="Sample"]').val(obj.Sample);
                 if (obj.ParEvaluationSchedule.length > 0)
@@ -719,6 +744,7 @@
             this.showTableParMultipleValues();
         },
         prepareDcAvam: function (obj) {
+            debugger
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};
@@ -729,6 +755,7 @@
             obj['ParDepartment_Id'] = formdata.ParDepartment_Id;
             obj['IsActive'] = true;
             obj['ParFrequencyId'] = parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val());
+            obj['IsAgendamento'] = $("#ParDCAvam #IsAgendamento").is('checked');
             return obj;
         },
 

@@ -42,7 +42,7 @@ function retornaProximasColetasParaSincronizar() {
 		if (coletas.length == 0 || !objIsEquals(getCollectionLevel2Obj(anterior), objAtual)) {
 
 			if (coletas.length > count) {
-                return coletas;
+				return coletas;
 			}
 		}
 

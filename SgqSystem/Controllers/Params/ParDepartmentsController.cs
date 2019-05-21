@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Dominio;
+using Helper;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Dominio;
-using Helper;
 
 namespace SgqSystem.Controllers
 {
@@ -56,11 +55,14 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id, ParCompany_Id")] ParDepartment parDepartment)
         {
+            ValidaVinculos(parDepartment);
+
             MontaHash(parDepartment);
             if (parDepartment.Parent_Id <= 0)
                 parDepartment.Parent_Id = null;
 
-            ValidaVinculos(parDepartment);
+            if (parDepartment.ParCompany_Id == 0)
+                parDepartment.ParCompany_Id = null;
 
             DepartamentoDuplicado(parDepartment);
             if (ModelState.IsValid)
@@ -107,14 +109,47 @@ namespace SgqSystem.Controllers
         {
             MontaHash(parDepartment);
             DepartamentoDuplicado(parDepartment);
-            if (ModelState.IsValid)
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
-                db.Entry(parDepartment).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var parCompanyDepartmentOld = db.ParDepartment.AsNoTracking().Where(x => x.Id == parDepartment.Id).Select(x => x.ParCompany_Id).FirstOrDefault();
+
+                if (parDepartment.ParCompany_Id == 0)
+                    parDepartment.ParCompany_Id = null;
+
+                if (parDepartment.ParCompany_Id != parCompanyDepartmentOld && parDepartment.Parent_Id == null)
+                    AlteraParCompanyFilhos(parDepartment);
+
+                if (ModelState.IsValid)
+                {
+                    db.Entry(parDepartment).State = EntityState.Modified;
+                    
+                    if (parDepartment.Parent_Id > 0)
+                        db.Entry(parDepartment).Property(x => x.ParCompany_Id).IsModified = false;
+
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
             }
             MontaLista(parDepartment);
             return View(parDepartment);
+        }
+
+        private void AlteraParCompanyFilhos(ParDepartment parDepartment)
+        {
+            string idPai = parDepartment.Id.ToString() + '|';
+            using (SgqDbDevEntities dbEntitie = new SgqDbDevEntities())
+            {
+                var filhos = dbEntitie.ParDepartment.Where(x => x.Active
+                    && (x.Parent_Id == parDepartment.Id || x.Hash.StartsWith(idPai))).ToList();
+
+                foreach (var item in filhos)
+                {
+                    item.ParCompany_Id = parDepartment.ParCompany_Id;
+                    dbEntitie.SaveChanges();
+                }
+            }
         }
 
         // GET: ParDepartments/Delete/5
@@ -162,6 +197,8 @@ namespace SgqSystem.Controllers
 
             if (pai != null)
             {
+                parDepartment.ParCompany_Id = pai.ParCompany_Id;
+
                 if (pai.Hash != null)
                 {
                     parDepartment.Hash = pai.Hash + "|" + pai.Id;
@@ -194,7 +231,7 @@ namespace SgqSystem.Controllers
 
         private void DepartamentoDuplicado(ParDepartment parDepartment)
         {
-            if(db.ParDepartment.Any(x=>x.Name == parDepartment.Name && x.Id != parDepartment.Id))
+            if (db.ParDepartment.Any(x => x.Name == parDepartment.Name && x.Id != parDepartment.Id))
             {
                 ModelState.AddModelError("", Resources.Resource.duplicated_department);
             }
