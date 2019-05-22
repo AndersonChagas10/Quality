@@ -960,6 +960,7 @@
     <Content Include="Scripts\appColeta\RH\parHeaderField.js" />
     <Content Include="Scripts\appColeta\RH\parLevels.js" />
     <Content Include="Scripts\appColeta\RH\resultado.js" />
+    <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
     <Content Include="Scripts\appColeta\RH\utils.js" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
     <Content Include="Content\select2-bootstrap.min.css" />
