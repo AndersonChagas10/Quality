@@ -139,7 +139,7 @@ namespace SgqSystem.Controllers.V2.Api
                             var headerFieldsIds = headerFields.Select(x => x.Id).ToList();
 
                             try
-                            {                           
+                            {
                                 db.CollectionLevel2XParHeaderField.AddRange(headerFields);
                                 db.SaveChanges();
 
@@ -256,6 +256,9 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParHeaderField> listaParHeaderField;
             List<ParDepartmentXHeaderField> listaParDepartmentXHeaderField;
             List<ParMultipleValues> listaParMultipleValues;
+
+            List<ParDepartmentXRotinaIntegracao> listaParDepartmentXRotinaIntegracao;
+            List<RotinaIntegracao> listaRotinaIntegracao;
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -485,7 +488,15 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => x.IsActive)
                     .ToList();
 
+                listaParDepartmentXRotinaIntegracao = db.ParDepartmentXRotinaIntegracao
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
 
+                listaRotinaIntegracao = db.RotinaIntegracao
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
 
             }
 
@@ -508,7 +519,9 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParAlert,
                 listaParDepartmentXHeaderField,
                 listaParHeaderField,
-                listaParMultipleValues
+                listaParMultipleValues,
+                listaParDepartmentXRotinaIntegracao,
+                listaRotinaIntegracao
             });
         }
 
