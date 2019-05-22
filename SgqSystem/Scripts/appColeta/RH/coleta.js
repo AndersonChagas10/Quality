@@ -306,7 +306,7 @@ function getLikert(level3) {
     var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
         level3.Name + '</small></div>                                                                                     ' +
         '<div class="col-xs-4 input-sm">                                                           ' +
-        '	Escala: ' + level3.ParLevel3Value.IntervalMin + ' - ' + level3.ParLevel3Value.IntervalMax +
+        '	Escala: ' + level3.ParLevel3Value.IntervalMin + ' a ' + level3.ParLevel3Value.IntervalMax +
         '</div>                                                                                    ' +
         '<div class="col-xs-3">                                                                    ' +
         '	<input type="text" class="col-xs-12 input-sm" data-valor/>                             ' +
