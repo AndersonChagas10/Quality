@@ -3,7 +3,7 @@
 @{
                 /**/
 
-                ViewBag.Title = "Novo Grupo de Indicador";
+                ViewBag.Title = "Novo Grupo de Função";
 }
 
 <div class="page-content-wrapper">
@@ -16,7 +16,7 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParGroupParLevel1")">@Resources.Resource.indicator_group</a>
+                    <a href="@Url.Action("Index", "ParGroupParLevel1")">Grupo de Função</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -32,7 +32,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create @Resources.Resource.indicator_group </span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create Grupo de Função </span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -54,7 +54,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParGroupParLevel1Type_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParGroupParLevel1Type_Id, "Grupo de Tipo de Função", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParGroupParLevel1Type_Id", null, htmlAttributes: new { @class = "form-control" })
 

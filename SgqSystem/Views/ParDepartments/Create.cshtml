@@ -1,7 +1,7 @@
 ﻿@model Dominio.ParDepartment
 
 @{
-    ViewBag.Title = @Resources.Resource.departments;
+    ViewBag.Title = @Resources.Resource.costcenter;
 }
 
 <div class="page-content-wrapper">
@@ -14,7 +14,7 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParDepartments")">@Resources.Resource.departments</a>
+                    <a href="@Url.Action("Index", "ParDepartments")">@Resources.Resource.costcenter</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -37,7 +37,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.new_department</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create  @Resources.Resource.costcenter</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -51,7 +51,7 @@
                                     <div class="form-horizontal">
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Name, @Resources.Resource.department, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Name,@Resources.Resource.name, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -67,7 +67,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Parent_Id, @Resources.Resource.linked, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Parent_Id, "É pai de", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-6">
                                                 @Html.DropDownListFor(model => model.Parent_Id, null,  new { @class = "form-control select2" })
                                                 @Html.ValidationMessageFor(model => model.Parent_Id, "", new { @class = "text-danger" })

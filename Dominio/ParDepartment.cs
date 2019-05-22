@@ -20,7 +20,7 @@ namespace Dominio
 
         [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
-        [DisplayName("Departamento")]
+        [DisplayName("Nome")]
         public string Name { get; set; }
 
         [Display(Name = "description", ResourceType = typeof(Resources.Resource))]
