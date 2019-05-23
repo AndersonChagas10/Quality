@@ -287,6 +287,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 listaParDepartment = db.ParDepartment
                     .AsNoTracking()
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.Active)
                     .Select(x => new ParDepartmentAppViewModel()
                     {

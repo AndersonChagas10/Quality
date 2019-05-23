@@ -32,13 +32,13 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink(Resources.Resource._new + " " + Resources.Resource.organizational_structure, "Create", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink( "Nova " + Resources.Resource.organizational_structure, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
                                 <table class="table">
                                     <tr>
                                         <th>
                                             @* @Html.DisplayNameFor(model => model.ParStructureGroup.Name)*@
-                                            Grupo de @Resources.Resource.organizational_structure
+                                            Grupo de Estrutura
                                         </th>
                                         <th>
                                             @Resources.Resource.name
@@ -47,7 +47,7 @@
                                             @Resources.Resource.description
                                         </th>
                                         <th>
-                                            @Resources.Resource.organizational_structure Pai
+                                            Estrutura Pai
                                         </th>
                                         <th>
                                             @Resources.Resource.is_active
