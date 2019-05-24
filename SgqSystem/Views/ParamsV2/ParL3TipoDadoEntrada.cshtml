@@ -12,6 +12,7 @@
 
             <div class="form-group">
                 <label for="ParLevel3InputType_Id">Tipo do dado:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Qual o tipo de entrada do dado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <select id="selectL3TipoDadoParLevel3InputType" class="input input-lg col-sm-12 required" name="ParLevel3InputType_Id"></select>
             </div>
 
@@ -38,6 +39,7 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label for="ParCompany_Id">Empresa:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Centro de custo que a tarefa responde" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <select id="selectL3TipoDadoParCompany" class="input input-lg col-sm-12" name="ParCompany_Id"></select>
             </div>
         </div>
@@ -45,7 +47,8 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label for="ParDepartment_Id">Centro de Custo:</label>
+                <label for="ParDepartment_Id">Seção:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Centro de custo que a tarefa responde" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <select id="selectL3TipoDadoParDepartment" class="input input-lg col-sm-12" name="ParDepartment_Id"></select>
             </div>
 
@@ -55,6 +58,7 @@
 
             <div class="form-group">
                 <label for="ParCargo_Id">Cargo:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="esponsável pela execução das tarefas" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <select id="selectL3ParCargo" class="input input-lg col-sm-12" name="ParCargo_Id"></select>
             </div>
 
@@ -308,7 +312,7 @@
     $("#selectL3TipoDadoParCompany").on('change', function () {
         var empresaSelecionada = parseInt($("#selectL3TipoDadoParCompany :selected").val());
 
-        MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3TipoDadoParDepartment', empresaSelecionada);
+        MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3TipoDadoParDepartment', empresaSelecionada, "Todos");
 
     });
 

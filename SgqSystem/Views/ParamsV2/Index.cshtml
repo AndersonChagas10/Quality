@@ -512,7 +512,7 @@
         $(`select#${id}`).select2();
     }
 
-    let MontaSelectDepartamentoVinculadoAUnidadeSelecionada = function (selectId, empresaSelecionada) {
+    let MontaSelectDepartamentoVinculadoAUnidadeSelecionada = function (selectId, empresaSelecionada, mensagem) {
 
         var unidadeSelecionada;
         if (empresaSelecionada == null) {
@@ -521,11 +521,14 @@
             unidadeSelecionada = empresaSelecionada
         }
 
-        var mensagem;
-        if (selectId == 'selectL3PesoParDepartment') {
-             mensagem = 'Todos';
-        } else {
-            mensagem = 'Selecione o centro de custo';
+        //var mensagem;
+        if (mensagem == null) {
+
+            if (selectId == 'selectL3PesoParDepartment') {
+                mensagem = 'Todos';
+            } else {
+                mensagem = 'Selecione o centro de custo';
+            }
         }
 
         if (unidadeSelecionada == 0) {
@@ -886,7 +889,7 @@
                 preencheSelect('selectDCAvamParCompany', 'Name', 'Id', data.ParCompanys, 'Todas as empresas');
 
                 $("#selectParCompanyGeral").on('change', function () {
-                    MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', null);
+                    MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', null, null);
                     MontaSelectUnidades();
                 });
                 preencheSelect('selectDCDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o centro de custo', preencheDC);
