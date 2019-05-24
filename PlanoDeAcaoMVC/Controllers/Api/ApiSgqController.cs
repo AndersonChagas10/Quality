@@ -199,7 +199,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 	FROM Pa_Acao PA
                 	WHERE PA.Status IN (3, 4)
                 	" + whereLevel + @"
-                	AND PA.Unidade_Id = " + unidade + @") PA
+                    AND U.SGQ_ID = " + unidade + @"
+                	-- AND PA.Unidade_Id = " + unidade + @"
+                    ) PA
                 	ON PC.Acao_Id = PA.Id
                 GROUP BY LD.data_
                 order by ld.data_
@@ -279,7 +281,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                             	FROM Pa_Acao PA
                             	WHERE PA.Status IN (3, 4)
                             	" + whereLevel + @"
-                            	AND PA.Unidade_Id = " + unidade + @") PA
+                            	-- AND PA.Unidade_Id = " + unidade + @"
+                                AND U.SGQ_ID = " + unidade + @"
+                                ) PA
                             INNER JOIN (SELECT
                             		Acao_id
                             	   ,MAX(AddDate) Max_Date
