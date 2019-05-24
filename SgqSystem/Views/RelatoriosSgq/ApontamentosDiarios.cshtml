@@ -591,30 +591,20 @@
                 }
             }
 
-            var isInterval = (!!$("#intervalMax").length && !!$("#intervalMin").length);
+            $.post(urlSave, dadosResultLevel3, function (r, x, e) {
 
-            if (!isInterval || (isInterval && parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text()) && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text()))) {
+                $("#myModal").modal('hide');
+                openMessageModal(Resources('done'), Resources('registry_alter_success')); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
 
-                $.post(urlSave, dadosResultLevel3, function (r, x, e) {
+            }).fail(function (r, x, e) {
 
-                    $("#myModal").modal('hide');
-                    openMessageModal(Resources('done'), Resources('registry_alter_success')); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
+                console.log(r);
+                console.log(x);
+                console.log(e);
+                openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
 
-                }).fail(function (r, x, e) {
+            });
 
-                    console.log(r);
-                    console.log(x);
-                    console.log(e);
-                    openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
-
-                });
-
-            } else {
-
-                $("#botaoSalvar").removeAttr('data-dismiss')
-                openMessageModal("Valor inserido fora do intervalo permitido!", null);
-
-            }
         }
 
         function ValidaDadosParaEnvio() {
