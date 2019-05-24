@@ -58,12 +58,12 @@
 
         @*<div class="col-sm-4">
 
-            <div class="form-group">
-                <label for="ParGroupParLevel1_Id">Grupo:</label>
-                <select id="" class="input input-lg col-sm-12" name="ParLevel3Group_Id"></select>
-            </div>
+                <div class="form-group">
+                    <label for="ParGroupParLevel1_Id">Grupo:</label>
+                    <select id="" class="input input-lg col-sm-12" name="ParLevel3Group_Id"></select>
+                </div>
 
-        </div>*@
+            </div>*@
 
         <div class="col-sm-4">
 
@@ -75,55 +75,61 @@
 
         </div>
 
-        <div class="col-sm-4">
+        <div class="row col-md-12">
+            <div class="col-sm-4">
 
-            <div class="form-group">
-                <label for="Peso">Peso:</label>
-                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Importância da tarefa " aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
-                <input type="number" class="form-control required" id="Peso" name="Peso">
+                <div class="form-group">
+                    <label for="Peso">Peso:</label>
+                    <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Importância da tarefa " aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                    <input type="number" class="form-control required" id="Peso" name="Peso">
+                </div>
+
+            </div>
+
+
+            <div class="col-sm-2">
+
+                <div class="form-group">
+                    <label></label>
+                    <button id="btnAvancado" type="button" class="form-control btn btn-info">Avançado</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row col-md-12">
+            <div id="divAvaliacao" hidden="hidden" class="col-sm-4">
+
+                <div class="form-group">
+                    <label for="Peso">Avaliação:</label>
+                    <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="número de avaliações na amostragem" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                    <input type="number" class="form-control" id="Evaluation" name="Evaluation">
+                </div>
+
+            </div>
+
+            <div id="divAmostra" hidden="hidden" class="col-sm-4">
+
+                <div class="form-group">
+                    <label for="Peso">Amostra:</label>
+                    <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Número de amostras a serem avaliadas" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                    <input type="number" class="form-control" id="Sample" name="Sample">
+                </div>
+
+            </div>
+
+            <div id="divFrequencia" hidden="hidden" class="col-sm-4">
+
+                <div class="form-group">
+                    <label for="Frequencia">Frequência:</label>
+                    <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Frequência da realização da tarefa" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                    <select class="input input-lg col-sm-12" id="selectParFrequencyAV" name="ParFrequencyId"></select>
+
+                </div>
+
             </div>
 
         </div>
-
-        <div id="divAvaliacao" hidden="hidden" class="col-sm-4">
-
-            <div class="form-group">
-                <label for="Peso">Avaliação:</label>
-                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="número de avaliações na amostragem" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
-                <input type="number" class="form-control" id="Evaluation" name="Evaluation">
-            </div>
-
-        </div>
-
-        <div id="divAmostra" hidden="hidden" class="col-sm-4">
-
-            <div class="form-group">
-                <label for="Peso">Amostra:</label>
-                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Número de amostras a serem avaliadas" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
-                <input type="number" class="form-control" id="Sample" name="Sample">
-            </div>
-
-        </div>
-
-        <div id="divFrequencia" hidden="hidden" class="col-sm-4">
-
-            <div class="form-group">
-                <label for="Frequencia">Frequência:</label>
-                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Frequência da realização da tarefa" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
-                <select class="form-control" id="selectParFrequencyAV" name="ParFrequencyId"></select>
-            </div>
-
-        </div>
-
-        <div class="col-sm-2">
-
-            <div class="form-group">
-                <label></label>
-                <button id="btnAvancado" type="button" class="form-control btn btn-info">Avançado</button>
-            </div>
-
-        </div>
-
         <div class="col-sm-2">
 
             <div class="form-group" data-action>
@@ -186,7 +192,7 @@
     $("#ParL3Peso #selectL3PesoParDepartment").on('change', function () {
         var departamentoSelecionado = parseInt($("#ParL3Peso #selectL3PesoParDepartment :selected").val());
         var cargosVinculado = [];
-        
+
         if (departamentoSelecionado === 0) {
             preencheSelect('selectL3ParCargo', 'Name', 'Id', ParCargosGlobal, 'Todos');
             cargosVinculado = [];
@@ -225,7 +231,7 @@
             $("#divAvaliacao").hide();
             $("#divAmostra").hide();
         }
-       
+
     });
 
     var ParL3Peso = {
@@ -235,7 +241,7 @@
         urlSave: '@Url.Action("PostParVinculoPeso", "api/ParLevel3Api")',
 
         load: function (list) {
-            
+
             let id = this.id;
             let urlSave = this.urlSave;
 
@@ -337,7 +343,7 @@
                 }
 
                 let ParLevel3Value = [];
-                
+
                 $('#tableParL3Peso tbody tr').each(function () {
                     ParLevel3Value.push($(this).data('sgq'));
                 });
