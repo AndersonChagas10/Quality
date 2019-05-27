@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -390,6 +390,7 @@
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VTVerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
@@ -2003,6 +2004,11 @@
     <Content Include="Views\ParAlert\Index.cshtml" />
     <Content Include="Views\ParamsV2\ParDCRotina.cshtml" />
     <Content Include="Views\ParamsV2\ParDCCabecalho.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Create.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Delete.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Details.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Edit.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -36,6 +36,8 @@ namespace Dominio
         [DisplayName("É filho de")]
         public int? Parent_Id { get; set; }
 
+        public int? ParDepartmentGroup_Id { get; set; }
+
         [ForeignKey("Parent_Id")]
         public virtual ParDepartment ParDepartmentPai { get; set; }
 
@@ -44,5 +46,8 @@ namespace Dominio
 
         [ForeignKey("ParCompany_Id")]
         public virtual ICollection<ParCompany> ParCompany { get; set; }
+
+        [ForeignKey("ParDepartmentGroup_Id")]
+        public virtual ParDepartmentGroup ParDepartmentGroup { get; set; }
     }
 }
