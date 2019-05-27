@@ -7231,8 +7231,8 @@ setTimeout(function(){
                 string[] deviation = arrayDeviations[i].Split(';');
 
                 string ParCompany_Id = deviation[0];
-                string ParLevel1_Id = deviation[1];
-                string ParLevel2_Id = deviation[2];
+                string ParLevel1_Id = deviation[1].Contains(quebraProcesso) ? deviation[1].Replace(quebraProcesso, "|").Split('|')[1] : deviation[1];
+                string ParLevel2_Id = deviation[2].Contains(quebraProcesso) ? deviation[2].Replace(quebraProcesso, "|").Split('|')[1] : deviation[2];
                 string Evaluation = deviation[3] == "" ? "0" : deviation[3];
 
                 if (Evaluation == "undefined")
