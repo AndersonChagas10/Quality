@@ -6722,7 +6722,10 @@ setTimeout(function(){
             }//Escala Likert
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
-                var ranges = dbEf.ParInputTypeValues.Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id).ToList();
+                var ranges = dbEf.ParInputTypeValues
+                    .Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id 
+                        && r.IsActive
+                        && (r.Intervalo <= parLevel3.IntervalMax && r.Intervalo >= parLevel3.IntervalMin) ).ToList();
 
                 var paramns = new List<string>();
 
