@@ -12,6 +12,7 @@ using Dominio;
 using IntegrationModule;
 using SgqSystem.Controllers.Api;
 using static SgqSystem.Controllers.Api.SyncServiceApiController;
+using SgqSystem.Services;
 
 namespace Jobs
 {
@@ -43,7 +44,7 @@ namespace Jobs
                 using (var db = new SgqDbDevEntities())
                 {
                     
-                    var integCollectionData = db.IntegCollectionData.Where(x => !(x.Coletado > 0)).Take(20).ToList();
+                    var integCollectionData = db.IntegCollectionData.Where(x => !(x.Coletado > 0)).Take(50).ToList();
 
                     foreach (var item in integCollectionData)
                     {
@@ -102,13 +103,12 @@ namespace Jobs
 
             try
             {
-                var x = new SyncServiceApiController().InsertJson(new InsertJsonClass()
-                {
-                    ObjResultJSon = coleta.ToString(),
-                    deviceId = "",
-                    deviceMac = "",
-                    autoSend = false
-                });
+                var x = new SyncServicesOld().InsertJson(
+                    coleta.ToString(),
+                    "",
+                    "",
+                    false
+                );
 
                 if (x == null)
                 {
@@ -119,9 +119,24 @@ namespace Jobs
                         db.SaveChanges();
                     }
                 }
+                else
+                {
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        integCollectionData.Coletado = 3;
+                        db.Entry(integCollectionData).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
             }catch(Exception ex)
             {
-
+                using (var db = new SgqDbDevEntities())
+                {
+                    integCollectionData.Coletado = 2;
+                    db.Entry(integCollectionData).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
 
         }
