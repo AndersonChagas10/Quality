@@ -86,5 +86,14 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
-
+    $(document).ready(function () {
+        closeLeftSidebar();
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaGrupoEstrutura').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+    });
 </script>
