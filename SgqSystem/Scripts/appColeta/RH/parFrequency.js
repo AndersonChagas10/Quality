@@ -41,6 +41,8 @@ function listarParFrequency() {
 
 		data = JSON.parse(data);
 
+		listaParFrequency = data;
+
 		var frequency = {};
 
 		var htmlParFrequency = "";

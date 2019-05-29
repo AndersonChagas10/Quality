@@ -23,7 +23,7 @@ function listarParCargo() {
             //Verificar primeiramente os que existem ParCargo e ParCompany obs (frequencia e departamento são obrigatorios)
             var listaEvaluation = [];
 
-            //pegar os dados que possuem unidade, cargo e 
+            //pegar os dados que possuem unidade, cargo 
             listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
                 return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
                     parEvaluation.ParDepartment_Id == currentParDepartment_Id &&
@@ -42,7 +42,7 @@ function listarParCargo() {
             //Busca o que possui todas as unidades e todos os cargos
             if (listaEvaluation.length == 0) {
                 listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
-                    return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
+                    return parEvaluation.ParCargo_Id == null &&
                         parEvaluation.ParDepartment_Id == currentParDepartment_Id &&
                         parEvaluation.ParCompany_Id == null;
                 });

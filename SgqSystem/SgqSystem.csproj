@@ -390,6 +390,7 @@
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VTVerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
@@ -492,6 +493,7 @@
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
     <Compile Include="Jobs\CollectionDataJobFactory.cs" />
+    <Compile Include="Jobs\CollectionJob.cs" />
     <Compile Include="Jobs\IntegrationJobFactory.cs" />
     <Compile Include="Jobs\MandalaJob.cs" />
     <Compile Include="Jobs\ReProcessJsonJob.cs" />
@@ -957,8 +959,10 @@
     <Content Include="Scripts\appColeta\RH\parCargo.js" />
     <Content Include="Scripts\appColeta\RH\parDepartment.js" />
     <Content Include="Scripts\appColeta\RH\parFrequency.js" />
+    <Content Include="Scripts\appColeta\RH\parHeaderField.js" />
     <Content Include="Scripts\appColeta\RH\parLevels.js" />
     <Content Include="Scripts\appColeta\RH\resultado.js" />
+    <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
     <Content Include="Scripts\appColeta\RH\utils.js" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
     <Content Include="Content\select2-bootstrap.min.css" />
@@ -2000,6 +2004,11 @@
     <Content Include="Views\ParAlert\Index.cshtml" />
     <Content Include="Views\ParamsV2\ParDCRotina.cshtml" />
     <Content Include="Views\ParamsV2\ParDCCabecalho.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Create.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Delete.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Details.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Edit.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

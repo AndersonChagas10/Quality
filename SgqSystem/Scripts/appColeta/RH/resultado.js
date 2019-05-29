@@ -63,7 +63,7 @@ function getCollectionLevel2Obj(obj) {
 	return {
 		ParLevel1_Id: obj.ParLevel1_Id,
 		ParLevel2_Id: obj.ParLevel2_Id,
-		PaCompany_Id: obj.PaCompany_Id,
+		ParCompany_Id: obj.ParCompany_Id,
 		ParCluster_Id: obj.ParCluster_Id,
 		ParCargo_Id: obj.ParCargo_Id,
 		ParDepartment_Id: obj.ParDepartment_Id,

@@ -4962,4 +4962,7 @@
   <data name="costcenter" xml:space="preserve">
     <value>Centro de Custo</value>
   </data>
+  <data name="organizational_structure" xml:space="preserve">
+    <value>Estrutura Organizacional</value>
+  </data>
 </root>

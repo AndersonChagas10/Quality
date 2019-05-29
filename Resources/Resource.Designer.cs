@@ -9097,6 +9097,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Organizational Structure.
+        /// </summary>
+        public static string organizational_structure {
+            get {
+                return ResourceManager.GetString("organizational_structure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Origionation Date.
         /// </summary>
         public static string origionation_date {

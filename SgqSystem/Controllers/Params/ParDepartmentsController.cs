@@ -53,7 +53,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id, ParCompany_Id")] ParDepartment parDepartment)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id,ParCompany_Id,ParDepartmentGroup_Id")] ParDepartment parDepartment)
         {
             ValidaVinculos(parDepartment);
 
@@ -63,6 +63,9 @@ namespace SgqSystem.Controllers
 
             if (parDepartment.ParCompany_Id == 0)
                 parDepartment.ParCompany_Id = null;
+
+            //if (parDepartment.ParDepartmentGroup_Id != null)
+               // VincularDepartamentoAoGrupoDeDepartamentos(parDepartment);
 
             DepartamentoDuplicado(parDepartment);
             if (ModelState.IsValid)
@@ -105,7 +108,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id,ParCompany_Id")] ParDepartment parDepartment)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id,ParCompany_Id,ParDepartmentGroup_Id")] ParDepartment parDepartment)
         {
             MontaHash(parDepartment);
             DepartamentoDuplicado(parDepartment);
@@ -117,8 +120,14 @@ namespace SgqSystem.Controllers
                 if (parDepartment.ParCompany_Id == 0)
                     parDepartment.ParCompany_Id = null;
 
-                if (parDepartment.ParCompany_Id != parCompanyDepartmentOld && parDepartment.Parent_Id == null)
+                if (parDepartment.ParDepartmentGroup_Id == 0)
+                    parDepartment.ParDepartmentGroup_Id = null;
+
+                if (parDepartment.ParCompany_Id != parCompanyDepartmentOld && parDepartment.Parent_Id == null || (parDepartment.ParDepartmentGroup_Id != null))
                     AlteraParCompanyFilhos(parDepartment);
+
+                //if(parDepartment.ParDepartmentGroup_Id != null)
+                    //VincularDepartamentoAoGrupoDeDepartamentos(parDepartment);
 
                 if (ModelState.IsValid)
                 {
@@ -139,18 +148,35 @@ namespace SgqSystem.Controllers
         private void AlteraParCompanyFilhos(ParDepartment parDepartment)
         {
             string idPai = parDepartment.Id.ToString() + '|';
-            using (SgqDbDevEntities dbEntitie = new SgqDbDevEntities())
+            using (SgqDbDevEntities dbEntities = new SgqDbDevEntities())
             {
-                var filhos = dbEntitie.ParDepartment.Where(x => x.Active
+                var filhos = dbEntities.ParDepartment.Where(x => x.Active
                     && (x.Parent_Id == parDepartment.Id || x.Hash.StartsWith(idPai))).ToList();
 
                 foreach (var item in filhos)
                 {
                     item.ParCompany_Id = parDepartment.ParCompany_Id;
-                    dbEntitie.SaveChanges();
+                    item.ParDepartmentGroup_Id = parDepartment.ParDepartmentGroup_Id;
+                    dbEntities.SaveChanges();
                 }
             }
         }
+
+        //private void VincularDepartamentoAoGrupoDeDepartamentos(ParDepartment parDepartment)
+        //{
+        //    string idPai = parDepartment.Id.ToString() + '|';
+        //    using (SgqDbDevEntities dbEntities = new SgqDbDevEntities())
+        //    {
+        //        var filhos = dbEntities.ParDepartment.Where(x => x.Active
+        //            && (x.Parent_Id == parDepartment.Id || x.Hash.StartsWith(idPai))).ToList();
+
+        //        foreach (var item in filhos)
+        //        {
+        //            item.ParDepartmentGroup_Id = parDepartment.ParDepartmentGroup_Id;
+        //            dbEntities.SaveChanges();
+        //        }
+        //    }
+        //}
 
         // GET: ParDepartments/Delete/5
         public ActionResult Delete(int? id)
@@ -227,6 +253,11 @@ namespace SgqSystem.Controllers
             listaUnidades.Insert(0, new ParCompany() { Id = 0, Name = "Selecione" });
             //listaUnidades.Add(new ParCompany() { Id = -1, Name = "Selecione" });
             ViewBag.ParCompany_Id = new SelectList(listaUnidades, "Id", "Name", parDepartment.ParCompany_Id);
+
+            var listaGrupoDepartamentos = db.ParDepartmentGroup.Where(x => x.IsActive).ToList();
+            listaGrupoDepartamentos.Insert(0, new ParDepartmentGroup() { Id = 0, Name = "Selecione" });
+            //listaUnidades.Add(new ParCompany() { Id = -1, Name = "Selecione" });
+            ViewBag.ParDepartmentGroup_Id = new SelectList(listaGrupoDepartamentos, "Id", "Name", parDepartment.ParDepartmentGroup_Id);
         }
 
         private void DepartamentoDuplicado(ParDepartment parDepartment)

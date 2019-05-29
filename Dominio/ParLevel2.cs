@@ -31,7 +31,7 @@ namespace Dominio
 
         public int? ParFrequency_Id { get; set; }
 
-        public int ParDepartment_Id { get; set; }
+        public int? ParDepartment_Id { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         [StringLength(155)]

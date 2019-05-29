@@ -56,12 +56,12 @@ namespace SgqSystem
             SetGlobalConfigAmbient();
             ThreadPool.QueueUserWorkItem(IntegrationJobFactory.ExecuteIntegrationJobFunction);
             ThreadPool.QueueUserWorkItem(CollectionDataJobFactory.ExecuteCollectionDataJobFunction);
-            
 
             ThreadPool.QueueUserWorkItem(MailJob.SendMailJobFunction);
             ThreadPool.QueueUserWorkItem(MandalaJob.PreencherListaMandala);
             ThreadPool.QueueUserWorkItem(ReProcessJsonJob.ReProcessJsonJobFunction);
-            
+
+            ThreadPool.QueueUserWorkItem(CollectionJob.ExecuteCollectionJob);
 
             //if (GlobalConfig.Brasil)
             //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR" + GlobalConfig.Ambient];
@@ -175,7 +175,7 @@ namespace SgqSystem
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "Instrucao", Value = "207", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero da Instrução" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "NumeroNotaFiscal", Value = "208", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero da Nota Fiscal" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "TipoCarga", Value = "209", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero do Tipo de Carga" });
-                DicionariosInserir.Add(new DicionarioEstatico() { Key = "TipoProduto", Value = "211", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero do tipo de Produto" });               
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "TipoProduto", Value = "211", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero do tipo de Produto" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "TipoEmbalagem", Value = "210", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Numero do tipo de embalagem" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "TemperaturaMin", Value = "212", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Temperatura Minima" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "TemperaturaMax", Value = "213", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Temperatura Maxima" });

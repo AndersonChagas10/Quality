@@ -4989,4 +4989,7 @@
   <data name="costcenter" xml:space="preserve">
     <value>Cost Center</value>
   </data>
+  <data name="organizational_structure" xml:space="preserve">
+    <value>Organizational Structure</value>
+  </data>
 </root>

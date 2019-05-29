@@ -1,9 +1,7 @@
-﻿@model Dominio.ParGroupParLevel1
+﻿@model Dominio.ParDepartmentGroup
 
 @{
-                /**/
-
-                ViewBag.Title = "Novo Grupo de Função";
+    ViewBag.Title = "Grupo de Departamentos";
 }
 
 <div class="page-content-wrapper">
@@ -16,13 +14,20 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParGroupParLevel1")">Grupo de Função</a>
+                    <a href="@Url.Action("Index", "ParDepartmentsGroup")">Grupo de Departamentos</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.create</span>
+                    <span>@Resources.Resource.edit</span>
                 </li>
             </ul>
+            <div class="page-toolbar">
+                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
+                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
+            </div>
         </div>
         <!-- END PAGE BAR -->
         <!-- END PAGE HEADER-->
@@ -32,19 +37,22 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create Grupo de Função </span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.edit Grupo de Departamentos</span>
                         </div>
                     </div>
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
-                                @using (Html.BeginForm("Create", "ParGroupParLevel1", FormMethod.Post))
+
+                                @using (Html.BeginForm())
                                 {
                                     @Html.AntiForgeryToken()
 
                                     <div class="form-horizontal">
                                         <hr />
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @Html.HiddenFor(model => model.Id)
+
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
@@ -54,27 +62,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParGroupParLevel1Type_Id, "Grupo de Tipo de Função", htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownList("ParGroupParLevel1Type_Id", null, htmlAttributes: new { @class = "form-control" })
-
-                                                @*@Html.DropDownList("ParGroupParLevel1Type_Id", Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:275px" })*@
-                                                @Html.ValidationMessageFor(model => model.ParGroupParLevel1Type_Id, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.Parent_Id, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                <div class="checkbox">
-                                                    @Html.DropDownList("Parent_Id", null, htmlAttributes: new { @class = "form-control" })
-                                                    @Html.ValidationMessageFor(model => model.Parent_Id, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.IsActive, Resources.Resource.active, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.IsActive)
@@ -86,14 +74,13 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="@Resources.Resource.create" class="btn btn-primary" />
-                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                                <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
+                                                @Html.ActionLink(Resources.Resource.back, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>
                                 }
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -102,15 +89,20 @@
     </div>
     <!-- END CONTENT BODY -->
 </div>
-@section Scripts {
 
-    <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
+<script>
 
-    <script>
-        $(document).ready(function () {
-            $("#IsActive").prop("checked", true);
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar4");
+    $('#ParDepartment_Id').select2();
 
-            $("#ParGroupParLevel1Type_Id").select2();
-        });
-    </script>
-}
+
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        closeLeftSidebar();
+    });
+</script>
