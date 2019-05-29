@@ -127,19 +127,19 @@
     }
 
     body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(1) a {
-        background-color: #d9edf7;
+        background-color: #edf5fc;
     }
 
     body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(2) a {
-        background-color: #faebcc;
+        background-color: #fcf4e3;
     }
 
     body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(3) a {
-        background-color: #fed5d5;
+        background-color: #ffeded;
     }
 
     body > div.page-wrapper > div.page-container > div.page-content-wrapper > div > div.row > div > ul > li:nth-child(4) a {
-        background-color: #fffcab;
+        background-color: #fffdc9;
     }
 
     #divAjuda {
@@ -221,10 +221,10 @@
                     </li>
                 </ul>
 
-                <div class="tab-content border color-update">
-                    <div class="col-sm-12 color-update">
+                <div class="tab-content border">
+                    <div class="col-sm-12">
                         <div id="l1" class="tab-pane fade in active">
-                            <h3 class="jumbotron text-center" data-name="Name"></h3>
+                            <h3 class="jumbotron text-center color-update" data-name="Name"></h3>
                             <div class="col-xs-3">
                                 <ul class="nav nav-tabs tabs-left" data-levels="l1">
                                     <li class="active">
@@ -268,7 +268,7 @@
                         </div>
 
                         <div id="l2" class="tab-pane fade">
-                            <h3 class="jumbotron text-center" data-name="Name"></h3>
+                            <h3 class="jumbotron text-center color-update" data-name="Name"></h3>
                             <div class="col-xs-3">
                                 <ul class="nav nav-tabs tabs-left" data-levels="l2">
                                     <li class="active">
@@ -320,7 +320,7 @@
                         </div>
 
                         <div id="l3" class="tab-pane fade">
-                            <h3 class="jumbotron text-center" data-name="Name"></h3>
+                            <h3 class="jumbotron text-center color-update" data-name="Name"></h3>
                             <div class="col-xs-3">
                                 <ul class="nav nav-tabs tabs-left" data-levels="l3">
                                     <li class="active">
@@ -380,7 +380,7 @@
                         </div>
 
                         <div id="dc" class="tab-pane fade">
-                            <h3 class="jumbotron text-center" data-name="Name"></h3>
+                            <h3 class="jumbotron text-center color-update" data-name="Name"></h3>
                             <div class="col-xs-3">
                                 <ul class="nav nav-tabs tabs-left" data-levels="dc">
                                     <li>
@@ -427,6 +427,9 @@
     var ParCargoXDepartmentsGlobal;
     var ParDepartmentsGlobal;
     var parCompanysGlobal;
+    var parLevel3ValueList;
+    var parLevel3PesoList;
+    var parDCAVamList;
 
     $("#btnVincular").hide();
 
@@ -512,6 +515,59 @@
         $(`select#${id}`).select2();
     }
 
+    let listaTipoDadoDeEntradaVinculadosaEmpresaSelecionada = function (listaTipoDado) {
+        if (listaTipoDado != null) {
+
+            if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+
+                var listaVinculadaAUnidade = jQuery.grep(listaTipoDado, function (n, i) {
+                    return (n.ParCompany_Id === parseInt($("#selectParCompanyGeral :selected").val()));
+                });
+
+                ParL3TipoDado.load(listaVinculadaAUnidade);
+
+            } else {
+                ParL3TipoDado.load(listaTipoDado);
+            }
+        }
+    }
+
+    let listaVinculoPesoVinculadosaEmpresaSelecionada = function (lista) {
+        if (lista != null) {
+
+            if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+
+                var listaPesoVinculadaAUnidade = jQuery.grep(lista, function (n, i) {
+                    return (n.ParCompany_Id === parseInt($("#selectParCompanyGeral :selected").val()));
+                });
+
+                ParL3Peso.load(listaPesoVinculadaAUnidade);
+
+            } else {
+                ParL3Peso.load(lista);
+            }
+        }
+    }
+    let listaAvaliacaoAmostraVinculadosaEmpresaSelecionada = function (lista) {
+        if (lista != null) {
+
+            if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+
+                var listaAvAmVinculadaAUnidade = jQuery.grep(lista, function (n, i) {
+                    return (n.ParCompany_Id === parseInt($("#selectParCompanyGeral :selected").val()));
+                });
+
+                parDCAvam.load(listaAvAmVinculadaAUnidade);
+
+            } else {
+                parDCAvam.load(lista);
+            }
+        }
+    }
+    
+
+    
+
     let MontaSelectDepartamentoVinculadoAUnidadeSelecionada = function (selectId, empresaSelecionada, mensagem) {
 
         var unidadeSelecionada;
@@ -546,7 +602,6 @@
 
         var unidadeSelecionadaTeste = parseInt($("#selectParCompanyGeral :selected").val());
 
-        debugger
         if (unidadeSelecionadaTeste == 0) {
             preencheSelect('selectDCAvamParCompany', 'Name', 'Id', parCompanysGlobal, "Todos");
             preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', parCompanysGlobal, "Todos");
@@ -784,9 +839,22 @@
                     preencheCampos('l3', '', data.Parlevel3, true)
                     ParL3Geral.set(data.Parlevel3);
                     ParL3Avancados.set(data.Parlevel3);
-                    //parL3Avam.load(data.Parlevel3.ParLevel3EvaluationSample);
-                    ParL3Peso.load(data.Parlevel3.ParVinculoPeso);
-                    ParL3TipoDado.load(data.Parlevel3.ParLevel3Value);
+
+                    parLevel3PesoList = data.Parlevel3.ParVinculoPeso;
+                    if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+                        listaVinculoPesoVinculadosaEmpresaSelecionada(parLevel3PesoList);
+                    } else {
+                        ParL3Peso.load(parLevel3PesoList);
+                    }
+              
+
+                    parLevel3ValueList = data.Parlevel3.ParLevel3Value;
+                    if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+                        listaTipoDadoDeEntradaVinculadosaEmpresaSelecionada(parLevel3ValueList);
+                    } else {
+                        ParL3TipoDado.load(parLevel3ValueList);
+                    }
+
                     ParL3Help.load(data.Parlevel3.ParLevel3XHelp);
                     verifyTabs('selectL3', 'l3');
                     closeLoader();
@@ -817,7 +885,14 @@
 
                     preencheCampos('dc', '', data.ParDepartment, true);
                     preencheSelect('selectDCAvamParCargo', 'Name', 'Id', data.ParCargo, 'Todos');
-                    parDCAvam.load(data.ParEvaluationXDepartmentXCargo);
+
+                    parDCAVamList = data.ParEvaluationXDepartmentXCargo;
+                    if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+                        listaAvaliacaoAmostraVinculadosaEmpresaSelecionada(parDCAVamList);
+                    } else {
+                        parDCAvam.load(parDCAVamList);
+                    }
+
                     parDCRotina.load(data.ParDepartmentXRotinaIntegracao);
                     parDCCabecalho.load(data.ParDepartmentXHeaderField);
                     closeLoader();
@@ -890,8 +965,17 @@
 
                 $("#selectParCompanyGeral").on('change', function () {
                     MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', null, null);
+
+                    //Com base na Empresa selecionada no pré filtro
+                    //o metodo preenche os selects de Empresa apenas com a empresa que foi selecionada e a opção todos
                     MontaSelectUnidades();
-                });
+
+                    listaTipoDadoDeEntradaVinculadosaEmpresaSelecionada(parLevel3ValueList);
+
+                    listaVinculoPesoVinculadosaEmpresaSelecionada(parLevel3PesoList);
+
+                    listaAvaliacaoAmostraVinculadosaEmpresaSelecionada(parDCAVamList);
+                })
                 preencheSelect('selectDCDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o centro de custo', preencheDC);
 
 
@@ -899,15 +983,6 @@
                 preencheSelect('selectRotina', 'Name', 'Id', data.RotinaIntegracao, 'Selecione a Rotina');
                 preencheSelect('selectL1ParFieldTypeDepartment', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
 
-                //$("#selectParCompanyGeral").on('change', function () {
-                //    var unidadeSelecionadaGlobal = parseInt($("#selectParCompanyGeral :selected").val());
-                //    var departamentosVinculados = jQuery.grep(ParDepartmentsGlobal, function (n, i) {
-                //        return (n.ParCompany_Id === unidadeSelecionadaGlobal);
-                //    });
-                //    preencheSelect('selectL2GeralParDepartment', 'Name', 'Id', departamentosVinculados, "Todos");
-                //    preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', departamentosVinculados, "Todos");
-                //    preencheSelect('selectL3PesoParCompany', 'Name', 'Id', departamentosVinculados, "Todos");
-                //});
                 closeLoader();
                 verifyTabs('selectDCDepartment', 'dc');
 
@@ -1129,7 +1204,7 @@
         }).fail(function (e, h, x) {
             openMessageModal(Resources("alert"), e.responseJSON.Message);
         });*@
-        
+
     });
 
     $(document).on('click', function () {
@@ -1137,26 +1212,30 @@
         setTimeout(function () {
 
             if ($('#l1').hasClass('active')) {
-                $('#l1').parents('.border').css('border-color', '#d9edf7');
-                $('.color-update').css('background-color', '#d9edf7');
+                $('#l1').parents('.border').css('border-color', '#edf5fc');
+                $('.color-update').css('background-color', '#edf5fc');
+                $('.titulo2').css('background-color', '#edf5fc');
             }
 
             if ($('#l2').hasClass('active')) {
-                $('#l2').parents('.border').css('border-color', '#faebcc');
-                $('.color-update').css('background-color', '#faebcc');
+                $('#l2').parents('.border').css('border-color', '#fcf4e3');
+                $('.color-update').css('background-color', '#fcf4e3');
+                $('.titulo2').css('background-color', '#fcf4e3');
             }
 
             if ($('#l3').hasClass('active')) {
-                $('#l3').parents('.border').css('border-color', '#fed5d5');
-                $('.color-update').css('background-color', '#fed5d5');
+                $('#l3').parents('.border').css('border-color', '#ffeded');
+                $('.color-update').css('background-color', '#ffeded');
+                $('.titulo2').css('background-color', '#ffeded');
             }
 
             if ($('#dc').hasClass('active')) {
-                $('#dc').parents('.border').css('border-color', '#fffcab');
-                $('.color-update').css('background-color', '#fffcab');
+                $('#dc').parents('.border').css('border-color', '#fffdc9');
+                $('.color-update').css('background-color', '#fffdc9');
+                $('.titulo2').css('background-color', '#fffdc9');
             }
 
         }, 150);
-
     });
 </script>
+
