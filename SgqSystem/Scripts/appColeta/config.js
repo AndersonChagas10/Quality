@@ -14,8 +14,8 @@
 //var urlPreffix = "http://server20129141.cloudapp.net/SGQSantander"; //Santander
 //var urlPreffix = "http://ytoara.no-ip.info:8081/SGQYtoara"; //Ytoara
 
-var baseAmbiente = "JBS ";
-var versao = " 2.0.47 Android"; //platform Android
+var baseAmbiente = "AppColeta ";
+var versao = " 2.0.48"; //platform Android
 //var versao = " 2.0.46 Windows"; //platform Windows
 //var versao = " 2.0.47"; //platform Browser
 
