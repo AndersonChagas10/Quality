@@ -64,8 +64,11 @@ namespace SgqSystem.Controllers
             if (parDepartment.ParCompany_Id == 0)
                 parDepartment.ParCompany_Id = null;
 
+            if (parDepartment.ParDepartmentGroup_Id == 0)
+                parDepartment.ParDepartmentGroup_Id = null;
+
             //if (parDepartment.ParDepartmentGroup_Id != null)
-               // VincularDepartamentoAoGrupoDeDepartamentos(parDepartment);
+            // VincularDepartamentoAoGrupoDeDepartamentos(parDepartment);
 
             DepartamentoDuplicado(parDepartment);
             if (ModelState.IsValid)
