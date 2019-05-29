@@ -3761,15 +3761,18 @@ namespace SgqSystem.Services
         {
             //var version = "2.0.47";
             string forcaAtualizacao = "";
-            if (!version.Contains("2.0.47"))
+
+            string appVersion = System.Configuration.ConfigurationManager.AppSettings["appVersion"];
+
+            if (!version.Contains(appVersion))
                 forcaAtualizacao = @"<script>
-setTimeout(function(){
-    navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
-    cleanArquivos, 
-    'Atualização', 
-    'OK');
-},500);
-</script>";
+                                     setTimeout(function(){
+                                         navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
+                                         Reload, 
+                                         'Atualização', 
+                                         'OK');
+                                     },500);
+                                     </script>";
 
             string login = GetLoginAPP();
 
