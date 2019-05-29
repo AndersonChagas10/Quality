@@ -83,7 +83,8 @@ function listarParCargo() {
                 'data-total-sample="' + o.Evaluation.Sample + '"                                                                 ' +
                 'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"                                            ' +
                 'data-current-sample="' + currentEvaluationSample.Sample + '">                                                   ' +
-                '	<div class="col-xs-4">' + o.Name + '</div>                                                                  ' +
+                '	<div class="col-xs-3">' + o.Name + '</div>                                                                  ' +
+                '	<div class="col-xs-1"></div>                                                                  ' +
                 '	<div class="col-xs-4">Av: ' + currentEvaluationSample.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>      ' +
                 '	<div class="col-xs-4">Am: ' + currentEvaluationSample.Sample + '/' + o.Evaluation.Sample + ' </div>              ' +
                 '</button>';
@@ -311,8 +312,10 @@ function atualizaCorAgendamento(cargo,currentEvaluationSample) {
             //warning = 3
             //success = 2
             //default = 1
-
-            var elem = $('[data-par-cargo-id="' + cargo.Id + '"]');
+            var elem = $('[data-par-cargo-id="' + cargo.Id + '"] .col-xs-1');
+            
+            $(elem).height(30);
+            $(elem).width(30);
 
             if (situacao.indexOf("4") >= 0) {
                 $(elem).attr('style','background-color:red');
