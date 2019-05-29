@@ -195,8 +195,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 	GROUP BY Acao_id) PC
                 	ON LD.data_ = CAST(PC.Max_Date AS DATE)
                 LEFT JOIN (SELECT
-                		*
+                		PA.*
                 	FROM Pa_Acao PA
+                    LEFT JOIN PA_UNIDADE U ON U.ID = PA.UNIDADE_ID
                 	WHERE PA.Status IN (3, 4)
                 	" + whereLevel + @"
                     AND U.SGQ_ID = " + unidade + @"
@@ -277,8 +278,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                             --,'O que' as 'O que'
                             --,'Observacao' as 'Observacao'
                             FROM (SELECT
-                            		*
+                            		PA.*
                             	FROM Pa_Acao PA
+                                LEFT JOIN PA_UNIDADE U ON U.ID = PA.UNIDADE_ID
                             	WHERE PA.Status IN (3, 4)
                             	" + whereLevel + @"
                             	-- AND PA.Unidade_Id = " + unidade + @"
