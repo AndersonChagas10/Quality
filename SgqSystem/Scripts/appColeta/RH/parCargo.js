@@ -15,7 +15,7 @@ function listarParCargo() {
     $(listaParCargoXDepartment).each(function (item, obj) {
 
         var listaParCargoFilter = $.grep(parametrization.listaParCargo, function (parCargo) {
-            return (parCargo.Id == obj.ParCargo_Id || obj.ParCargo_Id == null);
+            return (parCargo.Id == obj.ParCargo_Id);
         });
 
         listaParCargoFilter.forEach(function (item) {
@@ -26,16 +26,14 @@ function listarParCargo() {
             //pegar os dados que possuem unidade, cargo 
             listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
                 return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
-                    parEvaluation.ParDepartment_Id == currentParDepartment_Id &&
-                    parEvaluation.ParCompany_Id == currentLogin.ParCompany_Id;
+                    parEvaluation.ParDepartment_Id == currentParDepartment_Id
             });
 
             //Caso não existir, buscar os que possuem todas as unidades
             if (listaEvaluation.length == 0) {
                 listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
                     return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
-                        parEvaluation.ParDepartment_Id == currentParDepartment_Id &&
-                        parEvaluation.ParCompany_Id == null;
+                        parEvaluation.ParDepartment_Id == currentParDepartment_Id
                 });
             }
 
@@ -43,8 +41,7 @@ function listarParCargo() {
             if (listaEvaluation.length == 0) {
                 listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
                     return parEvaluation.ParCargo_Id == null &&
-                        parEvaluation.ParDepartment_Id == currentParDepartment_Id &&
-                        parEvaluation.ParCompany_Id == null;
+                        parEvaluation.ParDepartment_Id == currentParDepartment_Id
                 });
             }
 
