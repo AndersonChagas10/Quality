@@ -1,6 +1,6 @@
 ﻿var totalObj = 0; //Verifica total de Level02 a ser sincornizado
 var objsyncked = 0; //Ojetos j� sincronizados
-var qtdeObjetos = 50; //Quantidade de Objetos enviados por sincroniza��o
+var qtdeObjetos = 10; //Quantidade de Objetos enviados por sincroniza��o
 
 /// Fun��o que Inicializa a Sincroniza��o
 function sendResults() {
@@ -66,10 +66,7 @@ function preparing(showMessage) {
         return;
     }
 
-    if (isEUA)
-        qtdeObjetos = 500;
-
-    var arrayResultsSend = $('.level02Result[sync=false]:lt(30)').slice(0, qtdeObjetos);
+    var arrayResultsSend = $('.level02Result[sync=false]:lt('+qtdeObjetos+')').slice(0, qtdeObjetos);
     arrayResultsSend.attr('send', 'true');
 
 }
@@ -91,7 +88,14 @@ function send(autoSend, callbackPCC1B, sendImediato) {
         autoSend = false;
     }
 
+    var quantidadeDeObjetosParaSincronizar = qtdeObjetos;
+
     $('.level02Result[sync=false][send=true]').each(function (e) {
+
+        //BREAK NO FOREACH PARA LIMITAR A ENVIAR APENAS O NUMERO DEFINIDO DE LEVEL2
+        if(quantidadeDeObjetosParaSincronizar == 0)
+            return false;
+        quantidadeDeObjetosParaSincronizar--;
 
         var level02Result = "";
 
@@ -99,29 +103,29 @@ function send(autoSend, callbackPCC1B, sendImediato) {
         var level01 = level02.parents('.level01Result');
         var hasReason = false;
 
-        level02Result += level01.attr('level01id');//[0]
-        level02Result += ";" + level01.attr('datetime');//[1]
-        level02Result += ";" + level02.attr('level02id');//[2]
-        level02Result += ";" + level02.attr('datetime');//[3]
-        level02Result += ";" + level01.attr('unidadeid');//[4]
-        level02Result += ";" + level01.attr('period');//[5]
-        level02Result += ";" + level01.attr('shift'); //[6]
+        level02Result += RetornaValor0SeUndefined(level02.attr('level01id'));//[0]
+        level02Result += ";" + RetornaValor0SeUndefined(level01.attr('datetime'));//[1]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('level02id'));//[2]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('datetime'));//[3]
+        level02Result += ";" + RetornaValor0SeUndefined(level01.attr('unidadeid'));//[4]
+        level02Result += ";" + RetornaValor0SeUndefined(level01.attr('period'));//[5]
+        level02Result += ";" + RetornaValor0SeUndefined(level01.attr('shift')); //[6]
 
-        level02Result += ";" + level02.attr('auditorid'); //7]ok
-        level02Result += ";" + level02.attr('phase'); //[8] ok
-        level02Result += ";" + level02.attr('reaudit'); //[9]ok
-        level02Result += ";" + level02.attr('startphasedate'); //[10]ok
-        level02Result += ";" + level02.attr('evaluate');//[11]ok
-        level02Result += ";" + level02.attr('sample');//[12]ok
-        level02Result += ";" + level02.attr('headerlist');//[13]ok
-        level02Result += ";" + level02.attr('isemptylevel3');//[14]ok
-        level02Result += ";" + level02.attr('hassampletotal');//[15]ok
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('auditorid')); //7]ok
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('phase')); //[8] ok
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('reaudit')); //[9]ok
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('startphasedate')); //[10]ok
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('evaluate'));//[11]ok
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('sample'));//[12]ok
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('headerlist'));//[13]ok
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('isemptylevel3'));//[14]ok
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('hassampletotal'));//[15]ok
         level02Result += ";"; //[16]ok
-        level02Result += ";" + level02.attr('consecutivefailurelevel'); //[17] ok
-        level02Result += ";" + level02.attr('consecutivefailuretotal'); //[18] ok
-        level02Result += ";" + level02.attr('notavaliable'); //[19]ok
-        level02Result += ";" + versao; //[20]
-        level02Result += ";" + baseAmbiente; //[21]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('consecutivefailurelevel')); //[17] ok
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('consecutivefailuretotal')); //[18] ok
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('notavaliable')); //[19]ok
+        level02Result += ";" + RetornaValor0SeUndefined(versao); //[20]
+        level02Result += ";" + RetornaValor0SeUndefined(baseAmbiente); //[21]
 
         var level03Result = $(this).children('.level03Result');
         var resultLevel03 = "";
@@ -135,24 +139,24 @@ function send(autoSend, callbackPCC1B, sendImediato) {
 
             var level03 = $(this);
 
-            var result = level03.attr('level03id'); //[0]
-            result += "," + level03.attr('date'); //[1]
+            var result = RetornaValor0SeUndefined(level03.attr('level03id')); //[0]
+            result += "," + RetornaValor0SeUndefined(level03.attr('date')); //[1]
 
 
             var valueConfigurado = 0;
 
             var valorCientifico = level03.attr('value');
             if (valorCientifico.indexOf("x10^") >= 0) {
-                valueConfigurado = converteNotacaoBaseDezParaDecimal(level03.attr('value')); //[2]
+                valueConfigurado = converteNotacaoBaseDezParaDecimal(RetornaValor0SeUndefined(level03.attr('value'))); //[2]
             } else {
-                valueConfigurado = level03.attr('value'); //[2]
+                valueConfigurado = RetornaValor0SeUndefined(level03.attr('value')); //[2]
             }
 
             result += "," + (valueConfigurado != null ? valueConfigurado.toString().replace(",", ".") : valueConfigurado) //[2]
 
             var vvalor = parseFloat(valueConfigurado.toString().replace(",", "."));
-            var vmin = parseFloat(level03.attr('intervalmin').replace(",", "."));
-            var vmax = parseFloat(level03.attr('intervalmax').replace(",", "."));
+            var vmin = parseFloat(RetornaValor0SeUndefined(level03.attr('intervalmin')).replace(",", "."));
+            var vmax = parseFloat(RetornaValor0SeUndefined(level03.attr('intervalmax')).replace(",", "."));
 
             if (vvalor >= vmin && vvalor <= vmax && parseFloat((level03.attr('weidefects') ? level03.attr('weidefects') : "").replace(",", ".")) == 0) {
 
@@ -161,7 +165,7 @@ function send(autoSend, callbackPCC1B, sendImediato) {
             } else {
 
                 try {
-                    result += "," + level03.attr('conform'); //[3];
+                    result += "," + RetornaValor0SeUndefined(level03.attr('conform')); //[3];
                 } catch (e) {
                     result += "," + 'false';//level03.attr('defects'); 
                 }
@@ -169,20 +173,20 @@ function send(autoSend, callbackPCC1B, sendImediato) {
             }
 
 
-            result += "," + level03.attr('auditorid'); //[4]
-            result += "," + level03.attr('totalerror'); //[5]
-            result += "," + escape(level03.attr('valuetext')); //[6]
-            result += "," + level03.attr('id'); //[7]
-            result += "," + level03.attr('weight').replace(",", "."); //[8]
+            result += "," + RetornaValor0SeUndefined(level03.attr('auditorid')); //[4]
+            result += "," + RetornaValor0SeUndefined(level03.attr('totalerror')); //[5]
+            result += "," + RetornaValor0SeUndefined(escape(level03.attr('valuetext'))); //[6]
+            result += "," + RetornaValor0SeUndefined(level03.attr('id')); //[7]
+            result += "," + RetornaValor0SeUndefined(level03.attr('weight')).replace(",", "."); //[8]
             result += ","; //[9] Aqui era o name do level3
-            result += "," + level03.attr('intervalmin').replace(",", "."); //[10]
-            result += "," + level03.attr('intervalmax').replace(",", "."); //[11]
-            result += "," + level03.attr('isnotevaluate'); //[12]
-            result += "," + level03.attr('punishmentvalue'); //[13]
+            result += "," + RetornaValor0SeUndefined(level03.attr('intervalmin')).replace(",", "."); //[10]
+            result += "," + RetornaValor0SeUndefined(level03.attr('intervalmax')).replace(",", "."); //[11]
+            result += "," + RetornaValor0SeUndefined(level03.attr('isnotevaluate')); //[12]
+            result += "," + RetornaValor0SeUndefined(level03.attr('punishmentvalue')); //[13]
 
-            var vvalor = parseFloat(valueConfigurado.toString().replace(",", "."));
-            var vmin = parseFloat(level03.attr('intervalmin').replace(",", "."));
-            var vmax = parseFloat(level03.attr('intervalmax').replace(",", "."));
+            var vvalor = parseFloat(RetornaValor0SeUndefined(valueConfigurado).toString().replace(",", "."));
+            var vmin = parseFloat(RetornaValor0SeUndefined(level03.attr('intervalmin')).replace(",", "."));
+            var vmax = parseFloat(RetornaValor0SeUndefined(level03.attr('intervalmax')).replace(",", "."));
 
 
             //defects 14
@@ -193,31 +197,31 @@ function send(autoSend, callbackPCC1B, sendImediato) {
             } else {
 
                 try {
-                    result += "," + level03.attr('defects');
+                    result += "," + RetornaValor0SeUndefined(level03.attr('defects'));
                 } catch (e) {
                     result += "," + '1';//level03.attr('defects'); 
                 }
             }
 
             try {
-                result += "," + level03.attr('weievaluation').replace(",", "."); //[15]
+                result += "," + RetornaValor0SeUndefined(level03.attr('weievaluation')).replace(",", "."); //[15]
             } catch (e) {
                 level02Result += ";" + '0';
             }
             try {
-                result += "," + level03.attr('weidefects').replace(",", ".");//[16]
+                result += "," + RetornaValor0SeUndefined(level03.attr('weidefects')).replace(",", ".");//[16]
             } catch (e) {
                 level02Result += ";" + '0';
             }
 
             if (level03.attr('ParReasonId')) {
                 hasReason = true;
-                ParReason_Id = level03.attr('ParReasonId');
-                ParReasonType_Id = level03.attr('ParReasonType_Id');
+                ParReason_Id = RetornaValor0SeUndefined(level03.attr('ParReasonId'));
+                ParReasonType_Id = RetornaValor0SeUndefined(level03.attr('ParReasonType_Id'));
             }
 
             if (level03.attr('parDepartmentId')) {
-                parDepartment_Id = level03.attr('parDepartmentId');
+                parDepartment_Id = RetornaValor0SeUndefined(level03.attr('parDepartmentId'));
             }
 
             resultLevel03 += "<level03>" + result + "</level03>";
@@ -228,70 +232,70 @@ function send(autoSend, callbackPCC1B, sendImediato) {
 
         var correctiveActionResult = "";
 
-        level02Result += ";" + correctiveActionResult; //[23]
-        level02Result += ";" + level02.attr('havereaudit'); //[24]
-        level02Result += ";" + level02.attr('havecorrectiveaction'); //[25]
-        level02Result += ";" + level02.attr('reauditnumber');//[26]
-        level02Result += ";" + level01.attr('alertaatual'); // [27]
-        level02Result += ";" + level01.attr('completed');//[28]
-        level02Result += ";" + level02.attr('havephases'); //r[29]
-        level02Result += ";" + level02.attr('id'); //r[30]
-        level02Result += ";" + level02.attr('correctiveactioncomplete'); //r[31]
-        level02Result += ";" + level02.attr('completereaudit'); //r[32]
-        level02Result += ";" + level01.attr('hashkey'); // [33]
+        level02Result += ";" + RetornaValor0SeUndefined(correctiveActionResult); //[23]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('havereaudit')); //[24]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('havecorrectiveaction')); //[25]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('reauditnumber'));//[26]
+        level02Result += ";" + RetornaValor0SeUndefined(level01.attr('alertaatual')); // [27]
+        level02Result += ";" + RetornaValor0SeUndefined(level01.attr('completed'));//[28]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('havephases')); //r[29]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('id')); //r[30]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('correctiveactioncomplete')); //r[31]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('completereaudit')); //r[32]
+        level02Result += ";" + RetornaValor0SeUndefined(level01.attr('hashkey')); // [33]
         level02Result += ";0";//[34]
         try {
-            level02Result += ";" + level02.attr('weievaluation').replace(",", "."); //[35]
+            level02Result += ";" + RetornaValor0SeUndefined(level02.attr('weievaluation').replace(",", ".")); //[35]
         } catch (e) {
             level02Result += ";" + '0'; //[35]
         }
         try {
-            level02Result += ";" + level02.attr('defects').replace(",", "."); // [36]
+            level02Result += ";" + RetornaValor0SeUndefined(level02.attr('defects').replace(",", ".")); // [36]
         } catch (e) {
             level02Result += ";" + '0';
         }
         try {
-            level02Result += ";" + level02.attr('weidefects').replace(",", ".");// [37]
+            level02Result += ";" + RetornaValor0SeUndefined(level02.attr('weidefects').replace(",", "."));// [37]
         } catch (e) {
             level02Result += ";" + '0';
         }
         try {
-            level02Result += ";" + level02.attr('totallevel3withdefects').replace(",", "."); // r[38]
+            level02Result += ";" + RetornaValor0SeUndefined(level02.attr('totallevel3withdefects').replace(",", ".")); // r[38]
         } catch (e) {
             level02Result += ";" + '0';
         }
         try {
-            level02Result += ";" + level02.attr('totalLevel3evaluation').replace(",", "."); // r[39]
+            level02Result += ";" + RetornaValor0SeUndefined(level02.attr('totalLevel3evaluation').replace(",", ".")); // r[39]
         } catch (e) {
             level02Result += ";" + '0';
         }
         //level02Result += ";" + level01.attr('alertaatual').replace(",", "."); // r[40]
-        level02Result += ";" + level01.attr('avaliacaoultimoalerta'); // r[40]
-        level02Result += ";" + level02.attr('resultadoavaliado'); // r[41]
-        level02Result += ";" + level02.attr('resultadodefeitos'); // r[42]
-        level02Result += ";" + level02.attr('sequential'); // r[43]
-        level02Result += ";" + level02.attr('side'); // r[44]
-        level02Result += ";" + level01.attr('monitoramentoultimoalerta'); // r[45]
-        level02Result += ";" + level02.attr('reauditlevel'); // r[46]
-        level02Result += ";" + level02.attr('startphaseevaluation'); // r[47]
-        level02Result += ";" + level02.attr('endphaseevaluation'); // r[48]
+        level02Result += ";" + RetornaValor0SeUndefined(level01.attr('avaliacaoultimoalerta')); // r[40]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('resultadoavaliado')); // r[41]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('resultadodefeitos')); // r[42]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('sequential')); // r[43]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('side')); // r[44]
+        level02Result += ";" + RetornaValor0SeUndefined(level01.attr('monitoramentoultimoalerta')); // r[45]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('reauditlevel')); // r[46]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('startphaseevaluation')); // r[47]
+        level02Result += ";" + RetornaValor0SeUndefined(level02.attr('endphaseevaluation')); // r[48]
 
         if (level02.attr('objReprocesso'))
-            level02Result += ";" + level02.attr('objReprocesso'); // r[49]
+            level02Result += ";" + RetornaValor0SeUndefined(level02.attr('objReprocesso')); // r[49]
         else {
             level02Result += ";";
         }
 
         if (hasReason) {
-            level02Result += ";" + ParReason_Id; //[50]
-            level02Result += ";" + ParReasonType_Id; //[50]
+            level02Result += ";" + RetornaValor0SeUndefined(ParReason_Id); //[50]
+            level02Result += ";" + RetornaValor0SeUndefined(ParReasonType_Id); //[50]
         } else {
             level02Result += ";";
             level02Result += ";";
         }
 
         if (parDepartment_Id) {
-            level02Result += ";" + parDepartment_Id; //[50]
+            level02Result += ";" + RetornaValor0SeUndefined(parDepartment_Id); //[50]
         } else {
             level02Result += ";";
         }

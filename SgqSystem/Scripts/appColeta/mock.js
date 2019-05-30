@@ -293,3 +293,11 @@ function calcularSensorial(list){
     return  Math.round( CategoryScore_calc)
 
 }
+
+function RetornaValor0SeUndefined(valor){
+    if(typeof(valor) == 'undefined' || valor == 'undefined'){
+        return 0;
+    }else{
+        return valor
+    }
+}

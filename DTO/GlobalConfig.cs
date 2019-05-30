@@ -95,7 +95,7 @@ namespace DTO
     {
         public static bool Producao { get; set; }
         private static Semaphore _poolSemaphore;
-        public static Semaphore PoolSemaphore { get { if (_poolSemaphore == null) _poolSemaphore = new Semaphore(5, 5); return _poolSemaphore; } }
+        public static Semaphore PoolSemaphore { get { if (_poolSemaphore == null) _poolSemaphore = new Semaphore(3, 3); return _poolSemaphore; } }
         public static Dictionary<int, HtmlDoTablet> PaginaDoTablet { get; set; }
         public static Dictionary<string, DateTime> UltimaExecucaoDoJob { get; set; } = new Dictionary<string, DateTime>();
         public static string UrlUpdateTelaTablet { get; set; }

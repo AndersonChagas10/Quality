@@ -1989,6 +1989,8 @@ function saveResultLevel3() {
     $('input.likert').trigger('blur');
 
     exibirLevel3PorDepartamento();
+    
+    createFileResult();
 
 }
 
