@@ -47,41 +47,45 @@
                                             <th> Query </th>
                                             <th> Parametro </th>
                                             <th> Retorno </th>
+                                            <th> Busca Offline </th>
                                             <th> Está ativo </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.DataSource)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.InitialCatalog)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.User)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.query)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Parametro)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Retornos)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.IsActive)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.DataSource)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.InitialCatalog)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.User)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.query)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Parametro)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Retornos)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IsOffline)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                </td>
+                                            </tr>
                                         }
                                     </tbody>
                                 </table>
