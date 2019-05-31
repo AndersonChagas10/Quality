@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dominio;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Dominio;
 
 namespace SgqSystem.Controllers.CadastrosGerais
 {
@@ -28,6 +25,7 @@ namespace SgqSystem.Controllers.CadastrosGerais
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ParDepartmentGroup parDepartmentGroup = db.ParDepartmentGroup.Find(id);
+            parDepartmentGroup.ParDepartment = db.ParDepartment.Where(x => x.ParDepartmentGroup_Id == id).ToList();
             if (parDepartmentGroup == null)
             {
                 return HttpNotFound();

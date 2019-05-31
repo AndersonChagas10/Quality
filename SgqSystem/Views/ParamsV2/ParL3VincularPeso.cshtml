@@ -87,6 +87,18 @@
             </div>
 
 
+            <div id="divFrequencia"  class="col-sm-4">
+
+                <div class="form-group">
+                    <label for="Frequencia">Frequência:</label>
+                    <i class="fa fa-info-circle fa-lg text-primary popovers " data-container="body" data-trigger="hover" data-placement="bottom" data-content="Frequência da realização da tarefa" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                    <select class="input input-lg col-sm-12 required" id="selectParFrequencyAV" name="ParFrequencyId"></select>
+
+                </div>
+
+            </div>
+
+
             <div class="col-sm-2">
 
                 <div class="form-group">
@@ -118,16 +130,6 @@
 
             </div>
 
-            <div id="divFrequencia" hidden="hidden" class="col-sm-4">
-
-                <div class="form-group">
-                    <label for="Frequencia">Frequência:</label>
-                    <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Frequência da realização da tarefa" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
-                    <select class="input input-lg col-sm-12" id="selectParFrequencyAV" name="ParFrequencyId"></select>
-
-                </div>
-
-            </div>
 
         </div>
         <div class="col-sm-2">
@@ -222,12 +224,10 @@
 
     $("#ParL3Peso #btnAvancado").on('click', function () {
         debugger
-        if (!$("#divFrequencia").is(":visible")) {
-            $("#divFrequencia").show();
+        if (!$("#divAvaliacao").is(":visible")) {
             $("#divAvaliacao").show();
             $("#divAmostra").show();
         } else {
-            $("#divFrequencia").hide();
             $("#divAvaliacao").hide();
             $("#divAmostra").hide();
         }

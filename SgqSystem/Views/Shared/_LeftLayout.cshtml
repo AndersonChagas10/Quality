@@ -53,7 +53,7 @@
             <span class='arrow'></span>
         </a>";
             html += $@"<ul class='sub-menu'>";
-            foreach (var filho in item.ListaFilho)
+            foreach (var filho in item.ListaFilho.OrderBy(x => x.Name))
             {
                 html += MontaSubItem(filho);
             }
@@ -85,9 +85,9 @@
                 if (ListItensMenu != null)
                 {
                     //Prepara as classes para a montagem do menu
-                    foreach (var item in ListItensMenu)
+                    foreach (var item in ListItensMenu.OrderBy(x => x.Name))
                     {
-                        foreach (var filho in ListItensMenu)
+                        foreach (var filho in ListItensMenu.OrderBy(x => x.Name))
                         {
                             if (item.Id == filho.ItemMenu_Id)
                             {
@@ -99,7 +99,7 @@
 
 
                     //Gera a visualização do menu
-                    foreach (var item in ListItensMenu.Where(i => !i.IsSubItem))
+                    foreach (var item in ListItensMenu.Where(i => !i.IsSubItem).OrderBy(x => x.Name))
                     {
                         @Html.Raw(MontaSubItem(item))
                     }

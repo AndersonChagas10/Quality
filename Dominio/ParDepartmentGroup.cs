@@ -15,5 +15,8 @@ namespace Dominio
         public string Name { get; set; }
 
         public bool IsActive { get; set; }
+
+        [NotMapped]
+        public List<ParDepartment> ParDepartment { get; set; }
     }
 }
