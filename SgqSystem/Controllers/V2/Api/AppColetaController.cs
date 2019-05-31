@@ -510,7 +510,7 @@ namespace SgqSystem.Controllers.V2.Api
             {
                 try
                 {
-                    var resultados = QueryNinja(db, rotinaIntegracao.query);
+                    var resultados = QueryNinja(db, rotinaIntegracao.Query);
 
                     if (resultados.Count > 0)
                     {
