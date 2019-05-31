@@ -496,7 +496,7 @@
                     });
                 } else {
                     var listaErro = jQuery.grep(listaAgendamentoInseridos, function (n, i) {
-                        return ($(n).find("[data-column=inicio]").val() == "" || $(n).find("[data-column=termino]").val() == "");
+                        return ($(n).find("[data-column=inicio]").text() == "" || $(n).find("[data-column=termino]").text() == "");
                     });
                 }
 
@@ -985,13 +985,18 @@
         excludeTable: function (i) {
 
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
-
+            debugger
             if (obj) {
 
                 obj['ParEvaluationSchedule'][i].IsActive = false;
 
                 this.insertTable(obj);
-                $("#IsAgendamento").prop('disabled', false);
+                var listaAgendamentoInseridos = $("#camposCabecalhoIncluidos2 tbody tr");
+
+                if (!listaAgendamentoInseridos.length > 0) {
+                    $("#IsAgendamento").prop('checked', false);
+                } else 
+                    $("#IsAgendamento").prop('disabled', false);
             } else {
                 $('#camposCabecalhoIncluidos tbody').empty();
                 $('#divCamposCabecalhoIncluidos').hide();
