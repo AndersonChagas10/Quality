@@ -75,7 +75,7 @@ GO
  IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel1XRotinaIntegracao' AND xtype='U')
 CREATE TABLE ParLevel1XRotinaIntegracao (
   Id int NOT NULL Identity,
-  Name  varchar(100),
+  Nome  varchar(100),
   ParLevel1_Id  int,
   AddDate datetime not null,
   AlterDate datetime,
