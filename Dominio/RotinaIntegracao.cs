@@ -12,7 +12,6 @@ namespace Dominio
     public class RotinaIntegracao : BaseModel
     {
         [Key]
-        [Column("ID")]
         public int Id { get; set; }
         public string DataSource { get; set; }
         public string InitialCatalog { get; set; }
@@ -20,7 +19,6 @@ namespace Dominio
         public string Password { get; set; }
         public string query { get; set; }
         public string Parametro { get; set; }
-        [Column("Nome")]
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public string Retornos { get; set; }
