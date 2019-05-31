@@ -65,8 +65,8 @@ function getDynamicValues(obj, $btn) {
 
             var codigoEval = [];
 
-            Object.keys(obj.Params).forEach(function (key, i) {
-                codigoEval.push("resultado['" + key + "'] == '" + obj.Params[key] + "'")
+            $.each(obj.Params, function (key, value) {
+                codigoEval.push("resultado['" + key + "'] == '" + value + "'")
             });
 
             codigoEval = codigoEval.join(" && ");
