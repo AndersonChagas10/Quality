@@ -64,7 +64,7 @@ CREATE TABLE RotinaIntegracao (
 	[User]  varchar(50),
 	[Password] varchar(50),
 	IsActive bit not null default 1,
-	query varchar(MAX),
+	Query varchar(MAX),
 	Parametro  varchar(900),
 	Name  varchar(255),
     PRIMARY KEY (Id)
