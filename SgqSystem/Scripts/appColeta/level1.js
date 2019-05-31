@@ -306,6 +306,8 @@ function saveLevel01(Level01Id, date, unidadeId, shift, period, reaudit, reaudit
         reaudit = false
     }
 
+    Level01Id = Level01Id ? Level01Id : $(_level1).attr('id');
+
     period = period ? period : 1;
 
     reauditNumber = reauditNumber ? reauditNumber : 0;
