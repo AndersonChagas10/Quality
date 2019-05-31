@@ -15,6 +15,7 @@ using Dominio.AppViewModel;
 using ADOFactory;
 using System.Web.Http.Cors;
 using SgqSystem.Helpers;
+using SgqSystem.ViewModels;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -114,7 +115,9 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParMultipleValues> listaParMultipleValues;
 
             List<ParDepartmentXRotinaIntegracao> listaParDepartmentXRotinaIntegracao;
+
             List<RotinaIntegracao> listaRotinaIntegracao;
+            List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -350,10 +353,14 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => x.IsActive)
                     .ToList();
 
+                //Aqui precisa tirar a query para não ir pro APP
                 listaRotinaIntegracao = db.RotinaIntegracao
                     .AsNoTracking()
-                    .Where(x => x.IsActive)
+                    .Where(x => x.IsActive && x.IsOffline == false)
                     .ToList();
+
+                //Rotina Integração Offline
+                listaRotinaIntegracaoOffline = GetRotinaIntegracaoComResultados();
 
             }
 
@@ -378,7 +385,8 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParHeaderField,
                 listaParMultipleValues,
                 listaParDepartmentXRotinaIntegracao,
-                listaRotinaIntegracao
+                listaRotinaIntegracao,
+                listaRotinaIntegracaoOffline
             });
         }
 
@@ -449,5 +457,83 @@ namespace SgqSystem.Controllers.V2.Api
             public int ParFrequency_Id { get; set; }
             public DateTime AppDate { get; set; }
         }
+
+
+        #region RotinaIntegracaoOffline
+
+        public List<RotinaIntegracaoViewModel> GetRotinaIntegracaoComResultados()
+        {
+
+            var rotinasIntegracaoComResutados = new List<RotinaIntegracaoViewModel>();
+            var rotinasIntegracao = GetRotinaIntegracao();
+
+            foreach (var rotinaIntegracao in rotinasIntegracao)
+            {
+
+                var rotinaIntegracaoComResutados = GetResultado(rotinaIntegracao);
+
+                if (rotinaIntegracaoComResutados != null)
+                    rotinasIntegracaoComResutados.Add(rotinaIntegracaoComResutados);
+
+            }
+
+            return rotinasIntegracaoComResutados;
+        }
+
+        private List<RotinaIntegracao> GetRotinaIntegracao()
+        {
+            var rotinas = new List<RotinaIntegracao>();
+
+            try
+            {
+                using (var db = new SgqDbDevEntities())
+                {
+
+                    rotinas = db.RotinaIntegracao
+                        .AsNoTracking()
+                        .Where(x => x.IsActive && x.IsOffline)
+                        .ToList();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return rotinas;
+        }
+
+        private RotinaIntegracaoViewModel GetResultado(RotinaIntegracao rotinaIntegracao)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    var resultados = QueryNinja(db, rotinaIntegracao.query);
+
+                    if (resultados.Count > 0)
+                    {
+                        return new RotinaIntegracaoViewModel()
+                        {
+                            Id = rotinaIntegracao.Id,
+                            IsOffline = rotinaIntegracao.IsOffline,
+                            Name = rotinaIntegracao.Name,
+                            Parametro = rotinaIntegracao.Parametro,
+                            Retornos = rotinaIntegracao.Retornos,
+                            Resultado = resultados
+                        };
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                return null;
+            }
+        }
+
+        #endregion
     }
 }

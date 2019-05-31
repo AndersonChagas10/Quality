@@ -12,6 +12,7 @@ namespace Dominio
     public class RotinaIntegracao : BaseModel
     {
         [Key]
+        [Column("ID")]
         public int Id { get; set; }
         public string DataSource { get; set; }
         public string InitialCatalog { get; set; }

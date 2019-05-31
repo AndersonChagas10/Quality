@@ -37,7 +37,7 @@ namespace SgqSystem.Controllers
                 ValidaRotina(rotinaIntegracao);
 
                 if (!ModelState.IsValid)
-                   return View(rotinaIntegracao);
+                    return View(rotinaIntegracao);
 
 
                 if (rotinaIntegracao.Id > 0)
@@ -75,7 +75,7 @@ namespace SgqSystem.Controllers
         public ActionResult Edit(RotinaIntegracao rotinaIntegracao)
         {
             ValidaRotina(rotinaIntegracao);
-           
+
             if (ModelState.IsValid)
             {
                 db.Entry(rotinaIntegracao).State = EntityState.Modified;

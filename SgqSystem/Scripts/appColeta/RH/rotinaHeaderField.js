@@ -40,7 +40,8 @@ function getRotina(that) {
             IdUsuario: currentLogin.Id,
             IdRotina: $(that).attr('data-id-rotina'),
             Params: headerFieldsList,
-            HeaderFieldsParamsClean: headerFieldsParamsClean
+            HeaderFieldsParamsClean: headerFieldsParamsClean,
+            IsOffline: $(that).attr('data-isoffline')
         }
 
         getDynamicValues(obj, $btn);
@@ -52,31 +53,66 @@ function getDynamicValues(obj, $btn) {
 
     $btn.button('loading');
 
-    $.ajax({
-        data: JSON.stringify(obj),
-        url: urlPreffix + '/api/RetornaQueryRotinaApi/RetornaQueryRotina',
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
+    //se for coleta offline
+    if (obj.IsOffline == "true") {
+
+        //Buscar os dados no arr que o id for igual o buscado
+        var rotina = $.grep(parametrization.listaRotinaIntegracaoOffline, function (rotinaIntegracaoOffline) {
+            return rotinaIntegracaoOffline.Id = obj.IdRotina;
+        })[0];
+
+        if (rotina) {
+
+            var codigoEval = [];
+
+            Object.keys(obj.Params).forEach(function (key, i) {
+                codigoEval.push("resultado['" + key + "'] == '" + obj.Params[key] + "'")
+            });
+
+            codigoEval = codigoEval.join(" && ");
+
+            var data = $.grep(rotina.Resultado, function (resultado) {
+                return eval(codigoEval);
+            })[0];
 
             if (data)
                 setDynamicValues(data);
             else
                 cleanInputHeaderFields(obj);
 
-
-        },
-        timeout: 10000,
-        error: function () {
-            openModal("Não foi possível buscar os dados", "blue", "white");
-            closeModal(2000);
+        } else {
             cleanInputHeaderFields(obj);
-        },
-        complete: function () {
-            $btn.button('reset');
         }
 
-    });
+        $btn.button('reset');
+
+    } else {
+
+        $.ajax({
+            data: JSON.stringify(obj),
+            url: urlPreffix + '/api/RetornaQueryRotinaApi/RetornaQueryRotina',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                if (data)
+                    setDynamicValues(data);
+                else
+                    cleanInputHeaderFields(obj);
+
+            },
+            timeout: 10000,
+            error: function () {
+                openModal("Não foi possível buscar os dados", "blue", "white");
+                closeModal(2000);
+                cleanInputHeaderFields(obj);
+            },
+            complete: function () {
+                $btn.button('reset');
+            }
+
+        });
+    }
 }
 
 function setDynamicValues(obj) {
@@ -85,7 +121,7 @@ function setDynamicValues(obj) {
 
         var input = $('input[data-din=' + key + ']');
 
-        if (input)
+        if (input.length > 0)
             $(input).val(value);
 
     });

@@ -174,6 +174,12 @@ function montarBotoesRotinaIntegracao() {
 
         })[0];
 
+        //lista os botoes que buscam dados offline
+        if (!rotinaIntegracao)
+            rotinaIntegracao = $.grep(parametrization.listaRotinaIntegracaoOffline, function (rotinaIntegracaoOffline) {
+                return rotinaIntegracaoOffline.Id == parDepartmentXRotinaIntegracao.RotinaIntegracao_Id;
+            })[0];
+
         if (rotinaIntegracao)
             botoes.push(rotinaIntegracao);
 
@@ -185,10 +191,11 @@ function montarBotoesRotinaIntegracao() {
 
             //criar os botões de pegar as rotinas 
             html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
-            html += '<button type="button" class="btn btn-primary" data-id-rotina="' + botao.Id + 
-            '" data-headerFields="' + botao.Parametro + 
-            '" onclick="getRotina(this);" data-headerFieldsClean="' + botao.Retornos + 
-            '" data-loading-text="">' + botao.Name +'</button>';
+            html += '<button type="button" class="btn btn-primary" data-id-rotina="' + botao.Id +
+                '" data-headerFields="' + botao.Parametro +
+                '" data-isoffline="' + botao.IsOffline +
+                '" onclick="getRotina(this);" data-headerFieldsClean="' + botao.Retornos +
+                '" data-loading-text="">' + botao.Name + '</button>';
             html += '</div>';
 
         });
@@ -196,3 +203,4 @@ function montarBotoesRotinaIntegracao() {
 
     return html;
 }
+
