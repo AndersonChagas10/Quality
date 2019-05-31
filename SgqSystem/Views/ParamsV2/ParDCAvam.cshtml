@@ -330,7 +330,7 @@
                         avaliacaAmostraSelectShifts += '<option value="' + item.Id + '">' + item.Description + '</option>';
                     });
                     avaliacaAmostraSelectShifts += '</select ></td>';
-                 
+
                  if (parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val()) === 10)
                          MontaNovaLinhaAgendamentoIntervalo(null);
                  else if (parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val()) === 3
@@ -340,7 +340,7 @@
 
                          var somarNaTabela = 0;
                          if ($("#tabelaAgendamento tbody tr").length > 0) {
-                             
+
                              if ($("#tabelaAgendamento tbody tr").length < valorAvaliacao) {
                                  somarNaTabela = valorAvaliacao - $("#tabelaAgendamento tbody tr").length;
                                  for (var i = 0; i < somarNaTabela; i++) {
@@ -393,7 +393,7 @@
     }
 
     function MontaNovaLinhaAgendamento(data) {
-        
+
         if (parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val()) === 3) {
             $("#tabelaAgendamento tbody").append("<tr>"
                 + '<td><input data-column="inpTipoAgendamento" class="inpTipoAgendamento input-sm" disabled="disabled" /></td>'
@@ -484,6 +484,29 @@
         urlSave: '@Url.Action("PostParEvaluationXDepartmentXCargo", "api/ParEvaluationXDepartmentXCargoApi")',
 
         load: function (list) {
+
+            let AgendamentoIsValid = function () {
+
+                var listaAgendamento = $("#tabelaAgendamento tbody tr");
+                var listaAgendamentoInseridos = $("#camposCabecalhoIncluidos2 tbody tr");
+                debugger
+                if (listaAgendamento.length > 0) {
+                    var listaErro = jQuery.grep(listaAgendamento, function (n, i) {
+                        return ($(n).find("[data-column=inpInicio]").val() == "" || $(n).find("[data-column=inpTermino]").val() == "");
+                    });
+                } else {
+                    var listaErro = jQuery.grep(listaAgendamentoInseridos, function (n, i) {
+                        return ($(n).find("[data-column=inicio]").val() == "" || $(n).find("[data-column=termino]").val() == "");
+                    });
+                }
+
+                if (listaErro.length > 0) {
+                    openMessageModal("Alerta", "Os campos Inicio e Fim devem ser preenchidos ao selecionar 'Possui Agendamento'");
+                    return false;
+                } else {
+                    return true;
+                }
+            };
 
             let formIsDuplicate = function () {
 
@@ -662,6 +685,10 @@
                     return false;
                 }
 
+                if (!AgendamentoIsValid()) {
+                    return false;
+                }
+                
                 if ($("#tabelaAgendamento tbody").find("[data-column=inpAvaliacao]").hasClass('alert-danger')) {
                     openMessageModal("Alerta", "O campo Avaliação possui valores inválidos!");
                     return false;
@@ -745,7 +772,7 @@
             this.showTableParMultipleValues();
         },
         prepareDcAvam: function (obj) {
-            debugger
+
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};
@@ -896,8 +923,8 @@
                             <td class="hide">${ParFrequencyId}</td>
                             <td>${Evaluation}</td>
                             <td>${Sample}</td>
-                            <td>${o.Inicio}</td>
-                            <td>${o.Fim}</td>
+                            <td data-column=inicio>${o.Inicio}</td>
+                            <td data-column=termino>${o.Fim}</td>
                             <td>${o.Av}</td>
                             <td>${o.Shift_Id}</td>
                             <td class="hide">${ParDepartment_Id}</td>
