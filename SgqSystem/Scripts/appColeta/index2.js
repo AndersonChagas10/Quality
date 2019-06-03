@@ -703,19 +703,19 @@ var tempoSemaforo = 1;
 
 setInterval(function () {
     tempoSemaforo++;
-    if (tempoSemaforo >= 25)
+    if (tempoSemaforo >= 5)
         sendResultsTimeout();
 }, 1000)
 
 function sendResultsTimeout() {
 
-    if (tempoSemaforo > 20) {
+    if (tempoSemaforo > 3) {
         tempoSemaforo = 0;
 
         timeoutSendResults = setTimeout(function (e) {
             // ping(sendResultsOnLine, sendResultsOnLine);
             sendResultsOnLine();
-        }, 2000);
+        }, 1000);
     }
 }
 

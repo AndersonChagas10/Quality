@@ -3761,15 +3761,18 @@ namespace SgqSystem.Services
         {
             //var version = "2.0.47";
             string forcaAtualizacao = "";
-            if (!version.Contains("2.0.47"))
+
+            string appVersion = System.Configuration.ConfigurationManager.AppSettings["appVersion"];
+
+            if (!version.Contains(appVersion))
                 forcaAtualizacao = @"<script>
-setTimeout(function(){
-    navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
-    cleanArquivos, 
-    'Atualização', 
-    'OK');
-},500);
-</script>";
+                                     setTimeout(function(){
+                                         navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
+                                         Reload, 
+                                         'Atualização', 
+                                         'OK');
+                                     },500);
+                                     </script>";
 
             string login = GetLoginAPP();
 
@@ -7234,8 +7237,8 @@ setTimeout(function(){
                 string[] deviation = arrayDeviations[i].Split(';');
 
                 string ParCompany_Id = deviation[0];
-                string ParLevel1_Id = deviation[1];
-                string ParLevel2_Id = deviation[2];
+                string ParLevel1_Id = deviation[1].Contains(quebraProcesso) ? deviation[1].Replace(quebraProcesso, "|").Split('|')[1] : deviation[1];
+                string ParLevel2_Id = deviation[2].Contains(quebraProcesso) ? deviation[2].Replace(quebraProcesso, "|").Split('|')[1] : deviation[2];
                 string Evaluation = deviation[3] == "" ? "0" : deviation[3];
 
                 if (Evaluation == "undefined")
