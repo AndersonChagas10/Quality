@@ -706,11 +706,23 @@
                     }
 
                 }
+                var isValid = true;
 
-                crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
+                //eval("1.               * Math.pow(10,2)") - formato correto
+                //eval("1.               x 10^2") - formato q o eval nao reconhece
+
+                if (parseInt(object.IntervalMin) > parseInt(object.IntervalMax)) {
+                    isValid = false
+                } else {
+                    isValid = true;
+                }
+
+                if (isValid)
+                    crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
 
                 if (parseInt(object.IntervalMin) > parseInt(object.IntervalMax)) {
                     openMessageModal("Valor do Limite Superior menor que o Limite Inferior", null);
+                    return false;
                 } else {
                     if (object.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
                         $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers likert" onclick="mensagemAlerta()" data-toggle="popover"><i class="fa fa-cog"></i></button>')
