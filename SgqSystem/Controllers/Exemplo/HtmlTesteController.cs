@@ -1,4 +1,4 @@
-﻿using Dominio.Interfaces.Services;
+﻿using DTO.Interfaces.Services;
 using SgqSystem.ViewModels;
 using System.Globalization;
 using System.Threading;

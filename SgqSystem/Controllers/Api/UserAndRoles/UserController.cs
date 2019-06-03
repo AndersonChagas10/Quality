@@ -1,4 +1,4 @@
-﻿using Dominio.Interfaces.Services;
+﻿using DTO.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.Handlres;

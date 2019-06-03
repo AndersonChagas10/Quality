@@ -1,7 +1,7 @@
 ﻿using ADOFactory;
 using AutoMapper;
 using Dominio;
-using Dominio.Interfaces.Services;
+using DTO.Interfaces.Services;
 using DTO.DTO.Params;
 using Newtonsoft.Json.Linq;
 using SgqSystem.Helpers;
