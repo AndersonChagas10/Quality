@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using Dominio;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Dynamic;
 
 namespace SgqSystem
 {
@@ -62,6 +64,22 @@ namespace SgqSystem
             ThreadPool.QueueUserWorkItem(ReProcessJsonJob.ReProcessJsonJobFunction);
 
             ThreadPool.QueueUserWorkItem(CollectionJob.ExecuteCollectionJob);
+
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+                var x = new ExpandoObject() as IDictionary<string,object>;
+                foreach (var item in db.ResourcePT.ToList())
+                {
+                    x.Add(item.Key, item.Value);
+                   // Resources.Resource.Add( item.Key, item.Value);
+                    //Resources.Resource.GetType().InvokeMember(item.Key,
+                    //    BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty,
+                    //    Type.DefaultBinder, Resources.Resource, item.Value);
+                }
+                Resources.Resource = x;
+            }
+
+            
 
             //if (GlobalConfig.Brasil)
             //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR" + GlobalConfig.Ambient];
