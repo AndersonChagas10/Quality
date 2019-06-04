@@ -1372,7 +1372,7 @@ namespace SgqService.Controllers.Api
 
                         }
 
-                        var isRecravacao = new SGQDBContext.ParLevel1(db).getById(c.level01_Id).IsRecravacao == true;
+                        var isRecravacao = new SGQDBContext.ParLevel1(db, quebraProcesso).getById(c.level01_Id).IsRecravacao == true;
 
                         if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao || (c.Unit_Id == 4 && c.level01_Id == 22) || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
@@ -1510,7 +1510,7 @@ namespace SgqService.Controllers.Api
         protected int updateJson(int CollectionJson_Id)
         {
             string sql = "UPDATE CollectionJson SET IsProcessed=1 WHERE ID=@CollectionJsonId";
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -1550,7 +1550,7 @@ namespace SgqService.Controllers.Api
         protected int updateJsonDuplicated(int CollectionJson_Id)
         {
             string sql = "UPDATE CollectionJson SET IsProcessed=1, TTP = '2627' WHERE ID=@CollectionJsonId";
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
 
             try
             {
@@ -1629,7 +1629,7 @@ namespace SgqService.Controllers.Api
                 EvaluatedResult=@EvaluatedResult, 
                 DefectsResult=@DefectsResult WHERE ID=@ConsolidationLevel2_Id";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -1709,7 +1709,7 @@ namespace SgqService.Controllers.Api
                     DefectsResult=@DefectsResult 
                     WHERE ID=@ConsolidationLevel1_Id";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -1774,7 +1774,7 @@ namespace SgqService.Controllers.Api
                 HaveCorrectiveAction= 1 and 
                 reauditnumber=@ReauditNumber";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
 
             try
             {
@@ -1822,7 +1822,7 @@ namespace SgqService.Controllers.Api
 
             string sql = "UPDATE CollectionLevel02 SET HaveCorrectiveAction=@HaveCorrectiveAction, HaveReaudit=@HaveReaudit WHERE ID=@Id";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
 
             try
             {
@@ -1906,7 +1906,7 @@ namespace SgqService.Controllers.Api
 
                 SELECT @@IDENTITY AS 'Identity'";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -1971,7 +1971,7 @@ namespace SgqService.Controllers.Api
              (@ConsolidationLevel1_Id, @Cluster)
              SELECT @@IDENTITY AS 'Identity'";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -2075,7 +2075,7 @@ namespace SgqService.Controllers.Api
                         @ReauditNumber)
                         SELECT @@IDENTITY AS 'Identity'";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -2147,7 +2147,7 @@ namespace SgqService.Controllers.Api
                          @Cluster)
                          SELECT @@IDENTITY AS 'Identity'";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -2237,7 +2237,7 @@ namespace SgqService.Controllers.Api
             //var buscaParLevel1HashKey = "SELECT TOP 1 Hashkey FROM ParLevel1 WHERE id = " + ConsolidationLevel1.ParLevel1_Id.ToString();
             var buscaParLevel1HashKey = "SELECT TOP 1 Hashkey FROM ParLevel1 WHERE id = @ParLevel1_Id";
 
-            string con = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string con = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(con))
@@ -2463,7 +2463,7 @@ namespace SgqService.Controllers.Api
                 sql += " SELECT '" + id + "' AS 'Identity'";
             }
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -2637,7 +2637,7 @@ namespace SgqService.Controllers.Api
         {
 
             string sql = "DELETE FROM Result_Level3 whith (nolock) WHERE CollectionLevel2_Id=@CollectionLevel2_Id";
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -2737,7 +2737,7 @@ namespace SgqService.Controllers.Api
             if (sql.Count > 0)
             {
 
-                string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                string conexao = this.conexao;
                 try
                 {
 
@@ -2789,7 +2789,7 @@ namespace SgqService.Controllers.Api
 
             sql += " SELECT @@IDENTITY AS 'Identity' ";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -2820,7 +2820,7 @@ namespace SgqService.Controllers.Api
 
             sql += " SELECT @@IDENTITY AS 'Identity' ";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -2865,7 +2865,7 @@ namespace SgqService.Controllers.Api
                 VALUES (@CollectionLevel2_Id, @ParReason_Id, @ParReasonType_Id, GETDATE())";
             }
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
 
             try
             {
@@ -2930,7 +2930,7 @@ namespace SgqService.Controllers.Api
 
             //Lista de Level3
 
-            var ParLevel3DB = new SGQDBContext.ParLevel3(db);
+            var ParLevel3DB = new SGQDBContext.ParLevel3(db, quebraProcesso);
             var Result_Level3DB = new SGQDBContext.Result_Level3(db);
             var parLevel3List = ParLevel3DB.getList();
 
@@ -3201,7 +3201,7 @@ namespace SgqService.Controllers.Api
                 }
             }
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -3377,7 +3377,7 @@ namespace SgqService.Controllers.Api
                 @ProductDisposition,
                 @PreventativeMeasure";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
 
             try
             {
@@ -3986,7 +3986,7 @@ namespace SgqService.Controllers.Api
 
             try
             {
-                SGQDBContext.Generico listaProdutos = new Generico(db);
+                SGQDBContext.Generico listaProdutos = new Generico(db, conexao);
                 var listaProdutosJSON = listaProdutos.getProdutos();
 
                 supports += @" <script>
@@ -4170,7 +4170,7 @@ namespace SgqService.Controllers.Api
                 and ev.IsActive = 1 
                 and(ev.ParCompany_Id is null)";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -4522,7 +4522,7 @@ namespace SgqService.Controllers.Api
                 and ev.IsActive = 1
                 and(ev.ParCompany_Id is null)";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -4987,8 +4987,8 @@ namespace SgqService.Controllers.Api
             var html = new Html();
 
             //Instanciamos a Classe ParLevel01 Dapper
-            var ParLevel1DB = new SGQDBContext.ParLevel1(db);
-            var ParCounterDB = new SGQDBContext.ParCounter(db);
+            var ParLevel1DB = new SGQDBContext.ParLevel1(db, quebraProcesso);
+            var ParCounterDB = new SGQDBContext.ParCounter(db, quebraProcesso);
             //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction(db);
             var ParRelapseDB = new SGQDBContext.ParRelapse(db);
@@ -5054,7 +5054,7 @@ namespace SgqService.Controllers.Api
                         tipoTela = variableList[0].Name;
                     }
 
-                    var ParLevel2DB = new SGQDBContext.ParLevel2(db);
+                    var ParLevel2DB = new SGQDBContext.ParLevel2(db, quebraProcesso);
                     var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(parlevel1, dateCollect, ParCompany_Id);
 
                     //Se o ParLevel1 contem um ParCritialLevel_Id
@@ -5286,10 +5286,10 @@ namespace SgqService.Controllers.Api
             var html = new Html();
 
             //Buscar a lista de Módulos
-            SGQDBContext.Generico listaClusterGroup = new Generico(db);
+            SGQDBContext.Generico listaClusterGroup = new Generico(db, conexao);
             var parClusterGroupSQL = listaClusterGroup.getClusterGroupCompany(ParCompany_Id: ParCompany_Id);
 
-            SGQDBContext.Generico listaCluster = new Generico(db);
+            SGQDBContext.Generico listaCluster = new Generico(db, conexao);
 
             var parClusterSQL = new List<Generico>();
 
@@ -5383,9 +5383,9 @@ namespace SgqService.Controllers.Api
             #region Parametros e "Instancias"
 
             //Inicializa ParLevel2
-            var ParLevel1DB = new SGQDBContext.ParLevel1(db);
-            var ParLevel2DB = new SGQDBContext.ParLevel2(db);
-            var ParCounterDB = new SGQDBContext.ParCounter(db);
+            var ParLevel1DB = new SGQDBContext.ParLevel1(db, quebraProcesso);
+            var ParLevel2DB = new SGQDBContext.ParLevel2(db, quebraProcesso);
+            var ParCounterDB = new SGQDBContext.ParCounter(db, quebraProcesso);
 
             //Pega uma lista de ParLevel2
             //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
@@ -5394,7 +5394,7 @@ namespace SgqService.Controllers.Api
             //Inicializa Cabecalhos
             var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader(db);
             //Inicaliza ParFieldType
-            var ParFieldTypeDB = new SGQDBContext.ParFieldType(db);
+            var ParFieldTypeDB = new SGQDBContext.ParFieldType(db, conexao);
             var ParNCRuleDB = new SGQDBContext.NotConformityRule(db);
 
             var reauditFlag = "<li class='painel row list-group-item hide active reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
@@ -5407,8 +5407,8 @@ namespace SgqService.Controllers.Api
             string headerList = null;
 
             //Inicializa Avaliações e Amostras
-            var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate(db);
-            var ParSampleDB = new SGQDBContext.ParLevel2Sample(db);
+            var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate(db, quebraProcesso);
+            var ParSampleDB = new SGQDBContext.ParLevel2Sample(db, quebraProcesso);
 
 
             //Verifica avaliações padrão
@@ -6104,13 +6104,13 @@ namespace SgqService.Controllers.Api
             var reauditFlag = "<li class='painel row list-group-item active hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
 
             //Inicializa ParLevel3
-            var ParLevel3DB = new SGQDBContext.ParLevel3(db);
-            var ParCounterDB = new SGQDBContext.ParCounter(db);
+            var ParLevel3DB = new SGQDBContext.ParLevel3(db, quebraProcesso);
+            var ParCounterDB = new SGQDBContext.ParCounter(db, quebraProcesso);
 
             //Inicializa Cabecalhos
             var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader(db);
             //Inicaliza ParFieldType
-            var ParFieldTypeDB = new SGQDBContext.ParFieldType(db);
+            var ParFieldTypeDB = new SGQDBContext.ParFieldType(db, conexao);
             //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction(db);
 
@@ -7447,7 +7447,7 @@ namespace SgqService.Controllers.Api
                     0,
                     @DeviationMessage)";
 
-                string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                string conexao = this.conexao;
 
                 using (SqlCommand cmd = new SqlCommand(query, new SqlConnection(conexao)))
                 {
@@ -7672,7 +7672,7 @@ namespace SgqService.Controllers.Api
             //Adicionar o departamento
             string sql = "UPDATE UserSgq SET ParCompany_Id=@ParCompany_Id WHERE Id=@UserSgq_Id";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
 
             try
             {
@@ -7853,7 +7853,7 @@ namespace SgqService.Controllers.Api
             //string sql = "SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift + "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "'AND ReauditNumber='" + reauditnumber +
             //"' AND HaveCorrectiveAction=1";
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
@@ -8089,7 +8089,7 @@ namespace SgqService.Controllers.Api
                 WHERE CL2.UnitId=@ParCompany_Id AND CL1.ParLevel1_Id=@ParLevel1_Id AND CAST(CL1.ConsolidationDate AS DATE)=@ConsolidationDate";
 
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conexao = this.conexao;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
