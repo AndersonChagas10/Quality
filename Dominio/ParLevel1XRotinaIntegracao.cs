@@ -12,7 +12,6 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        [Column("Nome")]
         public string Name { get; set; }
 
         public int? ParLevel1_Id { get; set; }

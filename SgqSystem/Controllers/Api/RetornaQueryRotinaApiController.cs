@@ -88,8 +88,8 @@ namespace SgqSystem.Controllers.Api
 
                 for (int i = 0; i < parametro.Count; i++)
                 {
-                    query = rotinaSelecionada.query.Replace('{' + parametro.ElementAt(i).Key + '}', parametro.ElementAt(i).Value);
-                    rotinaSelecionada.query = query;
+                    query = rotinaSelecionada.Query.Replace('{' + parametro.ElementAt(i).Key + '}', parametro.ElementAt(i).Value);
+                    rotinaSelecionada.Query = query;
                 }
             }
             return query;

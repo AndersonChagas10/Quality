@@ -58,8 +58,8 @@ function getAppParametrization(frequencyId) {
                 _writeFile("appParametrization.txt", JSON.stringify(data), function () {
                     parametrization = data;
                     listarParDepartment(0);
+                    closeMensagem();
                 });
-                closeMensagem();
             },
             timeout: 600000,
             error: function () {

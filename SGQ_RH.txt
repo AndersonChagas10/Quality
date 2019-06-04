@@ -407,3 +407,9 @@ IF COL_LENGTH('ParDepartment','ParDepartmentGroup_Id') IS NULL
 		ADD ParDepartmentGroup_Id int NULL,
 		FOREIGN KEY (ParDepartmentGroup_Id) REFERENCES ParDepartmentGroup(Id);
     END
+
+IF COL_LENGTH('RotinaIntegracao','IsOffline') IS NULL
+BEGIN	
+	ALTER TABLE RotinaIntegracao 
+	ADD IsOffline bit default 0 not null
+END
