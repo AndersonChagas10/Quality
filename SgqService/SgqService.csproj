@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.0.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
     </Reference>
@@ -55,6 +58,24 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Logging, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Extensions.Logging.3.2.3.0\lib\net45-full\Ninject.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.3.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.WebApi.3.2.4.0\lib\net45-full\Ninject.Web.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.WebApi.DependencyResolver, Version=0.1.4758.24814, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.WebApi.DependencyResolver.0.1.4758.24814\lib\net45\Ninject.WebApi.DependencyResolver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -117,6 +138,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -134,6 +158,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
@@ -167,21 +192,102 @@
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\LoginController.cs" />
+    <Compile Include="Controllers\Api\ParHeaderFieldApiController.cs" />
+    <Compile Include="Controllers\Api\ParReasonApiController.cs" />
+    <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
+    <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\SyncServiceApiController.cs" />
+    <Compile Include="Controllers\Api\UserController.cs" />
+    <Compile Include="Controllers\Api\VTVerificacaoTipificacaoAPIController.cs" />
+    <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AppSettingsWebConfig.cs" />
     <Compile Include="Helpers\CommonData.cs" />
+    <Compile Include="Helpers\CommonDate.cs" />
     <Compile Include="Helpers\CommonLog.cs" />
     <Compile Include="Helpers\HandleCultureAPI.cs" />
     <Compile Include="Helpers\Handlres\HandleApi.cs" />
     <Compile Include="Helpers\Handlres\ValidateModelAttribute.cs" />
+    <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\Audit\CorrectiveActionMapperProfile.cs" />
+    <Compile Include="Mappers\AutoMapperConfig.cs" />
+    <Compile Include="Mappers\DefectMapperProfile.cs" />
+    <Compile Include="Mappers\EmailContentMapperProfile.cs" />
+    <Compile Include="Mappers\ExampleMapperProfile.cs" />
+    <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
+    <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParClusterGroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParConsolidationTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCriticalLevelMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParEvaluationMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParFieldTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParFrequencyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParGoalMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParHeaderFieldMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1ClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1HeaderField.cs" />
+    <Compile Include="Mappers\Params\ParLevel1MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1XHeaderFieldMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel2Level1MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel2MapperProfile .cs" />
+    <Compile Include="Mappers\Params\ParLevel2XHeaderFieldMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3BoolFalseMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3BoolTrueMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3EvaluationSampleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3GroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3InputTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3Level2Level1MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3Level2MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3ValueMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3XParDepartmentMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevelDefinitonMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLocalMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParMeasurementUnitMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParModuleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParMultipleValuesMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParNotConformityRuleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParNotConformityRuleXLevelMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParRelapseMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParSampleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParScoreTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
+    <Compile Include="Mappers\ParClusterXModuleMapperProfile.cs" />
+    <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
+    <Compile Include="Mappers\ParLevel1XRotinaIntegracaoMapperProfile.cs" />
+    <Compile Include="Mappers\PeriodMapperProfile.cs" />
+    <Compile Include="Mappers\RoleMapperProfile.cs" />
+    <Compile Include="Mappers\RoleUserSgqMapperProfile.cs" />
+    <Compile Include="Mappers\RoleUserSgqXItemMenuMapperProfile.cs" />
+    <Compile Include="Mappers\RotinaIntegracaoMapperProfile.cs" />
+    <Compile Include="Mappers\ShiftMapperProfile.cs" />
+    <Compile Include="Mappers\UnitMapperProfile.cs" />
+    <Compile Include="Mappers\UnitUserMapperProfile.cs" />
+    <Compile Include="Mappers\UserMapperProfile.cs" />
+    <Compile Include="Mappers\UserSgqMapperProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\CustomPrincipal.cs" />
+    <Compile Include="Security\SessionPersister.cs" />
     <Compile Include="Service\Html.cs" />
     <Compile Include="Service\SGQDBContext.cs" />
     <Compile Include="ViewModels\FormularioParaRelatorioViewModel.cs" />
+    <Compile Include="ViewModels\TipificacaoViewModel.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Readme\readme.txt" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -190,6 +296,54 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\appColeta\alert.js" />
+    <Content Include="Scripts\appColeta\alert_new.js" />
+    <Content Include="Scripts\appColeta\breadCrumb.js" />
+    <Content Include="Scripts\appColeta\config.js" />
+    <Content Include="Scripts\appColeta\consolidation.js" />
+    <Content Include="Scripts\appColeta\controleDeAlerta.js" />
+    <Content Include="Scripts\appColeta\correctiveAction.js" />
+    <Content Include="Scripts\appColeta\counter.js" />
+    <Content Include="Scripts\appColeta\counterLevel1.js" />
+    <Content Include="Scripts\appColeta\crypto.js" />
+    <Content Include="Scripts\appColeta\date.js" />
+    <Content Include="Scripts\appColeta\defect.js" />
+    <Content Include="Scripts\appColeta\defectEvaluation.js" />
+    <Content Include="Scripts\appColeta\email.js" />
+    <Content Include="Scripts\appColeta\eua.js" />
+    <Content Include="Scripts\appColeta\footer.js" />
+    <Content Include="Scripts\appColeta\geolocation.js" />
+    <Content Include="Scripts\appColeta\guard.js" />
+    <Content Include="Scripts\appColeta\header.js" />
+    <Content Include="Scripts\appColeta\index.css" />
+    <Content Include="Scripts\appColeta\index2.js" />
+    <Content Include="Scripts\appColeta\keys.js" />
+    <Content Include="Scripts\appColeta\lastSync.js" />
+    <Content Include="Scripts\appColeta\level1.js" />
+    <Content Include="Scripts\appColeta\level2.js" />
+    <Content Include="Scripts\appColeta\level3.js" />
+    <Content Include="Scripts\appColeta\level3Collapse.js" />
+    <Content Include="Scripts\appColeta\login.js" />
+    <Content Include="Scripts\appColeta\message.js" />
+    <Content Include="Scripts\appColeta\mock.js" />
+    <Content Include="Scripts\appColeta\mock_modulos.js" />
+    <Content Include="Scripts\appColeta\module.js" />
+    <Content Include="Scripts\appColeta\navBar.js" />
+    <Content Include="Scripts\appColeta\overlay.js" />
+    <Content Include="Scripts\appColeta\pcc1b.js" />
+    <Content Include="Scripts\appColeta\phase.js" />
+    <Content Include="Scripts\appColeta\photo.js" />
+    <Content Include="Scripts\appColeta\reaudit.js" />
+    <Content Include="Scripts\appColeta\reauditByHeader.js" />
+    <Content Include="Scripts\appColeta\reprocesso.js" />
+    <Content Include="Scripts\appColeta\resource.js" />
+    <Content Include="Scripts\appColeta\rightBar.js" />
+    <Content Include="Scripts\appColeta\role.js" />
+    <Content Include="Scripts\appColeta\rotinaHeaderField.js" />
+    <Content Include="Scripts\appColeta\scriptfile.js" />
+    <Content Include="Scripts\appColeta\sync.js" />
+    <Content Include="Scripts\appColeta\tempSave.js" />
+    <Content Include="Scripts\appColeta\verificacaoTipificacao.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -211,6 +365,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -268,6 +423,10 @@
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
       <Project>{31925fca-e0f6-428d-9a7d-59ca8879d6f8}</Project>
       <Name>ADOFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrossCutting\CrossCutting.csproj">
+      <Project>{0896bc38-df38-4e39-adf9-db1f9910bfe6}</Project>
+      <Name>CrossCutting</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dominio\Dominio.csproj">
       <Project>{777d8e88-0d52-446a-bc77-2f50a7d936e5}</Project>

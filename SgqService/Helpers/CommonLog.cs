@@ -1,6 +1,6 @@
 ﻿using Dominio;
 using DTO.Helpers;
-using SgqSystem.ViewModels;
+using SgqService.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;

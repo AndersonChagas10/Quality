@@ -4,7 +4,7 @@ using DTO.DTO.Params;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace SgqSystem.ViewModels
+namespace SgqService.ViewModels
 {
     public class FormularioParaRelatorioViewModel : DataCarrierFormulario
     {
