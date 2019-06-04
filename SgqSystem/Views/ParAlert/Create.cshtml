@@ -48,7 +48,7 @@
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Name, Resources.Resource.name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Name, Resources.Resource.name as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.TextBoxFor(model => model.Name, null, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -56,7 +56,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParDepartment, Resources.Resource.department, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParDepartment, Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParDepartment_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParDepartment_Id, "", new { @class = "text-danger" })
@@ -72,7 +72,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParLevel1, Resources.Resource.level1, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParLevel1, Resources.Resource.level1 as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParLevel1_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger" })
@@ -80,7 +80,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParLevel2, Resources.Resource.level2, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParLevel2, Resources.Resource.level2 as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParLevel2_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel2_Id, "", new { @class = "text-danger" })
@@ -88,7 +88,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParLevel3, Resources.Resource.level3, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParLevel3, Resources.Resource.level3 as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParLevel3_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel3_Id, "", new { @class = "text-danger" })
@@ -96,7 +96,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParAlertType, Resources.Resource.alert + " " + Resources.Resource.type, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParAlertType, Resources.Resource.alert as string + " " + Resources.Resource.type as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParAlertType_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParAlertType_Id, "", new { @class = "text-danger" })
@@ -104,7 +104,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.IsActive, Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.IsActive, Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.IsActive)
@@ -136,7 +136,7 @@
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
                                                 <input type="submit" value="@Resources.Resource.create" class="btn btn-primary" />
-                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                                @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>

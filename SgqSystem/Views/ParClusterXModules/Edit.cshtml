@@ -48,7 +48,7 @@
                                         @Html.HiddenFor(model => model.AlterDate)
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParCluster_Id, Resources.Resource.cluster, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParCluster_Id, Resources.Resource.cluster as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParCluster_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParCluster_Id, "", new { @class = "text-danger" })
@@ -56,7 +56,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParModule_Id, Resources.Resource.module, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParModule_Id, Resources.Resource.module as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParModule_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParModule_Id, "", new { @class = "text-danger" })
@@ -64,7 +64,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Points, Resources.Resource.points, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Points, Resources.Resource.points as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.TextBox("Points", null, new { htmlAttributes = new { @class = "form-control number_decimal" } })
                                                 @Html.HiddenFor(model => model.Points)
@@ -73,7 +73,16 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.IsActive, Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.EffectiveDate, Resources.Resource.effectiveDate as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-2">
+                                                @{string effectiveDate = Model.EffectiveDate?.ToString("yyyy-MM-dd") ?? "";}
+                                                @Html.TextBox("EffectiveDate", effectiveDate, new { @class = "form-control", @type = "date" })
+                                                @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.IsActive, Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.IsActive)
@@ -83,18 +92,9 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.EffectiveDate, Resources.Resource.effectiveDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-2">
-                                                @{string effectiveDate = Model.EffectiveDate?.ToString("yyyy-MM-dd") ?? "";}
-                                                @Html.TextBox("EffectiveDate", effectiveDate, new { @class = "form-control", @type = "date" })
-                                                @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
                                                 <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
-                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                                @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>
@@ -129,7 +129,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
-  
+
     <script>
 
         $("#Points").inputmask('decimal', {

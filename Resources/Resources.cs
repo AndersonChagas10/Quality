@@ -1,4 +1,9 @@
-﻿public static class Resources
+﻿using System.Collections.Generic;
+
+public static class Resources
 {
-    public static dynamic Resource { get; set; }
+    public static dynamic Resource
+    {
+        get;set;
+    }
 }

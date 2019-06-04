@@ -32,7 +32,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink("Nova " + Resources.Resource.organizational_structure, "Create", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink("Nova " + Resources.Resource.organizational_structure as string, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
                                 <table class="table" id="tableEstruturas">
                                     <thead>
@@ -88,7 +88,7 @@
                                                         @Html.DisplayFor(modelItem => item.AlterDate)
                                                     </td>*@
                                                 <td>
-                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                     @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })*@
                                                 </td>
                                             </tr>

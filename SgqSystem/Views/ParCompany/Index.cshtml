@@ -178,7 +178,7 @@
                                 <table class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColunaButton(@Html.DropDownList("structureGroupListId", new SelectList(ViewBag.listaParStructureXCompany, "Id", "Name"), Resources.Resource.select + "...", new { @id = "structureGroupListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='modalStructureGroupListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
+                                            @Table.GerarColunaButton(@Html.DropDownList("structureGroupListId", new SelectList(ViewBag.listaParStructureXCompany, "Id", "Name"), Resources.Resource.select as string + "...", new { @id = "structureGroupListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group as string), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving as string + "' id='btnSaveCompany' onclick='modalStructureGroupListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>

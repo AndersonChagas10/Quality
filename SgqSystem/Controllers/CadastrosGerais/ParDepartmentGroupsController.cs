@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.CadastrosGerais
 {
-    public class ParDepartmentGroupsController : Controller
+    public class ParDepartmentGroupsController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 

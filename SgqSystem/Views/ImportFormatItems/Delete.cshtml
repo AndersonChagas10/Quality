@@ -48,7 +48,7 @@
                                 <hr />
                                 <dl class="dl-horizontal">
                                     <dt>
-                                        @Html.DisplayName(Resources.Resource.key)
+                                        @Html.DisplayName(Resources.Resource.key as string)
                                     </dt>
 
                                     <dd>
@@ -56,7 +56,7 @@
                                     </dd>
 
                                     <dt>
-                                        @Html.DisplayName(Resources.Resource.value)
+                                        @Html.DisplayName(Resources.Resource.value as string)
                                     </dt>
 
                                     <dd>
@@ -64,7 +64,7 @@
                                     </dd>
 
                                     <dt>
-                                        @Html.DisplayName(Resources.Resource.add_date)
+                                        @Html.DisplayName(Resources.Resource.add_date as string)
                                     </dt>
 
                                     <dd>
@@ -72,7 +72,7 @@
                                     </dd>
 
                                     <dt>
-                                        @Html.DisplayName(Resources.Resource.alter_date)
+                                        @Html.DisplayName(Resources.Resource.alter_date as string)
                                     </dt>
 
                                     <dd>
@@ -80,7 +80,7 @@
                                     </dd>
 
                                     <dt>
-                                        @Html.DisplayName(Resources.Resource.import_format_id)
+                                        @Html.DisplayName(Resources.Resource.import_format_id as string)
                                     </dt>
 
                                     <dd>
@@ -96,7 +96,7 @@
 
                                     <div class="form-actions no-color">
                                         <input type="submit" value="@Resources.Resource.delete" class="btn btn-info" />
-                                        @Html.ActionLink(Resources.Resource.back_to_list, "Details", "ImportFormats", new { id = Model.ImportFormat_Id }, new { @class = "btn btn-default" })
+                                        @Html.ActionLink(Resources.Resource.back_to_list as string, "Details", "ImportFormats", new { id = Model.ImportFormat_Id }, new { @class = "btn btn-default" })
                                     </div>
                                 }
                             </div>

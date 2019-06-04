@@ -102,15 +102,15 @@
                                                     @Html.Raw(item.Active ? Resources.Resource.yes : Resources.Resource.no)
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", "ParDepartments", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", "ParDepartments", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 </td>
                                             </tr>
                                         }
                                     </tbody>
                                 </table>
                                 <p>
-                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = Model.Id }, new { @class = "btn btn-success" })
-                                    @Html.ActionLink(Resources.Resource.back, "Index", null, new { @class = "btn btn-default" })
+                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = Model.Id }, new { @class = "btn btn-success" })
+                                    @Html.ActionLink(Resources.Resource.back as string, "Index", null, new { @class = "btn btn-default" })
                                 </p>
                             </div>
 

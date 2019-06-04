@@ -1,5 +1,6 @@
 ﻿@model PlanoAcaoCore.Pa_Acao
 @using PlanoAcaoCore
+
 @{
     var showTipo1 = "display:none";
     var showTipo2 = "display:none";
@@ -271,7 +272,7 @@
 
                 <div class="form-group">
                     <label class="redLabel" for="inputlg">@Resources.Resource.status:</label>
-                    @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status2, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm" })
+                    @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status2, "Id", "Name"), Resources.Resource.select2 as string, new { @class = "form-control input-sm" })
                 </div>
             </div>
             <br />

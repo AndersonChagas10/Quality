@@ -35,20 +35,20 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink(Resources.Resource.create as string, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
                                 <table class="table" id="tabelaIndicadorModulo">
                                     <thead>
                                         <tr>
 
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.parlevel1)
+                                                @Html.DisplayName(Resources.Resource.parlevel1 as string)
                                             </th>
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.parModule)
+                                                @Html.DisplayName(Resources.Resource.parModule as string)
                                             </th>
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.clusters)
+                                                @Html.DisplayName(Resources.Resource.clusters as string)
                                             </th>
                                             @*
                                                 <th>
@@ -59,10 +59,10 @@
                                                     @Html.DisplayName(Resources.Resource.is_active)
                                                 </th>*@
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.effective_date_start)
+                                                @Html.DisplayName(Resources.Resource.effective_date_start as string)
                                             </th>
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.effective_date_end)
+                                                @Html.DisplayName(Resources.Resource.effective_date_end as string)
                                             </th>
                                             <th>
                                                 @Resources.Resource.action
@@ -106,9 +106,9 @@
                                                         @Html.DisplayFor(modelItem => item.EffectiveDateEnd)
                                                     </td>*@
                                                 <td>
-                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                     @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })*@
-                                                    @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                    @Html.ActionLink(Resources.Resource.delete as string, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                                                 </td>
                                             </tr>
                                         }

@@ -238,7 +238,7 @@
         <li>
             <div class="dropdown" id="showModulo" style="display:none">
                 <span class="redLabel">Módulo</span>
-                @Html.DropDownList("ModuloId", new SelectList(ViewBag.Modulos, "Id", "Name"), Resources.Resource.select, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
+                @Html.DropDownList("ModuloId", new SelectList(ViewBag.Modulos, "Id", "Name"), Resources.Resource.select as string, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
             </div>
         </li>
 
@@ -248,11 +248,11 @@
 
                 @if (ViewBag.UnitArr == null)
                 {
-                    @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
+                    @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all as string, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
                 }
                 else
                 {
-                    @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px", @multiple = "multiple" })
+                    @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all as string, htmlAttributes: new { @class = "form-control select2", @style = "width:210px", @multiple = "multiple" })
                 }
             </div>
         </li>
@@ -270,7 +270,7 @@
                 <div id="showTipoCEP" style="display:none">
                     <span class="redLabel">@Resources.Resource.letters_cep</span>
 
-                    @Html.DropDownList("tipoCEP", new SelectList(ViewBag.ListaCEP, "Value", "Text"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
+                    @Html.DropDownList("tipoCEP", new SelectList(ViewBag.ListaCEP, "Value", "Text"), @Resources.Resource.all as string, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
                 </div>
             </li>
         }
@@ -290,7 +290,7 @@
         <li>
             <div id="showShift" style="display:none">
                 <span class="redLabel">@Resources.Resource.shift</span>
-                @Html.DropDownList("shift", new SelectList(ViewBag.Shift, "Id", "Name"), Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
+                @Html.DropDownList("shift", new SelectList(ViewBag.Shift, "Id", "Name"), Resources.Resource.all as string, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
             </div>
         </li>
 
@@ -300,7 +300,7 @@
                 <div id="showDepartment" style="display:none">
                     <span class="redLabel">Teste</span>
 
-                    @Html.DropDownList("departmentId", new SelectList(ViewBag.Department, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
+                    @Html.DropDownList("departmentId", new SelectList(ViewBag.Department, "Id", "Name"), @Resources.Resource.all as string, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
                 </div>
             </li>
         }
@@ -312,14 +312,14 @@
         <li>
             <div id="showPeriod" style="display:none">
                 <span class="redLabel">@Resources.Resource.period</span>
-                @Html.DropDownList("period", new SelectList(ViewBag.Period, "Id", "Name"), Resources.Resource.all, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
+                @Html.DropDownList("period", new SelectList(ViewBag.Period, "Id", "Name"), Resources.Resource.all as string, htmlAttributes: new { @class = "form-control select2", @style = "width:210px" })
             </div>
         </li>
 
         <li>
             <div id="showUsers" style="display:none">
                 <span class="redLabel">@Resources.Resource.auditor</span>
-                @Html.DropDownList("auditorId", new SelectList(ViewBag.UserSgq, "Id", "Name"), Resources.Resource.all, htmlAttributes: new { @class = "form-control required select2", @style = "width:210px" })
+                @Html.DropDownList("auditorId", new SelectList(ViewBag.UserSgq, "Id", "Name"), Resources.Resource.all as string, htmlAttributes: new { @class = "form-control required select2", @style = "width:210px" })
             </div>
         </li>
 

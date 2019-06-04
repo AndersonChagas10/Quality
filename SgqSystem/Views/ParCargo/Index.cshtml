@@ -33,7 +33,7 @@
                             <div class="tab-pane active" id="setup_tab">
 
                                 <p>
-                                    @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink(Resources.Resource._novo as string, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
                                 <table class="table" id="tabelaCargos">
                                     <thead>
@@ -58,7 +58,7 @@
                                                     @Html.Raw((item.IsActive == true) ? Resources.Resource.yes : Resources.Resource.no)
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 </td>
                                             </tr>
                                         }

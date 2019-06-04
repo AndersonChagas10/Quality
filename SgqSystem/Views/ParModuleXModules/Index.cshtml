@@ -13,7 +13,7 @@
                 @if (ViewBag.EnableCreate)
                 {
                     <p>
-                        @Html.ActionLink(Resources.Resource.create, "Create", "ParModuleXModules", new { moduleId = ViewBag.ModuleId }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink(Resources.Resource.create as string, "Create", "ParModuleXModules", new { moduleId = ViewBag.ModuleId }, new { @class = "btn btn-primary" })
                     </p>
                 }
                 <table class="table">
@@ -33,7 +33,7 @@
                             <td>
                                 @*@Html.ActionLink(Resources.Resource.edit, "Edit", "ParModuleXModules", new { id = item.Id }, new { @class = "btn btn-success" })*@
                                 @*@Html.ActionLink(Resources.Resource.details, "Details", "ParModuleXModules", new { id = item.Id }, new { @class = "btn btn-info" })*@
-                                @Html.ActionLink(Resources.Resource.delete, "Delete", "ParModuleXModules", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                @Html.ActionLink(Resources.Resource.delete as string, "Delete", "ParModuleXModules", new { id = item.Id }, new { @class = "btn btn-danger" })
                             </td>
                         </tr>
                     }

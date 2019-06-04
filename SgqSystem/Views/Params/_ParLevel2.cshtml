@@ -32,8 +32,8 @@
                         </tr>
 
                         <tr class="row">
-                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParDepartment_Id", Model.paramsDdl.DdlParDepartment, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.department), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParDepartment_Id, null, new { @class = "text-danger" }))
-                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParDepartment_Id", Model.paramsDdl.DdlParDepartment, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.department as string), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParDepartment_Id, null, new { @class = "text-danger" }))
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency as string), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
                         </tr>
 
                         @*<tr class="row">

@@ -12,7 +12,7 @@
             <div class="tab-pane active" id="setup_tab">
              
                     <p>
-                        @Html.ActionLink(Resources.Resource.create, "Create", "ParCompany2XStructure", new { parCompanyId = ViewBag.ParCompanyId }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink(Resources.Resource.create as string, "Create", "ParCompany2XStructure", new { parCompanyId = ViewBag.ParCompanyId }, new { @class = "btn btn-primary" })
                     </p>
                 <table class="table">
                     <tr>
@@ -31,7 +31,7 @@
                             <td>
                                 @*@Html.ActionLink(Resources.Resource.edit, "Edit", "ParModuleXModules", new { id = item.Id }, new { @class = "btn btn-success" })*@
                                 @*@Html.ActionLink(Resources.Resource.details, "Details", "ParModuleXModules", new { id = item.Id }, new { @class = "btn btn-info" })*@
-                                @Html.ActionLink(Resources.Resource.delete, "Delete", "ParCompany2XStructure", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                @Html.ActionLink(Resources.Resource.delete as string, "Delete", "ParCompany2XStructure", new { id = item.Id }, new { @class = "btn btn-danger" })
                             </td>
                         </tr>
                     }
