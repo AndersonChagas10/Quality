@@ -1,15 +1,11 @@
-﻿using Dominio.Interfaces.Services;
+﻿//using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
-using SgqService.Controllers.Api;
+using DTO.Interfaces.Services;
 using SgqService.Handlres;
 using SgqService.Security;
 using SgqService.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web.Http;
 //using System.Web.Http.Cors;
 
