@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Dominio;
-using Dominio.Interfaces.Services;
-using Dominio.Services;
+using DTO.Interfaces.Services;
+using DTO.Services;
 using DTO;
 using DTO.DTO;
 using DTO.DTO.Params;

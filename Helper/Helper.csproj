@@ -63,24 +63,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CookieDoUserSgqWebApi.cs" />
-    <Compile Include="CustomAuthorizeAttribute.cs" />
     <Compile Include="DecimalModelBinder.cs" />
     <Compile Include="HtmlHelperExtension.cs" />
-    <Compile Include="MailSender.cs" />
     <Compile Include="NumericExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UtilException.cs" />
     <Compile Include="UtilType.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
-      <Project>{31925FCA-E0F6-428D-9A7D-59CA8879D6F8}</Project>
-      <Name>ADOFactory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DTO\DTO.csproj">
-      <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
-      <Name>DTO</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

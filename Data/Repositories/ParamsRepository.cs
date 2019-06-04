@@ -1,5 +1,5 @@
 ﻿using Dominio;
-using Dominio.Interfaces.Repositories;
+using DTO.Interfaces.Repositories;
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;

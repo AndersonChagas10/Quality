@@ -1,7 +1,7 @@
 ﻿using ADOFactory;
 using AutoMapper;
 using Dominio;
-using Dominio.Interfaces.Services;
+using DTO.Interfaces.Services;
 using DTO;
 using DTO.DTO.Params;
 using DTO.ResultSet;
