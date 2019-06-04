@@ -32,7 +32,7 @@ namespace AppService
 
                     if (!String.IsNullOrEmpty(token))
                     {
-                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                        client.DefaultRequestHeaders.Add("token", token);
                     }
 
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -58,7 +58,7 @@ namespace AppService
 
                     if (!String.IsNullOrEmpty(token))
                     {
-                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                        client.DefaultRequestHeaders.Add("token", token);
                     }
 
                     // envia a requisição POST
@@ -84,7 +84,7 @@ namespace AppService
 
                     if (!String.IsNullOrEmpty(token))
                     {
-                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                        client.DefaultRequestHeaders.Add("token", token);
                     }
 
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -110,7 +110,7 @@ namespace AppService
 
                     if (!String.IsNullOrEmpty(token))
                     {
-                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                        client.DefaultRequestHeaders.Add("token", token);
                     }
 
                     // envia a requisição POST
