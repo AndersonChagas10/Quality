@@ -2,6 +2,7 @@
 using Dominio;
 using DTO;
 using DTO.Helpers;
+using ServiceModel;
 using SgqService.Controllers.Api;
 using SgqService.Services;
 using System;
@@ -131,39 +132,5 @@ namespace SgqService.Controllers.Api.App
             }
         }
 
-    }
-
-    public class DefeitosPorAmostra
-    {
-        public int EvaluationNumber { get; set; }
-        public int Sample { get; set; }
-        public int WeiDefects { get; set; }
-        public int Period { get; set; }
-        public int Shift { get; set; }
-    }
-
-    public class RetornoLucas
-    {
-           
-        //public int IdLevel1 { get; set; }
-        public decimal SidesWithDefects { get; set; }
-        public decimal Defects { get; set; }
-    }
-
-    public class RetornoLevel1
-    {
-        public int idLevel1 { get; set; }
-        public List<AvAmPorLevel1> avAmPorLevel1 { get; set; }
-    }
-
-    public class AvAmPorLevel1
-    {
-        public string AvAm { get; set; }
-        public decimal? SomaWeiDefect { get; set; }
-        public decimal SomaNotIsConform { get; set; }
-        public decimal SomaWeiDefectsPorAv { get; set; }
-        public decimal SomaWeiDefectsPorAvAcumulada { get; set; }
-        public int Am { get; internal set; }
-        public int Av { get; internal set; }
     }
 }

@@ -22,6 +22,7 @@ using System.Collections;
 using System.Data;
 using SgqService.Services;
 using SgqService.Controllers.Api.App;
+using ServiceModel;
 
 namespace SgqService.Controllers.Api
 {
@@ -219,13 +220,6 @@ namespace SgqService.Controllers.Api
         #endregion
 
         #region Json
-        public class InsertJsonClass
-        {
-            public string ObjResultJSon { get; set; }
-            public string deviceId { get; set; }
-            public string deviceMac { get; set; }
-            public bool autoSend { get; set; }
-        }
         /// <summary>
         /// Método Para Inserir Resultado da Coleta
         /// </summary>
@@ -4064,14 +4058,6 @@ namespace SgqService.Controllers.Api
             return APPMain + supports;// + resource;
         }
 
-        public class GetAPPLevelsVolumeClass
-        {
-            public int UserSgq_Id { get; set; }
-            public int ParCompany_Id { get; set; }
-            public DateTime Date { get; set; }
-            public string Level1ListId { get; set; }
-            public int Shift_Id { get; set; }
-        }
 
         [HttpPost]
         [Route("getAPPLevelsVolume")]
@@ -7374,11 +7360,6 @@ namespace SgqService.Controllers.Api
 
         #endregion
 
-        public class InsertDeviationClass
-        {
-            public string Deviations { get; set; }
-        }
-
         [HttpPost]
         [Route("insertDeviation")]
         public string insertDeviation([FromBody] InsertDeviationClass insertDeviationClass)
@@ -7725,31 +7706,6 @@ namespace SgqService.Controllers.Api
             }
         }
 
-        public class InsertCorrectiveActionClass
-        {
-            public string CollectionLevel2_Id { get; set; }
-            public string ParLevel1_Id { get; set; }
-            public string ParLevel2_Id { get; set; }
-            public string Shift { get; set; }
-            public string Period { get; set; }
-            public string ParCompany_Id { get; set; }
-            public string EvaluationNumber { get; set; }
-            public string ParFrequency_Id { get; set; }
-            public string data { get; set; }
-            public string AuditorId { get; set; }
-            public string SlaughterId { get; set; }
-            public string TechinicalId { get; set; }
-            public string DateTimeSlaughter { get; set; }
-            public string DateTimeTechinical { get; set; }
-            public string DateCorrectiveAction { get; set; }
-            public string AuditStartTime { get; set; }
-            public string DescriptionFailure { get; set; }
-            public string ImmediateCorrectiveAction { get; set; }
-            public string ProductDisposition { get; set; }
-            public string PreventativeMeasure { get; set; }
-            public string reauditnumber { get; set; }
-        }
-
         [HttpPost]
         [Route("InsertCorrectiveAction")]
         public string InsertCorrectiveAction([FromBody] InsertCorrectiveActionClass insertCorrectiveActionClass)
@@ -8025,13 +7981,6 @@ namespace SgqService.Controllers.Api
                     "class=\"EvaluationDefects\"></div>";
             }
             return PhaseResult;
-        }
-
-        public class GetCollectionLevel2KeysClass
-        {
-            public string ParCompany_Id { get; set; }
-            public string date { get; set; }
-            public int ParLevel1_Id { get; set; } = 0;
         }
 
         [HttpPost]
@@ -8566,16 +8515,6 @@ namespace SgqService.Controllers.Api
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsolidationLevel2XCluster");
                 throw ex;
             }
-        }
-
-        public class GetLastSampleByCollectionLevel2Class
-        {
-            public string ParLevel1_Id { get; set; }
-            public string ParLevel2_Id { get; set; }
-            public string UnitId { get; set; }
-            public string EvaluationNumber { get; set; }
-            public string Shift { get; set; }
-            public DateTime CollectionDate { get; set; }
         }
 
         [HttpPost]

@@ -3,6 +3,7 @@ using Dominio;
 using DTO;
 using DTO.Helpers;
 using Newtonsoft.Json;
+using ServiceModel;
 using SgqService.Controllers.Api;
 using SgqService.Helpers;
 using SgqService.Services;
@@ -283,11 +284,6 @@ namespace SgqService.Controllers.Api.App
 
         #region Nova Proposta Get Tela
 
-        public class GeneratedUnit
-        {
-            public List<int> ListUnits { get; set; }
-        }
-
         [HttpGet]
         [Route("GetStackTrace/{id}")]
         public object GetStackTrace(int id)
@@ -436,16 +432,4 @@ namespace SgqService.Controllers.Api.App
             Dispose(true);
         }
     }
-
-
-    /// <summary>
-    /// Objeto de auxilio para retorno.
-    /// </summary>
-    public class RetornoParaTablet
-    {
-        public bool ready { get; set; }
-        public int pool { get; set; }
-        public string ParteDaTela { get; set; }
-    }
-
 }
