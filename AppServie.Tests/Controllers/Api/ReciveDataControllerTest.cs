@@ -8,15 +8,15 @@ using ServiceModel;
 namespace AppServie.Tests.Controllers
 {
     [TestClass]
-    public class GetTelaControllerTest
+    public class ReciveDataControllerTest
     {
         [TestMethod]
-        public void GetTelaTest()
+        public void ReciveDataTest()
         {
-            GetTelaController getTelaController = new GetTelaController();
-            getTelaController.token = Config.TOKEN;
+            ReciveDataController controller = new ReciveDataController();
+            controller.token = Config.TOKEN;
 
-            var x = getTelaController.GetTela(14,1);
+            var x = controller.ReciveData("14", "06042019");
 
             Assert.IsTrue(x.Result != null);
         }

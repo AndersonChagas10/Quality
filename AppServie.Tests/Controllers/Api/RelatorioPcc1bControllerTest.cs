@@ -4,19 +4,20 @@ using AppServie;
 using AppServie.Controllers;
 using AppServie.Api.Controllers;
 using ServiceModel;
+using System;
 
 namespace AppServie.Tests.Controllers
 {
     [TestClass]
-    public class GetTelaControllerTest
+    public class RelatorioPcc1bControllerTest
     {
         [TestMethod]
-        public void GetTelaTest()
+        public void RelatorioPcc1bTest()
         {
-            GetTelaController getTelaController = new GetTelaController();
-            getTelaController.token = Config.TOKEN;
+            RelatorioPcc1bController controller = new RelatorioPcc1bController();
+            controller.token = Config.TOKEN;
 
-            var x = getTelaController.GetTela(14,1);
+            var x = controller.reciveDataPCC1b2("14",DateTime.Now.ToString("yyyyMMdd"));
 
             Assert.IsTrue(x.Result != null);
         }
