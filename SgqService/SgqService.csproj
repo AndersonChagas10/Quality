@@ -1,0 +1,491 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4AA55E30-5913-43F3-BD66-9DF8561DE47A}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SgqService</RootNamespace>
+    <AssemblyName>SgqService</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.0.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Logging, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Extensions.Logging.3.2.3.0\lib\net45-full\Ninject.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.3.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.WebApi.3.2.4.0\lib\net45-full\Ninject.Web.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.WebApi.DependencyResolver, Version=0.1.4758.24814, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.WebApi.DependencyResolver.0.1.4758.24814\lib\net45\Ninject.WebApi.DependencyResolver.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.4\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.4\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.4\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
+    <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
+    <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageAreaRegistration.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageConfigurationExtensions.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\CollectionModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ComplexTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\DictionaryModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumValueDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\IModelDocumentationProvider.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\KeyValuePairModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescriptionGenerator.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameAttribute.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameHelper.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterAnnotation.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\SimpleTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\Models\HelpPageApiModel.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleKey.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ImageSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\InvalidSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ObjectGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
+    <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
+    <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
+    <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\LoginController.cs" />
+    <Compile Include="Controllers\Api\ParHeaderFieldApiController.cs" />
+    <Compile Include="Controllers\Api\ParReasonApiController.cs" />
+    <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
+    <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
+    <Compile Include="Controllers\Api\SyncServiceApiController.cs" />
+    <Compile Include="Controllers\Api\UserController.cs" />
+    <Compile Include="Controllers\Api\VTVerificacaoTipificacaoAPIController.cs" />
+    <Compile Include="Controllers\FirstConfigController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\AppSettingsWebConfig.cs" />
+    <Compile Include="Helpers\CommonData.cs" />
+    <Compile Include="Helpers\CommonDate.cs" />
+    <Compile Include="Helpers\CommonLog.cs" />
+    <Compile Include="Helpers\HandleCultureAPI.cs" />
+    <Compile Include="Helpers\Handlres\HandleApi.cs" />
+    <Compile Include="Helpers\Handlres\ValidateModelAttribute.cs" />
+    <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\Audit\CorrectiveActionMapperProfile.cs" />
+    <Compile Include="Mappers\AutoMapperConfig.cs" />
+    <Compile Include="Mappers\DefectMapperProfile.cs" />
+    <Compile Include="Mappers\EmailContentMapperProfile.cs" />
+    <Compile Include="Mappers\ExampleMapperProfile.cs" />
+    <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
+    <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParClusterGroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParConsolidationTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCriticalLevelMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParEvaluationMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParFieldTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParFrequencyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParGoalMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParHeaderFieldMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1ClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1HeaderField.cs" />
+    <Compile Include="Mappers\Params\ParLevel1MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1XHeaderFieldMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel2Level1MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel2MapperProfile .cs" />
+    <Compile Include="Mappers\Params\ParLevel2XHeaderFieldMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3BoolFalseMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3BoolTrueMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3EvaluationSampleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3GroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3InputTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3Level2Level1MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3Level2MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3ValueMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3XParDepartmentMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevelDefinitonMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLocalMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParMeasurementUnitMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParModuleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParMultipleValuesMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParNotConformityRuleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParNotConformityRuleXLevelMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParRelapseMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParSampleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParScoreTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
+    <Compile Include="Mappers\ParClusterXModuleMapperProfile.cs" />
+    <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
+    <Compile Include="Mappers\ParLevel1XRotinaIntegracaoMapperProfile.cs" />
+    <Compile Include="Mappers\PeriodMapperProfile.cs" />
+    <Compile Include="Mappers\RoleMapperProfile.cs" />
+    <Compile Include="Mappers\RoleUserSgqMapperProfile.cs" />
+    <Compile Include="Mappers\RoleUserSgqXItemMenuMapperProfile.cs" />
+    <Compile Include="Mappers\RotinaIntegracaoMapperProfile.cs" />
+    <Compile Include="Mappers\ShiftMapperProfile.cs" />
+    <Compile Include="Mappers\UnitMapperProfile.cs" />
+    <Compile Include="Mappers\UnitUserMapperProfile.cs" />
+    <Compile Include="Mappers\UserMapperProfile.cs" />
+    <Compile Include="Mappers\UserSgqMapperProfile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\CustomPrincipal.cs" />
+    <Compile Include="Security\SessionPersister.cs" />
+    <Compile Include="Services\Html.cs" />
+    <Compile Include="ViewModels\FormularioParaRelatorioViewModel.cs" />
+    <Compile Include="ViewModels\TipificacaoViewModel.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Readme\readme.txt" />
+    <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\appColeta\alert.js" />
+    <Content Include="Scripts\appColeta\alert_new.js" />
+    <Content Include="Scripts\appColeta\breadCrumb.js" />
+    <Content Include="Scripts\appColeta\config.js" />
+    <Content Include="Scripts\appColeta\consolidation.js" />
+    <Content Include="Scripts\appColeta\controleDeAlerta.js" />
+    <Content Include="Scripts\appColeta\correctiveAction.js" />
+    <Content Include="Scripts\appColeta\counter.js" />
+    <Content Include="Scripts\appColeta\counterLevel1.js" />
+    <Content Include="Scripts\appColeta\crypto.js" />
+    <Content Include="Scripts\appColeta\date.js" />
+    <Content Include="Scripts\appColeta\defect.js" />
+    <Content Include="Scripts\appColeta\defectEvaluation.js" />
+    <Content Include="Scripts\appColeta\email.js" />
+    <Content Include="Scripts\appColeta\eua.js" />
+    <Content Include="Scripts\appColeta\footer.js" />
+    <Content Include="Scripts\appColeta\geolocation.js" />
+    <Content Include="Scripts\appColeta\guard.js" />
+    <Content Include="Scripts\appColeta\header.js" />
+    <Content Include="Scripts\appColeta\index.css" />
+    <Content Include="Scripts\appColeta\index2.js" />
+    <Content Include="Scripts\appColeta\keys.js" />
+    <Content Include="Scripts\appColeta\lastSync.js" />
+    <Content Include="Scripts\appColeta\level1.js" />
+    <Content Include="Scripts\appColeta\level2.js" />
+    <Content Include="Scripts\appColeta\level3.js" />
+    <Content Include="Scripts\appColeta\level3Collapse.js" />
+    <Content Include="Scripts\appColeta\login.js" />
+    <Content Include="Scripts\appColeta\message.js" />
+    <Content Include="Scripts\appColeta\mock.js" />
+    <Content Include="Scripts\appColeta\mock_modulos.js" />
+    <Content Include="Scripts\appColeta\module.js" />
+    <Content Include="Scripts\appColeta\navBar.js" />
+    <Content Include="Scripts\appColeta\overlay.js" />
+    <Content Include="Scripts\appColeta\pcc1b.js" />
+    <Content Include="Scripts\appColeta\phase.js" />
+    <Content Include="Scripts\appColeta\photo.js" />
+    <Content Include="Scripts\appColeta\reaudit.js" />
+    <Content Include="Scripts\appColeta\reauditByHeader.js" />
+    <Content Include="Scripts\appColeta\reprocesso.js" />
+    <Content Include="Scripts\appColeta\resource.js" />
+    <Content Include="Scripts\appColeta\rightBar.js" />
+    <Content Include="Scripts\appColeta\role.js" />
+    <Content Include="Scripts\appColeta\rotinaHeaderField.js" />
+    <Content Include="Scripts\appColeta\scriptfile.js" />
+    <Content Include="Scripts\appColeta\sync.js" />
+    <Content Include="Scripts\appColeta\tempSave.js" />
+    <Content Include="Scripts\appColeta\verificacaoTipificacao.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\HelpPage\Views\Web.config" />
+    <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TextSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\SimpleTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Samples.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Parameters.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ModelDescriptionLink.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\KeyValuePairModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\InvalidSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ImageSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\EnumTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\DictionaryModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ComplexTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap.min.css.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap.css.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
+      <Project>{31925fca-e0f6-428d-9a7d-59ca8879d6f8}</Project>
+      <Name>ADOFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrossCutting\CrossCutting.csproj">
+      <Project>{0896bc38-df38-4e39-adf9-db1f9910bfe6}</Project>
+      <Name>CrossCutting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBContext\DBContext.csproj">
+      <Project>{8dc329a7-0151-438c-a2d5-9e5d82946f9b}</Project>
+      <Name>DBContext</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dominio\Dominio.csproj">
+      <Project>{777d8e88-0d52-446a-bc77-2f50a7d936e5}</Project>
+      <Name>Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{0ed5466d-2a8f-4e37-8d4a-c2f2760bd687}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{7ca0c2b1-2d05-4a01-86c2-8732d8a07192}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
+      <Project>{3ecf1d86-91f3-4140-a11a-1546b8f662a1}</Project>
+      <Name>ServiceModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>62000</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/SgqService</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

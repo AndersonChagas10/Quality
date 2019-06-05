@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Dominio;
-using Dominio.Interfaces.Services;
+using DTO.Interfaces.Services;
 using DTO.DTO.Params;
 using SgqSystem.Handlres;
 using SgqSystem.Helpers;

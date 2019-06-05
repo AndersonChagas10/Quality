@@ -241,6 +241,8 @@
     <Compile Include="Controllers\CentauroController.cs" />
     <Compile Include="Controllers\GerenciarController.cs" />
     <Compile Include="Controllers\Home2Controller.cs" />
+    <Compile Include="Helper\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Helper\MailSender.cs" />
     <Compile Include="Jobs\Jobs.cs" />
     <Compile Include="Helpers\Rodape.cs" />
     <Compile Include="PaMail\PaAsyncServices.cs" />

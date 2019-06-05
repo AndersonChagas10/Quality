@@ -1,5 +1,5 @@
-﻿using Dominio.Interfaces.Services;
-using Dominio.Services;
+﻿using DTO.Interfaces.Services;
+using DTO.Services;
 using Ninject.Modules;
 
 namespace CrossCutting.IOC.Module
@@ -10,14 +10,9 @@ namespace CrossCutting.IOC.Module
         {
             Bind(typeof(IBaseDomain<,>)).To(typeof(BaseDomain<,>));
             Bind<IUserDomain>().To<UserDomain>();
-            Bind<IExampleDomain>().To<ExampleDomain>();
             Bind<IParamsDomain>().To<ParamsDomain>();
             Bind<ICompanyDomain>().To<CompanyDomain>();
             Bind<IDefectDomain>().To<DefectDomain>();
-
-            //Bind<ICorrectiveActionDomain>().To<CorrectiveActionDomain>();
-            //Bind<ISaveConsolidateDataCollectionDomain>().To<SaveConsolidateDataCollectionDomain>();
-            //Bind<IGetConsolidateDataCollectionDomain>().To<GetConsolidateDataCollectionDomain>();
         }
     }
 }

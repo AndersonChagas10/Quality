@@ -94,6 +94,57 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         }
 
         [HttpPost]
+        [Route("GetParStructureGroup")]
+        public List<ParStructureGroupDTO> GetParStructureGroup([FromBody] ModelForm model)
+        {
+            var retorno = new List<ParStructureGroupDTO>();
+
+            if (model.UserId > 0)
+            {
+
+                var whereCluster = "";
+
+                if (model.Cluster > 0)
+                {
+                    whereCluster = "AND PC.Id = " + model.Cluster;
+                }
+                else if (model.ClusterArr != null && model.ClusterArr.Length > 0)
+                {
+                    whereCluster = $"AND PC.Id IN ({ string.Join(",", model.ClusterArr) })";
+                }
+
+                var query = $@"SELECT
+                        DISTINCT
+                        	PSG.Id
+                           ,PSG.Name
+                        FROM ParCluster PC
+                        LEFT JOIN ParCompanyCluster PCC
+                        	ON PC.Id = PCC.ParCluster_Id
+                        LEFT JOIN ParCompany UNIT
+                        	ON PCC.ParCompany_Id = UNIT.Id
+                        LEFT JOIN ParCompanyXStructure UNITXSTRUCT
+                        	ON UNITXSTRUCT.ParCompany_Id = UNIT.Id
+                        LEFT JOIN ParStructure PS
+                        	ON PS.Id = UNITXSTRUCT.ParStructure_Id
+                        LEFT JOIN ParStructureGroup PSG
+                        	ON PSG.Id = PS.ParStructureGroup_Id
+                        WHERE 1=1
+                        AND UNIT.Id IN (SELECT DISTINCT ParCompany_Id FROM ParCompanyXUserSgq WHERE UserSgq_Id = { model.UserId })
+                        { whereCluster }
+                        AND UNITXSTRUCT.Active = 1
+						AND PS.Active = 1
+                        AND PS.Id IS NOT NULL";
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    retorno = factory.SearchQuery<ParStructureGroupDTO>(query).ToList();
+                }
+            }
+
+            return retorno;
+        }
+
+        [HttpPost]
         [Route("GetParStructure")]
         public List<ParStructureDTO> GetParStructure([FromBody] ModelForm model)
         {
@@ -103,6 +154,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
             {
 
                 var whereCluster = "";
+                var whereStructureGroup = "";
                 var unidadesUsuario = GetUserUnits(model.UserId);
 
                 if (model.Cluster > 0)
@@ -113,6 +165,11 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                 if (model.ClusterArr != null && model.ClusterArr.Length > 0)
                 {
                     whereCluster = $"AND PC.Id IN ({ string.Join(",", model.ClusterArr) })";
+                }
+
+                if (model.ParStructureGroupId > 0)
+                {
+                    whereStructureGroup = $"AND PS.ParStructureGroup_Id = {model.ParStructureGroupId}";
                 }
 
                 var query = $@"SELECT
@@ -132,6 +189,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                         WHERE 1=1
                         AND UNIT.Id IN ({unidadesUsuario})
                         { whereCluster }
+                        { whereStructureGroup }
                         AND UNITXSTRUCT.Active = 1
 						AND PS.Active = 1
                         AND PS.Id IS NOT NULL";
@@ -383,7 +441,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
                 whereLevel1Group = $"AND PGP1.ParGroupParLevel1_Id IN ({ string.Join(",", model.groupParLevel1IdArr) })"; ;
             }
 
-                var query = $@"SELECT
+            var query = $@"SELECT
                         DISTINCT
                         	l1.Name
                            ,L1.ID
@@ -429,7 +487,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
             using (var db = new SgqDbDevEntities())
             {
                 var user = db.UserSgq.Find(User);
-                if(user.ShowAllUnits == true)
+                if (user.ShowAllUnits == true)
                 {
                     return string.Join(",", db.ParCompanyXUserSgq.Select(r => r.ParCompany_Id).ToList());
                 }
@@ -445,6 +503,7 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         public int CriticalLevel { get; set; }
         public int Cluster { get; set; }
         public int ClusterGroup { get; set; }
+        public int ParStructureGroupId { get; set; }
         public int Structure { get; set; }
         public int[] StructureArr { get; set; } = new int[] { };
         public int[] ClusterArr { get; set; } = new int[] { };
