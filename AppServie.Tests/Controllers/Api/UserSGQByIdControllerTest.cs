@@ -13,7 +13,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void UserSGQByIdTest()
         {
-            UserSGQByIdController controller = new UserSGQByIdController();
+            SyncServiceApiController controller = new SyncServiceApiController();
 
             var x = controller.UserSGQById(1);
 

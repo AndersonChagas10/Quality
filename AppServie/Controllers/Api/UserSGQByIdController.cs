@@ -11,8 +11,7 @@ using System.Web.Http;
 
 namespace AppServie.Api.Controllers
 {
-    [RoutePrefix("api/SyncServiceApi")]
-    public class UserSGQByIdController : BaseApiController
+    public partial class SyncServiceApiController : BaseApiController
     {
         [HttpPost]
         [Route("UserSGQById")]

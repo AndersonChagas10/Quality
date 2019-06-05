@@ -14,7 +14,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void GetCollectionLevel2XHeaderFieldTest()
         {
-            GetCollectionLevel2XHeaderFieldController controller = new GetCollectionLevel2XHeaderFieldController();
+            ParHeaderController controller = new ParHeaderController();
             controller.token = Config.TOKEN;
 
             var x = controller.GetListCollectionHeaderField(14, "06042019");

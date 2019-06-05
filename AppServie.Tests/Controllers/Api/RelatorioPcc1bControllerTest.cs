@@ -14,7 +14,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void RelatorioPcc1bTest()
         {
-            RelatorioPcc1bController controller = new RelatorioPcc1bController();
+            RelatorioGenericoController controller = new RelatorioGenericoController();
             controller.token = Config.TOKEN;
 
             var x = controller.reciveDataPCC1b2("14",DateTime.Now.ToString("yyyyMMdd"));

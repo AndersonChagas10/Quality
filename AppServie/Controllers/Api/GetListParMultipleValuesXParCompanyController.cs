@@ -12,8 +12,7 @@ using System.Web.Http;
 
 namespace AppServie.Api.Controllers
 {
-    [RoutePrefix("api/ParHeader")]
-    public class GetListParMultipleValuesXParCompanyController : BaseApiController
+    public partial class ParHeaderController : BaseApiController
     {
 
         [HttpGet]

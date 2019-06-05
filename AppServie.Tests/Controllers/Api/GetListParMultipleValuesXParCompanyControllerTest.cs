@@ -14,7 +14,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void GetListParMultipleValuesXParCompanyTest()
         {
-            GetListParMultipleValuesXParCompanyController controller = new GetListParMultipleValuesXParCompanyController();
+            ParHeaderController controller = new ParHeaderController();
             controller.token = Config.TOKEN;
 
             var x = controller.GetListParMultipleValuesXParCompany(14, "3987891");

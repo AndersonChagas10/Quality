@@ -14,7 +14,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void LogadoSemDataTest()
         {
-            LoginController login = new LoginController();
+            LoginApiController login = new LoginApiController();
 
             Assert.IsTrue(login.Logado() == "onLine");
         }
@@ -22,7 +22,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void LogadoDataAtualTest()
         {
-            LoginController login = new LoginController();
+            LoginApiController login = new LoginApiController();
 
             Assert.IsTrue(login.Logado(DateTime.Now) == "onLine");
         }
@@ -30,7 +30,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void LogadoDataDoisDiasAtrasTest()
         {
-            LoginController login = new LoginController();
+            LoginApiController login = new LoginApiController();
 
             Assert.IsTrue(login.Logado(DateTime.Now.AddDays(-2)) == "dataInvalida");
         }

@@ -12,7 +12,7 @@ using System.Web.Http;
 namespace AppServie.Api.Controllers
 {
     [RoutePrefix("api/RelatorioGenerico")]
-    public class RelatorioPcc1bController : BaseApiController
+    public class RelatorioGenericoController : BaseApiController
     {
         [HttpGet]
         [Route("reciveDataPCC1b2/{unidadeId}/{data}")]

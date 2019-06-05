@@ -10,8 +10,7 @@ using System.Web.Http;
 
 namespace AppServie.Api.Controllers
 {
-    [RoutePrefix("api/SyncServiceApi")]
-    public class GetApp2Controller : BaseApiController
+    public partial class SyncServiceApiController : BaseApiController
     {
         [HttpPost]
         [Route("getAPP2")]

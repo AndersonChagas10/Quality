@@ -13,7 +13,7 @@ using System.Web.Http;
 namespace AppServie.Api.Controllers
 {
     [RoutePrefix("api/Reprocesso")]
-    public class GetReprocessoController : BaseApiController
+    public class ReprocessoController : BaseApiController
     {
         [HttpGet]
         [Route("Get/{ParCompany_Id}")]

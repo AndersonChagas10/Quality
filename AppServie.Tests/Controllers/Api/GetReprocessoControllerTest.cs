@@ -13,7 +13,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void GetReprocessoTest()
         {
-            GetReprocessoController controller = new GetReprocessoController();
+            ReprocessoController controller = new ReprocessoController();
             controller.token = Config.TOKEN;
 
             var x = controller.Get(14);

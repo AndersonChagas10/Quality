@@ -13,7 +13,7 @@ using System.Web.Http;
 namespace AppServie.Api.Controllers
 {
     [RoutePrefix("api/User")]
-    public class GetAllUserByUnitController : BaseApiController
+    public class UserController : BaseApiController
     {
 
         [HttpPost]

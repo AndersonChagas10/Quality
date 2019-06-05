@@ -13,7 +13,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void GetCompanyUsersTest()
         {
-            GetCompanyUsersController controller = new GetCompanyUsersController();
+            SyncServiceApiController controller = new SyncServiceApiController();
             controller.token = Config.TOKEN;
 
             var x = controller.getCompanyUsers("14");

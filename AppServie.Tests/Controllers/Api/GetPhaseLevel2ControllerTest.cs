@@ -13,7 +13,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void GetPhaseLevel2Test()
         {
-            GetPhaseLevel2Controller controller = new GetPhaseLevel2Controller();
+            SyncServiceApiController controller = new SyncServiceApiController();
             controller.token = Config.TOKEN;
 
             var x = controller.GetPhaseLevel2(14, "06042019");

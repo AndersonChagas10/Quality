@@ -12,7 +12,7 @@ using System.Web.Http;
 namespace AppServie.Api.Controllers
 {
     [RoutePrefix("api/LoginApi")]
-    public class LoginController : BaseApiController
+    public partial class LoginApiController : BaseApiController
     {
         [HttpGet]
         [Route("Logado/{dataApp?}")]

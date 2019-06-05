@@ -11,7 +11,7 @@ using System.Web.Http;
 namespace AppServie.Api.Controllers
 {
     [RoutePrefix("api/VTVerificacaoTipificacao")]
-    public class GetVTVerificacaoTipificacaoController : BaseApiController
+    public class VTVerificacaoTipificacaoController : BaseApiController
     {
         [HttpGet]
         [Route("GetAll/{Date}/{UnidadeId}")]

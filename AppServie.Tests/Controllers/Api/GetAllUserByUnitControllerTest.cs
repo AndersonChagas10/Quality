@@ -13,7 +13,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void GetAllUserByUnitTest()
         {
-            GetAllUserByUnitController controller = new GetAllUserByUnitController();
+            UserController controller = new UserController();
 
             var x = controller.GetAllUserByUnit(14);
 

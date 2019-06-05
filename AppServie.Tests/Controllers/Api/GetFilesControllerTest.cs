@@ -8,15 +8,14 @@ using ServiceModel;
 namespace AppServie.Tests.Controllers
 {
     [TestClass]
-    public class ReciveDataControllerTest
+    public class GetFilesControllerTest
     {
         [TestMethod]
-        public void ReciveDataTest()
+        public void GetFilesTest()
         {
-            SyncServiceApiController controller = new SyncServiceApiController();
-            controller.token = Config.TOKEN;
+            AppParamsController controller = new AppParamsController();
 
-            var x = controller.ReciveData("14", "06042019");
+            var x = controller.GetFiles();
 
             Assert.IsTrue(x.Result != null);
         }

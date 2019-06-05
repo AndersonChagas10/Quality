@@ -14,7 +14,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void GetAllUserByUnitTest()
         {
-            GetCollectionLevel2KeysController controller = new GetCollectionLevel2KeysController();
+            SyncServiceApiController controller = new SyncServiceApiController();
             controller.token = Config.TOKEN;
 
             //{"ParCompany_Id":"14","date":"06042019","ParLevel1_Id":0}

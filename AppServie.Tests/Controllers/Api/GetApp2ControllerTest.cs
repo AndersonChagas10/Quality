@@ -13,7 +13,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void GetApp2Test()
         {
-            GetApp2Controller controller = new GetApp2Controller();
+            SyncServiceApiController controller = new SyncServiceApiController();
 
             var x = controller.getAPP2("2.0.47");
 

@@ -13,7 +13,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void GetVTVerificacaoTipificacaoTest()
         {
-            GetVTVerificacaoTipificacaoController controller = new GetVTVerificacaoTipificacaoController();
+            VTVerificacaoTipificacaoController controller = new VTVerificacaoTipificacaoController();
             controller.token = Config.TOKEN;
 
             var x = controller.GetVTVerificacaoTipificacao("06042019",14);

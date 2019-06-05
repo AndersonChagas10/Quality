@@ -10,14 +10,14 @@ using System.Web.Http;
 
 namespace AppServie.Api.Controllers
 {
-    public partial class SyncServiceApiController : BaseApiController
+    public partial class AppParamsController : BaseApiController
     {
-        [HttpPost]
-        [Route("InsertJson")]
-        public async Task<string> InsertJson([FromBody] InsertJsonClass insertJsonClass)
+        [HttpGet]
+        [Route("GetFiles")]
+        public async Task<string> GetFiles()
         {
-            string url = "/api/SyncServiceApi/InsertJson";
-            RestRequest restRequest = await RestRequest.Post(url, insertJsonClass, this.token);
+            string url = $"/api/AppParams/GetFiles";
+            RestRequest restRequest = await RestRequest.Get(url);
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {

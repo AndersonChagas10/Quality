@@ -14,7 +14,7 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void GetAPPLevelsVolume()
         {
-            GetAPPLevelsVolumeController controller = new GetAPPLevelsVolumeController();
+            SyncServiceApiController controller = new SyncServiceApiController();
             controller.token = Config.TOKEN;
 
             //{"UserSgq_Id":"1","ParCompany_Id":"14","Date":"Tue, 04 Jun 2019 15:00:00 GMT","Level1ListId":"","Shift_Id":1}
