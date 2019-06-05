@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -388,6 +388,7 @@
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VTVerificacaoTipificacaoApiController.cs" />
+    <Compile Include="Controllers\AppScriptsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
@@ -1938,6 +1939,11 @@
     <Content Include="Views\ParStructures\Details.cshtml" />
     <Content Include="Views\ParStructures\Edit.cshtml" />
     <Content Include="Views\ParStructures\Index.cshtml" />
+    <Content Include="Views\AppScripts\Create.cshtml" />
+    <Content Include="Views\AppScripts\Delete.cshtml" />
+    <Content Include="Views\AppScripts\Details.cshtml" />
+    <Content Include="Views\AppScripts\Edit.cshtml" />
+    <Content Include="Views\AppScripts\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
