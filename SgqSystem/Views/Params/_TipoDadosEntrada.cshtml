@@ -24,12 +24,13 @@
                         <td class="td-erp col-sm-6" colspan="0">
                             <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
                             <div>
-                                @Html.DropDownList("paramsDto.parLevel1Selected", new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }@*Model.paramsDdl.DdlparLevel1*@                                                      /**/
-                                                                                                                                                                                                                                                                                                       /**/
-                                                                                                                                                                                                                                                                                                       /**/
-                                                                                                                                                                                                                                                                                                       /**/
-                                                                                                                                                                                                                                                                                                       /**/
-                                                                                                                                                                                                                                                                                                       , htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2TipoDadosEntrada", style = "width: 100%" })
+                                @Html.DropDownList("paramsDto.parLevel1Selected", new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }@*Model.paramsDdl.DdlparLevel1*@                                                                       /**/
+                                                                                                                                                                                                                                                                                                                        /**/
+                                                                                                                                                                                                                                                                                                                        /**/
+                                                                                                                                                                                                                                                                                                                        /**/
+                                                                                                                                                                                                                                                                                                                        /**/
+                                                                                                                                                                                                                                                                                                                        /**/
+                                                                                                                                                                                                                                                                                                                        , htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2TipoDadosEntrada", style = "width: 100%" })
                             </div>
                         </td>
                         <td class="td-erp col-sm-6">
@@ -68,7 +69,7 @@
                     <tr class="row ParResultado" style="display: none;">
                         @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.DynamicValue", Model.paramsDto.parLevel3Value.DynamicValue, new { @Id = "parLevel3Value_DynamicValue", @class = "form-control input-sm" }), @Html.Label("Equação"), Table.PosicaoLabel.top, classTd: "col-sm-12", colspan: 2)
                         @*@Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top, style: "min-width:100px")
-                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, new { @Id = "parLevel3Value_IntervalMax", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top, style: "min-width:100px")*@
+                            @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, new { @Id = "parLevel3Value_IntervalMax", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top, style: "min-width:100px")*@
                     </tr>
 
                     <tr class="row ParResultadoEdit" style="display: none;">
@@ -233,7 +234,7 @@
     var eTipoDado_Recravacao = 99;
 
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
-    debugger
+
     var level3Value = {
         /*Setup*/
         levelControl: 3,
@@ -289,7 +290,7 @@
                 companyName = "@Resources.Resource.all";
             }
 
-            if (selectTipoInput == eTipoDado_NumeroDefeitos || selectTipoInput == eTipoDado_Intervalos || selectTipoInput == eTipoDado_IntervalosTexto || selectTipoInput == eTipoDado_Calculado || selectTipoInput == eTipoDado_Texto) {        
+            if (selectTipoInput == eTipoDado_NumeroDefeitos || selectTipoInput == eTipoDado_Intervalos || selectTipoInput == eTipoDado_IntervalosTexto || selectTipoInput == eTipoDado_Calculado || selectTipoInput == eTipoDado_Texto) {
                 selectConformeName = "";
                 selectNaoConformeName = "";
                 parLevel3Value_DynamicValue = "";
@@ -346,7 +347,7 @@
             }
 
             if (selectTipoInput == eTipoDado_Resultado) {
-                debugger
+
                 selectUnidadeDeMedidasName = "";
                 selectNaoConforme = "";
                 selectConforme = "";
@@ -423,7 +424,7 @@
             }
         },
         veifyAdd: function (isEdit) {
-            debugger
+
             var seletorTato = !!isEdit ? isEdit : level3Value.level;
             /*Valida se pode criar o objeto*/
 
@@ -456,7 +457,7 @@
                 }
             } // Resultado
             else if (parseInt($('#' + seletorTato + ' #selectTipoInput :selected').val()) == eTipoDado_Resultado) {
-            
+
                 if ($('#' + seletorTato + ' #parLevel3Value_IntervalMin').val().length <= 0) {
                     openMessageModal(Resources('required_field_was_not_filled'), "Limite Inferior");
                     return false;
@@ -528,7 +529,7 @@
             return true;
         },
         incluiNoObjetoParaSubmit: function (dados) {
-
+            
             var level = level3Value.levelControl;
             $('#' + level3Value.level + ' #' + level3Value.idTable + ' > tbody > tr ').each(function (c, obj) {
 
@@ -558,10 +559,11 @@
         },
         carregaDadosDoDb: function () {
             //console.log(o["IntervalMin"] );
+
             var id = level3Value.level + ' #' + level3Value.idTable;
             var tdNamess = level3Value.tdsNames;
             if (level3Value.listObjSalvo != null) { /*Carrega regras de NC*/
-                level3Value.listObjSalvo.forEach(function (o, c) {                    
+                level3Value.listObjSalvo.forEach(function (o, c) {
                     o["ParLevel3InputType_Name"] = o.ParLevel3InputType.Name;
 
                     if (o.ParCompany_Id > 0)
@@ -597,16 +599,20 @@
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
-                        o["ParLevel3BoolTrue_Name"] = "";                        
+                        o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = (o.IntervalMin == null || o.IntervalMin == "") ? "@Resources.Resource.acceptable_value_less_than " + o.IntervalMax :
                             ((o.IntervalMax == null || o.IntervalMax == "") ? "@Resources.Resource.acceptable_value_equal_or_greater_than " + o.IntervalMin :
                             (o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax))
 
                     } else if (o.ParLevel3InputType_Id == eTipoDado_Calculado) {
+                         debugger
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMinCalculado + " @Resources.Resource.and " + o.IntervalMaxCalculado : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMinCalculado + " @Resources.Resource.or_greater_than " + o.IntervalMaxCalculado;
+                        o["AcceptableValueBetween_Name"] = (o.IntervalMin == null || o.IntervalMin == "") ? "@Resources.Resource.acceptable_value_less_than " + o.IntervalMax :
+                            ((o.IntervalMax == null || o.IntervalMax == "") ? "@Resources.Resource.acceptable_value_equal_or_greater_than " + o.IntervalMin :
+                            (o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax))
+                        //o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
                         o["IntervalMin"] = o.IntervalMin == null ? "" : o.IntervalMin;
                         o["IntervalMinCalculado"] = o.IntervalMinCalculado == null ? "" : o.IntervalMinCalculado;
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
@@ -642,7 +648,7 @@
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = o.DynamicValue;
                     }
-                    debugger
+
                     if ((o.ParLevel1_Id == null
                         || o.ParLevel1_Id == "-1"
                         || o.ParLevel1_Id == $('#parLevel1Select2 :selected').val())
@@ -652,9 +658,9 @@
                             || o.ParLevel2_Id == $('#parLevel2Select2 :selected').val()))
                         crudNxN.adiciona(o, id, tdNamess);
 
-                      
+
                     if (o.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
-                       
+
                         $.ajax({
                             url: '@Url.Content("~")' + 'api/EscalaLikertAPI/Get/' + o.Id,
                             type: 'GET',
@@ -672,7 +678,7 @@
                             }
                         });
 
-                       
+
                     }
                 });
             }
@@ -700,11 +706,23 @@
                     }
 
                 }
+                var isValid = true;
 
-                crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
-                debugger
+                //eval("1.               * Math.pow(10,2)") - formato correto
+                //eval("1.               x 10^2") - formato q o eval nao reconhece
+
+                if (parseInt(object.IntervalMin) > parseInt(object.IntervalMax)) {
+                    isValid = false
+                } else {
+                    isValid = true;
+                }
+
+                if (isValid)
+                    crudNxN.adiciona(object, level3Value.level + ' #' + level3Value.idTable, level3Value.tdsNames);
+
                 if (parseInt(object.IntervalMin) > parseInt(object.IntervalMax)) {
                     openMessageModal("Valor do Limite Superior menor que o Limite Inferior", null);
+                    return false;
                 } else {
                     if (object.ParLevel3InputType_Id == eTipoDado_EscalaLikert) {
                         $('#tableLevel3Value  tbody  tr:last td:last').append('<button type="button" class="btn btn-default btn-xs popovers likert" onclick="mensagemAlerta()" data-toggle="popover"><i class="fa fa-cog"></i></button>')
@@ -725,7 +743,7 @@
                     $("input[name='paramsDto.parLevel3Value.IntervalMax']").val('');
                     $("input[name='paramsDto.parLevel3Value.DynamicValue']").val('');
                 }
-            } 
+            }
         },
     };
 
@@ -767,6 +785,7 @@
     }
 
     function parIntervalosTypeCreate() {
+
         if($('#selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#selectTipoInput :selected').val()  == eTipoDado_IntervaloMinutos)
             return;
 
@@ -821,13 +840,14 @@
         //    $('#parIntervalosType').empty();
         //    $('#parIntervalosType').append(options);
         //    $("#parIntervalosType").parents("td").show();
-        //} 
+        //}
         else {
             $("#parIntervalosType").parents("td").hide();
         }
     }
 
     function parIntervalosTypeCreateEdit() {
+        
         if($('#crudNxNEdit #selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#crudNxNEdit #selectTipoInput :selected').val()==eTipoDado_IntervaloMinutos)
             return;
 

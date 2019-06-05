@@ -133,7 +133,6 @@ public class ScorecardResultSet
         string where = " WHERE 1=1 ";
 
         string Wshift = "";
-        string WshiftVolume = "";
 
         if (clusterSelected_Id > 0)
         {
@@ -143,11 +142,9 @@ public class ScorecardResultSet
         if (shift > 0)
         {
             Wshift += $@" AND CL1.Shift = {shift} ";
-            WshiftVolume += $@" AND isnull(Shift_Id,0) = {shift}";
         }
 
-
-            where += "\n AND Meta Is Not Null";
+        where += "\n AND Meta Is Not Null";
 
 
         if (tipo == 0)
@@ -165,7 +162,7 @@ public class ScorecardResultSet
            "\n DECLARE @DATAFINAL   DATETIME = '" + dtFim.ToString("yyyyMMdd") + "  23:59:59'                                                                                                                                                                                                                    " +
            "\n DECLARE @ParModule_Id INT = " + moduloId + // + unidadeId + "  
 
-               // Alteração
+        // Alteração
         "\n CREATE TABLE #AMOSTRATIPO4 ( " +
 
                 "\n UNIDADE INT NULL, " +
@@ -317,7 +314,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n /* FIM DOS DADOS DA FREQUENCIA -----------------------------------------------------*/                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n SELECT TOP 1 @DIASABATE = COUNT(1), @VOLUMEPCC = SUM(Quartos) FROM VolumePcc1b  (nolock) WHERE ParCompany_id = @ParCompany_id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL "+ WshiftVolume + "                                                                                                    " +
+           "\n SELECT TOP 1 @DIASABATE = COUNT(1), @VOLUMEPCC = SUM(Quartos) FROM VolumePcc1b  (nolock) WHERE ParCompany_id = @ParCompany_id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                    " +
            "\n SELECT @DIASDEVERIFICACAO = COUNT(1) FROM(SELECT CONVERT(DATE, ConsolidationDate) DATA FROM ConsolidationLevel1 CL1 (nolock)  WHERE ParLevel1_Id = 24 AND CONVERT(DATE, ConsolidationDate) BETWEEN @DATAINICIAL AND @DATAFINAL AND CL1.UnitId = @ParCompany_Id GROUP BY CONVERT(DATE, ConsolidationDate)) VT  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n SET @AVFREQUENCIAVERIFICACAO = @DIASABATE                                                                                                                                                                                                                           " +
@@ -481,7 +478,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n   ISNULL(CL.Id, @CLUSTER) AS Cluster                                                                                                                                                                                                                                " +
            //"\n  , ISNULL(CL.Name, @CLUSTERNAME) AS ClusterName                                                                                                                                                                                                                     " +
-           
+
            "\n , ISNULL((                                                                                                           " +
            "\n SELECT TOP 1(select name from ParCluster where id = L1Ca.ParCluster_Id) FROM ParLevel1XCluster L1Ca WITH(NOLOCK)     " +
            "\n WHERE @CLUSTER = L1Ca.ParCluster_ID                                                                                  " +
@@ -803,7 +800,7 @@ public class ScorecardResultSet
            "\n     , C.Id                                                                                                                                                                                                                                                          " +
            "\n                                                                                                                                                                                                                                                                    " +
            "\n ) SCORECARD  " +
-           listaUnidades2 +                                                                                                                                                                                                
+           listaUnidades2 +
            "\n ) FIM                                                                                                                                                                                                                                                               " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n UNION ALL                                                                                                                                                                                                                                                           " +
@@ -920,7 +917,7 @@ public class ScorecardResultSet
            "\n AND L1.IsActive <> 0                                                                                                                                                                                                                                                " +
            "\n AND L1.Id NOT IN(SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC (nolock)  WHERE CCC.UnitId = @ParCompany_Id                                                                                                                                                             " +
            "\n AND CCC.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL)                                                                                                                                                                                                      " +
-           //"\n AND L1C.ParCluster_Id = @CLUSTER                                                                                                                                                                                                                                                                    " +
+            //"\n AND L1C.ParCluster_Id = @CLUSTER                                                                                                                                                                                                                                                                    " +
 
             " AND ( " +
 
