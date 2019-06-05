@@ -13,8 +13,8 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void GetTelaTest()
         {
-            GetTelaController getTelaController = new GetTelaController();
-            getTelaController.token = "camilaprata-mtz|kWRAo9vMSRhRoQu36AcDog==";
+            AppParamsController getTelaController = new AppParamsController();
+            getTelaController.token = Config.TOKEN;
 
             var x = getTelaController.GetTela(14,1);
 

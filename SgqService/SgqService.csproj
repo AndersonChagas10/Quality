@@ -287,9 +287,6 @@
     <Compile Include="Security\CustomPrincipal.cs" />
     <Compile Include="Security\SessionPersister.cs" />
     <Compile Include="Services\Html.cs" />
-    <Compile Include="ViewModels\FormularioParaRelatorioViewModel.cs" />
-    <Compile Include="ViewModels\TipificacaoViewModel.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Readme\readme.txt" />

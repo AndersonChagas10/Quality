@@ -1,5 +1,6 @@
 ﻿using ADOFactory;
 using Dominio;
+using ServiceModel;
 using SgqService.Handlres;
 using SgqService.Helpers;
 using System;
@@ -16,29 +17,6 @@ namespace SgqService.Controllers.Api
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ParHeaderFieldApiController : BaseApiController
     {
-        public partial class CollectionHeaderField
-        {
-            public int ParLevel1_Id { get; set; }
-            public int ParLevel2_Id { get; set; }
-            public int Period { get; set; }
-            public int Shift { get; set; }
-            public int ParHeaderField_Id { get; set; }
-            public int Evaluation { get; set; }
-            public int Sample { get; set; }
-            public string Value { get; set; }
-        }
-
-        public partial class ParMultipleValuesXParCompany
-        {
-            public int ParLevel1_Id { get; set; }
-            public int ParLevel2_Id { get; set; }
-            public int Period { get; set; }
-            public int Shift { get; set; }
-            public int ParHeaderField_Id { get; set; }
-            public int Evaluation { get; set; }
-            public int Sample { get; set; }
-            public string Value { get; set; }
-        }
 
         [HttpGet]
         [Route("GetCollectionLevel2XHeaderField/{unitId}/{date}")]

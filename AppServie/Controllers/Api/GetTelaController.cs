@@ -11,8 +11,7 @@ using System.Web.Http;
 
 namespace AppServie.Api.Controllers
 {
-   [RoutePrefix("api/AppParams")]
-    public class GetTelaController : BaseApiController
+    public partial class AppParamsController : BaseApiController
     {
 
         [HttpGet]

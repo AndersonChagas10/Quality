@@ -1,6 +1,7 @@
 ﻿using ADOFactory;
 using Dominio;
 using Newtonsoft.Json.Linq;
+using ServiceModel;
 using SgqService.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -326,11 +327,6 @@ namespace SgqService.Controllers.Api
         public string Col48 { get; set; }
         public string Col49 { get; set; }
         public string Col50 { get; set; }
-    }
-
-    public class Header
-    {
-        public string title { get; set; }
     }
 
 }

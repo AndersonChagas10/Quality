@@ -99,6 +99,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="Controllers\Api\AuthenticationLoginControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetFilesControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetListParMultipleValuesXParCompanyControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetCollectionLevel2XHeaderFieldControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetCollectionLevel2KeysControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetAPPLevelsVolumeControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetReprocessoControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetAllUserByUnitControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetCompanyUsersControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetPhaseLevel2ControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetVTVerificacaoTipificacaoControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetApp2ControllerTest.cs" />
+    <Compile Include="Controllers\Api\ParReasonControllerTest.cs" />
+    <Compile Include="Controllers\Api\ReciveDataControllerTest.cs" />
+    <Compile Include="Controllers\Api\UserSGQByIdControllerTest.cs" />
+    <Compile Include="Controllers\Api\RelatorioPcc1bControllerTest.cs" />
+    <Compile Include="Controllers\Api\LoginControllerTest.cs" />
     <Compile Include="Controllers\Api\GetTelaControllerTest.cs" />
     <Compile Include="Controllers\Api\InsertJsonControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,9 +133,21 @@
       <Project>{681D80C0-2352-4C89-B680-D8BAB9F82110}</Project>
       <Name>AppServie</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dominio\Dominio.csproj">
+      <Project>{777d8e88-0d52-446a-bc77-2f50a7d936e5}</Project>
+      <Name>Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{0ed5466d-2a8f-4e37-8d4a-c2f2760bd687}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
       <Project>{3ECF1D86-91F3-4140-A11A-1546B8F662A1}</Project>
       <Name>ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SgqService\SgqService.csproj">
+      <Project>{4AA55E30-5913-43F3-BD66-9DF8561DE47A}</Project>
+      <Name>SgqService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

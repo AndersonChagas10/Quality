@@ -13,8 +13,8 @@ namespace AppServie.Tests.Controllers
         [TestMethod]
         public void InsertJsonTest()
         {
-            InsertJsonController insertJsonController = new InsertJsonController();
-            insertJsonController.token = "camilaprata-mtz|kWRAo9vMSRhRoQu36AcDog==";
+            SyncServiceApiController insertJsonController = new SyncServiceApiController();
+            insertJsonController.token = Config.TOKEN;
 
             InsertJsonClass insertJson = new InsertJsonClass
             {

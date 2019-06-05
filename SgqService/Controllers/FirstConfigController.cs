@@ -13,16 +13,15 @@ namespace SgqService.Controllers
 {
     public class FirstConfigController : Controller
     {
-
         // GET: FirstConfig
         public ActionResult Index()
         {
-            List<SelectListItem> listaProjetos = new List<SelectListItem>();
-            listaProjetos.Add(new SelectListItem() { Text = "BRASIL", Value = "1" });
-            listaProjetos.Add(new SelectListItem() { Text = "EUA", Value = "2" });
-            listaProjetos.Add(new SelectListItem() { Text = "YTOARA", Value = "3" });
+            List<KeyValuePair<string, string>> listaProjetos = new List<KeyValuePair<string, string>>();
+            listaProjetos.Add(new KeyValuePair<string, string>("BRASIL", "1" ));
+            listaProjetos.Add(new KeyValuePair<string, string>("EUA",    "2" ));
+            listaProjetos.Add(new KeyValuePair<string, string>("YTOARA", "3" ));
 
-            ViewBag.ActiveIn = new SelectList(listaProjetos, "Value", "Text");
+            ViewBag.ActiveIn = new SelectList(listaProjetos, "Value", "Key");
 
             return View();
         }

@@ -255,6 +255,7 @@ namespace Dominio
         public virtual DbSet<ParReason> ParReason { get; set; }
         public virtual DbSet<DicionarioEstatico> DicionarioEstatico { get; set; }
         public virtual DbSet<IntegracaoSistemica> IntegracaoSistemica { get; set; }
+        public virtual DbSet<AppScript> AppScript { get; set; }
 
         public virtual DbSet<IntegCollectionData> IntegCollectionData { get; set; }
         public virtual DbSet<ParLevel1XRotinaIntegracao> ParLevel1XRotinaIntegracao { get; set; }
