@@ -1,12 +1,12 @@
 ﻿using SgqService.Handlres;
 using System;
 using System.Web.Http;
-//using System.Web.Http.Cors;
+using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api.Login
 {
     [HandleApi(saveLog: false)]
-    //[EnableCors(origins: "*", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/LoginApi")]
     public class LoginController : ApiController
     {

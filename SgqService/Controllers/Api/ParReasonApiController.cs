@@ -5,11 +5,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-//using System.Web.Http.Cors;
+using System.Web.Http.Cors;
 
 namespace SgqService.Controllers.Api
 {
-    //[EnableCors(origins: "*", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/ParReason")]
     public class ParReasonApiController : BaseApiController
     {
