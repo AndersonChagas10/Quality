@@ -133,6 +133,7 @@ public class ScorecardResultSet
         string where = " WHERE 1=1 ";
 
         string Wshift = "";
+        string WshiftVolume = "";
 
         if (clusterSelected_Id > 0)
         {
@@ -142,7 +143,9 @@ public class ScorecardResultSet
         if (shift > 0)
         {
             Wshift += $@" AND CL1.Shift = {shift} ";
+            WshiftVolume += $@" AND isnull(Shift_Id,0) = {shift}";
         }
+
 
             where += "\n AND Meta Is Not Null";
 
@@ -314,7 +317,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n /* FIM DOS DADOS DA FREQUENCIA -----------------------------------------------------*/                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
-           "\n SELECT TOP 1 @DIASABATE = COUNT(1), @VOLUMEPCC = SUM(Quartos) FROM VolumePcc1b  (nolock) WHERE ParCompany_id = @ParCompany_id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                    " +
+           "\n SELECT TOP 1 @DIASABATE = COUNT(1), @VOLUMEPCC = SUM(Quartos) FROM VolumePcc1b  (nolock) WHERE ParCompany_id = @ParCompany_id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL "+ WshiftVolume + "                                                                                                    " +
            "\n SELECT @DIASDEVERIFICACAO = COUNT(1) FROM(SELECT CONVERT(DATE, ConsolidationDate) DATA FROM ConsolidationLevel1 CL1 (nolock)  WHERE ParLevel1_Id = 24 AND CONVERT(DATE, ConsolidationDate) BETWEEN @DATAINICIAL AND @DATAFINAL AND CL1.UnitId = @ParCompany_Id GROUP BY CONVERT(DATE, ConsolidationDate)) VT  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n SET @AVFREQUENCIAVERIFICACAO = @DIASABATE                                                                                                                                                                                                                           " +

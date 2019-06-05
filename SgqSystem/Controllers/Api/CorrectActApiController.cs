@@ -8,6 +8,7 @@ using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Web.Http;
 
@@ -295,6 +296,48 @@ namespace SgqSystem.Controllers.Api
             obj2.Unit = unitDto;
 
             return obj2;
+        }
+
+
+        [Route("GetCorrectiveActionById2")]
+        [HttpPost]
+        public CorrectiveActionDTO GetCorrectiveActionById2([FromBody]int id)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                var correctiveAction = factory.SearchQuery<CorrectiveAction>("select top 1 * from CorrectiveAction where Id = " + id).FirstOrDefault();
+
+                var correctiveActionDTO = Mapper.Map<CorrectiveAction, CorrectiveActionDTO>(correctiveAction);
+
+                var collectionLevel2 = factory.SearchQuery<CollectionLevel2>($@"select top 1 ParLevel1_Id, ParLevel2_Id, Shift, Period, UnitId  from CollectionLevel2 where Id = { correctiveAction.CollectionLevel02Id }").FirstOrDefault();
+                var Auditor = db.UserSgq.Where(r => r.Id == correctiveAction.AuditorId).FirstOrDefault();
+                var Slaughter = db.UserSgq.Where(r => r.Id == correctiveAction.AuditorId).FirstOrDefault();
+                var Techinical = db.UserSgq.Where(r => r.Id == correctiveAction.TechinicalId).FirstOrDefault();
+
+                correctiveActionDTO.AuditorName = Auditor != null ? Auditor.Name : "";
+                correctiveActionDTO.NameSlaughter = Slaughter != null ? Slaughter.FullName : "";
+                correctiveActionDTO.NameTechinical = Techinical != null ? Techinical.FullName : "";
+
+                if (collectionLevel2 != null)
+                {
+                    var parCompany = db.ParCompany.Where(r => r.Id == collectionLevel2.UnitId).FirstOrDefault();
+                    var parLevel1 = db.ParLevel1.Where(r => r.Id == collectionLevel2.ParLevel1_Id).FirstOrDefault();
+                    var parLevel2 = db.ParLevel2.Where(r => r.Id == collectionLevel2.ParLevel2_Id).FirstOrDefault();
+
+                    correctiveActionDTO.level01Name = parLevel1 != null ? parLevel1.Name : "";
+                    correctiveActionDTO.level02Name = parLevel2 != null ? parLevel1.Name : "";
+
+                    correctiveActionDTO.ShiftName = collectionLevel2.Shift.ToString();
+                    correctiveActionDTO.PeriodName = collectionLevel2.Period.ToString();
+
+                    if (parCompany != null)
+                        correctiveActionDTO.Unit = new UnitDTO() { Code = parCompany.SIF, Name = parCompany.Name };
+                }
+
+
+                return correctiveActionDTO;
+            }
         }
     }
 }
