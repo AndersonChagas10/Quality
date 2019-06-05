@@ -336,7 +336,7 @@ namespace SgqSystem.Services
 
                         var ParLevel1Origin_Id = DefaultValueReturn(result[0], "0");
 
-                        string indicadorPai = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                        string indicadorFilho_ = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
                                               "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
                                               "\n  on p321.ParLevel1_Id = p1.id " +
                                               "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
@@ -352,17 +352,40 @@ namespace SgqSystem.Services
 
                         using (Factory factory = new Factory("DefaultConnection"))
                         {
-                            list = factory.SearchQuery<ResultadoUmaColuna>(indicadorPai).ToList();
+                            list = factory.SearchQuery<ResultadoUmaColuna>(indicadorFilho_).ToList();
                         }
 
                         string level3split = result[22].Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", ""); //tiro as tags de <level3></level3>, deixando o simbolo @ para separar os elementos.
                         string[] leveis3 = level3split.Split('@'); //faço um array contendo cada elemento level3 vindo do sistema
 
+
+                        string indicadorPai = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                                              "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
+                                              "\n  on p321.ParLevel1_Id = p1.id " +
+                                              "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
+                                              "\n  on p32.id = p321.ParLevel3Level2_Id " +
+                                              "\n  WHERE p1.id = " + ParLevel1Origin_Id +
+                                              "\n  and p1.isActive = 1 " +
+                                              "\n  and p321.Active = 1 " +
+                                              "\n  and p32.IsActive = 1" +
+                                              "\n  and p32.Parlevel2_Id = " + parLevel2_Id;
+
+
+                        List<ResultadoUmaColuna> listPai;
+
+                        using (Factory factory = new Factory("DefaultConnection"))
+                        {
+                            listPai = factory.SearchQuery<ResultadoUmaColuna>(indicadorPai).ToList();
+                        }
+
+                  
                         //string[][] matrizLevel3 = new string[leveis3.Length][];
 
                         string retorno = "";
 
                         string retornoFilho = "";
+
+                        bool apagarLevel3 = true;
 
                         //tiro todos os level3 que não são do indicador
                         for (int j = 0; j < leveis3.Length; j++) //Percorro cada elemento do array
@@ -376,7 +399,19 @@ namespace SgqSystem.Services
                                     retornoFilho += "<level03>";
                                     retornoFilho += leveis3[j];
                                     retornoFilho += "</level03>";
-                                    leveis3[j] = "";
+
+                                    for (var l = 0; l < listPai.Count(); l++)
+                                    {
+                                        if (listPai[l].retorno.ToString() == esteLevel3[0])
+                                        {
+                                            apagarLevel3 = false;
+                                        }
+                                    }
+
+                                    if(apagarLevel3)
+                                        leveis3[j] = "";
+
+                                    apagarLevel3 = true;
                                 }
                             }
                         }
