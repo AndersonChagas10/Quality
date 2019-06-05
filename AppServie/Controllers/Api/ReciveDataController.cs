@@ -1,4 +1,6 @@
 ﻿using AppService;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ServiceModel;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,7 @@ namespace AppServie.Api.Controllers
     public partial class SyncServiceApiController : BaseApiController
     {
         [HttpPost]
-        [Route("InsertJson")]
+        [Route("reciveData")]
         public async Task<string> ReciveData(string unidadeId, string data)
         {
             string url = $"/api/SyncServiceApi/reciveData?unidadeId={unidadeId}&data={data}";
@@ -21,7 +23,7 @@ namespace AppServie.Api.Controllers
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return restRequest.Response;
+                return JsonConvert.DeserializeObject<string>(restRequest.Response);
             }
             return null;
         }

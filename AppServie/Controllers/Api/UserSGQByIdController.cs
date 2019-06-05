@@ -22,7 +22,7 @@ namespace AppServie.Api.Controllers
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return restRequest.Response;
+                return JsonConvert.DeserializeObject<string>(restRequest.Response);
             }
             return null;
         }

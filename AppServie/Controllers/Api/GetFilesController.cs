@@ -1,4 +1,5 @@
 ﻿using AppService;
+using Newtonsoft.Json;
 using ServiceModel;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Web.Http;
 
 namespace AppServie.Api.Controllers
 {
+    [RoutePrefix("api/AppParams")]
     public partial class AppParamsController : BaseApiController
     {
         [HttpGet]
@@ -21,7 +23,7 @@ namespace AppServie.Api.Controllers
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return restRequest.Response;
+                return JsonConvert.DeserializeObject<string>(restRequest.Response);
             }
             return null;
         }

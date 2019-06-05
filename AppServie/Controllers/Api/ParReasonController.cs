@@ -1,4 +1,5 @@
 ﻿using AppService;
+using Dominio;
 using Newtonsoft.Json;
 using ServiceModel;
 using System;
@@ -11,18 +12,19 @@ using System.Web.Http;
 
 namespace AppServie.Api.Controllers
 {
-    public partial class SyncServiceApiController : BaseApiController
+    [RoutePrefix("api/ParReason")]
+    public partial class ParReasonController : BaseApiController
     {
-        [HttpPost]
-        [Route("getAPP2")]
-        public async Task<string> getAPP2(string version)
+        [HttpGet]
+        [Route("Get")]
+        public async Task<List<ParReason>> Get()
         {
-            string url = $"/api/SyncServiceApi/getAPP2?version={version}";
-            RestRequest restRequest = await RestRequest.Post(url, null);
+            string url = "/api/ParReason/Get";
+            RestRequest restRequest = await RestRequest.Get(url);
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return JsonConvert.DeserializeObject<string>(restRequest.Response);
+                return JsonConvert.DeserializeObject<List<ParReason>>(restRequest.Response);
             }
             return null;
         }

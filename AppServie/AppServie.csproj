@@ -16,7 +16,7 @@
     <AssemblyName>AppServie</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -127,6 +127,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Api\AuthenticationLoginController.cs" />
     <Compile Include="Controllers\Api\GetFilesController.cs" />
     <Compile Include="Controllers\Api\GetListParMultipleValuesXParCompanyController.cs" />
     <Compile Include="Controllers\Api\GetCollectionLevel2XHeaderFieldController.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Controllers\Api\GetPhaseLevel2Controller.cs" />
     <Compile Include="Controllers\Api\GetVTVerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\GetApp2Controller.cs" />
+    <Compile Include="Controllers\Api\ParReasonController.cs" />
     <Compile Include="Controllers\Api\ReciveDataController.cs" />
     <Compile Include="Controllers\Api\UserSGQByIdController.cs" />
     <Compile Include="Controllers\Api\RelatorioPcc1bController.cs" />
@@ -171,6 +173,10 @@
     <None Include="Properties\PublishProfiles\AppService.pubxml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dominio\Dominio.csproj">
+      <Project>{777D8E88-0D52-446A-BC77-2F50A7D936E5}</Project>
+      <Name>Dominio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DTO\DTO.csproj">
       <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
       <Name>DTO</Name>
@@ -198,7 +204,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>62094</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/AppServie</IISUrl>
+          <IISUrl>http://localhost:62094/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

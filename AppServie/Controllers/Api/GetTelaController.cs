@@ -11,7 +11,6 @@ using System.Web.Http;
 
 namespace AppServie.Api.Controllers
 {
-   [RoutePrefix("api/AppParams")]
     public partial class AppParamsController : BaseApiController
     {
 

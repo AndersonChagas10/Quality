@@ -1,4 +1,6 @@
 ﻿using AppService;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ServiceModel;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,7 @@ namespace AppServie.Api.Controllers
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return restRequest.Response;
+                return JsonConvert.DeserializeObject<string>(restRequest.Response);
             }
             return null;
         }
