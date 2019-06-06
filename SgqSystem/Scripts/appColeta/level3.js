@@ -2015,6 +2015,8 @@ function saveResultLevel3() {
 
     exibirLevel3PorDepartamento();
 
+    createFileResult();
+
 }
 
 function resetLevel3(level3Group) {

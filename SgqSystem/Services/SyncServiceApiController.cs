@@ -362,7 +362,7 @@ namespace SgqSystem.Controllers.Api
                         //                      "\n  and p32.IsActive = 1" +
                         //                      "\n  and p32.Parlevel2_Id = " + parLevel2_Id;
 
-                        string indicadorPai = $@"SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
+                        string indicadorFilho_ = $@"SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
                                               inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)
                                               on p321.ParLevel1_Id = p1.id 
                                               inner join ParLevel3Level2 p32  WITH (NOLOCK)
@@ -373,13 +373,11 @@ namespace SgqSystem.Controllers.Api
                                               and p32.IsActive = 1
                                               and p32.Parlevel2_Id = @ParLevel2_Id";
 
-
-
                         List<ResultadoUmaColuna> list;
 
                         using (Factory factory = new Factory("DefaultConnection"))
                         {
-                            using (SqlCommand cmd = new SqlCommand(indicadorPai, factory.connection))
+                            using (SqlCommand cmd = new SqlCommand(indicadorFilho_, factory.connection))
                             {
                                 cmd.CommandType = CommandType.Text;
                                 cmd.Parameters.Add(new SqlParameter("@ParLevel1Origin_Id", ParLevel1Origin_Id));
@@ -392,11 +390,39 @@ namespace SgqSystem.Controllers.Api
                         string level3split = result[22].Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", ""); //tiro as tags de <level3></level3>, deixando o simbolo @ para separar os elementos.
                         string[] leveis3 = level3split.Split('@'); //faço um array contendo cada elemento level3 vindo do sistema
 
+                        string indicadorPai = @"SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
+                                              inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)
+                                              on p321.ParLevel1_Id = p1.id 
+                                              inner join ParLevel3Level2 p32  WITH (NOLOCK)
+                                              on p32.id = p321.ParLevel3Level2_Id 
+                                              WHERE p1.id = @ParLevel1Origin_Id
+                                              and p1.isActive = 1 
+                                              and p321.Active = 1 
+                                              and p32.IsActive = 1
+                                              and p32.Parlevel2_Id = @ParLevel2_Id";
+
+                        List<ResultadoUmaColuna> listPai;
+
+                        using (Factory factory = new Factory("DefaultConnection"))
+                        {
+                            using (SqlCommand cmd = new SqlCommand(indicadorPai, factory.connection))
+                            {
+                                cmd.CommandType = CommandType.Text;
+                                cmd.Parameters.Add(new SqlParameter("@ParLevel1Origin_Id", ParLevel1Origin_Id));
+                                cmd.Parameters.Add(new SqlParameter("@ParLevel2_Id", parLevel2_Id));
+
+                                listPai = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                            }
+                        }
+
+
                         //string[][] matrizLevel3 = new string[leveis3.Length][];
 
                         string retorno = "";
 
                         string retornoFilho = "";
+
+                        bool apagarLevel3 = true;
 
                         //tiro todos os level3 que não são do indicador
                         for (int j = 0; j < leveis3.Length; j++) //Percorro cada elemento do array
@@ -410,7 +436,19 @@ namespace SgqSystem.Controllers.Api
                                     retornoFilho += "<level03>";
                                     retornoFilho += leveis3[j];
                                     retornoFilho += "</level03>";
-                                    leveis3[j] = "";
+
+                                    for (var l = 0; l < listPai.Count(); l++)
+                                    {
+                                        if (listPai[l].retorno.ToString() == esteLevel3[0])
+                                        {
+                                            apagarLevel3 = false;
+                                        }
+                                    }
+
+                                    if (apagarLevel3)
+                                        leveis3[j] = "";
+
+                                    apagarLevel3 = true;
                                 }
                             }
                         }
@@ -3948,11 +3986,14 @@ namespace SgqSystem.Controllers.Api
         {
             //var version = "2.0.47";
             string forcaAtualizacao = "";
-            if (!version.Contains("2.0.47"))
+
+            string appVersion = System.Configuration.ConfigurationManager.AppSettings["appVersion"];
+
+            if (!version.Contains(appVersion))
                 forcaAtualizacao = @"<script>
                                     setTimeout(function(){
                                         navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
-                                        cleanArquivos, 
+                                        Reload, 
                                         'Atualização', 
                                         'OK');
                                     },500);
@@ -7413,8 +7454,8 @@ namespace SgqSystem.Controllers.Api
                 string[] deviation = arrayDeviations[i].Split(';');
 
                 string ParCompany_Id = deviation[0];
-                string ParLevel1_Id = deviation[1];
-                string ParLevel2_Id = deviation[2];
+                string ParLevel1_Id = deviation[1].Contains(quebraProcesso) ? deviation[1].Replace(quebraProcesso, "|").Split('|')[1] : deviation[1];
+                string ParLevel2_Id = deviation[2].Contains(quebraProcesso) ? deviation[2].Replace(quebraProcesso, "|").Split('|')[1] : deviation[2];
                 string Evaluation = deviation[3] == "" ? "0" : deviation[3];
 
                 if (Evaluation == "undefined")

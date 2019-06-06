@@ -105,7 +105,9 @@ namespace SgqSystem.Controllers.Api.App
             GlobalConfig.PaginaDoTablet[UnitId].DataInicio = DateTime.Now;
 
             var shifts = this.listaDeShift;
-            shifts.Insert(0, new Shift());
+
+            //Era utilizado para gerar o arquivo de todos os turnos
+            //shifts.Insert(0, new Shift());
 
             using (var service = new SyncServiceApiController())
             {
@@ -170,14 +172,16 @@ namespace SgqSystem.Controllers.Api.App
         /// <returns></returns>
         [HttpGet]
         [Route("GetTela/{UnitId}/{ShiftId?}")]
-        public RetornoParaTablet GetTela(int UnitId, int ShiftId = 0)
+        public RetornoParaTablet GetTela(int UnitId, int ShiftId = 1)
         {
             VerifyIfIsAuthorized();
 
             var retorno = new RetornoParaTablet();
 
             var shifts = db.Shift.ToList();
-            shifts.Insert(0, new Shift());
+
+            //Era utilizado para gerar o arquivo de todos os turnos
+            //shifts.Insert(0, new Shift());
 
             try
             {

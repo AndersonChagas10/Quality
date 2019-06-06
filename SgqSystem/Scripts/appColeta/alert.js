@@ -245,10 +245,10 @@ function setValoresLevel3Alertas(level3) {
             defeitos = parseFloat(level3.attr('value').replace(",", "."));
             
             if(isEUA )
-                defeitosPonderados = (parseFloat(level3.attr('value').replace(",", ".")) * peso) + (punicao  (parseFloat(level3.attr('value').replace(",", ".")) * peso));
+                defeitosPonderados = (parseFloat(level3.attr('value').replace(",", ".")) * peso) + (punicao * (parseFloat(level3.attr('value').replace(",", ".")) * peso));
             else{
-                defeitosPonderados = (parseFloat(level3.attr('value').replace(",", ".")) * peso) + (punicao  (parseFloat(level3.attr('value').replace(",", ".")) * peso));
-                defeitosPonderados = defeitosVar > 0 ? (parseFloat(level3.attr('value').replace(",", ".")) * peso) + (punicao  (parseFloat(level3.attr('value').replace(",", ".")) * peso)) : defeitosPonderados;
+                defeitosPonderados = (parseFloat(level3.attr('value').replace(",", ".")) * peso) + (punicao * (parseFloat(level3.attr('value').replace(",", ".")) * peso));
+                defeitosPonderados = defeitosVar > 0 ? (parseFloat(level3.attr('value').replace(",", ".")) * peso) + (punicao * (parseFloat(level3.attr('value').replace(",", ".")) * peso)) : defeitosPonderados;
             }
             level3ComDefeitos = defeitosPonderados > 0 ? 1 : 0;
             break;
@@ -1395,6 +1395,11 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result) {
 function setGravaAlertaDBLocal(level1, alertaatual, defeitos, mensagem) {
 
     var level1 = $('.level1.selected');
+
+    if(typeof(level1.attr('id')) == 'undefined'){
+        level1 = $(_level1);
+    }
+
     var level2 = $('.level2.selected');
 
     var evaluateCurrent = $('.level3Group[level1id=' + $('.level1.selected').attr('id') + '][level2id=' + $('.level2.selected').attr('id') + '] .evaluateCurrent').text();
