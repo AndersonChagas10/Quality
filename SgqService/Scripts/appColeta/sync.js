@@ -310,7 +310,7 @@ function send(autoSend, callbackPCC1B, sendImediato) {
         , async: true //blocks window close
         , headers: token()
         , success: function (data, status) {
-            if (data != null && data.d == "error") {
+            if (data != null && data == "error") {
                 //createLog(XMLHttpRequest.responseText);
                 mensagemSyncHide();
                 if (!autoSend)
@@ -390,7 +390,7 @@ function consolidation() {
         , async: false //blocks window close
         , headers: token()
         , success: function (data, status) {
-            if (data != null && data.d == "error") {
+            if (data != null && data == "error") {
                 //createLog("Consolidation Error:" + XMLHttpRequest.responseText);
                 mensagemSyncHide();
                 openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
@@ -457,14 +457,14 @@ function recivingData() {
                     openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
                 }
                 , success: function (data, status) {
-                    if (data != null && data.d == "error") {
+                    if (data != null && data == "error") {
                         //createLog("Reciecing Error");
                         mensagemSyncHide();
                         openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));
                     }
                     else {
                         //("Success Recieving");
-                        var collections = $(data.d);
+                        var collections = $(data);
                         $('.ResultsConsolidation').empty();
                         appendDevice(collections, $('.ResultsConsolidation'));
 
@@ -530,12 +530,12 @@ function recivingDataByLevel1(ParLevel1) {
                 //createLog("Reciecing By Level1 Error");
             }
             , success: function (data, status) {
-                if (data != null && data.d == "error") {
+                if (data != null && data == "error") {
                     //createLog("Reciecing By Level1 Error");
                 }
                 else {
                     //createLog("Success By Level1 Recieving");
-                    var collections = $(data.d);
+                    var collections = $(data);
 
 
                     $('.ResultsConsolidation .Resultlevel2[level1id=' + ParLevel1.attr('id') + ']').remove();
