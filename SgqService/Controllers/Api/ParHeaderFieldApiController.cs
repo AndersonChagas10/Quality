@@ -8,13 +8,13 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
-//using System.Web.Http.Cors;
+using System.Web.Http.Cors;
 
 namespace SgqService.Controllers.Api
 {
     [HandleApi()]
     [RoutePrefix("api/ParHeader")]
-    //[EnableCors(origins: "*", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ParHeaderFieldApiController : BaseApiController
     {
 

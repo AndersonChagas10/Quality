@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace SgqService.Controllers.Api.App
 {
@@ -30,6 +31,7 @@ namespace SgqService.Controllers.Api.App
     /// 
     /// </summary>
     [RoutePrefix("api/AppParams")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AppParamsApiController : BaseApiController, IDisposable
     {
         SgqDbDevEntities db;

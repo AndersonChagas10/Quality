@@ -2488,9 +2488,10 @@ namespace SgqService.Controllers.Api
                             command.Parameters.Add(new SqlParameter("@Evaluation", Evaluation));
                             command.Parameters.Add(new SqlParameter("@Sample", Sample));
                             command.Parameters.Add(new SqlParameter("@ConsecuticeFalireIs", ConsecuticeFalireIs));
+                            command.Parameters.Add(new SqlParameter("@ConsecutiveFailureTotal", ConsecutiveFailureTotal));
                             command.Parameters.Add(new SqlParameter("@NotEvaluateIs", NotEvaluateIs));
                             command.Parameters.Add(new SqlParameter("@Duplicated", Duplicated));
-                            command.Parameters.Add(new SqlParameter("@HaveReaudit", haveReaudit));
+                            command.Parameters.Add(new SqlParameter("@HaveReaudi", haveReaudit));
                             command.Parameters.Add(new SqlParameter("@ReauditLevel", reauditLevel));
                             command.Parameters.Add(new SqlParameter("@HaveCorrectiveAction", haveCorrectiveAction));
                             command.Parameters.Add(new SqlParameter("@HavePhase", HavePhase));
@@ -2713,21 +2714,19 @@ namespace SgqService.Controllers.Api
                                ,@Sample
                                ,@Value)";
 
-                    using (SqlConnection connection = new SqlConnection(conexao))
+                    using (SqlCommand cmd = new SqlCommand(query))
                     {
-                        using (SqlCommand cmd = new SqlCommand(query, connection))
-                        {
 
-                            cmd.CommandType = CommandType.Text;
-                            cmd.Parameters.Add(new SqlParameter("@CollectionLevel2Id", CollectionLevel2Id));
-                            cmd.Parameters.Add(new SqlParameter("@ParHeaderField_Id", ParHeaderField_Id));
-                            cmd.Parameters.Add(new SqlParameter("@ParFieldType_Id", ParFieldType_Id));
-                            cmd.Parameters.Add(new SqlParameter("@Evaluation", Evaluation));
-                            cmd.Parameters.Add(new SqlParameter("@Sample", Sample));
-                            cmd.Parameters.Add(new SqlParameter("@Value", Value));
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.Add(new SqlParameter("@CollectionLevel2Id", CollectionLevel2Id));
+                        cmd.Parameters.Add(new SqlParameter("@ParHeaderField_Id", ParHeaderField_Id));
+                        cmd.Parameters.Add(new SqlParameter("@ParFieldType_Id", ParFieldType_Id));
+                        cmd.Parameters.Add(new SqlParameter("@Evaluation", Evaluation));
+                        cmd.Parameters.Add(new SqlParameter("@Sample", Sample));
+                        cmd.Parameters.Add(new SqlParameter("@Value", Value));
 
-                            sql.Add(cmd);
-                        }
+                        sql.Add(cmd);
+
                     }
                 }
 
@@ -2741,21 +2740,26 @@ namespace SgqService.Controllers.Api
                 try
                 {
 
-                    foreach (var command in sql)
+                    using (SqlConnection connection = new SqlConnection(conexao))
                     {
-                        //connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteNonQuery());
-                        //Se o script for executado corretamente retorna o Id
-                        if (i > 0)
-                        {
-                            return i;
-                        }
-                        else
-                        {
-                            //Se o script não for executado corretamente, retorna zero
-                            return 0;
-                        }
+                        connection.Open();
 
+                        foreach (var command in sql)
+                        {
+                            command.Connection = connection;
+                            //connection.Open();
+                            var i = Convert.ToInt32(command.ExecuteNonQuery());
+                            //Se o script for executado corretamente retorna o Id
+                            if (i > 0)
+                            {
+                                return i;
+                            }
+                            else
+                            {
+                                //Se o script não for executado corretamente, retorna zero
+                                return 0;
+                            }
+                        }
                     }
 
                 }

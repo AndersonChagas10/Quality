@@ -7,11 +7,11 @@ using SgqService.Security;
 using SgqService.ViewModels;
 using System.Collections.Generic;
 using System.Web.Http;
-//using System.Web.Http.Cors;
+using System.Web.Http.Cors;
 
 namespace SgqService.Controllers.Api
 {
-    //[EnableCors(origins: "*", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/User")]
     public class UserController : BaseApiController
     {
