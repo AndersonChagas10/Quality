@@ -7962,8 +7962,12 @@ namespace SgqService.Controllers.Api
 
         [HttpPost]
         [Route("getResultEvaluationDefects")]
-        public string getResultEvaluationDefects(int parCompany_Id, string date, int parLevel1_Id)
+        public string getResultEvaluationDefects(GetResultEvaluationDefects getResultEvaluationDefects)
         {
+            int parCompany_Id = getResultEvaluationDefects.parCompany_Id;
+            string date = getResultEvaluationDefects.date;
+            int parLevel1_Id = getResultEvaluationDefects.parLevel1_Id;
+
             VerifyIfIsAuthorized();
 
             var ResultPhaseDB = new SGQDBContext.ResultEvaluationDefects(db);

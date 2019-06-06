@@ -139,6 +139,17 @@
     <Compile Include="Controllers\Api\GetPhaseLevel2Controller.cs" />
     <Compile Include="Controllers\Api\GetVTVerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\GetApp2Controller.cs" />
+    <Compile Include="Controllers\Api\InsertCorrectiveActionController.cs" />
+    <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
+    <Compile Include="Controllers\Api\GetCompanyController.cs" />
+    <Compile Include="Controllers\Api\GetResourceController.cs" />
+    <Compile Include="Controllers\Api\RetornaQueryRotinaController.cs" />
+    <Compile Include="Controllers\Api\ReciveDataByLevel1Controller.cs" />
+    <Compile Include="Controllers\Api\UserCompanyUpdateController.cs" />
+    <Compile Include="Controllers\Api\InsertDeviationController.cs" />
+    <Compile Include="Controllers\Api\GetLastSampleByCollectionLevel2Controller.cs" />
+    <Compile Include="Controllers\Api\GetResultEvaluationDefectsController.cs" />
+    <Compile Include="Controllers\Api\SendEmailAlertaController.cs" />
     <Compile Include="Controllers\Api\ParReasonController.cs" />
     <Compile Include="Controllers\Api\ReciveDataController.cs" />
     <Compile Include="Controllers\Api\UserSGQByIdController.cs" />
