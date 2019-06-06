@@ -611,8 +611,9 @@
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = (o.IntervalMin == null || o.IntervalMin == "") ? "@Resources.Resource.acceptable_value_less_than " + o.IntervalMax :
                             ((o.IntervalMax == null || o.IntervalMax == "") ? "@Resources.Resource.acceptable_value_equal_or_greater_than " + o.IntervalMin :
-                            (o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax))
-                        //o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
+                                (o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax))
+
+    //o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
                         o["IntervalMin"] = o.IntervalMin == null ? "" : o.IntervalMin;
                         o["IntervalMinCalculado"] = o.IntervalMinCalculado == null ? "" : o.IntervalMinCalculado;
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
@@ -785,7 +786,7 @@
     }
 
     function parIntervalosTypeCreate() {
-
+        debugger
         if($('#selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#selectTipoInput :selected').val()  == eTipoDado_IntervaloMinutos)
             return;
 
@@ -795,7 +796,7 @@
 
         if ($("#parLevel3Value_IntervalMin").val() == "" && !$("#parLevel3Value_IntervalMax").val() == "") {
             var options = "<option value='0'>" +
-                Resources('acceptable_value_equal_or_greater_than')
+                Resources('acceptable_value_less_than')
                 + " "
                 + $("#parLevel3Value_IntervalMax").val() + " " + value +
             "</option>";
@@ -847,7 +848,7 @@
     }
 
     function parIntervalosTypeCreateEdit() {
-        
+        debugger
         if($('#crudNxNEdit #selectTipoInput :selected').val() == eTipoDado_EscalaLikert || $('#crudNxNEdit #selectTipoInput :selected').val()==eTipoDado_IntervaloMinutos)
             return;
 
