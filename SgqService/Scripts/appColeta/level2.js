@@ -447,9 +447,10 @@ function saveLevel02(Level01Id, Level02Id, unidadeId, date, dateTime, auditorId,
     sequencial = sequencial != null ? sequencial : 0
     banda = banda != null ? banda : 0
 
-    if ($('.totalnc:visible').parent().parent().parent().length == 0) {
-        reaudit = true;
-    }
+    //Comentado pois esta dando problema no BR, validar USA posteriormente
+    // if ($('.totalnc:visible').parent().parent().parent().length == 0) {
+    //     reaudit = true;
+    // }
 
 
     return "<div class='level02Result' level01Id='" + Level01Id + "' level02Id='" + Level02Id + "' unidadeId='" + unidadeId + "' date='" + date + "' dateTime='" + dateTime + "' auditorId='" + auditorId
