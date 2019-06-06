@@ -241,7 +241,7 @@ namespace SgqService.Controllers.Api
         {
             VerifyIfIsAuthorized();
 
-            string ObjResultJSon = insertJsonClass.ObjResultJSon.Replace("NaN","0");
+            string ObjResultJSon = insertJsonClass.ObjResultJSon.Replace("NaN", "0");
             string deviceId = insertJsonClass.deviceId;
             string deviceMac = insertJsonClass.deviceMac;
             bool autoSend = insertJsonClass.autoSend;
@@ -1120,7 +1120,7 @@ namespace SgqService.Controllers.Api
 
                         if (device == "web")
                         {
-                            
+
                         }
                         else if (id > 0)
                         {
@@ -5893,8 +5893,8 @@ namespace SgqService.Controllers.Api
 
             #region BotoesDeBusca
             var rotinasIntegracaoXLevel1 = dbEf.ParLevel1XRotinaIntegracao
-                .Where(x => x.ParLevel1_Id == ParLevel1_Id 
-                && x.IsActive 
+                .Where(x => x.ParLevel1_Id == ParLevel1_Id
+                && x.IsActive
                 && x.ParLevelDefinition_Id == parLevelDefinition_Id)
                 .Select(x => x.RotinaIntegracao_Id);
             var rotinasIntegracao = dbEf.RotinaIntegracao.Where(x => rotinasIntegracaoXLevel1.Contains(x.Id) && x.IsActive).ToList();
@@ -6211,7 +6211,7 @@ namespace SgqService.Controllers.Api
                                         );
 
                 var painelLevel3HeaderListHtml = new StringBuilder(GetHeaderHtml(
-                   ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id), ParFieldTypeDB, html, ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id, ParLevelHeaderDB, ParCompany_Id,2));
+                   ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id), ParFieldTypeDB, html, ParLevel1.ParLevel1_Id, ParLevel2.ParLevel2_id, ParLevelHeaderDB, ParCompany_Id, 2));
 
                 var painelLevel3HeaderListHtml2 = "";
                 painelLevel3HeaderListHtml2 += html.div(
@@ -7955,8 +7955,12 @@ namespace SgqService.Controllers.Api
 
         [HttpPost]
         [Route("getResultEvaluationDefects")]
-        public string getResultEvaluationDefects(int parCompany_Id, string date, int parLevel1_Id)
+        public string getResultEvaluationDefects(GetResultEvaluationDefects getResultEvaluationDefects)
         {
+            int parCompany_Id = getResultEvaluationDefects.parCompany_Id;
+            string date = getResultEvaluationDefects.date;
+            int parLevel1_Id = getResultEvaluationDefects.parLevel1_Id;
+
             VerifyIfIsAuthorized();
 
             var ResultPhaseDB = new SGQDBContext.ResultEvaluationDefects(db);

@@ -8,25 +8,21 @@ using ServiceModel;
 namespace AppServie.Tests.Controllers
 {
     [TestClass]
-    public class InsertJsonControllerTest
+    public class GetLastSampleByCollectionLevel2ControllerTest
     {
         [TestMethod]
-        public void InsertJsonTest()
+        public void GetLastSampleByCollectionLevel2Test()
         {
             SyncServiceApiController insertJsonController = new SyncServiceApiController();
             insertJsonController.token = Config.TOKEN;
 
-            InsertJsonClass insertJson = new InsertJsonClass
+            GetLastSampleByCollectionLevel2Class obj = new GetLastSampleByCollectionLevel2Class
             {
-                ObjResultJSon = "",
-                autoSend = false,
-                deviceId = "1",
-                deviceMac = "1"
             };
 
-            var x = insertJsonController.InsertJson(insertJson);
+            var x = insertJsonController.GetLastSampleByCollectionLevel2(obj);
 
-            Assert.IsTrue(x.Result == null);
+            Assert.IsTrue(x.Result == 0);
         }
     }
 }

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetResultEvaluationDefects.cs" />
     <Compile Include="CollectionHeaderField.cs" />
     <Compile Include="ParMultipleValuesXParCompany.cs" />
     <Compile Include="Produto.cs" />
