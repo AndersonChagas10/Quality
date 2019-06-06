@@ -436,8 +436,8 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                 totalAvaliacoes += (resultadoLevel3[1] > 0 ? resultadoLevel3[1] : 0);
                 totalAvaliacoesL2 += (resultadoLevel3[1] > 0 ? resultadoLevel3[1] : 0);
 
-                totalDefeitos += (resultadoLevel3[2] > 0 ? resultadoLevel3[2] : 0);
-                totalDefeitosL2 += (resultadoLevel3[2] > 0 ? resultadoLevel3[2] : 0);
+                totalDefeitos += (resultadoLevel3[3] > 0 ? (resultadoLevel3[2] > 0 ? resultadoLevel3[2] : 0) : 0);
+                totalDefeitosL2 += (resultadoLevel3[3] > 0 ? (resultadoLevel3[2] > 0 ? resultadoLevel3[2] : 0) : 0);
                 level3.attr('defects', (resultadoLevel3[2] > 0 ? resultadoLevel3[2] : 0));
                 level3.attr('weidefects', (resultadoLevel3[3] > 0 ? resultadoLevel3[3] : 0));
                 totalDefeitosPonderados += (resultadoLevel3[3] > 0 ? resultadoLevel3[3] : 0);
