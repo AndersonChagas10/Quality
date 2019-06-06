@@ -200,6 +200,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                    ,CASE WHEN TB1.IntervalMax > 9999999 THEN 0 ELSE TB1.IntervalMax END AS LSE
                    ,CASE WHEN TB1.IntervalMin < -9999999 THEN 0 ELSE TB1.IntervalMin END AS LIE
                    ,isnull(@LSC,0) AS LSC
+                INTO #CEP
                 FROM (SELECT
                 		ROW_NUMBER() OVER (ORDER BY CONVERT(DATE, CL.CollectionDate) ASC) AS Row#
                 	   ,CL.CollectionDate DATA
@@ -243,7 +244,36 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 	AND ISNUMERIC(REPLACE(R3.Value, ',', '.')) = 1
                 -- group by CL.CollectionDate                                                                                                   
                 ) TB2
-                	ON TB1.Row# = (TB2.Row#)";
+                	ON TB1.Row# = (TB2.Row#)
+
+                DECLARE @DESVIO DECIMAL(30,10)
+				DECLARE @CP DECIMAL(30,10)
+				DECLARE @CPK DECIMAL(30,10) 
+				DECLARE @CPKS DECIMAL(30,10) --SUPERIOR
+				DECLARE @CPKI DECIMAL(30,10) --INFERIOR
+
+				SELECT @DESVIO = SQRT((SUM((VALOR - @MEDIA) * (VALOR - @MEDIA)))/( COUNT(1) - 1)) FROM #CEP
+
+				SELECT TOP 1 @CP = (LSE - LIE)/(6*@DESVIO), @CPKS = (LSE-pbar)/(3*@DESVIO), @CPKI = (pbar-LIE)/(3*@DESVIO) FROM #CEP ORDER BY DATA DESC
+
+				SET @CPK = CASE WHEN @CPKI < @CPKS THEN @CPKI ELSE @CPKS END
+
+				ALTER TABLE #CEP
+				ADD DESVIO_PADRAO DECIMAL(30,10)
+
+				ALTER TABLE #CEP
+				ADD CP DECIMAL(30,10)
+
+				ALTER TABLE #CEP
+				ADD CPK DECIMAL(30,10)
+
+				UPDATE #CEP SET DESVIO_PADRAO = @DESVIO, CP = @CP, CPK = @CPK
+
+				SELECT * FROM #CEP
+
+				DROP TABLE #CEP
+
+                ";
 
 
             }
@@ -409,6 +439,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var media = new List<decimal>();
             var lci = new List<decimal>();
             var lcs = new List<decimal>();
+            var cp = new List<decimal>();
+            var cpk = new List<decimal>();
 
             foreach (var cep in _ceps)
             {
@@ -425,6 +457,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 //nivel3Max1.Add(cep);
                 //nivel3Min1.Add(cep);
                 media.Add(cep.pbar);
+                if (cep.cp != null)
+                    cp.Add(cep.cp.Value) ;
+                if (cep.cpk != null)
+                    cpk.Add(cep.cpk.Value);
 
             }
 
@@ -456,6 +492,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             _mockcartasCep.nivel3Max = nivel3Max1;
             _mockcartasCep.nivel3Min = nivel3Min1;
             _mockcartasCep.amostras = null;
+            if ( cp.Count > 0)
+                _mockcartasCep.cp = cp[0];
+            if (cpk.Count > 0)
+                _mockcartasCep.cpk = cpk[0];
 
             //var query = "Select";
 
@@ -485,6 +525,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         public List<decimal> nivel2Min;
         public List<decimal> nivel3Max;
         public List<decimal> nivel3Min;
+        public decimal cp;
+        public decimal cpk;
     }
 
     public class Cep
@@ -496,6 +538,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         public decimal LIE { get; set; }
         public decimal VALOR { get; set; }
         public DateTime Data { get; set; }
+        public decimal? cp { get; set; }
+        public decimal? cpk { get; set; }
     }
 
 
