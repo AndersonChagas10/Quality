@@ -1359,7 +1359,7 @@ namespace SgqService.Controllers.Api
                     else if (CollectionLevel2Id > 0 && !string.IsNullOrEmpty(c.Level03ResultJSon))
                     {
 
-                        int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated, filho);
+                        InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated, filho);
 
                         int IsBEA = 0;
 
@@ -2906,7 +2906,7 @@ namespace SgqService.Controllers.Api
         /// <param name="auditorId">Id do Auditor</param>
         /// <param name="duplicated">Duplicado</param>
         /// <returns></returns>
-        protected int InsertCollectionLevel3(string CollectionLevel02Id, int level02, string level03Results, int auditorId, string duplicated, bool filho)
+        protected void InsertCollectionLevel3(string CollectionLevel02Id, int level02, string level03Results, int auditorId, string duplicated, bool filho)
         {
             ///coloquei uma @ para replace, mas podemos utilizar o padrão de ; ou <> desde que todos os campos venha do script com escape()
             //string obj, string collectionDate, string level01id, string unit, string period, string shift, string device, string version
@@ -3083,8 +3083,6 @@ namespace SgqService.Controllers.Api
 
                 if (id == "0")
                 {
-                    var parLevel3_Name = parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)) != null ?
-                        parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") : "";
 
                     //sql = "INSERT INTO Result_Level3 ([CollectionLevel2_Id]," +
                     //    "[ParLevel3_Id]," +
@@ -3136,7 +3134,7 @@ namespace SgqService.Controllers.Api
                          [WeiDefects]) 
                            VALUES 
                            (@CollectionLevel02Id,
-                           @Level03Id
+                           @Level03Id,
                            @ParLevel3_Name,
                            @Weight,
                            @IntervalMin,
@@ -3153,26 +3151,6 @@ namespace SgqService.Controllers.Api
 
                            SELECT @@IDENTITY AS 'Identity'";
 
-                    using (SqlCommand cmd = new SqlCommand(query))
-                    {
-                        cmd.CommandType = CommandType.Text;
-                        cmd.Parameters.Add(new SqlParameter("@CollectionLevel02Id", CollectionLevel02Id));
-                        cmd.Parameters.Add(new SqlParameter("@Level03Id", Level03Id));
-                        cmd.Parameters.Add(new SqlParameter("@ParLevel3_Name", parLevel3_Name));
-                        cmd.Parameters.Add(new SqlParameter("@Weight", weight));
-                        cmd.Parameters.Add(new SqlParameter("@IntervalMin", intervalMin));
-                        cmd.Parameters.Add(new SqlParameter("@IntervalMax", intervalMax));
-                        cmd.Parameters.Add(new SqlParameter("@Value", value));
-                        cmd.Parameters.Add(new SqlParameter("@ValueText", valueText));
-                        cmd.Parameters.Add(new SqlParameter("@Conform", conform));
-                        cmd.Parameters.Add(new SqlParameter("@IsnotEvaluate", isnotEvaluate));
-                        cmd.Parameters.Add(new SqlParameter("@PunishimentValue", punishimentValue));
-                        cmd.Parameters.Add(new SqlParameter("@Defects", defects));
-                        cmd.Parameters.Add(new SqlParameter("@Evaluation", evaluation));
-                        cmd.Parameters.Add(new SqlParameter("@_WeiEvaluation", _WeiEvaluation));
-                        cmd.Parameters.Add(new SqlParameter("@WeiDefects", WeiDefects));
-                    }
-
                 }
                 else
                 {
@@ -3187,58 +3165,83 @@ namespace SgqService.Controllers.Api
                             ValueText=@ValueText
                             WHERE Id=@Id
                             SELECT @Id AS 'Identity'";
-
-
-                    using (SqlCommand cmd = new SqlCommand(query))
-                    {
-                        cmd.CommandType = CommandType.Text;
-                        cmd.Parameters.Add(new SqlParameter("@Conform", conform));
-                        cmd.Parameters.Add(new SqlParameter("@IsnotEvaluate", isnotEvaluate));
-                        cmd.Parameters.Add(new SqlParameter("@Value", value));
-                        cmd.Parameters.Add(new SqlParameter("@Weight", weight));
-                        cmd.Parameters.Add(new SqlParameter("@Defects", defects));
-                        cmd.Parameters.Add(new SqlParameter("@_WeiEvaluation", _WeiEvaluation));
-                        cmd.Parameters.Add(new SqlParameter("@WeiDefects", WeiDefects));
-                        cmd.Parameters.Add(new SqlParameter("@ValueText", valueText));
-                        cmd.Parameters.Add(new SqlParameter("@Id", id));
-                    }
                 }
-            }
 
-            string conexao = this.conexao;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
+
+                string conexao = this.conexao;
+
+                try
                 {
-                    using (SqlCommand command = new SqlCommand(sql.ToString(), connection))
+                    using (SqlConnection connection = new SqlConnection(conexao))
                     {
-
-                        connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteScalar());
-                        //Se o script foi executado, retorna o Id
-                        if (i > 0)
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
                         {
-                            return i;
-                        }
-                        else
-                        {
-                            //Caso ocorra algum erro, retorna zero
-                            return 0;
-                        }
 
-                    }
+                            if (id == "0")
+                            {
+                                var parLevel3_Name = parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)) != null ?
+                                    parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") : "";
+
+                                cmd.CommandType = CommandType.Text;
+                                cmd.Parameters.Add(new SqlParameter("@CollectionLevel02Id", CollectionLevel02Id));
+                                cmd.Parameters.Add(new SqlParameter("@Level03Id", Level03Id));
+                                cmd.Parameters.Add(new SqlParameter("@ParLevel3_Name", parLevel3_Name));
+                                cmd.Parameters.Add(new SqlParameter("@Weight", weight));
+                                cmd.Parameters.Add(new SqlParameter("@IntervalMin", intervalMin));
+                                cmd.Parameters.Add(new SqlParameter("@IntervalMax", intervalMax));
+                                cmd.Parameters.Add(new SqlParameter("@Value", value));
+                                cmd.Parameters.Add(new SqlParameter("@ValueText", valueText));
+                                cmd.Parameters.Add(new SqlParameter("@Conform", conform));
+                                cmd.Parameters.Add(new SqlParameter("@IsnotEvaluate", isnotEvaluate));
+                                cmd.Parameters.Add(new SqlParameter("@PunishimentValue", punishimentValue));
+                                cmd.Parameters.Add(new SqlParameter("@Defects", defects));
+                                cmd.Parameters.Add(new SqlParameter("@Evaluation", evaluation));
+                                cmd.Parameters.Add(new SqlParameter("@_WeiEvaluation", _WeiEvaluation));
+                                cmd.Parameters.Add(new SqlParameter("@WeiDefects", WeiDefects));
+
+                            }
+                            else
+                            {
+
+                                cmd.CommandType = CommandType.Text;
+                                cmd.Parameters.Add(new SqlParameter("@Conform", conform));
+                                cmd.Parameters.Add(new SqlParameter("@IsnotEvaluate", isnotEvaluate));
+                                cmd.Parameters.Add(new SqlParameter("@Value", value));
+                                cmd.Parameters.Add(new SqlParameter("@Weight", weight));
+                                cmd.Parameters.Add(new SqlParameter("@Defects", defects));
+                                cmd.Parameters.Add(new SqlParameter("@_WeiEvaluation", _WeiEvaluation));
+                                cmd.Parameters.Add(new SqlParameter("@WeiDefects", WeiDefects));
+                                cmd.Parameters.Add(new SqlParameter("@ValueText", valueText));
+                                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                            }
+
+                            connection.Open();
+
+                            cmd.ExecuteScalar();
+
+                            //Se o script foi executado, retorna o Id
+                            //if (salvo > 0)
+                            //{
+                            //    //return salvo;
+                            //}
+                            //else
+                            //{
+                            //    //Caso ocorra algum erro, retorna zero
+                            //    //return 0;
+                            //}
+                        }
+                    }                    
                 }
-            }
-            //Caso ocorra Exception, insere no banco e retorna zero
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql.ToString(), ex.Message, "N/A", "N/A", "InsertCollectionLevel03");
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql.ToString(), ex.Message, "N/A", "N/A", "InsertCollectionLevel03");
-                return 0;
+                //Caso ocorra Exception, insere no banco e retorna zero
+                catch (SqlException ex)
+                {
+                    int insertLog = insertLogJson(sql.ToString(), ex.Message, "N/A", "N/A", "InsertCollectionLevel03");
+                }
+                catch (Exception ex)
+                {
+                    int insertLog = insertLogJson(sql.ToString(), ex.Message, "N/A", "N/A", "InsertCollectionLevel03");
+                }
+
             }
 
         }

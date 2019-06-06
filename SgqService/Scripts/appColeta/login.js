@@ -127,7 +127,7 @@ function getCompanyUsers(ParCompany_Id) {
 
             $('Users').empty();
 
-            var users = $(data).text();
+            var users = data;//$(data).text();
             appendDevice(users, $('.Users'));
 
             wMessage($('#btnLoginOnline'), getResource('verifying_keys'));
