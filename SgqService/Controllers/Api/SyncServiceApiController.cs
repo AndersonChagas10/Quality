@@ -220,6 +220,13 @@ namespace SgqService.Controllers.Api
         #endregion
 
         #region Json
+        public class InsertJsonClass
+        {
+            public string ObjResultJSon { get; set; }
+            public string deviceId { get; set; }
+            public string deviceMac { get; set; }
+            public bool autoSend { get; set; }
+        }
         /// <summary>
         /// Método Para Inserir Resultado da Coleta
         /// </summary>
@@ -352,7 +359,7 @@ namespace SgqService.Controllers.Api
                         //                      "\n  and p32.IsActive = 1" +
                         //                      "\n  and p32.Parlevel2_Id = " + parLevel2_Id;
 
-                        string indicadorPai = $@"SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
+                        string indicadorFilho_ = $@"SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
                                               inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)
                                               on p321.ParLevel1_Id = p1.id 
                                               inner join ParLevel3Level2 p32  WITH (NOLOCK)
@@ -369,7 +376,7 @@ namespace SgqService.Controllers.Api
 
                         using (Factory factory = new Factory("DefaultConnection"))
                         {
-                            using (SqlCommand cmd = new SqlCommand(indicadorPai, factory.connection))
+                            using (SqlCommand cmd = new SqlCommand(indicadorFilho_, factory.connection))
                             {
                                 cmd.CommandType = CommandType.Text;
                                 cmd.Parameters.Add(new SqlParameter("@ParLevel1Origin_Id", ParLevel1Origin_Id));
@@ -382,11 +389,39 @@ namespace SgqService.Controllers.Api
                         string level3split = result[22].Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", ""); //tiro as tags de <level3></level3>, deixando o simbolo @ para separar os elementos.
                         string[] leveis3 = level3split.Split('@'); //faço um array contendo cada elemento level3 vindo do sistema
 
+                        string indicadorPai = @"SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
+                                              inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)
+                                              on p321.ParLevel1_Id = p1.id 
+                                              inner join ParLevel3Level2 p32  WITH (NOLOCK)
+                                              on p32.id = p321.ParLevel3Level2_Id 
+                                              WHERE p1.id = @ParLevel1Origin_Id
+                                              and p1.isActive = 1 
+                                              and p321.Active = 1 
+                                              and p32.IsActive = 1
+                                              and p32.Parlevel2_Id = @ParLevel2_Id";
+
+                        List<ResultadoUmaColuna> listPai;
+
+                        using (Factory factory = new Factory("DefaultConnection"))
+                        {
+                            using (SqlCommand cmd = new SqlCommand(indicadorPai, factory.connection))
+                            {
+                                cmd.CommandType = CommandType.Text;
+                                cmd.Parameters.Add(new SqlParameter("@ParLevel1Origin_Id", ParLevel1Origin_Id));
+                                cmd.Parameters.Add(new SqlParameter("@ParLevel2_Id", parLevel2_Id));
+
+                                listPai = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                            }
+                        }
+
+
                         //string[][] matrizLevel3 = new string[leveis3.Length][];
 
                         string retorno = "";
 
                         string retornoFilho = "";
+
+                        bool apagarLevel3 = true;
 
                         //tiro todos os level3 que não são do indicador
                         for (int j = 0; j < leveis3.Length; j++) //Percorro cada elemento do array
@@ -400,7 +435,19 @@ namespace SgqService.Controllers.Api
                                     retornoFilho += "<level03>";
                                     retornoFilho += leveis3[j];
                                     retornoFilho += "</level03>";
-                                    leveis3[j] = "";
+
+                                    for (var l = 0; l < listPai.Count(); l++)
+                                    {
+                                        if (listPai[l].retorno.ToString() == esteLevel3[0])
+                                        {
+                                            apagarLevel3 = false;
+                                        }
+                                    }
+
+                                    if (apagarLevel3)
+                                        leveis3[j] = "";
+
+                                    apagarLevel3 = true;
                                 }
                             }
                         }
@@ -2714,19 +2761,21 @@ namespace SgqService.Controllers.Api
                                ,@Sample
                                ,@Value)";
 
-                    using (SqlCommand cmd = new SqlCommand(query))
+                    using (SqlConnection connection = new SqlConnection(conexao))
                     {
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
 
-                        cmd.CommandType = CommandType.Text;
-                        cmd.Parameters.Add(new SqlParameter("@CollectionLevel2Id", CollectionLevel2Id));
-                        cmd.Parameters.Add(new SqlParameter("@ParHeaderField_Id", ParHeaderField_Id));
-                        cmd.Parameters.Add(new SqlParameter("@ParFieldType_Id", ParFieldType_Id));
-                        cmd.Parameters.Add(new SqlParameter("@Evaluation", Evaluation));
-                        cmd.Parameters.Add(new SqlParameter("@Sample", Sample));
-                        cmd.Parameters.Add(new SqlParameter("@Value", Value));
+                            cmd.CommandType = CommandType.Text;
+                            cmd.Parameters.Add(new SqlParameter("@CollectionLevel2Id", CollectionLevel2Id));
+                            cmd.Parameters.Add(new SqlParameter("@ParHeaderField_Id", ParHeaderField_Id));
+                            cmd.Parameters.Add(new SqlParameter("@ParFieldType_Id", ParFieldType_Id));
+                            cmd.Parameters.Add(new SqlParameter("@Evaluation", Evaluation));
+                            cmd.Parameters.Add(new SqlParameter("@Sample", Sample));
+                            cmd.Parameters.Add(new SqlParameter("@Value", Value));
 
-                        sql.Add(cmd);
-
+                            sql.Add(cmd);
+                        }
                     }
                 }
 
@@ -3134,7 +3183,7 @@ namespace SgqService.Controllers.Api
                          [WeiDefects]) 
                            VALUES 
                            (@CollectionLevel02Id,
-                           @Level03Id,
+                           @Level03Id
                            @ParLevel3_Name,
                            @Weight,
                            @IntervalMin,
@@ -3230,7 +3279,7 @@ namespace SgqService.Controllers.Api
                             //    //return 0;
                             //}
                         }
-                    }                    
+                    }
                 }
                 //Caso ocorra Exception, insere no banco e retorna zero
                 catch (SqlException ex)
@@ -3945,11 +3994,14 @@ namespace SgqService.Controllers.Api
         {
             //var version = "2.0.47";
             string forcaAtualizacao = "";
-            if (!version.Contains("2.0.47"))
+
+            string appVersion = System.Configuration.ConfigurationManager.AppSettings["appVersion"];
+
+            if (!version.Contains(appVersion))
                 forcaAtualizacao = @"<script>
                                     setTimeout(function(){
                                         navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
-                                        cleanArquivos, 
+                                        Reload, 
                                         'Atualização', 
                                         'OK');
                                     },500);
@@ -4065,6 +4117,14 @@ namespace SgqService.Controllers.Api
             return APPMain + supports;// + resource;
         }
 
+        public class GetAPPLevelsVolumeClass
+        {
+            public int UserSgq_Id { get; set; }
+            public int ParCompany_Id { get; set; }
+            public DateTime Date { get; set; }
+            public string Level1ListId { get; set; }
+            public int Shift_Id { get; set; }
+        }
 
         [HttpPost]
         [Route("getAPPLevelsVolume")]
@@ -7367,6 +7427,11 @@ namespace SgqService.Controllers.Api
 
         #endregion
 
+        public class InsertDeviationClass
+        {
+            public string Deviations { get; set; }
+        }
+
         [HttpPost]
         [Route("insertDeviation")]
         public string insertDeviation([FromBody] InsertDeviationClass insertDeviationClass)
@@ -7713,6 +7778,31 @@ namespace SgqService.Controllers.Api
             }
         }
 
+        public class InsertCorrectiveActionClass
+        {
+            public string CollectionLevel2_Id { get; set; }
+            public string ParLevel1_Id { get; set; }
+            public string ParLevel2_Id { get; set; }
+            public string Shift { get; set; }
+            public string Period { get; set; }
+            public string ParCompany_Id { get; set; }
+            public string EvaluationNumber { get; set; }
+            public string ParFrequency_Id { get; set; }
+            public string data { get; set; }
+            public string AuditorId { get; set; }
+            public string SlaughterId { get; set; }
+            public string TechinicalId { get; set; }
+            public string DateTimeSlaughter { get; set; }
+            public string DateTimeTechinical { get; set; }
+            public string DateCorrectiveAction { get; set; }
+            public string AuditStartTime { get; set; }
+            public string DescriptionFailure { get; set; }
+            public string ImmediateCorrectiveAction { get; set; }
+            public string ProductDisposition { get; set; }
+            public string PreventativeMeasure { get; set; }
+            public string reauditnumber { get; set; }
+        }
+
         [HttpPost]
         [Route("InsertCorrectiveAction")]
         public string InsertCorrectiveAction([FromBody] InsertCorrectiveActionClass insertCorrectiveActionClass)
@@ -7962,12 +8052,8 @@ namespace SgqService.Controllers.Api
 
         [HttpPost]
         [Route("getResultEvaluationDefects")]
-        public string getResultEvaluationDefects(GetResultEvaluationDefects getResultEvaluationDefects)
+        public string getResultEvaluationDefects(int parCompany_Id, string date, int parLevel1_Id)
         {
-            int parCompany_Id = getResultEvaluationDefects.parCompany_Id;
-            string date = getResultEvaluationDefects.date;
-            int parLevel1_Id = getResultEvaluationDefects.parLevel1_Id;
-
             VerifyIfIsAuthorized();
 
             var ResultPhaseDB = new SGQDBContext.ResultEvaluationDefects(db);
@@ -7992,6 +8078,13 @@ namespace SgqService.Controllers.Api
                     "class=\"EvaluationDefects\"></div>";
             }
             return PhaseResult;
+        }
+
+        public class GetCollectionLevel2KeysClass
+        {
+            public string ParCompany_Id { get; set; }
+            public string date { get; set; }
+            public int ParLevel1_Id { get; set; } = 0;
         }
 
         [HttpPost]
@@ -8526,6 +8619,16 @@ namespace SgqService.Controllers.Api
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsolidationLevel2XCluster");
                 throw ex;
             }
+        }
+
+        public class GetLastSampleByCollectionLevel2Class
+        {
+            public string ParLevel1_Id { get; set; }
+            public string ParLevel2_Id { get; set; }
+            public string UnitId { get; set; }
+            public string EvaluationNumber { get; set; }
+            public string Shift { get; set; }
+            public DateTime CollectionDate { get; set; }
         }
 
         [HttpPost]

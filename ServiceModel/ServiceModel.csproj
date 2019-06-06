@@ -63,6 +63,7 @@
     <Compile Include="GeneratedUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RetornoParaTablet.cs" />
+    <Compile Include="ViewModels\CompanyViewModel.cs" />
     <Compile Include="ViewModels\FormularioParaRelatorioViewModel.cs" />
     <Compile Include="ViewModels\TipificacaoViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
