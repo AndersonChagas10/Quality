@@ -380,11 +380,6 @@
                     return false
                 }
 
-                if (parseInt($("#selectParFrequencyAV :selected").val()) > 0 && ($("#Evaluation").val() == "" || $("#Sample").val() == "")) {
-                    openMessageModal("Alerta", "Ao selecionar uma Frequência os campos Avaliação e Amostra devem ser preenchidos!");
-                    return false;
-                }
-
                 if (formIsDuplicate()) {
                     return false;
                 }
