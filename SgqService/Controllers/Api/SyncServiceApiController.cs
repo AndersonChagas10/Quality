@@ -187,7 +187,7 @@ namespace SgqService.Controllers.Api
                         command.Parameters.Add(new SqlParameter("@Result", result.Replace("'", "")));
                         command.Parameters.Add(new SqlParameter("@Log", log.Replace("'", "")));
                         command.Parameters.Add(new SqlParameter("@DeviceId", deviceId));
-                        command.Parameters.Add(new SqlParameter("@AppVersion", AppVersion));
+                        command.Parameters.Add(new SqlParameter("@AppVersion", AppVersion == null ? "" : AppVersion));
                         command.Parameters.Add(new SqlParameter("@Callback", callback));
 
                         connection.Open();
@@ -207,11 +207,11 @@ namespace SgqService.Controllers.Api
                     }
                 }
             }
-            catch (SqlException)
+            catch (SqlException ex) 
             {
                 throw;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -3183,7 +3183,7 @@ namespace SgqService.Controllers.Api
                          [WeiDefects]) 
                            VALUES 
                            (@CollectionLevel02Id,
-                           @Level03Id
+                           @Level03Id,
                            @ParLevel3_Name,
                            @Weight,
                            @IntervalMin,
