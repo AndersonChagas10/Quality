@@ -217,13 +217,13 @@
 
 
     $("#selectL3PesoParCompany").on('change', function () {
-        debugger
+        
         var empresaSelecionada = parseInt($("#selectL3PesoParCompany :selected").val());
         MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', empresaSelecionada, null);
     });
 
     $("#ParL3Peso #btnAvancado").on('click', function () {
-        debugger
+        
         if (!$("#divAvaliacao").is(":visible")) {
             $("#divAvaliacao").show();
             $("#divAmostra").show();
@@ -286,6 +286,7 @@
                     success: function (data) {
                         openMessageModal("Feito", "Dados Salvos");
                         $('#selectL3').trigger('change');
+                        $("#ParL3Peso #btnAvancado").trigger('click')
                         closeLoader();
 
                     },
@@ -301,7 +302,7 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
-                debugger
+                scrollToForm();
                 var obj = $(this).parents('tr').data('sgq');
 
                 apagaCampos(id);

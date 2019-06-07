@@ -3,7 +3,7 @@
 <form id="ParL1Processo">
 
     <br />
-    <div class="row" data-form>
+    <div class="row" id="ParL1ProcessoAnchor" data-form>
 
         <div class="col-sm-3">
 
@@ -54,9 +54,9 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" >
         <div class="col-sm-12">
-            <table id="tableParL1Processo" class="table table-striped table-hover">
+            <table id="tableParL1Processo"class="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th class="col-sm-3">
@@ -106,7 +106,7 @@
                 html += '<td>' + o.ParCriticalLevel.Name + '</td>';
                 html += '<td>' + new Date(o.EffectiveDate).toLocaleDateString() + '</td>';
                 html += '<td>' + o.Points + '</td>';
-                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
+                html += '<td><button class="btn btn-sm btn-success tabelaProcesso" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
 
                 $('table#table' + id + ' tbody').append(html);
@@ -140,6 +140,8 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
+    
+                scrollToForm();
 
                 var obj = $(this).parents('tr').data('sgq');
 

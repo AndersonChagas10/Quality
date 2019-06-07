@@ -137,7 +137,7 @@
 
     //Adicionar os dados no data-form
     $('#' + ParL3Help.id).on('click', '[data-table-edit]', function (e) {
-
+        scrollToForm();
         var obj = $(this).parents('tr').data('sgq');
 
         apagaCampos(ParL3Help.id);

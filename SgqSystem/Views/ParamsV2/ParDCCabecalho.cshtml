@@ -447,7 +447,7 @@
 
     //Adicionar os dados no data-form
     $('#' + parDCCabecalho.id).on('click', '[data-table-edit]', function (e) {
-        
+        scrollToForm();
         var obj = $(this).parents('tr').data('sgq');
 
         apagaCampos(parDCCabecalho.id);

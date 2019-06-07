@@ -339,15 +339,16 @@
                                             </a>
                                         </li>*@
                                     <li>
-                                        <a href="#l3_tipo_dado_entrada" data-toggle="tab">
-                                            Tipo de dados de entrada
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href="#l3_peso" data-toggle="tab">
                                             Vincular Peso
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="#l3_tipo_dado_entrada" data-toggle="tab">
+                                            Tipo de dados de entrada
+                                        </a>
+                                    </li>
+
                                     <li>
                                         <a href="#l3_ajuda" data-toggle="tab">
                                             Botão Ajuda
@@ -431,6 +432,8 @@
     var parLevel3PesoList;
     var parDCAVamList;
 
+
+
     $("#btnVincular").hide();
 
     var validaBotaoVincular = function () {
@@ -441,6 +444,11 @@
         } else {
             $("#btnVincular").hide();
         }
+    }
+
+    let scrollToForm = function () {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 330;
     }
 
     let setSelectLevel1 = function (data) {
@@ -519,7 +527,7 @@
         if (listaTipoDado != null) {
 
             if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
-               
+
                 var listaVinculadaAUnidade = jQuery.grep(listaTipoDado, function (n, i) {
                     return (n.ParCompany_Id === parseInt($("#selectParCompanyGeral :selected").val()) || n.ParCompany_Id == null);
                 });
@@ -565,9 +573,9 @@
             }
         }
     }
-    
 
-    
+
+
 
     let MontaSelectDepartamentoVinculadoAUnidadeSelecionada = function (selectId, empresaSelecionada, mensagem) {
 
@@ -715,6 +723,9 @@
         setFormToDefault('ParL1Processo');
         validaBotaoVincular();
 
+        if ($("#selectL1").val() == "0")
+            $("#ParL1Geral").find("[name='IsActive']").prop('checked', false);
+
         if (parseInt($(this).val()) > 0) {
             debugger
             openLoader(Resources("please_wait"));
@@ -777,6 +788,9 @@
         setFormToDefault('ParL2Avam');
         validaBotaoVincular();
 
+        if ($("#selectL2").val() == "0")
+            $("#ParL2Geral").find("[name='IsActive']").prop('checked', false);
+
         if (parseInt($(this).val()) > 0) {
             openLoader(Resources("please_wait"));
             $.ajax({
@@ -828,6 +842,9 @@
         verifyTabs('selectL3', 'l3');
         validaBotaoVincular();
 
+        if ($("#selectL3").val() == "0")
+            $("#ParL3Geral").find("[name='IsActive']").prop('checked', false);
+
         if (parseInt($(this).val()) > 0) {
             openLoader(Resources("please_wait"));
             $.ajax({
@@ -847,7 +864,7 @@
                     } else {
                         ParL3Peso.load(parLevel3PesoList);
                     }
-              
+
 
                     parLevel3ValueList = data.Parlevel3.ParLevel3Value;
                     if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
