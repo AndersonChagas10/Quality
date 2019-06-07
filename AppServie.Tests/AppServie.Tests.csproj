@@ -113,7 +113,6 @@
     <Compile Include="Controllers\Api\GetVTVerificacaoTipificacaoControllerTest.cs" />
     <Compile Include="Controllers\Api\GetApp2ControllerTest.cs" />
     <Compile Include="Controllers\Api\InsertCorrectiveActionControllerTest.cs" />
-    <Compile Include="Controllers\Api\InsertDeviationControllerTest - Copy %282%29.cs" />
     <Compile Include="Controllers\Api\ReciveDataByLevel1ControllerTest.cs" />
     <Compile Include="Controllers\Api\UserCompanyUpdateControllerTest.cs" />
     <Compile Include="Controllers\Api\SendEmailAlertaControllerTest.cs" />

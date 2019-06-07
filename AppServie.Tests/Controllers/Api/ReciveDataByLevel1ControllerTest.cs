@@ -12,14 +12,14 @@ namespace AppServie.Tests.Controllers
     public class ReciveDataByLevel1ControllerTest
     {
         [TestMethod]
-        public void ReciveDataByLevel1Test()
+        public void ReciveDataByLevel1TestAsync()
         {
             SyncServiceApiController controller = new SyncServiceApiController();
             controller.token = Config.TOKEN;
 
-            var x = controller.ReciveDataByLevel1("14",DateTime.Now.ToString("MMddyyyy"),"1");
+            var x = controller.ReciveDataByLevel1("14", DateTime.Now.ToString("MMddyyyy"), "1");
 
-            Assert.IsTrue(x.Result == null);
+            Assert.IsTrue(x.Result != null);
         }
     }
 }
