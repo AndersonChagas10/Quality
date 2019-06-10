@@ -72,6 +72,7 @@ function preparing(showMessage) {
 }
 
 var terminouDeEnviar = false;
+
 function send(autoSend, callbackPCC1B, sendImediato) {
 
     if (terminouDeEnviar) {
