@@ -42,16 +42,16 @@ function updateLevel2Consolidation(
             appendDevice(level2Result, $('.ResultsConsolidation'));
         }
 
-        level2Result.attr('evaluation', evaluateCurrent)
+        level2Result.attr('evaluation', evaluateCurrent);
         level2Result.attr('sample', samplecurrent);
-        level2Result.attr('weievaluationl2', weievaluationl2)
-        level2Result.attr('defectsl2', defectsl2)
-        level2Result.attr('weidefectsl2', weidefectsl2)
-        level2Result.attr('totallevel3withdefectsl2', totallevel3withdefectsl2)
-        level2Result.attr('totallevel3evaluationl2', totallevel3evaluationl2)
-        level2Result.attr('sequential', sequential)
-        level2Result.attr('side', side)
-        level2Result.attr('DefectsResultL2', resultadodefeitos)
+        level2Result.attr('weievaluationl2', weievaluationl2);
+        level2Result.attr('defectsl2', defectsl2);
+        level2Result.attr('weidefectsl2', weidefectsl2);
+        level2Result.attr('totallevel3withdefectsl2', totallevel3withdefectsl2);
+        level2Result.attr('totallevel3evaluationl2', totallevel3evaluationl2);
+        level2Result.attr('sequential', sequential);
+        level2Result.attr('side', side);
+        level2Result.attr('DefectsResultL2', resultadodefeitos);
 
     }
 
