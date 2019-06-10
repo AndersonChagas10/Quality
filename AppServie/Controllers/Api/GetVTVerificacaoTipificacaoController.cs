@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using SgqService.ViewModels;
 
 namespace AppServie.Api.Controllers
 {
@@ -26,6 +27,22 @@ namespace AppServie.Api.Controllers
             {
                 return JsonConvert.DeserializeObject<string>(restRequest.Response);
             }
+            return null;
+        }
+
+
+        [HttpPost]
+        [Route("Save")]
+        public async Task<string> SaveVTVerificacaoTipificacao(TipificacaoViewModel model)
+        {
+            string url = $"/api/VTVerificacaoTipificacao/Save";
+            RestRequest restRequest = await RestRequest.Post(url, model, this.token);
+
+            if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return JsonConvert.DeserializeObject<string>(restRequest.Response);
+            }
+
             return null;
         }
 

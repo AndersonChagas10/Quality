@@ -1,8 +1,12 @@
 var userlogado;
 
-var token = function(){
-    return { 
-        "token": userlogado.attr('userlogin') + "|" + userlogado.attr('userpass')
+var token = function () {
+    if (userlogado)
+        return {
+            "token": userlogado.attr('userlogin') + "|" + userlogado.attr('userpass')
+        }
+    else {
+        return "";
     }
 }
 
@@ -388,7 +392,7 @@ function readFile(fileEntry) {
 }
 
 function verificaConexaoUnidadeAnterior(ParCompany_Id, user_Id) {
-    
+
     $.ajax({
         url: urlPreffix + '/api/Company/getCompany/',
         data: { id: ParCompany_Id },
@@ -445,18 +449,18 @@ function setupParCompanies() {
 }
 
 function setDateLastSync() {
-    if($('.App').attr('serverdate')){
+    if ($('.App').attr('serverdate')) {
 
         var dataServidor = convertDate($('.App').attr('serverdate'));
         const objLastSync = { Shift: parseInt($(shift).val()), Data: new Date(dataServidor).toLocaleDateString(), Unit: parseInt($('.App').attr('unidadeid')) }
 
         _writeFile("dateLastSync.txt", JSON.stringify(objLastSync));
-    
+
         $('.App').attr('datelastsync', dataServidor);
     }
 }
 
 function resetarDateLastSyncParam() {
-    _writeFile("dateLastSync.txt", "");  
-    _writeFile("lastsync.txt", "");  
+    _writeFile("dateLastSync.txt", "");
+    _writeFile("lastsync.txt", "");
 }
