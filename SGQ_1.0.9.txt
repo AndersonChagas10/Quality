@@ -177,7 +177,7 @@ CREATE TABLE AppScript(
 	Id int IDENTITY(1,1) NOT NULL primary key,
 	[Version] varchar(150) NOT NULL,
 	ArchiveName varchar(150) NOT NULL,
-	Script varchar(MAX) NOT NULL
+	Script text NOT NULL
 )
 
 GO

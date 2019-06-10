@@ -249,25 +249,27 @@ namespace SgqSystem.Controllers.Api.App
         [Route("GetFiles")]
         public string GetFiles()
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
-            string searchPattern = "*.*";
-            string[] MyFiles = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories)
-                .Where(file => file.ToLower().EndsWith("js") || file.ToLower().EndsWith("css")).ToArray();
+            return new AppScriptsController().GetByVersion("GQ");
 
-            var obj = new List<Dictionary<string, string>>();
+            //string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
+            //string searchPattern = "*.*";
+            //string[] MyFiles = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories)
+            //    .Where(file => file.ToLower().EndsWith("js") || file.ToLower().EndsWith("css")).ToArray();
 
-            foreach (var url in MyFiles)
-            {
-                var conteudo = System.IO.File.ReadAllText(url).ToString();
-                var nomeArquivo = Path.GetFileName(url);
+            //var obj = new List<Dictionary<string, string>>();
 
-                var file = new Dictionary<string, string>();
+            //foreach (var url in MyFiles)
+            //{
+            //    var conteudo = System.IO.File.ReadAllText(url).ToString();
+            //    var nomeArquivo = Path.GetFileName(url);
 
-                file.Add(nomeArquivo, conteudo);
-                obj.Add(file);
-            }
+            //    var file = new Dictionary<string, string>();
 
-            return JsonConvert.SerializeObject(obj);
+            //    file.Add(nomeArquivo, conteudo);
+            //    obj.Add(file);
+            //}
+
+            //return JsonConvert.SerializeObject(obj);
         }
 
         [HttpGet]
