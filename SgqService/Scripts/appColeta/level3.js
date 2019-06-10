@@ -1523,6 +1523,9 @@ function saveResultLevel3() {
                 level3.attr('value', $(level3).find('.levelValueNotes').val());
                 value = (level3).find('.levelValue').val()
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
+            } else if (inputType == 10) {
+                value = (level3).find('.levelValue').val()
+                conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
             }
 
             //Se tenho level03Result atualizo.
@@ -1546,7 +1549,7 @@ function saveResultLevel3() {
                     temDefeito = 1;
                     value = 1;
                     conform = false;
-                } else if ((inputType == 7 || inputType == 6)) {
+                } else if ((inputType == 7 || inputType == 6 || inputType == 10)) {
                     temDefeito = 0;
                     if (conform == false) {
                         temDefeito = 1;
@@ -2011,6 +2014,8 @@ function saveResultLevel3() {
     $('input.likert').trigger('blur');
 
     exibirLevel3PorDepartamento();
+
+    createFileResult();
 
 }
 

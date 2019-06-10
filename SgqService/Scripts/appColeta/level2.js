@@ -429,6 +429,8 @@ function scrollTop() {
 function saveLevel02(Level01Id, Level02Id, unidadeId, date, dateTime, auditorId, shift, period, evaluate, sample, defects, reaudit, reauditNumber, phase, startPhaseDate,
     consecutivefailureLevel, consecutivefailureTotal, notAvaliabled, headerList, alertlevel, sequencial, banda) {
 
+    Level01Id = Level01Id ? Level01Id : $(_level1).attr('id');
+
     if (notAvaliabled == "notavaliable") {
         notAvaliabled = true;
     }
