@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Dominio;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace SgqSystem.Controllers
 {
@@ -18,6 +19,7 @@ namespace SgqSystem.Controllers
         // GET: AppScripts
         public string GetByVersion(string version)
         {
+            //myString = myString.Replace(System.Environment.NewLine, "replacement text")
             var scripts = db.AppScript.Where(x => x.Version == version).ToList();
 
             var scriptsList = new List<Dictionary<string, string>>();
@@ -26,7 +28,12 @@ namespace SgqSystem.Controllers
             {
                 var scriptDctionary = new Dictionary<string, string>();
 
-                scriptDctionary.Add(item.ArchiveName, item.Script);
+                var x = item.Script.Length;
+                RegexOptions options = RegexOptions.None;
+                Regex regex = new Regex("[ ]{2,}", options);
+                item.Script = regex.Replace(item.Script, " ");
+
+                scriptDctionary.Add(item.ArchiveName+$"{x}+{item.Script}+{item.Script.Replace(System.Environment.NewLine, "")}", item.Script);
                 scriptsList.Add(scriptDctionary);
             }
 

@@ -248,7 +248,10 @@ namespace SgqService.Controllers.Api.App
         [Route("GetFiles")]
         public string GetFiles()
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
+
+            return new AppScriptsController().GetByVersion("GQ");
+
+          /* string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
             string searchPattern = "*.*";
             string[] MyFiles = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories)
                 .Where(file => file.ToLower().EndsWith("js") || file.ToLower().EndsWith("css")).ToArray();
@@ -266,7 +269,7 @@ namespace SgqService.Controllers.Api.App
                 obj.Add(file);
             }
 
-            return JsonConvert.SerializeObject(obj);
+            return JsonConvert.SerializeObject(obj);*/
         }
 
         [HttpGet]
