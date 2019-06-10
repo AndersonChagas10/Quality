@@ -578,6 +578,7 @@
     <Compile Include="Seed\DicionarioEstaticoSeed.cs" />
     <Compile Include="Seed\ResourceEnSeed.cs" />
     <Compile Include="Seed\ResourcePtSeed.cs" />
+    <Compile Include="Seed\Seed.cs" />
     <Compile Include="Services\Html.cs" />
     <Compile Include="Services\Level02Result.cs" />
     <Compile Include="Services\ServiceLevel2.cs" />

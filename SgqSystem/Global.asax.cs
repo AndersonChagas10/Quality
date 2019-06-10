@@ -19,7 +19,6 @@ using Dominio;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Dynamic;
-using SgqSystem.Seed;
 
 namespace SgqSystem
 {
@@ -66,16 +65,8 @@ namespace SgqSystem
 
             ThreadPool.QueueUserWorkItem(CollectionJob.ExecuteCollectionJob);
 
-            if (GlobalConfig.LanguageBrasil)
-            {
-                var resourcePtSeed = new ResourcePtSeed();
-                resourcePtSeed.SetResourcePTDictionary();
-            }
-            else
-            {
-                var resourceENSeed = new ResourceEnSeed();
-                resourceENSeed.SetResourceENDictionary();
-            }
+            var seed = new Seed.Seed();
+            seed.SetSeedValues();
 
             using (var db = new Dominio.SgqDbDevEntities())
             {
@@ -117,12 +108,7 @@ namespace SgqSystem
             }
 
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
-
-            //DicionarioEstatico
-            DicionarioEstaticoSeed dicionarioSeed = new DicionarioEstaticoSeed();
-            dicionarioSeed.SetDicionarioEstatico();
-            
+            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);         
 
         }
 
