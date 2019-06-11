@@ -2147,7 +2147,7 @@ $(document).on('input', '.interval input, .calculado input, .defects input', fun
     GetDefectsGroup();
 
     if ($('.level2Group .painelLevel02 .form-group .counter[counter=defects]').length > 0 ||
-        (($('.counter[indicador=' + _level2.id + '][headerlevel=level2_line][counter=defects]').length > 0 ||
+        (($('.counter[indicador=' + _level1.id + '][headerlevel=level2_line][counter=defects]').length > 0 ||
             $('.counter[indicador=' + _level1.id + '][headerlevel=level3_header][counter=defects]').length > 0) &&
             $('.painelLevel03 .defects:visible').length > 0)) {
 
