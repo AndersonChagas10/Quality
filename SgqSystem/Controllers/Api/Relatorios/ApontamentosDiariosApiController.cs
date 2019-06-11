@@ -30,17 +30,6 @@ namespace SgqSystem.Controllers.Api
         public ApontamentosDiariosApiController()
         {
             db.Configuration.LazyLoadingEnabled = false;
-
-            //if (GlobalConfig.Brasil)
-            //{
-            //    Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-br");
-            //    Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-br");
-            //}
-            //else
-            //{
-            //    Thread.CurrentThread.CurrentCulture = new CultureInfo("");
-            //    Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-            //}
         }
 
         private List<ApontamentosDiariosResultSet> _mock { get; set; }
@@ -101,7 +90,7 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]
         [Route("Edit/{id}")]
         public Result_Level3DTO EditResultLevel3(int id)
-        { 
+        {
             bool possuiVinculosResultado = false;
             using (var databaseSgq = new SgqDbDevEntities())
             {
@@ -111,7 +100,7 @@ namespace SgqSystem.Controllers.Api
                 var resultlevel3Final = databaseSgq.Result_Level3
                    .Join(databaseSgq.ParLevel3Value, pl3v => pl3v.ParLevel3_Id, rl3 => rl3.ParLevel3_Id, (rl3, pl3v) => new { rl3, pl3v })
                    .Where(x => x.rl3.CollectionLevel2_Id == resultlevel3.CollectionLevel2_Id
-                   && x.pl3v.ParLevel3InputType_Id == 10 
+                   && x.pl3v.ParLevel3InputType_Id == 10
                    && (x.pl3v.DynamicValue.Contains("{" + resultlevel3.ParLevel3_Id.ToString() + "}")
                    || x.pl3v.DynamicValue.Contains("{" + resultlevel3.ParLevel3_Id.ToString() + "?}"))
                    && x.pl3v.IsActive).ToList();
@@ -143,7 +132,7 @@ namespace SgqSystem.Controllers.Api
                 var parLevel3 = databaseSgq.ParLevel3.Where(x => x.Id == resultlevel3.ParLevel3_Id).FirstOrDefault();
                 parLevel3Value = databaseSgq.ParLevel3Value.Where(x => x.ParLevel3_Id == parLevel3.Id).FirstOrDefault();
                 var parInputTypeValues = databaseSgq.ParInputTypeValues.Where(x => x.ParLevel3Value_Id == parLevel3Value.Id && resultLevel3.Value == x.Intervalo.ToString()).FirstOrDefault();
-                if(parLevel3Value.ParLevel3InputType_Id == 8)
+                if (parLevel3Value.ParLevel3InputType_Id == 8)
                     resultLevel3.ValueText = parInputTypeValues.Valor.ToString();
 
             }
@@ -185,7 +174,7 @@ namespace SgqSystem.Controllers.Api
             var company_Id = level3.CollectionLevel2.UnitId;
             var level1_Id = level3.CollectionLevel2.ParLevel1_Id;
 
-            var service = new SyncServices();
+            var service = new SyncServiceApiController();
 
             service.ReconsolidationLevel3ByCollectionLevel2Id(level3.CollectionLevel2_Id.ToString());
 
@@ -206,7 +195,7 @@ namespace SgqSystem.Controllers.Api
                     resultLevel3.ParLevel3.ParLevel3Value = databaseSgq.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultLevel3.ParLevel3_Id && r.IsActive == true).ToList();
                     resultLevel3.CollectionLevel2 = databaseSgq.CollectionLevel2.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.CollectionLevel2_Id);
                 }
-                
+
                 return resultLevel3;
             }
 
@@ -358,9 +347,15 @@ namespace SgqSystem.Controllers.Api
                 {
                     if (isQueryEdit)
                     {
+                        var filtroParLevel3Value = ParLevel3.ParLevel3Value
+                            .Where(r => r.ParCompany_Id == CollectionLevel2.UnitId
+                            || r.ParCompany_Id == null)
+                            .OrderByDescending(r => r.ParCompany_Id)
+                            .ToList();
+
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)
+                            if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)
                                 return "0";
                         }
                         catch (Exception e)
@@ -371,7 +366,7 @@ namespace SgqSystem.Controllers.Api
 
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 2) != null)//NUMERO DEFEITOS
+                            if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2) != null)//NUMERO DEFEITOS
                                 return Value.ToString();
                         }
                         catch (Exception e)
@@ -381,7 +376,7 @@ namespace SgqSystem.Controllers.Api
 
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS
+                            if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS
                                 return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //010.0000 = 10
                         }
                         catch (Exception e)
@@ -391,7 +386,7 @@ namespace SgqSystem.Controllers.Api
 
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
+                            if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 4) != null)//CALCULADO
                                 return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //10x104 = 10.0000
                         }
                         catch (Exception e)
@@ -401,117 +396,13 @@ namespace SgqSystem.Controllers.Api
 
                         try
                         {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6)) != null)//TEXTO
+                            if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6)) != null)//TEXTO
                                 return "1";
                         }
                         catch (Exception e)
                         {
                             throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 5", e); throw;
                         }
-
-                        //Verifica Todos
-
-                        try
-                        {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)
-                                return "0";
-                        }
-                        catch (Exception e)
-                        {
-
-                            throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 1", e);
-                        }
-
-                        try
-                        {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 2) != null)//NUMERO DEFEITOS
-                                return Value.ToString();
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 2", e);
-                        }
-
-                        try
-                        {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS
-                                return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //010.0000 = 10
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 3", e); throw;
-                        }
-
-                        try
-                        {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
-                                return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //10x104 = 10.0000
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 4", e); throw;
-                        }
-
-                        try
-                        {
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//TEXTO
-                                return "1";
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 5", e); throw;
-                        }
-
-                        //try
-                        //{
-                        //    if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1) != null)//BINARIO
-                        //        return "0";
-                        //}
-                        //catch (Exception e)
-                        //{
-                        //    throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 1", e);
-                        //}
-
-                        //try
-                        //{
-                        //    if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 2) != null)//NUMERO DEFEITOS
-                        //        return Value.ToString();
-                        //}
-                        //catch (Exception e)
-                        //{
-                        //    throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 2", e);
-                        //}
-
-                        //try
-                        //{
-                        //    if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 3) != null)//INTERVALOS
-                        //        return Guard.ConverteValorCalculado(Value).ToString("G29"); //010.0000 = 10
-                        //}
-                        //catch (Exception e)
-                        //{
-                        //    throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 3", e); throw;
-                        //}
-
-                        //try
-                        //{
-                        //    if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
-                        //        return Guard.ConverteValorCalculado(Value).ToString("G29"); //10x104 = 10.0000
-                        //}
-                        //catch (Exception e)
-                        //{
-                        //    throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 4", e); throw;
-                        //}
-
-                        //try
-                        //{
-                        //    if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 5) != null)//TEXTO
-                        //        return "1";
-                        //}
-                        //catch (Exception e)
-                        //{
-                        //    throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 5", e); throw;
-                        //}
-
                     }
 
                     return string.Empty;
@@ -527,21 +418,26 @@ namespace SgqSystem.Controllers.Api
                 {
                     if (isQueryEdit)
                     {
+                        var filtroParLevel3Value = ParLevel3.ParLevel3Value
+                            .Where(r => r.ParCompany_Id == CollectionLevel2.UnitId
+                            || r.ParCompany_Id == null)
+                            .OrderByDescending(r => r.ParCompany_Id)
+                            .ToList();
 
-                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//BINARIO
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//BINARIO
                         {
                             return IsConform.GetValueOrDefault() ? "1" : "0";
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 2) != null)//NUMERO DEFEITOS
+                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2) != null)//NUMERO DEFEITOS
                         {
 
                             var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
                             var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
                             var valorDefinido = Guard.ConverteValorCalculado(_Value);
                             var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
-                            return dentroDoRange ? "1" : "0";
+                            return dentroDoRange ? "0" : "1";
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
+                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 4) != null)//CALCULADO
                         {
                             var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
                             var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
@@ -549,7 +445,7 @@ namespace SgqSystem.Controllers.Api
                             var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
                             return dentroDoRange ? "1" : "0";
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS 
+                        else if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS 
                         {
                             var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
                             var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
@@ -557,12 +453,7 @@ namespace SgqSystem.Controllers.Api
                             var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
                             return dentroDoRange ? "1" : "0";
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 5) != null)//TEXTO 
-                        {
-                            var valueText = string.IsNullOrEmpty(ValueText);
-                            return valueText ? "1" : "0";
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(x => x.ParLevel3InputType_Id == 8) != null) //Likert
+                        else if (filtroParLevel3Value.FirstOrDefault(x => x.ParLevel3InputType_Id == 8) != null) //Likert
                         {
                             var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
                             var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
@@ -570,39 +461,7 @@ namespace SgqSystem.Controllers.Api
                             var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
                             return dentroDoRange ? "1" : "0";
                         }
-
-                        //Verifica "Todos"
-                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//BINARIO
-                        {
-                            return IsConform.GetValueOrDefault() ? "1" : "0";
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 2) != null)//NUMERO DEFEITOS
-                        {
-
-                            var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
-                            var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
-                            var valorDefinido = Guard.ConverteValorCalculado(_Value);
-                            var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
-                            return dentroDoRange ? "1" : "0";
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
-                        {
-
-                            var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
-                            var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
-                            var valorDefinido = Guard.ConverteValorCalculado(_Value);
-                            var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
-                            return dentroDoRange ? "1" : "0";
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS 
-                        {
-                            var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
-                            var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
-                            var valorDefinido = Guard.ConverteValorCalculado(_Value);
-                            var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
-                            return dentroDoRange ? "1" : "0";
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 5) != null)//TEXTO 
+                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 5) != null)//TEXTO 
                         {
                             var valueText = string.IsNullOrEmpty(ValueText);
                             return valueText ? "1" : "0";
@@ -625,49 +484,32 @@ namespace SgqSystem.Controllers.Api
                     var defects = 0M;
                     if (isQueryEdit)
                     {
-                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//é um BINARIO
+                        var filtroParLevel3Value = ParLevel3.ParLevel3Value
+                            .Where(r => r.ParCompany_Id == CollectionLevel2.UnitId
+                            || r.ParCompany_Id == null)
+                            .OrderByDescending(r => r.ParCompany_Id)
+                            .ToList();
+
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
                         {
                             defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 2) != null)//Nº DEFEITOS 
+                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2) != null)//Nº DEFEITOS 
                         {
                             return _IsConform.Equals("0") ? 1 : 0;
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS 
+                        else if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS 
                         {
                             return _IsConform.Equals("0") ? 1 : 0;
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
+                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 4) != null)//CALCULADO
                         {
                             return _IsConform.Equals("0") ? 1 : 0;
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 5) != null)//TEXTO 
+                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 5) != null)//TEXTO 
                         {
                             return _IsConform.Equals("0") ? 1 : 0;
                         }
-
-                        //Todos
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//é um BINARIO
-                        {
-                            defects = IsConform.GetValueOrDefault() ? 0M : 1M;
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 2) != null)//Nº DEFEITOS 
-                        {
-                            return _IsConform.Equals("0") ? 1 : 0;
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS 
-                        {
-                            return _IsConform.Equals("0") ? 1 : 0;
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
-                        {
-                            return _IsConform.Equals("0") ? 1 : 0;
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 5) != null)//TEXTO 
-                        {
-                            return _IsConform.Equals("0") ? 1 : 0;
-                        }
-
                     }
 
                     return defects;
@@ -701,50 +543,32 @@ namespace SgqSystem.Controllers.Api
                     var defects = 0M;
                     if (isQueryEdit)
                     {
-                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//é um BINARIO
+                        var filtroParLevel3Value = ParLevel3.ParLevel3Value
+                            .Where(r => r.ParCompany_Id == CollectionLevel2.UnitId
+                            || r.ParCompany_Id == null)
+                            .OrderByDescending(r => r.ParCompany_Id)
+                            .ToList();
+
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
                         {
                             defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 2) != null)//N° DEFEITOS
+                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2) != null)//N° DEFEITOS
                         {
                             defects = Convert.ToDecimal(Value);
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS 
+                        else if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS 
                         {
                             defects = _Defects;
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
+                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 4) != null)//CALCULADO
                         {
                             defects = _Defects;
                         }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 5) != null)//TEXTO
+                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 5) != null)//TEXTO
                         {
                             defects = _Defects;
                         }
-
-                        //Se for Nulo
-
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)) != null)//é um BINARIO
-                        {
-                            defects = IsConform.GetValueOrDefault() ? 0M : 1M;
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 2) != null)//N° DEFEITOS
-                        {
-                            defects = Convert.ToDecimal(Value);
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 9)) != null)//INTERVALOS 
-                        {
-                            defects = _Defects;
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
-                        {
-                            defects = _Defects;
-                        }
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 5) != null)//TEXTO
-                        {
-                            defects = _Defects;
-                        }
-
                     }
 
                     if (IsConform.GetValueOrDefault())
@@ -767,205 +591,74 @@ namespace SgqSystem.Controllers.Api
 
             public int? unit { get; set; }
 
-            //public string _HeaderEdit
-            //{
-            //    get
-            //    {
-            //        if()
-            //        var level1Name = this.CollectionLevel2.ParLevel1_Id;
-            //        var level2Name = this.CollectionLevel2.UnitId;
-            //        using 
-            //        return ParLevel3_Name
-            //    }
-            //}
-
-            //public string showIntervalos
-            //{
-            //    get
-            //    {
-            //        if (ParLevel3.IsNotNull())
-            //            if (ParLevel3.ParLevel3Value.IsNotNull())
-            //                if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId /*unit*/ && r.ParLevel3InputType_Id == 3).IsNotNull())//INTERVALOS ??
-            //                {
-            //                    return mountHtmlIntervalos();
-
-            //                }
-            //        //else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 3).IsNotNull())
-            //        //{
-            //        //    return mountHtmlIntervalos();
-            //        //}
-
-            //        return string.Empty;
-            //    }
-
-            //}
-
             public string mountHtmlIntervalos()
             {
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
-                return "<div>" +
-                            //"<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
-                            "<label  for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + "<label id='intervalMax'>" + IntervalMax + "</label>" +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + "<label id='intervalMin'>" + IntervalMin + "</label>" +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + Value +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp " +
-                             "<input type='text' id='intervaloValor' class='form-control decimal' value=" + Value + " />" +
-                            "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
-                             "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
-                        "</div>";
+                return $@"<div
+                            <label for='Conforme: '> { Resources.Resource.max_interval }: </label> <label id='intervalMax'>{ IntervalMax }</label>
+                            <br>
+                            <label for='Conforme: '> { Resources.Resource.min_interval }: </label> <label id='intervalMin'>{ IntervalMin }</label>
+                            <br>
+                            <label for='Conforme: '> { Resources.Resource.current_value }: </label> { Value }
+                            <br>
+                            <label for='Conforme: '> { Resources.Resource.new_value }: </label> &nbsp 
+                            <input type='number' id='intervaloValor' class='form-control' value={ Value } />
+                            <br>
+                            <label for='Conforme: '> { Resources.Resource.unvalued }: </label> &nbsp 
+                            <input type='checkbox' id='IsEvaluated' { naoAvaliado } class='.check-box' />
+                        </div>";
             }
-
-            //public string showConform // BINARIO 
-            //{
-            //    get
-            //    {
-            //        if (ParLevel3.IsNotNull())
-            //            if (ParLevel3.ParLevel3Value.IsNotNull())
-
-            //                if (ParLevel3.ParLevel3Value.Any(r => r.ParCompany_Id == CollectionLevel2.UnitId))
-            //                {
-            //                    if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 1).IsNotNull())//é um BINARIO //É Unico
-            //                    {
-            //                        //if (ParLevel3.ParLevel3Value.Any(r=> r.ParCompany_Id == CollectionLevel2.UnitId)) //Verifica se corporativo ou unidade especifica
-            //                        //{
-
-            //                        //}
-            //                        return mountHtmlConform();
-            //                    }
-            //                }
-            //                else
-            //                {
-
-            //                }
-
-
-            //        //else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 1).IsNotNull())
-            //        //{
-            //        //    return mountHtmlConform();
-            //        //}
-
-            //        return string.Empty;
-            //    }
-
-            //}
 
             public string mountHtmlConform()
             {
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                 var checkedAttr = IsConform.GetValueOrDefault() ? "checked='checked'" : "";
                 return "<div>" +
-                           "<label for='Conforme: '> " + GetResources.getResource("conform2").Value.ToString() + ": </label> &nbsp " +
+                           "<label for='Conforme: '> " + Resources.Resource.conform2 + ": </label> &nbsp " +
                             "<input class='.check-box' id='conform' name='conform' " + checkedAttr + " type='checkbox' value='true'><input name = 'conform' type='hidden' value='false'>" +
                             "<br>" +
-                             "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
+                             "<label for='Conforme: '> " + Resources.Resource.unvalued + ": </label> &nbsp " +
                             "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                        "</div>"; ;
             }
-
-            //public string showCalculado
-            //{
-            //    get
-            //    {
-            //        if (ParLevel3.IsNotNull())
-            //            if (ParLevel3.ParLevel3Value.IsNotNull())
-            //                if (ParLevel3.ParLevel3Value.FirstOrDefault(r => /*r.ParCompany_Id == CollectionLevel2.UnitId &&*/ r.ParLevel3InputType_Id == 4).IsNotNull())//é um CALCULADO
-            //                {
-            //                    return mountHtmlCalculado();
-
-            //                }
-            //        //else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 4).IsNotNull())
-            //        //{
-            //        //    return mountHtmlCalculado();
-            //        //}
-
-            //        return string.Empty;
-            //    }
-
-            //}
 
             public string mountHtmlCalculado()
             {
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
 
                 return "<div>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                            "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
+                            "<label for='Conforme: '> " + Resources.Resource.min_interval + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                            "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp" +
+                            "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp" +
                         "<input type='text' id='decimal' class='decimal' /> ^10x <input type='text' id='precisao' class='decimal' />" +
                         "<br>" +
-                           "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
+                           "<label for='Conforme: '> " + Resources.Resource.unvalued + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }
-
-            //public string showNumeroDefeitos
-            //{
-            //    get
-            //    {
-
-            //        if (ParLevel3.IsNotNull())
-            //            if (ParLevel3.ParLevel3Value.IsNotNull())
-            //                if (ParLevel3.ParLevel3Value.FirstOrDefault(r => /*r.ParCompany_Id == CollectionLevel2.UnitId && */ r.ParLevel3InputType_Id == 2).IsNotNull())//é um Numero de Defeitos
-            //                {
-            //                    return mountHtmlNumeroDefeitos();
-            //                }
-            //        //else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 2).IsNotNull())
-            //        //{
-            //        //    return mountHtmlNumeroDefeitos();
-            //        //}
-
-            //        return string.Empty;
-            //    }
-
-            //}
 
             public string mountHtmlNumeroDefeitos()
             {
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
 
                 return "<div>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                            "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + double.Parse(IntervalMin, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
+                            "<label for='Conforme: '> " + Resources.Resource.min_interval + ": </label>" + double.Parse(IntervalMin, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                            "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp" +
+                            "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp" +
                         "<input type='text' id='numeroDeDefeitos' class='decimal' />" +
                         "<br>" +
-                           "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
+                           "<label for='Conforme: '> " + Resources.Resource.unvalued + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }
-
-            //public string showTexto
-            //{
-            //    //Texto = tipo 5
-            //    get
-            //    {
-            //        if (ParLevel3.IsNotNull())
-            //            if (ParLevel3.ParLevel3Value.IsNotNull())
-            //                if (ParLevel3.ParLevel3Value.FirstOrDefault(r => /*r.ParCompany_Id == CollectionLevel2.UnitId  &&*/ r.ParLevel3InputType_Id == 5).IsNotNull())//TEXTO ??
-            //                {
-            //                    return mountHtmlTexto();
-            //                }
-            //        //else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 5).IsNotNull())
-            //        //{
-            //        //    return mountHtmlTexto();
-            //        //}
-
-            //        return string.Empty;
-            //    }
-
-            //}
 
             public string mountHtmlTexto()
             {
@@ -975,19 +668,18 @@ namespace SgqSystem.Controllers.Api
                     ValueText = "";
 
                 return "<div>" +
-                            //"<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
-                            //"<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + IntervalMax +
-                            //"<br>" +
-                            //"<label for='Conforme: '> Intervalo Min: </label>" + IntervalMin +
-                            //"<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + ValueText +
+                            "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + ValueText +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp " +
+                            "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp " +
                              "<input type='text' id='texto' class='form-control text' value='" + ValueText + "' />" +
-                        //"<br>" +
-                        //"<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
-                        // "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
+            }
+
+            public string mountHtmlNotEditable()
+            {
+                return $@"<div>
+                            <div class='alert alert-warning' id='mensagemErro'>O item selecionado possui vínculos de resultado. A edição esta desabilitada.</div>
+                          </div>";
             }
 
             public string showGeneric
@@ -995,32 +687,29 @@ namespace SgqSystem.Controllers.Api
                 get
                 {
                     if (ParLevel3.IsNotNull())
+                    {
                         if (ParLevel3.ParLevel3Value.IsNotNull())
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId).IsNotNull())
-                            {
-                                if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull())
-                                    return mountHtmlConform();
-                                else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 2).IsNotNull())
-                                    return mountHtmlNumeroDefeitos();
-                                else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7 || r.ParLevel3InputType_Id == 9)).IsNotNull())
-                                    return mountHtmlIntervalos();
-                                else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 4).IsNotNull())
-                                    return mountHtmlCalculado();
-                                else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && (r.ParLevel3InputType_Id == 5)).IsNotNull())
-                                    return mountHtmlTexto();
-                            }
-                            else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 12)).IsNotNull())
-                                return mountHtmlConform();
-                            else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 2).IsNotNull())
-                                return mountHtmlNumeroDefeitos();
-                            else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7 || r.ParLevel3InputType_Id == 9).IsNotNull())
-                                return mountHtmlIntervalos();
-                            else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 4).IsNotNull())
-                                return mountHtmlCalculado();
-                            else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 5).IsNotNull())
-                                return mountHtmlTexto();
-                            else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 10).IsNotNull())
-                                return mountHtmlTexto();
+                        {
+                            var filtroParLevel3Value = ParLevel3.ParLevel3Value
+                                .Where(r => r.ParCompany_Id == CollectionLevel2.UnitId
+                                || r.ParCompany_Id == null)
+                                .OrderByDescending(r => r.ParCompany_Id)
+                                .ToList();
+
+                            if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull())
+                                return mountHtmlConform();                    
+                            else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2).IsNotNull())
+                                return mountHtmlNumeroDefeitos();             
+                            else if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7 || r.ParLevel3InputType_Id == 9)).IsNotNull())
+                                return mountHtmlIntervalos();                 
+                            else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 4).IsNotNull())
+                                return mountHtmlCalculado();                  
+                            else if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 5)).IsNotNull())
+                                return mountHtmlTexto();                      
+                            else if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 10)).IsNotNull())
+                                return mountHtmlNotEditable();
+                        }
+                    }
 
                     return string.Empty;
                 }
@@ -1076,7 +765,7 @@ namespace SgqSystem.Controllers.Api
                 //Reconsolida
                 if (Lsc2xhf.HeaderField.Count > 0)
                 {
-                    var syncServices = new SyncServices();
+                    var syncServices = new SyncServiceApiController();
 
                     syncServices.ReconsolidationToLevel3(Lsc2xhf.HeaderField[0].CollectionLevel2_Id.ToString());
                 }

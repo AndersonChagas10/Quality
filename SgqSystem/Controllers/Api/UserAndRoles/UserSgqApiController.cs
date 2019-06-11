@@ -1,5 +1,5 @@
 ﻿using Dominio;
-using Dominio.Interfaces.Services;
+using DTO.Interfaces.Services;
 using DTO;
 using DTO.DTO;
 using SgqSystem.Handlres;

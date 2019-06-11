@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AppScript.cs" />
     <Compile Include="AppViewModel\ParCargoXDepartmentAppViewModel.cs" />
     <Compile Include="AppViewModel\ParCargoAppViewModel.cs" />
     <Compile Include="AppViewModel\ParDepartmentAppViewModel.cs" />
@@ -80,23 +81,10 @@
     <Compile Include="Integ\ColetaCabecalho.cs" />
     <Compile Include="Integ\ColetaTarefa.cs" />
     <Compile Include="Integ\IntegCollectionData.cs" />
-    <Compile Include="Interfaces\Repositories\IBaseRepositoryNoLazyLoad.cs" />
-    <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IParamsRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IParLevel3Repository.cs" />
-    <Compile Include="Interfaces\Repositories\ISaveCollectionRepo.cs" />
-    <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
-    <Compile Include="Interfaces\Services\IDefectDomain.cs" />
-    <Compile Include="Interfaces\Services\ICompanyDomain.cs" />
-    <Compile Include="Interfaces\Services\IExampleDomain.cs" />
-    <Compile Include="Interfaces\Services\IParamsDomain.cs" />
-    <Compile Include="Interfaces\Services\IBaseDomain.cs" />
-    <Compile Include="Interfaces\Services\IUserDomain.cs" />
     <Compile Include="ItemMenu.cs" />
     <Compile Include="LeftControlRole.cs" />
     <Compile Include="LogAlteracoes.cs" />
     <Compile Include="LogJson.cs" />
-    <Compile Include="LogService\LoggerNLog.cs" />
     <Compile Include="LogSgq.cs" />
     <Compile Include="LogSgqGlobal.cs" />
     <Compile Include="Metas.cs" />
@@ -201,12 +189,6 @@
     <Compile Include="RoleUserSgqXItemMenu.cs" />
     <Compile Include="RotinaIntegracao.cs" />
     <Compile Include="ScreenComponent.cs" />
-    <Compile Include="Services\DefectDomain.cs" />
-    <Compile Include="Services\CompanyDomain.cs" />
-    <Compile Include="Services\ExampleDomain.cs" />
-    <Compile Include="Services\ParamsDomain.cs" />
-    <Compile Include="Services\BaseDomain.cs" />
-    <Compile Include="Services\UserDomain.cs" />
     <Compile Include="SgqDbDevEntities.cs" />
     <Compile Include="Shift.cs" />
     <Compile Include="TarefaAmostras.cs" />
@@ -226,7 +208,6 @@
     <Compile Include="VerificacaoTipificacaoTarefaIntegracao.cs" />
     <Compile Include="VerificacaoTipificacaoV2.cs" />
     <Compile Include="VerificacaoTipificacaoValidacao.cs" />
-    <Compile Include="ViewModel\ListaCollectionsLevel2XParReason.cs" />
     <Compile Include="VolumeCepDesossa.cs" />
     <Compile Include="VolumeCepRecortes.cs" />
     <Compile Include="VolumePcc1b.cs" />
@@ -237,10 +218,6 @@
     <Compile Include="VTVerificacaoTipificacaoValidacao.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=5.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.5.0.2\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -287,21 +264,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
-      <Project>{31925fca-e0f6-428d-9a7d-59ca8879d6f8}</Project>
-      <Name>ADOFactory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DTO\DTO.csproj">
-      <Project>{0ed5466d-2a8f-4e37-8d4a-c2f2760bd687}</Project>
-      <Name>DTO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{026EFA70-BD6D-46C8-BD94-D7FCD42B9692}</Project>
       <Name>Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Resources\Resources.csproj">
-      <Project>{7ca0c2b1-2d05-4a01-86c2-8732d8a07192}</Project>
-      <Name>Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -311,7 +276,12 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

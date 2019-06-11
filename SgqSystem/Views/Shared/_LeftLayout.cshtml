@@ -106,7 +106,7 @@
                 }
             }
 
-            @if (ViewBag.UserRoles != null && ViewBag.UserRoles.Contains("Admin"))
+            @if (ViewBag.UserId == "-1")
             {
                 <li class="nav-item">
                     <a href="javascript:;" target="" class="nav-link nav-toggle">
@@ -127,6 +127,24 @@
                         <li class="nav-item">
                             <a href="@Html.Raw(Url.Action("Index", "RoleUserSgq"))" target="" class="nav-link nav-toggle">
                                 <span class="title">Regras</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:;" target="" class="nav-link nav-toggle">
+                        <i class="fa fa-tasks"></i>
+                        <span class="title">Resources</span>
+                        <span class="arrow"></span>
+                    </a><ul class="sub-menu">
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("Index", "resourcePTs"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Resources PT</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("Index", "resourceENs"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Resources EN</span>
                             </a>
                         </li>
                     </ul>

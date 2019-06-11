@@ -68,6 +68,7 @@ namespace Dominio
             && !(x.Entity is RecravacaoJson)
             && !(x.Entity is EmailContent)
             && !(x.Entity is Deviation)
+            && !(x.Entity is IntegCollectionData)
             && !(x.State == EntityState.Detached || x.State == EntityState.Unchanged)
             ).ToList();
 
@@ -75,6 +76,7 @@ namespace Dominio
             {
                 object objeto = Activator.CreateInstance(entity.Entity.GetType());
                 Type t = entity.Entity.GetType();
+
                 foreach (var propInfo in t.GetProperties())
                 {
                     object valor = propInfo.GetValue(entity.Entity, null);
@@ -91,6 +93,7 @@ namespace Dominio
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                     PreserveReferencesHandling = PreserveReferencesHandling.None
                 });
+
                 this.DatabaseLog.Add(
                     new DatabaseLog()
                     {
@@ -100,6 +103,7 @@ namespace Dominio
                         Tabela = entity.Entity.GetType().ToString()
                     }
                  );
+
                 base.SaveChanges();
             }
         }
@@ -268,6 +272,7 @@ namespace Dominio
         public virtual DbSet<ParDepartmentXHeaderField> ParDepartmentXHeaderField { get; set; }
         public virtual DbSet<ResourcePT> ResourcePT { get; set; }
         public virtual DbSet<ResourceEN> ResourceEN { get; set; }
+        public virtual DbSet<AppScript> AppScript { get; set; }
 
         public virtual DbSet<IntegCollectionData> IntegCollectionData { get; set; }
 

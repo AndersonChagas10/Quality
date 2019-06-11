@@ -241,6 +241,8 @@
     <Compile Include="Controllers\CentauroController.cs" />
     <Compile Include="Controllers\GerenciarController.cs" />
     <Compile Include="Controllers\Home2Controller.cs" />
+    <Compile Include="Helper\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Helper\MailSender.cs" />
     <Compile Include="Jobs\Jobs.cs" />
     <Compile Include="Helpers\Rodape.cs" />
     <Compile Include="PaMail\PaAsyncServices.cs" />
@@ -1029,10 +1031,6 @@
     <ProjectReference Include="..\PlanoAcaoEF\PlanoAcaoEF.csproj">
       <Project>{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}</Project>
       <Name>PlanoAcaoEF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Resources\Resources.csproj">
-      <Project>{7ca0c2b1-2d05-4a01-86c2-8732d8a07192}</Project>
-      <Name>Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

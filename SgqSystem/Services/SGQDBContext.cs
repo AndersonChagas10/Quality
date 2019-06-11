@@ -9,6 +9,7 @@ using System.Collections;
 using SgqSystem.Services;
 using DTO;
 using ADOFactory;
+using SgqSystem.Controllers.Api;
 
 namespace SGQDBContext
 {
@@ -118,9 +119,9 @@ namespace SGQDBContext
             string whereIsChildren = " AND IsChildren = 0 ";
 
             string sql = @"SELECT * FROM (
-                        -- SELECT CAST(C.Id AS VARCHAR) + '" + SyncServices.quebraProcesso + @"' + CAST(P1.Id AS VARCHAR)  AS Id, P1.Id as ParLevel1_Id , P1.Name + ' - ' + C.Name as Name, P1.HasTakePhoto, 
+                        -- SELECT CAST(C.Id AS VARCHAR) + '" + SyncServiceApiController.quebraProcesso + @"' + CAST(P1.Id AS VARCHAR)  AS Id, P1.Id as ParLevel1_Id , P1.Name + ' - ' + C.Name as Name, P1.HasTakePhoto, 
                         
-                        SELECT CAST(C.Id AS VARCHAR) + '" + SyncServices.quebraProcesso + @"' + CAST(P1.Id AS VARCHAR)  AS Id, P1.Id as ParLevel1_Id , P1.Name, P1.HasTakePhoto, 
+                        SELECT CAST(C.Id AS VARCHAR) + '" + SyncServiceApiController.quebraProcesso + @"' + CAST(P1.Id AS VARCHAR)  AS Id, P1.Id as ParLevel1_Id , P1.Name, P1.HasTakePhoto, 
 
                         -- (select top 1 id from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= CAST('" + dateCollection.ToString("yyyy-MM-dd") + @"' AS DATE)  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Id, 
                         -- (select top 1 name from parCriticalLevel where id = (select top 1 parCriticalLevel_id from parlevel1XCluster where EffectiveDate <= CAST('" + dateCollection.ToString("yyyy-MM-dd") + @"' AS DATE)  and parlevel1_id = P1.id AND isactive = 1 and ParCluster_id = (select top 1 parCluster_id from ParCompanyCluster where ParCompany_id = '" + ParCompany_Id + @"') ORDER BY EffectiveDate Desc)) AS ParCriticalLevel_Name,
@@ -561,7 +562,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
             if (parLevel1.IsFixedEvaluetionNumber)
             {
-                string sql = "   SELECT '" + parLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id " +
+                string sql = "   SELECT '" + parLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id " +
                              "\n FROM ParLevel3Level2 P32   (nolock)                                                                                                                             " +
                              "\n INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                                                                                                 " +
                              "\n ON P321.ParLevel3Level2_Id = P32.Id and p321.active = 1                                                                                                                  " +
@@ -598,7 +599,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             {
                 string sql = $@"
                         SELECT
-                        	'{ parLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id
+                        	'{ parLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id
                            ,PL2.Id AS ParLevel2_Id
                            ,PL2.Name AS Name
                            ,PL2.HasSampleTotal
@@ -709,7 +710,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             if (ParLevel1.hashKey == 2 && ParCompany_Id != null)
             {
 
-                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
                              { ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name,
                              (SELECT top 1 Avaliacoes 
                              FROM VolumeCepDesossa (nolock) 
@@ -741,7 +742,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             else if (ParLevel1.hashKey == 3 && ParCompany_Id != null)
             {
 
-                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
                     { ParLevel1.ParCluster_Id } AS ParCluster_Id, 
                     PL2.Name AS Name,
                              (SELECT TOP 1 Avaliacoes FROM VolumeVacuoGRD (nolock)  
@@ -774,7 +775,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             else if (ParLevel1.hashKey == 4 && ParCompany_Id != null)
             {
 
-                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
                     { ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name,
                              (SELECT TOP 1 Avaliacoes FROM VolumeCepRecortes (nolock) WHERE Data = (
                                     SELECT MAX(DATA) FROM VolumeCepRecortes (nolock)  
@@ -805,7 +806,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             else if (ParLevel1.hashKey == 1 && ParCompany_Id != null)
             {
 
-                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
                              { ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name,
                              (SELECT TOP 1 Avaliacoes FROM VolumePcc1b (nolock)  WHERE Data = (
                                         SELECT MAX(DATA) FROM VolumePcc1b (nolock)  WHERE ParCompany_id = { ParCompany_Id } 
@@ -845,7 +846,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
                 string queryLevel1 = " AND (PE.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "' OR PE.ParLevel1_Id IS NULL) ";
 
-                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id, 
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id, 
                     {ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name, +
                     PE.Number AS Evaluate FROM                                                                      
                                 ParLevel3Level2 P32 (nolock)                                           
@@ -901,7 +902,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             if (ParLevel1.hashKey == 2 && ParCompany_Id != null)
             {
 
-                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
                             { ParLevel1.ParCluster_Id } AS ParCluster_Id, 
                             PL2.Name AS Name,          
                             (SELECT TOP 1 Amostras 
@@ -935,7 +936,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             else if (ParLevel1.hashKey == 3 && ParCompany_Id != null)
             {
 
-                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
                     { ParLevel1.ParCluster_Id } AS ParCluster_Id, 
                              PL2.Name AS Name, 
                              (SELECT TOP 1  Amostras FROM VolumeVacuoGRD (nolock) WHERE Data = (
@@ -968,7 +969,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             else if (ParLevel1.hashKey == 4 && ParCompany_Id != null)
             {
 
-                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
                     { ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name,
                              (SELECT  TOP 1 Amostras FROM VolumeCepRecortes (nolock) WHERE Data = (
                                         SELECT MAX(DATA) FROM VolumeCepRecortes (nolock)  
@@ -999,7 +1000,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             else if (ParLevel1.hashKey == 1 && ParCompany_Id != null)
             {
 
-                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso }' + CAST(PL2.Id AS VARCHAR)  AS Id,
                     { ParLevel1.ParCluster_Id } AS ParCluster_Id, 
                     PL2.Name AS Name, (SELECT TOP 1 Amostras FROM VolumePcc1b(nolock) 
                             WHERE Data = (
@@ -1042,7 +1043,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
                 string queryLevel1 = " AND (PS.ParLevel1_Id = '" + ParLevel1.ParLevel1_Id + "' OR PS.ParLevel1_Id IS NULL) ";
 
-                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServices.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
+                string sql = $@"SELECT '{ ParLevel1.ParCluster_Id + SyncServiceApiController.quebraProcesso }' + CAST(PL2.Id AS VARCHAR) AS Id,
                             { ParLevel1.ParCluster_Id } AS ParCluster_Id, PL2.Name AS Name, PS.Number AS Sample FROM  
                              ParLevel3Level2 P32  (nolock)                                    
                              INNER JOIN ParLevel3Level2Level1 P321 (nolock)                 
@@ -1140,7 +1141,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             string dataFim = null;
 
             //Pega a data pela regra da frequencia
-            SyncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
+            SyncServiceApiController.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
 
             string sql = "\n SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
                          "\n ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, L3V.Id as ParLevel3Value_Id , MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id  AS ParCompany_id1 , L32.ParCompany_Id AS ParCompany_id2, L3V.DynamicValue, L3.HasTakePhoto                                                                                                                                                                                                                                       " +
@@ -1329,7 +1330,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                 string dataFim = null;
 
                 //Pega a data pela regra da frequencia
-                SyncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
+                SyncServiceApiController.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
 
                 string sql = "SELECT " +
                              "R3.ParLevel3_Id AS Id " +
@@ -2657,7 +2658,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
                 if (ParLevel2 != null)
                 {
-                    lista = ParLevel2.Id.Replace(SyncServices.quebraProcesso, "|").Split('|');
+                    lista = ParLevel2.Id.Replace(SyncServiceApiController.quebraProcesso, "|").Split('|');
                     ParCluster_IdL2 = lista.Length > 1 ? lista[0] : "0";
                 }
 
@@ -2676,7 +2677,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                     if (ParLevel1_Id > 0)
                     {
 
-                        sql = "SELECT Distinct PO.level, PC.Name as Counter, PO.Name as Local, '" + ParCluster_IdL1 + SyncServices.quebraProcesso + "' + CAST(PL.ParLevel1_Id AS VARCHAR) AS indicador FROM ParCounterXLocal PL (nolock)  " +
+                        sql = "SELECT Distinct PO.level, PC.Name as Counter, PO.Name as Local, '" + ParCluster_IdL1 + SyncServiceApiController.quebraProcesso + "' + CAST(PL.ParLevel1_Id AS VARCHAR) AS indicador FROM ParCounterXLocal PL (nolock)  " +
                               "LEFT JOIN ParCounter PC (nolock)  ON PL.ParCounter_Id = PC.Id " +
                               "LEFT JOIN ParLocal PO  (nolock) ON PO.Id = PL.ParLocal_Id " +
                               "WHERE PL.ParLevel1_Id = " + ParLevel1_Id + " " +
@@ -2688,7 +2689,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                     else if (ParLevel2_Id > 0)
                     {
 
-                        sql = "SELECT Distinct PO.level, PC.Name as Counter, PO.Name as Local, '" + ParCluster_IdL2 + SyncServices.quebraProcesso + "' + CAST(PL.ParLevel2_Id AS VARCHAR) AS indicador FROM ParCounterXLocal PL (nolock)  " +
+                        sql = "SELECT Distinct PO.level, PC.Name as Counter, PO.Name as Local, '" + ParCluster_IdL2 + SyncServiceApiController.quebraProcesso + "' + CAST(PL.ParLevel2_Id AS VARCHAR) AS indicador FROM ParCounterXLocal PL (nolock)  " +
                               "LEFT JOIN ParCounter PC (nolock)  ON PL.ParCounter_Id = PC.Id " +
                               "LEFT JOIN ParLocal PO (nolock)  ON PO.Id = PL.ParLocal_Id " +
                               "WHERE PL.ParLevel1_Id IS NULL " +

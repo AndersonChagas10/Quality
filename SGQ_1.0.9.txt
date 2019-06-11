@@ -103,5 +103,81 @@ IF COL_LENGTH('RotinaIntegracao','Retornos') IS NULL
 		ALTER TABLE RotinaIntegracao ADD Retornos varchar(250);
     END
 
+GO
 
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='IntegracaoSistemica' AND xtype='U')
+create table IntegracaoSistemica(
+	Id int not null identity primary key,
+	Name varchar(20) NOT NULL,
+	Configuration varchar(255) NOT NULL,
+	Script text NOT NULL,
+	TableName varchar(50) NOT NULL,
+	Intervalo int NOT NULL,
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1
+)
 
+GO
+
+IF EXISTS (
+SELECT  schema_name
+FROM    information_schema.schemata
+WHERE   schema_name = 'INTEG' ) 
+ 
+	BEGIN
+	
+		IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionData' AND xtype='U')
+		CREATE TABLE INTEG.CollectionData
+		(
+			Table_Id			INT NULL,
+			Key_Integ			VARCHAR(500),
+			ParLevel1_id		INT NULL,
+			ParLevel2_id		INT NULL,
+			ParLevel3_id		INT NULL,
+			ParCompany_id		INT NULL,
+			[Weight]			DECIMAL(38,10) NULL,
+			Value				DECIMAL(38,10) NULL,
+			ValueText			VARCHAR(500)   NULL,
+			MinInterval			DECIMAL(38,10) NULL,
+			MaxInterval			DECIMAL(38,10) NULL,
+			IsConform			BIT NULL,
+			IsNotEvaluate		BIT NULL,
+			Evaluation			DECIMAL(38,10) NULL,
+			[Sample]			INT NULL,
+			WeiEvaluation		DECIMAL(38,10) NULL,
+			Defects				DECIMAL(38,10) NULL,
+			WeiDefects			DECIMAL(38,10) NULL,
+			Coletado			INT NULL
+		)
+
+		IF COL_LENGTH('Integ.CollectionData','CollectionDate') IS NULL
+			alter table Integ.CollectionData
+			add CollectionDate Datetime null
+
+	END
+GO
+
+IF COL_LENGTH('Result_Level3_Photos','IsProcess') IS NULL
+    BEGIN	
+		ALTER table Result_Level3_Photos add IsProcess bit not null default 0
+    END
+
+GO
+
+IF COL_LENGTH('ParLevel1XRotinaIntegracao','ParLevelDefinition_Id') IS NULL
+    BEGIN	
+		ALTER table ParLevel1XRotinaIntegracao add ParLevelDefinition_Id int not null default 1 references ParLevelDefiniton (Id)
+    END
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='AppScript' AND xtype='U')
+CREATE TABLE AppScript(
+	Id int IDENTITY(1,1) NOT NULL primary key,
+	[Version] varchar(150) NOT NULL,
+	ArchiveName varchar(150) NOT NULL,
+	Script text NOT NULL
+)
+
+GO

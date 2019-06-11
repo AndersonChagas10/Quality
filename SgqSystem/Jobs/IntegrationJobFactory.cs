@@ -25,7 +25,10 @@ namespace Jobs
             Thread.Sleep(new Random().Next(500, 2000));
             while (true)
             {
-                IntegrationJobFactory.Execute();
+                if (ConfigurationManager.AppSettings["IntegrationJob"] == "on")
+                {
+                    IntegrationJobFactory.Execute();
+                }
 
                 Thread.Sleep(new Random().Next(2000, 10000));
             }

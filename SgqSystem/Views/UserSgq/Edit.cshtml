@@ -1,13 +1,12 @@
 ﻿@{
-    ViewBag.Title = Resources.Resource.edit_user;
-    var Id = Url.RequestContext.RouteData.Values["Id"];
+                /**/
+
+                ViewBag.Title = Resources.Resource.edit_user;
+                var Id = Url.RequestContext.RouteData.Values["Id"];
 }
 
 <div class="page-content-wrapper">
-    <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
-        <!-- BEGIN PAGE HEADER-->
-        <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
@@ -23,15 +22,8 @@
                 </li>
             </ul>
             <div class="page-toolbar">
-                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
-                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                    </div>*@
             </div>
         </div>
-        <!-- END PAGE BAR -->
-        <!-- END PAGE HEADER-->
         <div class="row">
             <div class="col-xs-12">
                 <div class="portlet light bordered">
@@ -97,13 +89,6 @@
                                             </div>
                                         </div>
 
-                                        @*<div class="form-group">
-                                                @Html.Label(Resources.Resource.default_company, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                <div class="col-md-10">
-                                                    @Html.DropDownList("userSgqDto.ParCompany_Id", new SelectList(ViewBag.listaParCompany, "Id", "Name"), new { @class = "form-control" })
-                                                </div>
-                                            </div>*@
-
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.company as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
@@ -133,6 +118,11 @@
                                                     <input id="userSgqDto_ShowAllUnits" name="userSgqDto.ShowAllUnits" type="checkbox" value="">
                                                 </div>
                                             </div>
+                                        }
+                                        else
+                                        {
+                                            @Html.Hidden("userSgqDto_IsActive", "userSgqDto.IsActive");
+                                            @Html.Hidden("userSgqDto_ShowAllUnits", "userSgqDto.IsActive");
                                         }
 
                                         <hr />
@@ -189,7 +179,6 @@
             </div>
         </div>
     </div>
-    <!-- END CONTENT BODY -->
 </div>
 
 <script>
@@ -246,7 +235,17 @@
 
         }
 
-        $.post("@Url.Action("Save", "UserSgq")", $('form').serializeObject(), function () {
+        let obj = $('form').serializeObject();
+
+        if ($("#userSgqDto_IsActive").is(":hidden")) {
+            obj["userSgqDto.IsActive"] = $("#userSgqDto_IsActive").prop("checked");
+        }
+
+        if ($("#userSgqDto_ShowAllUnits").is(":hidden")) {
+            obj["userSgqDto.ShowAllUnits"] = $("#userSgqDto_ShowAllUnits").prop("checked");
+        }
+
+        $.post("@Url.Action("Save", "UserSgq")", obj, function () {
             openMessageModal(Resources('user_save_success'), '');
         })
     });
@@ -268,11 +267,6 @@
     }
 
     $(document).ready(function () {
-
-        @*$.fn.bootstrapSwitch.defaults.size = 'small';
-        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
-        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
-        $("[type='checkbox']").bootstrapSwitch();*@
 
         $.get("@Url.Action("Get", "api/UserSgq")", { 'Id': @Id }, function (object) {
             for (var key in object) {

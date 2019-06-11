@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using static SgqSystem.Controllers.Api.SyncServiceApiController;
 
 namespace SgqSystem.Controllers.Api.Public
 {
@@ -191,7 +192,13 @@ namespace SgqSystem.Controllers.Api.Public
             collectionJson += cluster_id; //[49]
             collectionJson += "</level02>";
 
-            new SgqSystem.Services.SyncServices().InsertJson(collectionJson, "1", "1", false);
+            new SyncServiceApiController().InsertJson(new InsertJsonClass()
+            {
+                ObjResultJSon = collectionJson,
+                deviceId = "1",
+                deviceMac = "1",
+                autoSend = false
+            });
 
         }
     }

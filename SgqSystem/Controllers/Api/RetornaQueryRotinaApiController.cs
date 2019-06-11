@@ -21,7 +21,9 @@ namespace SgqSystem.Controllers.Api
         [Route("RetornaQueryRotina")]
         public Object RetornaQueryRotina(JToken body)
         {
-            var service = new SyncServices();
+            VerifyIfIsAuthorized();
+
+            var service = new SyncServiceApiController();
             var empresaPadrao = new ParCompany();
             var retornoRotinaNinja = new Object();
             var idUsuario = 0;

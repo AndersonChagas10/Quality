@@ -1,14 +1,23 @@
 var userlogado;
+
+var token = function(){
+    return { 
+        "token": userlogado.attr('userlogin') + "|" + userlogado.attr('userpass')
+    }
+}
+
 //fazer login online caso necessario
 function onlineLogin(username, password) {
     Geral.esconderMensagem();
     $.ajax({
-        data: {
+        data: JSON.stringify({
             app: true,
             Name: $('#inputUserName').val(),
             Password: AES.Encrypt($('#inputPassword').val()),
-        },
+        }),
         url: urlPreffix + '/api/User/AuthenticationLogin',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
         type: 'POST',
         success: function (data) {
             if (data.MensagemExcecao) {
@@ -85,13 +94,10 @@ function onLineLogin(data) {
 function getInfoUserById(Id) {
     Geral.esconderMensagem();
     $.ajax({
-        data: {
-            Id: Id,
-        },
-        url: urlPreffix + '/Services/SyncServices.asmx/UserSGQById',
+        url: urlPreffix + '/api/SyncServiceApi/UserSGQById?Id=' + Id,
         type: 'POST',
         success: function (data) {
-            var user = $($(data).text());
+            var user = $(data);
             userlogado = user;
             if (!user.hasClass('user')) {
                 Geral.exibirMensagemErro($(data).text());
@@ -111,11 +117,11 @@ function getInfoUserById(Id) {
 }
 
 function getCompanyUsers(ParCompany_Id) {
-    var request = $.ajax({
-        data: {
-            "ParCompany_Id": ParCompany_Id
-        },
-        url: urlPreffix + '/Services/SyncServices.asmx/getCompanyUsers',
+    $.ajax({
+        url: urlPreffix + '/api/SyncServiceApi/getCompanyUsers?ParCompany_Id=' + ParCompany_Id,
+        headers: token(),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
         type: 'POST',
         success: function (data) {
 
@@ -382,20 +388,30 @@ function readFile(fileEntry) {
 }
 
 function verificaConexaoUnidadeAnterior(ParCompany_Id, user_Id) {
-    $.get(urlPreffix + '/api/Company/getCompany/', { id: ParCompany_Id }, function (r) {
-        if (r.IPServer != null) {
-            var prefixAntigo = urlPreffix;
-            urlPreffix = r.IPServer + '/SgqSystem';
-            ping(function (r) {
-                sendResults();
-                urlPreffix = prefixAntigo;
-                ping(getInfoUserById(user_Id), offLineLogin);
-            }, function (r) {
-                openMessageModal(getResource('data_not_synced'));
-                urlPreffix = prefixAntigo;
-                $('#btnLoginOnline').button('reset');
-                return false;
-            });
+    
+    $.ajax({
+        url: urlPreffix + '/api/Company/getCompany/',
+        data: { id: ParCompany_Id },
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        type: 'GET',
+        success: function (r) {
+            if (r.IPServer != null) {
+                var prefixAntigo = urlPreffix;
+                urlPreffix = r.IPServer + '/SgqSystem';
+                ping(function (r) {
+                    sendResults();
+                    urlPreffix = prefixAntigo;
+                    ping(getInfoUserById(user_Id), offLineLogin);
+                }, function (r) {
+                    openMessageModal(getResource('data_not_synced'));
+                    urlPreffix = prefixAntigo;
+                    $('#btnLoginOnline').button('reset');
+                    return false;
+                });
+            }
+        },
+        error: function (e) {
         }
     });
 }

@@ -17,8 +17,8 @@ namespace SgqSystem.Controllers.Api
 {
 
     [HandleApi()]
-    [RoutePrefix("api/ResultLevel3Photos")]
-    public class ResultLevel3PhotosApiController : ApiController
+    [RoutePrefix("api/ResultLevel3PhotosApi")]
+    public class ResultLevel3PhotosApiController : BaseApiController
     {
 
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -31,6 +31,7 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]
         public IHttpActionResult Insert([FromBody] List<Result_Level3_PhotosDTO> Fotos)
         {
+            VerifyIfIsAuthorized();
             //, int Level1Id, int Level2Id, int Level3Id, int Evaluation, int Sample, string Date
             string quebraProcesso = "98789";
 
@@ -118,7 +119,9 @@ namespace SgqSystem.Controllers.Api
 
                 if (ResultPhoto.Result_Level3_Id == 0)
                 {
-                    return Ok(new { message = "ResultLevel3Id não encontrado.", count = i });
+                    return Ok(new { message = 
+                        "ResultLevel3Id não encontrado."+Newtonsoft.Json.JsonConvert.SerializeObject(ResultPhoto),
+                        count = i });
                 }
 
                 string sql = @"INSERT INTO Result_Level3_Photos(Result_Level3_Id, Photo_Thumbnaills, Photo, Latitude, Longitude) 

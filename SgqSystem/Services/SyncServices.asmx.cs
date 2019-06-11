@@ -35,7 +35,7 @@ namespace SgqSystem.Services
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     [System.Web.Script.Services.ScriptService]
-    public class SyncServices : System.Web.Services.WebService
+    public class SyncServicesOld : System.Web.Services.WebService
     {
 
         string conexao;
@@ -46,7 +46,7 @@ namespace SgqSystem.Services
 
         Dominio.SgqDbDevEntities dbEf;
 
-        public SyncServices()
+        public SyncServicesOld()
         {
 
             conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -241,7 +241,7 @@ namespace SgqSystem.Services
 
             //ObjResultJSon = "<level02>3987891;03/30/2018 08:41:032:033;1;03/30/2018 08:41:032:072;5;1;1;1;0;false;03302018;1;1;<header>17,1,3,0,0,0,0,0,0</header>;false;false;;undefined;undefined;false; 2.0.46;JBS ;<level03>16,03/30/2018 08:41:032:075,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>27,03/30/2018 08:41:032:076,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>29,03/30/2018 08:41:032:077,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;3;0;0;0;3;0;1;0;0;0;0;undefined;0;0</level02>";
 
-            ObjResultJSon = ObjResultJSon.Replace("%2C", "");
+            ObjResultJSon = ObjResultJSon.Replace("%2C", "").Replace("NaN", "0");
 
             var objObjResultJSonPuro = ObjResultJSon;
 
@@ -332,7 +332,7 @@ namespace SgqSystem.Services
 
                         var ParLevel1Origin_Id = DefaultValueReturn(result[0], "0");
 
-                        string indicadorPai = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                        string indicadorFilho_ = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
                                               "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
                                               "\n  on p321.ParLevel1_Id = p1.id " +
                                               "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
@@ -348,17 +348,40 @@ namespace SgqSystem.Services
 
                         using (Factory factory = new Factory("DefaultConnection"))
                         {
-                            list = factory.SearchQuery<ResultadoUmaColuna>(indicadorPai).ToList();
+                            list = factory.SearchQuery<ResultadoUmaColuna>(indicadorFilho_).ToList();
                         }
 
                         string level3split = result[22].Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", ""); //tiro as tags de <level3></level3>, deixando o simbolo @ para separar os elementos.
                         string[] leveis3 = level3split.Split('@'); //faço um array contendo cada elemento level3 vindo do sistema
 
+
+                        string indicadorPai = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                                              "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
+                                              "\n  on p321.ParLevel1_Id = p1.id " +
+                                              "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
+                                              "\n  on p32.id = p321.ParLevel3Level2_Id " +
+                                              "\n  WHERE p1.id = " + ParLevel1Origin_Id +
+                                              "\n  and p1.isActive = 1 " +
+                                              "\n  and p321.Active = 1 " +
+                                              "\n  and p32.IsActive = 1" +
+                                              "\n  and p32.Parlevel2_Id = " + parLevel2_Id;
+
+
+                        List<ResultadoUmaColuna> listPai;
+
+                        using (Factory factory = new Factory("DefaultConnection"))
+                        {
+                            listPai = factory.SearchQuery<ResultadoUmaColuna>(indicadorPai).ToList();
+                        }
+
+                  
                         //string[][] matrizLevel3 = new string[leveis3.Length][];
 
                         string retorno = "";
 
                         string retornoFilho = "";
+
+                        bool apagarLevel3 = true;
 
                         //tiro todos os level3 que não são do indicador
                         for (int j = 0; j < leveis3.Length; j++) //Percorro cada elemento do array
@@ -372,7 +395,19 @@ namespace SgqSystem.Services
                                     retornoFilho += "<level03>";
                                     retornoFilho += leveis3[j];
                                     retornoFilho += "</level03>";
-                                    leveis3[j] = "";
+
+                                    for (var l = 0; l < listPai.Count(); l++)
+                                    {
+                                        if (listPai[l].retorno.ToString() == esteLevel3[0])
+                                        {
+                                            apagarLevel3 = false;
+                                        }
+                                    }
+
+                                    if(apagarLevel3)
+                                        leveis3[j] = "";
+
+                                    apagarLevel3 = true;
                                 }
                             }
                         }
@@ -3933,15 +3968,18 @@ namespace SgqSystem.Services
         {
             //var version = "2.0.47";
             string forcaAtualizacao = "";
-            if (!version.Contains("2.0.47"))
+
+            string appVersion = System.Configuration.ConfigurationManager.AppSettings["appVersion"];
+
+            if (!version.Contains(appVersion))
                 forcaAtualizacao = @"<script>
-                                    setTimeout(function(){
-                                        navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
-                                        cleanArquivos, 
-                                        'Atualização', 
-                                        'OK');
-                                    },500);
-                                    </script>";
+                                     setTimeout(function(){
+                                         navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
+                                         Reload, 
+                                         'Atualização', 
+                                         'OK');
+                                     },500);
+                                     </script>";
 
             string login = GetLoginAPP();
 
@@ -3975,295 +4013,7 @@ namespace SgqSystem.Services
                               "<div class=\"Deviations hide\"></div>" +
                               "<div class=\"Users hide\"></div>" +
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
-                              "<div class=\"VerificacaoTipificacaoResultados hide\"></div>" +
-                              " <script>" +
-
-                              @"
-
-                                  var countHeaderFieldGroup = 0;
-
-function preenchePCC1b(){
-    //debugger
-    if(_level1 && _level1.id.replace('98789','|').split('|')[1] == 3){
-        $('#DescriptionFailure').val('Foi encontrado fezes e/ou ingesta no quarto.');
-        $('#ImmediateCorrectiveAction').val('A nória foi paralizada e fez-se a remoção da porção contaminada.');
-        $('#ProductDisposition').val('Verificou-se a carcaça novamente e ela foi liberada.');
-        $('#PreventativeMeasure').val('Será analisado junto com o supervisor');
-    }
-}
-
-$(document).on('click','#btnMessageOk', function(e){
-    preenchePCC1b(); 
-});
-
-function clonarHF(a){ 
-    var headerFieldGroupVisiveis = $('[hfg]:visible').not('[data-vinculo]');
-    countHeaderFieldGroup++;
-    headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function(o, c){ return $(o).attr('hfg') == $(a).attr('hfg') }); 
-    $.each(headerFieldGroupVisiveis,function(i,o){
-    if(!$(o).parent().attr('data-vinculo')){
-        var elementoClonado = $(o).parent().clone(true, true);
-        elementoClonado.attr('data-vinculo',countHeaderFieldGroup);
-		elementoClonado.insertAfter($(o).parent());
-    }
-    });
-}
-
-function removerHF(a){ 
-    var headerFieldGroupVisiveis = $('[data-vinculo='+$(a).parent().attr('data-vinculo')+']:visible');
-    $.each(headerFieldGroupVisiveis,function(i,o){
-	    $(o).remove();
-    });
-}
-
-$(document).ready(function(){
-    $('body').on('input', 'input.interval:visible, input.likert:visible', function(){
-
-        var id = $(this).parents('li').attr('id');
-	    $.each($('input[resultado]:visible'), function(i, o){
-			if ($(o).attr('resultado').indexOf('{' + id + '}') >= 0 || $(o).attr('resultado').indexOf('{' + id + '?}') >= 0){
-				var resultado = $(o).attr('resultado');
-
-				const regex = /{([^}]+)}/g;
-				var m;
-
-				while ((m = regex.exec($(o).attr('resultado'))) !== null)
-				{
-					// This is necessary to avoid infinite loops with zero-width matches
-					if (m.index === regex.lastIndex)
-					{
-						regex.lastIndex++;
-					}
-
-					var valor = $('li[id=""' + m[1].replace('?','') + '""] input.interval').val();
-					if(valor)
-						resultado = resultado.replace(m[0],valor);
-					else{
-						var valor = $('li[id=""' + m[1].replace('?','') + '""] input.likert').val();
-						if(valor)
-							resultado = resultado.replace(m[0],valor);
-						else{
-							if(m[1].indexOf('?') >= 0){
-								resultado = resultado.replace(m[0],0);
-							}
-						}
-					}
-				}
-
-				if (resultado.indexOf('{') != -1)
-				{
-					resultado = """";
-				}
-				else
-				{
-					resultado = eval(resultado);
-				}
-				$(o).val(resultado);
-				$(o).trigger('input');
-
-			}
-		});
-    });
-
-    $('body').on('click','.level2',function(){
-	    var self = this;
-	    PesoHB(self);
-    });
-});
-
-var mediaPesoHB = [];
-
-function CalculoMediaPesoHB(){
-    var sum = 0;
-    for( var i = 0; i < mediaPesoHB.length; i++ ){
-        sum += parseInt( mediaPesoHB[i] ); //don't forget to add the base
-    }
-
-    if(mediaPesoHB.length == 0){
-        return 0;
-    }
-
-    return sum/mediaPesoHB.length;
-}
-
-function ResetaCorMediaPesoHB(timeout){
-    timeout = timeout ? timeout : 100;
-    setTimeout(function(){
-		if(CalculoMediaPesoHB() < parseInt($('#'+getDicionario('IdTarefaPesoHB')+'.level3').attr('intervalmin'))){
-			$('.level3List .calculoPesoHB').addClass('lightred');
-		}else{
-			$('.level3List .calculoPesoHB').removeClass('lightred');
-		}
-	}, timeout);
-}
-
-function PesoHB(self){
-	var level1 = $(_level1).attr('id').split('98789');
-	if(level1[1] == parseInt(getDicionario('IdIndicadorPesoHB'))){
-		var id = $(self).attr('id');
-		var cluster_level2 = id.split('98789');
-		if(cluster_level2.length > 0)
-			id = cluster_level2[1];
-		
-			setTimeout(
-				function(){
-					console.log('AQUI VC FAZ AS REGRAS DO HAMBURGUER');
-
-
-                    var minimo = parseInt($('#'+getDicionario('IdTarefaPesoHB')+'.level3').attr('intervalmin'));
-            var tara = parseInt($('#'+getDicionario('IdCabecalhoTaraPesoHB')).val());
-            if (isNaN(tara))
-                tara = 0;
-					
-					$('.level3List .calculoPesoHB').remove();
-            var ultimoLevel3 = $('.level3List .level3:last').clone();
-					$(ultimoLevel3).addClass('calculoPesoHB');
-					$(ultimoLevel3).find('.col-xs-4 .levelName').text('Média peso HB');
-					$(ultimoLevel3).find('.col-xs-3 .levelName').text('Min: ' + (minimo + tara) + 'g');
-
-
-                    if(parseInt($('span.sampleCurrent:visible').text()) <= 1)
-                        mediaPesoHB = [];
-
-					$(ultimoLevel3).find('.col-xs-3.counters').addClass('medicaCalculoPesoHB').text('Média: ' + CalculoMediaPesoHB() + 'g');
-					$(ultimoLevel3).find('.col-xs-2').html('');
-					
-					$('.level3List').off('blur', '#'+getDicionario('IdCabecalhoTaraPesoHB'));
-					$('.level3List').on('blur', '#'+getDicionario('IdCabecalhoTaraPesoHB'), function(){
-                PesoHB(self);
-            });
-					
-					$('.level3List').off('change', '#'+getDicionario('IdCabecalhoQuantidadeAmostraPesoHB'));
-					$('.level3List').on('change', '#'+getDicionario('IdCabecalhoQuantidadeAmostraPesoHB'), function(){
-                var text = $(this).find(':selected').text();
-						//Nº Amostrar
-						$(_level2).attr('sample', text);
-						$('span.sampleTotal:visible').text(text);
-                PesoHB(self);
-            });
-					
-					$('.level3List').append(ultimoLevel3);
-                    ResetaCorMediaPesoHB(400);
-}
-			,100);
-		
-    }
-}
-
-function validaNumeroEscalaLikert(evt, that)
-{
-    var e = event || evt; 
-    var charCode = e.which || e.keyCode;
-
-    $(that).parents('li').css('background-color', '');
-
-	if(!(charCode == 45 && $(that).val().length == 0)){
-		if (charCode > 31 && (charCode < 48 || charCode > 57)){
-			e.preventDefault();
-			return false;
-		}
-	}
-
-    aplicaCorAoInput(that);
-
-    return true;
-}
-
-function aplicaCorAoInput(input) {
-
-    var paramns = $(input).attr('paramns')
-
-    var properties = paramns.split('|');
-    var arr = [];
-
-    properties.forEach(function(property) {
-        var tup = property.split(':');
-        arr[tup[0]] = [tup[1],tup[2]];
-    });
-
-    var value = $(input).val();
-	if(!(typeof(arr[value]) == 'undefined') && !(typeof(arr[value][0]) == 'undefined')){
-            var color = arr[value][0];
-            var valueText = arr[value][1];
-
-            $(input).parents('li').attr('value', valueText);
-            $(input).parents('li').css('background-color', color);
-    }
-}
-
-function validaValoresValidosEscalaLikert(input) {
-
-    if((!(typeof($(input).val()) == 'undefined') && $(input).val().length <= 0) || parseInt($(input).attr('min')) > $(input).val()
-        || parseInt($(input).attr('max')) < $(input).val()){
-		$(input).val('');
-		$(input).parents('li').css('background-color', '');
-		$(input).trigger('input');
-    }
-
-}
-
-function calcularSensorial(list){
-
-	var attributes = list
-
-	//declare attribute and point counter
-	var noOf5 = 0
-	var noOf4and6 = 0
-	var noOf3and7 = 0
-	var noOf2and8 = 0
-	var noOf1and9 = 0
-	var noOfElem = 0 
-	var addPoint5_85 = 0
-	var addPoint5_60 = 0
-	var addPoint4and6 = 0
-	var CategoryScore_calc = 0
-
-	for (i = 0; i < attributes.length; i++){
-
-		if (attributes[i] == 1 || attributes[i] == 9){
-			noOf1and9 = noOf1and9 + 1
-		}else if (attributes[i] == 2 || attributes[i] == 8){
-			noOf2and8 = noOf2and8 + 1
-		}else if (attributes[i] == 3 || attributes[i] == 7){
-			noOf3and7 = noOf3and7 + 1
-		}else if (attributes[i] == 4 || attributes[i] == 6){
-			noOf4and6 = noOf4and6 + 1
-		}else if (attributes[i] == 5){
-			noOf5 = noOf5 + 1
-		}
-
-	}
-
-	noOfElem = 1 > (noOf4and6 + noOf3and7 + noOf5 - 1) ? 1 : (noOf4and6 + noOf3and7 + noOf5 - 1)
-
-	addPoint5_85 = (10 * noOf5 / noOfElem)
-	addPoint5_60 = (20 * noOf5 / noOfElem)
-	addPoint4and6 = (10 * noOf4and6 / noOfElem)
-
-	if (noOf1and9 > 0) {
-	    CategoryScore_calc = 0
-	}
-	else if (noOf2and8 > 0) {
-	    CategoryScore_calc = 25
-	}
-	else if (noOf3and7 > 0) {
-	    CategoryScore_calc = 60 + addPoint5_60 + addPoint4and6
-	}
-	else if (noOf4and6 > 0) {
-	    CategoryScore_calc = 85 + addPoint5_85
-	}
-	else if (noOf5 = 0) {
-	    CategoryScore_calc = 0
-	}
-	else {
-		CategoryScore_calc = 100
-	} 
-
-	//imprimir na tela
-	return  Math.round( CategoryScore_calc)
-
-}
-                              </script> ";
+                              "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
             try
             {
@@ -4521,7 +4271,7 @@ function calcularSensorial(list){
 
                     var parFrequency_Id = conexaoEF.ParLevel2.Find(parLevel2_Id).ParFrequency_Id;
 
-                    foreach (var item in conexaoEF.ParEvaluationSchedule
+                    var list = conexaoEF.ParEvaluationSchedule
                         .Where(x => (x.ParEvaluation.ParLevel1_Id == parLevel1_Id || x.ParEvaluation.ParLevel1_Id == null)
                         && x.ParEvaluation.ParLevel2_Id == parLevel2_Id
                         && (x.ParEvaluation.ParCompany_Id == company_Id || x.ParEvaluation.ParCompany_Id == null)
@@ -4529,21 +4279,25 @@ function calcularSensorial(list){
                         && x.ParEvaluation.ParCluster_Id == cluster_id
                         && x.ParEvaluation.IsActive
                         && x.IsActive)
-                        .OrderByDescending(x => new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList())
+                        .OrderByDescending(x => new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList();
+
+                    foreach (var item in list)
                     {
-                        if (parFrequency_Id != 10)
+                        if (item.ParEvaluation.ParCompany_Id == list[0].ParEvaluation.ParCompany_Id)
                         {
-                            frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
+                            if (parFrequency_Id != 10)
+                            {
+                                frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
+                            }
+                            else
+                            {
+                                frequencia.Add($"{item.Intervalo}");
+                            }
                         }
-                        else
-                        {
-                            frequencia.Add($"{item.Intervalo}");
-                        }
-
                     }
-                }
 
-                return string.Join("|", frequencia);
+                    return string.Join("|", frequencia);
+                }
             }
             catch (Exception Ex)
             {
@@ -7207,7 +6961,10 @@ function calcularSensorial(list){
             }//Escala Likert
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
-                var ranges = dbEf.ParInputTypeValues.Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id).ToList();
+                var ranges = dbEf.ParInputTypeValues
+                    .Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id 
+                        && r.IsActive
+                        && (r.Intervalo <= parLevel3.IntervalMax && r.Intervalo >= parLevel3.IntervalMin) ).ToList();
 
                 var paramns = new List<string>();
 
@@ -7716,8 +7473,8 @@ function calcularSensorial(list){
                 string[] deviation = arrayDeviations[i].Split(';');
 
                 string ParCompany_Id = deviation[0];
-                string ParLevel1_Id = deviation[1];
-                string ParLevel2_Id = deviation[2];
+                string ParLevel1_Id = deviation[1].Contains(quebraProcesso) ? deviation[1].Replace(quebraProcesso, "|").Split('|')[1] : deviation[1];
+                string ParLevel2_Id = deviation[2].Contains(quebraProcesso) ? deviation[2].Replace(quebraProcesso, "|").Split('|')[1] : deviation[2];
                 string Evaluation = deviation[3] == "" ? "0" : deviation[3];
 
                 if (Evaluation == "undefined")

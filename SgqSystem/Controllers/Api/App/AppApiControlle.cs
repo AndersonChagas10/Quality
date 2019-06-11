@@ -3,6 +3,7 @@ using Dominio;
 using DTO;
 using DTO.Helpers;
 using Newtonsoft.Json;
+using SgqSystem.Controllers.Api;
 using SgqSystem.Helpers;
 using SgqSystem.Services;
 using System;
@@ -59,7 +60,7 @@ namespace SgqSystem.Controllers.Api.App
             var shifts = db.Shift.ToList();
             shifts.Insert(0, new Shift());
 
-            using (var service = new SyncServices())
+            using (var service = new SyncServiceApiController())
             {
                 foreach (var shift in shifts)
                 {
@@ -104,9 +105,11 @@ namespace SgqSystem.Controllers.Api.App
             GlobalConfig.PaginaDoTablet[UnitId].DataInicio = DateTime.Now;
 
             var shifts = this.listaDeShift;
-            shifts.Insert(0, new Shift());
 
-            using (var service = new SyncServices())
+            //Era utilizado para gerar o arquivo de todos os turnos
+            //shifts.Insert(0, new Shift());
+
+            using (var service = new SyncServiceApiController())
             {
                 for (int i = 0; i < shifts.Count; i++)
                 {
@@ -169,12 +172,16 @@ namespace SgqSystem.Controllers.Api.App
         /// <returns></returns>
         [HttpGet]
         [Route("GetTela/{UnitId}/{ShiftId?}")]
-        public RetornoParaTablet GetTela(int UnitId, int ShiftId = 0)
+        public RetornoParaTablet GetTela(int UnitId, int ShiftId = 1)
         {
+            VerifyIfIsAuthorized();
+
             var retorno = new RetornoParaTablet();
 
             var shifts = db.Shift.ToList();
-            shifts.Insert(0, new Shift());
+
+            //Era utilizado para gerar o arquivo de todos os turnos
+            //shifts.Insert(0, new Shift());
 
             try
             {
@@ -231,7 +238,7 @@ namespace SgqSystem.Controllers.Api.App
         //[Route("UpdateListaDeUsuarios/{UnitId}")]
         //public Dictionary<int, string> UpdateListaDeUsuarios(int UnitId)
         //{
-        //    using (var service = new SyncServices())
+        //    using (var service = new SyncServiceApiController())
         //    {
         //        service.getCompanyUsers(UnitId.ToString()));
         //    }
@@ -242,27 +249,27 @@ namespace SgqSystem.Controllers.Api.App
         [Route("GetFiles")]
         public string GetFiles()
         {
-            
-                
-            string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta\\"+ System.Configuration.ConfigurationManager.AppSettings["AppFiles"];
-            string searchPattern = "*.*";
-            string[] MyFiles = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories)
-                .Where(file => file.ToLower().EndsWith("js") || file.ToLower().EndsWith("css")).ToArray();
+            return new AppScriptsController().GetByVersion("GQ");
 
-            var obj = new List<Dictionary<string, string>>();
+            //string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
+            //string searchPattern = "*.*";
+            //string[] MyFiles = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories)
+            //    .Where(file => file.ToLower().EndsWith("js") || file.ToLower().EndsWith("css")).ToArray();
 
-            foreach (var url in MyFiles)
-            {
-                var conteudo = System.IO.File.ReadAllText(url).ToString();
-                var nomeArquivo = Path.GetFileName(url);
+            //var obj = new List<Dictionary<string, string>>();
 
-                var file = new Dictionary<string, string>();
+            //foreach (var url in MyFiles)
+            //{
+            //    var conteudo = System.IO.File.ReadAllText(url).ToString();
+            //    var nomeArquivo = Path.GetFileName(url);
 
-                file.Add(nomeArquivo, conteudo);
-                obj.Add(file);
-            }
+            //    var file = new Dictionary<string, string>();
 
-            return JsonConvert.SerializeObject(obj);
+            //    file.Add(nomeArquivo, conteudo);
+            //    obj.Add(file);
+            //}
+
+            //return JsonConvert.SerializeObject(obj);
         }
 
         [HttpGet]
@@ -271,7 +278,7 @@ namespace SgqSystem.Controllers.Api.App
         {
             var html = new Html();
 
-            var teste = new SyncServices();
+            var teste = new SyncServiceApiController();
 
             string login = teste.GetLoginAPP();
 

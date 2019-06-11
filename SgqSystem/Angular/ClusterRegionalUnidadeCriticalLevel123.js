@@ -3,8 +3,7 @@
 (function () {
     app.controller('CtrlClstRegUnitCriticalLevel123', ['$scope', '$http',
         function ($scope, $http) {
-
-
+            
             $http({
                 method: 'POST',
                 url: GetListClusterGroup,
@@ -22,6 +21,17 @@
                 then(function (r) {
                     $scope.cluster = r.data;
                 });
+
+            //Novo            
+            $http({
+                method: 'POST',
+                url: GetListParStructureGroup,
+                data: JSON.stringify({ "UserId": GetUsuarioId() })
+            }).
+                then(function (r) {
+                    $scope.structureGroup = r.data;
+                });
+            //Fim Novo
 
             $http({
                 method: 'POST',
@@ -70,7 +80,6 @@
             }
 
             $scope.GetListClusterVinculadoClusterGroup = function () {
-                //if ($scope.clusterGroupValue) {
 
                 $http({
                     method: 'POST',
@@ -82,30 +91,37 @@
                         AtribuiCluster();
 
                     });
-            }
+            };
 
             $scope.GetListStructureVinculadoCluster = function () {
 
                 enviar['clusterIdArr'] = $('#clusterId').val();
 
+                enviar['ParStructureGroupId'] = $('#structureGroupId').val();
+
                 // Desabilita Nivel Critico se processo não selecionado
                 if ($('#clusterId').val().length > 0) {
+
                     $('#criticalLevelId').attr('disabled', false);
+
                 } else {
+
                     $('#criticalLevelId').attr('disabled', true);
                     $scope.criticalLevelValue = null;
 
                     setTimeout(function () {
-                        $('#criticalLevelId').trigger('change')
+                        $('#criticalLevelId').trigger('change');
                     }, 1);
                 }
 
-                if ($scope.clusterValue) {
+                if ($scope.clusterValue || $scope.structureGroupValue) {
 
                     $http({
                         method: 'POST',
                         url: GetListStructure,
-                        data: JSON.stringify({ "UserId": GetUsuarioId(), "ClusterArr": $scope.clusterValue })
+                        data: JSON.stringify({
+                            "UserId": GetUsuarioId(), "ClusterArr": $scope.clusterValue, "ParStructureGroupId": $scope.structureGroupValue
+                        })
                     }).
                         then(function (r) {
                             $scope.structure = r.data;
@@ -113,13 +129,15 @@
 
 
                     if (!$scope.structureValue) {
+
                         var structureValue = Array.isArray($scope.structureValue) ? $scope.structureValue : [$scope.structureValue];
+
                         $http({
                             method: 'POST',
                             url: GetListUnitVinculado,
                             data: JSON.stringify({
                                 "UserId": GetUsuarioId(), "ClusterArr": $scope.clusterValue, "StructureArr": structureValue
-                        })
+                            })
                         }).
                             then(function (r) {
                                 $scope.unit = r.data;
@@ -138,6 +156,7 @@
 
                 }
                 else {
+
                     $http({
                         method: 'POST',
                         url: GetListStructure,
@@ -155,11 +174,11 @@
                     $scope.criticalLevel = [];
                 }
 
-                //AtribuiCriticalLevel();
-            }
+            };
 
             $scope.GetListUnitVinculadoStructure = function () {
-                enviar['structureIdArr'] = []
+
+                enviar['structureIdArr'] = [];
                 enviar['structureId'] = document.getElementById('structureId').value;
                 enviar['structureIdArr'] = [$('#structureId').val()];
 
@@ -198,15 +217,15 @@
                 } else {
                     $scope.unit = UnitList;
                 }
-            }
+            };
 
             $scope.AtribuiObject = function () {
+
                 enviar['shift'] = $('#shiftIdV').val();
                 enviar['unitIdArr'] = $('#unitIdV').val();
                 enviar['unitId'] = document.getElementById('unitIdV').value;
-                //console.log($scope.unit);
-                //console.log($scope.unitValue);
-            }
+
+            };
 
             $scope.GetLevel1ByCriticalLevel = function () {
 
@@ -225,7 +244,7 @@
                             $scope.level1 = r.data;
                         });
                 }
-            }
+            };
 
             $scope.GetLevel1ByLevel1Group = function () {
 
@@ -244,23 +263,27 @@
                             $scope.level1 = r.data;
                         });
                 }
-            }
+            };
 
             $scope.GetListLevel2VinculadoLevel1 = function () {
+
                 enviar['level1Id'] = parseInt(document.getElementById('level1Idv').value);
                 enviar['level1IdArr'] = $('#level1Idv').val();
                 //
                 //Desabilita monitoramento e tarefa quando selecionado mais de um indicador
                 if ($('#level1Idv').val().length != 1) {
+
                     $('#level2Idv').attr('disabled', true);
                     $('#level3Idv').attr('disabled', true);
                     $scope.level2Value = null;
                     $scope.level3Value = null;
+
                 } else {
+
                     $('#level2Idv').attr('disabled', false);
+
                 }
 
-                //Desabilita tipo de indicador quando há um unico selecionado, caso contrario habilita
                 //Desabilita tipo de indicador quando há um unico selecionado, caso contrario habilita
                 if ($('#level1Idv').val().length != 1) {
                     $('#statusIndicador').prop("disabled", false);
@@ -317,7 +340,7 @@
                         AtribuiLevel2();
                     }
                 }
-            }
+            };
 
             $scope.GetListLevel3VinculadoLevel2 = function () {
                 enviar['level2Id'] = parseInt(document.getElementById('level2Idv').value);
@@ -335,7 +358,7 @@
                     $http({
                         method: 'POST',
                         url: GetListLevel3VinculadoLevel2,// + "/" + $scope.level2Value,
-                        data: JSON.stringify({ "Level2IdArr": $scope.level2Value,  })
+                        data: JSON.stringify({ "Level2IdArr": $scope.level2Value, })
                         //data: JSON.stringify({ Id: $scope.level2Value })
                     }).
                         then(function (r) {
@@ -366,43 +389,56 @@
                         $scope.level3 = [];
                     }
                 }
-            }
+            };
 
         }]);
 })();
 
 function AtribuiCluster() {
+
     setTimeout(function () {
+
         enviar['clusterSelected_Id'] = document.getElementById('clusterId').value;
         var option = $('#clusterGroupId option').filter(function () { return $(this).html() == clusterGroupInitialMock; }).val();
+
         if (enviar["clusterGroupId"] == undefined || enviar["clusterGroupId"] <= 0) {
+
             $('#clusterGroupId').val(option).trigger("change");
+
             enviar["clusterGroupId"] = option;
+
             // Inicia o Nivel Critico, desabilitado, por conta de ser dependente da seleção do Processo
             $('#criticalLevelId').prop("disabled", true);
         }
+
     }, 1);
 }
 
 function AtribuiLevel2() {
+
     setTimeout(function () {
+
         enviar['level2Id'] = document.getElementById('level2Idv').value;
+
     }, 1);
 }
 
 function AtribuiCriticalLevel() {
+
     // Desabilita Nivel Critico se processo não selecionado
     if ($('#clusterId').val().length > 0) {
+
         $('#criticalLevelId').attr('disabled', false);
+
     } else {
-        //$('#criticalLevelId').prop("value", '').trigger('change');
+
         $('#criticalLevelId').attr('disabled', true);
+
         $scope.criticalLevelValue = null;
-            //$('#criticalLevelId').attr('value', '');
 
         setTimeout(function () {
 
-            $('#criticalLevelId').trigger('change')
+            $('#criticalLevelId').trigger('change');
 
 
         }, 200);

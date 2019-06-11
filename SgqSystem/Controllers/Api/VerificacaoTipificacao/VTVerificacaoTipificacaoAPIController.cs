@@ -410,7 +410,7 @@ namespace SgqSystem.Controllers.Api
                                 {
                                     //if (autoSend == true)
                                     //{
-                                    SyncServices sync = new SyncServices();
+                                    SyncServiceApiController sync = new SyncServiceApiController();
                                     sync.ProcessJson(null, iSql, false);
 
                                     //}
@@ -443,6 +443,8 @@ namespace SgqSystem.Controllers.Api
         [Route("GetAll/{Date}/{UnidadeId}")]
         public string GetVTVerificacaoTipificacao(String Date, int UnidadeId)
         {
+            VerifyIfIsAuthorized();
+
             string retorno = "";
             try
             {

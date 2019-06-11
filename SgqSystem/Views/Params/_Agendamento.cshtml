@@ -82,8 +82,7 @@
         ContadorLinhas();
     });
 
-    function abrirModalAgendamento(linha) {
-        debugger
+    function abrirModalAgendamento(linha) { 
         var obj = $(linha).parents('tr').data();
         if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
             $("#tabelaAgendamentoIntervalo").attr('style', '');

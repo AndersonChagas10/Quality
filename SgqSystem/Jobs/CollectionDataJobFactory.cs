@@ -10,6 +10,9 @@ using SgqSystem.Mail;
 using System.Configuration;
 using Dominio;
 using IntegrationModule;
+using SgqSystem.Controllers.Api;
+using static SgqSystem.Controllers.Api.SyncServiceApiController;
+using SgqSystem.Services;
 
 namespace Jobs
 {
@@ -25,7 +28,10 @@ namespace Jobs
             Thread.Sleep(new Random().Next(1000, 2000));
             while (true)
             {
-                CollectionDataJobFactory.Execute();
+                if (ConfigurationManager.AppSettings["CollectionDataJob"] == "on")
+                {
+                    CollectionDataJobFactory.Execute();
+                }
 
                 Thread.Sleep(new Random().Next(50000, 80000));
             }
@@ -38,7 +44,7 @@ namespace Jobs
                 using (var db = new SgqDbDevEntities())
                 {
                     
-                    var integCollectionData = db.IntegCollectionData.Where(x => !(x.Coletado > 0)).Take(20).ToList();
+                    var integCollectionData = db.IntegCollectionData.Where(x => !(x.Coletado > 0)).Take(50).ToList();
 
                     foreach (var item in integCollectionData)
                     {
@@ -97,7 +103,13 @@ namespace Jobs
 
             try
             {
-                var x = new SgqSystem.Services.SyncServices().InsertJson(coleta.ToString(), "", "", false);
+                var x = new SyncServicesOld().InsertJson(
+                    coleta.ToString(),
+                    "",
+                    "",
+                    false
+                );
+
                 if (x == null)
                 {
                     using (var db = new SgqDbDevEntities())
@@ -107,6 +119,16 @@ namespace Jobs
                         db.SaveChanges();
                     }
                 }
+                else
+                {
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        integCollectionData.Coletado = 3;
+                        db.Entry(integCollectionData).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
             }catch(Exception ex)
             {
                 using (var db = new SgqDbDevEntities())

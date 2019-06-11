@@ -18,10 +18,10 @@ public class ApontamentosDiariosResultSet
     public string Lancado { get; set; }
 
     public Nullable<bool> Conforme { get; set; }
-    public string _Conforme { get { return Conforme.Value ? GetResources.getResource("according").Value.ToString() : GetResources.getResource("not_accordance").Value.ToString(); } }
+    public string _Conforme { get { return Conforme.Value ? Resources.Resource.according : Resources.Resource.not_accordance; } }
 
     public Nullable<bool> NA { get; set; }
-    public string _NA { get { return NA.Value ? GetResources.getResource("unvalued").Value.ToString() : GetResources.getResource("valued").Value.ToString(); } }
+    public string _NA { get { return NA.Value ? Resources.Resource.unvalued : Resources.Resource.valued; } }
 
     public Nullable<decimal> AV_Peso { get; set; }
     public Nullable<decimal> _AV_Peso { get { return AV_Peso.HasValue ? AV_Peso.Value : 0M; } }

@@ -41,10 +41,10 @@ namespace SgqSystem.Controllers
         public ActionResult Create(int parCompanyId)
         {
             ViewBag.ParCompanyId = parCompanyId;
-            var listlinkedCompany = db.ParCompanyXStructure.Where(m=> m.ParCompany_Id == parCompanyId).Select(m=>m.ParCompany_Id).ToList();
+            //var listlinkedCompany = db.ParCompanyXStructure.Where(m=> m.ParCompany_Id == parCompanyId).Select(m=>m.ParCompany_Id).ToList();
             var listaDeEmpresasSalvas = db.ParCompanyXStructure.Where(x => x.ParCompany_Id == parCompanyId && x.Active == true).Select(m => m.ParStructure_Id).ToList();
 
-            ViewBag.ParStructure_Id = new SelectList(db.ParStructure.Where(m=> !listaDeEmpresasSalvas.Contains(m.Id)).Select(m=>m).ToList(), "Id", "Name");
+            ViewBag.ParStructure_Id = new SelectList(db.ParStructure.Where(m=> !listaDeEmpresasSalvas.Contains(m.Id) && m.Active).Select(m=>m).ToList(), "Id", "Name");
 
             return View(new ParCompanyXStructure() { ParCompany_Id = parCompanyId });
         }
