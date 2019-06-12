@@ -74,8 +74,8 @@ namespace SgqSystem
                 foreach (var item in db.ResourcePT.ToList())
                 {
                     x.Add(item.Key, item.Value);
-                   // Resources.Resource.Add( item.Key, item.Value);
-                    //Resources.Resource.GetType().InvokeMember(item.Key,
+                    // Resources.Resource.Add( item.Key, item.Value);
+                    // Resources.Resource.GetType().InvokeMember(item.Key,
                     //    BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty,
                     //    Type.DefaultBinder, Resources.Resource, item.Value);
                 }

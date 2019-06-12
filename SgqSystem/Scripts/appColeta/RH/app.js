@@ -67,6 +67,7 @@ function getAppParametrization(frequencyId) {
                 closeMensagem();
             }
         });
+
     } else {
         openMensagem('Carregando parametrização', 'blue', 'white');
         _readFile("appParametrization.txt", function (data) {
@@ -81,7 +82,7 @@ function sincronizarResultado(frequencyId) {
     openMensagem('Sincronizando resultado', 'blue', 'white');
     $.ajax({
         data: JSON.stringify({
-            ParCompany_Id: currentLogin.ParCompanyXUserSgq[0].ParCompany.Id,
+            ParCompany_Id: curretParCompany_Id,
             CollectionDate: convertDateToJson(currentCollectDate)
         }),
         url: urlPreffix + '/api/AppColeta/GetResults/',
@@ -162,7 +163,10 @@ function changeDate(that) {
     openMensagem("Alterando data...", "blue", "White");
     _writeFile("appParametrization.txt", '', function () { });
 
-    currentCollectDate = new Date(newDate);
+    // var horas = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+    var horas = "00:00:00";
+
+    currentCollectDate = new Date(newDate + " " + horas);
 
     openParFrequency();
     closeModal(5000);
@@ -203,7 +207,7 @@ function setBreadcrumbs() {
 
         });
 
-        breadcrumbLi = deparment + breadcrumbLi
+        breadcrumbLi = deparment + breadcrumbLi;
         isCurrent = false;
     }
 
@@ -216,7 +220,7 @@ function setBreadcrumbs() {
         isCurrent = false;
     }
 
-    breadcrumb += breadcrumbLi + '</ol>'
+    breadcrumb += breadcrumbLi + '</ol>';
 
     $('.panel-heading').prepend(breadcrumb);
 

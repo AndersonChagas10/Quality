@@ -273,6 +273,8 @@ namespace Dominio
         public virtual DbSet<ResourcePT> ResourcePT { get; set; }
         public virtual DbSet<ResourceEN> ResourceEN { get; set; }
         public virtual DbSet<AppScript> AppScript { get; set; }
+        public virtual DbSet<CollectionLevel2XParCargo> CollectionLevel2XParCargo { get; set; }
+        public virtual DbSet<CollectionLevel2XCluster> CollectionLevel2XCluster { get; set; }
 
         public virtual DbSet<IntegCollectionData> IntegCollectionData { get; set; }
 

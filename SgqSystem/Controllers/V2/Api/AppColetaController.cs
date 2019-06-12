@@ -398,28 +398,29 @@ namespace SgqSystem.Controllers.V2.Api
 
             var sql = $@"
                     SELECT
-                    	MAX(EvaluationNumber) Evaluation
-                       ,(MAX(Sample)+1) Sample
-                       ,ParLevel1_Id
-                       ,ParLevel2_Id
-                       ,UnitId
-                       ,Shift
-                       --,CollectionDate
-                       ,ParDepartment_Id
-                       ,ParCargo_Id
-                       ,ParCluster_Id
-                    FROM CollectionLevel2
+                    	MAX(C2.EvaluationNumber) Evaluation
+                       ,(MAX(C2.Sample) + 1) Sample
+                       ,C2.ParLevel1_Id
+                       ,C2.ParLevel2_Id
+                       ,C2.UnitId
+                       ,C2.Shift
+                       ,C2XPD.Id AS ParDepartment_Id
+                       ,C2XPC.Id AS ParCargo_Id
+                       ,C2XC.Id AS ParCluster_Id
+                    FROM CollectionLevel2 C2 WITH (NOLOCK)
+                    INNER JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
+                    INNER JOIN CollectionLevel2XParCargo C2XPC WITH (NOLOCK) ON C2XPC.CollectionLevel2_Id = C2.Id
+                    INNER JOIN CollectionLevel2XParDepartment C2XPD WITH (NOLOCK) ON C2XPD.CollectionLevel2_Id = C2.Id
                     WHERE 1 = 1
                     AND CAST(CollectionDate AS DATE) = CAST('{data.CollectionDate.ToString("yyyy-MM-dd")}' AS DATE)
                     AND UnitId = {data.ParCompany_Id}
-                    GROUP BY ParLevel1_Id
-                    		,ParLevel2_Id
-                    		,UnitId
-                    		,Shift
-                    		--,CollectionDate
-                    		,ParDepartment_Id
-                    		,ParCargo_Id
-                    		,ParCluster_Id
+                    GROUP BY C2.ParLevel1_Id
+                    		,C2.ParLevel2_Id
+                    		,C2.UnitId
+                    		,C2.Shift
+                    		,C2XPD.Id
+                    		,C2XPC.Id
+                    		,C2XC.Id
                     ";
 
             using (var factory = new Factory("DefaultConnection"))
