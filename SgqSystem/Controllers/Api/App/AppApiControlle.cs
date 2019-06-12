@@ -250,9 +250,7 @@ namespace SgqSystem.Controllers.Api.App
         [Route("GetFiles")]
         public string GetFiles()
         {
-            var app = ConfigurationManager.AppSettings["AppFiles"];
-
-            return new AppScriptsController().GetByVersion(app);
+            return new AppScriptsController().GetByVersion(ConfigurationManager.AppSettings["AppFiles"]);
 
             //string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
             //string searchPattern = "*.*";
