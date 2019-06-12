@@ -56,6 +56,8 @@
     <Compile Include="CollectionHtml.cs" />
     <Compile Include="CollectionJson.cs" />
     <Compile Include="CollectionLevel2.cs" />
+    <Compile Include="CollectionLevel2XCluster.cs" />
+    <Compile Include="CollectionLevel2XParCargo.cs" />
     <Compile Include="CollectionLevel2XParDepartment.cs" />
     <Compile Include="CollectionLevel2XParReason.cs" />
     <Compile Include="CollectionLevel2XParHeaderField.cs" />

@@ -8,6 +8,7 @@ using SgqSystem.Helpers;
 using SgqSystem.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -249,7 +250,9 @@ namespace SgqSystem.Controllers.Api.App
         [Route("GetFiles")]
         public string GetFiles()
         {
-            return new AppScriptsController().GetByVersion("GQ");
+            var app = ConfigurationManager.AppSettings["AppFiles"];
+
+            return new AppScriptsController().GetByVersion(app);
 
             //string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
             //string searchPattern = "*.*";

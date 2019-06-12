@@ -1,6 +1,7 @@
 ﻿using ADOFactory;
 using Dominio;
 using Quartz;
+using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,24 +45,31 @@ namespace SgqSystem.Jobs
                         {
                             var collectionsProcess_Id = new List<int>();
                             var resultsLevel3 = GetResultLevel3NotProcess(collectionLevel2);
-                            var collectionLevel2Consolidada = SetConsolidation(collectionLevel2, resultsLevel3);
-                            var collection = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
+                            var collectionConsolidada = SetConsolidation(collectionLevel2, resultsLevel3);
+                            var collection = db.CollectionLevel2.Where(x => x.Key == collectionConsolidada.Key).FirstOrDefault();
 
                             if (collection == null)
                             {
-                                db.CollectionLevel2.Add(collectionLevel2Consolidada);
+
+                                var collectionLevel2Save = db.CollectionLevel2.Add(AutoMapper.Mapper.Map<CollectionLevel2>(collectionConsolidada));
                                 db.SaveChanges();
+
+                                db.CollectionLevel2XParCargo.Add(new CollectionLevel2XParCargo() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParCargo_Id = collectionLevel2.ParCargo_Id.Value });
+                                db.CollectionLevel2XCluster.Add(new CollectionLevel2XCluster() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParCluster_Id = collectionLevel2.ParCluster_Id.Value });
+                                db.CollectionLevel2XParDepartment.Add(new CollectionLevel2XParDepartment() { ParDepartment_Id = collectionLevel2.ParDepartment_Id.Value, AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id });
+                                db.SaveChanges();
+
                             }
                             else
                             {
-                                collectionLevel2Consolidada = collection;
+                                collectionConsolidada = AutoMapper.Mapper.Map<CollectionViewModel>(collection);
                             }
 
                             foreach (var resultLevel3 in resultsLevel3)
                             {
                                 try
                                 {
-                                    resultLevel3.CollectionLevel2_Id = collectionLevel2Consolidada.Id;
+                                    resultLevel3.CollectionLevel2_Id = collectionConsolidada.Id;
                                     resultLevel3.HasPhoto = resultLevel3.HasPhoto == null ? false : resultLevel3.HasPhoto;
                                     resultLevel3.ParLevel3_Name = parLevel3List.Where(x => x.Id == resultLevel3.ParLevel3_Id).Select(x => x.Name).FirstOrDefault();
                                     collectionsProcess_Id.Add(resultLevel3.Id);
@@ -89,10 +97,10 @@ namespace SgqSystem.Jobs
 
                             //validar primeiro se existe o headerField Inserido
                             //se existir header Fields para essa collectionLevel2, remove os cabeçalhos
-                            DeleteHeaderFieldIfExists(collectionLevel2Consolidada);
+                            DeleteHeaderFieldIfExists(collectionConsolidada);
 
                             //se não existir insere um novo
-                            var headerFields = GetHeaderFieldsByCollectionLevel2(collectionLevel2Consolidada);
+                            var headerFields = GetHeaderFieldsByCollectionLevel2(collectionConsolidada);
 
                             if (headerFields.Count > 0)
                             {
@@ -122,7 +130,7 @@ namespace SgqSystem.Jobs
 
         }
 
-        private static List<CollectionLevel2> GetCollectionsLevel2NotProcess()
+        private static List<CollectionViewModel> GetCollectionsLevel2NotProcess()
         {
             var sql = $@"
                         SELECT DISTINCT top 100 
@@ -139,19 +147,18 @@ namespace SgqSystem.Jobs
                        ,IIF(UserSgq_Id is null, 0,UserSgq_Id) as AuditorId
                        ,CONVERT(VARCHAR(19),IIF(DATEPART(MILLISECOND,CollectionDate)>500,DATEADD(SECOND,1,CollectionDate),CollectionDate),120) AS CollectionDate
                        ,GETDATE() as StartPhaseDate
-                       ,UserSgq_Id as AuditorId
                         FROM Collection
                         WHERE IsProcessed = 0
                         AND ParHeaderField_Id IS NULL";
 
-            var collectionLevel2 = new List<CollectionLevel2>();
+            var collectionLevel2 = new List<CollectionViewModel>();
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
 
                 try
                 {
-                    collectionLevel2 = factory.SearchQuery<CollectionLevel2>(sql).ToList();
+                    collectionLevel2 = factory.SearchQuery<CollectionViewModel>(sql).ToList();
                 }
                 catch (Exception ex)
                 {
@@ -161,7 +168,7 @@ namespace SgqSystem.Jobs
             }
         }
 
-        private static List<Result_Level3> GetResultLevel3NotProcess(CollectionLevel2 collectionLevel2)
+        private static List<Result_Level3> GetResultLevel3NotProcess(CollectionViewModel collection)
         {
             var resultsLevel3 = new List<Result_Level3>();
 
@@ -181,11 +188,11 @@ namespace SgqSystem.Jobs
                         ,Evaluation
                         ,WeiDefects
                         ,HasPhoto  FROM Collection 
-                    WHERE Evaluation = {collectionLevel2.EvaluationNumber} AND IsProcessed = 0 AND
-                        Sample = {collectionLevel2.Sample} AND ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND
-                        ParLevel2_Id = {collectionLevel2.ParLevel2_Id} AND Shift_Id = {collectionLevel2.Shift} AND
-                        Period_Id = {collectionLevel2.Period} AND ParCompany_Id = {collectionLevel2.UnitId} AND
-                        CAST(CONVERT(VARCHAR(19), IIF(DATEPART(MILLISECOND, CollectionDate) > 500, DATEADD(SECOND, 1, CollectionDate), CollectionDate), 120) AS DATE) = '{collectionLevel2.CollectionDate.ToString("yyyy-MM-dd")}'";
+                    WHERE Evaluation = {collection.EvaluationNumber} AND IsProcessed = 0 AND
+                        Sample = {collection.Sample} AND ParLevel1_Id = {collection.ParLevel1_Id} AND
+                        ParLevel2_Id = {collection.ParLevel2_Id} AND Shift_Id = {collection.Shift} AND
+                        Period_Id = {collection.Period} AND ParCompany_Id = {collection.UnitId} AND
+                        CAST(CONVERT(VARCHAR(19), IIF(DATEPART(MILLISECOND, CollectionDate) > 500, DATEADD(SECOND, 1, CollectionDate), CollectionDate), 120) AS DATE) = '{collection.CollectionDate.ToString("yyyy-MM-dd")}'";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -201,7 +208,7 @@ namespace SgqSystem.Jobs
             }
         }
 
-        private static CollectionLevel2 SetConsolidation(CollectionLevel2 collectionLevel2, List<Result_Level3> results_Level3)
+        private static CollectionViewModel SetConsolidation(CollectionViewModel collection, List<Result_Level3> results_Level3)
         {
 
             decimal defects = 0;
@@ -217,28 +224,27 @@ namespace SgqSystem.Jobs
                 weiEavaluation += result_Level3.Weight == null ? 0 : result_Level3.Weight.Value;
             }
 
-            collectionLevel2.Defects = defects;
-            collectionLevel2.WeiDefects = weiDefects;
-            collectionLevel2.TotalLevel3Evaluation = evaluation;
-            collectionLevel2.WeiEvaluation = weiEavaluation;
-            collectionLevel2.AuditorId = collectionLevel2.AuditorId == 0 ? 1 : collectionLevel2.AuditorId;
-            collectionLevel2.AlterDate = null;
-            collectionLevel2.AddDate = DateTime.Now;
-            collectionLevel2.Key = collectionLevel2.CollectionDate.ToString("yyyy-MM-dd") + "-" + collectionLevel2.UnitId + "-" +
-                collectionLevel2.ParLevel1_Id + "-" + collectionLevel2.ParLevel2_Id + "-" + collectionLevel2.Shift + "-" +
-                collectionLevel2.ParCluster_Id + "-" + collectionLevel2.ParCargo_Id + "-" + collectionLevel2.ParDepartment_Id + "-" +
-                collectionLevel2.EvaluationNumber + "-" + collectionLevel2.Sample;
+            collection.Defects = defects;
+            collection.WeiDefects = weiDefects;
+            collection.TotalLevel3Evaluation = evaluation;
+            collection.WeiEvaluation = weiEavaluation;
+            collection.AuditorId = collection.AuditorId == 0 ? 1 : collection.AuditorId;
+            collection.AlterDate = null;
+            collection.AddDate = DateTime.Now;
+            collection.Key = collection.CollectionDate.ToString("yyyy-MM-dd") + "-" + collection.UnitId + "-" +
+                collection.ParLevel1_Id + "-" + collection.ParLevel2_Id + "-" + collection.Shift + "-" +
+                collection.ParCluster_Id + "-" + collection.ParCargo_Id + "-" + collection.ParDepartment_Id + "-" +
+                collection.EvaluationNumber + "-" + collection.Sample;
 
-            return collectionLevel2;
+            return collection;
         }
 
 
-        private static void DeleteHeaderFieldIfExists(CollectionLevel2 collectionLevel2)
+        private static void DeleteHeaderFieldIfExists(CollectionViewModel collectionLevel2)
         {
             var sql = $@"delete CollectionLevel2XParHeaderField WHERE Id in(
                          select CL2XHF.Id FROM CollectionLevel2XParHeaderField CL2XHF
                          inner JOIN CollectionLevel2 C2 on C2.Id = CL2XHF.CollectionLevel2_Id
-                         --AND C2.UserSgq_Id = {collectionLevel2.UserSgq}
                          AND C2.Shift = { collectionLevel2.Shift }
                          AND C2.Period = { collectionLevel2.Period }
                          AND C2.ParCargo_Id = { collectionLevel2.ParCargo_Id }
@@ -256,7 +262,7 @@ namespace SgqSystem.Jobs
             }
         }
 
-        private static List<CollectionLevel2XParHeaderField> GetHeaderFieldsByCollectionLevel2(CollectionLevel2 collectionLevel2)
+        private static List<CollectionLevel2XParHeaderField> GetHeaderFieldsByCollectionLevel2(CollectionViewModel collectionLevel2)
         {
             var headerFields = new List<CollectionLevel2XParHeaderField>();
 

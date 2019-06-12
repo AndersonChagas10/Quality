@@ -33,7 +33,8 @@ namespace SgqSystem.Controllers
                 Regex regex = new Regex("[ ]{2,}", options);
                 item.Script = regex.Replace(item.Script, " ");
 
-                scriptDctionary.Add(item.ArchiveName+$"{x}+{item.Script}+{item.Script.Replace(System.Environment.NewLine, "")}", item.Script);
+                //scriptDctionary.Add(item.ArchiveName+$"{x}+{item.Script}+{item.Script.Replace(System.Environment.NewLine, "")}", item.Script);
+                scriptDctionary.Add(item.ArchiveName, item.Script);
                 scriptsList.Add(scriptDctionary);
             }
 

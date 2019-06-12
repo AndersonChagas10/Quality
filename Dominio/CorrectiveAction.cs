@@ -59,5 +59,6 @@ namespace Dominio
 
         [ForeignKey("SlaughterId")]
         public virtual UserSgq Slaughter { get; set; }
+
     }
 }

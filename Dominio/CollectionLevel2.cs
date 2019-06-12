@@ -103,12 +103,6 @@ namespace Dominio
 
         public int? EndPhaseEvaluation { get; set; }
 
-        public int? ParDepartment_Id { get; set; }
-
-        public int? ParCargo_Id { get; set; }
-
-        public int? ParCluster_Id { get; set; }
-
         [ForeignKey("ConsolidationLevel2_Id")]
         public virtual ConsolidationLevel2 ConsolidationLevel2 { get; set; }
 
@@ -126,5 +120,15 @@ namespace Dominio
         public virtual ICollection<CorrectiveAction> CorrectiveAction { get; set; }
 
         public virtual ICollection<Result_Level3> Result_Level3 { get; set; }
+
+        //bosta porque mudou no meio do caminho, dai teve que fazer isso pra salvar a ação corretiva
+        [NotMapped]
+        public int? ParDepartment_Id { get; set; }
+
+        [NotMapped]
+        public int? ParCargo_Id { get; set; }
+
+        [NotMapped]
+        public int? ParCluster_Id { get; set; }
     }
 }
