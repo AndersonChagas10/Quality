@@ -28,12 +28,39 @@ namespace SgqSystem.Controllers
             {
                 var scriptDctionary = new Dictionary<string, string>();
 
-                var x = item.Script.Length;
-                RegexOptions options = RegexOptions.None;
-                Regex regex = new Regex("[ ]{2,}", options);
-                item.Script = regex.Replace(item.Script, " ");
+                if (System.Configuration.ConfigurationManager.AppSettings["Producao"] == "SIM")
+                {
+                    #region ReduzScript (Minify)
+                    var blockComments = @"/\*(.*?)\*/";
+                    var lineComments = @"//(.*?)\r?\n";
+                    var strings = @"""((\\[^\n]|[^""\n])*)""";
+                    var verbatimStrings = @"@(""[^""]*"")+";
 
-                scriptDctionary.Add(item.ArchiveName+$"{x}+{item.Script}+{item.Script.Replace(System.Environment.NewLine, "")}", item.Script);
+                    item.Script = Regex.Replace(item.Script,
+                        blockComments + "|" + lineComments + "|" + strings + "|" + verbatimStrings,
+                        me =>
+                        {
+                            if (me.Value.StartsWith("/*") || me.Value.StartsWith("//"))
+                                return me.Value.StartsWith("//") ? Environment.NewLine : "";
+                            // Keep the literal strings
+                            return me.Value;
+                        },
+                        RegexOptions.Singleline);
+
+                    var x = item.Script.Length;
+                    RegexOptions options = RegexOptions.None;
+                    Regex regex = new Regex("[ ]{2,}", options);
+                    item.Script = regex.Replace(item.Script, " ");
+
+                    scriptDctionary.Add(item.ArchiveName
+                        , item.Script.Replace(System.Environment.NewLine, "").Replace("\\\"", "\'"));
+                    #endregion
+                }
+                else
+                {
+                    scriptDctionary.Add(item.ArchiveName, item.Script);
+                }
+
                 scriptsList.Add(scriptDctionary);
             }
 
