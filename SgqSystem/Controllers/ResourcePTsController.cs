@@ -10,6 +10,7 @@ using Dominio;
 
 namespace SgqSystem.Controllers
 {
+    [RoutePrefix("ResourcePTs")]
     public class ResourcePTsController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
@@ -18,6 +19,13 @@ namespace SgqSystem.Controllers
         public ActionResult Index()
         {
             return View(db.ResourcePT.OrderBy(x => x.Key).ToList());
+        }
+
+        [Route("AtualizarResource")]
+        public ActionResult AtualizarResource()
+        {
+            Seed.Seed.SetSeedValues();
+            return RedirectToAction("Index", "ResourcePTs");
         }
 
         // GET: ResourcePTs/Details/5
@@ -83,6 +91,7 @@ namespace SgqSystem.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(resourcePT).State = EntityState.Modified;
+                db.Entry(resourcePT).Property(x => x.Key).IsModified = false;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

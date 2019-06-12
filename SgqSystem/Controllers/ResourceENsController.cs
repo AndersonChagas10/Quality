@@ -83,6 +83,7 @@ namespace SgqSystem.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(resourceEN).State = EntityState.Modified;
+                db.Entry(resourceEN).Property(x => x.Key).IsModified = false;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
