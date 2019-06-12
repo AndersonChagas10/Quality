@@ -413,3 +413,21 @@ BEGIN
 	ALTER TABLE RotinaIntegracao 
 	ADD IsOffline bit default 0 not null
 END
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ResourcePT' AND xtype='U')
+create table ResourcePT(
+	Id int not null identity(1,1) primary key,
+	[Key] varchar(120),
+	Value varchar(120)
+)
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ResourceEN' AND xtype='U')
+create table ResourceEN(
+	Id int not null identity(1,1) primary key,
+	[Key] varchar(120),
+	Value varchar(120)
+)
