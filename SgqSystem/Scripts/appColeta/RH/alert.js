@@ -55,5 +55,5 @@ function processAlertRole(coletaJson) {
             closeMensagem(3000);
         }
     }
-    console.table(coletaJson);
+    //console.table(coletaJson);
 }
