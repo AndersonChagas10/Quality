@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -508,7 +508,6 @@
     <Compile Include="Mail\SimpleAsynchronous.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
-    <Compile Include="Mappers\CollectionMapperProfile.cs" />
     <Compile Include="Mappers\DefectMapperProfile.cs" />
     <Compile Include="Mappers\EmailContentMapperProfile.cs" />
     <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
@@ -598,7 +597,6 @@
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\EntityBaseViewModel.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\DataCollectionBaseViewModel.cs" />
-    <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\CompanyViewModel.cs" />
     <Compile Include="ViewModels\FormularioParaRelatorioViewModel.cs" />
     <Compile Include="ViewModels\CorrectiveActionViewModel.cs" />

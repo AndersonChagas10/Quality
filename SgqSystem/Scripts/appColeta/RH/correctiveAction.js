@@ -65,7 +65,7 @@ function AtualizarArquivoDeAcoesCorretivas() {
 function AtualizarVariaveisDeAcoesCorretivas() {
 
 	_readFile("globalAcoesCorretivasRealizadas.txt", function (content) {
-		if (typeof (content) == 'undefined')
+		if (typeof (content) == 'undefined' || content == "")
             content = '[]';
             
 			globalAcoesCorretivasRealizadas = JSON.parse(content);
