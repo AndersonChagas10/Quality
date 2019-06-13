@@ -14,7 +14,7 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParAlerts")">@Resources.Resource.alert</a>
+                    <a href="@Url.Action("Index", "ParAlert")">@Resources.Resource.alert</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -115,7 +115,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.IsCollectAlert, null, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.IsCollectAlert, Resources.Resource.isCollectAlert as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.IsCollectAlert)
@@ -125,7 +125,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.HasCorrectiveAction, null, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.HasCorrectiveAction, Resources.Resource.hasCorrectiveAction as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.HasCorrectiveAction)

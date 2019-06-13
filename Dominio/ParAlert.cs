@@ -30,7 +30,7 @@ namespace Dominio
 
         public bool IsCollectAlert { get; set; } = true;
 
-        public bool HasCorrectiveAction { get; set; }
+        public bool HasCorrectiveAction { get; set; } = true;
 
         [ForeignKey("ParDepartment_Id")]
         public virtual ParDepartment ParDepartment { get; set; }

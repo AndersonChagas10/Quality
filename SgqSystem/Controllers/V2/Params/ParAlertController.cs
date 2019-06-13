@@ -93,7 +93,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,ParDepartment_Id,ParCargo_Id,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParAlertType_Id,IsActive")] ParAlert parAlert)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,ParDepartment_Id,ParCargo_Id,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParAlertType_Id,IsCollectAlert,HasCorrectiveAction,IsActive")] ParAlert parAlert)
         {
             SetValues(parAlert);
             if (ModelState.IsValid)
@@ -130,7 +130,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,ParDepartment_Id,ParCargo_Id,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParAlertType_Id,IsActive")] ParAlert parAlert)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,ParDepartment_Id,ParCargo_Id,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParAlertType_Id,IsCollectAlert,HasCorrectiveAction,IsActive")] ParAlert parAlert)
         {
             SetValues(parAlert);
             if (ModelState.IsValid)

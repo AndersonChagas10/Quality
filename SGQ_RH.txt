@@ -431,3 +431,11 @@ create table ResourceEN(
 	[Key] varchar(120),
 	Value varchar(120)
 )
+
+GO
+
+IF COL_LENGTH('ParCargo','Name') IS NOT NULL
+BEGIN
+	ALTER TABLE ParCargo
+	ALTER COLUMN Name varchar(50) not null;
+END
