@@ -14,6 +14,19 @@ namespace SgqSystem.Seed
             DicionarioEstaticoSeed dicionarioSeed = new DicionarioEstaticoSeed();
             dicionarioSeed.SetDicionarioEstatico();
 
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+                var x = new ExpandoObject() as IDictionary<string, object>;
+
+                foreach (var item in db.DicionarioEstatico.ToList())
+                {
+                    x.Add(item.Key, item.Value);
+                }
+                DicionarioEstaticoHelper.DicionarioEstaticoHelpers = x;
+            }
+
+           
+
             if (GlobalConfig.LanguageBrasil)
             {
                 var resourcePtSeed = new ResourcePtSeed();
