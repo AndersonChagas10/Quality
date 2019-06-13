@@ -107,6 +107,7 @@ function getInputOrSelect(parheaderField) {
         case 8:	//Informações
             html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
+            html += '<br><button onclick="showInfo(this)" type="button" class="btn btn-info form-control input-sm" data-header-info="' + parheaderField.Description + '">Info</button></div>'
             html += '</div>';
             break;
         case 9:	//Parâmetro: texto
@@ -202,5 +203,14 @@ function montarBotoesRotinaIntegracao() {
     }
 
     return html;
+}
+
+function showInfo(btn) {
+
+    var mensagem = $(btn).attr('data-header-info');
+    var html = '<p class="text-justify">' + mensagem + '</p><br><button onclick="closeModal()" type="button" class="btn btn-info float-right">Fechar</button>';
+
+    openModal(html, '#dcdcdc', 'black');
+
 }
 
