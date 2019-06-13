@@ -51,18 +51,27 @@ namespace SgqSystem.Jobs
                             if (collection == null)
                             {
 
-                                var collectionLevel2Save = db.CollectionLevel2.Add(AutoMapper.Mapper.Map<CollectionLevel2>(collectionConsolidada));
+                                var collectionLevel2Save = db.CollectionLevel2.Add(collectionConsolidada);
                                 db.SaveChanges();
 
-                                db.CollectionLevel2XParCargo.Add(new CollectionLevel2XParCargo() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParCargo_Id = collectionLevel2.ParCargo_Id.Value });
-                                db.CollectionLevel2XCluster.Add(new CollectionLevel2XCluster() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParCluster_Id = collectionLevel2.ParCluster_Id.Value });
-                                db.CollectionLevel2XParDepartment.Add(new CollectionLevel2XParDepartment() { ParDepartment_Id = collectionLevel2.ParDepartment_Id.Value, AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id });
+                                if (collectionLevel2.ParCargo_Id != null)
+                                    db.CollectionLevel2XParCargo.Add(new CollectionLevel2XParCargo() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParCargo_Id = collectionLevel2.ParCargo_Id.Value });
+
+                                if (collectionLevel2.ParCluster_Id != null)
+                                    db.CollectionLevel2XCluster.Add(new CollectionLevel2XCluster() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParCluster_Id = collectionLevel2.ParCluster_Id.Value });
+
+                                if (collectionLevel2.ParDepartment_Id != null)
+                                    db.CollectionLevel2XParDepartment.Add(new CollectionLevel2XParDepartment() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParDepartment_Id = collectionLevel2.ParDepartment_Id.Value });
+
                                 db.SaveChanges();
 
                             }
                             else
                             {
-                                collectionConsolidada = AutoMapper.Mapper.Map<CollectionViewModel>(collection);
+                                collectionConsolidada = collection;
+                                collectionConsolidada.ParDepartment_Id = db.CollectionLevel2XParDepartment.Where(x => x.CollectionLevel2_Id == collection.Id).Select(x => x.ParDepartment_Id).FirstOrDefault();
+                                collectionConsolidada.ParCargo_Id = db.CollectionLevel2XParCargo.Where(x => x.CollectionLevel2_Id == collection.Id).Select(x => x.ParCargo_Id).FirstOrDefault();
+                                collectionConsolidada.ParCluster_Id = db.CollectionLevel2XCluster.Where(x => x.CollectionLevel2_Id == collection.Id).Select(x => x.ParCluster_Id).FirstOrDefault();
                             }
 
                             foreach (var resultLevel3 in resultsLevel3)
@@ -130,7 +139,7 @@ namespace SgqSystem.Jobs
 
         }
 
-        private static List<CollectionViewModel> GetCollectionsLevel2NotProcess()
+        private static List<CollectionLevel2> GetCollectionsLevel2NotProcess()
         {
             var sql = $@"
                         SELECT DISTINCT top 100 
@@ -151,14 +160,14 @@ namespace SgqSystem.Jobs
                         WHERE IsProcessed = 0
                         AND ParHeaderField_Id IS NULL";
 
-            var collectionLevel2 = new List<CollectionViewModel>();
+            var collectionLevel2 = new List<CollectionLevel2>();
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
 
                 try
                 {
-                    collectionLevel2 = factory.SearchQuery<CollectionViewModel>(sql).ToList();
+                    collectionLevel2 = factory.SearchQuery<CollectionLevel2>(sql).ToList();
                 }
                 catch (Exception ex)
                 {
@@ -168,7 +177,7 @@ namespace SgqSystem.Jobs
             }
         }
 
-        private static List<Result_Level3> GetResultLevel3NotProcess(CollectionViewModel collection)
+        private static List<Result_Level3> GetResultLevel3NotProcess(CollectionLevel2 collection)
         {
             var resultsLevel3 = new List<Result_Level3>();
 
@@ -208,7 +217,7 @@ namespace SgqSystem.Jobs
             }
         }
 
-        private static CollectionViewModel SetConsolidation(CollectionViewModel collection, List<Result_Level3> results_Level3)
+        private static CollectionLevel2 SetConsolidation(CollectionLevel2 collection, List<Result_Level3> results_Level3)
         {
 
             decimal defects = 0;
@@ -240,7 +249,7 @@ namespace SgqSystem.Jobs
         }
 
 
-        private static void DeleteHeaderFieldIfExists(CollectionViewModel collectionLevel2)
+        private static void DeleteHeaderFieldIfExists(CollectionLevel2 collectionLevel2)
         {
             var sql = $@"delete CollectionLevel2XParHeaderField WHERE Id in(
                          select CL2XHF.Id FROM CollectionLevel2XParHeaderField CL2XHF
@@ -262,7 +271,7 @@ namespace SgqSystem.Jobs
             }
         }
 
-        private static List<CollectionLevel2XParHeaderField> GetHeaderFieldsByCollectionLevel2(CollectionViewModel collectionLevel2)
+        private static List<CollectionLevel2XParHeaderField> GetHeaderFieldsByCollectionLevel2(CollectionLevel2 collectionLevel2)
         {
             var headerFields = new List<CollectionLevel2XParHeaderField>();
 

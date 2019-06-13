@@ -140,13 +140,13 @@ function AtualizarArquivoDeColetas() {
 function AtualizarVariaveisDeColetas() {
 
 	_readFile("globalColetasRealizadas.txt", function (content) {
-		if (typeof (content) == 'undefined')
+		if (typeof (content) == 'undefined' || content == "")
 			content = '[]';
 		globalColetasRealizadas = JSON.parse(content);
 	});
 
 	_readFile("coletasAgrupadas.txt", function (content) {
-		if (typeof (content) == 'undefined')
+		if (typeof (content) == 'undefined' || content == "")
 			content = '[]';
 		coletasAgrupadas = JSON.parse(content);
 	});

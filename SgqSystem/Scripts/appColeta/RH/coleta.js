@@ -473,7 +473,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
                 ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
                 IsNotEvaluate: $(data).attr('data-conforme-na') == "",
-                CollectionDate: convertDateToJson(new Date()),
+                CollectionDate: convertDateToJson(currentCollectDate),
                 UserSgq_Id: currentLogin.Id,
                 /*
 				"UserSgq_Id":1,
