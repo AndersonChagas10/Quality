@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -976,9 +976,6 @@
     <Content Include="Scripts\appColeta\RH\resultado.js" />
     <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
     <Content Include="Scripts\appColeta\RH\utils.js" />
-    <Content Include="Scripts\appColeta\GQ\mock.js" />
-    <Content Include="Scripts\appColeta\mock.js" />
-    <Content Include="Scripts\appColeta\rotinaHeaderField.js" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
     <Content Include="Content\select2-bootstrap.min.css" />
     <Content Include="Content\select2.min.css" />
