@@ -51,6 +51,14 @@ namespace SgqSystem.Seed
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "IdCabecalhoTaraPesoHB", Value = "cb1198", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Produto" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "IdCabecalhoQuantidadeAmostraPesoHB", Value = "cb1199", ControllerName = "AvaliacaoSensorial.cshtml", Descricao = "Id do campo de cabeçalho Produto" });
 
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "controllerParametrizacao", Value = "ParamsV2", ControllerName = "Dashboard", Descricao = "Parametrização" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "actionParametrizacao", Value = "Index", ControllerName = "Dashboard", Descricao = "Parametrização" });
+
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "controllerAppColeta", Value = "http://192.168.25.200/AppColeta_2_0/", ControllerName = "Dashboard", Descricao = "App Coleta" });
+
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "controllerGestao", Value = "Gestao", ControllerName = "Dashboard", Descricao = "Gestão" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "actionGestao", Value = "Index", ControllerName = "Dashboard", Descricao = "Gestão" });
+
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys);
 
                 if (add != null)
