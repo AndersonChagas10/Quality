@@ -103,6 +103,7 @@
     <Compile Include="ParColaboradorXCargo.cs" />
     <Compile Include="ParAlert.cs" />
     <Compile Include="ParLevel3XHelp.cs" />
+    <Compile Include="ParLevel3XModule.cs" />
     <Compile Include="ParReasonType.cs" />
     <Compile Include="ParReason.cs" />
     <Compile Include="NQA.cs" />

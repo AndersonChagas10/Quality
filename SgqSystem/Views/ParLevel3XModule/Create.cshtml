@@ -1,0 +1,186 @@
+﻿@model Dominio.ParLevel3XModule
+
+@{
+    ViewBag.Title = "Novo Módulo X Tarefa";
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                    <a href="@Url.Action("Index", "ParLevel1xModule")">Módulo X Tarefa</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.create</span>
+                </li>
+            </ul>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create Módulo X Tarefa </span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.name as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.impact as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.Points, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Points, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.level1 as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownList("ParLevel1_Id", null, htmlAttributes: new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.level2 as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownList("ParLevel2_Id", null, htmlAttributes: new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.ParLevel2_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.level3 as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownList("ParLevel3_Id", null, htmlAttributes: new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.ParLevel3_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.company as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownList("ParCompany_Id", null, htmlAttributes: new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownList("ParDepartment_Id", null, htmlAttributes: new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.ParDepartment_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.parModule as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownList("ParModule_Id", null, htmlAttributes: new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.ParModule_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.EffectiveDateStart, Resources.Resource.effective_date_start as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-2">
+                                                @{string effectiveDateStart = Model?.EffectiveDateStart?.ToString("yyyy-MM-dd") ?? "";}
+                                                @Html.TextBox("EffectiveDateStart", effectiveDateStart, new { @class = "form-control", @type = "date" })
+                                                @Html.ValidationMessageFor(model => model.EffectiveDateStart, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.EffectiveDateEnd, Resources.Resource.effective_date_end as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-2">
+                                                @{string effectiveDateEnd = Model?.EffectiveDateEnd?.ToString("yyyy-MM-dd") ?? "";}
+                                                @Html.TextBox("EffectiveDateEnd", effectiveDateEnd, new { @class = "form-control", @type = "date" })
+                                                @Html.ValidationMessageFor(model => model.EffectiveDateEnd, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.IsActive)
+                                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="@Resources.Resource.create" class="btn btn-primary" />
+                                                @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+@section Scripts {
+
+    <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $("#ParLevel1_Id").select2();
+            $("#ParLevel2_Id").select2();
+            $("#ParLevel3_Id").select2();
+            $("#ParCompany_Id").select2();
+            $("#ParDepartment_Id").select2();
+            $("#ParModule_Id").select2();
+            $("#IsActive").prop("checked", true);
+
+            $('#Points').inputmask({
+                'alias': 'decimal',
+                'groupSeparator': ',',
+                'autoGroup': true,
+                'digits': 2,
+                'digitsOptional': false,
+                'placeholder': '0.00',
+                'rightAlign': false,
+            });
+        });
+    </script>
+}
+
+
