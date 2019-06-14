@@ -1,5 +1,5 @@
 function processAlertRole(coletaJson) {
-    
+
     if (coletaJson.length == 0)
         return;
 
@@ -36,7 +36,9 @@ function processAlertRole(coletaJson) {
 
         if (exists.length > 0) {
             numeroDeAlertas++;
+
             openMensagem('Alerta ' + numeroDeAlertas + ' (' + exists[0].Name + ') foi disparado.', 'red', 'white');
+
             currentAlertsAgrupados.push({
                 ParDepartment_Id: coleta.ParDepartment_Id,
                 ParCargo_Id: coleta.ParCargo_Id,
@@ -49,7 +51,9 @@ function processAlertRole(coletaJson) {
 
             if (exists[0].HasCorrectiveAction) {
                 //Verificar se disparou alerta e se existe ação corretiva - Caso existir, abre o modal - após salvar a ação corretiva abre a função abaixo;
-                OpenCorrectiveAction(coleta);
+                setTimeout(function () {
+                    OpenCorrectiveAction(coleta);
+                }, 3500);
             }
 
             closeMensagem(3000);

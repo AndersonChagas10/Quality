@@ -451,7 +451,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         };
     }
 
-    var collectionHeaderFields = getCollectionHeaderFields();
+    //var collectionHeaderFields = getCollectionHeaderFields();
     //console.table(collectionHeaderFields);
 
     //Insere valores da coleta
@@ -473,7 +473,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
                 ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
                 IsNotEvaluate: $(data).attr('data-conforme-na') == "",
-                CollectionDate: convertDateToJson(currentCollectDate),
+                CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
                 /*
 				"UserSgq_Id":1,
@@ -565,7 +565,7 @@ function OpenCorrectiveAction(coleta) {
         ParDepartment_Id: currentParDepartment_Id,
         ParCargo_Id: currentParCargo_Id,
         //ParCluster_Id: 1,
-        CollectionDate: convertDateToJson(new Date())
+        CollectionDate: getCurrentDate()
     }
 
     var modal = '<h4>Ação Corretiva</h4>';
@@ -639,7 +639,7 @@ function getCollectionHeaderFields() {
                 ParDepartment_Id: currentParDepartment_Id,
                 ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: curretParCompany_Id,
-                CollectionDate: convertDateToJson(new Date()),
+                CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
             });
 
