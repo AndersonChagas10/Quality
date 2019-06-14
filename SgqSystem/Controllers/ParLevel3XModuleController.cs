@@ -10,7 +10,7 @@ using Dominio;
 
 namespace SgqSystem.Controllers
 {
-    public class ParLevel3XModuleController : Controller
+    public class ParLevel3XModuleController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
