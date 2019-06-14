@@ -393,11 +393,13 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
+    <Compile Include="Controllers\DicionarioEstaticoController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
     <Compile Include="Controllers\Params\ParCargoController.cs" />
     <Compile Include="Controllers\Params\ParColaboradorController.cs" />
+    <Compile Include="Controllers\ParLevel3InputTypeController.cs" />
     <Compile Include="Controllers\ParLevel3XModuleController.cs" />
     <Compile Include="Controllers\ParStructureGroupController.cs" />
     <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
@@ -2043,6 +2045,16 @@
     <Content Include="Views\ParLevel3XModule\Details.cshtml" />
     <Content Include="Views\ParLevel3XModule\Edit.cshtml" />
     <Content Include="Views\ParLevel3XModule\Index.cshtml" />
+    <Content Include="Views\DicionarioEstatico\Create.cshtml" />
+    <Content Include="Views\DicionarioEstatico\Delete.cshtml" />
+    <Content Include="Views\DicionarioEstatico\Details.cshtml" />
+    <Content Include="Views\DicionarioEstatico\Edit.cshtml" />
+    <Content Include="Views\DicionarioEstatico\Index.cshtml" />
+    <Content Include="Views\ParLevel3InputType\Create.cshtml" />
+    <Content Include="Views\ParLevel3InputType\Delete.cshtml" />
+    <Content Include="Views\ParLevel3InputType\Details.cshtml" />
+    <Content Include="Views\ParLevel3InputType\Edit.cshtml" />
+    <Content Include="Views\ParLevel3InputType\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
