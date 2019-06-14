@@ -27,6 +27,10 @@ function getResultEvaluationSample(parDepartment_Id, parCargo_Id) {
 
 }
 
+// window.onerror = function (errorMsg, url, lineNumber) {
+//     alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+// }
+
 function retornaProximasColetasParaSincronizar() {
 
 	var coletas = [];
@@ -36,18 +40,19 @@ function retornaProximasColetasParaSincronizar() {
 	for (var i = 0; i < globalColetasRealizadas.length; i++) {
 
 		if (anterior != null) {
-			var objAtual = Object.assign({}, getCollectionLevel2Obj(globalColetasRealizadas[i]));
-		}
 
-		if (coletas.length == 0 || !objIsEquals(getCollectionLevel2Obj(anterior), objAtual)) {
+			var objAtual = $.extend({}, getCollectionLevel2Obj(globalColetasRealizadas[i]));
 
-			if (coletas.length > count) {
-				return coletas;
+			if (coletas.length == 0 || !objIsEquals(getCollectionLevel2Obj(anterior), objAtual)) {
+
+				if (coletas.length > count) {
+					return coletas;
+				}
 			}
 		}
 
-		anterior = Object.assign({}, globalColetasRealizadas[i]);
-		coletas.push(Object.assign({}, anterior));
+		anterior = $.extend({}, globalColetasRealizadas[i]);
+		coletas.push(anterior);
 	}
 
 	return coletas;
@@ -121,11 +126,11 @@ function enviarColeta() {
 				console.log('desconectado');
 				enviarColetaEmExecucao = false;
 			});
-			
+
 	} else {
 
 		enviarAcaoCorretiva();
-		
+
 	}
 }
 
