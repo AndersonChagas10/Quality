@@ -497,6 +497,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         );
     });
 
+    processAlertRole(coletaJson);
+
     var cabecalhos = getCollectionHeaderFields();
 
     if (cabecalhos) {
@@ -543,10 +545,11 @@ function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
 }
 
 function SalvarColetas(coletaJson) {
-    processAlertRole(coletaJson);
+
     for (var i = 0; i < coletaJson.length; i++) {
         globalColetasRealizadas.push(coletaJson[i]);
     }
+
     AtualizarArquivoDeColetas();
 }
 
@@ -623,12 +626,11 @@ function getCollectionHeaderFields() {
 
     var collectionHeaderFied = [];
 
-    $('#headerField input, select').each(function () {
+    $('#headerField input, #headerField select').each(function () {
 
         $self = $(this);
 
         //validar se os campos de cabeçalho obrigatórios foram preenchidos;
-
         if ($self.val())
 
             collectionHeaderFied.push({
