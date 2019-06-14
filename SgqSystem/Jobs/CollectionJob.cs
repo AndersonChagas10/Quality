@@ -158,7 +158,8 @@ namespace SgqSystem.Jobs
                        ,GETDATE() as StartPhaseDate
                         FROM Collection
                         WHERE IsProcessed = 0
-                        AND ParHeaderField_Id IS NULL";
+                        AND ParHeaderField_Id IS NULL
+                        AND ParHeaderField_Value IS NULL";
 
             var collectionLevel2 = new List<CollectionLevel2>();
 
