@@ -561,12 +561,12 @@ function OpenCorrectiveAction(coleta) {
     correctiveAction.CollectionLevel2 = {
         ParLevel1_Id: coleta.ParLevel1_Id,
         ParLevel2_Id: coleta.ParLevel2_Id,
-        UnitId: curretParCompany_Id,
+        UnitId: coleta.ParCompany_Id,
         //Shift: 1,
         EvaluationNumber: coleta.Evaluation,
         Sample: coleta.Sample,
-        ParDepartment_Id: currentParDepartment_Id,
-        ParCargo_Id: currentParCargo_Id,
+        ParDepartment_Id: coleta.ParDepartment_Id,
+        ParCargo_Id: coleta.ParCargo_Id,
         //ParCluster_Id: 1,
         CollectionDate: getCurrentDate()
     }
