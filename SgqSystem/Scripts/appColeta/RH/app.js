@@ -163,7 +163,7 @@ function changeDate(that) {
     openMensagem("Alterando data...", "blue", "White");
     _writeFile("appParametrization.txt", '', function () { });
 
-    // var horas = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+    //var horas = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
     var horas = "00:00:00";
 
     currentCollectDate = new Date(newDate + " " + horas);

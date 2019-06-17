@@ -233,29 +233,42 @@ namespace SgqSystem.Controllers.Api
                     {
 
                         //Fazer o update da collectionLevel2 para informar se houve ação corretiva
-                        var sql = $@"Select * from CollectionLevel2                            
-                            WHERE ParLevel1_Id = { correctiveAction.CollectionLevel2.ParLevel1_Id }
-                            AND ParLevel2_Id = { correctiveAction.CollectionLevel2.ParLevel2_Id }
-                            AND UnitId = { correctiveAction.CollectionLevel2.UnitId }
-                            --AND Shift = { correctiveAction.CollectionLevel2.Shift }
-                            AND EvaluationNumber = { correctiveAction.CollectionLevel2.EvaluationNumber }
-                            AND Sample = { correctiveAction.CollectionLevel2.Sample }
-                            AND ParDepartment_Id = { correctiveAction.CollectionLevel2.ParDepartment_Id }
-                            AND ParCargo_Id = { correctiveAction.CollectionLevel2.ParCargo_Id }
-                            --AND ParCluster_Id = { correctiveAction.CollectionLevel2.ParCluster_Id }
-                            AND CAST(CollectionDate AS SMALLDATETIME) BETWEEN 
-                                DATEADD(MINUTE, -1, CAST('{ correctiveAction.CollectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") }' AS SMALLDATETIME)) AND 
-                                DATEADD(MINUTE, 1, CAST('{ correctiveAction.CollectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") }' AS SMALLDATETIME))";
+                        var sql = $@"Select 
+                                	*
+                            from CollectionLevel2  C2 
+                            INNER JOIN CollectionLevel2xParDepartment C2XPD on C2.Id = C2XPD.CollectionLevel2_Id
+                            INNER JOIN CollectionLevel2xParCargo C2XPC on C2.Id = C2XPC.CollectionLevel2_Id
+                            WHERE C2.ParLevel1_Id = { correctiveAction.CollectionLevel2.ParLevel1_Id }
+                            AND C2.ParLevel2_Id = { correctiveAction.CollectionLevel2.ParLevel2_Id }
+                            AND C2.UnitId = { correctiveAction.CollectionLevel2.UnitId }
+                            AND C2.EvaluationNumber = { correctiveAction.CollectionLevel2.EvaluationNumber }
+                            AND C2.Sample = { correctiveAction.CollectionLevel2.Sample }
+                            AND C2XPD.ParDepartment_Id = { correctiveAction.CollectionLevel2.ParDepartment_Id }
+                            AND C2XPC.ParCargo_Id = { correctiveAction.CollectionLevel2.ParCargo_Id }
+                            AND CAST(C2.CollectionDate AS SMALLDATETIME) BETWEEN 
+                            DATEADD(MINUTE, -1, CAST('{ correctiveAction.CollectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") }' AS SMALLDATETIME)) AND 
+                            DATEADD(MINUTE, 1, CAST('{ correctiveAction.CollectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") }' AS SMALLDATETIME))";
 
                         var collectionLevel2 = db.Database.SqlQuery<CollectionLevel2>(sql).FirstOrDefault();
+
+                        if(collectionLevel2 == null)
+                        {
+                            return correctiveActionsSave;
+                        }
 
                         collectionLevel2.HaveCorrectiveAction = true;
                         db.Entry(collectionLevel2).State = EntityState.Modified;
                         db.SaveChanges();
 
 
+                        //Não estava retornando na query acima então pego aqui novamente
+                        db.Configuration.LazyLoadingEnabled = false;
+                        collectionLevel2.ParCargo_Id = db.CollectionLevel2XParCargo.Where(x => x.CollectionLevel2_Id == collectionLevel2.Id).Select(x => x.ParCargo_Id).FirstOrDefault();
+                        collectionLevel2.ParDepartment_Id = db.CollectionLevel2XParDepartment.Where(x => x.CollectionLevel2_Id == collectionLevel2.Id).Select(x => x.ParDepartment_Id).FirstOrDefault();
+
                         correctiveAction.CollectionLevel2_Id = collectionLevel2.Id;
                         correctiveAction.CollectionLevel2 = collectionLevel2;
+
                         db.CorrectiveAction.Add(correctiveAction);
 
                         db.SaveChanges();

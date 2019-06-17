@@ -2,7 +2,7 @@ function atualizaAcoesCorretivasAposSincronizacao(data) {
 
 	for (var i = 0; i < data.length; i++) {
 		for (var j = 0; j < globalAcoesCorretivasRealizadas.length; j++) {
-			if (data[i].CollectionLevel2.Evaluation == globalAcoesCorretivasRealizadas[j].CollectionLevel2.Evaluation
+			if (data[i].CollectionLevel2.EvaluationNumber == globalAcoesCorretivasRealizadas[j].CollectionLevel2.EvaluationNumber
 				&& data[i].CollectionLevel2.Sample == globalAcoesCorretivasRealizadas[j].CollectionLevel2.Sample
 				&& data[i].CollectionLevel2.ParDepartment_Id == globalAcoesCorretivasRealizadas[j].CollectionLevel2.ParDepartment_Id
 				&& data[i].CollectionLevel2.ParCargo_Id == globalAcoesCorretivasRealizadas[j].CollectionLevel2.ParCargo_Id

@@ -451,7 +451,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         };
     }
 
-    var collectionHeaderFields = getCollectionHeaderFields();
+    //var collectionHeaderFields = getCollectionHeaderFields();
     //console.table(collectionHeaderFields);
 
     //Insere valores da coleta
@@ -473,7 +473,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
                 ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
                 IsNotEvaluate: $(data).attr('data-conforme-na') == "",
-                CollectionDate: convertDateToJson(currentCollectDate),
+                CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
                 /*
 				"UserSgq_Id":1,
@@ -496,6 +496,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
             }
         );
     });
+
+    processAlertRole(coletaJson);
 
     var cabecalhos = getCollectionHeaderFields();
 
@@ -543,10 +545,11 @@ function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
 }
 
 function SalvarColetas(coletaJson) {
-    processAlertRole(coletaJson);
+
     for (var i = 0; i < coletaJson.length; i++) {
         globalColetasRealizadas.push(coletaJson[i]);
     }
+
     AtualizarArquivoDeColetas();
 }
 
@@ -558,14 +561,14 @@ function OpenCorrectiveAction(coleta) {
     correctiveAction.CollectionLevel2 = {
         ParLevel1_Id: coleta.ParLevel1_Id,
         ParLevel2_Id: coleta.ParLevel2_Id,
-        UnitId: curretParCompany_Id,
+        UnitId: coleta.ParCompany_Id,
         //Shift: 1,
         EvaluationNumber: coleta.Evaluation,
         Sample: coleta.Sample,
-        ParDepartment_Id: currentParDepartment_Id,
-        ParCargo_Id: currentParCargo_Id,
+        ParDepartment_Id: coleta.ParDepartment_Id,
+        ParCargo_Id: coleta.ParCargo_Id,
         //ParCluster_Id: 1,
-        CollectionDate: convertDateToJson(new Date())
+        CollectionDate: getCurrentDate()
     }
 
     var modal = '<h4>Ação Corretiva</h4>';
@@ -623,12 +626,11 @@ function getCollectionHeaderFields() {
 
     var collectionHeaderFied = [];
 
-    $('#headerField input, select').each(function () {
+    $('#headerField input, #headerField select').each(function () {
 
         $self = $(this);
 
         //validar se os campos de cabeçalho obrigatórios foram preenchidos;
-
         if ($self.val())
 
             collectionHeaderFied.push({
@@ -639,7 +641,7 @@ function getCollectionHeaderFields() {
                 ParDepartment_Id: currentParDepartment_Id,
                 ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: curretParCompany_Id,
-                CollectionDate: convertDateToJson(new Date()),
+                CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
             });
 
