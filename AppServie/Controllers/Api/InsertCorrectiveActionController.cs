@@ -18,13 +18,14 @@ namespace AppServie.Api.Controllers
         [Route("InsertCorrectiveAction")]
         public async Task<string> InsertCorrectiveAction([FromBody] InsertCorrectiveActionClass insertCorrectiveActionClass)
         {
-            string url = "/api/SyncServiceApi/insertDeviation";
+            string url = "/api/SyncServiceApi/InsertCorrectiveAction";
             RestRequest restRequest = await RestRequest.Post(url, insertCorrectiveActionClass, this.token);
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 return JsonConvert.DeserializeObject<string>(restRequest.Response);
             }
+
             return null;
         }
 
