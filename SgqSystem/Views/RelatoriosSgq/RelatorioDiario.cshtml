@@ -153,7 +153,7 @@
 
                     level2DoLevel1.forEach(function (oo, cc) {
                         var divTarefas = DivManager.criaDiv(divMonitoramento, oo.level2_Id, "monitoramento");
-                        var level3DoLevel2 = $.grep(r.listResultSetLevel3, function (level2, c) { return level2.level2_Id == oo.level2_Id });
+                        var level3DoLevel2 = $.grep(r.listResultSetLevel3, function (level2, c) { return level2.level2_Id == oo.level2_Id && level2.level1_Id == oo.level1_Id });
 
                         if(   level3DoLevel2.length > 0 )   {
                             var dadosFTA = enviar
