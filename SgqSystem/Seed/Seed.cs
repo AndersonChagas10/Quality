@@ -1,9 +1,10 @@
-﻿using DTO;
+﻿using Dominio;
+using DTO;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
-using System.Web;
 
 namespace SgqSystem.Seed
 {
@@ -25,7 +26,7 @@ namespace SgqSystem.Seed
                 DicionarioEstaticoHelper.DicionarioEstaticoHelpers = x;
             }
 
-           
+
 
             if (GlobalConfig.LanguageBrasil)
             {
@@ -65,6 +66,12 @@ namespace SgqSystem.Seed
                     Resources.Resource = x;
                 }
             }
-        }    
+
+
+            //metodo para preencher os scrips com base nos arquivos da pasta, para mante-los atualizados
+            AppScriptSeed appScriptSeed = new AppScriptSeed();
+            appScriptSeed.SetAppScript();
+            
+        }
     }
 }

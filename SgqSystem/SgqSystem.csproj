@@ -582,6 +582,7 @@
     <Compile Include="Secirity\RoleAuthorizeAttribute.cs" />
     <Compile Include="Secirity\RolesPorUnidade.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />
+    <Compile Include="Seed\AppScriptSeed.cs" />
     <Compile Include="Seed\DicionarioEstaticoSeed.cs" />
     <Compile Include="Seed\ResourceEnSeed.cs" />
     <Compile Include="Seed\ResourcePtSeed.cs" />
