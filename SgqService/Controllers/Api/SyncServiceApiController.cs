@@ -3431,7 +3431,7 @@ namespace SgqService.Controllers.Api
                 @DescriptionFailure,
                 @ImmediateCorrectiveAction,
                 @ProductDisposition,
-                @PreventativeMeasure";
+                @PreventativeMeasure)";
 
             string conexao = this.conexao;
 
