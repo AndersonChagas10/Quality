@@ -83,6 +83,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Reso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DicionarioEstaticoHelper", "DicionarioEstaticoHelper\DicionarioEstaticoHelper.csproj", "{B5648B3F-6B76-4356-A2FD-24FDCAAFE15A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebConfig", "WebConfig\WebConfig.csproj", "{EEE93B57-7EA3-4662-B297-A1C97A41AD0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -169,6 +171,10 @@ Global
 		{B5648B3F-6B76-4356-A2FD-24FDCAAFE15A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5648B3F-6B76-4356-A2FD-24FDCAAFE15A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5648B3F-6B76-4356-A2FD-24FDCAAFE15A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEE93B57-7EA3-4662-B297-A1C97A41AD0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEE93B57-7EA3-4662-B297-A1C97A41AD0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEE93B57-7EA3-4662-B297-A1C97A41AD0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEE93B57-7EA3-4662-B297-A1C97A41AD0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,6 +200,7 @@ Global
 		{8DC329A7-0151-438C-A2D5-9E5D82946F9B} = {A9B14F0F-0651-4B4E-8A2F-E26D95018D98}
 		{7CA0C2B1-2D05-4A01-86C2-8732D8A07192} = {A9B14F0F-0651-4B4E-8A2F-E26D95018D98}
 		{B5648B3F-6B76-4356-A2FD-24FDCAAFE15A} = {A9B14F0F-0651-4B4E-8A2F-E26D95018D98}
+		{EEE93B57-7EA3-4662-B297-A1C97A41AD0F} = {A9B14F0F-0651-4B4E-8A2F-E26D95018D98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7D0A1A9-F2A2-4A1F-A45E-16387BDF6813}

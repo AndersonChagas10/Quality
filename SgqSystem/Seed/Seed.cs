@@ -70,8 +70,7 @@ namespace SgqSystem.Seed
 
             //metodo para preencher os scrips com base nos arquivos da pasta, para mante-los atualizados
             AppScriptSeed appScriptSeed = new AppScriptSeed();
-            appScriptSeed.SetAppScript();
-            
+            appScriptSeed.SetAppScript();            
         }
     }
 }

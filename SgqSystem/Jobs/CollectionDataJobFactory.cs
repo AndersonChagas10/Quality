@@ -28,7 +28,7 @@ namespace Jobs
             Thread.Sleep(new Random().Next(1000, 2000));
             while (true)
             {
-                if (ConfigurationManager.AppSettings["CollectionDataJob"] == "on")
+                if (DicionarioEstaticoHelper.DicionarioEstaticoHelpers.CollectionDataJob == "on")
                 {
                     CollectionDataJobFactory.Execute();
                 }

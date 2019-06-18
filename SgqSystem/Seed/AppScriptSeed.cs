@@ -18,7 +18,7 @@ namespace SgqSystem.Seed
                 appScripts = db.AppScript.ToList();
             }
 
-            string AppFilesVersion = System.Configuration.ConfigurationManager.AppSettings["AppFiles"];
+            string AppFilesVersion = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.AppFiles;
 
             string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta\\" + AppFilesVersion;
             string searchPattern = "*.*";

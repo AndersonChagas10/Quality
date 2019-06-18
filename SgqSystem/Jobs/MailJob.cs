@@ -40,7 +40,7 @@ namespace Jobs
         {
             try
             {
-                if (ConfigurationManager.AppSettings["SendMailJob"] == "on")
+                if (DicionarioEstaticoHelper.DicionarioEstaticoHelpers.SendMailJob == "on")
                 {
                     if (GlobalConfig.Brasil)
                     {

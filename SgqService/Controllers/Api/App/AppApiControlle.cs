@@ -250,7 +250,7 @@ namespace SgqService.Controllers.Api.App
         public string GetFiles()
         {
 
-            var app = ConfigurationManager.AppSettings["AppFiles"];
+            var app = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.AppFiles;
 
             return new AppScriptsController().GetByVersion(app);
 

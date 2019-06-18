@@ -3995,7 +3995,7 @@ namespace SgqService.Controllers.Api
             //var version = "2.0.47";
             string forcaAtualizacao = "";
 
-            string appVersion = System.Configuration.ConfigurationManager.AppSettings["appVersion"];
+            string appVersion = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.appVersion;
 
             if (!version.Contains(appVersion))
                 forcaAtualizacao = @"<script>

@@ -28,7 +28,7 @@ namespace SgqService.Controllers.Api
             {
                 var scriptDctionary = new Dictionary<string, string>();
 
-                if (System.Configuration.ConfigurationManager.AppSettings["Producao"] == "SIM")
+                if (DicionarioEstaticoHelper.DicionarioEstaticoHelpers.Producao == "SIM")
                 {
                     #region ReduzScript (Minify)
                     var blockComments = @"/\*(.*?)\*/";

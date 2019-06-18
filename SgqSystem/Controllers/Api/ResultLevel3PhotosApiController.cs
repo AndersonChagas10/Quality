@@ -52,7 +52,7 @@ namespace SgqSystem.Controllers.Api
                 #region Upload Photos
                 var bytes = Convert.FromBase64String(ResultPhoto.Photo);
 
-                var basePath = System.Configuration.ConfigurationManager.AppSettings["StorageRoot"] ?? "~";
+                var basePath = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.StorageRoot ?? "~";
                 if (basePath.Equals("~"))
                 {
                     basePath = @AppDomain.CurrentDomain.BaseDirectory;

@@ -38,7 +38,7 @@ namespace Jobs
 
         private static void Execute()
         {
-            if (ConfigurationManager.AppSettings["ResendProcessJsonJob"] == "on")
+            if (DicionarioEstaticoHelper.DicionarioEstaticoHelpers.ResendProcessJsonJob == "on")
             {
                 try
                 {

@@ -59,6 +59,24 @@ namespace SgqSystem.Seed
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "controllerGestao", Value = "Gestao", ControllerName = "Dashboard", Descricao = "Gestão" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "actionGestao", Value = "Index", ControllerName = "Dashboard", Descricao = "Gestão" });
 
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "BuildEm", Value = "DesenvolvimentoDeployServidorGrtParaTeste", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "aspnet:MaxJsonDeserializerMembers", Value = "2147483644", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "Producao", Value = "", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "URL_PA", Value = "http://192.168.25.200/PlanoAcao;http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "EnderecoEmailAlertaBR", Value = "http://localhost:57506/api/hf/SendMail", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "UsuariosComEmailBloqueado", Value = "543,546,511,545", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "UpdateTelaTabletRoot", Value = "~", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "SendMailJob", Value = "off", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "ResendProcessJsonJob", Value = "off", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "IntegrationJob", Value = "off", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "CollectionDataJob", Value = "off", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "PreencherMandala", Value = "off", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "appVersion", Value = "2.0.47", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "StorageRoot", Value = "C:\\uploadFiles", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "AppFiles", Value = "RH", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "credentialUserServerPhoto", Value = "GRT Soluções", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "credentialPassServerPhoto", Value = "1qazmko0", ControllerName = "WebConfig", Descricao = "" });
+
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys);
 
                 if (add != null)

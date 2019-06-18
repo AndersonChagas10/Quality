@@ -29,7 +29,7 @@ namespace SgqSystem.Controllers.Home
             ViewBag.UnidadesUsuario = listaMinhasUnidades;
             ViewBag.IdUnidadesUsuario = listaMinhasUnidades.Select(u => u.Id).ToList();
 
-            ViewBag.UpdateTelaTabletRoot = System.Configuration.ConfigurationManager.AppSettings["UpdateTelaTabletRoot"];
+            ViewBag.UpdateTelaTabletRoot = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.UpdateTelaTabletRoot;
             //listaMinhasUnidades.Select(u=>u.Id);
 
             ViewBag.IsBtnAtualizar = false;
