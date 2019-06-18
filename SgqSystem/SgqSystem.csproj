@@ -397,10 +397,15 @@
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
+    <Compile Include="Controllers\ParAlertTypesController.cs" />
     <Compile Include="Controllers\Params\ParCargoController.cs" />
     <Compile Include="Controllers\Params\ParColaboradorController.cs" />
+    <Compile Include="Controllers\ParConsolidationTypesController.cs" />
+    <Compile Include="Controllers\ParInputTypeValuesController.cs" />
     <Compile Include="Controllers\ParLevel3InputTypeController.cs" />
     <Compile Include="Controllers\ParLevel3XModuleController.cs" />
+    <Compile Include="Controllers\ParReasonTypesController.cs" />
+    <Compile Include="Controllers\ParScoreTypesController.cs" />
     <Compile Include="Controllers\ParStructureGroupController.cs" />
     <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
     <Compile Include="Controllers\ImportFormat\ImportFormatItemsController.cs" />
@@ -2056,6 +2061,31 @@
     <Content Include="Views\ParLevel3InputType\Details.cshtml" />
     <Content Include="Views\ParLevel3InputType\Edit.cshtml" />
     <Content Include="Views\ParLevel3InputType\Index.cshtml" />
+    <Content Include="Views\ParReasonTypes\Create.cshtml" />
+    <Content Include="Views\ParReasonTypes\Delete.cshtml" />
+    <Content Include="Views\ParReasonTypes\Details.cshtml" />
+    <Content Include="Views\ParReasonTypes\Edit.cshtml" />
+    <Content Include="Views\ParReasonTypes\Index.cshtml" />
+    <Content Include="Views\ParAlertTypes\Create.cshtml" />
+    <Content Include="Views\ParAlertTypes\Delete.cshtml" />
+    <Content Include="Views\ParAlertTypes\Details.cshtml" />
+    <Content Include="Views\ParAlertTypes\Edit.cshtml" />
+    <Content Include="Views\ParAlertTypes\Index.cshtml" />
+    <Content Include="Views\ParInputTypeValues\Create.cshtml" />
+    <Content Include="Views\ParInputTypeValues\Delete.cshtml" />
+    <Content Include="Views\ParInputTypeValues\Details.cshtml" />
+    <Content Include="Views\ParInputTypeValues\Edit.cshtml" />
+    <Content Include="Views\ParInputTypeValues\Index.cshtml" />
+    <Content Include="Views\ParScoreTypes\Create.cshtml" />
+    <Content Include="Views\ParScoreTypes\Delete.cshtml" />
+    <Content Include="Views\ParScoreTypes\Details.cshtml" />
+    <Content Include="Views\ParScoreTypes\Edit.cshtml" />
+    <Content Include="Views\ParScoreTypes\Index.cshtml" />
+    <Content Include="Views\ParConsolidationTypes\Create.cshtml" />
+    <Content Include="Views\ParConsolidationTypes\Delete.cshtml" />
+    <Content Include="Views\ParConsolidationTypes\Details.cshtml" />
+    <Content Include="Views\ParConsolidationTypes\Edit.cshtml" />
+    <Content Include="Views\ParConsolidationTypes\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
