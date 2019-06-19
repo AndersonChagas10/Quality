@@ -17,14 +17,14 @@ namespace AppServie.Api.Controllers
     public partial class ResultLevel3PhotosApiController : BaseApiController
     {
         [HttpPost]
-        public async Task<string> Post([FromBody] List<Result_Level3_PhotosDTO> Fotos)
+        public async Task<dynamic> Post([FromBody] List<Result_Level3_PhotosDTO> Fotos)
         {
             string url = "/api/ResultLevel3PhotosApi";
             RestRequest restRequest = await RestRequest.Post(url, Fotos, this.token);
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return JsonConvert.DeserializeObject<string>(restRequest.Response);
+                return JsonConvert.DeserializeObject<dynamic>(restRequest.Response);
             }
             return null;
         }
