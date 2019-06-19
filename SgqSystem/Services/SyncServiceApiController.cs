@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
+using System.Net.Http; 
 using System.Web.Http;
 using System.Data.SqlClient;
 using DTO;
@@ -261,7 +261,7 @@ namespace SgqSystem.Controllers.Api
 
             //ObjResultJSon = "<level02>3987891;03/30/2018 08:41:032:033;1;03/30/2018 08:41:032:072;5;1;1;1;0;false;03302018;1;1;<header>17,1,3,0,0,0,0,0,0</header>;false;false;;undefined;undefined;false; 2.0.46;JBS ;<level03>16,03/30/2018 08:41:032:075,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>27,03/30/2018 08:41:032:076,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>29,03/30/2018 08:41:032:077,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;3;0;0;0;3;0;1;0;0;0;0;undefined;0;0</level02>";
 
-            ObjResultJSon = ObjResultJSon.Replace("%2C", "");
+            ObjResultJSon = ObjResultJSon.Replace("%2C", "").Replace("NaN", "0");
 
             var objObjResultJSonPuro = ObjResultJSon;
 
@@ -7095,7 +7095,7 @@ namespace SgqSystem.Controllers.Api
             }//Escala Likert
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
-                var ranges = dbEf.ParInputTypeValues.Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id).ToList();
+                var ranges = dbEf.ParInputTypeValues.Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id && r.IsActive && (r.Intervalo <= parLevel3.IntervalMax && r.Intervalo >= parLevel3.IntervalMin)).ToList();
 
                 var paramns = new List<string>();
 
