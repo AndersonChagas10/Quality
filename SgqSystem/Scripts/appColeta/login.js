@@ -1,8 +1,12 @@
 var userlogado;
 
-var token = function(){
-    return { 
-        "token": userlogado.attr('userlogin') + "|" + userlogado.attr('userpass')
+var token = function () {
+    if (userlogado)
+        return {
+            "token": userlogado.attr('userlogin') + "|" + userlogado.attr('userpass')
+        }
+    else {
+        return "";
     }
 }
 
@@ -127,7 +131,7 @@ function getCompanyUsers(ParCompany_Id) {
 
             $('Users').empty();
 
-            var users = $(data).text();
+            var users = data;//$(data).text();
             appendDevice(users, $('.Users'));
 
             wMessage($('#btnLoginOnline'), getResource('verifying_keys'));
@@ -388,7 +392,7 @@ function readFile(fileEntry) {
 }
 
 function verificaConexaoUnidadeAnterior(ParCompany_Id, user_Id) {
-    
+
     $.ajax({
         url: urlPreffix + '/api/Company/getCompany/',
         data: { id: ParCompany_Id },

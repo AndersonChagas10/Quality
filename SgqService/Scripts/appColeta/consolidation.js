@@ -67,20 +67,20 @@ function updateLevel2Consolidation(
     level2ResultList.attr('evaluatetotall1', evaluatetotall1);
     level2ResultList.attr('totalavaliado', evaluatetotall1);
     level2ResultList.attr('defectstotall1', defectstotall1);
-    level2ResultList.attr('weidefectsl1', weidefectsl1)
+    level2ResultList.attr('weidefectsl1', weidefectsl1);
     level2ResultList.attr('totallevel3evaluationl1', totallevel3evaluationl1);
-    level2ResultList.attr('totallevel3withdefectsl1', totallevel3withdefectsl1)
-    level2ResultList.attr('lastevaluationalertl1', lastevaluationalertl1)
-    level2ResultList.attr('lastlevel2alertl1', lastlevel2alertl1)
-    level2ResultList.attr('evaluatedresultl1', evaluatedresultl1)
-    level2ResultList.attr('defectsresultl1', defectsresultl1)
+    level2ResultList.attr('totallevel3withdefectsl1', totallevel3withdefectsl1);
+    level2ResultList.attr('lastevaluationalertl1', lastevaluationalertl1);
+    level2ResultList.attr('lastlevel2alertl1', lastlevel2alertl1);
+    level2ResultList.attr('evaluatedresultl1', evaluatedresultl1);
+    level2ResultList.attr('defectsresultl1', defectsresultl1);
     if ($('.level1.selected').attr('havecorrectiveaction')) {
         level2ResultList.attr('havecorrectiveaction', 'true'); //2017.01.02 ultimo commit
     }
 
-    level2Result.attr('havereaudit', havereaudit)
-    level2Result.attr('reauditlevel', reauditlevel)
-    level2Result.attr('reauditnumber', reauditnumber)
+    level2Result.attr('havereaudit', havereaudit);
+    level2Result.attr('reauditlevel', reauditlevel);
+    level2Result.attr('reauditnumber', reauditnumber);
 
     if (level1.attr('hasgrouplevel2') == 'true' && level1.attr('isreaudit') == 'true') {
         level1.attr('lastsample', samplecurrent);
@@ -478,6 +478,6 @@ function updateConsolidationCollapse(level2Result, sample, evaluate, reauditnumb
     }
 
     level2Result.attr('defectsl2', tdef.text());
-    level2Result.attr('reauditnumber', reauditnumber)
+    level2Result.attr('reauditnumber', reauditnumber);
 
 }
