@@ -10,7 +10,7 @@ using Dominio;
 
 namespace SgqSystem.Controllers
 {
-    public class ParScoreTypesController : Controller
+    public class ParScoreTypesController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 

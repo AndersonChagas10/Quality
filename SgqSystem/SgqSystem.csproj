@@ -401,7 +401,6 @@
     <Compile Include="Controllers\Params\ParCargoController.cs" />
     <Compile Include="Controllers\Params\ParColaboradorController.cs" />
     <Compile Include="Controllers\ParConsolidationTypesController.cs" />
-    <Compile Include="Controllers\ParInputTypeValuesController.cs" />
     <Compile Include="Controllers\ParLevel3InputTypeController.cs" />
     <Compile Include="Controllers\ParLevel3XModuleController.cs" />
     <Compile Include="Controllers\ParReasonTypesController.cs" />
@@ -2071,11 +2070,6 @@
     <Content Include="Views\ParAlertTypes\Details.cshtml" />
     <Content Include="Views\ParAlertTypes\Edit.cshtml" />
     <Content Include="Views\ParAlertTypes\Index.cshtml" />
-    <Content Include="Views\ParInputTypeValues\Create.cshtml" />
-    <Content Include="Views\ParInputTypeValues\Delete.cshtml" />
-    <Content Include="Views\ParInputTypeValues\Details.cshtml" />
-    <Content Include="Views\ParInputTypeValues\Edit.cshtml" />
-    <Content Include="Views\ParInputTypeValues\Index.cshtml" />
     <Content Include="Views\ParScoreTypes\Create.cshtml" />
     <Content Include="Views\ParScoreTypes\Delete.cshtml" />
     <Content Include="Views\ParScoreTypes\Details.cshtml" />

@@ -10,7 +10,7 @@ using Dominio;
 
 namespace SgqSystem.Controllers
 {
-    public class ParAlertTypesController : Controller
+    public class ParAlertTypesController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
