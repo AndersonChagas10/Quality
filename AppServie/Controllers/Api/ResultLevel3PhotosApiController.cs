@@ -1,4 +1,5 @@
 ﻿using AppService;
+using DTO.DTO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceModel;
@@ -13,13 +14,13 @@ using System.Web.Http;
 namespace AppServie.Api.Controllers
 {
     [RoutePrefix("api/ResultLevel3PhotosApi")]
-    public partial class ResultLevel3PhotosApi : BaseApiController
+    public partial class ResultLevel3PhotosApiController : BaseApiController
     {
         [HttpPost]
-        public async Task<string> Post([FromBody] InsertDeviationClass insertDeviationClass)
+        public async Task<string> Post([FromBody] List<Result_Level3_PhotosDTO> Fotos)
         {
-            string url = "/api/SyncServiceApi/insertDeviation";
-            RestRequest restRequest = await RestRequest.Post(url, insertDeviationClass, this.token);
+            string url = "/api/ResultLevel3PhotosApi";
+            RestRequest restRequest = await RestRequest.Post(url, Fotos, this.token);
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
