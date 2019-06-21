@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web.Http;
+using Helper;
 
 namespace SgqService.Controllers.Api
 {
@@ -100,26 +101,31 @@ namespace SgqService.Controllers.Api
 
                 if (ResultPhoto.Result_Level3_Id == 0)
                 {
-                    return Ok(new { message = 
-                        "ResultLevel3Id não encontrado."+Newtonsoft.Json.JsonConvert.SerializeObject(ResultPhoto),
-                        count = i });
+                    return Ok(new
+                    {
+                        message =
+                        "ResultLevel3Id não encontrado." + Newtonsoft.Json.JsonConvert.SerializeObject(ResultPhoto),
+                        count = i
+                    });
                 }
 
                 #region Upload Photos
-                var bytes = Convert.FromBase64String(ResultPhoto.Photo);
 
+                //basePath = "\\\\192.168.25.16\\uploadFiles"
                 var basePath = System.Configuration.ConfigurationManager.AppSettings["StorageRoot"] ?? "~";
                 if (basePath.Equals("~"))
                 {
                     basePath = @AppDomain.CurrentDomain.BaseDirectory;
                 }
 
-                var path = Path.Combine(basePath, "photos", parLevel1_Id + parLevel2_Id + ResultPhoto.Level3Id + DateTime.Now.ToString("yyyyMMddHHssmm")) + new Random().Next(1000, 9999) + ".png";
-                using (var imageFile = new FileStream(path, FileMode.Create))
-                {
-                    imageFile.Write(bytes, 0, bytes.Length);
-                    imageFile.Flush();
-                }
+                string fileName = parLevel1_Id + parLevel2_Id + ResultPhoto.Level3Id + DateTime.Now.ToString("yyyyMMddHHssmm") + new Random().Next(1000, 9999) + ".png";
+
+                FileHelper.SavePhoto(ResultPhoto.Photo, basePath, fileName
+                    , GetWebConfigSettings("credentialUserServerPhoto")
+                    , GetWebConfigSettings("credentialPassServerPhoto")
+                    , GetWebConfigSettings("StorageRoot"));
+
+                var path = Path.Combine(basePath, "photos", fileName);
                 ResultPhoto.Photo = path;
                 ResultPhoto.Photo_Thumbnaills = ResultPhoto.Photo;
                 #endregion
