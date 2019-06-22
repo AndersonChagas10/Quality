@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -396,6 +396,7 @@
     <Compile Include="Controllers\DicionarioEstaticoController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
+    <Compile Include="Controllers\FotoController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
     <Compile Include="Controllers\ParAlertTypesController.cs" />
     <Compile Include="Controllers\Params\ParCargoController.cs" />
@@ -509,6 +510,7 @@
     <Compile Include="Jobs\CollectionJob.cs" />
     <Compile Include="Jobs\IntegrationJobFactory.cs" />
     <Compile Include="Jobs\MandalaJob.cs" />
+    <Compile Include="Jobs\PhotoJob.cs" />
     <Compile Include="Jobs\ReProcessJsonJob.cs" />
     <Compile Include="Jobs\MailJob.cs" />
     <Compile Include="Mail\SimpleAsynchronousUSA.cs" />
@@ -580,6 +582,7 @@
     <Compile Include="Mappers\UnitMapperProfile.cs" />
     <Compile Include="Mappers\UserMapperProfile.cs" />
     <Compile Include="Mappers\UserSgqMapperProfile.cs" />
+    <Compile Include="NetworkConnection\NetworkConnection.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
     <Compile Include="Secirity\FilterUnit.cs" />
     <Compile Include="Secirity\FormularioPesquisa.cs" />

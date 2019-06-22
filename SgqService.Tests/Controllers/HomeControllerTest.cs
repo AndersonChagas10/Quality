@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SgqService;
-using SgqService.Controllers;
 
 namespace SgqService.Tests.Controllers
 {

@@ -252,25 +252,25 @@ namespace SgqSystem.Controllers.Api.App
         {
             return new AppScriptsController().GetByVersion(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.AppFiles);
 
-            //string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
-            //string searchPattern = "*.*";
-            //string[] MyFiles = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories)
-            //    .Where(file => file.ToLower().EndsWith("js") || file.ToLower().EndsWith("css")).ToArray();
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
+            string searchPattern = "*.*";
+            string[] MyFiles = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories)
+                .Where(file => file.ToLower().EndsWith("js") || file.ToLower().EndsWith("css")).ToArray();
 
-            //var obj = new List<Dictionary<string, string>>();
+            var obj = new List<Dictionary<string, string>>();
 
-            //foreach (var url in MyFiles)
-            //{
-            //    var conteudo = System.IO.File.ReadAllText(url).ToString();
-            //    var nomeArquivo = Path.GetFileName(url);
+            foreach (var url in MyFiles)
+            {
+                var conteudo = System.IO.File.ReadAllText(url).ToString();
+                var nomeArquivo = Path.GetFileName(url);
 
-            //    var file = new Dictionary<string, string>();
+                var file = new Dictionary<string, string>();
 
-            //    file.Add(nomeArquivo, conteudo);
-            //    obj.Add(file);
-            //}
+                file.Add(nomeArquivo, conteudo);
+                obj.Add(file);
+            }
 
-            //return JsonConvert.SerializeObject(obj);
+            return JsonConvert.SerializeObject(obj);
         }
 
         [HttpGet]
@@ -322,7 +322,13 @@ namespace SgqSystem.Controllers.Api.App
                         GlobalConfig.PaginaDoTablet.Add(temp, null);
                     }
                 }
-                return GlobalConfig.PaginaDoTablet.Select(pt => new { pt.Key, pt.Value?.DataFimStr, pt.Value?.DataInicioStr, pt.Value?.StatusStr });
+                return GlobalConfig.PaginaDoTablet.Select(pt => new
+                {
+                    Key = pt.Key,
+                    DataFimStr = pt.Value?.DataFimStr,
+                    DataInicioStr = pt.Value?.DataInicioStr,
+                    StatusStr = pt.Value?.StatusStr
+                });
 
             }
             return null;

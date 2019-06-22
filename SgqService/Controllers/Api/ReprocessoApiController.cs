@@ -37,7 +37,8 @@ namespace SgqService.Controllers.Api
                 if (AppSettingsWebConfig.GetValue("BuildEm") == "DesenvolvimentoDeployServidorGrtParaTeste")
                 {
                     userSQL = "sa";
-                    passSQL = "betsy1";
+                    //passSQL = "betsy1";
+                    passSQL = "1qazmko0";
                 }
 
                 using (var db = new SgqDbDevEntities())

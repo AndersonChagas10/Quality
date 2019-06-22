@@ -548,7 +548,11 @@ namespace DTO.Services
                 {
                     CriaUSerSgqPeloUserSgqBR(userDto);
                     isCreate = true;
+                }else
+                {
+                    AtualizaUserSgqPeloUsuarios(userDto);
                 }
+                
 
             }
             catch (Exception e)
@@ -750,6 +754,45 @@ namespace DTO.Services
                 }
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userDto"></param>
+        private void AtualizaUserSgqPeloUsuarios(UserDTO userDto)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                Usuario usuarioSgqBr;
+                //db.Configuration.LazyLoadingEnabled = false;
+                try
+                {
+                    usuarioSgqBr = db.Usuario.AsNoTracking().FirstOrDefault(r => r.cSigla.ToLower() == userDto.Name.ToLower());
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Erro ao buscar dados do usuario do ERP JBS", e);
+                }
+
+                if (usuarioSgqBr == null)
+                    return;
+
+                try
+                {
+                    var userSgqs = db.UserSgq.Where(x => x.Name == userDto.Name).ToList();
+                    foreach (var item in userSgqs)
+                    {
+                        item.Email = usuarioSgqBr.cEMail;
+                    }
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Erro ao atualizar email registrado na tabela usuarios", e);
+                }
+
+            }
+        }
+
 
         //private string GetAppSettings(string key)
         //{

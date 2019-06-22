@@ -884,13 +884,12 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "view", Value = "View" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "view_db", Value = "View database" });
 
+                var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));
 
-
-                var add = ResourcesInserir.Select(r => r.Key).Except(resourceKeys);
-
-                if (add != null)
+                if (resourcesParaInserir != null)
                 {
-                    db.ResourceEN.AddRange(ResourcesInserir.Where(r => add.Contains(r.Key)));
+                    db.Configuration.AutoDetectChangesEnabled = false;
+                    db.ResourceEN.AddRange(resourcesParaInserir);
                     db.SaveChanges();
                 }
 

@@ -374,7 +374,7 @@ namespace SgqSystem.Services
                             listPai = factory.SearchQuery<ResultadoUmaColuna>(indicadorPai).ToList();
                         }
 
-                  
+
                         //string[][] matrizLevel3 = new string[leveis3.Length][];
 
                         string retorno = "";
@@ -404,7 +404,7 @@ namespace SgqSystem.Services
                                         }
                                     }
 
-                                    if(apagarLevel3)
+                                    if (apagarLevel3)
                                         leveis3[j] = "";
 
                                     apagarLevel3 = true;
@@ -4137,14 +4137,11 @@ namespace SgqSystem.Services
 
             System.Reflection.Assembly assembly = this.GetType().Assembly;
 
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-
-            var resourceSet = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false);
+            var resourceManager = (IDictionary<string, object>)Resources.Resource;
 
             string items = "";
 
-            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            foreach (var entry in resourceManager)
             {
                 items += "<div res='" + entry.Key.ToString() + "'>" + entry.Value.ToString() + "</div>";
             }
@@ -4518,6 +4515,15 @@ namespace SgqSystem.Services
             buttons += " <button id=\"btnSaveAllTemp\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button>";
 
             buttons += " <button id=\"btnCA\" class=\"btn btn-lg btn-danger hide\">" + Resources.Resource.corrective_action + "</button>";
+
+            buttons += @"<div style='
+                        height: 80px;
+                        width: 80px;
+                        position: fixed;
+                        z-index: 900;
+                        bottom: 20px;
+                        right: 15px;
+                    '></div>";
 
             string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
                              "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
@@ -6962,9 +6968,9 @@ namespace SgqSystem.Services
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
                 var ranges = dbEf.ParInputTypeValues
-                    .Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id 
+                    .Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id
                         && r.IsActive
-                        && (r.Intervalo <= parLevel3.IntervalMax && r.Intervalo >= parLevel3.IntervalMin) ).ToList();
+                        && (r.Intervalo <= parLevel3.IntervalMax && r.Intervalo >= parLevel3.IntervalMin)).ToList();
 
                 var paramns = new List<string>();
 

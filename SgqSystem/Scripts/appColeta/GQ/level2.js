@@ -429,6 +429,8 @@ function scrollTop() {
 function saveLevel02(Level01Id, Level02Id, unidadeId, date, dateTime, auditorId, shift, period, evaluate, sample, defects, reaudit, reauditNumber, phase, startPhaseDate,
     consecutivefailureLevel, consecutivefailureTotal, notAvaliabled, headerList, alertlevel, sequencial, banda) {
 
+    Level01Id = Level01Id ? Level01Id : $(_level1).attr('id');
+
     if (notAvaliabled == "notavaliable") {
         notAvaliabled = true;
     }
@@ -447,9 +449,10 @@ function saveLevel02(Level01Id, Level02Id, unidadeId, date, dateTime, auditorId,
     sequencial = sequencial != null ? sequencial : 0
     banda = banda != null ? banda : 0
 
-    if ($('.totalnc:visible').parent().parent().parent().length == 0) {
-        reaudit = true;
-    }
+    //Comentado pois esta dando problema no BR, validar USA posteriormente
+    // if ($('.totalnc:visible').parent().parent().parent().length == 0) {
+    //     reaudit = true;
+    // }
 
 
     return "<div class='level02Result' level01Id='" + Level01Id + "' level02Id='" + Level02Id + "' unidadeId='" + unidadeId + "' date='" + date + "' dateTime='" + dateTime + "' auditorId='" + auditorId
@@ -773,7 +776,7 @@ function atualizaCorAgendamento() {
                                 var intervalo = mapeamento[0];
 
                                 //isso foi copiado, pra pegar o numero da reauditoria
-                                var reaudMax = $('.Resultlevel2[level1id=' + level1Id + '][shift=' + shift + '][period=' + period + '][unitid=' + unitId + ']:last').attr('reauditnumber')
+                                var reaudMax = $('.Resultlevel2[level1id=' + level1Id + '][shift=' + shift + '][period=' + period + '][unitid=' + unitId + '][level2id=' + level2Id + ']:last').attr('reauditnumber')
 
                                 if (reaudMax > 0)
                                     reaudnumber = reaudMax;
@@ -782,6 +785,7 @@ function atualizaCorAgendamento() {
                                     reaudnumber = 1;
                                     reaudMax = 1;
                                 }
+
                                 // fim
 
                                 if (!!parseInt(avaliacaoAtual)) {

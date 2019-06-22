@@ -207,7 +207,7 @@ namespace SgqService.Controllers.Api
                     }
                 }
             }
-            catch (SqlException ex) 
+            catch (SqlException ex)
             {
                 throw;
             }
@@ -3431,7 +3431,7 @@ namespace SgqService.Controllers.Api
                 @DescriptionFailure,
                 @ImmediateCorrectiveAction,
                 @ProductDisposition,
-                @PreventativeMeasure";
+                @PreventativeMeasure)";
 
             string conexao = this.conexao;
 
@@ -4155,10 +4155,7 @@ namespace SgqService.Controllers.Api
 
             System.Reflection.Assembly assembly = this.GetType().Assembly;
 
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-
-            var resourceSet = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false);
+            var resourceSet = Resources.Resource;
 
             string items = "";
 
@@ -8161,21 +8158,30 @@ namespace SgqService.Controllers.Api
                 DROP TABLE #TBL_RESPOSTA DROP TABLE #COLETASLEVEL3 ";
 
             List<ResultadoUmaColuna> Lista1 = new List<ResultadoUmaColuna>();
-            using (Factory factory = new Factory("DefaultConnection"))
-            {
-                using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
-                {
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
-                    cmd.Parameters.Add(new SqlParameter("@DataS", dataS));
 
-                    Lista1 = factory.SearchQuery<ResultadoUmaColuna>(cmd);
+            try
+            {
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
+                        cmd.Parameters.Add(new SqlParameter("@DataS", dataS));
+
+                        Lista1 = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                    }
+                }
+
+                foreach (var i in Lista1)
+                {
+                    ResultsKeys += i.retorno;
                 }
             }
-
-            foreach (var i in Lista1)
+            catch (Exception ex)
             {
-                ResultsKeys += i.retorno;
+
+
             }
 
             return ResultsKeys;

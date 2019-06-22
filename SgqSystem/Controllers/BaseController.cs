@@ -77,13 +77,6 @@ namespace SgqSystem.Controllers
 
             try
             {
-
-
-               // System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-
-                //ViewBag.Resources = resourceManager.GetResourceSet(
-                    //Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
-
                 ViewBag.Resources = Resources.Resource;
 
                 using (var db = new SgqDbDevEntities())

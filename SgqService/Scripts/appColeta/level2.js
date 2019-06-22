@@ -776,7 +776,7 @@ function atualizaCorAgendamento() {
                                 var intervalo = mapeamento[0];
 
                                 //isso foi copiado, pra pegar o numero da reauditoria
-                                var reaudMax = $('.Resultlevel2[level1id=' + level1Id + '][shift=' + shift + '][period=' + period + '][unitid=' + unitId + ']:last').attr('reauditnumber')
+                                var reaudMax = $('.Resultlevel2[level1id=' + level1Id + '][shift=' + shift + '][period=' + period + '][unitid=' + unitId + '][level2id=' + level2Id + ']:last').attr('reauditnumber')
 
                                 if (reaudMax > 0)
                                     reaudnumber = reaudMax;
@@ -785,6 +785,7 @@ function atualizaCorAgendamento() {
                                     reaudnumber = 1;
                                     reaudMax = 1;
                                 }
+
                                 // fim
 
                                 if (!!parseInt(avaliacaoAtual)) {

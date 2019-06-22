@@ -882,15 +882,14 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "organizational_structure", Value = "Estrutura Organizacional" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "level1", Value = "Indicador" });
 
+                var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
-                var add = ResourcesInserir.Select(r => r.Key).Except(resourcesKeys);
-
-                if (add != null)
+                if (resourcesParaInserir != null)
                 {
-                    db.ResourcePT.AddRange(ResourcesInserir.Where(r => add.Contains(r.Key)));
+                    db.Configuration.AutoDetectChangesEnabled = false;
+                    db.ResourcePT.AddRange(resourcesParaInserir);
                     db.SaveChanges();
                 }
-
             }
         }
     }

@@ -13,29 +13,12 @@ namespace DTO.Helpers
     {
         public static DictionaryEntry getResource(string value)
         {
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+            var resourceManager = (IDictionary<string, object>)Resources.Resource;
 
-            if (GlobalConfig.LanguageBrasil)
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(Guard.LANGUAGE_PT_BR);
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Guard.LANGUAGE_PT_BR);
-            }
-            else
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-            }
-
-            var list = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false);
-
-
-            var listRes = list.Cast<DictionaryEntry>();
-
-            foreach (var r in listRes)
+            foreach (var r in resourceManager)
             {
                 if (r.Key.ToString() == value)
-                    return r;
+                    return new DictionaryEntry() { Key = r.Key, Value = r.Value };
             }
 
             return new DictionaryEntry();

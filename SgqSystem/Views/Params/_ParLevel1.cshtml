@@ -43,7 +43,7 @@
                             , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
 
                             <div style="display:none !important">
-                                @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
+                                @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency as string), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
                             </div>
 
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParScoreType_Id", Model.paramsDdl.DdlScoretype, htmlAttributes: new { @class = "form-control input-sm", @id = "selectScoreType" }), @Html.Label(Resources.Resource.scorecard_type as string), Table.PosicaoLabel.top, info: Resources.Resource.scorecard_type, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParScoreType_Id, null, new { @class = "text-danger" }))
@@ -271,8 +271,8 @@
                                         <table id="tblOpcaoMultiplaEscolha">
                                             <tbody>
                                                 <tr class="row">
-                                                    @Table.GerarColuna(@Html.Editor("objMultiplaEscolhaName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.option), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaNameCabecalho", "O campo Opção deve ser preenchido para o Cabeçalho."), null)
-                                                    @Table.GerarColunaButton(@Html.Editor("objMultiplaEscolhaPunishmentValue", new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-sm notAllowNegative", @min = "0" } }), @Html.Label(Resources.Resource.punishment_value), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaPunishmentValueCabecalho", "O campo Punição/Premiação deve ser selecionado para o Cabeçalho."), button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirMultiplaEscolha' onclick='Cabecalhos.IncluirMultiplaEscolha();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+                                                    @Table.GerarColuna(@Html.Editor("objMultiplaEscolhaName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.option as string), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaNameCabecalho", "O campo Opção deve ser preenchido para o Cabeçalho."), null)
+                                                    @Table.GerarColunaButton(@Html.Editor("objMultiplaEscolhaPunishmentValue", new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-sm notAllowNegative", @min = "0" } }), @Html.Label(Resources.Resource.punishment_value as string), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaPunishmentValueCabecalho", "O campo Punição/Premiação deve ser selecionado para o Cabeçalho."), button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirMultiplaEscolha' onclick='Cabecalhos.IncluirMultiplaEscolha();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -509,7 +509,7 @@
                                     @*Informações*@
                                     <div id="objInformacoes" style="display:none;">
 
-                                        @Html.Label(Resources.Resource.valueText): <input type="text" id="objInformacoesTextValue" />
+                                        @Html.Label(Resources.Resource.valueText as string): <input type="text" id="objInformacoesTextValue" />
 
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="@Resources.Resource.include_information" id="btnIncluirInformacao" onclick="Cabecalhos.IncluirInformacoes();" />
 
@@ -861,14 +861,14 @@
                                             @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
                                             @Table.GerarColuna(
                                                                                                                                                 @Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" })
-                                                                                                                                                , @Html.Label(Resources.Resource.not_conformity_rule)
+                                                                                                                                                , @Html.Label(Resources.Resource.not_conformity_rule as string)
                                                                                                                                                 , Table.PosicaoLabel.top)
                                             @Table.GerarColuna(
                                                                                                                                                 @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" })
-                                                                                                                                                , @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
+                                                                                                                                                , @Html.Label(Resources.Resource.value as string), Table.PosicaoLabel.top)
                                             @Table.GerarColunaCheckbox(
                                                                                                                                                 @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
-                                                                                                                                                , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm' onclick='RegraNcL1.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+                                                                                                                                                , @Html.Label(Resources.Resource.reaudit as string), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm' onclick='RegraNcL1.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
 
                                         </tr>
                                     </tbody>
