@@ -1,8 +1,8 @@
-﻿using Dominio;
+﻿using Dominio.Seed;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SgqSystem.Seed
+namespace Dominio.Seed
 {
     public class ResourcePtSeed
     {

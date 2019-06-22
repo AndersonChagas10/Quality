@@ -76,6 +76,8 @@
     <Compile Include="Equipamentos.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="FamiliaProdutos.cs" />
+    <Compile Include="Global\DicionarioEstaticoHelper.cs" />
+    <Compile Include="Global\Resources.cs" />
     <Compile Include="ImportFormat.cs" />
     <Compile Include="ImportFormatItem.cs" />
     <Compile Include="Horarios.cs" />
@@ -192,6 +194,11 @@
     <Compile Include="RoleUserSgqXItemMenu.cs" />
     <Compile Include="RotinaIntegracao.cs" />
     <Compile Include="ScreenComponent.cs" />
+    <Compile Include="Seed\AppScriptSeed.cs" />
+    <Compile Include="Seed\DicionarioEstaticoSeed.cs" />
+    <Compile Include="Seed\ResourceEnSeed.cs" />
+    <Compile Include="Seed\ResourcePtSeed.cs" />
+    <Compile Include="Seed\Seed.cs" />
     <Compile Include="SgqDbDevEntities.cs" />
     <Compile Include="Shift.cs" />
     <Compile Include="TarefaAmostras.cs" />

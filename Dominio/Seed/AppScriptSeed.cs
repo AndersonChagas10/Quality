@@ -1,11 +1,11 @@
-﻿using Dominio;
+﻿using Dominio.Seed;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
 
-namespace SgqSystem.Seed
+namespace Dominio.Seed
 {
     public class AppScriptSeed
     {
@@ -18,7 +18,7 @@ namespace SgqSystem.Seed
                 appScripts = db.AppScript.ToList();
             }
 
-            string AppFilesVersion = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.AppFiles;
+            string AppFilesVersion = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.AppFiles;
 
             string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta\\" + AppFilesVersion;
             string searchPattern = "*.*";

@@ -25,7 +25,7 @@ namespace Jobs
             Thread.Sleep(new Random().Next(500, 2000));
             while (true)
             {
-                if (DicionarioEstaticoHelper.DicionarioEstaticoHelpers.IntegrationJob == "on")
+                if (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.IntegrationJob == "on")
                 {
                     IntegrationJobFactory.Execute();
                 }

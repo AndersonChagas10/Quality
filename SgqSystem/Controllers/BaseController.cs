@@ -207,7 +207,7 @@ namespace SgqSystem.Controllers
 
         public static string[] GetWebConfigList(string key)
         {
-            var list = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.URL_PA.Split(';');
+            var list = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.URL_PA.Split(';');
             return list;
         }
 

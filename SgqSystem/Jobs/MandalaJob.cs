@@ -41,7 +41,7 @@ namespace SgqSystem.Jobs
 
         private static void Execute()
         {
-            if (DicionarioEstaticoHelper.DicionarioEstaticoHelpers.PreencherMandala == "on")
+            if (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.PreencherMandala == "on")
             {
                 PreencherListaUnidadeMandala(null);
                 Thread.Sleep(2000);

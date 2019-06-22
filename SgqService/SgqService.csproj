@@ -16,7 +16,7 @@
     <AssemblyName>SgqService</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -437,10 +437,6 @@
       <Project>{8dc329a7-0151-438c-a2d5-9e5d82946f9b}</Project>
       <Name>DBContext</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DicionarioEstaticoHelper\DicionarioEstaticoHelper.csproj">
-      <Project>{b5648b3f-6b76-4356-a2fd-24fdcaafe15a}</Project>
-      <Name>DicionarioEstaticoHelper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dominio\Dominio.csproj">
       <Project>{777d8e88-0d52-446a-bc77-2f50a7d936e5}</Project>
       <Name>Dominio</Name>
@@ -452,10 +448,6 @@
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
       <Name>Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Resources\Resources.csproj">
-      <Project>{7ca0c2b1-2d05-4a01-86c2-8732d8a07192}</Project>
-      <Name>Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
       <Project>{3ecf1d86-91f3-4140-a11a-1546b8f662a1}</Project>

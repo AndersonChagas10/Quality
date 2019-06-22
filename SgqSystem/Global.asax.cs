@@ -55,7 +55,7 @@ namespace SgqSystem
             //};
             #endregion
 
-            Seed.Seed.SetSeedValues();
+            Dominio.Seed.Seed.SetSeedValues(isPT:GlobalConfig.LanguageBrasil);
 
             SetGlobalConfigAmbient();
             ThreadPool.QueueUserWorkItem(IntegrationJobFactory.ExecuteIntegrationJobFunction);
@@ -101,8 +101,8 @@ namespace SgqSystem
         {
             
             //GlobalConfig.Ambient = System.Configuration.ConfigurationManager.AppSettings["BuildEm"];
-            GlobalConfig.Ambient = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.BuildEm;
-            GlobalConfig.Producao = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.Producao == "SIM";
+            GlobalConfig.Ambient = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.BuildEm;
+            GlobalConfig.Producao = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.Producao == "SIM";
 
         }
 

@@ -42,7 +42,7 @@ namespace SgqSystem.Mail
             {
                 using (var client = new HttpClient())
                 {
-                    var url = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.EnderecoEmailAlertaBR;
+                    var url = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.EnderecoEmailAlertaBR;
 
                     client.Timeout = TimeSpan.FromMinutes(10);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
@@ -454,7 +454,7 @@ namespace SgqSystem.Mail
                                 WHEN U.ID = 1872 THEN 2
 
                             ELSE(SELECT top 1 ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @" and Active = 1) END
-                            AND U.Id NOT IN (" + DicionarioEstaticoHelper.DicionarioEstaticoHelpers.UsuariosComEmailBloqueado + ")"; //Tirar Célia e Mariana da JBS
+                            AND U.Id NOT IN (" + DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.UsuariosComEmailBloqueado + ")"; //Tirar Célia e Mariana da JBS
 
                     var listaEmails = dbLegado.Database.SqlQuery<string>(query).ToList();
                     if (listaEmails != null && listaEmails.Count() > 0)

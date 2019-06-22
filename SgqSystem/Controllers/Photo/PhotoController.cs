@@ -32,8 +32,8 @@ namespace SgqSystem.Controllers.Photo
 
                 //Verificar se no web.config a credencial do servidor de fotos
 
-                var credentialUserServerPhoto = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.credentialUserServerPhoto;
-                var credentialPassServerPhoto = DicionarioEstaticoHelper.DicionarioEstaticoHelpers.credentialPassServerPhoto;
+                var credentialUserServerPhoto = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto;
+                var credentialPassServerPhoto = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto;
                 FileStream file = null;
 
                 if (!string.IsNullOrEmpty(credentialUserServerPhoto) 

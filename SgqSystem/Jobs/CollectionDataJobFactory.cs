@@ -28,7 +28,7 @@ namespace Jobs
             Thread.Sleep(new Random().Next(1000, 2000));
             while (true)
             {
-                if (DicionarioEstaticoHelper.DicionarioEstaticoHelpers.CollectionDataJob == "on")
+                if (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.CollectionDataJob == "on")
                 {
                     CollectionDataJobFactory.Execute();
                 }

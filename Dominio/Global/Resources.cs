@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-public static class WebConfig
+public static class Resources
 {
-    public static dynamic Config
+    public static dynamic Resource
     {
         get; set;
     }

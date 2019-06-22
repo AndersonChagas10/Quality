@@ -28,7 +28,7 @@ namespace SgqSystem.Controllers
             {
                 var scriptDctionary = new Dictionary<string, string>();
 
-                if (DicionarioEstaticoHelper.DicionarioEstaticoHelpers.Producao == "SIM")
+                if (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.Producao == "SIM")
                 {
                     #region ReduzScript (Minify)
                     var blockComments = @"/\*(.*?)\*/";

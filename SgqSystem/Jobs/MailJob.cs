@@ -40,7 +40,7 @@ namespace Jobs
         {
             try
             {
-                if (DicionarioEstaticoHelper.DicionarioEstaticoHelpers.SendMailJob == "on")
+                if (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.SendMailJob == "on")
                 {
                     if (GlobalConfig.Brasil)
                     {

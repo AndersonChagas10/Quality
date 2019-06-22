@@ -38,7 +38,7 @@ namespace Jobs
 
         private static void Execute()
         {
-            if (DicionarioEstaticoHelper.DicionarioEstaticoHelpers.ResendProcessJsonJob == "on")
+            if (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ResendProcessJsonJob == "on")
             {
                 try
                 {
