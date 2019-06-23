@@ -399,12 +399,28 @@ create table ResourcePT(
 
 GO
 
+IF COL_LENGTH('ResourcePT','Value') IS NOT NULL
+BEGIN	
+	ALTER TABLE ResourcePT
+	ALTER COLUMN Value varchar(500);
+END
+
+GO
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ResourceEN' AND xtype='U')
 create table ResourceEN(
 	Id int not null identity(1,1) primary key,
 	[Key] varchar(120),
 	Value varchar(120)
 )
+
+GO
+
+IF COL_LENGTH('ResourceEN','Value') IS NOT NULL
+BEGIN	
+	ALTER TABLE ResourceEN
+	ALTER COLUMN Value varchar(500);
+END
 
 GO
 
