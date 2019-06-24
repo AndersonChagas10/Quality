@@ -3441,6 +3441,10 @@ namespace SgqService.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+                        DescriptionFailure = DescriptionFailure == null ? DescriptionFailure = "" : DescriptionFailure;
+                        ImmediateCorrectiveAction = ImmediateCorrectiveAction == null ? ImmediateCorrectiveAction = "" : ImmediateCorrectiveAction;
+                        ProductDisposition = ProductDisposition == null ? ProductDisposition = "" : ProductDisposition;
+                        PreventativeMeasure = PreventativeMeasure == null ? PreventativeMeasure = "" : PreventativeMeasure;
 
                         command.CommandType = CommandType.Text;
                         command.Parameters.Add(new SqlParameter("@AuditorId", AuditorId));
