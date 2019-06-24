@@ -79,7 +79,7 @@
                                 , @Html.Label(Resources.Resource.company as string)
                                 , Table.PosicaoLabel.top)
 
-                                    @Table.GerarColuna(@Html.Editor("effectiveDateMeta", new { htmlAttributes = new { @value = 0, @type = "date", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.effectiveDate), Table.PosicaoLabel.top)
+                                    @Table.GerarColuna(@Html.Editor("effectiveDateMeta", new { htmlAttributes = new { @value = 0, @type = "date", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.effectiveDate as string), Table.PosicaoLabel.top)
 
                                     @Table.GerarColunaButton(@Html.TextBox("percentVal", "", htmlAttributes: new { @id = "percentVal", @class = "form-control input-sm" })
                                 , @Html.Label(Resources.Resource.goal_value as string)
