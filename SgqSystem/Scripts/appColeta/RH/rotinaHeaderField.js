@@ -1,3 +1,9 @@
+var token = function () {
+    return {
+        "token": currentLogin.Name + "|" + currentLogin.Password
+    };
+};
+
 function getRotina(that) {
 
     if (!appIsOnline) {
@@ -92,9 +98,10 @@ function getDynamicValues(obj, $btn) {
             data: JSON.stringify(obj),
             url: urlPreffix + '/api/RetornaQueryRotinaApi/RetornaQueryRotina',
             type: 'POST',
+            headers: token(),
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-
+                console.log(data);
                 if (data)
                     setDynamicValues(data);
                 else
