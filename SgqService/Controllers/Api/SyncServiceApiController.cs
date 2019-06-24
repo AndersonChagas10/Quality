@@ -1816,8 +1816,8 @@ namespace SgqService.Controllers.Api
             string sql = $@"UPDATE CollectionLevel2 SET HaveCorrectiveAction = 0 WHERE 
                 ParLevel1_Id=@ParLevel1_Id AND 
                 UnitId=@ParCompany_Id AND 
-                CollectionDate BETWEEN '@DataInicio 00:00:00' AND 
-                '@DataFim 23:59:59' AND 
+                CollectionDate BETWEEN @DataInicio AND 
+                @DataFim AND 
                 HaveCorrectiveAction= 1 and 
                 reauditnumber=@ReauditNumber";
 
@@ -1833,8 +1833,8 @@ namespace SgqService.Controllers.Api
                         command.CommandType = CommandType.Text;
                         command.Parameters.Add(new SqlParameter("@ParLevel1_Id", ParLevel1_Id));
                         command.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
-                        command.Parameters.Add(new SqlParameter("@DataInicio", dataInicio));
-                        command.Parameters.Add(new SqlParameter("@DataFim", dataFim));
+                        command.Parameters.Add(new SqlParameter("@DataInicio", dataInicio + " 00:00:00"));
+                        command.Parameters.Add(new SqlParameter("@DataFim", dataFim + " 23:59:59"));
                         command.Parameters.Add(new SqlParameter("@ReauditNumber", reauditnumber));
 
                         connection.Open();
