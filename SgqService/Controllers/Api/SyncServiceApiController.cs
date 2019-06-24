@@ -1831,7 +1831,7 @@ namespace SgqService.Controllers.Api
                     {
 
                         command.CommandType = CommandType.Text;
-                        command.Parameters.Add(new SqlParameter("@ParLevel1", ParLevel1_Id));
+                        command.Parameters.Add(new SqlParameter("@ParLevel1_Id", ParLevel1_Id));
                         command.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
                         command.Parameters.Add(new SqlParameter("@DataInicio", dataInicio));
                         command.Parameters.Add(new SqlParameter("@DataFim", dataFim));
@@ -7879,6 +7879,8 @@ namespace SgqService.Controllers.Api
                     string dataInicio = null;
                     string dataFim = null;
 
+                    data = data.Trim();
+
                     if (!data.Contains("/"))
                     {
                         string dia = data.Substring(2, 2);
@@ -7887,6 +7889,7 @@ namespace SgqService.Controllers.Api
 
                         data = ano + "/" + mes + "/" + dia;
                     }
+
                     DateTime dataAPP = Convert.ToDateTime(data);
 
                     //Pega a data pela regra da frequencia
