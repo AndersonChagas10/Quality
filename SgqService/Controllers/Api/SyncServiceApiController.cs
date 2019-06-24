@@ -4155,11 +4155,11 @@ namespace SgqService.Controllers.Api
 
             System.Reflection.Assembly assembly = this.GetType().Assembly;
 
-            var resourceSet = Resources.Resource;
+            var resourceSet = (IDictionary<string, object>)Resources.Resource;
 
             string items = "";
 
-            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            foreach (var entry in resourceSet)
             {
                 items += "<div res='" + entry.Key.ToString() + "'>" + entry.Value.ToString() + "</div>";
             }
