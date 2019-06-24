@@ -362,7 +362,7 @@ function openLevel3(level2) {
 	que precisou fazer a gambiarra abaixo para conseguir setar o valor corretamente*/
     $('.painelLevel03:visible').find('input[type="date"]').each(function (i, e) {
         var element = $('.painelLevel03:visible')
-		.find('input[parheaderfield_id="' + $(e).attr('parheaderfield_id') + '"]')
+            .find('input[parheaderfield_id="' + $(e).attr('parheaderfield_id') + '"]')
         element.attr('type', "text");
         element.attr('value', $(e).val());
         element.attr('type', "date");
@@ -626,8 +626,8 @@ function saveLevel03(Level03Id, value, conform, auditorId, totalError, valuetext
         + "' valueText='" + valuetext + "' weight='" + weight + "' punishmentvalue='" + punishment
         + "' intervalmin='" + intervalmin + "' intervalmax='" + intervalmax + "' isnotevaluate='" + isnotevaluate
         + "' defects='" + defects
-         + "' ParReasonId='" + ParReasonSelected_Id
-         + "' ParReasonType_Id='" + ParReasonType_Id
+        + "' ParReasonId='" + ParReasonSelected_Id
+        + "' ParReasonType_Id='" + ParReasonType_Id
         + "' parDepartmentId='" + parDepartmentSelected_Id + "'></div>";
 }
 
@@ -1484,9 +1484,9 @@ function saveResultLevel3() {
             var value = ReplaceVirgula($(this).val());
 
             //Se o valor de defeito for maior que zero o resultado é não conforme.
-            if (parseFloat(value) > 0) {
-                conform = false;
-            }
+            // if (parseFloat(value) > 0) {
+            //     conform = false;
+            // }
 
             if (!parseFloat(value)) {
                 value = 0;
@@ -1500,32 +1500,94 @@ function saveResultLevel3() {
 
             var inputType = parseInt($(this).parents('.level3').attr('inputtype'));
 
-            //Calcula valor do Campo Calculado
-            if (inputType == 4) {
+            if (inputType == 1) { //Binário
+
+                value = !level3.attr('notconform');
+                conform = value;
+
+            } else if (inputType == 2) { //Número de defeitos
+
+                if (parseFloat(value) > 0) {
+                    conform = false;
+                }
+
+            } else if (inputType = 3) { //Intervalos
+
+                value = (level3).find('.levelValue').val();
+                conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
+
+            } else if (inputType == 4) { //Calcula valor do Campo Calculado
 
                 var valor1 = $(this).val().replace(',', '.');
                 var valor2 = $(this).siblings('.input02').val().replace(',', '.');
 
                 value = converteNotacaoBaseDezParaDecimal(valor1, valor2);
-                //value = replaceWithDevice(value);
-            } else if (inputType == 6) {
+
+            } else if (inputType == 5) { //Texto
+
+                if ($(level3).find('input').val()) {
+                    conform = false;
+                }
+
+            } else if (inputType == 6) { //Binário com texto
+
                 level3.attr('value', $(level3).find('input').val());
                 value = !level3.attr('notconform');
                 conform = value;
-            } else if (inputType == 7) {
+
+            } else if (inputType == 7) { //Intervalo em minutos
 
                 var antes = $(level3).find('.antes').val();
                 var depois = $(level3).find('.depois').val();
                 level3.attr('value', antes + "|" + depois);
                 value = HourToMinutes(depois) - HourToMinutes(antes);
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
-            } else if (inputType == 9) {
+
+            } else if (inputType == 8) { //Escala Likert
+
+                value = (level3).find('.levelValue').val();
+                conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
+
+            } else if (inputType == 9) { //Intervalo com Observação
+
                 level3.attr('value', $(level3).find('.levelValueNotes').val());
-                value = (level3).find('.levelValue').val()
+                value = (level3).find('.levelValue').val();
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
-            } else if (inputType == 10) {
-                value = (level3).find('.levelValue').val()
+
+            } else if (inputType == 10) { //Resultado
+
+                value = (level3).find('.levelValue').val();
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
+
+            } else if (inputType == 11) { //Observação
+
+                if (parseFloat(value) > 0) {
+                    conform = false;
+                }
+
+                if (!parseFloat(value)) {
+                    value = 0;
+                }
+
+            } else if (inputType == 99) { //Calculado por outro
+
+                if (parseFloat(value) > 0) {
+                    conform = false;
+                }
+
+                if (!parseFloat(value)) {
+                    value = 0;
+                }
+
+            } else {
+
+                if (parseFloat(value) > 0) {
+                    conform = false;
+                }
+
+                if (!parseFloat(value)) {
+                    value = 0;
+                }
             }
 
             //Se tenho level03Result atualizo.
