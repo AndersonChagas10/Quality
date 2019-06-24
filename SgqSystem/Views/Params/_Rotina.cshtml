@@ -27,8 +27,8 @@
                             @*@if (Model.levelControl == 1)
                                 {*@
                             @Table.GerarColuna(CommonData.ParCounterList(@Html, "rotina", Model.paramsDdl.DdlRotina, new { @class = "form-control input-erp input-sm" }), @Html.Label("Rotina"), Table.PosicaoLabel.top, null, null)
-                            @Table.GerarColuna(@Html.DropDownList("ParLevelDefinition_Id", Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_level), Table.PosicaoLabel.top, @Html.ErrorManual("levelDefinitionCampoCabecalho", Resources.Resource.select_the_field_where), null)
-                            @Table.GerarColunaButton(@Html.TextBoxFor(m => m.rotinaIngracaoDTO.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, null, "Nome vinculo rotina"
+                            @Table.GerarColuna(@Html.DropDownList("ParLevelDefinition_Id", Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_level as string), Table.PosicaoLabel.top, @Html.ErrorManual("levelDefinitionCampoCabecalho", Resources.Resource.select_the_field_where as string), null)
+                            @Table.GerarColunaButton(@Html.TextBoxFor(m => m.rotinaIngracaoDTO.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name as string), Table.PosicaoLabel.top, null, "Nome vinculo rotina"
         , button: "<button type=\"button\" id=\"btnSaveVinculoRotina\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                             @*}
                                  else if (Model.levelControl == 2)

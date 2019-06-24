@@ -2519,7 +2519,9 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "active", Value = "Está Ativo" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "costcenter", Value = "Centro de Custo" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "organizational_structure", Value = "Estrutura Organizacional" });
-
+                ResourcesInserir.Add(new ResourcePT() { Key = "latitude", Value = "Latitude" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "controller_name", Value = "Controller" });
+                
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
                 if (resourcesParaInserir != null)
