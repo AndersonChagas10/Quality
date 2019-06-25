@@ -1,12 +1,12 @@
 ﻿@model QualidadeTotal.Models.Equipamentos
 
 @{
-    ViewBag.Title = Resources.Detalhes;
+    ViewBag.Title = Resources.Resource.Detalhes;
 }
 
 <ul class="breadcrumb">
     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-    <li>@Html.ActionLink(Resources.Parametros, "Parametros", "Home")</li>
+    <li>@Html.ActionLink(Resources.Resource.Parametros as string, "Parametros", "Home")</li>
     <li>@Html.ActionLink(Model.Nome, "Index", "ParEquipamentos")</li>
     <li class="active">@ViewBag.Title</li>
 </ul>
