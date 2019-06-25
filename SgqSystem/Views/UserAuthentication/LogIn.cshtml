@@ -122,7 +122,7 @@
                             openMessageModal("Alerta", e.responseJSON.Message);
                         } catch (e) {
                             closeLoader();
-                            openMessageModal("@Html.Raw(@Resources.Resource.warning)", "@Html.Raw(Resources.Resource.cannot_finish_action)");
+                            openMessageModal("@Html.Raw(@Resources.Resource.warning as string)", "@Html.Raw(Resources.Resource.cannot_finish_action as string)");
                             console.log(e);
                         }
                     });
@@ -154,7 +154,7 @@
                             openMessageModal("Alerta", e.responseJSON.Message);
                         } catch (e) {
                             closeLoader();
-                            openMessageModal("@Html.Raw(Resources.Resource.warning)", "@Html.Raw(Resources.Resource.cannot_finish_action)");
+                            openMessageModal("@Html.Raw(Resources.Resource.warning as string)", "@Html.Raw(Resources.Resource.cannot_finish_action as string)");
                             console.log(e);
                         }
                     });
