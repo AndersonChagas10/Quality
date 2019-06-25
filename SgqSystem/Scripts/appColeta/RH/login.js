@@ -13,12 +13,7 @@ function openLogin() {
     html = '<div id="" class="login" name="" style="">                                                                                                          '+
     '<div id="" class="head" name="" style=""></div>                                                                                                            '+
     '    <form id="" class="form-signin" name="" style="">                                                                                                      '+
-    '        <h2 id="" class="" name="" style="">Entrar</h2>                                                                                                    '+
-    '        <select id="shift" class="form-control" style="">                                                                                                  '+
-    '            <option value="0">Selecione o turno...</option>                                                                                                '+
-    '            <option value="1">Turno 1</option>                                                                                                             '+
-    '            <option value="2">Turno 2</option>                                                                                                             '+
-    '        </select>                                                                                                                                          '+
+    '        <h2 id="" class="" name="" style="">Entrar</h2>                                                                                                                                     '+
     '        <label for="inputUserName" class="sr-only" style="">Usuário</label>                                                                                '+
     '        <input type="text" id="inputUserName" class=" form-control" placeholder="Usuário" required="" >                                                    '+
     '        <label for="inputPassword" class="sr-only" style="">Senha</label>                                                                                  '+

@@ -18,7 +18,7 @@ namespace Dominio
 
         public int Id { get; set; }
 
-        public int? ConsolidationLevel2_Id { get; set; }
+        public int ConsolidationLevel2_Id { get; set; }
 
         public int ParLevel1_Id { get; set; }
 

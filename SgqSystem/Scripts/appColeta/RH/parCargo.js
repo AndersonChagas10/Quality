@@ -6,51 +6,7 @@ function listarParCargo() {
         return false;
     }
 
-    var listaParCargoXDepartment = $.grep(parametrization.listaParCargoXDepartment, function (item) {
-        return item.ParDepartment_Id == currentParDepartment_Id;
-    });
-
-    var listaParCargo = [];
-
-    $(listaParCargoXDepartment).each(function (item, obj) {
-
-        var listaParCargoFilter = $.grep(parametrization.listaParCargo, function (parCargo) {
-            return (parCargo.Id == obj.ParCargo_Id);
-        });
-
-        listaParCargoFilter.forEach(function (item) {
-
-            //Verificar primeiramente os que existem ParCargo e ParCompany obs (frequencia e departamento são obrigatorios)
-            var listaEvaluation = [];
-
-            //pegar os dados que possuem unidade, cargo 
-            listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
-                return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
-                    parEvaluation.ParDepartment_Id == currentParDepartment_Id
-            });
-
-            //Caso não existir, buscar os que possuem todas as unidades
-            if (listaEvaluation.length == 0) {
-                listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
-                    return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
-                        parEvaluation.ParDepartment_Id == currentParDepartment_Id
-                });
-            }
-
-            //Busca o que possui todas as unidades e todos os cargos
-            if (listaEvaluation.length == 0) {
-                listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
-                    return parEvaluation.ParCargo_Id == null &&
-                        parEvaluation.ParDepartment_Id == currentParDepartment_Id
-                });
-            }
-
-            if (listaEvaluation.length > 0) {
-                item['Evaluation'] = listaEvaluation[0]; //o correto é que retorne somente um, mas caso retorne mais do que um, não pode dar erro
-                listaParCargo.push(item);
-            }
-        });
-    });
+    var listaParCargo = retornaCargos(currentParDepartment_Id);
 
     var htmlParCargo = "";
 
@@ -117,6 +73,56 @@ function listarParCargo() {
 
     setBreadcrumbs();
 
+}
+
+function retornaCargos(parDepartmentId){
+    var listaParCargoXDepartment = $.grep(parametrization.listaParCargoXDepartment, function (item) {
+        return item.ParDepartment_Id == parDepartmentId;
+    });
+
+    var listaParCargo = [];
+
+    $(listaParCargoXDepartment).each(function (item, obj) {
+
+        var listaParCargoFilter = $.grep(parametrization.listaParCargo, function (parCargo) {
+            return (parCargo.Id == obj.ParCargo_Id);
+        });
+
+        listaParCargoFilter.forEach(function (item) {
+
+            //Verificar primeiramente os que existem ParCargo e ParCompany obs (frequencia e departamento são obrigatorios)
+            var listaEvaluation = [];
+
+            //pegar os dados que possuem unidade, cargo 
+            listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
+                return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
+                    parEvaluation.ParDepartment_Id == parDepartmentId
+            });
+
+            //Caso não existir, buscar os que possuem todas as unidades
+            if (listaEvaluation.length == 0) {
+                listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
+                    return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
+                        parEvaluation.ParDepartment_Id == parDepartmentId
+                });
+            }
+
+            //Busca o que possui todas as unidades e todos os cargos
+            if (listaEvaluation.length == 0) {
+                listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
+                    return parEvaluation.ParCargo_Id == null &&
+                        parEvaluation.ParDepartment_Id == parDepartmentId
+                });
+            }
+
+            if (listaEvaluation.length > 0) {
+                item['Evaluation'] = listaEvaluation[0]; //o correto é que retorne somente um, mas caso retorne mais do que um, não pode dar erro
+                listaParCargo.push(item);
+            }
+        });
+    });
+
+    return listaParCargo;
 }
 
 function cleanGlobalVarParCargo() {

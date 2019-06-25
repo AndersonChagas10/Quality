@@ -38,6 +38,7 @@ namespace SgqSystem.Jobs
                     var collectionsLevel2 = GetCollectionsLevel2NotProcess();
                     var headerFieldsProcess_Id = new List<int>();
                     var parLevel3List = db.ParLevel3.ToList();
+                    int consolidationLevel2_Id = returnConsolidationLevel2Id();
 
                     try
                     {
@@ -50,6 +51,7 @@ namespace SgqSystem.Jobs
 
                             if (collection == null)
                             {
+                                collectionConsolidada.ConsolidationLevel2_Id = consolidationLevel2_Id;
 
                                 var collectionLevel2Save = db.CollectionLevel2.Add(collectionConsolidada);
                                 db.SaveChanges();
@@ -307,6 +309,120 @@ namespace SgqSystem.Jobs
             }
 
             return headerFields;
+        }
+
+
+        private static int getConsolidationLevel2_Id()
+        {
+            var id = 0;
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var consolidation = factory.SearchQuery<ConsolidationLevel1>("SELECT TOP 1 * FROM ConsolidationLevel2 ORDER BY id DESC").FirstOrDefault();
+
+                return consolidation == null ? id : consolidation.Id;
+            }
+        }
+
+        private static int setConsolidationLevel1()
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                var consolidationLevel1 = new ConsolidationLevel1()
+                {
+                    AddDate = DateTime.Now,
+                    UnitId = 1,
+                    DepartmentId = getDepartment(),
+                    ParLevel1_Id = 1,
+                    ConsolidationDate = DateTime.Now
+                };
+
+                try
+                {
+                    db.ConsolidationLevel1.Add(consolidationLevel1);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                return consolidationLevel1.Id;
+            }
+        }
+
+        private static int setConsolidationLevel2(int consolidationLevel1_Id)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                var consolidationLevel2 = new ConsolidationLevel2()
+                {
+                    ConsolidationLevel1_Id = consolidationLevel1_Id,
+                    ParLevel2_Id = 1,
+                    AddDate = DateTime.Now,
+                    UnitId = 1
+                };
+
+                try
+                {
+                    db.ConsolidationLevel2.Add(consolidationLevel2);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                return consolidationLevel2.Id;
+            }
+        }
+
+        public static int returnConsolidationLevel2Id()
+        {
+            var idConsolidationL2 = getConsolidationLevel2_Id();
+
+            if (idConsolidationL2 == 0)
+            {
+                var cl1 = setConsolidationLevel1();
+
+                return setConsolidationLevel2(cl1);
+            }
+            else
+            {
+                return idConsolidationL2;
+            }
+        }
+
+        private static int getDepartment()
+        {
+            var id = 0;
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                id = factory.SearchQuery<ParDepartment>("SELECT TOP 1 Id FROM Department ORDER BY id DESC").FirstOrDefault().Id;
+            }
+
+            if (id == 0)
+                id = setDepartment();
+
+            return id;
+        }
+
+        private static int setDepartment()
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                try
+                {
+                    factory.ExecuteSql("INSERT INTO Department (AddDate, Name) VALUES(GETDATE(), 'Department Padrão')");
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                return getDepartment();
+            }
         }
     }
 }
