@@ -1672,7 +1672,7 @@ namespace SgqService.Controllers.Api
                 TotalLevel3Evaluation=@TotalLevel3Evaluation, 
                 TotalLevel3WithDefects=@TotalLevel3WithDefects, 
                 LastEvaluationAlert=@LastEvaluationAlert, 
-                LastLevel2Alert=@LastEvaluationAlert, 
+                LastLevel2Alert=@LastLevel2Alert, 
                 EvaluatedResult=@EvaluatedResult, 
                 DefectsResult=@DefectsResult WHERE ID=@ConsolidationLevel2_Id";
 
@@ -1693,7 +1693,7 @@ namespace SgqService.Controllers.Api
                         command.Parameters.Add(new SqlParameter("@TotalLevel3Evaluation", CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".")));
                         command.Parameters.Add(new SqlParameter("@TotalLevel3WithDefects", CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".")));
                         command.Parameters.Add(new SqlParameter("@LastEvaluationAlert", LastEvaluationAlert.ToString().Replace(",", ".")));
-                        command.Parameters.Add(new SqlParameter("@EvaluatedResult", LastLevel2Alert.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@LastLevel2Alert", LastLevel2Alert.ToString().Replace(",", ".")));
                         command.Parameters.Add(new SqlParameter("@EvaluatedResult", CollectionLevel2Consolidation.EvaluatedResult));
                         command.Parameters.Add(new SqlParameter("@DefectsResult", CollectionLevel2Consolidation.DefectsResult));
                         command.Parameters.Add(new SqlParameter("@ConsolidationLevel2_Id", ConsolidationLevel2_Id.ToString().Replace(",", ".")));
