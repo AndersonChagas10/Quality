@@ -1,34 +1,21 @@
-function listarParDepartment(parDepartment_Id) {
+function listarParDepartment(parDepartmentId) {
 
-	currentParDepartment_Id = parDepartment_Id;
-
-	currentParCargo_Id = null;
-
-	if (currentsParDepartments_Ids.indexOf(parDepartment_Id) >= 0)
-		currentsParDepartments_Ids = currentsParDepartments_Ids.slice(0, currentsParDepartments_Ids.indexOf(parDepartment_Id));
-
-	if (parDepartment_Id)
-		currentsParDepartments_Ids.push(parseInt(parDepartment_Id));
-	else
-		currentsParDepartments_Ids = [];
-
-	var data = parametrization.listaParDepartment;
-	var department = {};
+	var listaDepartamentos = retornaDepartamentos(parDepartmentId, true);
+	
 	var htmlParDepartment = "";
+	
+	var department = {};
 
-	$(data).each(function (i, o) {
+	$(listaDepartamentos).each(function (i, o) {
 
-		if (parseInt(parDepartment_Id) > 0 && parDepartment_Id == o.Id) {
+		if (parseInt(parDepartmentId) > 0 && parDepartmentId == o.Id) {
 			department = o;
-		}
-
-		if ((parDepartment_Id > 0 && parDepartment_Id == o.Parent_Id) || ((parDepartment_Id == 0 || parDepartment_Id == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
-
+		}else
+		if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
 			htmlParDepartment += '<button type="button" class="list-group-item col-xs-12" ' +
 				'data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name +
 				'<span class="badge">></span>' +
 				'</button>';
-
 		}
 
 	});
@@ -67,10 +54,39 @@ function listarParDepartment(parDepartment_Id) {
 	setBreadcrumbs();
 }
 
+function retornaDepartamentos(parDepartmentId, retornaDepartamentoAtual){
+
+	currentParDepartmentId = parDepartmentId;
+
+	currentParCargo_Id = null;
+
+	if (currentsParDepartments_Ids.indexOf(parDepartmentId) >= 0)
+		currentsParDepartments_Ids = currentsParDepartments_Ids.slice(0, currentsParDepartments_Ids.indexOf(parDepartmentId));
+
+	if (parDepartmentId)
+		currentsParDepartments_Ids.push(parseInt(parDepartmentId));
+	else
+		currentsParDepartments_Ids = [];
+
+	var data = parametrization.listaParDepartment;
+
+	var listaDepartamentos = [];
+
+	$(data).each(function (i, o) {
+		if ((retornaDepartamentoAtual && parseInt(parDepartmentId) > 0 && parDepartmentId == o.Id)
+		|| (parDepartmentId > 0 && parDepartmentId == o.Parent_Id) 
+		|| ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
+			listaDepartamentos.push(o);
+		}
+	});
+
+	return listaDepartamentos;
+}
+
 $('body').on('click', '[data-par-department-id]', function (e) {
 
-	var parDepartment_Id = $(this).attr('data-par-department-id');
+	var parDepartmentId = $(this).attr('data-par-department-id');
 
-	listarParDepartment(parDepartment_Id);
+	listarParDepartment(parDepartmentId);
 
 });

@@ -14,6 +14,7 @@ var currentAlerts = [];
 var currentAlertsAgrupados = [];
 var listaParFrequency = [];
 var currentsParDepartments_Ids = [];
+var currentPlanejamento = [];
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
@@ -33,11 +34,6 @@ function onOpenAppColeta() {
 }
 
 function getAppParametrization(frequencyId) {
-
-    if (currentParFrequency_Id > 0 && frequencyId == currentParFrequency_Id) {
-        if (confirm('Deseja refazer o download da parametrização desta frequencia?'))
-            currentParFrequency_Id = 0;
-    }
 
     sincronizarResultado(frequencyId);
 

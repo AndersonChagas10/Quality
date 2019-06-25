@@ -88,6 +88,14 @@ function cleanGlobalVarParFrequency() {
 
 $('body').off('click', '[data-par-frequency-id]').on('click', '[data-par-frequency-id]', function (e) {
 	var frequencyId = parseInt($(this).attr('data-par-frequency-id'));
-	getAppParametrization(frequencyId);
+	
+	var planejar = true;
+    if (currentParFrequency_Id > 0 && frequencyId == currentParFrequency_Id && confirm('Continuar com o planejamento baixado?')){
+		getAppParametrization(frequencyId);
+	}else{
+		currentParFrequency_Id = frequencyId;
+		openPlanejamentoColeta();
+	}
+	
 });
 
