@@ -51,7 +51,7 @@
 
 
                         <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_alert as string), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_alert as string), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover as string)
                         </tr>
 
 
@@ -118,11 +118,11 @@
                                     </tr>
                                     <!-- 03 - Agrupamento no monitoramento -->
                                     <tr class="row">
-                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasGroupLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_level2 as string + "?"), Table.PosicaoLabel.left, null, Resources.Resource.has_group_level2_popover)
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasGroupLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_level2 as string + "?"), Table.PosicaoLabel.left, null, Resources.Resource.has_group_level2_popover as string)
                                     </tr>
                                     <!-- 04 - Numero de avaliações limitadas -->
                                     <tr class="row">
-                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber, new { @class = "form-control checkbox-erp", @checked = "checked" }), @Html.Label(Resources.Resource.limited_number_of_evaluations as string + "?"), Table.PosicaoLabel.left, null, Resources.Resource.limited_number_of_evaluations_popover)
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber, new { @class = "form-control checkbox-erp", @checked = "checked" }), @Html.Label(Resources.Resource.limited_number_of_evaluations as string + "?"), Table.PosicaoLabel.left, null, Resources.Resource.limited_number_of_evaluations_popover as string)
                                     </tr>
                                     <!-- 05 - Têm edição no monitoramento -->
                                     <tr class="row">
@@ -203,7 +203,7 @@
 
                                     <!--16 - Indicador filho -->
                                     <tr class="row">
-                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsChildren, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.level1_children as string), Table.PosicaoLabel.left, null, Resources.Resource.level1_children_popover)
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsChildren, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.level1_children as string), Table.PosicaoLabel.left, null, Resources.Resource.level1_children_popover as string)
 
                                     </tr>
                                     <!--17 - Indicador de origem -->

@@ -72,10 +72,10 @@
                         <table class="table-erp" id="camposCluster">
                             <tbody>
                                 <tr class="row">
-                                    @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
-                                    @Table.GerarColuna(@Html.DropDownList("valCrit", Model.paramsDdl.DdlparCrit, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top)
-                                    @Table.GerarColuna(@Html.Editor("effectiveDate", new { htmlAttributes = new { @value = 0, @type = "date", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.effectiveDate), Table.PosicaoLabel.top)
-                                    @Table.GerarColunaButton(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top
+                                    @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_clusters as string), Table.PosicaoLabel.top)
+                                    @Table.GerarColuna(@Html.DropDownList("valCrit", Model.paramsDdl.DdlparCrit, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group as string), Table.PosicaoLabel.top)
+                                    @Table.GerarColuna(@Html.Editor("effectiveDate", new { htmlAttributes = new { @value = 0, @type = "date", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.effectiveDate as string), Table.PosicaoLabel.top)
+                                    @Table.GerarColunaButton(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.cluster_points as string), Table.PosicaoLabel.top
                            , button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirCluster' onclick='" + @click + ";'><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                 </tr>
                             </tbody>

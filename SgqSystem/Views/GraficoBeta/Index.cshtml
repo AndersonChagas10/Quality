@@ -10,7 +10,7 @@
 <table>
     <tr>
         <td class="dl-fake">
-            @Html.Label(Resources.Resource.date+": ", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label(Resources.Resource.date as string + ": ", htmlAttributes: new { @class = "control-label col-md-2" })
         </td>
         <td style="margin-top:10px;">
             <input type="date" id="dtIni"/>
@@ -19,7 +19,7 @@
     <tr>&nbsp;</tr>
     <tr>
         <td class="dl-fake">
-            @Html.Label(Resources.Resource.date + ": ", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label(Resources.Resource.date as string + ": ", htmlAttributes: new { @class = "control-label col-md-2" })
         </td>
         <td style="margin-top:10px;">
             <input type="date" id="dtFim"/>

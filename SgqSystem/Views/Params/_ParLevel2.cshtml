@@ -19,16 +19,16 @@
                 <table class="table-erp">
                     <tbody>
                         <tr class="row hide">
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.ParCompany_Id, htmlAttributes: new { @Value = "1" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Level, htmlAttributes: new { @Value = "2" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2 as string), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2 as string), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2 as string), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.ParCompany_Id, htmlAttributes: new { @Value = "1" }), @Html.Label(Resources.Resource.level2 as string), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Level, htmlAttributes: new { @Value = "2" }), @Html.Label(Resources.Resource.level2 as string), Table.PosicaoLabel.top, null, null)
                         </tr>
 
                         <tr class="row">
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_name), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Name, null, new { @class = "text-danger" }))
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Description, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_description), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Description, null, new { @class = "text-danger" }))
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_name as string), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Name, null, new { @class = "text-danger" }))
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Description, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_description as string), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Description, null, new { @class = "text-danger" }))
                         </tr>
 
                         <tr class="row">
@@ -45,7 +45,7 @@
                             </tr>*@
 
                         <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_on_level3), Table.PosicaoLabel.left, null, null)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_on_level3 as string), Table.PosicaoLabel.left, null, null)
                         </tr>
 
                         @*<tr id="HasSampleTotaltr" class="row">
@@ -53,11 +53,11 @@
                             </tr>*@
 
                         <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo as string), Table.PosicaoLabel.left, null, null)
                         </tr>
 
                         <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active as string), Table.PosicaoLabel.left, null, null)
                         </tr>
 
                     </tbody>
@@ -145,14 +145,14 @@
                                             @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
                                             @Table.GerarColuna(
          @Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" })
-         , @Html.Label(Resources.Resource.not_conformity_rule)
+         , @Html.Label(Resources.Resource.not_conformity_rule as string)
          , Table.PosicaoLabel.top)
                                             @Table.GerarColuna(
          @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" })
-         , @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
+         , @Html.Label(Resources.Resource.value as string), Table.PosicaoLabel.top)
                                             @Table.GerarColunaCheckbox(
              @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
-             , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm'  onclick='RegraNcL2.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+             , @Html.Label(Resources.Resource.reaudit as string), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm'  onclick='RegraNcL2.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
 
                                         </tr>
                                     </tbody>

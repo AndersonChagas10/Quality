@@ -883,6 +883,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "version", Value = "Version" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "view", Value = "View" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "view_db", Value = "View database" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "longitude", Value = "Longitude" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));
 

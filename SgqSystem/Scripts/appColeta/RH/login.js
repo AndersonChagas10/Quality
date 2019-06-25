@@ -1,3 +1,9 @@
+var token = function () {
+    return {
+        "token": currentLogin.Name + "|" + currentLogin.Password
+    };
+};
+
 function openLogin() {
 
     cleanGlobalVarLogin();
@@ -63,6 +69,7 @@ $('body').on('click', '#btnLogin', function (event) {
         },
         url: urlPreffix + '/api/User/AuthenticationLogin',
         type: 'POST',
+        headers: token(),
         success: function (data) {
 
 			parametrization = null;

@@ -23,13 +23,13 @@
                     <tbody>
                         <tr class="row">
                             @Table.GerarColuna(@Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number" })
-                                                , @Html.Label(Resources.Resource.number_nc)
+                                                , @Html.Label(Resources.Resource.number_nc as string)
                                                 , Table.PosicaoLabel.top)
                             @Table.GerarColuna(@Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number" })
-                                                , @Html.Label(Resources.Resource.validation)
+                                                , @Html.Label(Resources.Resource.validation as string)
                                                 , Table.PosicaoLabel.top)
                             @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" })
-                                                , @Html.Label(Resources.Resource.duration_of_validation)
+                                                , @Html.Label(Resources.Resource.duration_of_validation as string)
                                                 , Table.PosicaoLabel.top
                                                 , button: "<button type=\"button\" id=\"\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                         </tr>

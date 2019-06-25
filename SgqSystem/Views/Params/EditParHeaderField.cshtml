@@ -8,19 +8,19 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    @Html.Label(Resources.Resource.field_level)
+                    @Html.Label(Resources.Resource.field_level as string)
                     @Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.ParLevelDefinition_Id, Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    @Html.Label(Resources.Resource.type)
+                    @Html.Label(Resources.Resource.type as string)
                     @Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.ParFieldType_Id, Model.paramsDdl.DdlParFieldType, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    @Html.Label(Resources.Resource.field_name)
+                    @Html.Label(Resources.Resource.field_name as string)
                     @Html.TextBoxFor(m => Model.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control" })
                 </div>
             </div>
@@ -28,7 +28,7 @@
             {
                 <div class="col-md-3">
                     <div class="form-group">
-                        @Html.Label(Resources.Resource.description)
+                        @Html.Label(Resources.Resource.description as string)
                         @Html.HiddenFor(m => Model.paramsDto.parHeaderFieldDto.Description, new { @class = "hide" })
                         @{ Model.paramsDto.parHeaderFieldDto.Description = SgqSystem.Helpers.CommonData.PutSpaceBeforeCapitalLetter(Model.paramsDto.parHeaderFieldDto.Description.Replace("|", "")); }
                         @Html.TextBox("DestriptionParHeaderField", Model.paramsDto.parHeaderFieldDto.Description, new { @class = "form-control", @readonly = "readonly" })
@@ -37,7 +37,7 @@
                             }
             <div class="col-md-3">
                 <div class="form-group">
-                    @Html.Label(Resources.Resource.link_number_evaluation)
+                    @Html.Label(Resources.Resource.link_number_evaluation as string)
                     @Html.CheckBoxFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "" })
                 </div>
             </div>
@@ -52,19 +52,19 @@
                                         <div class="row">
                                             <div class="col-xs-4">
                                                 <div class="form-group">
-                                                    @Html.Label(Resources.Resource.option)
+                                                    @Html.Label(Resources.Resource.option as string)
                                                     @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @class = "form-control" } })
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <div class="form-group">
-                                                    @Html.Label(Resources.Resource.punishment_value)
+                                                    @Html.Label(Resources.Resource.punishment_value as string)
                                                     @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" })
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <div class="form-group">
-                                                    @Html.Label(Resources.Resource.is_active)
+                                                    @Html.Label(Resources.Resource.is_active as string)
                                                     @Html.CheckBoxFor(r => i.IsActive, new { @value = i.IsActive, @class = "make-switch checkbox-erp" })
                                                 </div>
                                             </div>
@@ -84,13 +84,13 @@
                                                 <div class="col-xs-5">
                                                     <div class="form-group">
                                                         <span class="hidden">@{ contador += 1; } </span>
-                                                        @Html.Label(Resources.Resource.option)
+                                                        @Html.Label(Resources.Resource.option as string)
                                                         @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @class = "form-control", @id=$"{contador}_Name"} })
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-5">
                                                     <div class="form-group">
-                                                        @Html.Label(Resources.Resource.punishment_value)
+                                                        @Html.Label(Resources.Resource.punishment_value as string)
                                                         @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control", @id = $"{contador}_PunishmentValue" })                                                                                                          
                                                         
                                                     </div>

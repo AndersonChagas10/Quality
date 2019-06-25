@@ -1816,8 +1816,8 @@ namespace SgqService.Controllers.Api
             string sql = $@"UPDATE CollectionLevel2 SET HaveCorrectiveAction = 0 WHERE 
                 ParLevel1_Id=@ParLevel1_Id AND 
                 UnitId=@ParCompany_Id AND 
-                CollectionDate BETWEEN '@DataInicio 00:00:00' AND 
-                '@DataFim 23:59:59' AND 
+                CollectionDate BETWEEN @DataInicio AND 
+                @DataFim AND 
                 HaveCorrectiveAction= 1 and 
                 reauditnumber=@ReauditNumber";
 
@@ -1831,10 +1831,10 @@ namespace SgqService.Controllers.Api
                     {
 
                         command.CommandType = CommandType.Text;
-                        command.Parameters.Add(new SqlParameter("@ParLevel1", ParLevel1_Id));
+                        command.Parameters.Add(new SqlParameter("@ParLevel1_Id", ParLevel1_Id));
                         command.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
-                        command.Parameters.Add(new SqlParameter("@DataInicio", dataInicio));
-                        command.Parameters.Add(new SqlParameter("@DataFim", dataFim));
+                        command.Parameters.Add(new SqlParameter("@DataInicio", dataInicio + " 00:00:00"));
+                        command.Parameters.Add(new SqlParameter("@DataFim", dataFim + " 23:59:59"));
                         command.Parameters.Add(new SqlParameter("@ReauditNumber", reauditnumber));
 
                         connection.Open();
@@ -3441,6 +3441,10 @@ namespace SgqService.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+                        DescriptionFailure = DescriptionFailure == null ? DescriptionFailure = "" : DescriptionFailure;
+                        ImmediateCorrectiveAction = ImmediateCorrectiveAction == null ? ImmediateCorrectiveAction = "" : ImmediateCorrectiveAction;
+                        ProductDisposition = ProductDisposition == null ? ProductDisposition = "" : ProductDisposition;
+                        PreventativeMeasure = PreventativeMeasure == null ? PreventativeMeasure = "" : PreventativeMeasure;
 
                         command.CommandType = CommandType.Text;
                         command.Parameters.Add(new SqlParameter("@AuditorId", AuditorId));
@@ -4155,11 +4159,11 @@ namespace SgqService.Controllers.Api
 
             System.Reflection.Assembly assembly = this.GetType().Assembly;
 
-            var resourceSet = Resources.Resource;
+            var resourceSet = (IDictionary<string, object>)Resources.Resource;
 
             string items = "";
 
-            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            foreach (var entry in resourceSet)
             {
                 items += "<div res='" + entry.Key.ToString() + "'>" + entry.Value.ToString() + "</div>";
             }
@@ -7875,6 +7879,8 @@ namespace SgqService.Controllers.Api
                     string dataInicio = null;
                     string dataFim = null;
 
+                    data = data.Trim();
+
                     if (!data.Contains("/"))
                     {
                         string dia = data.Substring(2, 2);
@@ -7883,6 +7889,7 @@ namespace SgqService.Controllers.Api
 
                         data = ano + "/" + mes + "/" + dia;
                     }
+
                     DateTime dataAPP = Convert.ToDateTime(data);
 
                     //Pega a data pela regra da frequencia
