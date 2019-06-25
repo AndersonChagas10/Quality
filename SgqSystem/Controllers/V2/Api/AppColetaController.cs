@@ -84,40 +84,31 @@ namespace SgqSystem.Controllers.V2.Api
 
         [HttpPost]
         [Route("GetAppParametrization")]
-        public IHttpActionResult GetAppParametrization(AppParametrization appParametrization)
+        public IHttpActionResult GetAppParametrization(PlanejamentoColetaViewModel appParametrization)
         {
-
             List<ParVinculoPesoAppViewModel> listaParVinculoPeso;
-
-
             List<ParLevel1AppViewModel> listaParLevel1;
             List<ParLevel2AppViewModel> listaParLevel2;
             List<ParLevel3AppViewModel> listaParLevel3;
-
             List<ParDepartmentAppViewModel> listaParDepartment;
             List<ParCargoAppViewModel> listaParCargo;
             List<ParCargoXDepartmentAppViewModel> listaParCargoXDepartment;
-
             List<ParEvaluationXDepartmentXCargoAppViewModel> listaParEvaluationXDepartmentXCargoAppViewModel;
-
             List<ParLevel3ValueAppViewModel> listaParLevel3Value;
             List<ParLevel3InputTypeAppViewModel> listaParLevel3InputType;
             List<ParMeasurementUnitAppViewModel> listaParMeasurementUnit;
             List<ParLevel3BoolTrueAppViewModel> listaParLevel3BoolTrue;
             List<ParLevel3BoolFalseAppViewModel> listaParLevel3BoolFalse;
-
             List<ParLevel3XHelp> listaParLevel3XHelp;
-
             List<ParAlert> listaParAlert;
-
             List<ParHeaderField> listaParHeaderField;
             List<ParDepartmentXHeaderField> listaParDepartmentXHeaderField;
             List<ParMultipleValues> listaParMultipleValues;
-
             List<ParDepartmentXRotinaIntegracao> listaParDepartmentXRotinaIntegracao;
-
             List<RotinaIntegracao> listaRotinaIntegracao;
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
+
+            var departamentosFiltrados = GetAllDepartmentsLinked(appParametrization.Planejamento.Select(x => x.ParDepartment_Id).Distinct().ToList());
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -143,8 +134,8 @@ namespace SgqSystem.Controllers.V2.Api
                         ParFrequency_Id = x.ParFrequencyId,
                         Evaluation = x.Evaluation,
                         Sample = x.Sample
-                    })
-                    .ToList();
+
+                    }).ToList();
 
                 listaParLevel1 = db.ParLevel1
                     .AsNoTracking()
@@ -430,6 +421,31 @@ namespace SgqSystem.Controllers.V2.Api
             return Ok(coletaAgrupada.ToList());
         }
 
+        private List<ParDepartment> GetAllDepartmentsLinked(List<int> listaDeDepartamentos_Ids)
+        {
+
+            using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
+            {
+                var listaDeDepartamentos = db.ParDepartment.Where(x => listaDeDepartamentos_Ids.Contains(x.Id))
+                    .ToList().Select(x=>new {
+                        id = x.Id,
+                        hash = x.Hash != null ? x.Hash + "|" + x.Id : x.Id.ToString(),
+                        hashx = (x.Hash != null ? x.Hash + "|" + x.Id : x.Id.ToString()) + "|",
+                        idpai =((x.Hash != null && x.Hash.IndexOf('|') > 0) ? x.Hash.Substring(0, x.Hash.IndexOf('|')) : x.Hash)
+                    });
+
+                var departamentos = db.ParDepartment.ToList();
+
+                departamentos = departamentos.Where(x => 
+                listaDeDepartamentos.Any(y=>y.id == x.Id 
+                    || y.hash == x.Hash 
+                    || y.idpai == x.Id.ToString()
+                    || (x.Hash != null && x.Hash.StartsWith(y.hashx))))
+                    .ToList();
+                return departamentos;
+            }
+        }
+
         public class GetResultsData
         {
             public int ParCompany_Id { get; set; }
@@ -457,7 +473,6 @@ namespace SgqSystem.Controllers.V2.Api
             public int ParFrequency_Id { get; set; }
             public DateTime AppDate { get; set; }
         }
-
 
         #region RotinaIntegracaoOffline
 
