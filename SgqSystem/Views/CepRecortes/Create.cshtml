@@ -73,7 +73,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Shift_Id, Resources.Resource.shift, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Shift_Id, Resources.Resource.shift as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("Shift_Id", new SelectList(ViewBag.ShiftVolume, "Id", "Name"), Resources.Resource.all as string, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.Shift_Id, "", new { @class = "text-danger" })
