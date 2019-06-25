@@ -29,6 +29,7 @@ namespace SgqSystem
 
         protected void Application_Start()
         {
+
             AreaRegistration.RegisterAllAreas();
             ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
             System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);
@@ -53,6 +54,7 @@ namespace SgqSystem
             //    });
 
             //};
+			
             #endregion
 
             Dominio.Seed.Seed.SetSeedValues(isPT:GlobalConfig.LanguageBrasil);
@@ -65,9 +67,7 @@ namespace SgqSystem
             ThreadPool.QueueUserWorkItem(MandalaJob.PreencherListaMandala);
             ThreadPool.QueueUserWorkItem(ReProcessJsonJob.ReProcessJsonJobFunction);
 
-            ThreadPool.QueueUserWorkItem(CollectionJob.ExecuteCollectionJob);
-
-            
+            ThreadPool.QueueUserWorkItem(CollectionJob.ExecuteCollectionJob);        
 
             //if (GlobalConfig.Brasil)
             //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR" + GlobalConfig.Ambient];
