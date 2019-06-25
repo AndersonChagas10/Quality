@@ -30,3 +30,21 @@ function getCurrentDate() {
 
     return convertDateToJson(data + " " + hour);
 }
+
+function retornaOptionsPeloArray(lista, value, text, defaultText){
+    var html = "";
+    if(typeof(defaultText) != 'undefined'){
+        html += '<option value="">'+defaultText+'</option>';
+    }
+    $(lista).each(function (i, o) {
+        html += '<option value="'+o[value]+'">'+o[text]+'</option>';
+    });
+    return html;
+}
+
+function criaHtmlSelect(titulo,options){
+	return '<div class="form-group">'+
+	'	<label>'+titulo+'</label>'+
+	'	<select class="form-control">'+options+'</select>'+
+	'</div>';
+}
