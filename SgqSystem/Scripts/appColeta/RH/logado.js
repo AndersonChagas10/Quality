@@ -1,5 +1,5 @@
 function openLogado() {
-    openParFrequency();
+    openMenu();
     //openParDepartment();
     AtualizarVariaveisDeColetas();
     AtualizarVariaveisDeAcoesCorretivas();

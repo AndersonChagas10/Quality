@@ -55,15 +55,15 @@ function listarParFrequency() {
 				'</button>';
 		});
 
-		var voltar = "";
+		var voltar = '<a onclick="openMenu();" class="btn btn-warning">Voltar</a>';
 
 		html = getHeader() +
 			'<div class="container-fluid">                               ' +
 			'	<div class="">                                  ' +
 			'		<div class="col-xs-12">                        ' +
-			'			<div class="panel panel-warning">          ' +
+			'			<div class="panel panel-primary">          ' +
 			'			  <div class="panel-heading">              ' +
-			'				<h3 class="panel-title">Qual frequencia deseja realizar coleta?</h3>      ' +
+			'				<h3 class="panel-title">'+voltar+' Qual frequencia deseja realizar coleta?</h3>      ' +
 			'			  </div>                                   ' +
 			'			  <div class="panel-body">                 ' +
 			'				<div class="list-group">               ' +
@@ -89,13 +89,45 @@ function cleanGlobalVarParFrequency() {
 $('body').off('click', '[data-par-frequency-id]').on('click', '[data-par-frequency-id]', function (e) {
 	var frequencyId = parseInt($(this).attr('data-par-frequency-id'));
 	
-	var planejar = true;
-    if (currentParFrequency_Id > 0 && frequencyId == currentParFrequency_Id && confirm('Continuar com o planejamento baixado?')){
-		getAppParametrization(frequencyId);
-	}else{
-		currentParFrequency_Id = frequencyId;
-		openPlanejamentoColeta();
-	}
-	
+	getPlanejamentoPorFrequencia(frequencyId);
 });
+
+function getPlanejamentoPorFrequencia(frequencyId) {
+
+    if (frequencyId != currentParFrequency_Id) {
+        currentParFrequency_Id = frequencyId;
+        openMensagem('Por favor, aguarde até que seja feito o download do planejamento selecionado', 'blue', 'white');
+        $.ajax({
+            data: JSON.stringify({
+                ParCompany_Id: curretParCompany_Id
+                , ParFrequency_Id: currentParFrequency_Id
+                , AppDate: currentCollectDate
+            }),
+            type: 'POST',
+            url: urlPreffix + '/api/AppColeta/GetAppParametrization',
+            contentType: "application/json",
+            success: function (data) {
+                data.currentParFrequency_Id = currentParFrequency_Id;
+                _writeFile("appParametrization.txt", JSON.stringify(data), function () {
+                    parametrization = data;
+                    openPlanejamentoColeta();
+                    closeMensagem();
+                });
+            },
+            timeout: 600000,
+            error: function () {
+                $(this).html($(this).attr('data-initial-text'));
+                closeMensagem();
+            }
+        });
+
+    } else {
+        openMensagem('Carregando parametrização', 'blue', 'white');
+        _readFile("appParametrization.txt", function (data) {
+            parametrization = JSON.parse(data);
+			openPlanejamentoColeta();
+            closeMensagem();
+        });
+    }
+}
 

@@ -16,7 +16,7 @@ function getHeader() {
         '        <span class="icon-bar"></span>                                                                                                                            ' +
         '        <span class="icon-bar"></span>                                                                                                                            ' +
         '      </button>                                                                                                                                                   ' +
-        '      <a class="navbar-brand" style="color:white" href="#">AppColeta</a>                                                                                                             ' +
+        '      <a class="navbar-brand" style="color:white" href="#" onclick="openMenu()">AppColeta</a>                                                                                                             ' +
         '    </div>                                                                                                                                                        ' +
         '    <div id="navbar" class="navbar-collapse collapse">                                                                                                            ' +
         '      <ul class="nav navbar-nav">                                                                                                                                 ' +

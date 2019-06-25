@@ -170,7 +170,7 @@ function changeDate(that) {
 
 function setBreadcrumbs() {
 
-    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="openParFrequency()">Inicio</a></li>';
+    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="openMenu()">Inicio</a></li>';
     var breadcrumbLi = "";
     var isCurrent = true;
 
@@ -208,13 +208,13 @@ function setBreadcrumbs() {
     }
 
 
-    if (currentParFrequency_Id) {
+    /*if (currentParFrequency_Id) {
         breadcrumbLi = getBreadcrumb($.grep(listaParFrequency, function (item) {
             return item.Id == currentParFrequency_Id;
         })[0].Name, 'listarParDepartment(0)', isCurrent) + breadcrumbLi;
 
         isCurrent = false;
-    }
+    }*/
 
     breadcrumb += breadcrumbLi + '</ol>';
 

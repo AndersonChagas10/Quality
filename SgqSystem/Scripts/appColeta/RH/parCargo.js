@@ -320,8 +320,8 @@ function atualizaCorAgendamento(cargo,currentEvaluationSample) {
             //default = 1
             var elem = $('[data-par-cargo-id="' + cargo.Id + '"] .col-xs-1');
             
-            $(elem).height(30);
-            $(elem).width(30);
+            $(elem).height(20);
+            //$(elem).width(20);
 
             if (situacao.indexOf("4") >= 0) {
                 $(elem).attr('style','background-color:red');

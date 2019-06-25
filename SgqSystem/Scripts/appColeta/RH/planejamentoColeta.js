@@ -1,6 +1,12 @@
 function openPlanejamentoColeta() {
+	
+	_readFile("planejamento.txt", function (data) {
+		if(data && data.length > 1)
+			currentPlanejamento = JSON.parse(data);
 
-	var frequenciaSelecionada = getFrequenciaSelecionada();
+		getFrequenciaSelecionada();
+	});
+
 }
 
 function getFrequenciaSelecionada() {
@@ -26,13 +32,16 @@ function renderPlanejamentoColeta(frequencia){
 
 	var html = '';
 
+	var voltar = '<a onclick="voltarPlanejamentoColeta();" class="btn btn-warning">Voltar</a>';
+
 	html = getHeader() +
 			'<div class="container-fluid">                               ' +
 			'	<div class="">                                  ' +
 			'		<div class="col-xs-12">                        ' +
 			'			<div class="panel panel-primary">          ' +
 			'			  <div class="panel-heading">              ' +
-			'				<h3 class="panel-title">Qual frequencia deseja realizar coleta?</h3>      ' +
+			'				<h3 class="panel-title">'+voltar+' Qual frequencia deseja realizar coleta?'+
+			'<button class="btn btn-success pull-right" onclick="downloadPlanejamento()">Baixar Planejamento</button> </h3>      ' +
 			'			  </div>                                   ' +
 			'			  <div class="panel-body" style="padding-top: 10px !important">                 ' +
 			'				<div class="list-group">               ' +
@@ -89,17 +98,47 @@ function renderPlanejamentos(){
 	return html;
 }
 
+function voltarPlanejamentoColeta(){
+	if(currentPlanejamento.length > 0){
+		openMenu();
+	}else{
+		openParFrequency();
+	}
+}
+
 var planejamento = {};
 function savePlanejar(){
 	if(planejamento.parDepartment_Id > 0){
 		currentPlanejamento.push($.extend({},planejamento));
 		$('[data-save-planned]').html(renderPlanejamentos());
+		saveInFilePlanejamento();
 	}
 }
 
 function removePlanejamento(index){
 	currentPlanejamento.splice(index,1);
 	$('[data-save-planned]').html(renderPlanejamentos());
+	saveInFilePlanejamento();
+}
+
+function saveInFilePlanejamento(){
+	_writeFile("planejamento.txt", JSON.stringify(currentPlanejamento), function () {
+	});
+}
+
+function downloadPlanejamento(){
+	console.log(JSON.stringify({
+		ParCompany_Id: curretParCompany_Id
+		, ParFrequency_Id: currentParFrequency_Id
+		, AppDate: currentCollectDate
+		, Planejamento: currentPlanejamento.map(function(obj){
+			return {
+				ParDepartment_Id: obj.parDepartment_Id,  
+				ParCargo_Id: obj.parCargo_Id,  
+				Indicador_Id: obj.indicador_Id
+			}
+		})
+	}));
 }
 
 $('body').off('change', '[data-selects-cc] select').on('change', '[data-selects-cc] select', function (e) {

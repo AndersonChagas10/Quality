@@ -20,6 +20,7 @@ function listarParDepartment(parDepartmentId) {
 
 	});
 
+	currentParDepartment_Id = department.Id;
 	//caso for "" quer dizer que não tem mais filhos, então abre o próximo	
 	if (htmlParDepartment == "") {
 		currentParDepartmentParent_Id = department.Parent_Id;
@@ -27,7 +28,7 @@ function listarParDepartment(parDepartmentId) {
 		return;
 	}
 
-	var voltar = !!department.Id ? '<a onclick="listarParDepartment(' + department.Parent_Id + ');" class="btn btn-warning">Voltar</a>' : '<a onclick="listarParFrequency();" class="btn btn-warning">Voltar</a>';
+	var voltar = '<a onclick="openMenu();" class="btn btn-warning">Voltar</a>';
 
 	html = getHeader() +
 		'<div class="container-fluid">                                           ' +
@@ -83,7 +84,7 @@ function retornaDepartamentos(parDepartmentId, retornaDepartamentoAtual){
 	return listaDepartamentos;
 }
 
-$('body').on('click', '[data-par-department-id]', function (e) {
+$('body').off('click', '[data-par-department-id]').on('click', '[data-par-department-id]', function (e) {
 
 	var parDepartmentId = $(this).attr('data-par-department-id');
 
