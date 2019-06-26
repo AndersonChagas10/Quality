@@ -108,7 +108,10 @@ namespace SgqSystem.Controllers.V2.Api
             List<RotinaIntegracao> listaRotinaIntegracao;
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
 
-            var departamentosFiltrados = GetAllDepartmentsLinked(appParametrization.Planejamento.Select(x => x.ParDepartment_Id).Distinct().ToList());
+            //var departamentosFiltrados = new List<ParDepartment>();
+
+            //if (appParametrization.Planejamento != null && appParametrization.Planejamento.Count > 0)
+            //    departamentosFiltrados = GetAllDepartmentsLinked(appParametrization.Planejamento.Select(x => x.ParDepartment_Id).Distinct().ToList());
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -279,6 +282,28 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList();
 
+                //if (departamentosFiltrados.Count > 0)
+                //{
+                //    var idsDosDepartamentos = departamentosFiltrados.Select(x => x.Id).ToList();
+
+                //    listaParDepartment = db.ParDepartment
+                //        .AsNoTracking()
+                //        .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                //        .Where(x => idsDosDepartamentos.Contains(x.Id))
+                //        .Where(x => x.Active)
+                //        .Select(x => new ParDepartmentAppViewModel()
+                //        {
+                //            Id = x.Id,
+                //            Name = x.Name,
+                //            Description = x.Description,
+                //            Parent_Id = x.Parent_Id,
+                //            Hash = x.Hash
+                //        })
+                //        .ToList();
+                //}
+                //else
+                //{
+
                 listaParDepartment = db.ParDepartment
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
@@ -292,6 +317,7 @@ namespace SgqSystem.Controllers.V2.Api
                         Hash = x.Hash
                     })
                     .ToList();
+                //}
 
                 listaParCargo = db.ParCargo
                     .AsNoTracking()
@@ -421,30 +447,31 @@ namespace SgqSystem.Controllers.V2.Api
             return Ok(coletaAgrupada.ToList());
         }
 
-        private List<ParDepartment> GetAllDepartmentsLinked(List<int> listaDeDepartamentos_Ids)
-        {
+        //private List<ParDepartment> GetAllDepartmentsLinked(List<int> listaDeDepartamentos_Ids)
+        //{
 
-            using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
-            {
-                var listaDeDepartamentos = db.ParDepartment.Where(x => listaDeDepartamentos_Ids.Contains(x.Id))
-                    .ToList().Select(x=>new {
-                        id = x.Id,
-                        hash = x.Hash != null ? x.Hash + "|" + x.Id : x.Id.ToString(),
-                        hashx = (x.Hash != null ? x.Hash + "|" + x.Id : x.Id.ToString()) + "|",
-                        idpai =((x.Hash != null && x.Hash.IndexOf('|') > 0) ? x.Hash.Substring(0, x.Hash.IndexOf('|')) : x.Hash)
-                    });
+        //    using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
+        //    {
+        //        var listaDeDepartamentos = db.ParDepartment.Where(x => listaDeDepartamentos_Ids.Contains(x.Id))
+        //            .ToList().Select(x => new
+        //            {
+        //                id = x.Id,
+        //                hash = x.Hash != null ? x.Hash + "|" + x.Id : x.Id.ToString(),
+        //                hashx = (x.Hash != null ? x.Hash + "|" + x.Id : x.Id.ToString()) + "|",
+        //                idpai = ((x.Hash != null && x.Hash.IndexOf('|') > 0) ? x.Hash.Substring(0, x.Hash.IndexOf('|')) : x.Hash)
+        //            });
 
-                var departamentos = db.ParDepartment.ToList();
+        //        var departamentos = db.ParDepartment.ToList();
 
-                departamentos = departamentos.Where(x => 
-                listaDeDepartamentos.Any(y=>y.id == x.Id 
-                    || y.hash == x.Hash 
-                    || y.idpai == x.Id.ToString()
-                    || (x.Hash != null && x.Hash.StartsWith(y.hashx))))
-                    .ToList();
-                return departamentos;
-            }
-        }
+        //        departamentos = departamentos.Where(x =>
+        //        listaDeDepartamentos.Any(y => y.id == x.Id
+        //            || y.hash == x.Hash
+        //            || y.idpai == x.Id.ToString()
+        //            || (x.Hash != null && x.Hash.StartsWith(y.hashx))))
+        //            .ToList();
+        //        return departamentos;
+        //    }
+        //}
 
         public class GetResultsData
         {
