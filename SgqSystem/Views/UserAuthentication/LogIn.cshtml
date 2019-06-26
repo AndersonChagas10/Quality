@@ -2,7 +2,7 @@
 @using SgqSystem.Helpers
 @using DTO
 @{
-    ViewBag.Title = Resources.Resource.log_in;
+    ViewBag.Title = Resources.Resource.log_in as string;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var urlRecPassword = @Url.Action("PasswordRecovery", "UserAuthentication");
     var urlBuscaEmail = @Url.Action("buscaEmail", "UserAuthentication");
