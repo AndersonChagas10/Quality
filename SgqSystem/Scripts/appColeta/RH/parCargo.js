@@ -8,6 +8,8 @@ function listarParCargo() {
 
     var listaParCargo = retornaCargos(currentParDepartment_Id);
 
+    listaParCargo = retornaCargosPlanejados(listaParCargo);
+
     var htmlParCargo = "";
 
     $(listaParCargo).each(function (i, o) {

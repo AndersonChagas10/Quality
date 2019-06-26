@@ -216,12 +216,19 @@ function getParDepartmentPlanejado() {
 
 	$.each(ParDepartments_Ids, function (i, id) {
 
-		ParDepartmentsFilter.push($.grep(todosParDepartments, function (o) {
+		var teste = $.grep(todosParDepartments, function (o) {
 
 			return o.Id == id;
 
-		})[0]);
+		})[0];
+
+		if (teste)
+			ParDepartmentsFilter.push(teste);
 	});
+
+	if (ParDepartmentsFilter.length == 0) {
+		return [];
+	}
 
 	var todosDepartmentsPais = [];
 
@@ -273,9 +280,13 @@ function getParDepartmentPlanejado() {
 	ParDepartmentsFilter = ParDepartmentsFilter.concat(todosDepartmentsFilhos);
 	ParDepartmentsFilter = ParDepartmentsFilter.concat(todosDepartmentsPais);
 
+	allParDepartments = ParDepartmentsFilter;
+
 	return ParDepartmentsFilter;
 
 }
+
+var allParDepartments = [];
 
 function getDepartmentPai(departmentsParaBuscar) {
 
@@ -297,7 +308,6 @@ function getDepartmentPai(departmentsParaBuscar) {
 
 function getDepartmentFilho(departmentsParaBuscar) {
 
-	debugger
 	var newDepartments = [];
 
 	$.each(departmentsParaBuscar, function (i, o) {
@@ -313,4 +323,91 @@ function getDepartmentFilho(departmentsParaBuscar) {
 
 	return newDepartments;
 
+}
+
+function retornaCargosPlanejados(listaParCargo) {
+
+	var planejamentos = $.grep(currentPlanejamento, function (o) {
+		if (o.parCargo_Id)
+			return o.ParDepartment_Id = currentParDepartment_Id;
+	});
+
+	if (planejamentos.length == 0)
+		return listaParCargo;
+
+	listaCargoFiltrada = $.map(planejamentos, function (o) {
+		return o.parCargo_Id;
+	});
+
+	var newListaParCargo = [];
+
+	$.each(listaCargoFiltrada, function (i, o) {
+
+		var listaDeCargoPlanejado = $.grep(listaParCargo, function (oo) {
+			return oo.Id == o;
+		});
+
+		newListaParCargo = newListaParCargo.concat(listaDeCargoPlanejado);
+	});
+
+	return newListaParCargo;
+
+}
+
+
+function retornaCargosPlanejados(listaParCargo) {
+
+	var planejamentos = $.grep(currentPlanejamento, function (o) {
+		if (o.parCargo_Id)
+			return o.ParDepartment_Id = currentParDepartment_Id;
+	});
+
+	if (planejamentos.length == 0)
+		return listaParCargo;
+
+	var listaCargoFiltrada = $.map(planejamentos, function (o) {
+		return o.parCargo_Id;
+	});
+
+	var newListaParCargo = [];
+
+	$.each(listaCargoFiltrada, function (i, o) {
+
+		var listaDeCargoPlanejado = $.grep(listaParCargo, function (oo) {
+			return oo.Id == o;
+		});
+
+		newListaParCargo = newListaParCargo.concat(listaDeCargoPlanejado);
+	});
+
+	return newListaParCargo;
+
+}
+
+function retornaLevels1Planejados(listaParLevel1) {
+
+	var planejamentos = $.grep(currentPlanejamento, function (o) {
+		if (o.parCargo_Id && o.indicador_Id)
+			return o.ParDepartment_Id == currentParDepartment_Id && o.parCargo_Id == currentParCargo_Id ;
+	});
+
+	if (planejamentos.length == 0)
+		return listaParLevel1;
+
+	var listaIndicadorFiltrado = $.map(planejamentos, function (o) {
+		return o.indicador_Id;
+	});
+
+	var newListaIndicador = [];
+
+	$.each(listaIndicadorFiltrado, function (i, o) {
+
+		var listaDeIndicadorPlanejado = $.grep(listaParLevel1, function (oo) {
+			return oo.Id == o;
+		});
+
+		newListaIndicador = newListaIndicador.concat(listaDeIndicadorPlanejado);
+	});
+
+	return newListaIndicador;
 }
