@@ -701,15 +701,6 @@ namespace SgqService.Controllers.Api
                         reauditNumber = DefaultValueReturn(reauditNumber, "0");
                         //Cria a linah de insert
 
-
-
-                        //string sql = "INSERT INTO [dbo].[CollectionJson] " +
-                        //       "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
-                        //       "VALUES " +
-                        //       "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
-
-                        //sql += "SELECT @@IDENTITY AS 'Identity'";
-
                         string sql = "INSERT INTO [dbo].[CollectionJson] " +
                             "([Unit_Id]," +
                             "[Shift]," +
@@ -829,18 +820,7 @@ namespace SgqService.Controllers.Api
                             using (Factory factory = new Factory("DefaultConnection"))
                             {
 
-                                //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
-                                //string indicadorFilho = " SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) " +
-                                //                      "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK) " +
-                                //                      "\n  on p321.ParLevel1_Id = p1.id " +
-                                //                      "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK) " +
-                                //                      "\n  on p32.id = p321.ParLevel3Level2_Id " +
-                                //                      "\n  WHERE ParLevel1Origin_Id = " + result[0] +
-                                //                      "\n  and p1.isActive = 1 " +
-                                //                      "\n  and p321.Active = 1 " +
-                                //                      "\n  and p32.IsActive = 1";
-
-                                string indicadorFilho = $@" SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) 
+                                string sqlIndicadorFilho = $@" SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) 
                                                     inner join ParLevel3Level2Level1 p321  WITH (NOLOCK) 
                                                     on p321.ParLevel1_Id = p1.id 
                                                     inner join ParLevel3Level2 p32  WITH (NOLOCK) 
@@ -850,7 +830,7 @@ namespace SgqService.Controllers.Api
                                                     and p321.Active = 1 
                                                     and p32.IsActive = 1";
 
-                                using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                                using (SqlCommand cmd = new SqlCommand(sqlIndicadorFilho, factory.connection))
                                 {
                                     cmd.CommandType = CommandType.Text;
                                     cmd.Parameters.Add(new SqlParameter("@Result", result[0]));
@@ -861,21 +841,14 @@ namespace SgqService.Controllers.Api
                                 {
                                     indicadorFilho_id = list2[l].retorno.ToString();
                                 }
-
-                                //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
-                                //string monitoramentoFilho = "select top 1 cast(p32.ParLevel2_Id as varchar) retorno " +
-                                //                            "\n from parlevel3level2level1 p321 WITH (NOLOCK) " +
-                                //                            "\n inner join parlevel3level2 p32 WITH (NOLOCK) " +
-                                //                            "\n on p321.parlevel3level2_id = p32.id " +
-                                //                            "\n where p321.Active = 1 and p321.parlevel1_id = " + indicadorFilho_id;
-
-                                string monitoramentoFilho = $@"select top 1 cast(p32.ParLevel2_Id as varchar) retorno
+                                
+                                string sqlMonitoramentoFilho = $@"select top 1 cast(p32.ParLevel2_Id as varchar) retorno
                                             from parlevel3level2level1 p321 WITH (NOLOCK)
                                             inner join parlevel3level2 p32 WITH (NOLOCK)
                                             on p321.parlevel3level2_id = p32.id 
                                             where p321.Active = 1 and p321.parlevel1_id = @IndicadorFilho_Id";
 
-                                using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                                using (SqlCommand cmd = new SqlCommand(sqlMonitoramentoFilho, factory.connection))
                                 {
                                     cmd.CommandType = CommandType.Text;
                                     cmd.Parameters.Add(new SqlParameter("@IndicadorFilho_Id", indicadorFilho_id));
@@ -889,63 +862,7 @@ namespace SgqService.Controllers.Api
 
                             }
 
-                            //string sql2 = "INSERT INTO [dbo].[CollectionJson] " +
-                            //   "([Unit_Id]," +
-                            //   "[Shift]," +
-                            //   "[Period]," +
-                            //   "[level01_Id]," +
-                            //   "[Level01CollectionDate]," +
-                            //   "[level02_Id],[Evaluate]," +
-                            //   "[Sample]," +
-                            //   "[AuditorId]," +
-                            //   "[Level02CollectionDate]," +
-                            //   "[Level02HeaderJson]," +
-                            //   "[Level03ResultJSon]," +
-                            //   "[CorrectiveActionJson]," +
-                            //   "[Reaudit]," +
-                            //   "[ReauditNumber]," +
-                            //   "[haveReaudit]," +
-                            //   "[ReauditLevel]," +
-                            //   "[haveCorrectiveAction]," +
-                            //   "[Device_Id]," +
-                            //   "[AppVersion]," +
-                            //   "[Ambient]," +
-                            //   "[IsProcessed]," +
-                            //   "[Device_Mac]," +
-                            //   "[AddDate]," +
-                            //   "[AlterDate]," +
-                            //   "[Key]," +
-                            //   "[TTP]) " +
-                            //   "VALUES " +
-                            //   "('" + unidadeId + "'," +
-                            //   "'" + shift + "'," +
-                            //   "'" + period + "'," +
-                            //   "'" + indicadorFilho_id + "'," +
-                            //   "CAST(N'" + level01DataCollect + "' AS DateTime)," +
-                            //   "'" + level02Id + "'," +
-                            //   "'" + evaluate + "'," +
-                            //   "'" + sample + "', " +
-                            //   "'" + auditorId + "'," +
-                            //   "CAST(N'" + level02DataCollect + "' AS DateTime)," +
-                            //   "'" + level02HeaderJSon + "'," +
-                            //   "'" + retornoFilho + "', " +
-                            //   "'" + correctiveActionJson + "', " +
-                            //   "'" + reaudit + "', " +
-                            //   "'" + reauditNumber + "', " +
-                            //   "'" + haveReaudit + "', " +
-                            //   "'" + reauditlevel + "'," +
-                            //   "'" + haveCorrectiveAction + "' ," +
-                            //   "'" + deviceId + "'," +
-                            //   "'" + versaoApp + "'," +
-                            //   "'" + ambiente + "'," +
-                            //   "0," +
-                            //   "'" + deviceMac + "'," +
-                            //   "GETDATE()," +
-                            //   "NULL," +
-                            //   "'" + key + "'," +
-                            //   "NULL) ";
-
-                            string sql2 = $@"INSERT INTO [dbo].[CollectionJson] 
+                            string sqlInsertCollectionJsonIndicadorFilho = $@"INSERT INTO [dbo].[CollectionJson] 
                                ([Unit_Id],
                                [Shift],
                                [Period],
@@ -999,13 +916,13 @@ namespace SgqService.Controllers.Api
                                GETDATE(),
                                NULL,
                                @Key,
-                               NULL)";
+                               NULL); ";
 
-                            sql2 += "SELECT @@IDENTITY AS 'Identity'";
+                            sqlInsertCollectionJsonIndicadorFilho += "SELECT @@IDENTITY AS 'Identity'";
 
                             var iSql2 = 0;
 
-                            using (SqlCommand cmd = new SqlCommand(sql, connection))
+                            using (SqlCommand cmd = new SqlCommand(sqlInsertCollectionJsonIndicadorFilho, connection))
                             {
                                 cmd.CommandType = CommandType.Text;
                                 cmd.Parameters.Add(new SqlParameter("@UnidadeId", unidadeId));
@@ -2784,6 +2701,7 @@ namespace SgqService.Controllers.Api
             //Tratamento de erros Gabriel 2017-05-27
             if (sql.Count > 0)
             {
+                var retornoSql = 0;
 
                 string conexao = this.conexao;
                 try
@@ -2797,20 +2715,11 @@ namespace SgqService.Controllers.Api
                         {
                             command.Connection = connection;
                             //connection.Open();
-                            var i = Convert.ToInt32(command.ExecuteNonQuery());
-                            //Se o script for executado corretamente retorna o Id
-                            if (i > 0)
-                            {
-                                return i;
-                            }
-                            else
-                            {
-                                //Se o script não for executado corretamente, retorna zero
-                                return 0;
-                            }
+                            retornoSql = Convert.ToInt32(command.ExecuteNonQuery());
                         }
                     }
 
+                    return retornoSql;
                 }
                 //Caso ocorra alguma exception, grava no log e retorna zero
                 catch (SqlException ex)

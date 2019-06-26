@@ -101,6 +101,7 @@
 /// <reference path="appcoleta/rh/logado.js" />
 /// <reference path="appcoleta/rh/login.js" />
 /// <reference path="appColeta/RH/mensagem.js" />
+/// <reference path="appcoleta/rh/menu.js" />
 /// <reference path="appcoleta/rh/parcargo.js" />
 /// <reference path="appcoleta/rh/pardepartment.js" />
 /// <reference path="appcoleta/rh/parfrequency.js" />
