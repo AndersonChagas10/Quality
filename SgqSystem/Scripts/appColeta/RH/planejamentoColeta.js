@@ -235,23 +235,8 @@ function getParDepartmentPlanejado() {
 	$.each(ParDepartmentsFilter, function (i, o) {
 
 		var novosDepartments = [o];
-		var todosNovos = [];
 
-		do {
-
-			novosDepartments = getDepartmentPai(novosDepartments);
-
-			todosNovos = todosNovos.concat(novosDepartments);
-
-			var novosComPai = $.grep(novosDepartments, function (o) {
-				return o.Hash != null;
-			});
-
-			novosDepartments = novosComPai;
-
-		} while (novosComPai.length > 0);
-
-		todosDepartmentsPais = todosDepartmentsPais.concat(todosNovos);
+		todosDepartmentsPais = todosDepartmentsPais.concat(getDepartmentPai(novosDepartments));
 
 	});
 
@@ -279,11 +264,36 @@ function getParDepartmentPlanejado() {
 
 	ParDepartmentsFilter = ParDepartmentsFilter.concat(todosDepartmentsFilhos);
 	ParDepartmentsFilter = ParDepartmentsFilter.concat(todosDepartmentsPais);
+	ParDepartmentsFilter = removeDumplicateId(ParDepartmentsFilter)
 
 	allParDepartments = ParDepartmentsFilter;
 
 	return ParDepartmentsFilter;
 
+}
+
+function removeDumplicateId(myArray) {
+
+	var newArray = [];
+
+	$.each(myArray, function (key, value) {
+
+		var exists = false;
+
+		$.each(newArray, function (k, val2) {
+
+			if (value.Id == val2.Id) {
+				exists = true
+			};
+		});
+
+		if (exists == false && value.Id != "") {
+			newArray.push(value);
+		}
+
+	});
+
+	return newArray;
 }
 
 var allParDepartments = [];
@@ -294,13 +304,22 @@ function getDepartmentPai(departmentsParaBuscar) {
 
 	$.each(departmentsParaBuscar, function (i, o) {
 
-		var departments = $.grep(parametrization.listaParDepartment, function (oo) {
+		if (o.Hash != null) {
 
-			return o.Parent_Id == oo.Id
+			var idsPais = o.Hash.split("|");
 
-		});
+			$.each(idsPais, function (i, id) {
+				var departments = $.grep(parametrization.listaParDepartment, function (oo) {
 
-		newDepartments = newDepartments.concat(departments);
+					return id == oo.Id
+
+				})[0];
+
+				if (departments)
+					newDepartments = newDepartments.concat(departments);
+			});
+		}
+
 	});
 
 	return newDepartments;
@@ -354,41 +373,11 @@ function retornaCargosPlanejados(listaParCargo) {
 
 }
 
-
-function retornaCargosPlanejados(listaParCargo) {
-
-	var planejamentos = $.grep(currentPlanejamento, function (o) {
-		if (o.parCargo_Id)
-			return o.ParDepartment_Id = currentParDepartment_Id;
-	});
-
-	if (planejamentos.length == 0)
-		return listaParCargo;
-
-	var listaCargoFiltrada = $.map(planejamentos, function (o) {
-		return o.parCargo_Id;
-	});
-
-	var newListaParCargo = [];
-
-	$.each(listaCargoFiltrada, function (i, o) {
-
-		var listaDeCargoPlanejado = $.grep(listaParCargo, function (oo) {
-			return oo.Id == o;
-		});
-
-		newListaParCargo = newListaParCargo.concat(listaDeCargoPlanejado);
-	});
-
-	return newListaParCargo;
-
-}
-
 function retornaLevels1Planejados(listaParLevel1) {
 
 	var planejamentos = $.grep(currentPlanejamento, function (o) {
 		if (o.parCargo_Id && o.indicador_Id)
-			return o.ParDepartment_Id == currentParDepartment_Id && o.parCargo_Id == currentParCargo_Id ;
+			return o.ParDepartment_Id == currentParDepartment_Id && o.parCargo_Id == currentParCargo_Id;
 	});
 
 	if (planejamentos.length == 0)
