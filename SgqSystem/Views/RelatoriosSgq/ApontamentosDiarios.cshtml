@@ -575,7 +575,9 @@
             }
 
             dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
-            dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
+
+           
+
             dadosResultLevel3["IsNotEvaluate"] = $('#IsEvaluated').is(':checked');
 
             if ($('#decimal').length)
@@ -590,8 +592,13 @@
                     dadosResultLevel3.IsNotEvaluate = true;
                 }
             }
-            
-            if (parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text()) && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text())) {
+
+            //verifica se o valor inserido é maior que o permitido, se for, a flag isconform fica falsa e salva como nao conforme
+            if (parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text()) && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text()))
+                dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
+            else
+                dadosResultLevel3["IsConform"] = false;
+
             $.post(urlSave, dadosResultLevel3, function (r, x, e) {
 
                 $("#myModal").modal('hide');
@@ -605,10 +612,7 @@
                 openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
 
             });
-            } else {
-                $("#botaoSalvar").removeAttr('data-dismiss')
-                openMessageModal("Valor inserido fora do intervalo permitido!",null);
-            }
+
         }
 
         function ValidaDadosParaEnvio() {

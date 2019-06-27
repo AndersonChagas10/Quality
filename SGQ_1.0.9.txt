@@ -181,3 +181,9 @@ CREATE TABLE AppScript(
 )
 
 GO
+
+IF COL_LENGTH('ParLevel2Level1','AlterDate') IS NOT NULL
+    BEGIN	
+		ALTER TABLE ParLevel2Level1 
+		ALTER COLUMN AlterDate datetime2(7) null;
+    END
