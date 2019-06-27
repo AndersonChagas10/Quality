@@ -249,14 +249,16 @@ function getParDepartmentPlanejado() {
 
 		do {
 
-			novosDepartments = getDepartmentFilho(novosDepartments);
+			var novos = getDepartmentFilho(novosDepartments);
 
-			todosNovos = todosNovos.concat(novosDepartments);
+			if (novos.length == 0)
+				break;
 
-			if (todosNovos.length > 0)
-				novosDepartments = todosNovos;
+			novosDepartments = novos;
 
-		} while (todosNovos > 0);
+			todosNovos = todosNovos.concat(novos);
+
+		} while (novos.length > 0);
 
 		todosDepartmentsFilhos = todosDepartmentsFilhos.concat(todosNovos);
 
@@ -264,7 +266,7 @@ function getParDepartmentPlanejado() {
 
 	ParDepartmentsFilter = ParDepartmentsFilter.concat(todosDepartmentsFilhos);
 	ParDepartmentsFilter = ParDepartmentsFilter.concat(todosDepartmentsPais);
-	ParDepartmentsFilter = removeDumplicateId(ParDepartmentsFilter)
+	ParDepartmentsFilter = removeDuplicateId(ParDepartmentsFilter)
 
 	allParDepartments = ParDepartmentsFilter;
 
@@ -272,7 +274,7 @@ function getParDepartmentPlanejado() {
 
 }
 
-function removeDumplicateId(myArray) {
+function removeDuplicateId(myArray) {
 
 	var newArray = [];
 
@@ -333,7 +335,7 @@ function getDepartmentFilho(departmentsParaBuscar) {
 
 		var departments = $.grep(parametrization.listaParDepartment, function (oo) {
 
-			return o.Id == oo.Hash
+			return o.Id == oo.Parent_Id
 
 		});
 
