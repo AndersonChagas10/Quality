@@ -1,22 +1,24 @@
 function listarParDepartment(parDepartmentId) {
 
-	var listaDepartamentos = retornaDepartamentos(parDepartmentId, true);
-	
+	//listaDepartamentos = getParDepartmentPlanejado(); parametrization.listaParDepartment
+
+	var listaDepartamentos = retornaDepartamentos(parDepartmentId, true, getParDepartmentPlanejado());
+
 	var htmlParDepartment = "";
-	
+
 	var department = {};
 
 	$(listaDepartamentos).each(function (i, o) {
 
 		if (parseInt(parDepartmentId) > 0 && parDepartmentId == o.Id) {
 			department = o;
-		}else
-		if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
-			htmlParDepartment += '<button type="button" class="list-group-item col-xs-12" ' +
-				'data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name +
-				'<span class="badge">></span>' +
-				'</button>';
-		}
+		} else
+			if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
+				htmlParDepartment += '<button type="button" class="list-group-item col-xs-12" ' +
+					'data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name +
+					'<span class="badge">></span>' +
+					'</button>';
+			}
 
 	});
 
@@ -28,7 +30,16 @@ function listarParDepartment(parDepartmentId) {
 		return;
 	}
 
-	var voltar = '<a onclick="openMenu();" class="btn btn-warning">Voltar</a>';
+	var voltar = "";
+
+	if (parDepartmentId == 0 || parDepartmentId == undefined || parDepartmentId == null) 
+
+		voltar = '<a onclick="openMenu();" class="btn btn-warning">Voltar</a>';
+
+	else {
+
+		voltar = '<a onclick="voltarDepartment(' + department.Parent_Id + ');" class="btn btn-warning">Voltar</a>';
+	}
 
 	html = getHeader() +
 		'<div class="container-fluid">                                           ' +
@@ -37,7 +48,7 @@ function listarParDepartment(parDepartmentId) {
 		'                                                                  ' +
 		'			<div class="panel panel-primary">                      ' +
 		'			  <div class="panel-heading">                          ' +
-        '				<h3 class="panel-title">' + voltar + ' Selecione o centro de custo desejado</h3>            ' +
+		'				<h3 class="panel-title">' + voltar + ' Selecione o centro de custo desejado</h3>            ' +
 		'			  </div>                                               ' +
 		'			  <div class="panel-body">                             ' +
 		'				<div class="list-group">                           ' +
@@ -55,7 +66,7 @@ function listarParDepartment(parDepartmentId) {
 	setBreadcrumbs();
 }
 
-function retornaDepartamentos(parDepartmentId, retornaDepartamentoAtual){
+function retornaDepartamentos(parDepartmentId, retornaDepartamentoAtual, listaParDepartment) {
 
 	currentParDepartmentId = parDepartmentId;
 
@@ -69,14 +80,14 @@ function retornaDepartamentos(parDepartmentId, retornaDepartamentoAtual){
 	else
 		currentsParDepartments_Ids = [];
 
-	var data = parametrization.listaParDepartment;
+	var data = listaParDepartment;
 
 	var listaDepartamentos = [];
 
 	$(data).each(function (i, o) {
 		if ((retornaDepartamentoAtual && parseInt(parDepartmentId) > 0 && parDepartmentId == o.Id)
-		|| (parDepartmentId > 0 && parDepartmentId == o.Parent_Id) 
-		|| ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
+			|| (parDepartmentId > 0 && parDepartmentId == o.Parent_Id)
+			|| ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
 			listaDepartamentos.push(o);
 		}
 	});
@@ -91,3 +102,10 @@ $('body').off('click', '[data-par-department-id]').on('click', '[data-par-depart
 	listarParDepartment(parDepartmentId);
 
 });
+
+function voltarDepartment(parent_Id) {
+
+	currentParDepartment_Id = parent_Id;
+
+	listarParDepartment(currentParDepartment_Id);
+}

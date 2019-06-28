@@ -5,7 +5,7 @@ function openMenu() {
 	var html = '';
 
 	var htmlButtonColetarDesabilitado = "";
-	if(!(currentPlanejamento && currentPlanejamento.length > 0)){
+	if (!(currentPlanejamento && currentPlanejamento.length > 0)) {
 		htmlButtonColetarDesabilitado = ' disabled="true"';
 	}
 
@@ -18,7 +18,7 @@ function openMenu() {
 		'			<button class="btn btn-lg btn-info btn-block" onclick="clickPlanejar()">Planejar</button>' +
 		'		</div>   ' +
 		'		<div class="col-xs-4">   ' +
-		'<button class="btn btn-lg btn-success btn-block" onclick="clickColetar()" '+htmlButtonColetarDesabilitado+'>Coletar</button>' +
+		'<button class="btn btn-lg btn-success btn-block" onclick="clickColetar()" ' + htmlButtonColetarDesabilitado + '>Coletar</button>' +
 		'		</div>   ' +
 		'		<div class="col-xs-2">                        ' +
 		'		</div>                                         ' +
@@ -29,10 +29,10 @@ function openMenu() {
 
 }
 
-function clickPlanejar(){
-	if(currentParFrequency_Id > 0){
+function clickPlanejar() {
+	if (currentParFrequency_Id > 0) {
 		openPlanejamentoColeta();
-	}else{
+	} else {
 		openParFrequency();
 	}
 }

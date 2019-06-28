@@ -67,7 +67,9 @@ function getAppParametrization(frequencyId) {
     } else {
         openMensagem('Carregando parametrização', 'blue', 'white');
         _readFile("appParametrization.txt", function (data) {
-            parametrization = JSON.parse(data);
+            if (data)
+                parametrization = JSON.parse(data);
+                
             listarParDepartment(0);
             closeMensagem();
         });

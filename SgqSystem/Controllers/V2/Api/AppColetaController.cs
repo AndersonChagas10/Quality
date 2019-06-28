@@ -277,6 +277,28 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList();
 
+                //if (departamentosFiltrados.Count > 0)
+                //{
+                //    var idsDosDepartamentos = departamentosFiltrados.Select(x => x.Id).ToList();
+
+                //    listaParDepartment = db.ParDepartment
+                //        .AsNoTracking()
+                //        .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                //        .Where(x => idsDosDepartamentos.Contains(x.Id))
+                //        .Where(x => x.Active)
+                //        .Select(x => new ParDepartmentAppViewModel()
+                //        {
+                //            Id = x.Id,
+                //            Name = x.Name,
+                //            Description = x.Description,
+                //            Parent_Id = x.Parent_Id,
+                //            Hash = x.Hash
+                //        })
+                //        .ToList();
+                //}
+                //else
+                //{
+
                 listaParDepartment = db.ParDepartment
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
@@ -290,6 +312,7 @@ namespace SgqSystem.Controllers.V2.Api
                         Hash = x.Hash
                     })
                     .ToList();
+                //}
 
                 listaParCargo = db.ParCargo
                     .AsNoTracking()
