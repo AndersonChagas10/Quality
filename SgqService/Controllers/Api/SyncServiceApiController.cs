@@ -3619,9 +3619,7 @@ namespace SgqService.Controllers.Api
                 	   ,(SELECT
                 				MIN(CAST(CollectionDate AS TIME))
                 			FROM #CollectionLevel2_HPA WITH (NOLOCK)
-                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
-                			AND EvaluationNumber = 1
-                			AND [Sample] = 1)
+                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id)
                 		AS HoraPrimeiraAvaliacao
                 	FROM CollectionLevel2 CL2 WITH (NOLOCK)
                 	LEFT JOIN CollectionLevel2XCluster CL2C
@@ -3667,9 +3665,7 @@ namespace SgqService.Controllers.Api
                 	   ,(SELECT
                 				MIN(CAST(CollectionDate AS TIME))
                 			FROM #CollectionLevel2_HPA WITH (NOLOCK)
-                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
-                			AND EvaluationNumber = 1
-                			AND [Sample] = 1)
+                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id)
                 		AS HoraPrimeiraAvaliacao
                 	FROM CollectionLevel2 CL2 WITH (NOLOCK)
                 	LEFT JOIN CollectionLevel2XCluster CL2C
@@ -3715,9 +3711,7 @@ namespace SgqService.Controllers.Api
                 	   ,(SELECT
                 				MIN(CAST(CollectionDate AS TIME))
                 			FROM #CollectionLevel2_HPA WITH (NOLOCK)
-                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
-                			AND EvaluationNumber = 1
-                			AND [Sample] = 1)
+                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id)
                 		AS HoraPrimeiraAvaliacao
                 	FROM CollectionLevel2 CL2 WITH (NOLOCK)
                 	LEFT JOIN CollectionLevel2XCluster CL2C
@@ -3763,9 +3757,7 @@ namespace SgqService.Controllers.Api
                 	   ,(SELECT
                 				MIN(CAST(CollectionDate AS TIME))
                 			FROM #CollectionLevel2_HPA WITH (NOLOCK)
-                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
-                			AND EvaluationNumber = 1
-                			AND [Sample] = 1)
+                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id)
                 		AS HoraPrimeiraAvaliacao
                 	FROM CollectionLevel2 CL2 WITH (NOLOCK)
                 	LEFT JOIN CollectionLevel2XCluster CL2C
