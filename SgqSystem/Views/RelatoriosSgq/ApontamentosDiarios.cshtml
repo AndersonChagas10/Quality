@@ -592,12 +592,15 @@
                     dadosResultLevel3.IsNotEvaluate = true;
                 }
             }
-
+         
             //verifica se o valor inserido é maior que o permitido, se for, a flag isconform fica falsa e salva como nao conforme
             if (parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text()) && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text()))
                 dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
             else
                 dadosResultLevel3["IsConform"] = false;
+
+            if ($("#intervalMax").text() == "" && $("#intervalMin").text() == "")
+                dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
 
             $.post(urlSave, dadosResultLevel3, function (r, x, e) {
 
