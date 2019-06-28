@@ -32,8 +32,6 @@ function listarParDepartment(parDepartmentId) {
 
 	var voltar = "";
 
-	debugger
-
 	if (parDepartmentId == 0 || parDepartmentId == undefined || parDepartmentId == null) 
 
 		voltar = '<a onclick="openMenu();" class="btn btn-warning">Voltar</a>';

@@ -73,9 +73,15 @@ $('body').on('click', '#btnLogin', function (event) {
         success: function (data) {
 
             //se for usuários diferentes, zera a parametrização
-            if (currentLogin.Id != data.Retorno.Id) { 
+            if (currentLogin.Id != data.Retorno.Id) {
+
                 parametrization = null;
+                currentPlanejamento = [];
+
                 _writeFile("appParametrization.txt", '', function () {
+                });
+
+                _writeFile("planejamento.txt", '', function () {                    
                 });
             }
 
