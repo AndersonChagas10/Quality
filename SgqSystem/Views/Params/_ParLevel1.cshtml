@@ -299,7 +299,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="row" id="negativo">
-                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.negative as string))                                           <td>
+                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.negative as string))                                    
                                                     <td>
                                                         <input type="text" id="objBinarioPunishmentName2" class="form-control input-sm">
                                                         @Html.ErrorManual("punishmentNameCabecalho2", "O campo Nome deve ser preechido para o Cabecalho.")
@@ -510,6 +510,7 @@
                                     <div id="objInformacoes" style="display:none;">
 
                                         @Html.Label(Resources.Resource.valueText as string): <input type="text" id="objInformacoesTextValue" />
+
 
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="@Resources.Resource.include_information" id="btnIncluirInformacao" onclick="Cabecalhos.IncluirInformacoes();" />
 
@@ -1078,9 +1079,9 @@
                 case 7:
                     Cabecalhos.ShowHora();
                     break;
-                    //case 8: //Informacoes
-                    //  Cabecalhos.ShowInformacoes();
-                    // break;
+                case 8: //Informacoes
+                      Cabecalhos.ShowInformacoes();
+                     break;
                 case 9: //Informacoes
                     Cabecalhos.ShowParametro();
                     break;

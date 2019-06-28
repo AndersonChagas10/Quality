@@ -101,7 +101,7 @@ namespace SgqSystem.Controllers.Params
             {
                 equipamentos.DataInsercao = System.DateTime.Now;
                 equipamentos.UsuarioInsercao = Guard.GetUsuarioLogado_Id(HttpContext);
-                equipamentos.Unidade = 1;
+                equipamentos.Unidade = 4;
                 db.Equipamentos.Add(equipamentos);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -157,7 +157,7 @@ namespace SgqSystem.Controllers.Params
             {
                 equipamentos.DataInsercao = System.DateTime.Now;
                 equipamentos.UsuarioAlteracao = Guard.GetUsuarioLogado_Id(HttpContext);
-                equipamentos.Unidade = 1;
+                equipamentos.Unidade = 4;
                 db.Entry(equipamentos).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

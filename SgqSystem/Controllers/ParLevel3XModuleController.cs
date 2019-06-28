@@ -17,7 +17,7 @@ namespace SgqSystem.Controllers
         // GET: ParLevel3XModule
         public ActionResult Index()
         {          
-            return View(db.ParLevel3XModule.Where(x => x.IsActive).ToList());
+            return View(db.ParLevel3XModule.ToList());
         }
 
         // GET: ParLevel3XModule/Details/5

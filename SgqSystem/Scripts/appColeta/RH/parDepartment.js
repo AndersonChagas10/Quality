@@ -30,7 +30,16 @@ function listarParDepartment(parDepartmentId) {
 		return;
 	}
 
-	var voltar = '<a onclick="openMenu();" class="btn btn-warning">Voltar</a>';
+	var voltar = "";
+
+	if (parDepartmentId == 0 || parDepartmentId == undefined || parDepartmentId == null) 
+
+		voltar = '<a onclick="openMenu();" class="btn btn-warning">Voltar</a>';
+
+	else {
+
+		voltar = '<a onclick="voltarDepartment(' + department.Parent_Id + ');" class="btn btn-warning">Voltar</a>';
+	}
 
 	html = getHeader() +
 		'<div class="container-fluid">                                           ' +
@@ -93,3 +102,10 @@ $('body').off('click', '[data-par-department-id]').on('click', '[data-par-depart
 	listarParDepartment(parDepartmentId);
 
 });
+
+function voltarDepartment(parent_Id) {
+
+	currentParDepartment_Id = parent_Id;
+
+	listarParDepartment(currentParDepartment_Id);
+}
