@@ -2515,8 +2515,6 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "zero_represents_infinity", Value = "O valor 0 representa um valor ilimitado de Avaliações ou Amostras" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "zero_represents_infinity1", Value = "O valor 0 representa um valor ilimitado de Avaliações ou Amostras" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "_new", Value = "Novo" });
-                ResourcesInserir.Add(new ResourcePT() { Key = "cluster_group1", Value = "Processo" });
-                ResourcesInserir.Add(new ResourcePT() { Key = "active", Value = "Está Ativo" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "costcenter", Value = "Centro de Custo" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "organizational_structure", Value = "Estrutura Organizacional" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "latitude", Value = "Latitude" });

@@ -78,9 +78,9 @@ namespace SgqSystem.Controllers
             if (id > 0)
             {
                 //var allControlCompany = db.ParLevel2ControlCompany.Include("ParLevel2").Where(r => r.ParLevel1_Id == id && r.InitDate == _dataInit && r.IsActive == true);
-                var allControlCompany = db.ParLevel2ControlCompany.Include("ParLevel2").Where(r => r.ParLevel1_Id == id && r.IsActive == true);
+                var allControlCompany = db.ParLevel2ControlCompany.Include("ParLevel2").Where(r => r.ParLevel1_Id == id && r.InitDate <= _dataInit && r.IsActive == true).ToList();
                 var lastDateDaControlCompany = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
-                var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDateDaControlCompany && r.ParCompany_Id == null).Select(r => r.ParLevel2);
+                var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDateDaControlCompany && r.ParCompany_Id == null).Select(r => r.ParLevel2).ToList();
                 var level2VinculadosAoLevel1Selecionado = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == id).Select(r => r.ParLevel3Level2.ParLevel2).Distinct().ToList();
 
                 ViewBag.ParLevel2Todos = level2VinculadosAoLevel1Selecionado;
