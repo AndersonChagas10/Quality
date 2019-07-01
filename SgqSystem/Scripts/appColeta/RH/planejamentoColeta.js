@@ -1,12 +1,17 @@
 function openPlanejamentoColeta() {
 
+	preencheCurrentPPlanejamento(getFrequenciaSelecionada);
+
+}
+
+function preencheCurrentPPlanejamento(callback){
 	_readFile("planejamento.txt", function (data) {
 		if (data && data.length > 1)
 			currentPlanejamento = JSON.parse(data);
 
-		getFrequenciaSelecionada();
+		if(callback)
+			callback();
 	});
-
 }
 
 function getFrequenciaSelecionada() {
@@ -482,10 +487,4 @@ function getCurrentPlanejamentoObj() {
 		});
 
 	currentPlanejamentoArr = !!arr.length ? arr : [];
-}
-
-function cleanCurrentPlanejamentoObj() {
-
-	currentPlanejamentoArr = [];
-
 }

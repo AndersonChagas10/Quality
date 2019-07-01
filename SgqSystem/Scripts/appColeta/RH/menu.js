@@ -1,5 +1,10 @@
 function openMenu() {
 
+	preencheCurrentPPlanejamento(showMenu);
+
+}
+
+function showMenu(){
 	cleanGlobalVarParFrequency();	
 
 	var html = '';
