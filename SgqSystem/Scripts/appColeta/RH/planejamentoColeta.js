@@ -461,6 +461,25 @@ function getCurrentPlanejamentoObj() {
 				return o;
 
 		});
+		
+	if (!arr.length)
+
+		arr = $.grep(currentPlanejamento, function (o) {
+
+			if (o.parDepartment_Id == currentParDepartment_Id &&
+				o.indicador_Id == undefined)
+
+				return o;
+		});
+
+	if (!arr.length)
+
+		arr = $.grep(currentPlanejamento, function (o) {
+
+			if (o.parDepartment_Id == currentParDepartment_Id)
+
+				return o;
+		});
 
 	currentPlanejamentoArr = !!arr.length ? arr : [];
 }
