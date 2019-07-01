@@ -124,7 +124,7 @@ namespace SgqService.Controllers.Api
                     , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
                     , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot);
 
-                var path = Path.Combine(basePath, "photos", fileName);
+                var path = Path.Combine(basePath, fileName);
                 ResultPhoto.Photo = path;
                 ResultPhoto.Photo_Thumbnaills = ResultPhoto.Photo;
                 #endregion
