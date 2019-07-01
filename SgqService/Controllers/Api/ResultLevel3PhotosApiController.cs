@@ -120,9 +120,9 @@ namespace SgqService.Controllers.Api
                 string fileName = parLevel1_Id + parLevel2_Id + ResultPhoto.Level3Id + DateTime.Now.ToString("yyyyMMddHHssmm") + new Random().Next(1000, 9999) + ".png";
 
                 FileHelper.SavePhoto(ResultPhoto.Photo, basePath, fileName
-                    , GetWebConfigSettings("credentialUserServerPhoto")
-                    , GetWebConfigSettings("credentialPassServerPhoto")
-                    , GetWebConfigSettings("StorageRoot"));
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot);
 
                 var path = Path.Combine(basePath, "photos", fileName);
                 ResultPhoto.Photo = path;
