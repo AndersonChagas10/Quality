@@ -345,7 +345,7 @@
         /*Tipos de dados L3*/
         modalAlterarLevel3Value: function (obj) {
             var divDeEdicao;
-
+            debugger
             divDeEdicao = $('#companyValueL3 > td').parent().clone();
             $(divDeEdicao).show();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
@@ -381,9 +381,9 @@
                 });
                 $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
                 $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
-
+                $("#crudNxNEdit #companyValueL3").hide();
             } else if (obj.ParLevel3InputType_Id == 1 || obj.ParLevel3InputType_Id == 6 || obj.ParLevel3InputType_Id == 12) {
-
+                
                 divDeEdicao = $('.ParBinarios').clone();
                 $(divDeEdicao).show();
                 $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
@@ -393,6 +393,8 @@
                 if (obj.ParCompany_Id > 0)
                     $('#crudNxNEdit #selectUnidadeParL3Value').val(obj.ParCompany_Id).change();
 
+                $("#crudNxNEdit #companyValueL3").hide();
+
             } else if (obj.ParLevel3InputType_Id == 10) {
                 divDeEdicao = $('.ParResultadoEdit').clone();
                 $(divDeEdicao).show();
@@ -401,7 +403,7 @@
                 $('#crudNxNEdit #parLevel3Value_IntervalMin').val(obj.IntervalMin).change().show().append();
                 $('#crudNxNEdit #parLevel3Value_IntervalMax').val(obj.IntervalMax).change().show().append();
                 $('#crudNxNEdit #parLevel3Value_DynamicValue').val(obj.DynamicValue).change().show().append();
-
+                $("#crudNxNEdit #companyValueL3").hide();
             } else if (obj.ParLevel3InputType_Id == 2) {
                 divDeEdicao = $('.ParIntervalos').clone();
                 $(divDeEdicao).show();
@@ -428,6 +430,7 @@
                 });
                 $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
                 $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
+                $("#crudNxNEdit #companyValueL3").hide();
             } else if (obj.ParLevel3InputType_Id == 8 || obj.ParLevel3InputType_Id == 7) {
 
                 divDeEdicao = $('.ParIntervalos').clone();
@@ -449,7 +452,7 @@
                 $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
                 $('#crudNxNEdit #selectUnidadeDeMedidas').parents('td').hide();
                 $('#crudNxNEdit #parIntervalosType').parents('td').hide();
-
+                $("#crudNxNEdit #companyValueL3").hide();
             }
 
             divDeEdicao = $('#selectTipoInput').clone();
