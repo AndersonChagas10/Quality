@@ -210,13 +210,13 @@ function setBreadcrumbs() {
     }
 
 
-    /*if (currentParFrequency_Id) {
-        breadcrumbLi = getBreadcrumb($.grep(listaParFrequency, function (item) {
+    if (currentParFrequency_Id) {
+        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
             return item.Id == currentParFrequency_Id;
         })[0].Name, 'listarParDepartment(0)', isCurrent) + breadcrumbLi;
 
         isCurrent = false;
-    }*/
+    }
 
     breadcrumb += breadcrumbLi + '</ol>';
 
