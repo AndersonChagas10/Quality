@@ -41,7 +41,7 @@ function renderPlanejamentoColeta(frequencia) {
 		'			<div class="panel panel-primary">          ' +
 		'			  <div class="panel-heading">              ' +
 		'				<h3 class="panel-title">' + voltar + ' Qual frequencia deseja realizar coleta?' +
-		'<button class="btn btn-success pull-right" onclick="downloadPlanejamento()">Baixar Planejamento</button> </h3>      ' +
+		'<button class="btn btn-success pull-right btncoletar" onclick="clickColetar()">Coletar</button> </h3>      ' +
 		'			  </div>                                   ' +
 		'			  <div class="panel-body" style="padding-top: 10px !important">                 ' +
 		'				<div class="list-group">               ' +
@@ -81,6 +81,8 @@ function renderPlanejamentoColeta(frequencia) {
 
 	$('div#app').html(html);
 
+	changeStateButtonColetar();
+
 }
 
 function renderPlanejamentos() {
@@ -112,6 +114,7 @@ function savePlanejar() {
 		currentPlanejamento.push($.extend({}, planejamento));
 		$('[data-save-planned]').html(renderPlanejamentos());
 		saveInFilePlanejamento();
+		changeStateButtonColetar();
 	}
 }
 
@@ -119,6 +122,7 @@ function removePlanejamento(index) {
 	currentPlanejamento.splice(index, 1);
 	$('[data-save-planned]').html(renderPlanejamentos());
 	saveInFilePlanejamento();
+	changeStateButtonColetar();
 }
 
 function saveInFilePlanejamento() {
@@ -348,7 +352,12 @@ function getDepartmentFilho(departmentsParaBuscar) {
 
 function retornaCargosPlanejados(listaParCargo) {
 
-	var planejamentos = $.grep(currentPlanejamento, function (o) {
+	// var planejamentos = $.grep(currentPlanejamento, function (o) {
+	// 	if (o.parCargo_Id)
+	// 		return o.ParDepartment_Id = currentParDepartment_Id;
+	// });
+
+	var planejamentos = $.grep(currentPlanejamentoArr, function (o) {
 		if (o.parCargo_Id)
 			return o.ParDepartment_Id = currentParDepartment_Id;
 	});
@@ -356,7 +365,7 @@ function retornaCargosPlanejados(listaParCargo) {
 	if (planejamentos.length == 0)
 		return listaParCargo;
 
-	listaCargoFiltrada = $.map(planejamentos, function (o) {
+	var listaCargoFiltrada = $.map(planejamentos, function (o) {
 		return o.parCargo_Id;
 	});
 
@@ -377,7 +386,12 @@ function retornaCargosPlanejados(listaParCargo) {
 
 function retornaLevels1Planejados(listaParLevel1) {
 
-	var planejamentos = $.grep(currentPlanejamento, function (o) {
+	// var planejamentos = $.grep(currentPlanejamento, function (o) {
+	// 	if (o.parCargo_Id && o.indicador_Id)
+	// 		return o.ParDepartment_Id == currentParDepartment_Id && o.parCargo_Id == currentParCargo_Id;
+	// });
+
+	var planejamentos = $.grep(currentPlanejamentoArr, function (o) {
 		if (o.parCargo_Id && o.indicador_Id)
 			return o.ParDepartment_Id == currentParDepartment_Id && o.parCargo_Id == currentParCargo_Id;
 	});
@@ -401,4 +415,58 @@ function retornaLevels1Planejados(listaParLevel1) {
 	});
 
 	return newListaIndicador;
+}
+
+var currentPlanejamentoArr = [];
+
+function getCurrentPlanejamentoObj() {
+
+
+	if (!!currentPlanejamentoArr.length &&
+		currentsParDepartments_Ids.indexOf(currentPlanejamentoArr[0].ParDepartment_Id) >= 0) {
+
+		return currentPlanejamentoArr
+
+	}
+
+	var arr = $.grep(currentPlanejamento, function (o) {
+
+		if (o.parDepartment_Id == currentParDepartment_Id &&
+			o.parCargo_Id == undefined &&
+			o.indicador_Id == undefined)
+
+			return o;
+	});
+
+	if (!arr.length)
+
+		arr = $.grep(currentPlanejamento, function (o) {
+
+
+			if (o.parDepartment_Id == currentParDepartment_Id &&
+				o.parCargo_Id == currentParCargo_Id &&
+				o.indicador_Id == undefined)
+
+				return o;
+
+		});
+
+	if (!arr.length)
+
+		arr = $.grep(currentPlanejamento, function (o) {
+
+			if (o.parDepartment_Id == currentParDepartment_Id &&
+				o.parCargo_Id == currentParCargo_Id)
+
+				return o;
+
+		});
+
+	currentPlanejamentoArr = !!arr.length ? arr : [];
+}
+
+function cleanCurrentPlanejamentoObj() {
+
+	currentPlanejamentoArr = [];
+
 }

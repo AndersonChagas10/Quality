@@ -1,6 +1,6 @@
 function openMenu() {
 
-	cleanGlobalVarParFrequency();
+	cleanGlobalVarParFrequency();	
 
 	var html = '';
 
@@ -27,6 +27,7 @@ function openMenu() {
 
 	$('div#app').html(html);
 
+	changeStateButtonColetar();
 }
 
 function clickPlanejar() {
@@ -37,6 +38,19 @@ function clickPlanejar() {
 	}
 }
 
-function clickColetar(){
+function clickColetar() {
 	listarParDepartment(0);
+}
+
+function changeStateButtonColetar() {
+
+	if (currentPlanejamento.length > 0) {
+
+		$(".btncoletar").removeClass("disabled");
+
+	} else {
+
+		$(".btncoletar").addClass("disabled");
+
+	}
 }

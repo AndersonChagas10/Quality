@@ -23,6 +23,9 @@ function listarParDepartment(parDepartmentId) {
 	});
 
 	currentParDepartment_Id = department.Id;
+
+	getCurrentPlanejamentoObj();
+
 	//caso for "" quer dizer que não tem mais filhos, então abre o próximo	
 	if (htmlParDepartment == "") {
 		currentParDepartmentParent_Id = department.Parent_Id;
@@ -68,7 +71,7 @@ function listarParDepartment(parDepartmentId) {
 
 function retornaDepartamentos(parDepartmentId, retornaDepartamentoAtual, listaParDepartment) {
 
-	currentParDepartmentId = parDepartmentId;
+	currentParDepartment_Id = parDepartmentId;
 
 	currentParCargo_Id = null;
 
