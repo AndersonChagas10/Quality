@@ -112,6 +112,7 @@ function getPlanejamentoPorFrequencia(frequencyId) {
 			contentType: "application/json",
 			success: function (data) {
 				data.currentParFrequency_Id = currentParFrequency_Id;
+				data.listaParFrequency = listaParFrequency;
 				_writeFile("appParametrization.txt", JSON.stringify(data), function () {
 					parametrization = data;
 					openPlanejamentoColeta();
