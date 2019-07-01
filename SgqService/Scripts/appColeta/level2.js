@@ -790,7 +790,7 @@ function atualizaCorAgendamento() {
 
                                 if (!!parseInt(avaliacaoAtual)) {
 
-                                    horaPrimeiraAv = $('.Resultlevel2[level1id=' + level1Id + '][unitid=' + unitId + '][reauditnumber=' + reaudnumber + '][level2id=' + level2Id + ']').attr('horaprimeiraavaliacao');
+                                    horaPrimeiraAv = $('.Resultlevel2[level1id=' + level1Id + '][unitid=' + unitId + '][level2id=' + level2Id + ']').attr('horaprimeiraavaliacao');
 
                                     horaMinutoPrimeiraAv = horaPrimeiraAv.split(":");
 
@@ -915,7 +915,7 @@ function atualizaCorAgendamento() {
                                 }
                             }
                         }
-                    )
+                    );
 
                     //verificar qual avaliação estou, e verificar todas a frente e pegar o pior caso para apresentar no semaforo
 
