@@ -4,12 +4,12 @@ function openPlanejamentoColeta() {
 
 }
 
-function preencheCurrentPPlanejamento(callback){
+function preencheCurrentPPlanejamento(callback) {
 	_readFile("planejamento.txt", function (data) {
 		if (data && data.length > 1)
 			currentPlanejamento = JSON.parse(data);
 
-		if(callback)
+		if (callback)
 			callback();
 	});
 }
@@ -219,7 +219,7 @@ function getParDepartmentPlanejado() {
 
 		return o["parDepartment_Id"];
 
-	}));
+	}).sort());
 
 	var ParDepartmentsFilter = [];
 
@@ -374,6 +374,9 @@ function retornaCargosPlanejados(listaParCargo) {
 		return o.parCargo_Id;
 	});
 
+	if (listaCargoFiltrada)
+		listaCargoFiltrada = $.unique(listaCargoFiltrada.sort());
+
 	var newListaParCargo = [];
 
 	$.each(listaCargoFiltrada, function (i, o) {
@@ -398,7 +401,8 @@ function retornaLevels1Planejados(listaParLevel1) {
 
 	var planejamentos = $.grep(currentPlanejamentoArr, function (o) {
 		if (o.parCargo_Id && o.indicador_Id)
-			return o.ParDepartment_Id == currentParDepartment_Id && o.parCargo_Id == currentParCargo_Id;
+			return o.ParDepartment_Id == currentParDepartment_Id &&
+				o.parCargo_Id == currentParCargo_Id;
 	});
 
 	if (planejamentos.length == 0)
@@ -407,6 +411,9 @@ function retornaLevels1Planejados(listaParLevel1) {
 	var listaIndicadorFiltrado = $.map(planejamentos, function (o) {
 		return o.indicador_Id;
 	});
+
+	if (listaIndicadorFiltrado)
+		listaIndicadorFiltrado = $.unique(listaIndicadorFiltrado.sort());
 
 	var newListaIndicador = [];
 
@@ -466,7 +473,7 @@ function getCurrentPlanejamentoObj() {
 				return o;
 
 		});
-		
+
 	if (!arr.length)
 
 		arr = $.grep(currentPlanejamento, function (o) {
