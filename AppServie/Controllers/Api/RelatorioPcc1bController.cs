@@ -15,10 +15,10 @@ namespace AppServie.Api.Controllers
     public class RelatorioGenericoController : BaseApiController
     {
         [HttpGet]
-        [Route("reciveDataPCC1b2/{unidadeId}/{data}")]
-        public async Task<dynamic> reciveDataPCC1b2(string unidadeId, string data)
+        [Route("reciveDataPCC1b2/{unidadeId}/{data}/{shift}")]
+        public async Task<dynamic> reciveDataPCC1b2(string unidadeId, string data, string shift)
         {
-            string url = $"/api/RelatorioGenerico/reciveDataPCC1b2/{unidadeId}/{data}";
+            string url = $"/api/RelatorioGenerico/reciveDataPCC1b2/{unidadeId}/{data}/{shift}";
             RestRequest restRequest = await RestRequest.Get(url, this.token);
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)

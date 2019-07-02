@@ -93,8 +93,8 @@ namespace SgqService.Controllers.Api
         }
 
         [HttpGet]
-        [Route("reciveDataPCC1b2/{unidadeId}/{data}")]
-        public dynamic reciveDataPCC1b2(string unidadeId, string data)
+        [Route("reciveDataPCC1b2/{unidadeId}/{data}/{shift}")]
+        public dynamic reciveDataPCC1b2(string unidadeId, string data, string shift)
         {
             VerifyIfIsAuthorized();
             //DateTime dataConsolidation = DateCollectConvert(data);
@@ -103,17 +103,14 @@ namespace SgqService.Controllers.Api
             string sql = @"
                             SELECT 
                             sequential, side, cast(
-							
-							case 
-								when (select avg( cast(IsNotEvaluate as int)) from result_level3 where CollectionLevel2_Id = c2.id) = 1 
-								then 2 
-								when ReauditIs = 1 
-										then case 
-												when Defects = 0 
-												then 0 
-												else 1 
-											 end 
-								else 0 end 
+										
+                            case 
+	                            when (select avg( cast(IsNotEvaluate as int)) from result_level3 where CollectionLevel2_Id = c2.id) = 1 
+		                            then 2 
+	                            when Defects = 0 
+		                            then 0 
+		                            else 1 
+	                            end 
 							
 							as varchar) resultado, P2.NAME AS monitoramento
                             -- '{""sequencial"":""' + cast(Sequential as varchar) + '"",""banda"":""' + cast(Side as varchar) + '"",""resultado"":""' + cast(case when Defects = 0 then 0 else 1 end as varchar) + '""}' as retorno
@@ -123,6 +120,7 @@ namespace SgqService.Controllers.Api
 							ON P2.ID = C2.PARLEVEL2_ID
                             WHERE PARLEVEL1_ID = 3
                             AND UnitId = " + unidadeId + @"
+                            AND shift = " + shift + @"
                             AND CAST(CollectionDate AS DATE) = '" + data + @"'
                            ORDER BY 4,1,2";
 
