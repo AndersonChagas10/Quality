@@ -204,6 +204,7 @@
     <Compile Include="Controllers\Api\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\ParHeaderFieldApiController.cs" />
     <Compile Include="Controllers\Api\ParReasonApiController.cs" />
+    <Compile Include="Controllers\Api\PCC1BController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />

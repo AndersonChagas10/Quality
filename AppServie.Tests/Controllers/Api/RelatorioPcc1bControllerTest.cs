@@ -17,7 +17,7 @@ namespace AppServie.Tests.Controllers
             RelatorioGenericoController controller = new RelatorioGenericoController();
             controller.token = Config.TOKEN;
 
-            var x = controller.reciveDataPCC1b2("14",DateTime.Now.ToString("yyyyMMdd"));
+            var x = controller.reciveDataPCC1b2("14",DateTime.Now.ToString("yyyyMMdd"),"1");
 
             Assert.IsTrue(x.Result != null);
         }

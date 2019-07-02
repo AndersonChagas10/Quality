@@ -69,7 +69,7 @@ namespace SgqService.Controllers.Api
 
         #region Funções
 
-        public const string quebraProcesso = "98789";
+        public static string quebraProcesso = "98789";
 
         /// <summary>
         /// Converter a Data do Tablet

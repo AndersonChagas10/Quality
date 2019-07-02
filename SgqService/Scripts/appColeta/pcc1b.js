@@ -21,8 +21,15 @@ function getPCC1BNext() {
 
             var data = { Data: yyyyMMdd(), Unit: parseInt($('.App').attr('unidadeid')), ParLevel2: parseInt($('.level2.selected').attr('id')), sequencialAtual: sequencial };
 
-            $.post(urlPreffix + "/api/PCC1B/Next", data, function (r) {
-
+            $.ajax({
+                url: urlPreffix + "/api/PCC1B/Next",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify(data),
+                type: 'POST',
+                headers: token(),
+                success: function (r) {
+                    
                 if (r.Sequential > 0 || r.Side > 0) {
 
                     // $('.Resultlevel2[level2id=' + $('.level2.selected').attr('id') + '][shift='+$('.App').attr('shift')+'][period='+$('.App').attr('period')+']')
@@ -36,19 +43,19 @@ function getPCC1BNext() {
                 } else {
                     offLinePCC1B();
                 }
-                return;
-            })
-            .done(function () {
+
                 setTimeout(function () {
                     closeModalPCC1B();
                 }, 300);
-            })
-            .fail(function () {
-                setTimeout(function () {
-                    closeModalPCC1B();
-                    openModalPCC1B();
-                    offLinePCC1B();
-                }, 300);
+                
+                },
+                error: function (e) {
+                    setTimeout(function () {
+                        closeModalPCC1B();
+                        openModalPCC1B();
+                        offLinePCC1B();
+                    }, 300);
+                }
             });
         }       
         
@@ -118,21 +125,35 @@ function updatePCC1B(useReload, callback) {
         var parLevel2IdDianteiro = $('.level2 .levelName:contains("Dianteiro")').parent().attr('id');
         var parLevel2IdTraseiro = $('.level2 .levelName:contains("Traseiro")').parent().attr('id');
 
-        $.post(urlPreffix + "/api/PCC1B/TotalNC/" + parLevel2IdDianteiro + "/" + parLevel2IdTraseiro, data, function (r) {
-            pcc1bList = r;
-            setPcc1bFile();
-            updateDefectsCounters();
-
-        }).fail(function (e, h, x) {
-            console.log(e);
-            console.log(h);
-            console.log(x);
-        }).always(function () {
-            if (useReload == undefined)
+        
+        $.ajax({
+            url: urlPreffix + "/api/PCC1B/TotalNC/" + parLevel2IdDianteiro + "/" + parLevel2IdTraseiro + "/" + $('.App').attr('shift'),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            type: 'POST',
+            headers: token(),
+            success: function (r) {
+                
+                pcc1bList = r;
+                setPcc1bFile();
+                updateDefectsCounters();
+    
+            
+                if (useReload == undefined)
                 setTimeout(updatePCC1B, 1000);
 
             if (callback) {
                 callback();
+            }
+            },
+            error: function (e) {
+                if (useReload == undefined)
+                    setTimeout(updatePCC1B, 1000);
+    
+                if (callback) {
+                    callback();
+                }
             }
         });
     }    
@@ -230,7 +251,7 @@ function addPCC1BSequence(sequence) {
     PCC1BSequence += sequence;
 
     if (PCC1BSequence == '12') {
-        showPCC1BStatus();
+        //showPCC1BStatus();
         PCC1BSequence = "";
     } else {
         switch (PCC1BSequence.length) {
@@ -254,10 +275,10 @@ function apagarDIVPCC1bSIF(){
 }
 
 
-$(document).on('click', '.level3Group.PCC1B .painel .btn', function (e) {
-    if($('.totalnc:visible').parent().parent().parent().length > 0){
-        hidePCC1BStatus();
-    }else{
+$(document).off('click', '.level3Group.PCC1B .painel .btn').on('click', '.level3Group.PCC1B .painel .btn', function (e) {
+   // if($('.totalnc:visible').parent().parent().parent().length > 0){
+    //    hidePCC1BStatus();
+   // }else{
         //cria a dIV do relatório
         $('.level3Group.PCC1B').not('.hide').prepend('<div class="relatorioSIFPCC1b" onClick="apagarDIVPCC1bSIF();" style="position: absolute; min-height:800px; width:100%; background-color:#f5f5f5; z-index:999999; left:0px;"></div>')
 
@@ -295,11 +316,11 @@ $(document).on('click', '.level3Group.PCC1B .painel .btn', function (e) {
 
         }
 
-    }
+    //}
     
 });
 
-function hidePCC1BStatus() {
+/*function hidePCC1BStatus() {
     $('.totalnc:visible').parent().parent().parent().fadeOut('fast');
     $('.ncdianteiro:visible').parent().parent().parent().fadeOut('fast');
     $('.nctraseiro:visible').parent().parent().parent().fadeOut('fast');
@@ -310,7 +331,7 @@ function showPCC1BStatus() {
     $('.ncdianteiro').parent().parent().parent().fadeIn('fast');
     $('.nctraseiro').parent().parent().parent().fadeIn('fast');
     $('.nivel1').parent().parent().parent().fadeIn('fast');
-}
+}*/
 
 var file_pcc1b = "pcc1b.json";
 var pcc1bList = [];
@@ -386,7 +407,9 @@ function sincronizarResultadoPCC1B(){
         try {
             sincronizando = true;
             $.ajax({
-                url: urlPreffix + "/api/RelatorioGenerico/reciveDataPCC1b2/" + $('.App').attr('unidadeid') + "/" + getCollectionDate().substring(4, 8) + getCollectionDate().substring(0, 2) + getCollectionDate().substring(2, 4),
+                url: urlPreffix + "/api/RelatorioGenerico/reciveDataPCC1b2/" + $('.App').attr('unidadeid') + "/"
+                 + getCollectionDate().substring(4, 8) + getCollectionDate().substring(0, 2) + getCollectionDate().substring(2, 4) + "/" 
+                 + $('.App').attr('shift'),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 type: 'GET',
