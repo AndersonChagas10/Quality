@@ -96,6 +96,7 @@
     <Compile Include="BaseEntity\EntityBase.cs" />
     <Compile Include="CreateLog.cs" />
     <Compile Include="DataCarrierFormulario.cs" />
+    <Compile Include="Formulario\DataCarrierFormularioNew.cs" />
     <Compile Include="DTO\ColetaDTO.cs" />
     <Compile Include="DTO\CollectionHtmlDTO.cs" />
     <Compile Include="DTO\ConsolidationLevel02DTO.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="DTO\EmpresaDTO.cs" />
     <Compile Include="DTO\UserSgqDTO.cs" />
     <Compile Include="DTO\VTVerificacaoTipificacaoDTO.cs" />
+    <Compile Include="Formulario\FormularioViewModel.cs" />
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="Helpers\CommonDataLocal.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
