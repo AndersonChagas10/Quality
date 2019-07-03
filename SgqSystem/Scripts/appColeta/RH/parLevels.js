@@ -62,7 +62,7 @@ function montarLevel2(parLevel1) {
         return obj.ParLevel2_Id;
     });
 
-    level2_Ids = $.unique(level2_Ids);
+    level2_Ids = $.unique(level2_Ids.sort());
 
     var level2List = [];
 
@@ -96,7 +96,7 @@ function montarLevel3(parLevel1, parLevel2, index) {
         return obj.ParLevel3_Id;
     });
 
-    level3_Ids = $.unique(level3_Ids);
+    level3_Ids = $.unique(level3_Ids.sort());
 
     var level3List = [];
 
