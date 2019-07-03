@@ -12,7 +12,7 @@
 
             <div class="form-group">
                 <label for="ParCompany_Id">Empresa:</label>
-                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Centro de custo que a tarefa responde" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Unidade que essa tarefa se aplica" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <select id="selectL3PesoParCompany" class="input input-lg col-sm-12" name="ParCompany_Id"></select>
             </div>
 
@@ -40,7 +40,7 @@
 
             <div class="form-group">
                 <label for="ParGroupParLevel1_Id">Função:</label>
-                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Seção" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Expectativa do cliente" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <select id="selectL3PesoParGroupParLevel1" class="input input-lg col-sm-12 required" name="ParGroupParLevel1_Id"></select>
             </div>
 
@@ -49,8 +49,8 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label for="ParDepartment_Id">Centro de Custo:</label>
-                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Centro de custo" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <label for="ParDepartment_Id">Centro de Custo/Seção:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Posto de trabalho" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <select id="selectL3PesoParDepartment" class="input input-lg col-sm-12" name="ParDepartment_Id"></select>
             </div>
 
@@ -69,7 +69,7 @@
 
             <div class="form-group">
                 <label for="ParCargo_Id">Cargo:</label>
-                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Responsável pela execução das tarefas" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Cargo do colaborador a ser avaliado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <select id="selectL3ParCargo" class="input input-lg col-sm-12" name="ParCargo_Id"></select>
             </div>
 
@@ -80,14 +80,14 @@
 
                 <div class="form-group">
                     <label for="Peso">Peso:</label>
-                    <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Importância da tarefa " aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                    <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Impacto da tarefa para o cargo selecionado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                     <input type="number" class="form-control required" id="Peso" name="Peso">
                 </div>
 
             </div>
 
 
-            <div id="divFrequencia"  class="col-sm-4">
+            <div id="divFrequencia" class="col-sm-4">
 
                 <div class="form-group">
                     <label for="Frequencia">Frequência:</label>
@@ -217,13 +217,13 @@
 
 
     $("#selectL3PesoParCompany").on('change', function () {
-        
+
         var empresaSelecionada = parseInt($("#selectL3PesoParCompany :selected").val());
         MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', empresaSelecionada, null);
     });
 
     $("#ParL3Peso #btnAvancado").on('click', function () {
-        
+
         if (!$("#divAvaliacao").is(":visible")) {
             $("#divAvaliacao").show();
             $("#divAmostra").show();
