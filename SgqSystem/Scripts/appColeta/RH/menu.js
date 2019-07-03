@@ -4,8 +4,8 @@ function openMenu() {
 
 }
 
-function showMenu(){
-	cleanGlobalVarParFrequency();	
+function showMenu() {
+	cleanGlobalVarParFrequency();
 
 	var html = '';
 
@@ -56,6 +56,29 @@ function changeStateButtonColetar() {
 	} else {
 
 		$(".btncoletar").addClass("disabled");
+
+	}
+
+	if (currentParFrequency_Id > 0) {
+
+		$(".btnGetParams").removeClass("disabled");
+
+	} else {
+
+		$(".btnGetParams").addClass("disabled");
+
+	}
+}
+
+function getParametrizationByButon() {
+
+	var frequencyId = currentParFrequency_Id;
+
+	if (frequencyId) {
+
+		currentParFrequency_Id = null;
+
+		getPlanejamentoPorFrequencia(frequencyId);
 
 	}
 }

@@ -39,15 +39,20 @@ function renderPlanejamentoColeta(frequencia) {
 
 	var voltar = '<a onclick="voltarPlanejamentoColeta();" class="btn btn-warning">Voltar</a>';
 
+	var btnColetar = '<button type="button" class="btn btn-success pull-right btncoletar" onclick="clickColetar()">Coletar</button>';
+
+	var btnbaixarParams = '<button type="button" style="margin-right:10px;" class="btn btn-success pull-right btnGetParams" onclick="getParametrizationByButon()">Baixar Parametrização</button>';
+
 	html = getHeader() +
 		'<div class="container-fluid">                               ' +
 		'	<div class="">                                  ' +
 		'		<div class="col-xs-12">                        ' +
 		'			<div class="panel panel-primary">          ' +
-		'			  <div class="panel-heading">              ' +
+		'			  <div class="panel-heading" style="display: table;width: 100%;">              ' +
 		'				<h3 class="panel-title">' + voltar + ' Qual frequencia deseja realizar coleta?' +
-		'<button class="btn btn-success pull-right btncoletar" onclick="clickColetar()">Coletar</button> </h3>      ' +
-		'			  </div>                                   ' +
+		btnColetar +
+		btnbaixarParams +
+		'			  </h3></div>                                   ' +
 		'			  <div class="panel-body" style="padding-top: 10px !important">                 ' +
 		'				<div class="list-group">               ' +
 		'					<div class="col-sm-6">               ' +
