@@ -161,6 +161,7 @@ public class ScorecardResultSet
            "\n DECLARE @DATAINICIAL DATETIME = '" + dtInicio.ToString("yyyyMMdd") + " 00:00'                                                                                                                                                                                                                    " +
            "\n DECLARE @DATAFINAL   DATETIME = '" + dtFim.ToString("yyyyMMdd") + "  23:59:59'                                                                                                                                                                                                                    " +
            "\n DECLARE @ParModule_Id INT = " + moduloId + // + unidadeId + "  
+           "\n DECLARE @Shift_Id INT = " + shift + // + Turno + "  
 
         // Alteração
         "\n CREATE TABLE #AMOSTRATIPO4 ( " +
@@ -315,6 +316,211 @@ public class ScorecardResultSet
            "\n /* FIM DOS DADOS DA FREQUENCIA -----------------------------------------------------*/                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n SELECT TOP 1 @DIASABATE = COUNT(1), @VOLUMEPCC = SUM(Quartos) FROM VolumePcc1b  (nolock) WHERE ParCompany_id = @ParCompany_id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL                                                                                                    " +
+            $@"
+            --Pega Volume do Perido
+            SELECT Data,ParCompany_id,Shift_Id,Quartos
+            INTO #VOLUME
+            FROM VolumePcc1b WITH(nolock)
+            WHERE 1 = 1
+            AND ParCompany_id = @ParCompany_Id
+            AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+
+            --Pega pcc1B Coletado e verifica quais turnos foram coletados no periodo
+            SELECT
+
+                [Shift]
+
+                INTO #TurnoPcc1B
+	            FROM ConsolidationLevel1 WITH(NOLOCK)
+            WHERE 1 = 1
+            AND ParLevel1_Id = 3
+            AND UnitId = @ParCompany_Id
+            AND ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+
+            DECLARE @SHIFT_1 INT = (SELECT top 1 [Shift] FROM #TurnoPcc1B WHERE [Shift] = 1)
+            DECLARE @SHIFT_2 INT = (SELECT top 1 [Shift] FROM #TurnoPcc1B WHERE [Shift] = 2)
+
+	            IF @Shift_Id = 0
+                -- FILTREI TODOS
+
+                    BEGIN
+                    IF @SHIFT_1 is not null and @SHIFT_2 is not null
+
+                    BEGIN
+                    -- COLETEI TURNO 1 E PARA O TURNO 2
+
+                            SELECT TOP 1
+
+                                    @DIASABATE = COUNT(DISTINCT DATA), 
+						            @VOLUMEPCC = SUM(Quartos)
+
+                             FROM #VOLUME WITH (nolock) 
+				            WHERE 1 = 1
+
+                            AND ParCompany_id = @ParCompany_id
+
+                            AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                            AND Shift_Id IS NULL
+
+
+                            IF @DIASABATE = 0 OR @DIASABATE IS NULL
+
+                            --QUANDO NÃO TEM VOLUME CADASTRADO PARA 'TODOS'
+
+                            BEGIN
+                                SELECT TOP 1
+
+                                        @DIASABATE = COUNT(DISTINCT DATA), 
+							            @VOLUMEPCC = SUM(Quartos)
+
+                                    FROM #VOLUME WITH (nolock) 
+					            WHERE 1 = 1
+
+                                AND ParCompany_id = @ParCompany_id
+
+                                AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                                AND Shift_Id IN(1, 2)
+
+                            END
+
+                        END
+
+
+                    --COLETA TURNO 1
+
+                        IF @SHIFT_1 is not null and @SHIFT_2 is null
+
+                        BEGIN
+
+                            SELECT TOP 1
+
+                                    @DIASABATE = COUNT(DISTINCT DATA), 
+						            @VOLUMEPCC = SUM(Quartos)
+
+                             FROM #VOLUME WITH (nolock) 
+				            WHERE 1 = 1
+
+                            AND ParCompany_id = @ParCompany_id
+
+                            AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                            AND Shift_Id = 1
+
+
+                        END
+                    -- COLETA TURNO 2
+
+                        IF @SHIFT_1 is null and @SHIFT_2 is not null
+
+                        BEGIN
+
+                            SELECT TOP 1
+
+                                    @DIASABATE = COUNT(DISTINCT DATA), 
+						            @VOLUMEPCC = SUM(Quartos)
+
+                             FROM #VOLUME WITH (nolock) 
+				            WHERE 1 = 1
+
+                            AND ParCompany_id = @ParCompany_id
+
+                            AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                            AND Shift_Id = 2
+
+                        END
+
+                    END
+
+
+                IF @Shift_Id = 1
+
+                    BEGIN
+                    -- FILTREI TURNO 1
+
+                            SELECT TOP 1
+
+                                    @DIASABATE = COUNT(DISTINCT DATA), 
+						            @VOLUMEPCC = SUM(Quartos)
+
+                             FROM #VOLUME WITH (nolock) 
+				            WHERE 1 = 1
+
+                            AND ParCompany_id = @ParCompany_id
+
+                            AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                            AND Shift_Id = 1
+
+
+                            IF @DIASABATE = 0 OR @DIASABATE IS NULL
+
+                            --QUANDO NÃO TEM VOLUME CADASTRADO PARA TURNO 1
+
+                            BEGIN
+                                SELECT TOP 1
+
+                                        @DIASABATE = COUNT(DISTINCT DATA), 
+							            @VOLUMEPCC = SUM(Quartos)
+
+                                    FROM #VOLUME WITH (nolock) 
+					            WHERE 1 = 1
+
+                                AND ParCompany_id = @ParCompany_id
+
+                                AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                                AND Shift_Id IS NULL
+
+                            END
+                    END
+
+                IF @Shift_Id = 2
+
+                    BEGIN
+                    -- FILTREI TURNO 2
+
+                            SELECT TOP 1
+
+                                    @DIASABATE = COUNT(DISTINCT DATA), 
+						            @VOLUMEPCC = SUM(Quartos)
+
+                             FROM #VOLUME WITH (nolock) 
+				            WHERE 1 = 1
+
+                            AND ParCompany_id = @ParCompany_id
+
+                            AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                            AND Shift_Id = 2
+
+
+                            IF @DIASABATE = 0 OR @DIASABATE IS NULL
+
+                            BEGIN
+                            -- QUANDO NÃO TEM VOLUME CADASTRADO PARA TURNO 1
+
+                                SELECT TOP 1
+
+                                        @DIASABATE = COUNT(DISTINCT DATA), 
+							            @VOLUMEPCC = SUM(Quartos)
+
+                                    FROM #VOLUME WITH (nolock) 
+					            WHERE 1 = 1
+
+                                AND ParCompany_id = @ParCompany_id
+
+                                AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                                AND Shift_Id IS NULL
+
+                            END
+                    END
+            " +
+
            "\n SELECT @DIASDEVERIFICACAO = COUNT(1) FROM(SELECT CONVERT(DATE, ConsolidationDate) DATA FROM ConsolidationLevel1 CL1 (nolock)  WHERE ParLevel1_Id = 24 AND CONVERT(DATE, ConsolidationDate) BETWEEN @DATAINICIAL AND @DATAFINAL AND CL1.UnitId = @ParCompany_Id GROUP BY CONVERT(DATE, ConsolidationDate)) VT  " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n SET @AVFREQUENCIAVERIFICACAO = @DIASABATE                                                                                                                                                                                                                           " +
