@@ -386,7 +386,7 @@ function getAvaliationNumber(that, number) {
         async: false,
         success: function (data) {
 
-            var currentSample = $(data).text();
+            var currentSample = data;
 
             $(that).find('.sampleCurrentTotal').html(currentSample);
             $(that).prev().attr('samplecurrent', currentSample);
