@@ -55,7 +55,8 @@
                                                     @Html.DisplayFor(modelItem => item.Name)
                                                 </td>
                                                 <td>
-                                                    @Html.Raw((item.IsActive == true) ? Resources.Resource.yes : Resources.Resource.no)
+                                                    @*@Html.Raw((item.IsActive == true) ? Resources.Resource.yes : Resources.Resource.no)*@
+                                                    @Html.DisplayFor(modelItem => item.IsActive)
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
