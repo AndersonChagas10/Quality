@@ -194,7 +194,8 @@ namespace SgqSystem.Controllers.Api.App
                     }
                 }
 
-                UpdateTelaDoTablet(UnitId);
+                UpdateGetTelaThread(new GeneratedUnit() { ListUnits = new List<int>() { UnitId } });
+                //UpdateTelaDoTablet(UnitId);
 
                 //foreach (var shift in shifts)
                 //{

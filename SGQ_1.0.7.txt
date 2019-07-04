@@ -42,7 +42,7 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel1XModule' AND xtype='U')
 BEGIN
 	CREATE TABLE [dbo].[ParLevel1XModule](
 		[Id] [int] IDENTITY(1,1) NOT NULL,
