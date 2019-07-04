@@ -32,6 +32,11 @@ namespace SgqService.Controllers.Api
         [HttpPost]
         public IHttpActionResult Insert([FromBody] List<Result_Level3_PhotosDTO> Fotos)
         {
+            if (Fotos == null || Fotos != null && Fotos.Count == 0)
+            {
+                return BadRequest("Nenhuma foto enviada!");
+            }
+
             VerifyIfIsAuthorized();
             //, int Level1Id, int Level2Id, int Level3Id, int Evaluation, int Sample, string Date
             string quebraProcesso = "98789";
@@ -96,16 +101,28 @@ namespace SgqService.Controllers.Api
                 }
                 catch (Exception ex)
                 {
+                    using (var db = new Dominio.SgqDbDevEntities())
+                    {
+                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "FOTOS " + ex.ToClient() });
+                        db.SaveChanges();
+                    }
+
                     return BadRequest(ex.ToClient());
                 }
 
                 if (ResultPhoto.Result_Level3_Id == 0)
                 {
+                    using (var db = new Dominio.SgqDbDevEntities())
+                    {
+                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "SALVOU " + Fotos.Count + " FOTOS" });
+                        db.SaveChanges();
+                    }
+
                     return Ok(new
                     {
                         message =
                         "ResultLevel3Id não encontrado." + Newtonsoft.Json.JsonConvert.SerializeObject(ResultPhoto),
-                        count = i
+                        count = i + 1
                     });
                 }
 
@@ -153,8 +170,20 @@ namespace SgqService.Controllers.Api
                 }
                 catch (Exception ex)
                 {
+                    using (var db = new Dominio.SgqDbDevEntities())
+                    {
+                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "FOTOS " + ex.ToClient() });
+                        db.SaveChanges();
+                    }
+
                     return BadRequest(ex.ToClient());
                 }
+            }
+
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+                db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "SALVOU " + Fotos.Count + " FOTOS" });
+                db.SaveChanges();
             }
 
             return Ok(new { message = "Fotos inseridas com sucesso.", count = Fotos.Count });

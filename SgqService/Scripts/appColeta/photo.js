@@ -33,7 +33,7 @@ function displayPhotoButtons() {
 function cameraSuccess(data) {
 
     $('.message, .overlay').hide();
-	
+
     //level3PhotoTemp.path = data;
     level3PhotoTemp.photo = data;
 
@@ -74,8 +74,8 @@ function cameraError(e) {
 }
 
 var cameraOptions = {
-	quality : 75,
-	destinationType : Camera.DestinationType.DATA_URL,
+    quality: 75,
+    destinationType: Camera.DestinationType.DATA_URL,
     targetWidth: 2048,
     targetHeight: 1152,
     correctOrientation: true //Corrects Android orientation quirks
@@ -87,7 +87,7 @@ $(document).on('click', '.camera-button', function (e) {
     //openMessageModal(!!_level2 + '-' + $(_level2).attr('sampleCurrent') + '--' +
     //    parseInt($(_level2).attr('sampleCurrent')) + '---' + $(_level2).attr('samplecurrent')
     //    , null);
-	
+
     level3PhotoTemp = {
         level1id: $('.level1.selected').attr('id'),
         level2id: $('.level2.selected').attr('id'),
@@ -95,7 +95,7 @@ $(document).on('click', '.camera-button', function (e) {
         //evaluation: parseInt($('.evaluateCurrent:visible').text()),
         //sample: parseInt($('.sampleCurrent:visible').text()),
         evaluation: !!$(_level2).attr('evaluateCurrent') ? parseInt($(_level2).attr('evaluateCurrent')) : 1,
-        sample: !!$(_level2).attr('sampleCurrent') ? parseInt($(_level2).attr('sampleCurrent'))+1 : 1,
+        sample: !!$(_level2).attr('sampleCurrent') ? parseInt($(_level2).attr('sampleCurrent')) + 1 : 1,
         date: getCollectionDate(),
         unitid: $('.App').attr('unidadeid'),
         period: $('.App').attr('period'),
@@ -109,17 +109,15 @@ $(document).on('click', '.camera-button', function (e) {
 });
 
 function sendResultLevel3Photo() {
-	if($('.level02Result[sync=false]').length == 0)
-		setTimeout(function () {
-			var listaFotosSalvas = level3Photos.filter(function (o, i) { return o.isactive == true });
-			if (listaFotosSalvas.length > 0) {
-				if (algumaFotoEstaSendoEnviada != true) {
-					algumaFotoEstaSendoEnviada = true;
-					var listaFotos = preparaFotos(listaFotosSalvas);
-					enviaFotos(listaFotos);
-				}
-			}
-		}, 1000);
+    if ($('.level02Result[sync=false]').length == 0 && algumaFotoEstaSendoEnviada != true)
+        setTimeout(function () {
+            var listaFotosSalvas = level3Photos.filter(function (o, i) { return o.isactive == true });
+            if (listaFotosSalvas.length > 0) {
+                algumaFotoEstaSendoEnviada = true;
+                var listaFotos = preparaFotos(listaFotosSalvas);
+                enviaFotos(listaFotos);
+            }
+        }, 1000);
 }
 
 function preparaFotos(listaFotosSalvas) {
@@ -167,11 +165,11 @@ function salvaFoto(level3PhotoTemp) {
 
         $('.level3[id=' + level3PhotoTemp.level3id + ']').find('.camera-button').removeClass('btn-danger').addClass('btn-default');
     }*/
-	
-	level3Photos.push(level3PhotoTemp);
-	_writeFile("level3Photos.json", level3Photos);
-		
-	$('.level3[id=' + level3PhotoTemp.level3id + ']').find('.camera-button').removeClass('btn-danger').addClass('btn-default');
+
+    level3Photos.push(level3PhotoTemp);
+    _writeFile("level3Photos.json", level3Photos);
+
+    $('.level3[id=' + level3PhotoTemp.level3id + ']').find('.camera-button').removeClass('btn-danger').addClass('btn-default');
 }
 
 function enviaFotos(listaFotos) {
@@ -182,22 +180,10 @@ function enviaFotos(listaFotos) {
         type: 'POST',
         headers: token(),
         success: function (data) {
-            //alert(JSON.stringify(data));
             algumaFotoEstaSendoEnviada = false;
-            if (data.count == 0)
-                data.count = 1;
-
-            if (data.count > 0) {
-                level3Photos.splice(0, data.count);
-                _writeFile("level3Photos.json", level3Photos);
-                sendResultLevel3Photo();
-            } else {
-                if (level3Photos.length > 0) {
-                    var photoTemp = level3Photos[0];
-                    level3Photos.splice(0, 1);
-                    level3Photos.push(photoTemp);
-                }
-            }
+            level3Photos.splice(0, data.count);
+            _writeFile("level3Photos.json", level3Photos);
+            sendResultLevel3Photo();
         },
         error: function (e) {
             //alert(JSON.stringify(e));
