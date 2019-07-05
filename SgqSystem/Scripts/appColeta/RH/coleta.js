@@ -360,13 +360,13 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
         linha.attr('data-conforme', '1');
         $(this).text($(this).attr('data-positivo'))
         $(this).addClass('btn-default');
-        $(this).removeClass('btn-danger');
+        $(this).removeClass('btn-secundary');
     } else {
         resetarLinha(linha);
-        linha.addClass('alert-danger');
+        linha.addClass('alert-secundary');
         linha.attr('data-conforme', '0');
         $(this).text($(this).attr('data-negativo'))
-        $(this).addClass('btn-danger');
+        $(this).addClass('btn-secundary');
         $(this).removeClass('btn-default');
     }
 });
@@ -380,7 +380,7 @@ $('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', f
         linha.attr('data-conforme', '1');
     } else {
         resetarLinha(linha);
-        linha.addClass('alert-danger');
+        linha.addClass('alert-secundary');
         linha.attr('data-conforme', '0');
     }
 });
@@ -419,7 +419,7 @@ $('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
 
 function resetarLinha(linha) {
     linha.attr('data-conforme', '1');
-    linha.removeClass('alert-danger');
+    linha.removeClass('alert-secundary');
     linha.removeClass('alert-warning');
     linha.removeAttr('data-conforme-na');
 }
