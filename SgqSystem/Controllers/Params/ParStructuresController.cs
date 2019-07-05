@@ -47,9 +47,9 @@ namespace SgqSystem.Controllers.Params
         [HttpGet]
         public ActionResult Create()
         {
-            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active), "Id", "Name");
+            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active).OrderBy(x => x.Name), "Id", "Name");
 
-            var listStrunct = db.ParStructure.Where(x => x.Active).ToList();
+            var listStrunct = db.ParStructure.Where(x => x.Active).OrderBy(x => x.Name).ToList();
             listStrunct.Insert(0, new ParStructure() { Id = 0, Name = Resources.Resource.select });
 
             ViewBag.ParStructureParentList = listStrunct;
@@ -63,6 +63,7 @@ namespace SgqSystem.Controllers.Params
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,ParStructureGroup_Id,Name,Description,ParStructureParent_Id,Active,AddDate,AlterDate")] ParStructure parStructure)
         {
+            ValidarModel(parStructure);
 
             if (ModelState.IsValid)
             {
@@ -72,7 +73,13 @@ namespace SgqSystem.Controllers.Params
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active), "Id", "Name", parStructure.ParStructureGroup_Id);
+            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active).OrderBy(x => x.Name), "Id", "Name", parStructure.ParStructureGroup_Id);
+
+            var listStrunct = db.ParStructure.Where(x => x.Active).OrderBy(x => x.Name).ToList();
+            listStrunct.Insert(0, new ParStructure() { Id = 0, Name = Resources.Resource.select });
+
+            ViewBag.ParStructureParentList = listStrunct;
+
             return View(parStructure);
         }
 
@@ -88,10 +95,9 @@ namespace SgqSystem.Controllers.Params
             {
                 return HttpNotFound();
             }
-            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active), "Id", "Name", parStructure.ParStructureGroup_Id);
-            var listStrunct = db.ParStructure.Where(x => x.Active && x.Id != id).ToList();
+            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active).OrderBy(x => x.Name), "Id", "Name", parStructure.ParStructureGroup_Id);
+            var listStrunct = db.ParStructure.Where(x => x.Active && x.Id != id).OrderBy(x => x.Name).ToList();
             listStrunct.Insert(0, new ParStructure() { Id = 0, Name = Resources.Resource.select });
-
             ViewBag.ParStructureParentList = listStrunct;
             return View(parStructure);
         }
@@ -103,6 +109,8 @@ namespace SgqSystem.Controllers.Params
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,ParStructureGroup_Id,Name,Description,ParStructureParent_Id,Active,AddDate,AlterDate")] ParStructure parStructure)
         {
+            ValidarModel(parStructure);
+
             if (ModelState.IsValid)
             {
                 parStructure.AlterDate = DateTime.Now;
@@ -110,8 +118,11 @@ namespace SgqSystem.Controllers.Params
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active), "Id", "Name", parStructure.ParStructureGroup_Id);
-            ViewBag.ParStructureParentList = db.ParStructure.Where(x => x.Active && x.Id != parStructure.Id).ToList();
+
+            ViewBag.ParStructureGroup_Id = new SelectList(db.ParStructureGroup.Where(x => x.Active).OrderBy(x => x.Name), "Id", "Name", parStructure.ParStructureGroup_Id);
+            var listStrunct = db.ParStructure.Where(x => x.Active && x.Id != parStructure.Id).OrderBy(x => x.Name).ToList();
+            listStrunct.Insert(0, new ParStructure() { Id = 0, Name = Resources.Resource.select });
+            ViewBag.ParStructureParentList = listStrunct;
             return View("Index");
         }
 
@@ -148,6 +159,14 @@ namespace SgqSystem.Controllers.Params
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void ValidarModel(ParStructure parStructure)
+        {
+
+            if (db.ParStructure.Any(x => x.Name == parStructure.Name))
+
+                ModelState.AddModelError("Name", "Já existe uma estrutura com este nome");
         }
     }
 }

@@ -80,7 +80,8 @@
                                                     @Html.DisplayFor(modelItem => item.ParDepartmentPai.Name)
                                                 </td>
                                                 <td>
-                                                    @Html.Raw(item.Active ? Resources.Resource.yes : Resources.Resource.no)
+                                                    @*@Html.Raw(item.Active ? Resources.Resource.yes : Resources.Resource.no)*@
+                                                    @Html.DisplayFor(modelItem => item.Active)
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
