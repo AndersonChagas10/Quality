@@ -153,168 +153,240 @@ function getBinario(level3) {
     var btnInfo = '';
 
     if (level3.ParLevel3XHelp)
-        btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" data-info> ? </button>'
+        btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" style="width:42px;" data-info> ? </button>';
 
-    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
-        level3.Name + '</small></div>                                                                                     ' +
-        '<div class="col-xs-4 input-sm">                                                            ' +
-        '</div>                                                                                     ' +
-        '<div class="col-xs-3">                                                                     ' +
-        '	<button type="button" class ="btn btn-default btn-sm btn-block"                         ' +
-        '    data-binario data-positivo="' + level3.ParLevel3BoolTrue.Name + '"                          ' +
-        '    data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>                    ' +
-        '</div>                                                                                     ' +
-        '<div class="col-xs-1">                                                                     ' +
-        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>    ' +
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>';
+
+    var html = '<div class="col-xs-5"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>' +
+        '<div class="col-xs-2 input-sm"></div>' +
+        '<div class="col-xs-2">' +
+        '	<button type="button" class ="btn btn-default btn-sm btn-block"' +
+        '    data-binario data-positivo="' + level3.ParLevel3BoolTrue.Name + '"' +
+        '    data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>' +
+        '</div>' +
+        '<div class="col-xs-3 divBtn">' +
+        btnNA +
         btnInfo +
-        '</div>                                                                                     ' +
+        '</div>' +
         '<div class="clearfix"></div>';
+
     return html;
 }
 
 function getBinarioComTexto(level3) {
 
-    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
-        level3.Name + '</small></div>                                                                                     ' +
-        '<div class="col-xs-2">                                                                            ' +
-        '</div>                                                                                            ' +
-        '<div class="col-xs-2">                                                                            ' +
-        '	<input type="text" class="col-xs-12 input-sm" data-texto/>                                     ' +
-        '</div>                                                                                            ' +
-        '<div class="col-xs-3">                                                                            ' +
-        '	<button type="button" class="btn btn-default btn-sm btn-block"                                 ' +
-        'data-binario data-positivo="' + level3.ParLevel3BoolTrue.Name + '"                                     ' +
-        'data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>                                    ' +
-        '</div>                                                                                            ' +
-        '<div class="col-xs-1">                                                                            ' +
-        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>           ' +
-        '</div>                                                                                            ' +
+    var btnInfo = '';
+
+    if (level3.ParLevel3XHelp)
+        btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" style="width:42px;" data-info> ? </button>';
+
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>';
+
+    var html = '<div class="col-xs-5"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>' +
+        '<div class="col-xs-2">' +
+        '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
+        '</div>' +
+        '<div class="col-xs-2">' +
+        '	<button type="button" class="btn btn-default btn-sm btn-block"' +
+        'data-binario data-positivo="' + level3.ParLevel3BoolTrue.Name + '"' +
+        'data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>' +
+        '</div>' +
+        '<div class="col-xs-3 divBtn">' +
+        btnNA +
+        btnInfo +
+        '</div>' +
         '<div class="clearfix"></div>';
+
     return html;
 }
 
 function getIntervalo(level3) {
 
-    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
-        level3.Name + '</small></div>                                                                                     ' +
-        '<div class="col-xs-4 input-sm">                                                              ' +
+    var btnInfo = '';
+
+    if (level3.ParLevel3XHelp)
+        btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" style="width:42px;" data-info> ? </button>';
+
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>';
+
+    var html = '<div class="col-xs-5"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>' +
+        '<div class="col-xs-2 input-sm">' +
         '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
-        '</div>                                                                                       ' +
-        '<div class="col-xs-3">                                                                       ' +
-        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>       ' +
-        '	<input type="text" class="col-xs-8 input input-sm" data-valor/>                           ' +
-        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>        ' +
-        '</div>                                                                                       ' +
-        '<div class="col-xs-1">                                                                       ' +
-        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>      ' +
-        '</div>                                                                                       ' +
+        '</div>' +
+        '<div class="col-xs-2">' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>' +
+        '	<input type="text" class="col-xs-8 input input-sm" data-valor/>' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>' +
+        '</div>' +
+        '<div class="col-xs-3 divBtn">' +
+        btnNA +
+        btnInfo +
+        '</div>' +
         '<div class="clearfix"></div>';
+
     return html;
 }
 
 function getIntervaloemMinutos(level3) {
 
-    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
-        level3.Name + '</small></div>                                                                                     ' +
-        '<div class="col-xs-4 input-sm">                                                              ' +
+    var btnInfo = '';
+
+    if (level3.ParLevel3XHelp)
+        btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" style="width:42px;" data-info> ? </button>';
+
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>';
+
+    var html = '<div class="col-xs-5"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>' +
+        '<div class="col-xs-2 input-sm">' +
         '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
-        '</div>                                                                                       ' +
-        '<div class="col-xs-3">                                                                       ' +
-        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>       ' +
-        '	<input type="number" class="col-xs-8 input input-sm" data-valor/>                           ' +
-        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>        ' +
-        '</div>                                                                                       ' +
-        '<div class="col-xs-1">                                                                       ' +
-        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>      ' +
-        '</div>                                                                                       ' +
+        '</div>' +
+        '<div class="col-xs-2">' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>' +
+        '	<input type="number" class="col-xs-8 input input-sm" data-valor/>' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>' +
+        '</div>' +
+        '<div class="col-xs-3 divBtn">' +
+        btnNA +
+        btnInfo +
+        '</div>' +
         '<div class="clearfix"></div>';
+
     return html;
 }
 
 function getIntervaloComObservacao(level3) {
 
+    var btnInfo = '';
+
+    if (level3.ParLevel3XHelp)
+        btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" style="width:42px;" data-info> ? </button>';
+
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>';
+
     var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
-        level3.Name + '</small></div>                                                                                     ' +
+        level3.Name + '</small></div>' +
         '<div class="col-xs-2 input-sm">' +
         '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
-        '</div>                                                                                   ' +
-        '<div class="col-xs-2">                                                                   ' +
-        '	<input type="text" class="col-xs-12 input-sm" data-texto/>                            ' +
-        '</div>                                                                                   ' +
-        '<div class="col-xs-3">                                                                   ' +
-        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>   ' +
-        '	<input type="text" class="col-xs-8 input-sm" data-valor/>                             ' +
-        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>    ' +
-        '</div>                                                                                   ' +
-        '<div class="col-xs-1">                                                                   ' +
-        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>  ' +
-        '</div>                                                                                   ' +
+        '</div>' +
+        '<div class="col-xs-2">' +
+        '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
+        '</div>' +
+        '<div class="col-xs-2">' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-minus>-</button>' +
+        '	<input type="text" class="col-xs-8 input-sm" data-valor/>' +
+        '	<button type="button" class="btn btn-sm btn-primary col-xs-2" data-plus>+</button>' +
+        '</div>' +
+        '<div class="col-xs-3 divBtn">' +
+        btnNA +
+        btnInfo +
+        '</div>' +
         '<div class="clearfix"></div>';
+
     return html;
 }
 
 function getObservacao(level3) {
 
-    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
-        level3.Name + '</small></div>                                                                                     ' +
-        '<div class="col-xs-4">                                                                      ' +
-        '</div>                                                                                      ' +
-        '<div class="col-xs-3">                                                                      ' +
-        '	<input type="text" class="col-xs-12 input-sm" data-texto/>                               ' +
-        '</div>                                                                                      ' +
-        '<div class="col-xs-1">                                                                      ' +
-        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>     ' +
-        '</div>                                                                                      ' +
+    var btnInfo = '';
+
+    if (level3.ParLevel3XHelp)
+        btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" style="width:42px;" data-info> ? </button>';
+
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>';
+
+    var html = '<div class="col-xs-5"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>' +
+        '<div class="col-xs-2">' +
+        '</div>' +
+        '<div class="col-xs-2">' +
+        '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
+        '</div>' +
+        '<div class="col-xs-3 divBtn">' +
+        btnNA +
+        btnInfo +
+        '</div>' +
         '<div class="clearfix"></div>';
+
     return html;
 }
 
 function getTexto(level3) {
 
-    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
-        level3.Name + '</small></div>                                                                                     ' +
-        '<div class="col-xs-4">                                                                      ' +
-        '</div>                                                                                      ' +
-        '<div class="col-xs-3">                                                                      ' +
-        '	<input type="text" class="col-xs-12 input-sm" data-valor/>                               ' +
-        '</div>                                                                                      ' +
-        '<div class="col-xs-1">                                                                      ' +
-        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>     ' +
-        '</div>                                                                                      ' +
+    var btnInfo = '';
+
+    if (level3.ParLevel3XHelp)
+        btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" style="width:42px;" data-info> ? </button>';
+
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>';
+
+    var html = '<div class="col-xs-5"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>' +
+        '<div class="col-xs-2">' +
+        '</div>' +
+        '<div class="col-xs-2">' +
+        '	<input type="text" class="col-xs-12 input-sm" data-valor/>' +
+        '</div>' +
+        '<div class="col-xs-3 divBtn">' +
+        btnNA +
+        btnInfo +
+        '</div>' +
         '<div class="clearfix"></div>';
+
     return html;
 }
 
 function getNumerodeDefeitos(level3) {
 
-    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
-        level3.Name + '</small></div>                                                                                     ' +
-        '<div class="col-xs-4">                                                                      ' +
-        '</div>                                                                                      ' +
-        '<div class="col-xs-3">                                                                      ' +
-        '	<input type="number" class="col-xs-12 input-sm" data-valor/>                               ' +
-        '</div>                                                                                      ' +
-        '<div class="col-xs-1">                                                                      ' +
-        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>     ' +
-        '</div>                                                                                      ' +
+    var btnInfo = '';
+
+    if (level3.ParLevel3XHelp)
+        btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" style="width:42px;" data-info> ? </button>';
+
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>';
+
+    var html = '<div class="col-xs-5"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>' +
+        '<div class="col-xs-2">' +
+        '</div>' +
+        '<div class="col-xs-2">' +
+        '	<input type="number" class="col-xs-12 input-sm" data-valor/>' +
+        '</div>' +
+        '<div class="col-xs-3 divBtn">' +
+        btnNA +
+        btnInfo +
+        '</div>' +
         '<div class="clearfix"></div>';
+
     return html;
 }
 
 function getLikert(level3) {
 
-    var html = '<div class="col-xs-4"><small style="font-weight:550 !important">' +
-        level3.Name + '</small></div>                                                                                     ' +
-        '<div class="col-xs-4 input-sm">                                                           ' +
+    var btnInfo = '';
+
+    if (level3.ParLevel3XHelp)
+        btnInfo = '<button type="button" l3id="' + level3.Id + '" class="btn btn-info pull-right btn-sm" style="width:42px;" data-info> ? </button>';
+
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>';
+
+    var html = '<div class="col-xs-5"><small style="font-weight:550 !important">' +
+        level3.Name + '</small></div>' +
+        '<div class="col-xs-2 input-sm">' +
         '	Escala: ' + level3.ParLevel3Value.IntervalMin + ' a ' + level3.ParLevel3Value.IntervalMax +
-        '</div>                                                                                    ' +
-        '<div class="col-xs-3">                                                                    ' +
-        '	<input type="text" class="col-xs-12 input-sm" data-valor/>                             ' +
-        '</div>                                                                                    ' +
-        '<div class="col-xs-1">                                                                    ' +
-        '	<button type="button" class="btn btn-warning pull-right btn-sm" data-na>N/A</button>   ' +
-        '</div>                                                                                    ' +
+        '</div>' +
+        '<div class="col-xs-2">' +
+        '	<input type="text" class="col-xs-12 input-sm" data-valor/>' +
+        '</div>' +
+        '<div class="col-xs-3 divBtn">' +
+        btnNA +
+        btnInfo +
+        '</div>' +
         '<div class="clearfix"></div>';
+
     return html;
 }
 
@@ -359,15 +431,15 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
         resetarLinha(linha);
         linha.attr('data-conforme', '1');
         $(this).text($(this).attr('data-positivo'))
-        $(this).addClass('btn-default');
-        $(this).removeClass('btn-secundary');
+        //$(this).addClass('btn-default');
+        //$(this).removeClass('btn-secundary');
     } else {
         resetarLinha(linha);
         linha.addClass('alert-secundary');
         linha.attr('data-conforme', '0');
         $(this).text($(this).attr('data-negativo'))
-        $(this).addClass('btn-secundary');
-        $(this).removeClass('btn-default');
+        //$(this).addClass('btn-secundary');
+        //$(this).removeClass('btn-default');
     }
 });
 

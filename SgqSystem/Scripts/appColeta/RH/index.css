@@ -2,24 +2,26 @@
     font-family: Arial, Verdana, Tahoma;
     border-radius: 0 !important;
 }
-html, body
-{
-   height:100%;
+
+html, body {
+    height: 100%;
 }
-select .period{
+
+select .period {
     width: 100px;
 }
-body > .App > div.container {
-    padding-top:70px;
-    margin-bottom:35px;
+
+body>.App>div.container {
+    padding-top: 70px;
+    margin-bottom: 35px;
 }
-.overflowNo
-{
+
+.overflowNo {
     overflow: hidden;
-} 
-.overlay
-{
-    position: fixed; 
+}
+
+.overlay {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -27,313 +29,317 @@ body > .App > div.container {
     background: #fff;
     opacity: 0.5;
     filter: alpha(opacity=10);
-    z-index:9998;
+    z-index: 9998;
 }
-.footer {
-    position:fixed;
-    left:0px;
-    bottom:0px;
-    height:45px;
-    width:100%;
-    background:#333;
-    z-index:999;
-    color:#fff;
-}
-.App > .container, .App > .navbar > .container
-.App > .container-fluid, .App > .navbar > .container-fluid
-{
-  max-width:100%;
-  padding-left:15px;
-  padding-right: 15px;
 
+.footer {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    height: 45px;
+    width: 100%;
+    background: #333;
+    z-index: 999;
+    color: #fff;
 }
-.iconMoreMenu *
-{
+
+.App>.container, .App>.navbar>.container .App>.container-fluid, .App>.navbar>.container-fluid {
+    max-width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.iconMoreMenu * {
     font-size: 28px !important;
     color: white;
 }
-.font10
-{
+
+.font10 {
     font-size: 10px !important;
 }
-.font11
-{
+
+.font11 {
     font-size: 11px !important;
 }
-.font12
-{
+
+.font12 {
     font-size: 12px !important;
 }
-.font14{
-	font-size: 14px !important;
-}
-.font16{
-	font-size: 16px !important;
-}
-.font18{
-	font-size: 18px !important;
-}
-.font20{
-	font-size: 20px !important;
-}
-.font22{
-	font-size: 22px !important;
-}
-.font24{
-	font-size: 24px !important;
+
+.font14 {
+    font-size: 14px !important;
 }
 
-.rightMenu .list-group a
-{
-	background-color: #333;
-	color: #fff;
+.font16 {
+    font-size: 16px !important;
 }
-.rightMenu .list-group a:hover
-{
-	background-color: #666;
-	
+
+.font18 {
+    font-size: 18px !important;
 }
-.rightMenu
-{
-	top:0px;
-	height:100%;
-	float:right;
-	width:150px;
-	z-index:9999;
-	position:fixed;
-	right:-151px;
-	border: 0;
-	background-color: #333;
+
+.font20 {
+    font-size: 20px !important;
 }
-.ccaImage
-{
-	top:50px;
-    left:-256px;
-	height:522px;
-	float:left;
-	width:255px;
-	z-index:9999;
-	position:fixed;
-	border: 1px solid #fff;
-	border-right: 0;
+
+.font22 {
+    font-size: 22px !important;
+}
+
+.font24 {
+    font-size: 24px !important;
+}
+
+.rightMenu .list-group a {
+    background-color: #333;
+    color: #fff;
+}
+
+.rightMenu .list-group a:hover {
+    background-color: #666;
+}
+
+.rightMenu {
+    top: 0px;
+    height: 100%;
+    float: right;
+    width: 150px;
+    z-index: 9999;
+    position: fixed;
+    right: -151px;
+    border: 0;
+    background-color: #333;
+}
+
+.ccaImage {
+    top: 50px;
+    left: -256px;
+    height: 522px;
+    float: left;
+    width: 255px;
+    z-index: 9999;
+    position: fixed;
+    border: 1px solid #fff;
+    border-right: 0;
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
-
 }
-.login
-{
+
+.login {
     width: 100%;
     height: 100%;
     background-color: #f8f9fd;
-
-
 }
-.login > .head
-{
+
+.login>.head {
     background-image: url("img/sgqlogo01.png");
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
-    height:220px;
+    height: 220px;
 }
-.login > .foot
-{
-    margin-top:50px;
+
+.login>.foot {
+    margin-top: 50px;
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
     height: 50px;
 }
-.form-signin {
 
+.form-signin {
     max-width: 320px;
     padding: 15px;
     margin: 0 auto;
     background-color: #f8f9fd;
 }
-.painel
-{
+
+.painel {
     border: 1px solid #ccc;
     margin-bottom: 10px;
-    min-height:45px;
+    min-height: 45px;
 }
-.smallPaddingRight{
+
+.smallPaddingRight {
     padding-right: 5px !important;
 }
-.smallPaddingLeft{
+
+.smallPaddingLeft {
     padding-left: 5px !important;
 }
-.padding5
-{
-    padding:5px !important;
-}
-.padding10
-{
-    padding:10px !important;
-}
-.padding20
-{
-    padding:20px !important;
-}
-.height50
-{
-   height: 50px !important;
 
-}
-.height100
-{
-   height: 100px !important;
+.padding5 {
+    padding: 5px !important;
 }
 
-.width100
-{
+.padding10 {
+    padding: 10px !important;
+}
+
+.padding20 {
+    padding: 20px !important;
+}
+
+.height50 {
+    height: 50px !important;
+}
+
+.height100 {
+    height: 100px !important;
+}
+
+.width100 {
     width: 100px !important;
 }
-.width150
-{
+
+.width150 {
     width: 150px !important;
 }
-.width180
-{
+
+.width180 {
     width: 180px !important;
 }
-.width200
-{
+
+.width200 {
     width: 200px !important;
 }
 
-.response{    
+.response {
     cursor: pointer;
 }
-.marginBottom10{
-    margin-bottom:10px;
+
+.marginBottom10 {
+    margin-bottom: 10px;
 }
-.marginTop10
-{
-    margin-top:10px;
+
+.marginTop10 {
+    margin-top: 10px;
 }
-.marginLeft10
-{
-	margin-left:10px;
+
+.marginLeft10 {
+    margin-left: 10px;
 }
-.marginLeft20
-{
-	margin-left:20px;
+
+.marginLeft20 {
+    margin-left: 20px;
 }
-.marginLeft30
-{
-	margin-left:30px;
+
+.marginLeft30 {
+    margin-left: 30px;
 }
-.marginLeft50
-{
-	margin-left:50px;
+
+.marginLeft50 {
+    margin-left: 50px;
 }
-.marginLeft70
-{
-	margin-left:70px;
+
+.marginLeft70 {
+    margin-left: 70px;
 }
-.marginRight10
-{
-    margin-right:10px !important;
+
+.marginRight10 {
+    margin-right: 10px !important;
 }
-.marginRight20
-{
-    margin-right:20px;
+
+.marginRight20 {
+    margin-right: 20px;
 }
-.marginRight30
-{
-    margin-right:30px;
+
+.marginRight30 {
+    margin-right: 30px;
 }
-.marginRight50
-{
+
+.marginRight50 {
     margin-right: 50px;
 }
-.marginRight80
-{
+
+.marginRight80 {
     margin-right: 80px;
 }
-.marginRight100
-{
+
+.marginRight100 {
     margin-right: 100px;
 }
-.red
-{
+
+.red {
     color: #ff0000;
 }
-.lightred
-{
+
+.lightred {
     background-color: antiquewhite !important;
 }
-.green
-{
-	color: #33cc33
+
+.green {
+    color: #33cc33
 }
-.iconsArea
-{
-	width:30px;
-	height:30px;
-	text-align:center;
+
+.iconsArea {
+    width: 30px;
+    height: 30px;
+    text-align: center;
 }
-.na
-{
-	color: #fff;
-	padding: 6px !important;
-}	
-.padding-4{
+
+.na {
+    color: #fff;
+    padding: 6px !important;
+}
+
+.padding-4 {
     padding: 4px !important;
 }
-.cursorPointer
-{
-	cursor: pointer;
+
+.cursorPointer {
+    cursor: pointer;
 }
-.naSelected
-{
-	color: #0000cc !important;
-	/*font-variant: body !important;*/
+
+.naSelected {
+    color: #0000cc !important;
+    /*font-variant: body !important;*/
 }
-.btnAreaSave
-{
-	color: white;
+
+.btnAreaSave {
+    color: white;
 }
-.disabled
-{
-	color: #ccc;
-	cursor: not-allowed;
+
+.disabled {
+    color: #ccc;
+    cursor: not-allowed;
 }
-.completed
-{
-	color: #0099ff;
+
+.completed {
+    color: #0099ff;
 }
-.bgCompleted
-{
-	background-color: #e6e6e6 !important;
-	color: #000 !important;
+
+.bgCompleted {
+    background-color: #e6e6e6 !important;
+    color: #000 !important;
 }
-.bgLimitExceeded
-{
+
+.bgLimitExceeded {
     background-color: #ffb3b3 !important;
-	color: #ff0000 !important;
+    color: #ff0000 !important;
 }
-.bgNoAvaliable
-{
+
+.bgNoAvaliable {
     background-color: #ffff99 !important;
-	color: #000 !important;
+    color: #000 !important;
 }
-.bgAlert
-{
-	background-color: #ffff99 !important;
-	color: #000 !important;
+
+.bgAlert {
+    background-color: #ffff99 !important;
+    color: #000 !important;
 }
-.panel-body{
+
+.panel-body {
     padding: 0px !important;
 }
-.panel-body .level03{
+
+.panel-body .level03 {
     padding: 10px !important;
 }
-#btnSave
-{
-    font-size:32px !important;
+
+#btnSave {
+    font-size: 32px !important;
     position: fixed;
     z-index: 999;
     bottom: 25px;
@@ -344,10 +350,10 @@ body > .App > div.container {
     -moz-border-radius: 70px !important;
     border-radius: 70px !important;
 }
-#btnSaveTemp
-{
+
+#btnSaveTemp {
     padding: 14px;
-    font-size:32px !important;
+    font-size: 32px !important;
     position: fixed;
     z-index: 999;
     bottom: 25px;
@@ -358,9 +364,9 @@ body > .App > div.container {
     -moz-border-radius: 70px !important;
     border-radius: 70px !important;
 }
-#btnSaveAllTemp
-{
-    font-size:32px !important;
+
+#btnSaveAllTemp {
+    font-size: 32px !important;
     position: fixed;
     z-index: 999;
     bottom: 25px;
@@ -371,112 +377,118 @@ body > .App > div.container {
     -moz-border-radius: 70px !important;
     border-radius: 70px !important;
 }
-#btnCA
-{
-    font-size:22px !important;
+
+#btnCA {
+    font-size: 22px !important;
     position: fixed;
     z-index: 999;
     bottom: 35px;
     right: 110px;
 }
-.level02Group , .level03Group{
+
+.level02Group, .level03Group {
     margin-bottom: 80px !important;
 }
-.modal-padrao{ 
+
+.modal-padrao {
     position: fixed;
     z-index: 9999;
-    margin: auto; 
+    margin: auto;
     top: 5%;
     left: 5%;
     right: 5%;
 }
-.modal-signature{ 
+
+.modal-signature {
     right: 40%;
 }
-#correctiveActionModal
-{
+
+#correctiveActionModal {
     height: auto !important;
     width: 90% !important;
 }
-#correctiveActionModal .modal-body
-{
+
+#correctiveActionModal .modal-body {
     padding-top: 0!important;
 }
-#correctiveActionModal .modal-body > .row
-{
-    padding: 10px !important;
-    overflow-y:auto;
-    overflow-x:hidden;
-    height:450px;
 
+#correctiveActionModal .modal-body>.row {
+    padding: 10px !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 450px;
 }
-#correctiveActionModal .modal-body > .row .row
-{
+
+#correctiveActionModal .modal-body>.row .row {
     padding: 10px;
 }
-#correctiveActionModal .modal-footer
-{
+
+#correctiveActionModal .modal-footer {
     padding: 10px;
 }
-.signature{
-    z-index: 99999; 
-    position: fixed; 
-    margin: auto; 
-    top: 50%; 
-    left: 50%; 
-    margin-top: -280px;  
+
+.signature {
+    z-index: 99999;
+    position: fixed;
+    margin: auto;
+    top: 50%;
+    left: 50%;
+    margin-top: -280px;
     margin-left: -160px !important;
     margin-right: 35% !important;
 }
-.btnNotAvaliable{
+
+.btnNotAvaliable {
     padding-right: 0;
     padding-left: 0;
     color: white !important;
 }
-.btnAreaSaveConfirm
-{
+
+.btnAreaSaveConfirm {
     position: absolute;
-    z-index:9999;
+    z-index: 9999;
     right: 130px !important;
 }
-#selectPeriod
-{
+
+#selectPeriod {
     width: 150px;
 }
-.headDescription
-{
-    height:30px;
+
+.headDescription {
+    height: 30px;
 }
-.headDescription span
-{
-    font-size:16px;
+
+.headDescription span {
+    font-size: 16px;
     font-weight: bold;
-    margin-right:20px;
+    margin-right: 20px;
 }
-.headGroup
-{
+
+.headGroup {
     margin-right: 120px;
 }
-.btnRounded{
+
+.btnRounded {
     height: 75px !important;
     width: 75px !important;
     z-index: 9999;
-    position:fixed;
-    right:15px;
-    bottom:20px;
-    margin-right:0;
+    position: fixed;
+    right: 15px;
+    bottom: 20px;
+    margin-right: 0;
     border-radius: 50% !important;
 }
 
-.btnConfirm{    
-    margin-bottom:90px !important;
+.btnConfirm {
+    margin-bottom: 90px !important;
 }
-.spanTitle{
+
+.spanTitle {
     margin-right: 1px !important;
     margin-left: 1px !important;
 }
-.message
-{   
+
+.message {
     /*margin-top: -50px;*/
     top: 200px;
     min-height: 200px;
@@ -486,16 +498,16 @@ body > .App > div.container {
     z-index: 99999;
     position: fixed;
 }
-.message.alertRed
-{
+
+.message.alertRed {
     background-color: #f15858 !important;
 }
-.message.alertRed #btnMessageOk
-{
+
+.message.alertRed #btnMessageOk {
     background-color: #ee8888 !important;
 }
-.messageConfirm, .messageParReason, .messageSelecionarDepartamento
-{
+
+.messageConfirm, .messageParReason, .messageSelecionarDepartamento {
     top: 200px;
     min-height: 200px;
     width: 100%;
@@ -504,56 +516,56 @@ body > .App > div.container {
     z-index: 9999;
     position: fixed;
 }
-span.Completed
-{
-    font-size:14px;
-    font-weight:bold;
+
+span.Completed {
+    font-size: 14px;
+    font-weight: bold;
     color: #0099ff;
 }
-.levelInfo
-{
-    margin-left:10px;
-    font-size:16px;
-    font-weight:bold;
+
+.levelInfo {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: bold;
     color: #000;
 }
-.iconMoreMenu 
-{
-    cursor:pointer;
+
+.iconMoreMenu {
+    cursor: pointer;
 }
-#version
-{
+
+#version {
     position: absolute;
     bottom: 10px;
     background-color: #333;
     color: #fff;
-    border:0;
-    font-size:14px;
+    border: 0;
+    font-size: 14px;
 }
-#ambiente
-{
-position: absolute;
+
+#ambiente {
+    position: absolute;
     bottom: 40px;
     background-color: #333;
     color: #fff;
-    border:0;
-    font-size:14px;
+    border: 0;
+    font-size: 14px;
 }
-.painel .row .col-xs-3, .col-xs-4, .col-xs-6
-{
+
+.painel .row .col-xs-3, .col-xs-4, .col-xs-6 {
     padding-right: 8px !important;
     padding-left: 12px !important;
 }
-.level1List, .level2List, .level3List
-{
-    padding-bottom:30px !important;
+
+.level1List, .level2List, .level3List {
+    padding-bottom: 30px !important;
 }
-.level3List
-{
+
+.level3List {
     padding-bottom: 70px !important;
 }
-.viewModal
-{
+
+.viewModal {
     position: absolute;
     left: 50%;
     margin-left: -35%;
@@ -564,30 +576,31 @@ position: absolute;
     z-index: 9999;
     border: 1px solid #333;
 }
-.footer .status
-{
+
+.footer .status {
     height: 15px;
     width: 15px;
     border-radius: 15px !important;
-    margin-top:5px;
+    margin-top: 5px;
 }
-.footer .status.online
-{
+
+.footer .status.online {
     background-color: #33cc33;
 }
-.footer .status.offline
-{
+
+.footer .status.offline {
     background-color: #ff0000;
 }
-.footer .status.databaseoffline
-{
+
+.footer .status.databaseoffline {
     background-color: #ffd800
 }
-.font-small{
+
+.font-small {
     font-size: 11px !important;
 }
-.modalVF
-{
+
+.modalVF {
     position: fixed;
     left: 50%;
     margin-left: -25%;
@@ -597,8 +610,8 @@ position: absolute;
     z-index: 9999;
     border: 1px solid #333;
 }
-.modalPCC1B
-{
+
+.modalPCC1B {
     position: fixed;
     left: 50%;
     margin-left: -25%;
@@ -608,79 +621,93 @@ position: absolute;
     z-index: 9999;
     border: 1px solid #333;
 }
-.small-margin{
+
+.small-margin {
     margin-bottom: 8px;
     margin-top: 8px;
 }
-#selectParCompany{
-    margin-top:25px;
+
+#selectParCompany {
+    margin-top: 25px;
     background-color: #333;
     /* background-color: white; */
     border: 0px;
     color: #fff;
     font-size: 15px;
 }
-.bgRed
-{
+
+.bgRed {
     background-color: #ff0000 !important;
 }
-.has-warning label
-{
+
+.has-warning label {
     color: #d01717;
 }
-#divDebugAlertas { 
-    width: 100%; 
-    height: 280px; 
-    border: 0px #000000 solid; 
+
+#divDebugAlertas {
+    width: 100%;
+    height: 280px;
+    border: 0px #000000 solid;
     background-color: #000252;
-    position: absolute; 
+    position: absolute;
     margin-top: 170px;
     z-index: 999999;
-    top:0; 
+    top: 0;
     color: #9a9292;
-    padding:20px;
-    font-size:small;
-} 
-.clDebugAlertas{
-	color: white;
-	display: inline;
-	font-weight:bold;
-	font-size:medium;
+    padding: 20px;
+    font-size: small;
 }
-.titDebugAlertas{
+
+.clDebugAlertas {
+    color: white;
+    display: inline;
+    font-weight: bold;
+    font-size: medium;
+}
+
+.titDebugAlertas {
     font-size: xx-large;
-    color:white;
+    color: white;
 }
-#ControlaDivDebugAlertas { 
+
+#ControlaDivDebugAlertas {
     width: 50px;
-    height: 50px; 
-    border: 0px #000000 solid; 
-    
-    background-size:50px;
-    position: absolute; 
-    margin-top: 110px; 
-    z-index: 999999; 
-    cursor: pointer; 
-    top:0;
-    right:0;
+    height: 50px;
+    border: 0px #000000 solid;
+    background-size: 50px;
+    position: absolute;
+    margin-top: 110px;
+    z-index: 999999;
+    cursor: pointer;
+    top: 0;
+    right: 0;
 }
+
 .zooms {
     position: fixed;
     left: 50%;
     bottom: 0px;
 }
 
-.nav-btn{
-	color:#fff;margin:7px 7px 7px 0px;padding:6px 15px
+.nav-btn {
+    color: #fff;
+    margin: 7px 7px 7px 0px;
+    padding: 6px 15px
 }
 
-@media(min-width:700px){
-	.nav-pull-right{
-		float:right;
-	}
+@media(min-width:700px) {
+    .nav-pull-right {
+        float: right;
+    }
 }
+
 .alert-secundary {
     color: #383d41;
     background-color: #e2e3e5;
     border-color: #d6d8db;
+}
+
+.divBtn .btn {
+    margin-left: 2px;
+    margin-right: 2px;
 }
