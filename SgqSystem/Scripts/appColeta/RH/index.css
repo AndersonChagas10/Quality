@@ -711,3 +711,10 @@ span.Completed {
     margin-left: 2px;
     margin-right: 2px;
 }
+
+.no-gutters>[class*="col-"] {
+    margin-right: 0;
+    margin-left: 0;
+    padding-right: 2px;
+    padding-left: 2px;
+}
