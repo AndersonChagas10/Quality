@@ -328,26 +328,27 @@ namespace SgqSystem.Jobs
         {
             using (var db = new SgqDbDevEntities())
             {
-                var consolidationLevel1 = new ConsolidationLevel1()
-                {
-                    AddDate = DateTime.Now,
-                    UnitId = 1,
-                    DepartmentId = getDepartment(),
-                    ParLevel1_Id = 1,
-                    ConsolidationDate = DateTime.Now
-                };
-
                 try
                 {
+                    var consolidationLevel1 = new ConsolidationLevel1()
+                    {
+                        AddDate = DateTime.Now,
+                        UnitId = db.ParCompany.FirstOrDefault()?.Id ?? 1,
+                        DepartmentId = getDepartment(),
+                        ParLevel1_Id = 1,
+                        ConsolidationDate = DateTime.Now
+                    };
+
                     db.ConsolidationLevel1.Add(consolidationLevel1);
                     db.SaveChanges();
+                    return consolidationLevel1.Id;
                 }
                 catch (Exception ex)
                 {
 
                 }
+                return 0;
 
-                return consolidationLevel1.Id;
             }
         }
 
@@ -399,7 +400,9 @@ namespace SgqSystem.Jobs
 
             using (var factory = new Factory("DefaultConnection"))
             {
-                id = factory.SearchQuery<ParDepartment>("SELECT TOP 1 Id FROM Department ORDER BY id DESC").FirstOrDefault().Id;
+                var department = factory.SearchQuery<ParDepartment>("SELECT TOP 1 Id FROM Department ORDER BY id DESC").FirstOrDefault();
+                if (department != null)
+                    id = department.Id;
             }
 
             if (id == 0)
