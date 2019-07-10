@@ -49,14 +49,15 @@ function renderPlanejamentoColeta(frequencia) {
 		'		<div class="col-xs-12">                        ' +
 		'			<div class="panel panel-primary">          ' +
 		'			  <div class="panel-heading" style="display: table;width: 100%;">              ' +
-		'				<h3 class="panel-title">' + voltar + ' Qual frequencia deseja realizar coleta?' +
+		'				<h3 class="panel-title">' + voltar +
 		btnColetar +
 		btnbaixarParams +
+		'<br><br> Qual frequencia deseja realizar coleta?' +
 		'			  </h3></div>                                   ' +
 		'			  <div class="panel-body" style="padding-top: 10px !important">                 ' +
 		'				<div class="list-group">               ' +
 		'					<div class="col-sm-6">               ' +
-		'<div class="form-group">' +
+		'	<div class="form-group">' +
 		'	<label>Frequencia:</label>' +
 		'	<input type="hidden"value="' + frequencia.Id + '">' +
 		'	<input type="text" class="form-control" value="' + frequencia.Name + '" readonly>' +
@@ -71,8 +72,8 @@ function renderPlanejamentoColeta(frequencia) {
 		'<div class="form-group">' +
 		'	<button type="button" class="btn btn-primary" onClick="savePlanejar()">Planejar</button>' +
 		'</div>' +
-		'					</div>                                 ' +
-		'					<div class="col-sm-6">               ' +
+		'</div>                                 ' +
+		'	<div class="col-sm-6">               ' +
 		'			<div class="panel panel-warning">          ' +
 		'			  <div class="panel-heading">              ' +
 		'				<h3 class="panel-title">Planejamentos salvos</h3>      ' +
