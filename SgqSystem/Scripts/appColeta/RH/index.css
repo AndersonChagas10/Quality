@@ -718,3 +718,7 @@ span.Completed {
     padding-right: 2px;
     padding-left: 2px;
 }
+
+.alert-warning {
+    background-color: #fcf8e3 !important;
+}
