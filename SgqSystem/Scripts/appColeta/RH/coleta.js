@@ -24,12 +24,15 @@ function openColeta(levels) {
                     hasLevel3 = true;
                 }
 
-                coleta += getInputLevel3(level3, level2, level1, striped);
+                var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
 
-                if (striped)
-                    striped = false;
-                else
-                    striped = true;
+                coleta += inputLevel3;
+
+                if (inputLevel3)
+                    if (striped)
+                        striped = false;
+                    else
+                        striped = true;
             });
         });
     });
