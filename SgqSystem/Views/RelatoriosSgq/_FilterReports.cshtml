@@ -1,0 +1,354 @@
+﻿@{
+    Layout = "../Shared/_LayoutReports.cshtml";
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content" style="padding:2px;">
+        <div class="col-sm-2" id="divFilterReports"
+             style="overflow-y:scroll; padding-top:0px">
+
+            <form id="filterReports">
+
+                <div>
+
+                    <div class="row">
+                        <div>
+                            <div class="col-sm-12" style="background-color:#eee;margin-bottom:10px;">
+                                <h4><strong>Filtros</strong></h4>
+                                <input type="hidden" name="startDate" />
+                                <input type="hidden" name="endDate" />
+                            </div>
+
+
+                            @if (ViewBag.ShowCurrentDate == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>
+                                                @Resources.Resource.date
+                                            </strong>
+                                        </label>
+                                        <input type="text" class="form-control"
+                                               name="currentDate" />
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowRangeDate == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>
+                                                @Resources.Resource.date
+                                            </strong>
+                                        </label>
+                                        <input type="text" class="form-control"
+                                               name="dateRange" />
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParStructure == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.structure</strong></label>
+                                        <select class="form-control" name="parStructure_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParCompany == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.unit</strong></label>
+                                        <select class="form-control" name="parCompany_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowShift == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.shift</strong></label>
+                                        <select class="form-control" name="shift_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParDepartment == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.department</strong></label>
+                                        <select class="form-control" name="parDepartment_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParSecao == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Seção</strong></label>
+                                        <select class="form-control" name="parSecao_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParCargo == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Cargo</strong></label>
+                                        <select class="form-control" name="parCargo_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParLevel1 == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.level1</strong></label>
+                                        <select class="form-control" name="parLevel1_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParLevel2 == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.level2</strong></label>
+                                        <select class="form-control" name="parLevel2_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParLevel3 == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.level3</strong></label>
+                                        <select class="form-control" name="parLevel3_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-primary pull-right btn-block"
+                                    id="btnSend" onclick="enviarFiltro();">
+                                @Resources.Resource.send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-10" id="divReportContent">
+
+            <div class="row" style="padding-bottom:10px;padding-top:5px">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-warning pull-left"
+                            id="btnToggleDivFilterReports"
+                            onclick="toggleDivFilterReports();">
+                        < Esconder Filtros
+                    </button>
+                    <button type="button" class="btn btn-primary pull-right"
+                            id="btnSend" onclick="enviarFiltro();">
+                        @Resources.Resource.refresh
+                    </button>
+                    <h4 class="text-center"><strong>@ViewBag.Title</strong></h4>
+                </div>
+            </div>
+
+            @RenderSection("Content", required: true)
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        function toggleDivFilterReports() {
+            if ($('#divFilterReports').hasClass("hide")) {
+                $('#divFilterReports').removeClass('hide');
+                $('#divReportContent').attr('class', 'col-sm-10');
+                $('#btnToggleDivFilterReports').text('< Esconder Filtros');
+
+            } else {
+                $('#divFilterReports').addClass('hide');
+                $('#divReportContent').attr('class', 'col-sm-12');
+                $('#btnToggleDivFilterReports').text('> Mostrar Filtros');
+            }
+        }
+
+        $('#filterReports select').on('change', function () {
+            preencheFiltrosAjax();
+        });
+
+        var dataFiltro = [];
+        var objFiltro = {};
+
+        function atualizaObjFiltro() {
+            objFiltro = $('#filterReports').serializeObject();
+            $(Object.keys(objFiltro)).each(function (i, o) {
+                if (o.indexOf("Date") < 0) {
+                    objFiltro[o] = Array.isArray(objFiltro[o]) ? objFiltro[o] : [objFiltro[o]];
+                }
+            });
+        }
+
+        function preencheFiltrosAjax() {
+            openLoader('Carregando Filtros...');
+            atualizaObjFiltro();
+            $.ajax({
+                url: "@Html.Raw(Url.Action("GetForm", "api/Formulario"))",
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                    $("#resultado").html("ENVIANDO...");
+                }
+            })
+            .done(function (data) {
+                preencheFiltros(data);
+                inicializaSelect2();
+                closeLoader();
+            })
+            .fail(function (jqXHR, textStatus, msg) {
+                console.log(msg);
+                closeLoader();
+            });
+        }
+
+        function inicializaSelect2() {
+            $('select[name="parStructure_Ids"]').select2();
+            $('select[name="parCompany_Ids"]').select2();
+            $('select[name="shift_Ids"]').select2();
+            $('select[name="parDepartment_Ids"]').select2();
+            $('select[name="parSecao_Ids"]').select2();
+            $('select[name="parCargo_Ids"]').select2();
+            $('select[name="parLevel1_Ids"]').select2();
+            $('select[name="parLevel2_Ids"]').select2();
+            $('select[name="parLevel3_Ids"]').select2();
+        }
+
+        inicializaSelect2();
+        preencheFiltrosAjax();
+
+        function preencheFiltros(data) {
+            dataFiltro = data;
+
+            $('#filterReports select').off('change');
+
+            $('select[name="parStructure_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParStructures, "Id", "Name", objFiltro["parStructure_Ids"]));
+            $('select[name="parCompany_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParCompanies, "Id", "Name", objFiltro["parCompany_Ids"]));
+            $('select[name="shift_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.Shifts, "Id", "Description", objFiltro["shift_Ids"]));
+            $('select[name="parDepartment_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParDepartments, "Id", "Name", objFiltro["parDepartment_Ids"]));
+            $('select[name="parSecao_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParSecoes, "Id", "Name", objFiltro["parSecao_Ids"]));
+            $('select[name="parCargo_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParCargos, "Id", "Name", objFiltro["parCargo_Ids"]));
+            $('select[name="parLevel1_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParLevel1s, "Id", "Name", objFiltro["parLevel1_Ids"]));
+            $('select[name="parLevel2_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParLevel2s, "Id", "Name", objFiltro["parLevel2_Ids"]));
+            $('select[name="parLevel3_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParLevel3s, "Id", "Name", objFiltro["parLevel3_Ids"]));
+
+            $('select[name="parStructure_Ids"]').trigger('change');
+            $('select[name="parCompany_Ids"]').trigger('change');
+            $('select[name="shift_Ids"]').trigger('change');
+            $('select[name="parDepartment_Ids"]').trigger('change');
+            $('select[name="parCargo_Ids"]').trigger('change');
+            $('select[name="parLevel1_Ids"]').trigger('change');
+            $('select[name="parLevel2_Ids"]').trigger('change');
+            $('select[name="parLevel3_Ids"]').trigger('change');
+
+            $('#filterReports select').on('change', function () {
+                preencheFiltrosAjax();
+            });
+        }
+
+        function retornaOptionsPeloArray(lista, value, text, listaSelecionada, defaultText) {
+            var html = "";
+            if (typeof (defaultText) != 'undefined') {
+                html += '<option value="">' + defaultText + '</option>';
+            }
+            $(lista).each(function (i, o) {
+                var selecionado = listaSelecionada != null ?
+                    $.grep(Array.isArray(listaSelecionada) ? listaSelecionada : [listaSelecionada],
+                    function (obj) { return obj == o[value] }) : [];
+                var selected = "";
+                if (selecionado.length > 0)
+                    selected = "selected";
+                html += '<option value="' + o[value] + '" ' + selected + '>' + o[text] + '</option>';
+            });
+            return html;
+        }
+
+        /*DATE RANGE PICKER*/
+
+        var start = moment();
+        var end = moment();
+
+        function callbackDateRange(start, end) {
+            $('input[name=startDate]').val(start.format("YYYY-MM-DD"));
+            $('input[name=endDate]').val(end.format("YYYY-MM-DD"));
+            atualizaObjFiltro();
+        }
+
+        var configCallendar = {};
+        $('input[name=dateRange]').daterangepicker({
+            startDate: start,
+            endDate: end,
+            locale: {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "customRangeLabel": "Seleção",
+            },
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            linkedCalendars: false
+        }, callbackDateRange);
+
+        /*SIMPLE DATE PICKER*/
+        $('input[name="currentDate"]').daterangepicker({
+            singleDatePicker: true,
+            startDate: start,
+            endDate: end,
+            locale: {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "customRangeLabel": "Seleção",
+            },
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            linkedCalendars: false
+        }, callbackDateRange);
+
+        setTimeout(function () {
+            callbackDateRange(start, end);
+        }, 500);
+
+    </script>
+
+}
+@RenderSection("Scripts", required: true)

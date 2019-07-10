@@ -344,6 +344,7 @@
     <Compile Include="Controllers\Api\CompanyFormApiController.cs" />
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
+    <Compile Include="Controllers\Api\Formulario\FormularioApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
     <Compile Include="Controllers\Api\Integracao\IntegracaoApiController.cs" />
     <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
@@ -2082,6 +2083,9 @@
     <Content Include="Views\ParConsolidationTypes\Details.cshtml" />
     <Content Include="Views\ParConsolidationTypes\Edit.cshtml" />
     <Content Include="Views\ParConsolidationTypes\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_FilterReports.cshtml" />
+    <Content Include="Views\RelatoriosSgq\ApontamentosDiariosRH.cshtml" />
+    <Content Include="Views\Shared\_LayoutReports.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

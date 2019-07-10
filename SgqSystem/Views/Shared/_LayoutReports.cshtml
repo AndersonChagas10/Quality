@@ -1,0 +1,734 @@
+﻿@using DTO
+@using SgqSystem.Helpers
+@{
+
+    var urlLogOutCookie = @Url.Action("LogOutCookie", "UserAuthentication");
+
+    ViewBag.urlHome = Url.Action("Index", "Home");
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Content/General")
+    @Styles.Render("~/Content/Erp")
+    @Styles.Render("~/Content/select2css")
+    @Styles.Render("~/Content/DatePikerContentCss")
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/Tables")
+
+    <link href="~/Content/Timeout/timeout-dialog.css" rel="stylesheet" />
+    <link href="~/Content/mindmap.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/css/components.min.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/css/darkblue.min.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+
+    @if (IsSectionDefined("Styles"))
+    {
+        @RenderSection("Styles");
+    }
+    <link rel="icon" href="~/Content/Imagens/favicon.png">
+
+    <script>
+        var hideMenu = false;
+
+        function HideMenuLayout() {
+            hideMenu = true;
+        }
+    </script>
+
+    <link href="~/Content/datatableGRT.css" rel="stylesheet" />
+    <script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="~/Content/PluginGRT/pivot.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/PluginGRT/c3.min.css">
+
+    <style>
+         @if (!GlobalConfig.Producao)
+         {
+            <text>
+            body,
+             .navbar,
+             .page-sidebar-wrapper a,
+             .page-sidebar-wrapper i
+                 {
+                 background-color:#b50000 !important;
+                 }
+             .navbar,
+             .page-sidebar-wrapper a,
+             .page-sidebar-wrapper i
+                 {
+                 color:#fff !important
+                 }
+            </text>
+         }
+    </style>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/ScriptTables")
+    @Scripts.Render("~/bundles/theme")
+    @Scripts.Render("~/bundles/select2js")
+    @Scripts.Render("~/bundles/DatePikerContent")
+    @Scripts.Render("~/bundles/Guard")
+    @Scripts.Render("~/bundles/mask")
+    @Scripts.Render("~/bundles/hc")
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <style>
+        /*table.table th, table.table td{
+            max-width:100px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        table.table th:active, table.table td:active{
+            max-width: 100% !important;
+            background-color:#fff;
+        }*/
+        table.table thead .sorting {
+            background: url('@Url.Content("~/imagens/sort_both.png")') no-repeat center right;
+        }
+
+        table.table thead .sorting_asc {
+            background: url('@Url.Content("~/imagens/sort_asc.png")') no-repeat center right;
+        }
+
+        table.table thead .sorting_desc {
+            background: url('@Url.Content("~/imagens/sort_desc.png")') no-repeat center right;
+        }
+
+        table.table thead .sorting_asc_disabled {
+            background: url('@Url.Content("~/imagens/sort_asc_disabled.png")') no-repeat center right;
+        }
+
+        table.table thead .sorting_desc_disabled {
+            background: url('@Url.Content("~/imagens/sort_desc_disabled.png")') no-repeat center right;
+        }
+    </style>
+</head>
+
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed">
+
+    <div id="mandala"></div>
+    <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                        </div>
+                        <div class="col-xs-11" id="modalLoaderMessage">Message </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade modalConfirm" id="modalConfirm" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-gray">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.confirm_the_action</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12" id="modalConfirmMessage">Message </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modalConfirmNo" type="button" class="btn btn-default">@Resources.Resource.no</button>
+                    <button id="modalConfirmYes" type="button" class="btn btn-primary">@Resources.Resource.yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay" style="display:none"></div>
+
+    <div id="messageModal" class="message padding20" style="display:none; left:0">
+        <h1 class="head">Titulo</h1>
+        <div class="body font16">Mensagem</div>
+        <div class="foot">
+            <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
+        </div>
+    </div>
+
+    <script>
+
+        $modalLoader = $('#modalLoader').clone();
+        $modalConfirm = $('#modalConfirm').clone();
+
+        var loaderMessages = [];
+
+        var openLoader = function (message) {
+            if (loaderMessages.length == 0) {
+                $('.modalLoader').remove();
+                $('body').append($modalLoader);
+                $('#modalLoader').modal({ backdrop: false });
+                $('#modalLoaderMessage').text(message);
+                loaderMessages.push(message);
+            } else {
+                loaderMessages.push(message);
+            }
+        }
+
+        var closeLoader = function () {
+            loaderMessages.splice(0, 1);
+            if (loaderMessages.length == 0) {
+                $('.modalLoader').remove();
+            }
+        }
+
+        var openConfirm = function (message, callbackYes, callbackNo) {
+            $('.modalConfirm').remove();
+            $('body').append($modalConfirm);
+            $('#modalConfirm').modal({ backdrop: false });
+            $('#modalConfirmMessage').text(message);
+
+            if (callbackYes) {
+                $('#modalConfirmYes').click(function () {
+                    callbackYes();
+                });
+            }
+
+            if (callbackNo) {
+                $('#modalConfirmNo').click(function () {
+                    callbackNo();
+                });
+            }
+        }
+
+        var closeConfirm = function () {
+            $('.modalConfirm').remove();
+        }
+
+        function openMessageModal(title, content, color) {
+
+            var mensagem = $('#messageModal');
+
+            mensagem.css('background-color', '');
+            if (!!color)
+                mensagem.css('background-color', color);
+
+            mensagem.children('.head').html(title);
+            mensagem.children('.body').html(content);
+            $('#overlay').fadeIn("fast");
+            $('#btnMessageOk').fadeIn("fast");
+
+            mensagem.fadeIn("fast");
+
+            setTimeout(function () {
+                $('#overlay').fadeOut("slow");
+                $('#btnMessageOk').fadeOut("slow");
+                mensagem.fadeOut("slow");
+            }, 2000);
+
+
+        }
+
+        $('#btnMessageOk').click(function () {
+            $('#overlay').fadeOut("fast");
+            var mensagem = $('#messageModal');
+            mensagem.fadeOut("fast");
+        });
+
+    </script>
+
+    <div class="page-wrapper">
+
+        @Html.Partial("~/Views/Shared/_Navbar.cshtml")
+
+        <div class="page-container">
+
+            @Html.Partial("~/Views/Shared/_LeftLayout.cshtml")
+
+            @RenderBody()
+
+            <button onclick="topFunction()" id="btn-topo"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
+
+        </div>
+    </div>
+
+    <footer class="wrapper">
+
+        <p class="page-content-wrapper" style="padding-left: 16px; padding-right: 16px; z-index: 999;">
+            <label class="pull-right">SGQ @Html.Raw("v" + @Html.AssemblyVersion()) App @Html.Raw("v" + @Html.AssemblyAppVersion())</label>
+            <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - GRT </label>
+        </p>
+
+    </footer>
+
+    @RenderSection("scripts", required: false)
+
+    <script>
+        debugger
+        var ResourcesFile = @Html.Raw(Json.Encode(ViewBag.Resources));
+
+        function Resources(key){
+            return $.grep(ResourcesFile , function(a) { return a.Key == key})[0].Value
+        }
+
+        let DicionarioEstatico = @Html.Raw(Json.Encode(ViewBag.DicionarioEstatico));
+
+        function getDicionario(key){
+            return DicionarioEstatico.filter(obj => obj.Key == key)[0].Value
+        }
+
+        /*Muda select2 para PADRÂO BR*/
+        $.fn.select2.defaults.set("language", "pt-BR");
+
+        /*Muda select2 para PADRÂO EUA*/
+        //$.fn.select2.defaults.set("language", "en");
+
+        $('.tableIndex').DataTable({
+            pageLength: 10,
+            loadingRecords: true,
+            destroy: true,
+            info: true,
+            responsive: true,
+            "language": {
+
+                "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                "sLengthMenu": "@Resources.Resource.show _MENU_ @Resources.Resource.resgisters_page",
+                "sZeroRecords": "Nenhum registro correspondente ao criterio encontrado",
+                "sInfoEmtpy": "Exibindo 0 a 0 de 0 registros",
+                "sInfo": "@Resources.Resource.showing _START_ @Resources.Resource.to _END_ @Resources.Resource.from _TOTAL_ @Resources.Resource.registers",
+                "sInfoFiltered": "",
+                "sSearch": "@Resources.Resource.search",
+                "oPaginate": {
+                    "sFirst": "@Resources.Resource.first",
+                    "sPrevious": "@Resources.Resource.previous",
+                    "sNext": "@Resources.Resource.next",
+                    "sLast": "@Resources.Resource.last"
+                }
+            }
+        });
+
+
+        var DataTableComResourcesEpropriedadesjaSetadas = {
+            "aoPaging": true,
+            "aoSearching": true,
+            "scrollX": true,
+            "order": [[1, "asc"]],
+            "language": {
+                "search": '@Resources.Resource.search',
+                "emptyTable": "@Resources.Resource.no_data_to_show",
+                "zeroRecords": '@Resources.Resource.no_data_to_show',
+                "info": "@Resources.Resource.page _PAGE_ de _PAGES_",
+                "lengthMenu": "@Resources.Resource.show _MENU_ @Resources.Resource.results @Resources.Resource.per_page",
+                "infoEmpty": "@Resources.Resource.no_data_to_show",
+                "infoFiltered": "(Filtrado de _MAX_ registros)",
+                "paginate": {
+                    "previous": '@Resources.Resource.previous',
+                    "next": '@Resources.Resource.next'
+                }
+            }
+        };
+
+        /*DataTable Padrão BR*/
+        $.extend(true, $.fn.dataTable.defaults,
+           {
+               "columnDefs": [
+                   { "className": "dt-center", "targets": "_all" }
+               ],
+               "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "@Resources.Resource.all"]],
+               "oLanguage": {
+
+                   "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                   "sLengthMenu": "@Resources.Resource.show _MENU_ @Resources.Resource.resgisters_page",
+                   "sZeroRecords": "Nenhum registro correspondente ao criterio encontrado",
+                   "sInfoEmtpy": "Exibindo 0 a 0 de 0 registros",
+                   "sInfo": "@Resources.Resource.showing _START_ @Resources.Resource.to _END_ @Resources.Resource.from _TOTAL_ @Resources.Resource.registers",
+                   "sInfoFiltered": "",
+                   "sSearch": "@Resources.Resource.search",
+                   "oPaginate": {
+                       "sFirst": "@Resources.Resource.first",
+                       "sPrevious": "@Resources.Resource.previous",
+                       "sNext": "@Resources.Resource.next",
+                       "sLast": "@Resources.Resource.last"
+                   }
+               }
+           });
+
+
+        var rangesEUA = {
+            //'Today': [moment(), moment()],
+            '⊲ Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            '⊲ Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            '⊲ Last 365 Days': [moment().subtract(12, 'month'), moment()],
+            '⬚ This Month': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ This Year': [moment().startOf('year'), moment().endOf('year')],
+            '⬚ Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+        }
+
+        var rangesBR = {
+            //'Hoje': [moment(), moment()],
+            '⊲ Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+            '⊲ Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+            '⊲ Últimos 365 Dias': [moment().subtract(12, 'month'), moment()],
+            '⬚ Este Mês': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Último Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ Este Ano': [moment().startOf('year'), moment().endOf('year')],
+            '⬚ Último Ano': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+        }
+
+        var configLayout = @Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));
+        var rangesCalendar;
+
+        /*Configura date range picker para PT-BR*/
+        if(configLayout){
+            moment.locale("Pt-Br");
+            moment.defaultFormat = "DD/MM/YYYY";
+
+            $.fn.daterangepicker('locale', {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "fromLabel": "de",
+                "toLabel": "até",
+                "customRangeLabel": "Customizado",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Dom",
+                    "Seg",
+                    "Ter",
+                    "Qua",
+                    "Qui",
+                    "Sex",
+                    "Sab"
+                ],
+                "monthNames": [
+                    "Janeiro",
+                    "Fevereiro",
+                    "Março",
+                    "Abril",
+                    "Maio",
+                    "Junho",
+                    "Julho",
+                    "Agosto",
+                    "Setembro",
+                    "Outubro",
+                    "Novembro",
+                    "Dezembro"
+                ],
+                //"firstDay": 0
+            });
+
+            rangesCalendar = rangesBR;
+
+        }else {
+            moment.defaultFormat = "MM/DD/YYYY";
+            $.fn.daterangepicker('locale', {
+                "format": "MM/DD/YYYY",
+                "separator": " - ",
+            });
+
+            rangesCalendar = rangesEUA;
+        }
+
+        $.fn.daterangepicker('ranges', rangesCalendar);
+
+
+        var monthNames = [
+            '@Resources.Resource.january',
+            '@Resources.Resource.february',
+            '@Resources.Resource.march',
+            '@Resources.Resource.april',
+            '@Resources.Resource.may',
+            '@Resources.Resource.june',
+            '@Resources.Resource.july',
+            '@Resources.Resource.august',
+            '@Resources.Resource.september',
+            '@Resources.Resource.october',
+            '@Resources.Resource.november',
+            '@Resources.Resource.december'];
+
+        function twoDigits(str) {
+            str = ("000" + str).slice(-2);
+            return str;
+        }
+
+        function watcher() {
+
+            var date = new Date();
+            var day = date.getDate();
+            var monthIndex = date.getMonth();
+            var year = date.getFullYear();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+
+            $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
+
+            setTimeout(watcher, 1000);
+        }
+
+        watcher();
+
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+
+        $.fn.serializeFormToObjetc = function () {
+
+            let o = {};
+            let inputs = this.find('input, select, div[contentEditable="true"]');
+
+            $.each(inputs, function () {
+
+                let name = this.name == undefined ? $(this).attr('name') : this.name;
+
+                if (name != undefined) {
+
+
+
+                if (o[name] !== undefined) {
+
+                    if (!o[name].push) {
+                        o[name] = [o[name]];
+                    }
+
+                    if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
+                        o[name].push($(this).prop('checked'));
+
+                    } else if ($(this).prop('contentEditable') == 'true') {
+                        o[name] = $(this).html();
+
+                    } else {
+                        o[name].push(this.value || '');
+                    }
+
+                } else {
+
+                    if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
+                        o[name] = $(this).prop('checked');
+
+                    } else if ($(this).prop('contentEditable') == 'true') {
+                        o[name] = $(this).html();
+
+                    } else {
+                        o[name] = this.value || '';
+                    }
+
+                    }
+
+                }
+            });
+
+            return o;
+        }
+
+        function FiltrosPorColuna() {
+
+            $('.dataTable thead th').each(function (i) {
+                var title = $('.dataTable thead th').eq($(this).index()).text();
+                $(this).html(title + '<br><input type="text" style="font-size:x-small; color: #555; text-align:center;" placeholder="Filtrar ' + title + '" data-index="' + i + '" />');
+            });
+
+            // DataTable
+            var table = $('.dataTable').DataTable();
+
+            // Filter event handler
+            $(table.table().container()).on('keyup', 'thead input', function () {
+                table
+                    .column($(this).data('index'))
+                    .search(this.value)
+                    .draw();
+            });
+
+        }
+
+
+
+        //FIM Metodo de exibir Modal de alerta de expirar sessão
+
+        var LogOutCookie = '@Html.Raw(@urlLogOutCookie)';
+        var flag_beforeunload = false;
+
+        function checkEventObj ( _event_ ){
+            // --- IE explorer
+            if ( window.event )
+                return window.event;
+                // --- Netscape and other explorers
+            else
+                return _event_;
+        }
+
+        function GetUrlFTA(){
+            return @Html.Raw(Json.Encode(@ViewBag.urlRootPaFTA))
+        }
+
+        $(document).ready(function () {
+            if (!hideMenu) {
+                $(".sidebar-toggler").removeClass("hide");
+                $(".page-sidebar-wrapper").removeClass("hide");
+                closeLeftSidebar();
+            }
+        });
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                document.getElementById("btn-topo").style.display = "block";
+            } else {
+                document.getElementById("btn-topo").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+        // IsDate =: é uma data?
+
+        function IsDate(Data) {
+
+            var resposta = new Date(Data)
+
+            var IsDateBool = false;
+
+            if (resposta == 'Invalid Date'){
+                IsDateBool = false;
+            } else
+            {
+                IsDateBool = true;
+            }
+
+            return IsDateBool;
+        }
+
+        $(document).ready(function () {
+
+            $.validator.methods.range = function (value, element, param) {
+                var globalizedValue = value.replace(",", ".");
+                return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+            }
+
+            $.validator.methods.number = function (value, element) {
+                return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+            }
+
+            //Função para paleativo de numerico e decimal permitindo apenas . ao inves de ,
+            $('.number_decimal').keypress(function (event) {
+                var $this = $(this);
+                // this next line...
+                if ((event.which != 44 || $this.val().indexOf(',') != -1) &&
+                    ((event.which < 48 || event.which > 57) &&
+                        (event.which != 0 && event.which != 8))) {
+                    event.preventDefault();
+                }
+
+                var text = $(this).val().replace('.', ',');
+                // this next line...
+                if ((event.which == 44) && (text.indexOf(',') == -1)) {
+                    setTimeout(function () {
+                        if ($this.val().substring($this.val().indexOf(',')).length > 3) {
+                            $this.val($this.val().substring(0, $this.val().indexOf(',') + 3));
+                        }
+                    }, 1);
+                }
+
+                if ((text.indexOf(',') != -1) &&
+                    (text.substring(text.indexOf(',')).length > 2) &&
+                    (event.which != 0 && event.which != 8) &&
+                    ($(this)[0].selectionStart >= text.length - 2)) {
+                    event.preventDefault();
+                }
+
+                $(this).val(text.replace(',', '.'));
+            });
+
+            $('.number_decimal').keypress();
+
+            $('.singleDatePicker').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                'locale': {
+                    "format": "DD/MM/YYYY"
+                }
+            });
+
+            $('.singleDatePicker').attr("type", "datetime");
+
+            $("body").on("keypress", ".notAllowNegative", function (e) {
+                var charCode = (e.which) ? e.which : e.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+                }
+            });
+
+        });
+    </script>
+
+    <div id="mandalaModal" class="modal" role="dialog" style="z-index:9999998">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered tabela">
+                        <tr>
+                            <th class="cabecalhoAR"></th>
+                            <th class="cabecalhoAP"></th>
+                            <th class="cabecalhoTotal"></th>
+                        </tr>
+                        <tr>
+                            <td class="dadosTabelaAR"></td>
+                            <td class="dadosTabelaAP"></td>
+                            <td class="dadosTabelaTotal"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="~/Scripts/PluginGRT/c3.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PluginGRT/d3.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/PluginGRT/pivot.js"></script>
+    <script type="text/javascript" src="~/Scripts/PluginGRT/c3_renderers.js"></script>
+
+    @Html.Partial("_Mandala")
+
+</body>
+</html>

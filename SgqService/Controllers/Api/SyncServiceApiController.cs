@@ -8615,6 +8615,13 @@ namespace SgqService.Controllers.Api
                 }
             }
         }
+
+        [HttpGet]
+        [Route("GetResource/{language}")]
+        public IEnumerable<DictionaryEntry> GetResource(string language)
+        {
+            return Resources.Resource;
+        }
     }
 }
 

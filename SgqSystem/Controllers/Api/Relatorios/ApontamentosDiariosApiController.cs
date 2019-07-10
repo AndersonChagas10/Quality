@@ -55,6 +55,21 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [Route("GetApontamentosDiariosRH")]
+        public List<ApontamentosDiariosResultSet> GetApontamentosDiariosRH([FromBody] DataCarrierFormularioNew form)
+        {
+
+            var query = new ApontamentosDiariosResultSet().SelectRH(form);
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
+
+                return _list;
+            }
+        }
+
+        [HttpPost]
         [Route("GetApontamentosDomingo")]
         public List<ApontamentosDiariosDomingoResultSet> GetApontamentosDomingo([FromBody] FormularioParaRelatorioViewModel form)
         {

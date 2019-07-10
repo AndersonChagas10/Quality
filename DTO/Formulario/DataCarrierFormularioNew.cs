@@ -8,16 +8,27 @@ namespace DTO
 {
     public class DataCarrierFormularioNew
     {
+        public DateTime startDate { get; set; }
 
-        public int[] ParStructure_Ids { get; set; }
+        public DateTime endDate { get; set; }
 
-        public int[] ParCompany_Ids { get; set; }
+        public int[] ParStructure_Ids { get; set; } = new int[] { };
 
-        public int[] ParLevel1_Ids { get; set; }
+        public int[] ParCompany_Ids { get; set; } = new int[] { };
 
-        public int[] ParLevel2_Ids { get; set; }
+        public int[] Shift_Ids { get; set; } = new int[] { };
 
-        public int[] ParLevel3_Ids { get; set; }
+        public int[] ParDepartment_Ids { get; set; } = new int[] { };
+
+        public int[] ParSecao_Ids { get; set; } = new int[] { };
+
+        public int[] ParCargo_Ids { get; set; } = new int[] { };
+
+        public int[] ParLevel1_Ids { get; set; } = new int[] { };
+
+        public int[] ParLevel2_Ids { get; set; } = new int[] { };
+
+        public int[] ParLevel3_Ids { get; set; } = new int[] { };
 
     }
 }
