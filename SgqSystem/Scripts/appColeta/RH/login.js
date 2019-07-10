@@ -98,7 +98,7 @@ $('body').on('click', '#btnLogin', function (event) {
 });
 
 function loginSuccess(data) {
-    curretParCompany_Id = data.ParCompany_Id;
+    currentParCompany_Id = data.ParCompany_Id;
     currentLogin = data;
     openLogado();
 }
@@ -106,7 +106,7 @@ function loginSuccess(data) {
 function cleanGlobalVarLogin() {
 
     currentParFrequency_Id = null;
-    curretParCompany_Id = null;
+    currentParCompany_Id = null;
     currentParDepartment_Id = null;
     currentParCargo_Id = null;
 

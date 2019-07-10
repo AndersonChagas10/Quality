@@ -143,7 +143,7 @@ function saveInFilePlanejamento() {
 
 function downloadPlanejamento() {
 	console.log(JSON.stringify({
-		ParCompany_Id: curretParCompany_Id
+		ParCompany_Id: currentParCompany_Id
 		, ParFrequency_Id: currentParFrequency_Id
 		, AppDate: currentCollectDate
 		, Planejamento: currentPlanejamento.map(function (obj) {

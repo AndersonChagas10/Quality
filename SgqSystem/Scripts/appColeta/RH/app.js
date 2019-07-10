@@ -1,4 +1,4 @@
-var curretParCompany_Id;
+var currentParCompany_Id;
 var currentParFrequency_Id;
 var parametrization = null;
 var currentParDepartment_Id;
@@ -20,14 +20,17 @@ var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
 
 function onOpenAppColeta() {
+    
     _readFile("login.txt", function (data) {
         if (typeof (data) != 'undefined' && data.length > 0)
             currentLogin = JSON.parse(data);
+            currentParCompany_Id = currentLogin.ParCompany_Id;
 
         _readFile("appParametrization.txt", function (param) {
             if (typeof (param) != 'undefined' && param.length > 0) {
                 parametrization = JSON.parse(param);
                 currentParFrequency_Id = parametrization.currentParFrequency_Id;
+                listaParFrequency = parametrization.listaParFrequency;
             }
         });
     });
@@ -42,7 +45,7 @@ function getAppParametrization(frequencyId) {
         openMensagem('Por favor, aguarde até que seja feito o download do planejamento selecionado', 'blue', 'white');
         $.ajax({
             data: JSON.stringify({
-                ParCompany_Id: curretParCompany_Id
+                ParCompany_Id: currentParCompany_Id
                 , ParFrequency_Id: currentParFrequency_Id
                 , AppDate: currentCollectDate
             }),
@@ -80,7 +83,7 @@ function sincronizarResultado(frequencyId) {
     openMensagem('Sincronizando resultado', 'blue', 'white');
     $.ajax({
         data: JSON.stringify({
-            ParCompany_Id: curretParCompany_Id,
+            ParCompany_Id: currentParCompany_Id,
             CollectionDate: convertDateToJson(currentCollectDate)
         }),
         url: urlPreffix + '/api/AppColeta/GetResults/',
@@ -105,10 +108,22 @@ function sincronizarColeta() {
 }
 
 function showAllGlobalVar() {
-    console.log("ParCompany:" + curretParCompany_Id);
+    console.log("ParCompany:" + currentParCompany_Id);
     console.log("Frequencia: " + currentParFrequency_Id);
     console.log("Departamento: " + currentParDepartment_Id);
     console.log("Cargo: " + currentParCargo_Id);
+    console.log("parametrization: " + parametrization);
+    console.log("currentParDepartmentParent_Id: " + currentParDepartmentParent_Id);
+    console.log("globalColetasRealizadas: " + globalColetasRealizadas);
+    console.log("globalAcoesCorretivasRealizadas: " + globalAcoesCorretivasRealizadas);
+    console.log("currentLogin: " + currentLogin);
+    console.log("globalLoginOnline: " + globalLoginOnline);
+    console.log("appIsOnline: " + appIsOnline);
+    console.log("currentAlerts: " + currentAlerts);
+    console.log("currentAlertsAgrupados: " + currentAlertsAgrupados);
+    console.log("listaParFrequency: " + listaParFrequency);
+    console.log("currentsParDepartments_Ids: " + currentsParDepartments_Ids);
+    console.log("currentPlanejamento: " + currentPlanejamento);
 }
 
 function openModalChangeDate() {
