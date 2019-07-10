@@ -11,7 +11,7 @@ function openColeta(levels) {
         level1.ParLevel2.forEach(function (level2) {
             var hasLevel3 = false;
 
-            var zebra = true;
+            var striped = true;
 
             level2.ParLevel3.forEach(function (level3) {
 
@@ -24,9 +24,12 @@ function openColeta(levels) {
                     hasLevel3 = true;
                 }
 
-                coleta += getInputLevel3(level3, level2, level1, zebra);
+                coleta += getInputLevel3(level3, level2, level1, striped);
 
-                zebra = false;
+                if (striped)
+                    striped = false;
+                else
+                    striped = true;
             });
         });
     });
@@ -59,6 +62,7 @@ function openColeta(levels) {
 }
 
 var currentEvaluationSample = {};
+
 function getContador() {
     currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, currentParCargo_Id);
     return '<div class="col-xs-12 alert-info" style="padding-top:10px;padding-bottom:10px">' +
@@ -96,16 +100,16 @@ function getLevel3(level3) {
     return '<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px">' + level3.Name + '</div>';
 }
 
-function getInputLevel3(level3, level2, level1, zebra) {
+function getInputLevel3(level3, level2, level1, striped) {
 
     var retorno = "";
 
     if (level3.ParLevel3InputType && level3.ParLevel3InputType.Id) {
 
-        var colorZebra = "";
+        var colorStriped = "";
 
-        if (zebra)
-            colorZebra = "background-color: #e9ecef;"
+        if (striped)
+            colorStriped = "background-color: #e9ecef;"
 
         retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-conforme="1"';
@@ -114,7 +118,7 @@ function getInputLevel3(level3, level2, level1, zebra) {
         retorno += ' data-level1="' + level1.Id + '"';
         retorno += ' data-level2="' + level2.Id + '"';
         retorno += ' data-level3="' + level3.Id + '"';
-        retorno += ' style="padding-left:10px;' + colorZebra + '">';
+        retorno += ' style="padding-left:10px;' + colorStriped + '">';
 
         switch (level3.ParLevel3InputType.Id) {
 
@@ -469,16 +473,17 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
     if (linha.attr('data-conforme') == '0') {
         resetarLinha(linha);
         linha.attr('data-conforme', '1');
-        $(this).text($(this).attr('data-positivo'))
-        //$(this).addClass('btn-default');
-        //$(this).removeClass('btn-secundary');
+        $(this).text($(this).attr('data-positivo'));
+        $(this).addClass('btn-default');
+        $(this).removeClass('btn-secundary');
     } else {
         resetarLinha(linha);
         linha.addClass('alert-secundary');
         linha.attr('data-conforme', '0');
-        $(this).text($(this).attr('data-negativo'))
-        //$(this).addClass('btn-secundary');
-        //$(this).removeClass('btn-default');
+        $(this).text($(this).attr('data-negativo'));
+        $(this).removeClass('btn-default');
+        $(this).addClass('btn-secundary');
+
     }
 });
 
