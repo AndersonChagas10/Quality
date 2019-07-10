@@ -17,6 +17,7 @@ function openParFrequency() {
 						listaParFrequency = data;
 						listarParFrequency();
 					});
+
 					closeMensagem();
 				},
 				timeout: 600000,
@@ -103,7 +104,7 @@ function getPlanejamentoPorFrequencia(frequencyId) {
 
 		$.ajax({
 			data: JSON.stringify({
-				ParCompany_Id: curretParCompany_Id
+				ParCompany_Id: currentParCompany_Id
 				, ParFrequency_Id: currentParFrequency_Id
 				, AppDate: currentCollectDate
 			}),
