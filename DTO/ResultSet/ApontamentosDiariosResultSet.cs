@@ -375,22 +375,22 @@ public class ApontamentosDiariosResultSet
 
         if (form.Shift_Ids.Length > 0)
         {
-            sqlTurno = $"\n AND [Shift] in ({string.Join(",",form.Shift_Ids)})";
+            sqlTurno = $"\n AND [Shift] in ({string.Join(",", form.Shift_Ids)})";
         }
 
         if (form.ParCompany_Ids.Length > 0)
         {
-            sqlUnidade = $"\n AND UnitId in ({string.Join(",",form.ParCompany_Ids)})";
+            sqlUnidade = $"\n AND UnitId in ({string.Join(",", form.ParCompany_Ids)})";
         }
 
         if (form.ParLevel1_Ids.Length > 0)
         {
-            sqlLevel1 = $"\n AND ParLevel1_id in ({string.Join(",",form.ParLevel1_Ids)})";
+            sqlLevel1 = $"\n AND ParLevel1_id in ({string.Join(",", form.ParLevel1_Ids)})";
         }
 
         if (form.ParLevel2_Ids.Length > 0)
         {
-            sqlLevel2 = $"\n AND ParLevel2_Id in ({string.Join(",",form.ParLevel2_Ids)})";
+            sqlLevel2 = $"\n AND ParLevel2_Id in ({string.Join(",", form.ParLevel2_Ids)})";
         }
 
         if (form.ParLevel3_Ids.Length > 0)
@@ -398,9 +398,20 @@ public class ApontamentosDiariosResultSet
             sqlLevel3 = $"\n AND L3.Id  in ({string.Join(",", form.ParLevel3_Ids)})";
         }
 
-        if (form.ParDepartment_Ids.Length > 0)
+        if (form.ParSecao_Ids.Length > 0)
         {
-            var CentroDeCustoComSecao = form.ParDepartment_Ids.Concat(form.ParSecao_Ids);
+            var sqlDepartamentoPelaHash = "";
+            foreach (var item in form.ParSecao_Ids)
+            {
+                sqlDepartamentoPelaHash += $@"OR PD.Hash like '{item}|%'
+                            OR PD.Hash like '%|{item}|%'
+                            OR PD.Hash = '{item}'";
+            }
+            sqlDepartment = $@" AND (PD.Id in ({string.Join(",", form.ParSecao_Ids)}) 
+                             {sqlDepartamentoPelaHash})";
+        }
+        else if(form.ParDepartment_Ids.Length > 0)
+        {
             var sqlDepartamentoPelaHash = "";
             foreach (var item in form.ParDepartment_Ids)
             {
