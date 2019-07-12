@@ -7437,9 +7437,7 @@ namespace SgqService.Controllers.Api
                     cmd.Parameters.Add(new SqlParameter("@DeviationMessage", HttpUtility.UrlDecode(deviationMessage)));
 
                     sql.Add(cmd);
-                }
-
-                //TODO: fazer uma variavel para depois o sql ant-injection antes de atribuir para sql, 
+                } 
             }
 
             try

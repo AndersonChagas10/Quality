@@ -7526,7 +7526,6 @@ namespace SgqSystem.Controllers.Api
                     sql.Add(cmd);
                 }
 
-                //TODO: fazer uma variavel para depois o sql ant-injection antes de atribuir para sql, 
             }
 
             try
