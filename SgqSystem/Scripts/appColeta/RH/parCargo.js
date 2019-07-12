@@ -82,12 +82,20 @@ function retornaCargos(parDepartmentId) {
         return item.ParDepartment_Id == parDepartmentId;
     });
 
+    var cargoIds = $.map(listaParCargoXDepartment, function (obj) {
+        return obj.ParCargo_Id;
+    });
+
+    cargoIds = cargoIds.sort();
+
+    cargoIds = $.unique(cargoIds);
+
     var listaParCargo = [];
 
-    $(listaParCargoXDepartment).each(function (item, obj) {
+    $(cargoIds).each(function (index, cargoId) {
 
         var listaParCargoFilter = $.grep(parametrization.listaParCargo, function (parCargo) {
-            return (parCargo.Id == obj.ParCargo_Id);
+            return (parCargo.Id == cargoId);
         });
 
         listaParCargoFilter.forEach(function (item) {
@@ -97,14 +105,14 @@ function retornaCargos(parDepartmentId) {
 
             //pegar os dados que possuem unidade, cargo 
             listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
-                return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
+                return parEvaluation.ParCargo_Id == cargoId &&
                     parEvaluation.ParDepartment_Id == parDepartmentId
             });
 
             //Caso não existir, buscar os que possuem todas as unidades
             if (listaEvaluation.length == 0) {
                 listaEvaluation = $.grep(parametrization.listaParEvaluationXDepartmentXCargoAppViewModel, function (parEvaluation) {
-                    return parEvaluation.ParCargo_Id == obj.ParCargo_Id &&
+                    return parEvaluation.ParCargo_Id == cargoId &&
                         parEvaluation.ParDepartment_Id == parDepartmentId
                 });
             }
