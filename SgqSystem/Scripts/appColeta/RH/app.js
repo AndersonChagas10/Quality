@@ -19,6 +19,11 @@ var currentPlanejamento = [];
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
 
+//Script para exibir erros no Mobile
+// window.onerror = function (errorMsg, url, lineNumber) {
+//     alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+// }
+
 function onOpenAppColeta() {
     
     _readFile("login.txt", function (data) {

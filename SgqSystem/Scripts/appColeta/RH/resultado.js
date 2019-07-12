@@ -27,10 +27,6 @@ function getResultEvaluationSample(parDepartment_Id, parCargo_Id) {
 
 }
 
-// window.onerror = function (errorMsg, url, lineNumber) {
-//     alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
-// }
-
 function retornaProximasColetasParaSincronizar() {
 
 	var coletas = [];

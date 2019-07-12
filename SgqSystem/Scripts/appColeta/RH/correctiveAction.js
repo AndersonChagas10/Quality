@@ -82,7 +82,7 @@ function retornaProximasAcoesCorretivasParaSincronizar() {
 	for (var i = 0; i < globalAcoesCorretivasRealizadas.length; i++) {
 
 		if (anterior != null) {
-			var objAtual = Object.assign({}, globalAcoesCorretivasRealizadas[i]);
+			var objAtual = $.extend({}, globalAcoesCorretivasRealizadas[i]);
 		}
 
 		if (acoesCorretivas.length == 0 || !objIsEquals(anterior, objAtual)) {
@@ -92,8 +92,8 @@ function retornaProximasAcoesCorretivasParaSincronizar() {
 			}
 		}
 
-		anterior = Object.assign({}, globalAcoesCorretivasRealizadas[i]);
-		acoesCorretivas.push(Object.assign({}, anterior));
+		anterior = $.extend({}, globalAcoesCorretivasRealizadas[i]);
+		acoesCorretivas.push($.extend({}, anterior));
 	}
 
 	return acoesCorretivas;
