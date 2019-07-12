@@ -172,7 +172,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
-  
+
     <script>
 
         $("#Points").inputmask('decimal', {
@@ -195,6 +195,13 @@
         setTimeout(function () {
             $('[data-valmsg-for="EffectiveDate"]').text($('[data-valmsg-for="EffectiveDate"]').text().replace('EffectiveDate', Resources('effectiveDate')));
         }, 100);
+
+
+        $(document).ready(function () {
+
+            $('.form-horizontal select').select2();
+
+        });
 
     </script>
 }
