@@ -34,7 +34,7 @@ function onOpenAppColeta() {
         _readFile("appParametrization.txt", function (param) {
             if (typeof (param) != 'undefined' && param.length > 0) {
                 parametrization = JSON.parse(param);
-                currentParFrequency_Id = parametrization.currentParFrequency_Id;
+                //currentParFrequency_Id = parametrization.currentParFrequency_Id;
                 listaParFrequency = parametrization.listaParFrequency;
             }
         });

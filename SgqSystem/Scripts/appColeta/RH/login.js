@@ -81,7 +81,7 @@ $('body').on('click', '#btnLogin', function (event) {
                 _writeFile("appParametrization.txt", '', function () {
                 });
 
-                _writeFile("planejamento.txt", '', function () {                    
+                _writeFile("planejamento.txt", '', function () {
                 });
             }
 
@@ -113,11 +113,11 @@ function cleanGlobalVarLogin() {
 }
 
 function logout() {
-    // _writeFile("login.txt", '', function () {
-    openLogin();
-    // });
+    _writeFile("login.txt", '', function () {
+        openLogin();
+    });
 }
 
 $(window).on('beforeunload', function () {
-    //_writeFile("login.txt", '', function () {});
+    _writeFile("login.txt", '', function () { });
 });
