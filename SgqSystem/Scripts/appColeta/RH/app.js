@@ -19,6 +19,11 @@ var currentPlanejamento = [];
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
 
+//Script para exibir erros no Mobile
+// window.onerror = function (errorMsg, url, lineNumber) {
+//     alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+// }
+
 function onOpenAppColeta() {
     
     _readFile("login.txt", function (data) {
@@ -29,7 +34,7 @@ function onOpenAppColeta() {
         _readFile("appParametrization.txt", function (param) {
             if (typeof (param) != 'undefined' && param.length > 0) {
                 parametrization = JSON.parse(param);
-                currentParFrequency_Id = parametrization.currentParFrequency_Id;
+                //currentParFrequency_Id = parametrization.currentParFrequency_Id;
                 listaParFrequency = parametrization.listaParFrequency;
             }
         });

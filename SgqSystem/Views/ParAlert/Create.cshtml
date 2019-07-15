@@ -34,7 +34,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create @Resources.Resource.module </span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create @Resources.Resource.alert </span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -151,3 +151,12 @@
     </div>
     <!-- END CONTENT BODY -->
 </div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $('.form-horizontal select').select2();
+
+        });
+    </script>
+}
