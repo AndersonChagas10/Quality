@@ -33,10 +33,12 @@ namespace SgqSystem.Controllers.Api.Formulario
                 retornoFormulario.Shifts = GetShifts(factory);
                 retornoFormulario.ParDepartments = GetParDepartments(form, factory);
                 retornoFormulario.ParSecoes = GetParSecoes(form, factory);
-                retornoFormulario.ParCargos = GetParCargos(form ,factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x=>x.Id).ToList());
-                retornoFormulario.ParLevel1s = GetParLevel1s(form, factory);
-                retornoFormulario.ParLevel2s = GetParLevel2s(form, factory);
-                retornoFormulario.ParLevel3s = GetParLevel3s(form, factory);
+                retornoFormulario.ParCargos = GetParCargos(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
+                retornoFormulario.ParLevel1s = GetParLevel1s(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
+                var listaParLevel1_Ids = form.ParLevel1_Ids.Length > 0 ? form.ParLevel1_Ids.ToList() : retornoFormulario.ParLevel1s.Select(x => x.Id).ToList();
+                retornoFormulario.ParLevel2s = GetParLevel2s(form, factory, listaParLevel1_Ids);
+                var listaParLevel2_Ids = form.ParLevel2_Ids.Length > 0 ? form.ParLevel2_Ids.ToList() : retornoFormulario.ParLevel2s.Select(x => x.Id).ToList();
+                retornoFormulario.ParLevel3s = GetParLevel3s(form, factory, listaParLevel1_Ids, listaParLevel2_Ids);
             }
 
             return retornoFormulario;
@@ -144,30 +146,56 @@ namespace SgqSystem.Controllers.Api.Formulario
             return retorno;
         }
 
-        private List<ParLevel1> GetParLevel1s(DataCarrierFormularioNew form, Factory factory)
+        private List<ParLevel1> GetParLevel1s(DataCarrierFormularioNew form, Factory factory, List<int> parDepartment_Ids)
         {
 
-            var query = "SELECT * FROM parLevel1";
+            string sqlFilter = "";
+            if (parDepartment_Ids.Count > 0)
+            {
+                sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel1_Id = PL1.Id WHERE 1 = 1 ";
+                sqlFilter += $@"AND PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)})";
+            }
+            var query = "SELECT DISTINCT PL1.ID, PL1.NAME FROM parLevel1 PL1 " + sqlFilter;
 
             var retorno = factory.SearchQuery<ParLevel1>(query).ToList();
 
             return retorno;
         }
 
-        private List<ParLevel2> GetParLevel2s(DataCarrierFormularioNew form, Factory factory)
+        private List<ParLevel2> GetParLevel2s(DataCarrierFormularioNew form, Factory factory, List<int> parLevel1_Ids)
         {
+            string sqlFilter = "";
+            if (parLevel1_Ids.Count > 0)
+            {
+                sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel2_Id = PL2.Id
+                                WHERE PVP.ParLevel1_Id IN ({string.Join(",", parLevel1_Ids)})";
+            }
 
-            var query = "SELECT * FROM parLevel2";
+            var query = "SELECT DISTINCT PL2.ID, PL2.NAME FROM parLevel2 PL2 " + sqlFilter;
 
             var retorno = factory.SearchQuery<ParLevel2>(query).ToList();
 
             return retorno;
         }
 
-        private List<ParLevel3> GetParLevel3s(DataCarrierFormularioNew form, Factory factory)
+        private List<ParLevel3> GetParLevel3s(DataCarrierFormularioNew form, Factory factory, List<int> parLevel1_Ids, List<int> parLevel2_Ids)
         {
 
-            var query = "SELECT * FROM parLevel3";
+            string sqlFilter = "";
+            if (parLevel1_Ids.Count > 0 || parLevel2_Ids.Count > 0)
+            {
+                sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel2_Id = PL3.Id WHERE 1 = 1 ";
+                if (parLevel1_Ids.Count > 0)
+                {
+                    sqlFilter += $@"AND PVP.ParLevel1_Id IN ({ string.Join(",", parLevel1_Ids)})";
+                }
+                if (parLevel2_Ids.Count > 0)
+                {
+                    sqlFilter += $@"AND PVP.ParLevel2_Id IN ({ string.Join(",", parLevel2_Ids)})";
+                }
+            }
+
+            var query = "SELECT DISTINCT PL3.ID, PL3.NAME FROM parLevel3 PL3 " + sqlFilter;
 
             var retorno = factory.SearchQuery<ParLevel3>(query).ToList();
 
