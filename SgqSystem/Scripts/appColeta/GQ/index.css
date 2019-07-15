@@ -128,7 +128,7 @@ body > .App > div.container {
 }
 .login > .head
 {
-    background-image: url("img/sgqlogo01.png");
+    /* background-image: url("img/sgqlogo01.png"); */
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
@@ -137,12 +137,13 @@ body > .App > div.container {
 .login > .foot
 {
     margin-top:50px;
-    background-image: url("img/grtjbslogo.png");
+    /* background-image: url("img/grtjbslogo.png"); */
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
     height: 50px;
 }
+
 .form-signin {
 
     max-width: 320px;
