@@ -674,3 +674,8 @@ create table [ParLevel3XModule](
 )
 
 GO
+
+IF COL_LENGTH('DicionarioEstatico','Value') IS NOT NULL
+BEGIN
+	ALTER TABLE DicionarioEstatico ALTER COLUMN Value Text
+END
