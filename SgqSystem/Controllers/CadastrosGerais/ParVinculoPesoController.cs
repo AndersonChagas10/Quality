@@ -75,7 +75,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,IsActive,ParGroupParLevel1_Id")] ParVinculoPeso ParVinculoPeso)
+        public ActionResult Create([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,IsActive,EffectiveDateStart,EffectiveDateEnd,ParGroupParLevel1_Id")] ParVinculoPeso ParVinculoPeso)
         {
             ValidaGrupoIndicadorXTarefa(ParVinculoPeso);
             if (ModelState.IsValid)
@@ -156,6 +156,9 @@ namespace SgqSystem.Controllers
 
                 if (ParVinculoPeso.ParGroupParLevel1_Id <= 0)
                     ModelState.AddModelError("ParGroupParLevel1_Id", Resources.Resource.required_field + " " + "Grupo Indicadores");
+
+                if(ParVinculoPeso.EffectiveDateStart > ParVinculoPeso.EffectiveDateEnd)
+                    ModelState.AddModelError("EffectiveDateStart", "O campo Data Efetiva de Início não pode ser maior que a Data de Término!");
             }
             else
             {
@@ -211,7 +214,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,IsActive,ParGroupParLevel1_Id")] ParVinculoPeso ParVinculoPeso)
+        public ActionResult Edit([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,EffectiveDateStart,EffectiveDateEnd,IsActive,ParGroupParLevel1_Id")] ParVinculoPeso ParVinculoPeso)
         {
             ValidaGrupoIndicadorXTarefa(ParVinculoPeso);
             if (ModelState.IsValid)

@@ -56,6 +56,10 @@ namespace Dominio
 
         public int? Sample { get; set; }
 
+        public DateTime? EffectiveDateStart { get; set; }
+
+        public DateTime? EffectiveDateEnd { get; set; }
+         
         [DisplayName("Cargo")]
         //[Index(IsUnique = true)]
         public int? ParCargo_Id { get; set; }
