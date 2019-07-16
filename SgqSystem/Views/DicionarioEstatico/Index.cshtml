@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Dicionario Estático";
-    //var urlAttResource = Url.Action("AtualizarResource", "ResourcePTs");
+    var urlAttResource = Url.Action("AtualizarResource", "ResourcePTs");
 }
 
 <div class="page-content-wrapper">
@@ -42,16 +42,24 @@
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
+
+                                <div id="modalSucesso" class="alert alert-success alert-dismissible hide">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>@Resources.Resource.success</strong> Dicionários Atualizados!
+                                </div>
+
                                 <p>
                                     <div>
                                         @Html.ActionLink(Resources.Resource._novo as string, "Create", null, new { @class = "btn btn-primary" })
+
+                                        <button class="btn btn-success pull-right" id="btnAtualizar">Atualizar Dicionários</button>
                                     </div>
                                 </p>
                                 <table class="table" id="tabelaDicionario">
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Resources.Resource.key 
+                                                @Resources.Resource.key
                                             </th>
                                             <th>
                                                 @Resources.Resource.controller_name
@@ -107,7 +115,7 @@
 </script>
 
 <script>
-    //var urlAttResource = 'Html.Raw(urlAttResource)';
+    var urlAttResource = '@Html.Raw(urlAttResource)';
     $(document).ready(function () {
         closeLeftSidebar();
         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
@@ -119,5 +127,23 @@
         ];
         $('#tabelaDicionario').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
+
+    $("#btnAtualizar").on('click', function () {
+
+        $.ajax({
+            type: "GET",
+            url: urlAttResource,
+            success: function (retorno) {
+                $("#modalSucesso").removeClass('hide');
+                $("#modalSucesso").fadeTo(2000, 500).slideUp(500, function () {
+                    $("#modalSucesso").slideUp(500);
+                });
+            },
+            error: function (retorno) {
+
+            }
+        });
+    });
+
 
 </script>

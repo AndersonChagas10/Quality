@@ -674,3 +674,30 @@ create table [ParLevel3XModule](
 )
 
 GO
+
+IF COL_LENGTH('DicionarioEstatico','Value') IS NOT NULL
+BEGIN
+	ALTER TABLE DicionarioEstatico ALTER COLUMN Value Text
+END
+
+GO
+
+IF COL_LENGTH('ParVinculoPeso','EffectiveDateStart') IS NULL
+    BEGIN	
+		alter table ParVinculoPeso
+		add EffectiveDateStart datetime null
+    END
+GO
+
+IF COL_LENGTH('ParVinculoPeso','EffectiveDateEnd') IS NULL
+    BEGIN		
+		alter table ParVinculoPeso
+		add EffectiveDateEnd datetime null
+    END
+GO
+
+
+
+
+
+
