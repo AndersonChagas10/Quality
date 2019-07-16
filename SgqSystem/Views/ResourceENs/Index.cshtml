@@ -44,14 +44,14 @@
                             <div class="tab-pane active" id="setup_tab">
                                 <div id="modalSucesso" class="alert alert-success alert-dismissible hide">
                                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                    <strong>@Resources.Resource.success</strong> Updated Resources!
+                                    <strong>@Resources.Resource.success</strong> Updated Dictionaries!
                                 </div>
 
                                 <p>
                                     <div>
                                         @Html.ActionLink(Resources.Resource._novo as string, "Create", null, new { @class = "btn btn-primary" })
 
-                                        <button class="btn btn-success pull-right" id="btnAtualizar">Atualizar Resource</button>
+                                        <button class="btn btn-success pull-right" id="btnAtualizar">@Resources.Resource.update Dictionaries</button>
                                     </div>
                                 </p>
                                 <table class="table" id="tabelaResourceEN">
