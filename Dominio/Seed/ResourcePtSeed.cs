@@ -438,7 +438,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "level", Value = "Nível" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "level1", Value = "Indicador" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "level1_children", Value = "Coletar este indicador através de um outro indicador" });
-                ResourcesInserir.Add(new ResourcePT() { Key = "level1_children_popover", Value = "Coleta os monitoramentos e suas tarefas utilizando as parametrizações de número de avaliações e amostras de outro indicador, chamado "Indicador de  origem". Caso a resposta para esta pergunta seja sim, os campos de cadastro para indicador de origem e de destino estarão à disposição da empresa" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "level1_children_popover", Value = "Coleta os monitoramentos e suas tarefas utilizando as parametrizações de número de avaliações e amostras de outro indicador, chamado \"Indicador de  origem\". Caso a resposta para esta pergunta seja sim, os campos de cadastro para indicador de origem e de destino estarão à disposição da empresa" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "level1_clusters", Value = "Processos do Indicador" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "level1_clusters1", Value = "Clusters do Indicador" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "level1_counter", Value = "Contador do Indicador" });
@@ -479,7 +479,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "level5", Value = "Nível" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "levelSpc", Value = "Nível" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "limited_number_of_evaluations", Value = "Limitar o número de avaliações" });
-                ResourcesInserir.Add(new ResourcePT() { Key = "limited_number_of_evaluations_popover", Value = "Limita o número de avaliações de acordo com a parametrização do monitoramento. O usuário não conseguirá fazer avaliações "extras", pois a coleta não permitirá." });
+                ResourcesInserir.Add(new ResourcePT() { Key = "limited_number_of_evaluations_popover", Value = "Limita o número de avaliações de acordo com a parametrização do monitoramento. O usuário não conseguirá fazer avaliações \"extras\", pois a coleta não permitirá." });
                 ResourcesInserir.Add(new ResourcePT() { Key = "limited_number_of_evaluations1", Value = "Número de Avaliações Limitados" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "link_alredy_used", Value = "Este vínculo já está sendo utilizado" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "link_number_evaluation", Value = "Link com a avaliação" });
@@ -577,8 +577,8 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "none", Value = "Nenhum" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "normal", Value = "Normal" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "not_accordance", Value = "Não Conforme" });
-                ResourcesInserir.Add(new ResourcePT() { Key = "not_applicable_on_level_2", Value = "Exibir o botão "N / A" na tela dos monitoramentos" });
-                ResourcesInserir.Add(new ResourcePT() { Key = "not_applicable_on_level_2_popover", Value = "Exibe o botão "N / A" (Não avaliado ou Não aplicado) na tela dos monitoramentos, permitindo não avaliar o monitoramento sem entrar na tela das tarefas." });
+                ResourcesInserir.Add(new ResourcePT() { Key = "not_applicable_on_level_2", Value = "Exibir o botão \"N / A\" na tela dos monitoramentos" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "not_applicable_on_level_2_popover", Value = "Exibe o botão \"N / A\" (Não avaliado ou Não aplicado) na tela dos monitoramentos, permitindo não avaliar o monitoramento sem entrar na tela das tarefas." });
                 ResourcesInserir.Add(new ResourcePT() { Key = "not_applicable_on_level_2_popover1", Value = "Define se haverá botão de não avaliado (n/a) no Monitoramento." });
                 ResourcesInserir.Add(new ResourcePT() { Key = "not_applicable_on_level_21", Value = "Botão N/A no Monitoramento" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "not_conform", Value = "NC" });
@@ -742,8 +742,8 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "samples", Value = "Amostras" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "samples_per_evaluation", Value = "Amostras por Avaliação" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "save", Value = "Salvar" });
-                ResourcesInserir.Add(new ResourcePT() { Key = "save_button_on_level2", Value = "Exibir o botão "Salvar" na tela dos monitoramentos" });
-                ResourcesInserir.Add(new ResourcePT() { Key = "save_button_on_level2_popover", Value = "Exibe o botão "Salvar" na tela dos monitoramentos, permitindo salvar o monitoramento sem entrar na tela de tarefas. Será exigido uma confirmação." });
+                ResourcesInserir.Add(new ResourcePT() { Key = "save_button_on_level2", Value = "Exibir o botão \"Salvar\" na tela dos monitoramentos" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "save_button_on_level2_popover", Value = "Exibe o botão \"Salvar\" na tela dos monitoramentos, permitindo salvar o monitoramento sem entrar na tela de tarefas. Será exigido uma confirmação." });
                 ResourcesInserir.Add(new ResourcePT() { Key = "save_button_on_level2_popover1", Value = "Define se haverá botão de salvar no monitoramento." });
                 ResourcesInserir.Add(new ResourcePT() { Key = "save_button_on_level21", Value = "Botão salvar no Monitoramento" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "save_button_on_level3", Value = "Botão salvar na Tarefa" });
