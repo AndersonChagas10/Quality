@@ -334,13 +334,13 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
             //$(elem).width(20);
 
             if (situacao.indexOf("4") >= 0) {
-                $(elem).attr('style', 'background-color:red');
+                $(elem).attr('style', 'background-color:red; height: 20px;width: 25px;');
             } else if (situacao.indexOf("3") >= 0) {
-                $(elem).attr('style', 'background-color:yellow');
+                $(elem).attr('style', 'background-color:yellow; height: 20px;width: 25px;');
             } else if (situacao.indexOf("2") >= 0) {
-                $(elem).attr('style', 'background-color:green');
+                $(elem).attr('style', 'background-color:green; height: 20px;width: 25px;');
             } else if (situacao.indexOf("1") >= 0) {
-                $(elem).attr('style', 'background-color:transparent');
+                $(elem).attr('style', 'background-color:transparent; height: 20px;width: 25px;');
             }
         }
     }, 200);
