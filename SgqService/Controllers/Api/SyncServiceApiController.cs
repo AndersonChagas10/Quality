@@ -7127,7 +7127,7 @@ namespace SgqService.Controllers.Api
         public string GetLoginAPP()
         {
             var html = new Html();
-            string head = html.div(classe: "head");
+            string head = html.div(classe: "head", style: "background-image: url(" + DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogo + ");");
 
             //Verifica as configurações iniciais da tela
             var ParConfSGQDB = new SGQDBContext.ParConfSGQContext(db);
@@ -7266,7 +7266,7 @@ namespace SgqService.Controllers.Api
 
             string foot = html.div(
                                     outerhtml: footOuterHtml
-                                    , classe: "foot", style: "text-align:center");
+                                    , classe: "foot", style: "text-align:center;background-image: url(" + DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogoFooter + ");");
 
             #endregion
 

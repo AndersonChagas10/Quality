@@ -277,8 +277,8 @@
     <footer class="wrapper">
 
         <p class="page-content-wrapper" style="padding-left: 16px; padding-right: 16px; z-index: 999;">
-            <label class="pull-right">SGQ @Html.Raw("v" + @Html.AssemblyVersion()) App @Html.Raw("v" + @Html.AssemblyAppVersion())</label>
-            <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - GRT </label>
+            <label class="pull-right">@DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.copyright @Html.Raw("v" + @Html.AssemblyVersion()) App @Html.Raw("v" + @Html.AssemblyAppVersion())</label>
+            <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - @DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemName </label>
         </p>
 
     </footer>
@@ -286,7 +286,7 @@
     @RenderSection("scripts", required: false)
 
     <script>
-        debugger
+        
         var ResourcesFile = @Html.Raw(Json.Encode(ViewBag.Resources));
 
         function Resources(key){

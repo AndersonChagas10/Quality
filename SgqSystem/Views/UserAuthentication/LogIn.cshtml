@@ -13,7 +13,7 @@
 @using (Html.BeginForm())
 {
     <div class="login">
-        <div class="head"></div>
+        <div class="head"><br /><img src="@DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogo" /><br /></div>
         <div class="form-signin panel panel-primary">
             <h2 class="form-signin-heading panel-heading">@Resources.Resource.please_sign_in</h2>
             <div class="panel-body">
@@ -36,21 +36,13 @@
             </div>
         </div>
 
-        @if (GlobalConfig.Ytoara)
-        {
-            <div class="foot" style="background-image: url('Content/Imagens/GRTYtoaraLogo.png');"></div>
-        }
-        else if (GlobalConfig.Santander)
-        {
-            <div class="foot" style="background-image: url('Content/Imagens/LogoGRTSantander.png');"></div>
-        }
-        else
-        {
-            <div class="foot" style="background-image: url('Content/Imagens/GRTJBSLogo.png');"></div>
-        }
+        <div class="foot">
+            <img src="@DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogoFooter" />
+        </div>
 
     </div>
 }
+
 <!--Modal Recupera Senha-->
 <div class="container">
     <div class="modal fade" id="modalRecPassword" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
@@ -73,10 +65,11 @@
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts {
+@section Scripts {
 
-        <script type="text/javascript">
+    <script type="text/javascript">
 
         HideMenuLayout();
 
@@ -181,5 +174,5 @@
         //    });
         //});
 
-        </script>
-    }
+    </script>
+}
