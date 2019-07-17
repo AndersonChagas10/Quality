@@ -35,7 +35,9 @@ function cameraSuccess(data) {
     $('.message, .overlay').hide();
 
     //level3PhotoTemp.path = data;
-    level3PhotoTemp.photo = data;
+    var imageBase64Name = new Date().getTime();
+    level3PhotoTemp.photo = imageBase64Name+".base64";
+    _writeFile(level3PhotoTemp.photo, data);
 
     //Insere valor padrão zerado
     level3PhotoTemp.latitude = 0;
@@ -114,15 +116,15 @@ function sendResultLevel3Photo() {
             var listaFotosSalvas = level3Photos.filter(function (o, i) { return o.isactive == true });
             if (listaFotosSalvas.length > 0) {
                 algumaFotoEstaSendoEnviada = true;
-                var listaFotos = preparaFotos(listaFotosSalvas);
-                enviaFotos(listaFotos);
+                preparaFotos(listaFotosSalvas);
             }
         }, 1000);
 }
 
 function preparaFotos(listaFotosSalvas) {
+    
     var listaFotos = [];
-    for (i = 0; i < (listaFotosSalvas.length > 2 ? 2 : listaFotosSalvas.length); i++) {
+    for (i = 0; i < (listaFotosSalvas.length > 1 ? 1 : listaFotosSalvas.length); i++) {
         var temp = listaFotosSalvas[i];
         listaFotos.push(
             {
@@ -144,7 +146,19 @@ function preparaFotos(listaFotosSalvas) {
             }
         );
     }
-    return listaFotos;
+    
+    lastFotoEnviada = temp.photo;
+    _readFile(temp.photo, function (data) {
+        if(typeof(data) != 'undefined' && data.length > 0){
+            listaFotos[0]["Photo"] = data;
+            enviaFotos(listaFotos);
+        }else{
+            level3Photos.splice(0, data.count);
+            _writeFile("level3Photos.json", level3Photos);
+            algumaFotoEstaSendoEnviada = false;
+            sendResultLevel3Photo();
+        }
+    });
 }
 
 function salvaFoto(level3PhotoTemp) {
@@ -153,24 +167,14 @@ function salvaFoto(level3PhotoTemp) {
 
     var img = new Image();
     img.src = level3PhotoTemp.path;
-    /*img.onload = function (e) {
-        canvasPhoto.height = this.height;
-        canvasPhoto.width = this.width;
-        contextPhoto.drawImage(img, 0, 0);
-
-        level3PhotoTemp.photo = canvasPhoto.toDataURL();
-
-        level3Photos.push(level3PhotoTemp);
-        _writeFile("level3Photos.json", level3Photos);
-
-        $('.level3[id=' + level3PhotoTemp.level3id + ']').find('.camera-button').removeClass('btn-danger').addClass('btn-default');
-    }*/
 
     level3Photos.push(level3PhotoTemp);
     _writeFile("level3Photos.json", level3Photos);
 
     $('.level3[id=' + level3PhotoTemp.level3id + ']').find('.camera-button').removeClass('btn-danger').addClass('btn-default');
 }
+
+var lastFotoEnviada = "";
 
 function enviaFotos(listaFotos) {
     $.ajax({
@@ -181,6 +185,7 @@ function enviaFotos(listaFotos) {
         headers: token(),
         success: function (data) {
             algumaFotoEstaSendoEnviada = false;
+            _writeFile(lastFotoEnviada, '');
             level3Photos.splice(0, data.count);
             _writeFile("level3Photos.json", level3Photos);
             sendResultLevel3Photo();

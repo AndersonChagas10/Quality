@@ -275,7 +275,9 @@
                         {
                             title: "@Resources.Resource.photo", mData: "ResultLevel3Id", "width": "50%", mRender: function (data, type, full) {
                                 return full.HasPhoto ?
-        "<button class='btn btn-info btn-sm' data-toggle='modal' data-target='#imageModal' data-photo='"+data+"' height='60' id='imgResult" + data +"'>@Resources.Resource.photo</button>" : '';
+        "<button class='btn btn-info btn-sm' data-toggle='modal' data-target='#imageModal' data-photo='"+data+"' height='60' id='imgResult" + data +"'>@Resources.Resource.photo</button>" 
+                                    :
+                                    '<button class="btn btn-default btn-sm" disabled="" title="Não há fotos para esta tarefa">Foto</button>';
                             }
                         }
                     ];
