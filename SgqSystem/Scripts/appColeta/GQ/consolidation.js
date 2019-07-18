@@ -55,12 +55,12 @@ function updateLevel2Consolidation(
 
     }
 
-    var level2ResultList = $('.Resultlevel2[Level1Id=' + $('.level1.selected').attr('id') + '][UnitId="' + $('.App').attr('unidadeid') + '"][Shift="' + $('.App').attr('shift') + '"][Period="' + $('.App').attr('period') + '"][CollectionDate="' + getCollectionDate() + '"]');
-
     if (evaluateCurrent <= 1) {
         var horaAtual = new Date().getHours() + ":" + new Date().getMinutes();
-        level2ResultList.attr('horaprimeiraavaliacao', horaAtual);
+        level2Result.attr('horaprimeiraavaliacao', horaAtual);
     }
+
+    var level2ResultList = $('.Resultlevel2[Level1Id=' + $('.level1.selected').attr('id') + '][UnitId="' + $('.App').attr('unidadeid') + '"][Shift="' + $('.App').attr('shift') + '"][Period="' + $('.App').attr('period') + '"][CollectionDate="' + getCollectionDate() + '"]');
 
     level2ResultList.attr('alertlevell1', alertlevell1);
     level2ResultList.attr('weievaluationl1', weievaluationl1);

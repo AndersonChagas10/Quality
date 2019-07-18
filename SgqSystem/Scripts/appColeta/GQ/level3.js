@@ -362,7 +362,7 @@ function openLevel3(level2) {
 	que precisou fazer a gambiarra abaixo para conseguir setar o valor corretamente*/
     $('.painelLevel03:visible').find('input[type="date"]').each(function (i, e) {
         var element = $('.painelLevel03:visible')
-		.find('input[parheaderfield_id="' + $(e).attr('parheaderfield_id') + '"]')
+            .find('input[parheaderfield_id="' + $(e).attr('parheaderfield_id') + '"]')
         element.attr('type', "text");
         element.attr('value', $(e).val());
         element.attr('type', "date");
@@ -490,7 +490,7 @@ function openLevel3(level2) {
 
             ParReasonSelected_Id = $(".messageParReasonType" + ParReasonType_Id + " #slcMotivo :selected").val();
 
-        },ParReasonType_Id);
+        }, ParReasonType_Id);
 
     } else {
         ParReasonSelected_Id = null;
@@ -626,8 +626,8 @@ function saveLevel03(Level03Id, value, conform, auditorId, totalError, valuetext
         + "' valueText='" + valuetext + "' weight='" + weight + "' punishmentvalue='" + punishment
         + "' intervalmin='" + intervalmin + "' intervalmax='" + intervalmax + "' isnotevaluate='" + isnotevaluate
         + "' defects='" + defects
-         + "' ParReasonId='" + ParReasonSelected_Id
-         + "' ParReasonType_Id='" + ParReasonType_Id
+        + "' ParReasonId='" + ParReasonSelected_Id
+        + "' ParReasonType_Id='" + ParReasonType_Id
         + "' parDepartmentId='" + parDepartmentSelected_Id + "'></div>";
 }
 
@@ -1060,7 +1060,7 @@ function saveResultLevel3() {
     var level1 = $(_level1).attr('id').split('98789');
     if (level1[1] == parseInt(getDicionario('IdIndicadorPesoHB'))) {
 
-        mediaPesoHB.push(parseFloat($('#' + getDicionario('IdTarefaPesoHB') + '.level3 input[type="text"]').val().replace(',','.')));
+        mediaPesoHB.push(parseFloat($('#' + getDicionario('IdTarefaPesoHB') + '.level3 input[type="text"]').val().replace(',', '.')));
         $('.level3List .calculoPesoHB .medicaCalculoPesoHB').text("Média: " + CalculoMediaPesoHB() + "g");
 
         if (!(typeof (ResetaCorMediaPesoHB) == "undefined"))
@@ -1080,12 +1080,12 @@ function saveResultLevel3() {
             }
 
             openMessageModal("A Quantidade Média final do peso dos Hamburguers é de:", "Média final: " + CalculoMediaPesoHB(), "", "");
-			
-			$('.level3List .calculoPesoHB').attr('id',getDicionario('IdTarefaMediaHB'));
-			$('.level3List .calculoPesoHB .medicaCalculoPesoHB').html('<input type="text" value="'+CalculoMediaPesoHB()+'" class="form-control text-center levelValue interval" style="text-align: right;" readonly="readonly">');
-			
-			$('.level3Group').append($('.level3List .calculoPesoHB'));
-			
+
+            $('.level3List .calculoPesoHB').attr('id', getDicionario('IdTarefaMediaHB'));
+            $('.level3List .calculoPesoHB .medicaCalculoPesoHB').html('<input type="text" value="' + CalculoMediaPesoHB() + '" class="form-control text-center levelValue interval" style="text-align: right;" readonly="readonly">');
+
+            $('.level3Group').append($('.level3List .calculoPesoHB'));
+
             mediaPesoHB = [];
         }
     }
@@ -1484,9 +1484,9 @@ function saveResultLevel3() {
             var value = ReplaceVirgula($(this).val());
 
             //Se o valor de defeito for maior que zero o resultado é não conforme.
-            if (parseFloat(value) > 0) {
-                conform = false;
-            }
+            // if (parseFloat(value) > 0) {
+            //     conform = false;
+            // }
 
             if (!parseFloat(value)) {
                 value = 0;
@@ -1500,32 +1500,94 @@ function saveResultLevel3() {
 
             var inputType = parseInt($(this).parents('.level3').attr('inputtype'));
 
-            //Calcula valor do Campo Calculado
-            if (inputType == 4) {
+            if (inputType == 1) { //Binário
+
+                value = !level3.attr('notconform');
+                conform = value;
+
+            } else if (inputType == 2) { //Número de defeitos
+
+                if (parseFloat(value) > 0) {
+                    conform = false;
+                }
+
+            } else if (inputType == 3) { //Intervalos
+
+                value = (level3).find('.levelValue').val();
+                conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
+
+            } else if (inputType == 4) { //Calcula valor do Campo Calculado
 
                 var valor1 = $(this).val().replace(',', '.');
                 var valor2 = $(this).siblings('.input02').val().replace(',', '.');
 
                 value = converteNotacaoBaseDezParaDecimal(valor1, valor2);
-                //value = replaceWithDevice(value);
-            } else if (inputType == 6) {
+
+            } else if (inputType == 5) { //Texto
+
+                if ($(level3).find('input').val()) {
+                    conform = false;
+                }
+
+            } else if (inputType == 6) { //Binário com texto
+
                 level3.attr('value', $(level3).find('input').val());
                 value = !level3.attr('notconform');
                 conform = value;
-            } else if (inputType == 7) {
+
+            } else if (inputType == 7) { //Intervalo em minutos
 
                 var antes = $(level3).find('.antes').val();
                 var depois = $(level3).find('.depois').val();
                 level3.attr('value', antes + "|" + depois);
                 value = HourToMinutes(depois) - HourToMinutes(antes);
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
-            } else if (inputType == 9) {
+
+            } else if (inputType == 8) { //Escala Likert
+
+                value = (level3).find('.levelValue').val();
+                conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
+
+            } else if (inputType == 9) { //Intervalo com Observação
+
                 level3.attr('value', $(level3).find('.levelValueNotes').val());
-                value = (level3).find('.levelValue').val()
+                value = (level3).find('.levelValue').val();
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
-            } else if (inputType == 10) {
-                value = (level3).find('.levelValue').val()
+
+            } else if (inputType == 10) { //Resultado
+
+                value = (level3).find('.levelValue').val();
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
+
+            } else if (inputType == 11) { //Observação
+
+                if (parseFloat(value) > 0) {
+                    conform = false;
+                }
+
+                if (!parseFloat(value)) {
+                    value = 0;
+                }
+
+            } else if (inputType == 99) { //Calculado por outro
+
+                if (parseFloat(value) > 0) {
+                    conform = false;
+                }
+
+                if (!parseFloat(value)) {
+                    value = 0;
+                }
+
+            } else {
+
+                if (parseFloat(value) > 0) {
+                    conform = false;
+                }
+
+                if (!parseFloat(value)) {
+                    value = 0;
+                }
             }
 
             //Se tenho level03Result atualizo.
@@ -1870,64 +1932,64 @@ function saveResultLevel3() {
 
         if (parseInt(sampleCurrent) == parseInt(sampleTotal)) {
 
-        if (level1.attr('hasgrouplevel2') != "true") {
-            evaluateCurrent = evaluateCurrent + 1;
-        }
-        if (level1.attr('hasgrouplevel2') == "true" && level2.attr('id') == $('.level2:visible:last').attr('id')) {
-            evaluateCurrent = evaluateCurrent + 1;
-        }
-
-        if (evaluateCurrent > evaluateTotal && level1.attr('islimitedevaluetionnumber') == "true" &&
-            level1.attr('hasgrouplevel2') == "true") {
-            level1.attr('hascompleteevaluation', 'true');
-            if (level1.attr('isreaudit'))
-                level1.attr('lastevaluate', level1.attr('reauditevaluation'));
-        }
-        sampleCurrent = 0;
-        level01Save.attr('completedsample', 'completedsample');
-        level01Save.attr('totalevaluate', evaluateCurrent);
-        level2.attr('evaluatecurrent', evaluateCurrent);
-        updateEvaluateSample(level2, $('.level3Group[level2id=' + $('.level2.selected').attr('id') + ']'), evaluateCurrent, sampleCurrent);
-        resetLevel3($('.level3Group[level2id=' + $('.level2.selected').attr('id') + ']'));
-        createFileResult();
-
-        if (isPartialSave == true) {
-
-            if (sampleCurrentTemp == 0)
-                level2.removeAttr('evaluatecurrent').removeAttr('samplecurrent');
-        }
-        else {
-            if (level2.attr('isreaudit') != "true") {
-                completeLevel2(level2, evaluateCurrent, evaluateTotal);
-
-                if ($('.level1.selected').attr('isreaudit') != 'true' && level2.attr('isreaudit') != 'true')
-                    setEvaluatedCounterLevel1(parseInt($('.level1.selected').attr('id')), parseInt(level2.attr('id')), evaluateCurrentTemp, parseInt($('.App').attr('shift')), parseInt($('.App').attr('period')));
-
-            } else {
-                var reauditevaluation = parseInt(level2.attr('reauditevaluation')) + 1;
-                level2.attr('reauditevaluation', reauditevaluation);
+            if (level1.attr('hasgrouplevel2') != "true") {
+                evaluateCurrent = evaluateCurrent + 1;
             }
-        }
-        var evalAux = evaluateCurrent;
-
-        if (evalAux > evaluateTotal && level1.attr('hasgrouplevel2') == 'true') {
-            createFileResultConsolidation();
-            $('#btnAllNA').text('Todos N/A');
-            controle = true;
-            //level1Show();
-        }
-        if (level2.attr('isreaudit') == 'true' && defects == 0 && evaluateCurrent > level2.attr('evaluate')) {
-            if (isNaN(level2.attr('reauditnumber')) == false) {
-                var rnum = parseInt(level2.attr('reauditnumber')) + 1;
-                $('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2[id=' + level2.attr('id') + ']').attr('reauditnumber', rnum);
-                console.log($('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2[id=' + level2.attr('id') + ']').attr('reauditnumber'));
+            if (level1.attr('hasgrouplevel2') == "true" && level2.attr('id') == $('.level2:visible:last').attr('id')) {
+                evaluateCurrent = evaluateCurrent + 1;
             }
-            level2.attr('havereaudit', 'false');
-        }
 
-        if (level1.attr('hasgrouplevel2') == "true" && level2.attr('id') == $('.level2:visible:last').attr('id')) {
-            openLevel2(level1);
-        }
+            if (evaluateCurrent > evaluateTotal && level1.attr('islimitedevaluetionnumber') == "true" &&
+                level1.attr('hasgrouplevel2') == "true") {
+                level1.attr('hascompleteevaluation', 'true');
+                if (level1.attr('isreaudit'))
+                    level1.attr('lastevaluate', level1.attr('reauditevaluation'));
+            }
+            sampleCurrent = 0;
+            level01Save.attr('completedsample', 'completedsample');
+            level01Save.attr('totalevaluate', evaluateCurrent);
+            level2.attr('evaluatecurrent', evaluateCurrent);
+            updateEvaluateSample(level2, $('.level3Group[level2id=' + $('.level2.selected').attr('id') + ']'), evaluateCurrent, sampleCurrent);
+            resetLevel3($('.level3Group[level2id=' + $('.level2.selected').attr('id') + ']'));
+            createFileResult();
+
+            if (isPartialSave == true) {
+
+                if (sampleCurrentTemp == 0)
+                    level2.removeAttr('evaluatecurrent').removeAttr('samplecurrent');
+            }
+            else {
+                if (level2.attr('isreaudit') != "true") {
+                    completeLevel2(level2, evaluateCurrent, evaluateTotal);
+
+                    if ($('.level1.selected').attr('isreaudit') != 'true' && level2.attr('isreaudit') != 'true')
+                        setEvaluatedCounterLevel1(parseInt($('.level1.selected').attr('id')), parseInt(level2.attr('id')), evaluateCurrentTemp, parseInt($('.App').attr('shift')), parseInt($('.App').attr('period')));
+
+                } else {
+                    var reauditevaluation = parseInt(level2.attr('reauditevaluation')) + 1;
+                    level2.attr('reauditevaluation', reauditevaluation);
+                }
+            }
+            var evalAux = evaluateCurrent;
+
+            if (evalAux > evaluateTotal && level1.attr('hasgrouplevel2') == 'true') {
+                createFileResultConsolidation();
+                $('#btnAllNA').text('Todos N/A');
+                controle = true;
+                //level1Show();
+            }
+            if (level2.attr('isreaudit') == 'true' && defects == 0 && evaluateCurrent > level2.attr('evaluate')) {
+                if (isNaN(level2.attr('reauditnumber')) == false) {
+                    var rnum = parseInt(level2.attr('reauditnumber')) + 1;
+                    $('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2[id=' + level2.attr('id') + ']').attr('reauditnumber', rnum);
+                    console.log($('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2[id=' + level2.attr('id') + ']').attr('reauditnumber'));
+                }
+                level2.attr('havereaudit', 'false');
+            }
+
+            if (level1.attr('hasgrouplevel2') == "true" && level2.attr('id') == $('.level2:visible:last').attr('id')) {
+                openLevel2(level1);
+            }
 
             if (sampleTotal != 0 && level1.attr('hasgrouplevel2') != "true") {
 
@@ -1950,18 +2012,23 @@ function saveResultLevel3() {
 
         sampleCurrent = parseInt(sampleCurrent) + 1;
 
-        if (level1.attr('hasgrouplevel2') != "true") {
-            if (level1.attr('editlevel2') != "true") {
-                openLevel2(level1);
-                scrollClick(parseInt(_level2.id));
-            } else {
-                if (ultL2Temp) {
+        if (sampleTotal != 0)
+        
+            if (level1.attr('hasgrouplevel2') != "true") {
+
+                if (level1.attr('editlevel2') != "true") {
                     openLevel2(level1);
                     scrollClick(parseInt(_level2.id));
+
+                } else {
+                    if (ultL2Temp) {
+                        openLevel2(level1);
+                        scrollClick(parseInt(_level2.id));
+                    }
                 }
-            }
-        } else if ($(_level1).attr('ispartialsave') == "true")
-            openLevel2(level1);
+
+            } else if ($(_level1).attr('ispartialsave') == "true")
+                openLevel2(level1);
     }
 
 
@@ -2548,15 +2615,19 @@ $(document).on('click', '#btnSave', function (e) {
     btnSave.children('#loadIcon').show();
 
     if ($('.level2Group:visible').length > 0) {
+
         if ($('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2').not('[completed]').length > 0) {
             return;
         }
+
         $('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2').each(function (index, self) {
             $(self).attr('.sampleTotal')
         });
+
         $('.level1.selected').removeAttr('isreaudit');
         $('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2').removeAttr('isreaudit');
         level1Show(false, clusterAtivo);
+
     } else {
 
         setTimeout(function (e) {
