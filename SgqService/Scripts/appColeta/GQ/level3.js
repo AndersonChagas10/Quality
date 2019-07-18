@@ -1130,6 +1130,8 @@ function saveResultLevel3() {
     //Seleciona o Side Current
     var sampleTotal = parseInt(level2.attr('sample'));
 
+    var isSampleInfinity = false;
+
     var updateSample = false;
     var evaluateCurrent = level2.attr('evaluatecurrent') != undefined ? parseInt(level2.attr('evaluatecurrent')) : 1;
 
@@ -2012,18 +2014,23 @@ function saveResultLevel3() {
 
         sampleCurrent = parseInt(sampleCurrent) + 1;
 
-        if (level1.attr('hasgrouplevel2') != "true") {
-            if (level1.attr('editlevel2') != "true") {
-                openLevel2(level1);
-                scrollClick(parseInt(_level2.id));
-            } else {
-                if (ultL2Temp) {
+        if (sampleTotal != 0)
+        
+            if (level1.attr('hasgrouplevel2') != "true") {
+
+                if (level1.attr('editlevel2') != "true") {
                     openLevel2(level1);
                     scrollClick(parseInt(_level2.id));
+
+                } else {
+                    if (ultL2Temp) {
+                        openLevel2(level1);
+                        scrollClick(parseInt(_level2.id));
+                    }
                 }
-            }
-        } else if ($(_level1).attr('ispartialsave') == "true")
-            openLevel2(level1);
+
+            } else if ($(_level1).attr('ispartialsave') == "true")
+                openLevel2(level1);
     }
 
 
@@ -2610,15 +2617,19 @@ $(document).on('click', '#btnSave', function (e) {
     btnSave.children('#loadIcon').show();
 
     if ($('.level2Group:visible').length > 0) {
+
         if ($('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2').not('[completed]').length > 0) {
             return;
         }
+
         $('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2').each(function (index, self) {
             $(self).attr('.sampleTotal')
         });
+
         $('.level1.selected').removeAttr('isreaudit');
         $('.level2Group[level01id=' + $('.level1.selected').attr('id') + '] .level2').removeAttr('isreaudit');
         level1Show(false, clusterAtivo);
+
     } else {
 
         setTimeout(function (e) {
