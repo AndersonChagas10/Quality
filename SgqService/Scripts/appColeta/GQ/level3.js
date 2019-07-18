@@ -1513,7 +1513,7 @@ function saveResultLevel3() {
                     conform = false;
                 }
 
-            } else if (inputType = 3) { //Intervalos
+            } else if (inputType == 3) { //Intervalos
 
                 value = (level3).find('.levelValue').val();
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
