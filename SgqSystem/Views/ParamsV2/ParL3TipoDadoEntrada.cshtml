@@ -254,6 +254,35 @@
     //    }
     //});
 
+    
+
+    $("#ParL3TipoDado #selectL3TipoDadoParDepartment").on('change', function () {
+
+        var departamentoSelecionado = parseInt($("#ParL3TipoDado #selectL3TipoDadoParDepartment :selected").val());
+        var cargosVinculado = [];
+
+        if (departamentoSelecionado === 0) {
+
+            preencheSelect('selectL3ParCargo', 'Name', 'Id', ParCargosGlobal, 'Todos');
+            cargosVinculado = [];
+
+        } else {
+
+            if (ParCargoXDepartmentsGlobal) {
+
+                ParCargosGlobalFiltrado = jQuery.grep(ParCargoXDepartmentsGlobal, function (n, i) {
+                    return (n.ParDepartment_Id === departamentoSelecionado);
+                });
+
+                ParCargosGlobalFiltrado.forEach(function (item) {
+                    cargosVinculado.push(item.ParCargo);
+                });
+
+                preencheSelect('selectL3ParCargo', 'Name', 'Id', cargosVinculado, 'Todos');
+            }
+        }
+    });
+
     $("#selectL3TipoDadoParLevel3InputType").on('change', function () {
 
         if ($("#selectL3TipoDadoParLevel3InputType :selected").val() == 8) {

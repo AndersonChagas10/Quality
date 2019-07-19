@@ -50,23 +50,31 @@ namespace SgqSystem.Controllers.V2.Api
                     return NotFound();
                 }
 
-                parlevel3Result.Parlevel3 = parLevel3;
-                parlevel3Result.Parlevel3.ParLevel3EvaluationSample =
-                    db.ParLevel3EvaluationSample
-                    .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
-                    .ToList();
-                parlevel3Result.Parlevel3.ParVinculoPeso =
-                    db.ParVinculoPeso
-                    .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
-                    .ToList();
-                parlevel3Result.Parlevel3.ParLevel3Value =
-                    db.ParLevel3Value
-                    .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
-                    .ToList();
-                parlevel3Result.Parlevel3.ParLevel3XHelp =
-                    db.ParLevel3XHelp
-                    .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
-                    .ToList();
+                try
+                {
+                    parlevel3Result.Parlevel3 = parLevel3;
+                    parlevel3Result.Parlevel3.ParLevel3EvaluationSample =
+                        db.ParLevel3EvaluationSample
+                        .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
+                        .ToList();
+                    parlevel3Result.Parlevel3.ParVinculoPeso =
+                        db.ParVinculoPeso
+                        .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
+                        .ToList();
+                    parlevel3Result.Parlevel3.ParLevel3Value =
+                        db.ParLevel3Value
+                        .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
+                        .ToList();
+                    parlevel3Result.Parlevel3.ParLevel3XHelp =
+                        db.ParLevel3XHelp
+                        .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
+                        .ToList();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
 
                 foreach (var item in parlevel3Result.Parlevel3.ParLevel3Value)
                 {

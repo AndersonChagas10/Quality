@@ -45,6 +45,7 @@
     .isDisabled {
         cursor: not-allowed;
         opacity: 0.5;
+        pointer-events: none;
     }
 
         .isDisabled > a {
@@ -574,8 +575,6 @@
     }
 
 
-
-
     let MontaSelectDepartamentoVinculadoAUnidadeSelecionada = function (selectId, empresaSelecionada, mensagem) {
 
         var unidadeSelecionada;
@@ -596,13 +595,67 @@
         }
 
         if (unidadeSelecionada == 0) {
+
+            ParDepartmentsGlobal = [];
             preencheSelect(selectId, 'Name', 'Id', ParDepartmentsGlobal, mensagem);
         } else {
+
             var departamentosVinculados = jQuery.grep(ParDepartmentsGlobal, function (n, i) {
                 return (n.ParCompany_Id === unidadeSelecionada);
             });
+
             preencheSelect(selectId, 'Name', 'Id', departamentosVinculados, mensagem);
         }
+
+        $('#' + selectId).trigger("change");
+    }
+
+    let GetParDepartmentsByUnit = function (unit) {
+
+        if (!unit) {
+            MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', null, null);
+            MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL2GeralParDepartment', null, null);
+            MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', null, null);
+
+            MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3TipoDadoParDepartment', null, null);
+
+            disableEnableAbasSemFiltroGeral();
+            return;
+        }
+
+        openLoader(Resources("please_wait"));
+
+        $.ajax({
+
+            url: `@Url.Action("GetParCargoXDepartmentByUnit", "api/ParLevel1Api")/${unit}`,
+            type: 'Get',
+            dataType: "json",
+            data: {},
+            contentType: "application/json",
+            success: function (data) {
+
+                ParDepartmentsGlobal = data.ParDepartments;
+                ParCargosGlobal = data.ParCargos;
+                ParCargoXDepartmentsGlobal = data.ParCargoXDepartments
+
+                MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', unit, null);
+                MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL2GeralParDepartment', unit, null);
+                MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', unit, null);
+
+                MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3TipoDadoParDepartment', unit, null);
+
+                preencheSelect('selectL3ParCargo', 'Name', 'Id', ParCargosGlobal, 'Todos');
+
+                disableEnableAbasSemFiltroGeral();
+
+                closeLoader();
+            },
+            error: function (request, error) {
+                closeLoader();
+                openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                console.log(error)
+            }
+        });
 
     }
 
@@ -726,7 +779,7 @@
             $("#ParL1Geral").find("[name='IsActive']").prop('checked', false);
 
         if (parseInt($(this).val()) > 0) {
-            debugger
+
             openLoader(Resources("please_wait"));
 
             $.ajax({
@@ -763,8 +816,9 @@
                 data: {},
                 contentType: "application/json",
                 success: function (data) {
-                    closeLoader();
                     preencheSelect('selectL2', 'Text', 'Value', data.Options, 'Criar novo monitoramento', preencheL2);
+                    disableEnableAbasSemFiltroGeral();
+                    closeLoader();
                 },
                 error: function (request, error) {
                     closeLoader();
@@ -823,6 +877,8 @@
                 success: function (data) {
 
                     preencheSelect('selectL3', 'Text', 'Value', data.Options, 'Criar nova tarefa', preencheL3);
+
+                    disableEnableAbasSemFiltroGeral();
                 },
                 error: function (request, error) {
                     closeLoader();
@@ -874,6 +930,9 @@
 
                     ParL3Help.load(data.Parlevel3.ParLevel3XHelp);
                     verifyTabs('selectL3', 'l3');
+
+                    disableEnableAbasSemFiltroGeral();
+
                     closeLoader();
                 },
                 error: function (request, error) {
@@ -943,18 +1002,13 @@
 
                 preencheSelect('selectL3GeralParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
 
-                preencheSelect('selectL3GeralParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o centro de custo');
-
-
                 preencheSelect('selectL3CaracteristicaDeRisco', 'Name', 'Id', data.ParRiskCharacteristicTypes, 'Selecione a Caracteristica de Risco');
 
                 preencheSelect('selectL2AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL2AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
-                preencheSelect('selectL2GeralParDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o centro de custo');
 
                 parCompanysGlobal = data.ParCompanys
-                preencheSelect('selectParCompanyGeral', 'Name', 'Id', data.ParCompanys, 'Todos');
-
+                preencheSelect('selectParCompanyGeral', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
 
                 preencheSelect('selectL3AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL3AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
@@ -962,18 +1016,11 @@
                 preencheSelect('selectL3PesoPesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
                 preencheSelect('selectL3PesoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3PesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
-                preencheSelect('selectL3PesoParDepartment', 'Name', 'Id', data.ParDepartments, 'Todos');
                 preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a Função');
-
-                preencheSelect('selectL3ParCargo', 'Name', 'Id', data.ParCargos, 'Todos');
-
-                ParDepartmentsGlobal = data.ParDepartments;
-                ParCargosGlobal = data.ParCargos;
-                ParCargoXDepartmentsGlobal = data.ParCargoXDepartments;
 
                 preencheSelect('selectL3TipoDadoParLevel3InputType', 'Name', 'Id', data.ParLevel3InputTypes, 'Selecione o Tipo de dados para a coleta');
                 preencheSelect('selectL3TipoDadoParLevel3BoolFalse', 'Name', 'Id', data.ParLevel3BoolFalses, 'Valor negativo');
-                preencheSelect('selectL3TipoDadoParDepartment', 'Name', 'Id', data.ParDepartments, 'Todos');
+
                 preencheSelect('selectL3TipoDadoParLevel3BoolTrue', 'Name', 'Id', data.ParLevel3BoolTrues, 'Valor positivo');
                 preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3TipoDadoParMeasurementUnit', 'Name', 'Id', data.ParMeasurementUnits, 'Selecione a unidade de medida');
@@ -981,7 +1028,8 @@
                 preencheSelect('selectDCAvamParCompany', 'Name', 'Id', data.ParCompanys, 'Todas as empresas');
 
                 $("#selectParCompanyGeral").on('change', function () {
-                    MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', null, null);
+
+                    GetParDepartmentsByUnit(parseInt($("#selectParCompanyGeral :selected").val()));
 
                     //Com base na Empresa selecionada no pré filtro
                     //o metodo preenche os selects de Empresa apenas com a empresa que foi selecionada e a opção todos
@@ -992,9 +1040,10 @@
                     listaVinculoPesoVinculadosaEmpresaSelecionada(parLevel3PesoList);
 
                     listaAvaliacaoAmostraVinculadosaEmpresaSelecionada(parDCAVamList);
-                })
-                preencheSelect('selectDCDepartment', 'Name', 'Id', data.ParDepartments, 'Selecione o centro de custo', preencheDC);
 
+                });
+
+                preencheSelect('selectDCDepartment', null, null, [], 'Selecione o centro de custo', preencheDC);
 
                 preencheSelect('selectParFrequencyAV', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
                 preencheSelect('selectRotina', 'Name', 'Id', data.RotinaIntegracao, 'Selecione a Rotina');
@@ -1002,6 +1051,8 @@
 
                 closeLoader();
                 verifyTabs('selectDCDepartment', 'dc');
+
+                disableEnableAbasSemFiltroGeral();
 
             },
             error: function (request, error) {
@@ -1169,6 +1220,30 @@
         }
 
         return isValid;
+    }
+
+    let disableEnableAbasSemFiltroGeral = function () {
+
+        let hasLevel3Selected = $("#selectL3 :selected").val() == "0";
+
+        if (hasLevel3Selected)
+            return;
+
+        let idUnidadeGeral = parseInt($('#selectParCompanyGeral :selected').val())
+
+        if (!idUnidadeGeral) {
+
+            //Desabilitar
+            $('#l3 a[href="#l3_peso"]').addClass("isDisabled");
+            $('#l3 a[href="#l3_tipo_dado_entrada"]').addClass("isDisabled");
+            $('a[href="#l3_geral"]').trigger("click");
+
+        } else {
+
+            //Habilitar
+            $('#l3 a[href="#l3_peso"]').removeClass("isDisabled");
+            $('#l3 a[href="#l3_tipo_dado_entrada"]').removeClass("isDisabled");
+        }
     }
 
     $('#btnVincular').on('click', function (e) {
