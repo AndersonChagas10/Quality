@@ -90,7 +90,7 @@ function cleanInputHeaderFields(obj) {
     if (obj.HeaderFieldsParamsClean && obj.HeaderFieldsParamsClean.length > 0)
         obj.HeaderFieldsParamsClean.forEach(function (key, i) {
 
-            if (key.length > 0) {
+            if(key.length > 0){
                 var input = $('input[data-din=' + key + ']:visible');
 
                 if (input)

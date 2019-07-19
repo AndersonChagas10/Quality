@@ -1016,7 +1016,8 @@ function syncButton() {
 
 var intervalo = setInterval(function () {
     $('span.database').css('margin', '2px');
-    var notSynced = $('.level02Result[sync=false]').length + $('.VerificacaoTipificacaoResultados div[sync=false]').length;
+    var notSynced = $('.level02Result[sync=false]').length + $('.VerificacaoTipificacaoResultados div[sync=false]').length
+     + level3Photos.filter(function (o, i) { return o.isactive == true }).length;
     if (notSynced == 0) {
         $('span.database').text(getResource('data_synced'));
         //afterDevice($('<i class="fa fa-database" aria-hidden="true"></i>'), $('span.database'));
