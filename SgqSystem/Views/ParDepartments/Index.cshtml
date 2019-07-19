@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Dominio.ParDepartment>
+﻿
+@model  PagedList.IPagedList<Dominio.ParDepartment>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = Resources.Resource.costcenter;
@@ -42,9 +44,22 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
 
-                                <p>
+                                <div class="col-md-5" style="padding:15px">
+
                                     @Html.ActionLink(Resources.Resource._novo as string, "Create", null, new { @class = "btn btn-primary" })
-                                </p>
+
+                                </div>
+
+                                <div class="pull-right" style="padding:15px">
+                                    @using (Html.BeginForm("Index", "ParDepartments", FormMethod.Get))
+                                    {
+                                        <label for="filtro">Buscar</label>
+                                        <input id="filtro" name="filtro" value="@ViewBag.filtro" />
+                                        <input type="submit" value="Pesquisar" class="btn btn-primary" />
+                                    }
+                                </div>
+
+
                                 <table class="table" id="tabelaDepartamentos">
                                     <thead>
                                         <tr>
@@ -92,6 +107,10 @@
                                         }
                                     </tbody>
                                 </table>
+                                @*Html.PagedListPager(Model, page => Html.ActionWithParams("Index", new { page }))*@
+                                <div class="pull-right" style="padding: 25px;">
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", "ParDepartments", new { page = page, filtro = ViewBag.filtro }))
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -111,15 +130,16 @@
 </script>
 
 <script>
-     $(document).ready(function () {
-         closeLeftSidebar();
-         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
-             null,
-             null,
-             null,
-             null,
-             { "bSearchable": false }
-         ];
-         $('#tabelaDepartamentos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+    $(document).ready(function () {
+        closeLeftSidebar();
+
+        //DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+        //    null,
+        //    null,
+        //    null,
+        //    null,
+        //    { "bSearchable": false }
+        //];
+        //$('#tabelaDepartamentos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 </script>

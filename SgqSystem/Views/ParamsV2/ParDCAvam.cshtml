@@ -213,6 +213,11 @@
             $("#IsAgendamento").prop('disabled', true);
         }
 
+        if ($("#ParDCAvam #selectParFrequencyAV :selected").val() === "1"
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "2") {
+            $("#ParDCAvamEvaluation").prop('disabled', false);
+            $("#IsAgendamento").prop('disabled', true);
+        }
 
         //altera o tipo do campo Inicio e Fim para numerico
         if ($("#ParDCAvam #selectParFrequencyAV :selected").val() === "4"
