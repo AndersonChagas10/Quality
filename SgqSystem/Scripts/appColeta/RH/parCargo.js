@@ -30,9 +30,10 @@ function listarParCargo() {
                 'data-total-sample="' + o.Evaluation.Sample + '"                                     ' +
                 'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"                ' +
                 'data-current-sample="' + currentEvaluationSample.Sample + '">                       ' +
-                '	<div class="col-xs-4">' + o.Name + '</div>                                      ' +
-                '	<div class="col-xs-4">Av: ' + currentEvaluationSample.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>      ' +
-                '	<div class="col-xs-4">Am: ' + currentEvaluationSample.Sample + '/' + o.Evaluation.Sample + ' </div>  ' +
+                '	<div class="col-xs-3">' + o.Name + '</div>                                      ' +
+                '	<div class="col-xs-1"></div>                                                                  ' +
+                '	<div class="col-xs-4">Av: ' + o.Evaluation.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>      ' +
+                '	<div class="col-xs-4">Am: ' + o.Evaluation.Sample + '/' + o.Evaluation.Sample + ' </div>  ' +
                 '</button>';
         } else {
             htmlParCargo += '<button type="button" class="list-group-item col-xs-12"                                       ' +
