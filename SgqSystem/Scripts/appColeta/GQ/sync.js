@@ -395,7 +395,7 @@ function consolidation() {
         , async: false //blocks window close
         , headers: token()
         , success: function (data, status) {
-            if (data != null && data.d == "error") {
+            if (data != null && data == "error") {
                 //createLog("Consolidation Error:" + XMLHttpRequest.responseText);
                 mensagemSyncHide();
                 openMessageModal(getResource("synchronization_error"), getResource("try_again_contact_support"));

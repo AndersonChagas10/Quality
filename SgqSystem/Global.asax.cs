@@ -57,7 +57,7 @@ namespace SgqSystem
 			
             #endregion
 
-            Dominio.Seed.Seed.SetSeedValues(isPT:GlobalConfig.LanguageBrasil);
+            Dominio.Seed.Seed.SetSeedValues(isPT:GlobalConfig.LanguageBrasil, runAppScripts: true);
 
             SetGlobalConfigAmbient();
             ThreadPool.QueueUserWorkItem(IntegrationJobFactory.ExecuteIntegrationJobFunction);
