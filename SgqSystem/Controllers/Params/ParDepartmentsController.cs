@@ -1,5 +1,7 @@
 ﻿using Dominio;
 using Helper;
+using PagedList;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -13,7 +15,7 @@ namespace SgqSystem.Controllers
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
         // GET: ParDepartments
-        public ActionResult Index()
+        public ActionResult Index(int? page, string filtro = "")
         {
             var listaFilhos = db.ParDepartment.ToList();
             listaFilhos.Add(new ParDepartment() { Id = -1, Name = "Selecione" });
@@ -22,8 +24,22 @@ namespace SgqSystem.Controllers
             var listaUnidades = db.ParCompany.ToList();
             listaUnidades.Add(new ParCompany() { Id = -1, Name = "Selecione" });
             ViewBag.ParCompany_Id = new SelectList(listaUnidades, "Id", "Name", -1);
+            
+            List<ParDepartment> departamentos = new List<ParDepartment>();
 
-            return View(db.ParDepartment.ToList());
+            departamentos = db.ParDepartment.Where(x => x.Active).OrderBy(x => x.Id).ToList();
+
+            if(filtro != "")
+            {
+                departamentos = db.ParDepartment.Where(x => x.Active && x.Name.Contains(filtro)).OrderBy(x => x.Id).ToList();
+                ViewBag.filtro = filtro;
+            }
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+
+            return View(departamentos.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: ParDepartments/Details/5
@@ -66,9 +82,6 @@ namespace SgqSystem.Controllers
 
             if (parDepartment.ParDepartmentGroup_Id == 0)
                 parDepartment.ParDepartmentGroup_Id = null;
-
-            //if (parDepartment.ParDepartmentGroup_Id != null)
-            // VincularDepartamentoAoGrupoDeDepartamentos(parDepartment);
 
             DepartamentoDuplicado(parDepartment);
             if (ModelState.IsValid)
@@ -128,9 +141,6 @@ namespace SgqSystem.Controllers
 
                 if (parDepartment.ParCompany_Id != parCompanyDepartmentOld && parDepartment.Parent_Id == null || (parDepartment.ParDepartmentGroup_Id != null))
                     AlteraParCompanyFilhos(parDepartment);
-
-                //if(parDepartment.ParDepartmentGroup_Id != null)
-                    //VincularDepartamentoAoGrupoDeDepartamentos(parDepartment);
 
                 if (ModelState.IsValid)
                 {
