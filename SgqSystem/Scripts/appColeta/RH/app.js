@@ -170,23 +170,28 @@ function changeDate(that) {
 
     if (globalColetasRealizadas.length > 0) {
 
-        var titulo = "Não foi possível alterar a data.";
-        var mensagem = "Existem coeltas não sincronizadas. Deseja sincronizar os dados?";
+        setTimeout(function(){
+            var titulo = "Não foi possível alterar a data.";
+            var mensagem = "Existem coeltas não sincronizadas. Deseja sincronizar os dados?";
 
-        openMessageConfirm(titulo, mensagem, sincronizarColeta, function () { }, "blue", "white");
-
+            openMessageConfirm(titulo, mensagem, sincronizarColeta, closeModal, "orange", "white");
+        },500);
         return false;
     }
 
     openMensagem("Alterando data...", "blue", "White");
-    _writeFile("appParametrization.txt", '', function () { });
+    _writeFile("appParametrization.txt", '', function () { 
+        var oldFrequency_Id = currentParFrequency_Id+0;
+        currentParFrequency_Id = 0;
+        getPlanejamentoPorFrequencia(oldFrequency_Id);
+        openParFrequency();
+    });
 
     //var horas = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
     var horas = "00:00:00";
 
     currentCollectDate = new Date(newDate + " " + horas);
 
-    openParFrequency();
     closeModal(5000);
 }
 

@@ -640,8 +640,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
 
     //Mostra mensagem de que a coleta foi realizada com sucesso e fecha após 3 segundos
-    openModal("Amostra salva com sucesso!", "blue", "white");
-    closeModal(3000);
+    openMensagem("Amostra salva com sucesso!", "blue", "white");
+    closeMensagem(3000);
 
     if (coletaAgrupada.Sample == 1) {
         //atualiza tela de coleta e contadores
