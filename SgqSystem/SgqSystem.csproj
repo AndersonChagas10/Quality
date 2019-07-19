@@ -951,7 +951,6 @@
     <Content Include="Scripts\appColeta\GQ\level1.js" />
     <Content Include="Scripts\appColeta\GQ\level2.js" />
     <Content Include="Scripts\appColeta\GQ\level3.js" />
-    <Content Include="Scripts\appColeta\GQ\level3Collapse.js" />
     <Content Include="Scripts\appColeta\GQ\login.js" />
     <Content Include="Scripts\appColeta\GQ\message.js" />
     <Content Include="Scripts\appColeta\GQ\mock_modulos.js" />

@@ -3,6 +3,7 @@ using SgqSystem.Controllers.Api;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -23,7 +24,7 @@ namespace SgqSystem.Controllers.V2.Api
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
-                parLevel1Selects.ParLevels1 = db.ParLevel1.ToList();               
+                parLevel1Selects.ParLevels1 = db.ParLevel1.ToList();
             }
 
             return Ok(parLevel1Selects);
@@ -62,12 +63,12 @@ namespace SgqSystem.Controllers.V2.Api
 
                 //Peso
                 var listaDepartamentos = db.ParDepartment.Where(x => x.Active).ToList();
-                parLevel1Selects.ParDepartments = listaDepartamentos.Where(y => !listaDepartamentos.Any(y1 => y1.Parent_Id == y.Id)).ToList();
+                //parLevel1Selects.ParDepartments = listaDepartamentos.Where(y => !listaDepartamentos.Any(y1 => y1.Parent_Id == y.Id)).ToList();
 
                 parLevel1Selects.ParGroupParLevel1s = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
-                parLevel1Selects.ParCargos = db.ParCargo.Where(x => x.IsActive).ToList();
+                //parLevel1Selects.ParCargos = db.ParCargo.Where(x => x.IsActive).ToList();
 
-                parLevel1Selects.ParCargoXDepartments = db.ParCargoXDepartment.Where(x => x.IsActive).ToList();
+                //parLevel1Selects.ParCargoXDepartments = db.ParCargoXDepartment.Where(x => x.IsActive).ToList();
                 parLevel1Selects.RotinaIntegracao = db.RotinaIntegracao.Where(x => x.IsActive).ToList();
 
             }
@@ -104,7 +105,7 @@ namespace SgqSystem.Controllers.V2.Api
                         .Where(x => x.IsActive == true && x.Id == item.ParHeaderField_Id)
                         .Include(x => x.ParLevelDefiniton)
                         .Include(x => x.ParFieldType)
-                        .Include(x=>x.ParMultipleValues)
+                        .Include(x => x.ParMultipleValues)
                         .FirstOrDefault();
                     item.ParHeaderField.ParMultipleValues = item.ParHeaderField.ParMultipleValues.Where(x => x.IsActive).ToList();
                 }
@@ -116,7 +117,7 @@ namespace SgqSystem.Controllers.V2.Api
                 }
 
             }
-    
+
             return Ok(parLevel1);
         }
 
@@ -170,6 +171,34 @@ namespace SgqSystem.Controllers.V2.Api
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [HttpGet]
+        [Route("GetParCargoXDepartmentByUnit/{id}")]
+        public IHttpActionResult GetDepartmentsByUnit(int id)
+        {
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var ParDepartments = db.ParDepartment.Where(x => x.ParCompany_Id == id).ToList();
+
+                var departamentosIds = ParDepartments.Select(x => x.Id).ToList();
+
+                var ParCargoXDepartment = db.ParCargoXDepartment.Where(x => departamentosIds.Contains(x.ParDepartment_Id)).ToList();
+
+                var ParCargoIds = ParCargoXDepartment.Select(x => x.ParCargo_Id).ToList();
+
+                var ParCargos = db.ParCargo.Where(x => ParCargoIds.Contains(x.Id)).ToList();
+
+                dynamic retorno = new ExpandoObject();
+
+                retorno.ParDepartments = ParDepartments;
+                retorno.ParCargos = ParCargos;
+                retorno.ParCargoXDepartments = ParCargoXDepartment;
+
+                return Ok(retorno);
+            }
+        }
+
         private bool SaveOrUpdateParLevel1(ParLevel1 parLevel1, bool isAvancado = false)
         {
             if (parLevel1.Id > 0)//Alter
@@ -215,7 +244,7 @@ namespace SgqSystem.Controllers.V2.Api
                     parLevel1.AddDate = DateTime.Now;
 
                     db.ParLevel1.Add(parLevel1);
-                    
+
                     try
                     {
                         db.SaveChanges();
