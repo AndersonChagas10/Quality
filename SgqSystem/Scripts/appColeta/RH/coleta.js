@@ -121,6 +121,7 @@ function getInputLevel3(level3, level2, level1, striped) {
         retorno += ' data-level1="' + level1.Id + '"';
         retorno += ' data-level2="' + level2.Id + '"';
         retorno += ' data-level3="' + level3.Id + '"';
+        retorno += ' data-peso="' + level3.Peso + '"';
         retorno += ' style="padding-left:10px;' + colorStriped + '">';
 
         switch (level3.ParLevel3InputType.Id) {
@@ -594,17 +595,17 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 IsNotEvaluate: $(data).attr('data-conforme-na') == "",
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
+				Weigth:$(data).attr('data-peso'),
+				WeiEvaluation: $(data).attr('data-peso'),
+				Defects: $(data).attr('data-conforme') == "1" ? 0 : 1,
+				WeiDefects: ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
                 /*
 				"UserSgq_Id":1,
 				"Shift_Id":1,
 				"Period_Id":1,
 				"ParCluster_Id":1,
 				"CollectionType":1,
-				"Weigth":1,
-				"Defects":0,
 				"PunishimentValue":1,
-				"WeiEvaluation":1,
-				"WeiDefects":0,
 				"HasPhoto":"0",
 				"HaveCorrectiveAction":"0",
 				"Parfrequency_Id":1,

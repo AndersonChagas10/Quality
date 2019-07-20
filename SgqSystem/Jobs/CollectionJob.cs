@@ -187,7 +187,7 @@ namespace SgqSystem.Jobs
             var sql = $@"
                     SELECT ParLevel3_Id
                         ,Id
-                        ,Weigth
+                        ,Weigth as Weight
                         ,IntervalMin
                         ,IntervalMax
                         ,Value
