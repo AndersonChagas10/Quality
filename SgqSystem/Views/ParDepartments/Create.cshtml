@@ -73,7 +73,7 @@
                                             @Html.ValidationMessageFor(model => model.Parent_Id, "", new { @class = "text-danger" })
                                         </div>
                                         <div id="infoFilho" class="col-md-10" hidden="hidden">
-                                            <p class="alert alert-info col-md-6">Ao vincular um Centro de Custo a uma Empresa esta campo ficará desablitado, pois seguirá a hierarquia do cadastro.</p>
+                                            <p class="alert alert-info col-md-6">Ao vincular um Centro de Custo a uma Empresa este campo ficará desablitado, pois seguirá a hierarquia do cadastro.</p>
                                         </div>
                                     </div>
 
@@ -84,12 +84,12 @@
                                             @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
                                         </div>
                                         <div id="infoVinculoUnidade" class="col-md-10" hidden="hidden">
-                                            <p class="alert alert-info col-md-6">Ao vincular uma Seção a um Centro de Custo, esta campo ficará desabilitado, pois seguirá a hierarquia do cadastro</p>
+                                            <p class="alert alert-info col-md-6">Ao vincular uma Seção a um Centro de Custo, este campo ficará desabilitado, pois seguirá a hierarquia do cadastro</p>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.ParDepartmentGroup_Id, "Grupo de Departamentos", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        @Html.LabelFor(model => model.ParDepartmentGroup_Id, Resources.Resource.group as string + " " + Resources.Resource.of as string + " " + Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                         <div class="col-md-6">
                                             @Html.DropDownListFor(model => model.ParDepartmentGroup_Id, null, new { @class = "form-control select2" })
                                             @Html.ValidationMessageFor(model => model.ParDepartmentGroup_Id, "", new { @class = "text-danger" })
