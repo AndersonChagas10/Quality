@@ -35,6 +35,9 @@ namespace Dominio
         [DisplayName("É filho de")]
         public int? Parent_Id { get; set; }
 
+        [NotMapped]
+        public string Parent { get; set; }
+
         public int? ParDepartmentGroup_Id { get; set; }
 
         [ForeignKey("Parent_Id")]

@@ -355,6 +355,7 @@
     <Compile Include="Controllers\Api\Integracao\IntegracaoApiController.cs" />
     <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
     <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
+    <Compile Include="Controllers\Api\ParDepartmentsApiController.cs" />
     <Compile Include="Controllers\Api\ParInputTypeValuesApiController.cs" />
     <Compile Include="Controllers\Api\ParReasonApiController.cs" />
     <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
@@ -882,6 +883,7 @@
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\GRTYtoaraLogo.png" />
     <Content Include="Content\Imagens\favicon.png" />
+    <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\mindmap.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\PluginGRT\pivot.css" />
@@ -994,6 +996,7 @@
     <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
     <Content Include="Scripts\appColeta\RH\utils.js" />
     <Content Include="Scripts\appColeta\GQ\mock.js" />
+    <Content Include="Scripts\jquery-1.12.1.min.js" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
     <Content Include="Content\select2-bootstrap.min.css" />
     <Content Include="Content\select2.min.css" />
