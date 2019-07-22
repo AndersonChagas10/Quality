@@ -289,6 +289,17 @@ namespace SgqSystem.Controllers.Api.App
             return login + resource;
         }
 
+        [HttpPost]
+        [Route("GetImages")]
+        public Dictionary<string, string> GetImages()
+        {
+            var image = new Dictionary<string, string>();
+
+            image.Add("logo", DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogo);
+
+            return image;
+        }
+
         #region Nova Proposta Get Tela
 
         public class GeneratedUnit
