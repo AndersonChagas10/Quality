@@ -1596,7 +1596,7 @@ DROP TABLE #AMOSTRATIPO4 ";
                              AND MON.Name = '{ form.level2Name }'
                              AND (UNI.Name = '{ form.unitName }' OR UNI.Initials = '{ form.unitName }')
                              AND R3.IsNotEvaluate = 0 
-                             AND C2.CollectionDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL }'
+                             AND C2.CollectionDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL } 23:59:59'
                          { whereShift }
                          GROUP BY 
                           IND.Id
