@@ -119,6 +119,7 @@ function getPlanejamentoPorFrequencia(frequencyId) {
 					openPlanejamentoColeta();
 					closeMensagem();
 				});
+				sincronizarResultado(currentParFrequency_Id);
 			},
 			timeout: 600000,
 			error: function () {

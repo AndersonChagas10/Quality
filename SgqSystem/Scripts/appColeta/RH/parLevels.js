@@ -83,16 +83,17 @@ function montarLevel2(parLevel1) {
 
 }
 
+var parVinculosMontarLevel3 = [];
 function montarLevel3(parLevel1, parLevel2, index) {
 
-    var parVinculos = $.grep(parametrization.listaParVinculoPeso, function (obj) {
+    parVinculosMontarLevel3 = $.grep(parametrization.listaParVinculoPeso, function (obj) {
         return (obj.ParDepartment_Id == currentParDepartment_Id || obj.ParDepartment_Id == null) &&
             (obj.ParCargo_Id == currentParCargo_Id || obj.ParCargo_Id == null) &&
             obj.ParLevel1_Id == parLevel1.Id &&
             obj.ParLevel2_Id == parLevel2.Id;
     });
 
-    var level3_Ids = $.map(parVinculos, function (obj) {
+    var level3_Ids = $.map(parVinculosMontarLevel3, function (obj) {
         return obj.ParLevel3_Id;
     });
 
@@ -103,10 +104,16 @@ function montarLevel3(parLevel1, parLevel2, index) {
     level3_Ids.forEach(function (parLevel3_Id) {
 
         var Level3 = $.grep(parametrization.listaParLevel3, function (parLevel3) {
-            return parLevel3.Id == parLevel3_Id && vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos);
+            return parLevel3.Id == parLevel3_Id && vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculosMontarLevel3);
         });
 
         Level3.forEach(function (level3) {
+
+            var vinculo = $.grep(parVinculosMontarLevel3, function (obj) {
+                return level3.Id == obj.ParLevel3_Id;
+            });
+
+            level3["Peso"] = vinculo[0].Peso;
 
             level3["ParLevel3InputType"] = getInputType(level3, parLevel2, parLevel1);
 

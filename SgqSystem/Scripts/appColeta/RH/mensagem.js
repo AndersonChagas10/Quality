@@ -43,6 +43,7 @@ function criarModal() {
 }
 
 function openModal(html, color, textColor) {
+	closeModalImediatamente();
 	
 	$('div[data-html] > div').css('color', textColor);
 	$('div[data-html] > div').css('background-color', color);
@@ -56,21 +57,25 @@ function closeModal(timer) {
 		timer = 0;
 
 	setTimeout(function () {
-		$('div[data-html]').addClass('hide');
-		$('div[data-html] > div').css('color', 'initial');
-		$('div[data-html] > div').css('background-color', 'initial');
-		$('div[data-html] > div').html('');
+		closeModalImediatamente();
 	}, timer);
 
 }
 
-function openMessageConfirm(title, messagem, callbackYes, callbackNo, color, textColor) {
+function closeModalImediatamente(){
+	$('div[data-html]').addClass('hide');
+	$('div[data-html] > div').css('color', 'initial');
+	$('div[data-html] > div').css('background-color', 'initial');
+	$('div[data-html] > div').html('');
+}
 
+function openMessageConfirm(title, messagem, callbackYes, callbackNo, color, textColor) {
+	closeModalImediatamente();
 	var html =
 		'<div class="container">' +
 		'<div class="row">' +
-		'<h4>' + title + '</h4>' +
-		'<p>' + messagem + '</p>' +
+		'<h3>' + title + '</h3>' +
+		'<h4>' + messagem + '</h4>' +
 		'<button class="btn btn-primary pull-right" onclick="' + callbackYes + ';closeModal();">Sim</button>' +
 		'<button class="btn btn-default pull-right" onclick="' + callbackNo + ';closeModal();">Não</button>' +
 		'</div>' +

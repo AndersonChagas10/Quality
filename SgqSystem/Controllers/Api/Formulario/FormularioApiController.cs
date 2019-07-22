@@ -92,7 +92,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                 sqlParCompany = $@" AND PD.ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)}) ";
             }
 
-            var query = $@"SELECT Distinct PD.Id,PD.Name FROM ParDepartment PD WHERE 1=1 AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
+            var query = $@"SELECT Distinct PD.Id,PD.Name FROM ParDepartment PD 
+WHERE 1=1 
+AND PD.Active = 1 
+AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
 
             var retorno = factory.SearchQuery<ParDepartment>(query).ToList();
 
@@ -121,7 +124,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                              {sqlDepartamentoPelaHash})";
             }
 
-            var query = $@"SELECT Distinct PD.Id,PD.Name  FROM ParDepartment PD WHERE 1=1 AND PD.Parent_Id IS NOT NULL " + sqlParDepartment;
+            var query = $@"SELECT Distinct PD.Id,PD.Name  FROM ParDepartment PD 
+WHERE 1=1 
+AND PD.Active = 1 
+AND PD.Parent_Id IS NOT NULL " + sqlParDepartment;
 
             var retorno = factory.SearchQuery<ParDepartment>(query).ToList();
 
