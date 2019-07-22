@@ -68,14 +68,23 @@
                                             </div>
                                         </div>
 
+                                        @*<div class="form-group">
+                                                @Html.LabelFor(model => model.Parent_Id, Resources.Resource.son_of as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-6">
+                                                    @Html.DropDownListFor(model => model.Parent_Id, null, new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(model => model.Parent_Id, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div id="infoFilho" class="col-md-6" hidden="hidden">
+                                                    <p class="alert alert-info col-md-6">Ao vincular uma Seção a um Centro de Custo, esta campo ficará desabilitado, pois seguirá a hierarquia do cadastro</p>
+                                                </div>
+                                            </div>*@
+
+
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Parent_Id, Resources.Resource.son_of as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-6">
-                                                @Html.DropDownListFor(model => model.Parent_Id, null, new { @class = "form-control select2" })
-                                                @Html.ValidationMessageFor(model => model.Parent_Id, "", new { @class = "text-danger" })
-                                            </div>
-                                            <div id="infoFilho" class="col-md-6" hidden="hidden">
-                                                <p class="alert alert-info col-md-6">Ao vincular uma Seção a um Centro de Custo, esta campo ficará desabilitado, pois seguirá a hierarquia do cadastro</p>
+                                            @Html.LabelFor(model => model.Parent_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.TextBox("Parent", ViewBag.Parents[0].Value as string, new { @class = "form-control" })
+                                                @Html.Hidden("Parent_Id", Model.Parent_Id)
                                             </div>
                                         </div>
 
@@ -130,55 +139,130 @@
     </div>
     <!-- END CONTENT BODY -->
 </div>
-
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<style>
+    .ui-autocomplete {
+        max-height: 100px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+    }
+    /* IE 6 doesn't support max-height
+    * we use height instead, but this forces the menu to always be this tall
+    */
+    * html .ui-autocomplete {
+        height: 100px;
+    }
+</style>
 <script>
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar4");
-    $('#Parent_Id').select2();
     $('#ParCompany_Id').select2();
 
-    $("#Parent_Id, #ParCompany_Id").on('change', function () {
-        debugger
-        if ($("#ParCompany_Id :selected").val() == 0 && $("#Parent_Id :selected").val() == 0) {
-            $("#ParCompany_Id").prop('disabled', false);
-            $("#Parent_Id").prop('disabled', false);
-            $("#infoFilho").hide();
-            $("#infoVinculoUnidade").hide();
-        } else if ($("#Parent_Id :selected").val() > 0) {
-            $("#ParCompany_Id").prop('disabled', true);
-            $("#Parent_Id").prop('disabled', false);
-            $("#infoFilho").hide();
-            $("#infoVinculoUnidade").show();
-        } else {
-            $("#Parent_Id").prop('disabled', true);
-            $("#ParCompany_Id").prop('disabled', false);
-            $("#infoFilho").show();
-            $("#infoVinculoUnidade").hide();
-        }
+    $("#ParCompany_Id").on('change', function () {
+        validaFilhoEEmpresaVinculados();
     });
 
 </script>
 
 <script>
-    $(document).ready(function () {
-        if ($("#ParCompany_Id :selected").val() == 0 && $("#Parent_Id :selected").val() == 0) {
+
+    function validaFilhoEEmpresaVinculados() {
+        debugger
+        if ($("#ParCompany_Id :selected").val() == 0 && $("#Parent_Id").val() == 0) {
             $("#ParCompany_Id").prop('disabled', false);
-            $("#Parent_Id").prop('disabled', false);
+            $("#Parent").prop('disabled', false);
             $("#infoFilho").hide();
             $("#infoVinculoUnidade").hide();
-        } else if ($("#Parent_Id :selected").val() > 0) {
+        } else if ($("#Parent_Id").val() > 0) {
             $("#ParCompany_Id").prop('disabled', true);
-            $("#Parent_Id").prop('disabled', false);
+            $("#Parent").prop('disabled', false);
             $("#infoFilho").hide();
             $("#infoVinculoUnidade").show();
         } else {
-            $("#Parent_Id").prop('disabled', true);
+            $("#Parent").prop('disabled', true);
             $("#ParCompany_Id").prop('disabled', false);
             $("#infoFilho").show();
             $("#infoVinculoUnidade").hide();
         }
+    }
+
+    $(document).ready(function () {
+        validaFilhoEEmpresaVinculados();
         closeLeftSidebar();
     });
+
+    $("#Parent").on('keyup', function () {
+        if ($("#Parent").val() == "") {
+            $("[name=Parent_Id]").val($("#Parent").val());
+        }
+        validaFilhoEEmpresaVinculados();
+    });
+
+
+    $(document).ready(function () {
+        $("[name=Parent_Id]").val($("#Parent").val().split("-", 1).pop());
+    });
+
+    $("#Parent").on("autocompleteselect", function (event, ui) {
+        if (ui.item.label.split("-", 1).pop() >= 0) {
+            $("#Parent_Id").val(ui.item.label.split("-", 1).pop());
+            validaFilhoEEmpresaVinculados();
+        }
+    });
+
+      function split(val) {
+            return val.split(/,\s*/);
+        }
+
+        function extractLast(term) {
+            return split(term).pop();
+        }
+
+         $('#Parent')
+            .autocomplete({
+                minLength: 3,
+                source: function (request, response) {
+                    //showDivLoading();
+                    var search = extractLast($('#Parent').val());
+                    $.ajax({
+                        type: "GET",
+                        data: {},
+                        url: '@Url.Content("~")' + "api/ParDepartments/GetParDepartmentParents?search=" + search,
+                        dataType: "json",
+                        success: function (data) {
+
+                            //hideDivLoading();
+                            response($.map(data, function (item) {
+                                return { label: item.Value, value: item.Value };
+                            }));
+
+
+                        },
+                        error: function (errorThrown) {
+                            //hideDivLoading();
+                            console.log('Error: ' + errorThrown);
+                        }
+                    });
+                },
+                focus: function () {
+                    return false;
+                },
+                select: function (event, ui) {
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push(ui.item.value);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
+                }
+            });
+
 </script>

@@ -115,6 +115,7 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+
             MontaLista(parDepartment);
             return View(parDepartment);
         }
@@ -264,13 +265,25 @@ namespace SgqSystem.Controllers
 
             var listaUnidades = db.ParCompany.Where(x => x.IsActive).ToList();
             listaUnidades.Insert(0, new ParCompany() { Id = 0, Name = "Selecione" });
-            //listaUnidades.Add(new ParCompany() { Id = -1, Name = "Selecione" });
             ViewBag.ParCompany_Id = new SelectList(listaUnidades, "Id", "Name", parDepartment.ParCompany_Id);
 
             var listaGrupoDepartamentos = db.ParDepartmentGroup.Where(x => x.IsActive).ToList();
             listaGrupoDepartamentos.Insert(0, new ParDepartmentGroup() { Id = 0, Name = "Selecione" });
-            //listaUnidades.Add(new ParCompany() { Id = -1, Name = "Selecione" });
             ViewBag.ParDepartmentGroup_Id = new SelectList(listaGrupoDepartamentos, "Id", "Name", parDepartment.ParDepartmentGroup_Id);
+
+            ViewBag.Parents = db.ParDepartment.Where(x => x.Id == parDepartment.Parent_Id).ToList()
+             .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+             .ToList();
+
+            if (ViewBag.Parents.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.Parents = semDados;
+            }
+
         }
 
         private void DepartamentoDuplicado(ParDepartment parDepartment)
