@@ -12,11 +12,11 @@
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
-                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resource.home</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Lista de Tipo de Grupo de Função</span>
+                    <span>@Resources.Resource.list @Resources.Resource.of @Resources.Resource.type @Resources.Resource.of @Resources.Resource.group @Resources.Resource.of @Resources.Resource.function</span>
                 </li>
             </ul>
         </div>
@@ -28,7 +28,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">Lista de Tipo de Função</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.list @Resources.Resource.of @Resources.Resource.type @Resources.Resource.of @Resources.Resource.group @Resources.Resource.of @Resources.Resource.function</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -60,7 +60,7 @@
                                                     @Html.DisplayFor(modelItem => item.IsActive)
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })                                                 
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 </td>
                                             </tr>
                                         }
@@ -83,7 +83,7 @@
             null,
             null,
             { "bSearchable": false }
-        ];    
+        ];
         $('#tabelaTipoGrupo').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 

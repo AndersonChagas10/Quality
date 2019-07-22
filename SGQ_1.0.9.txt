@@ -695,9 +695,3 @@ IF COL_LENGTH('ParVinculoPeso','EffectiveDateEnd') IS NULL
 		add EffectiveDateEnd datetime null
     END
 GO
-
-
-
-
-
-

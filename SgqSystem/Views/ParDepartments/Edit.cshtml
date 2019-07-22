@@ -68,23 +68,14 @@
                                             </div>
                                         </div>
 
-                                        @*<div class="form-group">
-                                                @Html.LabelFor(model => model.Parent_Id, Resources.Resource.son_of as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                <div class="col-md-6">
-                                                    @Html.DropDownListFor(model => model.Parent_Id, null, new { @class = "form-control select2" })
-                                                    @Html.ValidationMessageFor(model => model.Parent_Id, "", new { @class = "text-danger" })
-                                                </div>
-                                                <div id="infoFilho" class="col-md-6" hidden="hidden">
-                                                    <p class="alert alert-info col-md-6">Ao vincular uma Seção a um Centro de Custo, esta campo ficará desabilitado, pois seguirá a hierarquia do cadastro</p>
-                                                </div>
-                                            </div>*@
-
-
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Parent_Id, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            @Html.LabelFor(model => model.Parent_Id, Resources.Resource.son_of as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-6">
                                                 @Html.TextBox("Parent", ViewBag.Parents[0].Value as string, new { @class = "form-control" })
                                                 @Html.Hidden("Parent_Id", Model.Parent_Id)
+                                            </div>
+                                            <div id="infoFilho" class="col-md-6" hidden="hidden">
+                                                <p class="alert alert-info col-md-6">Ao vincular uma Seção a um Centro de Custo, este campo ficará desabilitado, pois seguirá a hierarquia do cadastro</p>
                                             </div>
                                         </div>
 
@@ -95,7 +86,7 @@
                                                 @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
                                             </div>
                                             <div id="infoVinculoUnidade" class="col-md-6" hidden="hidden">
-                                                <p class="alert alert-info col-md-6"> Ao vincular uma Seção a um Centro de Custo, esta campo ficará desabilitado, pois seguirá a hierarquia do cadastro. </p>
+                                                <p class="alert alert-info col-md-6"> Ao vincular uma Seção a um Centro de Custo, este campo ficará desabilitado, pois seguirá a hierarquia do cadastro. </p>
                                             </div>
                                         </div>
 

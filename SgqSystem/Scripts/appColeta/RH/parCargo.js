@@ -30,9 +30,10 @@ function listarParCargo() {
                 'data-total-sample="' + o.Evaluation.Sample + '"                                     ' +
                 'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"                ' +
                 'data-current-sample="' + currentEvaluationSample.Sample + '">                       ' +
-                '	<div class="col-xs-4">' + o.Name + '</div>                                      ' +
-                '	<div class="col-xs-4">Av: ' + currentEvaluationSample.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>      ' +
-                '	<div class="col-xs-4">Am: ' + currentEvaluationSample.Sample + '/' + o.Evaluation.Sample + ' </div>  ' +
+                '	<div class="col-xs-3">' + o.Name + '</div>                                      ' +
+                '	<div class="col-xs-1">&nbsp;</div>                                                                  ' +
+                '	<div class="col-xs-4">Av: ' + o.Evaluation.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>      ' +
+                '	<div class="col-xs-4">Am: ' + o.Evaluation.Sample + '/' + o.Evaluation.Sample + ' </div>  ' +
                 '</button>';
         } else {
             htmlParCargo += '<button type="button" class="list-group-item col-xs-12"                                       ' +
@@ -42,7 +43,7 @@ function listarParCargo() {
                 'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"                                            ' +
                 'data-current-sample="' + currentEvaluationSample.Sample + '">                                                   ' +
                 '	<div class="col-xs-3">' + o.Name + '</div>                                                                  ' +
-                '	<div class="col-xs-1"></div>                                                                  ' +
+                '	<div class="col-xs-1">&nbsp;</div>                                                                  ' +
                 '	<div class="col-xs-4">Av: ' + currentEvaluationSample.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>      ' +
                 '	<div class="col-xs-4">Am: ' + currentEvaluationSample.Sample + '/' + o.Evaluation.Sample + ' </div>              ' +
                 '</button>';
@@ -330,17 +331,14 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
             //default = 1
             var elem = $('[data-par-cargo-id="' + cargo.Id + '"] .col-xs-1');
 
-            $(elem).height(20);
-            //$(elem).width(20);
-
             if (situacao.indexOf("4") >= 0) {
-                $(elem).attr('style', 'background-color:red; height: 20px;width: 25px;');
+                $(elem).html("<div style='background-color:red; height: 20px;width: 25px;'></div>");
             } else if (situacao.indexOf("3") >= 0) {
-                $(elem).attr('style', 'background-color:yellow; height: 20px;width: 25px;');
+                $(elem).html("<div style='background-color:yellow; height: 20px;width: 25px;'></div>");
             } else if (situacao.indexOf("2") >= 0) {
-                $(elem).attr('style', 'background-color:green; height: 20px;width: 25px;');
+                $(elem).html("<div style='background-color:green; height: 20px;width: 25px;'></div>");
             } else if (situacao.indexOf("1") >= 0) {
-                $(elem).attr('style', 'background-color:transparent; height: 20px;width: 25px;');
+                $(elem).html("<div style='background-color:transparent; height: 20px;width: 25px;'></div>");
             }
         }
     }, 200);

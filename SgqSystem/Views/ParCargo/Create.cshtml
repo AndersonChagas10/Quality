@@ -14,11 +14,11 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParCargo")">Cargos</a>
+                    <a href="@Url.Action("Index", "ParCargo")">@Resources.Resource.cargos</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource._novo</span>
+                    <span>@Resources.Resource.create @Resources.Resource.cargo</span>
                 </li>
             </ul>
             <div class="page-toolbar"></div>
@@ -29,7 +29,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create @Resources.Resource.cargo</span>
                         </div>
                     </div>
                     <div class="portlet-body">

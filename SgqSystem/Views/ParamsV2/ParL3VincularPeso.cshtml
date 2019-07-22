@@ -199,6 +199,8 @@
             preencheSelect('selectL3ParCargo', 'Name', 'Id', ParCargosGlobal, 'Todos');
             cargosVinculado = [];
         } else {
+
+            if (ParCargoXDepartmentsGlobal) {
             ParCargosGlobalFiltrado = jQuery.grep(ParCargoXDepartmentsGlobal, function (n, i) {
                 return (n.ParDepartment_Id === departamentoSelecionado);
             });
@@ -207,19 +209,20 @@
                  cargosVinculado.push(item.ParCargo);
             });
 
-            preencheSelect('selectL3ParCargo', 'Name', 'Id', cargosVinculado, 'Todos');
+                preencheSelect('selectL3ParCargo', 'Name', 'Id', cargosVinculado, 'Todos');
+            }
         }
     });
 
     $("#selectParCompanyGeral").on('change', function () {
-        MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', null, null);
+        //MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', null, null);
     });
 
 
     $("#selectL3PesoParCompany").on('change', function () {
 
         var empresaSelecionada = parseInt($("#selectL3PesoParCompany :selected").val());
-        MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', empresaSelecionada, null);
+        //MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', empresaSelecionada, null);
     });
 
     $("#ParL3Peso #btnAvancado").on('click', function () {

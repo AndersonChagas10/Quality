@@ -960,6 +960,10 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "you_are_not_online", Value = "Você não está online." });
                 ResourcesInserir.Add(new ResourcePT() { Key = "you_need_to_be_connected", Value = "Você precisa entrar e sincronizar para efetuar o login." });
                 ResourcesInserir.Add(new ResourcePT() { Key = "zero_represents_infinity", Value = "O valor 0 representa um valor ilimitado de Avaliações ou Amostras" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "group_of", Value = "Grupo de" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "cargo", Value = "Cargo" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "cargos", Value = "Cargos" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "isChildrenOf", Value = "É filho de" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
