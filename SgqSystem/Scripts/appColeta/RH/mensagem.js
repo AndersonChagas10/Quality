@@ -32,6 +32,10 @@ function closeMensagem(timer) {
 
 }
 
+function closeMensagemImediatamente(){
+	closeMensagem(0);
+}
+
 function criarModal() {
 	var html = '';
 	html += '<div class="hide" style="text-align: center;margin: 50px 0px 0px 0px;background-color: rgba(255,255,255,0.8);z-index: 9999;position: fixed;color: #000;width: 100%;height:100%" data-html>';
@@ -76,8 +80,8 @@ function openMessageConfirm(title, messagem, callbackYes, callbackNo, color, tex
 		'<div class="row">' +
 		'<h3>' + title + '</h3>' +
 		'<h4>' + messagem + '</h4>' +
-		'<button class="btn btn-primary pull-right" onclick="' + callbackYes + ';closeModal();">Sim</button>' +
-		'<button class="btn btn-default pull-right" onclick="' + callbackNo + ';closeModal();">Não</button>' +
+		'<button class="btn btn-primary pull-right" onclick="closeModal();' + callbackYes.name + '();">Sim</button>' +
+		'<button class="btn btn-default pull-right" onclick="closeModal();' + callbackNo.name + '();">Não</button>' +
 		'</div>' +
 		'</div>';
 

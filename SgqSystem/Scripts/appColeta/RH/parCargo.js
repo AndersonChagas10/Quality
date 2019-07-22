@@ -17,8 +17,10 @@ function listarParCargo() {
 
         //FIX para trabalhar de forma correta os valores 
         //que são recebidos do backend com os resultados
-        if (currentEvaluationSample.Sample > o.Evaluation.Sample)
+        if (currentEvaluationSample.Sample > o.Evaluation.Sample){
             currentEvaluationSample.Evaluation += 1;
+            currentEvaluationSample.Sample = 1;
+        }
 
         var style = '';
         if (!podeRealizarColeta(currentEvaluationSample.Evaluation, o.Evaluation.Evaluation)) {

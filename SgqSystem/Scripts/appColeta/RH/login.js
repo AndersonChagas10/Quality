@@ -45,9 +45,11 @@ function openLogin() {
 
 }
 
-$('body').on('click', '#btnLogin', function (event) {
+$('body').off('click', '#btnLogin').on('click', '#btnLogin', function (event) {
 
     event.preventDefault();
+
+    var btnLogin = this;
 
     $(this).html($(this).attr('data-loading-text'));
 
@@ -55,7 +57,7 @@ $('body').on('click', '#btnLogin', function (event) {
         if ($('#inputUserName').val() == currentLogin.Name
             && AES.Encrypt($('#inputPassword').val()) == currentLogin.Password) {
             globalLoginOnline = false;
-            currentParFrequency_Id = parametrization.currentParFrequency_Id;
+            //currentParFrequency_Id = parametrization.currentParFrequency_Id;
             loginSuccess(currentLogin);
             return;
         }
@@ -92,7 +94,7 @@ $('body').on('click', '#btnLogin', function (event) {
         },
         timeout: 600000,
         error: function () {
-            $(this).html($(this).attr('data-initial-text'));
+            $(btnLogin).html($(btnLogin).attr('data-initial-text'));
         }
     });
 });
@@ -113,9 +115,21 @@ function cleanGlobalVarLogin() {
 }
 
 function logout() {
-    _writeFile("login.txt", '', function () {
-        openLogin();
-    });
+    if (globalColetasRealizadas.length > 0) {
+
+        setTimeout(function(){
+            var titulo = "Há coletas que não foram sincronizadas.";
+            var mensagem = "Não é possivel sair até que todas as coletas tenham sido sincronizadas.<br/>";
+            mensagem += "[Não] Fecha a mensagem [Sim] Força sincronização das coletas (esteja online).";
+
+            openMessageConfirm(titulo, mensagem, sincronizarColeta, closeMensagemImediatamente, "orange", "white");
+        },500);
+        return false;
+    }
+
+    //_writeFile("login.txt", '', function () {
+    openLogin();
+    // });
 }
 
 $(window).on('beforeunload', function () {
