@@ -172,7 +172,6 @@
 <script>
 
     function validaFilhoEEmpresaVinculados() {
-        debugger
         if ($("#ParCompany_Id :selected").val() == 0 && $("#Parent_Id").val() == 0) {
             $("#ParCompany_Id").prop('disabled', false);
             $("#Parent").prop('disabled', false);
@@ -202,7 +201,6 @@
         }
         validaFilhoEEmpresaVinculados();
     });
-
 
     $(document).ready(function () {
         $("[name=Parent_Id]").val($("#Parent").val().split("-", 1).pop());

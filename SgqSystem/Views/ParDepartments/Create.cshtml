@@ -166,7 +166,6 @@
     });
 
     $("#Parent").on("autocompleteselect", function (event, ui) {
-        debugger
         if (ui.item.label.split("-", 1).pop() >= 0) {
             $("#Parent_Id").val(ui.item.label.split("-", 1).pop());
             validaFilhoEEmpresaVinculados();
@@ -174,7 +173,6 @@
     });
 
     $("#Parent").on('keyup', function () {
-        debugger
         if ($("#Parent").val() == "") {
             $("#Parent_Id").val($("#Parent").val());
             validaFilhoEEmpresaVinculados();
