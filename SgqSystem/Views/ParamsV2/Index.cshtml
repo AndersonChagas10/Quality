@@ -490,6 +490,9 @@
 
     let preencheSelect = function (id, name, value, list, defaultText, callBack) {
 
+        if (list.length == 0)
+            return;
+
         $(`select#${id}`).empty();
         $(`select#${id}`).append(`<option value="0" selected>${defaultText}</option>`);
 
