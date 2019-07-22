@@ -4,14 +4,75 @@ var token = function () {
     };
 };
 
+function getImages() {
+
+    pingLogado(urlPreffix, function () {
+
+        $.ajax({
+            data: JSON.stringify({}),
+            type: 'POST',
+            url: urlPreffix + '/api/AppParams/GetImages',
+            contentType: "application/json",
+            success: function (data) {
+
+                _writeFile("images.txt", JSON.stringify(data), function () {
+                    getLogo(setLogin);
+                });
+
+            },
+            timeout: 600000,
+            error: function () {
+                getLogo(setLogin);
+            }
+        });
+
+    }, getLogo(setLogin))
+
+}
+
+function getLogo(callback) {
+
+    _readFile('images.txt', function (data) {
+
+        if (data) {
+
+            data = JSON.parse(data)
+
+            if (data.logo)
+
+                callback(data.logo);
+
+            else {
+                callback();
+            }
+        }
+        else {
+
+            callback();
+        }
+
+    });
+}
+
 function openLogin() {
+
+    getImages();
+
+}
+
+function setLogin(logo) {
 
     cleanGlobalVarLogin();
 
+    var systemLogo = "";
+
+    if (logo)
+        systemLogo = 'background-image: url(' + logo + ')';
+
     var html = '';
 
-    html = '<div id="" class="login" name="" style="">                                                                                                          ' +
-        '<div id="" class="head" name="" style=""></div>                                                                                                            ' +
+    html = '<div id="" class="login" name="" style="">                                                                                                              ' +
+        '<div id="" class="head" name="" style="' + systemLogo + '"></div>                                                                                                            ' +
         '    <form id="" class="form-signin" name="" style="">                                                                                                      ' +
         '        <h2 id="" class="" name="" style="">Entrar</h2>                                                                                                                                     ' +
         '        <label for="inputUserName" class="sr-only" style="">Usuário</label>                                                                                ' +
@@ -42,7 +103,6 @@ function openLogin() {
         '</div>';
 
     $('div#app').html(html);
-
 }
 
 $('body').on('click', '#btnLogin', function (event) {
