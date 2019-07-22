@@ -490,38 +490,39 @@
 
     let preencheSelect = function (id, name, value, list, defaultText, callBack) {
 
-        if (list.length == 0)
-            return;
-
         $(`select#${id}`).empty();
         $(`select#${id}`).append(`<option value="0" selected>${defaultText}</option>`);
 
-        let listVinculados = $.grep(list, (item) => { return (item.GroupName != "" && item.GroupName != undefined) });
-        let listNaoVinculados = $.grep(list, (item) => { return (item.GroupName == undefined || item.GroupName == "") });
+        if (list.length > 0) {
 
-        if (listVinculados && listVinculados.length > 0) {
+            let listVinculados = $.grep(list, (item) => { return (item.GroupName != "" && item.GroupName != undefined) });
+            let listNaoVinculados = $.grep(list, (item) => { return (item.GroupName == undefined || item.GroupName == "") });
 
-            [... new Set(listVinculados.map(x => x.GroupName))].forEach((groupName) => {
+            if (listVinculados && listVinculados.length > 0) {
 
-                $(`select#${id}`).append('<optgroup label="' + groupName + '">');
+                [... new Set(listVinculados.map(x => x.GroupName))].forEach((groupName) => {
 
-                listVinculados.filter(x => x.GroupName == groupName).forEach((o) => {
+                    $(`select#${id}`).append('<optgroup label="' + groupName + '">');
 
-                    $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
+                    listVinculados.filter(x => x.GroupName == groupName).forEach((o) => {
+
+                        $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
+
+                    });
+
+                    $(`select#${id}`).append('</optgroup>');
 
                 });
+            }
 
-                $(`select#${id}`).append('</optgroup>');
-
+            $(listNaoVinculados).each(function (i, o) {
+                $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
             });
-        }
 
-        $(listNaoVinculados).each(function (i, o) {
-            $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
-        });
+            if (callBack) {
+                $(`select#${id}`).off('change').on('change', callBack);
+            }
 
-        if (callBack) {
-            $(`select#${id}`).off('change').on('change', callBack);
         }
 
         $(`select#${id}`).select2();
