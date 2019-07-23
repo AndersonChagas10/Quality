@@ -27,11 +27,11 @@ namespace SgqSystem.Controllers
             
             List<ParDepartment> departamentos = new List<ParDepartment>();
 
-            departamentos = db.ParDepartment.Where(x => x.Active).OrderBy(x => x.Id).ToList();
+            departamentos = db.ParDepartment.OrderBy(x => x.Id).ToList();
 
             if(filtro != "")
             {
-                departamentos = db.ParDepartment.Where(x => x.Active && x.Name.Contains(filtro)).OrderBy(x => x.Id).ToList();
+                departamentos = db.ParDepartment.Where(x => x.Name.Contains(filtro)).OrderBy(x => x.Id).ToList();
                 ViewBag.filtro = filtro;
             }
 
