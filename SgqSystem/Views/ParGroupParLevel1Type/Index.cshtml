@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Dominio.ParGroupParLevel1Type>
 
 @{
-    ViewBag.Title = "Tipo de Grupo de Função";
+    ViewBag.Title = Resources.Resource.type_of_function;
 }
 
 <div class="page-content-wrapper">
@@ -41,7 +41,7 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Name)
+                                                @Html.DisplayName(Resources.Resource.type_of_function as string)
                                             </th>
                                             <th>
                                                 @Html.DisplayNameFor(model => model.IsActive)
