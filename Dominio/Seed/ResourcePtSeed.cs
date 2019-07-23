@@ -965,6 +965,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "cargos", Value = "Cargos" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "isChildrenOf", Value = "É filho de" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "type_of_function", Value = "Tipo de Função" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "group_of_department", Value = "Grupo de Centro de Custo/Seção" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
