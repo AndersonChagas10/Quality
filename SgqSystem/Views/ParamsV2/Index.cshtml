@@ -519,10 +519,10 @@
                 $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
             });
 
-            if (callBack) {
-                $(`select#${id}`).off('change').on('change', callBack);
-            }
+        }
 
+        if (callBack) {
+            $(`select#${id}`).off('change').on('change', callBack);
         }
 
         $(`select#${id}`).select2();
