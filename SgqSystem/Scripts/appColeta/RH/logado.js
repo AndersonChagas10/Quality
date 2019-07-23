@@ -8,9 +8,9 @@ function openLogado() {
         pingLogado(urlPreffix, online, offline)
     }, 20000);
 
+    appIsOnline = true;
     AtualizaConstantemente();
     onlineOffline = '<div class="btn btn-success btn-lg pull-right">ONLINE</div>';
-    appIsOnline = true;
 }
 
 var onlineOffline = "";

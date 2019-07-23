@@ -409,30 +409,44 @@ namespace SgqSystem.Controllers.V2.Api
             var coletaAgrupada = new List<ColetaAgrupadaViewModel>();
 
             var sql = $@"
-                    SELECT
-                    	MAX(C2.EvaluationNumber) Evaluation
-                       ,(MAX(C2.Sample) + 1) Sample
-                       ,C2.ParLevel1_Id
-                       ,C2.ParLevel2_Id
-                       ,C2.UnitId
-                       ,C2.Shift
-                       ,C2XPD.ParDepartment_Id AS ParDepartment_Id
-                       ,C2XPC.ParCargo_Id AS ParCargo_Id
-                       ,C2XC.ParCluster_Id AS ParCluster_Id
-                    FROM CollectionLevel2 C2 WITH (NOLOCK)
-                    LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
-                    INNER JOIN CollectionLevel2XParCargo C2XPC WITH (NOLOCK) ON C2XPC.CollectionLevel2_Id = C2.Id
-                    INNER JOIN CollectionLevel2XParDepartment C2XPD WITH (NOLOCK) ON C2XPD.CollectionLevel2_Id = C2.Id
-                    WHERE 1 = 1
+                   
+
+SELECT 
+	Evaluation,
+	CAST(SUBSTRING(Sample,CHARINDEX('-',Sample)+1,LEN(Sample)+1-CHARINDEX('-',Sample))AS INT)+1 AS Sample,
+	ParLevel1_Id,
+	ParLevel2_Id,
+	UnitId,
+	Shift,
+	ParDepartment_Id,
+	ParCargo_Id,
+	ParCluster_Id
+FROM (
+
+SELECT
+        MAX(C2.EvaluationNumber) Evaluation
+        ,MAX(CONCAT(RIGHT('0'+CAST(C2.EvaluationNumber AS VARCHAR),2),'-',RIGHT('0'+CAST(C2.Sample AS VARCHAR),2)))  Sample
+        ,C2.ParLevel1_Id
+        ,C2.ParLevel2_Id
+        ,C2.UnitId
+        ,C2.Shift
+        ,C2XPD.ParDepartment_Id AS ParDepartment_Id
+        ,C2XPC.ParCargo_Id AS ParCargo_Id
+        ,C2XC.ParCluster_Id AS ParCluster_Id
+    FROM CollectionLevel2 C2 WITH (NOLOCK)
+    LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
+    INNER JOIN CollectionLevel2XParCargo C2XPC WITH (NOLOCK) ON C2XPC.CollectionLevel2_Id = C2.Id
+    INNER JOIN CollectionLevel2XParDepartment C2XPD WITH (NOLOCK) ON C2XPD.CollectionLevel2_Id = C2.Id
+    WHERE 1 = 1
                     AND CAST(CollectionDate AS DATE) = CAST('{data.CollectionDate.ToString("yyyy-MM-dd")}' AS DATE)
                     AND UnitId = {data.ParCompany_Id}
-                    GROUP BY C2.ParLevel1_Id
-                    		,C2.ParLevel2_Id
-                    		,C2.UnitId
-                    		,C2.Shift
-		                    ,C2XPD.ParDepartment_Id
-		                    ,C2XPC.ParCargo_Id
-		                    ,C2XC.ParCluster_Id";
+    GROUP BY C2.ParLevel1_Id
+            ,C2.ParLevel2_Id
+            ,C2.UnitId
+            ,C2.Shift
+		    ,C2XPD.ParDepartment_Id
+		    ,C2XPC.ParCargo_Id
+		    ,C2XC.ParCluster_Id) A";
 
             using (var factory = new Factory("DefaultConnection"))
             {
