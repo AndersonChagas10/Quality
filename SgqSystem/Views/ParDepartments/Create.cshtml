@@ -144,107 +144,101 @@
     navbarSelect("navbar4");
     $('select').select2();
 
-    $("#Parent_Id, #ParCompany_Id").on('change', function () {
+    $("#ParCompany_Id").on('change', function () {
+        validaFilhoEEmpresaVinculados();
+    });
 
+    function validaFilhoEEmpresaVinculados() {
         if ($("#ParCompany_Id :selected").val() == 0 && $("#Parent_Id").val() == 0) {
-
             $("#ParCompany_Id").prop('disabled', false);
             $("#Parent").prop('disabled', false);
             $("#infoFilho").hide();
             $("#infoVinculoUnidade").hide();
-
         } else if ($("#Parent_Id").val() > 0) {
-
             $("#ParCompany_Id").prop('disabled', true);
             $("#Parent").prop('disabled', false);
             $("#infoFilho").hide();
             $("#infoVinculoUnidade").show();
-
         } else {
-
             $("#Parent").prop('disabled', true);
             $("#ParCompany_Id").prop('disabled', false);
             $("#infoFilho").show();
             $("#infoVinculoUnidade").hide();
         }
-    });
+    }
 
-    $("#ParCompany_Id").on('change', function () {
-
-        $("#Parent_Id").val("0");
-        validaFilhoEEmpresaVinculados();
-
-    });
-
-    $("#Parent").on("autocompleteselect", function (event, ui) {
-
-        if (ui.item.label.split("-", 1).pop() >= 0) {
-
-            $("#Parent_Id").val(ui.item.label.split("-", 1).pop());
+    $(document).ready(function () {
+        closeLeftSidebar();
+        setTimeout(function () {
             validaFilhoEEmpresaVinculados();
-        }
-
+        }, 1000);
     });
 
     $("#Parent").on('keyup', function () {
-
         if ($("#Parent").val() == "") {
+            $("[name=Parent_Id]").val($("#Parent").val());
+        }
+        validaFilhoEEmpresaVinculados();
+    });
 
-            $("#Parent_Id").val($("#Parent").val());
+    $(document).ready(function () {
+        $("[name=Parent_Id]").val($("#Parent").val().split("-", 1).pop());
+    });
+
+    $("#Parent").on("autocompleteselect", function (event, ui) {
+        if (ui.item.label.split("-", 1).pop() >= 0) {
+            $("#Parent_Id").val(ui.item.label.split("-", 1).pop());
             validaFilhoEEmpresaVinculados();
-
         }
     });
 
-    function split(val) {
+      function split(val) {
+            return val.split(/,\s*/);
+        }
 
-        return val.split(/,\s*/);
+        function extractLast(term) {
+            return split(term).pop();
+        }
 
-    }
+         $('#Parent')
+            .autocomplete({
+                minLength: 3,
+                source: function (request, response) {
+                    //showDivLoading();
+                    var search = extractLast($('#Parent').val());
+                    $.ajax({
+                        type: "GET",
+                        data: {},
+                        url: '@Url.Content("~")' + "api/ParDepartments/GetParDepartmentParents?search=" + search,
+                        dataType: "json",
+                        success: function (data) {
 
-    function extractLast(term) {
+                            //hideDivLoading();
+                            response($.map(data, function (item) {
+                                return { label: item.Value, value: item.Value };
+                            }));
 
-        return split(term).pop();
 
-    }
-
-    $('#Parent').autocomplete({
-        minLength: 3,
-        source: function (request, response) {
-            var search = extractLast($('#Parent').val());
-            $.ajax({
-                type: "GET",
-                data: {},
-                url: '@Url.Content("~")' + "api/ParDepartments/GetParDepartmentParents?search=" + search,
-                dataType: "json",
-                success: function (data) {
-                    response($.map(data, function (item) {
-                        return { label: item.Value, value: item.Value };
-                    }));
+                        },
+                        error: function (errorThrown) {
+                            //hideDivLoading();
+                            console.log('Error: ' + errorThrown);
+                        }
+                    });
                 },
-                error: function (errorThrown) {
-                    console.log('Error: ' + errorThrown);
+                focus: function () {
+                    return false;
+                },
+                select: function (event, ui) {
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push(ui.item.value);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
                 }
             });
-        },
-        focus: function () {
-            return false;
-        },
-        select: function (event, ui) {
-            var terms = split(this.value);
-            // remove the current input
-            terms.pop();
-            // add the selected item
-            terms.push(ui.item.value);
-            // add placeholder to get the comma-and-space at the end
-            terms.push("");
-
-            this.value = terms.join("");
-
-            return false;
-
-        }
-    });
-
-    //});
 </script>
