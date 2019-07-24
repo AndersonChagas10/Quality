@@ -695,3 +695,35 @@ IF COL_LENGTH('ParVinculoPeso','EffectiveDateEnd') IS NULL
 		add EffectiveDateEnd datetime null
     END
 GO
+
+---------------------------------------------------
+--GRAVAR PARLEVEL3GROUP----------------------------
+---------------------------------------------------
+
+CREATE TABLE [dbo].[Result_Level3XGroup](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Result_Level3_Id] [int] NOT NULL,
+	[ParLevel3Group_Id] [int] NOT NULL,
+	[AddDate] [datetime2](7) NOT NULL,
+	[AlterDate] [datetime2](7) NULL,
+	[IsActive] [bit] NULL
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[Result_Level3XGroup] ADD  DEFAULT ((1)) FOR [IsActive]
+GO
+
+ALTER TABLE [dbo].[Result_Level3XGroup]  WITH CHECK ADD  CONSTRAINT [FK_Result_Level3XGroup_ParLevel3Group] FOREIGN KEY([ParLevel3Group_Id])
+REFERENCES [dbo].[ParLevel3Group] ([Id])
+GO
+
+ALTER TABLE [dbo].[Result_Level3XGroup] CHECK CONSTRAINT [FK_Result_Level3XGroup_ParLevel3Group]
+GO
+
+ALTER TABLE [dbo].[Result_Level3XGroup]  WITH CHECK ADD  CONSTRAINT [FK_Result_Level3XGroup_Result_Level3] FOREIGN KEY([Result_Level3_Id])
+REFERENCES [dbo].[Result_Level3] ([Id])
+GO
+
+ALTER TABLE [dbo].[Result_Level3XGroup] CHECK CONSTRAINT [FK_Result_Level3XGroup_Result_Level3]
+GO
