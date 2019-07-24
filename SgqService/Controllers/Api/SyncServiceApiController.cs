@@ -3075,7 +3075,26 @@ namespace SgqService.Controllers.Api
                     //       "" + WeiDefects + ") " +
                     //       " SELECT @@IDENTITY AS 'Identity'";
 
-                    query = $@"INSERT INTO Result_Level3 ([CollectionLevel2_Id],
+                    query = $@"
+
+                        DECLARE @GRUPO INT
+                        DECLARE @L1 INT 
+                        DECLARE @L2 INT 
+                        DECLARE @UNIT INT
+
+                        select top 1 @L1 = parlevel1_id, @L2 = parlevel2_id, @UNIT = unitid from collectionlevel2 where id = @CollectionLevel02Id
+
+                        select top 1 @GRUPO = ParLevel3Group_Id from parlevel3level2 p32
+                        inner join parlevel3level2level1 p321
+                        on p32.id = p321.parlevel3level2_id
+                        where parlevel3_id = @Level03Id 
+                          and parlevel1_id = @L1
+                          and parlevel2_id = @L2
+                          and ( p32.ParCompany_Id = @UNIT or  p32.ParCompany_Id is null)
+                          and (p321.ParCompany_Id = @UNIT or p321.ParCompany_Id is null)
+                        order by p32.ParCompany_Id, p321.ParCompany_Id
+                        
+                        INSERT INTO Result_Level3 ([CollectionLevel2_Id],
                          [ParLevel3_Id],
                          [ParLevel3_Name],
                          [Weight],
@@ -3107,7 +3126,10 @@ namespace SgqService.Controllers.Api
                            @_WeiEvaluation,
                            @WeiDefects)
 
-                           SELECT @@IDENTITY AS 'Identity'";
+                           SELECT @@IDENTITY AS 'Identity'
+                           
+                           if @GRUPO > 0 begin INSERT INTO Result_Level3XGroup VALUES (@@IDENTITY, @GRUPO, GETDATE(), NULL, 1) end
+                           ";
 
                 }
                 else
@@ -3122,7 +3144,7 @@ namespace SgqService.Controllers.Api
                             WeiDefects=@WeiDefects,
                             ValueText=@ValueText
                             WHERE Id=@Id
-                            SELECT @Id AS 'Identity'";
+                            SELECT @Id AS 'Identity' ";
                 }
 
 
