@@ -375,6 +375,7 @@
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
+    <Compile Include="Controllers\Api\Relatorios\RH\NaoConformidadeRHApiController.cs" />
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\RetornaQueryRotinaApiController.cs" />
@@ -2095,6 +2096,8 @@
     <Content Include="Views\RelatoriosSgq\_FilterReports.cshtml" />
     <Content Include="Views\RelatoriosSgq\ApontamentosDiariosRH.cshtml" />
     <Content Include="Views\Shared\_LayoutReports.cshtml" />
+    <Content Include="Views\Relatorios\RH\NaoConformidadeRH.cshtml" />
+    <Content Include="Views\Shared\_ClusterRegionalUnidadeCriticalLevel123RH.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

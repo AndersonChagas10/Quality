@@ -243,6 +243,12 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult NaoConformidadeRH()
+        {
+            return View("~/Views/Relatorios/RH/NaoConformidadeRH.cshtml", form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult ExemploRelatorio()
         {
             return View(form);
