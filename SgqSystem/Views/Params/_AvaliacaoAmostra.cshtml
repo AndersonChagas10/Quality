@@ -2,16 +2,15 @@
 @using SgqSystem.Helpers
 
 @{
+
     var level = Model.levelControl;
     var id = "level" + Model.levelControl + "_AvAmostra_accordion";
     var id2 = "#level" + Model.levelControl + "__AvAmostra_accordion";
     var id3 = "#level" + Model.levelControl + "__AvAmostra_collapse";
     var id4 = "level" + Model.levelControl + "__AvAmostra_collapse";
     var click = "AvAm" + Model.levelControl + ".adiciona($(this))";
-    //var click = "alert();";
+
 }
-
-
 
 <div class="panel-group accordion" id="@id">
     <div class="panel panel-default">
@@ -22,14 +21,12 @@
         </div>
         <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
             <div class="panel-body">
-
                 <table class="table-erp" id="">
-
                     <tbody>
 
                         <tr>
 
-                            @Table.GerarColuna(@Html.DropDownList("avAmCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "avAmCompany" })
+                            @Table.GerarColuna(@Html.DropDownList("avAmCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control select2", @id = "avAmCompany", style = "width: 100%" })
                                 , @Html.Label(Resources.Resource.company as string)
                                 , Table.PosicaoLabel.top)
 
@@ -47,6 +44,13 @@
                             </td>
                         </tr>
                         <tr>
+
+                            <td class="td-erp col-sm-4">
+                                <label for="paramsDto.parFrequencySelected">@Resources.Resource.frequency</label>
+                                <div>
+                                    @Html.DropDownList("paramsDto.parFrequencySelected", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control select2", @id = "parFrequencySelect2AmostraLevel", style = "width: 100%" })
+                                </div>
+                            </td>
 
                             @Html.HiddenFor(r => r.paramsDto.parEvaluationDto.Id)
                             @Table.GerarColuna(@Html.TextBox("avaliacao", 0, htmlAttributes: new { @id = "avaliacao", @class = "form-control input-sm", type = "number", min = "0" })
@@ -102,40 +106,56 @@
             level: levelDomain,
             listObjSalvo: listSalvo,
             idTable: 'tableAvAm',//
-            tdsNames: ['companyName', 'ParLevel1_Name', 'ParCluster_Name','evaluationNumber', 'sampleNumber', 'agendamento','btn'],
+            tdsNames: ['companyName', 'ParLevel1_Name', 'ParCluster_Name', 'ParFrequency_Name' , 'evaluationNumber', 'sampleNumber', 'agendamento', 'btn'],
             getObjAdd: function (isEdit, obj) {
-        
-                if(isEdit != undefined){
+
+                if (isEdit != undefined) {
+
                     var compId = $('#' + isEdit + ' #avAmCompany :selected').val();
                     var compName = $('#' + isEdit + ' #avAmCompany :selected').text();
+
                     if(compId == "-1"){
                         compName = "@Resources.Resource.all"
                     }
+
                     obj.companyId = compId;
                     obj.companyName = compName;
                     obj.sampleNumber = $('#' + isEdit + ' #amostra').val();
                     obj.evaluationNumber = $('#' + isEdit + ' #avaliacao').val();
+                    obj.ParFrequency_Id = parseInt($('#' + isEdit + ' #parFrequencySelect2AmostraLevel :selected').val());
+                    obj.ParFrequency_Name = $('#' + isEdit + ' #parFrequencySelect2AmostraLevel :selected').text();
+
                     return obj;
-                }else{
+
+                } else {
+
                     var compId = $('#' + this.level + ' #avAmCompany :selected').val();
                     var compName = $('#' + this.level + ' #avAmCompany :selected').text();
-                    if(compId == "-1"){
+
+                    if (compId == "-1") {
                         compName = "@Resources.Resource.all"
                     }
 
                     var ParLevel1_Id = $(' #parLevel1Select2AmostraLevel :selected').val();
                     var ParLevel1_Name = $(' #parLevel1Select2AmostraLevel :selected').text();
-                    if(ParLevel1_Id == "-1"){
+
+                    if (ParLevel1_Id == "-1") {
+
                         ParLevel1_Name = "@Resources.Resource.all"
                     }
 
                     var ParCluster_Id = $(' #parClusterSelect2AmostraLevel :selected').val();
                     var ParCluster_Name = $(' #parClusterSelect2AmostraLevel :selected').text();
-                    if(ParCluster_Id == "-1"){
+
+                    if (ParCluster_Id == "-1") {
+
                         ParCluster_Name = "@Resources.Resource.all"
                     }
-                    
-                    return {/*Objeto*/     
+
+                    var ParFrequency_Id = $(' #parFrequencySelect2AmostraLevel :selected').val();
+                    var ParFrequency_Name = $(' #parFrequencySelect2AmostraLevel :selected').text();
+
+                    return {/*Objeto*/
                         sampleNumber     :  $('#' + this.level + ' #amostra').val(),
                         evaluationNumber    : $('#' + this.level + ' #avaliacao').val(),
                         companyId  :  compId,
@@ -143,7 +163,9 @@
                         ParLevel1_Id : ParLevel1_Id,
                         ParLevel1_Name : ParLevel1_Name,
                         ParCluster_Id : ParCluster_Id,
-                        ParCluster_Name : ParCluster_Name,
+                        ParCluster_Name: ParCluster_Name,
+                        ParFrequency_Id: ParFrequency_Id,
+                        ParFrequency_Name: ParFrequency_Name,
                         IsActive: true
                     }
                 }
@@ -169,6 +191,8 @@
                 var display = $('#' + seletorTato + ' #avAmCompany :selected').text();//
                 var parLevel1Selected = $('#' + seletorTato + ' #parLevel1Select2AmostraLevel :selected').val();
                 var parClusterSelected = $('#' + seletorTato + ' #parClusterSelect2AmostraLevel :selected').val();
+                var parFrequencySelected = $('#' + seletorTato + ' #parFrequencySelect2AmostraLevel :selected').val();
+
                 var exist = $.grep($('#tableAvAm  tbody  tr  td:nth-child(1)'), function(o, c){//
                     var count = 0;
                     if(companySelected == -1){
@@ -187,6 +211,12 @@
                         count += verify($(o).parent().data().ParCluster_Id);
                     }else{
                         count += $(o).parent().data().ParCluster_Id == parClusterSelected ? 1 : 0;
+                    }
+
+                    if (parFrequencySelected == -1) {
+                        count += verify($(o).parent().data().ParFrequency_Id);
+                    } else {
+                        count += $(o).parent().data().ParFrequency_Id == parFrequencySelected ? 1 : 0;
                     }
 
                     if(count == 3)
@@ -228,9 +258,10 @@
                     if((o.evaluationId != null || o.evaluationId != undefined) && o.evaluationId > 0){
                         dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].evaluationId"] = o.evaluationId;
                     }
-        
+
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].ParLevel1_Id"] = o.ParLevel1_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].ParCluster_Id"] = o.ParCluster_Id;
+                    dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].ParFrequency_Id"] = o.ParFrequency_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].sampleNumber"] = o.sampleNumber;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].evaluationNumber"] = o.evaluationNumber;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].companyId"] = o.companyId;
@@ -240,31 +271,37 @@
 
             },
             carregaDadosDoDb: function () {
-                
+
                 var id = this.level + ' #' + this.idTable;
                 var tdNamess = this.tdsNames;
 
-                if( this.listObjSalvo != null){ /*Carrega regras de NC*/
+                if (this.listObjSalvo != null) { /*Carrega regras de NC*/
                     this.listObjSalvo.forEach(function (o, c) {
-                        
+
                         if(o.companyId != null && o.companyId != "-1"){
                                 o['companyName'] = $('#avAmCompany option[value=' + o.companyId + ']').text();
-                        }else{
+                        } else {
                             o['companyName'] = "@Resources.Resource.all";
                         }
 
-                        if(o.ParCluster_Id != null && o.ParCluster_Id != "-1"){
+                        if (o.ParCluster_Id != null && o.ParCluster_Id != "-1") {
                                 o['ParCluster_Name'] = $('#parClusterSelect2AmostraLevel option[value=' + o.ParCluster_Id + ']').text();
-                        }else{
+                        } else {
                             o['ParCluster_Name'] = "@Resources.Resource.all";
+                        }
+                        
+                        if (o.ParFrequency_Id != null && o.ParFrequency_Id != "-1") {
+                            o['ParFrequency_Name'] = $('#parFrequencySelect2AmostraLevel option[value=' + o.ParFrequency_Id + ']').text();
+                        } else {
+                            o['ParFrequency_Name'] = "";
                         }
 
                         if(o.ParLevel1_Id != null && o.ParLevel1_Id != "-1"){
                                 o['ParLevel1_Name'] = $('#parLevel1Select2 option[value=' + o.ParLevel1_Id + ']').text();
-                        }else{
+                        } else {
                             o['ParLevel1_Name'] = "@Resources.Resource.all";
                         }
-         
+
                         if (o.TemAgendamento) {
                             o['agendamento'] = '<button type="button" id="agendamento" class="btn btn-success btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
 
@@ -275,11 +312,11 @@
 
                         if (o.evaluationNumber == 0) {
                             o['evaluationNumber'] = '<span>&infin;</span>'
-                        } 
+                        }
 
                         if (o.sampleNumber == 0) {
                             o['sampleNumber'] = '<span>&infin;</span>'
-                        } 
+                        }
 
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
@@ -296,14 +333,15 @@
             },
             /*Fim Setup*/
             adiciona: function (e) {
-                debugger
+                
                 if (this.veifyAdd()) {
+
                     var object = this.getObjAdd();
                     object.agendamento = "";
                     crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
 
-                    //$("#parClusterSelect2AmostraLevel").val($("#parClusterSelect2AmostraLevel option:first").val());
                     $("#parLevel1Select2AmostraLevel").val($("#parLevel1Select2AmostraLevel option:first").val());
+                    $("#parLevel1Select2AmostraLevel").val($("#parFrequencySelect2AmostraLevel option:first").val());
 
                 }
             },

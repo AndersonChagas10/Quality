@@ -695,3 +695,10 @@ IF COL_LENGTH('ParVinculoPeso','EffectiveDateEnd') IS NULL
 		add EffectiveDateEnd datetime null
     END
 GO
+
+
+IF COL_LENGTH('ParEvaluation','ParFrequency_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParEvaluation ADD ParFrequency_Id int foreign key(ParFrequency_Id) references ParFrequency(Id);
+    END
+GO
