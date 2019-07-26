@@ -4096,33 +4096,74 @@ namespace SgqService.Controllers.Api
             return evaluate;
         }
 
+        protected int getParFrequency_Id(SGQDBContext.ParLevel1 parlevel1, SGQDBContext.ParLevel2 parlevel2)
+        {
+            int parfrenquency_Id = 0;
+
+            string sql = $@"            
+            SELECT
+            	CASE
+            		WHEN FPE.ParFrequency_Id IS NULL THEN FPL2.ParFrequency_Id
+            		ELSE FPE.ParFrequency_Id
+            	END as ParFrequency_Id
+            FROM (SELECT
+            			 ParFrequency_Id
+            		 FROM ParEvaluation
+            		 WHERE 1 = 1
+            		 AND ParLevel1_Id = @ParLevel1_Id
+            		 AND ParLevel2_Id = @ParLevel2_Id
+            		 AND ParCluster_Id = @ParCluster_Id
+            		 AND IsActive = 1) AS FPE
+            	,(SELECT
+            			 ParFrequency_Id
+            		 FROM ParLevel2
+            		 WHERE 1 = 1
+            		 AND Id = @ParLevel2_Id
+            		 AND IsActive = 1) AS FPL2";
+
+            string conexao = this.conexao;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@ParLevel1_Id", parlevel1.ParLevel1_Id));
+                        command.Parameters.Add(new SqlParameter("@ParLevel2_Id", parlevel2.ParLevel2_id));
+                        command.Parameters.Add(new SqlParameter("@ParCluster_Id", parlevel1.ParCluster_Id));
+
+
+                        connection.Open();
+                        using (SqlDataReader r = command.ExecuteReader())
+                        {
+                            if (r.Read())
+                            {
+                                parfrenquency_Id = Convert.ToInt32(r[0]);
+                            }
+                        }
+                    }
+
+                    if (connection.State == System.Data.ConnectionState.Open)
+                        connection.Close();
+                }
+            }
+
+            catch (Exception)
+            {
+
+                return parfrenquency_Id;
+            }
+
+            return parfrenquency_Id;
+        }
+
         protected int getMaxEvaluateLevel1(SGQDBContext.ParLevel1 parlevel1, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany)
         {
             int evaluate = 0;
 
-            //string sql = "" +
-            //    "\n DECLARE @ParCompany_id int = 16 " +
-            //    "\n DECLARE @ParLevel1_id int =  " + parlevel1.ParLevel1_Id +
-            //    "\n DECLARE @ParCluster_id int = " + parlevel1.ParCluster_Id +
-
-            //    "\n SELECT max(Number) as av FROM ParEvaluation EV (nolock)  " +
-            //    "\n WHERE ParLevel2_id in ( " +
-            //        "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 (nolock)  " +
-
-            //        "\n inner join ParLevel3Level2 P32 (nolock)  " +
-
-            //        "\n on p32.id = p321.ParLevel3Level2_Id " +
-
-            //        "\n where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 " +
-            //        "\n and Ev.ParCluster_Id = @ParCluster_Id " +
-            //        "\n group by p32.ParLevel2_Id " +
-            //    "\n ) " +
-            //    "\n and ev.IsActive = 1 " +
-            //    "\n and(ev.ParCompany_Id is null) ";
-
-
             string sql = $@"
-                DECLARE @ParCompany_id int = 16 
                 DECLARE @ParLevel1_id int =  @ParLevel1_Id
                 DECLARE @ParCluster_id int = @ParCluster_Id 
                 SELECT max(Number) as av FROM ParEvaluation EV (nolock) 
@@ -4144,6 +4185,7 @@ namespace SgqService.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
 
                         command.CommandType = CommandType.Text;
                         command.Parameters.Add(new SqlParameter("@ParLevel1_Id", parlevel1.ParLevel1_Id));
@@ -5420,9 +5462,13 @@ namespace SgqService.Controllers.Api
             {
                 string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
+
+                var parlevel2ParFrequency = getParFrequency_Id(ParLevel1, parlevel2);
+
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
                     var parlevel2Evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
+
 
                     if (isVolume)
                     {
@@ -5443,6 +5489,7 @@ namespace SgqService.Controllers.Api
                     evaluate = parlevel2Evaluate.Evaluate;
                     sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
                     //defect = getCollectionLevel2Keys(ParCompany_Id,data, ParLevel1);
+
                 }
 
 
@@ -5608,7 +5655,7 @@ namespace SgqService.Controllers.Api
                                             evaluate: evaluate,
                                             sample: sample,
                                             HasSampleTotal: parlevel2.HasSampleTotal,
-                                            ParFrequency_Id: parlevel2.ParFrequency_Id,
+                                            ParFrequency_Id: parlevel2ParFrequency, // parlevel2.ParFrequency_Id,
                                             IsEmptyLevel3: parlevel2.IsEmptyLevel3,
                                             RuleId: parlevel2.ParNotConformityRule_id,
                                             RuleValue: ruleValue.ToString(),
