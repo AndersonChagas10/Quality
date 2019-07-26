@@ -34,7 +34,6 @@ function onOpenAppColeta() {
         _readFile("appParametrization.txt", function (param) {
             if (typeof (param) != 'undefined' && param.length > 0) {
                 parametrization = JSON.parse(param);
-                //currentParFrequency_Id = parametrization.currentParFrequency_Id;
                 listaParFrequency = parametrization.listaParFrequency;
             }
         });
@@ -46,8 +45,10 @@ function getAppParametrization(frequencyId) {
     sincronizarResultado(frequencyId);
 
     if (frequencyId != currentParFrequency_Id) {
+
         currentParFrequency_Id = frequencyId;
         openMensagem('Por favor, aguarde até que seja feito o download do planejamento selecionado', 'blue', 'white');
+        
         $.ajax({
             data: JSON.stringify({
                 ParCompany_Id: currentParCompany_Id
@@ -85,7 +86,9 @@ function getAppParametrization(frequencyId) {
 }
 
 function sincronizarResultado(frequencyId) {
+
     openMensagem('Sincronizando resultado', 'blue', 'white');
+
     $.ajax({
         data: JSON.stringify({
             ParCompany_Id: currentParCompany_Id,
@@ -107,12 +110,15 @@ function sincronizarResultado(frequencyId) {
 }
 
 function sincronizarColeta() {
+
     openMensagem('Iniciada sequencia forçada de sincronização', 'orange', 'white');
     enviarColeta();
     closeMensagem(2000);
+
 }
 
 function showAllGlobalVar() {
+
     console.log("ParCompany:" + currentParCompany_Id);
     console.log("Frequencia: " + currentParFrequency_Id);
     console.log("Departamento: " + currentParDepartment_Id);
@@ -129,6 +135,7 @@ function showAllGlobalVar() {
     console.log("listaParFrequency: " + listaParFrequency);
     console.log("currentsParDepartments_Ids: " + currentsParDepartments_Ids);
     console.log("currentPlanejamento: " + currentPlanejamento);
+
 }
 
 function openModalChangeDate() {
@@ -180,6 +187,7 @@ function changeDate(that) {
     }
 
     openMensagem("Alterando data...", "blue", "White");
+
     _writeFile("appParametrization.txt", '', function () { 
         var oldFrequency_Id = currentParFrequency_Id+0;
         currentParFrequency_Id = 0;
@@ -187,7 +195,6 @@ function changeDate(that) {
         openParFrequency();
     });
 
-    //var horas = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
     var horas = "00:00:00";
 
     currentCollectDate = new Date(newDate + " " + horas);
