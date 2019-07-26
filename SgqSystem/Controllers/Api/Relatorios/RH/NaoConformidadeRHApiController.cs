@@ -20,10 +20,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
         [HttpPost]
         [Route("GraficoUnidades")]
-        public List<NaoConformidadeRHResultsSet> GraficoUnidades([FromBody] FormularioParaRelatorioViewModel form)
+        public List<NaoConformidadeRHResultsSet> GraficoUnidades([FromBody] DTO.DataCarrierFormularioNew form)
         {
 
-            CommonLog.SaveReport(form, "Relatorio_Nao_Conformidade");
+            //CommonLog.SaveReport(form, "Relatorio_Nao_Conformidade");
 
             var whereDepartment = "";
             var whereShift = "";
@@ -33,7 +33,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             var whereCriticalLevel = "";
             var whereClusterGroup = "";
 
-            if (form.departmentId != 0)
+            if (form.ParDepartment_Ids.Length > 0)
             {
                 whereDepartment = $@" AND IND.ID IN (
                                 select distinct
@@ -48,28 +48,28 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
                                         on l21.ParLevel2_Id = l2.id
                                 WHERE 1 = 1
-                                AND L2.ParDepartment_Id = '{ form.departmentId }'
+                                AND L2.ParDepartment_Id in ('{ form.ParDepartment_Ids }')
                                 ";
             }
 
-            if (form.shift != 0)
+            if (form.Shift_Ids.Length > 0)
             {
-                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+                whereShift = "\n AND CL1.Shift = " + form.Shift_Ids + " ";
             }
 
-            if (form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
-                whereUnit = $@"AND UNI.Id in ({ string.Join(",", form.unitIdArr) })";
+                whereUnit = $@"AND UNI.Id in ({ string.Join(",", form.ParCompany_Ids) })";
             }
             else
             {
-                whereUnit = $@"AND UNI.Id IN (SELECT
+                /*whereUnit = $@"AND UNI.Id IN (SELECT
                 				ParCompany_Id
                 			FROM ParCompanyXUserSgq
-                			WHERE UserSgq_Id = { form.auditorId })";
+                			WHERE UserSgq_Id = { form.auditorId })";*/
             }
 
-            if (form.clusterGroupId > 0)
+            /*if (form.clusterGroupId > 0)
             {
                 whereClusterGroup = $@"AND PCG.Id = { form.clusterGroupId }";
             }
@@ -88,11 +88,11 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             {
                 whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id = {form.criticalLevelId} ";
                     //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
-            }
+            }*/
 
             var query = $@"
-                 DECLARE @DATAINICIAL DATETIME = '{ form._dataInicioSQL} {" 00:00:00"}'
-                 DECLARE @DATAFINAL   DATETIME = '{ form._dataFimSQL } {" 23:59:59"}'
+                 DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+                 DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
                  DECLARE @VOLUMEPCC int
 
 
@@ -210,44 +210,44 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
         [HttpPost]
         [Route("GraficoDepartamentos")]
-        public List<NaoConformidadeRHResultsSet> GraficoDepartamentos([FromBody] FormularioParaRelatorioViewModel form)
+        public List<NaoConformidadeRHResultsSet> GraficoDepartamentos([FromBody] DTO.DataCarrierFormularioNew form)
         {
 
             var whereDepartment = "";
             var whereShift = "";
             var whereCriticalLevel = "";
 
-            if (form.departmentId != 0)
+            if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment = "\n AND L2.ParDepartment_Id = " + form.departmentId + " ";
+                whereDepartment = "\n AND L2.ParDepartment_Id in (" + string.Join(",", form.ParDepartment_Ids) + ")";
             }
 
-            if (form.departmentName != "" && form.departmentName != null)
+            /*if (form.departmentName != "" && form.departmentName != null)
             {
                 whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+            }*/
+
+            if (form.Shift_Ids.Length > 0)
+            {
+                whereShift = "\n AND CL1.Shift in (" + string.Join(",", form.Shift_Ids) + ")";
             }
 
-            if (form.shift != 0)
-            {
-                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
-            }
-
-            if (form.criticalLevelId > 0)
-            {
-                whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id = { form.criticalLevelId }"; //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
-            }
+            //if (form.criticalLevelId > 0)
+            //{
+            //    whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id = { form.criticalLevelId }"; //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            //}
 
             var query = @"
              
-                         DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00:00" + @"'
+                         DECLARE @DATAINICIAL DATETIME = '" + form.startDate.ToString("yyyy-MM-dd") + " 00:00:00" + @"'
                                                                                                                                                                                                                                             
-                         DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + " 23:59:59" + @"'
+                         DECLARE @DATAFINAL   DATETIME = '" + form.endDate.ToString("yyyy-MM-dd") + " 23:59:59" + @"'
                                                                           
                          DECLARE @ParCompany_id INT
             SELECT
             	@ParCompany_id = ID
             FROM PARCOMPANY
-            WHERE NAME = '" + form.unitName + @"'
+            -- WHERE NAME = '" + form.Param["unitName"] + @"'
 
 
             --------------------------------  
@@ -360,7 +360,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             				ON UNI.Id = CL1.UnitId
             			WHERE 1=1
 						AND CL1.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-            			AND UNI.Name = '" + form.unitName + @"'
+            			-- AND UNI.Name = '" + form.Param["unitName"] + @"'
                         " + whereDepartment + @"
                         " + whereShift + @"
                         " + whereCriticalLevel + @"
@@ -382,8 +382,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             		,Departamento_Id
             HAVING SUM(ncComPeso) > 0
             AND SUM(NC) > 0
-            ORDER BY 3 DESC
-            DROP TABLE #AMOSTRATIPO4 ";
+            ORDER BY 3 DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -396,38 +395,38 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
         [HttpPost]
         [Route("GraficoDepartamentosPorShift")]
-        public List<NaoConformidadeRHResultsSet> GraficoDepartamentosPorShift([FromBody] FormularioParaRelatorioViewModel form)
+        public List<NaoConformidadeRHResultsSet> GraficoDepartamentosPorShift([FromBody] DTO.DataCarrierFormularioNew form)
         {
 
             var whereDepartment = "";
             var whereShift = "";
             var whereCriticalLevel = "";
 
-            if (form.departmentId != 0)
+            if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment = "\n AND L2.ParDepartment_Id = " + form.departmentId + " ";
+                whereDepartment = "\n AND L2.ParDepartment_Id in (" + string.Join(",", form.ParDepartment_Ids) + ")";
             }
 
-            if (form.departmentName != "" && form.departmentName != null)
+            if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
             {
-                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+                whereDepartment = "\n AND D.Name = '" + form.Param["departmentName"] + "'";
             }
 
-            if (form.shift != 0)
+            if (form.Shift_Ids.Length > 0)
             {
-                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+                whereShift = "\n AND CL1.Shift in (" + string.Join(",", form.Shift_Ids) + ")";
             }
 
-            if (form.criticalLevelId > 0)
-            {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
-            }
+            //if (form.criticalLevelId > 0)
+            //{
+            //    whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            //}
 
             var query = @"
              
-                         DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + @"'
+                         DECLARE @DATAINICIAL DATETIME = '" + form.startDate.ToString("yyyy-MM-dd") + @"'
                                                                                                                                                                                                                                             
-                         DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + @"'
+                         DECLARE @DATAFINAL   DATETIME = '" + form.endDate.ToString("yyyy-MM-dd") + @"'
                                                                                                                                                                                                                                             
                          DECLARE @VOLUMEPCC int
                                                                           
@@ -435,7 +434,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             SELECT
             	@ParCompany_id = ID
             FROM PARCOMPANY
-            WHERE NAME = '" + form.unitName + @"'
+            WHERE NAME = '" + form.Param["unitName"] + @"'
                          CREATE TABLE #AMOSTRATIPO4 ( 
                          UNIDADE INT NULL, 
                          INDICADOR INT NULL, 
@@ -637,7 +636,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             				ON A4.UNIDADE = UNI.Id
             				AND A4.INDICADOR = IND.ID
             			WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-            			AND UNI.Name = '" + form.unitName + @"'
+            			AND UNI.Name = '" + form.Param["unitName"] + @"'
                         " + whereDepartment + @"
                         " + whereShift + @"
                         " + whereCriticalLevel + @"
@@ -670,7 +669,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
         [HttpPost]
         [Route("GraficoIndicadorDepartamento")]
-        public List<NaoConformidadeRHResultsSet> GraficoIndicadorDepartamento([FromBody] FormularioParaRelatorioViewModel form)
+        public List<NaoConformidadeRHResultsSet> GraficoIndicadorDepartamento([FromBody] DTO.DataCarrierFormularioNew form)
         {
             //_list = CriaMockGraficoNcPorUnidadeIndicador();
 
@@ -689,13 +688,13 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
             var query = "" +
 
-                "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
-                "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'                                                                                                                                                                                                                    " +
+                "\n DECLARE @DATAINICIAL DATETIME = '" + form.startDate.ToString("yyyy-MM-dd") + "'                                                                                                                                                                                                                    " +
+                "\n DECLARE @DATAFINAL   DATETIME = '" + form.endDate.ToString("yyyy-MM-dd") + "'                                                                                                                                                                                                                    " +
 
                 "\n DECLARE @VOLUMEPCC int                                                  " +
                 "\n DECLARE @ParCompany_id INT                                              " +
 
-                "\n SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '" + form.unitName + "'" +
+                "\n SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '" + form.Param["unitName"] + "'" +
 
                 "\n CREATE TABLE #AMOSTRATIPO4 ( " +
 
@@ -876,7 +875,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 "\n         AND A4.DATA = CL1.ConsolidationDate " +
 
                 "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
-                "\n         AND UNI.Name = '" + form.unitName + "'" +
+                "\n         AND UNI.Name = '" + form.Param["unitName"] + "'" +
                 "\n         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
 
                 "\n         AND D.Id = 2 " +
@@ -902,7 +901,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
         [HttpPost]
         [Route("GraficoIndicador")]
-        public List<NaoConformidadeRHResultsSet> GraficoIndicador([FromBody] FormularioParaRelatorioViewModel form)
+        public List<NaoConformidadeRHResultsSet> GraficoIndicador([FromBody] DTO.DataCarrierFormularioNew form)
         {
             //_list = CriaMockGraficoNcPorUnidadeIndicador();
 
@@ -925,7 +924,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             var whereCriticalLevel = "";
 
 
-            if (form.departmentId != 0)
+            if (form.ParDepartment_Ids.Length > 0)
             {
                 whereDepartment = $@" AND IND.ID IN (SELECT 
 	                distinct 
@@ -941,44 +940,44 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	                AND P21.IsActive = 1
 	                AND P2.IsActive = 1
 	                AND P1.IsActive = 1
-	                AND PD.ID = { form.departmentId }) ";
+	                AND PD.ID in (" + string.Join(",", form.ParDepartment_Ids) + "))";
             }
 
-            if (form.departmentName != "" && form.departmentName != null)
+            if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
             {
-                whereDepartment = $@" AND D.Name = '{ form.departmentName }' ";
+                whereDepartment = $@" AND D.Name = '{ form.Param["departmentName"] }' ";
             }
 
-            if (form.departmentId != 0)
+            if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment_Todos = "\n AND L2.ParDepartment_Id = " + form.departmentId + " ";
+                whereDepartment_Todos = "\n AND L2.ParDepartment_Id in (" + string.Join(",", form.ParDepartment_Ids) + ") ";
             }
 
-            if (form.departmentName != "" && form.departmentName != null)
+            if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
             {
-                whereDepartment_Todos = "\n AND D.Name = '" + form.departmentName + "'";
+                whereDepartment_Todos = "\n AND D.Name = '" + form.Param["departmentName"] + "'";
             }
 
-            if (form.shift != 0)
+            if (form.Shift_Ids.Length > 0)
             {
-                whereShift = $@"AND CL1.Shift = { form.shift } ";
+                whereShift = $@"AND CL1.Shift  in (" + string.Join(",", form.Shift_Ids) + ") ";
             }
 
-            if (form.criticalLevelId > 0)
-            {
-                whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id = { form.criticalLevelId }"; //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
-            }
+            //if (form.criticalLevelId > 0)
+            //{
+            //    whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id = { form.criticalLevelId }"; //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            //}
 
             var query = $@"
- DECLARE @DATAINICIAL DATETIME = '{ form._dataInicioSQL } 00:00:00'
+ DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd") } 00:00:00'
                                                                                                                                                                                                                     
- DECLARE @DATAFINAL   DATETIME = '{ form._dataFimSQL } 23:59:59'
+ DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
                                                                                                                                                                                                                     
  DECLARE @ParCompany_id INT
 SELECT
 	@ParCompany_id = ID
 FROM PARCOMPANY
-WHERE NAME = '{ form.unitName }'
+WHERE NAME = '{ form.Param["unitName"] }'
  
 --------------------------------
 SELECT
@@ -1062,7 +1061,7 @@ FROM (SELECT
 			ON UNI.Id = CL1.UnitId
 		WHERE 1=1
 		AND CL1.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-		AND UNI.Name = '{form.unitName }'
+		AND UNI.Name = '{form.Param["unitName"] }'
         {whereDepartment}
         {whereShift}
         {whereCriticalLevel}
@@ -1098,37 +1097,37 @@ ORDER BY 5 DESC
 
         [HttpPost]
         [Route("GraficoIndicadorPorShift")]
-        public List<NaoConformidadeRHResultsSet> GraficoIndicadorPorShift([FromBody] FormularioParaRelatorioViewModel form)
+        public List<NaoConformidadeRHResultsSet> GraficoIndicadorPorShift([FromBody] DTO.DataCarrierFormularioNew form)
         {
             var whereDepartment = "";
             var whereShift = "";
             var whereCriticalLevel = "";
 
 
-            if (form.departmentId != 0)
+            if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment = $@"AND L2.ParDepartment_Id = { form.departmentId } ";
+                whereDepartment = $@"AND L2.ParDepartment_Id  in (" + string.Join(",", form.ParDepartment_Ids) + ") ";
             }
 
-            if (form.departmentName != "" && form.departmentName != null)
+            if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
             {
-                whereDepartment = $@"AND D.Name = '{ form.departmentName }'";
+                whereDepartment = $@"AND D.Name = '{ form.Param["departmentName"] }'";
             }
 
-            if (form.shift != 0)
+            if (form.Shift_Ids.Length > 0)
             {
-                whereShift = $@"AND CL1.Shift = { form.shift } ";
+                whereShift = $@"AND CL1.Shift  in (" + string.Join(",", form.Shift_Ids) + ") ";
             }
 
-            if (form.criticalLevelId > 0)
-            {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
-            }
+            //if (form.criticalLevelId > 0)
+            //{
+            //    whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            //}
 
             var query = $@"
- DECLARE @DATAINICIAL DATETIME = '{ form._dataInicioSQL }'
+ DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd") }'
                                                                                                                                                                                                                     
- DECLARE @DATAFINAL   DATETIME = '{ form._dataFimSQL }'
+ DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") }'
                                                                                                                                                                                                                     
  DECLARE @VOLUMEPCC int
                                                   
@@ -1136,7 +1135,7 @@ ORDER BY 5 DESC
 SELECT
 	@ParCompany_id = ID
 FROM PARCOMPANY
-WHERE NAME = '{ form.unitName }'
+WHERE NAME = '{ form.Param["unitName"] }'
  CREATE TABLE #AMOSTRATIPO4 ( 
  UNIDADE INT NULL, 
  INDICADOR INT NULL, 
@@ -1326,7 +1325,7 @@ FROM (SELECT
 		INNER JOIN ParDepartment D WITH (NOLOCK)
 			ON L2.ParDepartment_Id = D.Id
 		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-		AND UNI.Name = '{form.unitName }'
+		AND UNI.Name = '{form.Param["unitName"] }'
         {whereDepartment}
         {whereShift}
         {whereCriticalLevel}
@@ -1364,7 +1363,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
         [HttpPost]
         [Route("GraficoMonitoramento")]
-        public List<NaoConformidadeRHResultsSet> GraficoMonitoramento([FromBody] FormularioParaRelatorioViewModel form)
+        public List<NaoConformidadeRHResultsSet> GraficoMonitoramento([FromBody] DTO.DataCarrierFormularioNew form)
         {
             //_list = CriaMockGraficoMonitoramento();
 
@@ -1373,30 +1372,30 @@ DROP TABLE #AMOSTRATIPO4 ";
             var whereDepartment = "";
             var whereShift = "";
 
-            if (form.departmentId != 0)
+            if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment = "\n AND MON.ParDepartment_Id = " + form.departmentId + " ";
+                whereDepartment = "\n AND MON.ParDepartment_Id  in (" + string.Join(",", form.ParDepartment_Ids) + ") ";
             }
 
-            if (form.departmentName != "" && form.departmentName != null)
+            if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
             {
-                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+                whereDepartment = "\n AND D.Name = '" + form.Param["departmentName"] + "'";
             }
 
-            if (form.shift != 0)
+            if (form.Shift_Ids.Length > 0)
             {
-                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+                whereShift = "\n AND CL1.Shift   in (" + string.Join(",", form.Shift_Ids) + ") ";
             }
 
             var query = "" +
 
-                $@" DECLARE @DATAINICIAL DATETIME = '{form._dataInicioSQL} 00:00:00'
-                 DECLARE @DATAFINAL   DATETIME = '{form._dataFimSQL} 23:59:59'       
+                $@" DECLARE @DATAINICIAL DATETIME = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
+                 DECLARE @DATAFINAL   DATETIME = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'       
 
                  DECLARE @VOLUMEPCC int                                                  
                  DECLARE @ParCompany_id INT                                              
 
-                 SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '{ form.unitName }'
+                 SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '{ form.Param["unitName"] }'
 
  
 
@@ -1445,8 +1444,8 @@ DROP TABLE #AMOSTRATIPO4 ";
                	ON UNI.Id = CL1.UnitId 
                	WHERE 1=1
                 AND CL1.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                	AND (UNI.Name = '{form.unitName }' OR UNI.Initials = '{ form.unitName }')
-                	AND IND.Name = '{form.level1Name}' 
+                	AND (UNI.Name = '{form.Param["unitName"] }' OR UNI.Initials = '{ form.Param["unitName"] }')
+                	AND IND.Name = '{form.Param["level1Name"]}' 
                 ) S1 
              GROUP BY Level2Name 
               HAVING sum(NCSemPeso) > 0 
@@ -1464,32 +1463,32 @@ DROP TABLE #AMOSTRATIPO4 ";
 
         [HttpPost]
         [Route("GraficoTarefasAcumuladas")]
-        public List<NaoConformidadeRHResultsSet> GraficoTarefasAcumuladas([FromBody] FormularioParaRelatorioViewModel form)
+        public List<NaoConformidadeRHResultsSet> GraficoTarefasAcumuladas([FromBody] DTO.DataCarrierFormularioNew form)
         {
 
             var whereDepartment = "";
             var whereShift = "";
             var whereCriticalLevel = "";
 
-            if (form.departmentId != 0)
+            if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment = "\n AND MON.ParDepartment_Id = " + form.departmentId + " ";
+                whereDepartment = "\n AND MON.ParDepartment_Id   in (" + string.Join(",", form.ParDepartment_Ids) + ") ";
             }
 
-            if (form.departmentName != "" && form.departmentName != null)
+            if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
             {
-                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+                whereDepartment = "\n AND D.Name = '" + form.Param["departmentName"] + "'";
             }
 
-            if (form.shift != 0)
+            if (form.Shift_Ids.Length > 0)
             {
-                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+                whereShift = "\n AND CL1.Shift   in (" + string.Join(",", form.Shift_Ids) + ") ";
             }
 
-            if (form.criticalLevelId > 0)
-            {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
-            }
+            //if (form.criticalLevelId > 0)
+            //{
+            //    whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+            //}
 
             var queryGraficoTarefasAcumuladas = $@"
             SELECT
@@ -1515,9 +1514,9 @@ DROP TABLE #AMOSTRATIPO4 ";
             INNER JOIN ParLevel2 MON (NOLOCK)
             	ON MON.Id = C2.ParLevel2_Id
             WHERE 1 = 1 
-             AND IND.Name IN ('{ form.level1Name }') 
-            AND UNI.Name = '{ form.unitName }'
-            AND C2.CollectionDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL } 23:59:59'
+             AND IND.Name IN ('{ form.Param["level1Name"] }') 
+            AND UNI.Name = '{ form.Param["unitName"] }'
+            AND C2.CollectionDate BETWEEN '{ form.startDate.ToString("yyyy-MM-dd") }' AND '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
                 { whereDepartment }
                 { whereShift }            
                 { whereCriticalLevel }
@@ -1542,7 +1541,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
         [HttpPost]
         [Route("GraficoTarefa")]
-        public List<NaoConformidadeRHResultsSet> GraficoTarefa([FromBody] FormularioParaRelatorioViewModel form)
+        public List<NaoConformidadeRHResultsSet> GraficoTarefa([FromBody] DTO.DataCarrierFormularioNew form)
         {
             //_list = CriaMockGraficoTarefas();
 
@@ -1555,19 +1554,19 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             var whereShift = "";
 
-            if (form.shift != 0)
+            if (form.Shift_Ids.Length > 0)
             {
-                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+                whereShift = "\n AND CL1.Shift   in (" + string.Join(",", form.Shift_Ids) + ") ";
             }
 
             var query = "" +
 
-                $@" DECLARE @DATAINICIAL DATETIME = '{form._dataInicioSQL}'
-                  DECLARE @DATAFINAL   DATETIME = '{form._dataFimSQL}'   
+                $@" DECLARE @DATAINICIAL DATETIME = '{form.startDate.ToString("yyyy-MM-dd")}'
+                  DECLARE @DATAFINAL   DATETIME = '{form.startDate.ToString("yyyy-MM-dd")}'   
                  
                   DECLARE @ParCompany_id INT
                  
-                  SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '{ form.unitName }'
+                  SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '{ form.Param["unitName"] }'
 
                  SELECT 
                     TarefaName, NcSemPeso as Nc, AvSemPeso as Av, [Proc] FROM (
@@ -1592,11 +1591,12 @@ DROP TABLE #AMOSTRATIPO4 ";
                     INNER JOIN ParLevel2 MON  (nolock)
                     ON MON.Id = C2.ParLevel2_Id 
                           WHERE 1=1
-                             AND IND.Name = '{ form.level1Name }'
-                             AND MON.Name = '{ form.level2Name }'
-                             AND (UNI.Name = '{ form.unitName }' OR UNI.Initials = '{ form.unitName }')
+                             AND IND.Name = '{ form.Param["level1Name"] }'
+                             AND MON.Name = '{ form.Param["level2Name"] }'
+                             AND (UNI.Name = '{ form.Param["unitName"] }' OR UNI.Initials = '{ form.Param["unitName"] }')
                              AND R3.IsNotEvaluate = 0 
-                             AND C2.CollectionDate BETWEEN '{ form._dataInicioSQL }' AND '{ form._dataFimSQL } 23:59:59'
+                             AND C2.CollectionDate BETWEEN '{ form.startDate.ToString("yyyy-MM-dd") }' 
+                                    AND '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
                          { whereShift }
                          GROUP BY 
                           IND.Id
@@ -1623,24 +1623,20 @@ DROP TABLE #AMOSTRATIPO4 ";
 
         [HttpPost]
         [Route("PivotTable")]
-        public dynamic PivotTable([FromBody] FormularioParaRelatorioViewModel form)
+        public dynamic PivotTable([FromBody] DTO.DataCarrierFormularioNew form)
         {
-
-            var whereShift = "";
-
-            if (form.shift != 0)
-            {
-                whereShift = "" + form.shift + " ";
-            }
-
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
 
-                var parLevel1_Id = dbSgq.ParLevel1.Where(r => r.Name == form.level1Name).Select(r => r.Id).FirstOrDefault();
+                var level1Name = form.Param["level1Name"].ToString();
+                var level2Name = form.Param["level2Name"].ToString();
+                var unitName = form.Param["unitName"].ToString();
 
-                var parLevel2_Id = dbSgq.ParLevel2.Where(r => r.Name == form.level2Name).Select(r => r.Id).FirstOrDefault();
+                var parLevel1_Id = dbSgq.ParLevel1.Where(r => r.Name == level1Name).Select(r => r.Id).FirstOrDefault();
 
-                var unit_Id = dbSgq.ParCompany.Where(r => r.Name == form.unitName).Select(r => r.Id).FirstOrDefault();
+                var parLevel2_Id = dbSgq.ParLevel2.Where(r => r.Name == level2Name).Select(r => r.Id).FirstOrDefault();
+
+                var unit_Id = dbSgq.ParCompany.Where(r => r.Name == unitName).Select(r => r.Id).FirstOrDefault();
 
                 var sql = $@"
 		 
@@ -1648,7 +1644,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 		 --------	INPUTS					
 		 -------------------------------------------------------------------------------------------------------------------------
 
-		 DECLARE @DATEINI DATETIME = '{form._dataInicioSQL} 00:00:00' DECLARE @DATEFIM DATETIME = '{form._dataFimSQL} 23:59:59';
+		 DECLARE @DATEINI DATETIME = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00' DECLARE @DATEFIM DATETIME = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59';
 		 DECLARE @UNITID VARCHAR(10) = '{unit_Id}', @PARLEVEL1_ID VARCHAR(10) = '{parLevel1_Id}',@PARLEVEL2_ID VARCHAR(10) = '{parLevel2_Id}';
 
 		 -------------------------------------------------------------------------------------------------------------------------
@@ -1915,7 +1911,7 @@ DROP TABLE #CollectionLevel2
 
         [HttpPost]
         [Route("GraficoTarefasAcumulada")]
-        public List<NaoConformidadeRHResultsSet> GraficoTarefasAcumulada([FromBody] FormularioParaRelatorioViewModel form)
+        public List<NaoConformidadeRHResultsSet> GraficoTarefasAcumulada([FromBody] DTO.DataCarrierFormularioNew form)
         {
             //_list = CriaMockGraficoTarefasAcumuladas();
 
@@ -1947,10 +1943,10 @@ DROP TABLE #CollectionLevel2
                         "\n ON IND.Id = CL1.ParLevel1_Id " +
                         "\n INNER JOIN ParLevel2 MON  (nolock)" +
                         "\n ON MON.Id = CL2.ParLevel2_Id " +
-                        "\n WHERE IND.Name ='" + form.level1Name + "' " +
+                        "\n WHERE IND.Name ='" + form.Param["level1Name"] + "' " +
                         "\n /* and MON.Id = 1 */" +
-                        "\n 	AND UNI.Name = '" + form.unitName + "'" +
-                        "\n 	AND CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                        "\n 	AND UNI.Name = '" + form.Param["unitName"] + "'" +
+                        "\n 	AND CL2.ConsolidationDate BETWEEN '" + form.startDate.ToString("yyyy-MM-dd") + "' AND '" + form.endDate.ToString("yyyy-MM-dd") + "'" +
                         "\n GROUP BY " +
                         "\n -- IND.Id " +
                         "\n -- ,IND.Name " +
