@@ -80,12 +80,16 @@ var Select3 = {
 				</div>
 				<div class="col-sm-12">
 					<button class ="pull-left btn btn-danger" id="filtroSelect3Limpar">Limpar Tudo</button>
-					<button class ="pull-right btn btn-default" onclick="$('#filtroSelect3').remove();">Fechar</button>
+					<button class ="pull-right btn btn-default" id="filtroSelect3Fechar" onclick="$('#filtroSelect3').remove();">Fechar</button>
 				</div>
 			</div>
 			</div>`;
 
         $('body').append(html);
+
+        $("#filtroSelect3Fechar").on('click', function () {
+            console.log('clicadooo');
+        });
 
         $('#filtroSelect3 form').off('submit').on('submit', function (e) {
             e.preventDefault();

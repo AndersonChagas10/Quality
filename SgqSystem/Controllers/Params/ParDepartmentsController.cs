@@ -271,6 +271,8 @@ namespace SgqSystem.Controllers
             listaGrupoDepartamentos.Insert(0, new ParDepartmentGroup() { Id = 0, Name = "Selecione" });
             ViewBag.ParDepartmentGroup_Id = new SelectList(listaGrupoDepartamentos, "Id", "Name", parDepartment.ParDepartmentGroup_Id);
 
+            //ViewBag.Parents = new SelectList(parDepartment as IEnumerable<ParDepartment>, "Id", "Name", parDepartment.ParCompany_Id);
+
             ViewBag.Parents = db.ParDepartment.Where(x => x.Id == parDepartment.Parent_Id).ToList()
              .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
              .ToList();

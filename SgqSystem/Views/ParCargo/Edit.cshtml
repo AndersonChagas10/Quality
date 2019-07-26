@@ -54,8 +54,20 @@
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.ListBoxFor(model => model.ParDepartment_Ids, new MultiSelectList(ViewBag.Departamentos, "Id", "Name"), new { @class = "form-control", @multiple = "multiple" })
-                                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                <button type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=ParDepartment_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParDepartment", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+
+                                                <select class="form-control" name="ParDepartment_Ids" multiple>
+                                                    @foreach (var item in ViewBag.Departments)
+                                                    {
+                                                        <option value="@item.Key" selected="selected">@item.Value</option>
+                                                    }
+
+                                                </select>
                                             </div>
                                         </div>
 
@@ -85,7 +97,7 @@
         </div>
     </div>
 </div>
-
+<script src="~/Scripts/Select3/select3.js"></script>
 <script>
 
     $('#ParDepartment_Ids').select2();
