@@ -73,8 +73,18 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Parent_Id, Resources.Resource.son_of as string, htmlAttributes: new { @class = "control-label col-md-3" })
                                             <div class="col-md-6">
-                                                @Html.TextBox("Parent", ViewBag.Parents[0].Value as string, new { @class = "form-control" })
-                                                @Html.Hidden("Parent_Id", Model.Parent_Id)
+                                                <button id="btnBuscarDepartamentos" type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=Parent_Id]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParDepartment", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+
+                                                <select class="form-control" name="Parent_Id" id="Parent_Id" value="@ViewBag.Parents[0].Value">
+                                                    <option value="@ViewBag.Parents[0].Key" selected="selected">@ViewBag.Parents[0].Value</option>
+
+                                                </select>
+
                                                 <div id="infoFilho" class="col-md-10" hidden="hidden" style="padding-left:0px;">
                                                     <p class="alert alert-info col-md-10">Ao vincular uma Seção a um Centro de Custo, este campo ficará desabilitado, pois seguirá a hierarquia do cadastro</p>
                                                 </div>
@@ -135,6 +145,7 @@
     <!-- END CONTENT BODY -->
 </div>
 <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<script src="~/Scripts/Select3/select3.js"></script>
 <style>
     .ui-autocomplete {
         max-height: 100px;
@@ -162,6 +173,10 @@
         validaFilhoEEmpresaVinculados();
     });
 
+    Select3.callback = function () {
+        validaFilhoEEmpresaVinculados();
+    };
+
     function validaFilhoEEmpresaVinculados() {
         if ($("#ParCompany_Id :selected").val() == 0 && $("#Parent_Id").val() == 0) {
             $("#ParCompany_Id").prop('disabled', false);
@@ -183,77 +198,6 @@
 
     $(document).ready(function () {
         closeLeftSidebar();
-        setTimeout(function () {
-            validaFilhoEEmpresaVinculados();
-        }, 1000);
     });
-
-    $("#Parent").on('keyup', function () {
-        if ($("#Parent").val() == "") {
-            $("[name=Parent_Id]").val($("#Parent").val());
-        }
-        validaFilhoEEmpresaVinculados();
-    });
-
-    $(document).ready(function () {
-        $("[name=Parent_Id]").val($("#Parent").val().split("-", 1).pop());
-    });
-
-    $("#Parent").on("autocompleteselect", function (event, ui) {
-        if (ui.item.label.split("-", 1).pop() >= 0) {
-            $("#Parent_Id").val(ui.item.label.split("-", 1).pop());
-            validaFilhoEEmpresaVinculados();
-        }
-    });
-
-      function split(val) {
-            return val.split(/,\s*/);
-        }
-
-        function extractLast(term) {
-            return split(term).pop();
-        }
-
-         $('#Parent')
-            .autocomplete({
-                minLength: 3,
-                source: function (request, response) {
-                    //showDivLoading();
-                    var search = extractLast($('#Parent').val());
-                    $.ajax({
-                        type: "GET",
-                        data: {},
-                        url: '@Url.Content("~")' + "api/ParDepartments/GetParDepartmentParents?search=" + search,
-                        dataType: "json",
-                        success: function (data) {
-
-                            //hideDivLoading();
-                            response($.map(data, function (item) {
-                                return { label: item.Value, value: item.Value };
-                            }));
-
-
-                        },
-                        error: function (errorThrown) {
-                            //hideDivLoading();
-                            console.log('Error: ' + errorThrown);
-                        }
-                    });
-                },
-                focus: function () {
-                    return false;
-                },
-                select: function (event, ui) {
-                    var terms = split(this.value);
-                    // remove the current input
-                    terms.pop();
-                    // add the selected item
-                    terms.push(ui.item.value);
-                    // add placeholder to get the comma-and-space at the end
-                    terms.push("");
-                    this.value = terms.join("");
-                    return false;
-                }
-            });
 
 </script>
