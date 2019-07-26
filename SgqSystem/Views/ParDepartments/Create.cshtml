@@ -71,8 +71,18 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Parent_Id, htmlAttributes: new { @class = "control-label col-md-3" })
                                             <div class="col-md-6">
-                                                @Html.TextBox("Parent", "", new { @class = "form-control" })
-                                                @Html.Hidden("Parent_Id")
+                                                @*@Html.TextBox("Parent", "", new { @class = "form-control" })
+                                                @Html.Hidden("Parent_Id")*@
+
+                                                <button id="btnBuscarDepartamentos" type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=Parent_Id]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParDepartment", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+
+                                                <select class="form-control" name="Parent_Id"></select>
+
                                                 <div id="infoFilho" class="col-md-10" hidden="hidden" style="padding-left:0px;">
                                                     <p class="alert alert-info col-md-10">Ao vincular um Centro de Custo a uma Empresa este campo ficará desablitado, pois seguirá a hierarquia do cadastro.</p>
                                                 </div>
@@ -119,7 +129,7 @@
 </div>
 
 <link href="~/Content/jquery-ui.css" rel="stylesheet" />
-
+<script src="~/Scripts/Select3/select3.js"></script>
 <style>
     .ui-autocomplete {
         max-height: 100px;
@@ -148,19 +158,26 @@
         validaFilhoEEmpresaVinculados();
     });
 
+    Select3.callback = function () {
+        validaFilhoEEmpresaVinculados();
+    };
+
     function validaFilhoEEmpresaVinculados() {
-        if ($("#ParCompany_Id :selected").val() == 0 && $("#Parent_Id").val() == 0) {
+        if ($("#ParCompany_Id :selected").val() == 0 && $("[name=Parent_Id]").val() == null) {
             $("#ParCompany_Id").prop('disabled', false);
-            $("#Parent").prop('disabled', false);
+            $("[name=Parent_Id]").prop('disabled', false);
+            $("#btnBuscarDepartamentos").prop('disabled', false);
             $("#infoFilho").hide();
             $("#infoVinculoUnidade").hide();
-        } else if ($("#Parent_Id").val() > 0) {
+        } else if ($("[name=Parent_Id]").val() > 0) {
             $("#ParCompany_Id").prop('disabled', true);
-            $("#Parent").prop('disabled', false);
+            $("[name=Parent_Id]").prop('disabled', false);
+            $("#btnBuscarDepartamentos").prop('disabled', false);
             $("#infoFilho").hide();
             $("#infoVinculoUnidade").show();
         } else {
-            $("#Parent").prop('disabled', true);
+            $("[name=Parent_Id]").prop('disabled', true);
+            $("#btnBuscarDepartamentos").prop('disabled', true);
             $("#ParCompany_Id").prop('disabled', false);
             $("#infoFilho").show();
             $("#infoVinculoUnidade").hide();
@@ -169,28 +186,29 @@
 
     $(document).ready(function () {
         closeLeftSidebar();
-        setTimeout(function () {
-            validaFilhoEEmpresaVinculados();
-        }, 1000);
+        //setTimeout(function () {
+        //    validaFilhoEEmpresaVinculados();
+        //}, 1000);
     });
 
-    $("#Parent").on('keyup', function () {
-        if ($("#Parent").val() == "") {
-            $("[name=Parent_Id]").val($("#Parent").val());
-        }
-        validaFilhoEEmpresaVinculados();
-    });
+    //$("#Parent").on('keyup', function () {
+    //    if ($("#Parent").val() == "") {
+    //        $("[name=Parent_Id]").val($("#Parent").val());
+    //    }
+    //    validaFilhoEEmpresaVinculados();
+    //});
 
     $(document).ready(function () {
-        $("[name=Parent_Id]").val($("#Parent").val().split("-", 1).pop());
+        //$("[name=Parent_Id]").val($("#Parent").val().split("-", 1).pop());
+        //validaFilhoEEmpresaVinculados();
     });
 
-    $("#Parent").on("autocompleteselect", function (event, ui) {
-        if (ui.item.label.split("-", 1).pop() >= 0) {
-            $("#Parent_Id").val(ui.item.label.split("-", 1).pop());
-            validaFilhoEEmpresaVinculados();
-        }
-    });
+    //$("#Parent").on("autocompleteselect", function (event, ui) {
+    //    if (ui.item.label.split("-", 1).pop() >= 0) {
+    //        $("#Parent_Id").val(ui.item.label.split("-", 1).pop());
+    //        validaFilhoEEmpresaVinculados();
+    //    }
+    //});
 
       function split(val) {
             return val.split(/,\s*/);
@@ -240,5 +258,8 @@
                     this.value = terms.join("");
                     return false;
                 }
-            });
+        });
+
+
+    //Select3.initialize(function () {});
 </script>

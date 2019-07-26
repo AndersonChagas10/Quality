@@ -89,6 +89,20 @@ namespace SgqSystem.Controllers.Params
             var parDepartment_Ids = db.ParCargoXDepartment.Where(x => x.ParCargo_Id == parCargo.Id && x.IsActive).Select(x => x.ParDepartment_Id);
             parCargo.ParDepartment_Ids = db.ParDepartment.Where(x => parDepartment_Ids.Contains(x.Id)).Select(x => x.Id).ToArray();
 
+
+            ViewBag.Departments = db.ParDepartment.Where(x => parDepartment_Ids.Contains(x.Id)).ToList()
+           .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+           .ToList();
+
+            if (ViewBag.Departments.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.Departments = semDados;
+            }
+
             return View(parCargo);
         }
 
