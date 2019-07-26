@@ -323,7 +323,7 @@
                     if (ParLevel3XDepartment.veifyAdd('crudNxNEdit')) {
 
                         var editado = ParLevel3XDepartment.getObjAdd('crudNxNEdit', obj);
-                       
+
                         $(e).parents('tr').removeData();
                         $(e).parents('tr').data(editado);
                         $($(e).parents('tr').find('td')[0]).html(editado.ParCompany_Name);
@@ -382,7 +382,7 @@
                 $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
                 $("#crudNxNEdit #companyValueL3").hide();
             } else if (obj.ParLevel3InputType_Id == 1 || obj.ParLevel3InputType_Id == 6 || obj.ParLevel3InputType_Id == 12) {
-                
+
                 divDeEdicao = $('.ParBinarios').clone();
                 $(divDeEdicao).show();
                 $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
@@ -510,6 +510,12 @@
 
             if (obj.ParFrequency_Id && obj.ParFrequency_Id > 0) {
                 $('#crudNxNEdit #parFrequencySelect2AmostraLevel').val(obj.ParFrequency_Id).change();
+            }
+
+            if ($(obj.agendamento).hasClass('btn-success')) {//tem Agendamento?
+                $('#crudNxNEdit #parFrequencySelect2AmostraLevel').prop("disabled", true);
+            } else {
+                $('#crudNxNEdit #parFrequencySelect2AmostraLevel').prop("disabled", false);
             }
 
             $('#crudNxNEdit #parLevel1Select2AmostraLevel').parents('td').html('');
@@ -747,7 +753,7 @@
         },
         modalAlterParLevel3XDepartment: function (obj) {
 
-            var divDeEdicao = $('#level3__ParLevel3XDepartment_collapse .panel-body .table-erp').clone();          
+            var divDeEdicao = $('#level3__ParLevel3XDepartment_collapse .panel-body .table-erp').clone();
 
             let ParCompany_Id = obj.ParCompany_Id ? obj.ParCompany_Id : -1;
             let ParLevel1_Id = obj.ParLevel1_Id ? obj.ParLevel1_Id : -1;

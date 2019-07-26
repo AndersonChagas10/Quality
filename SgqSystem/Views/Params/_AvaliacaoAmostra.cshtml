@@ -306,8 +306,11 @@
                             o['agendamento'] = '<button type="button" id="agendamento" class="btn btn-success btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
 
                             $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', true)
-                        } else {
+                        } else {                            
                             o['agendamento'] = '<button type="button" id="agendamento"  class="btn btn-default btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
+
+                            if (!o.ParFrequency_Id)
+                                o['agendamento'] = '<button type="button" id="agendamento"  class="btn btn-default btn-xs popovers" onclick="abrirModalAgendamento($(this))" disabled>Agendamento</button>';
                         }
 
                         if (o.evaluationNumber == 0) {
