@@ -3,17 +3,17 @@
 @{
     ViewBag.Title = Resources.Resource.defects_reports; //"Não Conformidades";
     var url = Url.Action("Index", "Home");
-    var urlGraficoUnidades = Url.Action("GraficoUnidades", "api/NaoConformidade");
-    var urlGraficoDepartamentos = Url.Action("GraficoDepartamentos", "api/NaoConformidade");
-    var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidade");
-    var urlGraficoNcPorUnidadeIndicador = Url.Action("GraficoIndicador", "api/NaoConformidade");
-    var urlGraficoMonitoramento = Url.Action("GraficoMonitoramento", "api/NaoConformidade");
-    var urlGraficoTarefasAcumuladas = Url.Action("GraficoTarefasAcumuladas", "api/NaoConformidade");
-    var urlGraficoTarefa = Url.Action("GraficoTarefa", "api/NaoConformidade");
+    var urlGraficoUnidades = Url.Action("GraficoUnidades", "api/NaoConformidadeRH");
+    var urlGraficoDepartamentos = Url.Action("GraficoDepartamentos", "api/NaoConformidadeRH");
+    var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidadeRH");
+    var urlGraficoNcPorUnidadeIndicador = Url.Action("GraficoIndicador", "api/NaoConformidadeRH");
+    var urlGraficoMonitoramento = Url.Action("GraficoMonitoramento", "api/NaoConformidadeRH");
+    var urlGraficoTarefasAcumuladas = Url.Action("GraficoTarefasAcumuladas", "api/NaoConformidadeRH");
+    var urlGraficoTarefa = Url.Action("GraficoTarefa", "api/NaoConformidadeRH");
     var urlFtaGet = Url.Action("GetUrl", "api/Fta");
-    var UrlGraficoDepartamentosPorShift = Url.Action("GraficoDepartamentosPorShift", "api/NaoConformidade");
-    var UrlPivotTable = Url.Action("PivotTable", "api/NaoConformidade");
-    var UrlGraficoIndicadorPorShift = Url.Action("GraficoIndicadorPorShift", "api/NaoConformidade");
+    var UrlGraficoDepartamentosPorShift = Url.Action("GraficoDepartamentosPorShift", "api/NaoConformidadeRH");
+    var UrlPivotTable = Url.Action("PivotTable", "api/NaoConformidadeRH");
+    var UrlGraficoIndicadorPorShift = Url.Action("GraficoIndicadorPorShift", "api/NaoConformidadeRH");
     var UnidadeUsuario = ViewBag.UnidadeUsuario;
     ViewBag.UnitIdArr = true;
 }
@@ -53,7 +53,7 @@
 
 <div class="page-content-wrapper">
     <div class="page-content">
-        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml","")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml","RH")
 
 
         <div id="CustomPopover" class="hide">

@@ -1,5 +1,6 @@
-﻿@using DTO
-@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+﻿@model String
+@using DTO
+@*@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel*@
 @{
 
     var GetListLevel1 = Url.Action("GetListLevel1", "api/ParamsApi");
@@ -305,7 +306,14 @@
             </li>
         }
 
-        @Html.Partial("~/Views/Shared/_ClusterRegionalUnidadeCriticalLevel123.cshtml")
+        @if (Model == "RH")
+        {
+            @Html.Partial("~/Views/Shared/_ClusterRegionalUnidadeCriticalLevel123RH.cshtml")
+        }
+        else
+        {
+            @Html.Partial("~/Views/Shared/_ClusterRegionalUnidadeCriticalLevel123.cshtml")
+        }
 
         @Html.Partial("~/Views/Shared/_Level321Chain.cshtml")
 
@@ -411,12 +419,12 @@
         $('#level1Id').on('change', function (e) {
             @if(ViewBag.Level1IdArr == null){
                 <text>
-                    enviar['level1Id'] = parseInt( $('#level1Id').val().replace(/\D/g, ''), 10);
-                </text>
+            enviar['level1Id'] = parseInt( $('#level1Id').val().replace(/\D/g, ''), 10);
+            </text>
             }else{
                 <text>
             enviar['level1IdArr'] = RetornaArrayInteiro($('#level1Id').val());
-                </text>
+            </text>
             }
             $('#level2Id').change();
         });
@@ -424,12 +432,12 @@
         $('#level2Id').on('change', function (e) {
             @if(ViewBag.Level2IdArr == null){
                 <text>
-                    enviar['level2Id'] = parseInt( $('#level2Id').val().replace(/\D/g, ''), 10);
-                </text>
+            enviar['level2Id'] = parseInt( $('#level2Id').val().replace(/\D/g, ''), 10);
+            </text>
             }else{
                 <text>
             enviar['level2IdArr'] = RetornaArrayInteiro($('#level2Id').val());
-                </text>
+            </text>
             }
             $('#level3Id').change();
         });
@@ -437,12 +445,12 @@
         $('#level3Id').on('change', function (e) {
             @if(ViewBag.Level3IdArr == null){
                 <text>
-                    enviar['level3Id'] = parseInt( $('#level3Id').val().replace(/\D/g, ''), 10);
-                </text>
+            enviar['level3Id'] = parseInt( $('#level3Id').val().replace(/\D/g, ''), 10);
+            </text>
             }else{
                 <text>
             enviar['level3IdArr'] = RetornaArrayInteiro($('#level3Id').val());
-                </text>
+            </text>
             }
         });
 
@@ -505,11 +513,11 @@
             @if(ViewBag.Level3IdArr == null){
                 <text>
             enviar['groupParLevel1IdArr'] = parseInt($('#level1Groupv').val().replace(/\D/g, ''), 10);
-                </text>
+            </text>
             }else{
                 <text>
             enviar['groupParLevel1IdArr'] = RetornaArrayInteiro($('#level1Groupv').val());
-                </text>
+            </text>
             }
             $('#level1Idv').change();
         });
@@ -517,12 +525,12 @@
         $('#level1Idv').on('change', function (e) {
             @if(ViewBag.Level3IdArr == null){
                 <text>
-                    enviar['level1Idv'] = parseInt( $('#level1Idv').val().replace(/\D/g, ''), 10);
-                </text>
+            enviar['level1Idv'] = parseInt( $('#level1Idv').val().replace(/\D/g, ''), 10);
+            </text>
             }else{
                 <text>
             enviar['level1IdArr'] = RetornaArrayInteiro($('#level1Idv').val());
-                </text>
+            </text>
             }
             $('#level2Idv').change();
         });
@@ -530,12 +538,12 @@
         $('#level2Idv').on('change', function (e) {
             @if(ViewBag.Level3IdArr == null){
                 <text>
-                    enviar['level2Idv'] = parseInt( $('#level2Idv').val().replace(/\D/g, ''), 10);
-                </text>
+            enviar['level2Idv'] = parseInt( $('#level2Idv').val().replace(/\D/g, ''), 10);
+            </text>
             }else{
                 <text>
             enviar['level2IdArr'] = RetornaArrayInteiro($('#level2Idv').val());
-                </text>
+            </text>
             }
             $('#level3Idv').change();
         });
@@ -543,12 +551,12 @@
         $('#level3Idv').on('change', function (e) {
             @if(ViewBag.Level3IdArr == null){
                 <text>
-                    enviar['level3Idv'] = parseInt( $('#level3Idv').val().replace(/\D/g, ''), 10);
-                </text>
+            enviar['level3Idv'] = parseInt( $('#level3Idv').val().replace(/\D/g, ''), 10);
+            </text>
             }else{
                 <text>
             enviar['level3IdArr'] = RetornaArrayInteiro($('#level3Idv').val());
-                </text>
+            </text>
             }
         });
 
@@ -661,7 +669,7 @@
             $('#showModulo2').hide();
         }
 
-         $('body').on("click", "#menu-toggle",function (e) {
+        $('body').on("click", "#menu-toggle",function (e) {
             $("#menu-toggle > i").toggleClass("glyphicon-chevron-right");
             $('.redLabelSecTitle').toggle();
             e.preventDefault();
@@ -690,31 +698,31 @@
             }, 500)
 
         });
-        
-         $('#unitId').select2();
-         $('#ModuloId').select2();
-         $('#shift').select2();
-         $('#period').select2();
-         $('#auditorId').select2();
-         $('#tipoCEP').select2();
+
+        $('#unitId').select2();
+        $('#ModuloId').select2();
+        $('#shift').select2();
+        $('#period').select2();
+        $('#auditorId').select2();
+        $('#tipoCEP').select2();
 
         //Se não for multiplo força um change para selecionar o valor (motivo: ele remove o primeiro item 'todos' e não aplicava o evento change)
         if(!$('#unitId').attr('multiple'))
             setTimeout(function(){$('#unitId').trigger('change');},500);
 
-            let ItemMenu = @Html.Raw(Json.Encode(ViewBag.itemMenu));
+        let ItemMenu = @Html.Raw(Json.Encode(ViewBag.itemMenu));
 
-            if (ItemMenu) {
+        if (ItemMenu) {
 
-                enviar["ItemMenu_Id"] = ItemMenu.Id;
-            }
+            enviar["ItemMenu_Id"] = ItemMenu.Id;
+        }
 
-        });
+    });
 
     var formControl = {
 
         showLevel1: function () {
-        $('#showLevel1').show();
+            $('#showLevel1').show();
 
         },
         showLevel2: function () {
@@ -786,50 +794,50 @@
         }
     }
 
-     //Esconde o header e o footer quando tecla f11
-     $(document).keyup(function (e) {
-         if (e.which == 122) {
-             e.preventDefault();
-             expand();
-             return false;
-         }
-     });
+    //Esconde o header e o footer quando tecla f11
+    $(document).keyup(function (e) {
+        if (e.which == 122) {
+            e.preventDefault();
+            expand();
+            return false;
+        }
+    });
 
-     //Toggle navbar, header e footer
-     function expand() {
+    //Toggle navbar, header e footer
+    function expand() {
 
-         $(".navbar").toggle();
-         $(".page-header-fixed .page-container").toggleClass("fullScreen");
-         $("footer").toggle();
+        $(".navbar").toggle();
+        $(".page-header-fixed .page-container").toggleClass("fullScreen");
+        $("footer").toggle();
 
-     }
+    }
 
-     //Toggle fullscreen para todos os navegadores
-     function toggleFullScreen() {
-         if (!document.fullscreenElement &&
-             !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-             if (document.documentElement.requestFullscreen) {
-                 document.documentElement.requestFullscreen();
-             } else if (document.documentElement.msRequestFullscreen) {
-                 document.documentElement.msRequestFullscreen();
-             } else if (document.documentElement.mozRequestFullScreen) {
-                 document.documentElement.mozRequestFullScreen();
-             } else if (document.documentElement.webkitRequestFullscreen) {
-                 document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-             }
-         } else {
-             if (document.exitFullscreen) {
-                 document.exitFullscreen();
-             } else if (document.msExitFullscreen) {
-                 document.msExitFullscreen();
-             } else if (document.mozCancelFullScreen) {
-                 document.mozCancelFullScreen();
-             } else if (document.webkitExitFullscreen) {
-                 document.webkitExitFullscreen();
-             }
-         }
+    //Toggle fullscreen para todos os navegadores
+    function toggleFullScreen() {
+        if (!document.fullscreenElement &&
+            !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
 
-         expand();
-     }
+        expand();
+    }
 
 </script>

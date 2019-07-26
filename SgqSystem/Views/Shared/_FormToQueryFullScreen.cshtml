@@ -1,6 +1,7 @@
-﻿<!--QUERY FULL SCREEN-->
+﻿@model String
+<!--QUERY FULL SCREEN-->
 <div class="wrapper">
-    @Html.Partial("~/Views/Shared/_FormularioQueryData.cshtml")
+    @Html.Partial("~/Views/Shared/_FormularioQueryData.cshtml",Model)
     <div class="page-content-wrapper report-wrapper">
         <div class="container-fluid">
             <div class="row">
