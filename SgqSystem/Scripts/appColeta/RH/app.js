@@ -25,11 +25,11 @@ var currentTotalSampleValue = 0;
 // }
 
 function onOpenAppColeta() {
-    
+
     _readFile("login.txt", function (data) {
         if (typeof (data) != 'undefined' && data.length > 0)
             currentLogin = JSON.parse(data);
-            currentParCompany_Id = currentLogin.ParCompany_Id;
+        currentParCompany_Id = currentLogin.ParCompany_Id;
 
         _readFile("appParametrization.txt", function (param) {
             if (typeof (param) != 'undefined' && param.length > 0) {
@@ -48,7 +48,7 @@ function getAppParametrization(frequencyId) {
 
         currentParFrequency_Id = frequencyId;
         openMensagem('Por favor, aguarde até que seja feito o download do planejamento selecionado', 'blue', 'white');
-        
+
         $.ajax({
             data: JSON.stringify({
                 ParCompany_Id: currentParCompany_Id
@@ -78,7 +78,7 @@ function getAppParametrization(frequencyId) {
         _readFile("appParametrization.txt", function (data) {
             if (data)
                 parametrization = JSON.parse(data);
-                
+
             listarParDepartment(0);
             closeMensagem();
         });
@@ -177,19 +177,19 @@ function changeDate(that) {
 
     if (globalColetasRealizadas.length > 0) {
 
-        setTimeout(function(){
+        setTimeout(function () {
             var titulo = "Não foi possível alterar a data.";
             var mensagem = "Existem coeltas não sincronizadas. Deseja sincronizar os dados?";
 
             openMessageConfirm(titulo, mensagem, sincronizarColeta, closeModal, "orange", "white");
-        },500);
+        }, 500);
         return false;
     }
 
     openMensagem("Alterando data...", "blue", "White");
 
-    _writeFile("appParametrization.txt", '', function () { 
-        var oldFrequency_Id = currentParFrequency_Id+0;
+    _writeFile("appParametrization.txt", '', function () {
+        var oldFrequency_Id = currentParFrequency_Id + 0;
         currentParFrequency_Id = 0;
         getPlanejamentoPorFrequencia(oldFrequency_Id);
         openParFrequency();
