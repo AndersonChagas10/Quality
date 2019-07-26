@@ -727,3 +727,11 @@ GO
 
 ALTER TABLE [dbo].[Result_Level3XGroup] CHECK CONSTRAINT [FK_Result_Level3XGroup_Result_Level3]
 GO
+GO
+
+
+IF COL_LENGTH('ParEvaluation','ParFrequency_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParEvaluation ADD ParFrequency_Id int foreign key(ParFrequency_Id) references ParFrequency(Id);
+    END
+GO
