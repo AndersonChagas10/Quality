@@ -225,6 +225,8 @@
 
             });
 
+           
+
             this.showTableParMultipleValues();
         },
 
@@ -417,6 +419,7 @@
         },
 
         Save: function (obj) {
+            
             openLoader(Resources("please_wait"));
             $.ajax({
                 url: parDCCabecalho.urlSave,
@@ -481,10 +484,23 @@
 
     //Adicionar os dados no data-form
     $('#' + parDCCabecalho.id).on('click', '[data-table-delete]', function (e) {
+        e.preventDefault();
         var obj = $(this).parents('tr').data('sgq');
-        obj.IsActive = false;
-        parDCCabecalho.Save(obj);
+        $("#modalExclusao").show();
+
+        $("#excluirItem").off().on('click', function () {
+            obj.IsActive = false;
+            parDCCabecalho.Save(obj);
+            $("#modalExclusao").hide();
+            obj = "";
+        });
     });
+
+    $(".fecharModal").on('click', function () {
+        $("#modalExclusao").hide();
+        obj = "";
+    });
+
 
     $('#' + parDCCabecalho.id).on('click', '[data-cancel]', function (e) {
         apagaCampos(parDCCabecalho.id);

@@ -3,6 +3,7 @@
 <form id="ParDCAvam">
 
     <br />
+
     <div class="row" data-form>
 
         <div class="col-sm-3">
@@ -494,6 +495,9 @@
 
         load: function (list) {
 
+            let id = this.id;
+            let urlSave = this.urlSave;
+
             let AgendamentoIsValid = function () {
 
                 var listaAgendamento = $("#tabelaAgendamento tbody tr");
@@ -553,8 +557,6 @@
 
             };
 
-            let id = this.id;
-            let urlSave = this.urlSave;
 
             apagaCampos(id);
             parDCAvam.reloadTable();
@@ -671,17 +673,25 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-delete]', function (e) {
+                debugger
+                e.preventDefault();
+                var item = $(this).parents('tr').data('sgq');
+                $("#modalExclusao").show();
 
-                var r = confirm("Deseja Excluir?");
-
-                if (r == false) {
-                    return false;
-                }
-
-                var obj = $(this).parents('tr').data('sgq');
-                obj.IsActive = false;
-                Save(obj);
+                $("#excluirItem").off().on('click', function () {
+                    item.IsActive = false;
+                    Save(item);
+                    $("#modalExclusao").hide();
+                    itemDeletar = "";
+                });
             });
+
+            $(".fecharModal").on('click', function () {
+                $("#modalExclusao").hide();
+                itemDeletar = "";
+            });
+
+     
 
             $('#' + id).on('click', '[data-cancel]', function (e) {
                 apagaCampos(id);

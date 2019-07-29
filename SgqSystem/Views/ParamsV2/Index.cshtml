@@ -172,18 +172,39 @@
         @*@Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")*@
 
         @*<div class="row">
-                <div class="col-sm-3">
-                    <label for="ParCompany_Id">Unidade:</label>
-                    <select id="selectParCompanyGeral" class="input input-lg col-sm-6"
-                            name="ParCompany_Id"></select>
-                </div>
-            </div>*@
+            <div class="col-sm-3">
+                <label for="ParCompany_Id">Unidade:</label>
+                <select id="selectParCompanyGeral" class="input input-lg col-sm-6"
+                        name="ParCompany_Id"></select>
+            </div>
+        </div>*@
 
         <div class="row">
             <div class="col-sm-12" style="padding:0px 30px">
                 <div class="alert alert-success">
                     <strong>Selecione a unidade para obter um filtro das informações da parametrização</strong>
                     <select id="selectParCompanyGeral" class="input input-lg form-control col-sm-12" name="ParCompany_Id"></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="modal" hidden="hidden" id="modalExclusao" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content"  style="height: 220px; width: 350px">
+                        <div class="modal-header modal-header-gray">
+
+                            <button type="button" class="close fecharModal" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
+
+                            <h4 class="modal-title" id="Header">Exclusão</h4>
+                        </div>
+                        <div class="modal-body" id="body" style="padding:25px;">
+                            Deseja realmente excluir o item selecionado?
+                        </div>
+                        <div class="modal-footer" style="padding:15px;">
+                            <button id="excluirItem" type="button" class="btn btn-primary">Deletar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -283,20 +304,20 @@
                                         </a>
                                     </li>
                                     @*<li>
-                                            <a href="#l2_avam" data-toggle="tab">
-                                                Avaliação e Amostra
-                                            </a>
-                                        </li>*@
+                                        <a href="#l2_avam" data-toggle="tab">
+                                            Avaliação e Amostra
+                                        </a>
+                                    </li>*@
                                     @*<li>
-                                            <a href="#l2_cabecalho" data-toggle="tab">
-                                                Cabeçalhos no monitoramento
-                                            </a>
-                                        </li>*@
+                                        <a href="#l2_cabecalho" data-toggle="tab">
+                                            Cabeçalhos no monitoramento
+                                        </a>
+                                    </li>*@
                                     @*<li>
-                                            <a href="#l2_contador" data-toggle="tab">
-                                                Contadores
-                                            </a>
-                                        </li>*@
+                                        <a href="#l2_contador" data-toggle="tab">
+                                            Contadores
+                                        </a>
+                                    </li>*@
                                 </ul>
                             </div>
                             <div class="col-xs-9">
@@ -308,11 +329,11 @@
                                         @Html.Partial("ParL2Avancados")
                                     </div>
                                     @*<div class="tab-pane" id="l2_avam">
-                                            @Html.Partial("ParL2Avam")
-                                        </div>*@
+                                        @Html.Partial("ParL2Avam")
+                                    </div>*@
                                     @*<div class="tab-pane" id="l2_cabecalho">
-                                            @Html.Partial("ParL2Cabecalho")
-                                        </div>*@
+                                        @Html.Partial("ParL2Cabecalho")
+                                    </div>*@
                                     <div class="tab-pane" id="l2_contador">
                                         @Html.Partial("ParL2Contador")
                                     </div>
@@ -335,10 +356,10 @@
                                         </a>
                                     </li>
                                     @*<li>
-                                            <a href="#l3_avam" data-toggle="tab">
-                                                Avaliação e Amostra
-                                            </a>
-                                        </li>*@
+                                        <a href="#l3_avam" data-toggle="tab">
+                                            Avaliação e Amostra
+                                        </a>
+                                    </li>*@
                                     <li>
                                         <a href="#l3_peso" data-toggle="tab">
                                             Vincular Peso
