@@ -30,36 +30,36 @@ function prependDevice(obj, prependTo) {
 }
 
 function onDeviceReady() {
-	
-	onOpenAppColeta();
 
-	if (device.platform == 'browser') {
-		navigator.webkitPersistentStorage.requestQuota(
-			requestedBytes, function (grantedBytes) {
-				console.log('we were granted ', grantedBytes, 'bytes');
+    onOpenAppColeta();
 
-			}, function (e) { console.log('Error', e); }
-		);
-	}
+    if (device.platform == 'browser') {
+        navigator.webkitPersistentStorage.requestQuota(
+            requestedBytes, function (grantedBytes) {
+                console.log('we were granted ', grantedBytes, 'bytes');
 
-	starterReload();
-	
-	$('body').prepend('<div class="" id="app" style="padding-bottom:50px;"></div>');
-	$('body').css('padding-bottom','20px');
+            }, function (e) { console.log('Error', e); }
+        );
+    }
 
-	criarMensagem();
-	criarModal();
+    starterReload();
 
-	$('#btn-reload').attr('style',$('#btn-reload').attr('style')+";z-index:9999");
-	 
-    //openLogin();
-    
-	_readFile("login.txt", function (data) {
-		if(data)
-			openLogado();
-		else
-			openLogin();
-	});
+    $('body').prepend('<div class="" id="app" style="padding-bottom:50px;"></div>');
+    $('body').css('padding-bottom', '20px');
+
+    criarMensagem();
+    criarModal();
+
+    $('#btn-reload').attr('style', $('#btn-reload').attr('style') + ";z-index:9999");
+
+    openLogin();
+
+    // _readFile("login.txt", function (data) {
+    //     if (data)
+    //         openLogado();
+    //     else
+    //         openLogin();
+    // });
 }
 
 function starterReload() {

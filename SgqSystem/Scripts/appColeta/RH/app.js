@@ -25,16 +25,15 @@ var currentTotalSampleValue = 0;
 // }
 
 function onOpenAppColeta() {
-    
+
     _readFile("login.txt", function (data) {
         if (typeof (data) != 'undefined' && data.length > 0)
             currentLogin = JSON.parse(data);
-            currentParCompany_Id = currentLogin.ParCompany_Id;
+        currentParCompany_Id = currentLogin.ParCompany_Id;
 
         _readFile("appParametrization.txt", function (param) {
             if (typeof (param) != 'undefined' && param.length > 0) {
                 parametrization = JSON.parse(param);
-                //currentParFrequency_Id = parametrization.currentParFrequency_Id;
                 listaParFrequency = parametrization.listaParFrequency;
             }
         });
@@ -46,8 +45,10 @@ function getAppParametrization(frequencyId) {
     sincronizarResultado(frequencyId);
 
     if (frequencyId != currentParFrequency_Id) {
+
         currentParFrequency_Id = frequencyId;
         openMensagem('Por favor, aguarde até que seja feito o download do planejamento selecionado', 'blue', 'white');
+
         $.ajax({
             data: JSON.stringify({
                 ParCompany_Id: currentParCompany_Id
@@ -77,7 +78,7 @@ function getAppParametrization(frequencyId) {
         _readFile("appParametrization.txt", function (data) {
             if (data)
                 parametrization = JSON.parse(data);
-                
+
             listarParDepartment(0);
             closeMensagem();
         });
@@ -85,7 +86,9 @@ function getAppParametrization(frequencyId) {
 }
 
 function sincronizarResultado(frequencyId) {
+
     openMensagem('Sincronizando resultado', 'blue', 'white');
+
     $.ajax({
         data: JSON.stringify({
             ParCompany_Id: currentParCompany_Id,
@@ -107,12 +110,15 @@ function sincronizarResultado(frequencyId) {
 }
 
 function sincronizarColeta() {
+
     openMensagem('Iniciada sequencia forçada de sincronização', 'orange', 'white');
     enviarColeta();
     closeMensagem(2000);
+
 }
 
 function showAllGlobalVar() {
+
     console.log("ParCompany:" + currentParCompany_Id);
     console.log("Frequencia: " + currentParFrequency_Id);
     console.log("Departamento: " + currentParDepartment_Id);
@@ -129,6 +135,7 @@ function showAllGlobalVar() {
     console.log("listaParFrequency: " + listaParFrequency);
     console.log("currentsParDepartments_Ids: " + currentsParDepartments_Ids);
     console.log("currentPlanejamento: " + currentPlanejamento);
+
 }
 
 function openModalChangeDate() {
@@ -170,24 +177,24 @@ function changeDate(that) {
 
     if (globalColetasRealizadas.length > 0) {
 
-        setTimeout(function(){
+        setTimeout(function () {
             var titulo = "Não foi possível alterar a data.";
             var mensagem = "Existem coeltas não sincronizadas. Deseja sincronizar os dados?";
 
             openMessageConfirm(titulo, mensagem, sincronizarColeta, closeModal, "orange", "white");
-        },500);
+        }, 500);
         return false;
     }
 
     openMensagem("Alterando data...", "blue", "White");
-    _writeFile("appParametrization.txt", '', function () { 
-        var oldFrequency_Id = currentParFrequency_Id+0;
+
+    _writeFile("appParametrization.txt", '', function () {
+        var oldFrequency_Id = currentParFrequency_Id + 0;
         currentParFrequency_Id = 0;
         getPlanejamentoPorFrequencia(oldFrequency_Id);
         openParFrequency();
     });
 
-    //var horas = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
     var horas = "00:00:00";
 
     currentCollectDate = new Date(newDate + " " + horas);

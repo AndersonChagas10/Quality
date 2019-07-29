@@ -56,8 +56,14 @@ function getLogo(callback) {
 
 function openLogin() {
 
-    getImages();
+    _readFile("login.txt", function (data) {
+        
+        if (data)
+            currentLogin = JSON.parse(data);
 
+        getImages();
+
+    });
 }
 
 function setLogin(logo) {
@@ -177,21 +183,23 @@ function cleanGlobalVarLogin() {
 function logout() {
     if (globalColetasRealizadas.length > 0) {
 
-        setTimeout(function(){
+        setTimeout(function () {
             var titulo = "Há coletas que não foram sincronizadas.";
             var mensagem = "Não é possivel sair até que todas as coletas tenham sido sincronizadas.<br/>";
             mensagem += "[Não] Fecha a mensagem [Sim] Força sincronização das coletas (esteja online).";
 
             openMessageConfirm(titulo, mensagem, sincronizarColeta, closeMensagemImediatamente, "orange", "white");
-        },500);
+        }, 500);
         return false;
     }
 
     //_writeFile("login.txt", '', function () {
+    currentLogin = null;
     openLogin();
     // });
 }
 
 $(window).on('beforeunload', function () {
-    _writeFile("login.txt", '', function () { });
+    //_writeFile("login.txt", '', function () { });
+    currentLogin = null;
 });

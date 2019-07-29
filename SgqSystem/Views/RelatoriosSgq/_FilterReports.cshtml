@@ -241,15 +241,17 @@
         });
 
         var dataFiltro = [];
-        var objFiltro = {};
+        var objFiltro = { Param: {}};
 
         function atualizaObjFiltro() {
+            var objFiltroParam = objFiltro.Param;
             objFiltro = $('#filterReports').serializeObject();
             $(Object.keys(objFiltro)).each(function (i, o) {
                 if (o.indexOf("Date") < 0) {
                     objFiltro[o] = Array.isArray(objFiltro[o]) ? objFiltro[o] : [objFiltro[o]];
                 }
             });
+            objFiltro.Param = objFiltroParam;
         }
 
         function preencheFiltrosAjax() {

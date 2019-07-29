@@ -545,8 +545,8 @@ function resetarLinha(linha) {
 }
 
 $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
-    e.preventDefault();
 
+    e.preventDefault();
 
     if (!HeaderFieldsIsValid()) {
         return false;
@@ -628,7 +628,6 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         });
     }
 
-
     //Se for a primeira, insere na lista de resultados
     if (coletaAgrupada.Evaluation == 1 && coletaAgrupada.Sample == 1) {
         coletasAgrupadas.push(coletaAgrupada);
@@ -649,7 +648,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         listarParCargo();
     } else {
         listarParLevels();
-    }
+        $("html, body").animate({ scrollTop: 0 }, "fast");
+    }  
 });
 
 function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
