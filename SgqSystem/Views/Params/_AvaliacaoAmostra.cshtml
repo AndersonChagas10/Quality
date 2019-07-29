@@ -193,10 +193,9 @@
                 var display = $('#' + seletorTato + ' #avAmCompany :selected').text();//
                 var parLevel1Selected = $('#' + seletorTato + ' #parLevel1Select2AmostraLevel :selected').val();
                 var parClusterSelected = $('#' + seletorTato + ' #parClusterSelect2AmostraLevel :selected').val();
-                var parFrequencySelected = $('#' + seletorTato + ' #parFrequencySelect2AmostraLevel :selected').val();
 
                 var exist = $.grep($('#tableAvAm  tbody  tr  td:nth-child(1)'), function (o, c) {
-                   
+
                     var count = 0;
 
                     if (companySelected == -1) {
@@ -246,7 +245,7 @@
                 $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
 
                     var o = $(obj).data();
-   
+
                     if((o.Id != null || o.Id != undefined) && o.Id > 0){
                         dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].Id"] = o.Id;
                     }
@@ -289,7 +288,7 @@
                         } else {
                             o['ParCluster_Name'] = "@Resources.Resource.all";
                         }
-                        
+
                         if (o.ParFrequency_Id != null && o.ParFrequency_Id != "-1") {
                             o['ParFrequency_Name'] = $('#parFrequencySelect2AmostraLevel option[value=' + o.ParFrequency_Id + ']').text();
                         } else {
@@ -305,8 +304,12 @@
                         if (o.TemAgendamento) {
                             o['agendamento'] = '<button type="button" id="agendamento" class="btn btn-success btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
 
-                            $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', true)
-                        } else {                            
+                            if (!o.ParFrequency_Id)
+                                o['agendamento'] = '<button type="button" id="agendamento" class="btn btn-success btn-xs popovers" onclick="abrirModalAgendamento($(this))" disabled>Agendamento</button>';
+
+                            $('#paramsDto_parLevel2Dto_ParFrequency_Id').prop('disabled', true);
+
+                        } else {
                             o['agendamento'] = '<button type="button" id="agendamento"  class="btn btn-default btn-xs popovers" onclick="abrirModalAgendamento($(this))">Agendamento</button>';
 
                             if (!o.ParFrequency_Id)
@@ -336,7 +339,7 @@
             },
             /*Fim Setup*/
             adiciona: function (e) {
-                
+
                 if (this.veifyAdd()) {
 
                     var object = this.getObjAdd();

@@ -350,9 +350,6 @@
                 IsDeletar: $(item).data("IsDeletar")
             };
 
-            //var formato = $("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text();
-            //var linha = $(this).parent().parent();
-
             if (!form.IsDeletar && form.Intervalo < 0) {
 
                 contadorErros += 1;
@@ -404,8 +401,7 @@
 
     $("#modalAgendamento").on('click', "#btnSalvar", function () {
 
-        debugger
-        if ($("#tabelaAgendamento tbody tr").find("[data-column=inpTipoAgendamento]").val() === "Diario com Intervalo") {
+        if ($("#tabelaAgendamentoIntervalo tbody tr").find("[data-column=inpTipoAgendamento]").val() === "Diario com Intervalo") {
 
             SalvarAgendamentoIntervalo();
 
