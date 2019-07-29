@@ -409,8 +409,6 @@ namespace SgqSystem.Controllers.V2.Api
             var coletaAgrupada = new List<ColetaAgrupadaViewModel>();
 
             var sql = $@"
-                   
-
 SELECT 
 	Evaluation,
 	CAST(SUBSTRING(Sample,CHARINDEX('-',Sample)+1,LEN(Sample)+1-CHARINDEX('-',Sample))AS INT)+1 AS Sample,
