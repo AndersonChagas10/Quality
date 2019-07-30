@@ -4102,7 +4102,9 @@ namespace SgqService.Controllers.Api
             int parlevel2_id = lista.Length > 1 ? Int32.Parse(lista[1]) : Int32.Parse(lista[0]);
 
             ParLevel2Evaluate evaluate = new ParLevel2Evaluate() { Evaluate = 0 };
+
             var evaluateConf = ParEvaluateCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
+
             if (evaluateConf != null)
             {
                 evaluate = evaluateConf;
@@ -4110,11 +4112,13 @@ namespace SgqService.Controllers.Api
             else
             {
                 evaluateConf = ParEvaluatePadrao.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
+
                 if (evaluateConf != null)
                 {
                     evaluate = evaluateConf;
                 }
             }
+
             return evaluate;
         }
 
@@ -4274,23 +4278,21 @@ namespace SgqService.Controllers.Api
                 using (var conexaoEF = new SgqDbDevEntities())
                 {
 
-                    var parFrequency_Id = conexaoEF.ParLevel2.Find(parLevel2_Id).ParFrequency_Id;
-
-                    var list = conexaoEF.ParEvaluationSchedule
-                        .Where(x => (x.ParEvaluation.ParLevel1_Id == parLevel1_Id || x.ParEvaluation.ParLevel1_Id == null)
-                        && x.ParEvaluation.ParLevel2_Id == parLevel2_Id
-                        && (x.ParEvaluation.ParCompany_Id == company_Id || x.ParEvaluation.ParCompany_Id == null)
-                        && (x.Shift_Id == shift_Id || x.Shift_Id == null)
-                        && x.ParEvaluation.ParCluster_Id == cluster_id
-                        && x.ParEvaluation.IsActive
+                    var parEvaluation = conexaoEF.ParEvaluation.Where(x => (x.ParLevel1_Id == parLevel1_Id || x.ParLevel1_Id == null)
+                        && (x.ParCompany_Id == company_Id || x.ParCompany_Id == null)
+                        && x.ParLevel2_Id == parLevel2_Id
+                        && x.ParCluster_Id == cluster_id
                         && x.IsActive)
-                        .OrderByDescending(x => new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList();
+                        .OrderByDescending(x => new { x.ParCompany_Id, x.ParLevel1_Id })
+                        .FirstOrDefault();
+
+                    var list = conexaoEF.ParEvaluationSchedule.Where(x => x.ParEvaluation_Id == parEvaluation.Id && x.IsActive).ToList();
 
                     foreach (var item in list)
                     {
                         if (item.ParEvaluation.ParCompany_Id == list[0].ParEvaluation.ParCompany_Id)
                         {
-                            if (parFrequency_Id != 10)
+                            if (parEvaluation.ParFrequency_Id != 10)
                             {
                                 frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
                             }
