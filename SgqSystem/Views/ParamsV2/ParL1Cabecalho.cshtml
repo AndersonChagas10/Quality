@@ -3,6 +3,7 @@
 <form id="ParL1Cabecalho">
 
     <br />
+
     <div class="row" data-form>
 
         <div class="col-sm-3">
@@ -481,12 +482,31 @@
 
     });
 
+    //$('#' + parL1Cabecalho.id).on('click', '[data-table-delete]', function (e) {
+    //    var obj = $(this).parents('tr').data('sgq');
+    //    obj.IsActive = false;
+    //    parL1Cabecalho.Save(obj);
+    //});
+
     //Adicionar os dados no data-form
     $('#' + parL1Cabecalho.id).on('click', '[data-table-delete]', function (e) {
-        var obj = $(this).parents('tr').data('sgq');
-        obj.IsActive = false;
-        parL1Cabecalho.Save(obj);
+        e.preventDefault();
+        var item = $(this).parents('tr').data('sgq');
+        $("#modalExclusao").show();
+
+        $("#excluirItem").off().on('click', function () {
+            item.IsActive = false;
+            parL1Cabecalho.Save(item);
+            $("#modalExclusao").hide();
+            item = "";
+        });
     });
+
+    $(".fecharModal").on('click', function () {
+        $("#modalExclusao").hide();
+        item = "";
+    });
+
 
     $('#' + parL1Cabecalho.id).on('click', '[data-cancel]', function (e) {
         apagaCampos(parL1Cabecalho.id);

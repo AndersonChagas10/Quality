@@ -320,17 +320,23 @@
             });
 
             //Adicionar os dados no data-form
+
             $('#' + id).on('click', '[data-table-delete]', function (e) {
+                e.preventDefault();
+                var item = $(this).parents('tr').data('sgq');
+                $("#modalExclusao").show();
 
-                var r = confirm("Deseja Excluir?");
+                $("#excluirItem").off().on('click', function () {
+                    item.IsActive = false;
+                    Save(item);
+                    $("#modalExclusao").hide();
+                    item = "";
+                });
+            });
 
-                if (r == false) {
-                    return false;
-                }
-
-                var obj = $(this).parents('tr').data('sgq');
-                obj.IsActive = false;
-                Save(obj);
+            $(".fecharModal").on('click', function () {
+                $("#modalExclusao").hide();
+                item = "";
             });
 
             let formIsDuplicate = function () {
