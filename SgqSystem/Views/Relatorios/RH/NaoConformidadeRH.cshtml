@@ -21,15 +21,19 @@
 
     ViewBag.ShowCurrentDate = false;
     ViewBag.ShowRangeDate = true;
-    ViewBag.ShowParStructure = false;
+    ViewBag.ShowParStructure = true;
     ViewBag.ShowParCompany = true;
     ViewBag.ShowShift = true;
     ViewBag.ShowParDepartment = true;
     ViewBag.ShowParSecao = true;
     ViewBag.ShowParCargo = true;
-    ViewBag.ShowParLevel1 = true;
-    ViewBag.ShowParLevel2 = true;
-    ViewBag.ShowParLevel3 = true;
+    ViewBag.ShowParCriticalLevel = true;
+    ViewBag.ShowParLevel1 = false;
+    ViewBag.ShowParLevel2 = false;
+    ViewBag.ShowParLevel3 = false;
+    ViewBag.ShowParCluster = true;
+    ViewBag.ShowParClusterGroup = true;
+    ViewBag.ShowParStructureGroup = true;
 }
 
 @section Content {
@@ -183,7 +187,6 @@
 
         function enviarFiltro() {
             openLoader('Aguarde...');
-            
             $btn.button('loading');
             $('#results').empty();
             $("#RGOperacoesGrafico").empty();
@@ -204,7 +207,6 @@
                 $btn.button('reset');
                 return;
             }
-
             objFiltro.Param.auditorId = GetUsuarioId();
             console.log(enviar);
             
@@ -219,10 +221,12 @@
             })
             .done(function (data) {
                 GraficoUnidade(data);
+                $btn.button('reset');
                 closeLoader();
             })
             .fail(function (jqXHR, textStatus, msg) {
                 console.log(msg);
+                $btn.button('reset');
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
             });
@@ -230,9 +234,9 @@
             $('#RGTarefasPivotTable').hide();
         };
 
-        function ValidaDadosParaEnvio() {
-            GuardJs.resetForValidation();
-            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+    function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation(objFiltro);
+            GuardJs.CheckRangeDateTime(objFiltro.endDate, objFiltro.startDate, "Initial date", "End date");
 
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
@@ -557,7 +561,7 @@
         /*END GET*/
 
         /*Charts*/
-        function GraficoUnidade(data) {
+    function GraficoUnidade(data) {
             if(!(data.length > 0)){
                 GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
                 return;
@@ -918,7 +922,6 @@
         }
 
         function GraficoTarefas(data, monitoramento) {
-
             $('#PanelFull0').show();
 
             var nc = MapeiaValorParaHC(data, "Nc")

@@ -50,12 +50,74 @@
                                 </div>
                             }
 
+                            @*@if (ViewBag.ShowParStructure == true)
+        {
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label><strong>@Resources.Resource.structure</strong></label>
+                    <select class="form-control" name="parStructure_Ids" multiple></select>
+                </div>
+            </div>
+        }*@
+
+                            @if (ViewBag.ShowParClusterGroup == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.cluster_group</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parClusterGroup_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParClustersGroup", "api/Formulario")">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parClusterGroup_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParCluster == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.cluster</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parCluster_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParClusters", "api/Formulario")">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parCluster_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
                             @if (ViewBag.ShowParStructure == true)
                             {
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label><strong>@Resources.Resource.structure</strong></label>
+                                        <label><strong>Estruturas</strong></label>
+                                        <button type="button"
+                                                data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parStructure_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParStructure", "api/Formulario")">
+                                            Abrir
+                                        </button>
                                         <select class="form-control" name="parStructure_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParStructureGroup == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Grupo de Regional</strong></label>
+                                        <button type="button"
+                                                data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parStructureGroup_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParStructureGroup", "api/Formulario")">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parStructureGroup_Ids" multiple></select>
                                     </div>
                                 </div>
                             }
@@ -71,7 +133,7 @@
                                                 data-filtroselect3-url="@Url.Action("GetFilteredParCompany", "api/Formulario")">
                                             Abrir
                                         </button>
-                                        <select class="form-control" name="parCompany_Ids"  multiple></select>
+                                        <select class="form-control" name="parCompany_Ids" multiple></select>
                                     </div>
                                 </div>
                             }
@@ -88,6 +150,22 @@
                                             Abrir
                                         </button>
                                         <select class="form-control" name="shift_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParCriticalLevel == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.criticalLevel</strong></label>
+                                        <button type="button"
+                                                data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parCriticalLevel_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParCriticalLevels", "api/Formulario")">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parCriticalLevel_Ids" multiple></select>
                                     </div>
                                 </div>
                             }
@@ -140,6 +218,8 @@
                                 </div>
                             }
 
+
+
                             @if (ViewBag.ShowParLevel1 == true)
                             {
                                 <div class="col-sm-12">
@@ -184,6 +264,10 @@
                                     </div>
                                 </div>
                             }
+
+
+
+
                         </div>
                         <div class="col-sm-12">
                             <button type="button" class="btn btn-primary pull-right btn-block"
@@ -289,6 +373,10 @@
             $('select[name="parLevel1_Ids"]').select2();
             $('select[name="parLevel2_Ids"]').select2();
             $('select[name="parLevel3_Ids"]').select2();
+            $('select[name="parCriticalLevel_Ids"]').select2();
+            $('select[name="parStructure_Ids"]').select2();
+            $('select[name="parCluster_Ids"]').select2();
+            $('select[name="parClusterGroup_Ids"]').select2();
         }
 
         inicializaSelect2();
@@ -326,6 +414,10 @@
             $('select[name="parLevel1_Ids"]').trigger('change');
             $('select[name="parLevel2_Ids"]').trigger('change');
             $('select[name="parLevel3_Ids"]').trigger('change');
+            $('select[name="parCriticalLevel_Ids"]').trigger('change');
+            $('select[name="parStructure_Ids"]').trigger('change');
+            $('select[name="parCluster_Ids"]').trigger('change');
+            $('select[name="parClusterGroup_Ids"]').trigger('change');
 
             $('#filterReports select').on('change', function () {
                 preencheFiltrosAjax();

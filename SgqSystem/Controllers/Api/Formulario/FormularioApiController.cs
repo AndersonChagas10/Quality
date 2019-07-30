@@ -47,6 +47,67 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
+        [Route("GetFilteredParCriticalLevels")]
+        public List<Select3ViewModel> GetFilteredParCriticalLevels(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                //var filtroStructure = form.ParStructure_Ids.Length > 0 ? $@"AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) })" : "";
+
+                var query = $@"SELECT DISTINCT TOP 500
+                        	PCL.Id, PCL.Name
+                        FROM ParCriticalLevel PCL
+						WHERE 1 = 1
+                        AND PCL.IsActive = 1
+                        AND PCL.Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredParClusters")]
+        public List<Select3ViewModel> GetFilteredParClusters(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                var query = $@"SELECT DISTINCT TOP 500
+                        	PCL.Id, PCL.Name
+                        FROM ParCluster PCL
+						WHERE 1 = 1
+                        AND PCL.IsActive = 1
+                        AND PCL.Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredParClustersGroup")]
+        public List<Select3ViewModel> GetFilteredParClustersGroup(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                var query = $@"SELECT DISTINCT TOP 500
+                        	PCLG.Id, PCLG.Name
+                        FROM ParClusterGroup PCLG
+						WHERE 1 = 1
+                        AND PCLG.IsActive = 1
+                        AND PCLG.Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
         [Route("GetFilteredShift")]
         public List<Select3ViewModel> GetFilteredShift(string search, [FromBody] DataCarrierFormularioNew form)
         {
@@ -249,6 +310,36 @@ namespace SgqSystem.Controllers.Api.Formulario
 
                 var query = $@"SELECT DISTINCT TOP 500 PL3.ID, PL3.NAME FROM parLevel3 PL3 {sqlFilter}
                 AND Pl3.Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredParStructure")]
+        public List<Select3ViewModel> GetFilteredParStructure(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT DISTINCT TOP 500 ID, Name FROM ParStructure
+                    WHERE Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredParStructureGroup")]
+        public List<Select3ViewModel> GetFilteredParStructureGroup(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT DISTINCT TOP 500 ID, Name FROM ParStructureGroup
+                    WHERE Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
