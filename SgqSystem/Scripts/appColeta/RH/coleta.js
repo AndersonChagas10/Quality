@@ -599,8 +599,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 				WeiEvaluation: $(data).attr('data-peso'),
 				Defects: $(data).attr('data-conforme') == "1" ? 0 : 1,
 				WeiDefects: ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
+				Parfrequency_Id: parametrization.currentParFrequency_Id,
                 /*
-				"UserSgq_Id":1,
 				"Shift_Id":1,
 				"Period_Id":1,
 				"ParCluster_Id":1,
@@ -608,7 +608,6 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 				"PunishimentValue":1,
 				"HasPhoto":"0",
 				"HaveCorrectiveAction":"0",
-				"Parfrequency_Id":1,
 				"AlertLevel":"0",
 				"ParHeaderField_Id":1,
 				"ParHeaderField_Value":""
