@@ -155,6 +155,7 @@ namespace SgqSystem.Jobs
                        ,ParCargo_Id
                        ,ParCluster_Id
                        ,ParDepartment_Id
+                       ,ParFrequency_Id
                        ,IIF(UserSgq_Id is null, 0,UserSgq_Id) as AuditorId
                        ,CONVERT(VARCHAR(19),IIF(DATEPART(MILLISECOND,CollectionDate)>500,DATEADD(SECOND,1,CollectionDate),CollectionDate),120) AS CollectionDate
                        ,GETDATE() as StartPhaseDate

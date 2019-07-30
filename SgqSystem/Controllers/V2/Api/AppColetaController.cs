@@ -409,7 +409,43 @@ namespace SgqSystem.Controllers.V2.Api
             var coletaAgrupada = new List<ColetaAgrupadaViewModel>();
 
             var sql = $@"
-                   
+-- INPUTS --
+DECLARE @ParFrequency_Id INT = { data.ParFrequency_Id };
+DECLARE @ParCompany_Id INT = {data.ParCompany_Id};
+DECLARE @DataColeta DATETIME = {data.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss")};
+DECLARE @DateTimeInicio DATETIME;
+DECLARE @DateTimeFinal DATETIME;
+
+SET @DateTimeInicio = 
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 00:00:00') AS DATETIME)  -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 00:00:00') AS DATETIME)  -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 00:00:00') AS DATETIME)  -- Diario
+	WHEN 4 THEN CAST(DATEADD(DAY,-DATEPART(WEEKDAY,@DataColeta)+1,@DataColeta) AS DATE)  -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY,@DataColeta)<=15,CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-01'), CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-16'))  -- Quinzenal
+	WHEN 6 THEN CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-01')  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 00:00:00') AS DATETIME) -- Diario com Intervalo 
+END
+
+SET @DateTimeFinal = 
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Diario
+	WHEN 4 THEN CAST(CONCAT(CAST(DATEADD(DAY,7-DATEPART(WEEKDAY,@DataColeta),@DataColeta) AS DATE),' 23:59:59') AS DATETIME) -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY,@DataColeta)<=15,CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-15 23:59:59'), CONCAT(EOMONTH(@DataColeta),' 23:59:59'))  -- Quinzenal
+	WHEN 6 THEN EOMONTH(@DataColeta)  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Diario com Intervalo 
+END
+
+--Id	Name
+--1		Período
+--2		Turno
+--3		Diario
+--4		Semanal
+--5		Quinzenal
+--6		Mensal
+--10	Diario com Intervalo
 
 SELECT 
 	Evaluation,
@@ -437,16 +473,22 @@ SELECT
     LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
     INNER JOIN CollectionLevel2XParCargo C2XPC WITH (NOLOCK) ON C2XPC.CollectionLevel2_Id = C2.Id
     INNER JOIN CollectionLevel2XParDepartment C2XPD WITH (NOLOCK) ON C2XPD.CollectionLevel2_Id = C2.Id
+	INNER JOIN ParEvaluationXDepartmentXCargo PEDC WITH(NOLOCK) ON C2.UnitId = PEDC.ParCompany_Id 
+																AND C2XPC.ParCargo_Id = PEDC.ParCargo_Id 
+																AND C2XPD.ParDepartment_Id = PEDC.ParDepartment_Id
+																AND C2.ParFrequency_Id = PEDC.ParFrequencyId
     WHERE 1 = 1
-                    AND CAST(CollectionDate AS DATE) = CAST('{data.CollectionDate.ToString("yyyy-MM-dd")}' AS DATE)
-                    AND UnitId = {data.ParCompany_Id}
+		AND C2.CollectionDate BETWEEN @DateTimeInicio AND @DateTimeFinal
+		AND C2.UnitId = @ParCompany_Id
+		AND PEDC.ParFrequencyId = @ParFrequency_Id
     GROUP BY C2.ParLevel1_Id
             ,C2.ParLevel2_Id
             ,C2.UnitId
             ,C2.Shift
 		    ,C2XPD.ParDepartment_Id
 		    ,C2XPC.ParCargo_Id
-		    ,C2XC.ParCluster_Id) A";
+		    ,C2XC.ParCluster_Id
+		) A";
 
             using (var factory = new Factory("DefaultConnection"))
             {
@@ -455,11 +497,12 @@ SELECT
 
             return Ok(coletaAgrupada.ToList());
         }
-        
+
         public class GetResultsData
         {
             public int ParCompany_Id { get; set; }
             public DateTime CollectionDate { get; set; }
+            public int ParFrequency_Id { get; set; }
         }
 
         public class ColetaAgrupadaViewModel
