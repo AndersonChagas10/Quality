@@ -700,38 +700,28 @@ GO
 --GRAVAR PARLEVEL3GROUP----------------------------
 ---------------------------------------------------
 
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Result_Level3XGroup' AND xtype='U')
 CREATE TABLE [dbo].[Result_Level3XGroup](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Result_Level3_Id] [int] NOT NULL,
-	[ParLevel3Group_Id] [int] NOT NULL,
+	[Result_Level3_Id] [int] NOT NULL FOREIGN KEY REFERENCES [dbo].[Result_Level3] ([Id]),
+	[ParLevel3Group_Id] [int] NOT NULL FOREIGN KEY REFERENCES [dbo].[ParLevel3Group] ([Id]),
 	[AddDate] [datetime2](7) NOT NULL,
 	[AlterDate] [datetime2](7) NULL,
-	[IsActive] [bit] NULL
+	[IsActive] [bit] NULL default 1,
 ) ON [PRIMARY]
 
 GO
-
-ALTER TABLE [dbo].[Result_Level3XGroup] ADD  DEFAULT ((1)) FOR [IsActive]
-GO
-
-ALTER TABLE [dbo].[Result_Level3XGroup]  WITH CHECK ADD  CONSTRAINT [FK_Result_Level3XGroup_ParLevel3Group] FOREIGN KEY([ParLevel3Group_Id])
-REFERENCES [dbo].[ParLevel3Group] ([Id])
-GO
-
-ALTER TABLE [dbo].[Result_Level3XGroup] CHECK CONSTRAINT [FK_Result_Level3XGroup_ParLevel3Group]
-GO
-
-ALTER TABLE [dbo].[Result_Level3XGroup]  WITH CHECK ADD  CONSTRAINT [FK_Result_Level3XGroup_Result_Level3] FOREIGN KEY([Result_Level3_Id])
-REFERENCES [dbo].[Result_Level3] ([Id])
-GO
-
-ALTER TABLE [dbo].[Result_Level3XGroup] CHECK CONSTRAINT [FK_Result_Level3XGroup_Result_Level3]
-GO
-GO
-
 
 IF COL_LENGTH('ParEvaluation','ParFrequency_Id') IS NULL
     BEGIN	
 		ALTER TABLE ParEvaluation ADD ParFrequency_Id int foreign key(ParFrequency_Id) references ParFrequency(Id);
     END
+GO
+
+update pe set ParFrequency_Id = L2.ParFrequency_Id 
+from ParEvaluation pe inner join ParLevel2 L2 on pe.ParLevel2_Id = L2.Id
+where 1 = 1 
+and pe.IsActive = 1 
+and pe.ParFrequency_Id is null 
+
 GO
