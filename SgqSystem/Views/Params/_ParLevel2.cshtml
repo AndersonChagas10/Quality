@@ -33,6 +33,9 @@
 
                         <tr class="row">
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParDepartment_Id", Model.paramsDdl.DdlParDepartment, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.department as string), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParDepartment_Id, null, new { @class = "text-danger" }))
+                        </tr>
+
+                        <tr class="row hide">
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency as string), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
                         </tr>
 
@@ -277,12 +280,13 @@
                 dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReaudit"] = o.IsReaudit;
                 dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReauditShowTable"] = o.IsReauditShowTable;
                 dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].IsActive"] = o.IsActive;
+                dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].ParLevel1_Id"] = parseInt($('#paramsDto_parLevel1Dto_Id').val());
 
             });
 
         },/*Ok*/
         carregaDadosDoDb: function () {
-            
+
             if( RegraNcL2.listObjSalvo != null){ /*Carrega regras de NC*/
                 RegraNcL2.listObjSalvo.forEach(function(o, c){
                     o["IsReauditShowTable"] = o.IsReaudit ? "@Resources.Resource.yes" : "@Resources.Resource.no";
@@ -312,7 +316,7 @@
 
         var includeItem = true;
 
-        
+
         if (includeItem == true) {
             var indexValue = $('.counterLevel2Class').length;
 

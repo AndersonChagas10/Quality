@@ -5561,7 +5561,7 @@ namespace SgqSystem.Services
                                                 outerhtml: level02Header
                                                );
 
-                var parNCRuleDB = ParNCRuleDB.getParNCRule(parlevel2.ParNotConformityRule_id, parlevel2.ParLevel2_id);
+                var parNCRuleDB = ParNCRuleDB.getParNCRule(parlevel2.ParNotConformityRule_id, parlevel2.ParLevel2_id, ParLevel1.Id);
                 decimal ruleValue = 0;
 
                 if (parNCRuleDB != null)

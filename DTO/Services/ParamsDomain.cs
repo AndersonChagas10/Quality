@@ -260,7 +260,7 @@ namespace DTO.Services
             var cluster = parlevel1.ParLevel1XCluster.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
             var listL3L2L1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").AsNoTracking().Where(r => r.Active == true && r.ParLevel1_Id == idParLevel1).ToList();
             var relapse = parlevel1.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
-            var notConformityrule = parlevel1.ParNotConformityRuleXLevel.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+            var notConformityrule = parlevel1.ParNotConformityRuleXLevel.Where(r => r.IsActive == true && r.ParLevel2_Id == null).OrderByDescending(r => r.IsActive).ToList();
             var cabecalhos = parlevel1.ParLevel1XHeaderField.Where(r => r.IsActive == true).OrderBy(r => r.IsActive).ToList();
             var level2List = _baseRepoParLevel2NLL.GetAll().Where(r => r.IsActive == true);
 
@@ -371,7 +371,7 @@ namespace DTO.Services
             var evaluation = parLevel2.ParEvaluation.Where(r => r.IsActive);
             var relapse = parLevel2.ParRelapse.Where(r => r.IsActive).OrderByDescending(r => r.IsActive);
             var counter = parLevel2.ParCounterXLocal.Where(r => r.IsActive).OrderByDescending(r => r.IsActive);
-            var nonConformityrule = parLevel2.ParNotConformityRuleXLevel.Where(r => r.IsActive).OrderByDescending(r => r.IsActive);
+            var nonConformityrule = parLevel2.ParNotConformityRuleXLevel.Where(r => r.IsActive && (r.ParLevel1_Id == null || r.ParLevel1_Id == level1Id)).OrderByDescending(r => r.IsActive);
             var headerAdd = headerFieldLevel1.Where(r => r.IsActive && r.ParLevel1_Id == level1Id && r.ParHeaderField.ParLevelDefinition_Id == 2); //Somente cabeçalhos da tarefa
             var headerRemove = headerFieldLevel2.Where(r => r.IsActive && r.ParLevel1_Id == level1Id && r.ParLevel2_Id == idParLevel2);
             var parLevel3Group = parLevel2.ParLevel3Group.Where(r => r.IsActive).OrderByDescending(r => r.IsActive);
