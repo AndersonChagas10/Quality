@@ -213,20 +213,26 @@
             <div class="col-sm-12">
                 <ul class="nav nav-tabs nav-b-0">
                     <li class="active col-sm-3">
+                        @*<i class="fa fa-check" aria-hidden="true"></i>*@
+
                         <a data-toggle="tab" href="#l1">
                             Indicador (Level 1)
+                             <span data-reset class="fa fa-plus pull-right" style="cursor:pointer;"></span>
                             <select id="selectL1" class="input input-lg col-sm-12"></select>
                         </a>
+                       
                     </li>
                     <li class="col-sm-3">
                         <a data-toggle="tab" href="#l2">
                             Monitoramento (Level 2)
+                            <span data-reset class="fa fa-plus pull-right" style="cursor:pointer;"></span>
                             <select id="selectL2" class="input input-lg"></select>
                         </a>
                     </li>
                     <li class="col-sm-3">
                         <a data-toggle="tab" href="#l3">
                             Tarefa (Level 3)
+                            <span data-reset class="fa fa-plus pull-right" style="cursor:pointer;"></span>
                             <button id="btnVincular" class="btn btn-warning btn-sm btn-small"
                                     style="height:18px;position: relative;cursor:pointer;padding-top: 0px;
                                     padding-bottom: 0px;margin-bottom: 2px;" title="Vincular todos os níveis selecionados">
@@ -238,6 +244,7 @@
                     <li class="col-sm-3">
                         <a data-toggle="tab" href="#dc">
                             @Resources.Resource.department
+                            <span data-reset class="fa fa-plus pull-right" style="cursor:pointer;"></span>
                             <select id="selectDCDepartment" class="input input-lg"></select>
                         </a>
                     </li>
@@ -455,8 +462,11 @@
     var parDCAVamList;
 
 
-
     $("#btnVincular").hide();
+
+    $("[data-reset]").on('click', function () {
+        $(this).parents('li').find('select').val(0).change();
+    })
 
     var validaBotaoVincular = function () {
         if (parseInt($(`#selectL1 :selected`).val()) > 0
