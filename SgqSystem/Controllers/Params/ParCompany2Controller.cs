@@ -47,7 +47,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id, Name, Description, IsActive, Initials, SIF, CompanyNumber, IpServer, DBServer, IntegrationId, ParCompany_Id")] ParCompany parCompany)
+        public ActionResult Create([Bind(Include = "Id, Name, Description, IsActive, Initials, SIF, CompanyNumber, IpServer, DBServer, IntegrationId, ParCompany_Id, Identification")] ParCompany parCompany)
         {
             ValidModelState(parCompany);
             if (ModelState.IsValid)
@@ -81,7 +81,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id, Name, Description, IsActive, Initials, SIF, CompanyNumber, IpServer, DBServer, IntegrationId, ParCompany_Id")] ParCompany parCompany)
+        public ActionResult Edit([Bind(Include = "Id, Name, Description, IsActive, Initials, SIF, CompanyNumber, IpServer, DBServer, IntegrationId, ParCompany_Id, Identification")] ParCompany parCompany)
         {
             ValidModelState(parCompany);
             if (ModelState.IsValid)
@@ -133,6 +133,9 @@ namespace SgqSystem.Controllers
 
         private void ValidModelState(ParCompany parCompany)
         {
+            if (parCompany.Identification.Length > 50) 
+                ModelState.AddModelError("Identification", "O campo deve conter apenas 50 caracteres!");
+
             //if (totalDeVinculos > 0 && parCompany.IsActive == false) 
             //    ModelState.AddModelError("IsActive", Resources.Resource.module_link_indicator);
 
