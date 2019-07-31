@@ -695,3 +695,33 @@ IF COL_LENGTH('ParVinculoPeso','EffectiveDateEnd') IS NULL
 		add EffectiveDateEnd datetime null
     END
 GO
+
+---------------------------------------------------
+--GRAVAR PARLEVEL3GROUP----------------------------
+---------------------------------------------------
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Result_Level3XGroup' AND xtype='U')
+CREATE TABLE [dbo].[Result_Level3XGroup](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Result_Level3_Id] [int] NOT NULL FOREIGN KEY REFERENCES [dbo].[Result_Level3] ([Id]),
+	[ParLevel3Group_Id] [int] NOT NULL FOREIGN KEY REFERENCES [dbo].[ParLevel3Group] ([Id]),
+	[AddDate] [datetime2](7) NOT NULL,
+	[AlterDate] [datetime2](7) NULL,
+	[IsActive] [bit] NULL default 1,
+) ON [PRIMARY]
+
+GO
+
+IF COL_LENGTH('ParEvaluation','ParFrequency_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParEvaluation ADD ParFrequency_Id int foreign key(ParFrequency_Id) references ParFrequency(Id);
+    END
+GO
+
+update pe set ParFrequency_Id = L2.ParFrequency_Id 
+from ParEvaluation pe inner join ParLevel2 L2 on pe.ParLevel2_Id = L2.Id
+where 1 = 1 
+and pe.IsActive = 1 
+and pe.ParFrequency_Id is null 
+
+GO
