@@ -249,6 +249,12 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult EvolutivoRH()
+        {
+            return View("~/Views/Relatorios/RH/EvolutivoRH.cshtml", form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult ExemploRelatorio()
         {
             return View(form);

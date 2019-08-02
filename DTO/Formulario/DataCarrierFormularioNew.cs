@@ -39,6 +39,9 @@ namespace DTO
 
         public int[] ParClusterGroup_Ids { get; set; } = new int[] { };
 
+        public int[] ParLevel1Group_Ids { get; set; } = new int[] { };
+        
+
         public JObject Param { get; set; }
 
     }
