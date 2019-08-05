@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Dominio.ParClusterGroup>
 
 @{
-    ViewBag.Title = Resources.Resource.cluster_group;
+    ViewBag.Title = Resources.Resource.cluster_group1;
 }
 
 <div class="page-content-wrapper">
@@ -16,7 +16,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.cluster_group</span>
+                    <span>@Resources.Resource.cluster_group1</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -35,7 +35,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.cluster_group</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.cluster_group1</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -43,7 +43,7 @@
                             <div class="tab-pane active" id="setup_tab">
 
                                 <p>
-                                    @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink(Resources.Resource._novo as string, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
                                 <table class="table" id="tabelaGrupoProcessos">
                                     <thead>
@@ -55,48 +55,48 @@
                                                 @Resources.Resource.description
                                             </th>
                                             @*<th>
-                                                    @Html.DisplayNameFor(model => model.ParClusterGroupParent_Id)
-                                                </th>
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.AddDate)
-                                                </th>
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.AlterDate)
-                                                </th>
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.IsActive)
-                                                </th>*@
+                                                @Html.DisplayNameFor(model => model.ParClusterGroupParent_Id)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.AddDate)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.AlterDate)
+                                            </th>*@
+                                            <th>
+                                                @Resources.Resource.is_active
+                                            </th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-                                            <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Description)
-                                                </td>
-                                                @*<td>
-                                                        @Html.DisplayFor(modelItem => item.ParClusterGroupParent_Id)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.AddDate)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.AlterDate)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.IsActive)
-                                                    </td>*@
-                                                <td>
-                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                    @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })*@
-                                                    @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            @*<td>
+                                                @Html.DisplayFor(modelItem => item.ParClusterGroupParent_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AddDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AlterDate)
+                                            </td>*@
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.IsActive)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })*@
+                                                @*Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })*@
+                                            </td>
+                                        </tr>
                                         }
                                     </tbody>
                                 </table>
@@ -123,6 +123,7 @@
     $(document).ready(function () {
         closeLeftSidebar();
         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
             null,
             null,
             { "bSearchable": false }

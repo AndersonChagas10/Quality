@@ -1,9 +1,7 @@
 ﻿@model Dominio.ParGroupParLevel1
 
 @{
-                /**/
-
-                ViewBag.Title = "Novo Grupo de Indicador";
+    ViewBag.Title = Resources.Resource.create + " " + Resources.Resource.function;
 }
 
 <div class="page-content-wrapper">
@@ -16,11 +14,11 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParGroupParLevel1")">@Resources.Resource.indicator_group</a>
+                    <a href="@Url.Action("Index", "ParGroupParLevel1")">@Resources.Resource.function</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.create</span>
+                    <span>@Resources.Resource.create @Resources.Resource.function</span>
                 </li>
             </ul>
         </div>
@@ -32,7 +30,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create @Resources.Resource.indicator_group </span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create @Resources.Resource.function </span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -43,7 +41,6 @@
                                     @Html.AntiForgeryToken()
 
                                     <div class="form-horizontal">
-                                        <hr />
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -54,11 +51,10 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParGroupParLevel1Type_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParGroupParLevel1Type_Id, Resources.Resource.type_of_function as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParGroupParLevel1Type_Id", null, htmlAttributes: new { @class = "form-control" })
 
-                                                @*@Html.DropDownList("ParGroupParLevel1Type_Id", Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:275px" })*@
                                                 @Html.ValidationMessageFor(model => model.ParGroupParLevel1Type_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -87,7 +83,7 @@
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
                                                 <input type="submit" value="@Resources.Resource.create" class="btn btn-primary" />
-                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                                @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>

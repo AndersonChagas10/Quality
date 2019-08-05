@@ -1,7 +1,9 @@
-﻿@model IEnumerable<Dominio.ParDepartment>
+﻿
+@model  PagedList.IPagedList<Dominio.ParDepartment>
+@using PagedList.Mvc;
 
 @{
-    ViewBag.Title = @Resources.Resource.departments;
+    ViewBag.Title = Resources.Resource.costcenter;
 }
 
 <div class="page-content-wrapper">
@@ -16,7 +18,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.departments</span>
+                    <span>@Resources.Resource.costcenter</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -35,21 +37,34 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.departments</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.costcenter</span>
                         </div>
                     </div>
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
 
-                                <p>
-                                    @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
-                                </p>
+                                <div class="col-md-5" style="padding:15px">
+
+                                    @Html.ActionLink(Resources.Resource._novo as string, "Create", null, new { @class = "btn btn-primary" })
+
+                                </div>
+
+                                <div class="pull-right" style="padding:15px">
+                                    @using (Html.BeginForm("Index", "ParDepartments", FormMethod.Get))
+                                    {
+                                        <label for="filtro">Buscar</label>
+                                        <input id="filtro" name="filtro" value="@ViewBag.filtro" />
+                                        <input type="submit" value="Pesquisar" class="btn btn-primary" />
+                                    }
+                                </div>
+
+
                                 <table class="table" id="tabelaDepartamentos">
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Resources.Resource.name
+                                                @Resources.Resource.costcenter
                                             </th>
                                             <th>
                                                 @Resources.Resource.description
@@ -80,10 +95,11 @@
                                                     @Html.DisplayFor(modelItem => item.ParDepartmentPai.Name)
                                                 </td>
                                                 <td>
-                                                    @Html.Raw(item.Active ? Resources.Resource.yes : Resources.Resource.no)
+                                                    @*@Html.Raw(item.Active ? Resources.Resource.yes : Resources.Resource.no)*@
+                                                    @Html.DisplayFor(modelItem => item.Active)
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                     @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |*@
                                                     @*@Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })*@
                                                 </td>
@@ -91,8 +107,11 @@
                                         }
                                     </tbody>
                                 </table>
+                                @*Html.PagedListPager(Model, page => Html.ActionWithParams("Index", new { page }))*@
+                                <div class="pull-right" style="padding: 25px;">
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", "ParDepartments", new { page = page, filtro = ViewBag.filtro }))
+                                </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -111,15 +130,16 @@
 </script>
 
 <script>
-     $(document).ready(function () {
-         closeLeftSidebar();
-         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
-             null,
-             null,
-             null,
-             null,
-             { "bSearchable": false }
-         ];
-         $('#tabelaDepartamentos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+    $(document).ready(function () {
+        closeLeftSidebar();
+
+        //DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+        //    null,
+        //    null,
+        //    null,
+        //    null,
+        //    { "bSearchable": false }
+        //];
+        //$('#tabelaDepartamentos').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 </script>

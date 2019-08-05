@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Helper;
 using SgqSystem.Helpers;
 using System;
 using System.Collections.Generic;
@@ -27,34 +28,13 @@ namespace SgqSystem.Controllers.Photo
                     .Where(x => x.ID == id)
                     .FirstOrDefault();
 
-                System.Net.WebClient webClient = new System.Net.WebClient();
                 string url = photo.Photo;
 
                 //Verificar se no web.config a credencial do servidor de fotos
 
-                var credentialUserServerPhoto = GetWebConfigSettings("credentialUserServerPhoto");
-                var credentialPassServerPhoto = GetWebConfigSettings("credentialPassServerPhoto");
-                FileStream file = null;
-
-                if (!string.IsNullOrEmpty(credentialUserServerPhoto) 
-                    && !string.IsNullOrEmpty(credentialPassServerPhoto))
-                {
-
-                    var credential = new NetworkCredential(credentialUserServerPhoto, credentialPassServerPhoto);
-                    using (new NetworkConnection(Path.GetDirectoryName(url), credential))
-                    {
-                        if (System.IO.File.Exists(url))
-                            file = System.IO.File.OpenRead(url);
-
-                    }
-
-                }
-                else
-                {
-                    if (System.IO.File.Exists(url))
-                        file = System.IO.File.OpenRead(url);
-
-                }
+                FileStream file = FileHelper.DownloadPhoto(url
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto);
 
                 if (file != null)
                 {

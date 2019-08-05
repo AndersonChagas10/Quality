@@ -30,7 +30,7 @@ namespace SgqSystem.Controllers
             using (var db = new SgqDbDevEntities())
             {
 
-                 ViewBag.Clusters = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive));
+                ViewBag.Clusters = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive));
 
                 ViewBag.Modulos = Mapper.Map<IEnumerable<ParClusterGroupDTO>>(db.ParClusterGroup.Where(r => r.IsActive));
 
@@ -77,11 +77,7 @@ namespace SgqSystem.Controllers
 
             try
             {
-
-                System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-
-                ViewBag.Resources = resourceManager.GetResourceSet(
-                    Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+                ViewBag.Resources = Resources.Resource;
 
                 using (var db = new SgqDbDevEntities())
                 {
@@ -89,7 +85,7 @@ namespace SgqSystem.Controllers
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
 
@@ -113,9 +109,12 @@ namespace SgqSystem.Controllers
                     if (webControlCookie != null && webControlCookie.Values["userId"] != null)
                     {
                         var itensMenu = (IEnumerable<ItemMenuDTO>)ViewBag.TodosItensMenu;
-                        ViewBag.itemMenu = itensMenu.FirstOrDefault(i => i.Url != null && i.Url.ToUpperInvariant().Contains((controller + "/" + action).ToUpperInvariant()));
-                        if (ViewBag.itemMenu == null)
-                            throw new Exception("Acesso Negado!");
+                        if (itensMenu != null)
+                        {
+                            ViewBag.itemMenu = itensMenu.FirstOrDefault(i => i.Url != null && i.Url.ToUpperInvariant().Contains((controller + "/" + action).ToUpperInvariant()));
+                            if (ViewBag.itemMenu == null)
+                                throw new Exception("Acesso Negado!");
+                        }
                     }
             }
 
@@ -204,7 +203,7 @@ namespace SgqSystem.Controllers
 
         public static string[] GetWebConfigList(string key)
         {
-            var list = GetWebConfigSettings(key).Split(';');
+            var list = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.URL_PA.Split(';');
             return list;
         }
 
@@ -221,6 +220,7 @@ namespace SgqSystem.Controllers
             {
                 var UserId = webControlCookie.Values["userId"];
                 ViewBag.UserRoles = webControlCookie.Values["roles"];
+                ViewBag.UserId = UserId;
 
                 if (UserId != null && UserId != "" && int.Parse(UserId) > 0)
                 {

@@ -32,6 +32,11 @@ namespace SgqService.Controllers.Api
         [HttpPost]
         public IHttpActionResult Insert([FromBody] List<Result_Level3_PhotosDTO> Fotos)
         {
+            if (Fotos == null || Fotos != null && Fotos.Count == 0)
+            {
+                return BadRequest("Nenhuma foto enviada!");
+            }
+
             VerifyIfIsAuthorized();
             //, int Level1Id, int Level2Id, int Level3Id, int Evaluation, int Sample, string Date
             string quebraProcesso = "98789";
@@ -96,23 +101,34 @@ namespace SgqService.Controllers.Api
                 }
                 catch (Exception ex)
                 {
+                    using (var db = new Dominio.SgqDbDevEntities())
+                    {
+                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "FOTOS " + ex.ToClient() });
+                        db.SaveChanges();
+                    }
+
                     return BadRequest(ex.ToClient());
                 }
 
                 if (ResultPhoto.Result_Level3_Id == 0)
                 {
+                    using (var db = new Dominio.SgqDbDevEntities())
+                    {
+                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "SALVOU " + Fotos.Count + " FOTOS" });
+                        db.SaveChanges();
+                    }
+
                     return Ok(new
                     {
                         message =
                         "ResultLevel3Id não encontrado." + Newtonsoft.Json.JsonConvert.SerializeObject(ResultPhoto),
-                        count = i
+                        count = i + 1
                     });
                 }
 
                 #region Upload Photos
 
-                //basePath = "\\\\192.168.25.16\\uploadFiles"
-                var basePath = System.Configuration.ConfigurationManager.AppSettings["StorageRoot"] ?? "~";
+                var basePath = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot ?? "~";
                 if (basePath.Equals("~"))
                 {
                     basePath = @AppDomain.CurrentDomain.BaseDirectory;
@@ -121,11 +137,11 @@ namespace SgqService.Controllers.Api
                 string fileName = parLevel1_Id + parLevel2_Id + ResultPhoto.Level3Id + DateTime.Now.ToString("yyyyMMddHHssmm") + new Random().Next(1000, 9999) + ".png";
 
                 FileHelper.SavePhoto(ResultPhoto.Photo, basePath, fileName
-                    , GetWebConfigSettings("credentialUserServerPhoto")
-                    , GetWebConfigSettings("credentialPassServerPhoto")
-                    , GetWebConfigSettings("StorageRoot"));
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot);
 
-                var path = Path.Combine(basePath, "photos", fileName);
+                var path = Path.Combine(basePath, fileName);
                 ResultPhoto.Photo = path;
                 ResultPhoto.Photo_Thumbnaills = ResultPhoto.Photo;
                 #endregion
@@ -154,8 +170,20 @@ namespace SgqService.Controllers.Api
                 }
                 catch (Exception ex)
                 {
+                    using (var db = new Dominio.SgqDbDevEntities())
+                    {
+                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "FOTOS " + ex.ToClient() });
+                        db.SaveChanges();
+                    }
+
                     return BadRequest(ex.ToClient());
                 }
+            }
+
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+                db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "SALVOU " + Fotos.Count + " FOTOS" });
+                db.SaveChanges();
             }
 
             return Ok(new { message = "Fotos inseridas com sucesso.", count = Fotos.Count });

@@ -178,59 +178,6 @@ namespace SgqSystem.Controllers.Api
                 dados = factory.SearchQuery<CorrectiveActionDTO>(sql).ToList();
             }
 
-
-
-            //var list = new List<CorrectiveAction>();
-
-            //if (model.unitId == 0)
-            //{
-            //    list = db.CorrectiveAction.Where(r => r.DateCorrectiveAction >= model._dataInicio)
-            //    .Where(r => r.DateCorrectiveAction <= model._dataFim).ToList();
-            //}
-            //else
-            //{
-            //    var level2 = db.CollectionLevel2.Where(r => r.UnitId == model.unitId).ToList();
-
-            //    foreach (var item in level2)
-            //    {
-
-            //        var corrective = db.CorrectiveAction
-            //            .Where(r => r.DateCorrectiveAction >= model._dataInicio)
-            //            .Where(r => r.DateCorrectiveAction <= model._dataFim)
-            //            .Where(r => r.CollectionLevel02Id == item.Id).FirstOrDefault();
-
-            //        if (corrective != null)
-            //        {
-            //            list.Add(corrective);
-            //        }
-            //    }
-            //}
-
-            //List<CorrectiveActionDTO> clienteView2 = new List<CorrectiveActionDTO>();
-            //CorrectiveActionDTO ca = new CorrectiveActionDTO();
-
-            //if (list == null)
-            //    return clienteView2;
-
-            //foreach (var item in list)
-            //{
-            //    int leve1Id = 0;
-            //    int leve2Id = 0;
-
-            //    ca = Mapper.Map<CorrectiveAction, CorrectiveActionDTO>(item);
-            //    ca.AuditorName = db.UserSgq.Where(r => r.Id == item.AuditorId).FirstOrDefault().Name;
-            //    ca.NameSlaughter = db.UserSgq.Where(r => r.Id == item.AuditorId).FirstOrDefault().Name;
-            //    ca.NameTechinical = db.UserSgq.Where(r => r.Id == item.AuditorId).FirstOrDefault().Name;
-            //    ca.AuditorName = db.UserSgq.Where(r => r.Id == item.AuditorId).FirstOrDefault().Name;
-            //    leve1Id = db.CollectionLevel2.Where(r => r.Id == item.CollectionLevel02Id).FirstOrDefault().ParLevel1_Id;
-            //    leve2Id = db.CollectionLevel2.Where(r => r.Id == item.CollectionLevel02Id).FirstOrDefault().ParLevel2_Id;
-            //    ca.level01Name = db.ParLevel1.Where(r => r.Id == leve1Id).FirstOrDefault().Name;
-            //    ca.level02Name = db.ParLevel2.Where(r => r.Id == leve2Id).FirstOrDefault().Name;
-            //    clienteView2.Add(ca);
-            //}
-
-            //return clienteView2;
-
             return dados;
         }
 
@@ -261,33 +208,6 @@ namespace SgqSystem.Controllers.Api
             obj2.ShiftName = level2.Shift.ToString();
             obj2.PeriodName = level2.Period.ToString();
 
-            // Shift e Periodo com foreign key (por enquanto está funcionando sem)
-
-            //shift = db.Shift.Where(r => r.Id == level2.Shift).FirstOrDefault();
-            //period = db.Period.Where(r => r.Id == level2.Period).FirstOrDefault();
-
-            //if (shift.IsNull())
-            //{
-            //    //shift.Id = 0;
-            //    obj2.ShiftName = "";
-            //}
-            //else
-            //{
-            //    //obj2.ShiftId = shift.Id;
-            //    obj2.ShiftName = shift.Description;
-            //}
-
-            //if (period.IsNull())
-            //{
-            //    //period.Id = 0;
-            //    obj2.PeriodName = "";
-            //}
-            //else
-            //{
-            //    //obj2.PeriodId = period.Id;
-            //    obj2.PeriodName = period.Description;
-            //}
-
             Unit unit = new Unit();
             unit.Code = pc.SIF;
             unit.Name = pc.Name;
@@ -297,6 +217,76 @@ namespace SgqSystem.Controllers.Api
 
             return obj2;
         }
+
+        [Route("SetCorrectiveAction")]
+        [HttpPost]
+        public List<CorrectiveAction> SetCorrectiveAction([FromBody]List<CorrectiveAction> correctiveActions)
+        {
+            var correctiveActionsSave = new List<CorrectiveAction>();
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                try
+                {
+
+                    foreach (var correctiveAction in correctiveActions)
+                    {
+
+                        //Fazer o update da collectionLevel2 para informar se houve ação corretiva
+                        var sql = $@"Select 
+                                	*
+                            from CollectionLevel2  C2 
+                            INNER JOIN CollectionLevel2xParDepartment C2XPD on C2.Id = C2XPD.CollectionLevel2_Id
+                            INNER JOIN CollectionLevel2xParCargo C2XPC on C2.Id = C2XPC.CollectionLevel2_Id
+                            WHERE C2.ParLevel1_Id = { correctiveAction.CollectionLevel2.ParLevel1_Id }
+                            AND C2.ParLevel2_Id = { correctiveAction.CollectionLevel2.ParLevel2_Id }
+                            AND C2.UnitId = { correctiveAction.CollectionLevel2.UnitId }
+                            AND C2.EvaluationNumber = { correctiveAction.CollectionLevel2.EvaluationNumber }
+                            AND C2.Sample = { correctiveAction.CollectionLevel2.Sample }
+                            AND C2XPD.ParDepartment_Id = { correctiveAction.CollectionLevel2.ParDepartment_Id }
+                            AND C2XPC.ParCargo_Id = { correctiveAction.CollectionLevel2.ParCargo_Id }
+                            AND CAST(C2.CollectionDate AS SMALLDATETIME) BETWEEN 
+                            DATEADD(MINUTE, -1, CAST('{ correctiveAction.CollectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") }' AS SMALLDATETIME)) AND 
+                            DATEADD(MINUTE, 1, CAST('{ correctiveAction.CollectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") }' AS SMALLDATETIME))";
+
+                        var collectionLevel2 = db.Database.SqlQuery<CollectionLevel2>(sql).FirstOrDefault();
+
+                        if(collectionLevel2 == null)
+                        {
+                            return correctiveActionsSave;
+                        }
+
+                        collectionLevel2.HaveCorrectiveAction = true;
+                        db.Entry(collectionLevel2).State = EntityState.Modified;
+                        db.SaveChanges();
+
+
+                        //Não estava retornando na query acima então pego aqui novamente
+                        db.Configuration.LazyLoadingEnabled = false;
+                        collectionLevel2.ParCargo_Id = db.CollectionLevel2XParCargo.Where(x => x.CollectionLevel2_Id == collectionLevel2.Id).Select(x => x.ParCargo_Id).FirstOrDefault();
+                        collectionLevel2.ParDepartment_Id = db.CollectionLevel2XParDepartment.Where(x => x.CollectionLevel2_Id == collectionLevel2.Id).Select(x => x.ParDepartment_Id).FirstOrDefault();
+
+                        correctiveAction.CollectionLevel2_Id = collectionLevel2.Id;
+                        correctiveAction.CollectionLevel2 = collectionLevel2;
+
+                        db.CorrectiveAction.Add(correctiveAction);
+
+                        db.SaveChanges();
+
+                        correctiveActionsSave.Add(correctiveAction);
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    //deu ruim;
+                }
+            }
+
+            return correctiveActionsSave;
+        }
+
 
 
         [Route("GetCorrectiveActionById2")]

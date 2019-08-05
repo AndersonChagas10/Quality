@@ -28,7 +28,7 @@ namespace SgqService.Controllers.Api
             {
                 var scriptDctionary = new Dictionary<string, string>();
 
-                if (System.Configuration.ConfigurationManager.AppSettings["Producao"] == "SIM")
+                if (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.Producao == "SIM")
                 {
                     #region ReduzScript (Minify)
                     var blockComments = @"/\*(.*?)\*/";
@@ -51,9 +51,9 @@ namespace SgqService.Controllers.Api
                     RegexOptions options = RegexOptions.None;
                     Regex regex = new Regex("[ ]{2,}", options);
                     item.Script = regex.Replace(item.Script, " ");
+                    //item.Script = item.Script.Replace(System.Environment.NewLine, "").Replace("\\\"", "\'");
 
-                    scriptDctionary.Add(item.ArchiveName
-                        , item.Script.Replace(System.Environment.NewLine, "").Replace("\\\"", "\'"));
+                    scriptDctionary.Add(item.ArchiveName, item.Script);
                     #endregion
                 }else
                 {

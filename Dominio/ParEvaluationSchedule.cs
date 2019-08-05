@@ -17,9 +17,10 @@ namespace Dominio
         public string Fim { get; set; }
         public int Av { get; set; }
         public int? Shift_Id { get; set; }
-        public int ParEvaluation_Id { get; set; }
+        public int? ParEvaluation_Id { get; set; }
         public bool IsActive { get; set; }
         public string Intervalo { get; set; }
+        public int? ParEvaluationXDepartmentXCargo_Id { get; set; }
 
         [NotMapped]
         public bool isDeletar { get; set; }

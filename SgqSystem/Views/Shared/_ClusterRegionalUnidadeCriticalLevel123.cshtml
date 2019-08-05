@@ -74,7 +74,7 @@
         <div>
             <div id="shiftIdV" style="display:table-cell">
                 <span class="redLabel">@Resources.Resource.shift</span>
-                @Html.DropDownList("shift", new SelectList(ViewBag.Shift, "Id", "Name"), Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                @Html.DropDownList("shift", new SelectList(ViewBag.Shift, "Id", "Name"), Resources.Resource.all as string, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
 
             </div>
         </div>

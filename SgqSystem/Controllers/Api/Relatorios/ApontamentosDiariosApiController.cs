@@ -55,6 +55,21 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [Route("GetApontamentosDiariosRH")]
+        public List<ApontamentosDiariosResultSet> GetApontamentosDiariosRH([FromBody] DataCarrierFormularioNew form)
+        {
+
+            var query = new ApontamentosDiariosResultSet().SelectRH(form);
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
+
+                return _list;
+            }
+        }
+
+        [HttpPost]
         [Route("GetApontamentosDomingo")]
         public List<ApontamentosDiariosDomingoResultSet> GetApontamentosDomingo([FromBody] FormularioParaRelatorioViewModel form)
         {
@@ -595,16 +610,16 @@ namespace SgqSystem.Controllers.Api
             {
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                 return $@"<div
-                            <label for='Conforme: '> { GetResources.getResource("max_interval").Value.ToString() }: </label> <label id='intervalMax'>{ IntervalMax }</label>
+                            <label for='Conforme: '> { Resources.Resource.max_interval }: </label> <label id='intervalMax'>{ IntervalMax }</label>
                             <br>
-                            <label for='Conforme: '> { GetResources.getResource("min_interval").Value.ToString() }: </label> <label id='intervalMin'>{ IntervalMin }</label>
+                            <label for='Conforme: '> { Resources.Resource.min_interval }: </label> <label id='intervalMin'>{ IntervalMin }</label>
                             <br>
-                            <label for='Conforme: '> { GetResources.getResource("current_value").Value.ToString() }: </label> { Value }
+                            <label for='Conforme: '> { Resources.Resource.current_value }: </label> { Value }
                             <br>
-                            <label for='Conforme: '> { GetResources.getResource("new_value").Value.ToString() }: </label> &nbsp 
+                            <label for='Conforme: '> { Resources.Resource.new_value }: </label> &nbsp 
                             <input type='number' id='intervaloValor' class='form-control' value={ Value } />
                             <br>
-                            <label for='Conforme: '> { GetResources.getResource("unvalued").Value.ToString() }: </label> &nbsp 
+                            <label for='Conforme: '> { Resources.Resource.unvalued }: </label> &nbsp 
                             <input type='checkbox' id='IsEvaluated' { naoAvaliado } class='.check-box' />
                         </div>";
             }
@@ -614,10 +629,10 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                 var checkedAttr = IsConform.GetValueOrDefault() ? "checked='checked'" : "";
                 return "<div>" +
-                           "<label for='Conforme: '> " + GetResources.getResource("conform2").Value.ToString() + ": </label> &nbsp " +
+                           "<label for='Conforme: '> " + Resources.Resource.conform2 + ": </label> &nbsp " +
                             "<input class='.check-box' id='conform' name='conform' " + checkedAttr + " type='checkbox' value='true'><input name = 'conform' type='hidden' value='false'>" +
                             "<br>" +
-                             "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
+                             "<label for='Conforme: '> " + Resources.Resource.unvalued + ": </label> &nbsp " +
                             "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                        "</div>"; ;
             }
@@ -627,16 +642,16 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
 
                 return "<div>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                            "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
+                            "<label for='Conforme: '> " + Resources.Resource.min_interval + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                            "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp" +
+                            "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp" +
                         "<input type='text' id='decimal' class='decimal' /> ^10x <input type='text' id='precisao' class='decimal' />" +
                         "<br>" +
-                           "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
+                           "<label for='Conforme: '> " + Resources.Resource.unvalued + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }
@@ -646,16 +661,16 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
 
                 return "<div>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                            "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + double.Parse(IntervalMin, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
+                            "<label for='Conforme: '> " + Resources.Resource.min_interval + ": </label>" + double.Parse(IntervalMin, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                            "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp" +
+                            "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp" +
                         "<input type='text' id='numeroDeDefeitos' class='decimal' />" +
                         "<br>" +
-                           "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
+                           "<label for='Conforme: '> " + Resources.Resource.unvalued + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }
@@ -668,9 +683,9 @@ namespace SgqSystem.Controllers.Api
                     ValueText = "";
 
                 return "<div>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + ValueText +
+                            "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + ValueText +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp " +
+                            "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp " +
                              "<input type='text' id='texto' class='form-control text' value='" + ValueText + "' />" +
                         "</div>";
             }

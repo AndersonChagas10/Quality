@@ -2888,7 +2888,7 @@ namespace SgqSystem.Services
         //        return "error";
         //    }
         //}
-        public static void getFrequencyDate(int ParFrequency_Id, DateTime data, ref string dataInicio, ref string dataFim)
+        public static void getFrequencyDate(int? ParFrequency_Id, DateTime data, ref string dataInicio, ref string dataFim)
         {
 
             DateTime periodoInicio = data;
@@ -4137,14 +4137,11 @@ namespace SgqSystem.Services
 
             System.Reflection.Assembly assembly = this.GetType().Assembly;
 
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-
-            var resourceSet = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false);
+            var resourceManager = (IDictionary<string, object>)Resources.Resource;
 
             string items = "";
 
-            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            foreach (var entry in resourceManager)
             {
                 items += "<div res='" + entry.Key.ToString() + "'>" + entry.Value.ToString() + "</div>";
             }
@@ -5564,7 +5561,7 @@ namespace SgqSystem.Services
                                                 outerhtml: level02Header
                                                );
 
-                var parNCRuleDB = ParNCRuleDB.getParNCRule(parlevel2.ParNotConformityRule_id, parlevel2.ParLevel2_id);
+                var parNCRuleDB = ParNCRuleDB.getParNCRule(parlevel2.ParNotConformityRule_id, parlevel2.ParLevel2_id, ParLevel1.Id);
                 decimal ruleValue = 0;
 
                 if (parNCRuleDB != null)

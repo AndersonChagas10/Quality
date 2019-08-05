@@ -7,7 +7,7 @@
     <h2>@ViewBag.Title</h2>
 
     <p>
-        @Html.ActionLink(Resources.Resource.create, "Create")
+        @Html.ActionLink(Resources.Resource.create as string, "Create")
     </p>
     <table class="table">
         <tr>
@@ -54,9 +54,9 @@
                     @Html.DisplayFor(modelItem => item.InitDate)
                 </td>
                 <td>
-                    @Html.ActionLink(Resources.Resource.edit, "Create", new { id = item.Id }) |
-                    @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |
-                    @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })
+                    @Html.ActionLink(Resources.Resource.edit as string, "Create", new { id = item.Id }) |
+                    @Html.ActionLink(Resources.Resource.details as string, "Details", new { id = item.Id }) |
+                    @Html.ActionLink(Resources.Resource.delete as string, "Delete", new { id = item.Id })
                 </td>
             </tr>
         }

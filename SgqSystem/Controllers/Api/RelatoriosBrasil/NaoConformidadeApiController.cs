@@ -87,7 +87,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id = {form.criticalLevelId} ";
-                    //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var query = $@"

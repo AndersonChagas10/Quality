@@ -28,7 +28,7 @@
                         <tr class="alert-info" style="">
 
                             @Table.GerarColuna(@Html.DropDownList("avAmCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "avAmCompany" })
-                                , @Html.Label(Resources.Resource.company)
+                                , @Html.Label(Resources.Resource.company as string)
                                 , Table.PosicaoLabel.top, colspan: 1)
 
                         </tr>
@@ -61,16 +61,16 @@
 
                             @Html.HiddenFor(r => r.paramsDto.parEvaluationDto.Id)
                             @Table.GerarColuna(@Html.TextBox("avaliacao", 0, htmlAttributes: new { @id = "avaliacao", @class = "form-control input-sm", type = "number", min = "0" })
-                                , @Html.Label(Resources.Resource.evaluation)
+                                , @Html.Label(Resources.Resource.evaluation as string)
                                 , Table.PosicaoLabel.top, classTd: "col-sm-4")
 
                             @Html.HiddenFor(r => r.paramsDto.parSampleDto.Id)
                             @Table.GerarColuna(@Html.TextBox("amostra", 0, htmlAttributes: new { @id = "amostra", @class = "form-control input-sm", type = "number", min = "0" })
-                                , @Html.Label(Resources.Resource.samples_per_evaluation)
+                                , @Html.Label(Resources.Resource.samples_per_evaluation as string)
                                 , Table.PosicaoLabel.top, classTd: "col-sm-4")
 
                             @Table.GerarColunaButton(@Html.TextBox("intervaloParaAvaliar", 0, htmlAttributes: new { @id = "intervaloParaAvaliar", @class = "form-control input-sm", type = "text" })
-                                , @Html.Label(Resources.Resource.sampleInterval)
+                                , @Html.Label(Resources.Resource.sampleInterval as string)
                                 , Table.PosicaoLabel.top
                                 , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>"
                                 , classTd: "col-sm-4")

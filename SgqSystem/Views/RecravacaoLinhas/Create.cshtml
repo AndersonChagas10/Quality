@@ -49,7 +49,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ParCompany_Id, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.ParCompany, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.ParCompany, "Id", "Name"), Resources.Resource.select as string + "...", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ParRecravacao_TypeLata_Id, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.ParRecravacao_TypeLata_Id, new SelectList(ViewBag.TipoLata, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.ParRecravacao_TypeLata_Id, new SelectList(ViewBag.TipoLata, "Id", "Name"), Resources.Resource.select as string + "...", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ParRecravacao_TypeLata_Id, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ParLevel2_Id, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.ParLevel2_Id, new SelectList(ViewBag.ParLevel2, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.ParLevel2_Id, new SelectList(ViewBag.ParLevel2, "Id", "Name"), Resources.Resource.select as string + "...", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ParLevel2_Id, "", new { @class = "text-danger" })
                     </div>
                 </div>

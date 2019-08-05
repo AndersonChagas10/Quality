@@ -1,5 +1,5 @@
 ﻿@using DTO.DTO.Params
-@using Resources
+
 
 @{
     ViewBag.Title = Resources.Resource.update_tablet_screen;
@@ -10,11 +10,11 @@
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content monitor-get-tela">
 
-        <h2>@Resource.update_tablet</h2>
+        <h2>@Resources.Resource.update_tablet</h2>
 
-        <button class="btn btn-primary" style="color:white" id="updateTablets">@Resource.update_selected_units</button>
+        <button class="btn btn-primary" style="color:white" id="updateTablets">@Resources.Resource.update_selected_units</button>
         @*<button class="btn btn-success" id="refreshStatus">Atualizar</button>*@
-        <button class="btn btn-info" id="checkAll">@Resource.select_all</button>
+        <button class="btn btn-info" id="checkAll">@Resources.Resource.select_all</button>
         <spam id="spamLoading" style="display:block;float:right;width:30px;height:30px"></spam>
         <br />
         <br />
@@ -29,10 +29,10 @@
                     <tr>
                         <th></th>
                         <th>ID</th>
-                        <th>@Resource.name</th>
-                        <th>@Resource.initial_date</th>
-                        <th>@Resource.final_date</th>
-                        <th>@Resource.status</th>
+                        <th>@Resources.Resource.name</th>
+                        <th>@Resources.Resource.initial_date</th>
+                        <th>@Resources.Resource.final_date</th>
+                        <th>@Resources.Resource.status</th>
                     </tr>
                 </thead>
 

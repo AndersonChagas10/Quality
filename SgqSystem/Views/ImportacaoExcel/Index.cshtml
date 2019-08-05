@@ -62,7 +62,7 @@
 
         <div class="form-group" style="float:right">
             <div class="col-md-12">
-                @Html.ActionLink(Resources.Resource.new_format, "Index", "ImportFormats", null, new { @class = "btn btn-info" })
+                @Html.ActionLink(Resources.Resource.new_format as string, "Index", "ImportFormats", null, new { @class = "btn btn-info" })
             </div>
         </div>
 
@@ -99,7 +99,7 @@
                     <div class="form-group">
                         @Html.Label("Formatos de Importação", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.DropDownList("Formatos de Importação", (SelectList)ViewBag.Formatos, Resources.Resource.select + "...", new { @class = "form-control", @id = "formato" })
+                            @Html.DropDownList("Formatos de Importação", (SelectList)ViewBag.Formatos, Resources.Resource.select as string + "...", new { @class = "form-control", @id = "formato" })
                         </div>
                     </div>
                     <br /> <br />

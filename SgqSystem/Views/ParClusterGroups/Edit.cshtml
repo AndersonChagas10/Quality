@@ -13,11 +13,11 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParClusterGroups")">@Resources.Resource.cluster_group</a>
+                    <a href="@Url.Action("Index", "ParClusterGroups")">Grupo de Cluster</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.cluster_group</span>
+                    <span>@Resources.Resource.edit</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -36,7 +36,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.cluster_group</span>
+                            <span class="caption-subject font-dark bold uppercase">Grupo de Cluster</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -53,7 +53,7 @@
                                         @Html.HiddenFor(model => model.Id)
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Name, Resources.Resource.cluster_group, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Name, "Grupo de Cluster", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -61,7 +61,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Description, Resources.Resource.description, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Description, Resources.Resource.description as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
@@ -92,20 +92,20 @@
                                                 </div>
                                             </div>*@
 
-                                        @*<div class="form-group">
-                                                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="form-group">
+                                                @Html.LabelFor(model => model.IsActive, Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
                                                     <div class="checkbox">
                                                         @Html.EditorFor(model => model.IsActive)
                                                         @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
-                                            </div>*@
+                                            </div>
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
                                                 <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
-                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                                @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>

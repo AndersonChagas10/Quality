@@ -140,6 +140,7 @@
     <Compile Include="Controllers\Api\GetVTVerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\GetApp2Controller.cs" />
     <Compile Include="Controllers\Api\InsertCorrectiveActionController.cs" />
+    <Compile Include="Controllers\Api\PCC1BApiController.cs" />
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\GetCompanyController.cs" />
     <Compile Include="Controllers\Api\GetResourceController.cs" />

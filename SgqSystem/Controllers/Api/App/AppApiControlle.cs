@@ -8,6 +8,7 @@ using SgqSystem.Helpers;
 using SgqSystem.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -197,7 +198,8 @@ namespace SgqSystem.Controllers.Api.App
                     }
                 }
 
-                UpdateTelaDoTablet(UnitId);
+                UpdateGetTelaThread(new GeneratedUnit() { ListUnits = new List<int>() { UnitId } });
+                //UpdateTelaDoTablet(UnitId);
 
                 //foreach (var shift in shifts)
                 //{
@@ -249,7 +251,7 @@ namespace SgqSystem.Controllers.Api.App
         [Route("GetFiles")]
         public string GetFiles()
         {
-            //return new AppScriptsController().GetByVersion("GQ");
+            return new AppScriptsController().GetByVersion(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.AppFiles);
 
             string path = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\appColeta";
             string searchPattern = "*.*";
@@ -287,6 +289,17 @@ namespace SgqSystem.Controllers.Api.App
             return login + resource;
         }
 
+        [HttpPost]
+        [Route("GetImages")]
+        public Dictionary<string, string> GetImages()
+        {
+            var image = new Dictionary<string, string>();
+
+            image.Add("logo", DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogo);
+
+            return image;
+        }
+
         #region Nova Proposta Get Tela
 
         public class GeneratedUnit
@@ -321,7 +334,13 @@ namespace SgqSystem.Controllers.Api.App
                         GlobalConfig.PaginaDoTablet.Add(temp, null);
                     }
                 }
-                return GlobalConfig.PaginaDoTablet.Select(pt => new { pt.Key, pt.Value?.DataFimStr, pt.Value?.DataInicioStr, pt.Value?.StatusStr });
+                return GlobalConfig.PaginaDoTablet.Select(pt => new
+                {
+                    Key = pt.Key,
+                    DataFimStr = pt.Value?.DataFimStr,
+                    DataInicioStr = pt.Value?.DataInicioStr,
+                    StatusStr = pt.Value?.StatusStr
+                });
 
             }
             return null;

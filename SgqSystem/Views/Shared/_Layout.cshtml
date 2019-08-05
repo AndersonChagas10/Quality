@@ -35,7 +35,7 @@
 
     @if (IsSectionDefined("Styles"))
     {
-        @RenderSection("Styles")    ;
+        @RenderSection("Styles");
     }
     <link rel="icon" href="~/Content/Imagens/favicon.png">
 
@@ -227,9 +227,13 @@
             $('.modalConfirm').remove();
         }
 
-        function openMessageModal(title, content) {
+        function openMessageModal(title, content, color) {
 
             var mensagem = $('#messageModal');
+
+            mensagem.css('background-color', '');
+            if (!!color)
+                mensagem.css('background-color', color);
 
             mensagem.children('.head').html(title);
             mensagem.children('.body').html(content);
@@ -273,8 +277,8 @@
     <footer class="wrapper">
 
         <p class="page-content-wrapper" style="padding-left: 16px; padding-right: 16px; z-index: 999;">
-            <label class="pull-right">SGQ @Html.Raw("v" + @Html.AssemblyVersion()) App @Html.Raw("v" + @Html.AssemblyAppVersion())</label>
-            <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - GRT </label>
+            <label class="pull-right">@DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.copyright @Html.Raw("v" + @Html.AssemblyVersion()) App @Html.Raw("v" + @Html.AssemblyAppVersion())</label>
+            <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - @DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemName </label>
         </p>
 
     </footer>
@@ -282,7 +286,7 @@
     @RenderSection("scripts", required: false)
 
     <script>
-
+        
         var ResourcesFile = @Html.Raw(Json.Encode(ViewBag.Resources));
 
         function Resources(key){
@@ -290,7 +294,7 @@
         }
 
         let DicionarioEstatico = @Html.Raw(Json.Encode(ViewBag.DicionarioEstatico));
-        
+
         function getDicionario(key){
             return DicionarioEstatico.filter(obj => obj.Key == key)[0].Value
         }
@@ -505,6 +509,55 @@
             });
             return o;
         };
+
+        $.fn.serializeFormToObjetc = function () {
+
+            let o = {};
+            let inputs = this.find('input, select, div[contentEditable="true"]');
+
+            $.each(inputs, function () {
+
+                let name = this.name == undefined ? $(this).attr('name') : this.name;
+
+                if (name != undefined) {
+
+
+
+                if (o[name] !== undefined) {
+
+                    if (!o[name].push) {
+                        o[name] = [o[name]];
+                    }
+
+                    if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
+                        o[name].push($(this).prop('checked'));
+
+                    } else if ($(this).prop('contentEditable') == 'true') {
+                        o[name] = $(this).html();
+
+                    } else {
+                        o[name].push(this.value || '');
+                    }
+
+                } else {
+
+                    if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
+                        o[name] = $(this).prop('checked');
+
+                    } else if ($(this).prop('contentEditable') == 'true') {
+                        o[name] = $(this).html();
+
+                    } else {
+                        o[name] = this.value || '';
+                    }
+
+                    }
+
+                }
+            });
+
+            return o;
+        }
 
         function FiltrosPorColuna() {
 

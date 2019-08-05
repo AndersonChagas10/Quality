@@ -69,7 +69,7 @@ namespace SgqService.Controllers.Api
 
         #region Funções
 
-        public const string quebraProcesso = "98789";
+        public static string quebraProcesso = "98789";
 
         /// <summary>
         /// Converter a Data do Tablet
@@ -258,7 +258,7 @@ namespace SgqService.Controllers.Api
 
             //ObjResultJSon = "<level02>3987891;03/30/2018 08:41:032:033;1;03/30/2018 08:41:032:072;5;1;1;1;0;false;03302018;1;1;<header>17,1,3,0,0,0,0,0,0</header>;false;false;;undefined;undefined;false; 2.0.46;JBS ;<level03>16,03/30/2018 08:41:032:075,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>27,03/30/2018 08:41:032:076,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>29,03/30/2018 08:41:032:077,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;3;0;0;0;3;0;1;0;0;0;0;undefined;0;0</level02>";
 
-            ObjResultJSon = ObjResultJSon.Replace("%2C", "");
+            ObjResultJSon = ObjResultJSon.Replace("%2C", "").Replace("NaN", "0");
 
             var objObjResultJSonPuro = ObjResultJSon;
 
@@ -369,8 +369,6 @@ namespace SgqService.Controllers.Api
                                               and p321.Active = 1 
                                               and p32.IsActive = 1
                                               and p32.Parlevel2_Id = @ParLevel2_Id";
-
-
 
                         List<ResultadoUmaColuna> list;
 
@@ -701,15 +699,6 @@ namespace SgqService.Controllers.Api
                         reauditNumber = DefaultValueReturn(reauditNumber, "0");
                         //Cria a linah de insert
 
-
-
-                        //string sql = "INSERT INTO [dbo].[CollectionJson] " +
-                        //       "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
-                        //       "VALUES " +
-                        //       "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
-
-                        //sql += "SELECT @@IDENTITY AS 'Identity'";
-
                         string sql = "INSERT INTO [dbo].[CollectionJson] " +
                             "([Unit_Id]," +
                             "[Shift]," +
@@ -829,18 +818,7 @@ namespace SgqService.Controllers.Api
                             using (Factory factory = new Factory("DefaultConnection"))
                             {
 
-                                //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
-                                //string indicadorFilho = " SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) " +
-                                //                      "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK) " +
-                                //                      "\n  on p321.ParLevel1_Id = p1.id " +
-                                //                      "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK) " +
-                                //                      "\n  on p32.id = p321.ParLevel3Level2_Id " +
-                                //                      "\n  WHERE ParLevel1Origin_Id = " + result[0] +
-                                //                      "\n  and p1.isActive = 1 " +
-                                //                      "\n  and p321.Active = 1 " +
-                                //                      "\n  and p32.IsActive = 1";
-
-                                string indicadorFilho = $@" SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) 
+                                string sqlIndicadorFilho = $@" SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) 
                                                     inner join ParLevel3Level2Level1 p321  WITH (NOLOCK) 
                                                     on p321.ParLevel1_Id = p1.id 
                                                     inner join ParLevel3Level2 p32  WITH (NOLOCK) 
@@ -850,7 +828,7 @@ namespace SgqService.Controllers.Api
                                                     and p321.Active = 1 
                                                     and p32.IsActive = 1";
 
-                                using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                                using (SqlCommand cmd = new SqlCommand(sqlIndicadorFilho, factory.connection))
                                 {
                                     cmd.CommandType = CommandType.Text;
                                     cmd.Parameters.Add(new SqlParameter("@Result", result[0]));
@@ -862,20 +840,13 @@ namespace SgqService.Controllers.Api
                                     indicadorFilho_id = list2[l].retorno.ToString();
                                 }
 
-                                //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
-                                //string monitoramentoFilho = "select top 1 cast(p32.ParLevel2_Id as varchar) retorno " +
-                                //                            "\n from parlevel3level2level1 p321 WITH (NOLOCK) " +
-                                //                            "\n inner join parlevel3level2 p32 WITH (NOLOCK) " +
-                                //                            "\n on p321.parlevel3level2_id = p32.id " +
-                                //                            "\n where p321.Active = 1 and p321.parlevel1_id = " + indicadorFilho_id;
-
-                                string monitoramentoFilho = $@"select top 1 cast(p32.ParLevel2_Id as varchar) retorno
+                                string sqlMonitoramentoFilho = $@"select top 1 cast(p32.ParLevel2_Id as varchar) retorno
                                             from parlevel3level2level1 p321 WITH (NOLOCK)
                                             inner join parlevel3level2 p32 WITH (NOLOCK)
                                             on p321.parlevel3level2_id = p32.id 
                                             where p321.Active = 1 and p321.parlevel1_id = @IndicadorFilho_Id";
 
-                                using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                                using (SqlCommand cmd = new SqlCommand(sqlMonitoramentoFilho, factory.connection))
                                 {
                                     cmd.CommandType = CommandType.Text;
                                     cmd.Parameters.Add(new SqlParameter("@IndicadorFilho_Id", indicadorFilho_id));
@@ -889,63 +860,7 @@ namespace SgqService.Controllers.Api
 
                             }
 
-                            //string sql2 = "INSERT INTO [dbo].[CollectionJson] " +
-                            //   "([Unit_Id]," +
-                            //   "[Shift]," +
-                            //   "[Period]," +
-                            //   "[level01_Id]," +
-                            //   "[Level01CollectionDate]," +
-                            //   "[level02_Id],[Evaluate]," +
-                            //   "[Sample]," +
-                            //   "[AuditorId]," +
-                            //   "[Level02CollectionDate]," +
-                            //   "[Level02HeaderJson]," +
-                            //   "[Level03ResultJSon]," +
-                            //   "[CorrectiveActionJson]," +
-                            //   "[Reaudit]," +
-                            //   "[ReauditNumber]," +
-                            //   "[haveReaudit]," +
-                            //   "[ReauditLevel]," +
-                            //   "[haveCorrectiveAction]," +
-                            //   "[Device_Id]," +
-                            //   "[AppVersion]," +
-                            //   "[Ambient]," +
-                            //   "[IsProcessed]," +
-                            //   "[Device_Mac]," +
-                            //   "[AddDate]," +
-                            //   "[AlterDate]," +
-                            //   "[Key]," +
-                            //   "[TTP]) " +
-                            //   "VALUES " +
-                            //   "('" + unidadeId + "'," +
-                            //   "'" + shift + "'," +
-                            //   "'" + period + "'," +
-                            //   "'" + indicadorFilho_id + "'," +
-                            //   "CAST(N'" + level01DataCollect + "' AS DateTime)," +
-                            //   "'" + level02Id + "'," +
-                            //   "'" + evaluate + "'," +
-                            //   "'" + sample + "', " +
-                            //   "'" + auditorId + "'," +
-                            //   "CAST(N'" + level02DataCollect + "' AS DateTime)," +
-                            //   "'" + level02HeaderJSon + "'," +
-                            //   "'" + retornoFilho + "', " +
-                            //   "'" + correctiveActionJson + "', " +
-                            //   "'" + reaudit + "', " +
-                            //   "'" + reauditNumber + "', " +
-                            //   "'" + haveReaudit + "', " +
-                            //   "'" + reauditlevel + "'," +
-                            //   "'" + haveCorrectiveAction + "' ," +
-                            //   "'" + deviceId + "'," +
-                            //   "'" + versaoApp + "'," +
-                            //   "'" + ambiente + "'," +
-                            //   "0," +
-                            //   "'" + deviceMac + "'," +
-                            //   "GETDATE()," +
-                            //   "NULL," +
-                            //   "'" + key + "'," +
-                            //   "NULL) ";
-
-                            string sql2 = $@"INSERT INTO [dbo].[CollectionJson] 
+                            string sqlInsertCollectionJsonIndicadorFilho = $@"INSERT INTO [dbo].[CollectionJson] 
                                ([Unit_Id],
                                [Shift],
                                [Period],
@@ -999,13 +914,13 @@ namespace SgqService.Controllers.Api
                                GETDATE(),
                                NULL,
                                @Key,
-                               NULL)";
+                               NULL); ";
 
-                            sql2 += "SELECT @@IDENTITY AS 'Identity'";
+                            sqlInsertCollectionJsonIndicadorFilho += "SELECT @@IDENTITY AS 'Identity'";
 
                             var iSql2 = 0;
 
-                            using (SqlCommand cmd = new SqlCommand(sql, connection))
+                            using (SqlCommand cmd = new SqlCommand(sqlInsertCollectionJsonIndicadorFilho, connection))
                             {
                                 cmd.CommandType = CommandType.Text;
                                 cmd.Parameters.Add(new SqlParameter("@UnidadeId", unidadeId));
@@ -1672,7 +1587,7 @@ namespace SgqService.Controllers.Api
                 TotalLevel3Evaluation=@TotalLevel3Evaluation, 
                 TotalLevel3WithDefects=@TotalLevel3WithDefects, 
                 LastEvaluationAlert=@LastEvaluationAlert, 
-                LastLevel2Alert=@LastEvaluationAlert, 
+                LastLevel2Alert=@LastLevel2Alert,
                 EvaluatedResult=@EvaluatedResult, 
                 DefectsResult=@DefectsResult WHERE ID=@ConsolidationLevel2_Id";
 
@@ -1693,7 +1608,7 @@ namespace SgqService.Controllers.Api
                         command.Parameters.Add(new SqlParameter("@TotalLevel3Evaluation", CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".")));
                         command.Parameters.Add(new SqlParameter("@TotalLevel3WithDefects", CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".")));
                         command.Parameters.Add(new SqlParameter("@LastEvaluationAlert", LastEvaluationAlert.ToString().Replace(",", ".")));
-                        command.Parameters.Add(new SqlParameter("@EvaluatedResult", LastLevel2Alert.ToString().Replace(",", ".")));
+                        command.Parameters.Add(new SqlParameter("@LastLevel2Alert", LastLevel2Alert.ToString().Replace(",", ".")));
                         command.Parameters.Add(new SqlParameter("@EvaluatedResult", CollectionLevel2Consolidation.EvaluatedResult));
                         command.Parameters.Add(new SqlParameter("@DefectsResult", CollectionLevel2Consolidation.DefectsResult));
                         command.Parameters.Add(new SqlParameter("@ConsolidationLevel2_Id", ConsolidationLevel2_Id.ToString().Replace(",", ".")));
@@ -1816,8 +1731,8 @@ namespace SgqService.Controllers.Api
             string sql = $@"UPDATE CollectionLevel2 SET HaveCorrectiveAction = 0 WHERE 
                 ParLevel1_Id=@ParLevel1_Id AND 
                 UnitId=@ParCompany_Id AND 
-                CollectionDate BETWEEN '@DataInicio 00:00:00' AND 
-                '@DataFim 23:59:59' AND 
+                CollectionDate BETWEEN @DataInicio AND 
+                @DataFim AND 
                 HaveCorrectiveAction= 1 and 
                 reauditnumber=@ReauditNumber";
 
@@ -1831,10 +1746,10 @@ namespace SgqService.Controllers.Api
                     {
 
                         command.CommandType = CommandType.Text;
-                        command.Parameters.Add(new SqlParameter("@ParLevel1", ParLevel1_Id));
+                        command.Parameters.Add(new SqlParameter("@ParLevel1_Id", ParLevel1_Id));
                         command.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
-                        command.Parameters.Add(new SqlParameter("@DataInicio", dataInicio));
-                        command.Parameters.Add(new SqlParameter("@DataFim", dataFim));
+                        command.Parameters.Add(new SqlParameter("@DataInicio", dataInicio + " 00:00:00"));
+                        command.Parameters.Add(new SqlParameter("@DataFim", dataFim + " 23:59:59"));
                         command.Parameters.Add(new SqlParameter("@ReauditNumber", reauditnumber));
 
                         connection.Open();
@@ -2784,6 +2699,7 @@ namespace SgqService.Controllers.Api
             //Tratamento de erros Gabriel 2017-05-27
             if (sql.Count > 0)
             {
+                var retornoSql = 0;
 
                 string conexao = this.conexao;
                 try
@@ -2797,20 +2713,11 @@ namespace SgqService.Controllers.Api
                         {
                             command.Connection = connection;
                             //connection.Open();
-                            var i = Convert.ToInt32(command.ExecuteNonQuery());
-                            //Se o script for executado corretamente retorna o Id
-                            if (i > 0)
-                            {
-                                return i;
-                            }
-                            else
-                            {
-                                //Se o script não for executado corretamente, retorna zero
-                                return 0;
-                            }
+                            retornoSql = Convert.ToInt32(command.ExecuteNonQuery());
                         }
                     }
 
+                    return retornoSql;
                 }
                 //Caso ocorra alguma exception, grava no log e retorna zero
                 catch (SqlException ex)
@@ -3132,6 +3039,8 @@ namespace SgqService.Controllers.Api
 
                 if (id == "0")
                 {
+                    var parLevel3_Name = parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)) != null ?
+                        parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") : "";
 
                     //sql = "INSERT INTO Result_Level3 ([CollectionLevel2_Id]," +
                     //    "[ParLevel3_Id]," +
@@ -3166,7 +3075,26 @@ namespace SgqService.Controllers.Api
                     //       "" + WeiDefects + ") " +
                     //       " SELECT @@IDENTITY AS 'Identity'";
 
-                    query = $@"INSERT INTO Result_Level3 ([CollectionLevel2_Id],
+                    query = $@"
+
+                        DECLARE @GRUPO INT
+                        DECLARE @L1 INT 
+                        DECLARE @L2 INT 
+                        DECLARE @UNIT INT
+
+                        select top 1 @L1 = parlevel1_id, @L2 = parlevel2_id, @UNIT = unitid from collectionlevel2 where id = @CollectionLevel02Id
+
+                        select top 1 @GRUPO = ParLevel3Group_Id from parlevel3level2 p32
+                        inner join parlevel3level2level1 p321
+                        on p32.id = p321.parlevel3level2_id
+                        where parlevel3_id = @Level03Id 
+                          and parlevel1_id = @L1
+                          and parlevel2_id = @L2
+                          and ( p32.ParCompany_Id = @UNIT or  p32.ParCompany_Id is null)
+                          and (p321.ParCompany_Id = @UNIT or p321.ParCompany_Id is null)
+                        order by p32.ParCompany_Id, p321.ParCompany_Id
+                        
+                        INSERT INTO Result_Level3 ([CollectionLevel2_Id],
                          [ParLevel3_Id],
                          [ParLevel3_Name],
                          [Weight],
@@ -3198,7 +3126,10 @@ namespace SgqService.Controllers.Api
                            @_WeiEvaluation,
                            @WeiDefects)
 
-                           SELECT @@IDENTITY AS 'Identity'";
+                           SELECT @@IDENTITY AS 'Identity'
+                           
+                           if @GRUPO > 0 begin INSERT INTO Result_Level3XGroup VALUES (@@IDENTITY, @GRUPO, GETDATE(), NULL, 1) end
+                           ";
 
                 }
                 else
@@ -3213,7 +3144,7 @@ namespace SgqService.Controllers.Api
                             WeiDefects=@WeiDefects,
                             ValueText=@ValueText
                             WHERE Id=@Id
-                            SELECT @Id AS 'Identity'";
+                            SELECT @Id AS 'Identity' ";
                 }
 
 
@@ -3268,16 +3199,6 @@ namespace SgqService.Controllers.Api
 
                             cmd.ExecuteScalar();
 
-                            //Se o script foi executado, retorna o Id
-                            //if (salvo > 0)
-                            //{
-                            //    //return salvo;
-                            //}
-                            //else
-                            //{
-                            //    //Caso ocorra algum erro, retorna zero
-                            //    //return 0;
-                            //}
                         }
                     }
                 }
@@ -3441,6 +3362,10 @@ namespace SgqService.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+                        DescriptionFailure = DescriptionFailure == null ? DescriptionFailure = "" : DescriptionFailure;
+                        ImmediateCorrectiveAction = ImmediateCorrectiveAction == null ? ImmediateCorrectiveAction = "" : ImmediateCorrectiveAction;
+                        ProductDisposition = ProductDisposition == null ? ProductDisposition = "" : ProductDisposition;
+                        PreventativeMeasure = PreventativeMeasure == null ? PreventativeMeasure = "" : PreventativeMeasure;
 
                         command.CommandType = CommandType.Text;
                         command.Parameters.Add(new SqlParameter("@AuditorId", AuditorId));
@@ -3995,7 +3920,7 @@ namespace SgqService.Controllers.Api
             //var version = "2.0.47";
             string forcaAtualizacao = "";
 
-            string appVersion = System.Configuration.ConfigurationManager.AppSettings["appVersion"];
+            string appVersion = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.appVersion;
 
             if (!version.Contains(appVersion))
                 forcaAtualizacao = @"<script>
@@ -4155,14 +4080,11 @@ namespace SgqService.Controllers.Api
 
             System.Reflection.Assembly assembly = this.GetType().Assembly;
 
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-
-            var resourceSet = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false);
+            var resourceManager = (IDictionary<string, object>)Resources.Resource;
 
             string items = "";
 
-            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            foreach (var entry in resourceManager)
             {
                 items += "<div res='" + entry.Key.ToString() + "'>" + entry.Value.ToString() + "</div>";
             }
@@ -4180,7 +4102,9 @@ namespace SgqService.Controllers.Api
             int parlevel2_id = lista.Length > 1 ? Int32.Parse(lista[1]) : Int32.Parse(lista[0]);
 
             ParLevel2Evaluate evaluate = new ParLevel2Evaluate() { Evaluate = 0 };
+
             var evaluateConf = ParEvaluateCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
+
             if (evaluateConf != null)
             {
                 evaluate = evaluateConf;
@@ -4188,41 +4112,84 @@ namespace SgqService.Controllers.Api
             else
             {
                 evaluateConf = ParEvaluatePadrao.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
+
                 if (evaluateConf != null)
                 {
                     evaluate = evaluateConf;
                 }
             }
+
             return evaluate;
+        }
+
+        protected int getParFrequency_Id(SGQDBContext.ParLevel1 parlevel1, SGQDBContext.ParLevel2 parlevel2)
+        {
+            int parfrenquency_Id = 0;
+
+            string sql = $@"            
+            SELECT
+            	CASE
+            		WHEN FPE.ParFrequency_Id IS NULL THEN FPL2.ParFrequency_Id
+            		ELSE FPE.ParFrequency_Id
+            	END as ParFrequency_Id
+            FROM (SELECT
+            			 ParFrequency_Id
+            		 FROM ParEvaluation
+            		 WHERE 1 = 1
+            		 AND ParLevel1_Id = @ParLevel1_Id
+            		 AND ParLevel2_Id = @ParLevel2_Id
+            		 AND ParCluster_Id = @ParCluster_Id
+            		 AND IsActive = 1) AS FPE
+            	,(SELECT
+            			 ParFrequency_Id
+            		 FROM ParLevel2
+            		 WHERE 1 = 1
+            		 AND Id = @ParLevel2_Id
+            		 AND IsActive = 1) AS FPL2";
+
+            string conexao = this.conexao;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@ParLevel1_Id", parlevel1.ParLevel1_Id));
+                        command.Parameters.Add(new SqlParameter("@ParLevel2_Id", parlevel2.ParLevel2_id));
+                        command.Parameters.Add(new SqlParameter("@ParCluster_Id", parlevel1.ParCluster_Id));
+
+
+                        connection.Open();
+                        using (SqlDataReader r = command.ExecuteReader())
+                        {
+                            if (r.Read())
+                            {
+                                parfrenquency_Id = Convert.ToInt32(r[0]);
+                            }
+                        }
+                    }
+
+                    if (connection.State == System.Data.ConnectionState.Open)
+                        connection.Close();
+                }
+            }
+
+            catch (Exception)
+            {
+
+                return parfrenquency_Id;
+            }
+
+            return parfrenquency_Id;
         }
 
         protected int getMaxEvaluateLevel1(SGQDBContext.ParLevel1 parlevel1, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany)
         {
             int evaluate = 0;
 
-            //string sql = "" +
-            //    "\n DECLARE @ParCompany_id int = 16 " +
-            //    "\n DECLARE @ParLevel1_id int =  " + parlevel1.ParLevel1_Id +
-            //    "\n DECLARE @ParCluster_id int = " + parlevel1.ParCluster_Id +
-
-            //    "\n SELECT max(Number) as av FROM ParEvaluation EV (nolock)  " +
-            //    "\n WHERE ParLevel2_id in ( " +
-            //        "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 (nolock)  " +
-
-            //        "\n inner join ParLevel3Level2 P32 (nolock)  " +
-
-            //        "\n on p32.id = p321.ParLevel3Level2_Id " +
-
-            //        "\n where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 " +
-            //        "\n and Ev.ParCluster_Id = @ParCluster_Id " +
-            //        "\n group by p32.ParLevel2_Id " +
-            //    "\n ) " +
-            //    "\n and ev.IsActive = 1 " +
-            //    "\n and(ev.ParCompany_Id is null) ";
-
-
             string sql = $@"
-                DECLARE @ParCompany_id int = 16 
                 DECLARE @ParLevel1_id int =  @ParLevel1_Id
                 DECLARE @ParCluster_id int = @ParCluster_Id 
                 SELECT max(Number) as av FROM ParEvaluation EV (nolock) 
@@ -4244,6 +4211,7 @@ namespace SgqService.Controllers.Api
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+
 
                         command.CommandType = CommandType.Text;
                         command.Parameters.Add(new SqlParameter("@ParLevel1_Id", parlevel1.ParLevel1_Id));
@@ -4310,23 +4278,21 @@ namespace SgqService.Controllers.Api
                 using (var conexaoEF = new SgqDbDevEntities())
                 {
 
-                    var parFrequency_Id = conexaoEF.ParLevel2.Find(parLevel2_Id).ParFrequency_Id;
-
-                    var list = conexaoEF.ParEvaluationSchedule
-                        .Where(x => (x.ParEvaluation.ParLevel1_Id == parLevel1_Id || x.ParEvaluation.ParLevel1_Id == null)
-                        && x.ParEvaluation.ParLevel2_Id == parLevel2_Id
-                        && (x.ParEvaluation.ParCompany_Id == company_Id || x.ParEvaluation.ParCompany_Id == null)
-                        && (x.Shift_Id == shift_Id || x.Shift_Id == null)
-                        && x.ParEvaluation.ParCluster_Id == cluster_id
-                        && x.ParEvaluation.IsActive
+                    var parEvaluation = conexaoEF.ParEvaluation.Where(x => (x.ParLevel1_Id == parLevel1_Id || x.ParLevel1_Id == null)
+                        && (x.ParCompany_Id == company_Id || x.ParCompany_Id == null)
+                        && x.ParLevel2_Id == parLevel2_Id
+                        && x.ParCluster_Id == cluster_id
                         && x.IsActive)
-                        .OrderByDescending(x => new { x.ParEvaluation.ParCompany_Id, x.ParEvaluation.ParLevel1_Id, x.Shift_Id }).ToList();
+                        .OrderByDescending(x => new { x.ParCompany_Id, x.ParLevel1_Id })
+                        .FirstOrDefault();
+
+                    var list = conexaoEF.ParEvaluationSchedule.Where(x => x.ParEvaluation_Id == parEvaluation.Id && x.IsActive).ToList();
 
                     foreach (var item in list)
                     {
                         if (item.ParEvaluation.ParCompany_Id == list[0].ParEvaluation.ParCompany_Id)
                         {
-                            if (parFrequency_Id != 10)
+                            if (parEvaluation.ParFrequency_Id != 10)
                             {
                                 frequencia.Add($"{item.Av}-{item.Inicio}-{item.Fim}");
                             }
@@ -5520,9 +5486,13 @@ namespace SgqService.Controllers.Api
             {
                 string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
+
+                var parlevel2ParFrequency = getParFrequency_Id(ParLevel1, parlevel2);
+
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
                     var parlevel2Evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
+
 
                     if (isVolume)
                     {
@@ -5543,6 +5513,7 @@ namespace SgqService.Controllers.Api
                     evaluate = parlevel2Evaluate.Evaluate;
                     sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
                     //defect = getCollectionLevel2Keys(ParCompany_Id,data, ParLevel1);
+
                 }
 
 
@@ -5693,7 +5664,7 @@ namespace SgqService.Controllers.Api
                                                 outerhtml: level02Header
                                                );
 
-                var parNCRuleDB = ParNCRuleDB.getParNCRule(parlevel2.ParNotConformityRule_id, parlevel2.ParLevel2_id);
+                var parNCRuleDB = ParNCRuleDB.getParNCRule(parlevel2.ParNotConformityRule_id, parlevel2.ParLevel2_id, ParLevel1.Id);
                 decimal ruleValue = 0;
 
                 if (parNCRuleDB != null)
@@ -5708,7 +5679,7 @@ namespace SgqService.Controllers.Api
                                             evaluate: evaluate,
                                             sample: sample,
                                             HasSampleTotal: parlevel2.HasSampleTotal,
-                                            ParFrequency_Id: parlevel2.ParFrequency_Id,
+                                            ParFrequency_Id: parlevel2ParFrequency, // parlevel2.ParFrequency_Id,
                                             IsEmptyLevel3: parlevel2.IsEmptyLevel3,
                                             RuleId: parlevel2.ParNotConformityRule_id,
                                             RuleValue: ruleValue.ToString(),
@@ -7103,7 +7074,7 @@ namespace SgqService.Controllers.Api
             }//Escala Likert
             else if (parLevel3.ParLevel3InputType_Id == 8)
             {
-                var ranges = dbEf.ParInputTypeValues.Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id).ToList();
+                var ranges = dbEf.ParInputTypeValues.Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id && r.IsActive && (r.Intervalo <= parLevel3.IntervalMax && r.Intervalo >= parLevel3.IntervalMin)).ToList();
 
                 var paramns = new List<string>();
 
@@ -7225,7 +7196,7 @@ namespace SgqService.Controllers.Api
         public string GetLoginAPP()
         {
             var html = new Html();
-            string head = html.div(classe: "head");
+            string head = html.div(classe: "head", style: "background-image: url(" + DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogo + ");");
 
             //Verifica as configurações iniciais da tela
             var ParConfSGQDB = new SGQDBContext.ParConfSGQContext(db);
@@ -7364,7 +7335,7 @@ namespace SgqService.Controllers.Api
 
             string foot = html.div(
                                     outerhtml: footOuterHtml
-                                    , classe: "foot", style: "text-align:center");
+                                    , classe: "foot", style: "text-align:center;background-image: url(" + DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogoFooter + ");");
 
             #endregion
 
@@ -7462,8 +7433,8 @@ namespace SgqService.Controllers.Api
                 string[] deviation = arrayDeviations[i].Split(';');
 
                 string ParCompany_Id = deviation[0];
-                string ParLevel1_Id = deviation[1];
-                string ParLevel2_Id = deviation[2];
+                string ParLevel1_Id = deviation[1].Contains(quebraProcesso) ? deviation[1].Replace(quebraProcesso, "|").Split('|')[1] : deviation[1];
+                string ParLevel2_Id = deviation[2].Contains(quebraProcesso) ? deviation[2].Replace(quebraProcesso, "|").Split('|')[1] : deviation[2];
                 string Evaluation = deviation[3] == "" ? "0" : deviation[3];
 
                 if (Evaluation == "undefined")
@@ -7537,7 +7508,6 @@ namespace SgqService.Controllers.Api
                     sql.Add(cmd);
                 }
 
-                //TODO: fazer uma variavel para depois o sql ant-injection antes de atribuir para sql, 
             }
 
             try
@@ -7878,6 +7848,8 @@ namespace SgqService.Controllers.Api
                     string dataInicio = null;
                     string dataFim = null;
 
+                    data = data.Trim();
+
                     if (!data.Contains("/"))
                     {
                         string dia = data.Substring(2, 2);
@@ -7886,6 +7858,7 @@ namespace SgqService.Controllers.Api
 
                         data = ano + "/" + mes + "/" + dia;
                     }
+
                     DateTime dataAPP = Convert.ToDateTime(data);
 
                     //Pega a data pela regra da frequencia
@@ -8709,6 +8682,13 @@ namespace SgqService.Controllers.Api
                     return retorno;
                 }
             }
+        }
+
+        [HttpGet]
+        [Route("GetResource/{language}")]
+        public IEnumerable<DictionaryEntry> GetResource(string language)
+        {
+            return Resources.Resource;
         }
     }
 }

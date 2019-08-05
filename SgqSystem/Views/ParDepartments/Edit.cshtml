@@ -1,7 +1,9 @@
 ﻿@model Dominio.ParDepartment
 
 @{
-    ViewBag.Title = @Resources.Resource.departments;
+                /**/
+
+                ViewBag.Title = Resources.Resource.costcenter;
 }
 
 <div class="page-content-wrapper">
@@ -14,7 +16,7 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParDepartments")">@Resources.Resource.departments</a>
+                    <a href="@Url.Action("Index", "ParDepartments")">@Resources.Resource.costcenter</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -37,7 +39,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.edit @Resources.Resource.department</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.edit @Resources.Resource.costcenter</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -53,33 +55,67 @@
                                         @Html.HiddenFor(model => model.Id)
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Name, @Resources.Resource.department, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            @Html.LabelFor(model => model.Name, @Resources.Resource.name as string, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
                                                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Description, @Resources.Resource.description, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            @Html.LabelFor(model => model.Description, @Resources.Resource.description as string, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
                                                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Parent_Id, @Resources.Resource.linked, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.Parent_Id, null, new { htmlAttributes = new { @class = "form-control select2" } })
-                                                @Html.ValidationMessageFor(model => model.Parent_Id, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.Parent_Id, Resources.Resource.son_of as string, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
+                                                <button id="btnBuscarDepartamentos" type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=Parent_Id]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParDepartment", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+
+                                                <select class="form-control" name="Parent_Id" id="Parent_Id" value="@ViewBag.Parents[0].Value">
+                                                    <option value="@ViewBag.Parents[0].Key" selected="selected">@ViewBag.Parents[0].Value</option>
+
+                                                </select>
+
+                                                <div id="infoFilho" class="col-md-10" hidden="hidden" style="padding-left:0px;">
+                                                    <p class="alert alert-info col-md-10">Ao vincular uma Seção a um Centro de Custo, este campo ficará desabilitado, pois seguirá a hierarquia do cadastro</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.ParCompany_Id, Resources.Resource.company as string + " " + Resources.Resource.linked1 as string, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
+                                                @Html.DropDownListFor(model => model.ParCompany_Id, null, new { @class = "form-control  select2" })
+                                                @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
+                                                <div id="infoVinculoUnidade" class="col-md-10" hidden="hidden" style="padding-left:0px;">
+                                                    <p class="alert alert-info col-md-10"> Ao vincular uma Seção a um Centro de Custo, este campo ficará desabilitado, pois seguirá a hierarquia do cadastro. </p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.ParDepartmentGroup_Id, Resources.Resource.group as string + " " + Resources.Resource.of as string + " " + Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
+                                                @Html.DropDownListFor(model => model.ParDepartmentGroup_Id, null, new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(model => model.ParDepartmentGroup_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
                                         @if ((bool?)ViewBag.TemFilhos != true)
                                         {
                                             <div class="form-group">
-                                                @Html.LabelFor(model => model.Active, @Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                @Html.LabelFor(model => model.Active, @Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-4" })
                                                 <div class="col-md-1">
                                                     <div class="checkbox">
                                                         @Html.EditorFor(model => model.Active, new { htmlAttributes = new { @class = "input-sm" } })
@@ -90,17 +126,16 @@
                                         }
 
                                         <div class="form-group">
-                                            <div class="col-md-offset-2 col-md-10">
+                                            <div class="col-md-offset-3 col-md-9">
                                                 <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
-                                                @Html.ActionLink(@Resources.Resource.back_to_departments, "Index", null, new { @class = "btn btn-default" })
+                                                @Html.ActionLink(Resources.Resource.back as string, "Index", null, new { @class = "btn btn-default" })
+                                                @Html.ActionLink("Voltar para detalhes Grupo de Departamentos", "Details", "ParDepartmentGroups", new { id = Model.ParDepartmentGroup_Id }, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>
                                 }
 
-
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -109,18 +144,60 @@
     </div>
     <!-- END CONTENT BODY -->
 </div>
-
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<script src="~/Scripts/Select3/select3.js"></script>
+<style>
+    .ui-autocomplete {
+        max-height: 100px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+    }
+    /* IE 6 doesn't support max-height
+    * we use height instead, but this forces the menu to always be this tall
+    */
+    * html .ui-autocomplete {
+        height: 100px;
+    }
+</style>
 <script>
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar4");
-    $('#Parent_Id').select2();
+    $('select').select2();
 
-</script>
+    $("#ParCompany_Id").on('change', function () {
+        validaFilhoEEmpresaVinculados();
+    });
 
-<script>
+    Select3.callback = function () {
+        validaFilhoEEmpresaVinculados();
+    };
+
+    function validaFilhoEEmpresaVinculados() {
+        if ($("#ParCompany_Id :selected").val() == 0 && $("#Parent_Id").val() == 0) {
+            $("#ParCompany_Id").prop('disabled', false);
+            $("#Parent").prop('disabled', false);
+            $("#infoFilho").hide();
+            $("#infoVinculoUnidade").hide();
+        } else if ($("#Parent_Id").val() > 0) {
+            $("#ParCompany_Id").prop('disabled', true);
+            $("#Parent").prop('disabled', false);
+            $("#infoFilho").hide();
+            $("#infoVinculoUnidade").show();
+        } else {
+            $("#Parent").prop('disabled', true);
+            $("#ParCompany_Id").prop('disabled', false);
+            $("#infoFilho").show();
+            $("#infoVinculoUnidade").hide();
+        }
+    }
+
     $(document).ready(function () {
         closeLeftSidebar();
     });
+
 </script>

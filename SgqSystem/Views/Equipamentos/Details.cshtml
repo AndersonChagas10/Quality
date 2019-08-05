@@ -1,12 +1,12 @@
 ﻿@model QualidadeTotal.Models.Equipamentos
 
 @{
-    ViewBag.Title = Resources.Detalhes;
+    ViewBag.Title = Resources.Resource.Detalhes;
 }
 
 <ul class="breadcrumb">
     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-    <li>@Html.ActionLink(Resources.Parametros, "Parametros", "Home")</li>
+    <li>@Html.ActionLink(Resources.Resource.Parametros as string, "Parametros", "Home")</li>
     <li>@Html.ActionLink(Model.Nome, "Index", "ParEquipamentos")</li>
     <li class="active">@ViewBag.Title</li>
 </ul>
@@ -14,11 +14,11 @@
 <h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>@Resources.Equipamentos</h4>
+    <h4>@Resources.Resource.Equipamentos</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayName(Resources.Nome)
+            @Html.DisplayName(Resources.Resource.Nome as string)
         </dt>
 
         <dd>
@@ -26,7 +26,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayName(Resources.Tipo)
+            @Html.DisplayName(Resources.Resource.Tipo as string)
         </dt>
 
         <dd>
@@ -34,7 +34,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayName(Resources.Subtipo)
+            @Html.DisplayName(Resources.Resource.Subtipo as string)
         </dt>
 
         <dd>
@@ -42,7 +42,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayName(Resources.Unidade)
+            @Html.DisplayName(Resources.Resource.Unidade as string)
         </dt>
 
         <dd>
@@ -52,8 +52,8 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink(Resources.Editar, "Edit", new { id = Model.Id }) |
-    @Html.ActionLink(Resources.Voltar, "Index")
+    @Html.ActionLink(Resources.Resource.Editar as string, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(Resources.Resource.Voltar as string, "Index")
 </p>
 
 <script>

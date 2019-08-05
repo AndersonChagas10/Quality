@@ -17,8 +17,8 @@ namespace SgqSystem.Controllers
         // GET: ParVinculoPeso
         public ActionResult Index()
         {
-            var parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Include(p => p.ParLevel1).Include(p => p.ParLevel3);
-            return View(parGroupParLevel1XParLevel3.ToList());
+            var ParVinculoPeso = db.ParVinculoPeso.Include(p => p.ParLevel1).Include(p => p.ParLevel3);
+            return View(ParVinculoPeso.ToList());
         }
 
         // GET: ParVinculoPeso/Details/5
@@ -28,12 +28,12 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParVinculoPeso parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
-            if (parGroupParLevel1XParLevel3 == null)
+            ParVinculoPeso ParVinculoPeso = db.ParVinculoPeso.Find(id);
+            if (ParVinculoPeso == null)
             {
                 return HttpNotFound();
             }
-            return View(parGroupParLevel1XParLevel3);
+            return View(ParVinculoPeso);
         }
 
         // GET: ParVinculoPeso/Create
@@ -75,12 +75,12 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,IsActive,ParGroupParLevel1_Id")] ParVinculoPeso parGroupParLevel1XParLevel3)
+        public ActionResult Create([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,IsActive,EffectiveDateStart,EffectiveDateEnd,ParGroupParLevel1_Id")] ParVinculoPeso ParVinculoPeso)
         {
-            ValidaGrupoIndicadorXTarefa(parGroupParLevel1XParLevel3);
+            ValidaGrupoIndicadorXTarefa(ParVinculoPeso);
             if (ModelState.IsValid)
             {
-                db.ParGroupParLevel1XParLevel3.Add(parGroupParLevel1XParLevel3);
+                db.ParVinculoPeso.Add(ParVinculoPeso);
                 db.SaveChanges();
                 return RedirectToAction("Index"); 
             }
@@ -113,49 +113,52 @@ namespace SgqSystem.Controllers
             listaGrupoIndicadores.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
             ViewBag.ParGroupParLevel1_Id = new SelectList(listaGrupoIndicadores, "Id", "Name", -1);
 
-            return View(parGroupParLevel1XParLevel3);
+            return View(ParVinculoPeso);
         }
 
-        private void ValidaGrupoIndicadorXTarefa(ParVinculoPeso parGroupParLevel1XParLevel3)
+        private void ValidaGrupoIndicadorXTarefa(ParVinculoPeso ParVinculoPeso)
         {
             var existe = true;
 
-            existe = db.ParGroupParLevel1XParLevel3
+            existe = db.ParVinculoPeso
                .Any(
-               x => ((x.ParCompany_Id == parGroupParLevel1XParLevel3.ParCompany_Id &&
-               x.ParDepartment_Id == parGroupParLevel1XParLevel3.ParDepartment_Id &&
-               x.ParGroupParLevel1_Id == parGroupParLevel1XParLevel3.ParGroupParLevel1_Id &&
-               x.ParLevel1_Id == parGroupParLevel1XParLevel3.ParLevel1_Id &&
-               x.ParLevel2_Id == parGroupParLevel1XParLevel3.ParLevel2_Id &&
-               x.ParLevel3_Id == parGroupParLevel1XParLevel3.ParLevel3_Id) ||
-               x.Name == parGroupParLevel1XParLevel3.Name) && x.Id != parGroupParLevel1XParLevel3.Id);
+               x => ((x.ParCompany_Id == ParVinculoPeso.ParCompany_Id &&
+               x.ParDepartment_Id == ParVinculoPeso.ParDepartment_Id &&
+               x.ParGroupParLevel1_Id == ParVinculoPeso.ParGroupParLevel1_Id &&
+               x.ParLevel1_Id == ParVinculoPeso.ParLevel1_Id &&
+               x.ParLevel2_Id == ParVinculoPeso.ParLevel2_Id &&
+               x.ParLevel3_Id == ParVinculoPeso.ParLevel3_Id) ||
+               x.Name == ParVinculoPeso.Name) && x.Id != ParVinculoPeso.Id);
 
 
             if (!existe)
             {
-                if (parGroupParLevel1XParLevel3.Peso == 0 || parGroupParLevel1XParLevel3.Peso == null)
+                if (ParVinculoPeso.Peso == 0 || ParVinculoPeso.Peso == null)
                     ModelState.AddModelError("Peso", Resources.Resource.required_field + " " + Resources.Resource.weight);
 
-                if (parGroupParLevel1XParLevel3.Name == "" || parGroupParLevel1XParLevel3.Name == null)
+                if (ParVinculoPeso.Name == "" || ParVinculoPeso.Name == null)
                     ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
 
-                if (parGroupParLevel1XParLevel3.ParDepartment_Id <= 0)
+                if (ParVinculoPeso.ParDepartment_Id <= 0)
                     ModelState.AddModelError("ParDepartment_Id", Resources.Resource.required_field + " " + Resources.Resource.department);
 
-                if (parGroupParLevel1XParLevel3.ParCompany_Id <= 0)
+                if (ParVinculoPeso.ParCompany_Id <= 0)
                     ModelState.AddModelError("ParCompany_Id", Resources.Resource.required_field + " " + Resources.Resource.unit);
 
-                if (parGroupParLevel1XParLevel3.ParLevel3_Id <= 0)
+                if (ParVinculoPeso.ParLevel3_Id <= 0)
                     ModelState.AddModelError("ParLevel3_Id", Resources.Resource.required_field + " " + Resources.Resource.task);
 
-                if (parGroupParLevel1XParLevel3.ParLevel2_Id <= 0)
+                if (ParVinculoPeso.ParLevel2_Id <= 0)
                     ModelState.AddModelError("ParLevel2_Id", Resources.Resource.required_field + " " + Resources.Resource.monitoring);
 
-                if (parGroupParLevel1XParLevel3.ParLevel1_Id <= 0)
+                if (ParVinculoPeso.ParLevel1_Id <= 0)
                     ModelState.AddModelError("ParLevel1_Id", Resources.Resource.required_field + " " + "Indicador");
 
-                if (parGroupParLevel1XParLevel3.ParGroupParLevel1_Id <= 0)
+                if (ParVinculoPeso.ParGroupParLevel1_Id <= 0)
                     ModelState.AddModelError("ParGroupParLevel1_Id", Resources.Resource.required_field + " " + "Grupo Indicadores");
+
+                if(ParVinculoPeso.EffectiveDateStart > ParVinculoPeso.EffectiveDateEnd)
+                    ModelState.AddModelError("EffectiveDateStart", "O campo Data Efetiva de Início não pode ser maior que a Data de Término!");
             }
             else
             {
@@ -163,15 +166,15 @@ namespace SgqSystem.Controllers
             }
         }
 
-        // GET: ParGroupParLevel1XParLevel3/Edit/5
+        // GET: ParVinculoPeso/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParVinculoPeso parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
-            if (parGroupParLevel1XParLevel3 == null)
+            ParVinculoPeso ParVinculoPeso = db.ParVinculoPeso.Find(id);
+            if (ParVinculoPeso == null)
             {
                 return HttpNotFound();
             }
@@ -181,29 +184,29 @@ namespace SgqSystem.Controllers
 
             var listaIndicador = db.ParLevel1.Where(x => x.IsActive).ToList();
             listaIndicador.Add(new ParLevel1() { Id = -1, Name = "Selecione" });
-            ViewBag.ParLevel1_Id = new SelectList(listaIndicador, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel1_Id);
+            ViewBag.ParLevel1_Id = new SelectList(listaIndicador, "Id", "Name", ParVinculoPeso.ParLevel1_Id);
 
             var listaTarefa = db.ParLevel3.Where(x => x.IsActive).ToList();
             listaTarefa.Add(new ParLevel3() { Id = -1, Name = "Selecione" });
-            ViewBag.ParLevel3_Id = new SelectList(listaTarefa, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel3_Id);
+            ViewBag.ParLevel3_Id = new SelectList(listaTarefa, "Id", "Name", ParVinculoPeso.ParLevel3_Id);
 
             var listaMonitoramento = db.ParLevel2.Where(x => x.IsActive).ToList();
             listaMonitoramento.Add(new ParLevel2() { Id = -1, Name = "Selecione" });
-            ViewBag.ParLevel2_Id = new SelectList(listaMonitoramento, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel2_Id);
+            ViewBag.ParLevel2_Id = new SelectList(listaMonitoramento, "Id", "Name", ParVinculoPeso.ParLevel2_Id);
 
             var listaEmpresa = db.ParCompany.Where(x => x.IsActive).ToList();
             listaEmpresa.Add(new ParCompany() { Id = -1, Name = "Selecione" });
-            ViewBag.ParCompany_Id = new SelectList(listaEmpresa, "Id", "Name", parGroupParLevel1XParLevel3.ParCompany_Id);
+            ViewBag.ParCompany_Id = new SelectList(listaEmpresa, "Id", "Name", ParVinculoPeso.ParCompany_Id);
 
             var listaDepartamento = db.ParDepartment.Where(x => x.Active).ToList();
             listaDepartamento.Add(new ParDepartment() { Id = -1, Name = "Selecione" });
-            ViewBag.ParDepartment_Id = new SelectList(listaDepartamento, "Id", "Name", parGroupParLevel1XParLevel3.ParDepartment_Id);
+            ViewBag.ParDepartment_Id = new SelectList(listaDepartamento, "Id", "Name", ParVinculoPeso.ParDepartment_Id);
 
             var listaGrupoIndicadores = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
             listaGrupoIndicadores.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
-            ViewBag.ParGroupParLevel1_Id = new SelectList(listaGrupoIndicadores, "Id", "Name", parGroupParLevel1XParLevel3.ParGroupParLevel1_Id);
+            ViewBag.ParGroupParLevel1_Id = new SelectList(listaGrupoIndicadores, "Id", "Name", ParVinculoPeso.ParGroupParLevel1_Id);
 
-            return View(parGroupParLevel1XParLevel3);
+            return View(ParVinculoPeso);
         }
 
         // POST: ParVinculoPeso/Edit/5
@@ -211,12 +214,12 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,IsActive,ParGroupParLevel1_Id")] ParVinculoPeso parGroupParLevel1XParLevel3)
+        public ActionResult Edit([Bind(Include = "Id,Name,ParGroupParLevel1Type_Id,ParLevel3_Id,ParLevel1_Id,ParDepartment_Id,ParLevel2_Id,ParCompany_Id,Peso,EffectiveDateStart,EffectiveDateEnd,IsActive,ParGroupParLevel1_Id")] ParVinculoPeso ParVinculoPeso)
         {
-            ValidaGrupoIndicadorXTarefa(parGroupParLevel1XParLevel3);
+            ValidaGrupoIndicadorXTarefa(ParVinculoPeso);
             if (ModelState.IsValid)
             {
-                db.Entry(parGroupParLevel1XParLevel3).State = EntityState.Modified;
+                db.Entry(ParVinculoPeso).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -226,28 +229,28 @@ namespace SgqSystem.Controllers
 
             var listaIndicador = db.ParLevel1.Where(x => x.IsActive).ToList();
             listaIndicador.Add(new ParLevel1() { Id = -1, Name = "Selecione" });
-            ViewBag.ParLevel1_Id = new SelectList(listaIndicador, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel1_Id);
+            ViewBag.ParLevel1_Id = new SelectList(listaIndicador, "Id", "Name", ParVinculoPeso.ParLevel1_Id);
 
             var listaTarefa = db.ParLevel3.Where(x => x.IsActive).ToList();
             listaTarefa.Add(new ParLevel3() { Id = -1, Name = "Selecione" });
-            ViewBag.ParLevel3_Id = new SelectList(listaTarefa, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel3_Id);
+            ViewBag.ParLevel3_Id = new SelectList(listaTarefa, "Id", "Name", ParVinculoPeso.ParLevel3_Id);
 
             var listaMonitoramento = db.ParLevel2.Where(x => x.IsActive).ToList();
             listaMonitoramento.Add(new ParLevel2() { Id = -1, Name = "Selecione" });
-            ViewBag.ParLevel2_Id = new SelectList(listaMonitoramento, "Id", "Name", parGroupParLevel1XParLevel3.ParLevel2_Id);
+            ViewBag.ParLevel2_Id = new SelectList(listaMonitoramento, "Id", "Name", ParVinculoPeso.ParLevel2_Id);
 
             var listaEmpresa = db.ParCompany.Where(x => x.IsActive).ToList();
             listaEmpresa.Add(new ParCompany() { Id = -1, Name = "Selecione" });
-            ViewBag.ParCompany_Id = new SelectList(listaEmpresa, "Id", "Name", parGroupParLevel1XParLevel3.ParCompany_Id);
+            ViewBag.ParCompany_Id = new SelectList(listaEmpresa, "Id", "Name", ParVinculoPeso.ParCompany_Id);
 
             var listaDepartamento = db.ParDepartment.Where(x => x.Active).ToList();
             listaDepartamento.Add(new ParDepartment() { Id = -1, Name = "Selecione" });
-            ViewBag.ParDepartment_Id = new SelectList(listaDepartamento, "Id", "Name", parGroupParLevel1XParLevel3.ParDepartment_Id);
+            ViewBag.ParDepartment_Id = new SelectList(listaDepartamento, "Id", "Name", ParVinculoPeso.ParDepartment_Id);
 
             var listaGrupoIndicadores = db.ParGroupParLevel1.Where(x => x.IsActive).ToList();
             listaGrupoIndicadores.Add(new ParGroupParLevel1() { Id = -1, Name = "Selecione" });
-            ViewBag.ParGroupParLevel1_Id = new SelectList(listaGrupoIndicadores, "Id", "Name", parGroupParLevel1XParLevel3.ParGroupParLevel1_Id);
-            return View(parGroupParLevel1XParLevel3);
+            ViewBag.ParGroupParLevel1_Id = new SelectList(listaGrupoIndicadores, "Id", "Name", ParVinculoPeso.ParGroupParLevel1_Id);
+            return View(ParVinculoPeso);
         }
 
         // GET: ParVinculoPeso/Delete/5
@@ -257,12 +260,12 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParVinculoPeso parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
-            if (parGroupParLevel1XParLevel3 == null)
+            ParVinculoPeso ParVinculoPeso = db.ParVinculoPeso.Find(id);
+            if (ParVinculoPeso == null)
             {
                 return HttpNotFound();
             }
-            return View(parGroupParLevel1XParLevel3);
+            return View(ParVinculoPeso);
         }
 
         // POST: ParVinculoPeso/Delete/5
@@ -270,8 +273,8 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ParVinculoPeso parGroupParLevel1XParLevel3 = db.ParGroupParLevel1XParLevel3.Find(id);
-            db.ParGroupParLevel1XParLevel3.Remove(parGroupParLevel1XParLevel3);
+            ParVinculoPeso ParVinculoPeso = db.ParVinculoPeso.Find(id);
+            db.ParVinculoPeso.Remove(ParVinculoPeso);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

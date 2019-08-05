@@ -58,6 +58,8 @@ namespace Dominio
         [StringLength(155)]
         public string DBServer { get; set; }
 
+        public string Identification { get; set; }
+
         public decimal? IntegrationId { get; set; }
 
         public int? ParCompany_Id { get; set; }

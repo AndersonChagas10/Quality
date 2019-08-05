@@ -35,7 +35,7 @@
                                @class = "form-control input-sm",
                                @id = "parCompanySelectParLevel3XDepartment"
                            })
-                                , @Html.Label(Resources.Resource.company)
+                                , @Html.Label(Resources.Resource.company as string)
                                 , Table.PosicaoLabel.top, colspan: 1)
                         </tr>
                     </tbody>
@@ -83,7 +83,7 @@
                        Model.paramsDdl.DdlParDepartment,
                        htmlAttributes: new { @class = "form-control input-sm",
                            @id = "parDepartmentSelectParLevel3XDepartment" }),
-                       @Html.Label(Resources.Resource.department), Table.PosicaoLabel.top
+                       @Html.Label(Resources.Resource.department as string), Table.PosicaoLabel.top
                                             , button: "<button type='button' id='btnSaveparLevel3Department' onclick='ParLevel3XDepartment.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
                     </tr>
                 </table>

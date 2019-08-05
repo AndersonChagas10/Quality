@@ -748,8 +748,8 @@ namespace SgqService.Services
 
             StringBuilder tags = new StringBuilder("parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\" editlevel2=\"" + ParLevel1.EditLevel2.ToString().ToLower() + "\" hastakephoto=\"" + ParLevel1.HasTakePhoto.ToString().ToLower() + "\" ParCluster_Id=\"" + ParCluster_Id + "\"");
 
-            string btnReaudit = button(Resources.Resource.reaudit, type.submit, "", classe: "btn-primary pull-right btnReaudit btn-sm hide", style: "margin-left: 4px;");
-            string btnCA = button(Resources.Resource.corrective_action, type.submit, "", classe: "btn-danger pull-right btnCALevel1 btn-sm hide");
+            string btnReaudit = button(Resources.Resource.reaudit as string, type.submit, "", classe: "btn-primary pull-right btnReaudit btn-sm hide", style: "margin-left: 4px;");
+            string btnCA = button(Resources.Resource.corrective_action as string, type.submit, "", classe: "btn-danger pull-right btnCALevel1 btn-sm hide");
 
             if (listParRelapse.Count() > 0)
             {
@@ -825,21 +825,12 @@ namespace SgqService.Services
 
         public DictionaryEntry getResource(string value)
         {
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+            var resourceManager = (IDictionary<string, object>)Resources.Resource;
 
-            if (resourceManager == null) //se portugues
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-            }
-
-            var list = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
-
-            foreach (var r in list)
+            foreach (var r in resourceManager)
             {
                 if (r.Key.ToString() == value)
-                    return r;
+                    return new DictionaryEntry() { Key = r.Key, Value = r.Value };
             }
 
             return new DictionaryEntry();

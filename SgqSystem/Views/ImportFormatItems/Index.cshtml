@@ -13,15 +13,15 @@
             <div class="tab-pane active" id="setup_tab">
 
                 <p>
-                    @Html.ActionLink(Resources.Resource.create, "Create", "ImportFormatItems", new { id = Model.Id }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink(Resources.Resource.create as string, "Create", "ImportFormatItems", new { id = Model.Id }, new { @class = "btn btn-primary" })
                 </p>
                 <table class="table">
                     <tr>
                         <th>
-                            @Html.DisplayName(Resources.Resource.key)
+                            @Html.DisplayName(Resources.Resource.key as string)
                         </th>
                         <th>
-                            @Html.DisplayName(Resources.Resource.value)
+                            @Html.DisplayName(Resources.Resource.value as string)
                         </th>
                         <th></th>
                     </tr>
@@ -36,8 +36,8 @@
                                 @Html.DisplayFor(modelItem => item.Value)
                             </td>
                             <td>
-                                @Html.ActionLink(Resources.Resource.edit, "Edit", "ImportFormatItems", new { id = item.Id }, new { @class = "btn btn-success" })
-                                @Html.ActionLink(Resources.Resource.delete, "Delete", "ImportFormatItems", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                @Html.ActionLink(Resources.Resource.edit as string, "Edit", "ImportFormatItems", new { id = item.Id }, new { @class = "btn btn-success" })
+                                @Html.ActionLink(Resources.Resource.delete as string, "Delete", "ImportFormatItems", new { id = item.Id }, new { @class = "btn btn-danger" })
                             </td>
                         </tr>
                     }

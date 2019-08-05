@@ -36,7 +36,10 @@ namespace Dominio
 
         public int ParConsolidationType_Id { get; set; }
 
-        public int ParFrequency_Id { get; set; }
+        public int? ParFrequency_Id { get; set; }
+
+        [NotMapped]
+        public string ParFrequencyDescription { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         [StringLength(155)]

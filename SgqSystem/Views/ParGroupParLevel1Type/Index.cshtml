@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Dominio.ParGroupParLevel1Type>
 
 @{
-    ViewBag.Title = "Tipo de Grupo de Indicador";
+    ViewBag.Title = Resources.Resource.type_of_function;
 }
 
 <div class="page-content-wrapper">
@@ -12,11 +12,11 @@
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
-                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resource.home</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.indicator_group_type_list</span>
+                    <span>@Resources.Resource.type_of_function</span>
                 </li>
             </ul>
         </div>
@@ -28,20 +28,20 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.indicator_group_type_list</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.type_of_function</span>
                         </div>
                     </div>
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink(Resources.Resource.create as string, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
                                 <table class="table" id="tabelaTipoGrupo">
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Name)
+                                                @Html.DisplayName(Resources.Resource.type_of_function as string)
                                             </th>
                                             <th>
                                                 @Html.DisplayNameFor(model => model.IsActive)
@@ -60,7 +60,7 @@
                                                     @Html.DisplayFor(modelItem => item.IsActive)
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })                                                 
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 </td>
                                             </tr>
                                         }
@@ -83,7 +83,7 @@
             null,
             null,
             { "bSearchable": false }
-        ];    
+        ];
         $('#tabelaTipoGrupo').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 

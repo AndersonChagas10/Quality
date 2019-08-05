@@ -26,12 +26,12 @@
                     <tr class="row">
 
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" })
-                         , @Html.Label(Resources.Resource.level3_name)
+                         , @Html.Label(Resources.Resource.level3_name as string)
                          , Table.PosicaoLabel.top
                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }), classTd: "col-sm-6")
 
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" })
-                         , @Html.Label(Resources.Resource.level3_description)
+                         , @Html.Label(Resources.Resource.level3_description as string)
                          , Table.PosicaoLabel.top
                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }), classTd: "col-sm-6")
 
@@ -41,27 +41,27 @@
                     @if (Model.paramsDto.parLevel3Dto.hasVinculo && Session["IsRecravacao"] != null && (bool)Session["IsRecravacao"])
                     {
                         <tr class="row showAsReencravation">
-                            @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.OrderColumn, new { @class = "form-control" }), @Html.Label(Resources.Resource.OrderColumn), Table.PosicaoLabel.left, null, null)
+                            @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.OrderColumn, new { @class = "form-control" }), @Html.Label(Resources.Resource.OrderColumn as string), Table.PosicaoLabel.left, null, null)
                         </tr>
                     }
                     else
                     {
                         <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo as string), Table.PosicaoLabel.left, null, null)
                         </tr>
                     }
 
                     <tr class="row">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
+                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active as string), Table.PosicaoLabel.left, null, null)
                     </tr>
 
                     @if (Model.paramsDto.parLevel3Dto.hasVinculo && Session["IsRecravacao"] != null && (bool)Session["IsRecravacao"])
                     {
                         <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsPointLess, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.IsPointLess), Table.PosicaoLabel.left, null, null)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsPointLess, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.IsPointLess as string), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.AllowNA, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.AllowNA), Table.PosicaoLabel.left, null, null)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.AllowNA, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.AllowNA as string), Table.PosicaoLabel.left, null, null)
                         </tr>
                     }
                 </table>

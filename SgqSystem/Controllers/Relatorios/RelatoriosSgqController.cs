@@ -158,6 +158,43 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true, parLevel1e2 = true)]
+        public ActionResult ApontamentosDiariosRH()
+        {
+            //Retorna as Roles do usuário logado para filtrar o botão de edição
+            HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
+            var db = new SgqDbDevEntities();
+            List<string> Retorno = new List<string>();
+
+            int _userId = 0;
+            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            {
+                _userId = Convert.ToInt32(cookie.Values["userId"].ToString());
+            }
+
+            var roles = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == _userId).ToList();
+
+            foreach (var role in roles)
+            {
+                Retorno.Add(role.Role);
+            }
+
+            ViewBag.Roles = Retorno;
+
+            //Produtos para edição de cabeçalhos
+            var conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            var db2 = new SqlConnection(conexao);
+
+            SGQDBContext.Generico listaProdutos = new SGQDBContext.Generico(db2);
+
+            ViewBag.Produtos = listaProdutos.getProdutos();
+
+            //Fim da Role
+
+            return View(form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true, parLevel1e2 = true)]
         public ActionResult ApontamentosDiariosDomingo()
         {
             //Retorna as Roles do usuário logado para filtrar o botão de edição
@@ -203,6 +240,18 @@ namespace SgqSystem.Controllers
         public ActionResult NaoConformidade()
         {
             return View(form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult NaoConformidadeRH()
+        {
+            return View("~/Views/Relatorios/RH/NaoConformidadeRH.cshtml", form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult EvolutivoRH()
+        {
+            return View("~/Views/Relatorios/RH/EvolutivoRH.cshtml", form);
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]

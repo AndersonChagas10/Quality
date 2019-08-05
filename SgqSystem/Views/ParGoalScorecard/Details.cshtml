@@ -60,7 +60,7 @@
 
     </dl>
     <p>
-        @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = Model.Id }) |
-        @Html.ActionLink(Resources.Resource.back_to_list, "Index")
+        @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = Model.Id }) |
+        @Html.ActionLink(Resources.Resource.back_to_list as string, "Index")
     </p>
 </div>

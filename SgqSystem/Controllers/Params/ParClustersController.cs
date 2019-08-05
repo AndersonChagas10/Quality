@@ -39,7 +39,12 @@ namespace SgqSystem.Controllers
         // GET: ParClusters/Create
         public ActionResult Create()
         {
-            ViewBag.ParClusterGroup_Id = new SelectList(db.ParClusterGroup, "Id", "Name");
+           // ViewBag.ParClusterGroup_Id = new SelectList(db.ParClusterGroup.Where(x => x.IsActive), "Id", "Name");
+
+            var groupGlusterList = db.ParClusterGroup.Where(x => x.IsActive).ToList();
+            groupGlusterList.Add(new ParClusterGroup() { Id = -1, Name = "Selecione" });
+            ViewBag.ParClusterGroup_Id = new SelectList(groupGlusterList, "Id", "Name", -1);
+
             return View();
         }
 
@@ -59,7 +64,10 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ParClusterGroup_Id = new SelectList(db.ParClusterGroup, "Id", "Name", parCluster.ParClusterGroup_Id);
+            var groupGlusterList = db.ParClusterGroup.Where(x => x.IsActive).ToList();
+            groupGlusterList.Add(new ParClusterGroup() { Id = -1, Name = "Selecione" });
+            ViewBag.ParClusterGroup_Id = new SelectList(groupGlusterList, "Id", "Name", -1);
+
             return View(parCluster);
         }
 
@@ -67,9 +75,12 @@ namespace SgqSystem.Controllers
         {
 
             ModelState.Clear();
-
+            
             if (string.IsNullOrEmpty(parCluster.Name))
                 ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+
+            if (parCluster.ParClusterGroup_Id < 0 || parCluster.ParClusterGroup_Id == 0)
+                ModelState.AddModelError("ParClusterGroup_Id", Resources.Resource.required_field + " " + Resources.Resource.cluster_group1);
 
             if (string.IsNullOrEmpty(parCluster.Description))
                 ModelState.AddModelError("Description", Resources.Resource.required_field + " " + Resources.Resource.description);
@@ -90,7 +101,11 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ParClusterGroup_Id = new SelectList(db.ParClusterGroup, "Id", "Name", parCluster.ParClusterGroup_Id);
+  
+            var groupGlusterList = db.ParClusterGroup.Where(x => x.IsActive).ToList();
+            groupGlusterList.Add(new ParClusterGroup() { Id = -1, Name = "Selecione" });
+            ViewBag.ParClusterGroup_Id = new SelectList(groupGlusterList, "Id", "Name", parCluster.ParClusterGroup_Id);
+
             return View(parCluster);
         }
 
@@ -101,14 +116,18 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,ParClusterGroup_Id,Name,Description,ParClusterParent_Id,AddDate,AlterDate,IsActive")] ParCluster parCluster)
         {
+            ValidModelState(parCluster);
             if (ModelState.IsValid)
             {
-                parCluster.IsActive = true;
                 db.Entry(parCluster).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ParClusterGroup_Id = new SelectList(db.ParClusterGroup, "Id", "Name", parCluster.ParClusterGroup_Id);
+
+            var groupGlusterList = db.ParClusterGroup.Where(x => x.IsActive).ToList();
+            groupGlusterList.Add(new ParClusterGroup() { Id = -1, Name = "Selecione" });
+            ViewBag.ParClusterGroup_Id = new SelectList(groupGlusterList, "Id", "Name", parCluster.ParClusterGroup_Id);
+
             return View(parCluster);
         }
 

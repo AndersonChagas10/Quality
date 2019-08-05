@@ -58,7 +58,7 @@
                                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                                             <span></span> <b class="caret"></b>
                                         </div>
-                                        @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
+                                        @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select as string + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
                                         <span style="float:right;margin-top:-5px;margin-left:5px;">Filtro: </span>
                                     </div>
                                     @Html.ActionLink("Novo volume de PCC1b", "Create", null, new { @class = "btn btn-primary" })
