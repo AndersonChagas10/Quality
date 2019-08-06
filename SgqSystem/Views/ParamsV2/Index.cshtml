@@ -832,9 +832,10 @@
 
                     preencheCampos('l1', '', ParLevel1, true);
                     parL1Processo.load(ParLevel1.ParLevel1XCluster);
-                    parL1Cabecalho.load(ParLevel1.ParLevel1XHeaderField);
+                    parL1Cabecalho.load(ParLevel1.ParHeaderFieldsGeral);
                     verifyTabs('selectL1', 'l1');
                     closeLoader();
+
                 },
                 error: function (request, error) {
                     closeLoader();
@@ -1032,7 +1033,7 @@
                 preencheSelect('selectParConsolidation', 'Name', 'Id', data.ParConsolidationTypes, 'Selecione o tipo de Consolidação');
                 preencheSelect('selectParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
                 preencheSelect('selectParScoreType', 'Name', 'Id', data.ParScoreTypes, 'Selecione o tipo de Score');
-                preencheSelect('selectL1ParLevelDefiniton', 'Name', 'Id', data.ParLevelDefinitons, 'Selecione onde deve aparecer o cabeçalho');
+                //preencheSelect('selectL1ParLevelDefiniton', 'Name', 'Id', data.ParLevelDefinitons, 'Selecione onde deve aparecer o cabeçalho');
                 preencheSelect('selectL1ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
 
                 preencheSelect('selectL3GeralParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
@@ -1237,12 +1238,12 @@
 
         let isValid = true;
 
-        //se for binário o multipla escolha valida pela quantidade de parMultipleValues
-        if (obj.ParHeaderField.ParFieldType_Id == 1 || obj.ParHeaderField.ParFieldType_Id == 3) {
+        //se for binário o multipla escolha valida pela quantidade de ParMultipleValuesGeral
+        if (obj.ParFieldType_Id == 1 || obj.ParFieldType_Id == 3) {
 
-            if (!obj.ParHeaderField.ParMultipleValues ||
-                obj.ParHeaderField.ParMultipleValues.length <= 0 ||
-                obj.ParHeaderField.ParMultipleValues.filter(item => item.IsActive == true).length == 0 ||
+            if (!obj.ParMultipleValuesGeral ||
+                obj.ParMultipleValuesGeral.length <= 0 ||
+                obj.ParMultipleValuesGeral.filter(item => item.IsActive == true).length == 0 ||
                 !formIsValid(id)) {
                 openMessageModal("Alerta", "Favor Inserir opções antes de salvar");
                 isValid = false;

@@ -46,7 +46,7 @@ namespace SgqSystem.Controllers.V2.Api
                 parLevel1Selects.ParFrequencies = db.ParFrequency.Where(x => x.IsActive).ToList();
 
                 //Tabelas
-                //parLevel1Selects.ParHeaderFields = db.ParHeaderField.Where(x => x.IsActive).ToList();
+                parLevel1Selects.ParHeaderFieldsGeral = db.ParHeaderFieldGeral.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParFieldTypes = db.ParFieldType.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParLevelDefinitons = db.ParLevelDefiniton.Where(x => x.IsActive).ToList();
 
@@ -87,11 +87,10 @@ namespace SgqSystem.Controllers.V2.Api
             {
                 db.Configuration.LazyLoadingEnabled = false;
 
-                parLevel1 = db.ParLevel1.Where(x => x.Id == id)
-                    .FirstOrDefault();
+                parLevel1 = db.ParLevel1.Where(x => x.Id == id).FirstOrDefault();
 
                 parLevel1.ParLevel1XCluster = db.ParLevel1XCluster.Where(x => x.IsActive && x.ParLevel1_Id == parLevel1.Id).ToList();
-                parLevel1.ParLevel1XHeaderField = db.ParLevel1XHeaderField.Where(x => x.IsActive && x.ParLevel1_Id == parLevel1.Id).ToList();
+                parLevel1.ParHeaderFieldsGeral = db.ParHeaderFieldGeral.Where(x => x.IsActive && x.ParLevelHeaderField_Id == 1 && x.Generic_Id == parLevel1.Id).Include("ParMultipleValuesGeral").Include("ParFieldType").ToList();
 
                 foreach (var item in parLevel1.ParLevel1XCluster)
                 {
@@ -99,18 +98,6 @@ namespace SgqSystem.Controllers.V2.Api
                     item.ParCriticalLevel = db.ParCriticalLevel.Where(x => x.IsActive == true && x.Id == item.ParCriticalLevel_Id).FirstOrDefault();
                 }
 
-                foreach (var item in parLevel1.ParLevel1XHeaderField)
-                {
-                    item.ParHeaderField = db.ParHeaderField
-                        .Where(x => x.IsActive == true && x.Id == item.ParHeaderField_Id)
-                        .Include(x => x.ParLevelDefiniton)
-                        .Include(x => x.ParFieldType)
-                        .Include(x => x.ParMultipleValues)
-                        .FirstOrDefault();
-                    item.ParHeaderField.ParMultipleValues = item.ParHeaderField.ParMultipleValues.Where(x => x.IsActive).ToList();
-                }
-                //var ParFrequencyDescription = db.ParFrequency.Where(x => x.Id == parLevel1.ParFrequency_Id).FirstOrDefault();
-                //parLevel1.ParFrequencyDescription = ParFrequencyDescription.Name;
                 if (parLevel1 == null)
                 {
                     return NotFound();
@@ -141,20 +128,12 @@ namespace SgqSystem.Controllers.V2.Api
         }
 
         [HttpPost]
-        [Route("PostParHeaderField")]
-        public IHttpActionResult PostParHeaderField(ParLevel1XHeaderField saveParHeaderField)
+        [Route("PostParHeaderFieldGeral")]
+        public IHttpActionResult PostParHeaderField(ParHeaderFieldGeral saveParHeaderFieldGeral)
         {
-            if (saveParHeaderField.ParHeaderField.Id > 0)
-            {
-                SaveOrUpdateParHeaderField(saveParHeaderField.ParHeaderField);
-                SaveOrUpdateParLevel1XHeaderField(saveParHeaderField, saveParHeaderField.ParHeaderField.Id, saveParHeaderField.ParLevel1_Id);
-            }
-            else
-            {
-                SaveOrUpdateParHeaderField(saveParHeaderField.ParHeaderField);
-                SaveOrUpdateParLevel1XHeaderField(null, saveParHeaderField.ParHeaderField.Id, saveParHeaderField.ParLevel1_Id);
-            }
-            SaveOrUpdateParMultipleValues(saveParHeaderField.ParHeaderField);
+            SaveOrUpdateParHeaderField(saveParHeaderFieldGeral);
+
+            SaveOrUpdateParMultipleValues(saveParHeaderFieldGeral);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -259,33 +238,34 @@ namespace SgqSystem.Controllers.V2.Api
             return true;
         }
 
-        private int SaveOrUpdateParHeaderField(ParHeaderField parHeaderField)
+        private int SaveOrUpdateParHeaderField(ParHeaderFieldGeral parHeaderFieldGeral)
         {
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 try
                 {
-                    if (parHeaderField.Id > 0)
+                    if (parHeaderFieldGeral.Id > 0)
                     {
                         db.Configuration.LazyLoadingEnabled = false;
-                        var parHeaderFieldToUpdate = db.ParHeaderField.Find(parHeaderField.Id);
-                        parHeaderFieldToUpdate.Name = parHeaderField.Name;
-                        parHeaderFieldToUpdate.ParFieldType_Id = parHeaderField.ParFieldType_Id;
-                        parHeaderFieldToUpdate.LinkNumberEvaluetion = parHeaderField.LinkNumberEvaluetion;
-                        parHeaderFieldToUpdate.ParLevelDefinition_Id = parHeaderField.ParLevelDefinition_Id;
-                        parHeaderFieldToUpdate.Description = parHeaderField.Description;
-                        parHeaderFieldToUpdate.IsActive = parHeaderField.IsActive;
-                        parHeaderFieldToUpdate.IsRequired = parHeaderField.IsRequired;
-                        parHeaderFieldToUpdate.duplicate = parHeaderField.duplicate;
-                        parHeaderFieldToUpdate.CheckBox = parHeaderField.CheckBox;
+                        var parHeaderFieldToUpdate = db.ParHeaderFieldGeral.Find(parHeaderFieldGeral.Id);
+                        parHeaderFieldToUpdate.Name = parHeaderFieldGeral.Name;
+                        parHeaderFieldToUpdate.ParFieldType_Id = parHeaderFieldGeral.ParFieldType_Id;
+                        parHeaderFieldToUpdate.LinkNumberEvaluation = parHeaderFieldGeral.LinkNumberEvaluation;
+                        parHeaderFieldToUpdate.Description = parHeaderFieldGeral.Description;
+                        parHeaderFieldToUpdate.IsActive = parHeaderFieldGeral.IsActive;
+                        parHeaderFieldToUpdate.IsRequired = parHeaderFieldGeral.IsRequired;
+                        parHeaderFieldToUpdate.Duplicate = parHeaderFieldGeral.Duplicate;
                         parHeaderFieldToUpdate.AlterDate = DateTime.Now;
                     }
                     else
                     {
-                        parHeaderField.AddDate = DateTime.Now;
-                        parHeaderField.Description = parHeaderField.Description ?? "";
-                        parHeaderField.IsActive = true;
-                        db.ParHeaderField.Add(parHeaderField);
+                        parHeaderFieldGeral.AddDate = DateTime.Now;
+                        parHeaderFieldGeral.Description = parHeaderFieldGeral.Description ?? "";
+                        parHeaderFieldGeral.IsActive = true;
+                        parHeaderFieldGeral.ParLevelHeaderField_Id = 1;// ParLevelHeaderField.Id = 1 - ParLevel1
+                        db.Entry(parHeaderFieldGeral.ParMultipleValuesGeral).State = EntityState.Detached;
+                        db.Entry(parHeaderFieldGeral.ParLevelHeaderField).State = EntityState.Detached;
+                        db.ParHeaderFieldGeral.Add(parHeaderFieldGeral);
                     }
 
                     db.SaveChanges();
@@ -295,56 +275,7 @@ namespace SgqSystem.Controllers.V2.Api
                     return 0;
                 }
 
-                return parHeaderField.Id;
-            }
-        }
-
-        private bool SaveOrUpdateParLevel1XHeaderField(ParLevel1XHeaderField parLevel1XHeaderField, int parHeaderField_Id, int parLevel1_Id)
-        {
-
-            using (SgqDbDevEntities db = new SgqDbDevEntities())
-            {
-                try
-                {
-                    db.Configuration.LazyLoadingEnabled = false;
-
-                    if (parLevel1XHeaderField != null && parLevel1XHeaderField.Id > 0) //Update ou Inactive
-                    {
-
-                        //Update todos para isActive = false
-                        var parLevel1XHeaderFieldToModfy = db.ParLevel1XHeaderField.Find(parLevel1XHeaderField.Id);
-
-                        parLevel1XHeaderFieldToModfy.IsActive = parLevel1XHeaderField.IsActive;
-                        parLevel1XHeaderFieldToModfy.ParHeaderField_Id = parLevel1XHeaderField.ParHeaderField_Id;
-                        parLevel1XHeaderFieldToModfy.IsRequired = parLevel1XHeaderField.IsRequired;
-                        parLevel1XHeaderFieldToModfy.DefaultSelected = parLevel1XHeaderField.DefaultSelected;
-                        parLevel1XHeaderFieldToModfy.HeaderFieldGroup = parLevel1XHeaderFieldToModfy.HeaderFieldGroup;
-                        parLevel1XHeaderFieldToModfy.AlterDate = DateTime.Now;
-
-                    }
-                    else //Insert
-                    {
-                        parLevel1XHeaderField = new ParLevel1XHeaderField()
-                        {
-                            AddDate = DateTime.Now,
-                            IsActive = true,
-                            ParHeaderField_Id = parHeaderField_Id,
-                            ParLevel1_Id = parLevel1_Id,
-                        };
-
-                        db.ParLevel1XHeaderField.Add(parLevel1XHeaderField);
-
-                    }
-
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-
-                    return false;
-                }
-
-                return true;
+                return parHeaderFieldGeral.Id;
             }
         }
 
@@ -385,37 +316,28 @@ namespace SgqSystem.Controllers.V2.Api
             }
         }
 
-        private bool SaveOrUpdateParMultipleValues(ParHeaderField parHeaderField)
+        private bool SaveOrUpdateParMultipleValues(ParHeaderFieldGeral parHeaderFieldGeral)
         {
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 try
                 {
-                    if (parHeaderField.ParMultipleValues.Count > 0)
+                    if (parHeaderFieldGeral.ParMultipleValuesGeral.Count > 0)
                     {
-                        foreach (var parMultipleValue in parHeaderField.ParMultipleValues)
+                        foreach (var parMultipleValue in parHeaderFieldGeral.ParMultipleValuesGeral)
                         {
                             if (parMultipleValue.Id > 0)
                             {
-                                //db.Configuration.LazyLoadingEnabled = false;
-                                //var parMultipleValueToUpdate = db.ParMultipleValues.Find(parHeaderField.Id);
-                                //parMultipleValueToUpdate.Name = parMultipleValue.Name;
-                                //parMultipleValueToUpdate.Description = parMultipleValue.Description;
-                                //parMultipleValueToUpdate.IsActive = parMultipleValue.IsActive;
-                                //parMultipleValueToUpdate.AlterDate = DateTime.Now;
-                                //parMultipleValueToUpdate.IsDefaultOption = parMultipleValue.IsDefaultOption;
-                                //parMultipleValueToUpdate.ParHeaderField_Id = parHeaderField.Id;
-                                //parMultipleValueToUpdate.PunishmentValue = parMultipleValue.PunishmentValue;
-                                parMultipleValue.ParHeaderField = null;
+                                parMultipleValue.ParHeaderFieldGeral = null;
                                 db.Entry(parMultipleValue).State = EntityState.Modified;
                                 db.SaveChanges();
                             }
                             else
                             {
-                                parMultipleValue.ParHeaderField_Id = parHeaderField.Id;
+                                parMultipleValue.ParHeaderFieldGeral_Id = parHeaderFieldGeral.Id;
                                 parMultipleValue.AddDate = DateTime.Now;
                                 parMultipleValue.Description = "";
-                                db.ParMultipleValues.Add(parMultipleValue);
+                                db.ParMultipleValuesGeral.Add(parMultipleValue);
                             }
                         }
                         db.SaveChanges();
@@ -441,15 +363,15 @@ namespace SgqSystem.Controllers.V2.Api
         public class ParLevel1Result
         {
             public ParLevel1 Parlevel1 { get; set; }
-            public List<ParLevel1XHeaderField> ParLevel1XHeaderFields { get; set; }
+            //public List<ParLevel1XHeaderField> ParLevel1XHeaderFields { get; set; }
             public List<ParLevel1XCluster> ParLevel1XClusters { get; set; }
-            public List<ParHeaderField> ParHeaderFields { get; set; }
+            public List<ParHeaderFieldGeral> ParHeaderFieldGeral { get; set; }
         }
 
         public class ParLevel1Selects
         {
             public List<ParLevel1> ParLevels1 { get; set; }
-            public List<ParHeaderField> ParHeaderFields { get; set; }
+            public List<ParHeaderFieldGeral> ParHeaderFieldsGeral { get; set; }
             public List<ParCluster> ParClusters { get; set; }
             public List<ParCriticalLevel> ParCriticalLevels { get; set; }
             public List<ParFieldType> ParFieldTypes { get; set; }

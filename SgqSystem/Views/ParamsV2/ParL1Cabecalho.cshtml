@@ -13,15 +13,15 @@
             <input type="hidden" name="Id" />
             <input type="hidden" name="IsActive" value="true" data-notnull />
 
-            <div class="form-group">
+            @*<div class="form-group">
                 <label for="ParCluster_Id">Nível do campo:</label>
                 <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Onde será exibido o cabeçalho selecionado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12 required" name="ParLevelDefinition_Id"></select>
-            </div>
+            </div>*@
 
-        </div>
+        @*</div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-3">*@
 
             <div class="form-group">
                 <label for="ParCriticalLevel_Id">Tipo:</label>
@@ -153,9 +153,6 @@
                 <thead>
                     <tr>
                         <th class="col-sm-2">
-                            Nível do campo
-                        </th>
-                        <th class="col-sm-2">
                             Nome
                         </th>
                         <th class="col-sm-2">
@@ -187,10 +184,9 @@
 
         //paramtros
         id: 'ParL1Cabecalho',
-        urlSave: '@Url.Action("PostParHeaderField", "api/ParLevel1Api")',
-
-        load: function (ParLevel1XHeaderFields) {
-            
+        urlSave: '@Url.Action("PostParHeaderFieldGeral", "api/ParLevel1Api")',
+        load: function (ParHeaderFieldsGeral) {
+            debugger
             let id = this.id;
 
             apagaCampos(id);
@@ -203,20 +199,19 @@
             $('#tableParL1Cabecalho select,#tableParL1Cabecalho input,#tableParL1Cabecalho button').prop('disabled', false);
             $('#' + id + ' #divBtnCancelar').hide();
 
-            $(ParLevel1XHeaderFields).each(function (i, o) {
+            $(ParHeaderFieldsGeral).each(function (i, o) {
 
-                let previewHeaderField = getPreviewHeaderField(o.ParHeaderField);
+                let previewHeaderField = getPreviewHeaderField(o);
                 let defaultSelected = "";
 
-                if (o.ParHeaderField.ParFieldType_Id == 1)
+                if (o.ParFieldType_Id == 1)
                     defaultSelected = getDefaultSelected();
 
                 let isChecked = o.IsRequired ? "checked" : "";
 
                 var html = '<tr>';
-                html += '<td>' + o.ParHeaderField.ParLevelDefiniton.Name + '</td>';
-                html += '<td>' + o.ParHeaderField.Name + '</td>';
-                html += '<td>' + o.ParHeaderField.ParFieldType.Name + '</td>';
+                html += '<td>' + o.Name + '</td>';
+                html += '<td>' + o.ParFieldType.Name + '</td>';
                 html += '<td>' + previewHeaderField + '</td>';
                 html += '<td><div class=""><label class="switch"><input type="checkbox" name="IsRequired"' + isChecked + ' ><span class="slider round"></span> </label></div></td>';
                 html += '<td>' + defaultSelected + '</input></td>';
@@ -230,22 +225,21 @@
 
             this.showTableParMultipleValues();
         },
-
         prepareParHeaderField: function (obj) {           
             
             let formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
 
-            if (typeof (obj['ParHeaderField']) == 'undefined')
-                obj['ParHeaderField'] = {};
+            if (typeof (obj) == 'undefined')
+                obj = {};
 
-            obj['ParHeaderField']['Name'] = formdata.Name;
-            obj['ParHeaderField']['Description'] = formdata.Description;
-            obj['ParHeaderField']['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
-            obj['ParHeaderField']['ParFieldType_Id'] = formdata.ParFieldType_Id;
+            obj['Name'] = formdata.Name;
+            obj['Description'] = formdata.Description;
+            obj['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
+            obj['ParFieldType_Id'] = formdata.ParFieldType_Id;
+            obj['Generic_Id'] = $('[name="ParLevel1_Id"][data-id]').val();
 
             return obj;
         },
-
         prepareToInsert: function (parFieldType_Id) {
 
             if (!formIsValid(this.id)) {
@@ -259,11 +253,11 @@
             if (typeof (obj) == 'undefined')
                 obj = {};
 
-            if (typeof (obj['ParHeaderField']) == 'undefined')
-                obj['ParHeaderField'] = {};
+            if (typeof (obj) == 'undefined')
+                obj = {};
 
-            if (typeof (obj['ParHeaderField']['ParMultipleValues']) == 'undefined')
-                obj['ParHeaderField']['ParMultipleValues'] = [];
+            if (typeof (obj['ParMultipleValuesGeral']) == 'undefined')
+                obj['ParMultipleValuesGeral'] = [];
 
             switch (parFieldType_Id) {
 
@@ -271,9 +265,9 @@
 
                     $TblParMultipeValues = $('#tblOpcaoMultiplaEscolha');
 
-                    obj['ParHeaderField']['ParMultipleValues'].push({
-                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
-                        ParHeaderField: $('#ParL1Cabecalho #Name').val(),
+                    obj['ParMultipleValuesGeral'].push({
+                        //ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
+                        ParHeaderFieldGeral: $('#ParL1Cabecalho #Name').val(),
                         Id: 0,
                         Name: $TblParMultipeValues.find('#objMultiplaEscolhaName').val(),
                         Description: '',
@@ -287,7 +281,7 @@
 
                 case 3:	// Binario
 
-                    if ($.grep(obj['ParHeaderField']['ParMultipleValues'], function (o, i) {
+                    if ($.grep(obj['ParMultipleValuesGeral'], function (o, i) {
                         return o.IsActive == true;
                     }).length > 0) {
                         
@@ -297,9 +291,9 @@
 
                     $TblParMultipeValues = $('#tblBinario');
 
-                    obj['ParHeaderField']['ParMultipleValues'].push({
-                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
-                        ParHeaderField: $('#ParL1Cabecalho #Name').val(),
+                    obj['ParMultipleValuesGeral'].push({
+                        //ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
+                        ParHeaderFieldGeral: $('#ParL1Cabecalho #Name').val(),
                         Id: 0,
                         Name: $TblParMultipeValues.find('#objBinarioPunishmentName1').val(),
                         Description: '',
@@ -309,9 +303,9 @@
                         IsActive: true
                     });
 
-                    obj['ParHeaderField']['ParMultipleValues'].push({
-                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
-                        ParHeaderField: $('#ParL1Cabecalho #Name').val(),
+                    obj['ParMultipleValuesGeral'].push({
+                        //ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
+                        ParHeaderFieldGeral: $('#ParL1Cabecalho #Name').val(),
                         Name: $TblParMultipeValues.find('#objBinarioPunishmentName2').val(),
                         Id: 0,
                         Description: '',
@@ -339,22 +333,10 @@
 
             $('#camposCabecalhoIncluidos tbody').empty();
 
-            let parHeaderField = "";
+            let ParHeaderFieldGeral = "";
             let parLevelDefiniton = "";
 
-            try{
-
-                parHeaderField = obj.ParHeaderField.Name;
-                parLevelDefiniton = obj.ParHeaderField.ParLevelDefiniton.Name;
-
-            } catch (e) {
-
-                parHeaderField = obj['ParHeaderField']['ParMultipleValues'][0].ParHeaderField;
-                parLevelDefiniton = obj['ParHeaderField']['ParMultipleValues'][0].ParLevelDefiniton;
-
-            }
-
-            let multipleValues = obj['ParHeaderField']['ParMultipleValues'];
+            let multipleValues = obj['ParMultipleValuesGeral'];
             let blockParFieldType = false;
 
             multipleValues.forEach((o, i) => {
@@ -406,12 +388,12 @@
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (obj) {
-                if (obj.ParHeaderField.ParFieldType.Id == 3) //Se for binário, exclui todos os ParMultipleValues
-                    obj.ParHeaderField.ParMultipleValues.forEach((o, i, a) => {
+                if (obj.ParFieldType.Id == 3) //Se for binário, exclui todos os ParMultipleValuesGeral
+                    obj.ParMultipleValuesGeral.forEach((o, i, a) => {
                         a[i].IsActive = false;
                     });
                 else
-                    obj['ParHeaderField']['ParMultipleValues'][i].IsActive = false;
+                    obj['ParMultipleValuesGeral'][i].IsActive = false;
 
                 this.insertTable(obj);
 
@@ -422,7 +404,9 @@
         },
 
         Save: function (obj) {
+
             openLoader(Resources("please_wait"));
+
             $.ajax({
                 url: parL1Cabecalho.urlSave,
                 type: 'POST',
@@ -443,7 +427,6 @@
                 $('#tableParL1Cabecalho select,#tableParL1Cabecalho input,#tableParL1Cabecalho button').prop('disabled', true);
                 $('#ParL1Cabecalho' + ' #divBtnCancelar').hide();
             });
-
         }
 
     };
@@ -452,6 +435,9 @@
 
     //Adicionar os dados no data-form
     $('#' + parL1Cabecalho.id).on('click', '[data-table-edit]', function (e) {
+
+        debugger
+
         scrollToForm();
         var obj = $(this).parents('tr').data('sgq');
 
@@ -459,14 +445,14 @@
         parL1Cabecalho.reloadTable();
         preencheCampos(parL1Cabecalho.id + ' [data-form]', '', obj);
         
-        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderField.ParLevelDefinition_Id);
-        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
+        //$('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderFieldGeral.ParLevelDefinition_Id);
+        //$('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change');
 
-        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParHeaderField.ParFieldType_Id);
+        $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParFieldType_Id);
         $('#' + parL1Cabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').trigger('change')
 
-        $('#' + parL1Cabecalho.id + ' [data-form] input[name="Name"]').val(obj.ParHeaderField.Name);
-        $('#' + parL1Cabecalho.id + ' [data-form] input[name="Description"]').val(obj.ParHeaderField.Description);
+        $('#' + parL1Cabecalho.id + ' [data-form] input[name="Name"]').val(obj.Name);
+        $('#' + parL1Cabecalho.id + ' [data-form] input[name="Description"]').val(obj.Description);
 
         $('#' + parL1Cabecalho.id + ' [data-form]').data('sgq', obj);
         $('#' + parL1Cabecalho.id + ' [data-form]').addClass('alert alert-success');
@@ -515,7 +501,9 @@
 
     //Salvar o campo editado ou cria um novo
     $('#' + parL1Cabecalho.id).on('click', '[data-edit],[data-add]', function (e) {
-        
+
+        debugger
+
         $('#objMultiplaEscolha').hide();
         $('#objBinario').hide();
 
@@ -564,7 +552,7 @@
 
         parMultipleValues_Id = parMultipleValues_Id ? parMultipleValues_Id : null;
 
-        obj.ParHeaderField.ParMultipleValues.forEach((o, i, a) => {
+        obj.ParMultipleValuesGeral.forEach((o, i, a) => {
             a[i].IsDefaultOption = 0;
 
             if (o.Id == parMultipleValues_Id) {
@@ -591,7 +579,7 @@
 
                 let options = '<option>Selecione...</option>';
 
-                headerField.ParMultipleValues.forEach((o) => {
+                headerField.ParMultipleValuesGeral.forEach((o) => {
                     options += `<option value="${o.Id}" ${(o.IsDefaultOption ? "selected" : "")}>${o.Name}</option>`;
                 });
 

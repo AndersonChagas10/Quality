@@ -276,9 +276,10 @@ namespace Dominio
         public virtual DbSet<CollectionLevel2XParCargo> CollectionLevel2XParCargo { get; set; }
         public virtual DbSet<CollectionLevel2XCluster> CollectionLevel2XCluster { get; set; }
         public virtual DbSet<ParLevel3XModule> ParLevel3XModule { get; set; }
-        
-
+        public virtual DbSet<ParHeaderFieldGeral> ParHeaderFieldGeral { get; set; }
+        public virtual DbSet<ParLevelHeaderField> ParLevelHeaderField { get; set; }
         public virtual DbSet<IntegCollectionData> IntegCollectionData { get; set; }
+        public virtual DbSet<ParMultipleValuesGeral> ParMultipleValuesGeral { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
