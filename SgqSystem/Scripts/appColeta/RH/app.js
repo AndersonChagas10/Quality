@@ -92,6 +92,7 @@ function sincronizarResultado(frequencyId) {
     $.ajax({
         data: JSON.stringify({
             ParCompany_Id: currentParCompany_Id,
+            ParFrequency_Id: currentParFrequency_Id,
             CollectionDate: convertDateToJson(currentCollectDate)
         }),
         url: urlPreffix + '/api/AppColeta/GetResults/',

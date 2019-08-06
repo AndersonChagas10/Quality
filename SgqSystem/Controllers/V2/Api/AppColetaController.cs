@@ -412,7 +412,7 @@ namespace SgqSystem.Controllers.V2.Api
 -- INPUTS --
 DECLARE @ParFrequency_Id INT = { data.ParFrequency_Id };
 DECLARE @ParCompany_Id INT = {data.ParCompany_Id};
-DECLARE @DataColeta DATETIME = {data.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss")};
+DECLARE @DataColeta DATETIME = '{data.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss")}';
 DECLARE @DateTimeInicio DATETIME;
 DECLARE @DateTimeFinal DATETIME;
 
@@ -474,10 +474,10 @@ SELECT
     INNER JOIN CollectionLevel2XParCargo C2XPC WITH (NOLOCK) ON C2XPC.CollectionLevel2_Id = C2.Id
     INNER JOIN CollectionLevel2XParDepartment C2XPD WITH (NOLOCK) ON C2XPD.CollectionLevel2_Id = C2.Id
 	INNER JOIN ParEvaluationXDepartmentXCargo PEDC WITH(NOLOCK) ON C2.UnitId = PEDC.ParCompany_Id 
-																AND C2XPC.ParCargo_Id = PEDC.ParCargo_Id 
-																AND C2XPD.ParDepartment_Id = PEDC.ParDepartment_Id
-																AND C2.ParFrequency_Id = PEDC.ParFrequencyId
-    WHERE 1 = 1
+																AND C2XPC.ParCargo_Id      = ISNULL(PEDC.ParCargo_Id,C2XPC.ParCargo_Id)
+																AND C2XPD.ParDepartment_Id = ISNULL(PEDC.ParDepartment_Id,C2XPD.ParDepartment_Id)
+																AND C2.ParFrequency_Id     = PEDC.ParFrequencyId
+WHERE 1 = 1
 		AND C2.CollectionDate BETWEEN @DateTimeInicio AND @DateTimeFinal
 		AND C2.UnitId = @ParCompany_Id
 		AND PEDC.ParFrequencyId = @ParFrequency_Id
