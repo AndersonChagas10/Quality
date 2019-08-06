@@ -17,5 +17,7 @@ namespace Dominio
 
         [NotMapped]
         public virtual int[] ParDepartment_Ids { get; set; }
+
+        public virtual ICollection<ParCargoXDepartment> ParCargoXDepartment { get; set; }
     }
 }
