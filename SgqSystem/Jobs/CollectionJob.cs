@@ -205,6 +205,7 @@ namespace SgqSystem.Jobs
                         Sample = {collection.Sample} AND ParLevel1_Id = {collection.ParLevel1_Id} AND
                         ParLevel2_Id = {collection.ParLevel2_Id} AND Shift_Id = {collection.Shift} AND
                         Period_Id = {collection.Period} AND ParCompany_Id = {collection.UnitId} AND
+                        ParFrequency_Id = {collection.ParFrequency_Id} AND
                         CAST(CONVERT(VARCHAR(19), IIF(DATEPART(MILLISECOND, CollectionDate) > 500, DATEADD(SECOND, 1, CollectionDate), CollectionDate), 120) AS DATE) = '{collection.CollectionDate.ToString("yyyy-MM-dd")}'";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -247,7 +248,7 @@ namespace SgqSystem.Jobs
             collection.Key = collection.CollectionDate.ToString("yyyy-MM-dd") + "-" + collection.UnitId + "-" +
                 collection.ParLevel1_Id + "-" + collection.ParLevel2_Id + "-" + collection.Shift + "-" +
                 collection.ParCluster_Id + "-" + collection.ParCargo_Id + "-" + collection.ParDepartment_Id + "-" +
-                collection.EvaluationNumber + "-" + collection.Sample;
+                collection.EvaluationNumber + "-" + collection.Sample + "-" + collection.ParFrequency_Id;
 
             return collection;
         }

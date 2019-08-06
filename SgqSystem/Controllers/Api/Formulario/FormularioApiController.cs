@@ -480,7 +480,8 @@ AND PD.Parent_Id IS NOT NULL " + sqlParDepartment;
             if (parDepartment_Ids.Count > 0)
             {
                 sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel1_Id = PL1.Id WHERE 1 = 1 ";
-                sqlFilter += $@"AND PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)})";
+                sqlFilter += $@"AND (PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)})";
+                sqlFilter += $@"OR PVP.ParDepartment_Id IS NULL) ";
             }
             var query = "SELECT DISTINCT PL1.ID, PL1.NAME FROM parLevel1 PL1 " + sqlFilter;
 
