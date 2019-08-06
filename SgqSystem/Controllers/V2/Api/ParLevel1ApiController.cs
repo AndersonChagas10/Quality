@@ -179,9 +179,14 @@ namespace SgqSystem.Controllers.V2.Api
             {
                 db.Configuration.LazyLoadingEnabled = false;
 
-                var ParDepartments = db.ParDepartment.Where(x => x.ParCompany_Id == id).ToList();
+                var ParDepartmentsPai = db.ParDepartment.Where(x => x.ParCompany_Id == id)
+                    .Select(x=>x.Parent_Id)
+                    .ToList();
+                var ParDepartmentsFilhos = db.ParDepartment
+                    .Where(x => x.ParCompany_Id == id && x.Parent_Id != null && !ParDepartmentsPai.Any(y=>y == x.Id))
+                    .ToList();
 
-                var departamentosIds = ParDepartments.Select(x => x.Id).ToList();
+                var departamentosIds = ParDepartmentsFilhos.Select(x => x.Id).ToList();
 
                 var ParCargoXDepartment = db.ParCargoXDepartment.Where(x => departamentosIds.Contains(x.ParDepartment_Id)).ToList();
 
@@ -191,7 +196,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 dynamic retorno = new ExpandoObject();
 
-                retorno.ParDepartments = ParDepartments;
+                retorno.ParDepartments = ParDepartmentsFilhos;
                 retorno.ParCargos = ParCargos;
                 retorno.ParCargoXDepartments = ParCargoXDepartment;
 
