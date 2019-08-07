@@ -84,5 +84,8 @@ namespace Dominio
         public virtual ICollection<ParRelapse> ParRelapse { get; set; }
 
         public virtual ICollection<ParSample> ParSample { get; set; }
+
+        [NotMapped]
+        public List<ParHeaderFieldGeral> ParHeaderFieldsGeral { get; set; }
     }
 }

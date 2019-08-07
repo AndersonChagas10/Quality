@@ -51,8 +51,12 @@ namespace SgqSystem.Controllers.V2.Api
                         parHeaderFieldGeral.Description = parHeaderFieldGeral.Description ?? "";
                         parHeaderFieldGeral.IsActive = true;
                         parHeaderFieldGeral.ParLevelHeaderField_Id = 3;// ParLevelHeaderField.Id = 3 - ParDeparment
-                        db.Entry(parHeaderFieldGeral.ParMultipleValuesGeral).State = EntityState.Detached;
-                        db.Entry(parHeaderFieldGeral.ParLevelHeaderField).State = EntityState.Detached;
+                        for (int i = 0; i < parHeaderFieldGeral.ParMultipleValuesGeral.Count; i++)
+                        {
+                            db.Entry(parHeaderFieldGeral.ParMultipleValuesGeral.ElementAt(i)).State = EntityState.Detached;
+                        }
+                        if (parHeaderFieldGeral.ParLevelHeaderField != null)
+                            db.Entry(parHeaderFieldGeral.ParLevelHeaderField).State = EntityState.Detached;
                         db.ParHeaderFieldGeral.Add(parHeaderFieldGeral);
                     }
 

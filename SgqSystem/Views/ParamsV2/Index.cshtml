@@ -172,12 +172,12 @@
         @*@Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")*@
 
         @*<div class="row">
-            <div class="col-sm-3">
-                <label for="ParCompany_Id">Unidade:</label>
-                <select id="selectParCompanyGeral" class="input input-lg col-sm-6"
-                        name="ParCompany_Id"></select>
-            </div>
-        </div>*@
+                <div class="col-sm-3">
+                    <label for="ParCompany_Id">Unidade:</label>
+                    <select id="selectParCompanyGeral" class="input input-lg col-sm-6"
+                            name="ParCompany_Id"></select>
+                </div>
+            </div>*@
 
         <div class="row">
             <div class="col-sm-12" style="padding:0px 30px">
@@ -217,10 +217,10 @@
 
                         <a data-toggle="tab" href="#l1">
                             Indicador (Level 1)
-                             <span data-reset class="fa fa-plus pull-right" style="cursor:pointer;"></span>
+                            <span data-reset class="fa fa-plus pull-right" style="cursor:pointer;"></span>
                             <select id="selectL1" class="input input-lg col-sm-12"></select>
                         </a>
-                       
+
                     </li>
                     <li class="col-sm-3">
                         <a data-toggle="tab" href="#l2">
@@ -311,20 +311,20 @@
                                         </a>
                                     </li>
                                     @*<li>
-                                        <a href="#l2_avam" data-toggle="tab">
-                                            Avaliação e Amostra
-                                        </a>
-                                    </li>*@
-                                    @*<li>
+                                            <a href="#l2_avam" data-toggle="tab">
+                                                Avaliação e Amostra
+                                            </a>
+                                        </li>*@
+                                    <li>
                                         <a href="#l2_cabecalho" data-toggle="tab">
                                             Cabeçalhos no monitoramento
                                         </a>
-                                    </li>*@
+                                    </li>
                                     @*<li>
-                                        <a href="#l2_contador" data-toggle="tab">
-                                            Contadores
-                                        </a>
-                                    </li>*@
+                                            <a href="#l2_contador" data-toggle="tab">
+                                                Contadores
+                                            </a>
+                                        </li>*@
                                 </ul>
                             </div>
                             <div class="col-xs-9">
@@ -336,11 +336,11 @@
                                         @Html.Partial("ParL2Avancados")
                                     </div>
                                     @*<div class="tab-pane" id="l2_avam">
-                                        @Html.Partial("ParL2Avam")
-                                    </div>*@
-                                    @*<div class="tab-pane" id="l2_cabecalho">
+                                            @Html.Partial("ParL2Avam")
+                                        </div>*@
+                                    <div class="tab-pane" id="l2_cabecalho">
                                         @Html.Partial("ParL2Cabecalho")
-                                    </div>*@
+                                    </div>
                                     <div class="tab-pane" id="l2_contador">
                                         @Html.Partial("ParL2Contador")
                                     </div>
@@ -363,10 +363,10 @@
                                         </a>
                                     </li>
                                     @*<li>
-                                        <a href="#l3_avam" data-toggle="tab">
-                                            Avaliação e Amostra
-                                        </a>
-                                    </li>*@
+                                            <a href="#l3_avam" data-toggle="tab">
+                                                Avaliação e Amostra
+                                            </a>
+                                        </li>*@
                                     <li>
                                         <a href="#l3_peso" data-toggle="tab">
                                             Vincular Peso
@@ -895,6 +895,7 @@
                     preencheCampos('l2', '', data.Parlevel2, true)
                     ParL2Geral.set(data.Parlevel2);
                     ParL2Avancados.set(data.Parlevel2);
+                    parL2Cabecalho.load(data.Parlevel2.ParHeaderFieldsGeral);
                     verifyTabs('selectL2', 'l2');
                     closeLoader();
                 },
@@ -1036,6 +1037,7 @@
                 preencheSelect('selectParScoreType', 'Name', 'Id', data.ParScoreTypes, 'Selecione o tipo de Score');
                 //preencheSelect('selectL1ParLevelDefiniton', 'Name', 'Id', data.ParLevelDefinitons, 'Selecione onde deve aparecer o cabeçalho');
                 preencheSelect('selectL1ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
+                
 
                 preencheSelect('selectL3GeralParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
 
@@ -1043,6 +1045,7 @@
 
                 preencheSelect('selectL2AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL2AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
+                preencheSelect('selectL2ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
 
                 parCompanysGlobal = data.ParCompanys
                 preencheSelect('selectParCompanyGeral', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');

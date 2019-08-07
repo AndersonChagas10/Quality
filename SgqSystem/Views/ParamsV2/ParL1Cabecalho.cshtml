@@ -186,7 +186,7 @@
         id: 'ParL1Cabecalho',
         urlSave: '@Url.Action("PostParHeaderFieldGeral", "api/ParLevel1Api")',
         load: function (ParHeaderFieldsGeral) {
-            debugger
+            
             let id = this.id;
 
             apagaCampos(id);
@@ -263,7 +263,7 @@
 
                 case 1: // Multipla Escolha
 
-                    $TblParMultipeValues = $('#tblOpcaoMultiplaEscolha');
+                    $TblParMultipeValues = $('#ParL1Cabecalho #tblOpcaoMultiplaEscolha');
 
                     obj['ParMultipleValuesGeral'].push({
                         //ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
@@ -289,10 +289,9 @@
                         return false;
                     }
 
-                    $TblParMultipeValues = $('#tblBinario');
+                    $TblParMultipeValues = $('#ParL1Cabecalho #tblBinario');
 
                     obj['ParMultipleValuesGeral'].push({
-                        //ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderFieldGeral: $('#ParL1Cabecalho #Name').val(),
                         Id: 0,
                         Name: $TblParMultipeValues.find('#objBinarioPunishmentName1').val(),
@@ -304,7 +303,6 @@
                     });
 
                     obj['ParMultipleValuesGeral'].push({
-                        //ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderFieldGeral: $('#ParL1Cabecalho #Name').val(),
                         Name: $TblParMultipeValues.find('#objBinarioPunishmentName2').val(),
                         Id: 0,
@@ -331,7 +329,7 @@
             //pega os dados do form e transforma em obj
             obj = parL1Cabecalho.prepareParHeaderField(obj);
 
-            $('#camposCabecalhoIncluidos tbody').empty();
+            $('#ParL1Cabecalho #camposCabecalhoIncluidos tbody').empty();
 
             let ParHeaderFieldGeral = "";
             let parLevelDefiniton = "";
@@ -365,16 +363,16 @@
 
         showTableParMultipleValues: function () {
 
-            if ($('#camposCabecalhoIncluidos tbody tr').length) {
-                $('#divCamposCabecalhoIncluidos').show();
+            if ($('#ParL1Cabecalho #camposCabecalhoIncluidos tbody tr').length) {
+                $('#ParL1Cabecalho #divCamposCabecalhoIncluidos').show();
             } else {
-                $('#divCamposCabecalhoIncluidos').hide();
+                $('#ParL1Cabecalho #divCamposCabecalhoIncluidos').hide();
             }
 
         },
 
         reloadTable: function () {
-            $('#camposCabecalhoIncluidos tbody').empty();
+            $('#ParL1Cabecalho #camposCabecalhoIncluidos tbody').empty();
         },
 
         excludeTable: function (i) {
@@ -398,8 +396,8 @@
                 this.insertTable(obj);
 
             } else {
-                $('#camposCabecalhoIncluidos tbody').empty();
-                $('#divCamposCabecalhoIncluidos').hide();
+                $('#ParL1Cabecalho #camposCabecalhoIncluidos tbody').empty();
+                $('#ParL1Cabecalho #divCamposCabecalhoIncluidos').hide();
             }
         },
 
@@ -435,8 +433,6 @@
 
     //Adicionar os dados no data-form
     $('#' + parL1Cabecalho.id).on('click', '[data-table-edit]', function (e) {
-
-        debugger
 
         scrollToForm();
         var obj = $(this).parents('tr').data('sgq');
@@ -502,10 +498,8 @@
     //Salvar o campo editado ou cria um novo
     $('#' + parL1Cabecalho.id).on('click', '[data-edit],[data-add]', function (e) {
 
-        debugger
-
-        $('#objMultiplaEscolha').hide();
-        $('#objBinario').hide();
+        $('#ParL1Cabecalho #objMultiplaEscolha').hide();
+        $('#ParL1Cabecalho #objBinario').hide();
 
         var obj = $('#' + parL1Cabecalho.id + ' [data-form]').data('sgq');
         var formdata = $('#' + parL1Cabecalho.id + ' [data-form]').serializeFormToObjetc();
@@ -632,32 +626,30 @@
 
         hideAllOptions();
 
-        //limpar arr ParMultipleValues?
-
         let parFieldType_Id = parseInt($(this).val());
 
         switch (parFieldType_Id) {
 
             case 1: // Multipla Escolha
-                $('#objMultiplaEscolha').show();
+                $('#ParL1Cabecalho #objMultiplaEscolha').show();
                 break;
 
             case 3:	// Binario
-                $('#objBinario').show();
+                $('#ParL1Cabecalho #objBinario').show();
                 break;
 
             case 8:	// Informações
-                $('#objWithDescription').show();
+                $('#ParL1Cabecalho #objWithDescription').show();
                 //Inserir direto
                 break;
 
             case 9:	// Parâmetro
-                $('#objWithDescription').show();
+                $('#ParL1Cabecalho #objWithDescription').show();
                 //Inserir direto
                 break;
 
             case 10: //Dinâmico
-                $('#objWithDescription').show();
+                $('#ParL1Cabecalho #objWithDescription').show();
                 //Inserir direto
                 break;
 
@@ -668,10 +660,10 @@
 
     let hideAllOptions = function () {
 
-        $('#objMultiplaEscolha').hide();
-        $('#objBinario').hide();
-        $('#objInformacoes').hide();
-        $('#objWithDescription').hide();
+        $('#ParL1Cabecalho #objMultiplaEscolha').hide();
+        $('#ParL1Cabecalho #objBinario').hide();
+        $('#ParL1Cabecalho #objInformacoes').hide();
+        $('#ParL1Cabecalho #objWithDescription').hide();
 
     }
 

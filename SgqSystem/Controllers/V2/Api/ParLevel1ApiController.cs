@@ -90,7 +90,11 @@ namespace SgqSystem.Controllers.V2.Api
                 parLevel1 = db.ParLevel1.Where(x => x.Id == id).FirstOrDefault();
 
                 parLevel1.ParLevel1XCluster = db.ParLevel1XCluster.Where(x => x.IsActive && x.ParLevel1_Id == parLevel1.Id).ToList();
-                parLevel1.ParHeaderFieldsGeral = db.ParHeaderFieldGeral.Where(x => x.IsActive && x.ParLevelHeaderField_Id == 1 && x.Generic_Id == parLevel1.Id).Include("ParMultipleValuesGeral").Include("ParFieldType").ToList();
+                parLevel1.ParHeaderFieldsGeral = db.ParHeaderFieldGeral
+                    .Where(x => x.IsActive && x.ParLevelHeaderField_Id == 1 && x.Generic_Id == parLevel1.Id)
+                    .Include("ParMultipleValuesGeral")
+                    .Include("ParFieldType")
+                    .ToList();
 
                 foreach (var item in parLevel1.ParLevel1XCluster)
                 {
@@ -263,8 +267,12 @@ namespace SgqSystem.Controllers.V2.Api
                         parHeaderFieldGeral.Description = parHeaderFieldGeral.Description ?? "";
                         parHeaderFieldGeral.IsActive = true;
                         parHeaderFieldGeral.ParLevelHeaderField_Id = 1;// ParLevelHeaderField.Id = 1 - ParLevel1
-                        db.Entry(parHeaderFieldGeral.ParMultipleValuesGeral).State = EntityState.Detached;
-                        db.Entry(parHeaderFieldGeral.ParLevelHeaderField).State = EntityState.Detached;
+                        for (int i = 0; i < parHeaderFieldGeral.ParMultipleValuesGeral.Count; i++)
+                        {
+                            db.Entry(parHeaderFieldGeral.ParMultipleValuesGeral.ElementAt(i)).State = EntityState.Detached;
+                        }
+                        if (parHeaderFieldGeral.ParLevelHeaderField != null)
+                            db.Entry(parHeaderFieldGeral.ParLevelHeaderField).State = EntityState.Detached;
                         db.ParHeaderFieldGeral.Add(parHeaderFieldGeral);
                     }
 
