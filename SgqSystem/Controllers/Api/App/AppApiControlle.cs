@@ -43,47 +43,47 @@ namespace SgqSystem.Controllers.Api.App
         /// Sobrescreve a tela do tablet para todas as unidades.
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        [Route("UpdateTelaDoTablet")]
-        public RetornoParaTablet UpdateTelaDoTablet()
-        {
-            CommonLog.SaveReport("Update_GetTelaAll");
+        //[HttpGet]
+        //[Route("UpdateTelaDoTablet")]
+        //public RetornoParaTablet UpdateTelaDoTablet()
+        //{
+        //    CommonLog.SaveReport("Update_GetTelaAll");
 
-            GlobalConfig.ParamsDisponiveis = string.Empty;
+        //    GlobalConfig.ParamsDisponiveis = string.Empty;
 
-            if (GlobalConfig.PaginaDoTablet == null)
-                GlobalConfig.PaginaDoTablet = new Dictionary<int, HtmlDoTablet>();
+        //    if (GlobalConfig.PaginaDoTablet == null)
+        //        GlobalConfig.PaginaDoTablet = new Dictionary<int, HtmlDoTablet>();
 
-            var units = db.ParCompany.Where(r => r.IsActive).ToList();
+        //    var units = db.ParCompany.Where(r => r.IsActive).ToList();
 
-            var shifts = db.Shift.ToList();
-            shifts.Insert(0, new Shift());
+        //    var shifts = db.Shift.ToList();
+        //    shifts.Insert(0, new Shift());
 
-            using (var service = new SyncServices())
-            {
-                foreach (var shift in shifts)
-                {
-                    foreach (var i in units)
-                    {
-                        var atualizado = service.getAPPLevels(56, i.Id, DateTime.Now, shift.Id);
-                        try
-                        {
-                            this.SaveFile(i.Id, atualizado, shift.Id);
-                            GlobalConfig.PaginaDoTablet.Add(i.Id, new HtmlDoTablet() { /*Html = atualizado,*/ DataFim = DateTime.Now, DataInicio = DateTime.Now });
-                            GlobalConfig.ParamsDisponiveis += i.Id.ToString();
-                        }
-                        catch (Exception e)
-                        {
-                            new CreateLog(e, i);
-                        }
+        //    using (var service = new SyncServices())
+        //    {
+        //        foreach (var shift in shifts)
+        //        {
+        //            foreach (var i in units)
+        //            {
+        //                var atualizado = service.getAPPLevels(56, i.Id, DateTime.Now, shift.Id);
+        //                try
+        //                {
+        //                    this.SaveFile(i.Id, atualizado, shift.Id);
+        //                    GlobalConfig.PaginaDoTablet.Add(i.Id, new HtmlDoTablet() { /*Html = atualizado,*/ DataFim = DateTime.Now, DataInicio = DateTime.Now });
+        //                    GlobalConfig.ParamsDisponiveis += i.Id.ToString();
+        //                }
+        //                catch (Exception e)
+        //                {
+        //                    new CreateLog(e, i);
+        //                }
 
-                    }
-                }
-            }
+        //            }
+        //        }
+        //    }
 
-            return new RetornoParaTablet() { ready = true };
+        //    return new RetornoParaTablet() { ready = true };
 
-        }
+        //}
 
         /// <summary>
         /// Atualiza, se existir, a tela do tablet para determinada unidade.
@@ -92,16 +92,33 @@ namespace SgqSystem.Controllers.Api.App
         /// <returns></returns>
         [HttpGet]
         [Route("UpdateTelaDoTablet/{UnitId}")]
-        public RetornoParaTablet UpdateTelaDoTablet(int UnitId)
+        public RetornoParaTablet UpdateTelaDoTablet(int UnitId, out bool liberarFilaSemaforoThread)
         {
+            liberarFilaSemaforoThread = true;
             CommonLog.SaveReport(UnitId, "Update_GetTela");
 
             if (GlobalConfig.PaginaDoTablet == null)
                 GlobalConfig.PaginaDoTablet = new Dictionary<int, HtmlDoTablet>();
 
+            lock (GlobalConfig.PaginaDoTablet)
+            {
+                if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId)
+                    && GlobalConfig.PaginaDoTablet[UnitId] != null
+                    && GlobalConfig.PaginaDoTablet[UnitId].Status != HtmlDoTablet.StatusType.SUCESSO
+                    && GlobalConfig.PaginaDoTablet[UnitId].Status != HtmlDoTablet.StatusType.ERROR
+                    && GlobalConfig.PaginaDoTablet[UnitId].DataInicio?.AddMinutes(15) > DateTime.Now)
+                {
+                    liberarFilaSemaforoThread = false;
+                    return null;
+                }
+            }
+
             CreateItemIfNotExist(UnitId);
+            GlobalConfig.PoolSemaphore.WaitOne();
+
             GlobalConfig.PaginaDoTablet[UnitId].Status = HtmlDoTablet.StatusType.PROCESSANDO;
             GlobalConfig.PaginaDoTablet[UnitId].DataInicio = DateTime.Now;
+            
 
             var shifts = this.listaDeShift;
 
@@ -352,22 +369,10 @@ namespace SgqSystem.Controllers.Api.App
 
         private void ThreadManager(int id)
         {
+            bool liberarFilaSemaforoThread = false;
             try
             {
-                CreateItemIfNotExist(id);
-
-                GlobalConfig.PoolSemaphore.WaitOne();
-                if (GlobalConfig.PaginaDoTablet != null
-                    &&
-                    ((GlobalConfig.PaginaDoTablet[id] != null
-                        &&
-                        (GlobalConfig.PaginaDoTablet[id].DataFim != null
-                        || GlobalConfig.PaginaDoTablet[id].DataInicio == null))
-                    ||
-                    GlobalConfig.PaginaDoTablet[id] == null))
-                {
-                    UpdateTelaDoTablet(id);
-                }
+                UpdateTelaDoTablet(id, out liberarFilaSemaforoThread);
             }
             catch (Exception ex)
             {
@@ -380,7 +385,10 @@ namespace SgqSystem.Controllers.Api.App
             }
             finally
             {
-                GlobalConfig.PoolSemaphore.Release();
+                if (liberarFilaSemaforoThread)
+                {
+                    GlobalConfig.PoolSemaphore.Release();
+                }
             }
         }
 
@@ -392,7 +400,13 @@ namespace SgqSystem.Controllers.Api.App
             }
             else
             {
-                GlobalConfig.PaginaDoTablet[id] = new HtmlDoTablet() { };
+                if(GlobalConfig.PaginaDoTablet[id] == null)
+                {
+                    GlobalConfig.PaginaDoTablet[id] = new HtmlDoTablet() { };
+                }
+                GlobalConfig.PaginaDoTablet[id].Status = HtmlDoTablet.StatusType.PENDENTE;
+                GlobalConfig.PaginaDoTablet[id].DataInicio = DateTime.Now;
+                GlobalConfig.PaginaDoTablet[id].DataFim = null;
             }
         }
 
