@@ -21,19 +21,19 @@ namespace SgqSystem.Controllers.Params
         }
 
         // GET: ParCargo/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    ParCargo parCargo = db.ParCargo.Find(id);
-        //    if (parCargo == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(parCargo);
-        //}
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ParCargo parCargo = db.ParCargo.Find(id);
+            if (parCargo == null)
+            {
+                return HttpNotFound();
+            }
+            return View(parCargo);
+        }
 
         public ActionResult Create()
         {
