@@ -411,6 +411,7 @@
     <Compile Include="Controllers\ParAlertTypesController.cs" />
     <Compile Include="Controllers\Params\ParCargoController.cs" />
     <Compile Include="Controllers\Params\ParColaboradorController.cs" />
+    <Compile Include="Controllers\ParCargoXDepartmentsController.cs" />
     <Compile Include="Controllers\ParConsolidationTypesController.cs" />
     <Compile Include="Controllers\ParLevel3InputTypeController.cs" />
     <Compile Include="Controllers\ParLevel3XModuleController.cs" />
@@ -2101,6 +2102,12 @@
     <Content Include="Views\Relatorios\RH\NaoConformidadeRH.cshtml" />
     <Content Include="Views\Shared\_ClusterRegionalUnidadeCriticalLevel123RH.cshtml" />
     <Content Include="Views\Relatorios\RH\EvolutivoRH.cshtml" />
+    <Content Include="Views\ParCargoXDepartments\Create.cshtml" />
+    <Content Include="Views\ParCargoXDepartments\Delete.cshtml" />
+    <Content Include="Views\ParCargoXDepartments\Details.cshtml" />
+    <Content Include="Views\ParCargoXDepartments\Edit.cshtml" />
+    <Content Include="Views\ParCargoXDepartments\Index.cshtml" />
+    <Content Include="Views\Relatorios\RH\VGARH.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

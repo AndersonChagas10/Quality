@@ -16,7 +16,7 @@ namespace Dominio
 
         public bool IsActive { get; set; }
 
-        public decimal Points { get; set; }
+        public decimal? Points { get; set; }
 
         public DateTime? EffectiveDateEnd { get; set; }
 

@@ -267,6 +267,12 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult VisaoGeralDaAreaRH()
+        {
+            return View("~/Views/Relatorios/RH/VGARH.cshtml", form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult NaoConformidadePorCabecalho()
         {
             return View(form);

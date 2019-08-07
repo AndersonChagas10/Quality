@@ -72,6 +72,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,IsActive,Points,EffectiveDateEnd,EffectiveDateStart,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParDepartment_Id,ParModule_Id,AddDate,AlterDate")] ParLevel3XModule parLevel3XModule)
         {
+            ValidaCamposObrigatorios(parLevel3XModule);
             if (ModelState.IsValid)
             {
                 db.ParLevel3XModule.Add(parLevel3XModule);
@@ -103,6 +104,37 @@ namespace SgqSystem.Controllers
             parModuleList.Insert(0, new ParModule() { Id = 0, Name = "Selecione" });
             ViewBag.ParModule_Id = new SelectList(parModuleList, "Id", "Name");
             return View(parLevel3XModule);
+        }
+
+        private void ValidaCamposObrigatorios(ParLevel3XModule parLevel3XModule)
+        {
+            if (parLevel3XModule.Name == null)
+                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+
+            if (parLevel3XModule.Points == null)
+                ModelState.AddModelError("Points", Resources.Resource.required_field + " " + Resources.Resource.impact);
+
+            if (parLevel3XModule.EffectiveDateStart == null)
+                ModelState.AddModelError("EffectiveDateStart", Resources.Resource.required_field + " " + Resources.Resource.effective_date_start);
+
+            if (parLevel3XModule.ParLevel1_Id == 0 || parLevel3XModule.ParLevel1_Id < 0)
+                ModelState.AddModelError("ParLevel1_Id", Resources.Resource.required_field + " " + Resources.Resource.level1);
+
+            if (parLevel3XModule.ParLevel2_Id == 0 || parLevel3XModule.ParLevel2_Id < 0)
+                ModelState.AddModelError("ParLevel2_Id", Resources.Resource.required_field + " " + Resources.Resource.level2);
+
+            if (parLevel3XModule.ParLevel3_Id == 0 || parLevel3XModule.ParLevel3_Id < 0)
+                ModelState.AddModelError("ParLevel3_Id", Resources.Resource.required_field + " " + Resources.Resource.level3);
+
+            if (parLevel3XModule.ParCompany_Id == 0 || parLevel3XModule.ParCompany_Id < 0)
+                ModelState.AddModelError("ParCompany_Id", Resources.Resource.required_field + " " + Resources.Resource.company);
+
+            if (parLevel3XModule.ParModule_Id == 0 || parLevel3XModule.ParModule_Id < 0)
+                ModelState.AddModelError("ParModule_Id", Resources.Resource.required_field + " " + Resources.Resource.parModule);
+
+            if (parLevel3XModule.ParDepartment_Id == 0 || parLevel3XModule.ParDepartment_Id < 0)
+                ModelState.AddModelError("ParDepartment_Id", Resources.Resource.required_field + " " + Resources.Resource.department);
+
         }
 
         // GET: ParLevel3XModule/Edit/5
@@ -152,6 +184,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,IsActive,Points,EffectiveDateEnd,EffectiveDateStart,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParDepartment_Id,ParModule_Id,AddDate,AlterDate")] ParLevel3XModule parLevel3XModule)
         {
+            ValidaCamposObrigatorios(parLevel3XModule);
             if (ModelState.IsValid)
             {
                 db.Entry(parLevel3XModule).State = EntityState.Modified;
