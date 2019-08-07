@@ -512,7 +512,7 @@
 
         if (!(typeof (obj) == 'undefined')) {
             obj = atualizaValoresDoObjeto(obj, formdata);
-            obj.ParLevel1_Id = $('[data-id]').val();
+            obj.ParLevel1_Id = $('#l1 [data-id]').val();
         } else {
             obj = null;
             obj = atualizaValoresDoObjeto(obj, formdata);

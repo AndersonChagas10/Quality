@@ -881,7 +881,9 @@
             $("#ParL2Geral").find("[name='IsActive']").prop('checked', false);
 
         if (parseInt($(this).val()) > 0) {
+
             openLoader(Resources("please_wait"));
+
             $.ajax({
                 url: `@Url.Action("Get", "api/ParLevel2Api")/${$(this).val()}`,
                 type: 'Get',
@@ -893,7 +895,6 @@
                     preencheCampos('l2', '', data.Parlevel2, true)
                     ParL2Geral.set(data.Parlevel2);
                     ParL2Avancados.set(data.Parlevel2);
-                    //parL2Avam.load(data.Parlevel2.ParEvaluation);
                     verifyTabs('selectL2', 'l2');
                     closeLoader();
                 },
@@ -1006,7 +1007,7 @@
                     }
 
                     parDCRotina.load(data.ParDepartmentXRotinaIntegracao);
-                    parDCCabecalho.load(data.ParDepartmentXHeaderField);
+                    parDCCabecalho.load(data.ParHeaderFieldGeral);
                     closeLoader();
                 },
                 error: function (request, error) {
