@@ -20,7 +20,8 @@ namespace SgqSystem.Controllers.V2.Api
             public List<ParEvaluationXDepartmentXCargo> ParEvaluationXDepartmentXCargo { get; set; }
             public List<ParCargo> ParCargo { get; set; }
             public List<ParDepartmentXRotinaIntegracao> ParDepartmentXRotinaIntegracao { get; set; }
-            public List<ParDepartmentXHeaderField> ParDepartmentXHeaderField { get; set; }
+            //public List<ParDepartmentXHeaderField> ParDepartmentXHeaderField { get; set; }
+            public List<ParHeaderFieldGeral> ParHeaderFieldGeral { get; set; }
         }
 
         [HttpGet]
@@ -64,11 +65,18 @@ namespace SgqSystem.Controllers.V2.Api
 
                 parEvaluationXDepartmentXCargoResult.ParDepartmentXRotinaIntegracao = db.ParDepartmentXRotinaIntegracao.Where(x => x.ParDepartment_Id == id && x.IsActive).Include(y => y.RotinaIntegracao).ToList();
 
-                parEvaluationXDepartmentXCargoResult.ParDepartmentXHeaderField = db.ParDepartmentXHeaderField.Where(x => x.ParDepartment_Id == id && x.IsActive)
-                    .Include(y => y.ParHeaderField)
-                    .Include(u => u.ParHeaderField.ParLevelDefiniton)
-                    .Include(x => x.ParHeaderField.ParMultipleValues)
-                    .Include(x => x.ParHeaderField.ParFieldType)
+                //parEvaluationXDepartmentXCargoResult.ParDepartmentXHeaderField = db.ParDepartmentXHeaderField.Where(x => x.ParDepartment_Id == id && x.IsActive)
+                //    .Include(y => y.ParHeaderField)
+                //    .Include(u => u.ParHeaderField.ParLevelDefiniton)
+                //    .Include(x => x.ParHeaderField.ParMultipleValues)
+                //    .Include(x => x.ParHeaderField.ParFieldType)
+                //    .ToList();
+
+                const int parLevelHeaderField = 3; //Department
+
+                parEvaluationXDepartmentXCargoResult.ParHeaderFieldGeral = db.ParHeaderFieldGeral.Where(x => x.ParLevelHeaderField_Id == parLevelHeaderField && x.Generic_Id == id && x.IsActive)
+                    .Include(x => x.ParMultipleValuesGeral)
+                    .Include(x => x.ParFieldType)
                     .ToList();
             }
 
@@ -181,7 +189,7 @@ namespace SgqSystem.Controllers.V2.Api
         }
 
         private void SalvarEditarAgendamento(ParEvaluationXDepartmentXCargo parEvaluationXDepartmentXCargo, int? parEvaluationXDepartamentoXCargoSalvo_Id)
-        {          
+        {
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 foreach (var item in parEvaluationXDepartmentXCargo.ParEvaluationSchedule)

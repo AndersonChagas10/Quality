@@ -13,9 +13,7 @@ namespace SgqSystem.Controllers.V2.Api
     [RoutePrefix("api/ParLevel2Api")]
     public class ParLevel2ApiController : BaseApiController
     {
-        //private SgqDbDevEntities db = new SgqDbDevEntities();
 
-        // GET: api/ParLevel1Api
         [HttpGet]
         [Route("Get")]
         public IHttpActionResult GetParLevel2()
@@ -33,9 +31,9 @@ namespace SgqSystem.Controllers.V2.Api
 
         [HttpGet]
         [Route("Get/{id}")]
-        public IHttpActionResult GetParLevel1(int id)
+        public IHttpActionResult GetParLevel2(int id)
         {
-            ParLevel2Result parlevel1Result = new ParLevel2Result();
+            ParLevel2Result parLevel2Result = new ParLevel2Result();
             ParLevel2 parLevel2 = new ParLevel2();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
@@ -48,11 +46,20 @@ namespace SgqSystem.Controllers.V2.Api
                     return NotFound();
                 }
 
-                parlevel1Result.Parlevel2 = parLevel2;
-                parlevel1Result.Parlevel2.ParEvaluation = db.ParEvaluation.Where(x => x.IsActive && x.ParLevel2_Id == parLevel2.Id).ToList();
+                parLevel2Result.Parlevel2 = parLevel2;
+                parLevel2Result.Parlevel2.ParEvaluation = db.ParEvaluation.Where(x => x.IsActive && x.ParLevel2_Id == parLevel2.Id).ToList();
+
+                const int parLevelHeaderField_Id = 2; //ParLevelHeaderField = 2 = ParLevel2 
+
+                parLevel2Result.Parlevel2.ParHeaderFieldsGeral = db.ParHeaderFieldGeral
+                    .Where(x => x.IsActive && x.ParLevelHeaderField_Id == parLevelHeaderField_Id && x.Generic_Id == parLevel2.Id)
+                    .Include("ParMultipleValuesGeral")
+                    .Include("ParFieldType")
+                    .ToList();
+
             }
 
-            return Ok(parlevel1Result);
+            return Ok(parLevel2Result);
         }
 
         [HttpGet]
@@ -102,6 +109,99 @@ namespace SgqSystem.Controllers.V2.Api
             }
 
             return Ok(select);
+        }
+
+        [HttpPost]
+        [Route("PostParHeaderFieldGeral")]
+        public IHttpActionResult PostParHeaderField(ParHeaderFieldGeral saveParHeaderFieldGeral)
+        {
+            SaveOrUpdateParHeaderField(saveParHeaderFieldGeral);
+
+            SaveOrUpdateParMultipleValues(saveParHeaderFieldGeral);
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        private int SaveOrUpdateParHeaderField(ParHeaderFieldGeral parHeaderFieldGeral)
+        {
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (parHeaderFieldGeral.Id > 0)
+                    {
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var parHeaderFieldToUpdate = db.ParHeaderFieldGeral.Find(parHeaderFieldGeral.Id);
+                        parHeaderFieldToUpdate.Name = parHeaderFieldGeral.Name;
+                        parHeaderFieldToUpdate.ParFieldType_Id = parHeaderFieldGeral.ParFieldType_Id;
+                        parHeaderFieldToUpdate.LinkNumberEvaluation = parHeaderFieldGeral.LinkNumberEvaluation;
+                        parHeaderFieldToUpdate.Description = parHeaderFieldGeral.Description;
+                        parHeaderFieldToUpdate.IsActive = parHeaderFieldGeral.IsActive;
+                        parHeaderFieldToUpdate.IsRequired = parHeaderFieldGeral.IsRequired;
+                        parHeaderFieldToUpdate.Duplicate = parHeaderFieldGeral.Duplicate;
+                        parHeaderFieldToUpdate.AlterDate = DateTime.Now;
+                    }
+                    else
+                    {
+                        parHeaderFieldGeral.AddDate = DateTime.Now;
+                        parHeaderFieldGeral.Description = parHeaderFieldGeral.Description ?? "";
+                        parHeaderFieldGeral.IsActive = true;
+                        parHeaderFieldGeral.ParLevelHeaderField_Id = 2;// ParLevelHeaderField.Id = 2 - ParLevel2
+
+                        for (int i = 0; i < parHeaderFieldGeral.ParMultipleValuesGeral.Count; i++)
+                        {
+                            db.Entry(parHeaderFieldGeral.ParMultipleValuesGeral.ElementAt(i)).State = EntityState.Detached;
+                        }
+                        if (parHeaderFieldGeral.ParLevelHeaderField != null)
+                            db.Entry(parHeaderFieldGeral.ParLevelHeaderField).State = EntityState.Detached;
+                        db.ParHeaderFieldGeral.Add(parHeaderFieldGeral);
+                    }
+
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+
+                return parHeaderFieldGeral.Id;
+            }
+        }
+
+        private bool SaveOrUpdateParMultipleValues(ParHeaderFieldGeral parHeaderFieldGeral)
+        {
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (parHeaderFieldGeral.ParMultipleValuesGeral.Count > 0)
+                    {
+                        foreach (var parMultipleValue in parHeaderFieldGeral.ParMultipleValuesGeral)
+                        {
+                            if (parMultipleValue.Id > 0)
+                            {
+                                parMultipleValue.ParHeaderFieldGeral = null;
+                                db.Entry(parMultipleValue).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+                                parMultipleValue.ParHeaderFieldGeral_Id = parHeaderFieldGeral.Id;
+                                parMultipleValue.AddDate = DateTime.Now;
+                                parMultipleValue.Description = "";
+                                db.ParMultipleValuesGeral.Add(parMultipleValue);
+                            }
+                        }
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+
+                return true;
+            }
         }
 
         private bool ParLevel1Exists(int id)

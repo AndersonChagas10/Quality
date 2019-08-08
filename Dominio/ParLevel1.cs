@@ -166,5 +166,8 @@ namespace Dominio
         public virtual ICollection<ParNotConformityRuleXLevel> ParNotConformityRuleXLevel { get; set; }
 
         public virtual ICollection<ParRelapse> ParRelapse { get; set; }
+
+        [NotMapped]
+        public List<ParHeaderFieldGeral> ParHeaderFieldsGeral { get; set; }
     }
 }

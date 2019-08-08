@@ -8,18 +8,18 @@
         <div class="col-sm-3">
 
             <input type="hidden" name="ParHeaderField_Id" />
-            <input type="hidden" name="ParDepartment_Id" data-idDepartment />
+            <input type="hidden" name="ParDepartment_Id" data-id />
             <input type="hidden" name="Id" />
             <input type="hidden" name="IsActive" value="true" data-notnull />
 
-            <div class="form-group">
+            @*<div class="form-group">
                 <label for="ParCluster_Id">Nível do campo:</label>
                 <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12 required" name="ParLevelDefinition_Id"></select>
-            </div>
+            </div>*@
 
-        </div>
+        @*</div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-3">*@
 
             <div class="form-group">
                 <label for="ParCriticalLevel_Id">Tipo:</label>
@@ -151,9 +151,6 @@
                 <thead>
                     <tr>
                         <th class="col-sm-2">
-                            Nível do campo
-                        </th>
-                        <th class="col-sm-2">
                             Nome
                         </th>
                         <th class="col-sm-2">
@@ -187,7 +184,7 @@
         id: 'ParDCCabecalho',
         urlSave: '@Url.Action("PostParDepartmentxHeaderField", "api/ParDepartmentXHeaderFieldApi")',
 
-        load: function (ParDepartmentXHeaderFields) {
+        load: function (ParHeaderFieldsGeral) {
             let id = this.id;
 
             apagaCampos(id);
@@ -200,20 +197,19 @@
             $('#tableParDCCabecalho select,#tableParDCCabecalho input,#tableParDCCabecalho button').prop('disabled', false);
             $('#' + id + ' #divBtnCancelar').hide();
             
-            $(ParDepartmentXHeaderFields).each(function (i, o) {
+            $(ParHeaderFieldsGeral).each(function (i, o) {
 
-                let previewHeaderField = getPreviewDepartmentHeaderField(o.ParHeaderField);
+                let previewHeaderField = getPreviewDepartmentHeaderField(o);
                 let defaultSelected = "";
 
-                if (o.ParHeaderField.ParFieldType_Id == 1)
+                if (o.ParFieldType_Id == 1)
                     defaultSelected = getDefaultSelectedHeaderField();
 
                 let isChecked = o.IsRequired ? "checked" : "";
 
                 var html = '<tr>';
-                html += '<td>' + o.ParHeaderField.ParLevelDefiniton.Name + '</td>';
-                html += '<td>' + o.ParHeaderField.Name + '</td>';
-                html += '<td>' + o.ParHeaderField.ParFieldType.Name + '</td>';
+                html += '<td>' + o.Name + '</td>';
+                html += '<td>' + o.ParFieldType.Name + '</td>';
                 html += '<td>' + previewHeaderField + '</td>';
                 html += '<td><div class=""><label class="switch"><input type="checkbox" name="IsRequired"' + isChecked + ' ><span class="slider round"></span> </label></div></td>';
                 html += '<td>' + defaultSelected + '</input></td>';
@@ -225,21 +221,20 @@
 
             });
 
-           
-
             this.showTableParMultipleValues();
         },
 
         prepareParHeaderField: function (obj) {
             let formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
 
-            if (typeof (obj['ParHeaderField']) == 'undefined')
-                obj['ParHeaderField'] = {};
+            if (typeof (obj) == 'undefined')
+                obj = {};
 
-            obj['ParHeaderField']['Name'] = formdata.Name;
-            obj['ParHeaderField']['Description'] = formdata.Description;
-            obj['ParHeaderField']['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
-            obj['ParHeaderField']['ParFieldType_Id'] = formdata.ParFieldType_Id;
+            obj['Name'] = formdata.Name;
+            obj['Description'] = formdata.Description;
+            obj['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
+            obj['ParFieldType_Id'] = formdata.ParFieldType_Id;
+            obj['Generic_Id'] = $('[name="ParDepartment_Id"][data-id]').val();
 
             return obj;
         },
@@ -257,11 +252,11 @@
             if (typeof (obj) == 'undefined')
                 obj = {};
 
-            if (typeof (obj['ParHeaderField']) == 'undefined')
-                obj['ParHeaderField'] = {};
+            if (typeof (obj) == 'undefined')
+                obj = {};
 
-            if (typeof (obj['ParHeaderField']['ParMultipleValues']) == 'undefined')
-                obj['ParHeaderField']['ParMultipleValues'] = [];
+            if (typeof (obj['ParMultipleValuesGeral']) == 'undefined')
+                obj['ParMultipleValuesGeral'] = [];
 
             switch (parFieldType_Id) {
 
@@ -269,7 +264,7 @@
 
                     $TblParMultipeValues = $('#tblOpcaoMultiplaEscolhaDepartmentxHeader');
 
-                    obj['ParHeaderField']['ParMultipleValues'].push({
+                    obj['ParMultipleValuesGeral'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParDCCabecalho #Name').val(),
                         Id: 0,
@@ -285,7 +280,7 @@
 
                 case 3:	// Binario
 
-                    if ($.grep(obj['ParHeaderField']['ParMultipleValues'], function (o, i) {
+                    if ($.grep(obj['ParMultipleValuesGeral'], function (o, i) {
                         return o.IsActive == true;
                     }).length > 0) {
 
@@ -295,7 +290,7 @@
 
                     $TblParMultipeValues = $('#tblBinarioDepartmentxHeader');
 
-                    obj['ParHeaderField']['ParMultipleValues'].push({
+                    obj['ParMultipleValuesGeral'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParDCCabecalho #Name').val(),
                         Id: 0,
@@ -307,7 +302,7 @@
                         IsActive: true
                     });
 
-                    obj['ParHeaderField']['ParMultipleValues'].push({
+                    obj['ParMultipleValuesGeral'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParDCCabecalho #Name').val(),
                         Name: $TblParMultipeValues.find('#objBinarioPunishmentName2DepartmentxHeader').val(),
@@ -331,27 +326,13 @@
         },
 
         insertTable: function (obj) {
-
+            debugger
             //pega os dados do form e transforma em obj
             obj = parDCCabecalho.prepareParHeaderField(obj);
 
             $('#camposCabecalhoIncluidosDepartmentxHeader tbody').empty();
 
-            let parHeaderField = "";
-            let parLevelDefiniton = "";
-            try{
-
-                parHeaderField = obj.ParHeaderField.Name;
-                parLevelDefiniton = obj.ParHeaderField.ParLevelDefiniton.Name;
-
-            } catch (e) {
-
-                parHeaderField = obj['ParHeaderField']['ParMultipleValues'][0].ParHeaderField;
-                parLevelDefiniton = obj['ParHeaderField']['ParMultipleValues'][0].ParLevelDefiniton;
-
-            }
-
-            let multipleValues = obj['ParHeaderField']['ParMultipleValues'];
+            let multipleValues = obj['ParMultipleValuesGeral'];
             let blockParFieldType = false;
 
             multipleValues.forEach((o, i) => {
@@ -403,12 +384,12 @@
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (obj) {
-                if (obj.ParHeaderField.ParFieldType.Id == 3) //Se for binário, exclui todos os ParMultipleValues
-                    obj.ParHeaderField.ParMultipleValues.forEach((o, i, a) => {
+                if (obj.ParFieldType.Id == 3) //Se for binário, exclui todos os ParMultipleValues
+                    obj.ParMultipleValuesGeral.forEach((o, i, a) => {
                         a[i].IsActive = false;
                     });
                 else
-                    obj['ParHeaderField']['ParMultipleValues'][i].IsActive = false;
+                    obj['ParMultipleValuesGeral'][i].IsActive = false;
 
                 this.insertTable(obj);
 
@@ -459,14 +440,14 @@
         parDCCabecalho.reloadTable();
         preencheCampos(parDCCabecalho.id + ' [data-form]', '', obj);
         
-        $('#' + parDCCabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderField.ParLevelDefinition_Id);
+        $('#' + parDCCabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParLevelDefinition_Id);
         $('#' + parDCCabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
                 
-        $('#' + parDCCabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParHeaderField.ParFieldType_Id);
+        $('#' + parDCCabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParFieldType_Id);
         $('#' + parDCCabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').trigger('change')
                 
-        $('#' + parDCCabecalho.id + ' [data-form] input[name="Name"]').val(obj.ParHeaderField.Name);
-        $('#' + parDCCabecalho.id + ' [data-form] input[name="Description"]').val(obj.ParHeaderField.Description);
+        $('#' + parDCCabecalho.id + ' [data-form] input[name="Name"]').val(obj.Name);
+        $('#' + parDCCabecalho.id + ' [data-form] input[name="Description"]').val(obj.Description);
                 
         $('#' + parDCCabecalho.id + ' [data-form]').data('sgq', obj);
         $('#' + parDCCabecalho.id + ' [data-form]').addClass('alert alert-success');
@@ -518,7 +499,7 @@
 
         if (!(typeof (obj) == 'undefined')) {
             obj = atualizaValoresDoObjeto(obj, formdata);
-            obj.ParLevel1_Id = $('[data-id]').val();
+            obj.ParLevel1_Id = $('#l1 [data-id]').val();
         } else {
             obj = null;
             obj = atualizaValoresDoObjeto(obj, formdata);
@@ -558,7 +539,7 @@
 
         parMultipleValues_Id = parMultipleValues_Id ? parMultipleValues_Id : null;
 
-        obj.ParHeaderField.ParMultipleValues.forEach((o, i, a) => {
+        obj.ParMultipleValuesGeral.forEach((o, i, a) => {
             a[i].IsDefaultOption = 0;
 
             if (o.Id == parMultipleValues_Id) {
@@ -585,7 +566,7 @@
 
                 let options = '<option>Selecione...</option>';
 
-                headerField.ParMultipleValues.forEach((o) => {
+                headerField.ParMultipleValuesGeral.forEach((o) => {
                     options += `<option value="${o.Id}" ${(o.IsDefaultOption ? "selected" : "")}>${o.Name}</option>`;
                 });
 

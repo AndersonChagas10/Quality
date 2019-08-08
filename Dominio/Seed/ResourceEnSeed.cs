@@ -884,6 +884,10 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "view", Value = "View" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "view_db", Value = "View database" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "longitude", Value = "Longitude" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "table_name", Value = "Table Name" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "interval", Value = "Interval" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "sis_integration", Value = "Systemic Integration" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "identification", Value = "Identification" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));
 

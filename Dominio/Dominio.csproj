@@ -104,8 +104,11 @@
     <Compile Include="ParEvaluationXDepartmentXCargo.cs" />
     <Compile Include="ParColaboradorXCargo.cs" />
     <Compile Include="ParAlert.cs" />
+    <Compile Include="ParHeaderFieldGeral.cs" />
     <Compile Include="ParLevel3XHelp.cs" />
     <Compile Include="ParLevel3XModule.cs" />
+    <Compile Include="ParLevelHeaderField.cs" />
+    <Compile Include="ParMultipleValuesGeral.cs" />
     <Compile Include="ParReasonType.cs" />
     <Compile Include="ParReason.cs" />
     <Compile Include="NQA.cs" />

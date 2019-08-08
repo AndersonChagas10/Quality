@@ -407,6 +407,7 @@
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\FotoController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
+    <Compile Include="Controllers\IntegracaoSistemicasController.cs" />
     <Compile Include="Controllers\ParAlertTypesController.cs" />
     <Compile Include="Controllers\Params\ParCargoController.cs" />
     <Compile Include="Controllers\Params\ParColaboradorController.cs" />
@@ -2108,6 +2109,11 @@
     <Content Include="Views\ParCargoXDepartments\Edit.cshtml" />
     <Content Include="Views\ParCargoXDepartments\Index.cshtml" />
     <Content Include="Views\Relatorios\RH\VGARH.cshtml" />
+    <Content Include="Views\IntegracaoSistemicas\Create.cshtml" />
+    <Content Include="Views\IntegracaoSistemicas\Delete.cshtml" />
+    <Content Include="Views\IntegracaoSistemicas\Details.cshtml" />
+    <Content Include="Views\IntegracaoSistemicas\Edit.cshtml" />
+    <Content Include="Views\IntegracaoSistemicas\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
