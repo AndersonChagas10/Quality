@@ -559,7 +559,7 @@ public class ApontamentosDiariosResultSet
 							else CL2HF2.Value end)
 							FROM #CollectionLevel2XParHeaderField CL2HF2 (nolock) 
 							left join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
-							left join ParHeaderField HF (nolock)on CL2HF2.ParHeaderField_Id = HF.Id
+							left join ParHeaderFieldGeral HF (nolock)on CL2HF2.ParHeaderField_Id = HF.Id
 							left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
 							left join ParMultipleValues PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
 							left join Equipamentos EQP(nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2
@@ -570,7 +570,7 @@ public class ApontamentosDiariosResultSet
 						INTO #CollectionLevel2XParHeaderField2
 						FROM #CollectionLevel2XParHeaderField CL2HF (nolock) 
 						INNER join #Collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id 
-						LEFT JOIN ParHeaderField HF (nolock) on CL2HF.ParHeaderField_Id = HF.Id 
+						LEFT JOIN ParHeaderFieldGeral HF (nolock) on CL2HF.ParHeaderField_Id = HF.Id 
 						LEFT JOIN ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id
                     GROUP BY CL2HF.CollectionLevel2_Id
 
