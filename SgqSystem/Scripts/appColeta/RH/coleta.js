@@ -2,25 +2,31 @@ var coletaJson = [];
 
 function openColeta(levels) {
 
-    coletaJson = []
+    coletaJson = [];
     var html = '';
     var coleta = '';
 
     levels.forEach(function (level1) {
-        var hasLevel2 = false;
-        level1.ParLevel2.forEach(function (level2) {
-            var hasLevel3 = false;
 
+        var hasLevel2 = false;
+
+        level1.ParLevel2.forEach(function (level2) {
+
+            var hasLevel3 = false;
             var striped = true;
 
             level2.ParLevel3.forEach(function (level3) {
 
                 if (hasLevel3 == false) {
+
                     if (hasLevel2 == false) {
                         coleta += getLevel1(level1);
+                        coleta += getParHeaderFieldLevel1(level1);
                         hasLevel2 = true;
                     }
+
                     coleta += getLevel2(level2);
+                    coleta += getParHeaderFieldLevel2(level1, level2);
                     hasLevel3 = true;
                 }
 
@@ -46,10 +52,10 @@ function openColeta(levels) {
         '				<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
         '			  </div>                                                                                                                       ' +
         '			  <div class="panel-body">                                                                                                     ' +
-        getContador() +
-        getParHeaderField() +
+                        getContador() +
+                        getParHeaderFieldDeparment() +
         '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
-        coleta +
+                            coleta +
         '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       ' +
         '				</form>                                                                                                                    ' +
         '			  </div>                                                                                                                       ' +
@@ -112,7 +118,7 @@ function getInputLevel3(level3, level2, level1, striped) {
         var colorStriped = "";
 
         if (striped)
-            colorStriped = "background-color: #e9ecef;"
+            colorStriped = "background-color: #e9ecef;";
 
         retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-conforme="1"';
@@ -157,7 +163,6 @@ function getInputLevel3(level3, level2, level1, striped) {
             default:
                 retorno += "";
                 return '';
-                break;
         }
 
         retorno += '</div>';
@@ -443,7 +448,7 @@ $('body').off('click', '[data-plus]').on('click', '[data-plus]', function (e) {
         value = 1;
     else
         value += 1;
-    var input = $(this).parent().parent().find('input')
+    var input = $(this).parent().parent().find('input');
     input.val(value);
     input.trigger('change');
 
@@ -455,7 +460,7 @@ $('body').off('click', '[data-minus]').on('click', '[data-minus]', function (e) 
         value = -1;
     else
         value -= 1;
-    var input = $(this).parent().parent().find('input')
+    var input = $(this).parent().parent().find('input');
     input.val(value);
     input.trigger('change');
 });
@@ -517,7 +522,7 @@ $('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
     var body = l3xHelp.Corpo;
     var title = l3xHelp.Titulo;
 
-    var btnClose = '<button class="btn btn-primary pull-right" onclick="closeModal()">Fechar</button>'
+    var btnClose = '<button class="btn btn-primary pull-right" onclick="closeModal()">Fechar</button>';
     var modal = '<h4>' + title + '</h4>';
     var corpo =
         '<div class="container">' +
@@ -595,11 +600,11 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 IsNotEvaluate: $(data).attr('data-conforme-na') == "",
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
-				Weigth:$(data).attr('data-peso'),
-				WeiEvaluation: $(data).attr('data-peso'),
-				Defects: $(data).attr('data-conforme') == "1" ? 0 : 1,
-				WeiDefects: ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
-				Parfrequency_Id: parametrization.currentParFrequency_Id,
+                Weigth: $(data).attr('data-peso'),
+                WeiEvaluation: $(data).attr('data-peso'),
+                Defects: $(data).attr('data-conforme') == "1" ? 0 : 1,
+                WeiDefects: ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
+                Parfrequency_Id: parametrization.currentParFrequency_Id
                 /*
 				"Shift_Id":1,
 				"Period_Id":1,
@@ -648,7 +653,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     } else {
         listarParLevels();
         $("html, body").animate({ scrollTop: 0 }, "fast");
-    }  
+    }
 });
 
 function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
@@ -688,7 +693,7 @@ function OpenCorrectiveAction(coleta) {
         ParCargo_Id: coleta.ParCargo_Id,
         //ParCluster_Id: 1,
         CollectionDate: getCurrentDate()
-    }
+    };
 
     var modal = '<h4>Ação Corretiva</h4>';
     var selectUsers = '<option value="">Selecione...</option><option value="1">Pato Donald</option>';
@@ -745,11 +750,32 @@ function getCollectionHeaderFields() {
 
     var collectionHeaderFied = [];
 
-    $('#headerField input, #headerField select').each(function () {
+    $('#headerFieldDepartment input, #headerFieldDepartment select').each(function () {
 
         $self = $(this);
 
-        //validar se os campos de cabeçalho obrigatórios foram preenchidos;
+        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
+        if ($self.val())
+
+            collectionHeaderFied.push({
+                ParHeaderField_Id: $self.attr("parheaderfield_id"),
+                ParHeaderField_Value: $self.val(),
+                Evaluation: currentEvaluationSample.Evaluation,
+                Sample: currentEvaluationSample.Sample,
+                ParDepartment_Id: currentParDepartment_Id,
+                ParCargo_Id: currentParCargo_Id,
+                ParCompany_Id: currentParCompany_Id,
+                CollectionDate: getCurrentDate(),
+                UserSgq_Id: currentLogin.Id
+            });
+
+    });
+
+    $('#headerFieldLevel1 input, #headerFieldLevel1 select').each(function () {
+
+        $self = $(this);
+
+        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
         if ($self.val())
 
             collectionHeaderFied.push({
@@ -762,6 +788,31 @@ function getCollectionHeaderFields() {
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
+                ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id')
+            });
+
+    });
+
+    
+    $('#headerFieldLevel2 input, #headerFieldLevel2 select').each(function () {
+
+        $self = $(this);
+
+        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
+        if ($self.val())
+
+            collectionHeaderFied.push({
+                ParHeaderField_Id: $self.attr("parheaderfield_id"),
+                ParHeaderField_Value: $self.val(),
+                Evaluation: currentEvaluationSample.Evaluation,
+                Sample: currentEvaluationSample.Sample,
+                ParDepartment_Id: currentParDepartment_Id,
+                ParCargo_Id: currentParCargo_Id,
+                ParCompany_Id: currentParCompany_Id,
+                CollectionDate: getCurrentDate(),
+                UserSgq_Id: currentLogin.Id,
+                ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
+                ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id')
             });
 
     });
@@ -773,7 +824,7 @@ function HeaderFieldsIsValid() {
 
     retorno = true;
 
-    $('#headerField input, select').each(function () {
+    $('#headerFieldDepartment input, select').each(function () {
 
         $self = $(this);
 
