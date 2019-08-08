@@ -617,7 +617,7 @@
 
 
     let MontaSelectDepartamentoVinculadoAUnidadeSelecionada = function (selectId, empresaSelecionada, mensagem) {
-
+        debugger
         var unidadeSelecionada;
         if (empresaSelecionada == null) {
              unidadeSelecionada = parseInt($("#selectParCompanyGeral :selected").val());
@@ -674,7 +674,7 @@
             data: {},
             contentType: "application/json",
             success: function (data) {
-                
+
                 ParDepartmentsGlobal = data.ParDepartments;
                 ParCargosGlobal = data.ParCargos;
                 ParCargoXDepartmentsGlobal = data.ParCargoXDepartments
@@ -683,7 +683,7 @@
                 MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL2GeralParDepartment', unit, null);
                 MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', unit, null);
 
-                MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3TipoDadoParDepartment', unit, null);
+                MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3TipoDadoParDepartment', unit, "Todos");
 
                 preencheSelect('selectL3ParCargo', 'Name', 'Id', ParCargosGlobal, 'Todos');
 
