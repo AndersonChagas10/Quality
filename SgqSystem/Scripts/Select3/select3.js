@@ -42,12 +42,14 @@ var Select3 = {
     },
 
     render: function (element, name, url) {
-
         $('#filtroSelect3').remove();
 
         if (!this.objFiltroSelect3['_' + name]) {
             this.objFiltroSelect3['_' + name] = [];
         }
+
+        //Reseta busca pelos valores selecionados
+        Select3.objFiltroSelect3['_' + name] = $.grep(Select3.objFiltroSelect3['_' + name], function (obj) { return $.grep(element.val(), function (o) { return o == obj.Value; }).length > 0; })
 
         var html = `<div id="filtroSelect3" style="width:100%;height:100%;position: fixed;left:0;z-index:999998;background-color:rgba(0,0,0,.7);top: 0;">
 			<div style="background:#ccc;
