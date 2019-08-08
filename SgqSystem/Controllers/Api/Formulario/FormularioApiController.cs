@@ -224,7 +224,7 @@ namespace SgqSystem.Controllers.Api.Formulario
 
                 string sqlFilter = "";
                 string sqlWhereFilter = "";
-                if (parDepartment_Ids.Count > 0)
+                if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)
                 {
                     sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel1_Id = PL1.Id ";
                     sqlWhereFilter += $@"AND PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)})";
@@ -432,7 +432,7 @@ AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
         private List<ParDepartment> GetParSecoes(DataCarrierFormularioNew form, Factory factory, FormularioViewModel retornoFormulario)
         {
             string sqlParDepartment = "";
-            if (retornoFormulario.ParDepartments.Count > 0)
+            if (form.ParCompany_Ids.Length > 0 && retornoFormulario.ParDepartments.Count > 0)
             {
                 var sqlDepartamentoPelaHash = "";
                 foreach (var item in retornoFormulario.ParDepartments)
@@ -446,9 +446,9 @@ AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
             }
 
             var query = $@"SELECT Distinct PD.Id,PD.Name  FROM ParDepartment PD 
-WHERE 1=1 
-AND PD.Active = 1 
-AND PD.Parent_Id IS NOT NULL " + sqlParDepartment;
+                WHERE 1=1 
+                AND PD.Active = 1 
+                AND PD.Parent_Id IS NOT NULL " + sqlParDepartment;
 
             var retorno = factory.SearchQuery<ParDepartment>(query).ToList();
 
@@ -477,7 +477,7 @@ AND PD.Parent_Id IS NOT NULL " + sqlParDepartment;
         {
 
             string sqlFilter = "";
-            if (parDepartment_Ids.Count > 0)
+            if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)
             {
                 sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel1_Id = PL1.Id WHERE 1 = 1 ";
                 sqlFilter += $@"AND (PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)})";
