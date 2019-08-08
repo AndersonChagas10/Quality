@@ -47,7 +47,7 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label for="ParDepartment_Id">Seção:</label>
+                <label for="ParDepartment_Id">Centro de Custo/Seção:</label>
                 <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Centro de custo/Seção onde será exibido o tipo de dado de entrada tarefa" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <select id="selectL3TipoDadoParDepartment" class="input input-lg col-sm-12" name="ParDepartment_Id"></select>
             </div>
@@ -338,12 +338,13 @@
         }
     }
 
-    $("#selectL3TipoDadoParCompany").on('change', function () {
-        var empresaSelecionada = parseInt($("#selectL3TipoDadoParCompany :selected").val());
+    //$("#selectL3TipoDadoParCompany").on('change', function () {
+    //    debugger
+    //    var empresaSelecionada = parseInt($("#selectL3TipoDadoParCompany :selected").val());
 
-        MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3TipoDadoParDepartment', empresaSelecionada, "Todos");
+    //    MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3TipoDadoParDepartment', empresaSelecionada, "Todos");
 
-    });
+    //});
 
     var ParL3TipoDado = {
 
