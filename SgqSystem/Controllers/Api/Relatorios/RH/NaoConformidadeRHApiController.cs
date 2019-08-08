@@ -26,188 +26,93 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             //CommonLog.SaveReport(form, "Relatorio_Nao_Conformidade");
 
             var whereDepartment = "";
-            var whereShift = "";
-            var whereCluster = "";
+            var whereSecao = "";
+            var whereCargo = "";
             var whereStructure = "";
             var whereUnit = "";
-            var whereCriticalLevel = "";
-            var whereClusterGroup = "";
+            //var whereShift = "";
+            //var whereCluster = "";
+            //var whereCriticalLevel = "";
+            //var whereClusterGroup = "";
 
             if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment = $@" AND IND.ID IN (
-                                select distinct
-                                    l21.ParLevel1_Id
-                                    from ParLevel2Level1 l21
-
-                                    inner join ParLevel2 l1
-
-                                        on l21.ParLevel1_Id = l1.id
-
-                                    inner join ParLevel2 l2
-
-                                        on l21.ParLevel2_Id = l2.id
-                                WHERE 1 = 1
-                                AND L2.ParDepartment_Id in ({string.Join(",", form.ParDepartment_Ids)}) )
-                                ";
+                whereDepartment = $@" AND L2.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
             }
 
-            if (form.Shift_Ids.Length > 0)
+            if (form.ParSecao_Ids.Length > 0)
             {
-                whereShift = "\n AND CL1.Shift in (" + string.Join(",", form.Shift_Ids) + ")";
+                whereSecao = $@" AND L2.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
             }
+
+            if (form.ParCargo_Ids.Length > 0)
+            {
+                whereCargo = $@" AND L2.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
+            }
+
+
+            //if (form.Shift_Ids.Length > 0)
+            //{
+            //    whereShift = "\n AND CL1.Shift in (" + string.Join(",", form.Shift_Ids) + ")";
+            //}
 
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
-                whereUnit = $@"AND UNI.Id in ({ string.Join(",", form.ParCompany_Ids) }) ";
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
-            else
-            {
-                whereUnit = $@"AND UNI.Id IN (SELECT
-                				ParCompany_Id
-                			FROM ParCompanyXUserSgq
-                			WHERE UserSgq_Id = { form.Param["auditorId"] })";
-            }
+            //else
+            //{
+            //    whereUnit = $@"AND UNI.Id IN (SELECT
+            //    				ParCompany_Id
+            //    			FROM ParCompanyXUserSgq
+            //    			WHERE UserSgq_Id = { form.Param["auditorId"] })";
+            //}
 
-            if (form.ParClusterGroup_Ids.Length > 0)
-            {
-                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
-            }
+            //if (form.ParClusterGroup_Ids.Length > 0)
+            //{
+            //    whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            //}
 
-            if (form.ParCluster_Ids.Length > 0)
-            {
-                whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
-            }
+            //if (form.ParCluster_Ids.Length > 0)
+            //{
+            //    whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
+            //}
 
             if (form.ParStructure_Ids.Length > 0)
             {
-                whereStructure = $@"AND UNI.Id IN(SELECT PXS.ParCompany_Id FROM ParCompanyXStructure PXS WHERE PXS.ParStructure_Id in (" + string.Join(",", form.ParStructure_Ids) + ") AND PXS.Active = 1)";
+                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
             }
 
-            if (form.ParCriticalLevel_Ids.Length > 0)
-            {
-                whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")"; 
-                    //" AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")) ";
+            //if (form.ParCriticalLevel_Ids.Length > 0)
+            //{
+            //    whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")"; 
+            //        //" AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")) ";
                   
-            }
+            //}
 
             var query = $@"
                  DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
                  DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
-                 DECLARE @VOLUMEPCC int
 
+                SELECT 
+	                C.NAME AS UnidadeName,
+	                SUM(WeiEvaluation) AS AV,
+	                SUM(WeiDefects) AS NC,
+	                SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	                FROM DW.Cubo_Coleta_L2 L2 WITH (NOLOCK)
+	                INNER JOIN ParCompany C WITH (NOLOCK)
+		                ON L2.Unitid = C.ID
+	                WHERE 1=1
+	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 
-                SELECT
-                	Unidade AS UnidadeName
-                   ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
-                   ,ProcentagemNc AS [proc]
-                   ,nc
-                   ,av
-                FROM (SELECT
-                		Unidade
-                	   ,Unidade_Id
-                	   ,SUM(avSemPeso) AS av
-                	   ,SUM(ncSemPeso) AS nc
-                	   ,CASE
-                			WHEN SUM(AV) IS NULL OR
-                				SUM(AV) = 0 THEN 0
-                			ELSE SUM(NC) / SUM(AV) * 100
-                		END AS ProcentagemNc
-                	FROM (SELECT
-                			IND.Id AS level1_Id
-                		   ,IND.Name AS Level1Name
-                		   ,UNI.Id AS Unidade_Id
-                		   ,UNI.Name AS Unidade
-                		   ,CASE
-                				WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-                							SUM(Quartos)
-                						FROM VolumePcc1b
-                						WHERE ParCompany_id = UNI.Id
-                						AND Data = CL1.CollectionDate)
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
-                				ELSE 0
-                			END AS Av
-                		   ,CASE
-                				WHEN IND.HashKey = 1 THEN (SELECT TOP 1
-                							SUM(Quartos)
-                						FROM VolumePcc1b
-                						WHERE ParCompany_id = UNI.Id
-                						AND Data = CL1.CollectionDate)
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
-                				ELSE 0
-                			END AS AvSemPeso
-                		   ,CASE
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
-                				ELSE 0
-                			END AS NC
-                		   ,CASE
-                				WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
-                				ELSE 0
-                			END AS NCSemPeso
-                		   ,CASE
-                
-                				WHEN (SELECT
-                							COUNT(1)
-                						FROM ParGoal G
-                						WHERE 1=1 
-                                        AND G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                                        AND G.IsActive = 1
-                						AND G.EffectiveDate <= CL1.CollectionDate)
-                					> 0 THEN (SELECT TOP 1
-                							ISNULL(G.PercentValue, 0)
-                						FROM ParGoal G
-                						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                                        AND G.IsActive = 1
-                						AND G.EffectiveDate <= CL1.CollectionDate
-                						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
-                
-                				ELSE (SELECT TOP 1
-                							ISNULL(G.PercentValue, 0)
-                						FROM ParGoal G
-                						WHERE 1=1 
-                                        AND G.ParLevel1_id = CL1.ParLevel1_Id
-                						AND (G.ParCompany_id = CL1.UnitId
-                						OR G.ParCompany_id IS NULL)
-                                        AND G.IsActive = 1 
-                                        AND G.EffectiveDate <= CL1.CollectionDate
-                						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
-                			END
-                			AS Meta
-                		FROM CollectionLevel2 CL1 (NOLOCK)
-                		INNER JOIN ParLevel1 IND (NOLOCK)
-                			ON IND.Id = CL1.ParLevel1_Id 
-                            AND IND.IsActive = 1
-                		INNER JOIN ParCompany UNI (NOLOCK)
-                			ON UNI.Id = CL1.UnitId
-                            and UNI.IsActive = 1
-                        LEFT JOIN ParCompanyCluster PCC
-		                	ON PCC.ParCompany_Id = UNI.Id
-                            and PCC.Active = 1
-                        LEFT JOIN ParLevel1XCluster PLC
-							ON PLC.ParLevel1_Id = CL1.ParLevel1_Id 
-                        LEFT JOIN ParCluster PC
-		                	ON PCC.ParCluster_Id = PC.Id
-		                LEFT JOIN ParClusterGroup PCG
-		                	ON PC.ParClusterGroup_Id = PCG.Id
-                		WHERE 1=1
-                        AND CL1.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                        
-                        { whereDepartment }
-                        { whereShift }
-                        { whereUnit }
-                		{ whereCluster }
-                        { whereStructure } 
-                        { whereCriticalLevel }
-                        { whereClusterGroup }
-                        ) S1
-                	GROUP BY Unidade
-                			,Unidade_Id) S2
-                 WHERE ProcentagemNc <> 0
-                ORDER BY 3 DESC
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                GROUP BY 
+	                C.NAME
+
                 ";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -224,187 +129,107 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
         {
 
             var whereDepartment = "";
-            var whereShift = "";
-            var whereCriticalLevel = "";
+            var whereSecao = "";
+            var whereCargo = "";
+            var whereStructure = "";
+            var whereUnit = "";
+            //var whereShift = "";
+            //var whereCluster = "";
+            //var whereCriticalLevel = "";
+            //var whereClusterGroup = "";
 
             if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment = "\n AND L2.ParDepartment_Id in (" + string.Join(",", form.ParDepartment_Ids) + ")";
+                whereDepartment = $@" AND L2.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
             }
 
-            /*if (form.departmentName != "" && form.departmentName != null)
+            if (form.ParSecao_Ids.Length > 0)
             {
-                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
-            }*/
-
-            if (form.Shift_Ids.Length > 0)
-            {
-                whereShift = "\n AND CL1.Shift in (" + string.Join(",", form.Shift_Ids) + ")";
+                whereSecao = $@" AND L2.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
             }
 
-            if (form.ParCriticalLevel_Ids.Length > 0)
+            if (form.ParCargo_Ids.Length > 0)
             {
-                whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")";
-                //" AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")) ";
-
+                whereCargo = $@" AND L2.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
             }
 
-            var query = @"
+
+            //if (form.Shift_Ids.Length > 0)
+            //{
+            //    whereShift = "\n AND CL1.Shift in (" + string.Join(",", form.Shift_Ids) + ")";
+            //}
+
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            //else
+            //{
+            //    whereUnit = $@"AND UNI.Id IN (SELECT
+            //    				ParCompany_Id
+            //    			FROM ParCompanyXUserSgq
+            //    			WHERE UserSgq_Id = { form.Param["auditorId"] })";
+            //}
+
+            //if (form.ParClusterGroup_Ids.Length > 0)
+            //{
+            //    whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            //}
+
+            //if (form.ParCluster_Ids.Length > 0)
+            //{
+            //    whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
+            //}
+
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+            }
+
+            //if (form.ParCriticalLevel_Ids.Length > 0)
+            //{
+            //    whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")"; 
+            //        //" AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")) ";
+
+            //}
+
+            var query = $@"
              
-                         DECLARE @DATAINICIAL DATETIME = '" + form.startDate.ToString("yyyy-MM-dd") + " 00:00:00" + @"'
+                         DECLARE @DATAINICIAL DATETIME = '" + form.startDate.ToString("yyyy-MM-dd") + " 00:00:00" + $@"'
                                                                                                                                                                                                                                             
-                         DECLARE @DATAFINAL   DATETIME = '" + form.endDate.ToString("yyyy-MM-dd") + " 23:59:59" + @"'
+                         DECLARE @DATAFINAL   DATETIME = '" + form.endDate.ToString("yyyy-MM-dd") + " 23:59:59" + $@"'
                                                                           
-                         DECLARE @ParCompany_id INT
-            SELECT
-            	@ParCompany_id = ID
-            FROM PARCOMPANY
-            -- WHERE NAME = '" + form.Param["unitName"] + @"'
-
-
-            --------------------------------  
-            --------------------------------  
-            SELECT
-            	UnidadeName
-               ,Unidade_Id
-               ,IIF(SUM(avComPeso) IS NULL OR SUM(avComPeso) = 0, 0, SUM(ncComPeso) / SUM(avComPeso) * 100) AS [proc]
-               ,SUM(Meta) as Meta
-               ,SUM(ncComPeso) AS ncComPeso
-               ,SUM(avComPeso) AS avComPeso
-               ,SUM(NC) AS NC
-               ,SUM(Av) AS Av
-               ,DepartamentoName
-               ,Departamento_Id
-            FROM (SELECT
-            		CONVERT(VARCHAR(153), Unidade) AS UnidadeName
-            	   ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
-            	   ,avComPeso
-                   ,ncComPeso
-            	   ,(CASE
-            			WHEN IsRuleConformity = 1 THEN (100 - META)
-            			ELSE Meta
-            		END) AS Meta
-            	   ,NC
-            	   ,Av
-            	   ,DepartamentoName
-            	   ,CONVERT(VARCHAR(153), Departamento_Id) AS Departamento_Id
-            	FROM (SELECT
-            			Unidade
-            		   ,IsRuleConformity
-            		   ,Unidade_Id
-            		   ,Level1Name
-            		   ,level1_Id
-            		   ,SUM(avSemPeso) AS av
-            		   ,SUM(ncSemPeso) AS nc
-            		   ,SUM(av) AS avComPeso
-            		   ,SUM(nc) AS ncComPeso
-            		   ,CASE
-            				WHEN SUM(AV) IS NULL OR
-            					SUM(AV) = 0 THEN 0
-            				ELSE SUM(NC) / SUM(AV) * 100
-            			END AS ProcentagemNc
-            		   ,MAX(Meta) AS Meta
-            		   ,DepartamentoName
-            		   ,Departamento_Id
-            		FROM (SELECT
-            				IND.Id AS level1_Id
-            			   ,IND.IsRuleConformity
-            			   ,IND.Name AS Level1Name
-            			   ,UNI.Id AS Unidade_Id
-            			   ,UNI.Name AS Unidade
-            			   ,CASE
-            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
-            					ELSE 0
-            				END AS Av
-            			   ,CASE
-            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
-            					ELSE 0
-            				END AS AvSemPeso
-            			   ,CASE
-            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
-            					ELSE 0
-            				END AS NC
-            			   ,CASE
-            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
-            					ELSE 0
-            				END AS NCSemPeso
-            			   ,CASE
-            
-            					WHEN (SELECT
-            								COUNT(1)
-            							FROM ParGoal G
-            							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-            							AND (G.ParCompany_id = CL1.UnitId
-            							OR G.ParCompany_id IS NULL)
-            							AND G.EffectiveDate <= CL1.CollectionDate)
-            						> 0 THEN (SELECT TOP 1
-            								ISNULL(G.PercentValue, 0)
-            							FROM ParGoal G
-            							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-            							AND (G.ParCompany_id = CL1.UnitId
-            							OR G.ParCompany_id IS NULL)
-            							AND G.EffectiveDate <= CL1.CollectionDate
-            							ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
-            
-            					ELSE (SELECT TOP 1
-            								ISNULL(G.PercentValue, 0)
-            							FROM ParGoal G
-            							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-            							AND (G.ParCompany_id = CL1.UnitId
-            							OR G.ParCompany_id IS NULL)
-                                        AND G.EffectiveDate <= CL1.CollectionDate
-            							ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
-            				END
-            				AS Meta
-            			   ,D.Name AS DepartamentoName
-            			   ,D.Id AS Departamento_Id
-            			FROM CollectionLevel2 CL1 (NOLOCK)
-						LEFT JOIN CollectionLevel2XParDepartment CL1D
-							ON CL1.Id = CL1D.CollectionLevel2_Id
-            			INNER JOIN ParLevel1 IND (NOLOCK)
-            				ON IND.Id = CL1.ParLevel1_Id
-                            AND IND.IsActive = 1
-            			INNER JOIN ParLevel2 L2 WITH (NOLOCK)
-            				ON CL1.ParLevel2_id = L2.Id
-            			INNER JOIN ParDepartment D WITH (NOLOCK)
-            				ON CL1D.ParDepartment_Id = D.Id
-            			INNER JOIN ParCompany UNI (NOLOCK)
-                			ON UNI.Id = CL1.UnitId
-                            and UNI.IsActive = 1
-                        LEFT JOIN ParCompanyCluster PCC
-		                	ON PCC.ParCompany_Id = UNI.Id
-                            and PCC.Active = 1
-                        LEFT JOIN ParLevel1XCluster PLC
-							ON PLC.ParLevel1_Id = CL1.ParLevel1_Id 
-                        LEFT JOIN ParCluster PC
-		                	ON PCC.ParCluster_Id = PC.Id
-		                LEFT JOIN ParClusterGroup PCG
-		                	ON PC.ParClusterGroup_Id = PCG.Id
-            			WHERE 1=1
-						AND CL1.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-            			-- AND UNI.Name = '" + form.Param["unitName"] + @"'
-                        " + whereDepartment + @"
-                        " + whereShift + @"
-                        " + whereCriticalLevel + @"
-            		--AND D.Id = 2
-            		) S1
-            		GROUP BY Unidade
-            				,Unidade_Id
-            				,Level1Name
-            				,level1_Id
-            				,IsRuleConformity
-            				,DepartamentoName
-            				,Departamento_Id
-           HAVING SUM(NCSemPeso) > 0
-            AND SUM(NC) > 0) S2
-            	 ) A
-            GROUP BY UnidadeName
-            		,Unidade_Id
-            		,DepartamentoName
-            		,Departamento_Id
-            HAVING SUM(ncComPeso) > 0
-            AND SUM(NC) > 0
-            ORDER BY 3 DESC";
+            SELECT 
+	            D1.NAME AS DepartamentoName,
+	            SUM(WeiEvaluation) AS AV,
+	            SUM(WeiDefects) AS NC,
+	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            FROM DW.Cubo_Coleta_L2 L2 WITH (NOLOCK)
+	            INNER JOIN ParCompany C WITH (NOLOCK)
+		            ON L2.Unitid = C.ID
+	            INNER JOIN ParLevel1 L WITH (NOLOCK)
+		            ON L2.Parlevel1_Id = L.ID
+	            INNER JOIN ParLevel2 M WITH (NOLOCK)
+		            ON L2.Parlevel2_Id = M.ID
+				INNER JOIN ParDepartment D
+					ON L2.Centro_De_Custo_Id = D.ID
+				INNER JOIN ParDepartment D1
+					ON L2.Secao_Id = D1.ID
+				INNER JOIN ParCargo CG
+					ON L2.Cargo_Id = CG.ID
+	            WHERE 1=1
+                AND L2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                AND C.Name  = '{ form.Param["unitName"] }'
+                
+                {whereStructure}
+                {whereUnit}
+                {whereDepartment}
+                {whereSecao}
+                {whereCargo}
+            GROUP BY 
+	            D1.NAME
+            ORDER BY 4 DESC 
+";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -929,209 +754,113 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
         [Route("GraficoIndicador")]
         public List<NaoConformidadeRHResultsSet> GraficoIndicador([FromBody] DTO.DataCarrierFormularioNew form)
         {
-            //_list = CriaMockGraficoNcPorUnidadeIndicador();
-
-            //    public string Indicador_Id { get; set; }
-            //public string IndicadorName { get; set; }
-            //public string Unidade_Id { get; set; }
-            //public string UnidadeName { get; set; }
-            //public string Monitoramento_Id { get; set; }
-            //public string MonitoramentoName { get; set; }
-            //public string Tarefa_Id { get; set; }
-            //public string TarefaName { get; set; }
-            //public decimal Nc { get; set; }
-            //public decimal Av { get; set; }
-            //public decimal Meta { get; set; }
-            //public decimal Proc { get; internal set; }
-
             var whereDepartment = "";
-            var whereDepartment_Todos = "";
-            var whereShift = "";
-            var whereCriticalLevel = "";
-            var whereClusterGroup = "";
-            var whereCluster = "";
+            var whereDepartmentFiltro = "";
+            var whereSecao = "";
+            var whereCargo = "";
+            var whereStructure = "";
+            var whereUnit = "";
+            //var whereShift = "";
+            //var whereCluster = "";
+            //var whereCriticalLevel = "";
+            //var whereClusterGroup = "";
 
-            if (form.ParDepartment_Ids.Length > 0)
-            {
-                whereDepartment = $@" AND IND.ID IN (SELECT 
-	                distinct 
-                    P21.ParLevel1_Id
-	                FROM ParLevel1 P1
-	                INNER JOIN ParLevel2Level1 P21
-	                	ON P1.ID = P21.ParLevel1_Id
-	                INNER JOIN ParLevel2 P2
-	                	on P21.ParLevel2_Id = P2.ID
-	                INNER JOIN ParDepartment PD
-	                	ON PD.ID = P2.ParDepartment_Id
-	                WHERE 1=1 
-	                AND P21.IsActive = 1
-	                AND P2.IsActive = 1
-	                AND P1.IsActive = 1
-	                AND PD.ID in (" + string.Join(",", form.ParDepartment_Ids) + "))";
-            }
+            // Filtro = Gráfico Anterior
 
             if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
             {
-                whereDepartment = $@" AND D.Name = '{ form.Param["departmentName"] }' ";
+                whereDepartmentFiltro = $@"AND D.Name = '{form.Param["departmentName"]}'";
             }
 
+            // Filtro = Pré-seleção
             if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment_Todos = "\n AND L2.ParDepartment_Id in (" + string.Join(",", form.ParDepartment_Ids) + ") ";
+                whereDepartment = $@" AND L2.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
             }
 
-            if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
+            if (form.ParSecao_Ids.Length > 0)
             {
-                whereDepartment_Todos = "\n AND D.Name = '" + form.Param["departmentName"] + "'";
+                whereSecao = $@" AND L2.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
             }
 
-            if (form.Shift_Ids.Length > 0)
+            if (form.ParCargo_Ids.Length > 0)
             {
-                whereShift = $@"AND CL1.Shift  in (" + string.Join(",", form.Shift_Ids) + ") ";
+                whereCargo = $@" AND L2.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
             }
 
-            if (form.ParCriticalLevel_Ids.Length > 0)
+
+            //if (form.Shift_Ids.Length > 0)
+            //{
+            //    whereShift = "\n AND CL1.Shift in (" + string.Join(",", form.Shift_Ids) + ")";
+            //}
+
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
-                whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")";
-                //" AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")) ";
-
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
+            //else
+            //{
+            //    whereUnit = $@"AND UNI.Id IN (SELECT
+            //    				ParCompany_Id
+            //    			FROM ParCompanyXUserSgq
+            //    			WHERE UserSgq_Id = { form.Param["auditorId"] })";
+            //}
 
-            if (form.ParClusterGroup_Ids.Length > 0)
+            //if (form.ParClusterGroup_Ids.Length > 0)
+            //{
+            //    whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            //}
+
+            //if (form.ParCluster_Ids.Length > 0)
+            //{
+            //    whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
+            //}
+
+            if (form.ParStructure_Ids.Length > 0)
             {
-                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
             }
 
-            if (form.ParCluster_Ids.Length > 0)
-            {
-                whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
-            }
+            //if (form.ParCriticalLevel_Ids.Length > 0)
+            //{
+            //    whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")"; 
+            //        //" AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")) ";
+
+            //}
 
             var query = $@"
- DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd") } 00:00:00'
+             DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd") } 00:00:00'
                                                                                                                                                                                                                     
- DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
-                                                                                                                                                                                                                    
- DECLARE @ParCompany_id INT
-SELECT
-	@ParCompany_id = ID
-FROM PARCOMPANY
-WHERE NAME = '{ form.Param["unitName"] }'
- 
---------------------------------
-SELECT
-	CONVERT(VARCHAR(153), Unidade) AS UnidadeName
-   ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
-   ,CONVERT(VARCHAR(153), level1_Id) AS Indicador_Id
-   ,CONVERT(VARCHAR(153), Level1Name) AS IndicadorName
-   ,ProcentagemNc AS [proc]
-   ,IIF(IsRuleConformity = 1, (100 - META),Meta) AS Meta
-   ,NC
-   ,Av
-FROM (SELECT
-		Unidade
-	   ,IsRuleConformity
-	   ,Unidade_Id
-	   ,Level1Name
-	   ,level1_Id
-	   ,SUM(avSemPeso) AS av
-	   ,SUM(ncSemPeso) AS nc
-	   ,IIF(SUM(AV) IS NULL OR SUM(AV) = 0, 0 ,SUM(NC) / SUM(AV) * 100) AS ProcentagemNc
-	   ,MAX(Meta) AS Meta
-	FROM (SELECT
-			IND.Id AS level1_Id
-		   ,IND.IsRuleConformity
-		   ,IND.Name AS Level1Name
-		   ,UNI.Id AS Unidade_Id
-		   ,UNI.Name AS Unidade
-		   ,CASE
-				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL1.WeiEvaluation)
-				ELSE 0
-			END AS Av
-		   ,CASE
-				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL1.WeiEvaluation)
-				ELSE 0
-			END AS AvSemPeso
-		   ,CASE
-				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL1.WeiDefects)
-				ELSE 0
-			END AS NC
-		   ,CASE
-				WHEN IND.ParConsolidationType_Id = 1 THEN SUM(CL1.WeiDefects)
-				ELSE 0
-			END AS NCSemPeso
-		   ,CASE
+             DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
+        
 
-				WHEN (SELECT
-							COUNT(1)
-						FROM ParGoal G
-						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-						AND (G.ParCompany_id = CL1.UnitId
-						OR G.ParCompany_id IS NULL)
-						AND G.EffectiveDate <= CL1.CollectionDate)
-					> 0 THEN (SELECT TOP 1
-							ISNULL(G.PercentValue, 0)
-						FROM ParGoal G
-						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-						AND (G.ParCompany_id = CL1.UnitId
-						OR G.ParCompany_id IS NULL)
-						AND G.EffectiveDate <= CL1.CollectionDate
-						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
 
-				ELSE (SELECT TOP 1
-							ISNULL(G.PercentValue, 0)
-						FROM ParGoal G
-						WHERE G.ParLevel1_id = CL1.ParLevel1_Id
-						AND (G.ParCompany_id = CL1.UnitId
-						OR G.ParCompany_id IS NULL)
-                        AND G.EffectiveDate <= CL1.CollectionDate
-						ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
-			END
-			AS Meta
-		FROM CollectionLevel2 CL1 (NOLOCK)
-        LEFT JOIN CollectionLevel2XParDepartment CL1D
-            ON CL1.ID = CL1D.CollectionLevel2_Id
-        LEFT JOIN ParDepartment D (NOLOCK)
-            ON CL1D.ParDepartment_Id = D.id
-        INNER JOIN ParLevel1 IND (NOLOCK)
-			ON IND.Id = CL1.ParLevel1_Id
-              AND IND.IsActive = 1 
-        INNER JOIN ParCompany UNI (NOLOCK)
-            ON UNI.Id = CL1.UnitId
-            and UNI.IsActive = 1
-        LEFT JOIN ParCompanyCluster PCC
-		    ON PCC.ParCompany_Id = UNI.Id
-            and PCC.Active = 1
-        LEFT JOIN ParLevel1XCluster PLC
-			ON PLC.ParLevel1_Id = CL1.ParLevel1_Id 
-        LEFT JOIN ParCluster PC
-		    ON PCC.ParCluster_Id = PC.Id
-		LEFT JOIN ParClusterGroup PCG
-		    ON PC.ParClusterGroup_Id = PCG.Id
-		WHERE 1=1
-		AND CL1.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-		AND UNI.Name = '{form.Param["unitName"] }'
-        {whereDepartment}
-        {whereShift}
-        {whereCriticalLevel}
-		GROUP BY IND.ParConsolidationType_Id
-				,IND.HashKey
-				,IND.Id
-				,IND.IsRuleConformity
-				,IND.Name
-				,UNI.Id
-				,UNI.Name
-				,CL1.ParLevel1_Id
-				,CL1.UnitId
-                ,CL1.CollectionDate) S1
-	GROUP BY Unidade
-			,Unidade_Id
-			,Level1Name
-			,level1_Id
-			,IsRuleConformity) S2
- WHERE ProcentagemNc <> 0 
+            SELECT 
+	            L.NAME AS IndicadorName,
+	            SUM(WeiEvaluation) AS AV,
+	            SUM(WeiDefects) AS NC,
+	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            FROM DW.Cubo_Coleta_L2 L2 WITH (NOLOCK)
+	            INNER JOIN ParCompany C WITH (NOLOCK)
+		            ON L2.Unitid = C.ID
+	            INNER JOIN ParLevel1 L WITH (NOLOCK)
+		            ON L2.Parlevel1_Id = L.ID
+	            INNER JOIN ParDepartment D WITH (NOLOCK)
+		            ON L2.Secao_Id = D.ID
+	            WHERE 1=1
+	            AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+		            AND C.Name = '{form.Param["unitName"] }'
+                    
 
-ORDER BY 5 DESC
+                {whereStructure}
+                {whereUnit}
+                {whereDepartment}
+                {whereDepartmentFiltro}
+                {whereSecao}
+                {whereCargo}
+            GROUP BY 
+	            L.NAME
+            ORDER BY 4 DESC
  ";
 
 
@@ -1445,110 +1174,109 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             //var query = new NaoConformidadeRHResultsSet().Select(form._dataInicio, form._dataFim, form.unitId);
 
-            var whereDepartment = "";
-            var whereShift = "";
-            var whereClusterGroup = "";
-            var whereCluster = "";
 
-            if (form.ParDepartment_Ids.Length > 0)
-            {
-                whereDepartment = "\n AND MON.ParDepartment_Id  in (" + string.Join(",", form.ParDepartment_Ids) + ") ";
-            }
+
+            var whereDepartment = "";
+            var whereDepartmentFiltro = "";
+            var whereSecao = "";
+            var whereCargo = "";
+            var whereStructure = "";
+            var whereUnit = "";
+            //var whereShift = "";
+            //var whereCluster = "";
+            //var whereCriticalLevel = "";
+            //var whereClusterGroup = "";
 
             if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
             {
-                whereDepartment = "\n AND D.Name = '" + form.Param["departmentName"] + "'";
+                whereDepartmentFiltro = $@"AND D.Name = '{form.Param["departmentName"]}'";
             }
 
-            if (form.Shift_Ids.Length > 0)
+            if (form.ParDepartment_Ids.Length > 0)
             {
-                whereShift = "\n AND CL1.Shift   in (" + string.Join(",", form.Shift_Ids) + ") ";
+                whereDepartment = $@" AND L2.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
             }
 
-            if (form.ParClusterGroup_Ids.Length > 0)
+            if (form.ParSecao_Ids.Length > 0)
             {
-                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+                whereSecao = $@" AND L2.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
             }
 
-            if (form.ParCluster_Ids.Length > 0)
+            if (form.ParCargo_Ids.Length > 0)
             {
-                whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
+                whereCargo = $@" AND L2.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
             }
+
+
+            //if (form.Shift_Ids.Length > 0)
+            //{
+            //    whereShift = "\n AND CL1.Shift in (" + string.Join(",", form.Shift_Ids) + ")";
+            //}
+
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            //else
+            //{
+            //    whereUnit = $@"AND UNI.Id IN (SELECT
+            //    				ParCompany_Id
+            //    			FROM ParCompanyXUserSgq
+            //    			WHERE UserSgq_Id = { form.Param["auditorId"] })";
+            //}
+
+            //if (form.ParClusterGroup_Ids.Length > 0)
+            //{
+            //    whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            //}
+
+            //if (form.ParCluster_Ids.Length > 0)
+            //{
+            //    whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
+            //}
+
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+            }
+
+            //if (form.ParCriticalLevel_Ids.Length > 0)
+            //{
+            //    whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")"; 
+            //        //" AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")) ";
+
+            //}
 
             var query = "" +
 
                 $@" DECLARE @DATAINICIAL DATETIME = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
                  DECLARE @DATAFINAL   DATETIME = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'       
 
-                 DECLARE @VOLUMEPCC int                                                  
-                 DECLARE @ParCompany_id INT                                              
 
-                 SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '{ form.Param["unitName"] }'
+            SELECT 
+	            M.NAME AS MonitoramentoName,
+	            SUM(WeiEvaluation) AS AV,
+	            SUM(WeiDefects) AS NC,
+	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            FROM DW.Cubo_Coleta_L2 L2 WITH (NOLOCK)
+	            INNER JOIN ParCompany C WITH (NOLOCK)
+		            ON L2.Unitid = C.ID
+	            INNER JOIN ParLevel1 L WITH (NOLOCK)
+		            ON L2.Parlevel1_Id = L.ID
+	            INNER JOIN ParLevel2 M WITH (NOLOCK)
+		            ON L2.Parlevel2_Id = M.ID
+	            INNER JOIN ParDepartment D WITH (NOLOCK)
+		            ON L2.Secao_Id = D.ID
+	            WHERE 1=1
+                AND L2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                	AND (C.Name = '{form.Param["unitName"] }' OR C.Initials = '{ form.Param["unitName"] }')
+                	AND L.Name = '{form.Param["level1Name"]}' 
+                    {whereDepartment}
+                    {whereDepartmentFiltro}
 
- 
-
-                 SELECT 
-                  
-                 Level2Name AS MonitoramentoName 
-                
-                     , sum(avSemPeso) as av 
-                     , sum(ncSemPeso) as nc 
-                     , CASE WHEN sum(AV) IS NULL OR sum(AV) = 0 THEN 0 ELSE sum(NC) / sum(AV) * 100 END AS [Proc] 
-                
-                 FROM 
-                 (
-                 	SELECT 
-                 	 MON.Id			AS level2_Id 
-                 	,MON.Name		AS Level2Name 
-                 	,IND.Id AS level1_Id 
-                 	,IND.Name AS Level1Name 
-                 	,UNI.Id			AS Unidade_Id 
-                 	,UNI.Name		AS Unidade 
-                    , CASE 
-                     WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation 
-                     ELSE 0 
-                     END AS Av 
-                    , CASE 
-                     WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation 
-                     ELSE 0 
-                     END AS AvSemPeso 
-                    , CASE 
-                     WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects 
-                     ELSE 0 
-                     END AS NC 
-                    , CASE 
-                     WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects 
-                     ELSE 0 
-                     END AS NCSemPeso 
-
-               	FROM CollectionLevel2 CL1  (nolock)
-               	INNER JOIN ParLevel1 IND  (nolock)
-               	ON IND.Id = CL1.ParLevel1_Id 
-               	AND ISNULL(IND.ShowScorecard,1) = 1 
-               	AND IND.IsActive = 1 
-               	INNER JOIN ParLevel2 MON  (nolock)
-               	ON MON.Id = CL1.ParLevel2_Id 
-               	INNER JOIN ParCompany UNI (NOLOCK)
-                    ON UNI.Id = CL1.UnitId
-                    and UNI.IsActive = 1
-                LEFT JOIN ParCompanyCluster PCC
-		            ON PCC.ParCompany_Id = UNI.Id
-                    and PCC.Active = 1
-                LEFT JOIN ParLevel1XCluster PLC
-				    ON PLC.ParLevel1_Id = CL1.ParLevel1_Id 
-                LEFT JOIN ParCluster PC
-		            ON PCC.ParCluster_Id = PC.Id
-		        LEFT JOIN ParClusterGroup PCG
-		            ON PC.ParClusterGroup_Id = PCG.Id
-               	WHERE 1=1
-                AND CL1.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                	AND (UNI.Name = '{form.Param["unitName"] }' OR UNI.Initials = '{ form.Param["unitName"] }')
-                	AND IND.Name = '{form.Param["level1Name"]}' 
-                ) S1 
-             GROUP BY Level2Name 
-              HAVING sum(NCSemPeso) > 0 
-             AND SUM(NC) > 0 
-             ORDER BY 4 DESC ";
+            GROUP BY 
+	            M.NAME
+            ORDER BY 4 DESC ";
 
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -1565,85 +1293,105 @@ DROP TABLE #AMOSTRATIPO4 ";
         {
 
             var whereDepartment = "";
-            var whereShift = "";
-            var whereCriticalLevel = "";
-            var whereClusterGroup = "";
-            var whereCluster = "";
-
-            if (form.ParDepartment_Ids.Length > 0)
-            {
-                whereDepartment = "\n AND MON.ParDepartment_Id   in (" + string.Join(",", form.ParDepartment_Ids) + ") ";
-            }
+            var whereDepartmentFiltro = "";
+            var whereSecao = "";
+            var whereCargo = "";
+            var whereStructure = "";
+            var whereUnit = "";
+            //var whereShift = "";
+            //var whereCluster = "";
+            //var whereCriticalLevel = "";
+            //var whereClusterGroup = "";
 
             if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
             {
-                whereDepartment = "\n AND D.Name = '" + form.Param["departmentName"] + "'";
+                whereDepartmentFiltro = $@"AND D.Name = '{form.Param["departmentName"]}'";
             }
 
-            if (form.Shift_Ids.Length > 0)
+            if (form.ParDepartment_Ids.Length > 0)
             {
-                whereShift = "\n AND CL1.Shift   in (" + string.Join(",", form.Shift_Ids) + ") ";
+                whereDepartment = $@" AND L3.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
             }
 
-            if (form.ParCriticalLevel_Ids.Length > 0)
+            if (form.ParSecao_Ids.Length > 0)
             {
-                whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")";
-                //" AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")) ";
+                whereSecao = $@" AND L3.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
             }
 
-            if (form.ParClusterGroup_Ids.Length > 0)
+            if (form.ParCargo_Ids.Length > 0)
             {
-                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+                whereCargo = $@" AND L3.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
             }
 
-            if (form.ParCluster_Ids.Length > 0)
+
+            //if (form.Shift_Ids.Length > 0)
+            //{
+            //    whereShift = "\n AND CL1.Shift in (" + string.Join(",", form.Shift_Ids) + ")";
+            //}
+
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
-                whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
+                whereUnit = $@"AND L3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
+            //else
+            //{
+            //    whereUnit = $@"AND UNI.Id IN (SELECT
+            //    				ParCompany_Id
+            //    			FROM ParCompanyXUserSgq
+            //    			WHERE UserSgq_Id = { form.Param["auditorId"] })";
+            //}
+
+            //if (form.ParClusterGroup_Ids.Length > 0)
+            //{
+            //    whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            //}
+
+            //if (form.ParCluster_Ids.Length > 0)
+            //{
+            //    whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
+            //}
+
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@"AND L3.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+            }
+
+            //if (form.ParCriticalLevel_Ids.Length > 0)
+            //{
+            //    whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")"; 
+            //        //" AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")) ";
+
+            //}
 
 
             var queryGraficoTarefasAcumuladas = $@"
-            SELECT
-            
-            	IND.Id AS Indicador_id
-               ,IND.Name AS IndicadorName
-               ,R3.ParLevel3_Id AS Tarefa_Id
-               ,R3.ParLevel3_Name AS TarefaName
-               ,UNI.Name AS UnidadeName
-               ,UNI.Id AS Unidade_Id
-               ,SUM(R3.Defects) AS NC
-            FROM Result_Level3 R3 (NOLOCK)
-            INNER JOIN CollectionLevel2 C2 (NOLOCK)
-            	ON C2.Id = R3.CollectionLevel2_Id
-            LEFT JOIN CollectionLevel2XParDepartment C2D
-                ON C2.ID = C2D.CollectionLevel2_Id
-            LEFT JOIN ParDepartment D (NOLOCK)
-                ON C2D.ParDepartment_Id = D.id
-            INNER JOIN ParCompany UNI (NOLOCK)
-            	ON UNI.Id = C2.UnitId
-            INNER JOIN ParLevel1 IND (NOLOCK)
-            	ON IND.Id = C2.ParLevel1_Id
-            INNER JOIN ParLevel2 MON (NOLOCK)
-            	ON MON.Id = C2.ParLevel2_Id
-            LEFT JOIN ParLevel1XCluster PLC
-							ON PLC.ParLevel1_Id = CL1.ParLevel1_Id 
-            WHERE 1 = 1 
-             AND IND.Name IN ('{ form.Param["level1Name"] }') 
-            AND UNI.Name = '{ form.Param["unitName"] }'
-            AND C2.CollectionDate BETWEEN '{ form.startDate.ToString("yyyy-MM-dd") }' AND '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
-                { whereDepartment }
-                { whereShift }            
-                { whereCriticalLevel }
-            AND R3.IsNotEvaluate = 0
-            GROUP BY IND.Id
-            		,IND.Name
-            		,R3.ParLevel3_Id
-            		,R3.ParLevel3_Name
-            		,UNI.Name
-            		,UNI.Id
-            HAVING SUM(R3.WeiDefects) > 0
-            AND SUM(R3.Defects) > 0
-            ORDER BY 7 DESC";
+ 
+        SELECT 
+	            T.NAME AS TarefaName,
+	            SUM(WeiEvaluation) AS AV,
+	            SUM(WeiDefects) AS NC,
+	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            FROM DW.Cubo_Coleta_L3 L3 WITH (NOLOCK)
+	            INNER JOIN ParCompany C WITH (NOLOCK)
+		            ON L3.Unitid = C.ID
+	            INNER JOIN ParLevel1 L WITH (NOLOCK)
+		            ON L3.Parlevel1_Id = L.ID
+	            INNER JOIN ParLevel2 M WITH (NOLOCK)
+		            ON L3.Parlevel2_Id = M.ID
+	            INNER JOIN ParLevel3 T WITH (NOLOCK)
+		            ON L3.Parlevel3_Id = T.ID
+	            INNER JOIN ParDepartment D WITH (NOLOCK)
+		            ON L3.Secao_Id = D.ID
+	            WHERE 1=1
+                 AND L.Name IN ('{ form.Param["level1Name"] }') 
+                 AND C.Name = '{ form.Param["unitName"] }'
+                 AND CollectionDate BETWEEN '{ form.startDate.ToString("yyyy-MM-dd") }' AND '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
+                 {whereDepartment}
+                 {whereDepartmentFiltro}
+        GROUP BY 
+	        T.NAME
+        ORDER BY 4 DESC
+ ";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -1666,18 +1414,20 @@ DROP TABLE #AMOSTRATIPO4 ";
             //Proc = proc + i,
             //TarefaName = tarefaName + i.ToString()
 
+            var whereDepartmentFiltro = "";
+            var whereDepartment = "";
             var whereShift = "";
             var whereClusterGroup = "";
             var whereCluster = "";
 
             if (form.Shift_Ids.Length > 0)
             {
-                whereShift = "\n AND CL1.Shift   in (" + string.Join(",", form.Shift_Ids) + ") ";
+                whereShift = "\n AND L3.Shift   in (" + string.Join(",", form.Shift_Ids) + ") ";
             }
 
             if (form.ParClusterGroup_Ids.Length > 0)
             {
-                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+                whereClusterGroup = $@"AND L3.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
             }
 
             if (form.ParCluster_Ids.Length > 0)
@@ -1685,70 +1435,49 @@ DROP TABLE #AMOSTRATIPO4 ";
                 whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
             }
 
+            if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
+            {
+                whereDepartment = " AND D.Name = '" + form.Param["departmentName"] + "'";
+            }
+
+            if (form.ParDepartment_Ids.Length > 0)
+            {
+                whereDepartment = $@" AND L3.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
+            }
+
             var query = "" +
 
-                $@" DECLARE @DATAINICIAL DATETIME = '{form.startDate.ToString("yyyy-MM-dd")}'
-                  DECLARE @DATAFINAL   DATETIME = '{form.startDate.ToString("yyyy-MM-dd")}'   
-                 
-                  DECLARE @ParCompany_id INT
-                 
-                  SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '{ form.Param["unitName"] }'
+                $@" 
+ 
+        SELECT 
+	            T.NAME AS TarefaName,
+	            SUM(WeiEvaluation) AS AV,
+	            SUM(WeiDefects) AS NC,
+	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            FROM DW.Cubo_Coleta_L3 L3 WITH (NOLOCK)
+	            INNER JOIN ParCompany C WITH (NOLOCK)
+		            ON L3.Unitid = C.ID
+	            INNER JOIN ParLevel1 L WITH (NOLOCK)
+		            ON L3.Parlevel1_Id = L.ID
+	            INNER JOIN ParLevel2 M WITH (NOLOCK)
+		            ON L3.Parlevel2_Id = M.ID
+	            INNER JOIN ParLevel3 T WITH (NOLOCK)
+		            ON L3.Parlevel3_Id = T.ID
+	            INNER JOIN ParDepartment D WITH (NOLOCK)
+		            ON L3.Secao_Id = D.ID
+	            WHERE 1=1
+                 AND L.Name IN ('{ form.Param["level1Name"] }') 
+                 AND M.Name = '{ form.Param["level2Name"] }'
+                 AND C.Name = '{ form.Param["unitName"] }'
+                 AND CollectionDate BETWEEN '{ form.startDate.ToString("yyyy-MM-dd") }' AND '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
+                
+                 {whereDepartment}
+                 {whereDepartmentFiltro}
 
-                 SELECT 
-                    TarefaName, NcSemPeso as Nc, AvSemPeso as Av, [Proc] FROM (
-                    SELECT 
-  
-                    R3.ParLevel3_Name AS TarefaName 
-                    ,SUM(R3.WeiDefects) AS Nc 
-                    ,CASE WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiDefects) ELSE SUM(R3.Defects) END AS NcSemPeso  
-                    , SUM(R3.WeiEvaluation)  AS Av 
-                    ,CASE 
-                    WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation) 
-                    ELSE SUM(R3.Evaluation) END AS AvSemPeso 
-                    ,SUM(R3.WeiDefects) / 
-                    SUM(R3.WeiEvaluation) * 100 AS [Proc] 
-                    FROM Result_Level3 R3 (nolock) 
-                    INNER JOIN CollectionLevel2 C2  (nolock)
-                    ON C2.Id = R3.CollectionLevel2_Id 
-                    INNER JOIN ParCompany UNI  (nolock)
-                    ON UNI.Id = C2.UnitId 
-                    INNER JOIN ParLevel1 IND   (nolock)
-                    ON IND.Id = C2.ParLevel1_Id 
-                    INNER JOIN ParLevel2 MON  (nolock)
-                    ON MON.Id = C2.ParLevel2_Id 
-                    INNER JOIN ParCompany UNI (NOLOCK)
-                			ON UNI.Id = CL1.UnitId
-                            and UNI.IsActive = 1
-                        LEFT JOIN ParCompanyCluster PCC
-		                	ON PCC.ParCompany_Id = UNI.Id
-                            and PCC.Active = 1
-                        LEFT JOIN ParLevel1XCluster PLC
-							ON PLC.ParLevel1_Id = CL1.ParLevel1_Id 
-                        LEFT JOIN ParCluster PC
-		                	ON PCC.ParCluster_Id = PC.Id
-		                LEFT JOIN ParClusterGroup PCG
-		                	ON PC.ParClusterGroup_Id = PCG.Id
-                          WHERE 1=1
-                             AND IND.Name = '{ form.Param["level1Name"] }'
-                             AND MON.Name = '{ form.Param["level2Name"] }'
-                             AND (UNI.Name = '{ form.Param["unitName"] }' OR UNI.Initials = '{ form.Param["unitName"] }')
-                             AND R3.IsNotEvaluate = 0 
-                             AND C2.CollectionDate BETWEEN '{ form.startDate.ToString("yyyy-MM-dd") }' 
-                                    AND '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
-                         { whereShift }
-                         GROUP BY 
-                          IND.Id
-                         ,IND.Name 
-                         ,R3.ParLevel3_Id 
-                         ,R3.ParLevel3_Name 
-                         ,UNI.Name 
-                         ,UNI.Id 
-                         ,ind.hashKey 
-                         ,ind.ParConsolidationType_Id 
-
-                          HAVING SUM(R3.WeiDefects) > 0 
-                          AND SUM(R3.Defects) > 0 
-                          ) TAB ORDER BY 4 DESC";
+        GROUP BY 
+	        T.NAME
+        ORDER BY 4 DESC
+";
 
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -1768,11 +1497,16 @@ DROP TABLE #AMOSTRATIPO4 ";
 
                 var level1Name = form.Param["level1Name"].ToString();
                 var level2Name = form.Param["level2Name"].ToString();
+                var centroDeCustoName = form.Param["level2Name"].ToString();
+                var secaoName = form.Param["level2Name"].ToString();
+                var cargoName = form.Param["level2Name"].ToString();
                 var unitName = form.Param["unitName"].ToString();
 
                 var parLevel1_Id = dbSgq.ParLevel1.Where(r => r.Name == level1Name).Select(r => r.Id).FirstOrDefault();
 
                 var parLevel2_Id = dbSgq.ParLevel2.Where(r => r.Name == level2Name).Select(r => r.Id).FirstOrDefault();
+
+                var parsecao_Id = dbSgq.ParDepartment.Where(r => r.Name == secaoName).Select(r => r.Id).FirstOrDefault();
 
                 var unit_Id = dbSgq.ParCompany.Where(r => r.Name == unitName).Select(r => r.Id).FirstOrDefault();
 
@@ -1783,7 +1517,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 		 -------------------------------------------------------------------------------------------------------------------------
 
 		 DECLARE @DATEINI DATETIME = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00' DECLARE @DATEFIM DATETIME = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59';
-		 DECLARE @UNITID VARCHAR(10) = '{unit_Id}', @PARLEVEL1_ID VARCHAR(10) = '{parLevel1_Id}',@PARLEVEL2_ID VARCHAR(10) = '{parLevel2_Id}';
+		 DECLARE @UNITID VARCHAR(10) = '{unit_Id}', @PARLEVEL1_ID VARCHAR(10) = '{parLevel1_Id}',@PARLEVEL2_ID VARCHAR(10) = '{parLevel2_Id}',@SECAO_ID VARCHAR(10) = '{parsecao_Id}';
 
 		 -------------------------------------------------------------------------------------------------------------------------
 		 -------------------------------------------------------------------------------------------------------------------------		 
@@ -1792,29 +1526,37 @@ DROP TABLE #AMOSTRATIPO4 ";
 		 DECLARE @DATAFINAL DATETIME = @DATEFIM;                     
 
                     SELECT 
-	                     id
-	                    ,ParLevel1_Id
-	                    ,ParLevel2_Id
-	                    ,UnitId
-	                    ,CollectionDate
-	                    ,EvaluationNumber
-	                    ,Sample
-	                    ,Sequential
-	                    ,Side
-	                    ,Shift
-	                    ,Period
-	                    ,AuditorId
-	                    ,AddDate
-	                    ,AlterDate 
+	                     CL2.id
+	                    ,CL2.ParLevel1_Id
+	                    ,CL2.ParLevel2_Id
+	                    ,D.Parent_Id            AS ParCentroDeCusto_Id
+	                    ,CPD.ParDepartment_Id   AS ParSecao_Id
+	                    ,CCG.ParCargo_Id        AS ParCargo_Id
+	                    ,CL2.UnitId
+	                    ,CL2.CollectionDate
+	                    ,CL2.EvaluationNumber
+	                    ,CL2.Sample
+	                    ,CL2.Sequential
+	                    ,CL2.Side
+	                    ,CL2.Shift
+	                    ,CL2.Period
+	                    ,CL2.AuditorId
+	                    ,CL2.AddDate
+	                    ,CL2.AlterDate 
                     INTO #CollectionLevel2
                     FROM collectionlevel2 CL2
-                        WHERE 1=1
+                    INNER JOIN CollectionLevel2XParDepartment CPD
+                        ON CL2.ID = CPD.CollectionLevel2_Id
+                    INNER JOIN ParDepartment D
+                        ON D.ID = CPD.ParDepartment_Id
+                    INNER JOIN CollectionLevel2XParCargo CCG
+                        ON CL2.ID = CCG.CollectionLevel2_Id
+                    WHERE 1=1
 						AND cl2.Collectiondate BETWEEN @DATEINI AND @DATEFIM
-						AND CL2.ParLevel1_Id != 43
-						AND CL2.ParLevel1_Id != 42
 						AND CASE WHEN @UNITID = '0' THEN '0' ELSE cl2.unitid END = @UNITID
 						AND CASE WHEN @PARLEVEL1_ID = '0' THEN '0' ELSE cl2.ParLevel1_id END = @PARLEVEL1_ID
 						AND CASE WHEN @PARLEVEL2_ID = '0' THEN '0' ELSE cl2.ParLevel2_id END = @PARLEVEL2_ID
+						AND CASE WHEN @SECAO_ID = '0' THEN '0' ELSE CPD.ParDepartment_id END = @SECAO_ID
 
  
                     CREATE INDEX IDX_CollectionLevel2_ID ON #CollectionLevel2(ID);
@@ -1907,6 +1649,9 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         	CL2.ParLevel1_Id,
         	CL2.ParLevel2_Id,
         	R3.ParLevel3_Id,
+            CL2.ParCentroDeCusto_Id,
+            CL2.ParSecao_Id,
+            CL2.ParCargo_Id,
         	R3.WeiDefects,
         	R3.Defects,
         	R3.WeiEvaluation,
@@ -1944,7 +1689,13 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         	,concat(L2.Name, '' - '', PC.Name) as MonitoramentoUnidade
         	,C1.ParLevel3_Id			AS Tarefa
         	,L3.Name					AS TarefaName
-        	,0							AS ParCriticalLevel_Id
+            ,C1.ParCentroDeCusto_Id
+            ,D1.Name AS Centro_De_Custo
+            ,C1.ParSecao_Id
+            ,D2.Name AS Secao
+            ,C1.ParCargo_Id
+            ,CG.Name AS Cargo
+        	,0							    AS ParCriticalLevel_Id
         	,''''							AS ParCriticalLevel_Name
         	,L1.IsRuleConformity
         	,SUM(WeiEvaluation) AS [AVComPeso]
@@ -1983,6 +1734,15 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         	INNER JOIN ParLevel3 L3 WITH (NOLOCK)
          		ON C1.ParLevel3_Id = L3.ID
          		AND L3.IsActive = 1
+
+            INNER JOIN ParDepartment D1
+                ON D1.ID = C1.ParCentroDeCusto_Id
+
+            INNER JOIN ParDepartment D2
+                ON D2.ID = C1.ParSecao_Id
+
+            INNER JOIN ParCargo CG
+                ON CG.ID = C1.ParCargo_Id
         
         	LEFT JOIN ParCompany PC WITH (NOLOCK)
          		ON PC.Id = C1.Unitid
@@ -2004,6 +1764,12 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         	,L3.Name 	
         	,L1.IsRuleConformity
 			,C1.ID
+            ,C1.ParCentroDeCusto_Id
+            ,D1.Name 
+            ,C1.ParSecao_Id
+            ,D2.Name 
+            ,C1.ParCargo_Id
+            ,CG.Name 
         
             update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta)) 
 
@@ -2011,6 +1777,9 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 IndicadorName as Indicador,
                 MonitoramentoName as Monitoramento,
                 TarefaName as Tarefa,
+                Centro_De_Custo as [Centro De Custo],
+                Secao as Seção,
+                Cargo as Cargo,
                 H.*,
                 Meta as Meta,
                 AVComPeso as ''AV com Peso'',
