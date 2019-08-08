@@ -98,11 +98,11 @@ function getContador() {
 }
 
 function getLevel1(level1) {
-    return '<div class="col-xs-12"><small>' + level1.Name + '</small></div>';
+    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;"><small>' + level1.Name + '</small></div>';
 }
 
 function getLevel2(level2) {
-    return '<div class="col-xs-12" style="padding-left:18px; margin:5px 0px;"><small>' + level2.Name + '</small></div>';
+    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;"><small>' + level2.Name + '</small></div>';
 }
 
 function getLevel3(level3) {

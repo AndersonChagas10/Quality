@@ -1,11 +1,12 @@
 function getParHeaderFieldDeparment() {
 
     const ParLevelHeaderFiel_Id = 3; //ParDepartment
-    
+
     return '<div id="headerFieldDepartment" class="col-xs-12 alert-warning" style="padding-top:10px;padding-bottom:10px;display:table;">' +
         montarBotoesRotinaIntegracao() +
         montarHeaderFields(ParLevelHeaderFiel_Id, currentParDepartment_Id) +
         '</div>';
+
 
 }
 
@@ -13,28 +14,40 @@ function getParHeaderFieldLevel1(parLevel1) {
 
     const parLevelHeaderFiel_Id = 1; //ParLevel1
 
-    return '<div id="headerFieldLevel1" class="col-xs-12 alert-warning" parLevel1Id=' + parLevel1.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;">' +
-        montarBotoesRotinaIntegracao() +
-        montarHeaderFields(parLevelHeaderFiel_Id, parLevel1.Id) +
-        '</div>';
+    var cabecalhos = montarHeaderFields(parLevelHeaderFiel_Id, parLevel1.Id)
 
+    if (cabecalhos)
+
+        return '<div id="headerFieldLevel1" class="col-xs-12" parLevel1Id=' + parLevel1.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;background-color:#edf5fc;">' +
+            montarBotoesRotinaIntegracao() +
+            cabecalhos +
+            '</div>';
+
+    else
+        return '';
 }
 
 function getParHeaderFieldLevel2(parLevel1, parLevel2) {
 
     const parLevelHeaderFiel_Id = 2; //ParLevel2
-    
-    return '<div id="headerFieldLevel2" class="col-xs-12 alert-warning" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;">' +
-        montarBotoesRotinaIntegracao() +
-        montarHeaderFields(parLevelHeaderFiel_Id, parLevel2.Id) +
-        '</div>';
 
+    var cabecalhos = montarHeaderFields(parLevelHeaderFiel_Id, parLevel2.Id)
+
+    if (cabecalhos)
+
+        return '<div id="headerFieldLevel2" class="col-xs-12" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;background-color:#fcf4e3;">' +
+            montarBotoesRotinaIntegracao() +
+            cabecalhos +
+            '</div>';
+
+    else
+        return '';
 }
 
 
 function montarHeaderFields(parLevelHeaderFiel_Id, Generic_Id) {
 
-    var html = "";   
+    var html = "";
 
     var headerFields = getHeaderFileds(parLevelHeaderFiel_Id, Generic_Id);
 
@@ -49,7 +62,7 @@ function montarHeaderFields(parLevelHeaderFiel_Id, Generic_Id) {
 
 function getHeaderFileds(parLevelHeaderFiel_Id, Generic_Id) {
 
-    var headerFields = []; 
+    var headerFields = [];
 
     headerFields = $.grep(parametrization.listaParHeaderFieldGeral, function (headerFieldGeral) {
 
