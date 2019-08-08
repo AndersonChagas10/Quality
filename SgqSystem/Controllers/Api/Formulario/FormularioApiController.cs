@@ -156,7 +156,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 retornoFormulario.ParDepartments = GetParDepartments(form, factory);
 
                 string sqlParDepartment = "";
-                if (retornoFormulario.ParDepartments.Count > 0)
+                if (form.ParCompany_Ids.Length > 0 && retornoFormulario.ParDepartments.Count > 0)
                 {
                     var sqlDepartamentoPelaHash = "";
                     foreach (var item in retornoFormulario.ParDepartments)
@@ -193,7 +193,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 var parDepartment_Ids = form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList();
 
                 var sqlParDepartment = "";
-                if (parDepartment_Ids.Count > 0)
+                if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)
                 {
                     sqlParDepartment = $@" AND PCXD.ParDepartment_Id IN ({string.Join(",", parDepartment_Ids)})";
                 }
