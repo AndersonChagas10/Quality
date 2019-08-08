@@ -1,17 +1,42 @@
-function getParHeaderField() {
+function getParHeaderFieldDeparment() {
 
-    return '<div id="headerField" class="col-xs-12 alert-warning" style="padding-top:10px;padding-bottom:10px;display:table;">' +
+    const ParLevelHeaderFiel_Id = 3; //ParDepartment
+    
+    return '<div id="headerFieldDepartment" class="col-xs-12 alert-warning" style="padding-top:10px;padding-bottom:10px;display:table;">' +
         montarBotoesRotinaIntegracao() +
-        montarHeaderFields() +
+        montarHeaderFields(ParLevelHeaderFiel_Id, currentParDepartment_Id) +
         '</div>';
 
 }
 
-function montarHeaderFields() {
+function getParHeaderFieldLevel1(parLevel1) {
 
-    var html = "";
+    const parLevelHeaderFiel_Id = 1; //ParLevel1
 
-    var headerFields = getHeaderFiledsbyDepartment();
+    return '<div id="headerFieldLevel1" class="col-xs-12 alert-warning" parLevel1Id=' + parLevel1.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;">' +
+        montarBotoesRotinaIntegracao() +
+        montarHeaderFields(parLevelHeaderFiel_Id, parLevel1.Id) +
+        '</div>';
+
+}
+
+function getParHeaderFieldLevel2(parLevel1, parLevel2) {
+
+    const parLevelHeaderFiel_Id = 2; //ParLevel2
+    
+    return '<div id="headerFieldLevel2" class="col-xs-12 alert-warning" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;">' +
+        montarBotoesRotinaIntegracao() +
+        montarHeaderFields(parLevelHeaderFiel_Id, parLevel2.Id) +
+        '</div>';
+
+}
+
+
+function montarHeaderFields(parLevelHeaderFiel_Id, Generic_Id) {
+
+    var html = "";   
+
+    var headerFields = getHeaderFileds(parLevelHeaderFiel_Id, Generic_Id);
 
     if (headerFields && headerFields.length)
         headerFields.forEach(function (headerField) {
@@ -22,32 +47,13 @@ function montarHeaderFields() {
 
 }
 
-function getHeaderFiledsbyDepartment() {
+function getHeaderFileds(parLevelHeaderFiel_Id, Generic_Id) {
 
-    var ParDepartmentXHeaderFields = $.grep(parametrization.listaParDepartmentXHeaderField, function (parDepartmentXHeaderField) {
-        return parDepartmentXHeaderField.ParDepartment_Id == currentParDepartment_Id;
-    });
+    var headerFields = []; 
 
-    if (ParDepartmentXHeaderFields.length == 0) {
-        return null;
-    }
+    headerFields = $.grep(parametrization.listaParHeaderFieldGeral, function (headerFieldGeral) {
 
-    var headerFields = [];
-
-    ParDepartmentXHeaderFields.forEach(function (parDepartmentXHeaderField) {
-
-        var headerFieldByDepartment = $.grep(parametrization.listaParHeaderField, function (headerField) {
-
-            return parDepartmentXHeaderField.ParHeaderField_Id == headerField.Id;
-
-        })[0];
-
-        if (headerFieldByDepartment) {
-
-            headerFieldByDepartment.IsRequired = parDepartmentXHeaderField.IsRequired;
-            headerFields.push(headerFieldByDepartment);
-
-        }
+        return headerFieldGeral.Generic_Id == Generic_Id && headerFieldGeral.ParLevelHeaderField_Id == parLevelHeaderFiel_Id;
 
     });
 
@@ -83,7 +89,7 @@ function getInputOrSelect(parheaderField) {
         case 4:	//Texto 
             html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<input class="form-control input-sm" type="text" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '" >'
+            html += '<input class="form-control input-sm" type="text" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '" >';
             html += '</div>';
             break;
         case 5:	//Numerico 
@@ -101,26 +107,26 @@ function getInputOrSelect(parheaderField) {
         case 7:  //Hora
             html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<input class="form-control input-sm " type="time" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '" >'
+            html += '<input class="form-control input-sm " type="time" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '" >';
             html += '</div>';
             break;
         case 8:	//Informações
             html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<br><button onclick="showInfo(this)" type="button" class="btn btn-info form-control input-sm" data-header-info="' + parheaderField.Description + '">Info</button></div>'
+            html += '<br><button onclick="showInfo(this)" type="button" class="btn btn-info form-control input-sm" data-header-info="' + parheaderField.Description + '">Info</button></div>';
             html += '</div>';
             break;
         case 9:	//Parâmetro: texto
             //input do tipo texto quando 
             html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<input class="form-control input-sm" type="text" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '" data-param="' + parheaderField.Description + '">'
+            html += '<input class="form-control input-sm" type="text" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '" data-param="' + parheaderField.Description + '">';
             html += '</div>';
             break;
         case 10: //Dinâmico: texto
             html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<input class="form-control input-sm" type="text" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '" data-din="' + parheaderField.Description + '" readonly>'
+            html += '<input class="form-control input-sm" type="text" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '" data-din="' + parheaderField.Description + '" readonly>';
             html += '</div>';
             //input do tipo texto quando 
             break;
@@ -134,8 +140,8 @@ function getInputOrSelect(parheaderField) {
 
 function getParMultipleValues(parheaderField) {
 
-    var parMultipleValues = $.grep(parametrization.listaParMultipleValues, function (parMultipleValue) {
-        return parMultipleValue.ParHeaderField_Id == parheaderField.Id;
+    var parMultipleValues = $.grep(parametrization.listaParMultipleValuesGeral, function (parMultipleValueGeral) {
+        return parMultipleValueGeral.ParHeaderFieldGeral_Id == parheaderField.Id;
     });
 
 

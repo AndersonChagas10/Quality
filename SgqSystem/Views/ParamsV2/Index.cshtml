@@ -172,12 +172,12 @@
         @*@Html.Partial("~/Views/Shared/_MensagemAtualizartablets.cshtml")*@
 
         @*<div class="row">
-            <div class="col-sm-3">
-                <label for="ParCompany_Id">Unidade:</label>
-                <select id="selectParCompanyGeral" class="input input-lg col-sm-6"
-                        name="ParCompany_Id"></select>
-            </div>
-        </div>*@
+                <div class="col-sm-3">
+                    <label for="ParCompany_Id">Unidade:</label>
+                    <select id="selectParCompanyGeral" class="input input-lg col-sm-6"
+                            name="ParCompany_Id"></select>
+                </div>
+            </div>*@
 
         <div class="row">
             <div class="col-sm-12" style="padding:0px 30px">
@@ -217,10 +217,10 @@
 
                         <a data-toggle="tab" href="#l1">
                             Indicador (Level 1)
-                             <span data-reset class="fa fa-plus pull-right" style="cursor:pointer;"></span>
+                            <span data-reset class="fa fa-plus pull-right" style="cursor:pointer;"></span>
                             <select id="selectL1" class="input input-lg col-sm-12"></select>
                         </a>
-                       
+
                     </li>
                     <li class="col-sm-3">
                         <a data-toggle="tab" href="#l2">
@@ -311,20 +311,20 @@
                                         </a>
                                     </li>
                                     @*<li>
-                                        <a href="#l2_avam" data-toggle="tab">
-                                            Avaliação e Amostra
-                                        </a>
-                                    </li>*@
-                                    @*<li>
+                                            <a href="#l2_avam" data-toggle="tab">
+                                                Avaliação e Amostra
+                                            </a>
+                                        </li>*@
+                                    <li>
                                         <a href="#l2_cabecalho" data-toggle="tab">
                                             Cabeçalhos no monitoramento
                                         </a>
-                                    </li>*@
+                                    </li>
                                     @*<li>
-                                        <a href="#l2_contador" data-toggle="tab">
-                                            Contadores
-                                        </a>
-                                    </li>*@
+                                            <a href="#l2_contador" data-toggle="tab">
+                                                Contadores
+                                            </a>
+                                        </li>*@
                                 </ul>
                             </div>
                             <div class="col-xs-9">
@@ -336,11 +336,11 @@
                                         @Html.Partial("ParL2Avancados")
                                     </div>
                                     @*<div class="tab-pane" id="l2_avam">
-                                        @Html.Partial("ParL2Avam")
-                                    </div>*@
-                                    @*<div class="tab-pane" id="l2_cabecalho">
+                                            @Html.Partial("ParL2Avam")
+                                        </div>*@
+                                    <div class="tab-pane" id="l2_cabecalho">
                                         @Html.Partial("ParL2Cabecalho")
-                                    </div>*@
+                                    </div>
                                     <div class="tab-pane" id="l2_contador">
                                         @Html.Partial("ParL2Contador")
                                     </div>
@@ -363,10 +363,10 @@
                                         </a>
                                     </li>
                                     @*<li>
-                                        <a href="#l3_avam" data-toggle="tab">
-                                            Avaliação e Amostra
-                                        </a>
-                                    </li>*@
+                                            <a href="#l3_avam" data-toggle="tab">
+                                                Avaliação e Amostra
+                                            </a>
+                                        </li>*@
                                     <li>
                                         <a href="#l3_peso" data-toggle="tab">
                                             Vincular Peso
@@ -838,9 +838,10 @@
 
                     preencheCampos('l1', '', ParLevel1, true);
                     parL1Processo.load(ParLevel1.ParLevel1XCluster);
-                    parL1Cabecalho.load(ParLevel1.ParLevel1XHeaderField);
+                    parL1Cabecalho.load(ParLevel1.ParHeaderFieldsGeral);
                     verifyTabs('selectL1', 'l1');
                     closeLoader();
+
                 },
                 error: function (request, error) {
                     closeLoader();
@@ -886,7 +887,9 @@
             $("#ParL2Geral").find("[name='IsActive']").prop('checked', false);
 
         if (parseInt($(this).val()) > 0) {
+
             openLoader(Resources("please_wait"));
+
             $.ajax({
                 url: `@Url.Action("Get", "api/ParLevel2Api")/${$(this).val()}`,
                 type: 'Get',
@@ -898,7 +901,7 @@
                     preencheCampos('l2', '', data.Parlevel2, true)
                     ParL2Geral.set(data.Parlevel2);
                     ParL2Avancados.set(data.Parlevel2);
-                    //parL2Avam.load(data.Parlevel2.ParEvaluation);
+                    parL2Cabecalho.load(data.Parlevel2.ParHeaderFieldsGeral);
                     verifyTabs('selectL2', 'l2');
                     closeLoader();
                 },
@@ -1011,7 +1014,7 @@
                     }
 
                     parDCRotina.load(data.ParDepartmentXRotinaIntegracao);
-                    parDCCabecalho.load(data.ParDepartmentXHeaderField);
+                    parDCCabecalho.load(data.ParHeaderFieldGeral);
                     closeLoader();
                 },
                 error: function (request, error) {
@@ -1038,8 +1041,9 @@
                 preencheSelect('selectParConsolidation', 'Name', 'Id', data.ParConsolidationTypes, 'Selecione o tipo de Consolidação');
                 preencheSelect('selectParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
                 preencheSelect('selectParScoreType', 'Name', 'Id', data.ParScoreTypes, 'Selecione o tipo de Score');
-                preencheSelect('selectL1ParLevelDefiniton', 'Name', 'Id', data.ParLevelDefinitons, 'Selecione onde deve aparecer o cabeçalho');
+                //preencheSelect('selectL1ParLevelDefiniton', 'Name', 'Id', data.ParLevelDefinitons, 'Selecione onde deve aparecer o cabeçalho');
                 preencheSelect('selectL1ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
+                
 
                 preencheSelect('selectL3GeralParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
 
@@ -1047,6 +1051,7 @@
 
                 preencheSelect('selectL2AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL2AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
+                preencheSelect('selectL2ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
 
                 parCompanysGlobal = data.ParCompanys
                 preencheSelect('selectParCompanyGeral', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
@@ -1243,12 +1248,12 @@
 
         let isValid = true;
 
-        //se for binário o multipla escolha valida pela quantidade de parMultipleValues
-        if (obj.ParHeaderField.ParFieldType_Id == 1 || obj.ParHeaderField.ParFieldType_Id == 3) {
+        //se for binário o multipla escolha valida pela quantidade de ParMultipleValuesGeral
+        if (obj.ParFieldType_Id == 1 || obj.ParFieldType_Id == 3) {
 
-            if (!obj.ParHeaderField.ParMultipleValues ||
-                obj.ParHeaderField.ParMultipleValues.length <= 0 ||
-                obj.ParHeaderField.ParMultipleValues.filter(item => item.IsActive == true).length == 0 ||
+            if (!obj.ParMultipleValuesGeral ||
+                obj.ParMultipleValuesGeral.length <= 0 ||
+                obj.ParMultipleValuesGeral.filter(item => item.IsActive == true).length == 0 ||
                 !formIsValid(id)) {
                 openMessageModal("Alerta", "Favor Inserir opções antes de salvar");
                 isValid = false;

@@ -1,1 +1,656 @@
 ﻿<h3 class="titulo2">Cabeçalhos no monitoramento</h3>
+
+<form id="ParL2Cabecalho">
+
+    <br />
+
+    <div class="row" data-form>
+
+        <div class="col-sm-3">
+
+            <input type="hidden" name="ParHeaderField_Id" />
+            <input type="hidden" name="ParLevel2_Id" data-id />
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="IsActive" value="true" data-notnull />
+
+            <div class="form-group">
+                <label for="ParCriticalLevel_Id">Tipo:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Qual o tipo de entrada do dado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <select id="selectL2ParFieldType" class="input input-lg col-sm-12 required" name="ParFieldType_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label for="EffectiveDate">Nome do campo:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Nome que será exibido no cabeçalho selecionado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <input type="text" class="form-control required" id="Name" name="Name" autocomplete="off">
+            </div>
+
+        </div>
+
+        <div id="allObjCamposCabecalho" class="col-sm-12">
+
+            <div id="objMultiplaEscolha" style="display:none;" class="margin-top">
+                <table id="tblOpcaoMultiplaEscolha">
+                    <tbody>
+                        <tr class="row">
+                            <td class="td-erp " colspan="0" style="">
+                                <label for="Op__o">Opção</label>
+                                <div>
+                                    <input class="form-control input-sm text-box single-line required" id="objMultiplaEscolhaName" name="objMultiplaEscolhaName" style="max-width: 200px;" type="text" value="">
+                                </div>
+                                <span id="multiplaEscolhaNameCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
+                                    <span for="" class="">O campo Opção deve ser preenchido para o Cabeçalho.</span>
+                                </span>
+                            </td>
+                            <td class="td-erp " style="">
+                                <label for="Valor_da_puni__o">Valor da punição</label>
+                                <div class="input-group">
+                                    <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValue" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL2Cabecalho.prepareToInsert(1);">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
+                                    <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="objBinario" style="display:none;">
+                <table id="tblBinario">
+                    <tbody>
+                        <tr class="row">
+                            <td class="td-erp"></td>
+                            <td class="td-erp"><label for="Valor">Valor</label> </td>
+                            <td class="td-erp"><label for="Valor_da_puni__o">Valor da punição</label>  <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i></td>
+                        </tr>
+                        <tr class="row" id="positivo">
+                            <td class="td-erp"><label for="Positivo">Positivo</label> </td>
+                            <td>
+                                <input type="text" id="objBinarioPunishmentName1" class="form-control input-sm required">
+                                <span id="punishmentNameCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
+                            </td>
+                            <td>
+                                <input type="number" id="objBinarioPunishmentValue1" class="form-control input-sm required" value="0">
+                                <span id="punishmentValueCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
+                            </td>
+                        </tr>
+                        <tr class="row" id="negativo">
+                            <td class="td-erp"><label for="Negativo">Negativo</label> </td>
+                            <td>
+                                <input type="text" id="objBinarioPunishmentName2" class="form-control input-sm required">
+                                <span id="punishmentNameCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
+                            </td>
+                            <td>
+                                <input type="number" id="objBinarioPunishmentValue2" class="form-control input-sm required" value="0">
+                                <span id="punishmentValueCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary btn-sm margin-button" type="button" onclick="parL2Cabecalho.prepareToInsert(3);"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="objWithDescription" style="display:none;">
+
+                <label for="Description">Valor</label>:
+                <input type="text" name="Description" class="required">
+
+            </div>
+
+            <div id="divCamposCabecalhoIncluidos" style="display:none">
+                <table id="camposCabecalhoIncluidos" class="table" role="grid">
+                    <thead>
+                        <tr role="row">
+                            <th>Opções</th>
+                            <th>Valor de Punição</th>
+                            <th>Valor Padrão</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                <div class="td-erp">
+                    <div id="divBtnSalvar" class="col-sm-6">
+                        <button class="form-control btn btn-primary" data-add>Salvar</button>
+                    </div>
+
+                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="tableParL2Cabecalho" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-sm-2">
+                            Nome
+                        </th>
+                        <th class="col-sm-2">
+                            Tipo
+                        </th>
+                        <th class="col-sm-2">
+                            Visualização
+                        </th>
+                        <th class="col-sm-1">
+                            Obrigatório
+                        </th>
+                        <th class="col-sm-1">
+                            padrão
+                        </th>
+                        <th class="col-sm-2">
+                            Ação
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    var parL2Cabecalho = {
+
+        //paramtros
+        id: 'ParL2Cabecalho',
+        urlSave: '@Url.Action("PostParHeaderFieldGeral", "api/ParLevel2Api")',
+        load: function (ParHeaderFieldsGeral) {
+
+            let id = this.id;
+
+            apagaCampos(id);
+            parL2Cabecalho.reloadTable();
+
+            $('table#table' + id + ' tbody').html('');
+            $('#selectL2ParFieldType').prop("disabled", false);
+            $('#tableParL2Cabecalho [data-table-edit]').prop('disabled', false);
+            $('#tableParL2Cabecalho [data-table-delete]').prop('disabled', false);
+            $('#tableParL2Cabecalho select,#tableParL2Cabecalho input,#tableParL2Cabecalho button').prop('disabled', false);
+            $('#' + id + ' #divBtnCancelar').hide();
+
+            $(ParHeaderFieldsGeral).each(function (i, o) {
+
+                let previewHeaderField = getPreviewHeaderField(o);
+                let defaultSelected = "";
+
+                if (o.ParFieldType_Id == 1)
+                    defaultSelected = getDefaultSelected();
+
+                let isChecked = o.IsRequired ? "checked" : "";
+
+                var html = '<tr>';
+                html += '<td>' + o.Name + '</td>';
+                html += '<td>' + o.ParFieldType.Name + '</td>';
+                html += '<td>' + previewHeaderField + '</td>';
+                html += '<td><div class=""><label class="switch"><input type="checkbox" name="IsRequired"' + isChecked + ' ><span class="slider round"></span> </label></div></td>';
+                html += '<td>' + defaultSelected + '</input></td>';
+                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
+                html += '</tr>';
+
+                $('#ParL2Cabecalho table#table' + id + ' tbody').append(html);
+                $('#ParL2Cabecalho table#table' + id + ' tbody tr:last').data('sgq', o);
+
+            });
+
+            this.showTableParMultipleValues();
+        },
+        prepareParHeaderField: function (obj) {
+
+            let formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
+
+            if (typeof (obj) == 'undefined')
+                obj = {};
+
+            obj['Name'] = formdata.Name;
+            obj['Description'] = formdata.Description;
+            obj['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
+            obj['ParFieldType_Id'] = formdata.ParFieldType_Id;
+            obj['Generic_Id'] = $('[name="ParLevel2_Id"][data-id]').val();
+
+            return obj;
+        },
+        prepareToInsert: function (parFieldType_Id) {
+
+            if (!formIsValid(this.id)) {
+                return false;
+            }
+
+            let $TblParMultipeValues;
+
+            var obj = $('#' + this.id + ' [data-form]').data('sgq');
+
+            if (typeof (obj) == 'undefined')
+                obj = {};
+
+            if (typeof (obj) == 'undefined')
+                obj = {};
+
+            if (typeof (obj['ParMultipleValuesGeral']) == 'undefined')
+                obj['ParMultipleValuesGeral'] = [];
+
+            switch (parFieldType_Id) {
+
+                case 1: // Multipla Escolha
+
+                    $TblParMultipeValues = $('#ParL2Cabecalho #tblOpcaoMultiplaEscolha');
+
+                    obj['ParMultipleValuesGeral'].push({
+                        ParHeaderFieldGeral: $('#ParL2Cabecalho #Name').val(),
+                        Id: 0,
+                        Name: $TblParMultipeValues.find('#objMultiplaEscolhaName').val(),
+                        Description: '',
+                        PunishmentValue: $TblParMultipeValues.find('#objMultiplaEscolhaPunishmentValue').val(),
+                        Conformity: 0,
+                        IsDefaultOption: 0,
+                        IsActive: true
+                    });
+
+                    break;
+
+                case 3:	// Binario
+
+                    if ($.grep(obj['ParMultipleValuesGeral'], function (o, i) {
+                        return o.IsActive == true;
+                    }).length > 0) {
+
+                        openMessageModal("Alerta", "Já existem opções inseridas para este campo de cabeçalho")
+                        return false;
+                    }
+
+                    $TblParMultipeValues = $('#ParL2Cabecalho #tblBinario');
+
+                    obj['ParMultipleValuesGeral'].push({
+                        ParHeaderFieldGeral: $('#ParL2Cabecalho #Name').val(),
+                        Id: 0,
+                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName1').val(),
+                        Description: '',
+                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue1').val(),
+                        Conformity: 1,
+                        IsDefaultOption: 0,
+                        IsActive: true
+                    });
+
+                    obj['ParMultipleValuesGeral'].push({
+                        ParHeaderFieldGeral: $('#ParL2Cabecalho #ParL2Cabecalho #Name').val(),
+                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName2').val(),
+                        Id: 0,
+                        Description: '',
+                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue2').val(),
+                        Conformity: 0,
+                        IsDefaultOption: 0,
+                        IsActive: true
+                    });
+
+                    break;
+
+                default:
+            }
+
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+
+            this.insertTable(obj);
+
+        },
+
+        insertTable: function (obj) {
+
+            //pega os dados do form e transforma em obj
+            obj = parL2Cabecalho.prepareParHeaderField(obj);
+
+            $('#ParL2Cabecalho #camposCabecalhoIncluidos tbody').empty();
+
+            let ParHeaderFieldGeral = "";
+            let parLevelDefiniton = "";
+
+            let multipleValues = obj['ParMultipleValuesGeral'];
+            let blockParFieldType = false;
+
+            multipleValues.forEach((o, i) => {
+
+                if (o.IsActive) {
+                    let table = `<tr>
+                            <td>${o.Name}</td>
+                            <td>${o.PunishmentValue}</td>
+                            <td>${o.IsDefaultOption == true ? Resources("yes") : Resources("no")}</td>
+                            <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="parL2Cabecalho.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
+                          </tr>`;
+
+                    $('#ParL2Cabecalho #camposCabecalhoIncluidos tbody').append(table);
+
+                    blockParFieldType = true;
+                }
+            });
+
+            if (blockParFieldType)
+                $('#ParL2Cabecalho #selectL2ParFieldType').prop("disabled", true);
+            else
+                $('#ParL2Cabecalho #selectL2ParFieldType').prop("disabled", false);
+
+            this.showTableParMultipleValues();
+        },
+
+        showTableParMultipleValues: function () {
+
+            if ($('#ParL2Cabecalho #camposCabecalhoIncluidos tbody tr').length) {
+                $('#ParL2Cabecalho #divCamposCabecalhoIncluidos').show();
+            } else {
+                $('#ParL2Cabecalho #divCamposCabecalhoIncluidos').hide();
+            }
+
+        },
+
+        reloadTable: function () {
+            $('#ParL2Cabecalho #camposCabecalhoIncluidos tbody').empty();
+        },
+
+        excludeTable: function (i) {
+
+            var r = confirm("Deseja Excluir?");
+
+            if (r == false) {
+                return false;
+            }
+
+            var obj = $('#' + this.id + ' [data-form]').data('sgq');
+
+            if (obj) {
+                if (obj.ParFieldType.Id == 3) //Se for binário, exclui todos os ParMultipleValuesGeral
+                    obj.ParMultipleValuesGeral.forEach((o, i, a) => {
+                        a[i].IsActive = false;
+                    });
+                else
+                    obj['ParMultipleValuesGeral'][i].IsActive = false;
+
+                this.insertTable(obj);
+
+            } else {
+                $('#ParL2Cabecalho #camposCabecalhoIncluidos tbody').empty();
+                $('#ParL2Cabecalho #divCamposCabecalhoIncluidos').hide();
+            }
+        },
+
+        Save: function (obj) {
+
+            openLoader(Resources("please_wait"));
+
+            $.ajax({
+                url: parL2Cabecalho.urlSave,
+                type: 'POST',
+                dataType: "json",
+                data: JSON.stringify(obj),
+                contentType: "application/json",
+                success: function (data) {
+                    openMessageModal("Feito", "Dados Salvos");
+                    $('#selectL2').trigger('change');   
+                    closeLoader();
+                },
+                error: function (request, error) {
+                    openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                    console.log(error)
+                }
+
+            }).done(function () {
+                closeLoader();
+                $('#tableParL2Cabecalho select,#tableParL2Cabecalho input,#tableParL2Cabecalho button').prop('disabled', true);
+                $('#ParL2Cabecalho' + ' #divBtnCancelar').hide();
+            });
+        }
+
+    };
+
+    $('#' + parL2Cabecalho.id).off('click');
+
+    //Adicionar os dados no data-form
+    $('#' + parL2Cabecalho.id).on('click', '[data-table-edit]', function (e) {
+
+        debugger
+
+        scrollToForm();
+        var obj = $(this).parents('tr').data('sgq');
+
+        apagaCampos(parL2Cabecalho.id);
+        parL2Cabecalho.reloadTable();
+        preencheCampos(parL2Cabecalho.id + ' [data-form]', '', obj);
+
+        $('#' + parL2Cabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParFieldType_Id);
+        $('#' + parL2Cabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').trigger('change')
+
+        $('#' + parL2Cabecalho.id + ' [data-form] input[name="Name"]').val(obj.Name);
+        $('#' + parL2Cabecalho.id + ' [data-form] input[name="Description"]').val(obj.Description);
+
+        $('#' + parL2Cabecalho.id + ' [data-form]').data('sgq', obj);
+        $('#' + parL2Cabecalho.id + ' [data-form]').addClass('alert alert-success');
+        $('#' + parL2Cabecalho.id + ' [data-form] [data-action] [data-add]').addClass('hide');
+        $('#' + parL2Cabecalho.id + ' #divBtnCancelar').show();
+
+        parL2Cabecalho.insertTable(obj);
+
+        $('#' + parL2Cabecalho.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
+        $('#' + parL2Cabecalho.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+
+        $('#tableParL2Cabecalho select,#tableParL2Cabecalho input,#tableParL2Cabecalho button').prop('disabled', true);
+
+    });
+
+    //Adicionar os dados no data-form
+    $('#' + parL2Cabecalho.id).on('click', '[data-table-delete]', function (e) {
+        e.preventDefault();
+        var item = $(this).parents('tr').data('sgq');
+        $("#modalExclusao").show();
+
+        $("#excluirItem").off().on('click', function () {
+            item.IsActive = false;
+            parL2Cabecalho.Save(item);
+            $("#modalExclusao").hide();
+            item = "";
+        });
+    });
+
+    $(".fecharModal").on('click', function () {
+        $("#modalExclusao").hide();
+        item = "";
+    });
+
+
+    $('#' + parL2Cabecalho.id).on('click', '[data-cancel]', function (e) {
+        apagaCampos(parL2Cabecalho.id);
+        parL2Cabecalho.reloadTable();
+    });
+
+    //Salvar o campo editado ou cria um novo
+    $('#' + parL2Cabecalho.id).on('click', '[data-edit],[data-add]', function (e) {
+
+        debugger
+
+        $('#ParL2Cabecalho #objMultiplaEscolha').hide();
+        $('#ParL2Cabecalho #objBinario').hide();
+
+        var obj = $('#' + parL2Cabecalho.id + ' [data-form]').data('sgq');
+        var formdata = $('#' + parL2Cabecalho.id + ' [data-form]').serializeFormToObjetc();
+
+        if (!(typeof (obj) == 'undefined')) {
+            obj = atualizaValoresDoObjeto(obj, formdata);
+            obj.ParLevel2_Id = $('#l2 [data-id]').val();
+        } else {
+            obj = null;
+            obj = atualizaValoresDoObjeto(obj, formdata);
+        }
+
+        obj = parL2Cabecalho.prepareParHeaderField(obj);
+
+        if (optionIsValid(obj, parL2Cabecalho.id)) {
+
+            openLoader(Resources("please_wait"));
+            parL2Cabecalho.Save(obj);
+
+        } else {
+            $('#selectL2ParFieldType').trigger('change');
+        }
+
+    });
+
+    $('#' + parL2Cabecalho.id).on('change', '[name="IsRequired"]', function () {
+
+        openLoader("Salvando...");
+
+        var obj = $(this).parents('tr').data('sgq');
+
+        obj.IsRequired = !!$(this).prop('checked');
+
+        parL2Cabecalho.Save(obj);
+    });
+
+    $('#' + parL2Cabecalho.id).on('click', '.defaultSelected', function () {
+
+        var obj = $(this).parents('tr').data('sgq');
+
+        let parMultipleValues_Id = parseInt($(this).parents('tr').find('select :selected').val());
+
+        parMultipleValues_Id = parMultipleValues_Id ? parMultipleValues_Id : null;
+
+        obj.ParMultipleValuesGeral.forEach((o, i, a) => {
+            a[i].IsDefaultOption = 0;
+
+            if (o.Id == parMultipleValues_Id) {
+                a[i].IsDefaultOption = 1;
+            }
+        });
+
+        parL2Cabecalho.Save(obj);
+    });
+
+    $('#' + parL2Cabecalho.id).on('click', ' [data-add-cancel] ', function () {
+        $('#selectL2').trigger('change');
+        $(this).parent().hide();
+    });
+
+    //let getPreviewHeaderFieldMonitoramento = function (headerField) {
+
+    //    let input = "";
+
+    //    switch (headerField.ParFieldType_Id) {
+
+    //        case 1: // Multipla Escolha
+    //        case 3:	// Binario
+
+    //            let options = '<option>Selecione...</option>';
+
+    //            headerField.ParMultipleValuesGeral.forEach((o) => {
+    //                options += `<option value="${o.Id}" ${(o.IsDefaultOption ? "selected" : "")}>${o.Name}</option>`;
+    //            });
+
+    //            input = '<select class="form-control">' + options + '</select>';
+
+    //            break;
+
+    //        case 2:	// Integrações
+    //            input = "";
+    //            break;
+
+    //        case 4:	// Texto
+    //        case 9:	// Parâmetro
+    //            input = '<input type="text" class="form-control">';
+    //            break;
+
+    //        case 5:	// Numerico
+    //            input = '<input type="number" class="form-control">';
+    //            break;
+
+    //        case 6:	// Data
+    //            input = '<input type="date" class="form-control">';
+    //            break;
+
+    //        case 7:	// Hora
+    //            input = '<input type="time" class="form-control" />';
+    //            break;
+
+    //        case 8:	// Informações
+    //            input = `<input type="text" value='${headerField.Description}' class="form-control" disabled />`;
+    //            break;
+
+    //        case 10: //Dinâmico
+    //            input = '<input type="text" class="form-control" disabled />';
+    //            break;
+
+    //        default:
+    //    }
+
+    //    return input;
+    //}
+
+    //let getDefaultSelected = function () {
+
+    //    return `<button type="button" onclick="" class="btn btn-default btn-sm defaultSelected"><i class="fa fa-check" aria-hidden="true"></i></button>`;
+
+    //}
+
+    $('#selectL2ParFieldType').on("change", function () {
+
+        debugger
+        hideAllOptionsMonitoramento();
+
+        //limpar arr ParMultipleValues?
+
+        let parFieldType_Id = parseInt($(this).val());
+
+        switch (parFieldType_Id) {
+
+            case 1: // Multipla Escolha
+                $('#ParL2Cabecalho #objMultiplaEscolha').show();
+                break;
+
+            case 3:	// Binario
+                $('#ParL2Cabecalho #objBinario').show();
+                break;
+
+            case 8:	// Informações
+                $('#ParL2Cabecalho #objWithDescription').show();
+                //Inserir direto
+                break;
+
+            case 9:	// Parâmetro
+                $('#ParL2Cabecalho #objWithDescription').show();
+                //Inserir direto
+                break;
+
+            case 10: //Dinâmico
+                $('#ParL2Cabecalho #objWithDescription').show();
+                //Inserir direto
+                break;
+
+            default:
+        }
+
+    });
+
+    let hideAllOptionsMonitoramento = function () {
+
+        $('#ParL2Cabecalho #objMultiplaEscolha').hide();
+        $('#ParL2Cabecalho #objBinario').hide();
+        $('#ParL2Cabecalho #objInformacoes').hide();
+        $('#ParL2Cabecalho #objWithDescription').hide();
+
+    }
+
+</script>

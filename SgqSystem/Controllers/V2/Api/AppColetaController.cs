@@ -101,9 +101,11 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParLevel3BoolFalseAppViewModel> listaParLevel3BoolFalse;
             List<ParLevel3XHelp> listaParLevel3XHelp;
             List<ParAlert> listaParAlert;
-            List<ParHeaderField> listaParHeaderField;
-            List<ParDepartmentXHeaderField> listaParDepartmentXHeaderField;
-            List<ParMultipleValues> listaParMultipleValues;
+            //List<ParHeaderField> listaParHeaderField;
+            //List<ParDepartmentXHeaderField> listaParDepartmentXHeaderField;
+            List<ParHeaderFieldGeral> listaParHeaderFieldGeral;
+            //List<ParMultipleValues> listaParMultipleValues;
+            List<ParMultipleValuesGeral> listaParMultipleValuesGeral;
             List<ParDepartmentXRotinaIntegracao> listaParDepartmentXRotinaIntegracao;
             List<RotinaIntegracao> listaRotinaIntegracao;
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
@@ -345,17 +347,28 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => x.IsActive && x.IsCollectAlert)
                     .ToList();
 
-                listaParDepartmentXHeaderField = db.ParDepartmentXHeaderField
+                //listaParDepartmentXHeaderField = db.ParDepartmentXHeaderField
+                //    .AsNoTracking()
+                //    .Where(x => x.IsActive)
+                //    .ToList();
+
+                //listaParHeaderField = db.ParHeaderField
+                //    .AsNoTracking()
+                //    .Where(x => x.IsActive)
+                //    .ToList();
+
+                //listaParMultipleValues = db.ParMultipleValues
+                //    .AsNoTracking()
+                //    .Where(x => x.IsActive)
+                //    .ToList();
+
+
+                listaParHeaderFieldGeral = db.ParHeaderFieldGeral
                     .AsNoTracking()
                     .Where(x => x.IsActive)
                     .ToList();
 
-                listaParHeaderField = db.ParHeaderField
-                    .AsNoTracking()
-                    .Where(x => x.IsActive)
-                    .ToList();
-
-                listaParMultipleValues = db.ParMultipleValues
+                listaParMultipleValuesGeral = db.ParMultipleValuesGeral
                     .AsNoTracking()
                     .Where(x => x.IsActive)
                     .ToList();
@@ -393,9 +406,11 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParCargoXDepartment,
                 listaParLevel3XHelp,
                 listaParAlert,
-                listaParDepartmentXHeaderField,
-                listaParHeaderField,
-                listaParMultipleValues,
+                //listaParDepartmentXHeaderField,
+                //listaParHeaderField,
+                //listaParMultipleValues,
+                listaParHeaderFieldGeral,
+                listaParMultipleValuesGeral,
                 listaParDepartmentXRotinaIntegracao,
                 listaRotinaIntegracao,
                 listaRotinaIntegracaoOffline

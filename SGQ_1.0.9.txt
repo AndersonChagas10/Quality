@@ -650,7 +650,7 @@ GO
 IF COL_LENGTH('ParCargo','Name') IS NOT NULL
 BEGIN
 	ALTER TABLE ParCargo
-	ALTER COLUMN Name varchar(50) not null;
+	ALTER COLUMN Name varchar(255) not null;
 END
 
 GO
@@ -730,5 +730,4 @@ IF COL_LENGTH('ParCompany','Identification') IS NULL
     BEGIN	
 		ALTER TABLE ParCompany ADD Identification varchar(50) null;
     END
-
 GO

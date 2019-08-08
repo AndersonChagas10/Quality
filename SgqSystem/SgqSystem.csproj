@@ -2108,6 +2108,7 @@
     <Content Include="Views\ParCargoXDepartments\Details.cshtml" />
     <Content Include="Views\ParCargoXDepartments\Edit.cshtml" />
     <Content Include="Views\ParCargoXDepartments\Index.cshtml" />
+    <Content Include="Views\Relatorios\RH\VGARH.cshtml" />
     <Content Include="Views\IntegracaoSistemicas\Create.cshtml" />
     <Content Include="Views\IntegracaoSistemicas\Delete.cshtml" />
     <Content Include="Views\IntegracaoSistemicas\Details.cshtml" />
