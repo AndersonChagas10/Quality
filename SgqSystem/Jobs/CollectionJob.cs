@@ -36,7 +36,7 @@ namespace SgqSystem.Jobs
                 using (var db = new SgqDbDevEntities())
                 {
                     var collectionsLevel2 = GetCollectionsLevel2NotProcess();
-                    var headerFieldsProcess_Id = new List<int>();
+                    //var headerFieldsProcess_Id = new List<int>();
                     var parLevel3List = db.ParLevel3.ToList();
                     int consolidationLevel2_Id = returnConsolidationLevel2Id();
 
@@ -288,21 +288,23 @@ namespace SgqSystem.Jobs
                 var sql = $@"SELECT
                             	CL.ParHeaderField_Id
                                ,CL.ParHeaderField_Value as Value
-                               ,PHF.ParFieldType_Id
-                               ,PHF.Name as ParHeaderField_Name
+                               ,PHFG.ParFieldType_Id
+                               ,PHFG.Name as ParHeaderField_Name
                                ,CL.Evaluation
                                ,CL.Sample
                                ,CL.Id
                                ,{collectionLevel2.Id} as CollectionLevel2_Id
                             FROM Collection CL
-                            INNER JOIN ParHeaderField PHF on CL.ParHeaderField_Id = PHF.Id
+                            INNER JOIN ParHeaderFieldGeral PHFG on CL.ParHeaderField_Id = PHFG.Id
                             WHERE 1 =1 AND ParHeaderField_Id IS NOT NULL
                             AND CL.UserSgq_Id = {collectionLevel2.AuditorId}
                             AND cl.Shift_Id = {collectionLevel2.Shift}
                             AND cl.Period_Id = {collectionLevel2.Period}
                             AND CL.ParCargo_Id = {collectionLevel2.ParCargo_Id}
                             AND cl.ParCompany_Id = {collectionLevel2.UnitId}
-                            AND cl.ParDepartment_Id = {collectionLevel2.ParDepartment_Id}
+                            AND ((cl.ParDepartment_Id = {collectionLevel2.ParDepartment_Id} AND cl.ParLevel1_Id IS NULL AND cl.ParLevel2_Id IS NULL) OR
+                                (cl.ParDepartment_Id = {collectionLevel2.ParDepartment_Id} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
+                                (cl.ParDepartment_Id = {collectionLevel2.ParDepartment_Id} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))
                             AND cl.Evaluation = {collectionLevel2.EvaluationNumber}
                             AND cl.Sample = {collectionLevel2.Sample}
                             AND Cl.CollectionDate BETWEEN DATEADD(minute, -5, '{collectionDate}') and DATEADD(minute, 5, '{collectionDate}')";
