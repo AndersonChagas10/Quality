@@ -966,6 +966,10 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "isChildrenOf", Value = "É filho de" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "type_of_function", Value = "Tipo de Função" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "group_of_department", Value = "Grupo de Centro de Custo/Seção" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "table_name", Value = "Nome da Tabela" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "interval", Value = "Intervalo" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "sis_integration", Value = "Integração Sistêmica"});
+                
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
