@@ -9,8 +9,8 @@ namespace Dominio
     [Table("IntegracaoSistemica")]
     public partial class IntegracaoSistemica : BaseModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [StringLength(20)]
