@@ -7742,6 +7742,12 @@ namespace SgqSystem.Controllers
             return meta;
         }
 
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult RelatorioMSP()
+        {
+            return View("~/Views/Relatorios/MSP/RelatorioMSP.cshtml", form);
+        }
+
     }
 
 
