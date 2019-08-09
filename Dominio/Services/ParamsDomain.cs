@@ -492,7 +492,7 @@ namespace Dominio.Services
             try
             {
 
-                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, null, listParRelapse, parLevel3Level2peso?.ToList(), paramsDto.level1Selected);
+                _paramsRepo.SaveParLevel3(saveParamLevel3, null, null, null, null, paramsDto.level1Selected);
 
                 db.Database.ExecuteSqlCommand(string.Format("Update ParLevel3 SET IsPointLess = {0} WHERE Id = {1}", paramsDto.parLevel3Dto.IsPointLess ? "1" : "0", saveParamLevel3.Id));
                 db.Database.ExecuteSqlCommand(string.Format("Update ParLevel3 SET AllowNA = {0} WHERE Id = {1}", paramsDto.parLevel3Dto.AllowNA ? "1" : "0", saveParamLevel3.Id));
