@@ -646,11 +646,13 @@ namespace Data.Repositories
                     db.SaveChanges();
                 }
 
+                var listaParLevel3Level2 = new List<ParLevel3Level2>();
                 if (idLevel3 > 0)
                 {
                     /**/
                     var idL3L2 = 0;
-                    existenteL3L2 = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idLevel3 && r.ParLevel2_Id == idLevel2 && r.ParCompany_Id == companyId);
+                    listaParLevel3Level2 = db.ParLevel3Level2.Where(r => r.ParLevel3_Id == idLevel3 && r.ParLevel2_Id == idLevel2 && r.ParCompany_Id == companyId).ToList();
+                    existenteL3L2 = listaParLevel3Level2.FirstOrDefault();
                     if (existenteL3L2 == null)
                     {
                         //throw new Exception("");
@@ -675,9 +677,9 @@ namespace Data.Repositories
 
                     }
 
-
+                    var listaParLevel3Level2Ids = listaParLevel3Level2.Select(x=>x.Id).ToList();
                     /**/
-                    existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel3Level2_Id == idL3L2 && r.ParCompany_Id == companyId);
+                    existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParCompany_Id == companyId && listaParLevel3Level2Ids.Any(y => y == r.ParLevel3Level2_Id));
                     if (existenteL3L2L1 == null)
                     {
                         var salvarL3L2L1 = new ParLevel3Level2Level1() { ParLevel1_Id = idLevel1, ParLevel3Level2_Id = idL3L2, ParCompany_Id = companyId, Active = true };
