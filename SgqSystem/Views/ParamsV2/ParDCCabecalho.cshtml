@@ -380,17 +380,10 @@
         },
 
         excludeTable: function (i) {
-
-            var r = confirm("Deseja Excluir?");
-
-            if (r == false) {
-                return false;
-            }
-
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (obj) {
-                if (obj.ParFieldType.Id == 3) //Se for binário, exclui todos os ParMultipleValues
+                if (obj.ParFieldTypeId == 3) //Se for binário, exclui todos os ParMultipleValues
                     obj.ParMultipleValuesGeral.forEach((o, i, a) => {
                         a[i].IsActive = false;
                     });
