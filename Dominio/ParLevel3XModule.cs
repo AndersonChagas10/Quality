@@ -30,7 +30,7 @@ namespace Dominio
 
         public int ParCompany_Id { get; set; }
 
-        public int ParDepartment_Id { get; set; }
+        public int? ParDepartment_Id { get; set; }
 
         public int ParModule_Id { get; set; }
 
