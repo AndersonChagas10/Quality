@@ -109,13 +109,19 @@ var Select3 = {
 			    var lista = data;
 
 			    var htmlLista = $.map(lista,
-					function (o) {
+                    function (o) {
+                        var hash = "";
+                        if (o.Hash === null)
+                             hash = "";
+                        else
+                             hash = o.Hash + " / ";
+
 					    var selected = $.grep(Select3.objFiltroSelect3['_' + name], function (s) { return s.Value == o.Id });
 					    return `<tr>
 						<td><input type="checkbox" id="${o.Id} - ${o.Name}" value="${o.Id}" data-text="${o.Id} - ${o.Name}"
 						${selected.length > 0 ? ' checked' : ''}
 						/></td>
-						<td><label for="${o.Id} - ${o.Name}">${o.Id} - ${o.Name}</label></td>
+						<td><label for="${o.Id} - ${o.Name}"> ${hash} ${o.Id} - ${o.Name}</label></td>
 						</tr>`;
 					}
 				);

@@ -169,7 +169,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                              {sqlDepartamentoPelaHash})";
                 }
 
-                var query = $@"SELECT DISTINCT TOP 500 PD.Id,PD.Name  FROM ParDepartment PD 
+                var query = $@"SELECT DISTINCT TOP 500 PD.Hash,PD.Id,PD.Name  FROM ParDepartment PD 
                 WHERE 1=1 
                 AND PD.Active = 1 
                 AND PD.Name like '%{search}%'

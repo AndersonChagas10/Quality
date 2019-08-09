@@ -22,13 +22,13 @@
                     <thead>
                         <tr>
                             <th>
-                                Cargo
+                                @Resources.Resource.cargos
                             </th>
                             <th>
-                                Departamento
+                                @Resources.Resource.costcenter
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.IsActive)
+                                @Resources.Resource.active
                             </th>
                             <th></th>
                         </tr>
@@ -41,7 +41,8 @@
                                     @Html.DisplayFor(modelItem => item.ParCargo.Name)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ParDepartment.Name)
+                                    @(item.ParDepartment.Hash != null ? item.ParDepartment.Hash + "/" : "")  @item.ParDepartment.Id - @item.ParDepartment.Name
+
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.IsActive)
