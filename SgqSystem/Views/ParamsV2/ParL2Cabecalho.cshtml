@@ -47,18 +47,25 @@
                                 </span>
                             </td>
                             <td class="td-erp " style="">
-                                <label for="Valor_da_puni__o">Valor da punição</label>
-                                <div class="input-group">
-                                    <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValue" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
+                                @*<label for="Valor_da_puni__o">Valor da punição</label>
+                                    <div class="input-group">
+                                        <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValue" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL2Cabecalho.prepareToInsert(1);">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
+                                        <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
+                                    </span>*@
+                                <div class="input-group" style="margin-top: 27px;">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL2Cabecalho.prepareToInsert(1);">
+                                        <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL1Cabecalho.prepareToInsert(1);">
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                         </button>
                                     </span>
                                 </div>
-                                <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
-                                    <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
-                                </span>
                             </td>
                         </tr>
                     </tbody>
@@ -79,10 +86,10 @@
                                 <input type="text" id="objBinarioPunishmentName1" class="form-control input-sm required">
                                 <span id="punishmentNameCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
-                            <td>
+                            @*<td>
                                 <input type="number" id="objBinarioPunishmentValue1" class="form-control input-sm required" value="0">
                                 <span id="punishmentValueCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
-                            </td>
+                            </td>*@
                         </tr>
                         <tr class="row" id="negativo">
                             <td class="td-erp"><label for="Negativo">Negativo</label> </td>
@@ -90,10 +97,10 @@
                                 <input type="text" id="objBinarioPunishmentName2" class="form-control input-sm required">
                                 <span id="punishmentNameCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
-                            <td>
+                            @*<td>
                                 <input type="number" id="objBinarioPunishmentValue2" class="form-control input-sm required" value="0">
                                 <span id="punishmentValueCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
-                            </td>
+                            </td>*@
                             <td>
                                 <button class="btn btn-primary btn-sm margin-button" type="button" onclick="parL2Cabecalho.prepareToInsert(3);"><i class="fa fa-plus" aria-hidden="true"></i></button>
                             </td>
@@ -114,7 +121,7 @@
                     <thead>
                         <tr role="row">
                             <th>Opções</th>
-                            <th>Valor de Punição</th>
+                            @*<th>Valor de Punição</th>*@
                             <th>Valor Padrão</th>
                             <th></th>
                         </tr>
@@ -260,7 +267,7 @@
                         Id: 0,
                         Name: $TblParMultipeValues.find('#objMultiplaEscolhaName').val(),
                         Description: '',
-                        PunishmentValue: $TblParMultipeValues.find('#objMultiplaEscolhaPunishmentValue').val(),
+                        PunishmentValue: 0, //$TblParMultipeValues.find('#objMultiplaEscolhaPunishmentValue').val(),
                         Conformity: 0,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -285,7 +292,7 @@
                         Id: 0,
                         Name: $TblParMultipeValues.find('#objBinarioPunishmentName1').val(),
                         Description: '',
-                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue1').val(),
+                        PunishmentValue: 0,//$TblParMultipeValues.find('#objBinarioPunishmentValue1').val(),
                         Conformity: 1,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -296,7 +303,7 @@
                         Name: $TblParMultipeValues.find('#objBinarioPunishmentName2').val(),
                         Id: 0,
                         Description: '',
-                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue2').val(),
+                        PunishmentValue: 0, //$TblParMultipeValues.find('#objBinarioPunishmentValue2').val(),
                         Conformity: 0,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -331,7 +338,6 @@
                 if (o.IsActive) {
                     let table = `<tr>
                             <td>${o.Name}</td>
-                            <td>${o.PunishmentValue}</td>
                             <td>${o.IsDefaultOption == true ? Resources("yes") : Resources("no")}</td>
                             <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="parL2Cabecalho.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
                           </tr>`;
@@ -402,7 +408,7 @@
                 contentType: "application/json",
                 success: function (data) {
                     openMessageModal("Feito", "Dados Salvos");
-                    $('#selectL2').trigger('change');   
+                    $('#selectL2').trigger('change');
                     closeLoader();
                 },
                 error: function (request, error) {
