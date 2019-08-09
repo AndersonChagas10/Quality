@@ -824,7 +824,7 @@ function HeaderFieldsIsValid() {
 
     retorno = true;
 
-    $('#headerFieldDepartment input, select').each(function () {
+    $('#headerFieldDepartment input, #headerFieldDepartment select, #headerFieldLevel1 input, #headerFieldLevel1 select, #headerFieldLevel2 input, #headerFieldLevel2 select').each(function () {
 
         $self = $(this);
 
