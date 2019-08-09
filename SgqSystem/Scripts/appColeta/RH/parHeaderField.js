@@ -1,6 +1,6 @@
 function getParHeaderFieldDeparment() {
 
-    const ParLevelHeaderFiel_Id = 3; //ParDepartment
+    var ParLevelHeaderFiel_Id = 3; //ParDepartment
 
     return '<div id="headerFieldDepartment" class="col-xs-12 alert-warning" style="padding-top:10px;padding-bottom:10px;display:table;">' +
         montarBotoesRotinaIntegracao() +
@@ -12,7 +12,7 @@ function getParHeaderFieldDeparment() {
 
 function getParHeaderFieldLevel1(parLevel1) {
 
-    const parLevelHeaderFiel_Id = 1; //ParLevel1
+    var parLevelHeaderFiel_Id = 1; //ParLevel1
 
     var cabecalhos = montarHeaderFields(parLevelHeaderFiel_Id, parLevel1.Id)
 
@@ -29,7 +29,7 @@ function getParHeaderFieldLevel1(parLevel1) {
 
 function getParHeaderFieldLevel2(parLevel1, parLevel2) {
 
-    const parLevelHeaderFiel_Id = 2; //ParLevel2
+    var parLevelHeaderFiel_Id = 2; //ParLevel2
 
     var cabecalhos = montarHeaderFields(parLevelHeaderFiel_Id, parLevel2.Id)
 
