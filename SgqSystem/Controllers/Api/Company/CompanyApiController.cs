@@ -17,6 +17,7 @@ namespace SgqSystem.Controllers.Api.Company
     [HandleApi()]
     public class CompanyApiController : ApiController
     {
+        SgqServiceBusiness.Api.Company.CompanyApiController business;
 
         #region Construtor para injeção de dependencia
 
@@ -27,6 +28,8 @@ namespace SgqSystem.Controllers.Api.Company
         {
             _companyDomain = companyDomain;
             _basedomain = basedomain;
+
+            business = new SgqServiceBusiness.Api.Company.CompanyApiController(companyDomain, basedomain);
         }
 
         #endregion
@@ -127,7 +130,7 @@ namespace SgqSystem.Controllers.Api.Company
         [Route("getCompany")]
         public ParCompanyDTO GETCompany(int id)
         {
-            return _basedomain.GetById(id);
+            return business.GETCompany(id);
         }
         #endregion
     }

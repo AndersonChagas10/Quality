@@ -13,16 +13,17 @@ namespace SgqService.Controllers.Api
     [RoutePrefix("api/ParReason")]
     public class ParReasonApiController : BaseApiController
     {
+        SgqServiceBusiness.Api.ParReasonApiController business;
+        public ParReasonApiController()
+        {
+            business = new SgqServiceBusiness.Api.ParReasonApiController();
+        }
 
         [HttpGet]
         [Route("Get")]
         public List<ParReason> Get()
         {
-            using (var db = new SgqDbDevEntities())
-            {
-                return db.ParReason.Where(r => r.IsActive).ToList();
-            }
+            return business.Get();
         }
-
     }
 }

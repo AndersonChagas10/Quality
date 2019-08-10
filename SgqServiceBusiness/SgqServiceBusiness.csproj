@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2A112B7A-4627-43F6-B362-321E0B2E6B0B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SgqServiceBusiness</RootNamespace>
+    <AssemblyName>SgqServiceBusiness</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.0.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.4\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.4\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\Api\AppScriptsController.cs" />
+    <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
+    <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
+    <Compile Include="Controllers\Api\CompanyApiController.cs" />
+    <Compile Include="Controllers\Api\LoginController.cs" />
+    <Compile Include="Controllers\Api\ParHeaderFieldApiController.cs" />
+    <Compile Include="Controllers\Api\ParReasonApiController.cs" />
+    <Compile Include="Controllers\Api\PCC1BController.cs" />
+    <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
+    <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
+    <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
+    <Compile Include="Controllers\Api\SyncServiceApiController.cs" />
+    <Compile Include="Controllers\Api\UserController.cs" />
+    <Compile Include="Controllers\Api\VTVerificacaoTipificacaoAPIController.cs" />
+    <Compile Include="Helpers\CommonData.cs" />
+    <Compile Include="Helpers\CommonDate.cs" />
+    <Compile Include="Helpers\CommonLog.cs" />
+    <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\Audit\CorrectiveActionMapperProfile.cs" />
+    <Compile Include="Mappers\AutoMapperConfig.cs" />
+    <Compile Include="Mappers\DefectMapperProfile.cs" />
+    <Compile Include="Mappers\EmailContentMapperProfile.cs" />
+    <Compile Include="Mappers\ExampleMapperProfile.cs" />
+    <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
+    <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParClusterGroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParConsolidationTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCriticalLevelMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParEvaluationMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParFieldTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParFrequencyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParGoalMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParHeaderFieldMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1ClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1HeaderField.cs" />
+    <Compile Include="Mappers\Params\ParLevel1MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1XHeaderFieldMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel2Level1MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel2MapperProfile .cs" />
+    <Compile Include="Mappers\Params\ParLevel2XHeaderFieldMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3BoolFalseMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3BoolTrueMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3EvaluationSampleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3GroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3InputTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3Level2Level1MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3Level2MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3ValueMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3XParDepartmentMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevelDefinitonMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLocalMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParMeasurementUnitMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParModuleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParMultipleValuesMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParNotConformityRuleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParNotConformityRuleXLevelMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParRelapseMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParSampleMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParScoreTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
+    <Compile Include="Mappers\ParClusterXModuleMapperProfile.cs" />
+    <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
+    <Compile Include="Mappers\ParLevel1XRotinaIntegracaoMapperProfile.cs" />
+    <Compile Include="Mappers\PeriodMapperProfile.cs" />
+    <Compile Include="Mappers\RoleMapperProfile.cs" />
+    <Compile Include="Mappers\RoleUserSgqMapperProfile.cs" />
+    <Compile Include="Mappers\RoleUserSgqXItemMenuMapperProfile.cs" />
+    <Compile Include="Mappers\RotinaIntegracaoMapperProfile.cs" />
+    <Compile Include="Mappers\ShiftMapperProfile.cs" />
+    <Compile Include="Mappers\UnitMapperProfile.cs" />
+    <Compile Include="Mappers\UnitUserMapperProfile.cs" />
+    <Compile Include="Mappers\UserMapperProfile.cs" />
+    <Compile Include="Mappers\UserSgqMapperProfile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\CustomPrincipal.cs" />
+    <Compile Include="Security\SessionPersister.cs" />
+    <Compile Include="Services\Html.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
+      <Project>{31925fca-e0f6-428d-9a7d-59ca8879d6f8}</Project>
+      <Name>ADOFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{a75ec76c-9abf-4890-b82b-d8a048e6b7c5}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBContext\DBContext.csproj">
+      <Project>{8dc329a7-0151-438c-a2d5-9e5d82946f9b}</Project>
+      <Name>DBContext</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dominio\Dominio.csproj">
+      <Project>{777d8e88-0d52-446a-bc77-2f50a7d936e5}</Project>
+      <Name>Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
+      <Project>{3ecf1d86-91f3-4140-a11a-1546b8f662a1}</Project>
+      <Name>ServiceModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\Handlres\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,6 +1,7 @@
 ﻿using ADOFactory;
 using Dominio;
 using Newtonsoft.Json.Linq;
+using ServiceModel;
 using SgqSystem.Controllers.Api.Recravacao;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using SgqService.ViewModels;
 using SgqSystem.Controllers.Photo;
 using SgqSystem.ViewModels;
 using System;

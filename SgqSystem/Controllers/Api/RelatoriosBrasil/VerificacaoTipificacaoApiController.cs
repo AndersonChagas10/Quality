@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Newtonsoft.Json.Linq;
+using SgqService.ViewModels;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;

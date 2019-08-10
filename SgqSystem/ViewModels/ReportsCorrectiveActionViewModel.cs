@@ -1,4 +1,5 @@
 ﻿using DTO.DTO;
+using SgqService.ViewModels;
 
 namespace SgqSystem.ViewModels
 {

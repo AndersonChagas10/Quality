@@ -4,6 +4,7 @@ using DTO.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
+using SgqService.ViewModels;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
