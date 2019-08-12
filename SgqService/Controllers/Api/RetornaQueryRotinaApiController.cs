@@ -1,14 +1,13 @@
 ﻿using ADOFactory;
 using Dominio;
 using Newtonsoft.Json.Linq;
-using SgqSystem.Handlres;
-using SgqSystem.Services;
+using SgqService.Handlres;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
-namespace SgqSystem.Controllers.Api
+namespace SgqService.Controllers.Api
 {
 
     [HandleApi()]
@@ -29,5 +28,4 @@ namespace SgqSystem.Controllers.Api
             return business.RetornaQueryRotina(body);
         }
     }
-
 }

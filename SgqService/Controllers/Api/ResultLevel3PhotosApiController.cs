@@ -37,7 +37,7 @@ namespace SgqService.Controllers.Api
                 return BadRequest("Nenhuma foto enviada!");
             }
             VerifyIfIsAuthorized();
-            return business.Insert(Fotos);
+            return Ok(business.Insert(Fotos));
         }
 
     }

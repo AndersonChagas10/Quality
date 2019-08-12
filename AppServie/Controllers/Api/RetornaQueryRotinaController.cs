@@ -17,14 +17,14 @@ namespace AppServie.Api.Controllers
     {
         [HttpPost]
         [Route("RetornaQueryRotina")]
-        public async Task<string> RetornaQueryRotina([FromBody] InsertDeviationClass insertDeviationClass)
+        public async Task<object> RetornaQueryRotina([FromBody] JToken body)
         {
-            string url = "/api/SyncServiceApi/insertDeviation";
-            RestRequest restRequest = await RestRequest.Post(url, insertDeviationClass, this.token);
+            string url = "/api/RetornaQueryRotinaApi/RetornaQueryRotina";
+            RestRequest restRequest = await RestRequest.Post(url, body, this.token);
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return JsonConvert.DeserializeObject<string>(restRequest.Response);
+                return JsonConvert.DeserializeObject<object>(restRequest.Response);
             }
             return null;
         }

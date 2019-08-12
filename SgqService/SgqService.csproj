@@ -181,6 +181,7 @@
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
+    <Compile Include="Controllers\Api\RetornaQueryRotinaApiController.cs" />
     <Compile Include="Controllers\Api\SyncServiceApiController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
     <Compile Include="Controllers\Api\VTVerificacaoTipificacaoAPIController.cs" />
