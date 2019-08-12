@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SgqService.ViewModels
 {
-    public class FormularioParaRelatorioViewModel : DataCarrierFormulario
+    public partial class FormularioParaRelatorioViewModel : DataCarrierFormulario
     {
 
         public FormularioParaRelatorioViewModel()
