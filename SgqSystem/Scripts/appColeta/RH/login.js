@@ -57,7 +57,7 @@ function getLogo(callback) {
 function openLogin() {
 
     _readFile("login.txt", function (data) {
-        
+
         if (data)
             currentLogin = JSON.parse(data);
 
@@ -115,19 +115,28 @@ $('body').off('click', '#btnLogin').on('click', '#btnLogin', function (event) {
 
     event.preventDefault();
 
-    var btnLogin = this;
-
     $(this).html($(this).attr('data-loading-text'));
 
+    pingLogado(urlPreffix, loginOnline, loginOffline);
+
+});
+
+function loginOffline() {
+
     if (currentLogin.Id > 0) {
+
         if ($('#inputUserName').val() == currentLogin.Name
             && AES.Encrypt($('#inputPassword').val()) == currentLogin.Password) {
             globalLoginOnline = false;
-            //currentParFrequency_Id = parametrization.currentParFrequency_Id;
             loginSuccess(currentLogin);
             return;
         }
     }
+
+    loginOnline();
+}
+
+function loginOnline() {
 
     $.ajax({
         data: {
@@ -140,18 +149,17 @@ $('body').off('click', '#btnLogin').on('click', '#btnLogin', function (event) {
         headers: token(),
         success: function (data) {
 
-            //se for usuários diferentes, zera a parametrização
-            if (currentLogin.Id != data.Retorno.Id) {
+            //se for usuários diferentes ou unidade diferente, zera a parametrização
+            if (currentLogin.Id != data.Retorno.Id || currentLogin.ParCompany_Id != data.Retorno.ParCompany_Id) {
 
                 parametrization = null;
                 currentPlanejamento = [];
 
-                _writeFile("appParametrization.txt", '', function () {
-                });
+                _writeFile("appParametrization.txt", '', function () { });
 
-                _writeFile("planejamento.txt", '', function () {
-                });
-            }
+                _writeFile("planejamento.txt", '', function () { });
+
+            } 
 
             _writeFile("login.txt", JSON.stringify(data.Retorno), function () {
                 globalLoginOnline = true;
@@ -160,10 +168,11 @@ $('body').off('click', '#btnLogin').on('click', '#btnLogin', function (event) {
         },
         timeout: 600000,
         error: function () {
-            $(btnLogin).html($(btnLogin).attr('data-initial-text'));
+            $('#btnLogin').html($('#btnLogin').attr('data-initial-text'));
         }
     });
-});
+
+}
 
 function loginSuccess(data) {
     currentParCompany_Id = data.ParCompany_Id;
