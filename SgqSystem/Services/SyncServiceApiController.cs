@@ -54,6 +54,9 @@ namespace SgqSystem.Controllers.Api
             }
 
             business = new SgqServiceBusiness.Api.SyncServiceApiController(conexao, conexaoSGQ_GlobalADO);
+
+            db = new SqlConnection(conexao);
+            SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
         }
 
         protected override void Dispose(bool disposing)
@@ -261,7 +264,7 @@ namespace SgqSystem.Controllers.Api
         public int GetLastSampleByCollectionLevel2(GetLastSampleByCollectionLevel2Class getLastSampleByCollectionLevel2Class)
         {
             VerifyIfIsAuthorized();
-            return GetLastSampleByCollectionLevel2(getLastSampleByCollectionLevel2Class);
+            return business.GetLastSampleByCollectionLevel2(getLastSampleByCollectionLevel2Class);
         }
     }
 }
