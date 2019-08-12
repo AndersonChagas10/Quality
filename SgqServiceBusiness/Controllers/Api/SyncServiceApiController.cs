@@ -8497,7 +8497,6 @@ namespace SgqServiceBusiness.Api
                     AND cl.Shift = @Shift
                     AND CAST(cl.CollectionDate AS DATE) = @CollectionDate";
 
-            //using (var db = new SgqDbDevEntities())
             using (var factory = new Factory("DefaultConnection"))
             {
                 using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
@@ -8510,10 +8509,9 @@ namespace SgqServiceBusiness.Api
                     cmd.Parameters.Add(new SqlParameter("@EvaluationNumber", EvaluationNumber));
                     cmd.Parameters.Add(new SqlParameter("@ParCluster_Id", parCluster_Id));
                     cmd.Parameters.Add(new SqlParameter("@Shift", Shift));
-                    cmd.Parameters.Add(new SqlParameter("@CollectionDate", CollectionDate.ToString("yyyMMdd")));
+                    cmd.Parameters.Add(new SqlParameter("@CollectionDate", CollectionDate.ToString("yyyy-MM-dd")));
 
-                    //var retorno = db.Database.SqlQuery<int>(cmd.CommandText).FirstOrDefault();
-                    var retorno = factory.SearchQuery<int>(cmd).FirstOrDefault();
+                    var retorno = Convert.ToInt32(cmd.ExecuteScalar());
 
                     return retorno;
                 }
