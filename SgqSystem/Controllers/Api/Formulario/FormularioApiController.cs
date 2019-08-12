@@ -155,25 +155,18 @@ namespace SgqSystem.Controllers.Api.Formulario
                 var retornoFormulario = new FormularioViewModel();
                 retornoFormulario.ParDepartments = GetParDepartments(form, factory);
 
-                string sqlParDepartment = "";
-                if (form.ParCompany_Ids.Length > 0 && retornoFormulario.ParDepartments.Count > 0)
+                var sqlDepartamentoPelaHash = "";
+                if (form.ParDepartment_Ids.Length > 0 && retornoFormulario.ParDepartments.Count > 0)
                 {
-                    var sqlDepartamentoPelaHash = "";
-                    foreach (var item in retornoFormulario.ParDepartments)
-                    {
-                        sqlDepartamentoPelaHash += $@"OR PD.Hash like '{item.Id}|%'
-                            OR PD.Hash like '%|{item.Id}|%'
-                            OR PD.Hash = '{item.Id}'";
-                    }
-                    sqlParDepartment = $@" AND (PD.Id in ({string.Join(",", retornoFormulario.ParDepartments.Select(x => x.Id))}) 
-                             {sqlDepartamentoPelaHash})";
+                    sqlDepartamentoPelaHash += $@"AND PD.Hash in ({string.Join(",", form.ParDepartment_Ids)})
+                            AND (PD.Parent_Id IS not NULL OR PD.Parent_Id <> 0)  ";
                 }
 
-                var query = $@"SELECT DISTINCT TOP 500 PD.Id,PD.Name  FROM ParDepartment PD 
+                var query = $@"SELECT DISTINCT TOP 500 PD.Hash,PD.Id,PD.Name  FROM ParDepartment PD 
                 WHERE 1=1 
                 AND PD.Active = 1 
                 AND PD.Name like '%{search}%'
-                AND PD.Parent_Id IS NOT NULL " + sqlParDepartment;
+                AND PD.Parent_Id IS NOT NULL " + sqlDepartamentoPelaHash;
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
@@ -420,9 +413,9 @@ namespace SgqSystem.Controllers.Api.Formulario
             }
 
             var query = $@"SELECT Distinct PD.Id,PD.Name FROM ParDepartment PD 
-WHERE 1=1 
-AND PD.Active = 1 
-AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
+                            WHERE 1=1 
+                            AND PD.Active = 1 
+                            AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
 
             var retorno = factory.SearchQuery<ParDepartment>(query).ToList();
 

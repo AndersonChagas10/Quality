@@ -13,13 +13,13 @@
             <input type="hidden" name="IsActive" value="true" data-notnull />
 
             @*<div class="form-group">
-                <label for="ParCluster_Id">Nível do campo:</label>
-                <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12 required" name="ParLevelDefinition_Id"></select>
-            </div>*@
+                    <label for="ParCluster_Id">Nível do campo:</label>
+                    <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12 required" name="ParLevelDefinition_Id"></select>
+                </div>*@
 
-        @*</div>
+            @*</div>
 
-        <div class="col-sm-3">*@
+                <div class="col-sm-3">*@
 
             <div class="form-group">
                 <label for="ParCriticalLevel_Id">Tipo:</label>
@@ -55,18 +55,25 @@
                                 </span>
                             </td>
                             <td class="td-erp " style="">
-                                <label for="Valor_da_puni__o">Valor da punição</label>
-                                <div class="input-group">
-                                    <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValueDepartmentxHeader" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
+                                @*<label for="Valor_da_puni__o">Valor da punição</label>
+                                    <div class="input-group">
+                                        <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValueDepartmentxHeader" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parDCCabecalho.prepareToInsert(1);">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
+                                        <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
+                                    </span>*@
+                                <div class="input-group" style="margin-top: 27px;">
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parDCCabecalho.prepareToInsert(1);">
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                         </button>
                                     </span>
                                 </div>
-                                <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
-                                    <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
-                                </span>
                             </td>
                         </tr>
                     </tbody>
@@ -79,7 +86,7 @@
                         <tr class="row">
                             <td class="td-erp"></td>
                             <td class="td-erp"><label for="Valor">Valor</label> </td>
-                            <td class="td-erp"><label for="Valor_da_puni__o">Valor da punição</label>  <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i></td>
+                            @*<td class="td-erp"><label for="Valor_da_puni__o">Valor da punição</label>  <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i></td>*@
                         </tr>
                         <tr class="row" id="positivo">
                             <td class="td-erp"><label for="Positivo">Positivo</label> </td>
@@ -87,10 +94,10 @@
                                 <input type="text" id="objBinarioPunishmentName1DepartmentxHeader" class="form-control input-sm required">
                                 <span id="punishmentNameCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
-                            <td>
+                            @*<td>
                                 <input type="number" id="objBinarioPunishmentValue1DepartmentxHeader" class="form-control input-sm required" value="0">
                                 <span id="punishmentValueCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
-                            </td>
+                            </td>*@
                         </tr>
                         <tr class="row" id="negativo">
                             <td class="td-erp"><label for="Negativo">Negativo</label> </td>
@@ -98,10 +105,10 @@
                                 <input type="text" id="objBinarioPunishmentName2DepartmentxHeader" class="form-control input-sm required">
                                 <span id="punishmentNameCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
-                            <td>
+                            @*<td>
                                 <input type="number" id="objBinarioPunishmentValue2DepartmentxHeader" class="form-control input-sm required" value="0">
                                 <span id="punishmentValueCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
-                            </td>
+                            </td>*@
                             <td>
                                 <button class="btn btn-primary btn-sm margin-button" type="button" onclick="parDCCabecalho.prepareToInsert(3);"><i class="fa fa-plus" aria-hidden="true"></i></button>
                             </td>
@@ -122,7 +129,7 @@
                     <thead>
                         <tr role="row">
                             <th>Opções</th>
-                            <th>Valor de Punição</th>
+                            @*<th>Valor de Punição</th>*@
                             <th>Valor Padrão</th>
                             <th></th>
                         </tr>
@@ -196,7 +203,7 @@
             $('#tableParDCCabecalho [data-table-delete]').prop('disabled', false);
             $('#tableParDCCabecalho select,#tableParDCCabecalho input,#tableParDCCabecalho button').prop('disabled', false);
             $('#' + id + ' #divBtnCancelar').hide();
-            
+
             $(ParHeaderFieldsGeral).each(function (i, o) {
 
                 let previewHeaderField = getPreviewDepartmentHeaderField(o);
@@ -270,7 +277,7 @@
                         Id: 0,
                         Name: $TblParMultipeValues.find('#objMultiplaEscolhaNameDepartmentxHeader').val(),
                         Description: '',
-                        PunishmentValue: $TblParMultipeValues.find('#objMultiplaEscolhaPunishmentValueDepartmentxHeader').val(),
+                        PunishmentValue: 0, //$TblParMultipeValues.find('#objMultiplaEscolhaPunishmentValueDepartmentxHeader').val(),
                         Conformity: 0,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -296,7 +303,7 @@
                         Id: 0,
                         Name: $TblParMultipeValues.find('#objBinarioPunishmentName1DepartmentxHeader').val(),
                         Description: '',
-                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue1DepartmentxHeader').val(),
+                        PunishmentValue: 0, //$TblParMultipeValues.find('#objBinarioPunishmentValue1DepartmentxHeader').val(),
                         Conformity: 1,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -308,7 +315,7 @@
                         Name: $TblParMultipeValues.find('#objBinarioPunishmentName2DepartmentxHeader').val(),
                         Id: 0,
                         Description: '',
-                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue2DepartmentxHeader').val(),
+                        PunishmentValue: 0, //$TblParMultipeValues.find('#objBinarioPunishmentValue2DepartmentxHeader').val(),
                         Conformity: 0,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -339,8 +346,7 @@
 
                 if (o.IsActive) {
                     let table = `<tr>
-                            <td>${o.Name}</td>
-                            <td>${o.PunishmentValue}</td>
+                            <td>${o.Name}</td>        
                             <td>${o.IsDefaultOption == true ? Resources("yes") : Resources("no")}</td>
                             <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="parDCCabecalho.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
                           </tr>`;
@@ -374,17 +380,10 @@
         },
 
         excludeTable: function (i) {
-
-            var r = confirm("Deseja Excluir?");
-
-            if (r == false) {
-                return false;
-            }
-
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (obj) {
-                if (obj.ParFieldType.Id == 3) //Se for binário, exclui todos os ParMultipleValues
+                if (obj.ParFieldTypeId == 3) //Se for binário, exclui todos os ParMultipleValues
                     obj.ParMultipleValuesGeral.forEach((o, i, a) => {
                         a[i].IsActive = false;
                     });
@@ -400,7 +399,7 @@
         },
 
         Save: function (obj) {
-            
+
             openLoader(Resources("please_wait"));
             $.ajax({
                 url: parDCCabecalho.urlSave,
@@ -408,11 +407,11 @@
                 dataType: "json",
                 data: JSON.stringify(obj),
                 contentType: "application/json",
-                success: function (data) {         
+                success: function (data) {
                     closeLoader();
-                    openMessageModal("Feito", "Dados Salvos");                  
+                    openMessageModal("Feito", "Dados Salvos");
                     $('#selectDCDepartment').trigger('change');
-                    
+
                 },
                 error: function (request, error) {
                     openMessageModal("Ocorreu um erro", JSON.stringify(request));
@@ -439,16 +438,16 @@
         apagaCampos(parDCCabecalho.id);
         parDCCabecalho.reloadTable();
         preencheCampos(parDCCabecalho.id + ' [data-form]', '', obj);
-        
+
         $('#' + parDCCabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParLevelDefinition_Id);
         $('#' + parDCCabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
-                
+
         $('#' + parDCCabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParFieldType_Id);
         $('#' + parDCCabecalho.id + ' [data-form] select[name="ParFieldType_Id"]').trigger('change')
-                
+
         $('#' + parDCCabecalho.id + ' [data-form] input[name="Name"]').val(obj.Name);
         $('#' + parDCCabecalho.id + ' [data-form] input[name="Description"]').val(obj.Description);
-                
+
         $('#' + parDCCabecalho.id + ' [data-form]').data('sgq', obj);
         $('#' + parDCCabecalho.id + ' [data-form]').addClass('alert alert-success');
         $('#' + parDCCabecalho.id + ' [data-form] [data-action] [data-add]').addClass('hide');
@@ -490,7 +489,7 @@
 
     //Salvar o campo editado ou cria um novo
     $('#' + parDCCabecalho.id).on('click', '[data-edit],[data-add]', function (e) {
-        
+
         $('#objMultiplaEscolhaDepartmentxHeader').hide();
         $('#objBinarioDepartmentxHeader').hide();
 
@@ -506,7 +505,7 @@
         }
 
         obj = parDCCabecalho.prepareParHeaderField(obj);
-        
+
         if (optionIsValid(obj, parDCCabecalho.id)) {
             obj.ParDepartment_Id = $("#selectDCDepartment :selected").val();
             openLoader(Resources("please_wait"));
@@ -556,7 +555,7 @@
     });
 
     let getPreviewDepartmentHeaderField = function (headerField) {
-        
+
         let input = "";
 
         switch (headerField.ParFieldType_Id) {
@@ -616,7 +615,7 @@
     }
 
     $('#selectL1ParFieldTypeDepartment').on("change", function () {
-        
+
         hideAllOptionsDepartment();
 
         //limpar arr ParMultipleValues?

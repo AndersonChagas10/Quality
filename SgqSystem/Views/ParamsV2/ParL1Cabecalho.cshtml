@@ -14,14 +14,14 @@
             <input type="hidden" name="IsActive" value="true" data-notnull />
 
             @*<div class="form-group">
-                <label for="ParCluster_Id">Nível do campo:</label>
-                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Onde será exibido o cabeçalho selecionado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
-                <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12 required" name="ParLevelDefinition_Id"></select>
-            </div>*@
+                    <label for="ParCluster_Id">Nível do campo:</label>
+                    <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Onde será exibido o cabeçalho selecionado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                    <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12 required" name="ParLevelDefinition_Id"></select>
+                </div>*@
 
-        @*</div>
+            @*</div>
 
-        <div class="col-sm-3">*@
+                <div class="col-sm-3">*@
 
             <div class="form-group">
                 <label for="ParCriticalLevel_Id">Tipo:</label>
@@ -56,19 +56,26 @@
                                     <span for="" class="">O campo Opção deve ser preenchido para o Cabeçalho.</span>
                                 </span>
                             </td>
-                            <td class="td-erp " style="">
-                                <label for="Valor_da_puni__o">Valor da punição</label>
-                                <div class="input-group">
-                                    <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValue" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
+                            <td class="">
+                                @*<label for="Valor_da_puni__o">Valor da punição</label>
+                                    <div class="input-group">
+                                        <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValue" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL1Cabecalho.prepareToInsert(1);">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
+                                        <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
+                                    </span>*@
+                                <div class="input-group" style="margin-top: 27px;">
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL1Cabecalho.prepareToInsert(1);">
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                         </button>
                                     </span>
                                 </div>
-                                <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
-                                    <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
-                                </span>
                             </td>
                         </tr>
                     </tbody>
@@ -81,7 +88,7 @@
                         <tr class="row">
                             <td class="td-erp"></td>
                             <td class="td-erp"><label for="Valor">Valor</label> </td>
-                            <td class="td-erp"><label for="Valor_da_puni__o">Valor da punição</label>  <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i></td>
+                            @*<td class="td-erp"><label for="Valor_da_puni__o">Valor da punição</label>  <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i></td>*@
                         </tr>
                         <tr class="row" id="positivo">
                             <td class="td-erp"><label for="Positivo">Positivo</label> </td>
@@ -89,10 +96,10 @@
                                 <input type="text" id="objBinarioPunishmentName1" class="form-control input-sm required">
                                 <span id="punishmentNameCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
-                            <td>
+                            @*<td>
                                 <input type="number" id="objBinarioPunishmentValue1" class="form-control input-sm required" value="0">
                                 <span id="punishmentValueCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
-                            </td>
+                            </td>*@
                         </tr>
                         <tr class="row" id="negativo">
                             <td class="td-erp"><label for="Negativo">Negativo</label> </td>
@@ -100,10 +107,10 @@
                                 <input type="text" id="objBinarioPunishmentName2" class="form-control input-sm required">
                                 <span id="punishmentNameCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
-                            <td>
+                            @*<td>
                                 <input type="number" id="objBinarioPunishmentValue2" class="form-control input-sm required" value="0">
                                 <span id="punishmentValueCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
-                            </td>
+                            </td>*@
                             <td>
                                 <button class="btn btn-primary btn-sm margin-button" type="button" onclick="parL1Cabecalho.prepareToInsert(3);"><i class="fa fa-plus" aria-hidden="true"></i></button>
                             </td>
@@ -124,7 +131,7 @@
                     <thead>
                         <tr role="row">
                             <th>Opções</th>
-                            <th>Valor de Punição</th>
+                            @*<th>Valor de Punição</th>*@
                             <th>Valor Padrão</th>
                             <th></th>
                         </tr>
@@ -186,7 +193,7 @@
         id: 'ParL1Cabecalho',
         urlSave: '@Url.Action("PostParHeaderFieldGeral", "api/ParLevel1Api")',
         load: function (ParHeaderFieldsGeral) {
-            
+
             let id = this.id;
 
             apagaCampos(id);
@@ -225,8 +232,8 @@
 
             this.showTableParMultipleValues();
         },
-        prepareParHeaderField: function (obj) {           
-            
+        prepareParHeaderField: function (obj) {
+
             let formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
 
             if (typeof (obj) == 'undefined')
@@ -244,7 +251,7 @@
 
             if (!formIsValid(this.id)) {
                 return false;
-            }           
+            }
 
             let $TblParMultipeValues;
 
@@ -271,7 +278,7 @@
                         Id: 0,
                         Name: $TblParMultipeValues.find('#objMultiplaEscolhaName').val(),
                         Description: '',
-                        PunishmentValue: $TblParMultipeValues.find('#objMultiplaEscolhaPunishmentValue').val(),
+                        PunishmentValue: 0, //$TblParMultipeValues.find('#objMultiplaEscolhaPunishmentValue').val(),
                         Conformity: 0,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -284,7 +291,7 @@
                     if ($.grep(obj['ParMultipleValuesGeral'], function (o, i) {
                         return o.IsActive == true;
                     }).length > 0) {
-                        
+
                         openMessageModal("Alerta", "Já existem opções inseridas para este campo de cabeçalho")
                         return false;
                     }
@@ -296,7 +303,7 @@
                         Id: 0,
                         Name: $TblParMultipeValues.find('#objBinarioPunishmentName1').val(),
                         Description: '',
-                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue1').val(),
+                        PunishmentValue: 0, //$TblParMultipeValues.find('#objBinarioPunishmentValue1').val(),
                         Conformity: 1,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -307,7 +314,7 @@
                         Name: $TblParMultipeValues.find('#objBinarioPunishmentName2').val(),
                         Id: 0,
                         Description: '',
-                        PunishmentValue: $TblParMultipeValues.find('#objBinarioPunishmentValue2').val(),
+                        PunishmentValue: 0, //$TblParMultipeValues.find('#objBinarioPunishmentValue2').val(),
                         Conformity: 0,
                         IsDefaultOption: 0,
                         IsActive: true
@@ -325,7 +332,7 @@
         },
 
         insertTable: function (obj) {
-            
+
             //pega os dados do form e transforma em obj
             obj = parL1Cabecalho.prepareParHeaderField(obj);
 
@@ -338,16 +345,15 @@
             let blockParFieldType = false;
 
             multipleValues.forEach((o, i) => {
-                
+
                 if (o.IsActive) {
                     let table = `<tr>
                             <td>${o.Name}</td>
-                            <td>${o.PunishmentValue}</td>
                             <td>${o.IsDefaultOption == true ? Resources("yes") : Resources("no")}</td>
                             <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="parL1Cabecalho.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
                           </tr>`;
 
-                    $('#camposCabecalhoIncluidos tbody').append(table);
+                    $('#ParL1Cabecalho #camposCabecalhoIncluidos tbody').append(table);
 
                     blockParFieldType = true;
                 }
@@ -440,7 +446,7 @@
         apagaCampos(parL1Cabecalho.id);
         parL1Cabecalho.reloadTable();
         preencheCampos(parL1Cabecalho.id + ' [data-form]', '', obj);
-        
+
         //$('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParHeaderFieldGeral.ParLevelDefinition_Id);
         //$('#' + parL1Cabecalho.id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change');
 
@@ -563,7 +569,7 @@
     });
 
     let getPreviewHeaderField = function (headerField) {
-        
+
         let input = "";
 
         switch (headerField.ParFieldType_Id) {

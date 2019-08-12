@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Dominio;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Dominio;
 
 namespace SgqSystem.Controllers
 {
@@ -16,7 +14,7 @@ namespace SgqSystem.Controllers
 
         // GET: ParLevel3XModule
         public ActionResult Index()
-        {          
+        {
             return View(db.ParLevel3XModule.ToList());
         }
 
@@ -72,6 +70,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,IsActive,Points,EffectiveDateEnd,EffectiveDateStart,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParDepartment_Id,ParModule_Id,AddDate,AlterDate")] ParLevel3XModule parLevel3XModule)
         {
+
             ValidaCamposObrigatorios(parLevel3XModule);
             if (ModelState.IsValid)
             {
@@ -84,9 +83,9 @@ namespace SgqSystem.Controllers
             parCompanyList.Insert(0, new ParCompany() { Id = 0, Name = "Selecione" });
             ViewBag.ParCompany_Id = new SelectList(parCompanyList, "Id", "Name");
 
-            var parDepartmentList = db.ParDepartment.Where(x => x.Active).ToList();
-            parDepartmentList.Insert(0, new ParDepartment() { Id = 0, Name = "Selecione" });
-            ViewBag.ParDepartment_Id = new SelectList(parDepartmentList, "Id", "Name");
+            //var parDepartmentList = db.ParDepartment.Where(x => x.Active).ToList();
+            //parDepartmentList.Insert(0, new ParDepartment() { Id = 0, Name = "Selecione" });
+            //ViewBag.ParDepartment_Id = new SelectList(parDepartmentList, "Id", "Name");
 
             var parLevel1List = db.ParLevel1.Where(x => x.IsActive).ToList();
             parLevel1List.Insert(0, new ParLevel1() { Id = 0, Name = "Selecione" });
@@ -132,7 +131,7 @@ namespace SgqSystem.Controllers
             if (parLevel3XModule.ParModule_Id == 0 || parLevel3XModule.ParModule_Id < 0)
                 ModelState.AddModelError("ParModule_Id", Resources.Resource.required_field + " " + Resources.Resource.parModule);
 
-            if (parLevel3XModule.ParDepartment_Id == 0 || parLevel3XModule.ParDepartment_Id < 0)
+            if (parLevel3XModule.ParDepartment_Id == 0 || parLevel3XModule.ParDepartment_Id == null)
                 ModelState.AddModelError("ParDepartment_Id", Resources.Resource.required_field + " " + Resources.Resource.department);
 
         }
@@ -154,9 +153,18 @@ namespace SgqSystem.Controllers
             parCompanyList.Insert(0, new ParCompany() { Id = -1, Name = "Selecione" });
             ViewBag.ParCompany_Id = new SelectList(parCompanyList, "Id", "Name", parLevel3XModule.ParCompany_Id);
 
-            var parDepartmentList = db.ParDepartment.Where(x => x.Active).ToList();
-            parDepartmentList.Insert(0, new ParDepartment() { Id = -1, Name = "Selecione" });
-            ViewBag.ParDepartment_Id = new SelectList(parDepartmentList, "Id", "Name", parLevel3XModule.ParDepartment_Id);
+            ViewBag.ParDepartment_Id = db.ParDepartment.Where(x => x.Id == parLevel3XModule.ParDepartment_Id).ToList()
+                    .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+                    .ToList();
+
+            if (ViewBag.ParDepartment_Id.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.ParDepartment_Id = semDados;
+            }
 
             var parLevel1List = db.ParLevel1.Where(x => x.IsActive).ToList();
             parLevel1List.Insert(0, new ParLevel1() { Id = -1, Name = "Selecione" });
@@ -195,10 +203,6 @@ namespace SgqSystem.Controllers
             parCompanyList.Insert(0, new ParCompany() { Id = -1, Name = "Selecione" });
             ViewBag.ParCompany_Id = new SelectList(parCompanyList, "Id", "Name", parLevel3XModule.ParCompany_Id);
 
-            var parDepartmentList = db.ParDepartment.Where(x => x.Active).ToList();
-            parDepartmentList.Insert(0, new ParDepartment() { Id = -1, Name = "Selecione" });
-            ViewBag.ParDepartment_Id = new SelectList(parDepartmentList, "Id", "Name", parLevel3XModule.ParDepartment_Id);
-
             var parLevel1List = db.ParLevel1.Where(x => x.IsActive).ToList();
             parLevel1List.Insert(0, new ParLevel1() { Id = -1, Name = "Selecione" });
             ViewBag.ParLevel1_Id = new SelectList(parLevel1List, "Id", "Name", parLevel3XModule.ParLevel1_Id);
@@ -206,6 +210,19 @@ namespace SgqSystem.Controllers
             var parLevel2List = db.ParLevel2.Where(x => x.IsActive).ToList();
             parLevel2List.Insert(0, new ParLevel2() { Id = -1, Name = "Selecione" });
             ViewBag.ParLevel2_Id = new SelectList(parLevel2List, "Id", "Name", parLevel3XModule.ParLevel2_Id);
+
+            ViewBag.ParDepartment_Id = db.ParDepartment.Where(x => x.Id == parLevel3XModule.ParDepartment_Id).ToList()
+                    .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+                    .ToList();
+
+            if (ViewBag.ParDepartment_Id.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.ParDepartment_Id = semDados;
+            }
 
             var parLevel3List = db.ParLevel3.Where(x => x.IsActive).ToList();
             parLevel3List.Insert(0, new ParLevel3() { Id = -1, Name = "Selecione" });
