@@ -85,6 +85,9 @@ namespace SgqService.Controllers.Api
         [Route("InsertJson")]
         public string InsertJson([FromBody] InsertJsonClass insertJsonClass)
         {
+            if (string.IsNullOrEmpty(insertJsonClass.ObjResultJSon))
+                return null;
+
             VerifyIfIsAuthorized();
 
             return business.InsertJson(insertJsonClass);
