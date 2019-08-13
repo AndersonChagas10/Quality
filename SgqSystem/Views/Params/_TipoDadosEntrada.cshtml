@@ -231,6 +231,8 @@
     var eTipoDado_Resultado = 10;
     var eTipoDado_Observacao = 11;
     var eTipoDado_BinarioObrigatorio = 12;
+    var eTipoDado_Data = 13;
+    var eTipoDado_Hora = 14;
     var eTipoDado_Recravacao = 99;
 
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
@@ -321,6 +323,22 @@
                 selectNaoConformeName = "";
                 selectUnidadeDeMedidas = "";
                 parIntervalosTypeName = "";
+                parLevel3Value_DynamicValue = "";
+            }
+
+            if (selectTipoInput == eTipoDado_Data) {
+                selectUnidadeDeMedidasName = "";
+                selectNaoConforme = "";
+                selectConforme = "";
+                selectUnidadeDeMedidas = "";
+                parLevel3Value_DynamicValue = "";
+            }
+
+            if (selectTipoInput == eTipoDado_Hora) {
+                selectUnidadeDeMedidasName = "";
+                selectNaoConforme = "";
+                selectConforme = "";
+                selectUnidadeDeMedidas = "";
                 parLevel3Value_DynamicValue = "";
             }
 
@@ -618,7 +636,7 @@
                         o["IntervalMinCalculado"] = o.IntervalMinCalculado == null ? "" : o.IntervalMinCalculado;
                         o["IntervalMax"] = o.IntervalMax == null ? "" : o.IntervalMax;
                         o["IntervalMaxCalculado"] = o.IntervalMaxCalculado == null ? "" : o.IntervalMaxCalculado;
-                    } else if (o.ParLevel3InputType_Id == eTipoDado_Texto || o.ParLevel3InputType_Id == eTipoDado_Observacao) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_Texto || o.ParLevel3InputType_Id == eTipoDado_Data || o.ParLevel3InputType_Id == eTipoDado_Hora || o.ParLevel3InputType_Id == eTipoDado_Observacao) {
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
@@ -1001,7 +1019,7 @@
         }
 
         //Texto
-        if (tipoSelecionado == eTipoDado_Texto || tipoSelecionado == eTipoDado_Observacao) {
+        if (tipoSelecionado == eTipoDado_Texto || tipoSelecionado == eTipoDado_Observacao || tipoSelecionado == eTipoDado_Data || tipoSelecionado == eTipoDado_Hora) {
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
