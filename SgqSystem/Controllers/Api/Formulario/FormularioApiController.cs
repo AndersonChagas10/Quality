@@ -220,7 +220,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)
                 {
                     sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel1_Id = PL1.Id ";
-                    sqlWhereFilter += $@"AND PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)})";
+                    sqlWhereFilter += $@"AND (PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)}) OR PVP.ParDepartment_Id IS NULL)";
                 }
                 var query = $@"SELECT DISTINCT TOP 500 PL1.ID, PL1.NAME 
                                 FROM parLevel1 PL1 
@@ -257,7 +257,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 if (parLevel1_Ids.Count > 0)
                 {
                     sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel2_Id = PL2.Id
-                                WHERE PVP.ParLevel1_Id IN ({string.Join(",", parLevel1_Ids)})";
+                                WHERE PVP.ParLevel1_Id IN ({string.Join(",", parLevel1_Ids)}) OR PVP.ParLevel1_Id IS NULL";
                 }
 
                 var query = $@"SELECT DISTINCT TOP 500 PL2.ID, PL2.NAME FROM parLevel2 PL2 {sqlFilter}
@@ -293,11 +293,11 @@ namespace SgqSystem.Controllers.Api.Formulario
                     sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel3_Id = PL3.Id WHERE 1 = 1 ";
                     if (parLevel1_Ids.Count > 0)
                     {
-                        sqlFilter += $@"AND PVP.ParLevel1_Id IN ({ string.Join(",", parLevel1_Ids)})";
+                        sqlFilter += $@" AND PVP.ParLevel1_Id IN ({ string.Join(",", parLevel1_Ids)}) OR PVP.ParLevel1_Id IS NULL ";
                     }
                     if (parLevel2_Ids.Count > 0)
                     {
-                        sqlFilter += $@"AND PVP.ParLevel2_Id IN ({ string.Join(",", parLevel2_Ids)})";
+                        sqlFilter += $@" AND PVP.ParLevel2_Id IN ({ string.Join(",", parLevel2_Ids)}) OR PVP.ParLevel2_Id IS NULL ";
                     }
                 }
 
