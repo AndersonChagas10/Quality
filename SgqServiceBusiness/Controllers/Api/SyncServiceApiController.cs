@@ -6029,6 +6029,7 @@ namespace SgqServiceBusiness.Api
                         form_control = $@"<input class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-din=""{ header.ParHeaderField_Description }"" readonly>";
                         form_control += $@"<label class=""""></label>";
                         break;
+
                 }
 
                 //Incrementar valor para o pai do elemento para Ytoara.
@@ -6819,6 +6820,7 @@ namespace SgqServiceBusiness.Api
         {
             var html = new Html();
             string input = null;
+
             if (parLevel3.ParLevel3InputType_Id == 1)
             {
                 classInput = " boolean";
@@ -7065,6 +7067,27 @@ namespace SgqServiceBusiness.Api
 
                 input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
             }
+            else if (parLevel3.ParLevel3InputType_Id == 13)
+            {
+                classInput = " inputData";
+                labels = html.div(
+                                  outerhtml: "",
+                                  classe: ""
+                                  );
+
+                input = html.campoData(id: parLevel3.Id.ToString());
+
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 14)
+            {
+                classInput = " inputHora";
+                labels = html.div(
+                                  outerhtml: "",
+                                  classe: ""
+                                  );
+
+                input = html.campoHora(id: parLevel3.Id.ToString());
+            }
             else
             {
                 ///Campo interval está repetindo , falta o campo defeitos
@@ -7099,6 +7122,8 @@ namespace SgqServiceBusiness.Api
                                                 intervalMax: parLevel3.IntervalMax,
                                                 unitName: parLevel3.ParMeasurementUnit_Name);
             }
+
+
             return input;
         }
 

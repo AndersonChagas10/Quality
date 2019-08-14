@@ -416,6 +416,36 @@ namespace SgqServiceBusiness.Services
             return texto;
         }
 
+        public string campoData(string id, string classe = null)
+        {
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string texto = $@"<div class=""input-group input-group-sm width180 pull-right"" + classe + "" style=""width: 100% !important;"">
+                               <span class=""input-group-btn btn-minus""> </span>
+                               <input type=""date"" class=""form-control text-center levelValue texto"" style=""width:100%;"">
+                           </div>";
+            return texto;
+        }
+
+        public string campoHora(string id, string classe = null)
+        {
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string texto = $@"<div class=""input-group input-group-sm width180 pull-right"" + classe + "" style=""width: 100% !important;"">
+                               <span class=""input-group-btn btn-minus""> </span>
+                               <input type=""time"" class=""form-control text-center levelValue texto"" style=""width:100%;"">
+                           </div>";
+            return texto;
+        }
+
         public string campoObservacao(string id, string classe = null)
         {
             //definir min value //min=\"0\" 
