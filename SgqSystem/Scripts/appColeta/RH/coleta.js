@@ -25,7 +25,7 @@ function openColeta(levels) {
                         hasLevel2 = true;
                     }
 
-                    coleta += getLevel2(level2);
+                    coleta += getLevel2(level2,level1);
                     coleta += getParHeaderFieldLevel2(level1, level2);
                     hasLevel3 = true;
                 }
@@ -70,6 +70,20 @@ function openColeta(levels) {
 
 }
 
+$('body')
+.off('click','[data-collapse-targeter]')
+.on('click','[data-collapse-targeter]',function(){ 
+	if($(this).attr('data-targeter-collapsed') == 'true'){
+		$('[data-collapse-target^="'+$(this).attr('data-collapse-targeter')+'-"]').removeClass('hide');
+		$('[data-collapse-target="'+$(this).attr('data-collapse-targeter')+'"]').removeClass('hide');
+		$(this).attr('data-targeter-collapsed', false);
+	}else{
+		$('[data-collapse-target^="'+$(this).attr('data-collapse-targeter')+'-"]').addClass('hide');
+		$('[data-collapse-target="'+$(this).attr('data-collapse-targeter')+'"]').addClass('hide');
+		$(this).attr('data-targeter-collapsed', true);
+	}
+});
+
 var currentEvaluationSample = {};
 
 function getContador() {
@@ -98,15 +112,15 @@ function getContador() {
 }
 
 function getLevel1(level1) {
-    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;"><small>' + level1.Name + '</small></div>';
+    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="'+level1.Id+'"><small>' + level1.Name + '</small></div>';
 }
 
-function getLevel2(level2) {
-    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;"><small>' + level2.Name + '</small></div>';
+function getLevel2(level2,level1) {
+    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="'+level1.Id+'" data-collapse-targeter="'+level1.Id+'-'+level2.Id+'"><small>' + level2.Name + '</small></div>';
 }
 
-function getLevel3(level3) {
-    return '<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px">' + level3.Name + '</div>';
+function getLevel3(level3,level2,level1) {
+    return '<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px" data-collapse-target="'+level1.Id+'-'+level2.Id+'">' + level3.Name + '</div>';
 }
 
 function getInputLevel3(level3, level2, level1, striped) {
@@ -121,6 +135,7 @@ function getInputLevel3(level3, level2, level1, striped) {
             colorStriped = "background-color: #e9ecef;";
 
         retorno += '<div class="col-xs-12" data-linha-coleta ';
+        retorno += ' data-collapse-target="'+level1.Id+'-'+level2.Id+'"';
         retorno += ' data-conforme="1"';
         retorno += ' data-min="' + level3.ParLevel3Value.IntervalMin + '"';
         retorno += ' data-max="' + level3.ParLevel3Value.IntervalMax + '"';

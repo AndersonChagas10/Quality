@@ -1,6 +1,7 @@
 ﻿using ADOFactory;
 using Dominio;
 using SGQDBContext;
+using SgqService.ViewModels;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;
@@ -16,6 +17,12 @@ namespace SgqSystem.Controllers.Api
     [RoutePrefix("api/Scorecard")]
     public class ScorecardController : ApiController
     {
+        private string conexao;
+        public ScorecardController()
+        {
+            conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        }
+
         private List<ScorecardResultSet> _mock { get; set; }
         private List<ScorecardResultSet> _list { get; set; }
 
@@ -628,7 +635,7 @@ namespace SgqSystem.Controllers.Api
             #endregion
 
             #region Parte07
-            SyncServiceApiController s = new SyncServiceApiController();
+            var s = new SgqServiceBusiness.Api.SyncServiceApiController(conexao,conexao);
 
             //using (var db = new Factory(ipProd, bancoProd, "wordpass14t", "grjuser"))
             using (var db = new Factory(ipProd, bancoProd, "betsy1", "sa"))

@@ -185,24 +185,27 @@ function enviaFotos() {
             async: false,
             headers: token(),
             success: function (data) {
-                if(lastFotoEnviada != ""){
-                    _writeFile(lastFotoEnviada, '');
-                    lastFotoEnviada = "";
+                if(data != null){
+                    if(lastFotoEnviada != ""){
+                        _writeFile(lastFotoEnviada, '');
+                        lastFotoEnviada = "";
 
+                        enviandoFoto = false;
+                        algumaFotoEstaSendoEnviada = false;
+                        level3Photos.splice(0, data.count);
+                        _writeFile("level3Photos.json", level3Photos);
+                        sendResultLevel3Photo();
+                    }
+                }else{
                     enviandoFoto = false;
+                    //alert(JSON.stringify(e));
+                    setTimeout(function () {
+                        sendResultLevel3Photo();
+                    }, 20000);
                     algumaFotoEstaSendoEnviada = false;
-                    level3Photos.splice(0, data.count);
-                    _writeFile("level3Photos.json", level3Photos);
-                    sendResultLevel3Photo();
                 }
             },
             error: function (e) {
-                enviandoFoto = false;
-                //alert(JSON.stringify(e));
-                setTimeout(function () {
-                    sendResultLevel3Photo();
-                }, 20000);
-                algumaFotoEstaSendoEnviada = false;
             }
         });
     }

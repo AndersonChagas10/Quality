@@ -6,6 +6,7 @@ using DTO.DTO.Params;
 using DTO.Helpers;
 using DTO.ResultSet;
 using Newtonsoft.Json;
+using SgqService.ViewModels;
 using SgqSystem.Handlres;
 using SgqSystem.Helpers;
 using SgqSystem.Services;
@@ -27,8 +28,10 @@ namespace SgqSystem.Controllers.Api
     [RoutePrefix("api/ApontamentosDiarios")]
     public class ApontamentosDiariosApiController : ApiController
     {
+        private string conexao;
         public ApontamentosDiariosApiController()
         {
+            conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             db.Configuration.LazyLoadingEnabled = false;
         }
 
@@ -189,7 +192,7 @@ namespace SgqSystem.Controllers.Api
             var company_Id = level3.CollectionLevel2.UnitId;
             var level1_Id = level3.CollectionLevel2.ParLevel1_Id;
 
-            var service = new SyncServiceApiController();
+            var service = new SgqServiceBusiness.Api.SyncServiceApiController(conexao,conexao);
 
             service.ReconsolidationLevel3ByCollectionLevel2Id(level3.CollectionLevel2_Id.ToString());
 
@@ -780,7 +783,7 @@ namespace SgqSystem.Controllers.Api
                 //Reconsolida
                 if (Lsc2xhf.HeaderField.Count > 0)
                 {
-                    var syncServices = new SyncServiceApiController();
+                    var syncServices = new SgqServiceBusiness.Api.SyncServiceApiController(conexao,conexao);
 
                     syncServices.ReconsolidationToLevel3(Lsc2xhf.HeaderField[0].CollectionLevel2_Id.ToString());
                 }

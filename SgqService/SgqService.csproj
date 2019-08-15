@@ -14,17 +14,18 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SgqService</RootNamespace>
     <AssemblyName>SgqService</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>63128</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -78,6 +79,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -85,18 +87,17 @@
     <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
@@ -144,6 +145,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
@@ -167,34 +169,6 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
-    <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
-    <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
-    <Compile Include="Areas\HelpPage\HelpPageAreaRegistration.cs" />
-    <Compile Include="Areas\HelpPage\HelpPageConfigurationExtensions.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\CollectionModelDescription.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\ComplexTypeModelDescription.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\DictionaryModelDescription.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumTypeModelDescription.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumValueDescription.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\IModelDocumentationProvider.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\KeyValuePairModelDescription.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescription.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescriptionGenerator.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameAttribute.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameHelper.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterAnnotation.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterDescription.cs" />
-    <Compile Include="Areas\HelpPage\ModelDescriptions\SimpleTypeModelDescription.cs" />
-    <Compile Include="Areas\HelpPage\Models\HelpPageApiModel.cs" />
-    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleGenerator.cs" />
-    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleKey.cs" />
-    <Compile Include="Areas\HelpPage\SampleGeneration\ImageSample.cs" />
-    <Compile Include="Areas\HelpPage\SampleGeneration\InvalidSample.cs" />
-    <Compile Include="Areas\HelpPage\SampleGeneration\ObjectGenerator.cs" />
-    <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
-    <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
-    <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\Api\AppScriptsController.cs" />
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
@@ -207,10 +181,10 @@
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
+    <Compile Include="Controllers\Api\RetornaQueryRotinaApiController.cs" />
     <Compile Include="Controllers\Api\SyncServiceApiController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
     <Compile Include="Controllers\Api\VTVerificacaoTipificacaoAPIController.cs" />
-    <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -220,86 +194,10 @@
     <Compile Include="Helpers\CommonLog.cs" />
     <Compile Include="Helpers\HandleCultureAPI.cs" />
     <Compile Include="Helpers\Handlres\HandleApi.cs" />
-    <Compile Include="Helpers\Handlres\ValidateModelAttribute.cs" />
-    <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
-    <Compile Include="Mappers\Audit\CorrectiveActionMapperProfile.cs" />
-    <Compile Include="Mappers\AutoMapperConfig.cs" />
-    <Compile Include="Mappers\DefectMapperProfile.cs" />
-    <Compile Include="Mappers\EmailContentMapperProfile.cs" />
-    <Compile Include="Mappers\ExampleMapperProfile.cs" />
-    <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
-    <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParClusterGroupMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParClusterMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParConsolidationTypeMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParCriticalLevelMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParEvaluationMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParFieldTypeMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParFrequencyMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParGoalMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParHeaderFieldMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel1ClusterMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel1HeaderField.cs" />
-    <Compile Include="Mappers\Params\ParLevel1MapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel1XHeaderFieldMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel2Level1MapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel2MapperProfile .cs" />
-    <Compile Include="Mappers\Params\ParLevel2XHeaderFieldMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel3BoolFalseMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel3BoolTrueMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel3EvaluationSampleMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel3GroupMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel3InputTypeMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel3Level2Level1MapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel3Level2MapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel3MapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel3ValueMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel3XParDepartmentMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevelDefinitonMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLocalMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParMeasurementUnitMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParModuleMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParMultipleValuesMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParNotConformityRuleMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParNotConformityRuleXLevelMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParRelapseMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParSampleMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParScoreTypeMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
-    <Compile Include="Mappers\ParClusterXModuleMapperProfile.cs" />
-    <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
-    <Compile Include="Mappers\ParLevel1XRotinaIntegracaoMapperProfile.cs" />
-    <Compile Include="Mappers\PeriodMapperProfile.cs" />
-    <Compile Include="Mappers\RoleMapperProfile.cs" />
-    <Compile Include="Mappers\RoleUserSgqMapperProfile.cs" />
-    <Compile Include="Mappers\RoleUserSgqXItemMenuMapperProfile.cs" />
-    <Compile Include="Mappers\RotinaIntegracaoMapperProfile.cs" />
-    <Compile Include="Mappers\ShiftMapperProfile.cs" />
-    <Compile Include="Mappers\UnitMapperProfile.cs" />
-    <Compile Include="Mappers\UnitUserMapperProfile.cs" />
-    <Compile Include="Mappers\UserMapperProfile.cs" />
-    <Compile Include="Mappers\UserSgqMapperProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\CustomPrincipal.cs" />
-    <Compile Include="Security\SessionPersister.cs" />
-    <Compile Include="Services\Html.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Readme\readme.txt" />
-    <Content Include="Areas\HelpPage\HelpPage.css" />
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\appColeta\GQ\alert.js" />
@@ -351,25 +249,6 @@
     <Content Include="Scripts\appColeta\GQ\verificacaoTipificacao.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Areas\HelpPage\Views\Web.config" />
-    <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TextSample.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\SimpleTypeModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Samples.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Parameters.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ModelDescriptionLink.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\KeyValuePairModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\InvalidSample.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ImageSample.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\EnumTypeModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\DictionaryModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ComplexTypeModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -384,16 +263,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
-    <Content Include="Content\Site.css" />
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -406,18 +278,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap.min.css.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap.css.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css.map" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -452,6 +312,10 @@
     <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
       <Project>{3ecf1d86-91f3-4140-a11a-1546b8f662a1}</Project>
       <Name>ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SgqServiceBusiness\SgqServiceBusiness.csproj">
+      <Project>{2a112b7a-4627-43f6-b362-321e0b2e6b0b}</Project>
+      <Name>SgqServiceBusiness</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

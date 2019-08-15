@@ -4,6 +4,7 @@ using Dominio;
 using DTO;
 using DTO.DTO;
 using DTO.Helpers;
+using SgqService.ViewModels;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;

@@ -764,7 +764,7 @@ function atualizaCorAgendamento() {
                             var mapeamento = o2.split('-');
                             var level2Id = $(o).attr('id');
 
-                            if (frequenciaId == 10) { //Diário com Intervalo
+                            if (o2.indexOf(":") > 0 || frequenciaId == 10) { //Diário com Intervalo
 
                                 var horaPrimeiraAv;
                                 var horaMinutoPrimeiraAv;

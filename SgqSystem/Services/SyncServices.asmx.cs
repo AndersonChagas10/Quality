@@ -8714,7 +8714,7 @@ namespace SgqSystem.Services
                     AND cl.EvaluationNumber = { EvaluationNumber }
                     AND plx.ParCluster_Id = { parCluster_Id }
                     AND cl.Shift = { Shift }
-                    AND CAST(cl.CollectionDate AS DATE) = '{ CollectionDate.ToString("yyyMMdd") }'";
+                    AND CAST(cl.CollectionDate AS DATE) = '{ CollectionDate.ToString("yyyyMMdd") }'";
 
             using (var db = new SgqDbDevEntities())
             {
