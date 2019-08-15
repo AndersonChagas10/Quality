@@ -1366,7 +1366,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
             sql = "SELECT * FROM (" + sql;
 
-            sql += "\n  ) TOTAL  ORDER BY ISNULL(TOTAL.ParLevel3Group_Name,'ZZZ') ASC, 2 ASC,  15  DESC , 16  DESC    ";
+            sql += "\n  ) TOTAL  ORDER BY ISNULL(TOTAL.ParLevel3Group_Name,'ZZZ') ASC, 2 ASC,  15  ASC , 16  ASC";
 
             List<ParLevel3> parLevel3List = new List<ParLevel3>();
             using (Factory factory = new Factory("DefaultConnection"))
@@ -1374,7 +1374,20 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                 parLevel3List = factory.SearchQuery<ParLevel3>(sql);
             }
 
-            return parLevel3List;
+            //Remover duplicidade dos Levels3
+            var idsLevel3 = parLevel3List.Select(x => x.Id).Distinct().ToList();
+
+            var parLevel3ListSemDuplicidade = new List<ParLevel3>();
+
+            foreach (var level3_id in idsLevel3)
+            {
+                var level3 = parLevel3List.Where(x => x.Id == level3_id).FirstOrDefault();
+
+                if (level3 != null)
+                    parLevel3ListSemDuplicidade.Add(level3);
+            }
+
+            return parLevel3ListSemDuplicidade;
         }
         /// <summary>
         /// Recupera as tarefas que foram feitas no Level2
@@ -1800,8 +1813,8 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
             var valores = integracao.Split('|');
 
-            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta" 
-                || valores[0] == "Detector de Metais" || valores[0] == "Setor" || valores[0] == "Tipo de Corte" 
+            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta"
+                || valores[0] == "Detector de Metais" || valores[0] == "Setor" || valores[0] == "Tipo de Corte"
                 || valores[0] == "Setores BPF")
             {
                 var subtipo = "";
