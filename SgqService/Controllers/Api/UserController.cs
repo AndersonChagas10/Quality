@@ -3,7 +3,6 @@ using DTO.DTO;
 using DTO.Helpers;
 using DTO.Interfaces.Services;
 using SgqService.Handlres;
-using SgqService.Security;
 using SgqService.ViewModels;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -17,15 +16,16 @@ namespace SgqService.Controllers.Api
     {
         private readonly IUserDomain _userDomain;
 
+        private SgqServiceBusiness.Api.UserController business;
         public UserController(IUserDomain userDomain)
         {
             _userDomain = userDomain;
+            business = new SgqServiceBusiness.Api.UserController(userDomain);
         }
 
-        // POST: api/Teste
         public GenericReturn<UserDTO> Post([FromBody] UserViewModel userVm)
         {
-            return _userDomain.AuthenticationLogin(userVm);
+            return business.Post(userVm);
         }
 
         [HttpPost]
@@ -33,7 +33,7 @@ namespace SgqService.Controllers.Api
         [Route("AuthenticationLogin")]
         public GenericReturn<UserDTO> AuthenticationLogin([FromBody] UserViewModel userVm)
         {
-            return _userDomain.AuthenticationLogin(userVm);
+            return business.AuthenticationLogin(userVm);
         }
 
         [HttpPost]
@@ -47,18 +47,14 @@ namespace SgqService.Controllers.Api
         [Route("GetAllUserByUnit/{unidadeId}")]
         public List<UserDTO> GetAllUserByUnit(int unidadeId)
         {
-            return _userDomain.GetAllUserByUnit(unidadeId);
+            return business.GetAllUserByUnit(unidadeId);
         }
 
         [HttpPost]
         [Route("VerifyPassiveSiginInLoginScreen")]
         public bool VerifyPassiveSiginInLoginScreen()
         {
-            if (!(string.IsNullOrEmpty(SessionPersister.Username)))
-            {
-                return true;
-            }
-            return false;
+            return business.VerifyPassiveSiginInLoginScreen();
         }
     }
 

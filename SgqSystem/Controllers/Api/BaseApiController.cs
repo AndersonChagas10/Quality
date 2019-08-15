@@ -3,6 +3,7 @@ using Dominio;
 using DTO.DTO;
 using Newtonsoft.Json.Linq;
 using SGQDBContext;
+using SgqService.ViewModels;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;

@@ -16,6 +16,7 @@ using System.Web.Mvc;
 using SgqSystem.Secirity;
 using DTO;
 using System.Data.Entity.SqlServer;
+using SgqService.ViewModels;
 
 namespace SgqSystem.Controllers
 {

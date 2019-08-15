@@ -37,6 +37,7 @@ namespace SgqSystem
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfig.RegisterMappings();
+            SgqServiceBusiness.Mappers.AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
             GlobalConfig.VerifyConfig("DefaultConnection");
 

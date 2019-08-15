@@ -158,7 +158,7 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
         return obj.ParLevel3_Id == parLevel3.Id &&
             obj.ParLevel2_Id == parLevel2.Id &&
             obj.ParLevel1_Id == parLevel1.Id &&
-            obj.ParFrequency_Id == currentParFrequency_Id &&
+            obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
             obj.ParCargo_Id == currentParCargo_Id &&
             obj.ParDepartment_Id == currentParDepartment_Id &&
             obj.ParCompany_Id == currentLogin.ParCompany_Id;
@@ -170,7 +170,7 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
             return obj.ParLevel3_Id == parLevel3.Id &&
                 obj.ParLevel2_Id == parLevel2.Id &&
                 obj.ParLevel1_Id == parLevel1.Id &&
-                obj.ParFrequency_Id == currentParFrequency_Id &&
+                obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
                 obj.ParCargo_Id == currentParCargo_Id &&
                 obj.ParDepartment_Id == currentParDepartment_Id &&
                 obj.ParCompany_Id == null;
@@ -183,7 +183,7 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
             return obj.ParLevel3_Id == parLevel3.Id &&
                 obj.ParLevel2_Id == parLevel2.Id &&
                 obj.ParLevel1_Id == parLevel1.Id &&
-                obj.ParFrequency_Id == currentParFrequency_Id &&
+                obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
                 obj.ParCargo_Id == currentParCargo_Id &&
                 obj.ParDepartment_Id == null &&
                 obj.ParCompany_Id == null;
@@ -196,10 +196,22 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
             return obj.ParLevel3_Id == parLevel3.Id &&
                 obj.ParLevel2_Id == parLevel2.Id &&
                 obj.ParLevel1_Id == parLevel1.Id &&
-                obj.ParFrequency_Id == currentParFrequency_Id &&
+                obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
                 obj.ParCargo_Id == null &&
                 obj.ParDepartment_Id == null &&
                 obj.ParCompany_Id == null;
+        });
+    }
+    
+    if (parVinculo.length == 0) {
+        parVinculo = $.grep(parVinculos, function (obj) {
+            return obj.ParLevel3_Id == parLevel3.Id &&
+                obj.ParLevel2_Id == parLevel2.Id &&
+                obj.ParLevel1_Id == parLevel1.Id &&
+                obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
+                obj.ParCargo_Id == null &&
+                obj.ParDepartment_Id == null &&
+                obj.ParCompany_Id == currentLogin.ParCompany_Id;
         });
     }
 

@@ -10,21 +10,17 @@ namespace SgqSystem.Controllers.Api.Login
     [RoutePrefix("api/LoginApi")]
     public class LoginController : ApiController
     {
+        private SgqServiceBusiness.Api.Login.LoginController business;
+        public LoginController()
+        {
+            business = new SgqServiceBusiness.Api.Login.LoginController();
+        }
+
         [HttpGet]
         [Route("Logado/{dataApp?}")]
         public string Logado(DateTime? dataApp = null)
         {
-            if (dataApp != null)
-            {
-                var dataServer = DateTime.Now;
-
-                if (dataApp < dataServer.AddHours(-30))
-                {
-                    return "dataInvalida";
-                }
-            }
-
-            return "onLine";
+            return business.Logado(dataApp);
         }
     }
 }

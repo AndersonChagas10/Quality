@@ -52,11 +52,11 @@
     var avaliacao = 0;
     var _level2List;
 
-    if (_level2 && ultL2Temp == false) {
-        _level2List = level2Group.find('.level2[id=' + _level2.id + ']').length;
-    } else {
+    //if (_level2 && ultL2Temp == false) {
+    //    _level2List = level2Group.find('.level2[id=' + _level2.id + ']').length;
+    //} else {
         _level2List = level2Group.find('.level2').length;
-    }
+    //}
 
     var maior = 0;
     var totalDeAvaliacoes = 0;
@@ -64,9 +64,9 @@
     for (var i = 0; i < _level2List; i++) {
 
         var level2;
-        if (_level2 && level1.attr('hasgrouplevel2') != 'true' && ultL2Temp == false)
-            level2 = level2Group.find('.level2[id=' + _level2.id + ']');
-        else
+        //if (_level2 && level1.attr('hasgrouplevel2') != 'true' && ultL2Temp == false)
+        //    level2 = level2Group.find('.level2[id=' + _level2.id + ']');
+        //else
             level2 = level2Group.find($('.level2')[i]);
 
         updateCounterLinhaLevel2(level1, level2);
@@ -764,7 +764,7 @@ function atualizaCorAgendamento() {
                             var mapeamento = o2.split('-');
                             var level2Id = $(o).attr('id');
 
-                            if (frequenciaId == 10) { //Diário com Intervalo
+                            if (o2.indexOf(":") > 0 || frequenciaId == 10) { //Diário com Intervalo
 
                                 var horaPrimeiraAv;
                                 var horaMinutoPrimeiraAv;
