@@ -133,6 +133,16 @@ namespace PlanoAcaoCore
         public int TipoIndicador { get; set; }
         public string TipoIndicadorName { get; set; }
 
+        public string ParDepartments_Hash { get; set; }
+
+        public int? ParCargo_Id { get; set; }
+
+        public string ParCargoName { get; set; }
+
+        public string ParDepartmentsName { get; set; }
+
+        public string ParSecaoName { get; set; }
+
         public string _QuandoFimData
         {
             get

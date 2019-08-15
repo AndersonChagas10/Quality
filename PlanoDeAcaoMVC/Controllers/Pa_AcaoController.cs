@@ -448,6 +448,34 @@ namespace PlanoDeAcaoMVC.Controllers
                 {
                     fta.MetaFTA = "0";
                 }
+
+
+                #region RH
+
+                if (!string.IsNullOrEmpty(fta.ParDepartments_Hash))
+                {
+                    //verificar se vamos serparar por - os departamentos validar se pode ter esse caractere na url
+                    var parDepartment_ids = fta.ParDepartments_Hash.Split('-').ToList();
+
+                    var departamentos = dbFActory.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE Id in (" + string.Join(",", parDepartment_ids) + ")").ToList();
+
+                    //ultimo departamento é a seção
+                    var secao = departamentos.Last();
+
+                    //departamentos.RemoveAt(departamentos.Count - 1);
+                   
+                    fta.ParDepartmentsName += string.Join(" | ", departamentos.Select(x => x.Name).ToList());
+                    fta.ParSecaoName = secao.Name;
+
+                }
+
+                if (fta.ParCargo_Id != null && fta.ParCargo_Id > 0)
+                {
+                    fta.ParCargoName = dbFActory.SearchQuery<ParCargoDTO>("Select * from ParCargo WHERE Id = " + fta.ParCargo_Id).FirstOrDefault().Name;
+                }
+
+                #endregion
+
             }
         }
 
@@ -505,6 +533,16 @@ namespace PlanoDeAcaoMVC.Controllers
             }
 
             base.Initialize(requestContext);
+        }
+
+        [HttpGet]
+        public ActionResult NewFTARH(FTA fta)
+        {
+            ViewBag.PlanejamentosComFTA = fta.Panejamento_Id;
+            fta.ValidaFTA();
+            NovoFtaModelParaSgq2(fta);
+            fta.IsFTA = true;
+            return View("NewFTA", fta);
         }
 
         #endregion
