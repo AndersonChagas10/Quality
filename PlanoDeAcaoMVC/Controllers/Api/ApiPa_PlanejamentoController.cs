@@ -145,9 +145,20 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
             else
             {
-                a.AddDate = DateTime.Now;
-                db.Pa_Planejamento.Add(a);
-                db.SaveChanges();
+                try{
+                    a.AddDate = DateTime.Now;
+                    if (a.IsFta == null)
+                        a.IsFta = false;
+                    db.Pa_Planejamento.Add(a);
+                    db.SaveChanges();
+
+                }
+               
+                catch (Exception ex)
+                {
+                    //int insertLog = insertLogJson(objObjResultJSonPuro, ex.Message, deviceId, versaoApp, "InsertJson");
+                    throw ex;
+                }
             }
 
             #region GAMBIARRA FDP
