@@ -802,3 +802,21 @@ BEGIN
    END
 END
 GO
+
+BEGIN
+   IF NOT EXISTS (Select * from ParLevel3InputType where Id = 13)
+   BEGIN
+		INSERT into ParLevel3InputType (Id,Name, Description, AddDate, IsActive) VALUES (13,'Data', 'Data',  GETDATE(), 1)
+   END
+END
+
+GO
+
+BEGIN
+   IF NOT EXISTS (Select * from ParLevel3InputType where Id = 14)
+   BEGIN
+		INSERT into ParLevel3InputType (Id,Name, Description, AddDate, IsActive) VALUES (14,'Hora', 'Hora',  GETDATE(), 1)
+   END
+END
+
+GO
