@@ -344,21 +344,29 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
-                if (acao.Id > 0)
+                try
                 {
-                    acao.AlterDate = DateTime.Now;
-                    db.Pa_Acao.Attach(acao);
-                    var entry = db.Entry(acao);
-                    entry.State = System.Data.Entity.EntityState.Modified;
-                    entry.Property(e => e.AddDate).IsModified = false;
-                    db.SaveChanges();
+                    if (acao.Id > 0)
+                    {
+                        acao.AlterDate = DateTime.Now;
+                        db.Pa_Acao.Attach(acao);
+                        var entry = db.Entry(acao);
+                        entry.State = System.Data.Entity.EntityState.Modified;
+                        entry.Property(e => e.AddDate).IsModified = false;
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        acao.AddDate = DateTime.Now;
+                        db.Pa_Acao.Add(acao);
+                        db.SaveChanges();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    acao.AddDate = DateTime.Now;
-                    db.Pa_Acao.Add(acao);
-                    db.SaveChanges();
+
                 }
+
             }
         }
 

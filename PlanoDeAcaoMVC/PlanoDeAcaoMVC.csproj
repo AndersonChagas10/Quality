@@ -1005,6 +1005,7 @@
     <Content Include="Views\Home2\Index2.cshtml" />
     <Content Include="Views\Centauro\Index.cshtml" />
     <Content Include="Views\Shared\_Rodape.cshtml" />
+    <Content Include="Views\Pa_Acao\NewFTASESMT.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

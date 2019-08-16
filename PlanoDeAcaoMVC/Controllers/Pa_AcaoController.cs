@@ -542,7 +542,7 @@ namespace PlanoDeAcaoMVC.Controllers
             fta.ValidaFTA();
             NovoFtaModelParaSgq2(fta);
             fta.IsFTA = true;
-            return View("NewFTA", fta);
+            return View("NewFTASESMT", fta);
         }
 
         #endregion

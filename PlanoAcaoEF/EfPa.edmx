@@ -12,14 +12,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="To" Type="nvarchar" MaxLength="450" Nullable="false" />
+          <Property Name="To" Type="nvarchar" MaxLength="900" Nullable="false" />
           <Property Name="Body" Type="nvarchar(max)" />
-          <Property Name="SendStatus" Type="nvarchar" MaxLength="15" />
+          <Property Name="SendStatus" Type="nvarchar" MaxLength="900" />
           <Property Name="SendDate" Type="datetime2" Precision="7" />
           <Property Name="Project" Type="nvarchar" MaxLength="15" />
           <Property Name="IsBodyHtml" Type="bit" />
-          <Property Name="From" Type="nvarchar" MaxLength="35" />
-          <Property Name="Subject" Type="nvarchar" MaxLength="450" />
+          <Property Name="From" Type="nvarchar" MaxLength="350" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="2900" />
         </EntityType>
         <EntityType Name="Pa_Acao">
           <Key>
@@ -58,7 +58,11 @@
           <Property Name="Level3Name" Type="varchar" MaxLength="500" />
           <Property Name="Regional" Type="varchar" MaxLength="500" />
           <Property Name="UnidadeName" Type="varchar" MaxLength="500" />
-          <!--<Property Name="UnidadeDeMedida_Id" Type="int" />-->
+          <Property Name="UnidadeDeMedida_Id" Type="int" />
+          <Property Name="ParDepartments_Hash" Type="varchar" MaxLength="50" />
+          <Property Name="ParDepartmentsName" Type="varchar(max)" />
+          <Property Name="ParCargo_Id" Type="int" />
+          <Property Name="ParCargoName" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Pa_Acompanhamento">
           <Key>
@@ -113,8 +117,8 @@
           <Property Name="ObjetivoGerencial_Id" Type="int" />
           <Property Name="Dimensao" Type="nvarchar(max)" />
           <Property Name="Objetivo" Type="nvarchar(max)" />
-          <Property Name="ValorDe" Type="decimal" Precision="32" Scale="10" />
-          <Property Name="ValorPara" Type="decimal" Precision="32" Scale="10" />
+          <Property Name="ValorDe" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="ValorPara" Type="decimal" Precision="38" Scale="10" />
           <Property Name="DataInicio" Type="datetime2" Precision="7" />
           <Property Name="DataFim" Type="datetime2" Precision="7" />
           <Property Name="Order" Type="int" />
@@ -126,11 +130,11 @@
           <Property Name="Responsavel_Diretriz" Type="int" />
           <Property Name="Responsavel_Projeto" Type="int" />
           <Property Name="UnidadeDeMedida_Id" Type="int" />
-          <Property Name="IsTatico" Type="bit" Nullable="false" />
-          <Property Name="Tatico_Id" Type="int" />
-          <Property Name="IsFta" Type="bit" />
           <Property Name="TemaProjeto_Id" Type="int" />
           <Property Name="TipoProjeto_Id" Type="int" />
+          <Property Name="IsTatico" Type="bit" Nullable="false" />
+          <Property Name="Tatico_Id" Type="int" />
+          <Property Name="IsFta" Type="bit" Nullable="false" />
         </EntityType>
         <EntityContainer Name="PlanoDeAcaoModelStoreContainer">
           <EntitySet Name="EmailContent" EntityType="Self.EmailContent" Schema="dbo" store:Type="Tables" />
@@ -194,14 +198,14 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddDate" Type="DateTime" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="To" Type="String" Nullable="false" MaxLength="450" FixedLength="false" Unicode="true" />
+          <Property Name="To" Type="String" Nullable="false" MaxLength="900" FixedLength="false" Unicode="true" />
           <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SendStatus" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="SendStatus" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
           <Property Name="SendDate" Type="DateTime" Precision="7" />
           <Property Name="Project" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="IsBodyHtml" Type="Boolean" />
-          <Property Name="From" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-          <Property Name="Subject" Type="String" MaxLength="450" FixedLength="false" Unicode="true" />
+          <Property Name="From" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Subject" Type="String" MaxLength="2900" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Pa_Acao">
           <Key>
@@ -240,6 +244,11 @@
           <Property Name="Level3Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Regional" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="UnidadeName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="UnidadeDeMedida_Id" Type="Int32" />
+          <Property Name="ParDepartments_Hash" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParDepartmentsName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ParCargo_Id" Type="Int32" />
+          <Property Name="ParCargoName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <!--<Property Name="UnidadeDeMedida_Id" Type="Int32" />-->
         </EntityType>
         <EntityType Name="Pa_Planejamento">
@@ -260,8 +269,8 @@
           <Property Name="ObjetivoGerencial_Id" Type="Int32" />
           <Property Name="Dimensao" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Objetivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ValorDe" Type="Decimal" Precision="32" Scale="10" />
-          <Property Name="ValorPara" Type="Decimal" Precision="32" Scale="10" />
+          <Property Name="ValorDe" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="ValorPara" Type="Decimal" Precision="38" Scale="10" />
           <Property Name="DataInicio" Type="DateTime" Precision="7" />
           <Property Name="DataFim" Type="DateTime" Precision="7" />
           <Property Name="Order" Type="Int32" />
@@ -275,7 +284,7 @@
           <Property Name="UnidadeDeMedida_Id" Type="Int32" />
           <Property Name="IsTatico" Type="Boolean" Nullable="false" />
           <Property Name="Tatico_Id" Type="Int32" />
-          <Property Name="IsFta" Type="Boolean" />
+          <Property Name="IsFta" Type="Boolean" Nullable="false" />
           <Property Name="TemaProjeto_Id" Type="Int32" />
           <Property Name="TipoProjeto_Id" Type="Int32" />
         </EntityType>
@@ -344,6 +353,11 @@
             <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Acao">
               <MappingFragment StoreEntitySet="Pa_Acao">
                 <!--<ScalarProperty Name="UnidadeDeMedida_Id" ColumnName="UnidadeDeMedida_Id" />-->
+                <ScalarProperty Name="ParCargoName" ColumnName="ParCargoName" />
+                <ScalarProperty Name="ParCargo_Id" ColumnName="ParCargo_Id" />
+                <ScalarProperty Name="ParDepartmentsName" ColumnName="ParDepartmentsName" />
+                <ScalarProperty Name="ParDepartments_Hash" ColumnName="ParDepartments_Hash" />
+                <ScalarProperty Name="UnidadeDeMedida_Id" ColumnName="UnidadeDeMedida_Id" />
                 <ScalarProperty Name="UnidadeName" ColumnName="UnidadeName" />
                 <ScalarProperty Name="Regional" ColumnName="Regional" />
                 <ScalarProperty Name="Level3Name" ColumnName="Level3Name" />
