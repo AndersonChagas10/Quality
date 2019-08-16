@@ -371,29 +371,27 @@
         },
 
         excludeTable: function (i) {
-
-            var r = confirm("Deseja Excluir?");
-
-            if (r == false) {
-                return false;
-            }
-
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
+            $("#modalExclusao").show();
 
-            if (obj) {
-                if (obj.ParFieldType.Id == 3) //Se for binário, exclui todos os ParMultipleValuesGeral
-                    obj.ParMultipleValuesGeral.forEach((o, i, a) => {
-                        a[i].IsActive = false;
-                    });
-                else
-                    obj['ParMultipleValuesGeral'][i].IsActive = false;
+            $("#excluirItem").off().on('click', function () {
+                if (obj) {
+                    if (obj.ParFieldType_Id == 3) //Se for binário, exclui todos os ParMultipleValuesGeral
+                        obj.ParMultipleValuesGeral.forEach((o, i, a) => {
+                            a[i].IsActive = false;
+                        });
+                    else
+                        obj['ParMultipleValuesGeral'][i].IsActive = false;
 
-                this.insertTable(obj);
+                    parL2Cabecalho.insertTable(obj);
 
-            } else {
-                $('#ParL2Cabecalho #camposCabecalhoIncluidos tbody').empty();
-                $('#ParL2Cabecalho #divCamposCabecalhoIncluidos').hide();
-            }
+                } else {
+                    $('#ParL2Cabecalho #camposCabecalhoIncluidos tbody').empty();
+                    $('#ParL2Cabecalho #divCamposCabecalhoIncluidos').hide();
+                }
+                $("#modalExclusao").hide();
+                item = "";
+            });
         },
 
         Save: function (obj) {

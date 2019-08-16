@@ -1011,29 +1011,30 @@
         },
 
         excludeTable: function (i) {
-
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
-            debugger
-            if (obj) {
+            $("#modalExclusao").show();
 
-                obj['ParEvaluationSchedule'][i].IsActive = false;
+            $("#excluirItem").off().on('click', function () {
+                if (obj) {
 
-                this.insertTable(obj);
-                var listaAgendamentoInseridos = $("#camposCabecalhoIncluidos2 tbody tr");
+                    obj['ParEvaluationSchedule'][i].IsActive = false;
 
-                if (!listaAgendamentoInseridos.length > 0) {
-                    $("#IsAgendamento").prop('checked', false);
-                } else 
-                    $("#IsAgendamento").prop('disabled', false);
-            } else {
-                $('#camposCabecalhoIncluidos tbody').empty();
-                $('#divCamposCabecalhoIncluidos').hide();
-            }
+                    parDCAvam.insertTable(obj);
+                    var listaAgendamentoInseridos = $("#camposCabecalhoIncluidos2 tbody tr");
+
+                    if (!listaAgendamentoInseridos.length > 0) {
+                        $("#IsAgendamento").prop('checked', false);
+                    } else
+                        $("#IsAgendamento").prop('disabled', false);
+                } else {
+                    $('#camposCabecalhoIncluidos tbody').empty();
+                    $('#divCamposCabecalhoIncluidos').hide();
+                }
+                $("#modalExclusao").hide();
+                item = "";
+            });
         }
 
-
     };
-
-
 
 </script>
