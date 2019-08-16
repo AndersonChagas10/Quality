@@ -14,11 +14,18 @@ using ADOFactory;
 using DTO.Helpers;
 using PlanoDeAcaoMVC.PaMail;
 using System.Dynamic;
+using DTO;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     public class BaseApiController : ApiController
     {
+
+
+        public BaseApiController()
+        {
+            GlobalConfig.VerifyConfig("DefaultConnection");
+        }
 
         /// <summary>
         /// Retorna Objeto Dinamico com dados da query no formato da Datatable.
