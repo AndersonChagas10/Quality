@@ -12,11 +12,11 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     [RoutePrefix("api/Pa_Planejamento")]
     public class ApiPa_PlanejamentoController : BaseApiController
     {
-        PlanoAcaoEF.PlanoDeAcaoEntities db;
+        Dominio.SgqDbDevEntities db;
 
         public ApiPa_PlanejamentoController()
         {
-            db = new PlanoAcaoEF.PlanoDeAcaoEntities();
+            db = new Dominio.SgqDbDevEntities();
 
             Jobs.UpdateStatus();
         }
@@ -131,7 +131,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
 
             //Pa_BaseObject.SalvarGenerico(planejamento);
-            var a = Mapper.Map<PlanoAcaoEF.Pa_Planejamento>(planejamento);
+            var a = Mapper.Map<Dominio.Pa_Planejamento>(planejamento);
 
             if (a.Id > 0)
             {
@@ -184,7 +184,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico) values (1, 0)");
             //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico, Estrategico_Id) values (1, 1, (select Top 1 Id from pa_planejamento))");
 
-            var estrategico = new PlanoAcaoEF.Pa_Planejamento() { IsTatico = false };
+            var estrategico = new Dominio.Pa_Planejamento() { IsTatico = false };
             estrategico.Tatico_Id = null;
             estrategico.Gerencia_Id = 0;
             estrategico.Coordenacao_Id = 0;
@@ -195,7 +195,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             estrategico.IndicadoresDeProjeto_Id = 0;
             SavePlanejamentoInDb(estrategico);
 
-            var tatico = new PlanoAcaoEF.Pa_Planejamento() { IsTatico = true, Estrategico_Id = estrategico.Id };
+            var tatico = new Dominio.Pa_Planejamento() { IsTatico = true, Estrategico_Id = estrategico.Id };
             SavePlanejamentoInDb(tatico);
             tatico.Tatico_Id = tatico.Id;
             SavePlanejamentoInDb(tatico);
@@ -212,7 +212,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico) values (1, 0)");
             //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico, Estrategico_Id) values (1, 1, (select Top 1 Id from pa_planejamento))");
 
-            var estrategico = new PlanoAcaoEF.Pa_Planejamento() { IsTatico = false };
+            var estrategico = new Dominio.Pa_Planejamento() { IsTatico = false };
             estrategico.Tatico_Id = null;
             estrategico.Gerencia_Id = 0;
             estrategico.Coordenacao_Id = 0;
@@ -223,7 +223,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             estrategico.IndicadoresDeProjeto_Id = 0;
             SavePlanejamentoInDb(estrategico);
 
-            var tatico = new PlanoAcaoEF.Pa_Planejamento() { IsTatico = true, Estrategico_Id = estrategico.Id };
+            var tatico = new Dominio.Pa_Planejamento() { IsTatico = true, Estrategico_Id = estrategico.Id };
             SavePlanejamentoInDb(tatico);
             tatico.Tatico_Id = tatico.Id;
             tatico.IsFta = true;
@@ -236,7 +236,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         }
 
 
-        private void SavePlanejamentoInDb(PlanoAcaoEF.Pa_Planejamento a)
+        private void SavePlanejamentoInDb(Dominio.Pa_Planejamento a)
         {
             if (a.Id > 0)
             {

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using PlanoAcaoEF;
 using System.Collections.Generic;
 using System.Web.Http;
 using PlanoAcaoCore;
@@ -7,17 +6,18 @@ using System.Data.SqlClient;
 using System;
 using System.Net.Http;
 using System.Net;
+using Dominio;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     [RoutePrefix("api/ApiColvis")]
     public class ApiPa_ColvisController : BaseApiController
     {
-        private PlanoDeAcaoEntities db;
+        private SgqDbDevEntities db;
 
         public ApiPa_ColvisController()
         {
-            db = new PlanoDeAcaoEntities();
+            db = new SgqDbDevEntities();
         }
 
 
@@ -26,8 +26,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public List<JObject> Get(Pa_Colvis colvis)
         {
             var query = "Select * from Pa_Colvis where Pa_Quem_Id = " + colvis.Pa_Quem_Id;
-
-            //var lista = Pa_Colvis.ListarGenerico<Pa_Colvis>(query);
 
             return QueryNinja(db, query);
         }

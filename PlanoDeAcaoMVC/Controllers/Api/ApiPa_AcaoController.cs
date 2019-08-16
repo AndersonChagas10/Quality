@@ -45,7 +45,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             foreach (var i in acao)
             {
-                var acaoSaved = Mapper.Map<PlanoAcaoEF.Pa_Acao>(i);
+                var acaoSaved = Mapper.Map<Dominio.Pa_Acao>(i);
                 SalvarAcao(acaoSaved, IsFTA);
                 CreateMail(i.Panejamento_Id, acaoSaved.Id, i.Quem_Id, Conn.TitileMailNovaAcao);
             }
@@ -57,9 +57,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("SaveAcompanhamento")]
         public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento obj)
         {
-            var acompanhamento = Mapper.Map<PlanoAcaoEF.Pa_Acompanhamento>(obj);
+            var acompanhamento = Mapper.Map<Dominio.Pa_Acompanhamento>(obj);
 
-            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+            using (var db = new Dominio.SgqDbDevEntities())
             {
                 var acao = db.Pa_Acao.FirstOrDefault(r => r.Id == acompanhamento.Acao_Id);
 
@@ -70,7 +70,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 foreach (var i in obj.MailTo)
                 {
                     Pa_AcompanhamentoXQuemVM obj2 = new Pa_AcompanhamentoXQuemVM();
-                    var acomXQuem = Mapper.Map<PlanoAcaoEF.Pa_AcompanhamentoXQuem>(obj2);
+                    var acomXQuem = Mapper.Map<Dominio.Pa_AcompanhamentoXQuem>(obj2);
                     acomXQuem.Acompanhamento_Id = acompanhamento.Id;
                     acomXQuem.Quem_Id = i;
                     SalvarAcompanhamentoXQuem(db, acomXQuem);
@@ -82,7 +82,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         }
 
 
-        private int GetStatusAcao(PlanoAcaoEF.Pa_Acompanhamento acompanhamento, PlanoAcaoEF.Pa_Acao acao)
+        private int GetStatusAcao(Dominio.Pa_Acompanhamento acompanhamento, Dominio.Pa_Acao acao)
         {
             switch (acompanhamento.Status_Id)
             {
@@ -146,12 +146,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 throw (new Exception("obj.IsValid(); " + ex.StackTrace.ToString()));
             }
 
-            var acao = new PlanoAcaoEF.Pa_Acao();
-            var fta = new PlanoAcaoEF.Pa_FTA();
+            var acao = new Dominio.Pa_Acao();
+            var fta = new Dominio.Pa_FTA();
 
             try
             {
-                acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
+                acao = Mapper.Map<Dominio.Pa_Acao>(obj);
             }
             catch (Exception ex)
             {
@@ -160,7 +160,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             try
             {
-                fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
+                fta = Mapper.Map<Dominio.Pa_FTA>(obj);
             }
             catch (Exception ex)
             {
@@ -208,7 +208,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         #region Auxiliares
 
-        private void SalvarAcompanhamentoXQuem(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_AcompanhamentoXQuem quem)
+        private void SalvarAcompanhamentoXQuem(Dominio.SgqDbDevEntities db, Dominio.Pa_AcompanhamentoXQuem quem)
         {
             if (quem.Id > 0)
             {
@@ -224,7 +224,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        private void SalvarAcompanhamento(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_Acompanhamento acom, int statusDaAcao)
+        private void SalvarAcompanhamento(Dominio.SgqDbDevEntities db, Dominio.Pa_Acompanhamento acom, int statusDaAcao)
         {
             if (acom.Id > 0)
             {
@@ -244,7 +244,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        private void SalvarAcao(PlanoAcaoEF.Pa_Acao acao, bool IsFTA)
+        private void SalvarAcao(Dominio.Pa_Acao acao, bool IsFTA)
         {
             //var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
 
@@ -258,7 +258,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         }
 
-        private static void GetRegionalName(PlanoAcaoEF.Pa_Acao acao)
+        private static void GetRegionalName(Dominio.Pa_Acao acao)
         {
             if (acao.Unidade_Id > 0)
             {
@@ -282,7 +282,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        private void GetUnidadeName(PlanoAcaoEF.Pa_Acao acao, bool IsFTA)
+        private void GetUnidadeName(Dominio.Pa_Acao acao, bool IsFTA)
         {
             if (acao.Unidade_Id > 0)
             {
@@ -295,14 +295,14 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                     }
 
                     //Atribui o Id da Unidade do PA na Acao
-                    using (var dbPa = new PlanoAcaoEF.PlanoDeAcaoEntities())
+                    using (var dbPa = new Dominio.SgqDbDevEntities())
                     {
                         acao.Unidade_Id = QueryNinja(dbPa, "SELECT Id from PA_UNIDADE WHERE DESCRIPTION = '" + acao.UnidadeName + "'").FirstOrDefault().GetValue("Id").Value<int>();
                     }
                 }
                 else//Pelo PA
                 {
-                    using (var dbPa = new PlanoAcaoEF.PlanoDeAcaoEntities())
+                    using (var dbPa = new Dominio.SgqDbDevEntities())
                     {
                         acao.UnidadeName = QueryNinja(dbPa, "SELECT * from PA_UNIDADE WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Description").Value<string>();
                     }
@@ -311,7 +311,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        private void GetLevelName(PlanoAcaoEF.Pa_Acao acao)
+        private void GetLevelName(Dominio.Pa_Acao acao)
         {
             using (var dbSgq = new ConexaoSgq().db)
             {
@@ -340,9 +340,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        private static void Salvar(PlanoAcaoEF.Pa_Acao acao)
+        private static void Salvar(Dominio.Pa_Acao acao)
         {
-            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+            using (var db = new Dominio.SgqDbDevEntities())
             {
                 try
                 {
@@ -370,11 +370,10 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        private void SalvaFTA(PlanoAcaoEF.Pa_FTA fta)
+        private void SalvaFTA(Dominio.Pa_FTA fta)
         {
-            // var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
-
-            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+   
+            using (var db = new Dominio.SgqDbDevEntities())
             {
                 if (fta.Id > 0)
                 {

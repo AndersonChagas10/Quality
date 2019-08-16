@@ -23,14 +23,14 @@ namespace PlanoDeAcaoMVC.Controllers
     public class Pa_AcaoController : Controller
     {
 
-        PlanoAcaoEF.PlanoDeAcaoEntities db;
+        Dominio.SgqDbDevEntities db;
 
         /// <summary>
         /// Construtor Com drop down lists para views e partial de Ações
         /// </summary>
         public Pa_AcaoController()
         {
-            db = new PlanoAcaoEF.PlanoDeAcaoEntities();
+            db = new Dominio.SgqDbDevEntities();
             if (ViewBag.Unidade == null)
                 ViewBag.Unidade = Pa_Unidade.Listar();
 

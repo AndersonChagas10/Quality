@@ -176,6 +176,10 @@
     <Compile Include="ParStructure.cs" />
     <Compile Include="ParStructureGroup.cs" />
     <Compile Include="Pa_Acao.cs" />
+    <Compile Include="Pa_Acompanhamento.cs" />
+    <Compile Include="Pa_AcompanhamentoXQuem.cs" />
+    <Compile Include="Pa_FTA.cs" />
+    <Compile Include="Pa_Planejamento.cs" />
     <Compile Include="PenalidadeReincidencia.cs" />
     <Compile Include="Perfil.cs" />
     <Compile Include="Period.cs" />

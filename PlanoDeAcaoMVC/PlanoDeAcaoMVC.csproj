@@ -1028,10 +1028,6 @@
       <Project>{9f15cca3-ec01-46b6-91ec-3f408e7417bc}</Project>
       <Name>PlanoAcaoCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlanoAcaoEF\PlanoAcaoEF.csproj">
-      <Project>{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}</Project>
-      <Name>PlanoAcaoEF</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
