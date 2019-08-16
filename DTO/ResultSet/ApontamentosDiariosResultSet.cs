@@ -54,6 +54,7 @@ public class ApontamentosDiariosResultSet
 
     public string Cargo { get; set; }
     public string Departamento { get; set; }
+    public string Frequencia { get; set; }
 
     public bool HasPhoto { get; set; }
 
@@ -262,7 +263,7 @@ public class ApontamentosDiariosResultSet
                   C2.CollectionDate AS Data            
                  ,L1.Name AS Indicador                 
                  ,L2.Name AS Monitoramento             
-                 ,R3.ParLevel3_Name AS Tarefa          
+                 ,R3.ParLevel3_Name AS Tarefa           
                  ,R3.Weight AS Peso                    
                  ,case when R3.IntervalMin = '-9999999999999.9000000000' then '' else R3.IntervalMin end  AS 'IntervaloMinimo'  
                  ,case when R3.IntervalMax = '9999999999999.9000000000' then '' else R3.IntervalMax  end AS 'IntervaloMaximo'
@@ -324,7 +325,7 @@ public class ApontamentosDiariosResultSet
                  INNER JOIN ParLevel1 L1 (nolock)      
                  ON L1.Id = C2.ParLevel1_Id         
                  INNER JOIN UserSgq US (nolock)        
-                 ON C2.AuditorId = US.Id               
+                 ON C2.AuditorId = US.Id            
                  LEFT JOIN                             
                  #CollectionLevel2XParHeaderField2 HF 
                  on c2.Id = HF.CollectionLevel2_Id
@@ -444,6 +445,7 @@ public class ApontamentosDiariosResultSet
 
                      SELECT 
 	                     id
+						,ParFrequency_Id
 	                    ,ParLevel1_Id
 	                    ,ParLevel2_Id
 	                    ,UnitId
@@ -596,7 +598,8 @@ public class ApontamentosDiariosResultSet
                   C2.CollectionDate AS Data            
                  ,L1.Name AS Indicador                 
                  ,L2.Name AS Monitoramento             
-                 ,R3.ParLevel3_Name AS Tarefa          
+                 ,R3.ParLevel3_Name AS Tarefa  
+				 ,PF.Name AS Frequencia             
                  ,R3.Weight AS Peso                    
                  ,case when R3.IntervalMin = '-9999999999999.9000000000' then '' else R3.IntervalMin end  AS 'IntervaloMinimo'  
                  ,case when R3.IntervalMax = '9999999999999.9000000000' then '' else R3.IntervalMax  end AS 'IntervaloMaximo'
@@ -687,6 +690,9 @@ public class ApontamentosDiariosResultSet
                  ON CL2PC.CollectionLevel2_Id = C2.Id
                  LEFT JOIN ParCargo PCargo
                  ON PCargo.Id = CL2PC.ParCargo_Id
+
+                 LEFT JOIN ParFrequency PF (nolock)        
+                 ON C2.ParFrequency_Id = PF.Id     
 
                  WHERE 1=1 
                   { sqlDepartment }

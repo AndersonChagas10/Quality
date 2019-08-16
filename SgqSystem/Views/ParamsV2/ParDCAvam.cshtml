@@ -205,7 +205,11 @@
             || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "4"
             || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "5"
             || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "6"
-            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "10") {
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "10"
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "12"
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "13"
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "14"
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "15") {
 
             $("#ParDCAvamEvaluation").prop('disabled', false);
             $("#IsAgendamento").prop('disabled', false);
@@ -215,7 +219,11 @@
         }
 
         if ($("#ParDCAvam #selectParFrequencyAV :selected").val() === "1"
-            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "2") {
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "2"
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "12"
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "13"
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "14"
+            || $("#ParDCAvam #selectParFrequencyAV :selected").val() === "15") {
             $("#ParDCAvamEvaluation").prop('disabled', false);
             $("#IsAgendamento").prop('disabled', true);
         }
@@ -1003,29 +1011,30 @@
         },
 
         excludeTable: function (i) {
-
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
-            debugger
-            if (obj) {
+            $("#modalExclusao").show();
 
-                obj['ParEvaluationSchedule'][i].IsActive = false;
+            $("#excluirItem").off().on('click', function () {
+                if (obj) {
 
-                this.insertTable(obj);
-                var listaAgendamentoInseridos = $("#camposCabecalhoIncluidos2 tbody tr");
+                    obj['ParEvaluationSchedule'][i].IsActive = false;
 
-                if (!listaAgendamentoInseridos.length > 0) {
-                    $("#IsAgendamento").prop('checked', false);
-                } else 
-                    $("#IsAgendamento").prop('disabled', false);
-            } else {
-                $('#camposCabecalhoIncluidos tbody').empty();
-                $('#divCamposCabecalhoIncluidos').hide();
-            }
+                    parDCAvam.insertTable(obj);
+                    var listaAgendamentoInseridos = $("#camposCabecalhoIncluidos2 tbody tr");
+
+                    if (!listaAgendamentoInseridos.length > 0) {
+                        $("#IsAgendamento").prop('checked', false);
+                    } else
+                        $("#IsAgendamento").prop('disabled', false);
+                } else {
+                    $('#camposCabecalhoIncluidos tbody').empty();
+                    $('#divCamposCabecalhoIncluidos').hide();
+                }
+                $("#modalExclusao").hide();
+                item = "";
+            });
         }
 
-
     };
-
-
 
 </script>
