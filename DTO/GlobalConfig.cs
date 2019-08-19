@@ -114,6 +114,7 @@ namespace DTO
         public static bool Ytoara { get; set; }
         public static bool Guarani { get; set; }
         public static bool Santander { get; set; }
+        public static bool SESMT { get; set; }
 
 
         /*Resources manager*/
@@ -146,9 +147,9 @@ namespace DTO
             get
             {
                 var primeiraOption = string.Empty;
-                if (Eua)
+                if (LanguageEUA)
                     primeiraOption = "Select...";
-                else if (Brasil)
+                else if (LanguageBrasil)
                     primeiraOption = "Selecione...";
                 return primeiraOption;
             }
@@ -159,9 +160,9 @@ namespace DTO
             get
             {
                 var primeiraOption = string.Empty;
-                if (Eua)
+                if (LanguageEUA)
                     primeiraOption = "Linked";
-                else if (Brasil)
+                else if (LanguageBrasil)
                     primeiraOption = "Vinculado";
                 return primeiraOption;
             }
@@ -173,9 +174,9 @@ namespace DTO
             get
             {
                 var primeiraOption = string.Empty;
-                if (Eua)
+                if (LanguageEUA)
                     primeiraOption = "Unlinked";
-                else if (Brasil)
+                else if (LanguageBrasil)
                     primeiraOption = "Não Vinculados";
                 return primeiraOption;
             }
@@ -247,9 +248,7 @@ namespace DTO
                     break;
                 case 4:
                     Ytoara = true;
-                    //Brasil = true;
                     LanguageBrasil = true;
-                    //Brasil = true;
                     Verifica += "Ambiente:  Ytoara\n";
                     break;
                 case 5:
@@ -259,10 +258,13 @@ namespace DTO
                     break;
                 case 6:
                     Santander = true;
-                    //Brasil = true;
                     LanguageBrasil = true;
-                    //Brasil = true;
                     Verifica += "Ambiente:  Santander\n";
+                    break;
+                case 7:
+                    SESMT = true;
+                    LanguageBrasil = true;
+                    Verifica += "Ambiente:  SESMT\n";
                     break;
                 default:
                     break;

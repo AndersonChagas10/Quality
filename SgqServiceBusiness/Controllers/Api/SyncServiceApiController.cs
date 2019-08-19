@@ -4547,7 +4547,7 @@ namespace SgqServiceBusiness.Api
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
             string hide = string.Empty;
-            if (GlobalConfig.Brasil || GlobalConfig.Ytoara)
+            if (GlobalConfig.Brasil || GlobalConfig.Ytoara || GlobalConfig.Eua)
             {
                 hide = "hide";
             }
