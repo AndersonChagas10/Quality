@@ -465,7 +465,7 @@ namespace PlanoDeAcaoMVC.Controllers
                     //departamentos.RemoveAt(departamentos.Count - 1);
                    
                     fta.ParDepartmentsName += string.Join(" | ", departamentos.Select(x => x.Name).ToList());
-                    fta.ParSecaoName = secao.Name;
+                    fta.SecaoName = secao.Name;
 
                 }
 

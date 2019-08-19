@@ -141,7 +141,9 @@ namespace PlanoAcaoCore
 
         public string ParDepartmentsName { get; set; }
 
-        public string ParSecaoName { get; set; }
+        public string SecaoName { get; set; }
+
+        public int? Secao_Id { get; set; }
 
         public string _QuandoFimData
         {
