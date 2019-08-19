@@ -26,7 +26,11 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             using (var factory = new Factory("DefaultConnection"))
             {
-                var filtroStructure = form.ParStructure_Ids.Length > 0 ? $@"AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) })" : "";
+                var filtroStructure = 
+                                   form.ParStructure_Ids.Length > 0 
+                                 ? $@"  AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                                        OR  PS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                                        OR  PS1.Id IN ({ string.Join(",", form.ParStructure_Ids) })" : "";
 
                 var query = $@"SELECT DISTINCT TOP 500
                         	PC.Id, PC.Name
@@ -34,6 +38,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                         LEFT JOIN ParCompanyXStructure PCXS
                         	ON PC.Id = PCXS.ParCompany_Id
                         		AND PCXS.Active = 1
+						LEFT JOIN ParStructure PS
+							ON PS.Id = PCXS.ParStructure_Id
+						LEFT JOIN ParStructure PS1
+							ON PS.ParStructureParent_Id = PS1.ID
                         WHERE 1 = 1
                         AND PC.IsActive = 1
                         --Filtros
@@ -316,8 +324,18 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             using (var factory = new Factory("DefaultConnection"))
             {
-                var query = $@"SELECT DISTINCT TOP 500 ID, Name FROM ParStructure
-                    WHERE Name like '%{search}%'";
+                var wSG = "";
+
+                if(form.ParStructureGroup_Ids.Length > 0)
+                {
+                    wSG += "AND ParStructureGroup_Id IN(" + string.Join(",", form.ParStructureGroup_Ids) + ") ";
+                }
+
+                var query = $@"
+                    SELECT DISTINCT TOP 500 ID, Name FROM ParStructure
+                    WHERE 1=1
+                    AND Name like '%{search}%'
+                    {wSG}";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
