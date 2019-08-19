@@ -4547,7 +4547,7 @@ namespace SgqServiceBusiness.Api
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
             string hide = string.Empty;
-            if (GlobalConfig.Brasil || GlobalConfig.Ytoara)
+            if (GlobalConfig.Brasil || GlobalConfig.Ytoara || GlobalConfig.SESMT)
             {
                 hide = "hide";
             }
@@ -4714,6 +4714,10 @@ namespace SgqServiceBusiness.Api
             if (GlobalConfig.Canada)
             {
                 local = "canada";
+            }
+            if (GlobalConfig.SESMT)
+            {
+                local = "msp";
             }
 
 
@@ -6788,7 +6792,7 @@ namespace SgqServiceBusiness.Api
                 //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 var botoesTodos = "";
-                if (GlobalConfig.Brasil)
+                if (GlobalConfig.Brasil || GlobalConfig.SESMT)
                 {
                     botoesTodos = "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
                                     "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
@@ -7251,6 +7255,10 @@ namespace SgqServiceBusiness.Api
             if (GlobalConfig.Santander)
             {
                 empresa = "santander";
+            }
+            if (GlobalConfig.SESMT)
+            {
+                empresa = "SESMT";
             }
 
             string footOuterHtml = html.br() +

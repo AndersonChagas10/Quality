@@ -123,7 +123,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("SaveFTA")]
         public FTA SaveFTA(FTA obj)
         {
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.Brasil || GlobalConfig.SESMT)
                 obj.Panejamento_Id = 128; //Mock do ID Tático Genérico que vinculas as Ações
             else
                 obj.Panejamento_Id = 3;

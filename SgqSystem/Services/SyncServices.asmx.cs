@@ -51,7 +51,7 @@ namespace SgqSystem.Services
 
             conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.Brasil || GlobalConfig.SESMT)
             {
                 conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             }
@@ -4491,9 +4491,10 @@ namespace SgqSystem.Services
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
             string hide = string.Empty;
-            if (GlobalConfig.Brasil || GlobalConfig.Ytoara)
+
+            if (GlobalConfig.Brasil || GlobalConfig.Ytoara || GlobalConfig.SESMT)//Esconder o que?
             {
-                hide = "hide";
+                hide = "hide"; 
             }
 
             selectPeriod = html.select(selectPeriod, id: "period", disabled: true, style: "width: 160px");
@@ -4681,6 +4682,10 @@ namespace SgqSystem.Services
             if (GlobalConfig.Canada)
             {
                 local = "canada";
+            }
+            if (GlobalConfig.SESMT)
+            {
+                local = "SESMT";
             }
 
 
@@ -6744,10 +6749,9 @@ namespace SgqSystem.Services
                                                   classe: "painel painelLevel03 row"));
                 painellevel3.Append(html.painelCounters(listCounter));
 
-                //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 var botoesTodos = "";
-                if (GlobalConfig.Brasil)
+                if (GlobalConfig.Brasil || GlobalConfig.SESMT)
                 {
                     botoesTodos = "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
                                     "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
@@ -7320,6 +7324,10 @@ namespace SgqSystem.Services
             if (GlobalConfig.Santander)
             {
                 empresa = "santander";
+            }
+            if (GlobalConfig.SESMT)
+            {
+                empresa = "SESMT";
             }
 
             string footOuterHtml = html.br() +
