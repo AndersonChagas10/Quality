@@ -820,3 +820,9 @@ BEGIN
 END
 
 GO
+
+IF COL_LENGTH('ParLevel3Value','ShowLevel3Limits') IS NULL
+    BEGIN	
+		ALTER table ParLevel3Value add ShowLevel3Limits bit not null default 1
+    END
+GO
