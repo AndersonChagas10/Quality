@@ -72,13 +72,13 @@
                                             @Html.LabelFor(model => model.Tipo, "Tipo", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <select id="Tipo" name="Tipo" class="form-control valid">
-                                                    <option value="Câmara">Câmara</option>
-                                                    <option value="Equipamento">Equipamento</option>
-                                                    <option value="Ponto de Coleta">Ponto de Coleta de Água</option>
-                                                    <option value="Detector de Metais">Detector de Metais</option>
-                                                    <option value="Setor">Setor</option>
-                                                    <option value="Tipo de Corte">Tipo de Corte</option>
-                                                    <option value="Setores BPF">Setores BPF</option>
+                                                    <option value="Câmara" @(Model.Tipo == "Câmara" ? "selected" : "")>Câmara</option>
+                                                    <option value="Equipamento" @(Model.Tipo == "Equipamento" ? "selected" : "")>Equipamento</option>
+                                                    <option value="Ponto de Coleta" @(Model.Tipo == "Ponto de Coleta" ? "selected" : "")>Ponto de Coleta de Água</option>
+                                                    <option value="Detector de Metais" @(Model.Tipo == "Detector de Metais" ? "selected" : "")>Detector de Metais</option>
+                                                    <option value="Setor" @(Model.Tipo == "Setor" ? "selected" : "")>Setor</option>
+                                                    <option value="Tipo de Corte" @(Model.Tipo == "Tipo de Corte" ? "selected" : "")>Tipo de Corte</option>
+                                                    <option value="Setores BPF" @(Model.Tipo == "Setores BPF" ? "selected" : "")>Setores BPF</option>
                                                 </select>
                                                 @*@Html.EditorFor(model => model.AmostraPorDia, new { htmlAttributes = new { @class = "form-control" } })*@
                                                 @Html.ValidationMessageFor(model => model.Tipo, "", new { @class = "text-danger" })
@@ -90,9 +90,9 @@
                                             <div class="col-md-10">
                                                 <select id="Subtipo" name="Subtipo" class="form-control valid">
                                                     <option value="">@Resources.Resource.select</option>
-                                                    <option value="Esteiras">Esteiras</option>
-                                                    <option value="Tunel de Encolhimento">Tunel de Encolhimento</option>
-                                                    <option value="VS">VS</option>
+                                                    <option value="Esteiras" @(Model.Subtipo == "Esteiras" ? "selected" : "")>Esteiras</option>
+                                                    <option value="Tunel de Encolhimento" @(Model.Subtipo == "Tunel de Encolhimento" ? "selected" : "")>Tunel de Encolhimento</option>
+                                                    <option value="VS" @(Model.Subtipo == "VS" ? "selected" : "")>VS</option>
                                                 </select>
                                                 @*@Html.EditorFor(model => model.AmostraPorDia, new { htmlAttributes = new { @class = "form-control" } })*@
                                                 @*@Html.ValidationMessageFor(model => model.Subtipo, "", new { @class = "text-danger" })*@

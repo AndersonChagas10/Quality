@@ -58,6 +58,7 @@ namespace Dominio
         [StringLength(155)]
         public string DBServer { get; set; }
 
+        [NotMapped]
         public string Identification { get; set; }
 
         public decimal? IntegrationId { get; set; }

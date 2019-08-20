@@ -80,7 +80,7 @@ namespace SgqSystem.Controllers
                 ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
 
             if (parCluster.ParClusterGroup_Id < 0 || parCluster.ParClusterGroup_Id == 0)
-                ModelState.AddModelError("ParClusterGroup_Id", Resources.Resource.required_field + " " + Resources.Resource.cluster_group1);
+                ModelState.AddModelError("ParClusterGroup_Id", Resources.Resource.required_field + " " + Resources.Resource.cluster_group);
 
             if (string.IsNullOrEmpty(parCluster.Description))
                 ModelState.AddModelError("Description", Resources.Resource.required_field + " " + Resources.Resource.description);
