@@ -891,6 +891,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "structure_level", Value = "Structure Level" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "process", Value = "Process" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "linked1", Value = "Linked" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "son_of", Value = "Son of" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));
 

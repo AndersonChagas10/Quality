@@ -365,5 +365,15 @@ namespace SgqServiceBusiness.Api.App
         {
             db.Dispose();
         }
+
+        public Dictionary<string, string> GetImages()
+        {
+            var image = new Dictionary<string, string>();
+
+            image.Add("logo", DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogo);
+
+            return image;
+        }
+
     }
 }

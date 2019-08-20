@@ -130,5 +130,13 @@ namespace SgqService.Controllers.Api.App
 
         #endregion
 
+        [HttpPost]
+        [Route("GetImages")]
+        public Dictionary<string, string> GetImages()
+        {
+            return Business.GetImages();
+        }
+
+
     }
 }

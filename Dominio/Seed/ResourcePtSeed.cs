@@ -975,6 +975,8 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "points2", Value = "Pontos" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "structure_level", Value = "Níveis de Estrutura" });
 
+                ResourcesInserir.Add(new ResourcePT() { Key = "module_child", Value = "Módulo Filho" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "son_of", Value = "Filho de" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
