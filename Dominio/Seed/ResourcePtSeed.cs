@@ -971,7 +971,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "interval", Value = "Intervalo" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "sis_integration", Value = "Integração Sistêmica"});
                 ResourcesInserir.Add(new ResourcePT() { Key = "module_child", Value = "Módulo Filho" });
-               
+                ResourcesInserir.Add(new ResourcePT() { Key = "son_of", Value = "Filho de" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
