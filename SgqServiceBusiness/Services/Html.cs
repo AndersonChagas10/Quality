@@ -515,7 +515,7 @@ namespace SgqServiceBusiness.Services
             return intervalo;
         }
 
-        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null, 
+        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null,
             string idRandomico = null, string paramns = null)
         {
             //var idRandomico = "valor_range_" + new Random().Next(999999);
@@ -608,9 +608,9 @@ namespace SgqServiceBusiness.Services
                              bool reaudit = false, bool correctiveaction = false, bool phase = false,
                              bool HasSampleTotal = false, bool IsEmptyLevel3 = false, string level1Group_Id = "",
                              int RuleId = 0, string RuleValue = null, decimal AlertValue = 0, int ParFrequency_Id = 0,
-                             bool HasTakePhoto = false, 
+                             bool HasTakePhoto = false,
                              //Frequencia
-                             string FrequenciaTipo = "", string FrequenciaValor = "", 
+                             string FrequenciaTipo = "", string FrequenciaValor = "",
                              string FrequenciaMensagemInativo = "")
         {
 
@@ -646,8 +646,8 @@ namespace SgqServiceBusiness.Services
                            outerhtml: span(outerhtml: label, classe: "levelName")
                        );
         }
-        public string level3(SGQDBContext.ParLevel3 parLevel3, string input, 
-            string classe = null, string labelsInputs = null)
+
+        public string level3(SGQDBContext.ParLevel3 parLevel3, string input, string classe = null, string labelsInputs = null, bool hasInfo = false)
         {
             //Coloca botão de não avaliado ParLevel3
             //vai ter que ter uma configuração na parametrização
@@ -660,22 +660,27 @@ namespace SgqServiceBusiness.Services
                                    );
 
 
+            //Verificar se existe informação para esta tarefa
+            string btnHelp = "";
+
+            if (hasInfo)
+                btnHelp = button(label: "", classe: "btn-info btn-xs btnHelp cursorPointer fa fa-info-circle", style: "border-radius: 70px !important");
+
+
             string peso = parLevel3.Weight.ToString();
 
             if (parLevel3.ParLevel3InputType_Id == 11)
                 peso = "0";
 
-            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") 
-                + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") 
-                + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id 
+            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".")
+                + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".")
+                + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id
                 + "\" hastakephoto=\"" + parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
 
 
             //Gera o level3
-            string level3 = link(
-                                        outerhtml: span(outerhtml: parLevel3.Name, classe: "levelName") + "<br>" + span(outerhtml: "", classe: "levelNameDebug"),
-                                        classe: "col-xs-4"
-                                        );
+            string level3 = link(outerhtml: span(outerhtml: parLevel3.Name, classe: "levelName") + " " + btnHelp + "<br>" + span(outerhtml: "", classe: "levelNameDebug"),
+                classe: "col-xs-4");
 
             //gera os labels
             string labels = "";
@@ -703,6 +708,7 @@ namespace SgqServiceBusiness.Services
 
             //gera os contadores
             string counters = "";
+
             if (parLevel3.ParLevel3InputType_Id == 5)
             {
                 counters = div(
@@ -730,7 +736,7 @@ namespace SgqServiceBusiness.Services
             string buttons = div(
                                         outerhtml: btnNaoAvaliado,
                                         classe: "col-xs-2",
-                                        style: "text-align:right"
+                                        style: "text-align:right; padding: 0px !important;"
                                         );
 
 

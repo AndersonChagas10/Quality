@@ -3973,6 +3973,32 @@ namespace SgqServiceBusiness.Api
             }
 
 
+            try
+            {
+
+                using (var db = new SgqDbDevEntities())
+                {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    var listaParLevel3XHelp = db.ParLevel3XHelp.Where(x => x.IsActive).ToList();
+
+                    supports += $@"<script>
+                                var listaParLevel3XHelp = " + Newtonsoft.Json.JsonConvert.SerializeObject(listaParLevel3XHelp) + @";
+                                           
+                                function getParLevel3XHelp(parLevel3_Id){
+                                    var valor = $.grep(listaParLevel3XHelp, function(obj) { 
+                                                       return obj.ParLevel3_Id == parLevel3_Id;  
+                                                });
+                                    return (valor && valor.length > 0) ? valor[0] : '';
+                                }
+
+                                </script> ";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
 
             //string resource = GetResource();
 
@@ -6103,6 +6129,7 @@ namespace SgqServiceBusiness.Api
                                 );
 
 
+
             bool haveAccordeon = false;
 
             int Last_Id = 0;
@@ -6637,7 +6664,9 @@ namespace SgqServiceBusiness.Api
                             //tipo de input
                             string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
 
-                            string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
+                            bool hasInfo = dbEf.ParLevel3XHelp.Where(x => x.IsActive).Any(x => x.ParLevel3_Id == parLevel3.Id);
+
+                            string level3List = html.level3(parLevel3, input, classInput, labelsInputs, hasInfo);
                             level3Group.Append(level3List);
                         }
                     }
@@ -8547,6 +8576,7 @@ namespace SgqServiceBusiness.Api
         {
             return Resources.Resource;
         }
+
     }
 }
 
