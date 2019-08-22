@@ -3495,7 +3495,7 @@ namespace SgqServiceBusiness.Api
                 INSERT INTO #COLETASLEVEL3
                 	SELECT
                 		ROW_NUMBER() OVER (ORDER BY R3.ParLevel3_Id) AS ROW
-                	   ,'<div id=' + CAST(R3.ParLevel3_Id AS VARCHAR) + 'class=""r3l2""></div>' COLUNA
+                	   ,'<div id=""' + CAST(R3.ParLevel3_Id AS VARCHAR) + '"" class=""r3l2""></div>' COLUNA
                 	FROM CollectionLevel2 C2 (NOLOCK)
                 	INNER JOIN ParLevel1 L1 (NOLOCK)
                 		ON C2.ParLevel1_Id = L1.Id
@@ -4547,7 +4547,7 @@ namespace SgqServiceBusiness.Api
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
             string hide = string.Empty;
-            if (GlobalConfig.Brasil || GlobalConfig.Ytoara)
+            if (GlobalConfig.Brasil || GlobalConfig.Ytoara || GlobalConfig.Eua)
             {
                 hide = "hide";
             }

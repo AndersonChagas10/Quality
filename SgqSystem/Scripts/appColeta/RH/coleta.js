@@ -25,7 +25,7 @@ function openColeta(levels) {
                         hasLevel2 = true;
                     }
 
-                    coleta += getLevel2(level2,level1);
+                    coleta += getLevel2(level2, level1);
                     coleta += getParHeaderFieldLevel2(level1, level2);
                     hasLevel3 = true;
                 }
@@ -52,10 +52,10 @@ function openColeta(levels) {
         '				<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
         '			  </div>                                                                                                                       ' +
         '			  <div class="panel-body">                                                                                                     ' +
-                        getContador() +
-                        getParHeaderFieldDeparment() +
+        getContador() +
+        getParHeaderFieldDeparment() +
         '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
-                            coleta +
+        coleta +
         '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       ' +
         '				</form>                                                                                                                    ' +
         '			  </div>                                                                                                                       ' +
@@ -71,18 +71,18 @@ function openColeta(levels) {
 }
 
 $('body')
-.off('click','[data-collapse-targeter]')
-.on('click','[data-collapse-targeter]',function(){ 
-	if($(this).attr('data-targeter-collapsed') == 'true'){
-		$('[data-collapse-target^="'+$(this).attr('data-collapse-targeter')+'-"]').removeClass('hide');
-		$('[data-collapse-target="'+$(this).attr('data-collapse-targeter')+'"]').removeClass('hide');
-		$(this).attr('data-targeter-collapsed', false);
-	}else{
-		$('[data-collapse-target^="'+$(this).attr('data-collapse-targeter')+'-"]').addClass('hide');
-		$('[data-collapse-target="'+$(this).attr('data-collapse-targeter')+'"]').addClass('hide');
-		$(this).attr('data-targeter-collapsed', true);
-	}
-});
+    .off('click', '[data-collapse-targeter]')
+    .on('click', '[data-collapse-targeter]', function () {
+        if ($(this).attr('data-targeter-collapsed') == 'true') {
+            $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').removeClass('hide');
+            $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').removeClass('hide');
+            $(this).attr('data-targeter-collapsed', false);
+        } else {
+            $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').addClass('hide');
+            $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').addClass('hide');
+            $(this).attr('data-targeter-collapsed', true);
+        }
+    });
 
 var currentEvaluationSample = {};
 
@@ -112,15 +112,15 @@ function getContador() {
 }
 
 function getLevel1(level1) {
-    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="'+level1.Id+'"><small>' + level1.Name + '</small></div>';
+    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><small>' + level1.Name + '</small></div>';
 }
 
-function getLevel2(level2,level1) {
-    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="'+level1.Id+'" data-collapse-targeter="'+level1.Id+'-'+level2.Id+'"><small>' + level2.Name + '</small></div>';
+function getLevel2(level2, level1) {
+    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="' + level1.Id + '" data-collapse-targeter="' + level1.Id + '-' + level2.Id + '"><small>' + level2.Name + '</small></div>';
 }
 
-function getLevel3(level3,level2,level1) {
-    return '<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px" data-collapse-target="'+level1.Id+'-'+level2.Id+'">' + level3.Name + '</div>';
+function getLevel3(level3, level2, level1) {
+    return '<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px" data-collapse-target="' + level1.Id + '-' + level2.Id + '">' + level3.Name + '</div>';
 }
 
 function getInputLevel3(level3, level2, level1, striped) {
@@ -135,7 +135,7 @@ function getInputLevel3(level3, level2, level1, striped) {
             colorStriped = "background-color: #e9ecef;";
 
         retorno += '<div class="col-xs-12" data-linha-coleta ';
-        retorno += ' data-collapse-target="'+level1.Id+'-'+level2.Id+'"';
+        retorno += ' data-collapse-target="' + level1.Id + '-' + level2.Id + '"';
         retorno += ' data-conforme="1"';
         retorno += ' data-min="' + level3.ParLevel3Value.IntervalMin + '"';
         retorno += ' data-max="' + level3.ParLevel3Value.IntervalMax + '"';
@@ -252,10 +252,12 @@ function getIntervalo(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
+    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '   <div class="col-xs-2 input-sm" style="font-size: 8px;">' +
-        '	    MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
+        level3LimitLabel +
         '   </div>' +
         '   <div class="col-xs-8 no-gutters">' +
         '       <div class="col-xs-2" style="padding-right: 0;">' +
@@ -288,10 +290,12 @@ function getIntervaloemMinutos(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
+    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-2 input-sm" style="font-size: 8px;">' +
-        '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
+        level3LimitLabel +
         '</div>' +
         '<div class="col-xs-3">' +
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
@@ -327,10 +331,13 @@ function getIntervaloComObservacao(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
+    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-2 input-sm" style="font-size: 8px;">' +
-        '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
+        level3LimitLabel +
         '</div>' +
         '<div class="col-xs-3">' +
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
@@ -441,10 +448,12 @@ function getLikert(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
+    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '   <div class="col-xs-2 input-sm" style="font-size: 8px;">' +
-        '	    Escala: ' + level3.ParLevel3Value.IntervalMin + ' a ' + level3.ParLevel3Value.IntervalMax +
+        level3LimitLabel +
         '   </div>' +
         '   <div class="col-xs-8">' +
         '	    <input type="text" class="col-xs-12 input-sm" data-valor/>' +
@@ -808,7 +817,7 @@ function getCollectionHeaderFields() {
 
     });
 
-    
+
     $('#headerFieldLevel2 input, #headerFieldLevel2 select').each(function () {
 
         $self = $(this);

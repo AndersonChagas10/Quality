@@ -121,12 +121,34 @@ function voltarPlanejamentoColeta() {
 
 var planejamento = {};
 function savePlanejar() {
+
+	if (!planejamentoIsValid())
+		return false;
+
 	if (planejamento.parDepartment_Id > 0) {
 		currentPlanejamento.push($.extend({}, planejamento));
 		$('[data-save-planned]').html(renderPlanejamentos());
 		saveInFilePlanejamento();
 		changeStateButtonColetar();
 	}
+}
+
+function planejamentoIsValid() {
+
+	var plan = $.grep(currentPlanejamento, function (o) {
+		return o.parDepartment_Id == planejamento.parDepartment_Id &&
+			o.parCargo_Id == planejamento.parCargo_Id &&
+			o.indicador_Id == planejamento.indicador_Id
+	});
+
+	if (plan && plan.length > 0){
+		openMensagem("Planejamento já existente", '#428bca', 'white');
+		closeMensagem(2000);
+		return false;
+	}
+		
+
+	return true;
 }
 
 function removePlanejamento(index) {

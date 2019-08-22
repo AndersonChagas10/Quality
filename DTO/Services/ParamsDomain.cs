@@ -207,7 +207,7 @@ namespace DTO.Services
                 _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField
                                             , ListaParCounterLocal, listNonCoformitRule, listaReincidencia, listParGoal, listRotinaIntegracaoXParLevel1, removerVinculoRotina);
 
-                if (GlobalConfig.Brasil)
+                if (GlobalConfig.Brasil || GlobalConfig.SESMT)
                 {
                     if (paramsDto.parLevel1Dto.IsSpecific)
                     {
@@ -282,7 +282,7 @@ namespace DTO.Services
 
             parlevel1Dto.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(level2List), parlevel1Dto.listParLevel3Level2Level1Dto);
 
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.Brasil || GlobalConfig.SESMT)
             {
                 var query = "SELECT {0} FROM  PARLEVEL1 WHERE id = {1}";
                 var queryExcute = string.Empty;
