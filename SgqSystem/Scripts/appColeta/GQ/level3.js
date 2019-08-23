@@ -1130,6 +1130,8 @@ function saveResultLevel3() {
     //Seleciona o Side Current
     var sampleTotal = parseInt(level2.attr('sample'));
 
+    var isSampleInfinity = false;
+
     var updateSample = false;
     var evaluateCurrent = level2.attr('evaluatecurrent') != undefined ? parseInt(level2.attr('evaluatecurrent')) : 1;
 
@@ -2013,7 +2015,7 @@ function saveResultLevel3() {
         sampleCurrent = parseInt(sampleCurrent) + 1;
 
         if (sampleTotal != 0)
-        
+
             if (level1.attr('hasgrouplevel2') != "true") {
 
                 if (level1.attr('editlevel2') != "true") {
@@ -2989,3 +2991,12 @@ function exibirLevel3PorDepartamento() {
         }
     }
 }
+
+$(document).on('click', '.btnHelp', function (e) {
+
+    var level3_Id = parseInt($('.btnHelp').parents('.level3').prop('id'));
+
+    var help = getParLevel3XHelp(level3_Id);
+
+    openModal(help.Titulo, help.Corpo);
+});
