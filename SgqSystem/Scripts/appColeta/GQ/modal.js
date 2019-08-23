@@ -39,5 +39,7 @@ function closeModal(callback) {
 }
 
 function deleteModal() {
-    $('body').find('#modal-mensagem').remove();
+    setTimeout(function() {
+        $('body').find('#modal-mensagem').remove();
+    }, 2000);
 }
