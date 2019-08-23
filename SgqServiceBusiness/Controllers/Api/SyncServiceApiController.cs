@@ -5631,6 +5631,12 @@ namespace SgqServiceBusiness.Api
                     lineCounters = html.painelCounters(listLineCounter.Where(r => r.Local == "level2_line"), "margin-top: 45px;font-size: 12px;");
                 }
 
+                //Gera monitoramento do level3
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3);
+
+                if (string.IsNullOrEmpty(groupLevel3))
+                    continue;
+
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
@@ -5641,10 +5647,6 @@ namespace SgqServiceBusiness.Api
                                                                html.div(classe: "level2Debug") +
                                                                lineCounters
                                                     );
-
-
-                //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3);
 
                 if (ParLevel1.HasGroupLevel2 == true)
                 {

@@ -72,8 +72,8 @@
             <div class="col-xs-0 col-lg-3 col-md-3 col-sm-0"></div>
 
             <div class="col-xs-12 col-lg-2 col-md-2 col-sm-4 menuGeral">
-                <a>
-                    <img src="~/Imagens/if_check_406783.png" /><br /><br /> @Html.ActionLink(Resources.Resource.customization as string, DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.actionParametrizacao as string, DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.controllerParametrizacao as string)
+                <a href="@Html.Raw(Url.Action(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.actionParametrizacao,DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.controllerParametrizacao))" target="_blank">
+                    <img src="~/Imagens/if_check_406783.png" /><br /><br />@Resources.Resource.customization
                     <br /><p class="menuGeraltexto">@Resources.Resource.textHomeParams</p>
                 </a>
             </div>
@@ -86,8 +86,8 @@
             </div>
 
             <div class="col-xs-12 col-lg-2 col-md-2 col-sm-4 menuGeral">
-                <a>
-                    <img src="~/Imagens/if_target_406854.png" /><br /><br />@Html.ActionLink(Resources.Resource.management as string, DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.actionGestao as string, DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.controllerGestao as string)
+                <a href="@Html.Raw(Url.Action(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.actionGestao,DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.controllerGestao))" target="_blank">
+                    <img src="~/Imagens/if_target_406854.png" /><br /><br />@Resources.Resource.management
                     <br /><p class="menuGeraltexto">@Resources.Resource.textHomeGestao</p>
                 </a>
             </div>

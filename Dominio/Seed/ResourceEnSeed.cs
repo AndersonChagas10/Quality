@@ -888,6 +888,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "interval", Value = "Interval" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "sis_integration", Value = "Systemic Integration" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "identification", Value = "Identification" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "son_of", Value = "Son of" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));
 
