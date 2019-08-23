@@ -20,6 +20,8 @@ namespace Dominio
         public int? ParEvaluation_Id { get; set; }
         public bool IsActive { get; set; }
         public string Intervalo { get; set; }
+
+        [NotMapped]
         public int? ParEvaluationXDepartmentXCargo_Id { get; set; }
 
         [NotMapped]

@@ -329,7 +329,6 @@
             var name = '';
             var description = '';
             var groupId = '';
-
             if (result == undefined || result == null) {
                  name = $("#parStructureDTO_Name").val();
                  description = $("#parStructureDTO_Description").val();
@@ -399,6 +398,7 @@
 
     var indexParStructureGroup = {
         enviarDadosParaApi: function (result) {
+            debugger
             var name = '';
             var description = '';
             var groupId = '';
@@ -496,9 +496,9 @@
         if (description.length <= 0) {
             mensagemErroCompleta += ("Campo descrição é obrigatório!".replace("!", "<br />"));
         }
-        if (groupId.length <= 0) {
-            mensagemErroCompleta += ("Campo grupo é obrigatório!");
-        }
+        //if (groupId.length <= 0) {
+        //    mensagemErroCompleta += ("Campo grupo é obrigatório!");
+        //}
 
         return mensagemErroCompleta;
     }

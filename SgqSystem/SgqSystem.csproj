@@ -412,6 +412,7 @@
     <Compile Include="Controllers\ParAlertTypesController.cs" />
     <Compile Include="Controllers\Params\ParCargoController.cs" />
     <Compile Include="Controllers\Params\ParColaboradorController.cs" />
+    <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
     <Compile Include="Controllers\ParCargoXDepartmentsController.cs" />
     <Compile Include="Controllers\ParConsolidationTypesController.cs" />
     <Compile Include="Controllers\ParLevel3InputTypeController.cs" />
@@ -494,7 +495,7 @@
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Params\ParamsController.cs" />
     <Compile Include="Controllers\Params\ParClustersController.cs" />
-    <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
+    <Compile Include="Controllers\Params\ParDepartmentsRHController.cs" />
     <Compile Include="Controllers\Params\ParMeasurementUnitsController.cs" />
     <Compile Include="Controllers\VolumeProducao\Pcc1bController.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
@@ -1703,11 +1704,11 @@
     <Content Include="Views\ParClusters\Details.cshtml" />
     <Content Include="Views\ParClusters\Edit.cshtml" />
     <Content Include="Views\ParClusters\Index.cshtml" />
-    <Content Include="Views\ParDepartments\Create.cshtml" />
-    <Content Include="Views\ParDepartments\Delete.cshtml" />
-    <Content Include="Views\ParDepartments\Details.cshtml" />
-    <Content Include="Views\ParDepartments\Edit.cshtml" />
-    <Content Include="Views\ParDepartments\Index.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Create.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Delete.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Details.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Edit.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Index.cshtml" />
     <Content Include="Views\ParMeasurementUnits\Create.cshtml" />
     <Content Include="Views\ParMeasurementUnits\Delete.cshtml" />
     <Content Include="Views\ParMeasurementUnits\Details.cshtml" />
@@ -2116,6 +2117,11 @@
     <Content Include="Views\IntegracaoSistemicas\Edit.cshtml" />
     <Content Include="Views\IntegracaoSistemicas\Index.cshtml" />
     <Content Include="Views\Relatorios\MSP\RelatorioMSP.cshtml" />
+    <Content Include="Views\ParDepartments\Create.cshtml" />
+    <Content Include="Views\ParDepartments\Delete.cshtml" />
+    <Content Include="Views\ParDepartments\Details.cshtml" />
+    <Content Include="Views\ParDepartments\Edit.cshtml" />
+    <Content Include="Views\ParDepartments\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
