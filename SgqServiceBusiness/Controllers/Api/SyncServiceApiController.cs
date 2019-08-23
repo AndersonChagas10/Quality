@@ -20,6 +20,7 @@ using System.Data;
 using ServiceModel;
 using SgqServiceBusiness.Api.App;
 using SgqServiceBusiness.Services;
+using SgqSystem.Helpers;
 
 namespace SgqServiceBusiness.Api
 {
@@ -216,115 +217,117 @@ namespace SgqServiceBusiness.Api
         /// 6. O processo continua 1 a 5 se repete até finalizar os resultados.
         public string InsertJson(InsertJsonClass insertJsonClass)
         {
-            string ObjResultJSon = insertJsonClass.ObjResultJSon.Replace("NaN", "0");
-            string deviceId = insertJsonClass.deviceId;
-            string deviceMac = insertJsonClass.deviceMac;
-            bool autoSend = insertJsonClass.autoSend;
-
-
-            SqlConnection.ClearAllPools();
-
-            //ObjResultJSon = "<level02>3987891;03/30/2018 08:41:032:033;1;03/30/2018 08:41:032:072;5;1;1;1;0;false;03302018;1;1;<header>17,1,3,0,0,0,0,0,0</header>;false;false;;undefined;undefined;false; 2.0.46;JBS ;<level03>16,03/30/2018 08:41:032:075,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>27,03/30/2018 08:41:032:076,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>29,03/30/2018 08:41:032:077,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;3;0;0;0;3;0;1;0;0;0;0;undefined;0;0</level02>";
-
-            ObjResultJSon = ObjResultJSon.Replace("%2C", "").Replace("NaN", "0");
-
-            var objObjResultJSonPuro = ObjResultJSon;
-
-            string versaoApp = null;
-
             try
             {
+                string ObjResultJSon = insertJsonClass.ObjResultJSon.Replace("NaN", "0");
+                string deviceId = insertJsonClass.deviceId;
+                string deviceMac = insertJsonClass.deviceMac;
+                bool autoSend = insertJsonClass.autoSend;
 
-                if (string.IsNullOrEmpty(ObjResultJSon))
+
+                SqlConnection.ClearAllPools();
+
+                //ObjResultJSon = "<level02>3987891;03/30/2018 08:41:032:033;1;03/30/2018 08:41:032:072;5;1;1;1;0;false;03302018;1;1;<header>17,1,3,0,0,0,0,0,0</header>;false;false;;undefined;undefined;false; 2.0.46;JBS ;<level03>16,03/30/2018 08:41:032:075,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>27,03/30/2018 08:41:032:076,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>29,03/30/2018 08:41:032:077,,true,1,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;3;0;0;0;3;0;1;0;0;0;0;undefined;0;0</level02>";
+
+                ObjResultJSon = ObjResultJSon.Replace("%2C", "").Replace("NaN", "0");
+
+                var objObjResultJSonPuro = ObjResultJSon;
+
+                string versaoApp = null;
+
+                try
                 {
-                    return null;
-                }
-                //A key não está sendo utilizada
-                string key = "111111";
 
-                //Converto o Objeto Json e prepara para extrair os dados do Level02
-                ObjResultJSon = ObjResultJSon.Replace("</level02><level02>", "@").Replace("<level02>", "").Replace("</level02>", "");
-
-                //Gera um array
-                string[] arrayObj = ObjResultJSon.Split('@');
-                //Instanciamos a linha que gera a query
-                //Percorre o Objeto
-
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    connection.Open();
-
-                    for (int i = 0; i < arrayObj.Length; i++)
+                    if (string.IsNullOrEmpty(ObjResultJSon))
                     {
-                        //Estrai o resultado
-                        string[] result = arrayObj[i].Split(';');
+                        return null;
+                    }
+                    //A key não está sendo utilizada
+                    string key = "111111";
 
-                        //4 98789 1190 //98789 é a chave que separa processo de produto
-                        string parCluster_Id_parLevel1_id = result[0].Replace(quebraProcesso, "|"); //"Cluster|Indicador"
-                        string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : "0";
-                        string parLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
+                    //Converto o Objeto Json e prepara para extrair os dados do Level02
+                    ObjResultJSon = ObjResultJSon.Replace("</level02><level02>", "@").Replace("<level02>", "").Replace("</level02>", "");
 
-                        string parCluster_Id_parLevel2_id = result[2].Replace(quebraProcesso, "|");
-                        string parLevel2_Id = parCluster_Id_parLevel2_id.Split('|').Length > 1 ? parCluster_Id_parLevel2_id.Split('|')[1] : parCluster_Id_parLevel2_id.Split('|')[0];
+                    //Gera um array
+                    string[] arrayObj = ObjResultJSon.Split('@');
+                    //Instanciamos a linha que gera a query
+                    //Percorre o Objeto
 
-                        string parCluster_Id_parLevel2_id_UltimoAlerta = result[45].Replace(quebraProcesso, "|");
-                        string parLevel2_Id_UltimoAlerta = parCluster_Id_parLevel2_id_UltimoAlerta.Split('|').Length > 1 ? parCluster_Id_parLevel2_id_UltimoAlerta.Split('|')[1] : parCluster_Id_parLevel2_id_UltimoAlerta.Split('|')[0];
+                    using (SqlConnection connection = new SqlConnection(conexao))
+                    {
+                        connection.Open();
 
-
-                        result[0] = parLevel1_Id;
-
-                        result[2] = parLevel2_Id;
-
-                        result[45] = parLevel2_Id_UltimoAlerta;
-
-                        //List<string> r1 = result.ToList<string>();
-
-                        //r1.Add(parCluster_Id);
-
-                        int insertLog = 0;
-
-                        if (parCluster_Id == "0")
-                            insertLog = insertLogJson(objObjResultJSonPuro, "Gravou cluster 0", deviceId, versaoApp, "Cluster 0");
-
-                        //result = r1.ToArray();
-
-
-                        string[] resultCopy = result;
-                        while (!resultCopy[22].Contains("<level03>") && resultCopy.Count() > 23)
+                        for (int i = 0; i < arrayObj.Length; i++)
                         {
-                            resultCopy = RemoveFrom(resultCopy, 22);
-                        }
+                            //Estrai o resultado
+                            string[] result = arrayObj[i].Split(';');
 
-                        if (resultCopy.Count() > 22)
-                        {
-                            if (resultCopy[22].Contains("<level03>"))
+                            //4 98789 1190 //98789 é a chave que separa processo de produto
+                            string parCluster_Id_parLevel1_id = result[0].Replace(quebraProcesso, "|"); //"Cluster|Indicador"
+                            string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : "0";
+                            string parLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
+
+                            string parCluster_Id_parLevel2_id = result[2].Replace(quebraProcesso, "|");
+                            string parLevel2_Id = parCluster_Id_parLevel2_id.Split('|').Length > 1 ? parCluster_Id_parLevel2_id.Split('|')[1] : parCluster_Id_parLevel2_id.Split('|')[0];
+
+                            string parCluster_Id_parLevel2_id_UltimoAlerta = result[45].Replace(quebraProcesso, "|");
+                            string parLevel2_Id_UltimoAlerta = parCluster_Id_parLevel2_id_UltimoAlerta.Split('|').Length > 1 ? parCluster_Id_parLevel2_id_UltimoAlerta.Split('|')[1] : parCluster_Id_parLevel2_id_UltimoAlerta.Split('|')[0];
+
+
+                            result[0] = parLevel1_Id;
+
+                            result[2] = parLevel2_Id;
+
+                            result[45] = parLevel2_Id_UltimoAlerta;
+
+                            //List<string> r1 = result.ToList<string>();
+
+                            //r1.Add(parCluster_Id);
+
+                            int insertLog = 0;
+
+                            if (parCluster_Id == "0")
+                                insertLog = insertLogJson(objObjResultJSonPuro, "Gravou cluster 0", deviceId, versaoApp, "Cluster 0");
+
+                            //result = r1.ToArray();
+
+
+                            string[] resultCopy = result;
+                            while (!resultCopy[22].Contains("<level03>") && resultCopy.Count() > 23)
                             {
-                                result = resultCopy;
+                                resultCopy = RemoveFrom(resultCopy, 22);
                             }
-                        }
 
-                        /**
-                         * autor: Gabriel Nunes
-                         * date: 2017-06-05
-                         * title: indicador pai
-                         */
+                            if (resultCopy.Count() > 22)
+                            {
+                                if (resultCopy[22].Contains("<level03>"))
+                                {
+                                    result = resultCopy;
+                                }
+                            }
 
-                        //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
+                            /**
+                             * autor: Gabriel Nunes
+                             * date: 2017-06-05
+                             * title: indicador pai
+                             */
 
-                        var ParLevel1Origin_Id = DefaultValueReturn(result[0], "0");
+                            //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
 
-                        //string indicadorPai = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
-                        //                      "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
-                        //                      "\n  on p321.ParLevel1_Id = p1.id " +
-                        //                      "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
-                        //                      "\n  on p32.id = p321.ParLevel3Level2_Id " +
-                        //                      "\n  WHERE ParLevel1Origin_Id = " + ParLevel1Origin_Id +
-                        //                      "\n  and p1.isActive = 1 " +
-                        //                      "\n  and p321.Active = 1 " +
-                        //                      "\n  and p32.IsActive = 1" +
-                        //                      "\n  and p32.Parlevel2_Id = " + parLevel2_Id;
+                            var ParLevel1Origin_Id = DefaultValueReturn(result[0], "0");
 
-                        string indicadorFilho_ = $@"SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
+                            //string indicadorPai = "    SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                            //                      "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
+                            //                      "\n  on p321.ParLevel1_Id = p1.id " +
+                            //                      "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
+                            //                      "\n  on p32.id = p321.ParLevel3Level2_Id " +
+                            //                      "\n  WHERE ParLevel1Origin_Id = " + ParLevel1Origin_Id +
+                            //                      "\n  and p1.isActive = 1 " +
+                            //                      "\n  and p321.Active = 1 " +
+                            //                      "\n  and p32.IsActive = 1" +
+                            //                      "\n  and p32.Parlevel2_Id = " + parLevel2_Id;
+
+                            string indicadorFilho_ = $@"SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
                                               inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)
                                               on p321.ParLevel1_Id = p1.id 
                                               inner join ParLevel3Level2 p32  WITH (NOLOCK)
@@ -335,24 +338,24 @@ namespace SgqServiceBusiness.Api
                                               and p32.IsActive = 1
                                               and p32.Parlevel2_Id = @ParLevel2_Id";
 
-                        List<ResultadoUmaColuna> list;
+                            List<ResultadoUmaColuna> list;
 
-                        using (Factory factory = new Factory("DefaultConnection"))
-                        {
-                            using (SqlCommand cmd = new SqlCommand(indicadorFilho_, factory.connection))
+                            using (Factory factory = new Factory("DefaultConnection"))
                             {
-                                cmd.CommandType = CommandType.Text;
-                                cmd.Parameters.Add(new SqlParameter("@ParLevel1Origin_Id", ParLevel1Origin_Id));
-                                cmd.Parameters.Add(new SqlParameter("@ParLevel2_Id", parLevel2_Id));
+                                using (SqlCommand cmd = new SqlCommand(indicadorFilho_, factory.connection))
+                                {
+                                    cmd.CommandType = CommandType.Text;
+                                    cmd.Parameters.Add(new SqlParameter("@ParLevel1Origin_Id", ParLevel1Origin_Id));
+                                    cmd.Parameters.Add(new SqlParameter("@ParLevel2_Id", parLevel2_Id));
 
-                                list = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                                    list = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                                }
                             }
-                        }
 
-                        string level3split = result[22].Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", ""); //tiro as tags de <level3></level3>, deixando o simbolo @ para separar os elementos.
-                        string[] leveis3 = level3split.Split('@'); //faço um array contendo cada elemento level3 vindo do sistema
+                            string level3split = result[22].Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", ""); //tiro as tags de <level3></level3>, deixando o simbolo @ para separar os elementos.
+                            string[] leveis3 = level3split.Split('@'); //faço um array contendo cada elemento level3 vindo do sistema
 
-                        string indicadorPai = @"SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
+                            string indicadorPai = @"SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
                                               inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)
                                               on p321.ParLevel1_Id = p1.id 
                                               inner join ParLevel3Level2 p32  WITH (NOLOCK)
@@ -363,91 +366,91 @@ namespace SgqServiceBusiness.Api
                                               and p32.IsActive = 1
                                               and p32.Parlevel2_Id = @ParLevel2_Id";
 
-                        List<ResultadoUmaColuna> listPai;
+                            List<ResultadoUmaColuna> listPai;
 
-                        using (Factory factory = new Factory("DefaultConnection"))
-                        {
-                            using (SqlCommand cmd = new SqlCommand(indicadorPai, factory.connection))
+                            using (Factory factory = new Factory("DefaultConnection"))
                             {
-                                cmd.CommandType = CommandType.Text;
-                                cmd.Parameters.Add(new SqlParameter("@ParLevel1Origin_Id", ParLevel1Origin_Id));
-                                cmd.Parameters.Add(new SqlParameter("@ParLevel2_Id", parLevel2_Id));
-
-                                listPai = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
-                            }
-                        }
-
-
-                        //string[][] matrizLevel3 = new string[leveis3.Length][];
-
-                        string retorno = "";
-
-                        string retornoFilho = "";
-
-                        bool apagarLevel3 = true;
-
-                        //tiro todos os level3 que não são do indicador
-                        for (int j = 0; j < leveis3.Length; j++) //Percorro cada elemento do array
-                        {
-                            string[] esteLevel3 = leveis3[j].Split(',');
-
-                            for (var k = 0; k < list.Count(); k++)
-                            {
-                                if (list[k].retorno.ToString() == esteLevel3[0])
+                                using (SqlCommand cmd = new SqlCommand(indicadorPai, factory.connection))
                                 {
-                                    retornoFilho += "<level03>";
-                                    retornoFilho += leveis3[j];
-                                    retornoFilho += "</level03>";
+                                    cmd.CommandType = CommandType.Text;
+                                    cmd.Parameters.Add(new SqlParameter("@ParLevel1Origin_Id", ParLevel1Origin_Id));
+                                    cmd.Parameters.Add(new SqlParameter("@ParLevel2_Id", parLevel2_Id));
 
-                                    for (var l = 0; l < listPai.Count(); l++)
-                                    {
-                                        if (listPai[l].retorno.ToString() == esteLevel3[0])
-                                        {
-                                            apagarLevel3 = false;
-                                        }
-                                    }
-
-                                    if (apagarLevel3)
-                                        leveis3[j] = "";
-
-                                    apagarLevel3 = true;
+                                    listPai = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
                                 }
                             }
-                        }
 
 
-                        //coloco as tag de level3 e tiro quando não houver elementos
-                        for (int j = 0; j < leveis3.Length; j++) //Percorro cada elemento do array
-                        {
-                            if (leveis3[j] != "")
+                            //string[][] matrizLevel3 = new string[leveis3.Length][];
+
+                            string retorno = "";
+
+                            string retornoFilho = "";
+
+                            bool apagarLevel3 = true;
+
+                            //tiro todos os level3 que não são do indicador
+                            for (int j = 0; j < leveis3.Length; j++) //Percorro cada elemento do array
                             {
-                                retorno += "<level03>";
-                                retorno += leveis3[j];
-                                retorno += "</level03>";
+                                string[] esteLevel3 = leveis3[j].Split(',');
+
+                                for (var k = 0; k < list.Count(); k++)
+                                {
+                                    if (list[k].retorno.ToString() == esteLevel3[0])
+                                    {
+                                        retornoFilho += "<level03>";
+                                        retornoFilho += leveis3[j];
+                                        retornoFilho += "</level03>";
+
+                                        for (var l = 0; l < listPai.Count(); l++)
+                                        {
+                                            if (listPai[l].retorno.ToString() == esteLevel3[0])
+                                            {
+                                                apagarLevel3 = false;
+                                            }
+                                        }
+
+                                        if (apagarLevel3)
+                                            leveis3[j] = "";
+
+                                        apagarLevel3 = true;
+                                    }
+                                }
                             }
 
-                        }
 
-                        result[22] = retorno;
+                            //coloco as tag de level3 e tiro quando não houver elementos
+                            for (int j = 0; j < leveis3.Length; j++) //Percorro cada elemento do array
+                            {
+                                if (leveis3[j] != "")
+                                {
+                                    retorno += "<level03>";
+                                    retorno += leveis3[j];
+                                    retorno += "</level03>";
+                                }
 
-                        //-----------------------------
+                            }
 
-                        //Id do Level01
-                        string level01Id = DefaultValueReturn(result[0], "0");
+                            result[22] = retorno;
 
-                        if (level01Id == "0")
-                        {
-                            //string p1Undefined = "    SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
-                            //                     "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
-                            //                     "\n  on p321.ParLevel1_Id = p1.id " +
-                            //                     "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
-                            //                     "\n  on p32.id = p321.ParLevel3Level2_Id " +
-                            //                     "\n  WHERE p32.ParLevel2_Id = " + result[2] +
-                            //                     "\n  and p1.isActive = 1 " +
-                            //                     "\n  and p321.Active = 1 " +
-                            //                     "\n  and p32.IsActive = 1";
+                            //-----------------------------
 
-                            string p1Undefined = $@"SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
+                            //Id do Level01
+                            string level01Id = DefaultValueReturn(result[0], "0");
+
+                            if (level01Id == "0")
+                            {
+                                //string p1Undefined = "    SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                                //                     "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
+                                //                     "\n  on p321.ParLevel1_Id = p1.id " +
+                                //                     "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
+                                //                     "\n  on p32.id = p321.ParLevel3Level2_Id " +
+                                //                     "\n  WHERE p32.ParLevel2_Id = " + result[2] +
+                                //                     "\n  and p1.isActive = 1 " +
+                                //                     "\n  and p321.Active = 1 " +
+                                //                     "\n  and p32.IsActive = 1";
+
+                                string p1Undefined = $@"SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)
                                                 inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)
                                                 on p321.ParLevel1_Id = p1.id 
                                                 inner join ParLevel3Level2 p32  WITH (NOLOCK)
@@ -457,333 +460,333 @@ namespace SgqServiceBusiness.Api
                                                 and p321.Active = 1 
                                                 and p32.IsActive = 1";
 
-                            using (Factory factory = new Factory("DefaultConnection"))
-                            {
-                                using (SqlCommand cmd = new SqlCommand(p1Undefined, factory.connection))
+                                using (Factory factory = new Factory("DefaultConnection"))
                                 {
-                                    cmd.CommandType = CommandType.Text;
-                                    cmd.Parameters.Add(new SqlParameter("@Result", result[2]));
+                                    using (SqlCommand cmd = new SqlCommand(p1Undefined, factory.connection))
+                                    {
+                                        cmd.CommandType = CommandType.Text;
+                                        cmd.Parameters.Add(new SqlParameter("@Result", result[2]));
 
-                                    level01Id = factory.SearchQuery<ResultadoUmaColuna>(cmd).FirstOrDefault().retorno;
+                                        level01Id = factory.SearchQuery<ResultadoUmaColuna>(cmd).FirstOrDefault().retorno;
 
+                                    }
                                 }
                             }
-                        }
 
-                        //Data que a coleta começou ser gerada, pelo Id do Level01
-                        string level01DataCollect = result[1];
-                        //Converte a Data para o padrão correto
-                        //Nos EUA a data é mostrado como "11/25/2016 13:05"
-                        ////Tem que converter a data do padrão Brasil também
-                        DateTime level01CollectData = DateCollectConvert(level01DataCollect);
-                        //Converte a Data em String para utilizar no comando sql
-                        level01DataCollect = level01CollectData.ToString("yyyy-MM-dd HH:mm:ss");
+                            //Data que a coleta começou ser gerada, pelo Id do Level01
+                            string level01DataCollect = result[1];
+                            //Converte a Data para o padrão correto
+                            //Nos EUA a data é mostrado como "11/25/2016 13:05"
+                            ////Tem que converter a data do padrão Brasil também
+                            DateTime level01CollectData = DateCollectConvert(level01DataCollect);
+                            //Converte a Data em String para utilizar no comando sql
+                            level01DataCollect = level01CollectData.ToString("yyyy-MM-dd HH:mm:ss");
 
-                        //Pega o Id do Level02
-                        string level02Id = result[2];
-                        //Pega a Data da Coleta do Level02
-                        string level02DataCollect = result[3];
+                            //Pega o Id do Level02
+                            string level02Id = result[2];
+                            //Pega a Data da Coleta do Level02
+                            string level02DataCollect = result[3];
 
-                        //Pega a Coleta do Level02
-                        DateTime level02CollectData = DateCollectConvert(level02DataCollect);
-                        //Converte a data no padrão igual a data do LEvel01
-                        level02DataCollect = level02CollectData.ToString("yyyy-MM-dd HH:mm:ss");
+                            //Pega a Coleta do Level02
+                            DateTime level02CollectData = DateCollectConvert(level02DataCollect);
+                            //Converte a data no padrão igual a data do LEvel01
+                            level02DataCollect = level02CollectData.ToString("yyyy-MM-dd HH:mm:ss");
 
-                        //Pega o Id da Unidade
-                        string unidadeId = result[4];
+                            //Pega o Id da Unidade
+                            string unidadeId = result[4];
 
-                        ////MOCK
-                        //unidadeId = DefaultValueReturn(unidadeId, "1");
-                        //Pega o Period
+                            ////MOCK
+                            //unidadeId = DefaultValueReturn(unidadeId, "1");
+                            //Pega o Period
 
 
-                        string period = result[5];
-                        period = DefaultValueReturn(period, "1");
+                            string period = result[5];
+                            period = DefaultValueReturn(period, "1");
 
-                        //Pega o Shit
-                        string shift = result[6];
-                        shift = DefaultValueReturn(shift, "1");
+                            //Pega o Shit
+                            string shift = result[6];
+                            shift = DefaultValueReturn(shift, "1");
 
-                        //Pega o Auditor
-                        string auditorId = result[7];
+                            //Pega o Auditor
+                            string auditorId = result[7];
 
-                        //DEBUGAR PARA O AUDITOR
-                        //auditorId = "1";
+                            //DEBUGAR PARA O AUDITOR
+                            //auditorId = "1";
 
-                        //Verifica se é reauditoria
-                        string reaudit = result[9];
-                        //Converte para o padrão Sql
-                        ///Criar funções de converter de data, campo nulo automaticos
+                            //Verifica se é reauditoria
+                            string reaudit = result[9];
+                            //Converte para o padrão Sql
+                            ///Criar funções de converter de data, campo nulo automaticos
 
-                        reaudit = BoolConverter(reaudit);
+                            reaudit = BoolConverter(reaudit);
 
-                        //Pega número da Avaliação
-                        string evaluate = result[11];
-                        //Pega número da Amostra
-                        string sample = result[12];
-                        //Versão do App
-                        versaoApp = result[20];
-                        //Ambiente utilizado Ex: Homologação/Produção
-                        string ambiente = result[21];
-                        //Phase
-                        string phase = result[8];
-                        //StartPhaseDate
-                        string startphasedate = result[10];
-                        //Cattle Type (Biased/Unbiased está no Cattle Type também)
-                        //Chain Speed
-                        string isemptylevel3 = result[14];
-                        //Lot Number
-                        string hassampletotal = result[15];
-                        //Mud Score
-                        string mudscore = result[16];
-                        //Verifica falhas, descontinuado na JBS EUA por enquanto
-                        string consecutivefailurelevel = result[17];
-                        string consecutivefailuretotal = result[18];
-                        //Verifica se a coleta foi não avaliada
-                        ///Sugestão EUA para motivo de não avaliar a coleta
-                        string notavaliable = result[19];
+                            //Pega número da Avaliação
+                            string evaluate = result[11];
+                            //Pega número da Amostra
+                            string sample = result[12];
+                            //Versão do App
+                            versaoApp = result[20];
+                            //Ambiente utilizado Ex: Homologação/Produção
+                            string ambiente = result[21];
+                            //Phase
+                            string phase = result[8];
+                            //StartPhaseDate
+                            string startphasedate = result[10];
+                            //Cattle Type (Biased/Unbiased está no Cattle Type também)
+                            //Chain Speed
+                            string isemptylevel3 = result[14];
+                            //Lot Number
+                            string hassampletotal = result[15];
+                            //Mud Score
+                            string mudscore = result[16];
+                            //Verifica falhas, descontinuado na JBS EUA por enquanto
+                            string consecutivefailurelevel = result[17];
+                            string consecutivefailuretotal = result[18];
+                            //Verifica se a coleta foi não avaliada
+                            ///Sugestão EUA para motivo de não avaliar a coleta
+                            string notavaliable = result[19];
 
-                        //Coloca Biased/ Unbiased no Cattle Type
-                        string baisedUnbaised = result[27];
-                        baisedUnbaised = DefaultValueReturn(baisedUnbaised, "0");
-                        //if (baisedUnbaised != "0")
-                        //{
-                        //    cattletype = baisedUnbaised;
-                        //}
-                        string AlertLevel = result[27];
-                        string completed = result[28];
-                        string havePhases = result[29];
-                        string CollectionLevel02Id = result[30];
-                        string correctiveActionCompleted = result[31];
-                        string completeReaudit = result[32];
-                        string hashKey = result[33];
-                        string weievaluation = result[35];
-                        string weidefects = result[36];
-                        string defects = result[37];
-                        string totallevel3withdefects = result[38];
-                        string totalLevel2Evaluation = result[39];
-                        string avaliacaoultimoalerta = result[40];
-                        string evaluatedresult = result[41];
-                        string defectsresult = result[42];
-                        string sequential = result[43];
-                        string side = result[44];
-                        string monitoramentoultimoalerta = result[45];
-                        string startphaseevaluation = "0";
-                        string endphaseevaluation = "0";
-                        string reprocesso = null;
-                        string cluster = parCluster_Id;
-                        string ParReason_Id = null;
-                        string ParReasonType_Id = null;
-
-                        if (result.Length > 47)
-                        {
-                            startphaseevaluation = result[47];
-                        }
-                        if (result.Length > 48)
-                        {
-                            endphaseevaluation = result[48];
-                        }
-
-                        if (result.Length > 49)
-                        {
-                            reprocesso = result[49];
-                        }
-
-                        if (result.Length > 50)
-                        {
-                            ParReason_Id = result[50];
-                            ParReasonType_Id = result[51];
-                        }
-
-                        //Gera o Cabeçalho do Level02
-                        string level02HeaderJSon = result[13]; //[0]
-                        level02HeaderJSon += ";" + phase; //[1]
-                        level02HeaderJSon += ";" + startphasedate; //[2]
-                        level02HeaderJSon += ";" + consecutivefailurelevel; //[3]
-                        level02HeaderJSon += ";" + consecutivefailuretotal; //[4]
-                        level02HeaderJSon += ";" + notavaliable; //[5]
-                        level02HeaderJSon += ";" + completed; //[6]
-                        level02HeaderJSon += ";" + havePhases; //[7]
-                        level02HeaderJSon += ";" + CollectionLevel02Id; //[8]
-                        level02HeaderJSon += ";" + correctiveActionCompleted; //[9]
-                        level02HeaderJSon += ";" + completeReaudit; //[10]
-                        level02HeaderJSon += ";" + AlertLevel; //[11]
-                        level02HeaderJSon += ";" + sequential; //[12]
-                        level02HeaderJSon += ";" + side; //[13]
-                        level02HeaderJSon += ";" + weievaluation; //[14]
-                        level02HeaderJSon += ";" + weidefects; //[15]
-                        level02HeaderJSon += ";" + defects; //[16]
-                        level02HeaderJSon += ";" + totallevel3withdefects; //[17]
-                        level02HeaderJSon += ";" + totalLevel2Evaluation; //[18]
-                        level02HeaderJSon += ";" + avaliacaoultimoalerta; //[19]
-                        level02HeaderJSon += ";" + evaluatedresult; //[20]
-                        level02HeaderJSon += ";" + defectsresult; //[21]
-                        level02HeaderJSon += ";" + sequential; //[22]
-                        level02HeaderJSon += ";" + side; //[23]
-                        level02HeaderJSon += ";" + isemptylevel3; //[24]
-                        level02HeaderJSon += ";" + hassampletotal; //[25]
-                        level02HeaderJSon += ";" + hashKey; //[26]
-                        level02HeaderJSon += ";" + monitoramentoultimoalerta; //[27]
-                        level02HeaderJSon += ";" + startphaseevaluation; //[28]
-                        level02HeaderJSon += ";" + endphaseevaluation; //[29]
-                        level02HeaderJSon += ";" + reprocesso; //[30]
-                        level02HeaderJSon += ";" + cluster; //[31]
-                        level02HeaderJSon += ";" + ParReason_Id; //[32]
-                        level02HeaderJSon += ";" + ParReasonType_Id; //[33]
-
-                        //level02HeaderJSon += ";" + alertaAtual;
-
-                        //Verifica o Resultado do Level03
-                        string level03ResultJson = result[22];
-                        //Decodifica a o resultado
-                        level03ResultJson = HttpUtility.UrlDecode(level03ResultJson, System.Text.Encoding.Default);
-                        //Ação Corretiva
-                        string correctiveActionJson = result[23];
-                        //Verifica se tem reauditoria pendente
-                        string haveReaudit = result[24];
-                        //Convert Reauditoria Pendente para valor correto
-                        haveReaudit = DefaultValueReturn(haveReaudit, "0");
-                        if (haveReaudit != "0")
-                        {
-                            haveReaudit = "1";
-                        }
-                        string reauditlevel = result[46];
-                        //Convert Reauditoria Pendente para valor correto
-                        reauditlevel = DefaultValueReturn(reauditlevel, "0");
-
-                        //Se Ação corretiva ficou pendente
-                        string haveCorrectiveAction = result[25];
-                        //Converte ação corretiva para valor correto
-                        haveCorrectiveAction = DefaultValueReturn(haveCorrectiveAction, "0");
-                        if (haveCorrectiveAction == "havecorrectiveaction")
-                        {
-                            haveCorrectiveAction = "1";
-                        }
-                        //Número da reauditoria
-                        string reauditNumber = result[26];
-                        reauditNumber = DefaultValueReturn(reauditNumber, "0");
-                        //Cria a linah de insert
-
-                        string sql = "INSERT INTO [dbo].[CollectionJson] " +
-                            "([Unit_Id]," +
-                            "[Shift]," +
-                            "[Period]," +
-                            "[level01_Id]," +
-                            "[Level01CollectionDate]," +
-                            "[level02_Id]," +
-                            "[Evaluate]," +
-                            "[Sample]," +
-                            "[AuditorId]," +
-                            "[Level02CollectionDate]," +
-                            "[Level02HeaderJson]," +
-                            "[Level03ResultJSon]," +
-                            "[CorrectiveActionJson]," +
-                            "[Reaudit]," +
-                            "[ReauditNumber]," +
-                            "[haveReaudit]," +
-                            "[ReauditLevel]," +
-                            "[haveCorrectiveAction]," +
-                            "[Device_Id]," +
-                            "[AppVersion]," +
-                            "[Ambient]," +
-                            "[IsProcessed]," +
-                            "[Device_Mac]," +
-                            "[AddDate]," +
-                            "[AlterDate]," +
-                            "[Key]," +
-                            "[TTP]) " +
-                            "VALUES " +
-                            "(@UnidadeId," +
-                            "@Shift," +
-                            "@Period," +
-                            "@Level1Id," +
-                            "CAST(@Level1DataCollect AS DateTime)," +
-                            "@Level2Id," +
-                            "@Evaluate," +
-                            "@Sample, " +
-                            "@AuditorId," +
-                            "CAST(@Level2DataCollect AS DateTime)," +
-                            "@Level2HeaderJson," +
-                            "@Level3ResultJson, " +
-                            "@CorrectiveActionJson, " +
-                            "@Reaudit, " +
-                            "@ReauditNumber, " +
-                            "@HaveReaudit, " +
-                            "@ReauditLevel," +
-                            "@HaveCorrectiveAction," +
-                            "@DeviceId," +
-                            "@VersaoApp," +
-                            "@Ambiente," +
-                            "0," +
-                            "@DeviceMac," +
-                            "GETDATE()," +
-                            "NULL," +
-                            "@Key" +
-                            ",NULL) ";
-
-                        sql += "SELECT @@IDENTITY AS 'Identity'";
-
-                        var iSql = 0;
-
-                        using (SqlCommand cmd = new SqlCommand(sql, connection))
-                        {
-                            cmd.CommandType = CommandType.Text;
-                            cmd.Parameters.Add(new SqlParameter("@UnidadeId", unidadeId));
-                            cmd.Parameters.Add(new SqlParameter("@Shift", shift));
-                            cmd.Parameters.Add(new SqlParameter("@Period", period));
-                            cmd.Parameters.Add(new SqlParameter("@Level1Id", level01Id));
-                            cmd.Parameters.Add(new SqlParameter("@Level1DataCollect", level01DataCollect));
-                            cmd.Parameters.Add(new SqlParameter("@Level2Id", level02Id));
-                            cmd.Parameters.Add(new SqlParameter("@Evaluate", evaluate));
-                            cmd.Parameters.Add(new SqlParameter("@Sample", sample));
-                            cmd.Parameters.Add(new SqlParameter("@AuditorId", auditorId));
-                            cmd.Parameters.Add(new SqlParameter("@Level2DataCollect", level02DataCollect));
-                            cmd.Parameters.Add(new SqlParameter("@Level2HeaderJson", level02HeaderJSon));
-                            cmd.Parameters.Add(new SqlParameter("@Level3ResultJson", level03ResultJson));
-                            cmd.Parameters.Add(new SqlParameter("@CorrectiveActionJson", correctiveActionJson));
-                            cmd.Parameters.Add(new SqlParameter("@Reaudit", reaudit));
-                            cmd.Parameters.Add(new SqlParameter("@ReauditNumber", reauditNumber));
-                            cmd.Parameters.Add(new SqlParameter("@HaveReaudit", haveReaudit));
-                            cmd.Parameters.Add(new SqlParameter("@ReauditLevel", reauditlevel));
-                            cmd.Parameters.Add(new SqlParameter("@HaveCorrectiveAction", haveCorrectiveAction));
-                            cmd.Parameters.Add(new SqlParameter("@DeviceId", deviceId));
-                            cmd.Parameters.Add(new SqlParameter("@VersaoApp", versaoApp));
-                            cmd.Parameters.Add(new SqlParameter("@Ambiente", ambiente));
-                            cmd.Parameters.Add(new SqlParameter("@DeviceMac", deviceMac));
-                            cmd.Parameters.Add(new SqlParameter("@Key", key));
-
-                            iSql = Convert.ToInt32(cmd.ExecuteScalar());
-                        }
-
-                        if (iSql > 0)
-                        {
-                            //if (autoSend == true)
+                            //Coloca Biased/ Unbiased no Cattle Type
+                            string baisedUnbaised = result[27];
+                            baisedUnbaised = DefaultValueReturn(baisedUnbaised, "0");
+                            //if (baisedUnbaised != "0")
                             //{
-                            ProcessJson(null, iSql, false);
-
+                            //    cattletype = baisedUnbaised;
                             //}
-                        }
+                            string AlertLevel = result[27];
+                            string completed = result[28];
+                            string havePhases = result[29];
+                            string CollectionLevel02Id = result[30];
+                            string correctiveActionCompleted = result[31];
+                            string completeReaudit = result[32];
+                            string hashKey = result[33];
+                            string weievaluation = result[35];
+                            string weidefects = result[36];
+                            string defects = result[37];
+                            string totallevel3withdefects = result[38];
+                            string totalLevel2Evaluation = result[39];
+                            string avaliacaoultimoalerta = result[40];
+                            string evaluatedresult = result[41];
+                            string defectsresult = result[42];
+                            string sequential = result[43];
+                            string side = result[44];
+                            string monitoramentoultimoalerta = result[45];
+                            string startphaseevaluation = "0";
+                            string endphaseevaluation = "0";
+                            string reprocesso = null;
+                            string cluster = parCluster_Id;
+                            string ParReason_Id = null;
+                            string ParReasonType_Id = null;
 
-                        else
-                        {
-                            //Se não ocorre sem problemas, retorna um erro
-                            throw new Exception("erro json");
+                            if (result.Length > 47)
+                            {
+                                startphaseevaluation = result[47];
+                            }
+                            if (result.Length > 48)
+                            {
+                                endphaseevaluation = result[48];
+                            }
 
-                        }
+                            if (result.Length > 49)
+                            {
+                                reprocesso = result[49];
+                            }
 
-                        if (retornoFilho != "")
-                        {
+                            if (result.Length > 50)
+                            {
+                                ParReason_Id = result[50];
+                                ParReasonType_Id = result[51];
+                            }
 
+                            //Gera o Cabeçalho do Level02
+                            string level02HeaderJSon = result[13]; //[0]
+                            level02HeaderJSon += ";" + phase; //[1]
+                            level02HeaderJSon += ";" + startphasedate; //[2]
+                            level02HeaderJSon += ";" + consecutivefailurelevel; //[3]
+                            level02HeaderJSon += ";" + consecutivefailuretotal; //[4]
+                            level02HeaderJSon += ";" + notavaliable; //[5]
+                            level02HeaderJSon += ";" + completed; //[6]
+                            level02HeaderJSon += ";" + havePhases; //[7]
+                            level02HeaderJSon += ";" + CollectionLevel02Id; //[8]
+                            level02HeaderJSon += ";" + correctiveActionCompleted; //[9]
+                            level02HeaderJSon += ";" + completeReaudit; //[10]
+                            level02HeaderJSon += ";" + AlertLevel; //[11]
+                            level02HeaderJSon += ";" + sequential; //[12]
+                            level02HeaderJSon += ";" + side; //[13]
+                            level02HeaderJSon += ";" + weievaluation; //[14]
+                            level02HeaderJSon += ";" + weidefects; //[15]
+                            level02HeaderJSon += ";" + defects; //[16]
+                            level02HeaderJSon += ";" + totallevel3withdefects; //[17]
+                            level02HeaderJSon += ";" + totalLevel2Evaluation; //[18]
+                            level02HeaderJSon += ";" + avaliacaoultimoalerta; //[19]
+                            level02HeaderJSon += ";" + evaluatedresult; //[20]
+                            level02HeaderJSon += ";" + defectsresult; //[21]
+                            level02HeaderJSon += ";" + sequential; //[22]
+                            level02HeaderJSon += ";" + side; //[23]
+                            level02HeaderJSon += ";" + isemptylevel3; //[24]
+                            level02HeaderJSon += ";" + hassampletotal; //[25]
+                            level02HeaderJSon += ";" + hashKey; //[26]
+                            level02HeaderJSon += ";" + monitoramentoultimoalerta; //[27]
+                            level02HeaderJSon += ";" + startphaseevaluation; //[28]
+                            level02HeaderJSon += ";" + endphaseevaluation; //[29]
+                            level02HeaderJSon += ";" + reprocesso; //[30]
+                            level02HeaderJSon += ";" + cluster; //[31]
+                            level02HeaderJSon += ";" + ParReason_Id; //[32]
+                            level02HeaderJSon += ";" + ParReasonType_Id; //[33]
 
-                            List<ResultadoUmaColuna> list2;
+                            //level02HeaderJSon += ";" + alertaAtual;
 
-                            var indicadorFilho_id = "";
-                            var monitoramentoFilho_id = "";
+                            //Verifica o Resultado do Level03
+                            string level03ResultJson = result[22];
+                            //Decodifica a o resultado
+                            level03ResultJson = HttpUtility.UrlDecode(level03ResultJson, System.Text.Encoding.Default);
+                            //Ação Corretiva
+                            string correctiveActionJson = result[23];
+                            //Verifica se tem reauditoria pendente
+                            string haveReaudit = result[24];
+                            //Convert Reauditoria Pendente para valor correto
+                            haveReaudit = DefaultValueReturn(haveReaudit, "0");
+                            if (haveReaudit != "0")
+                            {
+                                haveReaudit = "1";
+                            }
+                            string reauditlevel = result[46];
+                            //Convert Reauditoria Pendente para valor correto
+                            reauditlevel = DefaultValueReturn(reauditlevel, "0");
 
-                            using (Factory factory = new Factory("DefaultConnection"))
+                            //Se Ação corretiva ficou pendente
+                            string haveCorrectiveAction = result[25];
+                            //Converte ação corretiva para valor correto
+                            haveCorrectiveAction = DefaultValueReturn(haveCorrectiveAction, "0");
+                            if (haveCorrectiveAction == "havecorrectiveaction")
+                            {
+                                haveCorrectiveAction = "1";
+                            }
+                            //Número da reauditoria
+                            string reauditNumber = result[26];
+                            reauditNumber = DefaultValueReturn(reauditNumber, "0");
+                            //Cria a linah de insert
+
+                            string sql = "INSERT INTO [dbo].[CollectionJson] " +
+                                "([Unit_Id]," +
+                                "[Shift]," +
+                                "[Period]," +
+                                "[level01_Id]," +
+                                "[Level01CollectionDate]," +
+                                "[level02_Id]," +
+                                "[Evaluate]," +
+                                "[Sample]," +
+                                "[AuditorId]," +
+                                "[Level02CollectionDate]," +
+                                "[Level02HeaderJson]," +
+                                "[Level03ResultJSon]," +
+                                "[CorrectiveActionJson]," +
+                                "[Reaudit]," +
+                                "[ReauditNumber]," +
+                                "[haveReaudit]," +
+                                "[ReauditLevel]," +
+                                "[haveCorrectiveAction]," +
+                                "[Device_Id]," +
+                                "[AppVersion]," +
+                                "[Ambient]," +
+                                "[IsProcessed]," +
+                                "[Device_Mac]," +
+                                "[AddDate]," +
+                                "[AlterDate]," +
+                                "[Key]," +
+                                "[TTP]) " +
+                                "VALUES " +
+                                "(@UnidadeId," +
+                                "@Shift," +
+                                "@Period," +
+                                "@Level1Id," +
+                                "CAST(@Level1DataCollect AS DateTime)," +
+                                "@Level2Id," +
+                                "@Evaluate," +
+                                "@Sample, " +
+                                "@AuditorId," +
+                                "CAST(@Level2DataCollect AS DateTime)," +
+                                "@Level2HeaderJson," +
+                                "@Level3ResultJson, " +
+                                "@CorrectiveActionJson, " +
+                                "@Reaudit, " +
+                                "@ReauditNumber, " +
+                                "@HaveReaudit, " +
+                                "@ReauditLevel," +
+                                "@HaveCorrectiveAction," +
+                                "@DeviceId," +
+                                "@VersaoApp," +
+                                "@Ambiente," +
+                                "0," +
+                                "@DeviceMac," +
+                                "GETDATE()," +
+                                "NULL," +
+                                "@Key" +
+                                ",NULL) ";
+
+                            sql += "SELECT @@IDENTITY AS 'Identity'";
+
+                            var iSql = 0;
+
+                            using (SqlCommand cmd = new SqlCommand(sql, connection))
+                            {
+                                cmd.CommandType = CommandType.Text;
+                                cmd.Parameters.Add(new SqlParameter("@UnidadeId", unidadeId));
+                                cmd.Parameters.Add(new SqlParameter("@Shift", shift));
+                                cmd.Parameters.Add(new SqlParameter("@Period", period));
+                                cmd.Parameters.Add(new SqlParameter("@Level1Id", level01Id));
+                                cmd.Parameters.Add(new SqlParameter("@Level1DataCollect", level01DataCollect));
+                                cmd.Parameters.Add(new SqlParameter("@Level2Id", level02Id));
+                                cmd.Parameters.Add(new SqlParameter("@Evaluate", evaluate));
+                                cmd.Parameters.Add(new SqlParameter("@Sample", sample));
+                                cmd.Parameters.Add(new SqlParameter("@AuditorId", auditorId));
+                                cmd.Parameters.Add(new SqlParameter("@Level2DataCollect", level02DataCollect));
+                                cmd.Parameters.Add(new SqlParameter("@Level2HeaderJson", level02HeaderJSon));
+                                cmd.Parameters.Add(new SqlParameter("@Level3ResultJson", level03ResultJson));
+                                cmd.Parameters.Add(new SqlParameter("@CorrectiveActionJson", correctiveActionJson));
+                                cmd.Parameters.Add(new SqlParameter("@Reaudit", reaudit));
+                                cmd.Parameters.Add(new SqlParameter("@ReauditNumber", reauditNumber));
+                                cmd.Parameters.Add(new SqlParameter("@HaveReaudit", haveReaudit));
+                                cmd.Parameters.Add(new SqlParameter("@ReauditLevel", reauditlevel));
+                                cmd.Parameters.Add(new SqlParameter("@HaveCorrectiveAction", haveCorrectiveAction));
+                                cmd.Parameters.Add(new SqlParameter("@DeviceId", deviceId));
+                                cmd.Parameters.Add(new SqlParameter("@VersaoApp", versaoApp));
+                                cmd.Parameters.Add(new SqlParameter("@Ambiente", ambiente));
+                                cmd.Parameters.Add(new SqlParameter("@DeviceMac", deviceMac));
+                                cmd.Parameters.Add(new SqlParameter("@Key", key));
+
+                                iSql = Convert.ToInt32(cmd.ExecuteScalar());
+                            }
+
+                            if (iSql > 0)
+                            {
+                                //if (autoSend == true)
+                                //{
+                                ProcessJson(null, iSql, false);
+
+                                //}
+                            }
+
+                            else
+                            {
+                                //Se não ocorre sem problemas, retorna um erro
+                                throw new Exception("erro json");
+
+                            }
+
+                            if (retornoFilho != "")
                             {
 
-                                string sqlIndicadorFilho = $@" SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) 
+
+                                List<ResultadoUmaColuna> list2;
+
+                                var indicadorFilho_id = "";
+                                var monitoramentoFilho_id = "";
+
+                                using (Factory factory = new Factory("DefaultConnection"))
+                                {
+
+                                    string sqlIndicadorFilho = $@" SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) 
                                                     inner join ParLevel3Level2Level1 p321  WITH (NOLOCK) 
                                                     on p321.ParLevel1_Id = p1.id 
                                                     inner join ParLevel3Level2 p32  WITH (NOLOCK) 
@@ -793,39 +796,39 @@ namespace SgqServiceBusiness.Api
                                                     and p321.Active = 1 
                                                     and p32.IsActive = 1";
 
-                                using (SqlCommand cmd = new SqlCommand(sqlIndicadorFilho, factory.connection))
-                                {
-                                    cmd.CommandType = CommandType.Text;
-                                    cmd.Parameters.Add(new SqlParameter("@Result", result[0]));
-                                    list2 = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
-                                }
+                                    using (SqlCommand cmd = new SqlCommand(sqlIndicadorFilho, factory.connection))
+                                    {
+                                        cmd.CommandType = CommandType.Text;
+                                        cmd.Parameters.Add(new SqlParameter("@Result", result[0]));
+                                        list2 = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                                    }
 
-                                for (var l = 0; l < list2.Count(); l++)
-                                {
-                                    indicadorFilho_id = list2[l].retorno.ToString();
-                                }
+                                    for (var l = 0; l < list2.Count(); l++)
+                                    {
+                                        indicadorFilho_id = list2[l].retorno.ToString();
+                                    }
 
-                                string sqlMonitoramentoFilho = $@"select top 1 cast(p32.ParLevel2_Id as varchar) retorno
+                                    string sqlMonitoramentoFilho = $@"select top 1 cast(p32.ParLevel2_Id as varchar) retorno
                                             from parlevel3level2level1 p321 WITH (NOLOCK)
                                             inner join parlevel3level2 p32 WITH (NOLOCK)
                                             on p321.parlevel3level2_id = p32.id 
                                             where p321.Active = 1 and p321.parlevel1_id = @IndicadorFilho_Id";
 
-                                using (SqlCommand cmd = new SqlCommand(sqlMonitoramentoFilho, factory.connection))
-                                {
-                                    cmd.CommandType = CommandType.Text;
-                                    cmd.Parameters.Add(new SqlParameter("@IndicadorFilho_Id", indicadorFilho_id));
-                                    list2 = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                                    using (SqlCommand cmd = new SqlCommand(sqlMonitoramentoFilho, factory.connection))
+                                    {
+                                        cmd.CommandType = CommandType.Text;
+                                        cmd.Parameters.Add(new SqlParameter("@IndicadorFilho_Id", indicadorFilho_id));
+                                        list2 = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                                    }
+
+                                    for (var l = 0; l < list2.Count(); l++)
+                                    {
+                                        monitoramentoFilho_id = list2[l].retorno.ToString();
+                                    }
+
                                 }
 
-                                for (var l = 0; l < list2.Count(); l++)
-                                {
-                                    monitoramentoFilho_id = list2[l].retorno.ToString();
-                                }
-
-                            }
-
-                            string sqlInsertCollectionJsonIndicadorFilho = $@"INSERT INTO [dbo].[CollectionJson] 
+                                string sqlInsertCollectionJsonIndicadorFilho = $@"INSERT INTO [dbo].[CollectionJson] 
                                ([Unit_Id],
                                [Shift],
                                [Period],
@@ -881,75 +884,80 @@ namespace SgqServiceBusiness.Api
                                @Key,
                                NULL); ";
 
-                            sqlInsertCollectionJsonIndicadorFilho += "SELECT @@IDENTITY AS 'Identity'";
+                                sqlInsertCollectionJsonIndicadorFilho += "SELECT @@IDENTITY AS 'Identity'";
 
-                            var iSql2 = 0;
+                                var iSql2 = 0;
 
-                            using (SqlCommand cmd = new SqlCommand(sqlInsertCollectionJsonIndicadorFilho, connection))
-                            {
-                                cmd.CommandType = CommandType.Text;
-                                cmd.Parameters.Add(new SqlParameter("@UnidadeId", unidadeId));
-                                cmd.Parameters.Add(new SqlParameter("@Shift", shift));
-                                cmd.Parameters.Add(new SqlParameter("@Period", period));
-                                cmd.Parameters.Add(new SqlParameter("@IndicadorFilhoId", indicadorFilho_id));
-                                cmd.Parameters.Add(new SqlParameter("@Level1DataCollect", level01DataCollect));
-                                cmd.Parameters.Add(new SqlParameter("@Level2Id", level02Id));
-                                cmd.Parameters.Add(new SqlParameter("@Evaluate", evaluate));
-                                cmd.Parameters.Add(new SqlParameter("@Sample", sample));
-                                cmd.Parameters.Add(new SqlParameter("@AuditorId", auditorId));
-                                cmd.Parameters.Add(new SqlParameter("@Level2DataColletion", level02DataCollect));
-                                cmd.Parameters.Add(new SqlParameter("@Level2HeaderJson", level02HeaderJSon));
-                                cmd.Parameters.Add(new SqlParameter("@RetornoFilho", retornoFilho));
-                                cmd.Parameters.Add(new SqlParameter("@CorrectiveActionJson", correctiveActionJson));
-                                cmd.Parameters.Add(new SqlParameter("@Reaudit", reaudit));
-                                cmd.Parameters.Add(new SqlParameter("@ReauditNumber", reauditNumber));
-                                cmd.Parameters.Add(new SqlParameter("@HaveReaudit", haveReaudit));
-                                cmd.Parameters.Add(new SqlParameter("@Reauditlevel", reauditlevel));
-                                cmd.Parameters.Add(new SqlParameter("@HaveCorrectiveAction", haveCorrectiveAction));
-                                cmd.Parameters.Add(new SqlParameter("@DeviceId", deviceId));
-                                cmd.Parameters.Add(new SqlParameter("@VersaoApp", versaoApp));
-                                cmd.Parameters.Add(new SqlParameter("@Ambiente", ambiente));
-                                cmd.Parameters.Add(new SqlParameter("@DeviceMac", deviceMac));
-                                cmd.Parameters.Add(new SqlParameter("@Key", key));
+                                using (SqlCommand cmd = new SqlCommand(sqlInsertCollectionJsonIndicadorFilho, connection))
+                                {
+                                    cmd.CommandType = CommandType.Text;
+                                    cmd.Parameters.Add(new SqlParameter("@UnidadeId", unidadeId));
+                                    cmd.Parameters.Add(new SqlParameter("@Shift", shift));
+                                    cmd.Parameters.Add(new SqlParameter("@Period", period));
+                                    cmd.Parameters.Add(new SqlParameter("@IndicadorFilhoId", indicadorFilho_id));
+                                    cmd.Parameters.Add(new SqlParameter("@Level1DataCollect", level01DataCollect));
+                                    cmd.Parameters.Add(new SqlParameter("@Level2Id", level02Id));
+                                    cmd.Parameters.Add(new SqlParameter("@Evaluate", evaluate));
+                                    cmd.Parameters.Add(new SqlParameter("@Sample", sample));
+                                    cmd.Parameters.Add(new SqlParameter("@AuditorId", auditorId));
+                                    cmd.Parameters.Add(new SqlParameter("@Level2DataColletion", level02DataCollect));
+                                    cmd.Parameters.Add(new SqlParameter("@Level2HeaderJson", level02HeaderJSon));
+                                    cmd.Parameters.Add(new SqlParameter("@RetornoFilho", retornoFilho));
+                                    cmd.Parameters.Add(new SqlParameter("@CorrectiveActionJson", correctiveActionJson));
+                                    cmd.Parameters.Add(new SqlParameter("@Reaudit", reaudit));
+                                    cmd.Parameters.Add(new SqlParameter("@ReauditNumber", reauditNumber));
+                                    cmd.Parameters.Add(new SqlParameter("@HaveReaudit", haveReaudit));
+                                    cmd.Parameters.Add(new SqlParameter("@Reauditlevel", reauditlevel));
+                                    cmd.Parameters.Add(new SqlParameter("@HaveCorrectiveAction", haveCorrectiveAction));
+                                    cmd.Parameters.Add(new SqlParameter("@DeviceId", deviceId));
+                                    cmd.Parameters.Add(new SqlParameter("@VersaoApp", versaoApp));
+                                    cmd.Parameters.Add(new SqlParameter("@Ambiente", ambiente));
+                                    cmd.Parameters.Add(new SqlParameter("@DeviceMac", deviceMac));
+                                    cmd.Parameters.Add(new SqlParameter("@Key", key));
 
-                                iSql2 = Convert.ToInt32(cmd.ExecuteScalar());
-                            }
+                                    iSql2 = Convert.ToInt32(cmd.ExecuteScalar());
+                                }
 
 
-                            if (iSql2 > 0)
-                            {
-                                //if (autoSend == true)
-                                //{
-                                ProcessJson(null, iSql2, true);
+                                if (iSql2 > 0)
+                                {
+                                    //if (autoSend == true)
+                                    //{
+                                    ProcessJson(null, iSql2, true);
 
-                                //}
-                            }
+                                    //}
+                                }
 
-                            else
-                            {
-                                //Se não ocorre sem problemas, retorna um erro
-                                throw new Exception("erro json");
+                                else
+                                {
+                                    //Se não ocorre sem problemas, retorna um erro
+                                    throw new Exception("erro json");
+
+                                }
 
                             }
 
                         }
 
+                        if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                     }
-
-                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                    return null;
                 }
-                return null;
-            }
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(objObjResultJSonPuro, ex.Message, deviceId, versaoApp, "InsertJson");
-                return ex.StackTrace + " | " + ex.Message;
-                //return "error sql insert";
+                catch (SqlException ex)
+                {
+                    int insertLog = insertLogJson(objObjResultJSonPuro, ex.Message, deviceId, versaoApp, "InsertJson");
+                    return ex.ToClient();
+                    //return "error sql insert";
+                }
+                catch (Exception ex)
+                {
+                    int insertLog = insertLogJson(objObjResultJSonPuro, ex.Message, deviceId, versaoApp, "InsertJson");
+                    return ex.ToClient();
+                }
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(objObjResultJSonPuro, ex.Message, deviceId, versaoApp, "InsertJson");
-                return ex.StackTrace + " | " + ex.Message;
+                return ex.ToClient();
             }
         }
 
@@ -3487,7 +3495,7 @@ namespace SgqServiceBusiness.Api
                 INSERT INTO #COLETASLEVEL3
                 	SELECT
                 		ROW_NUMBER() OVER (ORDER BY R3.ParLevel3_Id) AS ROW
-                	   ,'<div id=' + CAST(R3.ParLevel3_Id AS VARCHAR) + 'class=""r3l2""></div>' COLUNA
+                	   ,'<div id=""' + CAST(R3.ParLevel3_Id AS VARCHAR) + '"" class=""r3l2""></div>' COLUNA
                 	FROM CollectionLevel2 C2 (NOLOCK)
                 	INNER JOIN ParLevel1 L1 (NOLOCK)
                 		ON C2.ParLevel1_Id = L1.Id
@@ -4539,7 +4547,7 @@ namespace SgqServiceBusiness.Api
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
             string hide = string.Empty;
-            if (GlobalConfig.Brasil || GlobalConfig.Ytoara)
+            if (GlobalConfig.Brasil || GlobalConfig.Ytoara || GlobalConfig.Eua)
             {
                 hide = "hide";
             }
@@ -5937,7 +5945,7 @@ namespace SgqServiceBusiness.Api
 
                         //form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
 
-                        form_control = "<select class=\"form-control input-sm ddl\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb   ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\" LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\"   >" + optionsMultiple + "</select>";
+                        form_control = "<select id=\"\" class=\"form-control input-sm ddl\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb   ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\" LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\"   >" + optionsMultiple + "</select>";
                         form_control += " <label class=\"\"></label>";
 
                         break;
@@ -5947,7 +5955,7 @@ namespace SgqServiceBusiness.Api
                         /* Se for produto que digito o código e busco em uma lista*/
                         if (header.ParHeaderField_Description == "Produto")
                         {
-                            form_control += " <input class=\"form-control input-sm \" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" oninput=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \"  >";
+                            form_control += " <input id=\"\" class=\"form-control input-sm \" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" oninput=\"buscarProduto(this, $(this).val()); \" onchange=\"validaProduto(this, $(this).val()); \"  >";
                             form_control += " <label class=\"productNamelabel\"></label>";
                             //form_control += "<script>$(\"#cb" + header.ParHeaderField_Id + "\").inputmask('number');</script>";
                         }
@@ -5973,7 +5981,7 @@ namespace SgqServiceBusiness.Api
                             if (!hasDefaultIntegration)
                                 optionsIntegration = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsIntegration;
 
-                            form_control = "<select class=\"form-control input-sm \" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\"  >" + optionsIntegration + "</select>";
+                            form_control = "<select id=\"\" class=\"form-control input-sm \" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\"  >" + optionsIntegration + "</select>";
                         }
                         break;
                     //Binário
@@ -5991,28 +5999,28 @@ namespace SgqServiceBusiness.Api
                                 optionsBinario += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                             }
                         }
-                        form_control = "<select class=\"form-control input-sm \" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\"  >" + optionsBinario + "</select>";
+                        form_control = "<select id=\"\" class=\"form-control input-sm \" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'LinkNumberEvaluetion=\"" + header.LinkNumberEvaluetion.ToString().ToLower() + "\"  >" + optionsBinario + "</select>";
                         form_control += " <label class=\"\"></label>";
                         break;
                     //Texto
                     case 4:
-                        form_control = "<input class=\"form-control input-sm\" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
+                        form_control = "<input id=\"\" class=\"form-control input-sm\" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
                         form_control += " <label class=\"\"></label>";
                         break;
                     //Numérico
                     case 5:
-                        form_control = "<input class=\"form-control input-sm numeric\" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
+                        form_control = "<input id=\"\" class=\"form-control input-sm numeric\" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
                         form_control += " <label class=\"\"></label>";
                         break;
                     //Data
                     case 6:
-                        form_control = "<input class=\"form-control input-sm \" type=\"date\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
+                        form_control = "<input id=\"\" class=\"form-control input-sm \" type=\"date\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
                         form_control += " <label class=\"\"></label>";
                         break;
 
                     //Hora
                     case 7:
-                        form_control = "<input class=\"form-control input-sm \" type=\"time\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
+                        form_control = "<input id=\"\" class=\"form-control input-sm \" type=\"time\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\"  >";
                         form_control += " <label class=\"\"></label>";
                         break;
                     //Infomações
@@ -6021,12 +6029,12 @@ namespace SgqServiceBusiness.Api
                         form_control += " <label class=\"\"></label>";
                         break;
                     case 9:
-                        form_control = $@"<input class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-param=""{ header.ParHeaderField_Description }"">";
+                        form_control = $@"<input id="""" class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-param=""{ header.ParHeaderField_Description }"">";
                         form_control += $@"<label class=""""></label>";
                         break;
                     //Dinâmico
                     case 10:
-                        form_control = $@"<input class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-din=""{ header.ParHeaderField_Description }"" readonly>";
+                        form_control = $@"<input id="""" class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-din=""{ header.ParHeaderField_Description }"" readonly>";
                         form_control += $@"<label class=""""></label>";
                         break;
 

@@ -35,5 +35,7 @@ namespace Dominio.AppViewModel
         public int? ParLevel2_Id { get; set; }
 
         public string DynamicValue { get; set; }
+
+        public bool ShowLevel3Limits { get; set; }
     }
 }

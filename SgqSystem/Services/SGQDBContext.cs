@@ -1360,7 +1360,20 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                 parLevel3List = factory.SearchQuery<ParLevel3>(sql);
             }
 
-            return parLevel3List;
+            //Remover duplicidade dos Levels3
+            var idsLevel3 = parLevel3List.Select(x => x.Id).Distinct().ToList();
+
+            var parLevel3ListSemDuplicidade = new List<ParLevel3>();
+
+            foreach (var level3_id in idsLevel3)
+            {
+                var level3 = parLevel3List.Where(x => x.Id == level3_id).FirstOrDefault();
+
+                if (level3 != null)
+                    parLevel3ListSemDuplicidade.Add(level3);
+            }
+
+            return parLevel3ListSemDuplicidade;
         }
         /// <summary>
         /// Recupera as tarefas que foram feitas no Level2

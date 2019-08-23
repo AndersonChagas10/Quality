@@ -2336,7 +2336,7 @@ function partialSaveCheck(level3Group) {
         var totalInputs = level3Group.find('.level3').find('input').length;
         var inputsEmpty = checkInputEmpty(level3Group);
 
-        if (totalInputs == inputsEmpty)
+        if (totalInputs == inputsEmpty || inputsEmpty == 0)
             return false;
         else
             return true;
@@ -2345,6 +2345,7 @@ function partialSaveCheck(level3Group) {
         return false;
 
 }
+
 function checkInputEmpty(level3Group) {
 
     var inputs = level3Group.find('.level3').find('input:visible');

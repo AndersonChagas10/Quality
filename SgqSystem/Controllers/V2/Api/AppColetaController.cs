@@ -229,7 +229,8 @@ namespace SgqSystem.Controllers.V2.Api
                         ParCompany_Id = x.ParCompany_Id,
                         ParLevel1_Id = x.ParLevel1_Id,
                         ParLevel2_Id = x.ParLevel2_Id,
-                        ParLevel3_Id = x.ParLevel3_Id
+                        ParLevel3_Id = x.ParLevel3_Id,
+                        ShowLevel3Limits = x.ShowLevel3Limits
                     })
                     .ToList()
                     .Where(x => listaParLevel1.Any(y => y.Id == x.ParLevel1_Id))

@@ -64,7 +64,6 @@
 
         </div>
 
-
         <div class="col-sm-4">
 
             <div class="form-group">
@@ -107,6 +106,17 @@
                 <label for="IntervalMax">Limite superior:</label>
                 <input type="number" class="form-control required" id="IntervalMax" name="IntervalMax">
             </div>
+
+        </div>
+
+        <div class="col-sm-4">
+            Exibir limites
+            <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Exibe os limites superior e inferior na linha da tarefa" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+            <br />
+            <label class="switch">
+                <input type="checkbox" name="ShowLevel3Limits" id="ShowLevel3Limits">
+                <span class="slider round"></span>
+            </label>
 
         </div>
 
@@ -254,7 +264,7 @@
     //    }
     //});
 
-    
+
 
     $("#ParL3TipoDado #selectL3TipoDadoParDepartment").on('change', function () {
 
@@ -339,7 +349,7 @@
     }
 
     //$("#selectL3TipoDadoParCompany").on('change', function () {
-    //    debugger
+    //
     //    var empresaSelecionada = parseInt($("#selectL3TipoDadoParCompany :selected").val());
 
     //    MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3TipoDadoParDepartment', empresaSelecionada, "Todos");
@@ -361,6 +371,8 @@
             setInputsInputTypeHidden();
 
             $('table#table' + id + ' tbody').html('');
+
+            $('#ShowLevel3Limits').prop('checked', true);
 
             $(list).each(function (i, o) {
 
@@ -426,12 +438,6 @@
 
                 ParL3TipoDado.insertTable(obj);
 
-                //if ($("#camposLikertIncluidos tbody tr").length > 0) {
-                //    $("#btnAvancado").prop('disabled', true);
-                //} else {
-                //    $("#btnAvancado").prop('disabled', false);
-                //}
-
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
 
@@ -462,7 +468,6 @@
                 $('#divEscalaLikert').hide();
                 $('#divCamposLikertIncluidos').hide();
                 $("#camposLikertIncluidos tbody").empty();
-                //$("#btnAvancado").prop('disabled', false);
             });
 
             //Salvar o campo editado ou cria um novo
@@ -492,17 +497,6 @@
                     return false;
                 }
 
-                //debugger
-                //var itensNulos = obj.ParInputTypeValues.map(function (element) {
-                //    if (element.Valor == null)
-                //        return element;
-                //});
-                //if (itensNulos.length > 0) {
-                //    openMessageModal("Erro", "O campo Valor é obrigátorio");
-                //    //obj.ParInputTypeValues = [];
-                //    return false;
-                //}
-
                 Save(obj);
             });
 
@@ -530,6 +524,7 @@
                         showInput('selectL3TipoDadoParMeasurementUnit');
                         showInput('IntervalMin');
                         showInput('IntervalMax');
+                        showInput('ShowLevel3Limits');
 
                         break;
 
@@ -538,6 +533,7 @@
 
                         showInput('IntervalMin');
                         showInput('IntervalMax');
+                        showInput('ShowLevel3Limits');
 
                         break;
 
@@ -558,6 +554,7 @@
                         showInput('IntervalMin');
                         showInput('IntervalMax');
                         showInput('DynamicValue');
+                        showInput('ShowLevel3Limits');
 
                         break;
 
@@ -671,6 +668,7 @@
             obj['ParLevel3BoolFalse_Id'] = formdata.ParLevel3BoolFalse_Id;
             obj['ParDepartment_Id'] = formdata.ParDepartment_Id;
             obj['ParCargo_Id'] = formdata.ParCargo_Id;
+            obj['ShowLevel3Limits'] = formdata.ShowLevel3Limits;
             return obj;
         },
 
@@ -750,11 +748,6 @@
                 obj['ParInputTypeValues'][i].IsActive = false;
 
                 this.insertTable(obj);
-                //if ($("#camposLikertIncluidos tbody tr").length > 0) {
-                //    $("#btnAvancado").prop('disabled', true);
-                //} else {
-                //    $("#btnAvancado").prop('disabled', false);
-                //}
 
             } else {
                 $('#camposLikertIncluidos tbody').empty();
@@ -771,6 +764,7 @@
         hideInput('IntervalMin');
         hideInput('IntervalMax');
         hideInput('DynamicValue');
+        hideInput('ShowLevel3Limits');
     }
 
     let hideInput = function (id) {

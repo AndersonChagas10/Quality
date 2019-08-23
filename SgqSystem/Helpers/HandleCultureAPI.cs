@@ -10,7 +10,7 @@ namespace SgqSystem.Helpers
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
            
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.LanguageBrasil)
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-br");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-br");

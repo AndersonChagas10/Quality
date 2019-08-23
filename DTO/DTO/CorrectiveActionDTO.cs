@@ -200,20 +200,32 @@ namespace DTO.DTO
 
                 if (Unit == null)
                     return string.Empty;
-
-
-                var body = "<div class='header' style='font-size:14px;font-weight:bold'>";
-                if (GlobalConfig.Eua)
+                if (GlobalConfig.LanguageEUA)
                 {
                     System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("");
                     System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+                }
+                else
+                {
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
+                }
+                var body = "<div class='header' style='font-size:14px;font-weight:bold'>";
+                if (GlobalConfig.Eua)
+                {
                     body += "    <div class='unitCode'>JBS <span id='estName'>" + Unit.Name + "</span> Beef, Est. <span id='estCode'>" + Unit.Code + "</span></div>";
                 }
                 if (GlobalConfig.Brasil)
                 {
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-                    System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
                     body += "    <div class='unitCode'>JBS <span id='estName'>" + Unit.Name + "</span><span id='estCode'>" + Unit.Code + "</span></div>";
+                }
+
+                if (GlobalConfig.SESMT)
+                {
+
+                    body += "    <div class='unitCode'>SESMT <span id='estName'>" + Unit.Name + "</span><span id='estCode'>" + Unit.Code + "</span></div>";
                 }
 
                 body += "    <div>" + Resources.Resource.safe_program_audit_form + "</div>" +

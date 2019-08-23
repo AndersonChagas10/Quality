@@ -45,7 +45,7 @@ namespace SgqService.Controllers.Api
 
             conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.Brasil || GlobalConfig.Eua)
             {
                 conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             }
@@ -85,6 +85,9 @@ namespace SgqService.Controllers.Api
         [Route("InsertJson")]
         public string InsertJson([FromBody] InsertJsonClass insertJsonClass)
         {
+            if (string.IsNullOrEmpty(insertJsonClass.ObjResultJSon))
+                return null;
+
             VerifyIfIsAuthorized();
 
             return business.InsertJson(insertJsonClass);
