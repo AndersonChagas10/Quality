@@ -2,7 +2,7 @@
 using Dominio;
 using DTO.DTO.Params;
 
-namespace SgqSystem.Mappers
+namespace SgqServiceBusiness.Mappers
 {
     public class ResultLevel3MapperProfile : Profile
     {
