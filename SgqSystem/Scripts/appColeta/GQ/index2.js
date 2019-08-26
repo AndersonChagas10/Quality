@@ -387,7 +387,6 @@ function getAPPLevelsVolume() {
         },
         timeout: 600000,
         error: function () {
-            request.abort();
             contagem++;
             if (contagem > 2) {
                 contagem = 0;
@@ -459,7 +458,6 @@ function getAPPLevelsOnLine() {
         },
         timeout: 600000,
         error: function () {
-            request.abort();
             contagem++;
             if (contagem > 2) {
                 contagem = 0;
@@ -527,7 +525,6 @@ function getAPPLevels1OnLine() {
         },
         timeout: 600000,
         error: function () {
-            request.abort();
             contagem++;
             if (contagem > 2) {
                 contagem = 0;
