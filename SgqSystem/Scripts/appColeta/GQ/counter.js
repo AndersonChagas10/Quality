@@ -254,14 +254,14 @@ function readCounter(ParLevel1_Id) {
 // Este método esconde o numero de av, am ou defeitos da linha do monitoramento
 function updateCounterLinhaLevel2(level1, level2) {
 
-    // var evaluationCurrent = 0;
-    // var sampleCurrent = 0;
+    var evaluationCurrent = 0;
+    var sampleCurrent = 0;
 
     //verifica se exibe a avaliação na linha do monitoramento
     if ($('.counter[indicador=' + level2.attr('id') + '][headerlevel=level2_line][counter=evaluation]').length == 0
         && $('.counter[indicador=' + level1.attr('id') + '][headerlevel=level2_line][counter=evaluation]').length == 0) { //se não tiver, ele esconde
 
-        $('.list-group-item[id=' + level2.attr('id') + '] .evaluateCurrent').addClass('hide');       
+        $('.list-group-item[id=' + level2.attr('id') + '] .evaluateCurrent').addClass('hide');
         $($('.list-group-item[id=' + level2.attr('id') + '] .separator')[0]).addClass('hide');
         $('.list-group-item[id=' + level2.attr('id') + '] .evaluateTotal').addClass('hide');
 
@@ -269,20 +269,20 @@ function updateCounterLinhaLevel2(level1, level2) {
 
         // Este método foi descontinuado para teste
 
-        // var lastEvaluation;
+        var lastEvaluation;
 
-        // if (level2.attr('parfrequency_id') == 1) {// se for por periodo (USA)
-        //     lastEvaluation = $('.Resultlevel2[level2id=' + level2.attr('id') + '][period=' + $('.App').attr('period') + '][shift=' + $('.App').attr('shift') + ']:last').attr('evaluation');
-        // } else {
-        //     lastEvaluation = $('.Resultlevel2[level2id=' + level2.attr('id') + '][shift=' + $('.App').attr('shift') + ']:last').attr('evaluation');
-        // }
+        if (level2.attr('parfrequency_id') == 1) {// se for por periodo (USA)
+            lastEvaluation = $('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + '][period=' + $('.App').attr('period') + '][shift=' + $('.App').attr('shift') + ']:last').attr('evaluation');
+        } else {
+            lastEvaluation = $('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + '][shift=' + $('.App').attr('shift') + ']:last').attr('evaluation');
+        }
 
-        // if (lastEvaluation > 0) {
-        //     evaluationCurrent = parseInt($('.Resultlevel2[level2id=' + level2.attr('id') + ']:last').attr('evaluation'));
-        //     $('.list-group-item[id=' + level2.attr('id') + '] .evaluateCurrent').text(evaluationCurrent);
+        if (lastEvaluation > 0) {
+            evaluationCurrent = parseInt($('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + ']:last').attr('evaluation'));
+            $('.list-group-item[id=' + level2.attr('id') + '] .evaluateCurrent').text(evaluationCurrent);
 
-        // } else
-        //     $('.list-group-item[id=' + level2.attr('id') + '] .evaluateCurrent').text(0);
+        } else
+            $('.list-group-item[id=' + level2.attr('id') + '] .evaluateCurrent').text(0);
     }
 
     if ($('.counter[indicador=' + level2.attr('id') + '][headerlevel=level2_line][counter=sample]').length == 0
@@ -296,33 +296,33 @@ function updateCounterLinhaLevel2(level1, level2) {
 
         // Este método foi comentado para teste
 
-        // var lastSample;
+        var lastSample;
 
-        // if (level2.attr('parfrequency_id') == 1) {
+        if (level2.attr('parfrequency_id') == 1) {
 
-        //     lastSample = $('.Resultlevel2[level2id=' + level2.attr('id') + '][period=' + $('.App').attr('period') + '][shift=' + $('.App').attr('shift') + ']:last').attr('sample');
+            lastSample = $('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + '][period=' + $('.App').attr('period') + '][shift=' + $('.App').attr('shift') + ']:last').attr('sample');
 
-        // } else {
+        } else {
 
-        //     lastSample = $('.Resultlevel2[level2id=' + level2.attr('id') + '][shift=' + $('.App').attr('shift') + ']:last').attr('sample');
+            lastSample = $('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + '][shift=' + $('.App').attr('shift') + ']:last').attr('sample');
 
-        // }
+        }
 
-        // if (lastSample > 0) {
+        if (lastSample > 0) {
 
-        //     sampleCurrent = parseInt($('.Resultlevel2[level2id=' + level2.attr('id') + ']:last').attr('sample'));
-        //     var total = parseInt(level2.attr('sample'));
+            sampleCurrent = parseInt($('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + ']:last').attr('sample'));
+            var total = parseInt(level2.attr('sample'));
 
-        //     if (evaluationCurrent > 0) {
+            if (evaluationCurrent > 0) {
 
-        //         sampleCurrent = ((evaluationCurrent - 1) * total) + sampleCurrent;
+                sampleCurrent = ((evaluationCurrent - 1) * total) + sampleCurrent + 1;
 
-        //     }
+            }
 
-        //     $('.list-group-item[id=' + level2.attr('id') + '] .sampleCurrentTotal').text(sampleCurrent);
+            $('.list-group-item[id=' + level2.attr('id') + '] .sampleCurrentTotal').text(sampleCurrent);
 
-        // } else
-        //     $('.list-group-item[id=' + level2.attr('id') + '] .sampleCurrentTotal').text(0);
+        } else
+            $('.list-group-item[id=' + level2.attr('id') + '] .sampleCurrentTotal').text(0);
     }
 
     if ($('.counter[indicador=' + level2.attr('id') + '][headerlevel=level2_line][counter=defects][level=2]').length == 0

@@ -258,7 +258,7 @@ function updateCounterLinhaLevel2(level1, level2) {
     var sampleCurrent = 0;
 
    //verifica se exibe a avaliação na linha do monitoramento
-   if ($('.counter[indicador=' + level1.attr('id') + '][headerlevel=level2_line][counter=evaluation]').length == 0
+   if ($('.counter[indicador=' + level2.attr('id') + '][headerlevel=level2_line][counter=evaluation]').length == 0
        && $('.counter[indicador=' + level1.attr('id') + '][headerlevel=level2_line][counter=evaluation]').length == 0) { //se não tiver, ele esconde
 
        $('.list-group-item[id=' + level2.attr('id') + '] .evaluateCurrent').addClass('hide');       
