@@ -998,6 +998,19 @@
             paging: false,
             ordering: true,
         }),
+        tableMultiplaEscolhaReinicializa: function (e) {
+            Cabecalhos.tableMultiplaEscolha.destroy();
+
+            if (e)
+                e.parents('tr').remove();
+
+            Cabecalhos.tableMultiplaEscolha = $('#camposCabecalhoIncluidos').DataTable({
+                info: false,
+                searching: false,
+                paging: false,
+                ordering: true,
+            });
+        },
         hideAllObj: function () {
 
             /*Esconde campos*/
@@ -1911,37 +1924,41 @@
         },
 
         RemoverDaTabela: function(e, indexValueOfArray, isBinario){
-            if(indexValueOfArray != undefined && isBinario == undefined){
+
+            if (indexValueOfArray != undefined && isBinario == undefined) {
                 //Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indexValueOfArray,1);
 
-                if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                if ($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
                     $('#salvarCabecalho2').fadeOut();
                 else
                     $('#salvarCabecalho2').fadeIn();
 
             }
 
-            if(indexValueOfArray != undefined && isBinario != undefined){
-                //Cabecalhos.ParBinario.splice(indexValueOfArray,1);
+            if (indexValueOfArray != undefined && isBinario != undefined) {
 
-                if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                if ($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
                     $('#salvarCabecalho1').fadeOut();
                 else
                     $('#salvarCabecalho1').fadeIn();
 
             }
-            e.parents('tr').remove();
+            var indiceTabelaMultiplaEscolha = e.parents('tr').index();
+            if (!isBinario)
+                Cabecalhos.tableMultiplaEscolhaReinicializa(e);
 
+            Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indiceTabelaMultiplaEscolha, 1);
 
-            if(Cabecalhos.tableMultiplaEscolha.rows()[0].length == 0){
+            if (Cabecalhos.tableMultiplaEscolha.rows()[0].length == 0) {
                 $('#camposCabecalhoIncluidos').hide();
             }
 
             updateAllTables();
             Cabecalhos.ParBinario = [];
-            Cabecalhos.tableMultiplaEscolha.clear().draw();
-            binary = false;
+            if (isBinario)
+                Cabecalhos.tableMultiplaEscolha.clear().draw();
 
+            binary = false;
 
         },
 
