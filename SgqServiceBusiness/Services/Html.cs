@@ -679,8 +679,8 @@ namespace SgqServiceBusiness.Services
 
 
             //Gera o level3
-            string level3 = link(outerhtml: span(outerhtml: parLevel3.Name, classe: "levelName") + "<br>" + span(outerhtml: "", classe: "levelNameDebug"),
-                classe: "col-xs-4") + " " + btnHelp;
+            string level3 = link(outerhtml: span(outerhtml: parLevel3.Name, classe: "levelName") + "   " + span(outerhtml: btnHelp) + "<br>" + span(outerhtml: "", classe: "levelNameDebug"),
+                classe: "col-xs-4");
 
             //gera os labels
             string labels = "";
