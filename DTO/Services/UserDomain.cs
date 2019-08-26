@@ -150,7 +150,7 @@ namespace DTO.Services
 
                 //Verificar o local de login
                 /*Se for Brasil executa RN do Sistema Brasil*/
-                if (GlobalConfig.Brasil)
+                if (!GlobalConfig.Eua)
                 {
                     userSgq = LoginBrasil(userDto, userByName);
 

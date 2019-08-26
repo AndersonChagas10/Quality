@@ -10,10 +10,11 @@ namespace Dominio.Seed
 {
     public static class Seed
     {
-        public static void SetSeedValues(bool isPT = false, bool runAppScripts = false)
+        public static void SetSeedValues(bool isPT = false, bool runSetSeed = false)
         {
             DicionarioEstaticoSeed dicionarioSeed = new DicionarioEstaticoSeed();
-            dicionarioSeed.SetDicionarioEstatico();
+            if (runSetSeed)
+                dicionarioSeed.SetDicionarioEstatico();
             //new Task(()=> dicionarioSeed.SetDicionarioEstatico());
 
             using (var db = new Dominio.SgqDbDevEntities())
@@ -30,7 +31,8 @@ namespace Dominio.Seed
             if (isPT)
             {
                 var resourcePtSeed = new ResourcePtSeed();
-                resourcePtSeed.SetResourcePTDictionary();
+                if (runSetSeed)
+                    resourcePtSeed.SetResourcePTDictionary();
                 //new Task(()=>resourcePtSeed.SetResourcePTDictionary());
 
                 using (var db = new Dominio.SgqDbDevEntities())
@@ -46,7 +48,8 @@ namespace Dominio.Seed
             else
             {
                 var resourceENSeed = new ResourceEnSeed();
-                resourceENSeed.SetResourceENDictionary();
+                if (runSetSeed)
+                    resourceENSeed.SetResourceENDictionary();
                 //new Task(() => resourceENSeed.SetResourceENDictionary());
 
                 using (var db = new Dominio.SgqDbDevEntities())
@@ -60,7 +63,7 @@ namespace Dominio.Seed
                 }
             }
 
-            if (runAppScripts)
+            if (runSetSeed)
             {
                 //metodo para preencher os scrips com base nos arquivos da pasta, para mante-los atualizados
                 AppScriptSeed appScriptSeed = new AppScriptSeed();

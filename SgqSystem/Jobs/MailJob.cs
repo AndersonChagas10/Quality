@@ -42,7 +42,7 @@ namespace Jobs
             {
                 if (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.SendMailJob == "on")
                 {
-                    if (GlobalConfig.Brasil)
+                    if (GlobalConfig.Brasil || GlobalConfig.SESMT)
                     {
                         SimpleAsynchronous.CreateMailSgqAppDeviation();
                         Thread.Sleep(new Random().Next(100, 500));
