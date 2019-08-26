@@ -69,7 +69,6 @@ function getCollectionKeys(ParCompany_Id) {
         },
         timeout: 600000,
         error: function () {
-            request.abort();
             contagem++;
             if (contagem > 2) {
                 contagem = 0;
