@@ -827,6 +827,39 @@ IF COL_LENGTH('ParLevel3Value','ShowLevel3Limits') IS NULL
     END
 GO
 
+SET IDENTITY_INSERT ParFrequency ON;
+GO
+BEGIN
+   IF NOT EXISTS (Select * from ParFrequency where Id = 12)
+   BEGIN
+		INSERT into ParFrequency (Id,Name,Description,AddDate,AlterDate,IsActive) VALUES (12,'Bimestral','Bimestral', getdate(), NULL, 1);
+   END
+END 
+GO
+BEGIN
+   IF NOT EXISTS (Select * from ParFrequency where Id = 13)
+   BEGIN
+		INSERT into ParFrequency (Id,Name,Description,AddDate,AlterDate,IsActive) VALUES (13,'Trimestral','Trimestral', getdate(),	NULL, 1);
+   END
+END 
+GO
+BEGIN
+   IF NOT EXISTS (Select * from ParFrequency where Id = 14)
+   BEGIN
+		INSERT into ParFrequency (Id,Name,Description,AddDate,AlterDate,IsActive) VALUES (14,'Semestral','Semestral', getdate(),	NULL, 1);
+   END
+END 
+GO
+BEGIN
+   IF NOT EXISTS (Select * from ParFrequency where Id = 15)
+   BEGIN
+		INSERT into ParFrequency (Id,Name,Description,AddDate,AlterDate,IsActive) VALUES (15,'Anual','Anual', getdate(),	NULL, 1);
+   END
+END 
+GO
+SET IDENTITY_INSERT ParFrequency OFF
+GO
+
 IF COL_LENGTH('ParVinculoPeso','ParGroupParlevel1_id') IS NOT NULL
     BEGIN	
 		ALTER TABLE ParVinculoPeso ADD ParGroupParlevel1_id int null;

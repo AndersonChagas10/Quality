@@ -567,10 +567,12 @@
 
     let listaTipoDadoDeEntradaVinculadosaEmpresaSelecionada = function (listaTipoDado) {
         if (listaTipoDado != null) {
-            if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+            let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
+
+            if (parCompanySelectecId != 0) {
 
                 var listaVinculadaAUnidade = jQuery.grep(listaTipoDado, function (n, i) {
-                    return (n.ParCompany_Id === parseInt($("#selectParCompanyGeral :selected").val()) || n.ParCompany_Id == null);
+                    return (n.ParCompany_Id === parCompanySelectecId || n.ParCompany_Id == null);
                 });
 
                 ParL3TipoDado.load(listaVinculadaAUnidade);
@@ -584,10 +586,12 @@
     let listaVinculoPesoVinculadosaEmpresaSelecionada = function (lista) {
         if (lista != null) {
 
-            if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+            let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
+
+            if (parCompanySelectecId != 0) {
 
                 var listaPesoVinculadaAUnidade = jQuery.grep(lista, function (n, i) {
-                    return (n.ParCompany_Id === parseInt($("#selectParCompanyGeral :selected").val()) || n.ParCompany_Id == null);
+                    return (n.ParCompany_Id === parCompanySelectecId || n.ParCompany_Id == null);
                 });
 
                 ParL3Peso.load(listaPesoVinculadaAUnidade);
@@ -601,10 +605,12 @@
     let listaAvaliacaoAmostraVinculadosaEmpresaSelecionada = function (lista) {
         if (lista != null) {
 
-            if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+            let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
+
+            if (parCompanySelectecId != 0) {
 
                 var listaAvAmVinculadaAUnidade = jQuery.grep(lista, function (n, i) {
-                    return (n.ParCompany_Id === parseInt($("#selectParCompanyGeral :selected").val()) || n.ParCompany_Id == null);
+                    return (n.ParCompany_Id === parCompanySelectecId || n.ParCompany_Id == null);
                 });
 
                 parDCAvam.load(listaAvAmVinculadaAUnidade);
@@ -620,7 +626,7 @@
         
         var unidadeSelecionada;
         if (empresaSelecionada == null) {
-             unidadeSelecionada = parseInt($("#selectParCompanyGeral :selected").val());
+             unidadeSelecionada = parCompanySelectecId;
         } else {
             unidadeSelecionada = empresaSelecionada
         }
@@ -642,7 +648,7 @@
         } else {
 
             var departamentosVinculados = jQuery.grep(ParDepartmentsGlobal, function (n, i) {
-                return (n.ParCompany_Id === unidadeSelecionada);
+                return (n.ParCompany_Id === unidadeSelecionada || n.ParCompany_Id == null);
             });
 
             preencheSelect(selectId, 'Name', 'Id', departamentosVinculados, mensagem);
@@ -705,13 +711,17 @@
         var unidadeSelecionadaTeste = parseInt($("#selectParCompanyGeral :selected").val());
 
         if (unidadeSelecionadaTeste == 0) {
+
             preencheSelect('selectDCAvamParCompany', 'Name', 'Id', parCompanysGlobal, "Todos");
             preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', parCompanysGlobal, "Todos");
             preencheSelect('selectL3PesoParCompany', 'Name', 'Id', parCompanysGlobal, "Todos");
+
         } else {
+
             var unidadesVinculadas = jQuery.grep(parCompanysGlobal, function (n, i) {
                 return (n.Id === unidadeSelecionadaTeste);
             });
+
             preencheSelect('selectDCAvamParCompany', 'Name', 'Id', unidadesVinculadas, "Todos");
             preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', unidadesVinculadas, "Todos");
             preencheSelect('selectL3PesoParCompany', 'Name', 'Id', unidadesVinculadas, "Todos");
