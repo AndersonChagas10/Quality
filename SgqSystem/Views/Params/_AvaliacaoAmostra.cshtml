@@ -108,7 +108,7 @@
             idTable: 'tableAvAm',//
             tdsNames: ['companyName', 'ParLevel1_Name', 'ParCluster_Name', 'ParFrequency_Name' , 'evaluationNumber', 'sampleNumber', 'agendamento', 'btn'],
             getObjAdd: function (isEdit, obj) {
-
+                
                 if (isEdit != undefined) {
 
                     var compId = $('#' + isEdit + ' #avAmCompany :selected').val();
@@ -136,8 +136,8 @@
                         compName = "@Resources.Resource.all"
                     }
 
-                    var ParLevel1_Id = $(' #parLevel1Select2AmostraLevel :selected').val();
-                    var ParLevel1_Name = $(' #parLevel1Select2AmostraLevel :selected').text();
+                    var ParLevel1_Id = $("#parLevel1Select2AmostraLevel  option:first").val()
+                    var ParLevel1_Name = $("#parLevel1Select2AmostraLevel  option:first").text()
 
                     if (ParLevel1_Id == "-1") {
 
@@ -191,7 +191,7 @@
                 /*Verifica Unidade*/
                 var companySelected = $('#' + seletorTato + ' #avAmCompany :selected').val();//
                 var display = $('#' + seletorTato + ' #avAmCompany :selected').text();//
-                var parLevel1Selected = $('#' + seletorTato + ' #parLevel1Select2AmostraLevel :selected').val();
+                var parLevel1Selected = $('#' + seletorTato + ' #parLevel1Select2AmostraLevel option:first').val();
                 var parClusterSelected = $('#' + seletorTato + ' #parClusterSelect2AmostraLevel :selected').val();
 
                 var exist = $.grep($('#tableAvAm  tbody  tr  td:nth-child(1)'), function (o, c) {
@@ -240,7 +240,7 @@
                 return true;
             },
             incluiNoObjetoParaSubmit: function(dados){
-
+                
                 var level = this.levelControl;
                 $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
 
@@ -339,7 +339,6 @@
             },
             /*Fim Setup*/
             adiciona: function (e) {
-
                 if (this.veifyAdd()) {
 
                     var object = this.getObjAdd();

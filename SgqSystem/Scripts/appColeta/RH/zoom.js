@@ -18,22 +18,14 @@ function configureZoom() {
 }
 
 function applyZoom(zoom) {
-
     if (!localStorage.getItem('zoom') && zoom) {
-
         localStorage.setItem('zoom', zoom);
-
     } else if (!zoom) {
-
         zoom = parseFloat(localStorage.getItem('zoom'));
-
     } else {
-
         localStorage.setItem('zoom', parseFloat(localStorage.getItem('zoom')) + zoom);
-
     }
-
-    $('html').css('zoom', parseFloat($('html').css('zoom')) + zoom);
+    $('html').css('zoom', parseFloat(localStorage.getItem('zoom')));
 }
 
 $(document).on('click', '#zoomPlus', function () {

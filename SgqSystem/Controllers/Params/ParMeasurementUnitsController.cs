@@ -46,6 +46,12 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Description,AddDate,AlterDate,IsActive")] ParMeasurementUnit parMeasurementUnit)
         {
+            if (string.IsNullOrEmpty(parMeasurementUnit.Name))
+                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+
+            if (string.IsNullOrEmpty(parMeasurementUnit.Description))
+                ModelState.AddModelError("Description", Resources.Resource.required_field + " " + Resources.Resource.description);
+
             if (ModelState.IsValid)
             {
                 db.ParMeasurementUnit.Add(parMeasurementUnit);
@@ -78,6 +84,12 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Description,AddDate,AlterDate,IsActive")] ParMeasurementUnit parMeasurementUnit)
         {
+            if (string.IsNullOrEmpty(parMeasurementUnit.Name))
+                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+
+            if (string.IsNullOrEmpty(parMeasurementUnit.Description))
+                ModelState.AddModelError("Description", Resources.Resource.required_field + " " + Resources.Resource.description);
+
             if (ModelState.IsValid)
             {
                 db.Entry(parMeasurementUnit).State = EntityState.Modified;

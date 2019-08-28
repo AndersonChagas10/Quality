@@ -4056,7 +4056,7 @@ namespace SgqServiceBusiness.Api
             return evaluate;
         }
 
-        protected int getParFrequency_Id(SGQDBContext.ParLevel1 parlevel1, SGQDBContext.ParLevel2 parlevel2)
+        protected int getParFrequency_Id(SGQDBContext.ParLevel1 parlevel1, SGQDBContext.ParLevel2 parlevel2, int ParCompany_Id)
         {
             int parfrenquency_Id = 0;
 
@@ -4065,21 +4065,25 @@ namespace SgqServiceBusiness.Api
             	CASE
             		WHEN FPE.ParFrequency_Id IS NULL THEN FPL2.ParFrequency_Id
             		ELSE FPE.ParFrequency_Id
-            	END as ParFrequency_Id
+            	END as ParFrequency_Id,
+				FPE.ParCompany_Id
             FROM (SELECT
-            			 ParFrequency_Id
+            			 ParFrequency_Id,
+						 ParCompany_Id
             		 FROM ParEvaluation
             		 WHERE 1 = 1
             		 AND ParLevel1_Id = @ParLevel1_Id
             		 AND ParLevel2_Id = @ParLevel2_Id
             		 AND ParCluster_Id = @ParCluster_Id
-            		 AND IsActive = 1) AS FPE
+            		 AND IsActive = 1
+					 AND (ParCompany_Id = @ParCompany_Id OR ParCompany_Id IS NULL)) AS FPE
             	,(SELECT
             			 ParFrequency_Id
             		 FROM ParLevel2
             		 WHERE 1 = 1
             		 AND Id = @ParLevel2_Id
-            		 AND IsActive = 1) AS FPL2";
+            		 AND IsActive = 1) AS FPL2
+					 ORDER BY ParCompany_Id DESC";
 
             string conexao = this.conexao;
             try
@@ -4090,6 +4094,7 @@ namespace SgqServiceBusiness.Api
                     {
 
                         command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
                         command.Parameters.Add(new SqlParameter("@ParLevel1_Id", parlevel1.ParLevel1_Id));
                         command.Parameters.Add(new SqlParameter("@ParLevel2_Id", parlevel2.ParLevel2_id));
                         command.Parameters.Add(new SqlParameter("@ParCluster_Id", parlevel1.ParCluster_Id));
@@ -5421,7 +5426,7 @@ namespace SgqServiceBusiness.Api
                 string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
 
-                var parlevel2ParFrequency = getParFrequency_Id(ParLevel1, parlevel2);
+                var parlevel2ParFrequency = getParFrequency_Id(ParLevel1, parlevel2, ParCompany_Id);
 
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
@@ -5631,6 +5636,12 @@ namespace SgqServiceBusiness.Api
                     lineCounters = html.painelCounters(listLineCounter.Where(r => r.Local == "level2_line"), "margin-top: 45px;font-size: 12px;");
                 }
 
+                //Gera monitoramento do level3
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3);
+
+                if (string.IsNullOrEmpty(groupLevel3))
+                    continue;
+
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
@@ -5641,10 +5652,6 @@ namespace SgqServiceBusiness.Api
                                                                html.div(classe: "level2Debug") +
                                                                lineCounters
                                                     );
-
-
-                //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3);
 
                 if (ParLevel1.HasGroupLevel2 == true)
                 {

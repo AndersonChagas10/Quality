@@ -141,6 +141,9 @@ namespace SgqSystem.Controllers
 
             if (string.IsNullOrEmpty(parModule.Name))
                 ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+
+            if (string.IsNullOrEmpty(parModule.Description))
+                ModelState.AddModelError("Description", Resources.Resource.required_field + " " + Resources.Resource.description);
         }
     }
 }
