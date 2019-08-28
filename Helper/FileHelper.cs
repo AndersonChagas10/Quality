@@ -11,10 +11,12 @@ namespace Helper
 {
     public class FileHelper
     {
-        public static FileStream DownloadPhoto(string fileAddress
-            , string usuarioServidor, string senhaServidor)
+        public static byte[] DownloadPhoto(string fileAddress
+            , string usuarioServidor, string senhaServidor, out Exception exception)
         {
+            exception = null;
             FileStream stream;
+            byte[] bytes = new byte[0];
 
             try
             {
@@ -30,15 +32,22 @@ namespace Helper
                     {
 
                         stream = File.OpenRead(fileAddress);
+
+                        if (stream != null)
+                        {
+                            bytes = new byte[stream.Length];
+                            stream.Read(bytes, 0, bytes.Length);
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
+                exception = ex;
                 return null;
             }
 
-            return stream;
+            return bytes;
         }
 
         public static bool SavePhoto(string base64Arquivo, string fileAddress, string fileName
