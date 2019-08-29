@@ -403,6 +403,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
+    <Compile Include="Controllers\CrudGenerico\ComponenteGenericoController.cs" />
     <Compile Include="Controllers\DicionarioEstaticoController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
@@ -2115,6 +2116,8 @@
     <Content Include="Views\IntegracaoSistemicas\Edit.cshtml" />
     <Content Include="Views\IntegracaoSistemicas\Index.cshtml" />
     <Content Include="Views\Relatorios\MSP\RelatorioMSP.cshtml" />
+    <Content Include="Views\ComponenteGenerico\Index.cshtml" />
+    <Content Include="Views\ComponenteGenerico\Edit.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

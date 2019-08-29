@@ -1,0 +1,112 @@
+﻿@using DTO
+@model IEnumerable<Dominio.ComponenteGenerico>
+
+@{
+    ViewBag.Title = "Componente";
+}
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Novo Componente</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">Novo</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <p>
+                                    @Html.ActionLink("Novo componente", "Edit", null, new { @class = "btn btn-primary" })
+                                </p>
+                                <table class="table table-condensed" id="tabelaComponentes">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Nome
+                                            </th>
+                                            <th>
+                                                Ativo
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+
+    $(document).ready(function () {
+
+        closeLeftSidebar();
+
+        $('#tabelaComponentes').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+            "aoColumns": [
+                null,
+                null,
+                null,
+                null,
+                { "bSearchable": false }
+            ],
+            "order": [[1, "asc"]],
+               "language": {
+                "lengthMenu": "Mostrar _MENU_ resultados por página",
+                "emptyTable": "Sem dados"
+            }
+        });
+    });
+</script>
