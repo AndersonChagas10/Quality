@@ -1,0 +1,272 @@
+﻿@model Dominio.AppViewModel.ComponenteGenericoValorViewModel
+
+@{
+    ViewBag.Title = Resources.Resource.edit;
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                    <a href="@Url.Action("List", "ComponenteGenerico", new { id = Model.ComponenteGenerico.Id })">@Model.ComponenteGenerico.Name</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.edit</span>
+                </li>
+            </ul>
+            <div class="page-toolbar"></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Model.ComponenteGenerico.Name</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <div class="form-horizontal">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(Model => Model.ComponenteGenerico.Id)
+
+                                    @foreach (var item in Model.Colunas)
+                                    {
+
+                                        switch (item.ComponenteGenericoTipoColuna_Id)
+                                        {
+
+                                            case 1: //text
+                                                <div class="form-group">
+
+                                                    @{
+                                                        var id = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Id).FirstOrDefault();
+                                                        var saveId = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.SaveId).FirstOrDefault();
+                                                        var value = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Valor).FirstOrDefault();
+                                                    }
+
+                                                    @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        <input type="text" class="form-control formSave" isRequired="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
+                                                    </div>
+                                                </div>
+
+                                                break;
+
+                                            case 2: //number
+                                                <div class="form-group">
+
+                                                    @{
+                                                        id = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Id).FirstOrDefault();
+                                                        saveId = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.SaveId).FirstOrDefault();
+                                                        value = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Valor).FirstOrDefault();
+                                                    }
+
+                                                    @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        <input type="number" class="form-control formSave" isRequired="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
+                                                    </div>
+                                                </div>
+                                                break;
+
+                                            case 3: //checkbox
+                                                <div class="form-group">
+
+                                                    @{
+                                                        id = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Id).FirstOrDefault();
+                                                        saveId = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.SaveId).FirstOrDefault();
+                                                        value = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Valor).FirstOrDefault();
+                                                    }
+
+                                                    @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        <input type="checkbox" class="form-control formSave" isRequired="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
+                                                    </div>
+                                                </div>
+                                                break;
+
+                                            case 4: //textarea
+                                                <div class="form-group">
+
+                                                    @{
+                                                        id = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Id).FirstOrDefault();
+                                                        saveId = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.SaveId).FirstOrDefault();
+                                                        value = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Valor).FirstOrDefault();
+                                                    }
+
+                                                    @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        <textarea class="form-control formSave" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id"></textarea>
+                                                    </div>
+                                                </div>
+                                                break;
+
+                                            case 5: //select
+                                                <div class="form-group">
+
+                                                    @{
+                                                        id = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Id).FirstOrDefault();
+                                                        saveId = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.SaveId).FirstOrDefault();
+                                                        value = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Valor).FirstOrDefault();
+                                                    }
+
+                                                    @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        <select class="form-control" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                break;
+
+                                            case 6: //date
+                                                <div class="form-group">
+
+                                                    @{
+                                                        id = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Id).FirstOrDefault();
+                                                        saveId = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.SaveId).FirstOrDefault();
+                                                        value = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Valor).FirstOrDefault();
+                                                    }
+
+                                                    @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        <input type="date" class="form-control" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
+                                                    </div>
+                                                </div>
+                                                break;
+
+                                            case 7: //hour
+                                                <div class="form-group">
+
+                                                    @{
+                                                        id = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Id).FirstOrDefault();
+                                                        saveId = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.SaveId).FirstOrDefault();
+                                                        value = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Valor).FirstOrDefault();
+                                                    }
+
+                                                    @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        <input type="time" class="form-control" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
+                                                    </div>
+                                                </div>
+                                                break;
+
+                                            default:
+                                                break;
+
+                                        }
+                                    }
+
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" id="save" />
+                                            @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+
+    });
+
+    $('#save').on('click', function () {
+
+        let listObjToSave = [];
+        let formIsValid = true;
+
+        $('#setup_tab input.formSave, #setup_tab textarea.formSave, #setup_tab select.formSave').each(function () {
+
+            $(this).css('background-color', '');
+
+            let objToSave = {};
+
+            objToSave.Id = $(this).attr('id');
+            objToSave.SaveId = $(this).attr('saveId');
+            objToSave.ComponenteGenerico_Id = $(this).attr('componenteGenericoId');
+            objToSave.ComponenteGenericoColuna_Id = $(this).attr('componenteGenericoColunaId');
+
+            if ($(this).is('input:checkbox')) {
+
+                objToSave.Valor = $(this).prop('checked');
+
+            } else if ($(this).is('input')) {
+
+                objToSave.Valor = $(this).val();
+
+            } else if ($(this).is('select')) {
+
+                objToSave.Valor = $(this).find('option:selected').val();
+            }
+
+            //Validar o form
+            if (!inputIsValid(objToSave, this)) {
+                formIsValid = false;
+                return false;
+            }
+
+            listObjToSave.push(objToSave);
+
+        });
+
+        if (!formIsValid) {
+            return false;
+        }
+
+
+        let objToSave = {
+            Valores: listObjToSave,
+            ComponenteGenerico: JSON.parse('@Html.Raw(Json.Encode(Model.ComponenteGenerico))')
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'EditValor',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(objToSave),
+            async: false,
+            success: function (data, status) {
+                openMessageModal(Resources("saved_successfully"), "");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+                openMessageModal(Resources("error"), "");
+            }
+        });
+
+    });
+
+    function inputIsValid(objToSave, input) {
+
+        let isRequired = $(input).attr('isRequired');
+
+        if (isRequired && (objToSave.Valor == null || objToSave.Valor == "")) {
+            openMessageModal(Resources("required_fields_unfilled"));
+            $(input).css('background-color', 'rgba(255, 0, 0, 0.2)');
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
+

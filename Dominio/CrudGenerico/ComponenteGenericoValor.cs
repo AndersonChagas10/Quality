@@ -13,7 +13,7 @@ namespace Dominio
         public int SaveId { get; set; }
         public int ComponenteGenerico_Id { get; set; }
         public int ComponenteGenericoColuna_Id { get; set; }
-        public int Valor { get; set; }
+        public string Valor { get; set; }
 
         [ForeignKey("ComponenteGenerico_Id")]
         public ComponenteGenerico ComponenteGenerico { get; set; }

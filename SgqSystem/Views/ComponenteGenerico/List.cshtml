@@ -1,10 +1,9 @@
 ﻿@using DTO
-@model IEnumerable<Dominio.ComponenteGenerico>
+@model Dominio.AppViewModel.ComponenteGenericoValorViewModel
 
 @{
-    ViewBag.Title = "Componente";
+    ViewBag.Title = "";
 }
-
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
@@ -19,7 +18,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Novo Componente</span>
+                    <span>CRUD</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -40,40 +39,38 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink("Novo componente", "Edit", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink("Novo", "EditValor", new { id = Model.ComponenteGenerico.Id }, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table table-condensed" id="tabelaComponentes">
+                                <table class="table table-condensed" id="tabela">
                                     <thead>
                                         <tr>
-                                            <th>
-                                                Nome
-                                            </th>
-                                            <th>
-                                                Ativo
-                                            </th>
+                                            @foreach (var item in Model.Colunas)
+                                            {
+                                                <th>
+                                                    @item.Name
+                                                </th>
+                                            }
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model)
+                                        @foreach (var saveId in Model.Valores.Select(x => x.SaveId).Distinct())
                                         {
                                             <tr>
+                                                @foreach (var item in Model.Colunas)
+                                                {
+                                                    <td>
+                                                        @Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id && x.SaveId == saveId).FirstOrDefault().Valor
+                                                    </td>
+                                                }
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.IsActive)
-                                                </td>
-                                                <td>
-                                                    @Html.ActionLink("Editar Tabela", "Edit", new { id = item.Id }, new { @class = "btn btn-success btn-sm" })
-                                                    @Html.ActionLink("Ver Dados", "List", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
+                                                    @Html.ActionLink("Editar Tabela", "EditValor", new { id = Model.ComponenteGenerico.Id, idValor = saveId }, new { @class = "btn btn-success btn-sm" })
                                                 </td>
                                             </tr>
                                         }
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -92,7 +89,7 @@
 
         closeLeftSidebar();
 
-        $('#tabelaComponentes').dataTable({
+        $('table').dataTable({
             "aoPaging": true,
             "aoSearching": true,
             "aoColumns": [
@@ -103,10 +100,11 @@
                 { "bSearchable": false }
             ],
             "order": [[1, "asc"]],
-               "language": {
+            "language": {
                 "lengthMenu": "Mostrar _MENU_ resultados por página",
                 "emptyTable": "Sem dados"
             }
         });
     });
+
 </script>

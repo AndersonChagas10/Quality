@@ -47,55 +47,11 @@ namespace SgqSystem.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View();
             }
         }
-
-        // GET: ComponenteGenerico/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return RedirectToAction("Create", new { componenteGenerico_Id = id });
-        //}
-
-        //// POST: ComponenteGenerico/Edit/5
-        //[HttpPost]
-        //public ActionResult Edit(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add update logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: ComponenteGenerico/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: ComponenteGenerico/Delete/5
-        //[HttpPost]
-        //public ActionResult Delete(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
 
         private ComponenteGenerico SaveOrUpdateComponenteGenerico(ComponenteGenerico componenteGenerico)
         {
@@ -128,12 +84,13 @@ namespace SgqSystem.Controllers
 
                 foreach (var componenteGenericoColuna in collection.ComponentesGenericosColuna)
                 {
+                    componenteGenericoColuna.ComponenteGenerico = null;
+                    componenteGenericoColuna.ComponenteGenericoTipoColuna = null;
+
                     if (componenteGenericoColuna.Id > 0)
                     {
                         componenteGenericoColuna.ComponenteGenerico_Id = collection.ComponenteGenerico.Id;
                         componenteGenericoColuna.AlterDate = DateTime.Now;
-                        componenteGenericoColuna.ComponenteGenerico = null;
-                        componenteGenericoColuna.ComponenteGenericoTipoColuna = null;
                         db.Entry(componenteGenericoColuna).State = System.Data.Entity.EntityState.Modified;
                     }
                     else
@@ -148,6 +105,91 @@ namespace SgqSystem.Controllers
             }
 
             return collection.ComponentesGenericosColuna;
+        }
+
+        //Componente Generico Valor
+        public ActionResult List(int id)
+        {
+            var retorno = new ComponenteGenericoValorViewModel();
+
+            var colunas = db.ComponenteGenericoColuna.Where(x => x.IsActive && x.ComponenteGenerico_Id == id).ToList();
+            var dados = db.ComponenteGenericoValor.Where(x => x.ComponenteGenerico_Id == id).ToList();
+
+            retorno.Colunas = colunas;
+            retorno.Valores = dados;
+            retorno.ComponenteGenerico = db.ComponenteGenerico.Find(id);
+
+            return View(retorno);
+        }
+
+        public ActionResult EditValor(int id, int? idValor)
+        {
+            var retorno = new ComponenteGenericoValorViewModel();
+
+            var colunas = db.ComponenteGenericoColuna.Where(x => x.IsActive && x.ComponenteGenerico_Id == id).ToList();
+            var dados = db.ComponenteGenericoValor.Where(x => x.ComponenteGenerico_Id == id && x.SaveId == idValor).ToList();
+
+            retorno.Colunas = colunas;
+            retorno.Valores = dados;
+            retorno.ComponenteGenerico = db.ComponenteGenerico.Find(id);
+
+            return View(retorno);
+        }
+
+        [HttpPost]
+        public ActionResult EditValor(ComponenteGenericoValorViewModel componenteGenericoValores)
+        {
+
+            try
+            {
+                SaveOrUpdateComponenteGenericoValor(componenteGenericoValores.Valores);
+
+                return RedirectToAction("List", new { id = componenteGenericoValores.ComponenteGenerico.Id });
+            }
+            catch (Exception ex)
+            {
+                if (componenteGenericoValores.Valores.FirstOrDefault().SaveId == 0)
+                    return RedirectToAction("EditValor", new { id = componenteGenericoValores.ComponenteGenerico.Id });
+
+                else
+                    return RedirectToAction("EditValor", new { id = componenteGenericoValores.ComponenteGenerico.Id, idValor = componenteGenericoValores.Valores.FirstOrDefault().SaveId });
+
+            }
+        }
+
+        private List<ComponenteGenericoValor> SaveOrUpdateComponenteGenericoValor(List<ComponenteGenericoValor> componenteGenericoValores)
+        {
+
+            int hash = 0;
+
+            foreach (var componenteGenericoValor in componenteGenericoValores)
+            {
+
+                componenteGenericoValor.ComponenteGenerico = null;
+                componenteGenericoValor.ComponenteGenericoColuna = null;
+
+                if (componenteGenericoValor.Id == 0)//ADD
+                {
+
+                    componenteGenericoValor.AddDate = DateTime.Now;
+
+                    if (hash == 0)
+                        hash = DateTime.Now.GetHashCode();
+
+                    componenteGenericoValor.SaveId = hash;
+                    db.ComponenteGenericoValor.Add(componenteGenericoValor);
+
+                }
+                else //update
+                {
+                    componenteGenericoValor.AlterDate = DateTime.Now;
+                    db.Entry(componenteGenericoValor).State = System.Data.Entity.EntityState.Modified;
+                }
+            }
+
+            db.SaveChanges();
+
+            return componenteGenericoValores;
         }
     }
 }
