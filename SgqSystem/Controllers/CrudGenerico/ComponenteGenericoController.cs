@@ -113,7 +113,7 @@ namespace SgqSystem.Controllers
             var retorno = new ComponenteGenericoValorViewModel();
 
             var colunas = db.ComponenteGenericoColuna.Where(x => x.IsActive && x.ComponenteGenerico_Id == id).ToList();
-            var dados = db.ComponenteGenericoValor.Where(x => x.ComponenteGenerico_Id == id).ToList();
+            var dados = db.ComponenteGenericoValor.Where(x => x.ComponenteGenerico_Id == id && x.IsActive).ToList();
 
             retorno.Colunas = colunas;
             retorno.Valores = dados;
@@ -127,7 +127,7 @@ namespace SgqSystem.Controllers
             var retorno = new ComponenteGenericoValorViewModel();
 
             var colunas = db.ComponenteGenericoColuna.Where(x => x.IsActive && x.ComponenteGenerico_Id == id).ToList();
-            var dados = db.ComponenteGenericoValor.Where(x => x.ComponenteGenerico_Id == id && x.SaveId == idValor).ToList();
+            var dados = db.ComponenteGenericoValor.Where(x => x.ComponenteGenerico_Id == id && x.SaveId == idValor && x.IsActive).ToList();
 
             retorno.Colunas = colunas;
             retorno.Valores = dados;
@@ -176,6 +176,7 @@ namespace SgqSystem.Controllers
                     if (hash == 0)
                         hash = DateTime.Now.GetHashCode();
 
+                    componenteGenericoValor.IsActive = true;
                     componenteGenericoValor.SaveId = hash;
                     db.ComponenteGenericoValor.Add(componenteGenericoValor);
 
@@ -190,6 +191,23 @@ namespace SgqSystem.Controllers
             db.SaveChanges();
 
             return componenteGenericoValores;
+        }
+
+        [HttpPost]
+        public bool DeleteValor(int id, int? idValor)
+        {
+            try
+            {
+                var dados = db.ComponenteGenericoValor.Where(x => x.IsActive && x.SaveId == idValor && x.ComponenteGenerico_Id == id).ToList();
+                dados.ForEach(x => x.IsActive = false);
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
         }
     }
 }

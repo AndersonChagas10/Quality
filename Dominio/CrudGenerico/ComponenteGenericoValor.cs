@@ -14,6 +14,7 @@ namespace Dominio
         public int ComponenteGenerico_Id { get; set; }
         public int ComponenteGenericoColuna_Id { get; set; }
         public string Valor { get; set; }
+        public bool IsActive { get; set; }
 
         [ForeignKey("ComponenteGenerico_Id")]
         public ComponenteGenerico ComponenteGenerico { get; set; }

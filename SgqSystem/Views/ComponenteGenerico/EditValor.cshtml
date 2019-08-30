@@ -165,7 +165,7 @@
                                     <div class="form-group">
                                         <div class="col-md-offset-2 col-md-10">
                                             <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" id="save" />
-                                            @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
+                                            @Html.ActionLink(Resources.Resource.back_to_list as string, "List", new { id = Model.ComponenteGenerico.Id }, new { @class = "btn btn-default" })
                                         </div>
                                     </div>
                                 </div>
@@ -243,7 +243,9 @@
             data: JSON.stringify(objToSave),
             async: false,
             success: function (data, status) {
+                debugger
                 openMessageModal(Resources("saved_successfully"), "");
+                window.location.href = '@Url.Action("List", new { id = Model.ComponenteGenerico.Id })'
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest);

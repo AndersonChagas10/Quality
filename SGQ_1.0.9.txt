@@ -924,6 +924,7 @@ CREATE TABLE ComponenteGenericoValor(
 	ComponenteGenerico_Id int not null foreign key references ComponenteGenerico(Id),
 	ComponenteGenericoColuna_Id int not null foreign key references ComponenteGenericoColuna(Id),
 	Valor varchar(255),
+	IsActive bit not null default 1
 )
 
 GO
