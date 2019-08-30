@@ -411,8 +411,12 @@ function setAvaliationAndSampleOnLvl2(level2, evaluate, sample) {
 
 function setAvaliationAndSampleLvl2Line(level2) {
 
-    var evaluatecurrent = $(level2).attr('evaluatecurrent');
-    $(level2).next().find('.evaluateCurrent').html(evaluatecurrent);
-    $(level2).next().find('.sampleCurrentTotal').html($(level2).attr('samplecurrent'));
+    //var evaluatecurrent = $(level2).attr('evaluatecurrent');
+    //$(level2).next().find('.evaluateCurrent').html(evaluatecurrent);
+    var evaluatecurrent = $(level2).attr('evaluate');
+    if(parseInt(evaluatecurrent) == 0)
+        $(level2).next().find('.evaluateCurrent').html($(level2).attr('evaluatecurrent'));
+    var samplecurrent = parseInt($(level2).attr('samplecurrent'));
+    $(level2).next().find('.sampleCurrentTotal').html(samplecurrent == 0 ? $(level2).attr('sample') : samplecurrent);
 
 }

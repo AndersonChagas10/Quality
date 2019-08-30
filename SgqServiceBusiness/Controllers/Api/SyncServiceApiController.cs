@@ -577,6 +577,7 @@ namespace SgqServiceBusiness.Api
                             string cluster = parCluster_Id;
                             string ParReason_Id = null;
                             string ParReasonType_Id = null;
+                            string parDepartment_Id = null;
 
                             if (result.Length > 47)
                             {
@@ -596,6 +597,11 @@ namespace SgqServiceBusiness.Api
                             {
                                 ParReason_Id = result[50];
                                 ParReasonType_Id = result[51];
+                            }
+
+                            if (result.Length > 51)
+                            {
+                                parDepartment_Id = result[52];
                             }
 
                             //Gera o Cabeçalho do Level02
@@ -633,6 +639,7 @@ namespace SgqServiceBusiness.Api
                             level02HeaderJSon += ";" + cluster; //[31]
                             level02HeaderJSon += ";" + ParReason_Id; //[32]
                             level02HeaderJSon += ";" + ParReasonType_Id; //[33]
+                            level02HeaderJSon += ";" + parDepartment_Id; //[34]
 
                             //level02HeaderJSon += ";" + alertaAtual;
 
@@ -1191,7 +1198,7 @@ namespace SgqServiceBusiness.Api
                     isemptylevel3 = BoolConverter(isemptylevel3);
 
                     string cluster = DefaultValueReturn(arrayHeader[31], null);
-                    string parDepartment_Id = DefaultValueReturn(arrayHeader[33], null);
+                    string parDepartment_Id = DefaultValueReturn(arrayHeader[34], null);
 
                     string haveReaudit = BoolConverter(c.haveReaudit.ToString());
 
@@ -1262,7 +1269,7 @@ namespace SgqServiceBusiness.Api
 
                     if (arrayHeader.Length > 33)
                     {
-                        parDepartment_Id = arrayHeader[33];
+                        parDepartment_Id = arrayHeader[34];
                     }
 
                     int parDepartmentId = 0;
@@ -8116,40 +8123,109 @@ namespace SgqServiceBusiness.Api
                     SqlCommand command;
 
                     string query = $@"
-                        DECLARE @ID INT=@CollectionLevel2_Id
-                        DECLARE @Defects DECIMAL(10,3)                                                                                            
-                        DECLARE @DefectsResult DECIMAL(10, 3)                                                                                     
-                        DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                  
-                        DECLARE @WeiEvaluation DECIMAL(10, 3)                                                                                     
-                        DECLARE @WeiDefects DECIMAL(10, 3)                                                                                        
-                        DECLARE @TotalLevel3Evaluation  DECIMAL(10, 3)                                                                            
-                        DECLARE @TotalLevel3WithDefects DECIMAL(10, 3)                                                                            
-                                                                                                                                                  
-                        select                                                                                                                    
-                                                                                                                                                  
-                        @Defects = isnull(sum(r3.Defects),0),                                                                                     
-                        @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                      
-                        @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   
-                        @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         
-                        @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               
+                       DECLARE @ID BIGINT=@CollectionLevel2_Id
+                    DECLARE @CL2 INT
+                    DECLARE @CL1 INT
+                    DECLARE @Defects DECIMAL(10,3)                                                                                           
+                    DECLARE @DefectsResult DECIMAL(10, 3)                                                                                    
+                    DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                 
+                    DECLARE @WeiEvaluation DECIMAL(10, 3)                                                                                    
+                    DECLARE @WeiDefects DECIMAL(10, 3)                                                                                       
+                    DECLARE @TotalLevel3Evaluation  DECIMAL(10, 3)                                                                           
+                    DECLARE @TotalLevel3WithDefects DECIMAL(10, 3)                                                                           
 
-                        @TotalLevel3Evaluation = count(1),
-                        @TotalLevel3WithDefects = (select count(1) from result_level3  WITH (NOLOCK) where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         
-                        from result_level3 r3 WITH (NOLOCK)                                                                                                    
-                        where collectionlevel2_id = @ID                                                                                           
-                        and r3.IsNotEvaluate = 0                                                                                                  
-                                                                                                                                                  
-                                                                                                                                                  
-                        UPDATE CollectionLevel2                                                                                                   
-                        SET Defects = @Defects                                                                                                    
-                        , DefectsResult = @DefectsResult                                                                                          
-                        , EvaluatedResult = @EvatuationResult                                                                                     
-                        , WeiEvaluation = @WeiEvaluation                                                                                          
-                        , WeiDefects = @WeiDefects                                                                                                
-                        , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                          
-                        , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        
-                        , AlterDate = GETDATE()                                                                                                   
-                        WHERE Id = @ID SELECT 1";
+                    select
+                                                                                                                         
+                    @Defects = isnull(sum(r3.Defects),0),                                                                                    
+                    @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                     
+                    @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                  
+                    @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                        
+                    @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                              
+                    @TotalLevel3Evaluation = count(1),                                                                                       
+                    @TotalLevel3WithDefects = SUM(IIF(r3.Defects > 0 AND r3.IsNotEvaluate = 0,1,0 ))
+                    from result_level3 r3 WITH (NOLOCK)                                                                                      
+                    where collectionlevel2_id = @ID                                                                                          
+                    and r3.IsNotEvaluate = 0                                                                                                 
+                                                                                                                         
+                    UPDATE CollectionLevel2                                                                                                  
+                    SET Defects = @Defects                                                                                                   
+                    , DefectsResult = @DefectsResult                                                                                         
+                    , EvaluatedResult = @EvatuationResult                                                                                    
+                    , WeiEvaluation = @WeiEvaluation                                                                                         
+                    , WeiDefects = @WeiDefects                                                                                               
+                    , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                         
+                    , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                       
+                    , AlterDate = GETDATE()                                                                                                  
+                    WHERE Id = @ID         --SELECT 1     
+
+                    DECLARE @MAXEVALERT INT
+                    DECLARE @LAST2ALERT INT
+
+
+                    SELECT @CL2 = ConsolidationLevel2_Id FROM CollectionLevel2 WITH (NOLOCK) WHERE ID = @ID
+
+
+                    SELECT 
+	                      @WeiEvaluation = SUM(WeiEvaluation) 
+	                    , @Defects = SUM(Defects) 
+	                    , @WeiDefects = SUM(WeiDefects) 
+	                    , @TotalLevel3WithDefects = SUM(TotalLevel3WithDefects) 
+	                    , @TotalLevel3Evaluation = SUM(TotalLevel3Evaluation) 
+	                    , @MAXEVALERT = MAX(LastEvaluationAlert) 
+	                    , @LAST2ALERT = (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 WHERE Id = max(c2.id)) 
+	                    , @EvatuationResult =  SUM(EvaluatedResult) 
+	                    , @DefectsResult  = SUM(DefectsResult)
+
+                    FROM CollectionLevel2 C2  (nolock) WHERE  ConsolidationLevel2_Id = @CL2 
+
+
+                    group by ConsolidationLevel2_Id
+
+                    UPDATE ConsolidationLevel2 
+                    SET AlertLevel=ISNULL(@LAST2ALERT,0)
+                       , WeiEvaluation=@WeiEvaluation
+                       , EvaluateTotal=@EvatuationResult
+                       , DefectsTotal=@DefectsResult
+                       , WeiDefects=@WeiDefects
+                       , TotalLevel3Evaluation=@TotalLevel3Evaluation
+                       , TotalLevel3WithDefects=@TotalLevel3WithDefects
+                       , LastEvaluationAlert = ISNULL(@MAXEVALERT,0)
+                       , LastLevel2Alert = ISNULL(@LAST2ALERT,0)
+                       , EvaluatedResult=@EvatuationResult
+                       , DefectsResult=@DefectsResult
+                    WHERE ID = @CL2   
+
+                    SELECT @CL1 = ConsolidationLevel1_Id FROM ConsolidationLevel2 WHERE ID = @CL2
+
+
+                    select 
+	                    @WeiEvaluation = SUM(WeiEvaluation) 
+	                    , @EvatuationResult =  SUM(EvaluateTotal)
+	                    , @Defects = SUM(DefectsTotal)
+	                    , @WeiDefects = SUM(WeiDefects) 
+	                    , @TotalLevel3Evaluation = SUM(TotalLevel3Evaluation) 
+	                    , @TotalLevel3WithDefects = SUM(TotalLevel3WithDefects) 
+	                    , @MAXEVALERT = MAX(LastEvaluationAlert) 
+	                    , @LAST2ALERT = (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 (nolock)  WHERE ConsolidationLevel2_Id = max(c2.id))
+	                    , @EvatuationResult = SUM(EvaluatedResult) 
+	                    , @DefectsResult = SUM(DefectsResult) 
+                    FROM ConsolidationLevel2 C2 (nolock)  
+                    where ConsolidationLevel1_Id=@CL1   
+
+                    UPDATE ConsolidationLevel1 
+	                    SET AtualAlert=@LAST2ALERT
+	                    , Evaluation= @TotalLevel3Evaluation
+	                    , WeiEvaluation=@WeiEvaluation
+	                    , EvaluateTotal=@EvatuationResult
+	                    , DefectsTotal=@Defects
+	                    , WeiDefects=@WeiDefects
+	                    , TotalLevel3Evaluation=@TotalLevel3Evaluation
+	                    , TotalLevel3WithDefects=@TotalLevel3WithDefects
+	                    , LastEvaluationAlert=@MAXEVALERT
+	                    , LastLevel2Alert=@LAST2ALERT
+	                    , EvaluatedResult= @EvatuationResult
+	                    , DefectsResult=@DefectsResult
+                    WHERE ID=@CL1";
 
 
                     command = new SqlCommand(query, connection);
@@ -8162,20 +8238,21 @@ namespace SgqServiceBusiness.Api
                     if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
 
-                using (var db = new Dominio.SgqDbDevEntities())
-                {
-                    int idl2 = Int32.Parse(collectionLevel2_Id);
-                    Dominio.CollectionLevel2 collectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == idl2);
+                //using (var db = new Dominio.SgqDbDevEntities())
+                //{
+                //    int idl2 = Int32.Parse(collectionLevel2_Id);
+                //    Dominio.CollectionLevel2 collectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == idl2);
 
 
-                    int company_Id = collectionLevel2.UnitId;
-                    int level1_Id = collectionLevel2.ParLevel1_Id;
-                    DateTime data = collectionLevel2.CollectionDate.Date;
+                //    int company_Id = collectionLevel2.UnitId;
+                //    int level1_Id = collectionLevel2.ParLevel1_Id;
+                //    DateTime data = collectionLevel2.CollectionDate.Date;
 
-                    var retorno = _ReConsolidationByLevel1(company_Id, level1_Id, data);
+                //    var retorno = _ReConsolidationByLevel1(company_Id, level1_Id, data);
 
-                    return "OK";
-                }
+                //    return "OK";
+                //}
+                return "OK";
             }
             catch (Exception e)
             {
