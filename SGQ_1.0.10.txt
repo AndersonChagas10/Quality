@@ -134,7 +134,7 @@ GO
 SET IDENTITY_INSERT ParFrequency OFF
 GO
 
-IF COL_LENGTH('ParVinculoPeso','ParGroupParlevel1_id') IS NOT NULL
+IF COL_LENGTH('ParVinculoPeso','ParGroupParlevel1_id') IS NULL
     BEGIN	
 		ALTER TABLE ParVinculoPeso ADD ParGroupParlevel1_id int null;
     END
