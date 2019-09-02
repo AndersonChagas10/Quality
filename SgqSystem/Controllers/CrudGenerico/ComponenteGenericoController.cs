@@ -87,7 +87,7 @@ namespace SgqSystem.Controllers
                     componenteGenericoColuna.ComponenteGenerico = null;
                     componenteGenericoColuna.ComponenteGenericoTipoColuna = null;
 
-                    if (componenteGenericoColuna.Id > 0)
+                    if (componenteGenericoColuna.Id > 0 && componenteGenericoColuna.ComponenteGenerico_Id > 0)
                     {
                         componenteGenericoColuna.ComponenteGenerico_Id = collection.ComponenteGenerico.Id;
                         componenteGenericoColuna.AlterDate = DateTime.Now;
@@ -184,6 +184,7 @@ namespace SgqSystem.Controllers
                 else //update
                 {
                     componenteGenericoValor.AlterDate = DateTime.Now;
+                    componenteGenericoValor.IsActive = true;
                     db.Entry(componenteGenericoValor).State = System.Data.Entity.EntityState.Modified;
                 }
             }
