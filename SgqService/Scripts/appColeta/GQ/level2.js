@@ -1,4 +1,4 @@
-﻿function openLevel2(level1, gambiarraContadorSoFuncionaComCliqueNoIndicadorEntaoSimulamosIsso) {
+﻿function openLevel2(level1) {
 
     tempHDL2 = 0;
 
@@ -221,11 +221,11 @@
 
     atualizaCorAgendamento();
 
-    if (!gambiarraContadorSoFuncionaComCliqueNoIndicadorEntaoSimulamosIsso) {
-        setTimeout(function () {
-            openLevel2($(_level1), 1);
-        }, 1);
-    }
+    //if (!gambiarraContadorSoFuncionaComCliqueNoIndicadorEntaoSimulamosIsso) {
+    //    setTimeout(function () {
+    //        openLevel2($(_level1), 1);
+    //    }, 1);
+    //}
 
 }
 
