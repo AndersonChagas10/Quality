@@ -188,7 +188,7 @@ function updateCounters(level2, level3Group) {
     }
     //level2.siblings('.counters').children('div').children('.evaluateCurrent').text(evaluateCurrentLevel2);
     level2.siblings('.counters').children('div').children('.evaluateCurrent').text(evaluateCurrentLevel2);
-    level2.siblings('.counters').children('div').children('.sampleCurrentTotal').text(sampleCurrentTotalLevel2);
+    level2.siblings('.counters').children('div').children('.sampleCurrentTotal').text(currenteSample);
     //level3Group.children('.painelLevel03').find('.sampleCurrentTotal').text(sampleCurrentTotal);
     //level3Group.children('.painelLevel03').find('.sampleXEvaluateTotal').text(level2.siblings('.counters').children('div').children('.sampleXEvaluateTotal').text());
     //
@@ -253,6 +253,8 @@ function readCounter(ParLevel1_Id) {
 
 // Este método esconde o numero de av, am ou defeitos da linha do monitoramento
 function updateCounterLinhaLevel2(level1, level2) {
+    updateCounterLinhaLevel2Gambiarra(level1, level2);
+    return;
 
     var evaluationCurrent = 0;
     var sampleCurrent = 0;
@@ -317,6 +319,86 @@ function updateCounterLinhaLevel2(level1, level2) {
 
                 sampleCurrent = ((evaluationCurrent - 1) * total) + sampleCurrent + 1;
 
+            }
+
+            $('.list-group-item[id=' + level2.attr('id') + '] .sampleCurrentTotal').text(sampleCurrent);
+
+        } else
+            $('.list-group-item[id=' + level2.attr('id') + '] .sampleCurrentTotal').text(0);
+    }
+
+    if ($('.counter[indicador=' + level2.attr('id') + '][headerlevel=level2_line][counter=defects][level=2]').length == 0
+        && $('.counter[indicador=' + level1.attr('id') + '][headerlevel=level2_line][counter=defects][level=1]').length == 0 && level1.attr('hasgrouplevel2') != 'true') {
+        $('.list-group-item[id=' + level2.attr('id') + '] .defectstotal').addClass('hide');
+    }
+    //}
+}
+
+// Este método nao executa a multiplicação milagrosa que dobra as amostras
+function updateCounterLinhaLevel2Gambiarra(level1, level2) {
+
+    var evaluationCurrent = 0;
+    var sampleCurrent = 0;
+
+    //verifica se exibe a avaliação na linha do monitoramento
+    if ($('.counter[indicador=' + level2.attr('id') + '][headerlevel=level2_line][counter=evaluation]').length == 0
+        && $('.counter[indicador=' + level1.attr('id') + '][headerlevel=level2_line][counter=evaluation]').length == 0) { //se não tiver, ele esconde
+
+        $('.list-group-item[id=' + level2.attr('id') + '] .evaluateCurrent').addClass('hide');
+        $($('.list-group-item[id=' + level2.attr('id') + '] .separator')[0]).addClass('hide');
+        $('.list-group-item[id=' + level2.attr('id') + '] .evaluateTotal').addClass('hide');
+
+    } else { //se tiver, calcula a avaliação atual
+
+        // Este método foi descontinuado para teste
+
+        var lastEvaluation;
+
+        if (level2.attr('parfrequency_id') == 1) {// se for por periodo (USA)
+            lastEvaluation = $('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + '][period=' + $('.App').attr('period') + '][shift=' + $('.App').attr('shift') + ']:last').attr('evaluation');
+        } else {
+            lastEvaluation = $('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + '][shift=' + $('.App').attr('shift') + ']:last').attr('evaluation');
+        }
+
+        if (lastEvaluation > 0) {
+            evaluationCurrent = parseInt($('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + ']:last').attr('evaluation'));
+            $('.list-group-item[id=' + level2.attr('id') + '] .evaluateCurrent').text(evaluationCurrent);
+
+        } else
+            $('.list-group-item[id=' + level2.attr('id') + '] .evaluateCurrent').text(0);
+    }
+
+    if ($('.counter[indicador=' + level2.attr('id') + '][headerlevel=level2_line][counter=sample]').length == 0
+        && $('.counter[indicador=' + level1.attr('id') + '][headerlevel=level2_line][counter=sample]').length == 0) { //verifica se exibe a sample na linha do monitoramento
+
+        $('.list-group-item[id=' + level2.attr('id') + '] .sampleCurrentTotal').addClass('hide');
+        $($('.list-group-item[id=' + level2.attr('id') + '] .separator')[1]).addClass('hide');
+        $('.list-group-item[id=' + level2.attr('id') + '] .sampleXEvaluateTotal').addClass('hide');
+
+    } else {
+
+        // Este método foi comentado para teste
+
+        var lastSample;
+
+        if (level2.attr('parfrequency_id') == 1) {
+
+            lastSample = $('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + '][period=' + $('.App').attr('period') + '][shift=' + $('.App').attr('shift') + ']:last').attr('sample');
+
+        } else {
+
+            lastSample = $('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + '][shift=' + $('.App').attr('shift') + ']:last').attr('sample');
+
+        }
+
+        if (lastSample > 0) {
+
+            sampleCurrent = parseInt($('.Resultlevel2[level2id=' + level2.attr('id') + '][level1id=' + level1.attr('id') + ']:last').attr('sample'));
+            var total = parseInt(level2.attr('sample'));
+
+            if (evaluationCurrent > 0) {
+
+                sampleCurrent = sampleCurrent;
             }
 
             $('.list-group-item[id=' + level2.attr('id') + '] .sampleCurrentTotal').text(sampleCurrent);
@@ -414,7 +496,7 @@ function setAvaliationAndSampleLvl2Line(level2) {
     //var evaluatecurrent = $(level2).attr('evaluatecurrent');
     //$(level2).next().find('.evaluateCurrent').html(evaluatecurrent);
     var evaluatecurrent = $(level2).attr('evaluate');
-    if(parseInt(evaluatecurrent) == 0)
+    if (parseInt(evaluatecurrent) == 0)
         $(level2).next().find('.evaluateCurrent').html($(level2).attr('evaluatecurrent'));
     var samplecurrent = parseInt($(level2).attr('samplecurrent'));
     $(level2).next().find('.sampleCurrentTotal').html(samplecurrent == 0 ? $(level2).attr('sample') : samplecurrent);

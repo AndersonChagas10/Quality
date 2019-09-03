@@ -1,4 +1,4 @@
-﻿function openLevel2(level1) {
+﻿function openLevel2(level1, gambiarraContadorSoFuncionaComCliqueNoIndicadorEntaoSimulamosIsso) {
 
     tempHDL2 = 0;
 
@@ -55,7 +55,7 @@
     //if (_level2 && ultL2Temp == false) {
     //    _level2List = level2Group.find('.level2[id=' + _level2.id + ']').length;
     //} else {
-        _level2List = level2Group.find('.level2').length;
+    _level2List = level2Group.find('.level2').length;
     //}
 
     var maior = 0;
@@ -67,7 +67,7 @@
         //if (_level2 && level1.attr('hasgrouplevel2') != 'true' && ultL2Temp == false)
         //    level2 = level2Group.find('.level2[id=' + _level2.id + ']');
         //else
-            level2 = level2Group.find($('.level2')[i]);
+        level2 = level2Group.find($('.level2')[i]);
 
         updateCounterLinhaLevel2(level1, level2);
 
@@ -220,6 +220,12 @@
     ReauditByHeader.SetupReaudit(level1.attr('id'));
 
     atualizaCorAgendamento();
+
+    if (!gambiarraContadorSoFuncionaComCliqueNoIndicadorEntaoSimulamosIsso) {
+        setTimeout(function () {
+            openLevel2($(_level1), 1);
+        }, 1);
+    }
 
 }
 
