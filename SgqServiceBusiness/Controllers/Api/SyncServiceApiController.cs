@@ -3494,6 +3494,25 @@ namespace SgqServiceBusiness.Api
                 SET @datainicio = @data
                 SET @datafim = @data
                 
+				
+				SELECT 
+					row_number() over(partition by ParLevel1_id,ParLevel2_id,ParCluster_id order by ParCompany_id desc) as [rank]
+					,ParCompany_Id
+					,ParLevel2_Id
+					,Number
+					,ParLevel1_Id
+					,ParCluster_Id
+					,Sample
+					,ParFrequency_Id
+					INTO #PAREVALUATION
+					FROM PAREVALUATION  
+				WHERE 1=1
+				AND Isactive = 1
+				AND (ParCompany_id is null or ParCompany_id = @unidade)
+
+
+
+
                 CREATE TABLE #COLETASLEVEL3 (																																											  
                 	ROW INT NULL,																																															  
                 	COLUNA VARCHAR(153) NULL																																												  
@@ -3504,22 +3523,36 @@ namespace SgqServiceBusiness.Api
                 		ROW_NUMBER() OVER (ORDER BY R3.ParLevel3_Id) AS ROW
                 	   ,'<div id=""' + CAST(R3.ParLevel3_Id AS VARCHAR) + '"" class=""r3l2""></div>' COLUNA
                 	FROM CollectionLevel2 C2 (NOLOCK)
+					LEFT JOIN CollectionLevel2XCluster C2XCL (NOLOCK)
+						ON C2.ID = C2XCL.CollectionLevel2_Id
                 	INNER JOIN ParLevel1 L1 (NOLOCK)
                 		ON C2.ParLevel1_Id = L1.Id
                 			AND L1.IsPartialSave = 1
                 	INNER JOIN ParLevel2 L2 (NOLOCK)
                 		ON C2.ParLevel2_Id = L2.Id
+
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = C2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = C2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = C2XCL.ParCluster_Id
                 	INNER JOIN Result_Level3 R3 (NOLOCK)
                 		ON R3.CollectionLevel2_Id = C2.Id
-                	WHERE C2.UnitId = @unidade
+                	WHERE 1=1
+					AND C2.UnitId = @unidade
                 	AND CAST(C2.CollectionDate AS DATE) BETWEEN
                 	CASE
-                		WHEN (L2.ParFrequency_Id) IN (1, 2, 3, 10) THEN @datadiario
-                		WHEN (L2.ParFrequency_Id) IN (4) THEN @datasemanal
-                		WHEN (L2.ParFrequency_Id) IN (5) THEN @dataquinzenal
-                		WHEN (L2.ParFrequency_Id) IN (6) THEN @datamensal
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (1, 2, 3, 10) THEN @datadiario
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (4) THEN @datasemanal
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (5) THEN @dataquinzenal
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (6) THEN @datamensal
                 		ELSE @datadiario
                 	END AND @datafim
+
+					--AND C2.ParLevel1_Id =112 
+					--AND C2.ParLevel2_Id = 633
+	
                 DECLARE @HOMENSFORBRUNO INT = ( SELECT
                 		COUNT(1)
                 	FROM #COLETASLEVEL3);
@@ -3574,8 +3607,8 @@ namespace SgqServiceBusiness.Api
                 /*coletas diárias */
                 INSERT INTO #COLETA
                 	SELECT
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
                 		UnitId AS Unit_Id,--unidade
                 		Shift, --shift
                 		Period,--periodo
@@ -3608,11 +3641,18 @@ namespace SgqServiceBusiness.Api
                 		ON CL2C.CollectionLevel2_Id = CL2.Id
                 	INNER JOIN parlevel2 p2 WITH (NOLOCK)
                 		ON p2.id = CL2.ParLevel2_Id
-                	WHERE unitid = @unidade
-                	AND p2.ParFrequency_Id IN (1, 2, 3, 10)
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
+                	WHERE 1=1
+					AND unitid = @unidade
+                	AND FREQ_AV.ParFrequency_Id IN (1, 2, 3, 10)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @datadiario AND @data
-                	GROUP BY ParLevel1_Id
-                			,ParLevel2_Id
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
                 			,UnitId
                 			,Shift
                 			,Period
@@ -3622,8 +3662,8 @@ namespace SgqServiceBusiness.Api
                 /*coletas semanal */
                 INSERT INTO #COLETA
                 	SELECT
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
                 		UnitId AS Unit_Id,--unidade
                 		Shift, --shift
                 		Period,--periodo
@@ -3656,11 +3696,17 @@ namespace SgqServiceBusiness.Api
                 		ON CL2C.CollectionLevel2_Id = CL2.Id
                 	INNER JOIN parlevel2 p2 WITH (NOLOCK)
                 		ON p2.id = CL2.ParLevel2_Id
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
                 	WHERE unitid = @unidade
-                	AND p2.ParFrequency_Id IN (4)
+                	AND FREQ_AV.ParFrequency_Id IN (4)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @datasemanal AND @data
-                	GROUP BY ParLevel1_Id
-                			,ParLevel2_Id
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
                 			,UnitId
                 			,Shift
                 			,Period
@@ -3670,8 +3716,8 @@ namespace SgqServiceBusiness.Api
                 /*coletas quinzenal */
                 INSERT INTO #COLETA
                 	SELECT
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
                 		UnitId AS Unit_Id,--unidade
                 		Shift, --shift
                 		Period,--periodo
@@ -3704,11 +3750,17 @@ namespace SgqServiceBusiness.Api
                 		ON CL2C.CollectionLevel2_Id = CL2.Id
                 	INNER JOIN parlevel2 p2 WITH (NOLOCK)
                 		ON p2.id = CL2.ParLevel2_Id
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
                 	WHERE unitid = @unidade
                 	AND p2.ParFrequency_Id IN (5)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @dataquinzenal AND @data
-                	GROUP BY ParLevel1_Id
-                			,ParLevel2_Id
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
                 			,UnitId
                 			,Shift
                 			,Period
@@ -3718,8 +3770,8 @@ namespace SgqServiceBusiness.Api
                 /*coletas mensal */
                 INSERT INTO #COLETA
                 	SELECT
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
                 		UnitId AS Unit_Id,--unidade
                 		Shift, --shift
                 		Period,--periodo
@@ -3752,11 +3804,17 @@ namespace SgqServiceBusiness.Api
                 		ON CL2C.CollectionLevel2_Id = CL2.Id
                 	INNER JOIN parlevel2 p2 WITH (NOLOCK)
                 		ON p2.id = CL2.ParLevel2_Id
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
                 	WHERE unitid = @unidade
                 	AND p2.ParFrequency_Id IN (6)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @datamensal AND @data
-                	GROUP BY ParLevel1_Id
-                			,ParLevel2_Id
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
                 			,UnitId
                 			,Shift
                 			,Period
@@ -3851,7 +3909,9 @@ namespace SgqServiceBusiness.Api
                 ORDER BY Level2Result.CollectionDate ASC, Level2Result.ParLevel1_Id ASC, CDL2.ReauditNumber ASC
                 
                 DROP TABLE #COLETASLEVEL3
-                DROP TABLE #COLETA";
+                DROP TABLE #COLETA
+				DROP TABLE #PAREVALUATION
+				DROP TABLE #CollectionLevel2_HPA";
 
 
                 using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
