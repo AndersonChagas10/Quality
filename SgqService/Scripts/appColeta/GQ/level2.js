@@ -78,7 +78,7 @@
         setSampleLevel2(level2);
 
         if (parseInt($(level2).attr('evaluatecurrent')))
-            setAvaliationAndSampleLvl2Line(level2);
+            setAvaliationAndSampleLvl2Line(level2, totalDeAvaliacoes);
 
         level2.removeAttr('isreaudit');
 
@@ -221,12 +221,50 @@
 
     atualizaCorAgendamento();
 
-    //if (!gambiarraContadorSoFuncionaComCliqueNoIndicadorEntaoSimulamosIsso) {
-    //    setTimeout(function () {
-    //        openLevel2($(_level1), 1);
-    //    }, 1);
-    //}
+    setTimeout(function () {
+        //Instancia todos os monitoramentos
+        var level2List = $('.level2List');
+        //Instancia o grupo de Level2 referente ao Level1 selecionado
+        var level2Group = level2List.children('.level2Group[level01id=' + level1.attr('id') + ']');
 
+        var _level2List;
+        _level2List = level2Group.find('.level2').length;
+
+        for (var i = 0; i < _level2List; i++) {
+
+            var level2;
+            //if (_level2 && level1.attr('hasgrouplevel2') != 'true' && ultL2Temp == false)
+            //    level2 = level2Group.find('.level2[id=' + _level2.id + ']');
+            //else
+            level2 = level2Group.find($('.level2')[i]);
+
+            var linha = level2.parent().find('a');
+
+            var avaliacaoTotal = linha.attr('evaluate');
+            var amostraTotal = linha.attr('sample');
+
+            var avaliacao = linha.attr('evaluatecurrent');
+            var amostra = linha.attr('samplecurrent');
+
+            var avaliacaoAtual = 0;
+            var amostraAtual = 0;
+
+            if (avaliacaoTotal > 0) {
+                if (avaliacao > avaliacaoTotal) {
+                    avaliacaoAtual = avaliacaoTotal;
+
+                    if (amostraTotal > 0) {
+                        amostraAtual = avaliacaoAtual * amostraTotal;
+                    }
+                } else {
+                    avaliacaoAtual = RetornaValor0SeUndefined(avaliacao) > 0 ? RetornaValor0SeUndefined(avaliacao) : 1;
+                    amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(amostra));
+                }
+
+                level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
+            }
+        }
+    }, 100);
 }
 
 $(document).on('click', '.level2Group .level2', function (e) {
