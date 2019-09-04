@@ -257,11 +257,21 @@
                         amostraAtual = avaliacaoAtual * amostraTotal;
                     }
                 } else {
-                    avaliacaoAtual = RetornaValor0SeUndefined(avaliacao) > 0 ? RetornaValor0SeUndefined(avaliacao) : 1;
-                    amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(amostra));
+					if(amostra == undefined || avaliacao == undefined){
+						avaliacaoAtual = parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('evaluation'));
+						amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('sample'))));
+					}else{
+						avaliacaoAtual = RetornaValor0SeUndefined(avaliacao) > 0 ? RetornaValor0SeUndefined(avaliacao) : 1;
+						amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(amostra));
+					}
                 }
 
+                avaliacaoAtual = isNaN(avaliacaoAtual) ? 0 : avaliacaoAtual;
+                amostraAtual = isNaN(amostraAtual) ? 0 : amostraAtual;
+
                 level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
+                level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal);
+				
             }
         }
     }, 100);
