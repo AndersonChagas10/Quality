@@ -3757,7 +3757,7 @@ namespace SgqServiceBusiness.Api
 					) FREQ_AV 
 					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
                 	WHERE unitid = @unidade
-                	AND p2.ParFrequency_Id IN (5)
+                	AND FREQ_AV.ParFrequency_Id IN (5)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @dataquinzenal AND @data
                 	GROUP BY CL2.ParLevel1_Id
                 			,CL2.ParLevel2_Id
@@ -3811,7 +3811,7 @@ namespace SgqServiceBusiness.Api
 					) FREQ_AV 
 					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
                 	WHERE unitid = @unidade
-                	AND p2.ParFrequency_Id IN (6)
+                	AND FREQ_AV.ParFrequency_Id IN (6)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @datamensal AND @data
                 	GROUP BY CL2.ParLevel1_Id
                 			,CL2.ParLevel2_Id
