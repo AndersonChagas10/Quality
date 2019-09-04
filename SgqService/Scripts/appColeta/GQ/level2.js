@@ -78,7 +78,7 @@
         setSampleLevel2(level2);
 
         if (parseInt($(level2).attr('evaluatecurrent')))
-            setAvaliationAndSampleLvl2Line(level2, totalDeAvaliacoes);
+            setAvaliationAndSampleLvl2Line(level2);
 
         level2.removeAttr('isreaudit');
 

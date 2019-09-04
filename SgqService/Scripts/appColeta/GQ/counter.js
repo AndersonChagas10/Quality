@@ -391,7 +391,7 @@ function getAvaliationNumber(that, number) {
             $(that).prev().attr('samplecurrent', currentSample);
 
             setAvaliationAndSampleOnLvl2($(that).prev(), number, currentSample);
-            setAvaliationAndSampleLvl2Line($(that).prev(),0);
+            setAvaliationAndSampleLvl2Line($(that).prev());
 
         },
         error: function () {
