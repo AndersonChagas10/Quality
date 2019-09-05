@@ -70,6 +70,7 @@ namespace Jobs
                 UnidadeId = integCollectionData.ParCompany_id.ToString(),
                 Weidefects = Convert.ToInt32(integCollectionData.WeiDefects).ToString(),
                 Weievaluation = Convert.ToInt32(integCollectionData.WeiEvaluation).ToString(),
+                Period = "1",
                 ColetaTarefa = new List<ColetaTarefa>()
                 {
                     new ColetaTarefa()
