@@ -2121,6 +2121,8 @@
     <Content Include="Views\ParDepartments\Details.cshtml" />
     <Content Include="Views\ParDepartments\Edit.cshtml" />
     <Content Include="Views\ParDepartments\Index.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Filhos.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\ParDepartmentXCompany.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -61,8 +61,11 @@
 
 
                                 <table class="table" id="tabelaDepartamentos">
-                                    <thead>
+                                    <thead  style="background-color: cornflowerblue;">
                                         <tr>
+                                            <th>
+                                                Hash
+                                            </th>
                                             <th>
                                                 @Resources.Resource.department
                                             </th>
@@ -76,7 +79,6 @@
                                                 @Resources.Resource.is_active
                                             </th>
                                             <th>
-                                                @Resources.Resource.action
                                             </th>
 
                                         </tr>
@@ -85,6 +87,9 @@
                                         @foreach (var item in Model)
                                         {
                                             <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Hash)
+                                                </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Name)
                                                 </td>
@@ -100,6 +105,7 @@
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.details as string, "Details", new { id = item.Id }, new { @class = "btn btn-info" })
                                                     @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |*@
                                                     @*@Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })*@
                                                 </td>

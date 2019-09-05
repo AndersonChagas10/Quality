@@ -40,7 +40,7 @@ namespace SgqSystem.Controllers
 
 
             return View(departamentos.ToPagedList(pageNumber, pageSize));
-        }
+        } 
 
         // GET: ParDepartments/Details/5
         public ActionResult Details(int? id)
@@ -49,11 +49,13 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParDepartment parDepartment = db.ParDepartment.Find(id);
+            ParDepartment parDepartment = db.ParDepartment.FirstOrDefault( x => x.Id == id); 
             if (parDepartment == null)
             {
                 return HttpNotFound();
             }
+            parDepartment.ParCompany = db.ParCompany.Where(x => x.Id == parDepartment.ParCompany_Id).ToList();
+            parDepartment.ParDepartmentFilho = db.ParDepartment.Where(x => x.Parent_Id == id).ToList();
             return View(parDepartment);
         }
 
