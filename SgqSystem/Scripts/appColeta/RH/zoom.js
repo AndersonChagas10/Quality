@@ -18,6 +18,11 @@ function configureZoom() {
 }
 
 function applyZoom(zoom) {
+
+    if (localStorage.zoom == undefined) {
+        zoom = 1 + zoom;
+    }
+
     if (!localStorage.getItem('zoom') && zoom) {
         localStorage.setItem('zoom', zoom);
     } else if (!zoom) {
@@ -28,11 +33,11 @@ function applyZoom(zoom) {
     $('html').css('zoom', parseFloat(localStorage.getItem('zoom')));
 }
 
-$(document).on('click', '#zoomPlus', function () {
+$(document).off('click', '#zoomPlus').on('click', '#zoomPlus', function () {
     applyZoom(0.1);
 });
 
-$(document).on('click', '#zoomMinus', function () {
+$(document).off('click', '#zoomMinus').on('click', '#zoomMinus', function () {
     applyZoom(-0.1);
 });
 
