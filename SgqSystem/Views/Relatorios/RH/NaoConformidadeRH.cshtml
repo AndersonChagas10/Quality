@@ -343,8 +343,8 @@
             Aux = param;
             desdobramento = grafico;
 
-            popoverMain.css("top", y);
-            popoverMain.css("left", x);
+            popoverMain.css("top", (y + 35));
+            popoverMain.css("left", (x - 450));
 
             if (desdobramento == "Departamento") {
                 if (@Json.Encode(GlobalConfig.Eua)) {
