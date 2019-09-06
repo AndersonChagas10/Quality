@@ -51,7 +51,7 @@
                                 </div>
 
                                 <div class="pull-right" style="padding:15px">
-                                    @using (Html.BeginForm("Index", "ParDepartments", FormMethod.Get))
+                                    @using (Html.BeginForm("Index", "ParDepartmentsRH", FormMethod.Get))
                                     {
                                         <label for="filtro">Buscar</label>
                                         <input id="filtro" name="filtro" value="@ViewBag.filtro" />
@@ -60,8 +60,8 @@
                                 </div>
 
 
-                                <table class="table" id="tabelaDepartamentos">
-                                    <thead  style="background-color: cornflowerblue;">
+                                <table class="table dataTable" id="tabelaDepartamentos">
+                                    <thead>
                                         <tr>
                                             <th>
                                                 Hash

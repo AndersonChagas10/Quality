@@ -156,3 +156,8 @@ IF COL_LENGTH('ParVinculoPeso','EffectiveDateEnd') IS NOT NULL
     END
 
 GO
+
+IF COL_LENGTH('ParVinculoPeso','ParGroupParlevel1_id') IS NOT NULL
+BEGIN
+	ALTER TABLE ParVinculoPeso ALTER COLUMN ParGroupParlevel1_id int NULL
+END
