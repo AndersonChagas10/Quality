@@ -115,7 +115,7 @@
                                         @if ((bool?)ViewBag.TemFilhos != true)
                                         {
                                             <div class="form-group">
-                                                @Html.LabelFor(model => model.Active, @Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-4" })
+                                                @Html.LabelFor(model => model.Active, @Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-3" })
                                                 <div class="col-md-1">
                                                     <div class="checkbox">
                                                         @Html.EditorFor(model => model.Active, new { htmlAttributes = new { @class = "input-sm" } })
