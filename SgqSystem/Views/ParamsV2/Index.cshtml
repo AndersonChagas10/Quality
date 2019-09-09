@@ -536,9 +536,8 @@
                     $(`select#${id}`).append('<optgroup label="' + groupName + '">');
 
                     listVinculados.filter(x => x.GroupName == groupName).forEach((o) => {
-
-                        if (o.Hash != undefined)
-                            $(`select#${id}`).append(`<option value="${o[value]}">${o.Hash} / ${o[value]} - ${o[name]}</option>`);
+                        if (o.Hash != undefined && o.ParDepartmentPai != undefined) 
+                            $(`select#${id}`).append(`<option title="${o.ParDepartmentPai.Name}" value="${o[value]}">${o.Hash} / ${o[value]} - ${o[name]}</option>`);
                         else
                             $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
 
@@ -550,8 +549,8 @@
             }
 
             $(listNaoVinculados).each(function (i, o) {
-                if (o.Hash != undefined)
-                    $(`select#${id}`).append(`<option value="${o[value]}">${o.Hash} / ${o[value]} - ${o[name]}</option>`);
+                if (o.Hash != undefined && o.ParDepartmentPai != undefined) 
+                    $(`select#${id}`).append(`<option title="Centro de Custo: ${o.ParDepartmentPai.Name}" value="${o[value]}">${o.Hash} / ${o[value]} - ${o[name]}</option>`);
                 else
                     $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
             });

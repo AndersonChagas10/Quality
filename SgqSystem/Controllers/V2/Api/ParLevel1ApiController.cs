@@ -165,8 +165,10 @@ namespace SgqSystem.Controllers.V2.Api
                 var ParDepartmentsPai = db.ParDepartment.Where(x => x.ParCompany_Id == id)
                     .Select(x=>x.Parent_Id)
                     .ToList();
+
                 var ParDepartmentsFilhos = db.ParDepartment
                     .Where(x => x.ParCompany_Id == id && x.Parent_Id != null && !ParDepartmentsPai.Any(y=>y == x.Id))
+                    .Include(x => x.ParDepartmentPai).Where(x => x.ParCompany_Id == id && x.Parent_Id != null)
                     .ToList();
 
                 var departamentosIds = ParDepartmentsFilhos.Select(x => x.Id).ToList();
