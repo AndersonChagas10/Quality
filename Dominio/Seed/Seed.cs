@@ -10,7 +10,7 @@ namespace Dominio.Seed
 {
     public static class Seed
     {
-        public static void SetSeedValues(bool isPT = false, bool runSetSeed = false)
+        public static void SetSeedValues(bool isPT = false, bool runSetSeed = true)
         {
             DicionarioEstaticoSeed dicionarioSeed = new DicionarioEstaticoSeed();
             if (runSetSeed)
