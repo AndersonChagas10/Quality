@@ -177,6 +177,7 @@ function loginOnline() {
 function loginSuccess(data) {
     currentParCompany_Id = data.ParCompany_Id;
     currentLogin = data;
+    currentCollectDate = new Date();
     openLogado();
 }
 
@@ -191,7 +192,7 @@ function cleanGlobalVarLogin() {
 
 function logout() {
     if (globalColetasRealizadas.length > 0) {
-
+        
         setTimeout(function () {
             var titulo = "Há coletas que não foram sincronizadas.";
             var mensagem = "Não é possivel sair até que todas as coletas tenham sido sincronizadas.<br/>";
@@ -201,7 +202,6 @@ function logout() {
         }, 500);
         return false;
     }
-
     //_writeFile("login.txt", '', function () {
     currentLogin = null;
     openLogin();
