@@ -42,47 +42,59 @@ namespace IntegrationModule
             return null;
         }
 
-        public static System.Action RunIntegrationOneValue(string configuration, string script, string tableName)
+        public static System.Action RunIntegrationOneValue(string configuration, string script, string tableName, out Exception ex)
         {
+            ex = null;
             List<string> scripts = new List<string>();
             Setting setting = new Setting(configuration, script);
-            using (var factory = new Factory(
-                setting.Settings["DataSource"],
-                setting.Settings["Catalog"],
-                setting.Settings["Password"],
-                setting.Settings["User"]))
+            try
             {
-                try
-                {
-                    var retorno = factory.QueryNinjaADO(script);
-                    scripts = setting.CreateInsertScriptOneValue(retorno, tableName);
-                }
-                catch (Exception e)
-                {
-                }
-            }
-
-            using (var factory = new Factory(
-                setting.Settings["DataSourceServer"],
-                setting.Settings["CatalogServer"],
-                setting.Settings["PasswordServer"],
-                setting.Settings["UserServer"]))
-            {
-                foreach (var item in scripts)
+                using (var factory = new Factory(
+                    setting.Settings["DataSource"],
+                    setting.Settings["Catalog"],
+                    setting.Settings["Password"],
+                    setting.Settings["User"]))
                 {
                     try
                     {
-                        var sqlCommand = $"{item};SELECT CAST(1 AS int)";
-                        SqlCommand cmd = new SqlCommand(sqlCommand);
-
-                        int i = factory.InsertUpdateData(cmd);
-
+                        var retorno = factory.QueryNinjaADO(script);
+                        scripts = setting.CreateInsertScriptOneValue(retorno, tableName);
                     }
                     catch (Exception e)
                     {
-
+                        ex = e;
+                        return null;
                     }
                 }
+
+                using (var factory = new Factory(
+                    setting.Settings["DataSourceServer"],
+                    setting.Settings["CatalogServer"],
+                    setting.Settings["PasswordServer"],
+                    setting.Settings["UserServer"]))
+                {
+                    foreach (var item in scripts)
+                    {
+                        try
+                        {
+                            var sqlCommand = $"{item};SELECT CAST(1 AS int)";
+                            SqlCommand cmd = new SqlCommand(sqlCommand);
+
+                            int i = factory.InsertUpdateData(cmd);
+
+                        }
+                        catch (Exception e)
+                        {
+                            ex = e;
+                            return null;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ex = e;
+                return null;
             }
             return null;
         }

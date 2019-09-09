@@ -10,6 +10,7 @@ using SgqSystem.Mail;
 using System.Configuration;
 using Dominio;
 using IntegrationModule;
+using SgqSystem.Helpers;
 
 namespace Jobs
 {
@@ -50,12 +51,7 @@ namespace Jobs
                             GlobalConfig.UltimaExecucaoDoJob[key].AddSeconds(item.Intervalo) <= DateTime.Now))
                         {
 
-                            Task.Run(()=>
-                                Integration.RunIntegrationOneValue(
-                                    item.Configuration,
-                                    item.Script,
-                                    item.TableName)
-                            );
+                            Task.Run(() => IntegrationJobFactory.RunIntegrationOneValue(item));
                             GlobalConfig.UltimaExecucaoDoJob[key] = DateTime.Now;
 
                         }
@@ -66,6 +62,31 @@ namespace Jobs
             {
                 new CreateLog(new Exception("Erro no metodo [IntegrationJob]", ex));
             }
+        }
+
+        public static void RunIntegrationOneValue(IntegracaoSistemica item)
+        {
+            Exception ex = null;
+            using (var db = new SgqDbDevEntities())
+            {
+                db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "Entrou RunIntegrationOneValue ("+ item.Configuration + ")" });
+                db.SaveChanges();
+            }
+            Integration.RunIntegrationOneValue(
+                                    item.Configuration,
+                                    item.Script,
+                                    item.TableName,
+                                    out ex);
+
+            if (ex != null)
+            {
+                using (var db = new SgqDbDevEntities())
+                {
+                    db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = ex.ToClient() });
+                    db.SaveChanges();
+                }
+            }
+
         }
     }
 }
