@@ -64,9 +64,6 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                Hash
-                                            </th>
-                                            <th>
                                                 @Resources.Resource.department
                                             </th>
                                             <th>
@@ -87,17 +84,26 @@
                                         @foreach (var item in Model)
                                         {
                                             <tr>
+
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Hash)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                    @if (item.Parent_Id != null)
+                                                    {
+                                                        @Html.Raw(item.Hash + " / " + item.Name)
+                                                        @*@Html.DisplayFor(modelItem => item.Hash + "-").ToString() @Html.DisplayFor(modelItem => item.Id) @Html.DisplayFor(modelItem => item.Name)*@
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.Name)
+                                                    }
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Description)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.ParDepartmentPai.Name)
+                                                    @if (item.ParDepartmentPai != null)
+                                                    {
+                                                        @Html.Raw(item.ParDepartmentPai.Id + " / " + item.ParDepartmentPai.Name)
+                                                    }
                                                 </td>
                                                 <td>
                                                     @*@Html.Raw(item.Active ? Resources.Resource.yes : Resources.Resource.no)*@
@@ -115,7 +121,7 @@
                                 </table>
                                 @*Html.PagedListPager(Model, page => Html.ActionWithParams("Index", new { page }))*@
                                 <div class="pull-right" style="padding: 25px;">
-                                    @Html.PagedListPager(Model, page => Url.Action("Index", "ParDepartments", new { page = page, filtro = ViewBag.filtro }))
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", "ParDepartmentsRH", new { page = page, filtro = ViewBag.filtro }))
                                 </div>
                             </div>
                         </div>
