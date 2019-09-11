@@ -49,7 +49,7 @@ function openColeta(levels) {
         '		<div class="col-xs-12">                                                                                                            ' +
         '			<div class="panel panel-primary">                                                                                              ' +
         '			  <div class="panel-heading">                                                                                                  ' +
-        '				<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
+        '				<h3 class="panel-title"><a onclick="validaRota(listarParCargo,currentParCargo_Id);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
         '			  </div>                                                                                                                       ' +
         '			  <div class="panel-body">                                                                                                     ' +
         getContador() +
@@ -88,7 +88,7 @@ var currentEvaluationSample = {};
 
 function getContador() {
     currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, currentParCargo_Id);
-    return '<div class="col-xs-12 alert-info" style="padding-top:10px;padding-bottom:10px">' +
+    return '<div class="col-xs-12 alert-info" id="divColeta" style="padding-top:10px;padding-bottom:10px">' +
         '	<div class="col-xs-4">       ' +
         '		Avaliação                ' +
         '	</div>                       ' +

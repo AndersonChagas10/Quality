@@ -998,6 +998,7 @@
     <Content Include="Scripts\appColeta\RH\parLevels.js" />
     <Content Include="Scripts\appColeta\RH\resultado.js" />
     <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
+    <Content Include="Scripts\appColeta\RH\routeConfig.js" />
     <Content Include="Scripts\appColeta\RH\utils.js" />
     <Content Include="Scripts\appColeta\GQ\mock.js" />
     <Content Include="Scripts\appColeta\RH\zoom.js" />

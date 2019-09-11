@@ -202,6 +202,7 @@ function logout() {
         }, 500);
         return false;
     }
+
     //_writeFile("login.txt", '', function () {
     currentLogin = null;
     openLogin();
