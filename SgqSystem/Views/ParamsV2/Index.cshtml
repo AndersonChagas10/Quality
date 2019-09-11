@@ -566,6 +566,7 @@
 
     let listaTipoDadoDeEntradaVinculadosaEmpresaSelecionada = function (listaTipoDado) {
         if (listaTipoDado != null) {
+            
             let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
 
             if (parCompanySelectecId != 0) {
@@ -583,6 +584,7 @@
     }
 
     let listaVinculoPesoVinculadosaEmpresaSelecionada = function (lista) {
+        
         if (lista != null) {
 
             let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
@@ -602,8 +604,9 @@
     }
 
     let listaAvaliacaoAmostraVinculadosaEmpresaSelecionada = function (lista) {
+        
         if (lista != null) {
-
+            
             let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
 
             if (parCompanySelectecId != 0) {
@@ -625,7 +628,7 @@
         
         var unidadeSelecionada;
         if (empresaSelecionada == null) {
-             unidadeSelecionada = parCompanySelectecId;
+            unidadeSelecionada = parseInt($("#selectParCompanyGeral :selected").val());
         } else {
             unidadeSelecionada = empresaSelecionada
         }
@@ -659,7 +662,7 @@
     let GetParDepartmentsByUnit = function (unit) {
         
         if (!unit) {
-            MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', null, null);
+            MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', 0, null);
             MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL2GeralParDepartment', null, null);
             MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', null, null);
 
@@ -706,7 +709,7 @@
     }
 
     let MontaSelectUnidades = function () {
-
+        
         var unidadeSelecionadaTeste = parseInt($("#selectParCompanyGeral :selected").val());
 
         if (unidadeSelecionadaTeste == 0) {
@@ -1283,7 +1286,7 @@
 
         if (hasLevel3Selected)
             return;
-
+        
         let idUnidadeGeral = parseInt($('#selectParCompanyGeral :selected').val())
 
         if (!idUnidadeGeral) {
