@@ -68,9 +68,22 @@ namespace Jobs
                 ParLevel2_Id = integCollectionData.ParLevel2_id.ToString(),
                 ParCluster_Id = integCollectionData.ParCluster_id.ToString(),
                 UnidadeId = integCollectionData.ParCompany_id.ToString(),
-                Weidefects = Convert.ToInt32(integCollectionData.WeiDefects).ToString(),
+                Evaluate = Convert.ToInt32(integCollectionData.Evaluation).ToString(),
                 Weievaluation = Convert.ToInt32(integCollectionData.WeiEvaluation).ToString(),
+                Totallevel3withdefects = integCollectionData.IsConform == true ? "0" : Convert.ToInt32(integCollectionData.Defects).ToString(),
+                TotalLevel2Evaluation = Convert.ToInt32(integCollectionData.Evaluation).ToString(),
+                Sample = Convert.ToInt32(integCollectionData.Sample).ToString(),
+                Defects = integCollectionData.IsConform == true ? "0" : Convert.ToInt32(integCollectionData.Defects).ToString(),
+                Weidefects = integCollectionData.IsConform == true ? "0" : Convert.ToInt32(integCollectionData.WeiDefects).ToString(),
+                Defectsresult = integCollectionData.IsConform == true ? "0" : Convert.ToInt32(integCollectionData.Defects).ToString(),
+                Level01DataCollect = integCollectionData.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                Level02DataCollect = integCollectionData.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                Cluster = integCollectionData.ParCluster_id.ToString(),
+                Shift = "1",
                 Period = "1",
+                HaveReaudit = "0",
+                VersaoApp = "Integração " + integCollectionData.Table_Id.ToString(),
+                HashKey = integCollectionData.Key_Integ.ToString(),
                 ColetaTarefa = new List<ColetaTarefa>()
                 {
                     new ColetaTarefa()
@@ -84,22 +97,16 @@ namespace Jobs
                         IsnotEvaluate = integCollectionData.IsNotEvaluate.ToString(),
                         HasPhoto = "0",
                         CollectionDate = integCollectionData.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                        Defects = Convert.ToInt32(integCollectionData.Defects).ToString(),
-                        WeiDefects = Convert.ToInt32(integCollectionData.WeiDefects).ToString(),
+                        Defects = integCollectionData.IsConform == true ? "0" : Convert.ToInt32(integCollectionData.Defects).ToString(),
+                        WeiDefects = integCollectionData.IsConform == true ? "0" : Convert.ToInt32(integCollectionData.WeiDefects).ToString(),
                         WeiEvaluation = Convert.ToInt32(integCollectionData.WeiEvaluation).ToString(),
                         Weight = Convert.ToInt32(integCollectionData.Weight).ToString(),
                     }
                 },
-                Level01DataCollect = integCollectionData.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                Level02DataCollect = integCollectionData.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                Evaluate = Convert.ToInt32(integCollectionData.Evaluation).ToString(),
-                Sample = Convert.ToInt32(integCollectionData.Sample).ToString(),
-                Defects = Convert.ToInt32(integCollectionData.Defects).ToString(),
-                Cluster = integCollectionData.ParCluster_id.ToString(),
-                Defectsresult = Convert.ToInt32(integCollectionData.Defects).ToString(),
-                Shift = "1",
-                VersaoApp = "Integração " + integCollectionData.Table_Id.ToString(),
-                HashKey = integCollectionData.Key_Integ.ToString(),
+                Evaluatedresult = "1",
+                //Ambiente="Integracao",
+                Completed = "0"
+
             };
 
             try
