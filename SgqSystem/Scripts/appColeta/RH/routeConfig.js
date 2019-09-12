@@ -11,8 +11,8 @@ function validaRota(callback, parameter) {
         if (callback != null) {
             callbackRota = callback;
             parameterRota = parameter;
-            var titulo1 = "Confirmar saída";
-            var mensagem1 = "Ao sair da tela de coleta os dados não salvos serão perdidos. Deseja sair ?<br/>";
+            var titulo1 = "Confirmação de saída";
+            var mensagem1 = "Deseja sair sem salvar? <br/>";
             openMessageConfirm(titulo1, mensagem1, executeCallbackRota, closeMensagemImediatamente, "orange", "white");
         }
     } else {

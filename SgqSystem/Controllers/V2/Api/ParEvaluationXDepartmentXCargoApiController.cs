@@ -30,6 +30,7 @@ namespace SgqSystem.Controllers.V2.Api
         {
             ParEvaluationXDepartmentXCargoResult parEvaluationXDepartmentXCargoResult = new ParEvaluationXDepartmentXCargoResult();
             ParDepartment parEvaluationXDepartmentXCargo = new ParDepartment();
+            List<ParMultipleValuesGeral> parMultipleValuesGeral = new List<ParMultipleValuesGeral>();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
@@ -75,9 +76,21 @@ namespace SgqSystem.Controllers.V2.Api
                 const int parLevelHeaderField = 3; //Department
 
                 parEvaluationXDepartmentXCargoResult.ParHeaderFieldGeral = db.ParHeaderFieldGeral.Where(x => x.ParLevelHeaderField_Id == parLevelHeaderField && x.Generic_Id == id && x.IsActive)
-                    .Include(x => x.ParMultipleValuesGeral)
+                    //.Include(x => x.ParMultipleValuesGeral)
                     .Include(x => x.ParFieldType)
                     .ToList();
+
+                parMultipleValuesGeral = db.ParMultipleValuesGeral.Where(x => x.IsActive).ToList();
+
+                foreach (var item in parEvaluationXDepartmentXCargoResult.ParHeaderFieldGeral)
+                {
+                    foreach (var multipleValues in parMultipleValuesGeral)
+                    {
+                        if (multipleValues.ParHeaderFieldGeral_Id == item.Id)
+                            item.ParMultipleValuesGeral.Add(multipleValues);
+                    }
+                }
+
             }
 
             return Ok(parEvaluationXDepartmentXCargoResult);

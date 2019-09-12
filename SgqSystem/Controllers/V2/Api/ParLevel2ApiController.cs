@@ -35,7 +35,7 @@ namespace SgqSystem.Controllers.V2.Api
         {
             ParLevel2Result parLevel2Result = new ParLevel2Result();
             ParLevel2 parLevel2 = new ParLevel2();
-            var parMultipleValuesGeral = new List<ParMultipleValuesGeral>();
+            List<ParMultipleValuesGeral> parMultipleValuesGeral = new List<ParMultipleValuesGeral>();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {

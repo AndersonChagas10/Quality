@@ -82,6 +82,7 @@ namespace SgqSystem.Controllers.V2.Api
         {
             ParLevel1Result parlevel1Result = new ParLevel1Result();
             ParLevel1 parLevel1 = new ParLevel1();
+            List<ParMultipleValuesGeral> parMultipleValuesGeral = new List<ParMultipleValuesGeral>();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
@@ -92,14 +93,25 @@ namespace SgqSystem.Controllers.V2.Api
                 parLevel1.ParLevel1XCluster = db.ParLevel1XCluster.Where(x => x.IsActive && x.ParLevel1_Id == parLevel1.Id).ToList();
                 parLevel1.ParHeaderFieldsGeral = db.ParHeaderFieldGeral
                     .Where(x => x.IsActive && x.ParLevelHeaderField_Id == 1 && x.Generic_Id == parLevel1.Id)
-                    .Include("ParMultipleValuesGeral")
+                    //.Include("ParMultipleValuesGeral")
                     .Include("ParFieldType")
                     .ToList();
+
+                parMultipleValuesGeral = db.ParMultipleValuesGeral.Where(x => x.IsActive).ToList();
 
                 foreach (var item in parLevel1.ParLevel1XCluster)
                 {
                     item.ParCluster = db.ParCluster.Where(x => x.IsActive && x.Id == item.ParCluster_Id).FirstOrDefault();
                     item.ParCriticalLevel = db.ParCriticalLevel.Where(x => x.IsActive == true && x.Id == item.ParCriticalLevel_Id).FirstOrDefault();
+                }
+
+                foreach (var item in parLevel1.ParHeaderFieldsGeral)
+                {
+                    foreach (var multipleValues in parMultipleValuesGeral)
+                    {
+                        if (multipleValues.ParHeaderFieldGeral_Id == item.Id)
+                            item.ParMultipleValuesGeral.Add(multipleValues);
+                    }
                 }
 
                 if (parLevel1 == null)
