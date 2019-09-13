@@ -790,7 +790,8 @@ function getCollectionHeaderFields() {
                 ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
-                UserSgq_Id: currentLogin.Id
+                UserSgq_Id: currentLogin.Id,
+                Parfrequency_Id: parametrization.currentParFrequency_Id
             });
 
     });
@@ -812,7 +813,8 @@ function getCollectionHeaderFields() {
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
-                ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id')
+                ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
+                Parfrequency_Id: parametrization.currentParFrequency_Id
             });
 
     });
@@ -836,7 +838,8 @@ function getCollectionHeaderFields() {
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
-                ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id')
+                ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
+                Parfrequency_Id: parametrization.currentParFrequency_Id
             });
 
     });
