@@ -86,14 +86,14 @@
                                             <tr>
 
                                                 <td>
-                                                    @if (item.Parent_Id != null)
+                                                    @if ( (item.Parent_Id != 0 && item.Parent_Id != null) || item.Hash != null)
                                                     {
-                                                        @Html.Raw(item.Hash + " / " + item.Name)
+                                                        @Html.Raw(item.Hash + " - " + item.Id + " / " + item.Name)
                                                         @*@Html.DisplayFor(modelItem => item.Hash + "-").ToString() @Html.DisplayFor(modelItem => item.Id) @Html.DisplayFor(modelItem => item.Name)*@
                                                     }
                                                     else
                                                     {
-                                                        @Html.DisplayFor(modelItem => item.Name)
+                                                        @Html.Raw(item.Id + " / " + item.Name)
                                                     }
                                                 </td>
                                                 <td>

@@ -85,7 +85,7 @@ namespace SgqSystem.Controllers
             if (parDepartment.ParDepartmentGroup_Id == 0)
                 parDepartment.ParDepartmentGroup_Id = null;
 
-            DepartamentoDuplicado(parDepartment);
+            //DepartamentoDuplicado(parDepartment);
             if (ModelState.IsValid)
             {
                 db.ParDepartment.Add(parDepartment);
@@ -130,7 +130,7 @@ namespace SgqSystem.Controllers
         public ActionResult Edit([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id,ParCompany_Id,ParDepartmentGroup_Id")] ParDepartment parDepartment)
         {
             MontaHash(parDepartment);
-            DepartamentoDuplicado(parDepartment);
+            //DepartamentoDuplicado(parDepartment);
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
