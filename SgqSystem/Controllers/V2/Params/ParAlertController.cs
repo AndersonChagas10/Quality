@@ -110,6 +110,8 @@ namespace SgqSystem.Controllers
         public async Task<ActionResult> Create([Bind(Include = "Id,Name,ParDepartment_Id,ParCargo_Id,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParAlertType_Id,IsCollectAlert,HasCorrectiveAction,IsActive")] ParAlert parAlert)
         {
             SetValues(parAlert);
+            ValidarAlerta(parAlert);
+
             if (ModelState.IsValid)
             {
                 parAlert.AddDate = DateTime.Now;
@@ -146,7 +148,11 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Name,ParDepartment_Id,ParCargo_Id,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParAlertType_Id,IsCollectAlert,HasCorrectiveAction,IsActive")] ParAlert parAlert)
         {
+
             SetValues(parAlert);
+
+            ValidarAlerta(parAlert);
+
             if (ModelState.IsValid)
             {
                 parAlert.AlterDate = DateTime.Now;
@@ -200,6 +206,14 @@ namespace SgqSystem.Controllers
             parAlert.ParLevel1_Id = parAlert.ParLevel1_Id == 0 ? null : parAlert.ParLevel1_Id;
             parAlert.ParLevel2_Id = parAlert.ParLevel2_Id == 0 ? null : parAlert.ParLevel2_Id;
             parAlert.ParLevel3_Id = parAlert.ParLevel3_Id == 0 ? null : parAlert.ParLevel3_Id;
+        }
+
+        private void ValidarAlerta(ParAlert parAlert)
+        {
+            if(parAlert.ParLevel3_Id == null || parAlert.ParLevel3_Id == 0)
+            {
+                ModelState.AddModelError("ParLevel3_Id", Resources.Resource.select_the_level3);
+            }
         }
     }
 }
