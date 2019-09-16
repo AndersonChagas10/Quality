@@ -56,11 +56,29 @@
                                             </div>
                                         </div>
 
+                                        @*<div class="form-group">
+                                                @Html.LabelFor(model => model.ParDepartment, Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownList("ParDepartment_Id", null, htmlAttributes: new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.ParDepartment_Id, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>*@
+
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParDepartment, Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownList("ParDepartment_Id", null, htmlAttributes: new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.ParDepartment_Id, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.ParDepartment, Resources.Resource.costcenter as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-6">
+                                                <button id="btnBuscarDepartamentos" type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=ParDepartment_Id]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParDepartment", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+                                                @*<select class="form-control" name="ParDepartment_Id"></select>*@
+
+                                                <select class="form-control" name="ParDepartment_Id" id="ParDepartment_Id" value="@ViewBag.Department[0].Value">
+                                                    <option value="@ViewBag.Department[0].Key" selected="selected">@ViewBag.Department[0].Value</option>
+                                                </select>
+
                                             </div>
                                         </div>
 
@@ -172,7 +190,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
-
+    <script src="~/Scripts/Select3/select3.js"></script>
     <script>
 
         $("#Points").inputmask('decimal', {

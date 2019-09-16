@@ -56,12 +56,25 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParDepartment, Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownList("ParDepartment_Id", null, htmlAttributes: new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.ParDepartment_Id, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.ParDepartment_Id, Resources.Resource.costcenter as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-6">
+                                                <button id="btnBuscarDepartamentos" type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=ParDepartment_Id]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParDepartment", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+                                                <select class="form-control" name="ParDepartment_Id"></select>
                                             </div>
                                         </div>
+
+                                        @*<div class="form-group">
+                                                @Html.LabelFor(model => model.ParDepartment, Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownList("ParDepartment_Id", null, htmlAttributes: new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.ParDepartment_Id, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>*@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParCargo, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -152,6 +165,7 @@
     <!-- END CONTENT BODY -->
 </div>
 @section Scripts {
+    <script src="~/Scripts/Select3/select3.js"></script>
     <script>
         $(document).ready(function () {
 

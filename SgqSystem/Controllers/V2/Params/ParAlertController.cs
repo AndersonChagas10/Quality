@@ -24,9 +24,9 @@ namespace SgqSystem.Controllers
             {
                 parAlert = new ParAlert();
             }
-            var parDepartments = db.ParDepartment.Where(x => x.Active).ToList();
-            parDepartments.Insert(0, new ParDepartment() { Id = 0, Name = Resources.Resource.all });
-            ViewBag.ParDepartment_Id = new SelectList(parDepartments, "Id", "Name",parAlert.ParDepartment_Id);
+            //var parDepartments = db.ParDepartment.Where(x => x.Active).ToList();
+            //parDepartments.Insert(0, new ParDepartment() { Id = 0, Name = Resources.Resource.all });
+            //ViewBag.ParDepartment_Id = new SelectList(parDepartments, "Id", "Name",parAlert.ParDepartment_Id);
 
             var parCargos = db.ParCargo.Where(x => x.IsActive).ToList();
             parCargos.Insert(0, new ParCargo() { Id = 0, Name = Resources.Resource.all });
@@ -50,6 +50,20 @@ namespace SgqSystem.Controllers
 
             var parAlertTypes = db.ParAlertType.Where(x => x.IsActive).ToList();
             ViewBag.ParAlertType_Id = new SelectList(parAlertTypes, "Id", "Name", parAlert.ParAlertType_Id);
+
+
+            ViewBag.Department = db.ParDepartment.Where(x => x.Id == parAlert.ParDepartment_Id).ToList()
+             .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+             .ToList();
+
+            if (ViewBag.Department.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.Department = semDados;
+            }
         }
 
         // GET: ParAlerts
