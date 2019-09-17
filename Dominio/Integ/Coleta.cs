@@ -133,6 +133,8 @@ namespace Dominio
             collectionJson += ";"; //SEPARADOR LEVEL2
             collectionJson += HashKey; //[33]
             collectionJson += ";"; //SEPARADOR LEVEL2
+            //[34]
+            collectionJson += ";"; //SEPARADOR LEVEL2
             collectionJson += Weievaluation; //[35]
             collectionJson += ";"; //SEPARADOR LEVEL2
             collectionJson += Weidefects; //[36]

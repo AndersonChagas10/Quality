@@ -573,6 +573,10 @@ namespace SgqSystem.Services
                         if (result.Length > 50)
                         {
                             ParReason_Id = result[50];
+                        }
+
+                        if (result.Length > 51)
+                        {
                             ParReasonType_Id = result[51];
                         }
 
