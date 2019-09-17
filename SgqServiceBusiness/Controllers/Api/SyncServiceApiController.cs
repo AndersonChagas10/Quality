@@ -3981,6 +3981,32 @@ namespace SgqServiceBusiness.Api
             }
 
 
+            try
+            {
+
+                using (var db = new SgqDbDevEntities())
+                {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    var listaParLevel3XHelp = db.ParLevel3XHelp.Where(x => x.IsActive).ToList();
+
+                    supports += $@"<script>
+                                var listaParLevel3XHelp = " + Newtonsoft.Json.JsonConvert.SerializeObject(listaParLevel3XHelp) + @";
+                                           
+                                function getParLevel3XHelp(parLevel3_Id){
+                                    var valor = $.grep(listaParLevel3XHelp, function(obj) { 
+                                                       return obj.ParLevel3_Id == parLevel3_Id;  
+                                                });
+                                    return (valor && valor.length > 0) ? valor[0] : '';
+                                }
+
+                                </script> ";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
 
             //string resource = GetResource();
 
@@ -4056,7 +4082,7 @@ namespace SgqServiceBusiness.Api
             return evaluate;
         }
 
-        protected int getParFrequency_Id(SGQDBContext.ParLevel1 parlevel1, SGQDBContext.ParLevel2 parlevel2)
+        protected int getParFrequency_Id(SGQDBContext.ParLevel1 parlevel1, SGQDBContext.ParLevel2 parlevel2, int ParCompany_Id)
         {
             int parfrenquency_Id = 0;
 
@@ -4065,21 +4091,25 @@ namespace SgqServiceBusiness.Api
             	CASE
             		WHEN FPE.ParFrequency_Id IS NULL THEN FPL2.ParFrequency_Id
             		ELSE FPE.ParFrequency_Id
-            	END as ParFrequency_Id
+            	END as ParFrequency_Id,
+				FPE.ParCompany_Id
             FROM (SELECT
-            			 ParFrequency_Id
+            			 ParFrequency_Id,
+						 ParCompany_Id
             		 FROM ParEvaluation
             		 WHERE 1 = 1
             		 AND ParLevel1_Id = @ParLevel1_Id
             		 AND ParLevel2_Id = @ParLevel2_Id
             		 AND ParCluster_Id = @ParCluster_Id
-            		 AND IsActive = 1) AS FPE
+            		 AND IsActive = 1
+					 AND (ParCompany_Id = @ParCompany_Id OR ParCompany_Id IS NULL)) AS FPE
             	,(SELECT
             			 ParFrequency_Id
             		 FROM ParLevel2
             		 WHERE 1 = 1
             		 AND Id = @ParLevel2_Id
-            		 AND IsActive = 1) AS FPL2";
+            		 AND IsActive = 1) AS FPL2
+					 ORDER BY ParCompany_Id DESC";
 
             string conexao = this.conexao;
             try
@@ -4090,6 +4120,7 @@ namespace SgqServiceBusiness.Api
                     {
 
                         command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
                         command.Parameters.Add(new SqlParameter("@ParLevel1_Id", parlevel1.ParLevel1_Id));
                         command.Parameters.Add(new SqlParameter("@ParLevel2_Id", parlevel2.ParLevel2_id));
                         command.Parameters.Add(new SqlParameter("@ParCluster_Id", parlevel1.ParCluster_Id));
@@ -5421,7 +5452,7 @@ namespace SgqServiceBusiness.Api
                 string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
 
-                var parlevel2ParFrequency = getParFrequency_Id(ParLevel1, parlevel2);
+                var parlevel2ParFrequency = getParFrequency_Id(ParLevel1, parlevel2, ParCompany_Id);
 
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
@@ -5631,6 +5662,12 @@ namespace SgqServiceBusiness.Api
                     lineCounters = html.painelCounters(listLineCounter.Where(r => r.Local == "level2_line"), "margin-top: 45px;font-size: 12px;");
                 }
 
+                //Gera monitoramento do level3
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3);
+
+                if (string.IsNullOrEmpty(groupLevel3))
+                    continue;
+
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
@@ -5641,10 +5678,6 @@ namespace SgqServiceBusiness.Api
                                                                html.div(classe: "level2Debug") +
                                                                lineCounters
                                                     );
-
-
-                //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3);
 
                 if (ParLevel1.HasGroupLevel2 == true)
                 {
@@ -6037,6 +6070,7 @@ namespace SgqServiceBusiness.Api
                         form_control = $@"<input id="""" class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-din=""{ header.ParHeaderField_Description }"" readonly>";
                         form_control += $@"<label class=""""></label>";
                         break;
+
                 }
 
                 //Incrementar valor para o pai do elemento para Ytoara.
@@ -6108,6 +6142,7 @@ namespace SgqServiceBusiness.Api
                                                 ),
                                     classe: "btn-warning btnNotAvaliable na font11"
                                 );
+
 
 
             bool haveAccordeon = false;
@@ -6644,7 +6679,9 @@ namespace SgqServiceBusiness.Api
                             //tipo de input
                             string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
 
-                            string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
+                            bool hasInfo = dbEf.ParLevel3XHelp.Where(x => x.IsActive).Any(x => x.ParLevel3_Id == parLevel3.Id);
+
+                            string level3List = html.level3(parLevel3, input, classInput, labelsInputs, hasInfo);
                             level3Group.Append(level3List);
                         }
                     }
@@ -6827,6 +6864,7 @@ namespace SgqServiceBusiness.Api
         {
             var html = new Html();
             string input = null;
+
             if (parLevel3.ParLevel3InputType_Id == 1)
             {
                 classInput = " boolean";
@@ -7073,6 +7111,27 @@ namespace SgqServiceBusiness.Api
 
                 input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
             }
+            else if (parLevel3.ParLevel3InputType_Id == 13)
+            {
+                classInput = " inputData";
+                labels = html.div(
+                                  outerhtml: "",
+                                  classe: ""
+                                  );
+
+                input = html.campoData(id: parLevel3.Id.ToString());
+
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 14)
+            {
+                classInput = " inputHora";
+                labels = html.div(
+                                  outerhtml: "",
+                                  classe: ""
+                                  );
+
+                input = html.campoHora(id: parLevel3.Id.ToString());
+            }
             else
             {
                 ///Campo interval está repetindo , falta o campo defeitos
@@ -7107,6 +7166,8 @@ namespace SgqServiceBusiness.Api
                                                 intervalMax: parLevel3.IntervalMax,
                                                 unitName: parLevel3.ParMeasurementUnit_Name);
             }
+
+
             return input;
         }
 
@@ -8530,6 +8591,7 @@ namespace SgqServiceBusiness.Api
         {
             return Resources.Resource;
         }
+
     }
 }
 

@@ -133,7 +133,7 @@ namespace SgqSystem.Controllers
 
         private void ValidModelState(ParCompany parCompany)
         {
-            if (parCompany.Identification.Length > 50) 
+            if (!string.IsNullOrEmpty(parCompany.Identification) && parCompany.Identification.Length > 50) 
                 ModelState.AddModelError("Identification", "O campo deve conter apenas 50 caracteres!");
 
             //if (totalDeVinculos > 0 && parCompany.IsActive == false) 

@@ -1130,6 +1130,8 @@ function saveResultLevel3() {
     //Seleciona o Side Current
     var sampleTotal = parseInt(level2.attr('sample'));
 
+    var isSampleInfinity = false;
+
     var updateSample = false;
     var evaluateCurrent = level2.attr('evaluatecurrent') != undefined ? parseInt(level2.attr('evaluatecurrent')) : 1;
 
@@ -2334,7 +2336,7 @@ function partialSaveCheck(level3Group) {
         var totalInputs = level3Group.find('.level3').find('input').length;
         var inputsEmpty = checkInputEmpty(level3Group);
 
-        if (totalInputs == inputsEmpty)
+        if (totalInputs == inputsEmpty || inputsEmpty == 0)
             return false;
         else
             return true;
@@ -2343,6 +2345,7 @@ function partialSaveCheck(level3Group) {
         return false;
 
 }
+
 function checkInputEmpty(level3Group) {
 
     var inputs = level3Group.find('.level3').find('input:visible');
@@ -2989,3 +2992,12 @@ function exibirLevel3PorDepartamento() {
         }
     }
 }
+
+$(document).on('click', '.btnHelp', function (e) {
+
+    var level3_Id = parseInt($('.btnHelp').parents('.level3').prop('id'));
+
+    var help = getParLevel3XHelp(level3_Id);
+
+    openModal(help.Titulo, help.Corpo);
+});

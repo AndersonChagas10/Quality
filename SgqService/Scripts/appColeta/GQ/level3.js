@@ -2992,3 +2992,12 @@ function exibirLevel3PorDepartamento() {
         }
     }
 }
+
+$(document).on('click', '.btnHelp', function (e) {
+
+    var level3_Id = parseInt($('.btnHelp').parents('.level3').prop('id'));
+
+    var help = getParLevel3XHelp(level3_Id);
+
+    openModal(help.Titulo, help.Corpo);
+});

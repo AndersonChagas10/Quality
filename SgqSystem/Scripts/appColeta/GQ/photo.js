@@ -111,47 +111,42 @@ $(document).on('click', '.camera-button', function (e) {
 });
 
 function sendResultLevel3Photo() {
-    if ($('.level02Result[sync=false]').length == 0 && algumaFotoEstaSendoEnviada != true)
-        setTimeout(function () {
-            var listaFotosSalvas = level3Photos.filter(function (o, i) { return o.isactive == true });
-            if (listaFotosSalvas.length > 0) {
-                algumaFotoEstaSendoEnviada = true;
-                preparaFotos(listaFotosSalvas);
-            }
-        }, 1000);
+    if ($('.level02Result[sync=false]').length == 0 && algumaFotoEstaSendoEnviada != true){
+        var listaFotosSalvas = level3Photos.filter(function (o, i) { return o.isactive == true });
+        if (listaFotosSalvas.length > 0) {
+            algumaFotoEstaSendoEnviada = true;
+            preparaFotos(listaFotosSalvas);
+        }
+    }
 }
 
 function preparaFotos(listaFotosSalvas) {
     
-    var listaFotos = [];
-    for (i = 0; i < (listaFotosSalvas.length > 1 ? 1 : listaFotosSalvas.length); i++) {
-        var temp = listaFotosSalvas[i];
-        listaFotos.push(
-            {
-                "ID": 0,
-                "Result_Level3_Id": 0,
-                "Photo_Thumbnaills": "",
-                "Photo": temp.photo,
-                "Latitude": temp.latitude,
-                "Longitude": temp.longitude,
-                "Level1Id": temp.level1id,
-                "Level2Id": temp.level2id,
-                "Level3Id": temp.level3id,
-                "UnitId": temp.unitid,
-                "Period": temp.period,
-                "Shift": temp.shift,
-                "Evaluation": temp.evaluation,
-                "Sample": temp.sample,
-                "ResultDate": temp.date
-            }
-        );
-    }
-    
+    var temp = listaFotosSalvas[0];
+    var fotos = {
+        "ID": 0,
+        "Result_Level3_Id": 0,
+        "Photo_Thumbnaills": "",
+        "Photo": temp.photo,
+        "Latitude": temp.latitude,
+        "Longitude": temp.longitude,
+        "Level1Id": temp.level1id,
+        "Level2Id": temp.level2id,
+        "Level3Id": temp.level3id,
+        "UnitId": temp.unitid,
+        "Period": temp.period,
+        "Shift": temp.shift,
+        "Evaluation": temp.evaluation,
+        "Sample": temp.sample,
+        "ResultDate": temp.date
+    };
+
     lastFotoEnviada = temp.photo;
     _readFile(temp.photo, function (data) {
         if(typeof(data) != 'undefined' && data.length > 0){
-            listaFotos[0]["Photo"] = data;
-            enviaFotos(listaFotos);
+            fotos["Photo"] = data;
+            listaFotos = [fotos];
+            enviaFotos();
         }else{
             level3Photos.splice(0, data.count);
             _writeFile("level3Photos.json", level3Photos);
@@ -175,29 +170,45 @@ function salvaFoto(level3PhotoTemp) {
 }
 
 var lastFotoEnviada = "";
+var enviandoFoto = false;
+var listaFotos = [];
 
-function enviaFotos(listaFotos) {
-    $.ajax({
-        data: JSON.stringify(listaFotos),
-        contentType: "application/json; charset=utf-8",
-        url: urlPreffix + '/api/ResultLevel3PhotosApi',
-        type: 'POST',
-        headers: token(),
-        success: function (data) {
-            algumaFotoEstaSendoEnviada = false;
-            _writeFile(lastFotoEnviada, '');
-            level3Photos.splice(0, data.count);
-            _writeFile("level3Photos.json", level3Photos);
-            sendResultLevel3Photo();
-        },
-        error: function (e) {
-            //alert(JSON.stringify(e));
-            setTimeout(function () {
-                sendResultLevel3Photo();
-            }, 20000);
-            algumaFotoEstaSendoEnviada = false;
-        }
-    });
+function enviaFotos() {
+    if(enviandoFoto == false){
+        enviandoFoto = true;
+        //alert("3 - Level3: "+listaFotos[0]["Level3Id"]);
+        $.ajax({
+            data: JSON.stringify(listaFotos),
+            contentType: "application/json; charset=utf-8",
+            url: urlPreffix + '/api/ResultLevel3PhotosApi',
+            type: 'POST',
+            async: false,
+            headers: token(),
+            success: function (data) {
+                if(data != null){
+                    if(lastFotoEnviada != ""){
+                        _writeFile(lastFotoEnviada, '');
+                        lastFotoEnviada = "";
+
+                        enviandoFoto = false;
+                        algumaFotoEstaSendoEnviada = false;
+                        level3Photos.splice(0, data.count);
+                        _writeFile("level3Photos.json", level3Photos);
+                        sendResultLevel3Photo();
+                    }
+                }else{
+                    enviandoFoto = false;
+                    //alert(JSON.stringify(e));
+                    setTimeout(function () {
+                        sendResultLevel3Photo();
+                    }, 20000);
+                    algumaFotoEstaSendoEnviada = false;
+                }
+            },
+            error: function (e) {
+            }
+        });
+    }
 }
 
 function resetaBotaoCamera() {

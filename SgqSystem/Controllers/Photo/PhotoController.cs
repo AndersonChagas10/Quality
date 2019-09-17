@@ -31,24 +31,24 @@ namespace SgqSystem.Controllers.Photo
                 string url = photo.Photo;
 
                 //Verificar se no web.config a credencial do servidor de fotos
+                Exception exception = null;
 
-                FileStream file = FileHelper.DownloadPhoto(url
+                byte[] bytes = FileHelper.DownloadPhoto(url
                     , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
-                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto);
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
+                    , out exception);
 
-                if (file != null)
+                if (exception != null)
+                    throw new Exception("Error: " + exception.ToClient());
+
+                if (bytes != null && bytes.Length > 0)
                 {
-
-                    byte[] bytes = new byte[file.Length];
-                    file.Read(bytes, 0, bytes.Length);
-
                     Response.ContentType = "image/png";
                     Response.AppendHeader("Content-Disposition", $"attachment; filename={photo.Result_Level3_Id}-{photo.ID}.png");
                     Response.BinaryWrite(bytes);
                     Response.End();
 
                 }
-
             }
         }
 

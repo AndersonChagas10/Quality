@@ -100,6 +100,7 @@ namespace DTO.DTO.Params
             DdlRotina = Guard.CreateDropDownList(ddlrotina.Where(r => r.IsActive));
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation.Where(r => r.IsActive == true).OrderBy(r => r.Name));
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency.OrderBy(r => r.Name));
+            DdlFrequency.ElementAt(0).Value = "null";
             //DdlparLevel1 = Guard.CreateDropDownList(ddlparLevel1);
             //DdlparLevel2 = Guard.CreateDropDownList(ddlparLevel2);
             //DdlparLevel3 = Guard.CreateDropDownList(ddlparLevel3);

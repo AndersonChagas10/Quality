@@ -136,6 +136,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "cluster_points1", Value = "Pontos do cluster" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "cluster1", Value = "Cluster" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "clusters", Value = "Processos" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "process", Value = "Processo" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "clusters1", Value = "Clusters" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "collection_date", Value = "Data da coleta" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "collection_dropped", Value = "Verificamos que a coleta que está fazendo já foi lançada. Esta coleta será descartada" });
@@ -485,6 +486,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "link_number_evaluation", Value = "Link com a avaliação" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "link_number_evaluation1", Value = "Link com o número da avaliação" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "linked", Value = "Vinculado" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "linked1", Value = "Vinculada" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "list_results", Value = "Listar Resultados" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "listOf", Value = "Lista de" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "loading", Value = "Carregando" });
@@ -970,8 +972,11 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "table_name", Value = "Nome da Tabela" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "interval", Value = "Intervalo" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "sis_integration", Value = "Integração Sistêmica"});
+                ResourcesInserir.Add(new ResourcePT() { Key = "points2", Value = "Pontos" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "structure_level", Value = "Níveis de Estrutura" });
+
                 ResourcesInserir.Add(new ResourcePT() { Key = "module_child", Value = "Módulo Filho" });
-               
+                ResourcesInserir.Add(new ResourcePT() { Key = "son_of", Value = "Filho de" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
