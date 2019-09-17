@@ -149,7 +149,7 @@ function openModalChangeDate() {
         '<button id="btnChangeDate" type="button" class="btn btn-primary" onclick="closeModal()">Cancelar</button>' +
         '</div>';
 
-    openModal(html);
+    openModal(html, 'White', 'black');
 
 }
 
