@@ -35,9 +35,22 @@ function processAlertRole(coletaJson) {
         }).length;
 
         if (exists.length > 0) {
+
             numeroDeAlertas++;
 
-            openMensagem('Alerta ' + numeroDeAlertas + ' (' + exists[0].Name + ') foi disparado.', 'red', 'white');
+            setTimeout(function () {
+
+                openMensagem('Alerta ' + numeroDeAlertas + ' (' + exists[0].Name + ') foi disparado.', 'red', 'white');
+                closeMensagem(3000);
+
+                if (exists[0].HasCorrectiveAction) {
+                    //Verificar se disparou alerta e se existe ação corretiva - Caso existir, abre o modal - após salvar a ação corretiva abre a função abaixo;
+                    setTimeout(function () {
+                        OpenCorrectiveAction(coleta);
+                    }, 3100);
+                }
+
+            }, 3500);
 
             currentAlertsAgrupados.push({
                 ParDepartment_Id: coleta.ParDepartment_Id,
@@ -48,16 +61,6 @@ function processAlertRole(coletaJson) {
                 ParLevel3_Id: coleta.ParLevel3_Id,
                 Number: numeroDeAlertas
             });
-
-            if (exists[0].HasCorrectiveAction) {
-                //Verificar se disparou alerta e se existe ação corretiva - Caso existir, abre o modal - após salvar a ação corretiva abre a função abaixo;
-                setTimeout(function () {
-                    OpenCorrectiveAction(coleta);
-                }, 3500);
-            }
-
-            closeMensagem(3000);
         }
     }
-    //console.table(coletaJson);
 }
