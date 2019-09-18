@@ -719,13 +719,13 @@ function OpenCorrectiveAction(coleta) {
         CollectionDate: getCurrentDate()
     };
 
-    var tarefa = $.map(parametrization.listaParLevel3, function (val, i) {
-        if (val.Id == coleta.ParLevel3_Id) {
-            return val;
-        }
-    });
-
-    var modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>' + '<h4> Tarefa: "' + tarefa[0].Name + '"</h4>';
+    //var tarefa = $.map(parametrization.listaParLevel3, function (val, i) {
+    //    if (val.Id == coleta.ParLevel3_Id) {
+    //        return val;
+    //    }
+    //});
+    // + '<h4> Tarefa: "' + tarefa[0].Name + '"</h4>' verificar uma forma de mostrar a tarefa que esta nao conforme
+    var modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>';
     var selectUsers = '<option value="">Selecione...</option><option value="1">Pato Donald</option>';
 
     var body = '<div class="form-group">' +
