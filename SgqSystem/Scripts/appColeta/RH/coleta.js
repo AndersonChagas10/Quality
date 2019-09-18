@@ -719,21 +719,27 @@ function OpenCorrectiveAction(coleta) {
         CollectionDate: getCurrentDate()
     };
 
-    var modal = '<h4>Ação Corretiva</h4>';
+    var tarefa = $.map(parametrization.listaParLevel3, function (val, i) {
+        if (val.Id == coleta.ParLevel3_Id) {
+            return val;
+        }
+    });
+
+    var modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>' + '<h4> Tarefa: "' + tarefa[0].Name + '"</h4>';
     var selectUsers = '<option value="">Selecione...</option><option value="1">Pato Donald</option>';
 
     var body = '<div class="form-group">' +
         '<div class="form-group col-xs-12">' +
         '<label>Descrição da Falha:</label>' +
-        '<textarea name="DescriptionFailure" id="descriptionFailure" rows="7" class="col-sx-12 form-control"></textarea>' +
+        '<input name="DescriptionFailure" id="descriptionFailure" class="col-sx-12 form-control" style="height: 80px;">' +
         '</div>' +
-        '<div class="form-group col-xs-6">' +
-        '<label for="email">Slaughter :</label>' +
-        '<select name="SlaughterId" id="slaughterId" class="form-control">' + selectUsers + '</select>' +
+        '<div class="form-group col-xs-12">' +
+        '<label for="email">Ação Corretiva Imediata:</label>' +
+        '<input name="SlaughterId" id="slaughterId" class="form-control" style="height: 80px;">' +
         '</div>' +
-        '<div class="form-group col-xs-6">' +
-        '<label for="email">Technical:</label>' +
-        '<select name="TechinicalId" id="techinicalId" class="form-control">' + selectUsers + '</select>' +
+        '<div class="form-group col-xs-12">' +
+        '<label for="email">Ação Preventiva:</label>' +
+        '<input name="TechinicalId" id="techinicalId" class="form-control" style="height: 80px;">'+
         '</div>';
 
     var corpo =
@@ -751,14 +757,14 @@ function OpenCorrectiveAction(coleta) {
         '</div>' +
         '</div>';
 
-    openModal(corpo);
+    openModal(corpo, 'white');
 
     $('#btnSendCA').off().on('click', function () {
 
         //Inserir collectionLevel2 dentro do obj
         correctiveAction.AuditorId = currentLogin.Id;
-        correctiveAction.SlaughterId = $('#slaughterId :selected').val();
-        correctiveAction.TechinicalId = $('#techinicalId :selected').val();
+        correctiveAction.SlaughterId = $('#slaughterId').val();
+        correctiveAction.TechinicalId = $('#techinicalId').val();
         correctiveAction.DescriptionFailure = $('#descriptionFailure').val();
 
         //Salvar corrective action na lista de correctiveAction
