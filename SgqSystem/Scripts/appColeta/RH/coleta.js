@@ -757,7 +757,7 @@ function OpenCorrectiveAction(coleta) {
         '</div>' +
         '</div>';
 
-    openModal(corpo, 'white');
+    openModal(corpo, 'white', 'black');
 
     $('#btnSendCA').off().on('click', function () {
 
