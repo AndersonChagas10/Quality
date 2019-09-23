@@ -111,6 +111,7 @@
     <Compile Include="ParColaboradorXCargo.cs" />
     <Compile Include="ParAlert.cs" />
     <Compile Include="ParHeaderFieldGeral.cs" />
+    <Compile Include="ParHeaderFieldXComponenteGenerico.cs" />
     <Compile Include="ParLevel3XHelp.cs" />
     <Compile Include="ParLevel3XModule.cs" />
     <Compile Include="ParLevelHeaderField.cs" />

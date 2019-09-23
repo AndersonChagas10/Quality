@@ -625,6 +625,21 @@ namespace SgqSystem.Controllers.Api.Params
                 return level3;
             }
         }
+
+        [HttpGet]
+        [Route("GetComponenteGenericoColunas/{componenteGenerico_Id}")]
+        public List<ComponenteGenericoColuna> GetComponenteGenericoColunas(int componenteGenerico_Id)
+        {
+            var colunas = new List<ComponenteGenericoColuna>();
+
+            using (var db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                colunas = db.ComponenteGenericoColuna.Where(x => x.IsActive && x.ComponenteGenerico_Id == componenteGenerico_Id).ToList();
+            }
+
+            return colunas;
+        }
     }
 
     public class ParLevel3Bool

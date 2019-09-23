@@ -284,6 +284,7 @@ namespace Dominio
         public virtual DbSet<ComponenteGenericoTipoColuna> ComponenteGenericoTipoColuna { get; set; }
         public virtual DbSet<ComponenteGenericoColuna> ComponenteGenericoColuna { get; set; }
         public virtual DbSet<ComponenteGenericoValor> ComponenteGenericoValor { get; set; }
+        public virtual DbSet<ParHeaderFieldXComponenteGenerico> ParHeaderFieldXComponenteGenerico { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

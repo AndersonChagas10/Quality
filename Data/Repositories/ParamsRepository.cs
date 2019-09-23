@@ -85,6 +85,10 @@ namespace Data.Repositories
                         ParLevel1XHeaderField parLevel1HeaderField;
                         CriaParLevel1HeaderField(paramLevel1, parHeadField, out idParLevel1HeaderField, out parLevel1HeaderField);
                         SalvaParLevel1HeaderField(idParLevel1HeaderField, parLevel1HeaderField);/*Salva ParLevel1XHeaderField*/
+
+                        //Salvar o ComponenteGenericoXHeaderField
+                        SalvarParHeaderFieldXComponenteGenerico(parHeadField.ParHeaderFieldXComponenteGenerico, parHeadField.Id);
+
                     }
                 }
 
@@ -194,6 +198,23 @@ namespace Data.Repositories
                 db.ParMultipleValues.Attach(parMultipleValues);
                 db.Entry(parMultipleValues).State = EntityState.Modified;
                 db.Entry(parMultipleValues).Property(e => e.AddDate).IsModified = false;
+            }
+            db.SaveChanges();
+        }
+
+        private void SalvarParHeaderFieldXComponenteGenerico(ParHeaderFieldXComponenteGenerico parHeaderFieldXComponenteGenerico, int parHeaderFieldId)
+        {
+            if (parHeaderFieldXComponenteGenerico.Id == 0)
+            {
+                parHeaderFieldXComponenteGenerico.ParHeaderField_Id = parHeaderFieldId;
+                db.ParHeaderFieldXComponenteGenerico.Add(parHeaderFieldXComponenteGenerico);
+            }
+            else
+            {
+                Guard.verifyDate(parHeaderFieldXComponenteGenerico, "AlterDate");
+                db.ParHeaderFieldXComponenteGenerico.Attach(parHeaderFieldXComponenteGenerico);
+                db.Entry(parHeaderFieldXComponenteGenerico).State = EntityState.Modified;
+                db.Entry(parHeaderFieldXComponenteGenerico).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges();
         }
