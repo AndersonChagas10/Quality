@@ -4,6 +4,8 @@
 @{
     /**/
 
+    /**/
+
     ViewBag.Title = Resources.Resource.create;
 }
 
@@ -40,7 +42,7 @@
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
-                                @using (Html.BeginForm("Create", "ParAlert", FormMethod.Post, new { }))
+                                @using (Html.BeginForm("Create", "ParAlert", FormMethod.Post, new { @id = "filterReports" }))
                                 {
                                     @Html.AntiForgeryToken()
 
@@ -49,9 +51,22 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Name, Resources.Resource.name as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 @Html.TextBoxFor(model => model.Name, null, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.ParCompany_Id, Resources.Resource.unit as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-6">
+                                                <button id="btnBuscarUnidade" type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parCompany_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParCompany", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+                                                <select class="form-control" id="idSelectedParCompany" name="parCompany_Ids" multiple></select>
                                             </div>
                                         </div>
 
@@ -60,11 +75,11 @@
                                             <div class="col-md-6">
                                                 <button id="btnBuscarDepartamentos" type="button"
                                                         data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=ParDepartment_Id]"
+                                                        data-filtroselect3-select="select[name=ParDepartment_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParDepartmentFilho", "api/Formulario")">
                                                     Abrir
                                                 </button>
-                                                <select class="form-control" name="ParDepartment_Id"></select>
+                                                <select class="form-control" name="ParDepartment_Ids" multiple></select>
                                             </div>
                                         </div>
 
@@ -76,17 +91,30 @@
                                                 </div>
                                             </div>*@
 
+                                        @*<div class="form-group">
+                                                @Html.LabelFor(model => model.ParCargo, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownList("ParCargo_Id", null, htmlAttributes: new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.ParCargo_Id, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>*@
+
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParCargo, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownList("ParCargo_Id", null, htmlAttributes: new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.ParCargo_Id, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.ParCargo_Id, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-6">
+                                                <button type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parCargo_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParCargo", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+                                                <select class="form-control" name="parCargo_Ids" multiple></select>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParLevel1, Resources.Resource.level1 as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 @Html.DropDownList("ParLevel1_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger" })
                                             </div>
@@ -94,7 +122,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParLevel2, Resources.Resource.level2 as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 @Html.DropDownList("ParLevel2_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel2_Id, "", new { @class = "text-danger" })
                                             </div>
@@ -102,7 +130,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParLevel3, Resources.Resource.level3 as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 @Html.DropDownList("ParLevel3_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel3_Id, "", new { @class = "text-danger" })
                                             </div>
@@ -110,7 +138,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParAlertType, Resources.Resource.alert as string + " " + Resources.Resource.type as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 @Html.DropDownList("ParAlertType_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParAlertType_Id, "", new { @class = "text-danger" })
                                             </div>
@@ -118,7 +146,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.IsActive, Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.IsActive)
                                                     @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
@@ -128,7 +156,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.IsCollectAlert, Resources.Resource.isCollectAlert as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.IsCollectAlert)
                                                     @Html.ValidationMessageFor(model => model.IsCollectAlert, "", new { @class = "text-danger" })
@@ -138,7 +166,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.HasCorrectiveAction, Resources.Resource.hasCorrectiveAction as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.HasCorrectiveAction)
                                                     @Html.ValidationMessageFor(model => model.HasCorrectiveAction, "", new { @class = "text-danger" })
@@ -167,10 +195,36 @@
 @section Scripts {
     <script src="~/Scripts/Select3/select3.js"></script>
     <script>
+        var objFiltro = { Param: {} };
         $(document).ready(function () {
 
             $('.form-horizontal select').select2();
 
+            disableEnableSearchButton();
+
+            $('#filterReports select').on('change', function () {
+
+                var objFiltroParam = objFiltro.Param;
+                objFiltro = $('#filterReports').serializeObject();
+                $(Object.keys(objFiltro)).each(function (i, o) {
+                    objFiltro[o] = [objFiltro[o]];
+                });
+                objFiltro.Param = objFiltroParam;
+
+                disableEnableSearchButton();
+
+            });
+
+            Select3.initialize(function () { return objFiltro });
         });
+
+        function disableEnableSearchButton() {
+            if ($("#idSelectedParCompany").text() == null || $("#idSelectedParCompany").text() == "") {
+                $("#btnBuscarDepartamentos").prop('disabled', true);
+            } else {
+                $("#btnBuscarDepartamentos").prop('disabled', false);
+            }
+        }
+
     </script>
 }
