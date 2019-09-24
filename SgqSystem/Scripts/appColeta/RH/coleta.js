@@ -728,7 +728,17 @@ function OpenCorrectiveAction(coleta) {
     var modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>';
     var selectUsers = '<option value="">Selecione...</option><option value="1">Pato Donald</option>';
 
+    var date = stringToDate(currentCollectDate.toJSON());
+
     var body = '<div class="form-group">' +
+        '<div class="form-group col-xs-12">'+
+        '<strong>Informações</strong>'+
+        '<small><br/>Data/Hora: '+date.toLocaleDateString() + ' '+date.toLocaleTimeString()+
+        '<br/>Monitor: '+currentLogin.Name+
+        '<br/>Tarefa: '+$.grep(parametrization.listaParLevel3, function(o,i){ return o.Id == coleta.ParLevel3_Id; })[0].Name+
+        '<br/>Frequência: '+$.grep(parametrization.listaParFrequency, function (item) {return item.Id == currentParFrequency_Id;})[0].Name+
+        '</small></div>'+
+
         '<div class="form-group col-xs-12">' +
         '<label>Descrição da Falha:</label>' +
         '<input name="DescriptionFailure" id="descriptionFailure" class="col-sx-12 form-control" style="height: 80px;">' +
