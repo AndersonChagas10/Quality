@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using ADOFactory;
 using Dapper;
-using System;
-using System.Linq;
 using Dominio;
-using System.Threading;
-using System.Collections;
 //using SgqSystem.Services;
 using DTO;
-using ADOFactory;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
 //using SgqSystem.Controllers.Api;
 
 namespace SGQDBContext
@@ -1879,6 +1877,44 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             }
 
             return multipleValues;
+        }
+
+        public string getComponenteValues(int ParHeaderField_Id, int ParCompany_Id)
+        {
+            string conexaoBR = ConnectionString;
+
+            db = new SqlConnection(conexaoBR);
+
+            var sqlParHeaderFieldXComponenteGenerico = $@"SELECT PHFCG.* from ParHeaderFieldXComponenteGenerico PHFCG 
+	                                       INNER JOIN ComponenteGenerico CG on CG.Id = PHFCG.ComponenteGenerico_Id where PHFCG.ParHeaderField_Id = { ParHeaderField_Id }";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                var parHeaderFieldXComponenteGenerico = factory.SearchQuery<ParHeaderFieldXComponenteGenerico>(sqlParHeaderFieldXComponenteGenerico).FirstOrDefault();
+
+                if (parHeaderFieldXComponenteGenerico == null)
+                {
+                    return "";
+                }
+
+                var sqlComponenteGenericoValor = $@"select * from ComponenteGenericoValor where ComponenteGenerico_Id = { parHeaderFieldXComponenteGenerico.ComponenteGenerico_Id }";
+                var componenteGenericoValores = factory.SearchQuery<ComponenteGenericoValor>(sqlComponenteGenericoValor).ToList();
+                var hashValores = componenteGenericoValores.Select(x => x.SaveId).Distinct().ToList();
+
+                var options = "";
+
+                foreach (var hashValor in hashValores)
+                {
+
+                    var value = componenteGenericoValores.Where(x => x.SaveId == hashValor && x.ComponenteGenericoColuna_Id == int.Parse(parHeaderFieldXComponenteGenerico.Value)).FirstOrDefault().Valor;
+                    var text = componenteGenericoValores.Where(x => x.SaveId == hashValor && x.ComponenteGenericoColuna_Id == int.Parse(parHeaderFieldXComponenteGenerico.Text)).FirstOrDefault().Valor;
+
+                    options += "<option value=" + value + " hashId=" + hashValor + ">" + text + "</option>";
+
+                }
+
+                return options;
+            }
         }
     }
 

@@ -3920,6 +3920,7 @@ namespace SgqServiceBusiness.Api
                 var listaProdutosJSON = listaProdutos.getProdutos();
 
                 supports += @" <script>
+
                                 var listaProdutosJson = " + Newtonsoft.Json.JsonConvert.SerializeObject(listaProdutosJSON) + @";
                                            
                                 function buscarProduto(a,valor){
@@ -3932,7 +3933,7 @@ namespace SgqServiceBusiness.Api
                                             return;
                                         }		                                               
                                     }
-                                    //$(a).val('');
+
                                     $(a).next().html('');
                                 }
 
@@ -3946,8 +3947,10 @@ namespace SgqServiceBusiness.Api
                                         }
                                                                                                        
                                     }
+
                                     $(a).val('');
                                 }
+
                                 </script> ";
             }
             catch (Exception ex)
@@ -4007,11 +4010,36 @@ namespace SgqServiceBusiness.Api
 
             }
 
+            try
+            {
 
-            //string resource = GetResource();
+                using (var db = new SgqDbDevEntities())
+                {
+                    //db.Configuration.LazyLoadingEnabled = false;
+                    //var listParHeaderFieldXComponenteGenerico = db.ParHeaderFieldXComponenteGenerico.ToList();
+
+                    //supports += $@"<script>
+                    //            var listParHeaderFieldXComponenteGenerico = " + Newtonsoft.Json.JsonConvert.SerializeObject(listParHeaderFieldXComponenteGenerico) + @";
+
+                    //            function getParLevel3XHelp(parLevel3_Id) {
+
+                    //                var valor = $.grep(listaParLevel3XHelp, function(obj) { 
+                    //                                   return obj.ParLevel3_Id == parLevel3_Id;  
+                    //                            });
+
+                    //                return (valor && valor.length > 0) ? valor[0] : '';
+                    //            }
+
+                    //            </script> ";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
 
 
-            return APPMain + supports;// + resource;
+            return APPMain + supports;
         }
 
         public string getAPPLevelsVolume(GetAPPLevelsVolumeClass getAPPLevelsVolumeClass)
@@ -6071,6 +6099,18 @@ namespace SgqServiceBusiness.Api
                         form_control += $@"<label class=""""></label>";
                         break;
 
+                    case 11:
+
+                        var options = ParFieldTypeDB.getComponenteValues(header.ParHeaderField_Id, ParCompany_id);
+
+                        if (options != "")
+                        {
+                            form_control += $@"<select id="""" class=""form-control input-sm ddl"" Id="""" name=cb  ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" IdPai="" { id } "" LinkNumberEvaluetion=""{ header.LinkNumberEvaluetion.ToString().ToLower() }"">";
+                            form_control += options;
+                            form_control += "</select>";
+                        }
+
+                        break;
                 }
 
                 //Incrementar valor para o pai do elemento para Ytoara.

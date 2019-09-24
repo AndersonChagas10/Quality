@@ -59,6 +59,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", 
 		SGQ_1.0.7.txt = SGQ_1.0.7.txt
 		SGQ_1.0.8.txt = SGQ_1.0.8.txt
 		SGQ_1.0.9.txt = SGQ_1.0.9.txt
+		sgq_msp.txt = sgq_msp.txt
 		SGQ_RH_Descontinuado.txt = SGQ_RH_Descontinuado.txt
 	EndProjectSection
 EndProject
