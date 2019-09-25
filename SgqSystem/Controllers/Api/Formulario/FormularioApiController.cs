@@ -159,11 +159,6 @@ namespace SgqSystem.Controllers.Api.Formulario
         public List<Select3ViewModel> GetFilteredParDepartmentFilho(string search, [FromBody] DataCarrierFormularioNew form)
         {
 
-            if(form.parCompany_Ids != null)
-            {
-                form.ParCompany_Ids = form.parCompany_Ids;
-            }
-
             using (var factory = new Factory("DefaultConnection"))
             {
                 var retornoFormulario = new FormularioViewModel();
@@ -175,9 +170,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                     sqlDepartamentoPelaHash += $@"AND PD.Hash in ({string.Join(",", form.ParDepartment_Ids)})
                             AND (PD.Parent_Id IS not NULL OR PD.Parent_Id <> 0)  ";
                 }
-                if(form.parCompany_Ids != null && form.parCompany_Ids.Length > 0)
+
+                if(form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
                 {
-                    sqlDepartamentoPelaHash += $@"AND ParCompany_Id in ({string.Join(",", form.parCompany_Ids)})";
+                    sqlDepartamentoPelaHash += $@"AND ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)})";
                 }
 
                 var query = $@"SELECT DISTINCT TOP 500 PD.Hash,PD.Id,PD.Name  FROM ParDepartment PD 
@@ -203,16 +199,12 @@ namespace SgqSystem.Controllers.Api.Formulario
                 retornoFormulario.ParSecoes = GetParSecoes(form, factory, retornoFormulario);
                 var parDepartment_Ids = form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList();
 
+
+
                 var sqlParDepartment = "";
                 if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)
                 {
                     sqlParDepartment = $@" AND PCXD.ParDepartment_Id IN ({string.Join(",", parDepartment_Ids)})";
-                }
-
-                if(form.ParDepartment_Ids.Length > 0 && form.ParDepartment_Ids != null)
-                {
-                    sqlParDepartment += $@"and PCXD.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)})";
-                    
                 }
 
                 var query = $@"SELECT DISTINCT TOP 500 PC.Id,PC.Name FROM ParCargo PC

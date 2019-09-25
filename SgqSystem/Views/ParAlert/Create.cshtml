@@ -66,8 +66,9 @@
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParCompany", "api/Formulario")">
                                                     Abrir
                                                 </button>
-                                                <select class="form-control" id="idSelectedParCompany" name="parCompany_Ids" multiple></select>
+                                                <select class="form-control" id="idSelectedParCompany" name="parCompany_Ids"></select>
                                             </div>
+                                            @Html.HiddenFor(model => model.ParCompany_Id)
                                         </div>
 
                                         <div class="form-group">
@@ -75,29 +76,14 @@
                                             <div class="col-md-6">
                                                 <button id="btnBuscarDepartamentos" type="button"
                                                         data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=ParDepartment_Ids]"
+                                                        data-filtroselect3-select="select[name=ParSecao_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParDepartmentFilho", "api/Formulario")">
                                                     Abrir
                                                 </button>
-                                                <select class="form-control" name="ParDepartment_Ids" multiple></select>
+                                                <select class="form-control" name="ParSecao_Ids"></select>
                                             </div>
+                                            @Html.HiddenFor(model => model.ParDepartment_Id)
                                         </div>
-
-                                        @*<div class="form-group">
-                                                @Html.LabelFor(model => model.ParDepartment, Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                <div class="col-md-10">
-                                                    @Html.DropDownList("ParDepartment_Id", null, htmlAttributes: new { @class = "form-control" })
-                                                    @Html.ValidationMessageFor(model => model.ParDepartment_Id, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>*@
-
-                                        @*<div class="form-group">
-                                                @Html.LabelFor(model => model.ParCargo, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
-                                                <div class="col-md-10">
-                                                    @Html.DropDownList("ParCargo_Id", null, htmlAttributes: new { @class = "form-control" })
-                                                    @Html.ValidationMessageFor(model => model.ParCargo_Id, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>*@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParCargo_Id, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -108,8 +94,9 @@
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParCargo", "api/Formulario")">
                                                     Abrir
                                                 </button>
-                                                <select class="form-control" name="parCargo_Ids" multiple></select>
+                                                <select class="form-control" name="parCargo_Ids"></select>
                                             </div>
+                                            @Html.HiddenFor(model => model.ParCargo_Id)
                                         </div>
 
                                         <div class="form-group">
@@ -200,10 +187,7 @@
 
             $('.form-horizontal select').select2();
 
-            disableEnableSearchButton();
-
             $('#filterReports select').on('change', function () {
-
                 var objFiltroParam = objFiltro.Param;
                 objFiltro = $('#filterReports').serializeObject();
                 $(Object.keys(objFiltro)).each(function (i, o) {
@@ -211,20 +195,16 @@
                 });
                 objFiltro.Param = objFiltroParam;
 
-                disableEnableSearchButton();
+                $("#ParCompany_Id").val(objFiltro.parCompany_Ids[0]);
+                if (objFiltro.ParSecao_Ids != null || objFiltro.ParSecao_Ids != undefined)
+                    $("#ParDepartment_Id").val(objFiltro.ParSecao_Ids[0]);
+                if (objFiltro.parCargo_Ids != null || objFiltro.parCargo_Ids != undefined)
+                    $("#ParCargo_Id").val(objFiltro.parCargo_Ids[0]);
 
             });
 
             Select3.initialize(function () { return objFiltro });
         });
-
-        function disableEnableSearchButton() {
-            if ($("#idSelectedParCompany").text() == null || $("#idSelectedParCompany").text() == "") {
-                $("#btnBuscarDepartamentos").prop('disabled', true);
-            } else {
-                $("#btnBuscarDepartamentos").prop('disabled', false);
-            }
-        }
 
     </script>
 }

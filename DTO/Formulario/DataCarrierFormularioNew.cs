@@ -41,8 +41,6 @@ namespace DTO
 
         public int[] ParLevel1Group_Ids { get; set; } = new int[] { };
 
-        public int[] parCompany_Ids { get; set; } = new int[] { };
-
         public JObject Param { get; set; }
 
     }

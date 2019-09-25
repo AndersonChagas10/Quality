@@ -64,6 +64,45 @@ namespace SgqSystem.Controllers
             };
                 ViewBag.Department = semDados;
             }
+
+            ViewBag.SonDepartments = db.ParDepartment.Where(x => x.Id == parAlert.ParDepartment_Id).ToList()
+             .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+             .ToList();
+
+            if (ViewBag.SonDepartments.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.SonDepartments = semDados;
+            }
+
+            ViewBag.Company = db.ParCompany.Where(x => x.Id == parAlert.ParCompany_Id).ToList()
+             .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+             .ToList();
+
+            if (ViewBag.Company.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.Company = semDados;
+            }
+
+            ViewBag.Cargo = db.ParCargo.Where(x => x.Id == parAlert.ParCargo_Id).ToList()
+            .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+            .ToList();
+
+            if (ViewBag.Cargo.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.Cargo = semDados;
+            }
         }
 
         // GET: ParAlerts
