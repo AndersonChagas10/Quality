@@ -135,7 +135,7 @@ namespace SgqSystem.Controllers.Api
             " \n DescriptionFailure, " +
             " \n AuditStartTime, " +
             " \n ImmediateCorrectiveAction, " +
-            " \n ProductDisposition, " +
+            " \n ProductDisposition, " + 
             " \n PreventativeMeasure, " +
             " \n CollectionLevel02Id, " +
             " \n CollectionLevel2_Id " +
@@ -144,8 +144,8 @@ namespace SgqSystem.Controllers.Api
 
             " \n INNER JOIN CollectionLevel2 ON CorrectiveAction.CollectionLevel02Id = CollectionLevel2.Id " +
             " \n INNER JOIN UserSgq UserSgqAuditor on CorrectiveAction.AuditorId = UserSgqAuditor.Id " +
-            " \n INNER JOIN UserSgq UserSgqSlaugther on CorrectiveAction.SlaughterId = UserSgqSlaugther.Id " +
-            " \n INNER JOIN UserSgq UserSgqTechinical on CorrectiveAction.TechinicalId = UserSgqTechinical.Id " +
+            " \n LEFT JOIN UserSgq UserSgqSlaugther on CorrectiveAction.SlaughterId = UserSgqSlaugther.Id " +
+            " \n LEFT JOIN UserSgq UserSgqTechinical on CorrectiveAction.TechinicalId = UserSgqTechinical.Id " +
             " \n INNER JOIN ParLevel1 on CollectionLevel2.ParLevel1_Id = ParLevel1.Id " +
             " \n INNER JOIN ParLevel2 on CollectionLevel2.ParLevel2_Id = ParLevel2.Id " +
 
