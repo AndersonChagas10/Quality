@@ -10,10 +10,17 @@ function processAlertRole(coletaJson) {
 
     for (var i = 0; i < coletaJson.length; i++) {
 
-        var coleta = coletaJson[i];
+        //var coleta = coletaJson[i];
 
-        if (coleta.IsConform)
+        //if (coleta.IsConform)
+        //continue;
+
+        var coleta;
+        if (coletaJson[i].IsConform) {
             continue;
+        } else {
+            coleta = coletaJson[i];
+        }
 
         //retorna se existe alguem alerta vigente para este cenario
         var exists = $.grep(listaParAlertPreFiltrada, function (o, i) {

@@ -733,7 +733,7 @@ function OpenCorrectiveAction(coleta) {
     var body = '<div class="form-group">' +
         '<div class="form-group col-xs-12">'+
         '<strong>Informações</strong>'+
-        '<small><br/>Data/Hora: '+date.toLocaleDateString() + ' '+date.toLocaleTimeString()+
+        '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString()+
         '<br/>Monitor: '+currentLogin.Name+
         '<br/>Tarefa: '+$.grep(parametrization.listaParLevel3, function(o,i){ return o.Id == coleta.ParLevel3_Id; })[0].Name+
         '<br/>Frequência: '+$.grep(parametrization.listaParFrequency, function (item) {return item.Id == currentParFrequency_Id;})[0].Name+

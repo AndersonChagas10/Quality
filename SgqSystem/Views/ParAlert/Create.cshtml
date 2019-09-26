@@ -201,7 +201,7 @@
                 if (objFiltro.parCargo_Ids != null || objFiltro.parCargo_Ids != undefined)
                     $("#ParCargo_Id").val(objFiltro.parCargo_Ids[0]);
 
-            });
+            }).change();
 
             Select3.initialize(function () { return objFiltro });
         });
