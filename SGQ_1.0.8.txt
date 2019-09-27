@@ -237,3 +237,19 @@ WHERE   schema_name = 'INTEG' )
 
 	END
 GO
+
+
+-- gabriel criou a coluna IsKnockout 2019-09-24
+
+IF COL_LENGTH('parlevel3level2','IsKnockout') IS NULL
+    BEGIN	
+		alter table parlevel3level2
+		add IsKnockout bit null;
+    END
+GO
+
+
+go
+
+update parlevel3level2 set IsKnockout = 0 where IsKnockout is null
+go

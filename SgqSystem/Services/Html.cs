@@ -634,7 +634,7 @@ namespace SgqSystem.Services
             if (parLevel3.ParLevel3InputType_Id == 11)
                 peso = "0";
 
-            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\"" + parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
+            string tags = " weight=\"" + peso + "\" IsKnockout=\"" + parLevel3.IsKnockout.ToString() + "\" intervalmin =\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\"" + parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
 
 
             //Gera o level3
