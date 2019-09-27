@@ -55,7 +55,7 @@
     //if (_level2 && ultL2Temp == false) {
     //    _level2List = level2Group.find('.level2[id=' + _level2.id + ']').length;
     //} else {
-        _level2List = level2Group.find('.level2').length;
+    _level2List = level2Group.find('.level2').length;
     //}
 
     var maior = 0;
@@ -67,7 +67,7 @@
         //if (_level2 && level1.attr('hasgrouplevel2') != 'true' && ultL2Temp == false)
         //    level2 = level2Group.find('.level2[id=' + _level2.id + ']');
         //else
-            level2 = level2Group.find($('.level2')[i]);
+        level2 = level2Group.find($('.level2')[i]);
 
         updateCounterLinhaLevel2(level1, level2);
 
@@ -221,6 +221,60 @@
 
     atualizaCorAgendamento();
 
+    setTimeout(function () {
+        //Instancia todos os monitoramentos
+        var level2List = $('.level2List');
+        //Instancia o grupo de Level2 referente ao Level1 selecionado
+        var level2Group = level2List.children('.level2Group[level01id=' + level1.attr('id') + ']');
+
+        var _level2List;
+        _level2List = level2Group.find('.level2').length;
+
+        for (var i = 0; i < _level2List; i++) {
+
+            var level2;
+            //if (_level2 && level1.attr('hasgrouplevel2') != 'true' && ultL2Temp == false)
+            //    level2 = level2Group.find('.level2[id=' + _level2.id + ']');
+            //else
+            level2 = level2Group.find($('.level2')[i]);
+
+            var linha = level2.parent().find('a');
+
+            var avaliacaoTotal = linha.attr('evaluate');
+            var amostraTotal = linha.attr('sample');
+
+            var avaliacao = linha.attr('evaluatecurrent');
+            var amostra = linha.attr('samplecurrent');
+
+            var avaliacaoAtual = 0;
+            var amostraAtual = 0;
+
+            if (avaliacaoTotal > 0) {
+                if (avaliacao > avaliacaoTotal) {
+                    avaliacaoAtual = avaliacaoTotal;
+
+                    if (amostraTotal > 0) {
+                        amostraAtual = avaliacaoAtual * amostraTotal;
+                    }
+                } else {
+					if(amostra == undefined || avaliacao == undefined){
+						avaliacaoAtual = parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('evaluation'));
+						amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('sample'))));
+					}else{
+						avaliacaoAtual = RetornaValor0SeUndefined(avaliacao) > 0 ? RetornaValor0SeUndefined(avaliacao) : 1;
+						amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(amostra));
+					}
+                }
+
+                avaliacaoAtual = isNaN(avaliacaoAtual) ? 0 : avaliacaoAtual;
+                amostraAtual = isNaN(amostraAtual) ? 0 : amostraAtual;
+
+                level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
+                level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal);
+				
+            }
+        }
+    }, 100);
 }
 
 $(document).on('click', '.level2Group .level2', function (e) {

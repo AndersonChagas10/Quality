@@ -117,10 +117,14 @@ function userAPPDataInsert(user) {
 
 }
 
-$(document).on('click', '#btnSyncParam', function (e) {
+$(document).off('click', '#btnSyncParam').on('click', '#btnSyncParam', function (e) {
 
     //$('#btnSync').click();
-    ping(paramsUpdate_OnLine, paramsUpdate_OffLine);
+
+    if (!isDisabledSyncButton) {
+        disableSyncButtons();
+        ping(paramsUpdate_OnLine, paramsUpdate_OffLine);
+    }
 
 });
 

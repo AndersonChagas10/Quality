@@ -54,6 +54,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", 
 		20180927_1600_AdicionarParCluster_Id_na_PARLEVEL1XMODULE.txt = 20180927_1600_AdicionarParCluster_Id_na_PARLEVEL1XMODULE.txt
 		_oldscripts-em desenvolvimento.txt = _oldscripts-em desenvolvimento.txt
 		PA_1.txt = PA_1.txt
+		SGQ_1.0.09.2.txt = SGQ_1.0.09.2.txt
 		SGQ_1.0.10.txt = SGQ_1.0.10.txt
 		SGQ_1.0.6.txt = SGQ_1.0.6.txt
 		SGQ_1.0.7.txt = SGQ_1.0.7.txt
