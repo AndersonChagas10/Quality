@@ -936,6 +936,7 @@
     <Content Include="Scripts\appColeta\GQ\alert.js" />
     <Content Include="Scripts\appColeta\GQ\alert_new.js" />
     <Content Include="Scripts\appColeta\GQ\breadCrumb.js" />
+    <Content Include="Scripts\appColeta\GQ\componente.js" />
     <Content Include="Scripts\appColeta\GQ\config.js" />
     <Content Include="Scripts\appColeta\GQ\consolidation.js" />
     <Content Include="Scripts\appColeta\GQ\controleDeAlerta.js" />
