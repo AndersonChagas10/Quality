@@ -50,8 +50,7 @@ namespace SgqSystem.Controllers.V2.Api
 
             using (var db = new SgqDbDevEntities())
             {
-
-                var parLevel3List = db.ParLevel3.ToList();
+                //var parLevel3List = db.ParLevel3.ToList();
 
                 //Adiciona os arquivos na Collection
                 foreach (var item in listSimpleCollect)
@@ -64,7 +63,6 @@ namespace SgqSystem.Controllers.V2.Api
                         item.Period_Id = 1;
                         item.IsProcessed = false;
                         db.Collection.Add(item);
-                        db.SaveChanges();
                     }
                     catch (Exception ex)
                     {
@@ -72,6 +70,8 @@ namespace SgqSystem.Controllers.V2.Api
                         //Registrar LOG
                     }
                 }
+
+                db.SaveChanges();
             }
 
 
