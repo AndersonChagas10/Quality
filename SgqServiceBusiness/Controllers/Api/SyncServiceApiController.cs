@@ -4013,24 +4013,29 @@ namespace SgqServiceBusiness.Api
             try
             {
 
-                using (var db = new SgqDbDevEntities())
+                using (var factory = new Factory("DefaultConnection"))
                 {
-                    //db.Configuration.LazyLoadingEnabled = false;
-                    //var listParHeaderFieldXComponenteGenerico = db.ParHeaderFieldXComponenteGenerico.ToList();
+                    var sql = $@"SELECT
+                                	CGC.Name
+                                   ,CGC.ComponenteGenerico_Id
+                                   ,CGC.ComponenteGenericoTipoColuna_Id
+                                   ,CGC.IsActive
+                                   ,CGV.SaveId
+                                   ,CGV.ComponenteGenericoColuna_Id
+                                   ,CGV.Valor
+                                FROM ComponenteGenericoColuna CGC
+                                INNER JOIN ComponenteGenericoValor CGV
+                                	ON CGC.Id = CGV.ComponenteGenericoColuna_Id
+                                WHERE CGC.IsActive = 1
+                                AND CGV.IsActive = 1";
 
-                    //supports += $@"<script>
-                    //            var listParHeaderFieldXComponenteGenerico = " + Newtonsoft.Json.JsonConvert.SerializeObject(listParHeaderFieldXComponenteGenerico) + @";
+                    var listParHeaderFieldXComponenteGenerico = factory.SearchQuery<Dominio.AppViewModel.ComponenteGenericoValoresViewModel>(sql).ToList();
 
-                    //            function getParLevel3XHelp(parLevel3_Id) {
+                    supports += $@"<script>
 
-                    //                var valor = $.grep(listaParLevel3XHelp, function(obj) { 
-                    //                                   return obj.ParLevel3_Id == parLevel3_Id;  
-                    //                            });
+                                var listComponenteGenericoValores = " + Newtonsoft.Json.JsonConvert.SerializeObject(listParHeaderFieldXComponenteGenerico) + @";
 
-                    //                return (valor && valor.length > 0) ? valor[0] : '';
-                    //            }
-
-                    //            </script> ";
+                                </script> ";
                 }
             }
             catch (Exception ex)
@@ -6101,14 +6106,9 @@ namespace SgqServiceBusiness.Api
 
                     case 11:
 
-                        var options = ParFieldTypeDB.getComponenteValues(header.ParHeaderField_Id, ParCompany_id);
+                        var options = ParFieldTypeDB.getComponenteValues(header, ParCompany_id, id);
 
-                        if (options != "")
-                        {
-                            form_control += $@"<select id="""" class=""form-control input-sm ddl"" Id="""" name=cb  ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" IdPai="" { id } "" LinkNumberEvaluetion=""{ header.LinkNumberEvaluetion.ToString().ToLower() }"">";
-                            form_control += options;
-                            form_control += "</select>";
-                        }
+                        form_control += options;
 
                         break;
                 }

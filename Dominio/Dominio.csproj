@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AppScript.cs" />
+    <Compile Include="AppViewModel\ComponenteGenericoValoresViewModel.cs" />
     <Compile Include="AppViewModel\ComponenteGenericoValorViewModel.cs" />
     <Compile Include="AppViewModel\ComponenteGenericoViewModel.cs" />
     <Compile Include="AppViewModel\ParCargoXDepartmentAppViewModel.cs" />

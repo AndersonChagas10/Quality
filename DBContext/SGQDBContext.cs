@@ -1879,14 +1879,14 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             return multipleValues;
         }
 
-        public string getComponenteValues(int ParHeaderField_Id, int ParCompany_Id)
+        public string getComponenteValues(ParLevelHeader parLevelHeader, int ParCompany_Id, int id)
         {
             string conexaoBR = ConnectionString;
 
             db = new SqlConnection(conexaoBR);
 
             var sqlParHeaderFieldXComponenteGenerico = $@"SELECT PHFCG.* from ParHeaderFieldXComponenteGenerico PHFCG 
-	                                       INNER JOIN ComponenteGenerico CG on CG.Id = PHFCG.ComponenteGenerico_Id where PHFCG.ParHeaderField_Id = { ParHeaderField_Id }";
+	                                       INNER JOIN ComponenteGenerico CG on CG.Id = PHFCG.ComponenteGenerico_Id where PHFCG.ParHeaderField_Id = { parLevelHeader.ParHeaderField_Id }";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -1901,7 +1901,10 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                 var componenteGenericoValores = factory.SearchQuery<ComponenteGenericoValor>(sqlComponenteGenericoValor).ToList();
                 var hashValores = componenteGenericoValores.Select(x => x.SaveId).Distinct().ToList();
 
-                var options = "";
+                var sqlComponenteGenericoColuna = $@"select top 1 * from componenteGenericoColuna where componenteGenerico_Id = { parHeaderFieldXComponenteGenerico.ComponenteGenerico_Id } and Id = { parHeaderFieldXComponenteGenerico.Value }";
+                var componenteGenericoColuna = factory.SearchQuery<ComponenteGenericoColuna>(sqlComponenteGenericoColuna).FirstOrDefault();
+
+                var options = @"<option value="""" selected>" + Resources.Resource.select + "...</option>";
 
                 foreach (var hashValor in hashValores)
                 {
@@ -1913,7 +1916,17 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
                 }
 
-                return options;
+                return $@"<select id="""" 
+                    class=""form-control input-sm ddl selectComponente"" 
+                    Id="""" name=cb  
+                    ParHeaderField_Id=""{ parLevelHeader.ParHeaderField_Id }"" 
+                    ParFieldType_Id=""{ parLevelHeader.ParFieldType_Id }"" 
+                    IdPai=""{ id }""
+                    Componente_Id=""{ parHeaderFieldXComponenteGenerico.ComponenteGenerico_Id }""
+                    ComponenteGenericoColuna=""{ componenteGenericoColuna.Name }""
+                    LinkNumberEvaluetion=""{ parLevelHeader.LinkNumberEvaluetion.ToString().ToLower() }"">
+                    { options }
+                    </select>";
             }
         }
     }
