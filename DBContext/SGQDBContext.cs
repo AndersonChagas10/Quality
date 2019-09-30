@@ -1899,22 +1899,29 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
                 var sqlComponenteGenericoValor = $@"select * from ComponenteGenericoValor where ComponenteGenerico_Id = { parHeaderFieldXComponenteGenerico.ComponenteGenerico_Id }";
                 var componenteGenericoValores = factory.SearchQuery<ComponenteGenericoValor>(sqlComponenteGenericoValor).ToList();
-                var hashValores = componenteGenericoValores.Select(x => x.SaveId).Distinct().ToList();
+                //var hashValores = componenteGenericoValores.Select(x => x.SaveId).Distinct().ToList();
 
                 var sqlComponenteGenericoColuna = $@"select top 1 * from componenteGenericoColuna where componenteGenerico_Id = { parHeaderFieldXComponenteGenerico.ComponenteGenerico_Id } and Id = { parHeaderFieldXComponenteGenerico.Value }";
                 var componenteGenericoColuna = factory.SearchQuery<ComponenteGenericoColuna>(sqlComponenteGenericoColuna).FirstOrDefault();
 
                 var options = @"<option value="""" selected>" + Resources.Resource.select + "...</option>";
 
-                foreach (var hashValor in hashValores)
+                var optionsData = componenteGenericoValores.Where(x => x.ComponenteGenericoColuna_Id == int.Parse(parHeaderFieldXComponenteGenerico.Text)).Select(x => x.Valor).Distinct().ToList();
+
+                foreach (var item in optionsData)
                 {
-
-                    var value = componenteGenericoValores.Where(x => x.SaveId == hashValor && x.ComponenteGenericoColuna_Id == int.Parse(parHeaderFieldXComponenteGenerico.Value)).FirstOrDefault().Valor;
-                    var text = componenteGenericoValores.Where(x => x.SaveId == hashValor && x.ComponenteGenericoColuna_Id == int.Parse(parHeaderFieldXComponenteGenerico.Text)).FirstOrDefault().Valor;
-
-                    options += "<option value=" + value + " hashId=" + hashValor + ">" + text + "</option>";
-
+                    options += "<option value=" + item + ">" + item + "</option>";
                 }
+
+                //foreach (var hashValor in hashValores)
+                //{
+
+                //    var value = componenteGenericoValores.Where(x => x.SaveId == hashValor && x.ComponenteGenericoColuna_Id == int.Parse(parHeaderFieldXComponenteGenerico.Value)).FirstOrDefault().Valor;
+                //    var text = componenteGenericoValores.Where(x => x.SaveId == hashValor && x.ComponenteGenericoColuna_Id == int.Parse(parHeaderFieldXComponenteGenerico.Text)).FirstOrDefault().Valor;
+
+                //    options += "<option value=" + value + " hashId=" + hashValor + ">" + text + "</option>";
+
+                //}
 
                 return $@"<select id="""" 
                     class=""form-control input-sm ddl selectComponente"" 

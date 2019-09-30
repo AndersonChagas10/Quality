@@ -6,11 +6,11 @@ $(document).on('change', '.painelLevel03 select.selectComponente', function () {
 
 function processComponente(thiss) {
 
-    var hashid = $(thiss).find('option:selected').attr('hashid');
+    //var hashid = $(thiss).find('option:selected').attr('hashid');
 
-    if (!hashid) {
-        return false;
-    }
+    // if (!hashid) {
+    //     return false;
+    // }
 
     if (!headerIsValid($(thiss).attr('Componente_id'))) {
         return false;
@@ -19,7 +19,7 @@ function processComponente(thiss) {
     var arrColumName = getColumNames($(thiss).attr('Componente_id'));
 
     //pegar os limites usando a função getLimits
-    var limites = getComponenteGenericoValor(hashid, arrColumName);
+    var limites = getComponenteGenericoValor(arrColumName);
 
     if (!limites) {
         return false;
@@ -84,11 +84,10 @@ function trocarLimitesLinhaLevel3(tarefa_Id, limiteSuperior, limiteInferior) {
 
 }
 
-function getComponenteGenericoValor(SaveId, arrColumName) {
+function getComponenteGenericoValor(arrColumName) {
 
     var valor = $.grep(listComponenteGenericoValores, function (obj) {
-        var saveId = SaveId;
-        return eval("obj.SaveId == saveId && (obj.Name == 'Limite' || obj.Name == " + arrColumName.join(" || obj.Name == ") + ")");
+        return eval("(obj.Name == 'Limite' || obj.Name == " + arrColumName.join(" || obj.Name == ") + ")");
     });
 
     if (valor.length > arrColumName.length)
@@ -96,7 +95,6 @@ function getComponenteGenericoValor(SaveId, arrColumName) {
             return obj.Name == 'Limite'; //trocar para obj.ComponenteGenericoTipoColuna_Id == (Id da coluna do tipo Limite)
         })[0];
 
-    // (valor && valor.length > 0) ? valor[0] : '';
     else
         return null
 }
