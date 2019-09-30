@@ -66,7 +66,7 @@ namespace SgqSystem.Controllers
         public ActionResult Create([Bind(Include = "Id,ParDepartment_Id,ParCargo_Id,IsActive,AddDate,AlterDate")] ParCargoXDepartment parCargoXDepartment)
         {
 
-            //buscar se ja existe um vinculo entr departamento e cargo, se sim bloquear a criação
+            //buscar se ja existe um vinculo entre departamento e cargo, se sim bloquear a criação
 
             var parCargoXDepartmentExistente = db.ParCargoXDepartment
                                                     .Where(x => x.ParCargo_Id == parCargoXDepartment.ParCargo_Id && x.ParDepartment_Id == parCargoXDepartment.ParDepartment_Id)
@@ -74,7 +74,7 @@ namespace SgqSystem.Controllers
 
             if (parCargoXDepartmentExistente != null)
             {
-                ModelState.AddModelError("ParDepartment_Id", "Já exste um vinculo entre Centro de Custo e Cargo selecionados!");
+                ModelState.AddModelError("ParDepartment_Id", "Já existe um vinculo idêntico para este cargo.");
             }
             if (ModelState.IsValid)
             {
