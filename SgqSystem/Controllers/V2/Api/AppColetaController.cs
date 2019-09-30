@@ -62,7 +62,6 @@ namespace SgqSystem.Controllers.V2.Api
                         item.Shift_Id = 1;
                         item.Period_Id = 1;
                         item.IsProcessed = false;
-                        db.Collection.Add(item);
                     }
                     catch (Exception ex)
                     {
@@ -71,6 +70,7 @@ namespace SgqSystem.Controllers.V2.Api
                     }
                 }
 
+                db.Collection.AddRange(listSimpleCollect);
                 db.SaveChanges();
             }
 
