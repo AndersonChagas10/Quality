@@ -29,11 +29,14 @@ namespace Dominio
 
         public int? Sample { get; set; }
 
-        [ForeignKey("CollectionLevel2_Id")]
-        public virtual CollectionLevel2 CollectionLevel2 { get; set; }
+        //[ForeignKey("CollectionLevel2_Id")]
+        //public virtual CollectionLevel2 CollectionLevel2 { get; set; }
 
         [ForeignKey("ParFieldType_Id")]
         public virtual ParFieldType ParFieldType { get; set; }
+
+        [NotMapped]
+        public int Collection_Id { get; set; }
 
         //[ForeignKey("[ParHeaderFieldGeral_Id]")]
         //public virtual ParHeaderFieldGeral ParHeaderFieldGeral { get; set; }
