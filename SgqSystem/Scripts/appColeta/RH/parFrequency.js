@@ -56,7 +56,7 @@ function listarParFrequency() {
 				'</button>';
 		});
 
-		var voltar = '<a onclick="openMenu();" class="btn btn-warning">Voltar</a>';
+        var voltar = '<a onclick="validaRota(openMenu,null);" class="btn btn-warning">Voltar</a>';
 
 		html = getHeader() +
 			'<div class="container-fluid">                               ' +

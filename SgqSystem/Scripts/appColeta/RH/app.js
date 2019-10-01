@@ -149,7 +149,7 @@ function openModalChangeDate() {
         '<button id="btnChangeDate" type="button" class="btn btn-primary" onclick="closeModal()">Cancelar</button>' +
         '</div>';
 
-    openModal(html);
+    openModal(html, 'White', 'black');
 
 }
 
@@ -205,7 +205,7 @@ function changeDate(that) {
 
 function setBreadcrumbs() {
 
-    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="openMenu()">Inicio</a></li>';
+    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="validaRota(openMenu,null)">Inicio</a></li>';
     var breadcrumbLi = "";
     var isCurrent = true;
 
@@ -233,7 +233,7 @@ function setBreadcrumbs() {
 
                 deparment += getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
                     return item.Id == department_Id;
-                })[0].Name, 'listarParDepartment(' + department_Id + ')', isCurrent);
+                })[0].Name, 'validaRota(listarParDepartment,' + department_Id + ')', isCurrent);
             }
 
         });
@@ -246,7 +246,7 @@ function setBreadcrumbs() {
     if (currentParFrequency_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
             return item.Id == currentParFrequency_Id;
-        })[0].Name, 'listarParDepartment(0)', isCurrent) + breadcrumbLi;
+        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
 
         isCurrent = false;
     }

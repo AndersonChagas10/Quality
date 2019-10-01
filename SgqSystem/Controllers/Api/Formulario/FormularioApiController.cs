@@ -158,6 +158,7 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredParDepartmentFilho")]
         public List<Select3ViewModel> GetFilteredParDepartmentFilho(string search, [FromBody] DataCarrierFormularioNew form)
         {
+
             using (var factory = new Factory("DefaultConnection"))
             {
                 var retornoFormulario = new FormularioViewModel();
@@ -168,6 +169,11 @@ namespace SgqSystem.Controllers.Api.Formulario
                 {
                     sqlDepartamentoPelaHash += $@"AND PD.Hash in ({string.Join(",", form.ParDepartment_Ids)})
                             AND (PD.Parent_Id IS not NULL OR PD.Parent_Id <> 0)  ";
+                }
+
+                if(form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
+                {
+                    sqlDepartamentoPelaHash += $@"AND ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)})";
                 }
 
                 var query = $@"SELECT DISTINCT TOP 500 PD.Hash,PD.Id,PD.Name  FROM ParDepartment PD 
@@ -192,6 +198,8 @@ namespace SgqSystem.Controllers.Api.Formulario
                 retornoFormulario.ParDepartments = GetParDepartments(form, factory);
                 retornoFormulario.ParSecoes = GetParSecoes(form, factory, retornoFormulario);
                 var parDepartment_Ids = form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList();
+
+
 
                 var sqlParDepartment = "";
                 if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)

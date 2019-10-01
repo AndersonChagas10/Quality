@@ -62,6 +62,7 @@
     <Compile Include="CollectionLevel2XCluster.cs" />
     <Compile Include="CollectionLevel2XParCargo.cs" />
     <Compile Include="CollectionLevel2XParDepartment.cs" />
+    <Compile Include="CollectionLevel2XParHeaderFieldGeral.cs" />
     <Compile Include="CollectionLevel2XParReason.cs" />
     <Compile Include="CollectionLevel2XParHeaderField.cs" />
     <Compile Include="ConsolidationLevel1.cs" />

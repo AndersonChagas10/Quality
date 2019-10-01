@@ -51,5 +51,8 @@ namespace Dominio
 
         [ForeignKey("ParDepartmentGroup_Id")]
         public virtual ParDepartmentGroup ParDepartmentGroup { get; set; }
+
+        [NotMapped]
+        public ICollection<ParDepartment> ParDepartmentFilho { get; set; }
     }
 }

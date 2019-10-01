@@ -24,9 +24,9 @@ namespace SgqSystem.Controllers
             {
                 parAlert = new ParAlert();
             }
-            var parDepartments = db.ParDepartment.Where(x => x.Active).ToList();
-            parDepartments.Insert(0, new ParDepartment() { Id = 0, Name = Resources.Resource.all });
-            ViewBag.ParDepartment_Id = new SelectList(parDepartments, "Id", "Name",parAlert.ParDepartment_Id);
+            //var parDepartments = db.ParDepartment.Where(x => x.Active).ToList();
+            //parDepartments.Insert(0, new ParDepartment() { Id = 0, Name = Resources.Resource.all });
+            //ViewBag.ParDepartment_Id = new SelectList(parDepartments, "Id", "Name",parAlert.ParDepartment_Id);
 
             var parCargos = db.ParCargo.Where(x => x.IsActive).ToList();
             parCargos.Insert(0, new ParCargo() { Id = 0, Name = Resources.Resource.all });
@@ -50,6 +50,59 @@ namespace SgqSystem.Controllers
 
             var parAlertTypes = db.ParAlertType.Where(x => x.IsActive).ToList();
             ViewBag.ParAlertType_Id = new SelectList(parAlertTypes, "Id", "Name", parAlert.ParAlertType_Id);
+
+
+            ViewBag.Department = db.ParDepartment.Where(x => x.Id == parAlert.ParDepartment_Id).ToList()
+             .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+             .ToList();
+
+            if (ViewBag.Department.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.Department = semDados;
+            }
+
+            ViewBag.SonDepartments = db.ParDepartment.Where(x => x.Id == parAlert.ParDepartment_Id).ToList()
+             .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+             .ToList();
+
+            if (ViewBag.SonDepartments.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.SonDepartments = semDados;
+            }
+
+            ViewBag.Company = db.ParCompany.Where(x => x.Id == parAlert.ParCompany_Id).ToList()
+             .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+             .ToList();
+
+            if (ViewBag.Company.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.Company = semDados;
+            }
+
+            ViewBag.Cargo = db.ParCargo.Where(x => x.Id == parAlert.ParCargo_Id).ToList()
+            .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+            .ToList();
+
+            if (ViewBag.Cargo.Count == 0)
+            {
+                var semDados = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, ""),
+
+            };
+                ViewBag.Cargo = semDados;
+            }
         }
 
         // GET: ParAlerts
@@ -96,6 +149,8 @@ namespace SgqSystem.Controllers
         public async Task<ActionResult> Create([Bind(Include = "Id,Name,ParDepartment_Id,ParCargo_Id,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParAlertType_Id,IsCollectAlert,HasCorrectiveAction,IsActive")] ParAlert parAlert)
         {
             SetValues(parAlert);
+            ValidarAlerta(parAlert);
+
             if (ModelState.IsValid)
             {
                 parAlert.AddDate = DateTime.Now;
@@ -132,7 +187,11 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Name,ParDepartment_Id,ParCargo_Id,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParAlertType_Id,IsCollectAlert,HasCorrectiveAction,IsActive")] ParAlert parAlert)
         {
+
             SetValues(parAlert);
+
+            ValidarAlerta(parAlert);
+
             if (ModelState.IsValid)
             {
                 parAlert.AlterDate = DateTime.Now;
@@ -186,6 +245,14 @@ namespace SgqSystem.Controllers
             parAlert.ParLevel1_Id = parAlert.ParLevel1_Id == 0 ? null : parAlert.ParLevel1_Id;
             parAlert.ParLevel2_Id = parAlert.ParLevel2_Id == 0 ? null : parAlert.ParLevel2_Id;
             parAlert.ParLevel3_Id = parAlert.ParLevel3_Id == 0 ? null : parAlert.ParLevel3_Id;
+        }
+
+        private void ValidarAlerta(ParAlert parAlert)
+        {
+            if(parAlert.ParLevel3_Id == null || parAlert.ParLevel3_Id == 0)
+            {
+                ModelState.AddModelError("ParLevel3_Id", Resources.Resource.select_the_level3);
+            }
         }
     }
 }
