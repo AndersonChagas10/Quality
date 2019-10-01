@@ -118,13 +118,14 @@ namespace SgqSystem.Jobs
 
                             if (headerFields.Count > 0)
                             {
-                                var headerFieldsIds = headerFields.Select(x => x.Id).ToList();
+                                var collectionIds = headerFields.Select(x => x.Id).ToList();
 
                                 try
                                 {
                                     db.CollectionLevel2XParHeaderFieldGeral.AddRange(headerFields);
                                     db.SaveChanges();
 
+                                    db.Database.ExecuteSqlCommand("UPDATE Collection set IsProcessed = 1 where Id in (" + string.Join(",", collectionIds) + ")");
                                 }
                                 catch (Exception ex)
                                 {
@@ -295,7 +296,7 @@ namespace SgqSystem.Jobs
                                ,PHFG.Name as ParHeaderField_Name
                                ,CL.Evaluation
                                ,CL.Sample
-                               ,CL.Id
+                               ,CL.Id as Collection_Id
                                ,{collectionLevel2.Id} as CollectionLevel2_Id
                             FROM Collection CL
                             INNER JOIN ParHeaderFieldGeral PHFG on CL.ParHeaderField_Id = PHFG.Id
