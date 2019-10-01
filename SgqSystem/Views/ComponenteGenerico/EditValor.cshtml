@@ -2,7 +2,15 @@
 
 @{
     ViewBag.Title = Resources.Resource.edit;
+    var limites = "";
 }
+
+<style>
+    .no-gutters {
+        padding-right: 0;
+        padding-left: 0;
+    }
+</style>
 
 <div class="page-content-wrapper">
     <div class="page-content">
@@ -156,12 +164,65 @@
                                                 </div>
                                                 break;
 
+                                            case 8: //Limite
+                                                <div class="form-group limitForm">
+
+                                                    @{
+                                                        id = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Id).FirstOrDefault();
+                                                        saveId = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.SaveId).FirstOrDefault();
+                                                        value = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Valor).FirstOrDefault();
+
+                                                        limites = value;
+                                                    }
+
+                                                    @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10 no-gutters">
+                                                        <input type="hidden" name="limitInfo" class="form-control" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
+                                                        <div class="col-md-4">
+                                                            Tarefa:
+                                                            @Html.DropDownList("ParLevel3_Id", new SelectList(ViewBag.Level3, "Id", "Name"), (string)Resources.Resource.select, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            Limite Inferior:
+                                                            <input type="number" class="form-control" id="limiteInferior">
+
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            Limite Superior:
+                                                            <input type="number" class="form-control" id="limiteSuperior">
+                                                        </div>
+
+                                                        <div class="col-md-2">
+                                                            <div style="visibility:hidden">a</div>
+                                                            <button class="btn btn-primary" id="addLimit">Incluir</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                break;
+
                                             default:
                                                 break;
 
                                         }
                                     }
 
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <table id="limites" class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <td>Tarefa</td>
+                                                        <td>Limite Inferior</td>
+                                                        <td>Limite Superior</td>
+                                                        <td></td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <div class="col-md-offset-2 col-md-10">
                                             <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" id="save" />
@@ -180,10 +241,18 @@
 
 <script>
 
+    let Level3s = JSON.parse('@Html.Raw(Json.Encode(ViewBag.Level3))')
+
+    let Limite = '@limites';
+
     $(document).ready(function () {
 
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
+
+        $('select').select2();
+
+        insertLimits(Limite);
 
     });
 
@@ -226,10 +295,14 @@
 
         });
 
+        let limits = getLimits();
+
+        if(limits)
+            listObjToSave.push(limits);
+
         if (!formIsValid) {
             return false;
         }
-
 
         let objToSave = {
             Valores: listObjToSave,
@@ -257,6 +330,54 @@
 
     });
 
+    $('#addLimit').on('click', function () {
+
+        let level3 = parseInt($('#ParLevel3_Id :selected').val());
+        let limiteInferior = parseFloat($('#limiteInferior').val());
+        let limiteSuperior = parseFloat($('#limiteSuperior').val());
+
+        if (!insertIsValid(level3, limiteInferior, limiteSuperior))
+            return;
+
+        let limitToInsert = level3 + ":" + limiteInferior + ":" + limiteSuperior;
+
+        addLimit(limitToInsert);
+    });
+
+    function insertIsValid(level3, limiteInferior, limiteSuperior) {
+
+        if (isNaN(level3)) {
+            openMessageModal("Alerta", "Selecione uma tarefa");
+            return;
+        }
+
+        if (isNaN(limiteInferior) && isNaN(limiteSuperior)) {
+            openMessageModal("Alerta", "O limite deve ser inserido");
+            return false;
+        }
+
+        if (limiteInferior > limiteSuperior) {
+            openMessageModal("Alerta", "O limite inferior deve ser menor que o limite superior");
+            return false;
+        }
+
+        let existe = false;
+        $('#limites tbody tr').each(function () {
+
+            let obj = $(this).data("data-obj");
+
+            if (obj.ParLevel3_Id == level3) {
+                existe = true;
+                openMessageModal("Alerta", "Já existe um limite para esta tarefa");
+            }
+        });
+
+        if (existe)
+            return false;
+
+        return true;
+    }
+
     function inputIsValid(objToSave, input) {
 
         let isRequired = $(input).attr('isRequired');
@@ -268,6 +389,81 @@
         }
 
         return true;
+    }
+
+    function getLimits() {
+
+        let arrValor = [];
+
+        $('#limites tbody tr').each(function () {
+
+            let objToSave = $(this).data('data-obj');
+
+            arrValor.push(objToSave.ParLevel3_Id + ":" + objToSave.LimiteInferior + ":" + objToSave.LimiteSuperior);
+
+        });
+
+        if (arrValor) {
+
+            objToSave = {};
+            objToSave.Id = $('[name="limitInfo"]').attr('id');
+            objToSave.SaveId = $('[name="limitInfo"]').attr('saveId');
+            objToSave.ComponenteGenerico_Id = $('[name="limitInfo"]').attr('componenteGenericoId');
+            objToSave.ComponenteGenericoColuna_Id = $('[name="limitInfo"]').attr('componenteGenericoColunaId');
+            objToSave.Valor = arrValor.join("|");
+
+            return objToSave;
+
+        }
+
+        return null;
+    }
+
+    function insertLimits(limites) {
+
+        //fazer um split dos limites pelo |
+        let limitesArr = limites.split("|");
+
+        if (!limitesArr && limitesArr.length == 0) {
+            return;
+        }
+
+        //fazer um forach nos limites que viere
+        //chamar a funcao addLimit
+        limitesArr.forEach(x => addLimit(x));
+
+    }
+
+    function addLimit(limite) {
+
+        let parLevel3_Id = limite.split(":")[0];
+        let limiteInferior = limite.split(":")[1];
+        let limiteSuperior = limite.split(":")[2];
+
+        let MyTable = document.getElementById("limites").getElementsByTagName('tbody')[0];
+
+        let novaLinha = MyTable.insertRow(0);
+        let Newcell1 = novaLinha.insertCell(0);
+        let Newcell2 = novaLinha.insertCell(1);
+        let Newcell3 = novaLinha.insertCell(2);
+        let Newcell4 = novaLinha.insertCell(3);
+
+        let btn = `<button class="btn btn-danger btn-xs" onclick="removeLimit(this)">X</button>`;
+
+        Newcell1.innerHTML = Level3s.filter(x => { return x.Id == parLevel3_Id })[0].Name;
+        Newcell2.innerHTML = limiteInferior;
+        Newcell3.innerHTML = limiteSuperior;
+        Newcell4.innerHTML = btn;
+
+        let obj = { ParLevel3_Id: parLevel3_Id, LimiteInferior: limiteInferior, LimiteSuperior: limiteSuperior };
+
+        $('#limites tbody').find('tr:first()').data("data-obj", obj)
+    }
+
+    function removeLimit(that) {
+
+        //remover o dado
+        $(that).parents("tr").remove();
     }
 
 </script>

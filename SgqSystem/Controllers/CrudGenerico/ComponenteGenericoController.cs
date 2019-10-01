@@ -133,6 +133,9 @@ namespace SgqSystem.Controllers
             retorno.Valores = dados;
             retorno.ComponenteGenerico = db.ComponenteGenerico.Find(id);
 
+            db.Configuration.LazyLoadingEnabled = false;
+            ViewBag.Level3 = db.ParLevel3.Where(x => x.IsActive).ToList();
+
             return View(retorno);
         }
 
