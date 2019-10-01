@@ -161,3 +161,109 @@ IF COL_LENGTH('ParVinculoPeso','ParGroupParlevel1_id') IS NOT NULL
 BEGIN
 	ALTER TABLE ParVinculoPeso ALTER COLUMN ParGroupParlevel1_id int NULL
 END
+
+--Scripts de CRUD dinâmico
+
+ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ComponenteGenerico' AND xtype='U')
+CREATE TABLE ComponenteGenerico (
+	Id int not null primary key identity,
+	AddDate Datetime2 not null,
+	AlterDate Datetime2,
+	Name varchar(255) not null,
+	IsActive bit not null default 1
+) 
+
+GO
+
+ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ComponenteGenericoTipoColuna' AND xtype='U')
+CREATE TABLE ComponenteGenericoTipoColuna (
+	Id int not null primary key identity,
+	AddDate Datetime2 not null,
+	AlterDate Datetime2,
+	Name varchar(255) not null,
+	IsActive bit not null default 1
+)
+
+go
+
+if not exists(select Id from ComponenteGenericoTipoColuna where id = 1)
+INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'text');
+if not exists(select Id from ComponenteGenericoTipoColuna where id = 2)
+INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'number');
+if not exists(select Id from ComponenteGenericoTipoColuna where id = 3)
+INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'checkbox');
+if not exists(select Id from ComponenteGenericoTipoColuna where id = 4)
+INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'textarea');
+if not exists(select Id from ComponenteGenericoTipoColuna where id = 5)
+INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'select');
+if not exists(select Id from ComponenteGenericoTipoColuna where id = 6)
+INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'date');
+if not exists(select Id from ComponenteGenericoTipoColuna where id = 7)
+INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'hour');
+if not exists(select Id from ComponenteGenericoTipoColuna where id = 8)
+insert into ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'limite');
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ComponenteGenericoColuna' AND xtype='U')
+CREATE TABLE ComponenteGenericoColuna (
+	Id int not null primary key identity,
+	AddDate Datetime2 not null,
+	AlterDate Datetime2,
+	Name varchar(255) not null,
+	ComponenteGenerico_Id int not null foreign key references ComponenteGenerico(Id),
+	ComponenteGenericoTipoColuna_Id int not null foreign key references ComponenteGenericoTipoColuna(Id),
+	IsRequired bit not null default 0,
+	ValorPadrao varchar(255),
+	IsActive bit not null default 1
+)
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ComponenteGenericoValor' AND xtype='U')
+CREATE TABLE ComponenteGenericoValor(
+	Id int not null primary key identity,
+	SaveId int not null, 
+	AddDate Datetime2 not null,
+	AlterDate Datetime2,
+	ComponenteGenerico_Id int not null foreign key references ComponenteGenerico(Id),
+	ComponenteGenericoColuna_Id int not null foreign key references ComponenteGenericoColuna(Id),
+	Valor varchar(255),
+	IsActive bit not null default 1
+)
+
+GO
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParHeaderFieldGeral' AND xtype='U')
+CREATE TABLE CollectionLevel2XParHeaderFieldGeral  (
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CollectionLevel2_Id] [int] NOT NULL,
+	[ParHeaderFieldGeral_Id] [int] NOT NULL,
+	[ParHeaderField_Name] [nvarchar](max) NOT NULL,
+	[ParFieldType_Id] [int] NOT NULL,
+	[Value] [nvarchar](max) NOT NULL,
+	[Evaluation] [int] NULL,
+	[Sample] [int] NULL,
+	FOREIGN KEY ([CollectionLevel2_Id]) REFERENCES CollectionLevel2(Id),
+	FOREIGN KEY ([ParFieldType_Id]) REFERENCES ParFieldType(Id),
+	FOREIGN KEY ([ParHeaderFieldGeral_Id]) REFERENCES ParHeaderFieldGeral(Id),
+    PRIMARY KEY (Id)
+);
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParHeaderFieldXComponenteGenerico' AND xtype='U')
+create table ParHeaderFieldXComponenteGenerico (
+	Id int primary key not null identity,
+	AddDate datetime2 not null,
+	AlterDate datetime2,
+	ComponenteGenerico_Id int foreign key references ComponenteGenerico(Id),
+	ParHeaderField_Id int foreign key references ParHeaderField(Id),
+	Value varchar(255) not null,
+	Text varchar(255) not null
+)
+
+IF NOT EXISTS (SELECT * FROM ParFieldType WHERE Id = 11)
+	INSERT INTO ParFieldType VALUES (11, 'Componente', 'Componente Genérico', GETDATE(), NULL, 1)
+GO
