@@ -339,6 +339,9 @@
         if (!insertIsValid(level3, limiteInferior, limiteSuperior))
             return;
 
+        limiteInferior = isNaN(limiteInferior) ? '' : limiteInferior;
+        limiteSuperior = isNaN(limiteSuperior) ? '' : limiteSuperior;
+
         let limitToInsert = level3 + ":" + limiteInferior + ":" + limiteSuperior;
 
         addLimit(limitToInsert);

@@ -6,11 +6,6 @@ $(document).on('change', '.painelLevel03 select.selectComponente', function () {
 
 function processComponente(thiss) {
 
-    //var hashid = $(thiss).find('option:selected').attr('hashid');
-
-    // if (!hashid) {
-    //     return false;
-    // }
 
     if (!headerIsValid($(thiss).attr('Componente_id'))) {
         return false;
@@ -48,51 +43,65 @@ function changeLimitLevel3(tarefa_Id, limiteSuperior, limiteInferior) {
         return false;
     }
 
+    trocarLimitesLinhaLevel3(tarefa_Id, limiteSuperior, limiteInferior)
+}
+
+function trocarLimitesLinhaLevel3(tarefa_Id, limiteSuperior, limiteInferior) {
+
     //Intervalo
-    if (!isNaN(limiteSuperior) && !isNaN(limiteInferior)) {
+    if (!isNaN(parseFloat(limiteSuperior)) && !isNaN(parseFloat(limiteInferior))) {
+
 
         //Trocar os limites da tarefa intervalo
         $('.level3[id="' + tarefa_Id + '"]').attr('intervalmin', limiteInferior);
         $('.level3[id="' + tarefa_Id + '"]').attr('intervalmax', limiteSuperior);
 
-        trocarLimitesLinhaLevel3(tarefa_Id, limiteSuperior, limiteInferior)
+        var posicaoLimiteInferior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().split('~')[0].indexOf('</b>') + 4;
+        var posicaoLimteSuperior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().split('~')[1].indexOf('</b>') + 4;
+        var textoLimiteInferior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().split('~')[0].substring(0, posicaoLimiteInferior);
+        var textoLimiteSuperior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().split('~')[1].substring(0, posicaoLimteSuperior);
+        var textoFinal = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().split('~')[1].substring(posicaoLimteSuperior);
+        var unidadeMedida = textoFinal.substring(textoFinal.indexOf(' '), textoFinal.length);
 
-    } else if (!isNaN(limiteSuperior) && isNaN(limiteInferior)) { //Deve ser Menor que
+        $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html(textoLimiteInferior + limiteInferior + " ~" + textoLimiteSuperior + limiteSuperior + unidadeMedida);
 
-        //Trocar os limite superior da tarefa
+    } else if (!isNaN(parseFloat(limiteSuperior)) && isNaN(parseFloat(limiteInferior))) { //Deve ser Menor que
 
-    } else if (!isNaN(limiteInferior) && !isNaN(limiteSuperior)) { //Deve ser Maior que 
+        $('.level3[id="' + tarefa_Id + '"]').attr('intervalmax', limiteSuperior);
+
+        var posicaoLimteSuperior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().indexOf('</b>') + 4;
+        var textoLimiteSuperior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().substring(0, posicaoLimteSuperior);
+        var textoFinal = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().substring(posicaoLimteSuperior);
+        var unidadeMedida = textoFinal.substring(textoFinal.indexOf(' '), textoFinal.length);
+
+        $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html(textoLimiteSuperior + limiteSuperior + unidadeMedida);
+
+
+    } else if (!isNaN(parseFloat(limiteInferior)) && isNaN(parseFloat(limiteSuperior))) { //Deve ser Maior que 
+
+        $('.level3[id="' + tarefa_Id + '"]').attr('intervalmin', limiteInferior);
 
         //Trocar os limite inferior da tarefa
+        var posicaoLimiteInferior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().indexOf('</b>') + 4;
+        var textoLimiteInferior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().substring(0, posicaoLimiteInferior);
+        var textoFinal = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().substring(posicaoLimiteInferior);
+        var unidadeMedida = textoFinal.substring(textoFinal.indexOf(' '), textoFinal.length);
+
+        $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html(textoLimiteInferior + limiteInferior + unidadeMedida);
+
     }
-
-}
-
-function trocarLimitesLinhaLevel3(tarefa_Id, limiteSuperior, limiteInferior) {
-
-    var posicaoLimiteInferior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().split('~')[0].indexOf('</b>') + 4;
-    var posicaoLimteSuperior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().split('~')[1].indexOf('</b>') + 4;
-
-    var textoLimiteInferior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().split('~')[0].substring(0, posicaoLimiteInferior);
-    var textoLimiteSuperior = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().split('~')[1].substring(0, posicaoLimteSuperior);
-
-    var textoFinal = $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html().split('~')[1].substring(posicaoLimteSuperior);
-
-    var unidadeMedida = textoFinal.substring(textoFinal.indexOf(' '), textoFinal.length);
-
-    $($('.level3[id="' + tarefa_Id + '"]').find('.levelName')[1]).html(textoLimiteInferior + limiteInferior + " ~" + textoLimiteSuperior + limiteSuperior + unidadeMedida)
 
 }
 
 function getComponenteGenericoValor(arrColumName) {
 
     var valor = $.grep(listComponenteGenericoValores, function (obj) {
-        return eval("(obj.Name == 'Limite' || obj.Name == " + arrColumName.join(" || obj.Name == ") + ")");
+        return eval("(obj.ComponenteGenericoTipoColuna_Id == 8 || obj.Name == " + arrColumName.join(" || obj.Name == ") + ")");
     });
 
     if (valor.length > arrColumName.length)
         return $.grep(valor, function (obj) {
-            return obj.Name == 'Limite'; //trocar para obj.ComponenteGenericoTipoColuna_Id == (Id da coluna do tipo Limite)
+            return obj.ComponenteGenericoTipoColuna_Id == 8;
         })[0];
 
     else
