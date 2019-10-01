@@ -8,3 +8,7 @@ create table ParHeaderFieldXComponenteGenerico (
 	Value varchar(255) not null,
 	Text varchar(255) not null
 )
+
+IF NOT EXISTS (SELECT * FROM ParFieldType WHERE Id = 11)
+	INSERT INTO ParFieldType VALUES (11, 'Componente', 'Componente Genérico', GETDATE(), NULL, 1)
+GO

@@ -289,14 +289,14 @@ function send(autoSend, callbackPCC1B, sendImediato) {
 
         if (hasReason) {
             level02Result += ";" + RetornaValor0SeUndefined(ParReason_Id); //[50]
-            level02Result += ";" + RetornaValor0SeUndefined(ParReasonType_Id); //[50]
+            level02Result += ";" + RetornaValor0SeUndefined(ParReasonType_Id); //[51]
         } else {
             level02Result += ";";
             level02Result += ";";
         }
 
         if (parDepartment_Id) {
-            level02Result += ";" + RetornaValor0SeUndefined(parDepartment_Id); //[50]
+            level02Result += ";" + RetornaValor0SeUndefined(parDepartment_Id); //[52]
         } else {
             level02Result += ";";
         }
