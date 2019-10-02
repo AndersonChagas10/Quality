@@ -61,11 +61,11 @@
                                             <div class="col-md-6">
                                                 <button id="btnBuscarUnidade" type="button"
                                                         data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parCompany_Ids]"
+                                                        data-filtroselect3-select="select[name=ParCompany_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParCompany", "api/Formulario")">
                                                     Abrir
                                                 </button>
-                                                <select class="form-control" name="parCompany_Ids" value="@ViewBag.Company[0].Value">
+                                                <select class="form-control" name="ParCompany_Ids" value="@ViewBag.Company[0].Value">
                                                     <option value="@ViewBag.Company[0].Key" selected="selected">@ViewBag.Company[0].Value</option>
 
                                                 </select>
@@ -244,7 +244,7 @@
                 });
                 objFiltro.Param = objFiltroParam;
 
-                $("#ParCompany_Id").val(objFiltro.parCompany_Ids[0]);
+                $("#ParCompany_Id").val(objFiltro.ParCompany_Id[0]);
                 if (objFiltro.parSecao_Ids != null || objFiltro.parSecao_Ids != undefined)
                     $("#ParDepartment_Id").val(objFiltro.parSecao_Ids[0]);
                 if (objFiltro.parCargo_Ids != null || objFiltro.parCargo_Ids != undefined)
