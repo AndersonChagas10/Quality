@@ -37,7 +37,7 @@ function listarParDepartment(parDepartmentId) {
 
 	if (parDepartmentId == 0 || parDepartmentId == undefined || parDepartmentId == null) 
 
-		voltar = '<a onclick="openMenu();" class="btn btn-warning">Voltar</a>';
+        voltar = '<a onclick="validaRota(openMenu,null);" class="btn btn-warning">Voltar</a>';
 
 	else {
 

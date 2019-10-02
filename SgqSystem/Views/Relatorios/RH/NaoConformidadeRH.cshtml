@@ -193,6 +193,7 @@
             $('#RGDepartamentosGrafico').empty();
             $('#RGDepartamentosShiftGrafico').empty();
             $('#RGOperacoesShiftGrafico').empty();
+            $("#RGUnidadesGrafico").empty()
             $("#PanelFull0").hide();
 
             ShiftSelected = $('#shift :selected').val();
@@ -342,8 +343,8 @@
             Aux = param;
             desdobramento = grafico;
 
-            popoverMain.css("top", y);
-            popoverMain.css("left", x);
+            popoverMain.css("top", (y + 35));
+            popoverMain.css("left", (x - 450));
 
             if (desdobramento == "Departamento") {
                 if (@Json.Encode(GlobalConfig.Eua)) {
@@ -985,7 +986,10 @@
                                     objFiltro.Param['Evaluated'] = qtdAv[this.x];
                                     objFiltro.Param['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
                                     objFiltro.Param['byName'] = true;
-                                    $.post(urlGetUnitId, enviar, function(c){
+                                    debugger
+                                    enviar.unitName = objFiltro.Param["unitName"];
+                                    $.post(urlGetUnitId, enviar, function (c) {
+                                        debugger
                                         objFiltro.Param.unitId = c.unitId;
                                         //objFiltro.Param.MetaFTA = "0";
                                         RedirecionaParaFTA(enviar);
@@ -1015,7 +1019,10 @@
                                     objFiltro.Param['Evaluated'] = qtdAv[this.x];
                                     objFiltro.Param['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
                                     objFiltro.Param['byName'] = true;
-                                    $.post(urlGetUnitId, enviar, function(c){
+                                    debugger
+                                    enviar.unitName = objFiltro.Param["unitName"];
+                                    $.post(urlGetUnitId, enviar, function (c) {
+                                        debugger
                                         objFiltro.Param.unitId = c.unitId;
                                         //objFiltro.Param.MetaFTA = "0";
                                         RedirecionaParaFTA(enviar);

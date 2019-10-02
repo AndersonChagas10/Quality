@@ -24,7 +24,7 @@ namespace SgqService
             AutoMapperConfig.RegisterMappings();
             GlobalConfig.VerifyConfig("DefaultConnection");
 
-            Dominio.Seed.Seed.SetSeedValues(isPT: GlobalConfig.LanguageBrasil,runAppScripts:true);
+            Dominio.Seed.Seed.SetSeedValues(isPT: GlobalConfig.LanguageBrasil,runSetSeed:true);
         }
     }
 }

@@ -49,6 +49,9 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Motivo,IsActive,AddDate,AlterDate,ParReasonType_Id")] ParReason ParReason)
         {
+            if (string.IsNullOrEmpty(ParReason.Motivo))
+                ModelState.AddModelError("Motivo", Resources.Resource.required_field + " " + Resources.Resource.reason);
+
             if (ModelState.IsValid)
             {
                 ParReason.AlterDate = null;
@@ -84,6 +87,9 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Motivo,IsActive,AddDate,AlterDate,ParReasonType_Id")] ParReason ParReason)
         {
+            if (string.IsNullOrEmpty(ParReason.Motivo))
+                ModelState.AddModelError("Motivo", Resources.Resource.required_field + " " + Resources.Resource.reason);
+
             if (ModelState.IsValid)
             {
                 ParReason.AlterDate = DateTime.Now;

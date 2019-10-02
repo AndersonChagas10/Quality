@@ -283,6 +283,8 @@
                         IsActive: true
                     });
 
+                    $TblParMultipeValues.find('#objMultiplaEscolhaNameDepartmentxHeader').val('');
+
                     break;
 
                 case 3:	// Binario
@@ -381,21 +383,26 @@
 
         excludeTable: function (i) {
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
+            $("#modalExclusao").show();
 
-            if (obj) {
-                if (obj.ParFieldTypeId == 3) //Se for binário, exclui todos os ParMultipleValues
-                    obj.ParMultipleValuesGeral.forEach((o, i, a) => {
-                        a[i].IsActive = false;
-                    });
-                else
-                    obj['ParMultipleValuesGeral'][i].IsActive = false;
+            $("#excluirItem").off().on('click', function () {
+                if (obj) {
+                    if (obj.ParFieldTypeId == 3) //Se for binário, exclui todos os ParMultipleValues
+                        obj.ParMultipleValuesGeral.forEach((o, i, a) => {
+                            a[i].IsActive = false;
+                        });
+                    else
+                        obj['ParMultipleValuesGeral'][i].IsActive = false;
 
-                this.insertTable(obj);
+                    parDCCabecalho.insertTable(obj);
 
-            } else {
-                $('#camposCabecalhoIncluidosDepartmentxHeader tbody').empty();
-                $('#divCamposCabecalhoIncluidosDepartmentxHeader').hide();
-            }
+                } else {
+                    $('#camposCabecalhoIncluidosDepartmentxHeader tbody').empty();
+                    $('#divCamposCabecalhoIncluidosDepartmentxHeader').hide();
+                }
+                $("#modalExclusao").hide();
+                item = "";
+            });
         },
 
         Save: function (obj) {

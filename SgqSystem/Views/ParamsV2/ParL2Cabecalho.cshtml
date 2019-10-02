@@ -61,7 +61,7 @@
                                     </span>*@
                                 <div class="input-group" style="margin-top: 27px;">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL1Cabecalho.prepareToInsert(1);">
+                                        <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL2Cabecalho.prepareToInsert(1);">
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                         </button>
                                     </span>
@@ -238,7 +238,7 @@
             return obj;
         },
         prepareToInsert: function (parFieldType_Id) {
-
+            
             if (!formIsValid(this.id)) {
                 return false;
             }
@@ -259,7 +259,6 @@
             switch (parFieldType_Id) {
 
                 case 1: // Multipla Escolha
-
                     $TblParMultipeValues = $('#ParL2Cabecalho #tblOpcaoMultiplaEscolha');
 
                     obj['ParMultipleValuesGeral'].push({
@@ -272,7 +271,7 @@
                         IsDefaultOption: 0,
                         IsActive: true
                     });
-
+                    $TblParMultipeValues.find('#objMultiplaEscolhaName').val('')
                     break;
 
                 case 3:	// Binario
@@ -371,29 +370,28 @@
         },
 
         excludeTable: function (i) {
-
-            var r = confirm("Deseja Excluir?");
-
-            if (r == false) {
-                return false;
-            }
-
+           
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
+            $("#modalExclusao").show();
 
-            if (obj) {
-                if (obj.ParFieldType.Id == 3) //Se for binário, exclui todos os ParMultipleValuesGeral
-                    obj.ParMultipleValuesGeral.forEach((o, i, a) => {
-                        a[i].IsActive = false;
-                    });
-                else
-                    obj['ParMultipleValuesGeral'][i].IsActive = false;
+            $("#excluirItem").off().on('click', function () {
+                if (obj) {
+                    if (obj.ParFieldType_Id == 3) //Se for binário, exclui todos os ParMultipleValuesGeral
+                        obj.ParMultipleValuesGeral.forEach((o, i, a) => {
+                            a[i].IsActive = false;
+                        });
+                    else
+                        obj['ParMultipleValuesGeral'][i].IsActive = false;
 
-                this.insertTable(obj);
+                    parL2Cabecalho.insertTable(obj);
 
-            } else {
-                $('#ParL2Cabecalho #camposCabecalhoIncluidos tbody').empty();
-                $('#ParL2Cabecalho #divCamposCabecalhoIncluidos').hide();
-            }
+                } else {
+                    $('#ParL2Cabecalho #camposCabecalhoIncluidos tbody').empty();
+                    $('#ParL2Cabecalho #divCamposCabecalhoIncluidos').hide();
+                }
+                $("#modalExclusao").hide();
+                item = "";
+            });
         },
 
         Save: function (obj) {
@@ -612,8 +610,7 @@
     //}
 
     $('#selectL2ParFieldType').on("change", function () {
-
-        debugger
+        
         hideAllOptionsMonitoramento();
 
         //limpar arr ParMultipleValues?

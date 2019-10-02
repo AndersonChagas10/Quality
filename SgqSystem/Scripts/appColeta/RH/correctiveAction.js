@@ -38,10 +38,17 @@ function enviarAcaoCorretiva() {
 					contentType: "application/json",
 					success: function (data) {
 
-						enviarAcaoCorretivaEmExecucao = false;
-						atualizaAcoesCorretivasAposSincronizacao(data);
-                        //enviarAcaoCorretiva();
-                        enviarColeta();
+						var delay = 1;
+						if(data && data.length == 0){
+							delay = 10000;//10 segundos
+						}
+
+						setTimeout(function(){
+							enviarAcaoCorretivaEmExecucao = false;
+							atualizaAcoesCorretivasAposSincronizacao(data);
+							//enviarAcaoCorretiva();
+							enviarColeta();
+						},delay);
 					},
 					timeout: 600000,
 					error: function () {

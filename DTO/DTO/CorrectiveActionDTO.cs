@@ -200,8 +200,17 @@ namespace DTO.DTO
 
                 if (Unit == null)
                     return string.Empty;
+                if (GlobalConfig.LanguageEUA)
+                {
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+                }
+                else
+                {
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
 
-
+                }
                 var body = "<div class='header' style='font-size:14px;font-weight:bold'>";
 
                 if (GlobalConfig.LanguageEUA)

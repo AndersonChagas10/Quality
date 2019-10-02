@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Dominio;
-using static SgqSystem.Controllers.Api.ApontamentosDiariosApiController;
+using DTO.DTO.Params;
 
 namespace SgqSystem.Mappers
 {

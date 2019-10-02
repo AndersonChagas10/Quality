@@ -45,11 +45,7 @@ namespace SgqSystem.Controllers.Api.App
         [Route("GetImages")]
         public Dictionary<string, string> GetImages()
         {
-            var image = new Dictionary<string, string>();
-
-            image.Add("logo", DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogo);
-
-            return image;
+            return Business.GetImages();
         }
 
         /// <summary>

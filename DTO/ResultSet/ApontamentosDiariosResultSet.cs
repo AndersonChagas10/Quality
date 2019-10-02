@@ -54,6 +54,7 @@ public class ApontamentosDiariosResultSet
 
     public string Cargo { get; set; }
     public string Departamento { get; set; }
+    public string Frequencia { get; set; }
 
     public bool HasPhoto { get; set; }
 
@@ -262,7 +263,7 @@ public class ApontamentosDiariosResultSet
                   C2.CollectionDate AS Data            
                  ,L1.Name AS Indicador                 
                  ,L2.Name AS Monitoramento             
-                 ,R3.ParLevel3_Name AS Tarefa          
+                 ,R3.ParLevel3_Name AS Tarefa           
                  ,R3.Weight AS Peso                    
                  ,case when R3.IntervalMin = '-9999999999999.9000000000' then '' else R3.IntervalMin end  AS 'IntervaloMinimo'  
                  ,case when R3.IntervalMax = '9999999999999.9000000000' then '' else R3.IntervalMax  end AS 'IntervaloMaximo'
@@ -324,7 +325,7 @@ public class ApontamentosDiariosResultSet
                  INNER JOIN ParLevel1 L1 (nolock)      
                  ON L1.Id = C2.ParLevel1_Id         
                  INNER JOIN UserSgq US (nolock)        
-                 ON C2.AuditorId = US.Id               
+                 ON C2.AuditorId = US.Id            
                  LEFT JOIN                             
                  #CollectionLevel2XParHeaderField2 HF 
                  on c2.Id = HF.CollectionLevel2_Id
@@ -410,7 +411,7 @@ public class ApontamentosDiariosResultSet
             sqlDepartment = $@" AND (PD.Id in ({string.Join(",", form.ParSecao_Ids)}) 
                              {sqlDepartamentoPelaHash})";
         }
-        else if(form.ParDepartment_Ids.Length > 0)
+        else if (form.ParDepartment_Ids.Length > 0)
         {
             var sqlDepartamentoPelaHash = "";
             foreach (var item in form.ParDepartment_Ids)
@@ -444,6 +445,7 @@ public class ApontamentosDiariosResultSet
 
                      SELECT 
 	                     id
+						,ParFrequency_Id
 	                    ,ParLevel1_Id
 	                    ,ParLevel2_Id
 	                    ,UnitId
@@ -538,14 +540,14 @@ public class ApontamentosDiariosResultSet
 						SELECT 
 							CL2HF.Id
 							,CL2HF.CollectionLevel2_Id
-							,CL2HF.ParHeaderField_Id
+							,CL2HF.ParHeaderFieldGeral_Id
 							,CL2HF.ParFieldType_Id
 							,CL2HF.Value
-						INTO #CollectionLevel2XParHeaderField
-						FROM CollectionLevel2XParHeaderField CL2HF (nolock) 
+						INTO #CollectionLevel2XParHeaderFieldGeral
+						FROM CollectionLevel2XParHeaderFieldGeral CL2HF (nolock) 
 						INNER JOIN #Collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id 
 
-                    CREATE INDEX IDX_CollectionLevel2XParHeaderField_CollectionLevel_ID ON #CollectionLevel2XParHeaderField (CollectionLevel2_Id);
+                    CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel_ID ON #CollectionLevel2XParHeaderFieldGeral (CollectionLevel2_Id);
 
                     -- Concatenação da Fato de Cabeçalhos
 
@@ -557,9 +559,9 @@ public class ApontamentosDiariosResultSet
 							when CL2HF2.ParFieldType_Id = 2 then case when HF.Description = 'Produto' then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end 
 							when CL2HF2.ParFieldType_Id = 6 then CONVERT(varchar,  CL2HF2.value, 103)
 							else CL2HF2.Value end)
-							FROM #CollectionLevel2XParHeaderField CL2HF2 (nolock) 
+							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (nolock) 
 							left join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
-							left join ParHeaderFieldGeral HF (nolock)on CL2HF2.ParHeaderField_Id = HF.Id
+							left join ParHeaderFieldGeral HF (nolock)on CL2HF2.ParHeaderFieldGeral_Id = HF.Id
 							left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
 							left join ParMultipleValuesGeral PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
 							left join Equipamentos EQP(nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2
@@ -567,14 +569,14 @@ public class ApontamentosDiariosResultSet
 							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
 							FOR XML PATH('')
 							), 1, 1, '')  AS HeaderFieldList
-						INTO #CollectionLevel2XParHeaderField2
-						FROM #CollectionLevel2XParHeaderField CL2HF (nolock) 
+						INTO #CollectionLevel2XParHeaderFieldGeral2
+						FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (nolock) 
 						INNER join #Collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id 
-						LEFT JOIN ParHeaderFieldGeral HF (nolock) on CL2HF.ParHeaderField_Id = HF.Id 
+						LEFT JOIN ParHeaderFieldGeral HF (nolock) on CL2HF.ParHeaderFieldGeral_Id = HF.Id 
 						LEFT JOIN ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id
                     GROUP BY CL2HF.CollectionLevel2_Id
 
-                    CREATE INDEX IDX_CollectionLevel2XParHeaderField_CollectionLevel2_ID ON #CollectionLevel2XParHeaderField2 (CollectionLevel2_Id);
+                    CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeral2 (CollectionLevel2_Id);
 
 					-- Criação da Fato de Coleta x Cluster
 
@@ -596,7 +598,8 @@ public class ApontamentosDiariosResultSet
                   C2.CollectionDate AS Data            
                  ,L1.Name AS Indicador                 
                  ,L2.Name AS Monitoramento             
-                 ,R3.ParLevel3_Name AS Tarefa          
+                 ,R3.ParLevel3_Name AS Tarefa  
+				 ,PF.Name AS Frequencia             
                  ,R3.Weight AS Peso                    
                  ,case when R3.IntervalMin = '-9999999999999.9000000000' then '' else R3.IntervalMin end  AS 'IntervaloMinimo'  
                  ,case when R3.IntervalMax = '9999999999999.9000000000' then '' else R3.IntervalMax  end AS 'IntervaloMaximo'
@@ -662,7 +665,7 @@ public class ApontamentosDiariosResultSet
                  INNER JOIN UserSgq US (nolock)        
                  ON C2.AuditorId = US.Id               
                  LEFT JOIN                             
-                 #CollectionLevel2XParHeaderField2 HF 
+                 #CollectionLevel2XParHeaderFieldGeral2 HF 
                  on c2.Id = HF.CollectionLevel2_Id
                  LEFT JOIN #CollectionLevel2XCollectionJson CLCJ
                  ON CLCJ.CollectionLevel2_Id = C2.Id
@@ -688,6 +691,9 @@ public class ApontamentosDiariosResultSet
                  LEFT JOIN ParCargo PCargo
                  ON PCargo.Id = CL2PC.ParCargo_Id
 
+                 LEFT JOIN ParFrequency PF (nolock)        
+                 ON C2.ParFrequency_Id = PF.Id     
+
                  WHERE 1=1 
                   { sqlDepartment }
                   { sqlCargo }
@@ -696,8 +702,8 @@ public class ApontamentosDiariosResultSet
                      DROP TABLE #CollectionLevel2 
                      DROP TABLE #CollectionJson
                      DROP TABLE #Result_Level3
-					 DROP TABLE #CollectionLevel2XParHeaderField 
-					 DROP TABLE #CollectionLevel2XParHeaderField2
+					 DROP TABLE #CollectionLevel2XParHeaderFieldGeral 
+					 DROP TABLE #CollectionLevel2XParHeaderFieldGeral2
 					 DROP TABLE #CollectionLevel2XCluster
 					 DROP TABLE #CollectionLevel2XCollectionJson
 

@@ -263,7 +263,7 @@ namespace DTO
                 case 7:
                     SESMT = true;
                     LanguageBrasil = true;
-                    Verifica += "Ambiente:  MSP\n";
+                    Verifica += "Ambiente:  SESMT\n";
                     break;
                 default:
                     break;

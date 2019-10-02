@@ -17,11 +17,11 @@ namespace Dominio
 
         public int Id { get; set; }
 
-        [Required(AllowEmptyStrings = true)]
+        //[Required(AllowEmptyStrings = true)]
         [StringLength(155)]
         public string Name { get; set; }
 
-        [Required(AllowEmptyStrings = true)]
+        //[Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
 
         public bool IsActive { get; set; }

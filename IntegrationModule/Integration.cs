@@ -46,33 +46,17 @@ namespace IntegrationModule
         {
             List<string> scripts = new List<string>();
             Setting setting = new Setting(configuration, script);
-            using (var factory = new Factory(
-                setting.Settings["DataSource"],
-                setting.Settings["Catalog"],
-                setting.Settings["Password"],
-                setting.Settings["User"]))
+            if (setting.Settings["JustCommand"] == "on")
             {
-                try
-                {
-                    var retorno = factory.QueryNinjaADO(script);
-                    scripts = setting.CreateInsertScriptOneValue(retorno, tableName);
-                }
-                catch (Exception e)
-                {
-                }
-            }
-
-            using (var factory = new Factory(
-                setting.Settings["DataSourceServer"],
-                setting.Settings["CatalogServer"],
-                setting.Settings["PasswordServer"],
-                setting.Settings["UserServer"]))
-            {
-                foreach (var item in scripts)
+                using (var factory = new Factory(
+                    setting.Settings["DataSource"],
+                    setting.Settings["Catalog"],
+                    setting.Settings["Password"],
+                    setting.Settings["User"]))
                 {
                     try
                     {
-                        var sqlCommand = $"{item};SELECT CAST(1 AS int)";
+                        var sqlCommand = $"{script};SELECT CAST(1 AS int)";
                         SqlCommand cmd = new SqlCommand(sqlCommand);
 
                         int i = factory.InsertUpdateData(cmd);
@@ -81,6 +65,47 @@ namespace IntegrationModule
                     catch (Exception e)
                     {
 
+                    }
+                }
+            }
+            else
+            {
+                using (var factory = new Factory(
+                    setting.Settings["DataSource"],
+                    setting.Settings["Catalog"],
+                    setting.Settings["Password"],
+                    setting.Settings["User"]))
+                {
+                    try
+                    {
+                        var retorno = factory.QueryNinjaADO(script);
+                        scripts = setting.CreateInsertScriptOneValue(retorno, tableName);
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                }
+
+                using (var factory = new Factory(
+                    setting.Settings["DataSourceServer"],
+                    setting.Settings["CatalogServer"],
+                    setting.Settings["PasswordServer"],
+                    setting.Settings["UserServer"]))
+                {
+                    foreach (var item in scripts)
+                    {
+                        try
+                        {
+                            var sqlCommand = $"{item};SELECT CAST(1 AS int)";
+                            SqlCommand cmd = new SqlCommand(sqlCommand);
+
+                            int i = factory.InsertUpdateData(cmd);
+
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
                     }
                 }
             }

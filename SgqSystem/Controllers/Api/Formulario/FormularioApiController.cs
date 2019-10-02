@@ -26,7 +26,11 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             using (var factory = new Factory("DefaultConnection"))
             {
-                var filtroStructure = form.ParStructure_Ids.Length > 0 ? $@"AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) })" : "";
+                var filtroStructure = 
+                                   form.ParStructure_Ids.Length > 0 
+                                 ? $@"  AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                                        OR  PS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                                        OR  PS1.Id IN ({ string.Join(",", form.ParStructure_Ids) })" : "";
 
                 var query = $@"SELECT DISTINCT TOP 500
                         	PC.Id, PC.Name
@@ -34,6 +38,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                         LEFT JOIN ParCompanyXStructure PCXS
                         	ON PC.Id = PCXS.ParCompany_Id
                         		AND PCXS.Active = 1
+						LEFT JOIN ParStructure PS
+							ON PS.Id = PCXS.ParStructure_Id
+						LEFT JOIN ParStructure PS1
+							ON PS.ParStructureParent_Id = PS1.ID
                         WHERE 1 = 1
                         AND PC.IsActive = 1
                         --Filtros
@@ -150,6 +158,7 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredParDepartmentFilho")]
         public List<Select3ViewModel> GetFilteredParDepartmentFilho(string search, [FromBody] DataCarrierFormularioNew form)
         {
+
             using (var factory = new Factory("DefaultConnection"))
             {
                 var retornoFormulario = new FormularioViewModel();
@@ -160,6 +169,11 @@ namespace SgqSystem.Controllers.Api.Formulario
                 {
                     sqlDepartamentoPelaHash += $@"AND PD.Hash in ({string.Join(",", form.ParDepartment_Ids)})
                             AND (PD.Parent_Id IS not NULL OR PD.Parent_Id <> 0)  ";
+                }
+
+                if(form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
+                {
+                    sqlDepartamentoPelaHash += $@"AND ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)})";
                 }
 
                 var query = $@"SELECT DISTINCT TOP 500 PD.Hash,PD.Id,PD.Name  FROM ParDepartment PD 
@@ -184,6 +198,8 @@ namespace SgqSystem.Controllers.Api.Formulario
                 retornoFormulario.ParDepartments = GetParDepartments(form, factory);
                 retornoFormulario.ParSecoes = GetParSecoes(form, factory, retornoFormulario);
                 var parDepartment_Ids = form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList();
+
+
 
                 var sqlParDepartment = "";
                 if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)
@@ -220,7 +236,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)
                 {
                     sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel1_Id = PL1.Id ";
-                    sqlWhereFilter += $@"AND PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)})";
+                    sqlWhereFilter += $@"AND (PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)}) OR PVP.ParDepartment_Id IS NULL)";
                 }
                 var query = $@"SELECT DISTINCT TOP 500 PL1.ID, PL1.NAME 
                                 FROM parLevel1 PL1 
@@ -257,7 +273,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 if (parLevel1_Ids.Count > 0)
                 {
                     sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel2_Id = PL2.Id
-                                WHERE PVP.ParLevel1_Id IN ({string.Join(",", parLevel1_Ids)})";
+                                WHERE PVP.ParLevel1_Id IN ({string.Join(",", parLevel1_Ids)}) OR PVP.ParLevel1_Id IS NULL";
                 }
 
                 var query = $@"SELECT DISTINCT TOP 500 PL2.ID, PL2.NAME FROM parLevel2 PL2 {sqlFilter}
@@ -293,11 +309,11 @@ namespace SgqSystem.Controllers.Api.Formulario
                     sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel3_Id = PL3.Id WHERE 1 = 1 ";
                     if (parLevel1_Ids.Count > 0)
                     {
-                        sqlFilter += $@"AND PVP.ParLevel1_Id IN ({ string.Join(",", parLevel1_Ids)})";
+                        sqlFilter += $@" AND PVP.ParLevel1_Id IN ({ string.Join(",", parLevel1_Ids)}) OR PVP.ParLevel1_Id IS NULL ";
                     }
                     if (parLevel2_Ids.Count > 0)
                     {
-                        sqlFilter += $@"AND PVP.ParLevel2_Id IN ({ string.Join(",", parLevel2_Ids)})";
+                        sqlFilter += $@" AND PVP.ParLevel2_Id IN ({ string.Join(",", parLevel2_Ids)}) OR PVP.ParLevel2_Id IS NULL ";
                     }
                 }
 
@@ -316,8 +332,18 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             using (var factory = new Factory("DefaultConnection"))
             {
-                var query = $@"SELECT DISTINCT TOP 500 ID, Name FROM ParStructure
-                    WHERE Name like '%{search}%'";
+                var wSG = "";
+
+                if(form.ParStructureGroup_Ids.Length > 0)
+                {
+                    wSG += "AND ParStructureGroup_Id IN(" + string.Join(",", form.ParStructureGroup_Ids) + ") ";
+                }
+
+                var query = $@"
+                    SELECT DISTINCT TOP 500 ID, Name FROM ParStructure
+                    WHERE 1=1
+                    AND Name like '%{search}%'
+                    {wSG}";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 

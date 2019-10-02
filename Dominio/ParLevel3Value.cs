@@ -40,6 +40,8 @@ namespace Dominio
 
         public string DynamicValue { get; set; }
 
+        public bool ShowLevel3Limits { get; set; }
+
         [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 

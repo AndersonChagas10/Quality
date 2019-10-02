@@ -284,6 +284,7 @@ namespace Dominio
         public virtual DbSet<Pa_AcompanhamentoXQuem> Pa_AcompanhamentoXQuem { get; set; }
         public virtual DbSet<Pa_FTA> Pa_FTA { get; set; }
         public virtual DbSet<Pa_Planejamento> Pa_Planejamento { get; set; }
+        public virtual DbSet<CollectionLevel2XParHeaderFieldGeral> CollectionLevel2XParHeaderFieldGeral { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

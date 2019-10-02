@@ -68,7 +68,7 @@ namespace Dominio.Seed
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "UpdateTelaTabletRoot", Value = "~", ControllerName = "WebConfig", Descricao = "" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "SendMailJob", Value = "off", ControllerName = "WebConfig", Descricao = "" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "ResendProcessJsonJob", Value = "off", ControllerName = "WebConfig", Descricao = "" });
-                DicionariosInserir.Add(new DicionarioEstatico() { Key = "IntegrationJob", Value = "off", ControllerName = "WebConfig", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "IntegrationJob", Value = "on", ControllerName = "WebConfig", Descricao = "" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "CollectionDataJob", Value = "off", ControllerName = "WebConfig", Descricao = "" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "PreencherMandala", Value = "off", ControllerName = "WebConfig", Descricao = "" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "appVersion", Value = "2.0.47", ControllerName = "WebConfig", Descricao = "" });
