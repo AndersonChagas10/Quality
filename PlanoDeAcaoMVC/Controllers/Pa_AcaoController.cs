@@ -273,9 +273,12 @@ namespace PlanoDeAcaoMVC.Controllers
                 fta.PercentualNCFTA = level2.Name + " > " + level3.Name + ": " + PercentualNCFTA2f + " %";
                 fta.ReincidenciaDesvioFTA = level2.Name + " > " + level3.Name + ": " + fta.ReincidenciaDesvioFTA;
                 fta._Supervisor = usersgq.Name;
-                dynamic meta = dbFActory.QueryNinjaADO(metaQuery).FirstOrDefault();
-                string meta2 = meta.META;
-                fta.MetaFTA = decimal.Round(decimal.Parse(meta2), 2, MidpointRounding.AwayFromZero).ToString();
+                if (fta.MetaFTA == null || fta.MetaFTA == "")
+                {
+                    dynamic meta = dbFActory.QueryNinjaADO(metaQuery).FirstOrDefault();
+                    string meta2 = meta.META;
+                    fta.MetaFTA = decimal.Round(decimal.Parse(meta2), 2, MidpointRounding.AwayFromZero).ToString();
+                }
             }
         }
 

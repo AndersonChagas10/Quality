@@ -991,8 +991,10 @@
                                     $.post(urlGetUnitId, enviar, function (c) {
                                         debugger
                                         objFiltro.Param.unitId = c.unitId;
-                                        //objFiltro.Param.MetaFTA = "0";
-                                        RedirecionaParaFTA(enviar);
+                                        objFiltro.Param.MetaFTA = "80";
+                                        objFiltro.Param.startDate = objFiltro.startDate;
+                                        objFiltro.Param.endDate = objFiltro.endDate;
+                                        RedirecionaParaFTA(objFiltro.Param);
                                     });
                                     //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
                                     //RedirecionaParaFTA(enviar);
@@ -1024,8 +1026,10 @@
                                     $.post(urlGetUnitId, enviar, function (c) {
                                         debugger
                                         objFiltro.Param.unitId = c.unitId;
-                                        //objFiltro.Param.MetaFTA = "0";
-                                        RedirecionaParaFTA(enviar);
+                                        objFiltro.Param.MetaFTA = "80";
+                                        objFiltro.Param.startDate = objFiltro.startDate;
+                                        objFiltro.Param.endDate = objFiltro.endDate;
+                                        RedirecionaParaFTA(objFiltro.Param);
                                     });
                                     //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
                                     //RedirecionaParaFTA(enviar);
