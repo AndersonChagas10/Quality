@@ -9,6 +9,12 @@
     var id4 = "level" + level + "__AvAmostra_collapse";
     var click = "AvAm" + level + ".adiciona($(this))";
     //var click = "alert();";
+	
+	for(int i = 0; i < Model.paramsDto.parLevel3Dto.listParLevel3EvaluationSample.Count(); i++){
+		Model.paramsDto.parLevel3Dto.listParLevel3EvaluationSample[i].ParLevel1 = null;
+		Model.paramsDto.parLevel3Dto.listParLevel3EvaluationSample[i].ParLevel2 = null;
+	}
+	
 }
 
 <div class="panel-group accordion" id="@id">
@@ -104,13 +110,13 @@
 
     //function changeCompanyAvAm() {
 
-    var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
+    var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.listParLevel3EvaluationSample));
 
     var AvAm3 = {
         /*Setup*/
         levelControl: 3,
         level: "newLevel3Modal",
-        listObjSalvo: levelParamsDTO.parLevel3Dto.listParLevel3EvaluationSample,
+        listObjSalvo: levelParamsDTO,
         idTable: 'tableAvAmLevel3',//
         tdsNames: ['CompanyName', 'ParLevel1_Name', 'ParLevel2_Name', 'EvaluationNumber', 'SampleNumber', 'EvaluationInterval', 'btn'],
         getObjAdd: function(isEdit, obj){

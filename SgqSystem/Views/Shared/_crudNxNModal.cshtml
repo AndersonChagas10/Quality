@@ -133,6 +133,7 @@
                     $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name);
                     $($(e).parents('tr').find('td')[1]).html(editado.Value);
                     $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable);
+                    $($(e).parents('tr').find('td')[3]).html(editado.CorrectiveActionShowTable);
                     $('#crudNxNEdit').modal('hide');
 
                 });
@@ -196,14 +197,15 @@
             else if ($(e).parents('#level3_PesoL3_accordion').length) {
                 crudNxN.modalAlterarPesoL3(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-
+                    debugger;
                     if (PesoL3.veifyAdd('crudNxNEdit')) {
                         var editado = PesoL3.getObjAdd('crudNxNEdit', obj);
                         $(e).parents('tr').removeData();
                         $(e).parents('tr').data(editado);
                         $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
                         $($(e).parents('tr').find('td')[1]).html(editado.Weight)//
-                        $($(e).parents('tr').find('td')[2]).html(editado.groupName)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.IsKnockout)//
+                        $($(e).parents('tr').find('td')[3]).html(editado.groupName)//
                         $('#crudNxNEdit').modal('hide');
                         //$('#crudNxNEdit #percentVal').inputmask('remove');
                     }
@@ -551,7 +553,9 @@
             $('#crudNxNEdit #selectNotConformityRule').val(obj.ParNotConformityRule_Id);/*Preenche*/
             $("#crudNxNEdit .check-box").bootstrapSwitch('state', obj.IsReaudit);
             $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(obj.Value);
+
             $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch();
+            $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_CorrectiveAction").bootstrapSwitch();
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
 
@@ -572,8 +576,10 @@
             obj.ParNotConformityRule_Id = $('#crudNxNEdit #selectNotConformityRule :selected').val();
             obj.ParNotConformityRule_Name = $('#crudNxNEdit #selectNotConformityRule :selected').text();
             obj.Value = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val();
-            obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? true : false;
-            obj.IsReauditShowTable = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n";
+            obj.IsReaudit                 = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? true : false;
+            obj.IsReauditShowTable        = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n";
+            obj.CorrectiveAction          = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_CorrectiveAction').is(":checked") ? true : false;
+            obj.CorrectiveActionShowTable = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_CorrectiveAction').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n";
 
             return obj;
         },

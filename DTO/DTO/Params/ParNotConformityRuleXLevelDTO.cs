@@ -13,6 +13,7 @@ namespace DTO.DTO.Params
         public int? ParLevel3_Id { get; set; }
         public bool IsReaudit { get; set; }
         public bool IsActive { get; set; } = true;
+        public bool CorrectiveAction { get; set; } = true;
 
         public ParCompanyDTO parCompany { get; set; }
         public ParLevel1DTO parLevel1 { get; set; }

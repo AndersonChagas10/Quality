@@ -4902,6 +4902,17 @@ namespace SgqSystem.Services
                                     meta = alertas.Meta;
                                 }
                             }
+                            else if (tipoAlerta == 7)  //reincidenciaKOAmostras
+                            {
+                                if (alertas != null)
+                                {
+                                    alertaNivel1 = valorAlerta;
+                                    alertaNivel2 = valorAlerta;
+                                    alertaNivel3 = "a7";
+                                    volumeAlerta = alertas.VolumeAlerta;
+                                    meta = alertas.Meta;
+                                }
+                            }
                             else
                             {
                                 if (alertas != null) //Fica como padrão JBS por indicador
@@ -4949,7 +4960,8 @@ namespace SgqSystem.Services
                                                          metaIndicador: meta,
                                                          IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber,
                                                          listParRelapse: listParRelapse,
-                                                         ParCluster_Id: parlevel1.ParCluster_Id.ToString());
+                                                         ParCluster_Id: parlevel1.ParCluster_Id.ToString(),
+                                                         DisparaAlerta: parlevel1.DisparaAlerta);
                             //Incrementa level1
                             parLevel1.Append(html.listgroupItem(parlevel1.Id.ToString(), classe: "row " + excecao, outerhtml: level01 + painelCounters));
                         }

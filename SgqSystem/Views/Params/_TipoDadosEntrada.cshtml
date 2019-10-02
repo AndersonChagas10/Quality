@@ -1,6 +1,14 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
 @using SgqSystem.Helpers
 
+@{
+    for (int i = 0; i < Model.paramsDto.parLevel3Dto.listLevel3Value.Count(); i++)
+    {
+        Model.paramsDto.parLevel3Dto.listLevel3Value[i].ParLevel1 = null;
+        Model.paramsDto.parLevel3Dto.listLevel3Value[i].ParLevel2 = null;
+    }
+}
+
 <div class="panel-group accordion" id="level3_data_type_accordion">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -24,13 +32,14 @@
                         <td class="td-erp col-sm-6" colspan="0">
                             <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
                             <div>
-                                @Html.DropDownList("paramsDto.parLevel1Selected", new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }@*Model.paramsDdl.DdlparLevel1*@                                                                       /**/
-                                                                                                                                                                                                                                                                                                                        /**/
-                                                                                                                                                                                                                                                                                                                        /**/
-                                                                                                                                                                                                                                                                                                                        /**/
-                                                                                                                                                                                                                                                                                                                        /**/
-                                                                                                                                                                                                                                                                                                                        /**/
-                                                                                                                                                                                                                                                                                                                        , htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2TipoDadosEntrada", style = "width: 100%" })
+                                @Html.DropDownList("paramsDto.parLevel1Selected", new List<SelectListItem> { new SelectListItem { Text = Resources.Resource.all, Value = "-1" } }@*Model.paramsDdl.DdlparLevel1*@                                                                                        /**/
+                                                                                                                                                                                                                                                                                                                                         /**/
+                                                                                                                                                                                                                                                                                                                                         /**/
+                                                                                                                                                                                                                                                                                                                                         /**/
+                                                                                                                                                                                                                                                                                                                                         /**/
+                                                                                                                                                                                                                                                                                                                                         /**/
+                                                                                                                                                                                                                                                                                                                                         /**/
+                                                                                                                                                                                                                                                                                                                                         , htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2TipoDadosEntrada", style = "width: 100%" })
                             </div>
                         </td>
                         <td class="td-erp col-sm-6">
@@ -233,13 +242,13 @@
     var eTipoDado_Observacao = 11;
     var eTipoDado_Recravacao = 99;
 
-    var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
+    var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.listLevel3Value));
 
     var level3Value = {
         /*Setup*/
         levelControl: 3,
         level: "newLevel3Modal",
-        listObjSalvo: levelParamsDTO.parLevel3Dto.listLevel3Value,
+        listObjSalvo: levelParamsDTO,
         idTable: 'tableLevel3Value',//
         tdsNames: ['ParLevel3InputType_Name', 'ParLevel1_Name', 'ParLevel2_Name', 'ParCompany_Name', 'ParMeasurementUnit_Name', 'IntervalMin', 'IntervalMax', 'AcceptableValueBetween_Name', 'ParLevel3BoolFalse_Name', 'ParLevel3BoolTrue_Name', 'btn'],
         getObjAdd: function (isEdit, obj) {
@@ -529,7 +538,7 @@
             return true;
         },
         incluiNoObjetoParaSubmit: function (dados) {
-            
+
             var level = level3Value.levelControl;
             $('#' + level3Value.level + ' #' + level3Value.idTable + ' > tbody > tr ').each(function (c, obj) {
 
@@ -571,15 +580,22 @@
                     else
                         o["ParCompany_Name"] = "@Resources.Resource.all";
 
-                    if (o.ParLevel1_Id > 0)
-                        o["ParLevel1_Name"] = o.ParLevel1.Id + " - " + o.ParLevel1.Name;
-                    else
-                        o["ParLevel1_Name"] = "@Resources.Resource.all";
+                    if(o.ParLevel1_Id != null){
+                        if(o.ParLevel1_Id != "-1"){
+                            o['ParLevel1_Name'] = $(' #parLevel1Select2 option[value=' + o.ParLevel1_Id + ']').text();
+                        }
+                    }else{
+                        o['ParLevel1_Name'] = "@Resources.Resource.all";
+                    }
 
-                    if (o.ParLevel2_Id > 0)
-                        o["ParLevel2_Name"] = o.ParLevel2.Id + " - " + o.ParLevel2.Name;
-                    else
-                        o["ParLevel2_Name"] = "@Resources.Resource.all";
+                    if(o.ParLevel2_Id != null){
+                        if(o.ParLevel2_Id != "-1"){
+                            o['ParLevel2_Name'] = $(' #parLevel2Select2 option[value=' + o.ParLevel2_Id + ']').text();
+                        }
+                    }else{
+                        o['ParLevel2_Name'] = "@Resources.Resource.all";
+                    }
+
                     //console.log(o["ParLevel2_Name"]);
                     //console.log(o["ParLevel1_Name"]);
                     if (o.ParLevel3InputType_Id == eTipoDado_Binario || o.ParLevel3InputType_Id == eTipoDado_BinarioComTexto) {

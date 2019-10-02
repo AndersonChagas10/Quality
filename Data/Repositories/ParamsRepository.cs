@@ -984,8 +984,8 @@ namespace Data.Repositories
                             }
                         }
 
-                        db.SaveChanges();
                     }
+                    db.SaveChanges();
                 }
             }
         }

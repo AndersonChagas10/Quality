@@ -55,6 +55,9 @@ public class ApontamentosDiariosResultSet
 
     public bool HasPhoto { get; set; }
 
+    public int C2ID { get; set; }
+    public int DesvioAv { get; set; }
+
     public string Select(DataCarrierFormulario form)
     {
         var dtInit = form._dataInicio.ToString("yyyyMMdd");
@@ -121,7 +124,7 @@ public class ApontamentosDiariosResultSet
 	                    ,AuditorId
 	                    ,AddDate
 	                    ,AlterDate 
-                    INTO #CollectionLevel2
+                    INTO #CollectionLevel2_
                     FROM Collectionlevel2 CL2 WITH (NOLOCK)
                         WHERE 1=1
                          AND NotEvaluatedIs <> 999
@@ -131,6 +134,74 @@ public class ApontamentosDiariosResultSet
                          { sqlUnidade } 
                          { sqlLevel1 } 
                          { sqlLevel2 }
+
+                    select c2.*, c2Group.C2ID,  case when av_desvios.shift is null then 0 else 1 end desvio  
+				        INTO #CollectionLevel2
+				        from #CollectionLevel2_ c2
+				        left join ( 
+				         select 
+				         min(id) as C2ID,
+				         parlevel1_id,
+				         parlevel2_id,
+				         Unitid,
+				         cast(collectiondate as date) data,
+				         EvaluationNumber,
+				         Shift,
+				         Period
+				         from #CollectionLevel2_ 
+				 
+				         group by
+				 
+				         parlevel1_id,
+				         parlevel2_id,
+				         Unitid,
+				         cast(collectiondate as date),
+				         EvaluationNumber,
+				         Shift,
+				         Period
+				         ) as c2Group 
+				         on  c2Group.parlevel1_id = c2.parlevel1_id
+				         and c2Group.parlevel2_id = c2.parlevel2_id
+				         and c2Group.Unitid = c2.Unitid
+				         and c2Group.data = cast(c2.collectiondate as date)
+				         and c2Group.EvaluationNumber = c2.EvaluationNumber
+				         and c2Group.Shift = c2.Shift
+				         and c2Group.Period = c2.Period
+
+				         left join ( 
+				         select 
+				         parlevel1_id,
+				         parlevel2_id,
+				         Unitid,
+				         cast(collectiondate as date) data,
+				         EvaluationNumber,
+				         Shift,
+				         Period
+				         from #CollectionLevel2_ c2_
+				         inner join (Select Adddate as adddated, Evaluation, Sample as sampled, ParLevel1_Id as p1, ParLevel2_Id as p2, ParCompany_Id  from Deviation where DeviationMessage is not null) d 
+				         on d.Adddated between dateadd(MI, -5, c2_.Adddate) and dateadd(MI, 5, c2_.Adddate)
+				         and d.Evaluation = c2_.EvaluationNumber
+				         and d.Sampled = c2_.sample
+				         and d.p1 = c2_.ParLevel1_Id
+				         and d.p2 = c2_.ParLevel2_Id
+				         and d.ParCompany_Id = c2_.unitid
+				         group by
+				 
+				         parlevel1_id,
+				         parlevel2_id,
+				         Unitid,
+				         cast(collectiondate as date),
+				         EvaluationNumber,
+				         Shift,
+				         Period
+				         ) as av_desvios 
+				         on av_desvios.parlevel1_id = c2.parlevel1_id 
+				         and av_desvios.parlevel2_id = c2.parlevel2_id
+				         and av_desvios.Unitid = c2.Unitid
+				         and cast(av_desvios.data as date) = cast(c2.collectiondate as date)
+				         and av_desvios.EvaluationNumber = c2.EvaluationNumber
+				         and av_desvios.Shift = c2.Shift
+				         and av_desvios.Period = c2.Period
  
  
                     CREATE INDEX IDX_CollectionLevel2_ID ON #CollectionLevel2(ID);
@@ -310,6 +381,10 @@ public class ApontamentosDiariosResultSet
 	            ,CASE WHEN (SELECT TOP 1 Id FROM Result_Level3_Photos RL3P WHERE RL3P.Result_Level3_Id = R3.Id) IS NOT NULL THEN 1 ELSE 0 END AS HasPhoto
 	            ,ma.Motivo as ParReason
 	            ,PRT.Name as ParReasonType
+                
+                ,C2.C2ID AS C2ID
+                ,c2.desvio as DesvioAv
+
                  FROM #CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     
                  ON UN.Id = c2.UnitId                  
@@ -343,7 +418,8 @@ public class ApontamentosDiariosResultSet
                  WHERE 1=1 
                   
                   { sqlLevel3 } 
-                
+                    
+                     DROP TABLE #CollectionLevel2_ 
                      DROP TABLE #CollectionLevel2 
                      DROP TABLE #CollectionJson
                      DROP TABLE #Result_Level3

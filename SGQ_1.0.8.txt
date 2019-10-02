@@ -24,7 +24,8 @@ IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Antecipado')
 
 GO
 
-IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Atrasado')
+IF
+NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Atrasado')
 	begin
 		insert into ParReasonType(Id,Name,AddDate, AlterDate, IsActive) 
 		values(2,'Atrasado',GETDATE(),NULL,1)
@@ -253,3 +254,13 @@ go
 
 update parlevel3level2 set IsKnockout = 0 where IsKnockout is null
 go
+
+IF COL_LENGTH('ParNotConformityRuleXLevel','CorrectiveAction') IS NULL
+    BEGIN	
+		ALTER TABLE ParNotConformityRuleXLevel
+		ADD CorrectiveAction BIT NULL
+	END
+GO
+
+UPDATE ParNotConformityRuleXLevel SET CorrectiveAction = 1 where CorrectiveAction is null
+GO

@@ -28,6 +28,8 @@ namespace Dominio
 
         public int? ParCompany_Id { get; set; }
 
+        public bool? IsKnockout { get; set; }
+
         [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 

@@ -47,6 +47,8 @@ namespace SGQDBContext
 
         public bool? IsRecravacao { get; set; }
 
+        public bool DisparaAlerta { get; set; }
+
         public ParLevel1()
         {
 
@@ -130,7 +132,7 @@ namespace SGQDBContext
 
                         P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     
                         P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave
-                        ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2, P1.IsFixedEvaluetionNumber AS IsFixedEvaluetionNumber 
+                        ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, AL.CorrectiveAction as DisparaAlerta, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2, P1.IsFixedEvaluetionNumber AS IsFixedEvaluetionNumber 
                         ,C.Id AS ParCluster_Id
                         FROM ParLevel1 P1  (nolock)                                                                                                         
                         INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 where Active = 1 GROUP BY ParLevel1_Id) P321                                     

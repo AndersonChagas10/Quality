@@ -9,6 +9,12 @@
     var id3 = "#level" + Model.levelControl + "__" + name + "_collapse";
     var id4 = "level" + Model.levelControl + "__" + name + "_collapse";
     var click = name + ".adiciona($(this))";
+
+    for (int i = 0; i < Model.paramsDto.parLevel3Dto.listLevel3Level2.Count(); i++)
+    {
+        Model.paramsDto.parLevel3Dto.listLevel3Level2[i].ParLevel3 = null;
+        Model.paramsDto.parLevel3Dto.listLevel3Level2[i].ParLevel2 = null;
+    }
 }
 
 <div class="panel-group accordion" id="@id">
@@ -32,6 +38,10 @@
                             @Table.GerarColuna(@Html.TextBox("peso", "", htmlAttributes: new { @class = "form-control input-sm", @id = "peso", @mask = "numerica" })
                                , @Html.Label(Resources.Resource.inform_the_weight_of_the_level3)
                                , Table.PosicaoLabel.top)
+
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Level2.IsKnockout, new { @class = "make -switch checkbox-erp", @id = "pesoIsKnockout" })
+                            , @Html.Label("Is Critical"), Table.PosicaoLabel.top)
+
                             @Table.GerarColunaButton(@Html.DropDownList("pesoGroupLevel2", new SelectList(Model.paramsDto.parLevel3Dto.listGroupsLevel2, dataValueField: "Id", dataTextField: "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm", @id = "pesoGroupLevel2" })
                                , @Html.Label(Resources.Resource.level2_group)
                                , Table.PosicaoLabel.top
@@ -46,6 +56,7 @@
                         <tr>
                             <th>@Resources.Resource.company</th>
                             <th>@Resources.Resource.weight</th>
+                            <th>Is Critical</th>
                             <th>@Resources.Resource.group</th>
                             <th class="options"></th>
                         </tr>
@@ -65,13 +76,13 @@
 
     function atribuiVariavelPeso (){
 
-        var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
+        var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.listLevel3Level2));
         var levelDomain;
         var listSalvo;
 
         if(levelControl == 3){
             levelDomain = "newLevel3Modal";
-            listSalvo = paramsDto.parLevel3Dto.listLevel3Level2;//
+            listSalvo = paramsDto;//
             PesoL3 = getCounterObject(levelDomain, listSalvo);//
             PesoL3.carregaDadosDoDb();//
         }
@@ -80,14 +91,16 @@
 
     atribuiVariavelPeso();
 
-    function getCounterObject (levelDomain, listSalvo) {
+    function getCounterObject(levelDomain, listSalvo) {
+        debugger;
         return {
+            
             /*Setup*/
             levelControl: levelControl,
             level: levelDomain,
             listObjSalvo: listSalvo,
             idTable: 'tablePeso',//
-            tdsNames: ['companyName', 'Weight', 'groupName', 'btn'],
+            tdsNames: ['companyName', 'Weight', 'IsKnockout', 'groupName', 'btn'],
             getObjAdd: function(isEdit, obj){
 
                 if(isEdit != undefined){
@@ -106,6 +119,7 @@
                     }
 
                     obj.Weight = $('#' + isEdit + ' #peso').val();
+                    obj.IsKnockout = $('#' + isEdit + ' #paramsDto_parLevel3Level2_IsKnockout').val();
                     obj.ParCompany_Id = compVal;
                     obj.companyName = compName;
                     obj.ParLevel3Group_Id = groupVal;
@@ -122,6 +136,8 @@
                     var groupName =  $('#' + this.level + ' #pesoGroupLevel2 :selected').text();
                     var groupVal = $('#' + this.level + ' #pesoGroupLevel2 :selected').val();
 
+
+
                     if(compVal == 0 || compVal == "-1" || compVal == "0" || compVal == -1){
                         compName = "Todos";
                     }
@@ -131,7 +147,8 @@
                     }
 
                     return {/*Objeto*/
-                        Weight    : $('#' + this.level + ' #peso').val(),
+                        Weight: $('#' + this.level + ' #peso').val(),
+                        IsKnockout: $('#' + this.level + ' #paramsDto_parLevel3Level2_IsKnockout').val(), //paramsDto_parLevel3Level2_IsKnockout
                         ParCompany_Id  :  compVal,
                         ParLevel2_Id  : $('#paramsDto_parLevel2Dto_Id').val(),
                         ParLevel3_Id  : $('#paramsDto_parLevel3Dto_Id').val(),
@@ -145,7 +162,7 @@
 
             },
             veifyAdd: function(isEdit) {
-                
+
                 var seletorTato = !!isEdit ? isEdit : this.level;
 
                 /*Valida se pode criar o objeto*/
@@ -164,7 +181,7 @@
                 });
 
                 if(!!isEdit){/*Edição*/
-                   
+
                 } else {/*Inclusão*/
                     if(exist.length){
                         var display = $('#' + seletorTato + ' #pesoCompany :selected').text();
@@ -190,6 +207,7 @@
                     }
 
                     dados["paramsDto.parLevel" + level + "Dto.listLevel3Level2[" + c + "].Weight"] = o.Weight;
+                    dados["paramsDto.parLevel" + level + "Dto.listLevel3Level2[" + c + "].IsKnockout"] = o.IsKnockout;
                     dados["paramsDto.parLevel" + level + "Dto.listLevel3Level2[" + c + "].ParCompany_Id"] = o.ParCompany_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listLevel3Level2[" + c + "].ParLevel2_Id"] = o.ParLevel2_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listLevel3Level2[" + c + "].ParLevel3_Id"] = o.ParLevel3_Id;
