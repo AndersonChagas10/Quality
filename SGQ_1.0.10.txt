@@ -1,4 +1,20 @@
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParHeaderFieldGeral' AND xtype='U')
+CREATE TABLE CollectionLevel2XParHeaderFieldGeral  (
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CollectionLevel2_Id] [int] NOT NULL,
+	[ParHeaderFieldGeral_Id] [int] NOT NULL,
+	[ParHeaderField_Name] [nvarchar](max) NOT NULL,
+	[ParFieldType_Id] [int] NOT NULL,
+	[Value] [nvarchar](max) NOT NULL,
+	[Evaluation] [int] NULL,
+	[Sample] [int] NULL,
+	FOREIGN KEY ([CollectionLevel2_Id]) REFERENCES CollectionLevel2(Id),
+	FOREIGN KEY ([ParFieldType_Id]) REFERENCES ParFieldType(Id),
+	FOREIGN KEY ([ParHeaderFieldGeral_Id]) REFERENCES ParHeaderFieldGeral(Id),
+    PRIMARY KEY (Id)
+);
 
+GO
 
 IF COL_LENGTH('ParCompany','Identification') IS NULL
     BEGIN	
@@ -161,3 +177,5 @@ IF COL_LENGTH('ParVinculoPeso','ParGroupParlevel1_id') IS NOT NULL
 BEGIN
 	ALTER TABLE ParVinculoPeso ALTER COLUMN ParGroupParlevel1_id int NULL
 END
+
+GO
