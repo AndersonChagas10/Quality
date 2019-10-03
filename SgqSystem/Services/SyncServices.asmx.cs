@@ -5214,6 +5214,25 @@ namespace SgqSystem.Services
                 sampleGroup = sample;
             }
 
+            var departamento = "";
+
+            var index = 0;
+            var count = parlevel02List.Count();
+
+            var auxDepto = "";
+            var countDepto = 0;
+
+            foreach (var parlevel2count in parlevel02List) //LOOP3
+            {
+                if (parlevel2count.Departamento != auxDepto)
+                {
+                    countDepto++;
+                }
+                auxDepto = parlevel2count.Departamento;
+            }
+
+      
+
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List) //LOOP3
             {
@@ -5414,7 +5433,8 @@ namespace SgqSystem.Services
                                             reaudit: parlevel2.IsReaudit,
                                             HasTakePhoto: parlevel2.HasTakePhoto,
                                             FrequenciaValor: frequencia,
-                                            FrequenciaMensagemInativo: "");
+                                            FrequenciaMensagemInativo: "",
+                                            Departamento: parlevel2.Departamento);
 
                 var listLineCounter = ParCounterDB.GetParLevelXParCounterList(null, parlevel2, 2);
 
@@ -5426,14 +5446,53 @@ namespace SgqSystem.Services
                 }
 
                 //Gera linha do Level2
+
+                var inicioGrupo = false;
+                var fimGrupo = false;
+                var fimFinalGrupo = false;
+                var Grupo = "";
+
+                if (countDepto > 1)
+                {
+
+                    if (departamento == "")
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                    }
+                    else if (departamento == parlevel2.Departamento)
+                    {
+                        inicioGrupo = false;
+                    }
+                    else if (departamento != parlevel2.Departamento)
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                        fimGrupo = true;
+                    }
+
+                    if (++index == count)
+                    {
+                        fimFinalGrupo = true;
+                    }
+
+                    departamento = parlevel2.Departamento;
+
+                }
+
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
-                                                    classe: "row",
+                                                    classe: "row gabriel " + parlevel2.Departamento,
+                                                    tags: "departamento='" + parlevel2.Departamento + "'",
                                                     outerhtml: level2 +
                                                                counters +
                                                                buttons +
                                                                html.div(classe: "level2Debug") +
-                                                               lineCounters
+                                                               lineCounters,
+                                                    inicioGrupo: inicioGrupo,
+                                                    fimGrupo: fimGrupo,
+                                                    fimFinalGrupo: fimFinalGrupo,
+                                                    Grupo: Grupo
                                                     );
 
 

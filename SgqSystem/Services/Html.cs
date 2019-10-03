@@ -254,9 +254,43 @@ namespace SgqSystem.Services
                     outerhtml +
                     "</ul>";
         }
-        public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null, string totalDefeitos = null)
+        public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null, string totalDefeitos = null, bool inicioGrupo = false, bool fimGrupo = false, bool fimFinalGrupo = false, string Grupo = "" )
         {
             classe += " list-group-item";
+
+            var fim = "";
+            var fimFinal = "";
+            var inicio = "";
+
+            if (inicioGrupo)
+            {
+                
+                inicio = @" <div class='accordion' id='accordionExample" + id + @"'>
+                  <div class='card z-depth-0 bordered'>
+                    <div class='card-header' id='headingThree" + id + @"'>
+                      <h5 class='row list-group-item'>
+                        <button class='btn btn-link collapsed' type='button' data-toggle='collapse'
+                          data-target='#collapseThree" + id + @"' aria-expanded='false' aria-controls='collapseThree" + id + @"'>" +
+                                      Grupo +
+                                      @"
+                        </button>
+                      </h5>
+                    </div>
+                    <div id = 'collapseThree" + id + @"' class='collapse' aria-labelledby='headingThree" + id + @"' data-parent='#accordionExample" + id + @"'>
+                      <div class='card-body'>";
+            }
+
+            if (fimGrupo)
+            {
+                fim = " </div>    </div>  </div>  </div> ";
+            }
+
+            if (fimFinalGrupo)
+            {
+                fimFinal = " </div>    </div>  </div>  </div> ";
+            }          
+
+            
 
             if (!string.IsNullOrEmpty(tags))
             {
@@ -264,7 +298,7 @@ namespace SgqSystem.Services
                 tags = tags.Trim();
             }
 
-            return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='" + totalDefeitos + "'>" + outerhtml + "</li>";
+            return fim + inicio + "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='" + totalDefeitos + "'>" + outerhtml + "</li>" + fimFinal;
         }
 
         public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, string accordeonId = "", string othersTags = null)
@@ -581,7 +615,7 @@ namespace SgqSystem.Services
                              bool HasTakePhoto = false, 
                              //Frequencia
                              string FrequenciaTipo = "", string FrequenciaValor = "", 
-                             string FrequenciaMensagemInativo = "")
+                             string FrequenciaMensagemInativo = "", string Departamento ="")
         {
 
             string tagLevel1Group = null;
