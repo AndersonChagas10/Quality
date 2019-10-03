@@ -119,7 +119,7 @@
                     }
 
                     obj.Weight = $('#' + isEdit + ' #peso').val();
-                    obj.IsKnockout = $('#' + isEdit + ' #paramsDto_parLevel3Level2_IsKnockout').val();
+                    obj.IsKnockout = $('#' + isEdit + ' #paramsDto_parLevel3Level2_IsKnockout').is(":checked");
                     obj.ParCompany_Id = compVal;
                     obj.companyName = compName;
                     obj.ParLevel3Group_Id = groupVal;
@@ -148,7 +148,7 @@
 
                     return {/*Objeto*/
                         Weight: $('#' + this.level + ' #peso').val(),
-                        IsKnockout: $('#' + this.level + ' #paramsDto_parLevel3Level2_IsKnockout').val(), //paramsDto_parLevel3Level2_IsKnockout
+                        IsKnockout: $('#' + this.level + ' #paramsDto_parLevel3Level2_IsKnockout').is(":checked"), //paramsDto_parLevel3Level2_IsKnockout
                         ParCompany_Id  :  compVal,
                         ParLevel2_Id  : $('#paramsDto_parLevel2Dto_Id').val(),
                         ParLevel3_Id  : $('#paramsDto_parLevel3Dto_Id').val(),

@@ -497,8 +497,16 @@
         },
         /*Peso L3*/
         modalAlterarPesoL3: function (obj) {
+            debugger
+            $("#paramsDto_parLevel3Level2_IsKnockout").bootstrapSwitch('destroy', true);
+
             var divDeEdicao = $('#level3__PesoL3_collapse > div > table.table-erp').clone();
+
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+
+            $("#crudNxNEdit #paramsDto_parLevel3Level2_IsKnockout.check-box").bootstrapSwitch('state', obj.IsKnockout);
+
             $('#crudNxNEdit #pesoCompany').attr("disabled", true);
             if (obj.ParCompany_Id > 0) {
                 $('#crudNxNEdit #pesoCompany').val(obj.ParCompany_Id).change();
@@ -506,6 +514,9 @@
             $('#crudNxNEdit #peso').val(obj.Weight);
             $('#crudNxNEdit #peso').inputmask("mascaraNumericaPositivaNegativa");
             $('#crudNxNEdit #pesoGroupLevel2').val(obj.ParLevel3Group_Id).change();
+
+            $("#paramsDto_parLevel3Level2_IsKnockout").bootstrapSwitch();
+
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tablePeso').attr('nameModal'));
         },
@@ -545,13 +556,15 @@
 
         modalAlterarRegraNc: function (obj) {
             $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('destroy', true);
+            $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_CorrectiveAction").bootstrapSwitch('destroy', true);
 
             $('#crudNxNEdit #myModalLabel').html($('#tableRegraNc').attr('nameModal'));
 
             var divDeEdicao = $('#level1_nc_collapse > div > table.table-erp').clone();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
             $('#crudNxNEdit #selectNotConformityRule').val(obj.ParNotConformityRule_Id);/*Preenche*/
-            $("#crudNxNEdit .check-box").bootstrapSwitch('state', obj.IsReaudit);
+            $("#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('state', obj.IsReaudit);
+            $("#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_CorrectiveAction").bootstrapSwitch('state', obj.CorrectiveAction);
             $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(obj.Value);
 
             $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch();
