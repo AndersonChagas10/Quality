@@ -595,6 +595,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\GRT PA.pubxml" />
     <None Include="Properties\PublishProfiles\PA Local.pubxml" />
     <None Include="Properties\PublishProfiles\Plano De Acao .pubxml" />
