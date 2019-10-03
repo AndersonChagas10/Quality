@@ -351,7 +351,7 @@ FROM (SELECT
 	   ,Pl2.Responsavel_Projeto
 	   ,Pl2.UnidadeDeMedida_Id
 	   ,Pl2.IsTatico
-	   ,Pl2.Tatico_Id
+	   ,IIF(Pl2.Tatico_Id IS NULL, Pl2.Id, Pl2.Tatico_Id) as Tatico_Id
 	   ,Pl1.IsFta
 	   ,Pl2.TemaProjeto_Id
 	   ,Pl2.TipoProjeto_Id
