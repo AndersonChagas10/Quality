@@ -731,13 +731,13 @@ function OpenCorrectiveAction(coleta) {
     var date = stringToDate(currentCollectDate.toJSON());
 
     var body = '<div class="form-group">' +
-        '<div class="form-group col-xs-12">'+
-        '<strong>Informações</strong>'+
-        '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString()+
-        '<br/>Monitor: '+currentLogin.Name+
-        '<br/>Tarefa: '+$.grep(parametrization.listaParLevel3, function(o,i){ return o.Id == coleta.ParLevel3_Id; })[0].Name+
-        '<br/>Frequência: '+$.grep(parametrization.listaParFrequency, function (item) {return item.Id == currentParFrequency_Id;})[0].Name+
-        '</small></div>'+
+        '<div class="form-group col-xs-12">' +
+        '<strong>Informações</strong>' +
+        '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString() +
+        '<br/>Monitor: ' + currentLogin.Name +
+        '<br/>Tarefa: ' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +
+        '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == currentParFrequency_Id; })[0].Name +
+        '</small></div>' +
 
         '<div class="form-group col-xs-12">' +
         '<label>Descrição da Falha:</label>' +
@@ -749,7 +749,7 @@ function OpenCorrectiveAction(coleta) {
         '</div>' +
         '<div class="form-group col-xs-12">' +
         '<label for="email">Ação Preventiva:</label>' +
-        '<input name="TechinicalId" id="techinicalId" class="form-control" style="height: 80px;">'+
+        '<input name="TechinicalId" id="techinicalId" class="form-control" style="height: 80px;">' +
         '</div>';
 
     var corpo =
@@ -863,6 +863,7 @@ function getCollectionHeaderFields() {
     return collectionHeaderFied;
 }
 
+
 function HeaderFieldsIsValid() {
 
     retorno = true;
@@ -888,6 +889,15 @@ function HeaderFieldsIsValid() {
         closeMensagem(2000);
     }
 
-    return retorno;
+    //verifica se tem campos obrigatorios que nao estao preenchidos e realiza o focus neles
+    $.each($('[data-required=true]'), function (i, o) {
+        if ($(o).val() == 0 || $(o).val() == "") {
+            $('html, body').animate({
+                scrollTop: $(o).offset().top
+            }, 300);
+            return false;
+        }
+    });
 
+    return retorno;
 }
