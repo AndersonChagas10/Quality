@@ -317,6 +317,13 @@ namespace PlanoDeAcaoMVC.Controllers
 
         private static void NovoFtaModelParaSgq2(FTA fta)
         {
+            if (fta._DataInicioFTA == null)
+                fta._DataInicioFTA = fta.DataInicioFTA.ToString("dd/MM/yyyy");
+
+            if (fta._DataFimFTA == null)
+                fta._DataFimFTA = fta.DataFimFTA.ToString("dd/MM/yyyy");
+
+
             //Guard.CheckStringFullSimple(fta._Level1, "_Level1");
             //Guard.CheckStringFullSimple(fta._Level2, "_Level2");
             //Guard.CheckStringFullSimple(fta._Level3, "_Level3");
@@ -343,7 +350,8 @@ namespace PlanoDeAcaoMVC.Controllers
                 if (fta.Level2Id > 0)
                 {
                     level2 = dbFActory.SearchQuery<ParLevel2DTO>("Select * from parlevel2 WHERE Id = '" + fta.Level2Id + "'").FirstOrDefault(r => r.IsActive);
-                    parDepartment = dbFActory.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + level2.ParDepartment_Id).FirstOrDefault();
+                    if (level2.ParDepartment_Id != null)
+                        parDepartment = dbFActory.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + level2.ParDepartment_Id).FirstOrDefault();
                     fta.Level2Id = level2.Id;
                 }
                 if (fta.Level3Id > 0)
@@ -466,7 +474,7 @@ namespace PlanoDeAcaoMVC.Controllers
                     var secao = departamentos.Last();
 
                     //departamentos.RemoveAt(departamentos.Count - 1);
-                   
+
                     fta.ParDepartmentsName += string.Join(" | ", departamentos.Select(x => x.Name).ToList());
                     fta.SecaoName = secao.Name;
 
