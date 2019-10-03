@@ -1019,27 +1019,32 @@
                                     //RedirecionaParaFTA(enviar);
  
                                     var self = this;
+                                    debugger
+                                    if (objFiltro.Param.department_Id == null || objFiltro.Param.department_Id == "") {
+                                        criaObjFTA(objFiltro, self, porc, nc, Ids, "")
+                                    } else {
+                                        getHashDepartment(objFiltro, self, porc, nc, Ids, data);
+                                    }
+                                    //$.post(urlGetHashDepartment + "/" + objFiltro.Param.department_Id, function (data) {
 
-                                    $.post(urlGetHashDepartment + "/" + objFiltro.Param.department_Id, function (data) {
+                                    //    let objFTA = {
 
-                                        let objFTA = {
+                                    //        DataInicioFTA: encodeURIComponent(objFiltro.startDate),
+                                    //        DataFimFTA: encodeURIComponent(objFiltro.endDate),
+                                    //        Supervisor_Id: getCookie("webControlCookie")[0].split('=')[1],
+                                    //        PercentualNCFTA: porc[self.x],
+                                    //        ReincidenciaDesvioFTA: nc[self.x],
+                                    //        Unidade_Id: objFiltro.Param.unit_Id,
+                                    //        level1Id: objFiltro.Param.level1_Id,
+                                    //        level2Id: objFiltro.Param.level2_Id,
+                                    //        level3Id: Ids[self.x],
+                                    //        ParDepartments_Hash: data,
+                                    //        ParCargo_Id: ""
+                                    //    };
 
-                                            DataInicioFTA: encodeURIComponent(objFiltro.startDate),
-                                            DataFimFTA: encodeURIComponent(objFiltro.endDate),
-                                            Supervisor_Id: getCookie("webControlCookie")[0].split('=')[1],
-                                            PercentualNCFTA: porc[self.x],
-                                            ReincidenciaDesvioFTA: nc[self.x],
-                                            Unidade_Id: objFiltro.Param.unit_Id,
-                                            level1Id: objFiltro.Param.level1_Id,
-                                            level2Id: objFiltro.Param.level2_Id,
-                                            level3Id: Ids[self.x],
-                                            ParDepartments_Hash: data,
-                                            ParCargo_Id: ""
-                                        };
+                                    //    openFTA(objFTA);
 
-                                        openFTA(objFTA);
-
-                                    });
+                                    //});
                                 }
                             }
                         },
@@ -1079,30 +1084,33 @@
                                     //RedirecionaParaFTA(enviar);
 
                                     var self = this;
-                                    
-                                    $.post(urlGetHashDepartment + "/" + objFiltro.Param.department_Id, function (data) {
+                                    debugger
+                                    if (objFiltro.Param.department_Id == null || objFiltro.Param.department_Id == "") {
+                                        criaObjFTA(objFiltro, self, porc, Ids, "")
+                                    } else {
+                                        getHashDepartment(objFiltro, self, porc, Ids, data);
+                                    }
 
-                                        let objFTA = {
+                                    //$.post(urlGetHashDepartment + "/" + objFiltro.Param.department_Id, function (data) {
 
-                                            DataInicioFTA: encodeURIComponent(objFiltro.startDate),
-                                            DataFimFTA: encodeURIComponent(objFiltro.endDate),
-                                            Supervisor_Id: getCookie("webControlCookie")[0].split('=')[1],
-                                            PercentualNCFTA: porc[self.x],
-                                            ReincidenciaDesvioFTA: nc[self.x],
-                                            Unidade_Id: objFiltro.Param.unit_Id,
-                                            level1Id: objFiltro.Param.level1_Id,
-                                            level2Id: objFiltro.Param.level2_Id,
-                                            level3Id: Ids[self.x],
-                                            ParDepartments_Hash: data,
-                                            ParCargo_Id: ""
-                                        };
+                                    //    let objFTA = {
 
-                                        openFTA(objFTA);
+                                    //        DataInicioFTA: encodeURIComponent(objFiltro.startDate),
+                                    //        DataFimFTA: encodeURIComponent(objFiltro.endDate),
+                                    //        Supervisor_Id: getCookie("webControlCookie")[0].split('=')[1],
+                                    //        PercentualNCFTA: porc[self.x],
+                                    //        ReincidenciaDesvioFTA: nc[self.x],
+                                    //        Unidade_Id: objFiltro.Param.unit_Id,
+                                    //        level1Id: objFiltro.Param.level1_Id,
+                                    //        level2Id: objFiltro.Param.level2_Id,
+                                    //        level3Id: Ids[self.x],
+                                    //        ParDepartments_Hash: data,
+                                    //        ParCargo_Id: ""
+                                    //    };
 
-                                    });
+                                    //    openFTA(objFTA);
 
-
-                                    
+                                    //});
                                 }
                             }
                         },
@@ -1117,6 +1125,34 @@
                 ]
             })
 
+        }
+
+        function criaObjFTA(objFiltro, self, porc, nc, Ids, data) {
+            let objFTA = {
+
+                DataInicioFTA: encodeURIComponent(objFiltro.startDate),
+                DataFimFTA: encodeURIComponent(objFiltro.endDate),
+                Supervisor_Id: getCookie("webControlCookie")[0].split('=')[1],
+                PercentualNCFTA: porc[self.x],
+                ReincidenciaDesvioFTA: nc[self.x],
+                Unidade_Id: objFiltro.Param.unit_Id,
+                level1Id: objFiltro.Param.level1_Id,
+                level2Id: objFiltro.Param.level2_Id,
+                level3Id: Ids[self.x],
+                ParDepartments_Hash: data,
+                ParCargo_Id: ""
+            };
+
+            openFTA(objFTA);
+        }
+
+        function getHashDepartment(objFiltro, self, porc, nc, Ids, data) {
+
+            $.post(urlGetHashDepartment + "/" + objFiltro.Param.department_Id, function (data) {
+                criaObjFTA(objFiltro, self, porc, nc, Ids, data);
+            });
+
+            
         }
 
         function btnOrdenacao(id, func, btn, sentido) {
