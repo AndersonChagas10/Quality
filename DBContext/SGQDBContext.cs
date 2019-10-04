@@ -2627,14 +2627,14 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             TotalLevel3WithDefects, 
                             EvaluatedResult 
                             FROM ConsolidationLevel2 c2 with (nolock)
-                            LEFT JOIN ConsolidationLevel2XCluster C2C
-                            ON C2C.ConsolidationLevel2_id = c2.Id
+                            /*LEFT JOIN ConsolidationLevel2XCluster C2C
+                            ON C2C.ConsolidationLevel2_id = c2.Id*/
                             LEFT JOIN ConsolidationLevel2XParDepartment C2PD
                             ON C2PD.ConsolidationLevel2_id = c2.Id
                             WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
                             " AND ParLevel2_Id= '" + ParLevel2_Id + "' " +
                             " AND UnitId='" + ParCompany_Id + "'" +
-                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)";
+                            "/*AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)*/";
 
                 string departmentWhere = " AND C2PD.ParDepartment_Id IS NULL";
                 if (parDepartment_Id > 0)
@@ -2679,8 +2679,8 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             c2.ReauditIs, 
                             c2.ReauditNumber 
                             FROM ConsolidationLevel2 c2 with (nolock) 
-                            LEFT JOIN ConsolidationLevel2XCluster C2C
-                            ON C2C.ConsolidationLevel2_id = c2.Id
+                            /*LEFT JOIN ConsolidationLevel2XCluster C2C
+                            ON C2C.ConsolidationLevel2_id = c2.Id*/
                             LEFT JOIN ConsolidationLevel2XParDepartment C2PD
                             ON C2PD.ConsolidationLevel2_id = c2.Id
                             WHERE c2.ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' " +
@@ -2688,7 +2688,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                             "AND c2.UnitId='" + ParCompany_Id + "' " +
                             "AND c2.ReauditIs=" + reaudit + " " +
                             "and c2.reauditnumber=" + reauditNumber + " " +
-                            " AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)";
+                            " /*AND (C2C.ParCluster_Id = '" + cluster + "' OR C2C.ParCluster_Id IS NULL)*/";
 
                 string departmentWhere = " AND C2PD.ParDepartment_Id IS NULL";
                 if (parDepartment_Id > 0)
