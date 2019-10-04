@@ -27,7 +27,7 @@ namespace SgqServiceBusiness.Api
             {
                 var scriptDctionary = new Dictionary<string, string>();
 
-                if (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.Producao == "SIM")
+                if (false && DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.Producao == "SIM")
                 {
                     #region ReduzScript (Minify)
                     var blockComments = @"/\*(.*?)\*/";
