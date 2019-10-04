@@ -149,22 +149,32 @@ function loginOnline() {
         headers: token(),
         success: function (data) {
 
-            //se for usuários diferentes ou unidade diferente, zera a parametrização
-            if (currentLogin.Id != data.Retorno.Id || currentLogin.ParCompany_Id != data.Retorno.ParCompany_Id) {
+            if (data && data.Retorno != null) {
+                //se for usuários diferentes ou unidade diferente, zera a parametrização
+                if (currentLogin.Id != data.Retorno.Id || currentLogin.ParCompany_Id != data.Retorno.ParCompany_Id) {
 
-                parametrization = null;
-                currentPlanejamento = [];
+                    parametrization = null;
+                    currentPlanejamento = [];
 
-                _writeFile("appParametrization.txt", '', function () { });
+                    _writeFile("appParametrization.txt", '', function () { });
 
-                _writeFile("planejamento.txt", '', function () { });
+                    _writeFile("planejamento.txt", '', function () { });
 
-            } 
+                    _writeFile("login.txt", JSON.stringify(data.Retorno), function () {
+                        globalLoginOnline = true;
+                        loginSuccess(data.Retorno);
+                    });
 
-            _writeFile("login.txt", JSON.stringify(data.Retorno), function () {
-                globalLoginOnline = true;
-                loginSuccess(data.Retorno);
-            });
+                }
+            } else {
+
+                var mensagem = "Usúario ou senha incorretos. Verificar os dados e tentar novamente!";
+
+                openMensagem(mensagem, "blue", "white");
+
+                closeMensagem(1400);
+                openLogin();
+            }
         },
         timeout: 600000,
         error: function () {
