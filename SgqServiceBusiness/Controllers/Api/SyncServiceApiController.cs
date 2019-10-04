@@ -3987,6 +3987,7 @@ namespace SgqServiceBusiness.Api
                 var listaProdutosJSON = listaProdutos.getProdutos();
 
                 supports += @" <script>
+
                                 var listaProdutosJson = " + Newtonsoft.Json.JsonConvert.SerializeObject(listaProdutosJSON) + @";
                                            
                                 function buscarProduto(a,valor){
@@ -3999,7 +4000,7 @@ namespace SgqServiceBusiness.Api
                                             return;
                                         }		                                               
                                     }
-                                    //$(a).val('');
+
                                     $(a).next().html('');
                                 }
 
@@ -4013,8 +4014,10 @@ namespace SgqServiceBusiness.Api
                                         }
                                                                                                        
                                     }
+
                                     $(a).val('');
                                 }
+
                                 </script> ";
             }
             catch (Exception ex)
@@ -4074,11 +4077,41 @@ namespace SgqServiceBusiness.Api
 
             }
 
+            try
+            {
 
-            //string resource = GetResource();
+                using (var factory = new Factory("DefaultConnection"))
+                {
+                    var sql = $@"SELECT
+                                	CGC.Name
+                                   ,CGC.ComponenteGenerico_Id
+                                   ,CGC.ComponenteGenericoTipoColuna_Id
+                                   ,CGC.IsActive
+                                   ,CGV.SaveId
+                                   ,CGV.ComponenteGenericoColuna_Id
+                                   ,CGV.Valor
+                                FROM ComponenteGenericoColuna CGC
+                                INNER JOIN ComponenteGenericoValor CGV
+                                	ON CGC.Id = CGV.ComponenteGenericoColuna_Id
+                                WHERE CGC.IsActive = 1
+                                AND CGV.IsActive = 1";
+
+                    var listParHeaderFieldXComponenteGenerico = factory.SearchQuery<Dominio.AppViewModel.ComponenteGenericoValoresViewModel>(sql).ToList();
+
+                    supports += $@"<script>
+
+                                var listComponenteGenericoValores = " + Newtonsoft.Json.JsonConvert.SerializeObject(listParHeaderFieldXComponenteGenerico) + @";
+
+                                </script> ";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
 
 
-            return APPMain + supports;// + resource;
+            return APPMain + supports;
         }
 
         public string getAPPLevelsVolume(GetAPPLevelsVolumeClass getAPPLevelsVolumeClass)
@@ -6138,6 +6171,13 @@ namespace SgqServiceBusiness.Api
                         form_control += $@"<label class=""""></label>";
                         break;
 
+                    case 11:
+
+                        var options = ParFieldTypeDB.getComponenteValues(header, ParCompany_id, id);
+
+                        form_control += options;
+
+                        break;
                 }
 
                 //Incrementar valor para o pai do elemento para Ytoara.

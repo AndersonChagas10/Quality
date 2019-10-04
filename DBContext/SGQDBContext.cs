@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using ADOFactory;
 using Dapper;
-using System;
-using System.Linq;
 using Dominio;
-using System.Threading;
-using System.Collections;
 //using SgqSystem.Services;
 using DTO;
-using ADOFactory;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
 //using SgqSystem.Controllers.Api;
 
 namespace SGQDBContext
@@ -1879,6 +1877,64 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             }
 
             return multipleValues;
+        }
+
+        public string getComponenteValues(ParLevelHeader parLevelHeader, int ParCompany_Id, int id)
+        {
+            string conexaoBR = ConnectionString;
+
+            db = new SqlConnection(conexaoBR);
+
+            var sqlParHeaderFieldXComponenteGenerico = $@"SELECT PHFCG.* from ParHeaderFieldXComponenteGenerico PHFCG 
+	                                       INNER JOIN ComponenteGenerico CG on CG.Id = PHFCG.ComponenteGenerico_Id where PHFCG.ParHeaderField_Id = { parLevelHeader.ParHeaderField_Id }";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                var parHeaderFieldXComponenteGenerico = factory.SearchQuery<ParHeaderFieldXComponenteGenerico>(sqlParHeaderFieldXComponenteGenerico).FirstOrDefault();
+
+                if (parHeaderFieldXComponenteGenerico == null)
+                {
+                    return "";
+                }
+
+                var sqlComponenteGenericoValor = $@"select * from ComponenteGenericoValor where ComponenteGenerico_Id = { parHeaderFieldXComponenteGenerico.ComponenteGenerico_Id }";
+                var componenteGenericoValores = factory.SearchQuery<ComponenteGenericoValor>(sqlComponenteGenericoValor).ToList();
+                //var hashValores = componenteGenericoValores.Select(x => x.SaveId).Distinct().ToList();
+
+                var sqlComponenteGenericoColuna = $@"select top 1 * from componenteGenericoColuna where componenteGenerico_Id = { parHeaderFieldXComponenteGenerico.ComponenteGenerico_Id } and Id = { parHeaderFieldXComponenteGenerico.Value }";
+                var componenteGenericoColuna = factory.SearchQuery<ComponenteGenericoColuna>(sqlComponenteGenericoColuna).FirstOrDefault();
+
+                var options = @"<option value="""" selected>" + Resources.Resource.select + "...</option>";
+
+                var optionsData = componenteGenericoValores.Where(x => x.ComponenteGenericoColuna_Id == int.Parse(parHeaderFieldXComponenteGenerico.Text)).Select(x => x.Valor).Distinct().ToList();
+
+                foreach (var item in optionsData)
+                {
+                    options += "<option value=" + item + ">" + item + "</option>";
+                }
+
+                //foreach (var hashValor in hashValores)
+                //{
+
+                //    var value = componenteGenericoValores.Where(x => x.SaveId == hashValor && x.ComponenteGenericoColuna_Id == int.Parse(parHeaderFieldXComponenteGenerico.Value)).FirstOrDefault().Valor;
+                //    var text = componenteGenericoValores.Where(x => x.SaveId == hashValor && x.ComponenteGenericoColuna_Id == int.Parse(parHeaderFieldXComponenteGenerico.Text)).FirstOrDefault().Valor;
+
+                //    options += "<option value=" + value + " hashId=" + hashValor + ">" + text + "</option>";
+
+                //}
+
+                return $@"<select id="""" 
+                    class=""form-control input-sm ddl selectComponente"" 
+                    Id="""" name=cb  
+                    ParHeaderField_Id=""{ parLevelHeader.ParHeaderField_Id }"" 
+                    ParFieldType_Id=""{ parLevelHeader.ParFieldType_Id }"" 
+                    IdPai=""{ id }""
+                    Componente_Id=""{ parHeaderFieldXComponenteGenerico.ComponenteGenerico_Id }""
+                    ComponenteGenericoColuna=""{ componenteGenericoColuna.Name }""
+                    LinkNumberEvaluetion=""{ parLevelHeader.LinkNumberEvaluetion.ToString().ToLower() }"">
+                    { options }
+                    </select>";
+            }
         }
     }
 

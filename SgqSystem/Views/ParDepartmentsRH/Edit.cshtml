@@ -16,7 +16,7 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParDepartments")">@Resources.Resource.department</a>
+                    <a href="@Url.Action("Index", "ParDepartmentsRH")">@Resources.Resource.department</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -129,7 +129,7 @@
                                             <div class="col-md-offset-3 col-md-9">
                                                 <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
                                                 @Html.ActionLink(Resources.Resource.back as string, "Index", null, new { @class = "btn btn-default" })
-                                                @Html.ActionLink("Voltar para detalhes Grupo de Departamentos", "Details", "ParDepartmentGroups", new { id = Model.ParDepartmentGroup_Id }, new { @class = "btn btn-default" })
+                                                @*@Html.ActionLink("Voltar para detalhes Grupo de Departamentos", "Details", "ParDepartmentGroups", new { id = Model.ParDepartmentGroup_Id }, new { @class = "btn btn-default" })*@
                                             </div>
                                         </div>
                                     </div>

@@ -8,8 +8,8 @@ namespace ServiceModel
 {
     public partial class CollectionHeaderField
     {
-        public int ParLevel1_Id { get; set; }
-        public int ParLevel2_Id { get; set; }
+        public long ParLevel1_Id { get; set; }
+        public long ParLevel2_Id { get; set; }
         public int Period { get; set; }
         public int Shift { get; set; }
         public int ParHeaderField_Id { get; set; }

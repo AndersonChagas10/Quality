@@ -16,7 +16,7 @@ function getHeader() {
         '        <span class="icon-bar"></span>                                                                                                                            ' +
         '        <span class="icon-bar"></span>                                                                                                                            ' +
         '      </button>                                                                                                                                                   ' +
-        '      <a class="navbar-brand" style="color:white" href="#" onclick="openMenu()">AppColeta</a>                                                                                                             ' +
+        '      <a class="navbar-brand" style="color:white" href="#" onclick="validaRota(openMenu,null)">AppColeta</a>                                                                                                             ' +
         '    </div>                                                                                                                                                        ' +
         '    <div id="navbar" class="navbar-collapse collapse">                                                                                                            ' +
         '      <ul class="nav navbar-nav">                                                                                                                                 ' +
@@ -27,7 +27,7 @@ function getHeader() {
         '        <li class="nav-btn">' + currentLogin.FullName + '</li>' +
         '        <li class="nav-btn">' + parCompanyName + '</li>' +
         '        <li class="nav-btn" onclick="openModalChangeDate()">' + stringToDate(currentCollectDate.toJSON()).toLocaleDateString() + '</li>' +
-        '        <li><button href="#" class="btn btn-block btn-danger" onclick="logout()" style="color:#fff;margin:7px 7px 7px 0px;padding:6px 15px">Sair</button></li>    ' +
+        '        <li><button href="#" class="btn btn-block btn-danger" onclick="validaRota(logout,null)" style="color:#fff;margin:7px 7px 7px 0px;padding:6px 15px">Sair</button></li>    ' +
         '      </ul>                                                                                                                                                       ' +
         '    </div>                                                                                                                                  ' +
         '  </div>                                                                                                                                ' +

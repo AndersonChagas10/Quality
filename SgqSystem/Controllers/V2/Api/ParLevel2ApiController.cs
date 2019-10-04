@@ -35,6 +35,7 @@ namespace SgqSystem.Controllers.V2.Api
         {
             ParLevel2Result parLevel2Result = new ParLevel2Result();
             ParLevel2 parLevel2 = new ParLevel2();
+            List<ParMultipleValuesGeral> parMultipleValuesGeral = new List<ParMultipleValuesGeral>();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
@@ -53,10 +54,20 @@ namespace SgqSystem.Controllers.V2.Api
 
                 parLevel2Result.Parlevel2.ParHeaderFieldsGeral = db.ParHeaderFieldGeral
                     .Where(x => x.IsActive && x.ParLevelHeaderField_Id == parLevelHeaderField_Id && x.Generic_Id == parLevel2.Id)
-                    .Include("ParMultipleValuesGeral")
+                    //.Include(y => y.ParMultipleValuesGeral)
                     .Include("ParFieldType")
                     .ToList();
 
+                parMultipleValuesGeral = db.ParMultipleValuesGeral.Where(x => x.IsActive).ToList();
+            }
+
+            foreach (var item in parLevel2Result.Parlevel2.ParHeaderFieldsGeral)
+            {
+                foreach (var multipleValues in parMultipleValuesGeral)
+                {
+                    if (multipleValues.ParHeaderFieldGeral_Id == item.Id)
+                        item.ParMultipleValuesGeral.Add(multipleValues);
+                }
             }
 
             return Ok(parLevel2Result);

@@ -52,7 +52,8 @@
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParDepartmentFilho", "api/Formulario")">
                                                     Abrir
                                                 </button>
-                                                <select class="form-control" name="ParDepartment_Id"></select>
+                                                <select class="form-control" id="ParDepartment_Id" name="ParDepartment_Id"></select>
+                                                @Html.ValidationMessageFor(model => model.ParDepartment_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 

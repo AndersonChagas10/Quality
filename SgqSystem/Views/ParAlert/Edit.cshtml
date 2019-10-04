@@ -37,7 +37,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
 
-                                @using (Html.BeginForm("Edit", "ParAlert", FormMethod.Post, new { }))
+                                @using (Html.BeginForm("Edit", "ParAlert", FormMethod.Post, new { @id = "filterReports" }))
                                 {
                                     @Html.AntiForgeryToken()
 
@@ -57,19 +57,56 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParDepartment, Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownList("ParDepartment_Id", null, htmlAttributes: new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.ParDepartment_Id, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.ParCompany_Id, Resources.Resource.unit as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-6">
+                                                <button id="btnBuscarUnidade" type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parCompany_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParCompany", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+                                                <select class="form-control" name="parCompany_Ids" value="@ViewBag.Company[0].Value">
+                                                    <option value="@ViewBag.Company[0].Key" selected="selected">@ViewBag.Company[0].Value</option>
+
+                                                </select>
                                             </div>
+                                            @Html.HiddenFor(model => model.ParCompany_Id)
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParCargo, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownList("ParCargo_Id", null, htmlAttributes: new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.ParCargo_Id, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.ParDepartment_Id, Resources.Resource.costcenter as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-6">
+                                                <button id="btnBuscarDepartamentos" type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parSecao_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParDepartmentFilho", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+
+                                                <select class="form-control" name="parSecao_Ids" value="@ViewBag.SonDepartments[0].Value">
+                                                    <option value="@ViewBag.SonDepartments[0].Key" selected="selected">@ViewBag.SonDepartments[0].Value</option>
+
+                                                </select>
                                             </div>
+                                            @Html.HiddenFor(model => model.ParDepartment_Id)
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.ParCargo_Id, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-6">
+                                                <button type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parCargo_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParCargo", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+
+                                                <select class="form-control" name="parCargo_Ids" value="@ViewBag.Cargo[0].Value">
+                                                    <option value="@ViewBag.Cargo[0].Key" selected="selected">@ViewBag.Cargo[0].Value</option>
+
+                                                </select>
+                                            </div>
+                                            @Html.HiddenFor(model => model.ParCargo_Id)
                                         </div>
 
                                         <div class="form-group">
@@ -172,9 +209,9 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/inputmask/min/inputmask/inputmask.min.js"></script>
-
+    <script src="~/Scripts/Select3/select3.js"></script>
     <script>
-
+        var objFiltro = { Param: {} };
         $("#Points").inputmask('decimal', {
             radixPoint: ",",
             groupSeparator: ".",
@@ -195,11 +232,27 @@
         setTimeout(function () {
             $('[data-valmsg-for="EffectiveDate"]').text($('[data-valmsg-for="EffectiveDate"]').text().replace('EffectiveDate', Resources('effectiveDate')));
         }, 100);
-
-
+   
         $(document).ready(function () {
 
-            $('.form-horizontal select').select2();
+            $('#filterReports select').on('change', function () {
+                
+                var objFiltroParam = objFiltro.Param;
+                objFiltro = $('#filterReports').serializeObject();
+                $(Object.keys(objFiltro)).each(function (i, o) {
+                    objFiltro[o] = [objFiltro[o]];
+                });
+                objFiltro.Param = objFiltroParam;
+
+                $("#ParCompany_Id").val(objFiltro.parCompany_Ids[0]);
+                if (objFiltro.parSecao_Ids != null || objFiltro.parSecao_Ids != undefined)
+                    $("#ParDepartment_Id").val(objFiltro.parSecao_Ids[0]);
+                if (objFiltro.parCargo_Ids != null || objFiltro.parCargo_Ids != undefined)
+                    $("#ParCargo_Id").val(objFiltro.parCargo_Ids[0]);
+
+            }).change();
+
+            Select3.initialize(function () { return objFiltro });
 
         });
 

@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Dominio;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Dominio;
 
 namespace SgqSystem.Controllers
 {
@@ -67,6 +65,17 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,ParDepartment_Id,ParCargo_Id,IsActive,AddDate,AlterDate")] ParCargoXDepartment parCargoXDepartment)
         {
+
+            //buscar se ja existe um vinculo entre departamento e cargo, se sim bloquear a criação
+
+            var parCargoXDepartmentExistente = db.ParCargoXDepartment
+                                                    .Where(x => x.ParCargo_Id == parCargoXDepartment.ParCargo_Id && x.ParDepartment_Id == parCargoXDepartment.ParDepartment_Id)
+                                                    .FirstOrDefault();
+
+            if (parCargoXDepartmentExistente != null)
+            {
+                ModelState.AddModelError("ParDepartment_Id", "Já existe um vinculo idêntico para este cargo.");
+            }
             if (ModelState.IsValid)
             {
                 db.ParCargoXDepartment.Add(parCargoXDepartment);
@@ -74,6 +83,7 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Details", "ParCargo", new { id = parCargoXDepartment.ParCargo_Id });
                 //return RedirectToAction("Index");
             }
+
 
             ViewBag.ParCargo_Id = new SelectList(db.ParCargo, "Id", "Name", parCargoXDepartment.ParCargo_Id);
             ViewBag.ParDepartment_Id = new SelectList(db.ParDepartment, "Id", "Name", parCargoXDepartment.ParDepartment_Id);
