@@ -898,7 +898,7 @@ function HeaderFieldsIsValid() {
     $.each($('[data-required=true]'), function (i, o) {
         if ($(o).val() == 0 || $(o).val() == "") {
             $('html, body').animate({
-                scrollTop: $(o).offset().top
+                scrollTop: $(o).parent().offset().top
             }, 300);
             return false;
         }
