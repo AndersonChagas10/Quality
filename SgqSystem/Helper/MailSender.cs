@@ -42,7 +42,7 @@ namespace Helper
                 //MailAddress to = new MailAddress();
                 var mails = mailEntry.To.Split(',');
 
-                mails = mails.Where(v=>v.Contains("@") && v.Length > 5).Select(v=>v.Replace(" ","").Trim()).Distinct().ToArray();
+                mails = mails.Where(v => v.Contains("@") && v.Length > 5).Select(v => v.Replace(" ", "").Trim()).Distinct().ToArray();
 
                 //MailMessage - Subject + Body
                 // Specify the message content.
@@ -74,8 +74,54 @@ namespace Helper
             }
             catch (Exception ex)
             {
-                if(handleErrorDelegate != null)
+                if (handleErrorDelegate != null)
                     handleErrorDelegate(ex.Message + " - " + ex.StackTrace, mailEntry.Id);
+                //throw;
+            }
+
+        }
+        public static void SendMail(string emailFrom, string emailPass, string emailSmtp,
+            int emailPort, bool emailSSL, string toList, string subject, string body)
+        {
+            //return;
+            try
+            {
+                //sgq @jbs.com.br
+                //Pi@ui1628
+                //correio.jbs.com.br
+                //587
+                SmtpClient client = new SmtpClient(emailSmtp, emailPort);
+                client.EnableSsl = emailSSL; //true Hotmail
+                client.Credentials = new NetworkCredential(emailFrom, emailPass);
+
+                //Address
+                // Specify the e-mail sender.
+                // Create a mailing address that includes a UTF8 character
+                // in the display name.
+                MailAddress from = new MailAddress(emailFrom, "SGQ", System.Text.Encoding.UTF8);
+                // Set destinations for the e-mail message.
+                //MailAddress to = new MailAddress();
+                var mails = toList.Split(',');
+
+                mails = mails.Where(v => v.Contains("@") && v.Length > 5).Select(v => v.Replace(" ", "").Trim()).Distinct().ToArray();
+
+                //MailMessage - Subject + Body
+                // Specify the message content.
+                MailMessage message = new MailMessage();
+                message.From = from;
+                foreach (var i in mails)
+                    message.To.Add(i);
+                message.Subject = subject;
+                message.Body = body;
+                message.Body += Environment.NewLine;
+                message.IsBodyHtml = true;
+                message.SubjectEncoding = System.Text.Encoding.UTF8;
+                message.BodyEncoding = System.Text.Encoding.UTF8;
+
+                client.SendAsync(message, DateTime.Now.ToString("yyyyMMhhss"));
+            }
+            catch (Exception ex)
+            {
                 //throw;
             }
 

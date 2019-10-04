@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    [Table("CollectionLevel2XParHeaderFieldGeral")]
-    public class CollectionLevel2XParHeaderFieldGeral
+    /*[Table("CollectionLevel2XParHeaderField")]
+    public class CollectionLevel2XParHeaderField
     {
         public int Id { get; set; }
 
         public int CollectionLevel2_Id { get; set; }
 
-        public int ParHeaderFieldGeral_Id { get; set; }
+        public int ParHeaderField_Id { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         public string ParHeaderField_Name { get; set; }
@@ -38,7 +38,7 @@ namespace Dominio
         [NotMapped]
         public int Collection_Id { get; set; }
 
-        //[ForeignKey("[ParHeaderFieldGeral_Id]")]
+        //[ForeignKey("[ParHeaderField_Id]")]
         //public virtual ParHeaderFieldGeral ParHeaderFieldGeral { get; set; }
-    }
+    }*/
 }

@@ -1573,7 +1573,7 @@ DECLARE @HeaderField varchar(max);
 SELECT     @HeaderField =
 STUFF(   
 (SELECT DISTINCT ', '+ CONCAT(' [',ParHeaderField_Name,' - ',ROW_NUMBER() OVER(partition by cl2xph_.CollectionLevel2_id,cl2xph_.ParHeaderField_Name Order By cl2xph_.Id),']') 
-FROM CollectionLevel2XParHeaderFieldGeral cl2xph_ 
+FROM CollectionLevel2XParHeaderField cl2xph_ 
 INNER JOIN #CollectionLevel2 CL2
 	ON cl2xph_.CollectionLevel2_id = CL2.ID
 	 FOR XML PATH('')
@@ -1598,7 +1598,7 @@ SELECT
 				when CL2HF2.ParFieldType_Id = 2 then case when EQP.Nome is null then cast(PRD.nCdProduto as varchar(500)) + '' - '' + PRD.cNmProduto else EQP.Nome end 
 				when CL2HF2.ParFieldType_Id = 6 then CONVERT(varchar, CL2HF2.Value, 103)
 				else CL2HF2.Value end) as Valor
-FROM CollectionLevel2XParHeaderFieldGeral CL2HF2 (nolock) 
+FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) 
 inner join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
 left join ParHeaderField HF (nolock)on CL2HF2.ParHeaderField_Id = HF.Id
 left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id

@@ -374,6 +374,7 @@ public class ApontamentosDiariosResultSet
         var sqlCargo = "";
         var formatDate = "";
 
+
         if (form.Shift_Ids.Length > 0)
         {
             sqlTurno = $"\n AND [Shift] in ({string.Join(",", form.Shift_Ids)})";
@@ -540,14 +541,14 @@ public class ApontamentosDiariosResultSet
 						SELECT 
 							CL2HF.Id
 							,CL2HF.CollectionLevel2_Id
-							,CL2HF.ParHeaderFieldGeral_Id
+							,CL2HF.ParHeaderField_Id
 							,CL2HF.ParFieldType_Id
 							,CL2HF.Value
-						INTO #CollectionLevel2XParHeaderFieldGeral
-						FROM CollectionLevel2XParHeaderFieldGeral CL2HF (nolock) 
+						INTO #CollectionLevel2XParHeaderField
+						FROM CollectionLevel2XParHeaderField CL2HF (nolock) 
 						INNER JOIN #Collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id 
 
-                    CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel_ID ON #CollectionLevel2XParHeaderFieldGeral (CollectionLevel2_Id);
+                    CREATE INDEX IDX_CollectionLevel2XParHeaderField_CollectionLevel_ID ON #CollectionLevel2XParHeaderField (CollectionLevel2_Id);
 
                     -- Concatenação da Fato de Cabeçalhos
 
@@ -559,9 +560,9 @@ public class ApontamentosDiariosResultSet
 							when CL2HF2.ParFieldType_Id = 2 then case when HF.Description = 'Produto' then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end 
 							when CL2HF2.ParFieldType_Id = 6 then CONVERT(varchar,  CL2HF2.value, 103)
 							else CL2HF2.Value end)
-							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (nolock) 
+							FROM #CollectionLevel2XParHeaderField CL2HF2 (nolock) 
 							left join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
-							left join ParHeaderFieldGeral HF (nolock)on CL2HF2.ParHeaderFieldGeral_Id = HF.Id
+							left join ParHeaderFieldGeral HF (nolock)on CL2HF2.ParHeaderField_Id = HF.Id
 							left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
 							left join ParMultipleValuesGeral PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
 							left join Equipamentos EQP(nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2
@@ -569,14 +570,14 @@ public class ApontamentosDiariosResultSet
 							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
 							FOR XML PATH('')
 							), 1, 1, '')  AS HeaderFieldList
-						INTO #CollectionLevel2XParHeaderFieldGeral2
-						FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (nolock) 
+						INTO #CollectionLevel2XParHeaderField2
+						FROM #CollectionLevel2XParHeaderField CL2HF (nolock) 
 						INNER join #Collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id 
-						LEFT JOIN ParHeaderFieldGeral HF (nolock) on CL2HF.ParHeaderFieldGeral_Id = HF.Id 
+						LEFT JOIN ParHeaderFieldGeral HF (nolock) on CL2HF.ParHeaderField_Id = HF.Id 
 						LEFT JOIN ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id
                     GROUP BY CL2HF.CollectionLevel2_Id
 
-                    CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeral2 (CollectionLevel2_Id);
+                    CREATE INDEX IDX_CollectionLevel2XParHeaderField_CollectionLevel2_ID ON #CollectionLevel2XParHeaderField2 (CollectionLevel2_Id);
 
 					-- Criação da Fato de Coleta x Cluster
 
@@ -665,7 +666,7 @@ public class ApontamentosDiariosResultSet
                  INNER JOIN UserSgq US (nolock)        
                  ON C2.AuditorId = US.Id               
                  LEFT JOIN                             
-                 #CollectionLevel2XParHeaderFieldGeral2 HF 
+                 #CollectionLevel2XParHeaderField2 HF 
                  on c2.Id = HF.CollectionLevel2_Id
                  LEFT JOIN #CollectionLevel2XCollectionJson CLCJ
                  ON CLCJ.CollectionLevel2_Id = C2.Id
@@ -702,8 +703,8 @@ public class ApontamentosDiariosResultSet
                      DROP TABLE #CollectionLevel2 
                      DROP TABLE #CollectionJson
                      DROP TABLE #Result_Level3
-					 DROP TABLE #CollectionLevel2XParHeaderFieldGeral 
-					 DROP TABLE #CollectionLevel2XParHeaderFieldGeral2
+					 DROP TABLE #CollectionLevel2XParHeaderField 
+					 DROP TABLE #CollectionLevel2XParHeaderField2
 					 DROP TABLE #CollectionLevel2XCluster
 					 DROP TABLE #CollectionLevel2XCollectionJson
 

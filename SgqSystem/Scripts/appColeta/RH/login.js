@@ -146,26 +146,26 @@ function loginOnline() {
         },
         url: urlPreffix + '/api/User/AuthenticationLogin',
         type: 'POST',
-        headers: token(),
         success: function (data) {
 
             if (data && data.Retorno != null) {
                 //se for usuários diferentes ou unidade diferente, zera a parametrização
-                if (currentLogin.Id != data.Retorno.Id || currentLogin.ParCompany_Id != data.Retorno.ParCompany_Id) {
+                if (currentLogin)
+                    if (currentLogin.Id != data.Retorno.Id || currentLogin.ParCompany_Id != data.Retorno.ParCompany_Id) {
 
-                    parametrization = null;
-                    currentPlanejamento = [];
+                        parametrization = null;
+                        currentPlanejamento = [];
 
-                    _writeFile("appParametrization.txt", '', function () { });
+                        _writeFile("appParametrization.txt", '', function () { });
 
-                    _writeFile("planejamento.txt", '', function () { });
+                        _writeFile("planejamento.txt", '', function () { });
 
-                    _writeFile("login.txt", JSON.stringify(data.Retorno), function () {
-                        globalLoginOnline = true;
-                        loginSuccess(data.Retorno);
-                    });
 
-                }
+                    }
+                _writeFile("login.txt", JSON.stringify(data.Retorno), function () {
+                    globalLoginOnline = true;
+                    loginSuccess(data.Retorno);
+                });
             } else {
 
                 var mensagem = "Usúario ou senha incorretos. Verificar os dados e tentar novamente!";
@@ -204,7 +204,7 @@ function cleanGlobalVarLogin() {
 
 function logout() {
     if (globalColetasRealizadas.length > 0) {
-        
+
         setTimeout(function () {
             var titulo = "Há coletas que não foram sincronizadas.";
             var mensagem = "Não é possivel sair até que todas as coletas tenham sido sincronizadas.<br/>";

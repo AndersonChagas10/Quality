@@ -122,7 +122,7 @@ namespace SgqSystem.Jobs
 
                                 try
                                 {
-                                    db.CollectionLevel2XParHeaderFieldGeral.AddRange(headerFields);
+                                    db.CollectionLevel2XParHeaderField.AddRange(headerFields);
                                     db.SaveChanges();
 
                                     db.Database.ExecuteSqlCommand("UPDATE Collection set IsProcessed = 1 where Id in (" + string.Join(",", collectionIds) + ")");
@@ -260,8 +260,8 @@ namespace SgqSystem.Jobs
 
         private static void DeleteHeaderFieldIfExists(CollectionLevel2 collectionLevel2)
         {
-            var sql = $@"delete CollectionLevel2XParHeaderFieldGeral WHERE Id in(
-                         select CL2XHF.Id FROM CollectionLevel2XParHeaderFieldGeral CL2XHF
+            var sql = $@"delete CollectionLevel2XParHeaderField WHERE Id in(
+                         select CL2XHF.Id FROM CollectionLevel2XParHeaderField CL2XHF
                          inner JOIN CollectionLevel2 C2 on C2.Id = CL2XHF.CollectionLevel2_Id
                          AND C2.Shift = { collectionLevel2.Shift }
                          AND C2.Period = { collectionLevel2.Period }
@@ -280,9 +280,9 @@ namespace SgqSystem.Jobs
             }
         }
 
-        private static List<CollectionLevel2XParHeaderFieldGeral> GetHeaderFieldsByCollectionLevel2(CollectionLevel2 collectionLevel2)
+        private static List<CollectionLevel2XParHeaderField> GetHeaderFieldsByCollectionLevel2(CollectionLevel2 collectionLevel2)
         {
-            var headerFields = new List<CollectionLevel2XParHeaderFieldGeral>();
+            var headerFields = new List<CollectionLevel2XParHeaderField>();
 
             using (var factory = new Factory("DefaultConnection"))
             {
@@ -290,7 +290,7 @@ namespace SgqSystem.Jobs
                 var collectionDate = collectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss");
 
                 var sql = $@"SELECT
-                            	CL.ParHeaderField_Id as ParHeaderFieldGeral_Id
+                            	CL.ParHeaderField_Id as ParHeaderField_Id
                                ,CL.ParHeaderField_Value as Value
                                ,PHFG.ParFieldType_Id
                                ,PHFG.Name as ParHeaderField_Name
@@ -313,7 +313,7 @@ namespace SgqSystem.Jobs
                             AND cl.Sample = {collectionLevel2.Sample}
                             AND Cl.CollectionDate BETWEEN DATEADD(minute, -5, '{collectionDate}') and DATEADD(minute, 5, '{collectionDate}')";
 
-                headerFields = factory.SearchQuery<CollectionLevel2XParHeaderFieldGeral>(sql).ToList();
+                headerFields = factory.SearchQuery<CollectionLevel2XParHeaderField>(sql).ToList();
             }
 
             return headerFields;
