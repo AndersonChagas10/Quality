@@ -407,7 +407,7 @@ public class ScorecardResultSet
 
                             AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
 
-                            AND Shift_Id = 1
+                            AND Shift_Id IS NULL
 
 
                         END
@@ -429,7 +429,7 @@ public class ScorecardResultSet
 
                             AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
 
-                            AND Shift_Id = 2
+                            AND Shift_Id IS NULL
 
                         END
 
