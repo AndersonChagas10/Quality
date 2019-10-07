@@ -1,0 +1,101 @@
+﻿<style>
+    #btnImpressaoFloat {
+        display: block;
+        position: fixed;
+        bottom: 120px;
+        right: 20px;
+        z-index: 200;
+        border: none;
+        outline: none;
+        background-color: #2b3643;
+        color: white;
+        cursor: pointer;
+        padding: 15px;
+        border-radius: 10px;
+        opacity: 0.5;
+    }
+
+        #btnImpressaoFloat:hover {
+            opacity: 0.9;
+        }
+
+    btnImpressao {
+        
+    }
+</style>
+
+<script src="~/Scripts/Print/printGRT.js"></script>
+
+<script>
+
+    function ImprimirRelatorio() {
+
+        let nomeRelatorio = $('.text-center').text();
+
+        PrepararImpressao(
+            nomeRelatorio,
+            "",
+            "",
+            "",
+            'impressao',
+            "",
+            "");
+    }
+
+    function PrepararImpressao(titulo, elaborador, aprovador, codigoRodape, idImpressao, imagemCabecalhoLeft, imagemCabecalhoRight) {
+
+        $('#printTitulo').html(titulo);
+        //$("#printElaborador").html(elaborador);
+        //$("#printAprovador").html(aprovador);
+        //$("#printCodigoRodape").html(codigoRodape);
+        //$("#printImagemCabecalhoLeft").attr('src', imagemCabecalhoLeft);
+        //$("#printImagemCabecalhoRight").attr('src', imagemCabecalhoRight);
+
+        printGRT.Inicializar({
+
+            //headerHtml: document.getElementById('contentHeader').innerHTML,
+            //bodyHtml: document.getElementById(idImpressao).innerHTML,
+            //footerHtml: document.getElementById('contentFooter').innerHTML,
+
+            bodyHtml: getInnerHtml(idImpressao),
+            numberMarginRight: 25,
+            numberMarginBottom: 25,
+            renderTableMargin: 0,
+            pageMarginHeader: "25px 25px 10px 25px",
+            pageMarginFooter: "10px 25px 25px 25px",
+            pageMarginBody: "0 25px 0 25px"
+
+        });
+
+        printGRT.Imprimir();
+
+        $('#divRenderPrint').remove();
+    }
+
+    function getInnerHtml(idImpressao) {
+
+        let $div = $('#' + idImpressao).clone();
+
+        $div.find('#impressao').css('width', '1080px');
+
+        return $div.html();
+
+    }
+
+    $(document).ready(function () {
+
+        let botaoImpressao = `
+            <li><div>
+                <button onclick="ImprimirRelatorio()" class="btn-primary" id="btnImpressao"><i class="fa fa-print" aria-hidden="true"></i></button>
+            </li></div>
+        `;
+
+        $(botaoImpressao).insertAfter('#sidebar-wrapper .sidebar-nav li:first()');
+
+    });
+
+</script>
+
+@*<div>
+        <button onclick="ImprimirRelatorio()" id="btnImpressaoFloat"><i class="fa fa-print" aria-hidden="true"></i></button>
+    </div>*@
