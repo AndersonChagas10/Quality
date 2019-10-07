@@ -48,6 +48,16 @@
             margin-left: 1px;
             margin-right: 1px;
         }
+
+    #impressao {
+        width: 100%;
+    }
+
+    @@media print {
+        #impressao {
+            width: 1080px;
+        }
+    }
 </style>
 
 <div class="page-content-wrapper">
@@ -69,24 +79,29 @@
         <div id="formBodyContent">
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-            <div id="RGUnidadesGrafico"></div>
-            <div id="RGDepartamentosGrafico"></div>
-            <div id="RGDepartamentosShiftGrafico"></div>
-            <div id="RGOperacoesGrafico"></div>
-            <div id="RGOperacoesShiftGrafico"></div>
+            <div id="impressao">
+                <div id="RGUnidadesGrafico"></div>
 
-            <div id="loading"></div>
+                <div id="RGDepartamentosGrafico"></div>
 
-            <div class="panel panel-info" id="PanelFull0" style="display:none">
-                <div class="panel-heading"></div>
-                <div class="panel-body" id="g0">
-                    <div id="RGMonitoramentosGrafico"></div>
-                    <div id="RGMonitoramentosShiftGrafico"></div>
-                    <div id="RGTarefasAcumuladasGrafico"></div>
-                    <div id="RGTarefasGrafico"></div>
+                <div id="RGDepartamentosShiftGrafico"></div>
 
-                    <div id="RGTarefasPivotTable"></div>
+                <div id="RGOperacoesGrafico"></div>
+                <div id="RGOperacoesShiftGrafico"></div>
 
+                <div id="loading"></div>
+
+                <div class="panel panel-info" id="PanelFull0" style="display:none">
+                    <div class="panel-heading"></div>
+                    <div class="panel-body" id="g0">
+                        <div id="RGMonitoramentosGrafico"></div>
+                        <div id="RGMonitoramentosShiftGrafico"></div>
+                        <div id="RGTarefasAcumuladasGrafico"></div>
+                        <div id="RGTarefasGrafico"></div>
+
+                        <div id="RGTarefasPivotTable"></div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,11 +111,13 @@
     @Html.Partial("~/Views/RelatoriosSgq/_PivotTable.cshtml")
 
     @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+
+    @Html.Partial("~/Views/Shared/_Print.cshtml")
 </div>
 
 @section Scripts {
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -1320,6 +1337,6 @@
             $('#btnShift').show();
         }
 
-</script>
+    </script>
 
 }

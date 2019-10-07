@@ -1921,6 +1921,7 @@
     <Content Include="Views\RotinaIntegracao\Edit.cshtml" />
     <Content Include="Views\RotinaIntegracao\Delete.cshtml" />
     <Content Include="Views\Params\_Rotina.cshtml" />
+    <Content Include="Views\Shared\_Print.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
