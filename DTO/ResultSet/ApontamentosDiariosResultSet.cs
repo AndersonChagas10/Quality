@@ -135,7 +135,7 @@ public class ApontamentosDiariosResultSet
                          { sqlLevel1 } 
                          { sqlLevel2 }
 
-                    select c2.*, c2Group.C2ID,  case when av_desvios.shift is null then 'pass' else 'fail' end desvio  
+                    select c2.*, c2Group.C2ID,  case when av_desvios.shift is null then 0 else 1 end desvio  
 				        INTO #CollectionLevel2
 				        from #CollectionLevel2_ c2
 				        left join ( 

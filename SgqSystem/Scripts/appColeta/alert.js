@@ -574,7 +574,9 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                 mensagemHtml = $('.message').html();
 
                 level1.attr('alertaatual', alertaatual);
-                level1.attr('havecorrectiveaction', 'true');
+                if ($(_level1).attr('disparaalerta') == "True") {
+                    level1.attr('havecorrectiveaction', 'true');
+                }
 
                 if (level2Result) {
                     if (level1.attr('phase1')) {
@@ -651,7 +653,9 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                 mensagemHtml = $('.message').html();
 
                 level1.attr('alertaatual', alertaatual);
-                level1.attr('havecorrectiveaction', 'true');
+                if ($(_level1).attr('disparaalerta') == "True") {
+                    level1.attr('havecorrectiveaction', 'true');
+                }
 
                 if (level2Result) {
                     if (level1.attr('phase1')) {
@@ -761,7 +765,12 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                 mensagemHtml = $('.message').html();
 
                 level1.attr('alertaatual', alertaatual);
-                level1.attr('havecorrectiveaction', 'true');
+
+                if ($(_level1).attr('disparaalerta') == "True") {
+
+                    level1.attr('havecorrectiveaction', 'true');
+
+                }
 
                 if (level2Result) {
                     if (level1.attr('phase1')) {
