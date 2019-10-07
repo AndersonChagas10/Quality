@@ -3557,7 +3557,7 @@ namespace SgqServiceBusiness.Api
                 		COUNT(1)
                 	FROM #COLETASLEVEL3);
                 DECLARE @I INT = 1;
-                DECLARE @RESPOSTA VARCHAR(153) = '';
+                DECLARE @RESPOSTA VARCHAR(2000) = '';
                 WHILE @I<@HOMENSFORBRUNO
                 BEGIN
                 SELECT
