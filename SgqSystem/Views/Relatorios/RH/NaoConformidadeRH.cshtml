@@ -986,7 +986,10 @@
                                     objFiltro.Param['Evaluated'] = qtdAv[this.x];
                                     objFiltro.Param['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
                                     objFiltro.Param['byName'] = true;
-                                    $.post(urlGetUnitId, enviar, function(c){
+                                    debugger
+                                    enviar.unitName = objFiltro.Param["unitName"];
+                                    $.post(urlGetUnitId, enviar, function (c) {
+                                        debugger
                                         objFiltro.Param.unitId = c.unitId;
                                         //objFiltro.Param.MetaFTA = "0";
                                         RedirecionaParaFTA(enviar);
@@ -1016,7 +1019,10 @@
                                     objFiltro.Param['Evaluated'] = qtdAv[this.x];
                                     objFiltro.Param['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
                                     objFiltro.Param['byName'] = true;
-                                    $.post(urlGetUnitId, enviar, function(c){
+                                    debugger
+                                    enviar.unitName = objFiltro.Param["unitName"];
+                                    $.post(urlGetUnitId, enviar, function (c) {
+                                        debugger
                                         objFiltro.Param.unitId = c.unitId;
                                         //objFiltro.Param.MetaFTA = "0";
                                         RedirecionaParaFTA(enviar);

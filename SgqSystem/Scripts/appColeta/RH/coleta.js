@@ -1,5 +1,3 @@
-var coletaJson = [];
-
 function openColeta(levels) {
 
     coletaJson = [];
@@ -17,35 +15,40 @@ function openColeta(levels) {
 
             level2.ParLevel3.forEach(function (level3) {
 
-                if (hasLevel3 == false) {
-
-                    if (hasLevel2 == false) {
-                        coleta += getLevel1(level1);
-                        coleta += getParHeaderFieldLevel1(level1);
-                        hasLevel2 = true;
-                    }
-
-                    coleta += getLevel2(level2, level1);
-                    coleta += getParHeaderFieldLevel2(level1, level2);
-                    hasLevel3 = true;
-                }
-
                 var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
 
-                coleta += inputLevel3;
+                if (inputLevel3.length > 0) {
 
-                if (inputLevel3)
-                    if (striped)
-                        striped = false;
-                    else
-                        striped = true;
+                    if (hasLevel3 == false) {
+
+                        if (hasLevel2 == false) {
+                            coleta += getLevel1(level1);
+                            coleta += getParHeaderFieldLevel1(level1);
+                            hasLevel2 = true;
+                        }
+
+                        coleta += getLevel2(level2, level1);
+                        coleta += getParHeaderFieldLevel2(level1, level2);
+                        hasLevel3 = true;
+                    }
+
+                    coleta += inputLevel3;
+
+                    if (inputLevel3)
+                        if (striped)
+                            striped = false;
+                        else
+                            striped = true;
+
+
+                }
             });
         });
     });
 
     html = getHeader() +
         '<div class="container-fluid">                                                                                                                   ' +
-        '	<div class="">                                                                                                                      ' +
+        '	<div class="">                                                                                                                         ' +
         '		<div class="col-xs-12">                                                                                                            ' +
         '			<div class="panel panel-primary">                                                                                              ' +
         '			  <div class="panel-heading">                                                                                                  ' +
@@ -90,7 +93,7 @@ function getContador() {
     currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, currentParCargo_Id);
     return '<div class="col-xs-12 alert-info" id="divColeta" style="padding-top:10px;padding-bottom:10px">' +
         '	<div class="col-xs-4">       ' +
-        '		AvaliaÃ§Ã£o                ' +
+        '		Avaliação                ' +
         '	</div>                       ' +
         '	<div class="col-xs-4">       ' +
         '		Amostra                  ' +
@@ -147,13 +150,13 @@ function getInputLevel3(level3, level2, level1, striped) {
 
         switch (level3.ParLevel3InputType.Id) {
 
-            case 1: //BinÃ¡rio
+            case 1: //Binário
                 retorno += getBinario(level3);
                 break;
             case 2: //Numerodedefeitos
                 retorno += getNumerodeDefeitos(level3);
                 break;
-            case 6: //BinÃ¡rioComTexto
+            case 6: //BinárioComTexto
                 retorno += getBinarioComTexto(level3);
                 break;
             case 3: //Intervalo
@@ -581,7 +584,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         return false;
     }
 
-    //Verifica se existe coleta jÃ¡ realizada para este cargo.
+    //Verifica se existe coleta já realizada para este cargo.
     var coletaAgrupada = null;
     $(coletasAgrupadas).each(function (i, o) {
         if (o.ParCargo_Id == currentParCargo_Id
@@ -590,7 +593,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         }
     });
 
-    //Se nÃ£o existir, cria uma zerada
+    //Se não existir, cria uma zerada
     if (coletaAgrupada == null) {
         coletaAgrupada = {
             ParDepartment_Id: currentParDepartment_Id,
@@ -651,7 +654,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 
     if (cabecalhos) {
         cabecalhos.forEach(function (cabecalho) {
-            //campos de cabeÃ§alhos
+            //campos de cabeçalhos
             coletaJson.push(cabecalho);
         });
     }
@@ -664,10 +667,10 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     //Salva a coleta realizada numa variavel global
     SalvarColetas(coletaJson);
 
-    //Atualiza para a proxima coleta (se precisar adicionar amostra ou avaliaÃ§Ã£o)
+    //Atualiza para a proxima coleta (se precisar adicionar amostra ou avaliação)
     coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
 
-    //Mostra mensagem de que a coleta foi realizada com sucesso e fecha apÃ³s 3 segundos
+    //Mostra mensagem de que a coleta foi realizada com sucesso e fecha após 3 segundos
     openMensagem("Amostra salva com sucesso!", "blue", "white");
     closeMensagem(3000);
 
@@ -686,7 +689,7 @@ function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
         coletaAgrupada.Sample = 1;
         coletaAgrupada.Evaluation++;
         if (coletaAgrupada.Evaluation > currentTotalEvaluationValue) {
-            //Acabou as avaliaÃ§Ãµes
+            //Acabou as avaliações
         }
     }
     return coletaAgrupada;
@@ -725,31 +728,31 @@ function OpenCorrectiveAction(coleta) {
     //    }
     //});
     // + '<h4> Tarefa: "' + tarefa[0].Name + '"</h4>' verificar uma forma de mostrar a tarefa que esta nao conforme
-    var modal = '<h3 style="font-weight:bold;">AÃ§Ã£o Corretiva</h3>';
+    var modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>';
     var selectUsers = '<option value="">Selecione...</option><option value="1">Pato Donald</option>';
 
     var date = stringToDate(currentCollectDate.toJSON());
 
     var body = '<div class="form-group">' +
-        '<div class="form-group col-xs-12">'+
-        '<strong>InformaÃ§Ãµes</strong>'+
-        '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString()+
-        '<br/>Monitor: '+currentLogin.Name+
-        '<br/>Tarefa: '+$.grep(parametrization.listaParLevel3, function(o,i){ return o.Id == coleta.ParLevel3_Id; })[0].Name+
-        '<br/>FrequÃªncia: '+$.grep(parametrization.listaParFrequency, function (item) {return item.Id == currentParFrequency_Id;})[0].Name+
-        '</small></div>'+
+        '<div class="form-group col-xs-12">' +
+        '<strong>Informações</strong>' +
+        '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString() +
+        '<br/>Monitor: ' + currentLogin.Name +
+        '<br/>Tarefa: ' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +
+        '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == currentParFrequency_Id; })[0].Name +
+        '</small></div>' +
 
         '<div class="form-group col-xs-12">' +
-        '<label>DescriÃ§Ã£o da Falha:</label>' +
+        '<label>Descrição da Falha:</label>' +
         '<input name="DescriptionFailure" id="descriptionFailure" class="col-sx-12 form-control" style="height: 80px;">' +
         '</div>' +
         '<div class="form-group col-xs-12">' +
-        '<label for="email">AÃ§Ã£o Corretiva Imediata:</label>' +
+        '<label for="email">Ação Corretiva Imediata:</label>' +
         '<input name="SlaughterId" id="slaughterId" class="form-control" style="height: 80px;">' +
         '</div>' +
         '<div class="form-group col-xs-12">' +
-        '<label for="email">AÃ§Ã£o Preventiva:</label>' +
-        '<input name="TechinicalId" id="techinicalId" class="form-control" style="height: 80px;">'+
+        '<label for="email">Ação Preventiva:</label>' +
+        '<input name="TechinicalId" id="techinicalId" class="form-control" style="height: 80px;">' +
         '</div>';
 
     var corpo =
@@ -762,7 +765,7 @@ function OpenCorrectiveAction(coleta) {
         '</div>' +
         '<hr>' +
         '<div class="form-group col-xs-6">' +
-        '<button class="btn btn-primary" id="btnSendCA">Salvar AÃ§Ã£o Corretiva</button>' +
+        '<button class="btn btn-primary" id="btnSendCA">Salvar Ação Corretiva</button>' +
         '</div>' +
         '</div>' +
         '</div>';
@@ -794,7 +797,7 @@ function getCollectionHeaderFields() {
 
         $self = $(this);
 
-        //TODO: validar se os campos de cabeÃ§alho obrigatÃ³rios foram preenchidos;
+        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
         if ($self.val())
 
             collectionHeaderFied.push({
@@ -816,7 +819,7 @@ function getCollectionHeaderFields() {
 
         $self = $(this);
 
-        //TODO: validar se os campos de cabeÃ§alho obrigatÃ³rios foram preenchidos;
+        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
         if ($self.val())
 
             collectionHeaderFied.push({
@@ -840,7 +843,7 @@ function getCollectionHeaderFields() {
 
         $self = $(this);
 
-        //TODO: validar se os campos de cabeÃ§alho obrigatÃ³rios foram preenchidos;
+        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
         if ($self.val())
 
             collectionHeaderFied.push({
@@ -863,6 +866,7 @@ function getCollectionHeaderFields() {
     return collectionHeaderFied;
 }
 
+
 function HeaderFieldsIsValid() {
 
     retorno = true;
@@ -884,10 +888,19 @@ function HeaderFieldsIsValid() {
     });
 
     if (!retorno) {
-        openMensagem("Campos de cabeÃ§alho obrigatÃ³rios nÃ£o preenchidos", "blue", "white");
+        openMensagem("Campos de cabeçalho obrigatórios não preenchidos", "blue", "white");
         closeMensagem(2000);
     }
 
-    return retorno;
+    //verifica se tem campos obrigatorios que nao estao preenchidos e realiza o focus neles
+    $.each($('[data-required=true]'), function (i, o) {
+        if ($(o).val() == 0 || $(o).val() == "") {
+            $('html, body').animate({
+                scrollTop: $(o).offset().top
+            }, 300);
+            return false;
+        }
+    });
 
+    return retorno;
 }
