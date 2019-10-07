@@ -430,40 +430,24 @@ namespace SgqServiceBusiness.Api
         }
 
         //QueryGenerica para implementar
-        protected dynamic QueryNinja(DbContext db, string query)
+        protected List<JObject> QueryNinja(DbContext db, string query)
         {
-
             db.Database.Connection.Open();
             var cmd = db.Database.Connection.CreateCommand();
             cmd.CommandText = query;
+            cmd.CommandTimeout = 300;
             var reader = cmd.ExecuteReader();
-            List<JObject> datas = new List<JObject>();
-            List<JObject> columns = new List<JObject>();
-            dynamic retorno = new ExpandoObject();
-
+            List<JObject> items = new List<JObject>();
             while (reader.Read())
             {
-                var row = new JObject();
+                JObject row = new JObject();
                 for (int i = 0; i < reader.FieldCount; i++)
                     row[reader.GetName(i)] = reader[i].ToString();
 
-                datas.Add(row);
+                items.Add(row);
             }
-
-
-            for (int i = 0; i < reader.FieldCount; i++)
-            {
-                var col = new JObject();
-                col["title"] = col["data"] = reader.GetName(i);
-                columns.Add(col);
-            }
-
-
-
-            retorno.datas = datas;
-            retorno.columns = columns;
-
-            return retorno;
+            db.Database.Connection.Close();
+            return items;
         }
 
         public string GetVTVerificacaoTipificacao(String Date, int UnidadeId)
