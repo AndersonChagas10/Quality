@@ -209,7 +209,7 @@
 
                                     <div class="form-group">
                                         <div class="col-md-offset-2 col-md-10">
-                                            <table id="limites" class="table table-striped">
+                                            <table id="limites" class="table table-striped hidden">
                                                 <thead>
                                                     <tr>
                                                         <td>Tarefa</td>
@@ -252,14 +252,16 @@
 
         $('select').select2();
 
-        if(Limite)
+        if (Limite) {
             insertLimits(Limite);
+            $("#limites").show();
+        }
 
 
     });
 
     $('#save').on('click', function () {
-
+        
         let listObjToSave = [];
         let formIsValid = true;
 
@@ -318,7 +320,7 @@
             data: JSON.stringify(objToSave),
             async: false,
             success: function (data, status) {
-                debugger
+                
                 openMessageModal(Resources("saved_successfully"), "");
                 window.location.href = '@Url.Action("List", new { id = Model.ComponenteGenerico.Id })'
             },
@@ -408,7 +410,7 @@
 
         });
 
-        if (arrValor) {
+        if (arrValor.length > 0) {
 
             objToSave = {};
             objToSave.Id = $('[name="limitInfo"]').attr('id');
