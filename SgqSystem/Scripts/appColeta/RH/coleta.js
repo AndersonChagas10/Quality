@@ -862,7 +862,7 @@ function getCollectionHeaderFields() {
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
                 Parfrequency_Id: parametrization.currentParFrequency_Id
             });
-
+ 
     });
 
     return collectionHeaderFied;
@@ -890,7 +890,7 @@ function HeaderFieldsIsValid() {
     });
 
     if (!retorno) {
-        openMensagem("Campos de cabeçalho obrigatórios não preenchidos", "blue", "white");
+        openMensagem("Campos de cabe\347alho obrigat\363rios n\343o preenchidos", "blue", "white");
         closeMensagem(2000);
     }
 
