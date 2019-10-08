@@ -338,6 +338,7 @@ public class ScorecardResultSet
             AND ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 
 
+            DECLARE @SHIFT_0 INT = ISNULL((SELECT top 1 COUNT(*) FROM #TurnoPcc1B WHERE [Shift] IS NULL),0)
             DECLARE @SHIFT_1 INT = (SELECT top 1 [Shift] FROM #TurnoPcc1B WHERE [Shift] = 1)
             DECLARE @SHIFT_2 INT = (SELECT top 1 [Shift] FROM #TurnoPcc1B WHERE [Shift] = 2)
 
@@ -394,21 +395,41 @@ public class ScorecardResultSet
                         IF @SHIFT_1 is not null and @SHIFT_2 is null
 
                         BEGIN
+							
+							IF @SHIFT_0 > 0 
 
-                            SELECT TOP 1
+							BEGIN
+								SELECT TOP 1
 
-                                    @DIASABATE = COUNT(DISTINCT DATA), 
-						            @VOLUMEPCC = SUM(Quartos)
+										@DIASABATE = COUNT(DISTINCT DATA), 
+										@VOLUMEPCC = SUM(Quartos)
 
-                             FROM #VOLUME WITH (nolock) 
-				            WHERE 1 = 1
+								 FROM #VOLUME WITH (nolock) 
+								WHERE 1 = 1
 
-                            AND ParCompany_id = @ParCompany_id
+								AND ParCompany_id = @ParCompany_id
 
-                            AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+								AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
 
-                            AND Shift_Id IS NULL
+								AND (Shift_Id IS NULL)
+							END
+							ELSE 
+								BEGIN
+								SELECT TOP 1
 
+										@DIASABATE = COUNT(DISTINCT DATA), 
+										@VOLUMEPCC = SUM(Quartos)
+
+								 FROM #VOLUME WITH (nolock) 
+								WHERE 1 = 1
+
+								AND ParCompany_id = @ParCompany_id
+
+								AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+
+								AND (Shift_Id = 1)
+
+								END
 
                         END
                     -- COLETA TURNO 2
