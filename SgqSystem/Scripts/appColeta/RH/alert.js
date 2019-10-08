@@ -10,17 +10,10 @@ function processAlertRole(coletaJson) {
 
     for (var i = 0; i < coletaJson.length; i++) {
 
-        //var coleta = coletaJson[i];
+        var coleta = coletaJson[i];
 
-        //if (coleta.IsConform)
-        //continue;
-
-        var coleta;
-        if (coletaJson[i].IsConform) {
+        if (coleta.IsConform)
             continue;
-        } else {
-            coleta = coletaJson[i];
-        }
 
         //retorna se existe alguem alerta vigente para este cenario
         var exists = $.grep(listaParAlertPreFiltrada, function (o, i) {
@@ -45,19 +38,19 @@ function processAlertRole(coletaJson) {
 
             numeroDeAlertas++;
 
-            setTimeout(function () {
+            setTimeout(function (exists,coleta) {
 
                 openMensagem('Alerta ' + numeroDeAlertas + ' (' + exists[0].Name + ') foi disparado.', 'red', 'white');
                 closeMensagem(3000);
 
                 if (exists[0].HasCorrectiveAction) {
                     //Verificar se disparou alerta e se existe ação corretiva - Caso existir, abre o modal - após salvar a ação corretiva abre a função abaixo;
-                    setTimeout(function () {
+                    setTimeout(function (coleta) {
                         OpenCorrectiveAction(coleta);
-                    }, 3100);
+                    }(coleta), 3100);
                 }
 
-            }, 3500);
+            }(exists,coleta), 3500);
 
             currentAlertsAgrupados.push({
                 ParDepartment_Id: coleta.ParDepartment_Id,
