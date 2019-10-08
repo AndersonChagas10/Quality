@@ -66,42 +66,42 @@ CREATE TABLE [dbo].[Pa_AcompanhamentoXQuem] (
 GO
 
 
-IF COL_LENGTH('Pa_Acao','ParDepartments_Hash') IS NULL
+IF COL_LENGTH('Pa_Coordenacao','IsActive') IS NULL
     BEGIN
 ALTER TABLE Pa_Coordenacao	
 Add IsActive bit not null default(1)
     END
 GO
 
-IF COL_LENGTH('Pa_Acao','ParDepartments_Hash') IS NULL
+IF COL_LENGTH('Pa_Gerencia','IsActive') IS NULL
     BEGIN
 ALTER TABLE Pa_Gerencia	
 Add IsActive bit not null default(1)
     END
 GO
 
-IF COL_LENGTH('Pa_Acao','ParDepartments_Hash') IS NULL
+IF COL_LENGTH('Pa_Planejamento','IsTatico') IS NULL
     BEGIN
 ALTER TABLE Pa_Planejamento	
 Add IsTatico bit not null default(0)
     END
 GO
 
-IF COL_LENGTH('Pa_Acao','ParDepartments_Hash') IS NULL
+IF COL_LENGTH('Pa_Planejamento','Tatico_Id') IS NULL
     BEGIN
 ALTER TABLE Pa_Planejamento	
 Add Tatico_Id int null
     END
 GO
 
-IF COL_LENGTH('Pa_Acao','ParDepartments_Hash') IS NULL
+IF COL_LENGTH('Pa_Planejamento','IsFta') IS NULL
     BEGIN
 ALTER TABLE Pa_Planejamento	
 Add IsFta bit not null default(0)
     END
 GO
 
-IF COL_LENGTH('Pa_Acao','ParDepartments_Hash') IS NULL
+IF COL_LENGTH('Pa_Unidade','Sgq_Id') IS NULL
     BEGIN
 ALTER TABLE Pa_Unidade	
 Add Sgq_Id int null
