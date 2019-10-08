@@ -1198,7 +1198,7 @@ namespace SgqServiceBusiness.Api
                     isemptylevel3 = BoolConverter(isemptylevel3);
 
                     string cluster = DefaultValueReturn(arrayHeader[31], null);
-                    string parDepartment_Id = DefaultValueReturn(arrayHeader[34], null);
+                    string parDepartment_Id = arrayHeader.Length > 34 ? DefaultValueReturn(arrayHeader[34], null) : null;
 
                     string haveReaudit = BoolConverter(c.haveReaudit.ToString());
 
