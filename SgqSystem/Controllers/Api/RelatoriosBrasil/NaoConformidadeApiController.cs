@@ -87,7 +87,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id = {form.criticalLevelId} ";
-                    //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var query = $@"
@@ -2125,23 +2125,157 @@ DROP TABLE #AMOSTRATIPO4 ";
         }
 
         [HttpPost]
-        [Route("GraficoTarefa")]
-        public List<NaoConformidadeResultsSet> GraficoTarefa([FromBody] FormularioParaRelatorioViewModel form)
+        [Route("GraficoGrupoTarefa")]
+        public List<NaoConformidadeResultsSet> GraficoGrupoTarefa([FromBody] FormularioParaRelatorioViewModel form)
         {
-            //_list = CriaMockGraficoTarefas();
-
-            //var query = new NaoConformidadeResultsSet().Select(form._dataInicio, form._dataFim, form.unitId);
-
-            //Av = av + i,
-            //Nc = nc + i,
-            //Proc = proc + i,
-            //TarefaName = tarefaName + i.ToString()
 
             var whereShift = "";
 
             if (form.shift != 0)
             {
                 whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+            }
+
+            var query = $@"
+
+                DECLARE @DATAINICIAL DATETIME = '{ form._dataInicioSQL }'
+                DECLARE @DATAFINAL   DATETIME = '{ form._dataFimSQL }'
+                DECLARE @VOLUMEPCC int
+                                                               
+                DECLARE @ParCompany_id INT
+                
+                SELECT
+                	@ParCompany_id = Id
+                FROM ParCompany
+                WHERE Name = '{ form.unitName }'
+                
+                --------------------------------
+                
+                SELECT TOP 1
+                	@VOLUMEPCC = SUM(Quartos)
+                FROM VolumePcc1b(nolock)
+                WHERE ParCompany_Id = @ParCompany_id
+                AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+                
+                DECLARE @NAPCC INT
+                
+                SELECT
+                	@NAPCC =
+                	COUNT(1)
+                FROM (SELECT
+                		COUNT(1) AS NA
+                	FROM CollectionLevel2 C2 (NOLOCK)
+                	LEFT JOIN Result_Level3 C3 (NOLOCK)
+                		ON C3.CollectionLevel2_Id = C2.Id
+                	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
+                	AND C2.ParLevel1_id = (SELECT TOP 1
+                			Id
+                		FROM ParLevel1
+                		WHERE hashKey = 1)
+                	AND C2.Unitid = @ParCompany_id
+                	AND IsNotEvaluate = 1
+                	GROUP BY C2.Id) NA
+                WHERE NA = 2
+                --------------------------------
+                SELECT
+                	IIF(GrupoTarefaName IS NULL, 'Sem Grupo', GrupoTarefaName) as GrupoTarefaName
+                   ,IIF(GrupoTarefa_Id IS NULL, 0, GrupoTarefa_Id) as GrupoTarefa_Id
+                   ,NcSemPeso AS Nc
+                   ,AvSemPeso AS Av
+                   ,[Proc]
+                FROM (SELECT
+                		L3G.Name AS GrupoTarefaName
+                       ,L3G.Id AS GrupoTarefa_Id
+                	   ,SUM(R3.WeiDefects) AS Nc
+                	   ,CASE
+                			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(R3.WeiDefects)
+                			ELSE SUM(R3.Defects)
+                		END AS NcSemPeso
+                	   ,CASE
+                			WHEN IND.hashKey = 1 THEN @VOLUMEPCC / 2 - @NAPCC
+                			ELSE SUM(R3.WeiEvaluation)
+                		END AS Av
+                	   ,CASE
+                			WHEN IND.hashKey = 1 THEN @VOLUMEPCC / 2 - @NAPCC
+                			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
+                			ELSE SUM(R3.Evaluation)
+                		END AS AvSemPeso
+                	   ,SUM(R3.WeiDefects) /
+                		CASE
+                			WHEN IND.hashKey = 1 THEN (SELECT TOP 1
+                						SUM(Quartos) / 2
+                					FROM VolumePcc1b(nolock)
+                					WHERE ParCompany_Id = UNI.Id
+                					AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+                			ELSE SUM(R3.WeiEvaluation)
+                		END * 100 AS [Proc]
+                	FROM Result_Level3 R3 (NOLOCK)
+                	INNER JOIN CollectionLevel2 C2 (NOLOCK)
+                		ON C2.Id = R3.CollectionLevel2_Id
+                	INNER JOIN ConsolidationLevel2 CL2 (NOLOCK)
+                		ON CL2.Id = C2.ConsolidationLevel2_Id
+                	INNER JOIN ConsolidationLevel1 CL1 (NOLOCK)
+                		ON CL1.Id = CL2.ConsolidationLevel1_Id
+                	INNER JOIN ParCompany UNI (NOLOCK)
+                		ON UNI.Id = C2.Unitid
+                	INNER JOIN ParLevel1 IND (NOLOCK)
+                		ON IND.Id = C2.ParLevel1_id
+                	INNER JOIN ParLevel2 MON (NOLOCK)
+                		ON MON.Id = C2.ParLevel2_Id
+                	LEFT JOIN Result_Level3XGroup R3G
+                		ON R3.Id = R3G.Result_Level3_Id
+                		AND R3G.IsActive = 1
+                	LEFT JOIN ParLevel3Group L3G
+                		ON R3G.ParLevel3Group_Id = L3G.Id
+                		AND CL2.ParLevel2_Id = L3G.ParLevel2_Id
+                	WHERE IND.Name = '{form.level1Name}'
+                	AND MON.Name = '{form.level2Name}'
+                	AND (UNI.Name = '{form.unitName}'
+                	OR UNI.Initials = '{form.unitName}')
+                	AND R3.IsNotEvaluate = 0
+                	AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                    {whereShift}
+                	GROUP BY IND.Id
+                			,IND.Name
+                			,L3G.Name
+                            ,L3G.Id
+                			,UNI.Name
+                			,UNI.Id
+                			,IND.hashKey
+                			,IND.ParConsolidationType_Id
+                	HAVING SUM(R3.WeiDefects) > 0
+                	AND SUM(R3.Defects) > 0) TAB
+                ORDER BY 4 DESC
+            ";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<NaoConformidadeResultsSet>(query).ToList();
+            }
+
+            return _list;
+        }
+
+        [HttpPost]
+        [Route("GraficoTarefa")]
+        public List<NaoConformidadeResultsSet> GraficoTarefa([FromBody] FormularioParaRelatorioViewModel form)
+        {
+
+            var whereShift = "";
+            var whereGrupoTarefa = "";
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+            }
+
+            if (form.GrupoTarefa_Id > 0)
+            {
+                whereGrupoTarefa = " \n AND R3G.ParLevel3Group_Id = " + form.GrupoTarefa_Id + " ";
+            }
+            else if(form.GrupoTarefa_Id == 0)
+            {
+                whereGrupoTarefa = " \n AND R3G.ParLevel3Group_Id Is Null";
             }
 
             var query = "" +
@@ -2219,12 +2353,19 @@ DROP TABLE #AMOSTRATIPO4 ";
                          "\n ON IND.Id = C2.ParLevel1_Id " +
                          "\n INNER JOIN ParLevel2 MON  (nolock)" +
                          "\n ON MON.Id = C2.ParLevel2_Id " +
+                         "\n LEFT JOIN Result_Level3XGroup R3G " +
+                         "\n 	ON R3.Id = R3G.Result_Level3_Id " +
+                         "\n 	AND R3G.IsActive = 1 " +
+                         "\n LEFT JOIN ParLevel3Group L3G " +
+                         "\n 	ON R3G.ParLevel3Group_Id = L3G.Id " +
+                         "\n 	AND CL2.ParLevel2_Id = L3G.ParLevel2_Id " +
                          "\n WHERE IND.Name = '" + form.level1Name + "' " +
                          "\n    and MON.Name = '" + form.level2Name + "' " +
                          "\n 	AND (UNI.Name = '" + form.unitName + "' OR UNI.Initials = '" + form.unitName + "')" +
                          "\n    AND R3.IsNotEvaluate = 0 " +
                          "\n 	AND CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
                          whereShift +
+                         whereGrupoTarefa +
                          "\n GROUP BY " +
                          "\n  IND.Id " +
                          "\n ,IND.Name " +
@@ -2661,20 +2802,17 @@ DROP TABLE #CollectionLevel2
         [Route("GraficoTarefasAcumulada")]
         public List<NaoConformidadeResultsSet> GraficoTarefasAcumulada([FromBody] FormularioParaRelatorioViewModel form)
         {
-            //_list = CriaMockGraficoTarefasAcumuladas();
 
-            //var query = new NaoConformidadeResultsSet().Select(form._dataInicio, form._dataFim, form.unitId);
+            var whereGrupoTarefa = "";
+
+            if (form.GrupoTarefa_Id != 0)
+            {
+                whereGrupoTarefa = "";
+            }
 
             var query = "SELECT " +
                         "\n  " +
-                        //     "\n  IND.Id AS level1_Id " +
-                        //     "\n ,IND.Name AS Level1Name " +
-                        //     "\n ,IND.Id AS level2_Id " +
-                        //     "\n ,IND.Name AS Level2Name " +
-                        //     "\n ,R3.ParLevel3_Id AS level3_Id " +
                         "\n R3.ParLevel3_Name AS TarefaName " +
-                        //     "\n ,UNI.Name AS Unidade " +
-                        //     "\n ,UNI.Id AS Unidade_Id " +
                         "\n ,SUM(R3.WeiDefects) AS Nc " +
                         "\n ,SUM(R3.WeiEvaluation) AS Av " +
                         "\n ,SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100 AS [Proc] " +
@@ -2871,6 +3009,8 @@ public class NaoConformidadeResultsSet
     public string MonitoramentoName { get; set; }
     public string Tarefa_Id { get; set; }
     public string TarefaName { get; set; }
+    public string GrupoTarefaName { get; set; }
+    public int? GrupoTarefa_Id { get; set; }
     public decimal? Nc { get; set; }
     public decimal? Av { get; set; }
     public decimal? Meta { get; set; }
