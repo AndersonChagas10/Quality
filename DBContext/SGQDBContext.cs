@@ -618,7 +618,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
             if (parLevel1.IsFixedEvaluetionNumber)
             {
-                string sql = "   SELECT '" + parLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id, D.name as Departamento " +
+                string sql = "   SELECT '" + parLevel1.ParCluster_Id + quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id, D.name as Departamento " +
                              "\n FROM ParLevel3Level2 P32   (nolock)                                                                                                                             " +
                              "\n INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                                                                                                 " +
                              "\n ON P321.ParLevel3Level2_Id = P32.Id and p321.active = 1                                                                                                                  " +
@@ -655,7 +655,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             else
             {
 
-                string sql = "\n SELECT '" + parLevel1.ParCluster_Id + SyncServices.quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit,PL2.ParFrequency_id, D.name as Departamento  " +
+                string sql = "\n SELECT '" + parLevel1.ParCluster_Id + quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit,PL2.ParFrequency_id, D.name as Departamento  " +
                          "\n FROM ParLevel3Level2 P32                                      " +
                          "\n INNER JOIN ParLevel3Level2Level1 P321                         " +
                          "\n ON P321.ParLevel3Level2_Id = P32.Id and p321.active = 1                           " +
