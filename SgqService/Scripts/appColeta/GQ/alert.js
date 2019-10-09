@@ -87,8 +87,8 @@ function setValoresLevel3Alertas(level3) {
 
     var resultado = [];
 
-    var valor = parseFloat(level3.attr('value'));
-    var punicao = parseFloat(level3.attr('punishmentvalue'));
+    var valor = parseFloat(ReplaceVirgula(level3.attr('value')));
+    var punicao = parseFloat(ReplaceVirgula(level3.attr('punishmentvalue')));
     var numeroAmostragem = parseFloat(level3.parents('.level02Result').attr('sample'));
 
     //numeroAmostragem pagar do input
