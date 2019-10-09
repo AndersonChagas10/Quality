@@ -12,7 +12,7 @@
         [Key]
         public int Id { get; set; }
 
-        [Required(AllowEmptyStrings = true)]
+        //[Required(AllowEmptyStrings = true)]
         [DisplayName("Titulo")]
         public string Title { get; set; }
 

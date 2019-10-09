@@ -49,6 +49,9 @@ namespace SgqSystem.Controllers.ImportFormat
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Title,IsActive")] Dominio.ImportFormat importFormat)
         {
+            if (string.IsNullOrEmpty(importFormat.Title))
+                ModelState.AddModelError("Title", Resources.Resource.required_field + " " + Resources.Resource.title);
+
             importFormat.AddDate = DateTime.Now;
             importFormat.AlterDate = DateTime.Now;
             if (ModelState.IsValid)
@@ -84,6 +87,10 @@ namespace SgqSystem.Controllers.ImportFormat
         public async Task<ActionResult> Edit([Bind(Include = "Id,Title,IsActive")] Dominio.ImportFormat importFormat)
         {
             importFormat.AlterDate = DateTime.Now;
+
+            if (string.IsNullOrEmpty(importFormat.Title))
+                ModelState.AddModelError("Title", Resources.Resource.required_field + " " + Resources.Resource.title);
+
             if (ModelState.IsValid)
             {
                 db.Entry(importFormat).State = EntityState.Modified;

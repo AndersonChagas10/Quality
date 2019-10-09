@@ -135,6 +135,8 @@ namespace SgqSystem.Controllers.Params
         [ValidateAntiForgeryToken]
         public ActionResult CreateTrue(ParLevel3BoolTrue parLevel3Bool)
         {
+            if (string.IsNullOrEmpty(parLevel3Bool.Name))
+                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
 
             if (ModelState.IsValid)
             {
@@ -153,6 +155,9 @@ namespace SgqSystem.Controllers.Params
         [ValidateAntiForgeryToken]
         public ActionResult CreateFalse(ParLevel3BoolFalse parLevel3Bool)
         {
+            if (string.IsNullOrEmpty(parLevel3Bool.Name))
+                ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
+
             if (ModelState.IsValid)
             {
                 parLevel3Bool.AddDate = DateTime.Now;
@@ -175,12 +180,18 @@ namespace SgqSystem.Controllers.Params
 
             if (original != null)
             {
-                parLevel3Bool.AlterDate = DateTime.Now;
-                parLevel3Bool.AddDate = original.AddDate;
-                db.Entry(original).CurrentValues.SetValues(parLevel3Bool);
-                db.SaveChanges();
+                if (string.IsNullOrEmpty(parLevel3Bool.Name))
+                    ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
 
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    parLevel3Bool.AlterDate = DateTime.Now;
+                    parLevel3Bool.AddDate = original.AddDate;
+                    db.Entry(original).CurrentValues.SetValues(parLevel3Bool);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
             }
 
             return View(parLevel3Bool);
@@ -189,19 +200,25 @@ namespace SgqSystem.Controllers.Params
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditFalse(int? id, ParLevel3BoolTrue parLevel3Bool)
+        public ActionResult EditFalse(int? id, ParLevel3BoolFalse parLevel3Bool)
         {
 
             var original = db.ParLevel3BoolFalse.Find(id);
 
             if (original != null)
             {
-                parLevel3Bool.AlterDate = DateTime.Now;
-                parLevel3Bool.AddDate = original.AddDate;
-                db.Entry(original).CurrentValues.SetValues(parLevel3Bool);
-                db.SaveChanges();
+                if (string.IsNullOrEmpty(parLevel3Bool.Name))
+                    ModelState.AddModelError("Name", Resources.Resource.required_field + " " + Resources.Resource.name);
 
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    parLevel3Bool.AlterDate = DateTime.Now;
+                    parLevel3Bool.AddDate = original.AddDate;
+                    db.Entry(original).CurrentValues.SetValues(parLevel3Bool);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
             }
 
             return View(parLevel3Bool);

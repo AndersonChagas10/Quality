@@ -29,7 +29,7 @@
 
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink(Resources.Resource._new, "Create", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink(Resources.Resource._new as string, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
                             
                                 <table class="table table-striped" id="tabelaElaboradorEditor">
@@ -54,7 +54,7 @@
                                                 @Html.DisplayNameFor(model => model.NomeRelatorio)
                                             </th>
                                             <th>
-                                                @Resources.Resource.action
+                                                @Resources.Resource.action 
                                             </th>
                                         </tr>
                                     </thead>

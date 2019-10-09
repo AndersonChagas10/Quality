@@ -12,7 +12,6 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        [Column("Nome")]
         public string Name { get; set; }
 
         public int? ParLevel1_Id { get; set; }
@@ -20,6 +19,11 @@ namespace Dominio
         public int? RotinaIntegracao_Id { get; set; }
 
         public bool IsActive { get; set; }
+
+        public int ParLevelDefinition_Id { get; set; }
+
+        [ForeignKey("ParLevelDefinition_Id")]
+        public ParLevelDefiniton ParLevelDefinition { get; set; }
 
         [ForeignKey("ParLevel1_Id")]
         public virtual ParLevel1 ParLevel1 { get; set; }

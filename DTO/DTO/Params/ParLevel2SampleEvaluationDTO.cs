@@ -10,6 +10,7 @@
 
         public int? ParLevel1_Id { get; set; }
         public int? ParCluster_Id { get; set; }
+        public int? ParFrequency_Id { get; set; }
 
         public int level2Id { get; set; }
         public int? companyId { get; set; }

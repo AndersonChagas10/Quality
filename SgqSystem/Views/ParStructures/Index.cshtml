@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Dominio.ParStructure>
+
+@{
+    ViewBag.Title = Resources.Resource.structure;
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.structure</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.structure</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <p>
+                                    @Html.ActionLink("Nova " + Resources.Resource.structure as string, "Create", null, new { @class = "btn btn-primary" })
+                                </p>
+                                <table class="table" id="tableEstruturas">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Resources.Resource.structure_level
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.name
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.description
+                                            </th>
+                                            <th>
+                                                Estrutura Pai
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.is_active
+                                            </th>
+                                            @*<th>
+                                                    @Html.DisplayNameFor(model => model.AddDate)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.AlterDate)
+                                                </th>*@
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ParStructureGroup.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Description)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ParStructureParent.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Active)
+                                                </td>
+                                                @*<td>
+                                                        @Html.DisplayFor(modelItem => item.AddDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.AlterDate)
+                                                    </td>*@
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, new { @class = "btn btn-info" })*@
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            null,
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tableEstruturas').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+    });
+</script>

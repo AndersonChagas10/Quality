@@ -1,4 +1,4 @@
-﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
 @{
     ViewBag.Title = Resources.Resource.daily_apointments_sunday;
     var url = Url.Action("Index", "Home");
@@ -72,7 +72,7 @@
 
 <div class="page-content-wrapper">
     <div class="page-content">
-        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml","")
 
         <div id="formBodyContent">
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
@@ -242,17 +242,18 @@
                             }
                         },
                         {
-                            title: "@Resources.Resource.IsLate", mData: "IsLate", mRender: function (data, type, full) {
+                            title: "@Resources.Resource.reason_type", mData: "ParReasonType", mRender: function (data, type, full) {
 
-                                if (data == 0) {
+                                return data;
+                                @*if (data == 0) {
                                     return '@Resources.Resource.no'
                                 } else {
-                                return '@Resources.Resource.yes'
-                                }
+                                    return '@Resources.Resource.yes'
+                                }*@
 
                             }
                         },
-                        { title: "@Resources.Resource.LateReason", mData: "MotivoAtraso", "width": "50%" },
+                        { title: "@Resources.Resource.reason", mData: "ParReason", "width": "50%" },
 
                     ];
 

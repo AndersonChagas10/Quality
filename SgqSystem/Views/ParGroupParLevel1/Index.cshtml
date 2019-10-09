@@ -3,7 +3,7 @@
 @{
                 /**/
 
-                ViewBag.Title = "Grupo de Indicador";
+                ViewBag.Title = Resources.Resource.function;
 }
 
 <div class="page-content-wrapper">
@@ -18,7 +18,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.indicator_group</span>
+                    <span>@Resources.Resource.function</span>
                 </li>
             </ul>
         </div>
@@ -30,14 +30,14 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.listOf @Resources.Resource.indicator_group</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.function</span>
                         </div>
                     </div>
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink(Resources.Resource.create as string, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
                                 <table class="table" id="tabelaGrupo">
                                     <thead>
@@ -74,7 +74,7 @@
                                                 @Html.DisplayFor(modelItem => item.IsActive)
                                             </td>
                                             <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                             </td>
                                         </tr>
                                         }

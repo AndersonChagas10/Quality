@@ -1,5 +1,5 @@
 ﻿@using DTO.DTO.Params
-@using Resources
+
 
 @{
     ViewBag.Title = "Jobs";
@@ -22,7 +22,7 @@
                         <div class="panel @((segundosAposUltimaExecucao <= 100)? "panel-primary" : ((segundosAposUltimaExecucao <= 200)? "panel-warning" : "panel-danger"))">
                             <div class="panel-heading">@job.Key</div>
                             <div class="panel-body">
-                                <strong>@Resource.date_time:</strong> @job.Value (@segundosAposUltimaExecucao s)
+                                <strong>@Resources.Resource.date_time:</strong> @job.Value (@segundosAposUltimaExecucao s)
                             </div>
                         </div>
                     </div>

@@ -3,12 +3,62 @@ Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.8CreateTabelaMotiv
 
 GO
 
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MotivoAtraso' AND xtype='U')
-Create Table MotivoAtraso (   
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReasonType' AND xtype='U')
+create table ParReasonType(
+	Id int not null identity primary key,
+	Name varchar(20) NOT NULL,
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1
+)
+
+GO
+SET IDENTITY_INSERT ParReasonType ON 
+GO
+
+IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Antecipado')
+	begin
+		insert into ParReasonType(Id,Name,AddDate, AlterDate, IsActive) 
+		values(1,'Antecipado',GETDATE(),NULL,1)
+	end
+
+GO
+
+IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Atrasado')
+	begin
+		insert into ParReasonType(Id,Name,AddDate, AlterDate, IsActive) 
+		values(2,'Atrasado',GETDATE(),NULL,1)
+	end
+
+GO
+
+SET IDENTITY_INSERT ParReasonType OFF
+
+GO
+
+SET IDENTITY_INSERT ParReasonType OFF
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReason' AND xtype='U')
+Create Table ParReason (   
 	Id int not null identity PRIMARY KEY,
 	Motivo varchar(250) not null,
 	AddDate datetime not null,
 	AlterDate datetime,
+	IsActive bit not null default 1,
+	ParReasonType_Id int not null FOREIGN key REFERENCES ParReasonType(Id),
+)
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReasonXReasonType' AND xtype='U')
+create table ParReasonXReasonType(
+	Id int not null identity primary key,
+	ParReason_Id int not null FOREIGN key REFERENCES ParReason(Id),
+	ParReasonType_Id int not null FOREIGN key REFERENCES ParReasonType(Id),
+	AddDate datetime not null,
+	AlterDate datetime null,
 	IsActive bit not null default 1
 )
 
@@ -29,13 +79,14 @@ Create Table ParEvaluationSchedule (
 
 GO
  
- IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XMotivoAtraso' AND xtype='U')
- create table CollectionLevel2XMotivoAtraso (
+ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParReason' AND xtype='U')
+ create table CollectionLevel2XParReason (
 	Id int primary key identity not null,
 	AddDate datetime not null,
 	AlterDate datetime,
 	CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
-	MotivoAtraso_Id int not null foreign key references MotivoAtraso(Id)
+	ParReason_Id int not null foreign key references ParReason(Id),
+	ParReasonType_Id int not null foreign key references ParReasonType(Id)
 )
 
 GO
@@ -84,6 +135,10 @@ IF NOT EXISTS (SELECT * FROM ParFrequency WHERE Name = 'Diario com Intervalo')
 	end
 
 GO
+
+SET IDENTITY_INSERT ParFrequency OFF
+
+GO
 IF COL_LENGTH('VolumeCepDesossa','Agendamento') IS NULL
     BEGIN	
 		ALTER TABLE VolumeCepDesossa
@@ -126,8 +181,63 @@ IF COL_LENGTH('VolumeCepRecortes','Agendamento') IS NULL
     END
 GO
 
-Insert into MigrationHistory (Name, AddDate) VALUES ('20190207_AlterarTamanhoColunaDynamicValue',GetDate())
 
-ALTER TABLE ParLevel3Value
-ALTER COLUMN DynamicValue varchar(900) null
+IF not Exists (select 1 from MigrationHistory where Name = '20190207_AlterarTamanhoColunaDynamicValue')
+BEGIN
+	Insert into MigrationHistory (Name, AddDate) VALUES ('20190207_AlterarTamanhoColunaDynamicValue',GetDate())
+
+	ALTER TABLE ParLevel3Value
+	ALTER COLUMN DynamicValue varchar(900) null
+END
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='IntegracaoSistemica' AND xtype='U')
+create table IntegracaoSistemica(
+	Id int not null identity primary key,
+	Name varchar(20) NOT NULL,
+	Configuration varchar(255) NOT NULL,
+	Script text NOT NULL,
+	TableName varchar(50) NOT NULL,
+	Intervalo int NOT NULL,
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1
+)
+
+IF EXISTS (
+SELECT  schema_name
+FROM    information_schema.schemata
+WHERE   schema_name = 'INTEG' ) 
+ 
+	BEGIN
+	
+		IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionData' AND xtype='U')
+		CREATE TABLE INTEG.CollectionData
+		(
+			Table_Id			INT NULL,
+			Key_Integ			VARCHAR(500),
+			ParLevel1_id		INT NULL,
+			ParLevel2_id		INT NULL,
+			ParLevel3_id		INT NULL,
+			ParCompany_id		INT NULL,
+			[Weight]			DECIMAL(38,10) NULL,
+			Value				DECIMAL(38,10) NULL,
+			ValueText			VARCHAR(500)   NULL,
+			MinInterval			DECIMAL(38,10) NULL,
+			MaxInterval			DECIMAL(38,10) NULL,
+			IsConform			BIT NULL,
+			IsNotEvaluate		BIT NULL,
+			Evaluation			DECIMAL(38,10) NULL,
+			[Sample]			INT NULL,
+			WeiEvaluation		DECIMAL(38,10) NULL,
+			Defects				DECIMAL(38,10) NULL,
+			WeiDefects			DECIMAL(38,10) NULL,
+			Coletado			INT NULL
+		)
+
+		IF COL_LENGTH('Integ.CollectionData','CollectionDate') IS NULL
+			alter table Integ.CollectionData
+			add CollectionDate Datetime null
+
+	END
 GO

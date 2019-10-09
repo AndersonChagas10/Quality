@@ -1,7 +1,6 @@
 ﻿using DTO.BaseEntity;
 using DTO.Helpers;
 using System;
-using Resources;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,26 +17,18 @@ namespace DTO.DTO.Params
 
         public List<ParCounterXLocalDTO> listParCounterXLocal { get; set; }
 
-        [Range(0, 9999999999, ErrorMessageResourceName = "select_the_frequency", ErrorMessageResourceType = typeof(Resource))]
         public int ParFrequency_Id { get; set; }
 
-        [Range(0, 9999999999, ErrorMessageResourceName = "select_the_department", ErrorMessageResourceType = typeof(Resource))]
-        public int ParDepartment_Id { get; set; }
+        public int? ParDepartment_Id { get; set; }
 
         //[Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
         //[MinLength(3, ErrorMessage = "O tamanho mínimo do Nome são 3 caracteres.")]
         //[MaxLength(300, ErrorMessage = "O tamanho máximo do Nome são 300 caracteres.")]
-        [Required(ErrorMessageResourceName = "name_has_between_3_and_10", ErrorMessageResourceType = typeof(Resource))]
-        [MinLength(3, ErrorMessageResourceName = "minimum_name_3_characteres", ErrorMessageResourceType = typeof(Resource))]
-        [MaxLength(300, ErrorMessageResourceName = "maximum_name_300_characteres", ErrorMessageResourceType = typeof(Resource))]
         public string Name { get; set; }
 
         //[Required(ErrorMessage = "A Descrição deverá ter no mínimo 1 e máximo 10 caracteres.")]
         //[MinLength(1, ErrorMessage = "O tamanho mínimo da Descrição deve ser 1 caracter.")]
         //[MaxLength(300, ErrorMessage = "O tamanho máximo da Descrição são 300 caracteres.")]
-        [Required(ErrorMessageResourceName = "description_has_between_1_and_300", ErrorMessageResourceType = typeof(Resource))]
-        [MinLength(1, ErrorMessageResourceName = "minimum_description_1_characteres", ErrorMessageResourceType = typeof(Resource))]
-        [MaxLength(300, ErrorMessageResourceName = "maximum_description_300_characteres", ErrorMessageResourceType = typeof(Resource))]
         public string Description { get; set; }
 
         public bool IsEmptyLevel3 { get; set; }
@@ -146,7 +137,8 @@ namespace DTO.DTO.Params
                         Id = i.evaluationId ?? 0,
                         IsActive = i.IsActive,
                         ParLevel1_Id = i.ParLevel1_Id,
-                        ParCluster_Id = i.ParCluster_Id
+                        ParCluster_Id = i.ParCluster_Id,
+                        ParFrequency_Id = i.ParFrequency_Id
                     };
 
                     if (i.companyId > 0)
@@ -185,6 +177,8 @@ namespace DTO.DTO.Params
                     coiso.IsActive = i.IsActive;
                     coiso.ParLevel1_Id = i.ParLevel1_Id;
                     coiso.ParCluster_Id = i.ParCluster_Id;
+                    coiso.ParFrequency_Id = i.ParFrequency_Id;
+
                     coiso.Id = 1;
                     if (i.ParCompany_Id != null && i.ParCompany_Id > 0)
                         coiso.companyId = i.ParCompany_Id;

@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using DTO.Helpers;
+using SgqService.ViewModels;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;

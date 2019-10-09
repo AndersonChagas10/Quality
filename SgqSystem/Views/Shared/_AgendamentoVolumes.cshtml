@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <div id="cadastroIntervalos" class="hidden">
                     <div class="form-group">
-                        @Html.Label(Resources.Resource.frequency_type, htmlAttributes: new { @class = "control-label col-md-4" })
+                        @Html.Label(Resources.Resource.frequency_type as string, htmlAttributes: new { @class = "control-label col-md-4" })
                         <div class="col-md-4">
                             <select id="tipoFrequencia" name="tipoFrequencia" class="form-control valid">
                                 <option value="Diario com Intervalo" id="diarioFrequencia">@Resources.Resource.daily_with_interval</option>
@@ -89,7 +89,7 @@
                 }
 
                 $("#tipoFrequencia").on('change', function () {
-                    debugger
+                    
                     if ($("#tipoFrequencia :selected").text() === "Diário com Intervalo") {
                         $("#tabelaAgendamento").attr('hidden', 'hidden');
                         $("#divIntervalo").removeAttr('hidden');

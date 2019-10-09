@@ -17,6 +17,7 @@ namespace SgqSystem
             //HighCharts
             bundles.Add(new ScriptBundle("~/bundles/hc")
                 .Include("~/Scripts/highcharts/4.2.0/highcharts.js")
+                .Include("~/Scripts/highcharts/4.2.0/highcharts-more.js")
             );
 
             bundles.Add(new ScriptBundle("~/bundles/Guard")

@@ -18,10 +18,10 @@ namespace DTO.ResultSet
         public string Lancado { get; set; }
 
         public Nullable<bool> Conforme { get; set; }
-        public string _Conforme { get { return Conforme.Value ? GetResources.getResource("according").Value.ToString() : GetResources.getResource("not_accordance").Value.ToString(); } }
+        public string _Conforme { get { return Conforme.Value ? Resources.Resource.according : Resources.Resource.not_accordance; } }
 
         public Nullable<bool> NA { get; set; }
-        public string _NA { get { return NA.Value ? GetResources.getResource("unvalued").Value.ToString() : GetResources.getResource("valued").Value.ToString(); } }
+        public string _NA { get { return NA.Value ? Resources.Resource.unvalued : Resources.Resource.valued;  } }
 
         public Nullable<decimal> AV_Peso { get; set; }
         public Nullable<decimal> _AV_Peso { get { return AV_Peso.HasValue ? AV_Peso.Value : 0M; } }
@@ -48,7 +48,7 @@ namespace DTO.ResultSet
         public string Processo { get; set; }
 
         public bool IsLate { get; set; }
-        public string MotivoAtraso { get; set; }
+        public string ParReason { get; set; }
 
         public string Select(DataCarrierFormulario form)
         {
@@ -161,7 +161,8 @@ namespace DTO.ResultSet
 				 as Type,
                  PC.Name as Processo
 	            ,CASE WHEN MA.Motivo IS NULL THEN 0 ELSE 1 END AS IsLate
-	            ,ma.Motivo as MotivoAtraso
+	            ,ma.Motivo as ParReason
+	            ,PRT.Name as ParReasonType
                  FROM #CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     
                  ON UN.Id = c2.UnitId                  
@@ -209,10 +210,12 @@ namespace DTO.ResultSet
 				 ON C2XC.CollectionLevel2_Id = C2.Id
 				 LEFT JOIN ParCluster PC
 				 ON PC.Id = C2XC.ParCluster_Id
-                 LEFT JOIN CollectionLevel2XMotivoAtraso CL2MA
+                 LEFT JOIN CollectionLevel2XParReason CL2MA
                  ON CL2MA.CollectionLevel2_Id = C2.Id
-                 LEFT JOIN MotivoAtraso MA
-                 ON MA.Id = CL2MA.MotivoAtraso_Id
+                 LEFT JOIN ParReason MA
+                 ON MA.Id = CL2MA.ParReason_Id
+                 LEFT JOIN ParReasonType PRT
+                 ON PRT.Id = MA.ParReasonType_Id
                  WHERE 1=1 
                   -- AND C2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
                   {sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3 } ";

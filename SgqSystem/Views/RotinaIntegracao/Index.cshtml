@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Dominio.RotinaIntegracao>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Rotina Integração";
 }
 
 <div class="page-content-wrapper">
@@ -35,9 +35,9 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink(Resources.Resource.create, "Create", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink(Resources.Resource.create as string, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
-                                <table class="table" id="">
+                                <table class="table" id="tabelaRotina">
                                     <thead>
                                         <tr>
                                             <th> Nome </th>
@@ -47,41 +47,46 @@
                                             <th> Query </th>
                                             <th> Parametro </th>
                                             <th> Retorno </th>
+                                            <th> Busca Offline </th>
                                             <th> Está ativo </th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.DataSource)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.InitialCatalog)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.User)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.query)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Parametro)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Retornos)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.IsActive)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.DataSource)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.InitialCatalog)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.User)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Query)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Parametro)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Retornos)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IsOffline)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                </td>
+                                            </tr>
                                         }
                                     </tbody>
                                 </table>
@@ -95,4 +100,21 @@
     </div>
     <!-- END CONTENT BODY -->
 </div>
-
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaRotina').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+    });
+</script>

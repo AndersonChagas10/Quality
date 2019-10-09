@@ -10,39 +10,17 @@ namespace SgqSystem.Controllers.Api.Login
     [RoutePrefix("api/LoginApi")]
     public class LoginController : ApiController
     {
+        private SgqServiceBusiness.Api.Login.LoginController business;
+        public LoginController()
+        {
+            business = new SgqServiceBusiness.Api.Login.LoginController();
+        }
+
         [HttpGet]
         [Route("Logado/{dataApp?}")]
         public string Logado(DateTime? dataApp = null)
         {
-            if (dataApp != null)
-            {
-                var dataServer = DateTime.Now;
-
-                if (dataApp < dataServer.AddHours(-30))
-                {
-                    return "dataInvalida";
-                }
-            }
-
-            return "onLine";
+            return business.Logado(dataApp);
         }
-
-        // Route /status to this controller
-
-        /// <summary>
-        /// Metodo CORRETO a ser utilizado para PING:
-        ///     $.post("http://localhost/SgqSystem/api/LoginApi")
-        ///     $.get("http://localhost/SgqSystem/api/LoginApi")
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        //[HttpGet] // accept get
-        //[HttpPost] // accept post
-        //[Route("Logado")] // route default request to this method.
-        //public IHttpActionResult Get()
-        //{
-        //    return Ok();
-        //}
-
     }
 }

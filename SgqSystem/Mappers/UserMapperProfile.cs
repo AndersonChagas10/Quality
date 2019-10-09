@@ -2,6 +2,7 @@
 using Dominio;
 using DTO.DTO;
 using DTO.Helpers;
+using SgqService.ViewModels;
 using SgqSystem.ViewModels;
 
 namespace SgqSystem.Mappers

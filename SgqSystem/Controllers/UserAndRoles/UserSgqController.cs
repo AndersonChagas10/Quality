@@ -1,5 +1,5 @@
 ﻿using Dominio;
-using Dominio.Interfaces.Services;
+using DTO.Interfaces.Services;
 using DTO.DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
@@ -16,6 +16,7 @@ using System.Web.Mvc;
 using SgqSystem.Secirity;
 using DTO;
 using System.Data.Entity.SqlServer;
+using SgqService.ViewModels;
 
 namespace SgqSystem.Controllers
 {
@@ -100,7 +101,7 @@ namespace SgqSystem.Controllers
                 Password = userSgq.Password,
                 Phone = userSgq.Phone,
                 ParCompany_Id = userSgq.ParCompany_Id,
-                Empresa = parCompanyXUserSgq != null ? (from comp in parCompanyXUserSgq select new EmpresaDTO { Role = comp.Role, Nome = comp.ParCompany.Name, Perfil = string.IsNullOrEmpty(comp.Role) ? "" : Perfis.FirstOrDefault(x => x.nCdPerfil.ToString() == comp.Role).cNmPerfil }).ToList() : new List<EmpresaDTO>()
+                Empresa = parCompanyXUserSgq != null ? (from comp in parCompanyXUserSgq select new EmpresaDTO { Role = comp.Role, Nome = comp.ParCompany.Name, Perfil = string.IsNullOrEmpty(comp.Role) ? "" : Perfis.Count > 0 ? Perfis.FirstOrDefault(x => x.nCdPerfil.ToString() == comp.Role).cNmPerfil : "" }).ToList() : new List<EmpresaDTO>()
             };
 
             return View(model);

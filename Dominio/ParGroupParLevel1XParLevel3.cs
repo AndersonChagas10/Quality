@@ -46,6 +46,24 @@ namespace Dominio
         [Index(IsUnique = true)]
         public int? ParLevel2_Id { get; set; }
 
+        [DisplayName("Grupo")]
+        //[Index(IsUnique = true)]
+        public int? ParLevel3Group_Id { get; set; }
+
+        public int? ParFrequencyId { get; set; }
+
+        public int? Evaluation { get; set; }
+
+        public int? Sample { get; set; }
+
+        public DateTime? EffectiveDateStart { get; set; }
+
+        public DateTime? EffectiveDateEnd { get; set; }
+         
+        [DisplayName("Cargo")]
+        //[Index(IsUnique = true)]
+        public int? ParCargo_Id { get; set; }
+
         [ForeignKey("ParLevel3_Id")]
         public virtual ParLevel3 ParLevel3 { get; set; }
 
@@ -63,5 +81,11 @@ namespace Dominio
 
         [ForeignKey("ParGroupParLevel1_Id")]
         public virtual ParGroupParLevel1 ParGroupParLevel1 { get; set; }
+
+        [ForeignKey("ParLevel3Group_Id")]
+        public virtual ParLevel3Group ParLevel3Group { get; set; }
+
+        [ForeignKey("ParCargo_Id")]
+        public virtual ParCargo ParCargo { get; set; }
     }
 }

@@ -8,12 +8,12 @@
             <table class="table-erp">
                 <tbody>
                     <tr class="row hide">
-                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Id", new { @id = "parCompanyDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
+                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Id", new { @id = "parCompanyDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id as string), Table.PosicaoLabel.top, null, null)
                     </tr>
                     <tr class="row">
-                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Description", new { htmlAttributes = new { @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
-                        @Table.GerarColunaButton(@Html.DropDownList("parStructureDTO.ParStructureGroup_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick='indexParStructure.enviarDadosParaApi()' class='btn btn-primary btn-sm margin'><i class='fa fa-save'></i> " + Resources.Resource.save + "</button>")
+                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name as string), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Description", new { htmlAttributes = new { @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description as string), Table.PosicaoLabel.top)
+                        @Table.GerarColunaButton(@Html.DropDownList("parStructureDTO.ParStructureGroup_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select as string + "...", new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group as string), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick='indexParStructure.enviarDadosParaApi()' class='btn btn-primary btn-sm margin'><i class='fa fa-save'></i> " + Resources.Resource.save as string + "</button>")
                     </tr>
                 </tbody>
             </table>

@@ -832,21 +832,12 @@ namespace SgqSystem.Services
 
         public DictionaryEntry getResource(string value)
         {
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+            var resourceManager = (IDictionary<string, object>)Resources.Resource;
 
-            if (resourceManager == null) //se portugues
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-            }
-
-            var list = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
-
-            foreach (var r in list)
+            foreach (var r in resourceManager)
             {
                 if (r.Key.ToString() == value)
-                    return r;
+                    return new DictionaryEntry() { Key = r.Key, Value = r.Value };
             }
 
             return new DictionaryEntry();

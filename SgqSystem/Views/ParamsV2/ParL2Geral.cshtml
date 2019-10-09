@@ -1,0 +1,137 @@
+﻿<h3 class="titulo2">Informações Gerais</h3>
+
+<form id="ParL2Geral">
+
+    <br />
+    <div class="row" data-form>
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label for="Name">Nome do monitoramento:</label>
+                <input type="text" class="form-control required" id="Name" name="Name">
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label for="Description">Descrição do monitoramento:</label>
+                <input type="text" class="form-control required" id="Description" name="Description">
+            </div>
+
+        </div>
+
+        <div class="col-sm-6 hide">
+
+            <div class="form-group">
+                <label>Departamento:</label>
+                <select class="form-control required" id="selectL2GeralParDepartment" name="ParDepartment_Id"></select>
+            </div>
+        </div>
+
+        <div class="col-sm-6 hide">
+
+            <div class="form-group">
+                <label>Frequência:</label>
+                <select class="form-control" id="selectL3GeralParFrequency" name="ParFrequency_Id"></select>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label>Está ativo:</label>
+                <br />
+                <label class="switch">
+                    <input type="checkbox" name="IsActive">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+        </div>
+
+        <div class="col-sm-12">
+
+            <button class="btn btn-primary pull-right btn btn-block" data-add>Salvar</button>
+
+        </div>
+    </div>
+
+</form>
+
+<script>
+
+    var lastIdL2 = 0;
+    var ParL2Geral = {
+
+        //paramtros
+        id: 'ParL2Geral',
+        urlSave: '@Url.Action("PostParLevel2", "api/ParLevel2Api")',
+
+        set: function (obj) {
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+        },
+
+        afterCreate: function (data) {
+            setSelectLevel2(data);
+            $('#selectL2').val(lastIdL2);
+            $('#selectL2').trigger('change');
+        },
+
+        load: function () {
+        
+            let id = this.id;
+            let urlSave = this.urlSave;   
+
+            function Save(obj) {
+                openLoader(Resources("please_wait"));
+                var hasId = obj.Id;
+                $.ajax({
+                    url: urlSave,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    contentType: "application/json",
+                    success: function (data) {
+                        closeLoader();
+                        lastIdL2 = parseInt(data);
+                        openMessageModal("Feito", "Dados Salvos");
+                        if (parseInt(hasId) <= 0 || isNaN(parseInt(hasId)))
+                            getGenericAjax('@Url.Action("Get", "api/ParLevel2Api")', 'Get', ParL2Geral.afterCreate);                      
+                        else
+                            $('#selectL2').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
+            }
+
+            //Salvar o campo editado ou cria um novo
+            $('#' + id).on('click', '[data-add]', function (e) {
+
+                if (!formIsValid(id)) {
+                    return false
+                }
+
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                Save(obj);
+            });
+        },
+    };
+    ParL2Geral.load();
+</script>

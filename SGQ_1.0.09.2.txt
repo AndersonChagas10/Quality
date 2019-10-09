@@ -1,0 +1,101 @@
+IF NOT EXISTS (
+SELECT  schema_name
+FROM    information_schema.schemata
+WHERE   schema_name = 'INTEG' ) 
+	BEGIN
+		exec('CREATE SCHEMA INTEG;')
+	END
+GO
+
+IF EXISTS (
+SELECT  schema_name
+FROM    information_schema.schemata
+WHERE   schema_name = 'INTEG' ) 
+ 
+	BEGIN
+	
+		IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionData' AND xtype='U')
+			CREATE TABLE [INTEG].[CollectionData](
+			[Table_Id] [int] NULL,
+			[Key_Integ] [varchar](500) NOT NULL,
+			[ParLevel1_id] [int] NULL,
+			[ParLevel2_id] [int] NULL,
+			[ParLevel3_id] [int] NULL,
+			[ParCompany_id] [int] NULL,
+			[Weight] [decimal](38, 10) NULL,
+			[Value] [decimal](38, 10) NULL,
+			[ValueText] [varchar](500) NULL,
+			[MinInterval] [decimal](38, 10) NULL,
+			[MaxInterval] [decimal](38, 10) NULL,
+			[IsConform] [bit] NULL,
+			[IsNotEvaluate] [bit] NULL,
+			[Evaluation] [decimal](38, 10) NULL,
+			[Sample] [int] NULL,
+			[WeiEvaluation] [decimal](38, 10) NULL,
+			[Defects] [decimal](38, 10) NULL,
+			[WeiDefects] [decimal](38, 10) NULL,
+			[Coletado] [int] NULL,
+			[CollectionDate] [datetime] NULL
+		) ON [PRIMARY]
+
+	END
+GO
+
+
+IF EXISTS (
+SELECT  schema_name
+FROM    information_schema.schemata
+WHERE   schema_name = 'INTEG' ) 
+ 
+	BEGIN
+	
+		IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionAnaliseLaboratorial' AND xtype='U')
+			CREATE TABLE [INTEG].[CollectionAnaliseLaboratorial](
+				[nCdEmpresa] [decimal](38, 0) NULL,
+				[dColetaAmostra] [datetime] NULL,
+				[dProducao] [datetime] NULL,
+				[nCdProduto] [decimal](38, 0) NULL,
+				[nCdAnalise] [decimal](38, 0) NULL,
+				[cNmAnalise] [varchar](400) NULL,
+				[cGrupoColeta] [varchar](400) NULL,
+				[nCdSetor] [decimal](38, 0) NULL,
+				[cNmSetor] [varchar](400) NULL,
+				[nCdTpColeta] [decimal](38, 0) NULL,
+				[cNmTpColeta] [varchar](400) NULL,
+				[nResultadoAnalise] [decimal](38, 5) NULL,
+				[cSgUnidadeMedidaLaboratorio] [varchar](400) NULL,
+				[dMovimento] [datetime] NULL,
+				[iLote] [int] NULL,
+				[nCdPontoColeta] [decimal](38, 0) NULL,
+				[cNmPontoColeta] [varchar](400) NULL,
+				[cNmDetalhePontoColeta] [varchar](400) NULL,
+				[nCdRequisicaoAnalise] [decimal](38, 0) NULL,
+				[nCdRequisicaoFilial] [decimal](38, 0) NULL,
+				[nCdLaboratorio] [decimal](38, 0) NULL,
+				[cNmLaboratorio] [varchar](400) NULL,
+				[iAmostra] [int] NULL,
+				[cCdBarraAmostra] [varchar](400) NULL,
+				[nCdMatriz] [decimal](38, 0) NULL,
+				[cNmMatriz] [varchar](400) NULL,
+				[nCdGrupoAnalise] [decimal](38, 0) NULL,
+				[cNmGrupoAnalise] [varchar](400) NULL,
+				[nCdMetodologia] [decimal](38, 0) NULL,
+				[cCdMetodologia] [varchar](400) NULL,
+				[cNmMetodologia] [varchar](400) NULL,
+				[dAnaliseCritica] [datetime] NULL,
+				[dAnaliseInicial] [datetime] NULL,
+				[dAnaliseFinal] [datetime] NULL,
+				[dPrevisaoFinalAnalise] [datetime] NULL,
+				[nCdValorPadrao] [decimal](38, 0) NULL,
+				[cSinal1] [varchar](400) NULL,
+				[nValor1] [decimal](38, 5) NULL,
+				[cOperadorPadrao] [varchar](400) NULL,
+				[cSinal2] [varchar](400) NULL,
+				[nValor2] [decimal](38, 5) NULL,
+				[cRastreabilidadeLaudo] [varchar](400) NULL,
+				[Key_Integ] [varchar](500) NULL,
+				[AddDate] [datetime] NULL
+			) ON [PRIMARY]	
+
+	END
+GO

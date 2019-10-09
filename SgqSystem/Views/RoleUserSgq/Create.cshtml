@@ -55,7 +55,7 @@
                                         }
 
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.name as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -63,28 +63,28 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.description, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.description as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.item_menu, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.item_menu as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.ListBoxFor(model => model.ItemMenuIDs, new MultiSelectList(ViewBag.listaItensMenu, "Id", "Name"), new { @class = "form-control", @multiple = "multiple" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.do_audit, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.do_audit as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.FazColeta, new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
@@ -93,7 +93,7 @@
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
                                                 <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
-                                                @Html.ActionLink(Resources.Resource.back, "Index", null, new { @class = "btn btn-default" })
+                                                @Html.ActionLink(Resources.Resource.back as string, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>

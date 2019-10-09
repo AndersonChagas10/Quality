@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -37,6 +37,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <IncludeIisSettings>true</IncludeIisSettings>
+    <IncludeAppPool>false</IncludeAppPool>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -141,9 +144,8 @@
     <Reference Include="Microsoft.SqlServer.SqlEnum, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Unofficial.Microsoft.SQLServer.SMO.2014.12.0.2000.8\lib\Microsoft.SqlServer.SqlEnum.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=4.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\NHibernate.4.1.1.4000\lib\net40\NHibernate.dll</HintPath>
@@ -181,6 +183,12 @@
       <HintPath>..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
     </Reference>
@@ -196,20 +204,24 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web" />
@@ -225,17 +237,11 @@
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
@@ -328,16 +334,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_GlobalResources\Resource.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Resource.pt-br.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.pt-br.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -353,12 +349,14 @@
     <Compile Include="Controllers\Api\CompanyFormApiController.cs" />
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
+    <Compile Include="Controllers\Api\Formulario\FormularioApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
     <Compile Include="Controllers\Api\Integracao\IntegracaoApiController.cs" />
     <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
     <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
+    <Compile Include="Controllers\Api\ParDepartmentsApiController.cs" />
     <Compile Include="Controllers\Api\ParInputTypeValuesApiController.cs" />
-    <Compile Include="Controllers\Api\MotivoAtrasoApiController.cs" />
+    <Compile Include="Controllers\Api\ParReasonApiController.cs" />
     <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
@@ -376,6 +374,9 @@
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
+    <Compile Include="Controllers\Api\Relatorios\MSP\RelatorioMSPApiController.cs" />
+    <Compile Include="Controllers\Api\Relatorios\RH\NaoConformidadeRHApiController.cs" />
+    <Compile Include="Controllers\Api\Relatorios\RH\RelatorioDeResultadosRHApiController.cs" />
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\RetornaQueryRotinaApiController.cs" />
@@ -398,11 +399,27 @@
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VTVerificacaoTipificacaoApiController.cs" />
+    <Compile Include="Controllers\AppScriptsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\CadastrosGerais\MotivoAtrasoController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
+    <Compile Include="Controllers\DicionarioEstaticoController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
+    <Compile Include="Controllers\FotoController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
+    <Compile Include="Controllers\IntegracaoSistemicasController.cs" />
+    <Compile Include="Controllers\ParAlertTypesController.cs" />
+    <Compile Include="Controllers\Params\ParCargoController.cs" />
+    <Compile Include="Controllers\Params\ParColaboradorController.cs" />
+    <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
+    <Compile Include="Controllers\ParCargoXDepartmentsController.cs" />
+    <Compile Include="Controllers\ParConsolidationTypesController.cs" />
+    <Compile Include="Controllers\ParLevel3InputTypeController.cs" />
+    <Compile Include="Controllers\ParLevel3XModuleController.cs" />
+    <Compile Include="Controllers\ParReasonTypesController.cs" />
+    <Compile Include="Controllers\ParScoreTypesController.cs" />
+    <Compile Include="Controllers\ParStructureGroupController.cs" />
     <Compile Include="Controllers\Home\UpdateTelaTabletController.cs" />
     <Compile Include="Controllers\ImportFormat\ImportFormatItemsController.cs" />
     <Compile Include="Controllers\ImportFormat\ImportFormatsController.cs" />
@@ -424,6 +441,10 @@
     <Compile Include="Controllers\CadastrosGerais\ParLevel1XModuleController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParModulesController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParModuleXModulesController.cs" />
+    <Compile Include="Controllers\Params\ParCompany2Controller.cs" />
+    <Compile Include="Controllers\Params\ParCompany2XClusterController.cs" />
+    <Compile Include="Controllers\Params\ParCompany2XStructureController.cs" />
+    <Compile Include="Controllers\Params\ParStructuresController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoJsonController.cs" />
     <Compile Include="Controllers\RelatoriosMD\RelatoriosMDController.cs" />
@@ -438,10 +459,23 @@
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\Relatorios\SIFReportsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ReportXUserSgqController.cs" />
+    <Compile Include="Controllers\ResourceENsController.cs" />
+    <Compile Include="Controllers\ResourcePTsController.cs" />
     <Compile Include="Controllers\RotinaIntegracaoController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
+    <Compile Include="Controllers\V2\Api\AppColetaController.cs" />
+    <Compile Include="Controllers\V2\Api\DepartmentXRotinaApiController.cs" />
+    <Compile Include="Controllers\V2\Api\ParDepartmentXHeaderFieldApiController.cs" />
+    <Compile Include="Controllers\V2\Api\ParFrequencyController.cs" />
+    <Compile Include="Controllers\V2\Api\ParDepartmentController.cs" />
+    <Compile Include="Controllers\V2\Api\ParLevel2ApiController.cs" />
+    <Compile Include="Controllers\V2\Api\ParEvaluationXDepartmentXCargoApiController.cs" />
+    <Compile Include="Controllers\V2\Api\ParLevel3ApiController.cs" />
+    <Compile Include="Controllers\V2\Api\ParLevel1ApiController.cs" />
+    <Compile Include="Controllers\V2\Params\ParAlertController.cs" />
+    <Compile Include="Controllers\V2\Params\ParamsV2Controller.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
     <Compile Include="Controllers\GlobalConfigController.cs" />
@@ -461,7 +495,7 @@
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Params\ParamsController.cs" />
     <Compile Include="Controllers\Params\ParClustersController.cs" />
-    <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
+    <Compile Include="Controllers\Params\ParDepartmentsRHController.cs" />
     <Compile Include="Controllers\Params\ParMeasurementUnitsController.cs" />
     <Compile Include="Controllers\VolumeProducao\Pcc1bController.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
@@ -478,11 +512,18 @@
     <Compile Include="Helpers\CommonLog.cs" />
     <Compile Include="Helpers\GenericTable.cs" />
     <Compile Include="Helpers\HandleCultureAPI.cs" />
+    <Compile Include="Helpers\NetworkConnection.cs" />
     <Compile Include="Helpers\Table.cs" />
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
+    <Compile Include="Helper\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Helper\MailSender.cs" />
+    <Compile Include="Jobs\CollectionDataJobFactory.cs" />
+    <Compile Include="Jobs\CollectionJob.cs" />
+    <Compile Include="Jobs\IntegrationJobFactory.cs" />
     <Compile Include="Jobs\MandalaJob.cs" />
+    <Compile Include="Jobs\PhotoJob.cs" />
     <Compile Include="Jobs\ReProcessJsonJob.cs" />
     <Compile Include="Jobs\MailJob.cs" />
     <Compile Include="Mail\SimpleAsynchronousUSA.cs" />
@@ -554,6 +595,7 @@
     <Compile Include="Mappers\UnitMapperProfile.cs" />
     <Compile Include="Mappers\UserMapperProfile.cs" />
     <Compile Include="Mappers\UserSgqMapperProfile.cs" />
+    <Compile Include="NetworkConnection\NetworkConnection.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
     <Compile Include="Secirity\FilterUnit.cs" />
     <Compile Include="Secirity\FormularioPesquisa.cs" />
@@ -564,7 +606,7 @@
     <Compile Include="Services\Level02Result.cs" />
     <Compile Include="Services\ServiceLevel2.cs" />
     <Compile Include="Services\SGQDBContext.cs" />
-    <Compile Include="Services\SGQDBContext_YTOARA.cs" />
+    <Compile Include="Services\SyncServiceApiController.cs" />
     <Compile Include="Services\SyncModel\ParLevel3XParDepartmentSyncModel.cs" />
     <Compile Include="Services\SyncServices.asmx.cs">
       <DependentUpon>SyncServices.asmx</DependentUpon>
@@ -575,17 +617,18 @@
     <Compile Include="ViewModels\BaseEntityViewModel\EntityBaseViewModel.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\DataCollectionBaseViewModel.cs" />
     <Compile Include="ViewModels\CompanyViewModel.cs" />
-    <Compile Include="ViewModels\FormularioParaRelatorioViewModel.cs" />
     <Compile Include="ViewModels\CorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\IdentityModels.cs" />
     <Compile Include="ViewModels\ColetaViewModel.cs" />
     <Compile Include="ViewModels\ContextExampleViewModel.cs" />
     <Compile Include="ViewModels\ParamsViewModel.cs" />
+    <Compile Include="ViewModels\PlanejamentoColetaViewModel.cs" />
+    <Compile Include="ViewModels\PlanejamentoViewModel.cs" />
     <Compile Include="ViewModels\ReportsCorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\ReqController.cs" />
+    <Compile Include="ViewModels\RotinaIntegracaoViewModel.cs" />
     <Compile Include="ViewModels\SyncViewModel.cs" />
     <Compile Include="ViewModels\TipificacaoViewModel.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Startup.cs" />
@@ -626,11 +669,6 @@
     <Content Include="Angular\ClusterRegionalUnidadeCriticalLevel123.js" />
     <Content Include="Angular\Level321Chain.js" />
     <Content Include="Angular\SelectVinculado.js" />
-    <Content Include="App_GlobalResources\Resource.pt-br.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resource.pt-br.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_Readme\readme.txt" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker.min.css" />
@@ -848,7 +886,9 @@
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\GRTYtoaraLogo.png" />
     <Content Include="Content\Imagens\favicon.png" />
+    <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\mindmap.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\PluginGRT\pivot.css" />
     <Content Include="Content\lobi\bootstrap\dist\css\bootstrap-theme.min.css" />
     <Content Include="Content\lobi\bootstrap\dist\css\bootstrap.min.css" />
@@ -885,58 +925,83 @@
     <Content Include="Imagens\A.png" />
     <Content Include="Imagens\C.png" />
     <Content Include="Imagens\D.png" />
+    <Content Include="Imagens\MatrizVGA.PNG" />
     <Content Include="Imagens\P.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_both.png" />
     <Content Include="images\sort_desc.png" />
-    <Content Include="Scripts\appColeta\alert.js" />
-    <Content Include="Scripts\appColeta\alert_new.js" />
-    <Content Include="Scripts\appColeta\breadCrumb.js" />
-    <Content Include="Scripts\appColeta\config.js" />
-    <Content Include="Scripts\appColeta\consolidation.js" />
-    <Content Include="Scripts\appColeta\controleDeAlerta.js" />
-    <Content Include="Scripts\appColeta\correctiveAction.js" />
-    <Content Include="Scripts\appColeta\counter.js" />
-    <Content Include="Scripts\appColeta\counterLevel1.js" />
-    <Content Include="Scripts\appColeta\crypto.js" />
-    <Content Include="Scripts\appColeta\date.js" />
-    <Content Include="Scripts\appColeta\defect.js" />
-    <Content Include="Scripts\appColeta\defectEvaluation.js" />
-    <Content Include="Scripts\appColeta\email.js" />
-    <Content Include="Scripts\appColeta\eua.js" />
-    <Content Include="Scripts\appColeta\footer.js" />
-    <Content Include="Scripts\appColeta\geolocation.js" />
-    <Content Include="Scripts\appColeta\guard.js" />
-    <Content Include="Scripts\appColeta\header.js" />
-    <Content Include="Scripts\appColeta\index.css" />
-    <Content Include="Scripts\appColeta\index2.js" />
-    <Content Include="Scripts\appColeta\keys.js" />
-    <Content Include="Scripts\appColeta\lastSync.js" />
-    <Content Include="Scripts\appColeta\level1.js" />
-    <Content Include="Scripts\appColeta\level2.js" />
-    <Content Include="Scripts\appColeta\level3.js" />
-    <Content Include="Scripts\appColeta\level3Collapse.js" />
-    <Content Include="Scripts\appColeta\login.js" />
-    <Content Include="Scripts\appColeta\message.js" />
-    <Content Include="Scripts\appColeta\mock_modulos.js" />
-    <Content Include="Scripts\appColeta\module.js" />
-    <Content Include="Scripts\appColeta\navBar.js" />
-    <Content Include="Scripts\appColeta\overlay.js" />
-    <Content Include="Scripts\appColeta\pcc1b.js" />
-    <Content Include="Scripts\appColeta\phase.js" />
-    <Content Include="Scripts\appColeta\photo.js" />
-    <Content Include="Scripts\appColeta\reaudit.js" />
-    <Content Include="Scripts\appColeta\reauditByHeader.js" />
-    <Content Include="Scripts\appColeta\reprocesso.js" />
-    <Content Include="Scripts\appColeta\resource.js" />
-    <Content Include="Scripts\appColeta\rightBar.js" />
-    <Content Include="Scripts\appColeta\role.js" />
-    <Content Include="Scripts\appColeta\rotinaHeaderField.js" />
-    <Content Include="Scripts\appColeta\scriptfile.js" />
-    <Content Include="Scripts\appColeta\sync.js" />
-    <Content Include="Scripts\appColeta\tempSave.js" />
-    <Content Include="Scripts\appColeta\verificacaoTipificacao.js" />
+    <Content Include="Scripts\appColeta\GQ\alert.js" />
+    <Content Include="Scripts\appColeta\GQ\alert_new.js" />
+    <Content Include="Scripts\appColeta\GQ\breadCrumb.js" />
+    <Content Include="Scripts\appColeta\GQ\config.js" />
+    <Content Include="Scripts\appColeta\GQ\consolidation.js" />
+    <Content Include="Scripts\appColeta\GQ\controleDeAlerta.js" />
+    <Content Include="Scripts\appColeta\GQ\correctiveAction.js" />
+    <Content Include="Scripts\appColeta\GQ\counter.js" />
+    <Content Include="Scripts\appColeta\GQ\counterLevel1.js" />
+    <Content Include="Scripts\appColeta\GQ\crypto.js" />
+    <Content Include="Scripts\appColeta\GQ\date.js" />
+    <Content Include="Scripts\appColeta\GQ\defect.js" />
+    <Content Include="Scripts\appColeta\GQ\defectEvaluation.js" />
+    <Content Include="Scripts\appColeta\GQ\email.js" />
+    <Content Include="Scripts\appColeta\GQ\eua.js" />
+    <Content Include="Scripts\appColeta\GQ\footer.js" />
+    <Content Include="Scripts\appColeta\GQ\geolocation.js" />
+    <Content Include="Scripts\appColeta\GQ\guard.js" />
+    <Content Include="Scripts\appColeta\GQ\header.js" />
+    <Content Include="Scripts\appColeta\GQ\index.css" />
+    <Content Include="Scripts\appColeta\GQ\index2.js" />
+    <Content Include="Scripts\appColeta\GQ\keys.js" />
+    <Content Include="Scripts\appColeta\GQ\lastSync.js" />
+    <Content Include="Scripts\appColeta\GQ\level1.js" />
+    <Content Include="Scripts\appColeta\GQ\level2.js" />
+    <Content Include="Scripts\appColeta\GQ\level3.js" />
+    <Content Include="Scripts\appColeta\GQ\login.js" />
+    <Content Include="Scripts\appColeta\GQ\message.js" />
+    <Content Include="Scripts\appColeta\GQ\mock_modulos.js" />
+    <Content Include="Scripts\appColeta\GQ\module.js" />
+    <Content Include="Scripts\appColeta\GQ\navBar.js" />
+    <Content Include="Scripts\appColeta\GQ\overlay.js" />
+    <Content Include="Scripts\appColeta\GQ\pcc1b.js" />
+    <Content Include="Scripts\appColeta\GQ\phase.js" />
+    <Content Include="Scripts\appColeta\GQ\photo.js" />
+    <Content Include="Scripts\appColeta\GQ\reaudit.js" />
+    <Content Include="Scripts\appColeta\GQ\reauditByHeader.js" />
+    <Content Include="Scripts\appColeta\GQ\reprocesso.js" />
+    <Content Include="Scripts\appColeta\GQ\resource.js" />
+    <Content Include="Scripts\appColeta\GQ\rightBar.js" />
+    <Content Include="Scripts\appColeta\GQ\role.js" />
+    <Content Include="Scripts\appColeta\GQ\rotinaHeaderField.js" />
+    <Content Include="Scripts\appColeta\GQ\scriptfile.js" />
+    <Content Include="Scripts\appColeta\GQ\sync.js" />
+    <Content Include="Scripts\appColeta\GQ\tempSave.js" />
+    <Content Include="Scripts\appColeta\GQ\verificacaoTipificacao.js" />
+    <Content Include="Scripts\appColeta\RH\alert.js" />
+    <Content Include="Scripts\appColeta\RH\app.js" />
+    <Content Include="Scripts\appColeta\RH\coleta.js" />
+    <Content Include="Scripts\appColeta\RH\correctiveAction.js" />
+    <Content Include="Scripts\appColeta\RH\crypto.js" />
+    <Content Include="Scripts\appColeta\RH\guard.js" />
+    <Content Include="Scripts\appColeta\RH\index.css" />
+    <Content Include="Scripts\appColeta\RH\index2.js" />
+    <Content Include="Scripts\appColeta\RH\layout.js" />
+    <Content Include="Scripts\appColeta\RH\logado.js" />
+    <Content Include="Scripts\appColeta\RH\login.js" />
+    <Content Include="Scripts\appColeta\RH\mensagem.js" />
+    <Content Include="Scripts\appColeta\RH\menu.js" />
+    <Content Include="Scripts\appColeta\RH\parCargo.js" />
+    <Content Include="Scripts\appColeta\RH\parDepartment.js" />
+    <Content Include="Scripts\appColeta\RH\planejamentoColeta.js" />
+    <Content Include="Scripts\appColeta\RH\parFrequency.js" />
+    <Content Include="Scripts\appColeta\RH\parHeaderField.js" />
+    <Content Include="Scripts\appColeta\RH\parLevels.js" />
+    <Content Include="Scripts\appColeta\RH\resultado.js" />
+    <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
+    <Content Include="Scripts\appColeta\RH\utils.js" />
+    <Content Include="Scripts\appColeta\GQ\mock.js" />
+    <Content Include="Scripts\appColeta\RH\zoom.js" />
+    <Content Include="Scripts\jquery-1.12.1.min.js" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
     <Content Include="Content\select2-bootstrap.min.css" />
     <Content Include="Content\select2.min.css" />
@@ -1158,6 +1223,7 @@
     <Content Include="Content\gallery\package.json" />
     <Content Include="Content\gallery\README.md" />
     <Content Include="Scripts\mindmap.js" />
+    <Content Include="Scripts\Select3\select3.js" />
     <Content Include="WebConfig_Old.xml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
@@ -1396,7 +1462,6 @@
     <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
@@ -1417,6 +1482,7 @@
     <None Include="Properties\PublishProfiles\SgqLocal.pubxml" />
     <None Include="Properties\PublishProfiles\SGQMaster.pubxml" />
     <Content Include="Scripts\DataTables\datatablePtBr.json" />
+    <None Include="Properties\PublishProfiles\SGQRH Servidor.pubxml" />
     <None Include="Properties\PublishProfiles\SgqTablet.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSA.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSAV1.pubxml" />
@@ -1637,11 +1703,11 @@
     <Content Include="Views\ParClusters\Details.cshtml" />
     <Content Include="Views\ParClusters\Edit.cshtml" />
     <Content Include="Views\ParClusters\Index.cshtml" />
-    <Content Include="Views\ParDepartments\Create.cshtml" />
-    <Content Include="Views\ParDepartments\Delete.cshtml" />
-    <Content Include="Views\ParDepartments\Details.cshtml" />
-    <Content Include="Views\ParDepartments\Edit.cshtml" />
-    <Content Include="Views\ParDepartments\Index.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Create.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Delete.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Details.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Edit.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Index.cshtml" />
     <Content Include="Views\ParMeasurementUnits\Create.cshtml" />
     <Content Include="Views\ParMeasurementUnits\Delete.cshtml" />
     <Content Include="Views\ParMeasurementUnits\Details.cshtml" />
@@ -1897,11 +1963,11 @@
     <Content Include="Views\ParVinculoPeso\Index.cshtml" />
     <Content Include="Views\Integracao\Index.cshtml" />
     <Content Include="Views\Params\_EscalaLikert.cshtml" />
-    <Content Include="Views\MotivoAtraso\Create.cshtml" />
-    <Content Include="Views\MotivoAtraso\Delete.cshtml" />
-    <Content Include="Views\MotivoAtraso\Details.cshtml" />
-    <Content Include="Views\MotivoAtraso\Edit.cshtml" />
-    <Content Include="Views\MotivoAtraso\Index.cshtml" />
+    <Content Include="Views\ParReason\Create.cshtml" />
+    <Content Include="Views\ParReason\Delete.cshtml" />
+    <Content Include="Views\ParReason\Details.cshtml" />
+    <Content Include="Views\ParReason\Edit.cshtml" />
+    <Content Include="Views\ParReason\Index.cshtml" />
     <Content Include="Views\Params\_Agendamento.cshtml" />
     <Content Include="Views\RecravacaoJson\Index.cshtml" />
     <Content Include="Views\Recravacao\Retroativo.cshtml" />
@@ -1922,6 +1988,140 @@
     <Content Include="Views\RotinaIntegracao\Delete.cshtml" />
     <Content Include="Views\Params\_Rotina.cshtml" />
     <Content Include="Views\Shared\_Print.cshtml" />
+    <Content Include="Views\ParStructureGroup\Index.cshtml" />
+    <Content Include="Views\ParStructureGroup\Create.cshtml" />
+    <Content Include="Views\ParStructureGroup\Edit.cshtml" />
+    <Content Include="Views\ParCompany2\Create.cshtml" />
+    <Content Include="Views\ParCompany2\Delete.cshtml" />
+    <Content Include="Views\ParCompany2\Details.cshtml" />
+    <Content Include="Views\ParCompany2\Edit.cshtml" />
+    <Content Include="Views\ParCompany2\Index.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Create.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Delete.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Details.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Edit.cshtml" />
+    <Content Include="Views\ParCompany2XStructure\Index.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Create.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Delete.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Details.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Edit.cshtml" />
+    <Content Include="Views\ParCompany2XCluster\Index.cshtml" />
+    <Content Include="Views\ParStructures\Create.cshtml" />
+    <Content Include="Views\ParStructures\Delete.cshtml" />
+    <Content Include="Views\ParStructures\Details.cshtml" />
+    <Content Include="Views\ParStructures\Edit.cshtml" />
+    <Content Include="Views\ParStructures\Index.cshtml" />
+    <Content Include="Views\ParamsV2\Index.cshtml" />
+    <Content Include="Views\ParamsV2\ParL1Geral.cshtml" />
+    <Content Include="Views\ParamsV2\ParL1Avancados.cshtml" />
+    <Content Include="Views\ParamsV2\ParL1Cabecalho.cshtml" />
+    <Content Include="Views\ParamsV2\ParL1Processo.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2Geral.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2Avancados.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2Avam.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2Cabecalho.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2Contador.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3Geral.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3Avancados.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3Avam.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3TipoDadoEntrada.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3VincularPeso.cshtml" />
+    <Content Include="Views\ParCargo\Create.cshtml" />
+    <Content Include="Views\ParCargo\Delete.cshtml" />
+    <Content Include="Views\ParCargo\Details.cshtml" />
+    <Content Include="Views\ParCargo\Edit.cshtml" />
+    <Content Include="Views\ParCargo\Index.cshtml" />
+    <Content Include="Views\ParColaborador\Create.cshtml" />
+    <Content Include="Views\ParColaborador\Delete.cshtml" />
+    <Content Include="Views\ParColaborador\Details.cshtml" />
+    <Content Include="Views\ParColaborador\Edit.cshtml" />
+    <Content Include="Views\ParColaborador\Index.cshtml" />
+    <Content Include="Views\ParamsV2\ParDCAvam.cshtml" />
+    <Content Include="Views\ParamsV2\_Agendamento.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3Ajuda.cshtml" />
+    <Content Include="Views\ParAlert\Create.cshtml" />
+    <Content Include="Views\ParAlert\Edit.cshtml" />
+    <Content Include="Views\ParAlert\Index.cshtml" />
+    <Content Include="Views\ParamsV2\ParDCRotina.cshtml" />
+    <Content Include="Views\ParamsV2\ParDCCabecalho.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Create.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Delete.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Details.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Edit.cshtml" />
+    <Content Include="Views\ParDepartmentGroups\Index.cshtml" />
+    <Content Include="Views\ResourcePTs\Create.cshtml" />
+    <Content Include="Views\ResourcePTs\Delete.cshtml" />
+    <Content Include="Views\ResourcePTs\Details.cshtml" />
+    <Content Include="Views\ResourcePTs\Edit.cshtml" />
+    <Content Include="Views\ResourcePTs\Index.cshtml" />
+    <Content Include="Views\ResourceENs\Create.cshtml" />
+    <Content Include="Views\ResourceENs\Delete.cshtml" />
+    <Content Include="Views\ResourceENs\Details.cshtml" />
+    <Content Include="Views\ResourceENs\Edit.cshtml" />
+    <Content Include="Views\ResourceENs\Index.cshtml" />
+    <Content Include="Views\AppScripts\Create.cshtml" />
+    <Content Include="Views\AppScripts\Delete.cshtml" />
+    <Content Include="Views\AppScripts\Details.cshtml" />
+    <Content Include="Views\AppScripts\Edit.cshtml" />
+    <Content Include="Views\AppScripts\Index.cshtml" />
+    <Content Include="Views\ParLevel3XModule\Create.cshtml" />
+    <Content Include="Views\ParLevel3XModule\Delete.cshtml" />
+    <Content Include="Views\ParLevel3XModule\Details.cshtml" />
+    <Content Include="Views\ParLevel3XModule\Edit.cshtml" />
+    <Content Include="Views\ParLevel3XModule\Index.cshtml" />
+    <Content Include="Views\DicionarioEstatico\Create.cshtml" />
+    <Content Include="Views\DicionarioEstatico\Delete.cshtml" />
+    <Content Include="Views\DicionarioEstatico\Details.cshtml" />
+    <Content Include="Views\DicionarioEstatico\Edit.cshtml" />
+    <Content Include="Views\DicionarioEstatico\Index.cshtml" />
+    <Content Include="Views\ParLevel3InputType\Create.cshtml" />
+    <Content Include="Views\ParLevel3InputType\Delete.cshtml" />
+    <Content Include="Views\ParLevel3InputType\Details.cshtml" />
+    <Content Include="Views\ParLevel3InputType\Edit.cshtml" />
+    <Content Include="Views\ParLevel3InputType\Index.cshtml" />
+    <Content Include="Views\ParReasonTypes\Create.cshtml" />
+    <Content Include="Views\ParReasonTypes\Delete.cshtml" />
+    <Content Include="Views\ParReasonTypes\Details.cshtml" />
+    <Content Include="Views\ParReasonTypes\Edit.cshtml" />
+    <Content Include="Views\ParReasonTypes\Index.cshtml" />
+    <Content Include="Views\ParAlertTypes\Create.cshtml" />
+    <Content Include="Views\ParAlertTypes\Delete.cshtml" />
+    <Content Include="Views\ParAlertTypes\Details.cshtml" />
+    <Content Include="Views\ParAlertTypes\Edit.cshtml" />
+    <Content Include="Views\ParAlertTypes\Index.cshtml" />
+    <Content Include="Views\ParScoreTypes\Create.cshtml" />
+    <Content Include="Views\ParScoreTypes\Delete.cshtml" />
+    <Content Include="Views\ParScoreTypes\Details.cshtml" />
+    <Content Include="Views\ParScoreTypes\Edit.cshtml" />
+    <Content Include="Views\ParScoreTypes\Index.cshtml" />
+    <Content Include="Views\ParConsolidationTypes\Create.cshtml" />
+    <Content Include="Views\ParConsolidationTypes\Delete.cshtml" />
+    <Content Include="Views\ParConsolidationTypes\Details.cshtml" />
+    <Content Include="Views\ParConsolidationTypes\Edit.cshtml" />
+    <Content Include="Views\ParConsolidationTypes\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_FilterReports.cshtml" />
+    <Content Include="Views\RelatoriosSgq\ApontamentosDiariosRH.cshtml" />
+    <Content Include="Views\Shared\_LayoutReports.cshtml" />
+    <Content Include="Views\Relatorios\RH\NaoConformidadeRH.cshtml" />
+    <Content Include="Views\Shared\_ClusterRegionalUnidadeCriticalLevel123RH.cshtml" />
+    <Content Include="Views\Relatorios\RH\EvolutivoRH.cshtml" />
+    <Content Include="Views\ParCargoXDepartments\Create.cshtml" />
+    <Content Include="Views\ParCargoXDepartments\Delete.cshtml" />
+    <Content Include="Views\ParCargoXDepartments\Details.cshtml" />
+    <Content Include="Views\ParCargoXDepartments\Edit.cshtml" />
+    <Content Include="Views\ParCargoXDepartments\Index.cshtml" />
+    <Content Include="Views\Relatorios\RH\VGARH.cshtml" />
+    <Content Include="Views\IntegracaoSistemicas\Create.cshtml" />
+    <Content Include="Views\IntegracaoSistemicas\Delete.cshtml" />
+    <Content Include="Views\IntegracaoSistemicas\Details.cshtml" />
+    <Content Include="Views\IntegracaoSistemicas\Edit.cshtml" />
+    <Content Include="Views\IntegracaoSistemicas\Index.cshtml" />
+    <Content Include="Views\Relatorios\MSP\RelatorioMSP.cshtml" />
+    <Content Include="Views\ParDepartments\Create.cshtml" />
+    <Content Include="Views\ParDepartments\Delete.cshtml" />
+    <Content Include="Views\ParDepartments\Details.cshtml" />
+    <Content Include="Views\ParDepartments\Edit.cshtml" />
+    <Content Include="Views\ParDepartments\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1944,7 +2144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
-      <Project>{31925FCA-E0F6-428D-9A7D-59CA8879D6F8}</Project>
+      <Project>{31925fca-e0f6-428d-9a7d-59ca8879d6f8}</Project>
       <Name>ADOFactory</Name>
     </ProjectReference>
     <ProjectReference Include="..\CrossCutting\CrossCutting.csproj">
@@ -1963,9 +2163,21 @@
       <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
       <Name>Helper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationModule\IntegrationModule.csproj">
+      <Project>{B6DDBEB5-490D-4D8A-B55E-4E66C283DCD4}</Project>
+      <Name>IntegrationModule</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlanoAcaoCore\PlanoAcaoCore.csproj">
       <Project>{9F15CCA3-EC01-46B6-91EC-3F408E7417BC}</Project>
       <Name>PlanoAcaoCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
+      <Project>{3ECF1D86-91F3-4140-A11A-1546B8F662A1}</Project>
+      <Name>ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SgqServiceBusiness\SgqServiceBusiness.csproj">
+      <Project>{2a112b7a-4627-43f6-b362-321e0b2e6b0b}</Project>
+      <Name>SgqServiceBusiness</Name>
     </ProjectReference>
     <ProjectReference Include="..\YTOARA_DOMINIO\YTOARA_DOMINIO.csproj">
       <Project>{02cfb056-37ce-40f2-8790-0d47bc6d2b59}</Project>
@@ -1977,13 +2189,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_GlobalResources\Resource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

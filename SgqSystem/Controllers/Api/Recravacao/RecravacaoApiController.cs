@@ -1,6 +1,7 @@
 ﻿using ADOFactory;
 using Dominio;
 using Newtonsoft.Json.Linq;
+using ServiceModel;
 using SgqSystem.Controllers.Api.Recravacao;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using static SgqSystem.Controllers.Api.SyncServiceApiController;
 
 namespace SgqSystem.Controllers.Api
 {
@@ -159,7 +161,12 @@ namespace SgqSystem.Controllers.Api
                     {
                         foreach (string collectionJson in listaCollectionJson)
                         {
-                            new SgqSystem.Services.SyncServices().InsertJson(collectionJson, "1", "1", false);
+                            new SyncServiceApiController().InsertJson(new InsertJsonClass() {
+                                ObjResultJSon = collectionJson,
+                                deviceId = "1",
+                                deviceMac = "1",
+                                autoSend = false
+                            });
                             //após realizado a inserção efetuar a reconsolidação por level3
                             //1004
                         }

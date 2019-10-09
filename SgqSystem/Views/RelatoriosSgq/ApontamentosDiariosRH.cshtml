@@ -1,0 +1,196 @@
+﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
+@{
+    Layout = "_FilterReports.cshtml";
+    ViewBag.Title = Resources.Resource.daily_apointments; //"Apontamentos Diarios";
+
+    ViewBag.ShowCurrentDate = true;
+    ViewBag.ShowRangeDate = false;
+    ViewBag.ShowParStructure = false;
+    ViewBag.ShowParCompany = true;
+    ViewBag.ShowShift = false;
+    ViewBag.ShowParDepartment = true;
+    ViewBag.ShowParSecao = true;
+    ViewBag.ShowParCargo = true;
+    ViewBag.ShowParLevel1 = true;
+    ViewBag.ShowParLevel2 = true;
+    ViewBag.ShowParLevel3 = true;
+
+    var urlGet = Url.Action("GetApontamentosDiariosRH", "api/ApontamentosDiarios");
+}
+
+@section Content {
+
+    <div id="divApontamentosDiarios"></div>
+    <div id="divTable">
+        <table id="resultsApontamentos" class="table table-striped"></table>
+    </div>
+
+}
+
+@section Scripts {
+
+    <script>
+
+        var urlGet = '@Html.Raw(@urlGet)';
+
+        function enviarFiltro() {
+            openLoader('Aguarde...');
+            $('#resultsApontamentos').empty();
+            $('#divApontamentosDiarios').empty();
+
+            $('#divTable').hide();
+
+            $.ajax({
+                url: urlGet,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+            .done(function (data) {
+                GerarTabela(data);
+                closeLoader();
+            })
+            .fail(function (jqXHR, textStatus, msg) {
+                console.log(msg);
+                preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                closeLoader();
+            });
+        }
+
+        function preencheRetornoGrafico(msg) {
+            $('#divApontamentosDiarios').html("<div class='alert alert-info'>" + msg + "</div>");
+        }
+
+        function GerarTabela(retornoArray) {
+
+            if (retornoArray.length == 0) {
+
+                preencheRetornoGrafico(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
+            }
+
+            else {
+
+                //Fim Regra
+                var Tipo1 = {};
+                var Tipo2 = {};
+
+                if (retornoArray[0].HashKey == 1 || retornoArray[0].HashKey == 5) {
+
+                    Tipo1 = { title: "@Resources.Resource.sequential", mData: "Sequencial" };
+                    Tipo2 = { title: "@Resources.Resource.side_banda", mData: "Banda" };
+                } else {
+                    Tipo1 = { title: "@Resources.Resource.evaluation", mData: "Avaliacao" };
+                    Tipo2 = { title: "@Resources.Resource.sample", mData: "Amostra" };
+                }
+
+                $('#divTable').show();
+
+                var colunas =
+                    [
+                        { title: "@Resources.Resource.unit", mData: "Unidade" },
+                        //{ title: "@Resources.Resource.cluster", mData: "Processo" },
+                        //{ title: "@Resources.Resource.shift", mData: "Turno" },
+                        //{ title: "@Resources.Resource.period", mData: "Periodo" },
+                        { title: "@Resources.Resource.frequency", mData: "Frequencia" },
+                        { title: "@Resources.Resource.auditor", mData: "Auditor" },
+                        { title: "@Resources.Resource.date", mData: "_Data" },
+                        { title: "@Resources.Resource.time", mData: "_Hora" },
+
+                        { title: "@Resources.Resource.department", mData: "Departamento" },
+                        { title: "Cargo", mData: "Cargo" },
+                        { title: "@Resources.Resource.audit", mData: "Indicador" },
+                        { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
+                        { title: "@Resources.Resource.task", mData: "Tarefa" },
+                        { title: "@Resources.Resource.weight", mData: "Peso" },
+                        {
+                            title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
+
+                                if (isNaN(parseFloat(data))) {
+
+                                    return data;
+
+                                } else {
+
+                                    return data.toString().match(/^-?\d+(\.\d{1,2})?/g)[0];
+                                }
+
+                            }
+                        },
+                        {
+                            title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
+
+                                if (isNaN(parseFloat(data))) {
+
+                                    return data;
+
+                                } else {
+
+                                    return data.toString().match(/^-?\d+(\.\d{1,2})?/g)[0];
+                                }
+
+                            }
+                        },
+                        { title: "@Resources.Resource.value", mData: "Lancado" },
+                        { title: "@Resources.Resource.valueText", mData: "ValueText" },
+                        { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
+                        { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
+                        { title: "@Resources.Resource.na ?", mData: "_NA" },
+                        { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
+                        Tipo1,
+                        Tipo2,
+                        { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%" },
+                        //{ title: "@Resources.Resource.platform", mData: "Platform", "width": "50%" },
+                        { title: "@Resources.Resource.add_date", mData: "_AddDate", "width": "50%" },
+                        {
+                            title: "@Resources.Resource.type ", mData: "Type", mRender: function (data, type, full) {
+
+                                if (data == "2") {
+                                    return '@Resources.Resource.retroactive';
+                                } else if (data == "3") {
+                                    return '@Resources.Resource.anticipated';
+                                } else if (data == "4") {
+                                    return '@Resources.Resource.import';
+                                } else if (data == '1') {
+                                    return '@Resources.Resource.edited';
+                                } else {
+                                    return '@Resources.Resource.normal';
+                                }
+                            }
+                        }
+                    ];
+
+                var initDatatable = function () {
+
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#resultsApontamentos').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+
+                }
+
+                var table = datatableGRT.Inicializar({
+                    idTabela: "resultsApontamentos",
+                    listaDeDados: retornoArray,
+                    colunaDosDados: colunas,
+                    numeroLinhasNaTabela: 25,
+                    aplicarResponsividade: true,
+                    tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                    loadingRecords: true,
+                    destroy: true,
+                    info: true,
+                    initComplete: initDatatable,
+                    createdRow: function (row, data, index) {
+                    }
+                });
+            }
+
+        }
+    </script>
+
+}

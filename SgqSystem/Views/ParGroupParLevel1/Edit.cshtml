@@ -1,7 +1,7 @@
 ﻿@model Dominio.ParGroupParLevel1
 
 @{
-    ViewBag.Title = "Editar Grupo de Indicador";
+    ViewBag.Title = "Editar Grupo de Função";
 }
 
 <div class="page-content-wrapper">
@@ -14,7 +14,7 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParGroupParLevel1")">@Resources.Resource.indicator_group</a>
+                    <a href="@Url.Action("Index", "ParGroupParLevel1")">@Resources.Resource.function</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -30,7 +30,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.edit @Resources.Resource.indicator_group</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.edit @Resources.Resource.function</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -43,7 +43,6 @@
                                     @Html.AntiForgeryToken()
 
                                     <div class="form-horizontal">
-                                        <hr />
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         @Html.HiddenFor(model => model.Id)
 
@@ -56,7 +55,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParGroupParLevel1Type_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParGroupParLevel1Type_Id, "Grupo de Tipo de Função", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownListFor(model => model.ParGroupParLevel1Type_Id, null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParGroupParLevel1Type_Id, "", new { @class = "text-danger" })
@@ -86,7 +85,7 @@
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
                                                 <input type="submit" value="@Resources.Resource.save" class="btn btn-success" />
-                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                                @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
                                     </div>

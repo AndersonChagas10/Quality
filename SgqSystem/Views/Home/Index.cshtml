@@ -1,10 +1,11 @@
-﻿
-@{
-    var urlDataCollection = ViewBag.UrlDataCollect;
-    //var urlDataCollection = Url.Action("", "DataCollect");
-    var urlManagement = Url.Action("Index", "Gestao");
-    var urlCustomization = Url.Action("Index", "Params");
-    var version = ViewBag.Asembly;
+﻿@{
+                /**/
+
+                var urlDataCollection = ViewBag.UrlDataCollect;
+                //var urlDataCollection = Url.Action("", "DataCollect");
+                var urlManagement = Url.Action("Index", "Gestao");
+                var urlCustomization = Url.Action("Index", "Params");
+                var version = ViewBag.Asembly;
 
 }
 
@@ -46,7 +47,7 @@
             .menuGeral a {
                 text-decoration: none;
                 color: #2a4375;
-                display:block;
+                display: block;
             }
 
                 .menuGeral a:hover {
@@ -61,7 +62,9 @@
 
         <div class="row" style="text-align:center;">
 
-            <img src="~/Imagens/Logo.png" style="width:180px;"/>
+            @*<img src="~/Imagens/Logo.png" style="width:180px;" />*@
+            <img src="@DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogo" style="width:180px;" />
+
         </div>
 
 
@@ -69,19 +72,27 @@
             <div class="col-xs-0 col-lg-3 col-md-3 col-sm-0"></div>
 
             <div class="col-xs-12 col-lg-2 col-md-2 col-sm-4 menuGeral">
-                <a href="@urlCustomization">
+                <a href="@Html.Raw(Url.Action(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.actionParametrizacao,DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.controllerParametrizacao))" target="_blank">
                     <img src="~/Imagens/if_check_406783.png" /><br /><br />@Resources.Resource.customization
                     <br /><p class="menuGeraltexto">@Resources.Resource.textHomeParams</p>
                 </a>
             </div>
 
-            <div class="col-xs-12 col-lg-2 col-md-2 col-sm-4 menuGeral"><a href="@urlDataCollection" target="_blank"><img src="~/Imagens/if_tablet_406729.png" /><br /><br />@Resources.Resource.data_collection 
-                <br /><p class="menuGeraltexto">@Resources.Resource.textHomeColeta</p></a></div>
+            <div class="col-xs-12 col-lg-2 col-md-2 col-sm-4 menuGeral">
+                <a href="@Html.Raw(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.controllerAppColeta)" target="_blank">
+                    <img src="~/Imagens/if_tablet_406729.png" /><br /><br />@Resources.Resource.data_collection
+                    <br /><p class="menuGeraltexto">@Resources.Resource.textHomeColeta</p>
+                </a>
+            </div>
 
-            <div class="col-xs-12 col-lg-2 col-md-2 col-sm-4 menuGeral"><a href="@urlManagement"><img src="~/Imagens/if_target_406854.png" /><br /><br />@Resources.Resource.management 
-                <br /><p class="menuGeraltexto">@Resources.Resource.textHomeGestao</p></a></div>
+            <div class="col-xs-12 col-lg-2 col-md-2 col-sm-4 menuGeral">
+                <a href="@Html.Raw(Url.Action(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.actionGestao,DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.controllerGestao))" target="_blank">
+                    <img src="~/Imagens/if_target_406854.png" /><br /><br />@Resources.Resource.management
+                    <br /><p class="menuGeraltexto">@Resources.Resource.textHomeGestao</p>
+                </a>
+            </div>
 
-            
+
             <div class="col-xs-0 col-lg-3 col-md-4 col-sm-0"></div>
         </div>
 

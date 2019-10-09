@@ -2,12 +2,12 @@
     ViewBag.Title = Resources.Resource.corrective_action_reports;
     var url = Url.Action("Index", "Home");
     var urlTabelaRelatorio = Url.Action("GetCorrectiveAction", "api/CorrectiveAction");
-    var urlGetCa = Url.Action("GetCorrectiveActionById", "api/CorrectiveAction");
+    var urlGetCa = Url.Action("GetCorrectiveActionById2", "api/CorrectiveAction");
 }
 
 <div class="page-content-wrapper">
     <div class="page-content">
-        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml","")
         <div id="formBodyContent">
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
             @Html.Partial("~/Views/Shared/_CorrectiveActionReportEdit.cshtml", new DTO.DTO.CorrectiveActionDTO())

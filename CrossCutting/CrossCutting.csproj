@@ -87,6 +87,10 @@
       <Project>{777d8e88-0d52-446a-bc77-2f50a7d936e5}</Project>
       <Name>Dominio</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

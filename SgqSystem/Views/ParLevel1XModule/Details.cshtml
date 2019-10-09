@@ -47,7 +47,7 @@
                                 <div>
                                     <dl class="dl-horizontal">
                                         <dt>
-                                            @Html.DisplayName(Resources.Resource.parlevel1)
+                                            @Html.DisplayName(Resources.Resource.parlevel1 as string)
                                         </dt>
 
                                         <dd>
@@ -55,7 +55,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayName(Resources.Resource.parModule)
+                                            @Html.DisplayName(Resources.Resource.parModule as string)
                                         </dt>
 
                                         <dd>
@@ -71,7 +71,7 @@
                                         </dd>*@
 
                                         <dt>
-                                            @Html.DisplayName(Resources.Resource.is_active)
+                                            @Html.DisplayName(Resources.Resource.is_active as string)
                                         </dt>
 
                                         <dd>
@@ -79,7 +79,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayName(Resources.Resource.effective_date_start)
+                                            @Html.DisplayName(Resources.Resource.effective_date_start as string)
                                         </dt>
 
 
@@ -97,8 +97,8 @@
                                     </dl>
                                 </div>
                                 <p>
-                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = Model.Id }, new { @class = "btn btn-success" })
-                                    @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = Model.Id }, new { @class = "btn btn-success" })
+                                    @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
                                 </p>
                             </div>
                         </div>

@@ -14,7 +14,7 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        [DisplayName("Tipo Indicador")]
+        [DisplayName("Tipo Função")]
         public string Name { get; set; }
 
         [DisplayName("Está Ativo")]

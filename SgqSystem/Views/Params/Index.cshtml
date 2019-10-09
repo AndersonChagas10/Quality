@@ -460,14 +460,14 @@
         loading_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.loading)),
 
         enviarDadosParaApi: function (e) {
-            debugger
+            
             $("#paramsDto_parLevel1Dto_Name").val($.trim($("#paramsDto_parLevel1Dto_Name").val().replace(/  +/g, ' ')));
 
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
             $.validator.unobtrusive.parse("form");
 
             if ($('#newLevel1Modal > form').valid()) {
-                debugger
+                
                 $("#newLevel1Modal :disabled").addClass('voltarDisabled').prop("disabled", false);
 
                 var $btn = $('#btnSaveNewLevel1');
@@ -827,7 +827,7 @@
 
 
         enviarDadosParaApi: function (e) {
-            debugger
+            
             $("#paramsDto_parLevel3Dto_Name").val($.trim($("#paramsDto_parLevel3Dto_Name").val().replace(/  +/g, ' ')));
 
             $('#selectTipoInput').val(-1).change();
@@ -1446,7 +1446,7 @@
     var idLvl1;
     var indexCabecalho ={
         enviarDadosParaApi: function (e) {
-            debugger
+            
             var dados = $('#ediCab > form').serializeObject();
             dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] = idfieldType;
             dados['paramsDto.parHeaderFieldDto.Id'] = idpar;
@@ -1523,7 +1523,7 @@
     var EditCabecalho = '@Html.Raw(@urlEditCabecalho)';
 
     function ModalEdicaoCabecalho(title, idpH, idL1, idFT) {
-        debugger
+        
         idpar = idpH;
         idfieldType = idFT;
         idLvl1 = idL1;
@@ -1532,7 +1532,7 @@
         $('#Header').html("@Resources.Resource.edit_header");
 
         $.get(EditCabecalho, { id: idpar, idLevel1: idL1 }, function (r) {
-            debugger
+            
             $('#modalEdicaoCabecalho').find('.modal-body').empty().append(r);
             $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').attr('disabled', true);
             if (parseInt($('#paramsDto_parHeaderFieldDto_ParFieldType_Id').val()) == 9 || parseInt($('#paramsDto_parHeaderFieldDto_ParFieldType_Id').val()) == 10) {

@@ -56,12 +56,6 @@
                                         @{ Html.EnableClientValidation(false); }
 
                                         <div class="form-group">
-                                            <div class="col-md-12 hidden" id="divbotaoAgendamento">
-                                                <button type="button" id="btnModalAgendamento" onclick="AbrirModal()" class="btn btn-success btn-sm pull-right"> Agendamento</button>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
                                             @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Data, new { htmlAttributes = new { @class = "form-control" } })
@@ -73,15 +67,15 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParCompany_id, "Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                                                @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select as string + "...", new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParCompany_id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Shift_Id, Resources.Resource.shift, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Shift_Id, Resources.Resource.shift as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownList("Shift_Id", new SelectList(ViewBag.ShiftVolume, "Id", "Name"), Resources.Resource.all, new { @class = "form-control" })
+                                                @Html.DropDownList("Shift_Id", new SelectList(ViewBag.ShiftVolume, "Id", "Name"), Resources.Resource.all as string, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.Shift_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -198,12 +192,9 @@
                                             </div>
                                         </div>
 
-                                        @Html.Partial("_AgendamentoVolumes")
-                                        @Html.HiddenFor(model => model.Agendamento, new { @id = "Agendamento" })
-
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Salvar" onclick="preencheAgendamento(event)" class="btn btn-primary" />
+                                                <input type="submit" value="Salvar" class="btn btn-primary" />
                                                 @Html.ActionLink("Voltar para Volume de CEP Matéria Prima", "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>

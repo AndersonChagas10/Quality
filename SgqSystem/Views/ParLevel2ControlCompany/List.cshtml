@@ -50,7 +50,7 @@
                     title: Resources("initial_date"),
                     mData: null,
                     render: function (data) {
-                        debugger
+                        
                         const html = "<span style='display:none'>" + new Date(data.InitDate.match(/\d+/)[0] * 1).toJSON() + "</span>" + new Date(data.InitDate.match(/\d+/)[0] * 1).toLocaleDateString();
                         return html;
                     }

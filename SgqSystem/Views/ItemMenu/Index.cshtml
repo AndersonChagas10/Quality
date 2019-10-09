@@ -37,7 +37,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab" >
                                 <p>
-                                    @Html.ActionLink(Resources.Resource._novo, "Create", null, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink(Resources.Resource._novo as string, "Create", null, new { @class = "btn btn-primary" })
                                 </p>
                                 <table class="table" id="tabelaMenu">
                                     <thead>
@@ -46,27 +46,27 @@
                                                 @Html.DisplayName("Menu Predecessor")
                                             </th>
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.add_date)
+                                                @Html.DisplayName(Resources.Resource.add_date as string)
                                             </th>
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.alter_date)
+                                                @Html.DisplayName(Resources.Resource.alter_date as string)
                                             </th>
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.name)
+                                                @Html.DisplayName(Resources.Resource.name as string)
                                             </th>
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.icon)
+                                                @Html.DisplayName(Resources.Resource.icon as string)
                                             </th>
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.url)
+                                                @Html.DisplayName(Resources.Resource.url as string)
                                             </th>
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.resource)
+                                                @Html.DisplayName(Resources.Resource.resource as string)
                                             </th>
                                             <th>
-                                                @Html.DisplayName(Resources.Resource.is_active)
+                                                @Html.DisplayName(Resources.Resource.is_active as string)
                                             </th>
-                                            <th> @Html.DisplayName(Resources.Resource.action)</th>
+                                            <th> @Html.DisplayName(Resources.Resource.action as string)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -95,10 +95,10 @@
                                                     @Html.DisplayFor(modelItem => item.Resource)
                                                 </td>
                                                 <td>
-                                                    @Html.Raw((item.IsActive == true) ? Resources.Resource.yes : Resources.Resource.no)
+                                                    @Html.Raw((item.IsActive == true) ? Resources.Resource.yes as string : Resources.Resource.no as string)
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 </td>
                                             </tr>
                                         }

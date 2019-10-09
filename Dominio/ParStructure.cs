@@ -27,5 +27,8 @@ namespace Dominio
 
         [ForeignKey("ParStructureGroup_Id")]
         public virtual ParStructureGroup ParStructureGroup { get; set; }
+
+        [NotMapped]
+        public virtual ParStructure ParStructureParent { get; set; }
     }
 }

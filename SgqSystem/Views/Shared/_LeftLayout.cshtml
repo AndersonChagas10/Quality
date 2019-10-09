@@ -48,12 +48,12 @@
         if (item.ListaFilho.Count > 0)
         {
             html += $@"<a href = '{url}' target='{target}' class='nav-link nav-toggle'>
-            {RetornaIcone(item)}
-            <span class='title'>{item.Name}</span>
-            <span class='arrow'></span>
-        </a>";
+{RetornaIcone(item)}
+<span class='title'>{item.Name}</span>
+<span class='arrow'></span>
+</a>";
             html += $@"<ul class='sub-menu'>";
-            foreach (var filho in item.ListaFilho)
+            foreach (var filho in item.ListaFilho.OrderBy(x => x.Name))
             {
                 html += MontaSubItem(filho);
             }
@@ -62,9 +62,9 @@
         else
         {
             html += $@"<a href = '{url}' target='{target}' class='nav-link nav-toggle'>
-            {RetornaIcone(item)}
-            <span class='title'>{item.Name}</span>
-        </a>";
+{RetornaIcone(item)}
+<span class='title'>{item.Name}</span>
+</a>";
         }
         html += "</li>";
         return html;
@@ -85,9 +85,9 @@
                 if (ListItensMenu != null)
                 {
                     //Prepara as classes para a montagem do menu
-                    foreach (var item in ListItensMenu)
+                    foreach (var item in ListItensMenu.OrderBy(x => x.Name))
                     {
-                        foreach (var filho in ListItensMenu)
+                        foreach (var filho in ListItensMenu.OrderBy(x => x.Name))
                         {
                             if (item.Id == filho.ItemMenu_Id)
                             {
@@ -99,14 +99,14 @@
 
 
                     //Gera a visualização do menu
-                    foreach (var item in ListItensMenu.Where(i => !i.IsSubItem))
+                    foreach (var item in ListItensMenu.Where(i => !i.IsSubItem).OrderBy(x => x.Name))
                     {
                         @Html.Raw(MontaSubItem(item))
                     }
                 }
             }
 
-            @if (ViewBag.UserRoles != null && ViewBag.UserRoles.Contains("Admin"))
+            @if (ViewBag.UserId == "-1")
             {
                 <li class="nav-item">
                     <a href="javascript:;" target="" class="nav-link nav-toggle">
@@ -127,6 +127,59 @@
                         <li class="nav-item">
                             <a href="@Html.Raw(Url.Action("Index", "RoleUserSgq"))" target="" class="nav-link nav-toggle">
                                 <span class="title">Regras</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:;" target="" class="nav-link nav-toggle">
+                        <i class="fa fa-tasks"></i>
+                        <span class="title">Dicionários</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("Index", "resourcePTs"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Resources PT</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("Index", "resourceENs"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Resources EN</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("Index", "DicionarioEstatico"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Dicionário Estático</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:;" target="" class="nav-link nav-toggle">
+                        <i class="fa fa-tasks"></i>
+                        <span class="title">Enumeradores</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("Index", "ParReasonTypes"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Tipo Razão</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("Index", "ParAlertTypes"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Tipos de Alerta</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("Index", "ParScoreTypes"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Tipo de Score </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Html.Raw(Url.Action("Index", "ParConsolidationTypes"))" target="" class="nav-link nav-toggle">
+                                <span class="title">Tipo de Consolidação</span>
                             </a>
                         </li>
                     </ul>

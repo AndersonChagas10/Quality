@@ -1,0 +1,110 @@
+﻿<h3 class="titulo2">Itens Avançados</h3>
+
+<form id="ParL1Avancados">
+
+    <br />
+    <div class="row" data-form>
+
+        <input type="hidden" name="Id" />
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="">
+                        <!-- Rounded switch -->
+                        <label class="switch">
+                            <input type="checkbox" name="IsLimitedEvaluetionNumber">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-10">
+                    Limitar o número de avaliações
+                    <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Limita o número de avaliações de acordo com o monitoramento não permitindo, o usuário  realizar coletas “extras”" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="">
+                        <!-- Rounded switch -->
+                        <label class="switch">
+                            <input type="checkbox" name="HasTakePhoto">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-10">
+                    Permitir tirar foto nas tarefas
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+
+            <button class="btn btn-primary pull-right btn btn-block" data-add>Salvar</button>
+
+        </div>
+    </div>
+
+</form>
+
+
+<script>
+    var ParL1Avancados = {
+
+        //paramtros
+        id: 'ParL1Avancados',
+        urlSave: '@Url.Action("PostParLevel1Avancados", "api/ParLevel1Api")',
+
+        set: function (obj) {
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+        },
+
+        load: function () {
+
+            let id = this.id;
+            let urlSave = this.urlSave;
+
+            function Save(obj) {
+                var parLevel1Clonado = JSON.parse(JSON.stringify(obj));
+                parLevel1Clonado.ParLevel1XCluster = {};
+                parLevel1Clonado.ParLevel1XHeaderField = {};
+
+                openLoader(Resources("please_wait"));
+                $.ajax({
+                    url: urlSave,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(parLevel1Clonado),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Feito", "Dados Salvos");
+                        $('#selectL1').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
+            }
+
+            //Salvar o campo editado ou cria um novo
+            $('#' + id).on('click', '[data-add]', function (e) {
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+                Save(obj);
+            });
+        },
+    };
+    ParL1Avancados.load();
+</script>

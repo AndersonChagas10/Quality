@@ -186,6 +186,52 @@ namespace ADOFactory
 
         }
 
+        public List<T> SearchQuery<T>(SqlCommand command)
+        {
+            try
+            {
+                var listReturn = new List<T>();
+
+                command.CommandTimeout = connectionTimeout; //3 minutos
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        //var columns = Enumerable.Range(0, reader.FieldCount).Select(reader.GetName).ToList();
+                        object instance = Activator.CreateInstance(typeof(T));
+
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            try
+                            {
+                                if (!reader.IsDBNull(i))
+                                {
+                                    var info = instance.GetType().GetProperty(reader.GetName(i), BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                                    if (info != null)
+                                    {
+                                        Type type = Nullable.GetUnderlyingType(info.PropertyType) ?? info.PropertyType;
+                                        info.SetValue(instance, Convert.ChangeType(reader[i], type));
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                throw e;
+                            }
+                        }
+                        listReturn.Add((T)instance);
+                    }
+                }
+                return listReturn;
+            }
+            catch (Exception e)
+            {
+                closeConnection();
+                throw e;
+            }
+
+        }
+
         public List<JObject> QueryNinjaADO(string query)
         {
             List<JObject> items = new List<JObject>();
