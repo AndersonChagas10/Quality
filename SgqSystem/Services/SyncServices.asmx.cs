@@ -6792,7 +6792,7 @@ namespace SgqSystem.Services
             string input = null;
             //string valorMaximo = "";
             //string valorMinimo = "";
-            
+
             switch (parLevel3.ParLevel3InputType_Id)
             {
                 case 1:
@@ -6938,15 +6938,13 @@ namespace SgqSystem.Services
                                                     intervalMin: parLevel3.IntervalMin,
                                                     intervalMax: parLevel3.IntervalMax,
                                                     unitName: parLevel3.ParMeasurementUnit_Name);
-
                     break;
-
                 case 8:
 
                     var ranges = dbEf.ParInputTypeValues
-    .Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id
-        && r.IsActive
-        && (r.Intervalo <= parLevel3.IntervalMax && r.Intervalo >= parLevel3.IntervalMin)).ToList();
+                    .Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id
+                        && r.IsActive
+                        && (r.Intervalo <= parLevel3.IntervalMax && r.Intervalo >= parLevel3.IntervalMin)).ToList();
 
                     var paramns = new List<string>();
 
@@ -8721,7 +8719,7 @@ namespace SgqSystem.Services
             }
         }
 
-        
+
 
         #endregion
 
