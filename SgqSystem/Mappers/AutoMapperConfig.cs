@@ -112,7 +112,6 @@ namespace SgqSystem.Mappers
 
                 x.AddProfile<ParLevel1XRotinaIntegracaoMapperProfile>();
 
-
                 ///*PA............*/
                 //x.AddProfile<AcompanhamentoTarefaProfile>();
                 //x.AddProfile<CabecalhoProfile>();

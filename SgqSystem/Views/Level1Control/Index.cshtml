@@ -8,7 +8,7 @@
 <h2>Index</h2>
 
 <div>ParCompany</div>
-<div>@Html.DropDownList("ParCompany", new SelectList(ViewBag.ParCompany, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm" })</div>
+<div>@Html.DropDownList("ParCompany", new SelectList(ViewBag.ParCompany, "Id", "Name"), Resources.Resource.select as string + "...", new { @class = "form-control input-sm" })</div>
 
 <div id="tables">
     @Html.Partial("_ParLevel2OnParCompany")

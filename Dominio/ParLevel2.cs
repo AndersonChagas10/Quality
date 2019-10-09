@@ -29,9 +29,9 @@ namespace Dominio
 
         public int Id { get; set; }
 
-        public int ParFrequency_Id { get; set; }
+        public int? ParFrequency_Id { get; set; }
 
-        public int ParDepartment_Id { get; set; }
+        public int? ParDepartment_Id { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
@@ -84,5 +84,8 @@ namespace Dominio
         public virtual ICollection<ParRelapse> ParRelapse { get; set; }
 
         public virtual ICollection<ParSample> ParSample { get; set; }
+
+        [NotMapped]
+        public List<ParHeaderFieldGeral> ParHeaderFieldsGeral { get; set; }
     }
 }

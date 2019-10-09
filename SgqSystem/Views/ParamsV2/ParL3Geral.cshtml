@@ -1,0 +1,132 @@
+﻿<h3 class="titulo2">Informações Gerais</h3>
+
+<form id="ParL3Geral">
+
+    <br />
+    <div class="row" data-form>
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label for="Name">Nome da tarefa:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Nome da tarefa" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <input type="text" class="form-control required" id="Name" name="Name">
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label for="Description">Descrição da tarefa:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Breve explicação  do indicador" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <input type="text" class="form-control required" id="Description" name="Description">
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+           
+            <div class="form-group">
+                <label for="selectL3CaracteristicaDeRisco">Caracteristica De Risco:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Classificação do risco" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <select id="selectL3CaracteristicaDeRisco" class="input input-lg col-sm-12 required" name="ParRiskCharacteristicType_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label>Está ativo:</label>
+                <br />
+                <label class="switch">
+                    <input type="checkbox" name="IsActive">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+        </div>
+
+        <div class="col-sm-12">
+
+            <button class="btn btn-primary pull-right btn btn-block" data-add>Salvar</button>
+
+        </div>
+    </div>
+
+</form>
+
+<script>
+    var lastIdL3 = 0;
+    var ParL3Geral = {
+
+        //paramtros
+        id: 'ParL3Geral',
+        urlSave: '@Url.Action("PostParLevel3", "api/ParLevel3Api")',
+
+        set: function (obj) {
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+        },
+
+        afterCreate: function (data) {
+            setSelectLevel3(data);
+            $('#selectL3').val(lastIdL3);
+            $('#selectL3').trigger('change');
+        },
+
+        load: function () {
+
+            let id = this.id;
+            let urlSave = this.urlSave;
+
+            function Save(obj) {
+                openLoader(Resources("please_wait"));
+                var hasId = obj.Id;
+                $.ajax({
+                    url: urlSave,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    contentType: "application/json",
+                    success: function (data) {
+                        lastIdL3 = parseInt(data);
+                        openMessageModal("Feito", "Dados Salvos");
+                        if (parseInt(hasId) <= 0 || isNaN(parseInt(hasId)))
+                            getGenericAjax('@Url.Action("Get", "api/ParLevel3Api")', 'Get', ParL3Geral.afterCreate);
+                        else
+                            $('#selectL3').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
+            }
+
+            //Salvar o campo editado ou cria um novo
+            $('#' + id).on('click', '[data-add]', function (e) {
+
+                if (!formIsValid(id)) {
+                    return false
+                }
+
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+                obj.ParRiskCharacteristicType_Id = parseInt($("#selectL3CaracteristicaDeRisco :selected").val());
+                debugger
+                Save(obj);
+            });
+        },
+    };
+    ParL3Geral.load();
+</script>

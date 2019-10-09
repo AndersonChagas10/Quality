@@ -76,13 +76,13 @@
                                 <tr>
 
                                     @Table.GerarColuna(@Html.DropDownList("metaCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "metaCompany" })
-                                , @Html.Label(Resources.Resource.company)
+                                , @Html.Label(Resources.Resource.company as string)
                                 , Table.PosicaoLabel.top)
 
-                                    @Table.GerarColuna(@Html.Editor("effectiveDateMeta", new { htmlAttributes = new { @value = 0, @type = "date", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.effectiveDate), Table.PosicaoLabel.top)
+                                    @Table.GerarColuna(@Html.Editor("effectiveDateMeta", new { htmlAttributes = new { @value = 0, @type = "date", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.effectiveDate as string), Table.PosicaoLabel.top)
 
                                     @Table.GerarColunaButton(@Html.TextBox("percentVal", "", htmlAttributes: new { @id = "percentVal", @class = "form-control input-sm" })
-                                , @Html.Label(Resources.Resource.goal_value)
+                                , @Html.Label(Resources.Resource.goal_value as string)
                                 , Table.PosicaoLabel.top
                                 , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
 
@@ -255,7 +255,7 @@
                     //Verificar z-index modal
 
                     var o = $(obj).data();
-                    //debugger
+                    //
                     if(o.IsActive && (o.EffectiveDate == emptyEffectiveDate || new Date(o.EffectiveDate).getTime() <= new Date().getTime())){
                         var index = -1;
                         $(MetaL1.listObjActive).each(function(i,g){

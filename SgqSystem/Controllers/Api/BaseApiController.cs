@@ -3,22 +3,92 @@ using Dominio;
 using DTO.DTO;
 using Newtonsoft.Json.Linq;
 using SGQDBContext;
+using SgqService.ViewModels;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data.Entity;
 using System.Dynamic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 
 namespace SgqSystem.Controllers.Api
 {
+    public class CredenciaisSgq
+    {
+        public string Username { get; set; }
+        public string Senha { get; set; }
+    }
+
     public class BaseApiController : ApiController
     {
+        protected string token;
+        // GET: BaseAPI
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            // Do some stuff
+            base.Initialize(controllerContext);
+
+            try
+            {
+                //userlogado.attr('userlogin') +"|"+ userlogado.attr('userpass')
+                token = Request.Headers.GetValues("token").FirstOrDefault().ToString();
+                
+
+            }
+            catch
+            {
+
+            }
+
+            string language = "";
+            try
+            {
+                language = Request.Headers.GetValues("lang").FirstOrDefault();
+            }
+            catch
+            {
+
+            }
+
+            if (string.IsNullOrEmpty(language))
+            {
+                language = "pt-BR";
+            }
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(language);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
+        }
+
+        protected void VerifyIfIsAuthorized()
+        {
+            try
+            {
+                using (SgqDbDevEntities db = new SgqDbDevEntities())
+                {
+                    var user = new CredenciaisSgq()
+                    {
+                        Username = token.Split('|')[0],
+                        Senha = token.Split('|')[1]
+                    };
+                    if (!db.UserSgq.Any(x => x.Name == user.Username && x.Password == user.Senha && x.IsActive == true))
+                    {
+                        throw new UnauthorizedAccessException("Acesso negado!");
+                    }
+                }
+            }catch(Exception ex)
+            {
+                throw new UnauthorizedAccessException("Acesso negado!");
+            }
+        }
+
         /// <summary>
         /// Retorna Objeto Dinamico com dados da query no formato da Datatable.
         /// </summary>

@@ -27,6 +27,18 @@ namespace SgqSystem.Controllers.Api
             return agendamentos;
         }
 
+        [HttpGet]
+        [Route("GetAgendamentoParamv2/{id}")]
+        public List<ParEvaluationSchedule> GetAgendamentoParamv2(int id)
+        {
+            var db = new SgqDbDevEntities();
+            db.Configuration.LazyLoadingEnabled = false;
+
+            var agendamentos = db.ParEvaluationSchedule.Where(x => x.ParEvaluationXDepartmentXCargo_Id == id && x.IsActive).ToList();
+
+            return agendamentos;
+        }
+
         [HttpPost]
         [Route("Post")]
         public List<ParEvaluationSchedule> Post([FromBody] List<ParEvaluationSchedule> listaAgendamento)

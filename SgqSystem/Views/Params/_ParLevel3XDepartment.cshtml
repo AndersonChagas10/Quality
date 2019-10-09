@@ -2,6 +2,8 @@
 @using SgqSystem.Helpers
 
 @{
+    /**/
+
     var level = "3";
     var id = "level" + level + "_ParLevel3XDepartment_accordion";
     var id2 = "#level" + level + "__ParLevel3XDepartment_accordion";
@@ -11,7 +13,7 @@
     //var click = "alert();";
 }
 
-<div class="panel-group accordion" id="@id">
+<div class="panel-group accordion hide" id="@id">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
@@ -33,7 +35,7 @@
                                @class = "form-control input-sm",
                                @id = "parCompanySelectParLevel3XDepartment"
                            })
-                                , @Html.Label(Resources.Resource.company)
+                                , @Html.Label(Resources.Resource.company as string)
                                 , Table.PosicaoLabel.top, colspan: 1)
                         </tr>
                     </tbody>
@@ -58,7 +60,7 @@
                                 </div>
                             </td>
                             <td class="td-erp col-sm-6">
-                                <label for="paramsDto.parLevel1Selected">@Resources.Resource.level1</label>
+                                <label for="paramsDto.parLevel1Selected">@Resources.Resource.level2</label>
                                 <div>
                                     @Html.DropDownList("paramsDto.parLevel2Selected",
                                    new List<SelectListItem> {
@@ -81,7 +83,7 @@
                        Model.paramsDdl.DdlParDepartment,
                        htmlAttributes: new { @class = "form-control input-sm",
                            @id = "parDepartmentSelectParLevel3XDepartment" }),
-                       @Html.Label(Resources.Resource.department), Table.PosicaoLabel.top
+                       @Html.Label(Resources.Resource.department as string), Table.PosicaoLabel.top
                                             , button: "<button type='button' id='btnSaveparLevel3Department' onclick='ParLevel3XDepartment.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
                     </tr>
                 </table>
@@ -116,41 +118,66 @@
         levelControl: 3,
         level: "newLevel3Modal",
         listObjSalvo: levelParamsDTO.parLevel3Dto.listParLevel3XDepartment,
-        idTable: 'tableParLevel3XDepartment',//
+        idTable: 'tableParLevel3XDepartment',
         tdsNames: ['CompanyName', 'ParLevel1_Name', 'ParLevel2_Name', 'ParDepartment_Name', 'btn'],
-        getObjAdd: function(isEdit, obj){
-            if(isEdit != undefined){
+        getObjAdd: function (isEdit, obj) {
 
-                var compId = $('#' + isEdit + ' #parCompanySelectParLevel3XDepartment :selected').val();
-                var compName = $('#' + isEdit + ' #parCompanySelectParLevel3XDepartment :selected').text();
-                if(compId == "-1"){
-                    compName = "@Resources.Resource.all"
+            if (isEdit != undefined) {
+
+                let compId = $('#' + isEdit + ' #parCompanySelectParLevel3XDepartment :selected').val();
+                let compName = $('#' + isEdit + ' #parCompanySelectParLevel3XDepartment :selected').text();
+                if (compId == "-1") {
+                    compName = "@Resources.Resource.all";
                 }
+
+                let ParLevel1_Id = $('#' + isEdit + ' #parLevel1SelectParLevel3XDepartment :selected').val();
+                let ParLevel1_Name = $('#' + isEdit + ' #parLevel1SelectParLevel3XDepartment :selected').text();
+                if(ParLevel1_Id == "-1"){
+                    ParLevel1_Name = "@Resources.Resource.all";
+                }
+
+                let ParLevel2_Id = $('#' + isEdit + ' #parLevel2SelectParLevel3XDepartment :selected').val();
+                let ParLevel2_Name = $('#' + isEdit + ' #parLevel2SelectParLevel3XDepartment :selected').text();
+                if(ParLevel2_Id == "-1"){
+                    ParLevel2_Name = "@Resources.Resource.all";
+                }
+
+                let ParDepartment_Id = $('#' + isEdit + ' #parDepartmentSelectParLevel3XDepartment :selected').val();
+                let ParDepartment_Name = $('#' + isEdit + ' #parDepartmentSelectParLevel3XDepartment :selected').text();
+
                 obj.ParCompany_Id = compId;
                 obj.CompanyName = compName;
+                obj.ParLevel1_Id = ParLevel1_Id;
+                obj.ParLevel1_Name = ParLevel1_Name;
+                obj.ParLevel2_Id = ParLevel2_Id;
+                obj.ParLevel2_Name = ParLevel2_Name;
+                obj.ParDepartment_Id = ParDepartment_Id;
+                obj.ParDepartment_Name = ParDepartment_Name;
 
                 return obj;
-            }else{
-                var compId = $('#' + this.level + ' @id3 #parCompanySelectParLevel3XDepartment :selected').val();
-                var compName = $('#' + this.level + ' @id3 #parCompanySelectParLevel3XDepartment :selected').text();
+
+            } else {
+
+                let compId = $('#' + this.level + ' @id3 #parCompanySelectParLevel3XDepartment :selected').val();
+                let compName = $('#' + this.level + ' @id3 #parCompanySelectParLevel3XDepartment :selected').text();
                 if(compId == "-1"){
                     compName = "@Resources.Resource.all"
                 }
 
-                var ParLevel1_Id = $(' #parLevel1SelectParLevel3XDepartment :selected').val();
-                var ParLevel1_Name = $(' #parLevel1SelectParLevel3XDepartment :selected').text();
+                let ParLevel1_Id = $(' #parLevel1SelectParLevel3XDepartment :selected').val();
+                let ParLevel1_Name = $(' #parLevel1SelectParLevel3XDepartment :selected').text();
                 if(ParLevel1_Id == "-1"){
                     ParLevel1_Name = "@Resources.Resource.all"
                 }
 
-                var ParLevel2_Id = $(' #parLevel2SelectParLevel3XDepartment :selected').val();
-                var ParLevel2_Name = $(' #parLevel2SelectParLevel3XDepartment :selected').text();
+                let ParLevel2_Id = $(' #parLevel2SelectParLevel3XDepartment :selected').val();
+                let ParLevel2_Name = $(' #parLevel2SelectParLevel3XDepartment :selected').text();
                 if(ParLevel2_Id == "-1"){
                     ParLevel2_Name = "@Resources.Resource.all"
                 }
 
-                var ParDepartment_Id = $(' #parDepartmentSelectParLevel3XDepartment :selected').val();
-                var ParDepartment_Name = $(' #parDepartmentSelectParLevel3XDepartment :selected').text();
+                let ParDepartment_Id = $(' #parDepartmentSelectParLevel3XDepartment :selected').val();
+                let ParDepartment_Name = $(' #parDepartmentSelectParLevel3XDepartment :selected').text();
 
                 return {/*Objeto*/
                     ParCompany_Id  :  compId,
@@ -165,71 +192,77 @@
                 }
             }
         },
-        veifyAdd: function(isEdit) {
-            var seletorTato = !!isEdit ? isEdit : this.level;
+        veifyAdd: function (isEdit) {
+
+            let seletorTato = !!isEdit ? isEdit : this.level;
 
             function verify(data){
                 return (data == 0 || data == -1 || data == null) ? 1 : 0;
             }
-            /*Verifica Unidade*/
-            console.log('#' + seletorTato + ' @id3 #parCompanySelectParLevel3XDepartment :selected');
-            var companySelected = $('#' + seletorTato + ' @id3 #parCompanySelectParLevel3XDepartment :selected').val();//
-            var parLevel1Selected = $(' #parLevel1SelectParLevel3XDepartment :selected').val();
-            var parLevel2Selected = $(' #parLevel2SelectParLevel3XDepartment :selected').val();
-            var parDepartmentSelected = $(' #parLevel3SelectParDepartment :selected').val();
-            var display = $('#' + seletorTato + ' @id3 #parCompanySelectParLevel3XDepartment :selected').text();//
-            var exist = $.grep($('#tableParLevel3XDepartment  tbody  tr  td:nth-child(1)'), function(o, c){
 
-                var count = 0;
-                if(companySelected == -1){
-                    count += verify($(o).parent().data().ParCompany_Id);
-                    console.log(1);
-                }else{
-                    count += $(o).parent().data().ParCompany_Id == companySelected ? 1 : 0;
-                    console.log(2);
-                }
+            let companySelected = $('#' + seletorTato + ' #parCompanySelectParLevel3XDepartment :selected').val();
+            let parLevel1Selected = $('#' + seletorTato + ' #parLevel1SelectParLevel3XDepartment :selected').val();
+            let parLevel2Selected = $('#' + seletorTato + ' #parLevel2SelectParLevel3XDepartment :selected').val();
+            let parDepartmentSelected = $('#' + seletorTato + ' #parDepartmentSelectParLevel3XDepartment :selected').val();
 
-                if(parLevel1Selected == -1){
-                    count += verify($(o).parent().data().ParLevel1_Id);
-                    console.log(3);
-                }else{
-                    count += $(o).parent().data().ParLevel1_Id == parLevel1Selected ? 1 : 0;
-                    console.log(4);
-                }
+            let exist = false;      
+            let valorMaximo = 0;
 
-                if(parLevel2Selected == -1){
-                    count += verify($(o).parent().data().ParLevel2_Id);
-                    console.log(5);
-                }else{
-                    count += $(o).parent().data().ParLevel2_Id == parLevel2Selected ? 1 : 0;
-                    console.log(6);
-                }
+            //se for edição, comparar todos menos o que está editando
+            if (!!isEdit) {/*Edição*/
 
-                if(parDepartmentSelected == -1){
-                    count += verify($(o).parent().data().ParDepartment_Id);
-                    console.log(5);
-                }else{
-                    count += $(o).parent().data().ParDepartment_Id == parDepartmentSelected ? 1 : 0;
-                    console.log(6);
-                }
-
-                if(count == 4)
-                    return true;
-                return false;
-            });
-
-            if(!!isEdit){/*Edição*/
+                valorMaximo = 4               
 
             } else {/*Inclusão*/
-                if(exist.length){
 
-                    if(companySelected == -1)
-                        display= "@Resources.Resource.all";
+                valorMaximo = 4
+            }
 
-                    openMessageModal("@Resources.Resource.data_already_register_on_company"+" " + display + ".", "")
-                    return false;
+            $.each($('#tableParLevel3XDepartment  tbody  tr  td:nth-child(1)'), function (i, o) {
 
+                let count = 0;
+
+                //verifica se existe unidade
+                if (companySelected == -1) {
+                    count += verify($(o).parent().data().ParCompany_Id);
+                } else {
+                    count += $(o).parent().data().ParCompany_Id == companySelected ? 1 : 0;
                 }
+
+                //verifica se existe indicador
+                if (parLevel1Selected == -1) {
+                    count += verify($(o).parent().data().ParLevel1_Id);
+                } else {
+                    count += $(o).parent().data().ParLevel1_Id == parLevel1Selected ? 1 : 0;
+                }
+
+                //verifica se existe monitoramento
+                if (parLevel2Selected == -1) {
+                    count += verify($(o).parent().data().ParLevel2_Id);
+                } else {
+                    count += $(o).parent().data().ParLevel2_Id == parLevel2Selected ? 1 : 0;
+                }
+
+                //verifica se existe departamento
+                if (parDepartmentSelected == -1) {
+                    count += verify($(o).parent().data().ParDepartment_Id);
+                } else {
+                    count += $(o).parent().data().ParDepartment_Id == parDepartmentSelected ? 1 : 0;
+                }
+
+                //caso exista um com os memos valores
+                if (count == valorMaximo)
+                    exist = true;
+            });
+
+            if (exist) {
+
+                if (companySelected == -1)
+                    display = "@Resources.Resource.all";
+
+                openMessageModal("@Resources.Resource.data_already_register_on_company" + " " + display + ".", "")
+                return false;
+
             }
 
             return true;
@@ -311,6 +344,9 @@
             if(this.veifyAdd()){
                 var object = this.getObjAdd();
                 crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
+
+                //remover tosos os botoes de editar
+                //$('#tableParLevel3XDepartment .btn-success').remove();
 
                 $("#parLevel1SelectParLevel3XDepartment").val($("#parLevel1SelectParLevel3XDepartment option:first").val());
                 $("#parLevel2SelectParLevel3XDepartment").val($("#parLevel2SelectParLevel3XDepartment option:first").val());

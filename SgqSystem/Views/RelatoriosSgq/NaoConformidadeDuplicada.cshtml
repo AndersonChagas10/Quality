@@ -3,7 +3,7 @@
     ViewBag.Title = "NaoConformidadeDuplicada";
 }
 
-@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@model SgqService.ViewModels.FormularioParaRelatorioViewModel
 @using DTO
 @{
     var url = Url.Action("Index", "Home");
@@ -21,7 +21,7 @@
 <div class="page-content-wrapper">
     <div class="page-content">
 
-        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml","")
 
         <div id="formBodyContent">
 
@@ -198,7 +198,7 @@
         }
 
         $('#editModal').on('click', '#save', function () {
-            debugger
+            
             var save = ($(this).attr(''));
             $.ajax({
                 type: 'POST',

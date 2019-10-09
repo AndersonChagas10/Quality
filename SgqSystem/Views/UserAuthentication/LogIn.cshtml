@@ -1,8 +1,8 @@
-﻿@model SgqSystem.ViewModels.UserViewModel
+﻿@model SgqService.ViewModels.UserViewModel
 @using SgqSystem.Helpers
 @using DTO
 @{
-    ViewBag.Title = Resources.Resource.log_in;
+    ViewBag.Title = Resources.Resource.log_in as string;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var urlRecPassword = @Url.Action("PasswordRecovery", "UserAuthentication");
     var urlBuscaEmail = @Url.Action("buscaEmail", "UserAuthentication");
@@ -13,7 +13,7 @@
 @using (Html.BeginForm())
 {
     <div class="login">
-        <div class="head"></div>
+        <div class="head"><br /><img src="@DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogo" /><br /></div>
         <div class="form-signin panel panel-primary">
             <h2 class="form-signin-heading panel-heading">@Resources.Resource.please_sign_in</h2>
             <div class="panel-body">
@@ -26,7 +26,7 @@
 
                 @Html.AntiForgeryToken()
 
-                @Html.ValidationSummary(true, Resources.Resource.username_or_password_are_incorrect, new { @class = "alert alert-danger" })
+                @Html.ValidationSummary(true, Resources.Resource.username_or_password_are_incorrect as string, new { @class = "alert alert-danger" })
 
                 <button class="btn btn-md btn-primary marginTop10" type="submit" data-loading-text="Authenticating..." id="btnLogin">@Resources.Resource.sign_in</button>
                 @if (!GlobalConfig.Eua)
@@ -36,21 +36,13 @@
             </div>
         </div>
 
-        @if (GlobalConfig.Ytoara)
-        {
-            <div class="foot" style="background-image: url('Content/Imagens/GRTYtoaraLogo.png');"></div>
-        }
-        else if (GlobalConfig.Santander)
-        {
-            <div class="foot" style="background-image: url('Content/Imagens/LogoGRTSantander.png');"></div>
-        }
-        else
-        {
-            <div class="foot" style="background-image: url('Content/Imagens/GRTJBSLogo.png');"></div>
-        }
+        <div class="foot">
+            <img src="@DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemLogoFooter" />
+        </div>
 
     </div>
 }
+
 <!--Modal Recupera Senha-->
 <div class="container">
     <div class="modal fade" id="modalRecPassword" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
@@ -73,10 +65,11 @@
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts {
+@section Scripts {
 
-        <script type="text/javascript">
+    <script type="text/javascript">
 
         HideMenuLayout();
 
@@ -122,7 +115,7 @@
                             openMessageModal("Alerta", e.responseJSON.Message);
                         } catch (e) {
                             closeLoader();
-                            openMessageModal("@Html.Raw(@Resources.Resource.warning)", "@Html.Raw(Resources.Resource.cannot_finish_action)");
+                            openMessageModal("@Html.Raw(@Resources.Resource.warning as string)", "@Html.Raw(Resources.Resource.cannot_finish_action as string)");
                             console.log(e);
                         }
                     });
@@ -154,7 +147,7 @@
                             openMessageModal("Alerta", e.responseJSON.Message);
                         } catch (e) {
                             closeLoader();
-                            openMessageModal("@Html.Raw(Resources.Resource.warning)", "@Html.Raw(Resources.Resource.cannot_finish_action)");
+                            openMessageModal("@Html.Raw(Resources.Resource.warning as string)", "@Html.Raw(Resources.Resource.cannot_finish_action as string)");
                             console.log(e);
                         }
                     });
@@ -181,5 +174,5 @@
         //    });
         //});
 
-        </script>
-    }
+    </script>
+}

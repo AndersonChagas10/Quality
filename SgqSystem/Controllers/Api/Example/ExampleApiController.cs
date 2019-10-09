@@ -1,7 +1,7 @@
 ﻿using ADOFactory;
 using AutoMapper;
 using Dominio;
-using Dominio.Interfaces.Services;
+using DTO.Interfaces.Services;
 using DTO.DTO;
 using DTO.DTO.Params;
 using Newtonsoft.Json.Linq;
@@ -78,23 +78,7 @@ namespace SgqSystem.Controllers.Api.Example
         [Route("ChangeCultureTable/{cultureDesejada}")]
         public IEnumerable<DictionaryEntry> ChangeCultureTable(string cultureDesejada)
         {
-            if (cultureDesejada != null) //CULTURE DIFERENTE DO PADRÃO
-                if (cultureDesejada.Equals("en"))
-                {
-                    Thread.CurrentThread.CurrentCulture = new CultureInfo("");
-                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-                }
-                else
-                {
-                    Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureDesejada);
-                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureDesejada);
-                }
-
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-
-            var resourceSet = Resources.Resource.ResourceManager.GetResourceSet(Thread.CurrentThread.CurrentUICulture, true, false);
-
-            return resourceSet.Cast<DictionaryEntry>();
+            return Resources.Resource;
         }
 
         [HttpPost]

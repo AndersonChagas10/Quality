@@ -1,0 +1,179 @@
+﻿@model Dominio.ParCompany
+
+@{
+    ViewBag.Title = Resources.Resource.details;
+    ViewBag.ParCompanyId = Model.Id;
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                    <a href="@Url.Action("Index", "ParCompany2")">@Resources.Resource.company</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.details @Resources.Resource.company</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
+                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.details @Resources.Resource.company</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+
+                                <div>
+                                    <dl class="dl-horizontal">
+                                        <dt>
+                                            @Resources.Resource.name
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Name)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.description
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Description)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.initials
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Initials)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.sif
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.SIF)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.company_number
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.CompanyNumber)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.ip_server
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.IPServer)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.db_server
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.DBServer)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.identification
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Identification)
+                                        </dd>
+
+                                        <dt>
+                                            Id Integração
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.IntegrationId)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.add_date
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.AddDate)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.alter_date
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.AlterDate)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.is_active
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.IsActive)
+                                        </dd>
+
+                                    </dl>
+                                </div>
+                                <p>
+                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = Model.Id }, new { @class = "btn btn-success" })
+                                    @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                @Html.Partial("~/Views/ParCompany2XStructure/Index.cshtml", Model.ParCompanyXStructure)
+                @Html.Partial("~/Views/ParCompany2XCluster/Index.cshtml", Model.ParCompanyCluster)
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar3");
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
+</script>

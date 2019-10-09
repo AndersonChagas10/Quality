@@ -1,0 +1,245 @@
+﻿<h3 class="titulo2">Cluster</h3>
+
+<form id="ParL1Processo">
+
+    <br />
+    <div class="row" id="ParL1ProcessoAnchor" data-form>
+
+        <div class="col-sm-3">
+
+            <input type="hidden" name="ParLevel1_Id" data-id />
+            <input type="hidden" name="IsActive" value="true" data-notnull />
+
+            <div class="form-group">
+                <label for="ParCluster_Id">Cluster:</label>
+                <select id="selectL1Cluster" class="input input-lg col-sm-12 required" name="ParCluster_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-2">
+
+            <div class="form-group">
+                <label for="ParCriticalLevel_Id">Grupo:</label>
+                <select id="selectL1CriticalLevel" class="input input-lg col-sm-12 required" name="ParCriticalLevel_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-3">
+
+            <div class="form-group">
+                <label for="EffectiveDate">Data Vigente:</label>
+                <input type="date" class="form-control required" id="EffectiveDate" name="EffectiveDate">
+            </div>
+
+        </div>
+
+        <div class="col-sm-2">
+
+            <div class="form-group">
+                <label for="Points">Pontos:</label>
+                <input type="text" class="form-control required" id="Points" name="Points">
+            </div>
+
+        </div>
+
+        <div class="col-sm-2">
+
+            <div class="form-group" data-action>
+                <label></label>
+                <button class="form-control btn btn-primary" data-add>+</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row" >
+        <div class="col-sm-12">
+            <table id="tableParL1Processo"class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-sm-3">
+                            Nome
+                        </th>
+                        <th class="col-sm-3">
+                            Grupo
+                        </th>
+                        <th class="col-sm-2">
+                            Data Vigencia
+                        </th>
+                        <th class="col-sm-2">
+                            Pontos
+                        </th>
+                        <th class="col-sm-2">
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    var parL1Processo = {
+
+        //paramtros
+        id: 'ParL1Processo',
+        urlSave: '@Url.Action("PostParLevel1XCluster", "api/ParLevel1Api")',
+
+        load: function (parLevel1XCluster) {
+
+            let id = this.id;
+            let urlSave = this.urlSave;
+
+            apagaCampos(id);
+
+            $('table#table' + id + ' tbody').html('');
+          
+            $(parLevel1XCluster).each(function (i, o) {
+
+                var html = '<tr>';
+                html += '<td>' + o.ParCluster.Name + '</td>';
+                html += '<td>' + o.ParCriticalLevel.Name + '</td>';
+                html += '<td>' + new Date(o.EffectiveDate).toLocaleDateString() + '</td>';
+                html += '<td>' + o.Points + '</td>';
+                html += '<td><button class="btn btn-sm btn-success tabelaProcesso" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
+                html += '</tr>';
+
+                $('table#table' + id + ' tbody').append(html);
+                $('table#table' + id + ' tbody tr:last').data('sgq', o);
+
+            });
+
+            function Save(obj) {
+                openLoader(Resources("please_wait"));
+                $.ajax({
+                    url: urlSave,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Feito", "Dados Salvos");
+                        $('#selectL1').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
+            }
+
+            $('#' + id).off('click');
+
+            //Adicionar os dados no data-form
+            $('#' + id).on('click', '[data-table-edit]', function (e) {
+    
+                scrollToForm();
+
+                var obj = $(this).parents('tr').data('sgq');
+
+                apagaCampos(id);               
+                preencheCampos(id + ' [data-form]', '', obj);
+
+                $('#' + id + ' [data-form]').data('sgq', obj);
+                $('#' + id + ' [data-form]').addClass('alert alert-success');
+                $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
+
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
+                $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
+
+            });
+
+            //Adicionar os dados no data-form
+            $('#' + id).on('click', '[data-table-delete]', function (e) {
+                e.preventDefault();
+                var item = $(this).parents('tr').data('sgq');
+                $("#modalExclusao").show();
+
+                $("#excluirItem").off().on('click', function () {
+                    item.IsActive = false;
+                    Save(item);
+                    $("#modalExclusao").hide();
+                    item = "";
+                });
+            });
+
+            $(".fecharModal").on('click', function () {
+                $("#modalExclusao").hide();
+                item = "";
+            });
+
+            $('#' + id).on('click', '[data-cancel]', function (e) {
+                apagaCampos(id);
+            });
+
+            //Salvar o campo editado ou cria um novo
+            $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+
+                if (!formIsValid(id)) {
+                    return false
+                }
+
+                if (formIsDuplicate()) {
+                    return false;
+                }
+                
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                Save(obj);
+            });
+
+            let formIsDuplicate = function () {
+
+                //Validar se já existe na table um processo com o mesmo Processo, Grupo e Data, que o Id seja diferente do editado.
+                
+                var obj = $('#ParL1Processo [data-form]').data('sgq');
+                var formdata = $('#ParL1Processo [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                let arrParLevel1XClusters = [];
+
+                $('#tableParL1Processo tbody tr').each(function () {
+                    arrParLevel1XClusters.push($(this).data('sgq'));
+                });
+
+                let isDuplicate = arrParLevel1XClusters.filter((item) => {
+
+                    return (item.Id != obj.Id &&
+                        item.ParCluster_Id == obj.ParCluster_Id &&
+                        item.ParCriticalLevel_Id == obj.ParCriticalLevel_Id &&
+                        item.EffectiveDate.substring(0, 10) == obj.EffectiveDate.substring(0, 10));
+
+                }).length > 0;
+
+                if (isDuplicate) {
+                    openMessageModal("Alerta", "Já existe um mesmo Processo nesta data!")
+                }
+
+                return isDuplicate;
+
+            }
+        },
+    };
+</script>

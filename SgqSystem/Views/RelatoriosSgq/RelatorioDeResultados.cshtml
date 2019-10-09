@@ -1,4 +1,4 @@
-﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
 @using DTO
 @{
     ViewBag.Title = Resources.Resource.evolutional;
@@ -34,6 +34,8 @@
         border-right: solid;
         border-top: solid;
         border-width: 1px;
+        display:none !important;
+        height:0px !important;
     }
 </style>
 
@@ -41,7 +43,7 @@
 <div class="page-content-wrapper">
     <div class="page-content">
 
-        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml","")
 
         <div id="formBodyContent" class="col-xs-12" style="margin-left:auto; margin-right:auto;">
 
@@ -57,7 +59,7 @@
                 @Resources.Resource.select_the_unit_first
             </div>
 
-            <button class="btn btn-primary" id="botao-filtros" style="display: none;margin-left:50%;margin-right:50%;background-color:rgb(240, 124, 0);border-color:rgb(240, 124, 0);" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="filtro">Exibir Filtros</button>
+            @*<button class="btn btn-primary" id="botao-filtros" style="display: none;margin-left:50%;margin-right:50%;background-color:rgb(240, 124, 0);border-color:rgb(240, 124, 0);" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="filtro">Exibir Filtros</button>*@
 
             <h2 id="Titulo"></h2>
             <h3 id="TituloGrafico" style="display:none;"></h3>
@@ -343,25 +345,25 @@
     enviar['botaoFiltros'] = 0;
     exibeTodosLevels = false;
 
-    $("#botao-filtros").on('click', function () {
+    /*$("#botao-filtros").on('click', function () {
         if (enviar["botaoFiltros"] === 0) {
             enviar["botaoFiltros"] = 1;
         } else {
             enviar["botaoFiltros"] = 0;
         }
-    });
+    });*/
 
 
     function Send(toggle) {
 
-        //debugger;
+        //;
 
         // Botão desabilita até retorno
-        if (enviar["botaoFiltros"] === 1) {
+        /*if (enviar["botaoFiltros"] === 1) {
             $("#botao-filtros").trigger('click');
-        }
+        }*/
 
-        $("#botao-filtros").show()
+        //$("#botao-filtros").show()
 
         limpaDadosTela();
         enviar["shift"] = $('#shiftIdV :selected').val();

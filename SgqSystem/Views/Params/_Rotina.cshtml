@@ -27,7 +27,8 @@
                             @*@if (Model.levelControl == 1)
                                 {*@
                             @Table.GerarColuna(CommonData.ParCounterList(@Html, "rotina", Model.paramsDdl.DdlRotina, new { @class = "form-control input-erp input-sm" }), @Html.Label("Rotina"), Table.PosicaoLabel.top, null, null)
-                            @Table.GerarColunaButton(@Html.TextBoxFor(m => m.rotinaIngracaoDTO.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, null, "Nome vinculo rotina"
+                            @Table.GerarColuna(@Html.DropDownList("ParLevelDefinition_Id", Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_level as string), Table.PosicaoLabel.top, @Html.ErrorManual("levelDefinitionCampoCabecalho", Resources.Resource.select_the_field_where as string), null)
+                            @Table.GerarColunaButton(@Html.TextBoxFor(m => m.rotinaIngracaoDTO.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name as string), Table.PosicaoLabel.top, null, "Nome vinculo rotina"
         , button: "<button type=\"button\" id=\"btnSaveVinculoRotina\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                             @*}
                                  else if (Model.levelControl == 2)
@@ -45,6 +46,7 @@
                         <tr>
                             <th>Rotina</th>
                             <th>Nome Vinculo</th>
+                            <th>Nivel</th>
                             <th>Parametros</th>
                             <th>Retornos</th>
                             <th>Ações</th>
@@ -74,18 +76,20 @@
 
     atribuiLevelDivCounter();
     function getCounterObject(levelDomain, listSalvo) {
-        debugger
+
         return {
             /*Setup*/
             levelControl: levelControl,
             idTable: 'tableRotinas',
             level: levelDomain,
             listObjSalvo: listSalvo,
-            tdsNames: ['Rotina', 'Name', 'Parametro', 'Retornos', 'btn'],
+            tdsNames: ['Rotina', 'Name', 'ParLevelDefinition_Name', 'Parametro', 'Retornos', 'btn'],
             getObjAdd: function () {
                 var id = parseInt($('#' + this.level + ' #rotina :selected').val())
                 var rotina = $.grep(paramsDto.parLevel1Dto.listaRotinas, function (n, i) { return n.Id == id });
                 return {/*Objeto*/
+                    ParLevelDefinition_Id: $('#' + this.level + ' #ParLevelDefinition_Id').val(),
+                    ParLevelDefinition_Name: $('#' + this.level + ' #ParLevelDefinition_Id option[value='+$('#' + this.level + ' #ParLevelDefinition_Id').val()+']').text(),
                     Name: $('#' + this.level + ' #rotinaIngracaoDTO_Name').val(),
                     RotinaIntegracao_Id: $('#' + this.level + ' #rotina :selected').val(),
                     Rotina: $('#' + this.level + ' #rotina :selected').text(),
@@ -96,17 +100,23 @@
                 };
             },
             veifyAdd: function () {
-                debugger
+
                 /*Valida se pode criar o objeto*/
                 if ($('#' + this.level + ' #rotina :selected').val() <= 0){
                     openMessageModal("Selecione um rotina!");
                     return false;
                 }
 
+                /*Valida se pode criar o objeto*/
+                if ($('#' + this.level + ' #ParLevelDefinition_Id :selected').val() <= 0){
+                    openMessageModal("Selecione um nivel para apresentar o botão da rotina de integração!");
+                    return false;
+                }
+
                 return true;
             },
             incluiNoObjetoParaSubmit: function(dados){
-               
+
                 var level = this.levelControl;
                 $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
 
@@ -115,7 +125,8 @@
                     if((o.Id != null || o.Id != undefined) && o.Id > 0){
                         dados["paramsDto.parLevel" + level + "Dto.listParLevel1XRotinaIntegracao[" + c + "].Id"] = o.Id;
                     }
-          
+
+                    dados["paramsDto.parLevel" + level + "Dto.listParLevel1XRotinaIntegracao[" + c + "].ParLevelDefinition_Id"] = o.ParLevelDefinition_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel1XRotinaIntegracao[" + c + "].Name"] = o.Name;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel1XRotinaIntegracao[" + c + "].RotinaIntegracao_Id"] = o.RotinaIntegracao_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listParLevel1XRotinaIntegracao[" + c + "].ParLevel1_Id"] = o.ParLevel1_Id;
@@ -125,11 +136,13 @@
 
             },
             carregaDadosDoDb: function () {
-                debugger
                 var id = this.level + ' #' + this.idTable;
+                var level = this.level;
                 var tdNamess = this.tdsNames;
-                if( this.listObjSalvo != null){ 
+                if( this.listObjSalvo != null){
                     this.listObjSalvo.forEach(function (o, c) {
+                        o["ParLevelDefinition_Id"] = o.ParLevelDefinition_Id;
+                        o["ParLevelDefinition_Name"] = $('#' + level + ' #ParLevelDefinition_Id option[value='+o.ParLevelDefinition_Id+']').text();
                         o["Name"] = o.Name;
                         o["Rotina"] = o.RotinaIntegracao.Name;
                         o['Parametro'] = o.RotinaIntegracao.Parametro;

@@ -1,4 +1,4 @@
-﻿using Dominio.Interfaces.Repositories;
+﻿using DTO.Interfaces.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using Dominio;

@@ -11,7 +11,7 @@
         @Html.Label("Monitoramentos Corporativos Ativos:")
     </td>
     <td class="colTabelaFamilia" align="center">
-        @Html.DropDownList("level2", new SelectList(ViewBag.ParLevel2Todos, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%", @multiple = "multiple" })
+        @Html.DropDownList("level2", new SelectList(ViewBag.ParLevel2Todos, "Id", "Name"), Resources.Resource.select as string + "...", new { @class = "form-control select2", style = "width: 100%", @multiple = "multiple" })
     </td>
 </tr>
 

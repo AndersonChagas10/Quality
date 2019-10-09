@@ -1,0 +1,265 @@
+﻿@model Dominio.ParDepartment
+
+@{
+    /**/
+
+    ViewBag.Title = Resources.Resource.department as string;
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                    <a href="@Url.Action("Index", "ParDepartments")">@Resources.Resource.department</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.create</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
+                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create  @Resources.Resource.department</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Name, @Resources.Resource.name as string, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
+                                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Description, @Resources.Resource.description as string, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
+                                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Parent_Id, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
+                                                @*@Html.TextBox("Parent", "", new { @class = "form-control" })
+                                                @Html.Hidden("Parent_Id")*@
+
+                                                <button id="btnBuscarDepartamentos" type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=Parent_Id]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParDepartment", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+
+                                                <select class="form-control" name="Parent_Id"></select>
+
+                                                <div id="infoFilho" class="col-md-10" hidden="hidden" style="padding-left:0px;">
+                                                    <p class="alert alert-info col-md-10">Ao vincular um Centro de Custo a uma Empresa este campo ficará desablitado, pois seguirá a hierarquia do cadastro.</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.company as string + " " + Resources.Resource.linked1 as string, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
+                                                @Html.DropDownListFor(model => model.ParCompany_Id, null, new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
+                                                <div id="infoVinculoUnidade" class="col-md-10" hidden="hidden" style="padding-left:0px;">
+                                                    <p class="alert alert-info col-md-10">Ao vincular uma Seção a um Centro de Custo, esta campo ficará desabilitado, pois seguirá a hierarquia do cadastro</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.ParDepartmentGroup_Id, Resources.Resource.group as string + " " + Resources.Resource.of as string + " " + Resources.Resource.department as string, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
+                                                @Html.DropDownListFor(model => model.ParDepartmentGroup_Id, null, new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(model => model.ParDepartmentGroup_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-3 col-md-9">
+                                                <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
+                                                @Html.ActionLink(Resources.Resource.back as string, "Index", null, new { @class = "btn btn-default" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<script src="~/Scripts/Select3/select3.js"></script>
+<style>
+    .ui-autocomplete {
+        max-height: 100px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+    }
+    /* IE 6 doesn't support max-height
+    * we use height instead, but this forces the menu to always be this tall
+    */
+    * html .ui-autocomplete {
+        height: 100px;
+    }
+</style>
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar4");
+    $('select').select2();
+
+    $("#ParCompany_Id").on('change', function () {
+        validaFilhoEEmpresaVinculados();
+    });
+
+    Select3.callback = function () {
+        validaFilhoEEmpresaVinculados();
+    };
+
+    function validaFilhoEEmpresaVinculados() {
+        if ($("#ParCompany_Id :selected").val() == 0 && $("[name=Parent_Id]").val() == null) {
+            $("#ParCompany_Id").prop('disabled', false);
+            $("[name=Parent_Id]").prop('disabled', false);
+            $("#btnBuscarDepartamentos").prop('disabled', false);
+            $("#infoFilho").hide();
+            $("#infoVinculoUnidade").hide();
+        } else if ($("[name=Parent_Id]").val() > 0) {
+            $("#ParCompany_Id").prop('disabled', true);
+            $("[name=Parent_Id]").prop('disabled', false);
+            $("#btnBuscarDepartamentos").prop('disabled', false);
+            $("#infoFilho").hide();
+            $("#infoVinculoUnidade").show();
+        } else {
+            $("[name=Parent_Id]").prop('disabled', true);
+            $("#btnBuscarDepartamentos").prop('disabled', true);
+            $("#ParCompany_Id").prop('disabled', false);
+            $("#infoFilho").show();
+            $("#infoVinculoUnidade").hide();
+        }
+    }
+
+    $(document).ready(function () {
+        closeLeftSidebar();
+        //setTimeout(function () {
+        //    validaFilhoEEmpresaVinculados();
+        //}, 1000);
+    });
+
+    //$("#Parent").on('keyup', function () {
+    //    if ($("#Parent").val() == "") {
+    //        $("[name=Parent_Id]").val($("#Parent").val());
+    //    }
+    //    validaFilhoEEmpresaVinculados();
+    //});
+
+    $(document).ready(function () {
+        //$("[name=Parent_Id]").val($("#Parent").val().split("-", 1).pop());
+        //validaFilhoEEmpresaVinculados();
+    });
+
+    //$("#Parent").on("autocompleteselect", function (event, ui) {
+    //    if (ui.item.label.split("-", 1).pop() >= 0) {
+    //        $("#Parent_Id").val(ui.item.label.split("-", 1).pop());
+    //        validaFilhoEEmpresaVinculados();
+    //    }
+    //});
+
+      function split(val) {
+            return val.split(/,\s*/);
+        }
+
+        function extractLast(term) {
+            return split(term).pop();
+        }
+
+         $('#Parent')
+            .autocomplete({
+                minLength: 3,
+                source: function (request, response) {
+                    //showDivLoading();
+                    var search = extractLast($('#Parent').val());
+                    $.ajax({
+                        type: "GET",
+                        data: {},
+                        url: '@Url.Content("~")' + "api/ParDepartments/GetParDepartmentParents?search=" + search,
+                        dataType: "json",
+                        success: function (data) {
+
+                            //hideDivLoading();
+                            response($.map(data, function (item) {
+                                return { label: item.Value, value: item.Value };
+                            }));
+
+
+                        },
+                        error: function (errorThrown) {
+                            //hideDivLoading();
+                            console.log('Error: ' + errorThrown);
+                        }
+                    });
+                },
+                focus: function () {
+                    return false;
+                },
+                select: function (event, ui) {
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push(ui.item.value);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
+                }
+        });
+
+
+    //Select3.initialize(function () {});
+</script>

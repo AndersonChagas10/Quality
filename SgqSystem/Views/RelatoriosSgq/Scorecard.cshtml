@@ -1,4 +1,4 @@
-﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
 @{
     ViewBag.Title = "Scorecard";
     var url = Url.Action("Index", "Home");
@@ -54,7 +54,7 @@
 <div class="page-content-wrapper">
     <div class="page-content">
 
-        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml","")
 
         <div id="formBodyContent">
 
@@ -62,7 +62,7 @@
 
             <div id="load"></div>
 
-            <div id="divTable"> 
+            <div id="divTable">
 
                 <table id="results" class="display" cellspacing="0" style="width:100% !important;"></table>
 
@@ -129,7 +129,7 @@
         })
 
         function GerarTabela(retornoArray) {
-            debugger
+
             $('#divTable').show();
 
             var table = $('#results').empty().DataTable({
@@ -183,7 +183,7 @@
 
                 }
             });
-            
+
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
                     {
@@ -202,8 +202,8 @@
                         exportOptions: {
                             columns: ':visible'
                         }
-                    }
-                    @*{ comentado para subir a versao 1.0.8 - sera reativado na proxima versao
+                    },
+                    { //comentado para subir a versao 1.0.8 - sera reativado na proxima versao
                         extend: 'print',
                         text: '@Resources.Resource.print',
                         action: function (e, dt, button, config) {
@@ -215,14 +215,20 @@
                             columns: ':visible'
                         },
                         orientation: 'landscape',
-                        title: '@Resources.Resource.filtered_report_between_dates' + $("#reportrange").text() + "/ " + "Módulo: " + $("#select2-ModuloId-container").text() + " / "+ "Unidade: " + $("#select2-unitId-container").text(),
+                        title: '',
                         customize: function (win) {
-                            $(win.document.body).css('font-size', '45pt'); 
-                            $(win.document.body).find('h1').css('text-align', 'left');
-                            $(win.document.body).find('h1').text("");
+                            $(win.document.body).find('h1').attr('style', 'font-size: 14pt !important');
+                            $(win.document.body).find('h1').text(
+							'Relatório Scorecard '
+							+ " | Unidade: " + $("#select2-unitId-container").text()
+							+ " | Período:" + $("#reportrange").text()
+							+ " | Turno: " + $('#shift option:selected').text()
+							+ " | Módulo: " + $("#select2-ModuloId-container").text()
+							);
+
                             $(win.document.body).find('h1').css('margin-bottom', '35px');
                         },
-                    }*@
+                    }
                 ]
             });
 
@@ -285,7 +291,7 @@
             //$("#ModuloId").find("option").eq(0).remove();
             $(".sidebar-toggler").removeClass("hide");
             $(".page-sidebar-wrapper").removeClass("hide");
-            $('button.refresh-btn-right-top').removeClass("hide");           
+            $('button.refresh-btn-right-top').removeClass("hide");
             $('#ModuloId').change();
         });
     </script>

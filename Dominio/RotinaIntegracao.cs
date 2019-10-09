@@ -17,11 +17,11 @@ namespace Dominio
         public string InitialCatalog { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
-        public string query { get; set; }
+        public string Query { get; set; }
         public string Parametro { get; set; }
-        [Column("Nome")]
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public string Retornos { get; set; }
+        public bool IsOffline { get; set; }
     }
 }

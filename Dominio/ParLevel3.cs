@@ -32,6 +32,9 @@ namespace Dominio
         [StringLength(1000)]
         public string Description { get; set; }
 
+
+        public int? ParRiskCharacteristicType_Id { get; set; }
+
         public bool IsActive { get; set; }
 
         public bool HasTakePhoto { get; set; }
@@ -57,6 +60,9 @@ namespace Dominio
         public virtual ICollection<ParLevel3Value> ParLevel3Value { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParVinculoPeso> ParVinculoPeso { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParNotConformityRuleXLevel> ParNotConformityRuleXLevel { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -64,5 +70,8 @@ namespace Dominio
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Result_Level3> Result_Level3 { get; set; }
+
+        public virtual ICollection<ParLevel3XHelp> ParLevel3XHelp { get; set; }
+
     }
 }

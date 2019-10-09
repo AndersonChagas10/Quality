@@ -336,7 +336,7 @@ namespace SgqSystem.Mail
 
         /// <summary>
         /// Este callback preenche os campos AlterDate, SendDate, e SendStatus da tabela EmailContent, dos emails enviados, falhos, etc.... 
-        /// TODO email que executar este callback em seua chamada exibirá algum resultado refletido nestes campos.
+        /// TODOs emails que executarem este callback em suas chamada exibirá algum resultado refletido nestes campos.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

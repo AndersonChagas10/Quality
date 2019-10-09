@@ -67,7 +67,7 @@
     });
 
     function abrirModalAgendamento(linha) {
-        debugger
+        
         $("#tabelaAgendamento").attr('style', '');
         var obj = $(linha).parents('tr').data();
         valorAvaliacao = obj.evaluationNumber;
@@ -128,7 +128,7 @@
     }
 
     function MontaNovaLinhaAgendamento(data) {
-        debugger
+        
         if ($("#paramsDto_parLevel2Dto_ParFrequency_Id [selected]").text() === "Diario com Intervalo") {
 
             $('#tabelaAgendamento').find("#headFim").each(function () {
@@ -225,7 +225,7 @@
     }
 
     $("#modalAgendamento").on('click', "#btnSalvar", function () {
-        debugger
+        
         var listaTabelaAgendamento = [];
         var contadorErros = 0;
         listaTabelaAgendamento = $("#tabelaAgendamento tbody tr").not(':first');
@@ -315,7 +315,7 @@
     });
 
     $("#modalAgendamento").on('change', '[data-column=slAgendamento]', function () {
-        debugger
+        
         let tabela = $('#tabelaAgendamento tbody tr').not(':first');
         $(tabela).find('[data-column=inpAvaliacao]').each(function (i, o) {
             var self = o;
@@ -376,7 +376,7 @@
     });
 
     $("#modalAgendamento").on('click', "#btnSalvarAgendamento", function () {
-        debugger
+        
         var linha = $(this).parent().parent();
         var inicio = $(linha).find('[data-column=inpInicio]').val();
         var termino = $(linha).find('[data-column=inpTermino]').val();
@@ -396,7 +396,7 @@
             }
         }
         var isEdit = !!$(this).parents('tr').data()['Id'];
-        debugger
+        
             if (valorAvaliacao >= $(linha).find("[data-column=inpAvaliacao]").val()) {
 
                 var form = {
@@ -419,7 +419,7 @@
     });
 
     function frequenciaIsValid(formato, inicio, fim) {
-        debugger
+        
         switch (formato) {
             case "Diario":
                 if(fim < 0 || inicio < 0 || fim > 24 || inicio > 24 || inicio > fim)
@@ -448,7 +448,7 @@
     }
 
     function camposIsValid(avaliacao, inicio, termino, turno) {
-        debugger
+        
         if (avaliacao == null || avaliacao == undefined || avaliacao < 0 || avaliacao === "") {
             openMessageModal("O campo Avaliação deve ser preechido", null);
             return false;

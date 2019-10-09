@@ -32,6 +32,10 @@ namespace Dominio
 
         public int? ParLevel1_Id { get; set; }
 
+        public int? ParDepartment_Id { get; set; }
+
+        public int? ParCargo_Id { get; set; }
+
         public int? ParLevel2_Id { get; set; }
 
         public string DynamicValue { get; set; }
@@ -59,5 +63,8 @@ namespace Dominio
 
         [ForeignKey("ParMeasurementUnit_Id")]
         public virtual ParMeasurementUnit ParMeasurementUnit { get; set; }
+
+        [NotMapped]
+        public List<ParInputTypeValues> ParInputTypeValues { get; set; }
     }
 }

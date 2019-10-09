@@ -1,5 +1,5 @@
 ﻿using Dominio;
-using Dominio.Interfaces.Services;
+using DTO.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
 using Helper;
@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SgqService.ViewModels;
 
 namespace SgqSystem.Controllers.Api
 {

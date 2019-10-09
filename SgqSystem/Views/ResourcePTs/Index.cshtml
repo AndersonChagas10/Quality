@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Dominio.ResourcePT>
+
+@{
+    ViewBag.Title = "Resources PT";
+    var urlAttResource = Url.Action("AtualizarResource", "ResourcePTs");
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Resources Pt</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
+                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">Resources PT-br</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+
+                                <div id="modalSucesso" class="alert alert-success alert-dismissible hide">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>@Resources.Resource.success</strong> Dicionários Atualizados!
+                                </div>
+
+                                <p>
+                                    <div>
+                                        @Html.ActionLink(Resources.Resource._novo as string, "Create", null, new { @class = "btn btn-primary" })
+
+                                        <button class="btn btn-success pull-right" id="btnAtualizar">Atualizar Dicionários</button>
+                                    </div>
+                                </p>
+                                <table class="table" id="tabelaResourcesPt">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                               @Resources.Resource.key
+                                            </th>
+                                            <th>
+                                              @Resources.Resource.value
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Key)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Value)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+<script>
+   
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar4");
+
+</script>
+
+<script>
+    var urlAttResource = '@Html.Raw(urlAttResource)';
+    $(document).ready(function () {
+        closeLeftSidebar();
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaResourcesPt').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+    });
+
+    $("#btnAtualizar").on('click', function () {
+        
+        $.ajax({
+            type: "GET",
+            url: urlAttResource,
+            success: function (retorno) {
+                $("#modalSucesso").removeClass('hide');
+                $("#modalSucesso").fadeTo(2000, 500).slideUp(500, function () {
+                    $("#modalSucesso").slideUp(500);
+                });
+            },
+            error: function (retorno) {
+               
+            }
+        });
+    });
+
+
+</script>

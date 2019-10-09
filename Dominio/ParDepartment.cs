@@ -20,7 +20,7 @@ namespace Dominio
 
         [Required(AllowEmptyStrings = true)]
         [StringLength(155)]
-        [DisplayName("Departamento")]
+        [DisplayName("Nome")]
         public string Name { get; set; }
 
         [Required(AllowEmptyStrings = true)]
@@ -30,13 +30,26 @@ namespace Dominio
        
         public string Hash { get; set; }
 
+        public int? ParCompany_Id { get; set; }
+
         [DisplayName("É filho de")]
         public int? Parent_Id { get; set; }
+
+        [NotMapped]
+        public string Parent { get; set; }
+
+        public int? ParDepartmentGroup_Id { get; set; }
 
         [ForeignKey("Parent_Id")]
         public virtual ParDepartment ParDepartmentPai { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel2> ParLevel2 { get; set; }
+
+        [ForeignKey("ParCompany_Id")]
+        public virtual ICollection<ParCompany> ParCompany { get; set; }
+
+        [ForeignKey("ParDepartmentGroup_Id")]
+        public virtual ParDepartmentGroup ParDepartmentGroup { get; set; }
     }
 }

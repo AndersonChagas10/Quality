@@ -1,4 +1,4 @@
-﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
 
 @{
     ViewBag.Title = "Relatorio Diario";
@@ -50,7 +50,7 @@
 
 
 <div class="page-content">
-    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml","")
     <div id="formBodyContent">
         <button onclick="migr('Cactus', '10.164.67.22', 'QA_GRJ',
 

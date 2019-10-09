@@ -1,0 +1,162 @@
+﻿<h3 class="titulo2">Informações Gerais</h3>
+
+<form id="ParL1Geral">
+
+    <br />
+    <div class="row" data-form>
+
+        <input type="hidden" name="Id"/>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label>@Resources.Resource.name @Resources.Resource.of @Resources.Resource.level1</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Nome dado ao indicador" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <input type="text" class="form-control required" id="Name" name="Name">
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label>@Resources.Resource.description  @Resources.Resource.of @Resources.Resource.level1</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Breve explicação do indicador" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <input type="text" class="form-control required" id="Description" name="Description">
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label>Tipo de consolidação:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Define o tipo de apuração de resultado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <select class="form-control required" id="selectParConsolidation" name="ParConsolidationType_Id"></select>
+            </div>
+        </div>
+
+        <div class="col-sm-6 hide">
+
+            <div class="form-group">
+                <label>Frequência:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Define a frequência em que o indicador avaliado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <select class="form-control required" id="selectParFrequency" name="ParFrequency_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label>Tipo scorecard:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Define o tipo de Avaliação de desempenho" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <select class="form-control" id="selectParScoreType" name="ParScoreType_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label>Está ativo:</label>
+                <br />
+                <label class="switch">
+                    <input type="checkbox" name="IsActive">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+        </div>
+
+        <div class="col-sm-12">
+
+            <button class="btn btn-primary pull-right btn btn-block" data-add>Salvar</button>
+
+        </div>
+    </div>
+
+</form>
+
+<script>
+    
+
+    
+
+    var lastIdL1 = 0;
+    var ParL1Geral = {
+
+        //paramtros
+        id: 'ParL1Geral',
+        urlSave: '@Url.Action("PostParLevel1", "api/ParLevel1Api")',
+
+        set: function (obj) {
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+        },
+
+        afterCreate: function (data) {
+            setSelectLevel1(data);
+            $('#selectL1').val(lastIdL1);
+            $('#selectL1').trigger('change');
+        },
+
+        load: function () {
+
+            let id = this.id;
+            let urlSave = this.urlSave;
+
+
+            function Save(obj) {
+                var hasId = obj.Id;
+
+                var parLevel1Clonado = JSON.parse(JSON.stringify(obj));
+                parLevel1Clonado.ParLevel1XCluster = {};
+                parLevel1Clonado.ParLevel1XHeaderField = {};
+
+                $.ajax({
+                    url: urlSave,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(parLevel1Clonado),
+                    contentType: "application/json",
+                    success: function (data) {
+                        lastIdL1 = parseInt(data);
+                        openMessageModal("Feito", "Dados Salvos");
+                        if (parseInt(hasId) <= 0 || isNaN(parseInt(hasId)))
+                            getGenericAjax('@Url.Action("Get", "api/ParLevel1Api")', 'Get', ParL1Geral.afterCreate);
+                        else
+                            $('#selectL1').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
+            }
+
+            //Salvar o campo editado ou cria um novo
+            $('#' + id).on('click', '[data-add]', function (e) {
+
+                if (!formIsValid(id)) {
+                    return false
+                }
+                
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                Save(obj);
+            });
+        },
+    };
+    ParL1Geral.load();
+</script>

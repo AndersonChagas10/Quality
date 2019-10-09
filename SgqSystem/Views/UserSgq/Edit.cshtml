@@ -1,13 +1,12 @@
 ﻿@{
-    ViewBag.Title = Resources.Resource.edit_user;
-    var Id = Url.RequestContext.RouteData.Values["Id"];
+                /**/
+
+                ViewBag.Title = Resources.Resource.edit_user;
+                var Id = Url.RequestContext.RouteData.Values["Id"];
 }
 
 <div class="page-content-wrapper">
-    <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
-        <!-- BEGIN PAGE HEADER-->
-        <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
@@ -23,15 +22,8 @@
                 </li>
             </ul>
             <div class="page-toolbar">
-                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
-                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                    </div>*@
             </div>
         </div>
-        <!-- END PAGE BAR -->
-        <!-- END PAGE HEADER-->
         <div class="row">
             <div class="col-xs-12">
                 <div class="portlet light bordered">
@@ -58,14 +50,14 @@
                                     <div class="form-horizontal">
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.fullname, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.fullname as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.Editor("userSgqDto.FullName", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
 
                                         <div class="form-group hide">
-                                            @Html.Label(Resources.Resource.date, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.date as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.Editor("userSgqDto.AccessDate", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
@@ -84,35 +76,28 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.email as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.Editor("userSgqDto.Email", new { htmlAttributes = new { @class = "form-control", @type = "email" } })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.phone as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.Editor("userSgqDto.Phone", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
 
-                                        @*<div class="form-group">
-                                                @Html.Label(Resources.Resource.default_company, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                <div class="col-md-10">
-                                                    @Html.DropDownList("userSgqDto.ParCompany_Id", new SelectList(ViewBag.listaParCompany, "Id", "Name"), new { @class = "form-control" })
-                                                </div>
-                                            </div>*@
-
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.company, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.company as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("userSgqDto.ListParCompany_Id", new SelectList(ViewBag.listaParCompany, "Id", "Name"), new { @class = "form-control" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.role, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.role as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("userSgqDto.ListRole", new SelectList(ViewBag.listaRoleSGQ, "Name", "Name"), new { @class = "form-control" })
                                             </div>
@@ -121,18 +106,23 @@
                                         @if (ViewBag.UserRoles != null && ViewBag.UserRoles.Contains("Admin"))
                                         {
                                             <div class="form-group">
-                                                @Html.Label(Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                @Html.Label(Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
                                                     <input id="userSgqDto_IsActive" name="userSgqDto.IsActive" type="checkbox" value="">
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                @Html.Label(Resources.Resource.show_all + " ("+ Resources.Resource.unit + ")", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                @Html.Label(Resources.Resource.show_all as string + " ("+ Resources.Resource.unit as string + ")", htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
                                                     <input id="userSgqDto_ShowAllUnits" name="userSgqDto.ShowAllUnits" type="checkbox" value="">
                                                 </div>
                                             </div>
+                                        }
+                                        else
+                                        {
+                                            @Html.Hidden("userSgqDto_IsActive", "userSgqDto.IsActive");
+                                            @Html.Hidden("userSgqDto_ShowAllUnits", "userSgqDto.IsActive");
                                         }
 
                                         <hr />
@@ -140,7 +130,7 @@
                                         @if (@DTO.GlobalConfig.Eua)
                                         {
                                             <div class="form-group">
-                                                @Html.Label(Resources.Resource.use_active_directory, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                @Html.Label(Resources.Resource.use_active_directory as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
                                                     <input id="userSgqDto_UseActiveDirectory" name="userSgqDto.UseActiveDirectory" type="checkbox" value="">
                                                 </div>
@@ -148,7 +138,7 @@
                                         }
 
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.username, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.username as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.Editor("userSgqDto.Name", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
@@ -157,14 +147,14 @@
                                         <div id="passwordContainer">
 
                                             <div class="form-group">
-                                                @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                @Html.Label(Resources.Resource.password as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
                                                     @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                @Html.Label(Resources.Resource.confirm_password as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
                                                     @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
                                                 </div>
@@ -176,7 +166,7 @@
                                             <div class="col-md-offset-2 col-md-10">
                                                 <button type="button" id="btnChangePassword" class="btn btn-warning">@Resources.Resource.change_password</button>
                                                 <button type="button" id="btnSave" class="btn btn-primary">@Resources.Resource.save</button>
-                                                @Html.ActionLink(Resources.Resource.back_to_list, "Index", null, new { @class = "btn btn-default" })
+                                                @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
                                             </div>
                                         </div>
 
@@ -189,7 +179,6 @@
             </div>
         </div>
     </div>
-    <!-- END CONTENT BODY -->
 </div>
 
 <script>
@@ -246,7 +235,17 @@
 
         }
 
-        $.post("@Url.Action("Save", "UserSgq")", $('form').serializeObject(), function () {
+        let obj = $('form').serializeObject();
+
+        if ($("#userSgqDto_IsActive").is(":hidden")) {
+            obj["userSgqDto.IsActive"] = $("#userSgqDto_IsActive").prop("checked");
+        }
+
+        if ($("#userSgqDto_ShowAllUnits").is(":hidden")) {
+            obj["userSgqDto.ShowAllUnits"] = $("#userSgqDto_ShowAllUnits").prop("checked");
+        }
+
+        $.post("@Url.Action("Save", "UserSgq")", obj, function () {
             openMessageModal(Resources('user_save_success'), '');
         })
     });
@@ -268,11 +267,6 @@
     }
 
     $(document).ready(function () {
-
-        @*$.fn.bootstrapSwitch.defaults.size = 'small';
-        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
-        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
-        $("[type='checkbox']").bootstrapSwitch();*@
 
         $.get("@Url.Action("Get", "api/UserSgq")", { 'Id': @Id }, function (object) {
             for (var key in object) {

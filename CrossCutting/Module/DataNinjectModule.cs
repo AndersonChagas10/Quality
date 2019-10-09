@@ -1,5 +1,5 @@
 ﻿using Data.Repositories;
-using Dominio.Interfaces.Repositories;
+using DTO.Interfaces.Repositories;
 using Ninject.Modules;
 
 namespace CrossCutting.IOC.Module

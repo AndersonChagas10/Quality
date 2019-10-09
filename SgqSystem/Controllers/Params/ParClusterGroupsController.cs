@@ -105,7 +105,7 @@ namespace SgqSystem.Controllers.Params
 
             if (ModelState.IsValid)
             {
-                parClusterGroup.IsActive = true;
+                //parClusterGroup.IsActive = true;
                 parClusterGroup.AlterDate = DateTime.Now;               
                 db.Entry(parClusterGroup).State = EntityState.Modified;
                 db.Entry(parClusterGroup).Property(x => x.AddDate).IsModified = false;

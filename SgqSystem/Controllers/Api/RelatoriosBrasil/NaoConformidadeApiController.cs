@@ -1,5 +1,6 @@
 ﻿using ADOFactory;
 using Dominio;
+using SgqService.ViewModels;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;
@@ -57,9 +58,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereShift = "\n AND CL1.Shift = " + form.shift + " ";
             }
 
-            if (form.unitId > 0)
+            if (form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
             {
-                whereUnit = $@"AND UNI.Id = { form.unitId }";
+                whereUnit = $@"AND UNI.Id in ({ string.Join(",", form.unitIdArr) })";
             }
             else
             {
@@ -87,7 +88,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.criticalLevelId > 0)
             {
                 whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id = {form.criticalLevelId} ";
-                    //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                //$@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             var query = $@"
@@ -2584,7 +2585,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         
         	INNER JOIN ParStructureGroup SG WITH (NOLOCK)
         		ON S.ParStructureGroup_Id = SG.ID 
-        		AND SG.ID = 2 
+        		-- AND SG.ID = 2 
         	
         	LEFT JOIN ParScoreType ST WITH (NOLOCK)
         		ON L1.ParConsolidationType_Id = ST.Id 

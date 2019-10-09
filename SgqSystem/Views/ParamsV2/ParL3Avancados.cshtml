@@ -1,0 +1,92 @@
+﻿<h3 class="titulo2">Itens Avançados</h3>
+
+<form id="ParL3Avancados">
+
+    <br />
+
+    <div class="row" data-form>
+        <div class="col-sm-12">
+
+
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="">
+                        <!-- Rounded switch -->
+                        <label class="switch">
+                            <input type="checkbox" name="HasTakePhoto">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-10">
+                    Permitir tirar foto
+                    <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Permite que o usuário tire uma foto como evidência da tarefa" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+
+            <button class="btn btn-primary pull-right btn btn-block" data-add>Salvar</button>
+
+        </div>
+    </div>
+
+</form>
+
+<script>
+    var ParL3Avancados = {
+
+        //paramtros
+        id: 'ParL3Avancados',
+        urlSave: '@Url.Action("PostParLevel3", "api/ParLevel3Api")',
+
+        set: function (obj) {
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+        },
+
+        load: function () {
+
+            let id = this.id;
+            let urlSave = this.urlSave;
+
+            function Save(obj) {
+                openLoader(Resources("please_wait"));
+                $.ajax({
+                    url: urlSave,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Feito", "Dados Salvos");
+                        $('#selectL3').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
+            }
+
+            //Salvar o campo editado ou cria um novo
+            $('#' + id).on('click', '[data-add]', function (e) {
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                Save(obj);
+            });
+        },
+    };
+    ParL3Avancados.load();
+</script>

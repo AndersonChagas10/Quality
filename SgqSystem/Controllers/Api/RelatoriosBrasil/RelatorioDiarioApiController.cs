@@ -1,6 +1,7 @@
 ﻿using ADOFactory;
 using Dominio;
 using DTO.Helpers;
+using SgqService.ViewModels;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;
