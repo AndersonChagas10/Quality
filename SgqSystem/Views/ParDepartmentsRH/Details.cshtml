@@ -87,11 +87,11 @@
                                         </dd>
 
                                         <dt>
-                                            É Filho de:
+                                            @Resources.Resource.unit
                                         </dt>
 
                                         <dd>
-                                            @Html.DisplayFor(model => model.ParDepartmentPai.Name)
+                                            @Html.DisplayFor(model => model.ParCompany.First().Name)
                                         </dd>
 
                                         <dt>
@@ -114,8 +114,12 @@
                 </div>
             </div>
             <div class="col-xs-8">
-                @Html.Partial("~/Views/ParDepartmentsRH/Filhos.cshtml", Model.ParDepartmentFilho)
-                @Html.Partial("~/Views/ParDepartmentsRH/ParDepartmentXCompany.cshtml", Model.ParCompany)
+                @if (Model.ParDepartmentFilho.Count > 0)
+                {
+                    @Html.Partial("~/Views/ParDepartmentsRH/Filhos.cshtml", Model.ParDepartmentFilho)
+                }
+
+                @*@Html.Partial("~/Views/ParDepartmentsRH/ParDepartmentXCompany.cshtml", Model.ParCompany)*@
             </div>
         </div>
  
