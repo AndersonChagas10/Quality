@@ -58,6 +58,8 @@ public class ApontamentosDiariosResultSet
     public int C2ID { get; set; }
     public string DesvioAv { get; set; }
 
+    public string CriticalLevel { get; set; }
+
     public string Select(DataCarrierFormulario form)
     {
         var dtInit = form._dataInicio.ToString("yyyyMMdd");
@@ -384,6 +386,26 @@ public class ApontamentosDiariosResultSet
                 
                 ,C2.C2ID AS C2ID
                 ,c2.desvio as DesvioAv
+                ,
+				(
+					select TOP 10 PCL.NAME AS CRITICALLEVEL from ParLevel1XCluster P1XC
+					 left join ParCriticalLevel PCL
+					 ON PCL.ID = P1XC.ParCriticalLevel_Id
+					 WHERE P1XC.Parlevel1_id = l1.id
+					 and P1XC.ParCluster_Id = pc.id
+					 and P1XC.isActive = 1
+					 and P1XC.EffectiveDate = 
+					 (
+						select MAX(P1XC.EffectiveDate) AS CRITICALLEVEL from ParLevel1XCluster P1XC
+						 left join ParCriticalLevel PCL
+						 ON PCL.ID = P1XC.ParCriticalLevel_Id
+						 WHERE P1XC.Parlevel1_id = l1.id
+						 and P1XC.ParCluster_Id = pc.id
+						 and P1XC.isActive = 1
+						 and P1XC.EffectiveDate <= c2.collectiondate
+					 )
+					 group by P1XC.EffectiveDate, PCL.NAME
+				) CriticalLevel
 
                  FROM #CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     

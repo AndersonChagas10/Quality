@@ -264,3 +264,392 @@ GO
 
 UPDATE ParNotConformityRuleXLevel SET CorrectiveAction = 1 where CorrectiveAction is null
 GO
+
+
+/*
+
+RELATÓRIO DE APONTAMENTOS DIÁRIOS FORMADO POR VIEWS
+
+*/
+
+
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='V_DailyAppointments_1' AND xtype='V')
+	begin
+		DROP VIEW V_DailyAppointments_1
+	end
+
+	GO
+
+CREATE VIEW V_DailyAppointments_1 as
+
+ SELECT 
+	                     id
+	                    ,ParLevel1_Id
+	                    ,ParLevel2_Id
+	                    ,UnitId
+	                    ,CollectionDate
+	                    ,EvaluationNumber
+	                    ,Sample
+	                    ,Sequential
+	                    ,Side
+	                    ,Shift
+	                    ,Period
+	                    ,AuditorId
+	                    ,AddDate
+	                    ,AlterDate 
+                   
+                    FROM Collectionlevel2 CL2 WITH (NOLOCK)
+                        WHERE 1=1
+                         AND NotEvaluatedIs <> 999
+                         AND Duplicated <> 999
+                         AND CL2.CollectionDate > '20190101 00:00' 
+
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='V_DailyAppointments_2' AND xtype='V')
+	begin
+		DROP VIEW V_DailyAppointments_2
+	end
+
+	GO
+
+CREATE VIEW V_DailyAppointments_2 AS
+
+select c2.*, c2Group.C2ID,  case when av_desvios.shift is null then 0 else 1 end desvio  
+				        --INTO #CollectionLevel2
+				        from V_DailyAppointments_1 c2
+				        left join ( 
+				         select 
+				         min(id) as C2ID,
+				         parlevel1_id,
+				         parlevel2_id,
+				         Unitid,
+				         cast(collectiondate as date) data,
+				         EvaluationNumber,
+				         Shift,
+				         Period
+				         from V_DailyAppointments_1 
+				 
+				         group by
+				 
+				         parlevel1_id,
+				         parlevel2_id,
+				         Unitid,
+				         cast(collectiondate as date),
+				         EvaluationNumber,
+				         Shift,
+				         Period
+				         ) as c2Group 
+				         on  c2Group.parlevel1_id = c2.parlevel1_id
+				         and c2Group.parlevel2_id = c2.parlevel2_id
+				         and c2Group.Unitid = c2.Unitid
+				         and c2Group.data = cast(c2.collectiondate as date)
+				         and c2Group.EvaluationNumber = c2.EvaluationNumber
+				         and c2Group.Shift = c2.Shift
+				         and c2Group.Period = c2.Period
+
+				         left join ( 
+				         select 
+				         parlevel1_id,
+				         parlevel2_id,
+				         Unitid,
+				         cast(collectiondate as date) data,
+				         EvaluationNumber,
+				         Shift,
+				         Period
+				         from V_DailyAppointments_1 c2_
+				         inner join (Select Adddate as adddated, Evaluation, Sample as sampled, ParLevel1_Id as p1, ParLevel2_Id as p2, ParCompany_Id  from Deviation where DeviationMessage is not null) d 
+				         on d.Adddated between dateadd(MI, -5, c2_.Adddate) and dateadd(MI, 5, c2_.Adddate)
+				         and d.Evaluation = c2_.EvaluationNumber
+				         and d.Sampled = c2_.sample
+				         and d.p1 = c2_.ParLevel1_Id
+				         and d.p2 = c2_.ParLevel2_Id
+				         and d.ParCompany_Id = c2_.unitid
+				         group by
+				 
+				         parlevel1_id,
+				         parlevel2_id,
+				         Unitid,
+				         cast(collectiondate as date),
+				         EvaluationNumber,
+				         Shift,
+				         Period
+				         ) as av_desvios 
+				         on av_desvios.parlevel1_id = c2.parlevel1_id 
+				         and av_desvios.parlevel2_id = c2.parlevel2_id
+				         and av_desvios.Unitid = c2.Unitid
+				         and cast(av_desvios.data as date) = cast(c2.collectiondate as date)
+				         and av_desvios.EvaluationNumber = c2.EvaluationNumber
+				         and av_desvios.Shift = c2.Shift
+				         and av_desvios.Period = c2.Period
+
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='V_DailyAppointments_3' AND xtype='V')
+	begin
+		DROP VIEW V_DailyAppointments_3
+	end
+
+	GO
+
+CREATE VIEW V_DailyAppointments_3 AS
+
+SELECT 
+						R3.ID
+						,R3.CollectionLevel2_Id
+						,R3.ParLevel3_Id
+						,R3.ParLevel3_Name
+						,R3.Weight
+						,R3.IntervalMin
+						,R3.IntervalMax
+						,R3.Value
+						,R3.ValueText
+						,R3.IsConform
+						,R3.IsNotEvaluate
+						,R3.WeiEvaluation
+						,R3.WeiDefects
+						--INTO #Result_Level3
+						FROM Result_Level3 R3 WITH (NOLOCK)
+						INNER JOIN V_DailyAppointments_2 C2
+							ON R3.CollectionLevel2_Id = C2.Id
+
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='V_DailyAppointments_4_CollectionLevel2XCollectionJson' AND xtype='V')
+	begin
+		DROP VIEW V_DailyAppointments_4_CollectionLevel2XCollectionJson
+	end
+
+	GO
+
+CREATE VIEW V_DailyAppointments_4_CollectionLevel2XCollectionJson AS
+
+SELECT 
+						CollectionLevel2_Id
+						,CollectionJson_Id as CollectionJson_Id 
+						,ROW_NUMBER() OVER (PARTITION BY CollectionLevel2_Id ORDER BY CollectionJson_Id DESC) AS [ROW]
+
+                    --INTO #CollectionLevel2XCollectionJson
+					FROM CollectionLevel2XCollectionJson C2CJ WITH(NOLOCK)
+
+                    INNER JOIN V_DailyAppointments_2 C2
+						ON C2.Id = C2CJ.CollectionLevel2_Id
+
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='V_DailyAppointments_5_CollectionJson' AND xtype='V')
+	begin
+		DROP VIEW V_DailyAppointments_5_CollectionJson
+	end
+
+	GO
+
+CREATE VIEW V_DailyAppointments_5_CollectionJson AS
+
+SELECT CJ.ID,CJ.AppVersion
+						--INTO #CollectionJson 
+						FROM CollectionJson CJ WITH (NOLOCK)
+						INNER JOIN V_DailyAppointments_4_CollectionLevel2XCollectionJson C2CJ WITH (NOLOCK)
+							ON CJ.Id = C2CJ.CollectionJson_Id
+
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='V_DailyAppointments_6_CollectionLevel2XParHeaderField' AND xtype='V')
+	begin
+		DROP VIEW V_DailyAppointments_6_CollectionLevel2XParHeaderField
+	end
+
+	GO
+	
+CREATE VIEW V_DailyAppointments_6_CollectionLevel2XParHeaderField AS
+
+SELECT 
+							CL2HF.Id
+							,CL2HF.CollectionLevel2_Id
+							,CL2HF.ParHeaderField_Id
+							,CL2HF.ParFieldType_Id
+							,CL2HF.Value
+						--INTO #CollectionLevel2XParHeaderField
+						FROM CollectionLevel2XParHeaderField CL2HF (nolock) 
+						INNER JOIN V_DailyAppointments_2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id
+
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='V_DailyAppointments_7_CollectionLevel2XParHeaderField2' AND xtype='V')
+	begin
+		DROP VIEW V_DailyAppointments_7_CollectionLevel2XParHeaderField2
+	end
+
+	GO
+	
+CREATE VIEW V_DailyAppointments_7_CollectionLevel2XParHeaderField2 AS
+
+SELECT                               
+						 CL2HF.CollectionLevel2_Id,        
+						 STUFF(   
+							(SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case 
+							when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
+							when CL2HF2.ParFieldType_Id = 2 then case when HF.Description = 'Produto' then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end 
+							when CL2HF2.ParFieldType_Id = 6 then CONVERT(varchar,  CL2HF2.value, 103)
+							else CL2HF2.Value end)
+							FROM V_DailyAppointments_6_CollectionLevel2XParHeaderField CL2HF2 (nolock) 
+							left join V_DailyAppointments_2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
+							left join ParHeaderField HF (nolock)on CL2HF2.ParHeaderField_Id = HF.Id
+							left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
+							left join ParMultipleValues PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
+							left join Equipamentos EQP(nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2
+							left join Produto PRD with(nolock) on cast(PRD.nCdProduto as varchar(500)) = CL2HF2.Value and CL2HF2.ParFieldType_Id = 2
+							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
+							FOR XML PATH('')
+							), 1, 1, '')  AS HeaderFieldList
+						--INTO #CollectionLevel2XParHeaderField2
+						FROM V_DailyAppointments_6_CollectionLevel2XParHeaderField CL2HF (nolock) 
+						INNER join V_DailyAppointments_2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id 
+						LEFT JOIN ParHeaderField HF (nolock) on CL2HF.ParHeaderField_Id = HF.Id 
+						LEFT JOIN ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id
+                    GROUP BY CL2HF.CollectionLevel2_Id
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='V_DailyAppointments_8_CollectionLevel2XCluster' AND xtype='V')
+	begin
+		DROP VIEW V_DailyAppointments_8_CollectionLevel2XCluster
+	end
+
+	GO
+	 
+CREATE VIEW V_DailyAppointments_8_CollectionLevel2XCluster AS
+
+SELECT 
+						C2XC.Id,
+						C2XC.CollectionLevel2_Id,
+						C2XC.ParCluster_Id
+						--INTO #CollectionLevel2XCluster
+						FROM CollectionLevel2XCluster C2XC WITH (NOLOCK)
+						INNER JOIN V_DailyAppointments_2 C2 WITH (NOLOCK)
+							ON C2XC.CollectionLevel2_Id = C2.Id
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name='V_DailyAppointments' AND xtype='V')
+	begin
+		DROP VIEW V_DailyAppointments
+	end
+
+	go 
+
+CREATE VIEW V_DailyAppointments AS
+
+ 
+                 SELECT                                
+                  C2.CollectionDate AS Date 
+				 ,L1.ID AS Level1_Id            
+                 ,L1.Name AS Audit 
+				 ,L2.ID AS Level2_Id                 
+                 ,L2.Name AS Monitoring 
+				 ,R3.ParLevel3_ID AS Level3_Id             
+                 ,R3.ParLevel3_Name AS Task          
+                 ,R3.Weight AS Weight                    
+                 ,case when R3.IntervalMin = '-9999999999999.9000000000' then '' else R3.IntervalMin end  AS 'MinInterval'  
+                 ,case when R3.IntervalMax = '9999999999999.9000000000' then '' else R3.IntervalMax  end AS 'MaxInterval'
+                  
+                 ,R3.Value AS 'Value'                
+                 ,R3.IsConform AS 'Deviation?'           
+                 ,R3.IsNotEvaluate AS 'NA'             
+                 ,R3.WeiEvaluation AS 'WeightedEV'        
+                 ,R3.WeiDefects AS 'WeightedDefects'              
+                 ,case 
+					when isnull(R3.ValueText, '') in ('undefined','null')
+						THEN '' 
+					ELSE isnull(R3.ValueText, '') END 
+						AS ValueText 
+                 ,C2.EvaluationNumber AS 'Evaluation'    
+                 ,C2.Sample AS 'Sample'                
+                 ,ISNULL(C2.Sequential,0) AS 'Sequential'
+                 ,ISNULL(C2.Side,0) as 'Side'          
+                 ,STR(C2.[Shift]) as 'Shift'            
+                 ,STR(C2.Period) as 'Period'   
+				 ,UN.Id as "Unit_Id"        
+                 ,UN.Name AS 'Unit'                  
+                 ,R3.Id AS 'ResultLevel3Id'             
+                 ,US.Name as 'Auditor'                  
+                 ,ISNULL(L1.hashKey, '') as 'HashKey'                      
+                 ,ISNULL(HF.HeaderFieldList, '') as 'HeaderFieldList' 
+                 ,C2.AddDate as AddDate
+                 ,CJ.AppVersion as Platform
+				 , CASE 
+					WHEN CJ.AppVersion = 'Excel'  THEN '4'
+					WHEN C2.AlterDate IS NOT NULL THEN '1'
+					WHEN CAST(C2.AddDate as date) > CAST(C2.CollectionDate as date) THEN '2'
+                    WHEN CAST(C2.AddDate as date) < CAST(C2.CollectionDate as date) THEN '3'
+				   ELSE '0'
+				   END
+				 as Type,
+                 PC.Name as Cluster,
+                  (SELECT top 1 PL3V.ParLevel3InputType_Id 
+						FROM parlevel3value PL3V 
+						WHERE 1 = 1
+						 AND (isnull(PL3V.parcompany_id,un.id) = un.id ) 
+						 AND (isnull(PL3V.ParLevel1_id,l1.id) = l1.id ) 
+						 AND (isnull(PL3V.ParLevel2_id,l2.id) = l2.id ) 
+						 AND PL3V.ParLevel3_Id = L3.Id
+						 AND PL3V.IsActive = 1
+				 order by PL3V.id DESC,PL3V.parcompany_id DESC, PL3V.ParLevel2_Id DESC,PL3V.ParLevel1_Id DESC) as ParLevel3InputType_Id
+	            ,CASE WHEN MA.Motivo IS NULL THEN 0 ELSE 1 END AS IsLate
+	            ,CASE WHEN (SELECT TOP 1 Id FROM Result_Level3_Photos RL3P WHERE RL3P.Result_Level3_Id = R3.Id) IS NOT NULL THEN 1 ELSE 0 END AS HasPhoto
+	            ,ma.Motivo as ParReason
+	            ,PRT.Name as ParReasonType
+                
+                ,C2.C2ID AS AuditId
+                ,c2.desvio as AuditFail
+				,
+				(
+					select TOP 10 PCL.NAME AS CRITICALLEVEL from ParLevel1XCluster P1XC
+					 left join ParCriticalLevel PCL
+					 ON PCL.ID = P1XC.ParCriticalLevel_Id
+					 WHERE P1XC.Parlevel1_id = l1.id
+					 and P1XC.ParCluster_Id = pc.id
+					 and P1XC.isActive = 1
+					 and P1XC.EffectiveDate = 
+					 (
+						select MAX(P1XC.EffectiveDate) AS CRITICALLEVEL from ParLevel1XCluster P1XC
+						 left join ParCriticalLevel PCL
+						 ON PCL.ID = P1XC.ParCriticalLevel_Id
+						 WHERE P1XC.Parlevel1_id = l1.id
+						 and P1XC.ParCluster_Id = pc.id
+						 and P1XC.isActive = 1
+						 and P1XC.EffectiveDate <= c2.collectiondate
+					 )
+					 group by P1XC.EffectiveDate, PCL.NAME
+				) CriticalLevel
+                 FROM V_DailyAppointments_2 C2 (nolock)     
+                 INNER JOIN ParCompany UN (nolock)     
+                 ON UN.Id = c2.UnitId                  
+                 INNER JOIN V_DailyAppointments_3 R3  (nolock) 
+                 ON R3.CollectionLevel2_Id = C2.Id     
+                 INNER JOIN ParLevel3 L3 (nolock)      
+                 ON L3.Id = R3.ParLevel3_Id            
+                 INNER JOIN ParLevel2 L2 (nolock)      
+                 ON L2.Id = C2.ParLevel2_Id            
+                 INNER JOIN ParLevel1 L1 (nolock)      
+                 ON L1.Id = C2.ParLevel1_Id         
+                 INNER JOIN UserSgq US (nolock)        
+                 ON C2.AuditorId = US.Id               
+                 LEFT JOIN                             
+                 V_DailyAppointments_7_CollectionLevel2XParHeaderField2 HF 
+                 on c2.Id = HF.CollectionLevel2_Id
+                 LEFT JOIN V_DailyAppointments_4_CollectionLevel2XCollectionJson CLCJ
+                 ON CLCJ.CollectionLevel2_Id = C2.Id
+                 LEFT JOIN V_DailyAppointments_5_CollectionJson CJ
+                 ON CJ.Id = CLCJ.CollectionJson_Id
+                 LEFT JOIN V_DailyAppointments_8_CollectionLevel2XCluster C2XC
+				 ON C2XC.CollectionLevel2_Id = C2.Id			 
+				 LEFT JOIN ParCluster PC
+				 ON PC.Id = C2XC.ParCluster_Id
+                 LEFT JOIN CollectionLevel2XParReason CL2MA
+                 ON CL2MA.CollectionLevel2_Id = C2.Id
+                 LEFT JOIN ParReason MA
+                 ON MA.Id = CL2MA.ParReason_Id
+                 LEFT JOIN ParReasonType PRT
+                 ON PRT.Id = MA.ParReasonType_Id
+                 WHERE 1=1 
+ GO
