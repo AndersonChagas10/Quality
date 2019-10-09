@@ -346,7 +346,8 @@ public class ScorecardResultSet
                 -- FILTREI TODOS
 
                     BEGIN
-                    IF @SHIFT_1 is not null and @SHIFT_2 is not null
+
+                    --GABRIEL TIROU --IF @SHIFT_1 is not null and @SHIFT_2 is not null
 
                     BEGIN
                     -- COLETEI TURNO 1 E PARA O TURNO 2
@@ -389,7 +390,7 @@ public class ScorecardResultSet
 
                         END
 
-
+                    /* --GABRIEL TIROU TUDO
                     --COLETA TURNO 1
 
                         IF @SHIFT_1 is not null and @SHIFT_2 is null
@@ -453,7 +454,7 @@ public class ScorecardResultSet
                             AND Shift_Id IS NULL
 
                         END
-
+                */
                     END
 
 
@@ -494,7 +495,7 @@ public class ScorecardResultSet
 
                                 AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
 
-                                AND Shift_Id IS NULL
+                                AND Shift_Id = 1 --IS NULL
 
                             END
                     END
@@ -536,7 +537,7 @@ public class ScorecardResultSet
 
                                 AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
 
-                                AND Shift_Id IS NULL
+                                AND Shift_Id = 2 --IS NULL
 
                             END
                     END
