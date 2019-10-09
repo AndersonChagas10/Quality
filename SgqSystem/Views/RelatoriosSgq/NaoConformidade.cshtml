@@ -64,7 +64,7 @@
 
 <div class="page-content-wrapper">
     <div class="page-content">
-        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml","")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml", "")
 
 
         <div id="CustomPopover" class="hide">
@@ -76,7 +76,7 @@
                 <button class="btn btn-sm btn-default" id="btnShift">Shift</button>
                 <button class="btn btn-sm btn-default" id="btnDepartamento">@Resources.Resource.department</button>
                 <button class="btn btn-sm btn-default" id="btnLevel3">Tarefa</button>
-                <button class="btn btn-sm btn-default" id="btnLevel3Group">Grupo de Tarefa</button>
+                <button class="btn btn-sm btn-default" id="btnLevel3Group">@Resources.Resource.group_of @Resources.Resource.level3</button>
             </div>
         </div>
 
@@ -135,7 +135,7 @@
         var GraficoDepto = '@Resources.Resource.defects_per_deparment'; //'NC por departamento';
         var GraficoIndic = '@Resources.Resource.defects_per_audit'; //'NC por Indicador: ';
         var GraficoMon = '@Resources.Resource.defects_per_monitoring'; //'NC por Monitoramento: ';
-        var GraficoGrupTarefa = 'Grafico de Grupo de Tarefas';
+        var GraficoGrupTarefa = '@Resources.Resource.defects_per_level3_group';
         var GraficoTarefa = '@Resources.Resource.defects_per_tasks'; //'NC por Tarefa: ';
         var GraficoTarefasAcumuladasTit ='@Resources.Resource.derivations_per_defects'; // 'NC por Tarefas acumuladas: ';
         var GraficoMoncomTarefa = '@Resources.Resource.defects_per_monitoring_at_tasks'; //'NC por Monitoramento na Tarefa: ';
@@ -259,7 +259,7 @@
             } else {
                 enviar["shift"] = $('#shiftIdV :selected').val()
             }
-            
+
             EasyAjax(urlGraficoDepartamentos, enviar, GraficoDepartamento, "RGDepartamentosGrafico");
             $('#RGTarefasPivotTable').hide();
         }
@@ -268,7 +268,7 @@
             enviar["departmentName"] = departamento;
             $("#PanelFull0").hide();
             pathDirect = 1;
-            
+
             EasyAjax(urlGraficoIndicador, enviar, GraficoIndicadorUnidade, "RGOperacoesGrafico");
             $('#RGTarefasPivotTable').hide();
         }
@@ -282,7 +282,7 @@
                 enviar["shift"] = $('#shiftIdV :selected').val()
             }
             pathDirect = 0;
-            
+
             EasyAjax(urlGraficoIndicador, enviar, GraficoIndicadorUnidade, "RGOperacoesGrafico");
             $('#RGTarefasPivotTable').hide();
         }
@@ -378,7 +378,7 @@
             $("#RGTarefasGrafico").empty();
             $("#RGGrupoTarefasGrafico").empty();
             enviar["level1Name"] = removeFtaDaLabel(indicador);
-            
+
             EasyAjax(urlGraficoMonitoramento, enviar, GraficoMonitoramento, "RGMonitoramentosGrafico");
             $('#RGTarefasPivotTable').hide();
         };
@@ -398,7 +398,8 @@
 
         function GetTarefa(monitoramento){
             enviar["level2Name"] = removeFtaDaLabel(monitoramento);
-            
+            enviar["GrupoTarefa_Id"] = null;
+            enviar["GrupoTarefaName"] = null;
             EasyAjax(urlGraficoTarefa, enviar, GraficoTarefas, "RGTarefasGrafico");
             $('#RGTarefasPivotTable').hide();
             pivotTableId = "RGTarefasPivotTable";
@@ -406,10 +407,10 @@
             $('#RGTarefasPivotTable').show();
         };
 
-        function GetTarefaByGrupo(level3Group_Id) {
+        function GetTarefaByGrupo(level3Group_Id, nada, level3GroupName) {
             enviar["level2Name"] = removeFtaDaLabel(enviar["level2Name"]);
             enviar["GrupoTarefa_Id"] = level3Group_Id;
-            
+            enviar["GrupoTarefaName"] = level3GroupName;
             EasyAjax(urlGraficoTarefa, enviar, GraficoTarefas, "RGTarefasGrafico");
             $('#RGTarefasPivotTable').hide();
             pivotTableId = "RGTarefasPivotTable";
@@ -423,12 +424,12 @@
                 IsDepartment = true;
                 idGrafico = "RGDepartamentosShiftGrafico";
                 $('#RGOperacoesGrafico').empty();
-                
+
                 EasyAjax(UrlGraficoDepartamentosPorShift, enviar, GraficoDepartamentoPorShift, "RGDepartamentosShiftGrafico");
                 $('#RGTarefasPivotTable').hide();
             } else if (desdobramento == "Indicador") {
                 idGrafico = "RGOperacoesShiftGrafico";
-                
+
                 EasyAjax(urlGraficoIndicadorPorShift, enviar, GraficoIndicadorPorShift, "RGOperacoesShiftGrafico");
                 $('#RGTarefasPivotTable').hide();
             }
@@ -731,7 +732,7 @@
                         borderWidth: 0
                     }
                 },
-                series: [                  
+                series: [
                     //Chart.ProcNc(porc, GetTarefa, null, "", nome),
                     //Chart.NC(nc, GetTarefa, null, null, null, "", nome),
                     //Chart.Av(qtdAv, GetTarefa, null, null, null, "", nome),
@@ -794,9 +795,9 @@
                     }
                 },
                 series: [
-                    Chart.ProcNc(porc, GetTarefaByGrupo, null, "", ids),
-                    Chart.NC(nc, GetTarefaByGrupo, null, null, null, "", ids),
-                    Chart.Av(qtdAv, GetTarefaByGrupo, null, null, null, "", ids),
+                    Chart.ProcNc(porc, GetTarefaByGrupo, null, "", ids, nome),
+                    Chart.NC(nc, GetTarefaByGrupo, null, null, null, "", ids, nome),
+                    Chart.Av(qtdAv, GetTarefaByGrupo, null, null, null, "", ids, nome),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
             })
@@ -868,15 +869,18 @@
             //enviar["level3names"] = nome
             enviar.isLevel = 3;
 
-            subtitle = Resources('unit') + ": " + enviar["unitName"];
+            subtitle = Resources('unit') + ": " + enviar.unitName;
 
             if (pathDirect == 1)
                 subtitle += " | " + Resources('department') + ": " + enviar["departmentName"];
 
-            subtitle += " | " + Resources('level1') + ": " + enviar["level1Name"] + " | " + Resources('level2') + ": " + enviar["level2Name"];
+            subtitle += " | " + Resources('level1') + ": " + enviar.level1Name + " | " + Resources('level2') + ": " + enviar.level2Name;
 
-            if (enviar["shift"] != "" && enviar["shift"] != undefined)
-                subtitle += " | " + Resources("shift") + ": " + (enviar["shift"] == 1 ? "1" : "2");
+            if (enviar.GrupoTarefaName)
+                subtitle += " | " + Resources('group_of_level3') + ": " + enviar.GrupoTarefaName;
+
+            if (enviar.shift != "" && enviar.shift != undefined)
+                subtitle += " | " + Resources("shift") + ": " + (enviar.shift == 1 ? "1" : "2");
 
             var sentido = 'desc';
             var inverse = sentido == 'desc' ? undefined : 1;
@@ -1412,7 +1416,6 @@
         });
 
         $('#btnLevel3').on('click', function () {
-            enviar["GrupoTarefa_Id"] = null;
             $('#RGGrupoTarefasGrafico').empty();
             $('#RGTarefasGrafico').empty();
             popoverMain.addClass('hide');

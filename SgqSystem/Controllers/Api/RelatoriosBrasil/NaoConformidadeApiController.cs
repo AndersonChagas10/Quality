@@ -2179,7 +2179,7 @@ DROP TABLE #AMOSTRATIPO4 ";
                 WHERE NA = 2
                 --------------------------------
                 SELECT
-                	IIF(GrupoTarefaName IS NULL, 'Sem Grupo', GrupoTarefaName) as GrupoTarefaName
+                	IIF(GrupoTarefaName IS NULL, '{ Resources.Resource.no_group }', GrupoTarefaName) as GrupoTarefaName
                    ,IIF(GrupoTarefa_Id IS NULL, 0, GrupoTarefa_Id) as GrupoTarefa_Id
                    ,NcSemPeso AS Nc
                    ,AvSemPeso AS Av
