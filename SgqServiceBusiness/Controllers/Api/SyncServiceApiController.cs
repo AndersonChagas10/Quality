@@ -5487,6 +5487,24 @@ namespace SgqServiceBusiness.Api
                 sampleGroup = sample;
             }
 
+            var departamento = "";
+
+            var index = 0;
+            var count = parlevel02List.Count();
+
+            var auxDepto = "";
+            var countDepto = 0;
+
+            foreach (var parlevel2count in parlevel02List) //LOOP3
+            {
+                if (parlevel2count.Departamento != auxDepto)
+                {
+                    countDepto++;
+                }
+                auxDepto = parlevel2count.Departamento;
+            }
+
+
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List) //LOOP3
             {
@@ -5678,6 +5696,8 @@ namespace SgqServiceBusiness.Api
                     ruleValue = parNCRuleDB.Value;
                 }
 
+
+
                 //podemos aplicar os defeitos
                 string level2 = html.level2(id: parlevel2.Id.ToString(),
                                             label: parlevel2.Name,
@@ -5710,15 +5730,64 @@ namespace SgqServiceBusiness.Api
                     continue;
 
                 //Gera linha do Level2
+
+                var inicioGrupo = false;
+                var fimGrupo = false;
+                var fimFinalGrupo = false;
+                var Grupo = "";
+
+                if (countDepto > 1)
+                {
+
+                    if (departamento == "")
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                    }
+                    else if (departamento == parlevel2.Departamento)
+                    {
+                        inicioGrupo = false;
+                    }
+                    else if (departamento != parlevel2.Departamento)
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                        fimGrupo = true;
+                    }
+
+                    if (++index == count)
+                    {
+                        fimFinalGrupo = true;
+                    }
+
+                    departamento = parlevel2.Departamento;
+
+                }
+
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
-                                                    classe: "row",
+                                                    classe: "row gabriel " + parlevel2.Departamento,
+                                                    tags: "departamento='" + parlevel2.Departamento + "'",
                                                     outerhtml: level2 +
-                                                               counters +
-                                                               buttons +
-                                                               html.div(classe: "level2Debug") +
-                                                               lineCounters
+                                                                counters +
+                                                                buttons +
+                                                                html.div(classe: "level2Debug") +
+                                                                lineCounters,
+                                                    inicioGrupo: inicioGrupo,
+                                                    fimGrupo: fimGrupo,
+                                                    fimFinalGrupo: fimFinalGrupo,
+                                                    Grupo: Grupo
                                                     );
+
+                //ParLevel2List += html.listgroupItem(
+                //                                    id: parlevel2.Id.ToString(),
+                //                                    classe: "row",
+                //                                    outerhtml: level2 +
+                //                                               counters +
+                //                                               buttons +
+                //                                               html.div(classe: "level2Debug") +
+                //                                               lineCounters
+                //                                    );
 
                 if (ParLevel1.HasGroupLevel2 == true)
                 {
