@@ -1,4 +1,20 @@
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParHeaderFieldGeral' AND xtype='U')
+CREATE TABLE CollectionLevel2XParHeaderFieldGeral  (
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CollectionLevel2_Id] [int] NOT NULL,
+	[ParHeaderFieldGeral_Id] [int] NOT NULL,
+	[ParHeaderField_Name] [nvarchar](max) NOT NULL,
+	[ParFieldType_Id] [int] NOT NULL,
+	[Value] [nvarchar](max) NOT NULL,
+	[Evaluation] [int] NULL,
+	[Sample] [int] NULL,
+	FOREIGN KEY ([CollectionLevel2_Id]) REFERENCES CollectionLevel2(Id),
+	FOREIGN KEY ([ParFieldType_Id]) REFERENCES ParFieldType(Id),
+	FOREIGN KEY ([ParHeaderFieldGeral_Id]) REFERENCES ParHeaderFieldGeral(Id),
+    PRIMARY KEY (Id)
+);
 
+GO
 
 IF COL_LENGTH('ParCompany','Identification') IS NULL
     BEGIN	
@@ -161,3 +177,170 @@ IF COL_LENGTH('ParVinculoPeso','ParGroupParlevel1_id') IS NOT NULL
 BEGIN
 	ALTER TABLE ParVinculoPeso ALTER COLUMN ParGroupParlevel1_id int NULL
 END
+
+GO
+
+-- Prioridade na tabela de Diretrizes
+IF COL_LENGTH('Pa_Objetivo','IsPriority') IS NULL
+    BEGIN
+		ALTER TABLE Pa_Objetivo
+		ADD IsPriority bit not null default 0;
+    END
+GO
+
+------------------------------------------------- script de nivelamento do PA -------------------------------
+
+SELECT
+	*
+FROM INFORMATION_SCHEMA.columns
+
+/****** Object:  Table [dbo].[Pa_FTA]    Script Date: 09/08/2019 15:59:36 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT
+		*
+	FROM sysobjects
+	WHERE Name = 'Pa_FTA'
+	AND xtype = 'U')
+CREATE TABLE [dbo].[Pa_FTA] (
+	[Id] [INT] IDENTITY (1, 1) NOT NULL
+   ,[AddDate] [DATETIME2](7) NULL DEFAULT (getdate())
+   ,[AlterDate] [DATETIME2](7) NULL
+   ,[MetaFTA] [NVARCHAR](MAX) NOT NULL
+   ,[PercentualNCFTA] [NVARCHAR](MAX) NOT NULL
+   ,[ReincidenciaDesvioFTA] [NVARCHAR](MAX) NOT NULL
+   ,[Supervisor_Id] [INT] NULL
+   ,[Order] [INT] NULL
+   ,CONSTRAINT [PK_Pa_FTA] PRIMARY KEY CLUSTERED
+	(
+	[Id] ASC
+	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+/****** Object:  Table [dbo].[Pa_AcompanhamentoXQuem]    Script Date: 09/08/2019 16:00:16 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT
+		*
+	FROM sysobjects
+	WHERE Name = 'Pa_AcompanhamentoXQuem'
+	AND xtype = 'U')
+CREATE TABLE [dbo].[Pa_AcompanhamentoXQuem] (
+	[Id] [INT] IDENTITY (1, 1) NOT NULL
+   ,[Acompanhamento_Id] [INT] NOT NULL
+   ,[Quem_Id] [INT] NOT NULL
+   ,CONSTRAINT [PK_Pa_AcompanhamentoXQuem] PRIMARY KEY CLUSTERED
+	(
+	[Id] ASC
+	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+IF COL_LENGTH('Pa_Coordenacao','IsActive') IS NULL
+    BEGIN
+ALTER TABLE Pa_Coordenacao	
+Add IsActive bit not null default(1)
+    END
+GO
+
+IF COL_LENGTH('Pa_Gerencia','IsActive') IS NULL
+    BEGIN
+ALTER TABLE Pa_Gerencia	
+Add IsActive bit not null default(1)
+    END
+GO
+
+IF COL_LENGTH('Pa_Planejamento','IsTatico') IS NULL
+    BEGIN
+ALTER TABLE Pa_Planejamento	
+Add IsTatico bit not null default(0)
+    END
+GO
+
+IF COL_LENGTH('Pa_Planejamento','Tatico_Id') IS NULL
+    BEGIN
+ALTER TABLE Pa_Planejamento	
+Add Tatico_Id int null
+    END
+GO
+
+IF COL_LENGTH('Pa_Planejamento','IsFta') IS NULL
+    BEGIN
+ALTER TABLE Pa_Planejamento	
+Add IsFta bit not null default(0)
+    END
+GO
+
+IF COL_LENGTH('Pa_Unidade','Sgq_Id') IS NULL
+    BEGIN
+ALTER TABLE Pa_Unidade	
+Add Sgq_Id int null
+    END
+GO
+
+-- Script de novas colunas do SESMT
+
+IF COL_LENGTH('Pa_Acao','ParDepartments_Hash') IS NULL
+    BEGIN
+	
+		alter table Pa_Acao add ParDepartments_Hash varchar(50) null;
+    END
+GO
+IF COL_LENGTH('Pa_Acao','ParDepartmentsName') IS NULL
+    BEGIN
+	
+		alter table Pa_Acao add ParDepartmentsName varchar(max) null;
+    END
+GO
+IF COL_LENGTH('Pa_Acao','ParCargo_Id') IS NULL
+    BEGIN
+	
+		alter table Pa_Acao add ParCargo_Id int null;
+    END
+GO
+IF COL_LENGTH('Pa_Acao','ParCargoName') IS NULL
+    BEGIN
+	
+		alter table Pa_Acao add ParCargoName varchar(50) null;
+    END
+GO
+
+BEGIN
+   IF NOT EXISTS (SELECT
+		*
+	FROM Pa_Planejamento
+	WHERE Id = 1)
+BEGIN
+SET IDENTITY_INSERT Pa_Planejamento ON
+INSERT INTO Pa_Planejamento (Id, AddDate, IsTatico, IsFta)
+	VALUES (1, GETDATE(), 1, 0)
+SET IDENTITY_INSERT Pa_Planejamento OFF
+   END
+END
+GO
+
+BEGIN
+   IF NOT EXISTS (SELECT
+		*
+	FROM Pa_Planejamento
+	WHERE Id = 128)
+BEGIN
+SET IDENTITY_INSERT Pa_Planejamento ON
+INSERT INTO Pa_Planejamento (Id, AddDate, IsTatico, IsFta)
+	VALUES (128, GETDATE(), 1, 0)
+SET IDENTITY_INSERT Pa_Planejamento OFF
+   END
+END
+GO

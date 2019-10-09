@@ -21,28 +21,26 @@ function openColeta(levels) {
 
                 if (inputLevel3.length > 0) {
 
-                    if (hasLevel3 == false) {
+                if (hasLevel3 == false) {
 
-                        if (hasLevel2 == false) {
-                            coleta += getLevel1(level1);
-                            coleta += getParHeaderFieldLevel1(level1);
-                            hasLevel2 = true;
-                        }
-
-                        coleta += getLevel2(level2, level1);
-                        coleta += getParHeaderFieldLevel2(level1, level2);
-                        hasLevel3 = true;
+                    if (hasLevel2 == false) {
+                        coleta += getLevel1(level1);
+                        coleta += getParHeaderFieldLevel1(level1);
+                        hasLevel2 = true;
                     }
 
-                    coleta += inputLevel3;
+                    coleta += getLevel2(level2, level1);
+                    coleta += getParHeaderFieldLevel2(level1, level2);
+                    hasLevel3 = true;
+                }
 
-                    if (inputLevel3)
-                        if (striped)
-                            striped = false;
-                        else
-                            striped = true;
+                coleta += inputLevel3;
 
-
+                if (inputLevel3)
+                    if (striped)
+                        striped = false;
+                    else
+                        striped = true;
                 }
             });
         });
@@ -50,7 +48,7 @@ function openColeta(levels) {
 
     html = getHeader() +
         '<div class="container-fluid">                                                                                                                   ' +
-        '	<div class="">                                                                                                                         ' +
+        '	<div class="">                                                                                                                      ' +
         '		<div class="col-xs-12">                                                                                                            ' +
         '			<div class="panel panel-primary">                                                                                              ' +
         '			  <div class="panel-heading">                                                                                                  ' +
@@ -741,7 +739,7 @@ function OpenCorrectiveAction(coleta) {
         '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString() +
         '<br/>Monitor: ' + currentLogin.Name +
         '<br/>Tarefa: ' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +
-        '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == currentParFrequency_Id; })[0].Name +
+        '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == parametrization.currentParFrequency_Id; })[0].Name +
         '</small></div>' +
 
         '<div class="form-group col-xs-12">' +
@@ -862,12 +860,11 @@ function getCollectionHeaderFields() {
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
                 Parfrequency_Id: parametrization.currentParFrequency_Id
             });
- 
+
     });
 
     return collectionHeaderFied;
 }
-
 
 function HeaderFieldsIsValid() {
 
