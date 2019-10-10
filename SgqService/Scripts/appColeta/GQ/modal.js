@@ -13,7 +13,7 @@ function createModal(title, body, callback) {
         '   <div class="modal-dialog modal-lg"> ' +
         '       <div class=""> ' +
         '           <div class="modal-header"> ' +
-        '           <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal(' + callback + ')" style="float:right">' + getResource('close') + '</button> ' +
+        '           <button type="button" class="btn btn-default" data-dismiss="modal" style="float:right">' + getResource('close') + '</button> ' +
         '           <h4 class="modal-title">' + title + '</h4> ' +
         '           </div> ' +
         '           <div class="modal-body" style="overflow-y: scroll;"> ' +
@@ -26,20 +26,14 @@ function createModal(title, body, callback) {
         '</div>';
 
     $('body').prepend(modal);
-}
 
+    $('#modal-mensagem').on('hidden.bs.modal', function () {
 
-function closeModal(callback) {
-
-    if (callback) {
-        callback();
-    }
-
-    deleteModal();
-}
-
-function deleteModal() {
-    setTimeout(function () {
         $('body').find('#modal-mensagem').remove();
-    }, 2000);
+
+        if (callback) {
+            callback();
+        }
+
+    });
 }
