@@ -576,7 +576,7 @@ INSERT INTO #AMOSTRATIPO4
             			LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
             				ON A4.UNIDADE = UNI.Id
             				AND A4.INDICADOR = IND.ID
-                        LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+                        INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
 		                        ON P1M.ParLevel1_Id = IND.Id
 		                        AND P1M.IsActive = 1
 		                        AND P1M.EffectiveDateStart <= @DATAINICIAL
@@ -875,7 +875,7 @@ INSERT INTO #AMOSTRATIPO4
             			LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
             				ON A4.UNIDADE = UNI.Id
             				AND A4.INDICADOR = IND.ID
-                        LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+                        INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			                        ON P1M.ParLevel1_Id = IND.Id
 			                        --Variavel
 			                        AND P1M.IsActive = 1
@@ -1125,7 +1125,7 @@ INSERT INTO #AMOSTRATIPO4
                 "\n         INNER JOIN ParDepartment D with (nolock) " +
                 "\n         ON L2.ParDepartment_Id = D.Id " +
                 $@"
-                        LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+                        INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			                        ON P1M.ParLevel1_Id = IND.Id
 			                        --Variavel
 			                        AND P1M.IsActive = 1
@@ -1362,8 +1362,10 @@ AND Data  BETWEEN @DATAINICIAL AND @DATAFINAL )
 SELECT
 	CONVERT(VARCHAR(153), Unidade) AS UnidadeName
    ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
+    ,ParModule_Id
+,CONVERT(VARCHAR(153), Level1Name) AS IndicadorName
    ,CONVERT(VARCHAR(153), level1_Id) AS Indicador_Id
-   ,CONVERT(VARCHAR(153), Level1Name) AS IndicadorName
+   ,ParModule_Id
    ,ProcentagemNc AS [proc]
    ,IIF(IsRuleConformity = 1, (100 - META),Meta) AS Meta
    ,NC
@@ -1372,6 +1374,7 @@ FROM (SELECT
 		Unidade
 	   ,IsRuleConformity
 	   ,Unidade_Id
+       ,ParModule_Id
 	   ,Level1Name
 	   ,level1_Id
 	   ,SUM(avSemPeso) AS av
@@ -1383,6 +1386,7 @@ FROM (SELECT
 		   ,IND.IsRuleConformity
 		   ,IND.Name AS Level1Name
 		   ,UNI.Id AS Unidade_Id
+           ,P1M.ParModule_Id
 		   ,UNI.Name AS Unidade
 		   ,CASE
 				WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos)
@@ -1477,6 +1481,19 @@ FROM (SELECT
 		--  	ON CL2.ParLevel2_id = L2.Id
 		--  INNER JOIN ParDepartment D WITH (NOLOCK)
 		--  	ON L2.ParDepartment_Id = D.Id
+            INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
+			        ON P1M.ParLevel1_Id = IND.Id
+			        --Variavel
+			        AND P1M.IsActive = 1
+			        AND P1M.EffectiveDateStart <= @DATAINICIAL
+			        AND (P1M.ParCluster_Id IS NULL
+			        OR P1M.ParCluster_Id IN (SELECT
+					        ParCluster_Id
+				        FROM ParCompanyCluster
+				        WHERE ParCompany_Id = UNI.Id
+				        AND Active = 1)
+			        ) 
+
         LEFT JOIN ParLevel1XCluster PLC
 			ON dbo.grtFN_getParLevel1XCluster(CL1.ConsolidationDate,CL1.ParLevel1_Id,CL1.Unitid,3) = PLC.ID
 		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
@@ -1484,6 +1501,7 @@ FROM (SELECT
         {whereDepartment}
         {whereShift}
         {whereCriticalLevel}
+        {whereModule}
         AND (IND.ParConsolidationType_id = 4 OR ISNULL(IND.hashKey,0) = 1)
         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
 		GROUP BY IND.ParConsolidationType_Id
@@ -1495,11 +1513,13 @@ FROM (SELECT
 				,UNI.Name
 				,CL1.ParLevel1_Id
 				,CL1.UnitId
+	            ,P1m.ParModule_Id
                 ,CL1.ConsolidationDate) S1
 	GROUP BY Unidade
 			,Unidade_Id
 			,Level1Name
 			,level1_Id
+	        ,ParModule_Id
 			,IsRuleConformity) S2
  WHERE ProcentagemNc <> 0 
 
@@ -1511,15 +1531,18 @@ FROM (SELECT
                ,Unidade_Id
                ,Indicador_Id
                ,IndicadorName
+               ,ParModule_Id
                ,IIF(SUM(avComPeso) IS NULL OR SUM(avComPeso) = 0, 0, SUM(ncComPeso) / SUM(avComPeso) * 100) AS [proc]
                ,AVG(Meta) as Meta
                ,SUM(NC) AS NC
                ,SUM(Av) AS Av
+               ,ParModule_Id
             FROM (SELECT
             		CONVERT(VARCHAR(153), Unidade) AS UnidadeName
             	   ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
             	   ,CONVERT(VARCHAR(153), level1_Id) AS Indicador_Id
             	   ,CONVERT(VARCHAR(153), Level1Name) AS IndicadorName
+                   ,ParModule_Id
             	   ,avComPeso
                    ,ncComPeso
             	   ,(CASE
@@ -1537,6 +1560,7 @@ FROM (SELECT
             		   ,Unidade_Id
             		   ,Level1Name
             		   ,level1_Id
+                       ,ParModule_Id
             		   ,SUM(avSemPeso) AS av
             		   ,SUM(ncSemPeso) AS nc
             		   ,SUM(av) AS avComPeso
@@ -1555,6 +1579,7 @@ FROM (SELECT
             			   ,IND.Name AS Level1Name
             			   ,UNI.Id AS Unidade_Id
             			   ,UNI.Name AS Unidade
+                           ,P1M.ParModule_Id as ParModule_Id
             			   ,CASE
             					WHEN IND.HashKey = 1 THEN ISNULL((SELECT top 1 SUM(VOLUMEPCC) From #VOLUMES V WITH (NOLOCK)
             											WHERE 1=1 
@@ -1654,7 +1679,7 @@ FROM (SELECT
                             AND A4.DATA = CL1.ConsolidationDate
                             AND A4.[SHIFT] = CL1.[SHIFT]
                             AND A4.[PERIOD] = CL1.[PERIOD]
-                        LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+                        INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			                        ON P1M.ParLevel1_Id = IND.Id
 			                        --Variavel
 			                        AND P1M.IsActive = 1
@@ -1684,12 +1709,14 @@ FROM (SELECT
             				,level1_Id
             				,IsRuleConformity
             				,DepartamentoName
-            				,Departamento_Id) S2
+            				,Departamento_Id
+                            ,ParModule_Id) S2
             	 ) A
             GROUP BY UnidadeName
             		,Unidade_Id
             		,IndicadorName
             		,Indicador_Id
+                    ,ParModule_Id
             HAVING SUM(ncComPeso) > 0
             AND SUM(NC) > 0
 
@@ -1940,7 +1967,7 @@ FROM (SELECT
 			ON CL2.ConsolidationLevel1_id = CL1.Id
 		INNER JOIN ParLevel2 L2 WITH (NOLOCK)
 			ON CL2.ParLevel2_id = L2.Id
-        LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+        INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			        ON P1M.ParLevel1_Id = IND.Id
 			        --Variavel
 			        AND P1M.IsActive = 1
@@ -2135,7 +2162,7 @@ DROP TABLE #AMOSTRATIPO4 ";
                "\n 	ON MON.Id = CL2.ParLevel2_Id " +
                "\n 	INNER JOIN ParCompany UNI (nolock) " +
                "\n 	ON UNI.Id = CL1.UnitId " +
-               $@"  LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+               $@"  INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			            ON P1M.ParLevel1_Id = IND.Id
 			            --Variavel
 			            AND P1M.IsActive = 1
@@ -2231,7 +2258,7 @@ DROP TABLE #AMOSTRATIPO4 ";
             	ON IND.Id = CL1.ParLevel1_Id
             INNER JOIN ParLevel2 MON (NOLOCK)
             	ON MON.Id = CL2.ParLevel2_Id
-            LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+            INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			            ON P1M.ParLevel1_Id = IND.Id
 			            --Variavel
 			            AND P1M.IsActive = 1
