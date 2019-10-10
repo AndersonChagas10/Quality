@@ -299,7 +299,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="row" id="negativo">
-                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.negative as string))                                    
+                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.negative as string))
                                                     <td>
                                                         <input type="text" id="objBinarioPunishmentName2" class="form-control input-sm">
                                                         @Html.ErrorManual("punishmentNameCabecalho2", "O campo Nome deve ser preechido para o Cabecalho.")
@@ -597,242 +597,242 @@
                                                 {
                                                     foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
                                                     {
-                                                <tr class="alteracao"
-                                                    data-headerfield-id="@parLevel1XHeaderField.ParHeaderField.Id"
-                                                    data-headerfieldgroup="@parLevel1XHeaderField.HeaderFieldGroup">
-                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9 || parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 10)
-                                                    {
-                                                        <td>@parLevel1XHeaderField.ParHeaderField.Name &nbsp;(Id: @parLevel1XHeaderField.ParHeaderField.Description)</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td>@parLevel1XHeaderField.ParHeaderField.Name</td>
-                                                    }
-
-                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
-                                                    {
-                                                        <td>
-                                                            @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
-                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })*@
-                                                        </td>
-                                                    }
-
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
-                                                    {
-
-                                                        <td>
-
-                                                            @{ var tipo = CommonData.PutSpaceBeforeCapitalLetter(parLevel1XHeaderField.ParHeaderField.Description);
-
-                                                                switch (tipo)
-                                                                {
-                                                                    case ("Equipamento|"):
-                                                                        tipo = "Equipamento";
-                                                                        break;
-                                                                    case ("Câmara|"):
-                                                                        tipo = "Câmara";
-                                                                        break;
-                                                                    case ("Ponto de Coleta|"):
-                                                                        tipo = "Ponto de Coleta de Água";
-                                                                        break;
-                                                                    case ("Detector de Metais|"):
-                                                                        tipo = "Detector de Metais";
-                                                                        break;
-                                                                    case ("Setor|"):
-                                                                        tipo = "Setor";
-                                                                        break;
-                                                                    case ("Tipo de Corte|"):
-                                                                        tipo = "Tipo de Corte";
-                                                                        break;
-                                                                    case ("Setores BPF|"):
-                                                                        tipo = "Setores BPF";
-                                                                        break;
-                                                                    case ("familiaProduto"):
-                                                                        tipo = "Família de Produtos";
-                                                                        break;
-                                                                    case ("Produto"):
-                                                                        tipo = Resources.Resource.products;
-                                                                        break;
-                                                                    default:
-                                                                        break;
-                                                                }
-                                                            }
-
-                                                            @tipo;
-
-                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })*@
-
-                                                        </td>
-
-                                                    }
-
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
-                                                    {
-                                                        <td>
-                                                            @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
+                                                        <tr class="alteracao"
+                                                            data-headerfield-id="@parLevel1XHeaderField.ParHeaderField.Id"
+                                                            data-headerfieldgroup="@parLevel1XHeaderField.HeaderFieldGroup">
+                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9 || parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 10)
                                                             {
-                                                                <label>@radioOpt.Name</label>
-                                                                @Html.RadioButton("removerParHeaderField", true, new { @class = "" });
-                                                            }
-                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
-
-                                                        </td>
-                                                    }
-
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
-                                                    {
-                                                        <td>
-                                                            @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
-                                                        </td>
-                                                    }
-
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8)
-                                                    {
-                                                        <td>
-                                                            @Html.Raw(parLevel1XHeaderField.ParHeaderField.Description)
-                                                        </td>
-                                                    }
-
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
-                                                    {
-                                                        <td>
-                                                            <input type="number" class="fixed-width form-control input-sm" />
-
-                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
-
-                                                        </td>
-                                                    }
-
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
-                                                    {
-
-                                                        <td>
-                                                            <input type="text" class="dataInput active form-control input-sm">
-                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
-
-                                                        </td>
-                                                    }
-
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
-                                                    {
-
-                                                        <td>
-                                                            <input type="time" class="active form-control input-sm">
-                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
-
-                                                        </td>
-                                                    }
-
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9)
-                                                    {
-
-                                                        <td>
-                                                            <input type="text" class="active form-control input-sm">
-                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
-
-                                                        </td>
-                                                    }
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 10)
-                                                    {
-
-                                                        <td>
-                                                            <input type="text" class="active form-control input-sm">
-                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
-
-                                                        </td>
-                                                    }
-
-                                                    <td>
-                                                        <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control fixed-width input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
-                                                            @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
-                                                            {
-                                                                if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
-                                                                {
-                                                                    <option value="0">@Resources.Resource.n</option>
-                                                                    <option value="1" selected>@Resources.Resource.y</option>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <option value="0" selected>@Resources.Resource.n</option>
-                                                                    <option value="1">@Resources.Resource.y</option>
-                                                                }
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name &nbsp;(Id: @parLevel1XHeaderField.ParHeaderField.Description)</td>
                                                             }
                                                             else
                                                             {
-                                                                <option value="0" selected>@Resources.Resource.n</option>
-                                                                <option value="1">@Resources.Resource.y</option>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name</td>
                                                             }
-                                                        </select>
 
+                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
 
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
+                                                            {
+                                                                <td>
+                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })*@
+                                                                </td>
+                                                            }
 
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
+                                                            {
 
-                                                    </td>
+                                                                <td>
 
-                                                    <td>
-                                                        @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
-                                                        {
-                                                            <div class="input-group">
-                                                                <div class="input-group-btn">
-                                                                    <select class="form-control fixed-width input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
-                                                                        <option value="0" selected>@Resources.Resource.none</option>
-                                                                        @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
+                                                                    @{ var tipo = CommonData.PutSpaceBeforeCapitalLetter(parLevel1XHeaderField.ParHeaderField.Description);
+
+                                                                        switch (tipo)
                                                                         {
-                                                                            if (radioOpt.IsDefaultOption == true)
-                                                                            {
-                                                                                <option value="@radioOpt.Id" selected>@radioOpt.Name</option>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <option value="@radioOpt.Id">@radioOpt.Name</option>
-                                                                            }
+                                                                            case ("Equipamento|"):
+                                                                                tipo = "Equipamento";
+                                                                                break;
+                                                                            case ("Câmara|"):
+                                                                                tipo = "Câmara";
+                                                                                break;
+                                                                            case ("Ponto de Coleta|"):
+                                                                                tipo = "Ponto de Coleta de Água";
+                                                                                break;
+                                                                            case ("Detector de Metais|"):
+                                                                                tipo = "Detector de Metais";
+                                                                                break;
+                                                                            case ("Setor|"):
+                                                                                tipo = "Setor";
+                                                                                break;
+                                                                            case ("Tipo de Corte|"):
+                                                                                tipo = "Tipo de Corte";
+                                                                                break;
+                                                                            case ("Setores BPF|"):
+                                                                                tipo = "Setores BPF";
+                                                                                break;
+                                                                            case ("familiaProduto"):
+                                                                                tipo = "Família de Produtos";
+                                                                                break;
+                                                                            case ("Produto"):
+                                                                                tipo = Resources.Resource.products;
+                                                                                break;
+                                                                            default:
+                                                                                break;
                                                                         }
-                                                                    </select>
-                                                                    <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
-                                                                </div>
-                                                            </div>
-                                                        }
-                                                    </td>
+                                                                    }
 
-                                                    <td>
-                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                        @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
-                                                        {
-                                                            <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho - Ativado">
-                                                                <span class="glyphicon glyphicon-duplicate"></span>
-                                                            </button>
+                                                                    @tipo;
 
-                                                        }
-                                                        else
-                                                        {
-                                                            <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho - Inativado">
-                                                                <span class="fa fa-copy"></span>
-                                                            </button>
-                                                        }
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })*@
 
-                                                        <button type="button" class="btn btn-success btn-xs" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('@Resources.Resource.edit_header', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" title="@Resources.Resource.edit_header">
-                                                            <span class="fa fa-pencil-square-o"></span>
-                                                        </button>
+                                                                </td>
 
-                                                        <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" title="Remover Cabeçalho">
-                                                            <span class="fa fa-close"></span>
-                                                        </button>
+                                                            }
 
-                                                        <button type="button" class="btn btn-default btn-xs" id="AgruparCabecalho" onclick="HeaderLevel1.LinkGroup(@parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id, $(this));" title="Agrupar cabeçalho">
-                                                            <span class="fa fa-link"></span>
-                                                        </button>
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
+                                                            {
+                                                                <td>
+                                                                    @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
+                                                                    {
+                                                                        <label>@radioOpt.Name</label>
+                                                                        @Html.RadioButton("removerParHeaderField", true, new { @class = "" });
+                                                                    }
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
 
-                                                        <button type="button" class="btn btn-danger btn-xs" id="DesagruparCabecalho" onclick="HeaderLevel1.UnlinkGroup(@parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id, $(this));" title="Desagrupar cabeçalho">
-                                                            <span class="fa fa-unlink"></span>
-                                                        </button>
-                                                    </td>
+                                                                </td>
+                                                            }
 
-                                                </tr>
-                                                                            }
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
+                                                            {
+                                                                <td>
+                                                                    @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
+                                                                </td>
+                                                            }
+
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8)
+                                                            {
+                                                                <td>
+                                                                    @Html.Raw(parLevel1XHeaderField.ParHeaderField.Description)
+                                                                </td>
+                                                            }
+
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
+                                                            {
+                                                                <td>
+                                                                    <input type="number" class="fixed-width form-control input-sm" />
+
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
+
+                                                                </td>
+                                                            }
+
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
+                                                            {
+
+                                                                <td>
+                                                                    <input type="text" class="dataInput active form-control input-sm">
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
+
+                                                                </td>
+                                                            }
+
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
+                                                            {
+
+                                                                <td>
+                                                                    <input type="time" class="active form-control input-sm">
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
+
+                                                                </td>
+                                                            }
+
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9)
+                                                            {
+
+                                                                <td>
+                                                                    <input type="text" class="active form-control input-sm">
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
+
+                                                                </td>
+                                                            }
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 10)
+                                                            {
+
+                                                                <td>
+                                                                    <input type="text" class="active form-control input-sm">
+                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
+
+                                                                </td>
+                                                            }
+
+                                                            <td>
+                                                                <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control fixed-width input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
+                                                                    @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
+                                                                    {
+                                                                        if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
+                                                                        {
+                                                                            <option value="0">@Resources.Resource.n</option>
+                                                                            <option value="1" selected>@Resources.Resource.y</option>
                                                                         }
+                                                                        else
+                                                                        {
+                                                                            <option value="0" selected>@Resources.Resource.n</option>
+                                                                            <option value="1">@Resources.Resource.y</option>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="0" selected>@Resources.Resource.n</option>
+                                                                        <option value="1">@Resources.Resource.y</option>
+                                                                    }
+                                                                </select>
+
+
+
+
+                                                            </td>
+
+                                                            <td>
+                                                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
+                                                                {
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-btn">
+                                                                            <select class="form-control fixed-width input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
+                                                                                <option value="0" selected>@Resources.Resource.none</option>
+                                                                                @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
+                                                                                {
+                                                                                    if (radioOpt.IsDefaultOption == true)
+                                                                                    {
+                                                                                        <option value="@radioOpt.Id" selected>@radioOpt.Name</option>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <option value="@radioOpt.Id">@radioOpt.Name</option>
+                                                                                    }
+                                                                                }
+                                                                            </select>
+                                                                            <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            </td>
+
+                                                            <td>
+                                                                @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                                {
+                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho - Ativado">
+                                                                        <span class="glyphicon glyphicon-duplicate"></span>
+                                                                    </button>
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho - Inativado">
+                                                                        <span class="fa fa-copy"></span>
+                                                                    </button>
+                                                                }
+
+                                                                <button type="button" class="btn btn-success btn-xs" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('@Resources.Resource.edit_header', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" title="@Resources.Resource.edit_header">
+                                                                    <span class="fa fa-pencil-square-o"></span>
+                                                                </button>
+
+                                                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" title="Remover Cabeçalho">
+                                                                    <span class="fa fa-close"></span>
+                                                                </button>
+
+                                                                <button type="button" class="btn btn-default btn-xs" id="AgruparCabecalho" onclick="HeaderLevel1.LinkGroup(@parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id, $(this));" title="Agrupar cabeçalho">
+                                                                    <span class="fa fa-link"></span>
+                                                                </button>
+
+                                                                <button type="button" class="btn btn-danger btn-xs" id="DesagruparCabecalho" onclick="HeaderLevel1.UnlinkGroup(@parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id, $(this));" title="Desagrupar cabeçalho">
+                                                                    <span class="fa fa-unlink"></span>
+                                                                </button>
+                                                            </td>
+
+                                                        </tr>
+                                                    }
+                                                }
                                             </tbody>
                                             <tfoot></tfoot>
                                         </table>
@@ -903,10 +903,8 @@
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
 
-
-
         </div>
-                                                                        }
+    }
 </div>
 
 <script>
@@ -1573,7 +1571,7 @@
             $('#btnIncluirCabecalho input').hide();
         },
         IncluirSalvarTexto: function (isData) {
-            
+
             if($('#headerLevel option:selected').val() == -1){
                 openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
                 //alert('Selecione o Nivel do Cabecalho')
@@ -1626,7 +1624,7 @@
                 example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '(' + 'Id:' + descricao + ')' + '</label></td>' + // nome
                     '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>'; // Tipo
             }
-           
+
             //var example = '<div>';
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
