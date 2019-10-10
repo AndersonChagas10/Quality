@@ -180,7 +180,9 @@ namespace SgqSystem.Controllers
                         hash = DateTime.Now.GetHashCode();
 
                     componenteGenericoValor.IsActive = true;
-                    componenteGenericoValor.SaveId = hash;
+                    if(componenteGenericoValor.SaveId == 0)
+                        componenteGenericoValor.SaveId = hash;
+
                     db.ComponenteGenericoValor.Add(componenteGenericoValor);
 
                 }

@@ -174,7 +174,7 @@
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
-
+    var IdComponente;
     $(document).ready(function () {
 
         closeLeftSidebar();
@@ -190,7 +190,7 @@
     });
 
     $('#btnAdd').on("click", function () {
-
+        debugger
         let obj = $('#formNewColum').serializeFormToObjetc();
 
         if (!colunaIsValid(obj)) {
@@ -201,9 +201,9 @@
 
         obj.ComponenteGenericoTipoColuna.Id = obj.ComponenteGenericoTipoColuna_Id;
         obj.ComponenteGenericoTipoColuna.Name = $('#ComponenteGenericoTipoColuna_Id :selected').text();
-
+        IdComponente = obj.ComponenteGenerico_Id;
         addRow(obj);
-
+        
     });
 
     function colunaIsValid(obj) {
@@ -257,12 +257,12 @@
     }
 
     $('#tableGenericoColuna').on('click', '.btnEditColuna', function () {
-
+        debugger
         //colocar o id no form
         let indexNumber = $(this).closest("tr").index();
 
         let obj = $(this).closest("tr").data('data');
-
+        IdComponente = obj.ComponenteGenerico_Id;
         setForm(obj);
 
         //trocar o botão inserir para o botão Ok
@@ -288,6 +288,8 @@
             obj.ComponenteGenericoTipoColuna.Name = $('#ComponenteGenericoTipoColuna_Id :selected').text();
             obj.IsRequired = Array.isArray(obj.IsRequired) ? obj.IsRequired[0] : obj.IsRequired;
             obj.IsActive = Array.isArray(obj.IsActive) ? obj.IsActive[0] : obj.IsActive;
+
+            obj.ComponenteGenerico_Id = IdComponente;
 
             $('#tableGenericoColuna tbody tr:eq(' + indexNumber + ')').data('data', obj);
             $('#tableGenericoColuna tbody tr:eq(' + indexNumber + ')').find('td:eq(0)').html(obj.Name);
