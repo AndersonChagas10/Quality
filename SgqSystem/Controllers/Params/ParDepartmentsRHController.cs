@@ -55,7 +55,7 @@ namespace SgqSystem.Controllers
                 return HttpNotFound();
             }
             parDepartment.ParCompany = db.ParCompany.Where(x => x.Id == parDepartment.ParCompany_Id).ToList();
-            parDepartment.ParDepartmentFilho = db.ParDepartment.Where(x => x.Parent_Id == id && x.Active).ToList();
+            parDepartment.ParDepartmentFilho = db.ParDepartment.Where(x => x.Parent_Id == id).ToList();
             return View(parDepartment);
         }
 

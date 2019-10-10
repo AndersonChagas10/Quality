@@ -650,7 +650,8 @@
         } else {
 
             var departamentosVinculados = jQuery.grep(ParDepartmentsGlobal, function (n, i) {
-                return (n.ParCompany_Id === unidadeSelecionada || n.ParCompany_Id == null);
+                debugger
+                return ((n.ParCompany_Id === unidadeSelecionada || n.ParCompany_Id == null) && n.Active == true);
             });
 
             preencheSelect(selectId, 'Name', 'Id', departamentosVinculados, mensagem);
