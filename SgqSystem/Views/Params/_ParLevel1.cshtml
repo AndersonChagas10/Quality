@@ -697,8 +697,8 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 11)
                                                             {
                                                                 <td>
-                                                                    Value: @parLevel1XHeaderField.ParHeaderField.ParHeaderFieldXComponenteGenerico.ValueName
-                                                                    Text: @parLevel1XHeaderField.ParHeaderField.ParHeaderFieldXComponenteGenerico.TextName
+                                                                    @Resources.Resource.value: @parLevel1XHeaderField.ParHeaderField.ParHeaderFieldXComponenteGenerico.ValueName
+                                                                    @Resources.Resource.text: @parLevel1XHeaderField.ParHeaderField.ParHeaderFieldXComponenteGenerico.TextName
                                                                 </td>
                                                             }
 
@@ -1892,8 +1892,8 @@
             /*Cria preview*/
             example += '<td>';
 
-            example += `Value: ${ componenteValueName } </br>
-                        Text: ${ componenteTextName }`;
+            example += `Valor: ${ componenteValueName } </br>
+                        Texto: ${ componenteTextName }`;
 
             Cabecalhos.ParBinario.forEach(function (o, c) {
 
