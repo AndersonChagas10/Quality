@@ -253,7 +253,14 @@ namespace SgqService.Controllers.Api
         {
             return business.GetResource(language);
         }
+
+        #endregion
+
+        [HttpGet]
+        [Route("ReconsolidationToLevel3")]
+        public string ReconsolidationToLevel3(string collectionLevel2_Id)
+        {
+            return business.ReconsolidationToLevel3(collectionLevel2_Id);
+        }
     }
 }
-
-#endregion

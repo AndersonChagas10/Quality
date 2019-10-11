@@ -59,9 +59,12 @@
                                             <tr>
                                                 @foreach (var item in Model.Colunas)
                                                 {
-                                                    <td>
+                                                <td>
+                                                    @if (Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id && x.SaveId == saveId).FirstOrDefault() != null)
+                                                    {
                                                         @Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id && x.SaveId == saveId).FirstOrDefault().Valor
-                                                    </td>
+                                                    }
+                                                </td>
                                                 }
                                             <td>
                                                 @Html.ActionLink("Editar", "EditValor", new { id = Model.ComponenteGenerico.Id, idValor = saveId }, new { @class = "btn btn-success btn-sm" })

@@ -1198,7 +1198,7 @@ namespace SgqServiceBusiness.Api
                     isemptylevel3 = BoolConverter(isemptylevel3);
 
                     string cluster = DefaultValueReturn(arrayHeader[31], null);
-                    string parDepartment_Id = DefaultValueReturn(arrayHeader[34], null);
+                    string parDepartment_Id = arrayHeader.Length > 34 ? DefaultValueReturn(arrayHeader[34], null) : null;
 
                     string haveReaudit = BoolConverter(c.haveReaudit.ToString());
 
@@ -3557,7 +3557,7 @@ namespace SgqServiceBusiness.Api
                 		COUNT(1)
                 	FROM #COLETASLEVEL3);
                 DECLARE @I INT = 1;
-                DECLARE @RESPOSTA VARCHAR(153) = '';
+                DECLARE @RESPOSTA VARCHAR(2000) = '';
                 WHILE @I<@HOMENSFORBRUNO
                 BEGIN
                 SELECT

@@ -43,7 +43,7 @@
                                 <div class="form-horizontal">
                                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                     @Html.HiddenFor(Model => Model.ComponenteGenerico.Id)
-
+                                    @Html.HiddenFor(Model => Model.Valores.FirstOrDefault().SaveId)
                                     @foreach (var item in Model.Colunas)
                                     {
 
@@ -126,8 +126,7 @@
 
                                                     @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                                                     <div class="col-md-10">
-                                                        <select class="form-control formSave" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
-                                                        </select>
+                                                        <select class="form-control formSave" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id"></select>
                                                     </div>
                                                 </div>
                                                 break;
@@ -242,8 +241,7 @@
                                                         <td></td>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                </tbody>
+                                                <tbody></tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -287,7 +285,7 @@
 
         let listObjToSave = [];
         let formIsValid = true;
-
+        debugger
         $('#setup_tab input.formSave, #setup_tab textarea.formSave, #setup_tab select.formSave').each(function () {
 
             $(this).css('background-color', '');
@@ -317,6 +315,12 @@
                 formIsValid = false;
                 return false;
             }
+
+            if (objToSave.ComponenteGenerico_Id == null || objToSave.ComponenteGenerico_Id == "")
+                objToSave.ComponenteGenerico_Id = $("#ComponenteGenerico_Id").val();
+
+            if (objToSave.SaveId == null || objToSave.SaveId == "0")
+                objToSave.SaveId = $("#SaveId").val();
 
             listObjToSave.push(objToSave);
 
@@ -422,7 +426,7 @@
     }
 
     function getLimits() {
-
+        debugger
         let arrValor = [];
 
         $('#limites tbody tr').each(function () {
