@@ -1944,6 +1944,7 @@
     <Content Include="Views\RotinaIntegracao\Edit.cshtml" />
     <Content Include="Views\RotinaIntegracao\Delete.cshtml" />
     <Content Include="Views\Params\_Rotina.cshtml" />
+    <Content Include="Views\Shared\_Print.cshtml" />
     <Content Include="Views\ParStructureGroup\Index.cshtml" />
     <Content Include="Views\ParStructureGroup\Create.cshtml" />
     <Content Include="Views\ParStructureGroup\Edit.cshtml" />
@@ -2170,7 +2171,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>false</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

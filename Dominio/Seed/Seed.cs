@@ -12,21 +12,6 @@ namespace Dominio.Seed
     {
         public static void SetSeedValues(bool isPT = false, bool runSetSeed = true)
         {
-            DicionarioEstaticoSeed dicionarioSeed = new DicionarioEstaticoSeed();
-            if (runSetSeed)
-                dicionarioSeed.SetDicionarioEstatico();
-            //new Task(()=> dicionarioSeed.SetDicionarioEstatico());
-
-            using (var db = new Dominio.SgqDbDevEntities())
-            {
-                var x = new ExpandoObject() as IDictionary<string, object>;
-
-                foreach (var item in db.DicionarioEstatico.ToList())
-                {
-                    x.Add(item.Key, item.Value);
-                }
-                DicionarioEstaticoGlobal.DicionarioEstaticoHelpers = x;
-            }
 
             if (isPT)
             {
@@ -69,6 +54,25 @@ namespace Dominio.Seed
                 AppScriptSeed appScriptSeed = new AppScriptSeed();
                 appScriptSeed.SetAppScript();
                 //new Task(() => appScriptSeed.SetAppScript());
+            }
+        }
+
+        public static void SetDicionario()
+        {
+            DicionarioEstaticoSeed dicionarioSeed = new DicionarioEstaticoSeed();
+
+            dicionarioSeed.SetDicionarioEstatico();
+
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+                var x = new ExpandoObject() as IDictionary<string, object>;
+
+                foreach (var item in db.DicionarioEstatico.ToList())
+                {
+                    x.Add(item.Key, item.Value);
+                }
+
+                DicionarioEstaticoGlobal.DicionarioEstaticoHelpers = x;
             }
         }
     }
