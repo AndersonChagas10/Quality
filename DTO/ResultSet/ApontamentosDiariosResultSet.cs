@@ -180,13 +180,15 @@ public class ApontamentosDiariosResultSet
 				         Shift,
 				         Period
 				         from #CollectionLevel2_ c2_
-				         inner join (Select Adddate as adddated, Evaluation, Sample as sampled, ParLevel1_Id as p1, ParLevel2_Id as p2, ParCompany_Id  from Deviation where DeviationMessage is not null) d 
-				         on d.Adddated between dateadd(MI, -5, c2_.Adddate) and dateadd(MI, 5, c2_.Adddate)
+				         inner join (Select Adddate as adddated, Evaluation, Sample as sampled, ParLevel1_Id as p1, ParLevel2_Id as p2, ParCompany_Id, period as periodo, shift as turno, collectiondate as data  from Deviation where DeviationMessage is not null) d 
+				         on (concat(substring(d.data,5,4) ,substring(d.data,1,2),substring(d.data,3,2))) = cast(c2_.collectiondate as date)
 				         and d.Evaluation = c2_.EvaluationNumber
 				         and d.Sampled = c2_.sample
 				         and d.p1 = c2_.ParLevel1_Id
 				         and d.p2 = c2_.ParLevel2_Id
 				         and d.ParCompany_Id = c2_.unitid
+                         and d.periodo = c2_.Period
+                         and d.turno = c2_.Shift
 				         group by
 				 
 				         parlevel1_id,
