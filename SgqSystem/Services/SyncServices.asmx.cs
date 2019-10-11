@@ -6025,7 +6025,7 @@ namespace SgqSystem.Services
                                                 );
 
                 //string HeaderLevel02 = null;
-                painellevel3 = new StringBuilder(html.listgroupItem(
+                painellevel3 = new StringBuilder(html.listgroupItemDIV(
                                                      outerhtml: avaliacoes +
                                                                 amostras +
                                                                 painelLevel3HeaderListHtml.ToString() +
@@ -6268,7 +6268,7 @@ namespace SgqSystem.Services
                 //Painel
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
-                painellevel3 = new StringBuilder(html.listgroupItem(
+                painellevel3 = new StringBuilder(html.listgroupItemDIV(
                                                             outerhtml: avaliacoes +
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
@@ -6416,7 +6416,7 @@ namespace SgqSystem.Services
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2 hide");
 
-                painellevel3 = new StringBuilder(html.listgroupItem(
+                painellevel3 = new StringBuilder(html.listgroupItemDIV(
                                                             outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
                                                classe: "painel painelLevel03 row"));
 
@@ -6610,7 +6610,7 @@ namespace SgqSystem.Services
                     }
                 }
 
-                painellevel3 = new StringBuilder(html.listgroupItem(outerhtml: avaliacoes +
+                painellevel3 = new StringBuilder(html.listgroupItemDIV(outerhtml: avaliacoes +
                                                              amostras +
                                                              defeitos +
                                                              painelLevel3HeaderListHtml.ToString(),
@@ -7159,7 +7159,7 @@ namespace SgqSystem.Services
 
             string divChangeServer =
                 html.div(style: "max-width:320px; margin: 0 auto; padding-right:15px; padding-left:15px",
-                outerhtml: html.button(label: "Atualizar o APP", id: "btnChangeHost", classe: "btn-lg btn-default btn-sm btn-block"));
+                outerhtml: html.button(label: CommonData.getResource("atualizarapp").Value.ToString(), id: "btnChangeHost", classe: "btn-lg btn-default btn-sm btn-block"));
 
             #region foot
 
@@ -7385,9 +7385,25 @@ namespace SgqSystem.Services
                 if (VerificaStringNulaUndefinedNaN(defects))
                     defects = "0";
 
-                sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage]) " +
-                        "VALUES " +
-                        "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd HH:mm:ss") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ")";
+                if(deviation.Count() < 10)
+                {
+                    sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage]) " +
+                            "VALUES " +
+                            "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd HH:mm:ss") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ") ";
+                }
+                else
+                {
+                    string deviation_period = deviation[9];
+                    string deviation_shift = deviation[10];
+                    string deviation_collectiondate = deviation[11];
+
+
+                    sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage],[Period],[Shift],[CollectionDate]) " +
+                            "VALUES " +
+                            "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd HH:mm:ss") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ", '" + deviation_period + "', '" + deviation_shift + "', '" + deviation_collectiondate + "') ";
+                }
+
+
             }
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;

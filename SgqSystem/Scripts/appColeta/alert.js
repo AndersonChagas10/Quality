@@ -97,7 +97,8 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
     //valor;
 
     //Trazer o tipo de input do level3
-    var inputType = parseInt($('.level3[id=' + level3.attr('level03id') + ']:visible').attr('inputtype'));
+    //var inputType = parseInt($('.level3[id=' + level3.attr('level03id') + ']:visible').attr('inputtype'));
+    var inputType = parseInt($('.level3[id=' + level3.attr('level03id') + ']').attr('inputtype'));
 
     /*****
     SE FOR CAMPO CALCULADO, PRECISAMOS REVERTER O VALOR PARA DECIMAL
@@ -1637,7 +1638,7 @@ function setGravaAlertaDBLocal(level1, alertaatual, defeitos, mensagem) {
     var sampleCurrent = $('.level3Group[level1id=' + $('.level1.selected').attr('id') + '][level2id=' + $('.level2.selected').attr('id') + '] .sampleCurrent').text();
 
     //verificar level2 com gabriel
-    var deviation = '<div class="deviation" parcompany_id="' + $('.App').attr('unidadeid') + '" parlevel1_id="' + level1.attr('id') + '" parlevel2_id="' + level2.attr('id') + '" evaluation="' + evaluateCurrent + '" sample="' + sampleCurrent + '" alertnumber="' + alertaatual + '" defects="' + defeitos + '" deviationdate="' + dateTimeFormat() + '" sync="false">' +
+    var deviation = '<div class="deviation" parcompany_id="' + $('.App').attr('unidadeid') + '" period="' + $('.App').attr('period') + '" shift="' + $('.App').attr('shift') + '" collectiondate="' + $('.App').attr('date') + '" parlevel1_id="' + level1.attr('id') + '" parlevel2_id="' + level2.attr('id') + '" evaluation="' + evaluateCurrent + '" sample="' + sampleCurrent + '" alertnumber="' + alertaatual + '" defects="' + defeitos + '" deviationdate="' + dateTimeFormat() + '" sync="false">' +
         '<div class="message">' + mensagem + '</div>' +
         '</div>';
 
@@ -1785,7 +1786,10 @@ function setGravaAlerta() {
         result += ";" + deviation.attr('alertnumber');// 5
         result += ";" + deviation.attr('defects');// 6
         result += ";" + deviation.attr('deviationdate');// 7
-        result += ";" + encodeURI(deviation.children('.message').text().replace(/ +(?= )/g, ''));// 7
+        result += ";" + encodeURI(deviation.children('.message').text().replace(/ +(?= )/g, ''));// 8
+        result += ";" + deviation.attr('period');// 9
+        result += ";" + deviation.attr('shift');// 10
+        result += ";" + deviation.attr('collectiondate');// 11
         //result += ";" + "alerta";// 7
 
         deviationsSend += "<deviation>" + result + "</deviation>";

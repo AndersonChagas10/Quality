@@ -653,3 +653,99 @@ CREATE VIEW V_DailyAppointments AS
                  ON PRT.Id = MA.ParReasonType_Id
                  WHERE 1=1 
  GO
+
+IF COL_LENGTH('DEVIATION','Period') IS NULL
+    BEGIN
+		ALTER TABLE DEVIATION
+		ADD Period int null
+	END
+
+GO
+
+IF COL_LENGTH('DEVIATION','Shift') IS NULL
+    BEGIN
+		ALTER TABLE DEVIATION
+		ADD Shift int null
+	END
+
+GO
+
+IF COL_LENGTH('DEVIATION','CollectionDate') IS NULL
+    BEGIN
+		ALTER TABLE DEVIATION
+		ADD CollectionDate varchar(8) null
+	END
+
+GO
+
+
+
+
+/****** Object:  UserDefinedFunction [dbo].[grtFN_getParLevel1XCluster]    Script Date: 11/10/2019 10:19:36 ******/
+DROP FUNCTION [dbo].[grtFN_getParLevel1XCluster]
+GO
+
+/****** Object:  UserDefinedFunction [dbo].[grtFN_getParLevel1XCluster]    Script Date: 11/10/2019 10:19:36 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE FUNCTION [dbo].[grtFN_getParLevel1XCluster] (@ConsolidationDate DATETIME, @ParLevel1_Id INT, @ParCompany_Id INT, @Dimensao INT /*1-Cluster, 2-Pontos, 3-ID*/)
+RETURNS  VARCHAR(500)
+AS
+BEGIN
+
+DECLARE @ParLevel1XCluster_Id INT = 0;
+DECLARE @Retorno_Id VARCHAR(500) = 0;
+			
+			-- Retorna a linha que eu devo utilizar
+
+			SELECT TOP 1 
+				   @ParLevel1XCluster_Id = L1C.ID
+				FROM ParLevel1XCluster L1C WITH (NOLOCK)  
+				LEFT JOIN ParCompanyCluster CC WITH (NOLOCK)  
+					ON L1C.ParCluster_Id = CC.ParCluster_Id
+			WHERE 1=1
+			AND L1C.IsActive = 1
+			AND  CC.Active = 1
+			
+			AND L1C.EffectiveDate		<=  @ConsolidationDate				-- '2019-01-23 15:53:41.000'
+			AND L1C.ParLevel1_Id		=   @ParLevel1_Id					-- 32
+			AND  CC.ParCompany_Id		=   @ParCompany_Id					-- 1
+			ORDER BY L1C.ParLevel1_Id,L1C.ParCluster_Id,L1C.EffectiveDate DESC,L1C.AlterDate,L1C.AddDate
+
+			-- Pergunta a Dimensao desejada /*1-Cluster, 2-Pontos, 3-ID*/
+
+			IF @Dimensao = 1
+			BEGIN
+				
+				SELECT TOP 1 @Retorno_Id = ParCluster_Id 
+					FROM ParLevel1XCluster WITH (NOLOCK) WHERE ID = @ParLevel1XCluster_Id
+
+			END
+			IF @Dimensao = 2
+			BEGIN
+				
+				SELECT TOP 1 @Retorno_Id = Points
+					FROM ParLevel1XCluster WITH (NOLOCK) WHERE ID = @ParLevel1XCluster_Id
+
+			END
+
+			IF @Dimensao = 3
+			BEGIN
+				
+				SET @Retorno_Id = @ParLevel1XCluster_Id
+
+			END
+
+
+			RETURN @Retorno_Id
+END
+
+
+GO
+
+

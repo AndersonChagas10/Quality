@@ -35,7 +35,7 @@ function getTempLevel2(level1id, level2id){
 
 }
 
-function setTempLevel2(level1id, level2id, evaluation, sample){
+function setTempLevel2(level1id, level2id, reaudit, evaluation, sample){
 
     var period = parseInt($('.App').attr('period'));
     var shift = parseInt($('.App').attr('shift'));
