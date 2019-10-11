@@ -190,7 +190,6 @@
     });
 
     $('#btnAdd').on("click", function () {
-        debugger
         let obj = $('#formNewColum').serializeFormToObjetc();
 
         if (!colunaIsValid(obj)) {
@@ -203,7 +202,7 @@
         obj.ComponenteGenericoTipoColuna.Name = $('#ComponenteGenericoTipoColuna_Id :selected').text();
         IdComponente = obj.ComponenteGenerico_Id;
         addRow(obj);
-        
+        $('#formNewColum').find("input, textarea").val("");
     });
 
     function colunaIsValid(obj) {
@@ -257,7 +256,6 @@
     }
 
     $('#tableGenericoColuna').on('click', '.btnEditColuna', function () {
-        debugger
         //colocar o id no form
         let indexNumber = $(this).closest("tr").index();
 
