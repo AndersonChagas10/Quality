@@ -1941,6 +1941,9 @@
   <data name="enter_offline" xml:space="preserve">
     <value>Entrar</value>
   </data>
+  <data name="atualizarapp" xml:space="preserve">
+    <value>Atualizar o App</value>
+  </data>
   <data name="slow_network" xml:space="preserve">
     <value>Sua rede está apresentando muita lentidão. Tente mais tarde.</value>
   </data>
