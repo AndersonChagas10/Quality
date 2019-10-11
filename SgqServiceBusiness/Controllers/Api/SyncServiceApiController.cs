@@ -3465,7 +3465,7 @@ namespace SgqServiceBusiness.Api
 
             string dataIni = data.ToString("yyyyMMdd");
 
-            string retorno = "";
+            StringBuilder retorno = new StringBuilder();
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -3515,7 +3515,7 @@ namespace SgqServiceBusiness.Api
 
                 CREATE TABLE #COLETASLEVEL3 (																																											  
                 	ROW INT NULL,																																															  
-                	COLUNA VARCHAR(153) NULL																																												  
+                	COLUNA VARCHAR(8000) NULL																																												  
                 )
                 
                 INSERT INTO #COLETASLEVEL3
@@ -3557,7 +3557,7 @@ namespace SgqServiceBusiness.Api
                 		COUNT(1)
                 	FROM #COLETASLEVEL3);
                 DECLARE @I INT = 1;
-                DECLARE @RESPOSTA VARCHAR(2000) = '';
+                DECLARE @RESPOSTA VARCHAR(8000) = '';
                 WHILE @I<@HOMENSFORBRUNO
                 BEGIN
                 SELECT
@@ -3865,9 +3865,9 @@ namespace SgqServiceBusiness.Api
                 	more3defectsEvaluate = ""0""
                 	CollectionLevel2_ID_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Id) AS VARCHAR), '.', ','), 'NULL') + '""
                 	CollectionLevel2_Period_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Period) AS VARCHAR), '.', ','), 'NULL') + '"" 
-                	HoraPrimeiraAvaliacao = ""' + ISNULL(Level2Result.HoraPrimeiraAvaliacao, 'NULL') + '"" >
-                	' + @RESPOSTA + '
-                	</div> ' AS retorno
+                	HoraPrimeiraAvaliacao = ""' + ISNULL(Level2Result.HoraPrimeiraAvaliacao, 'NULL') + '"" >' as retornoLevel2,
+                    @RESPOSTA as retornoLevel3,
+                    '</div> ' AS retornoFechaDiv
                 FROM #COLETA Level2Result
                 INNER JOIN ConsolidationLevel2 CDL2 WITH (NOLOCK)
                 	ON Level2Result.ConsolidationLevel2_Id = CDL2.Id
@@ -3920,16 +3920,18 @@ namespace SgqServiceBusiness.Api
                     cmd.Parameters.Add(new SqlParameter("@DataIni", dataIni));
                     cmd.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
 
-                    var list = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                    var list = factory.SearchQuery<ResultadoH4B>(cmd).ToList();
 
                     for (var i = 0; i < list.Count(); i++)
                     {
-                        retorno += list[i].retorno.ToString();
+                        retorno.Append(list[i].retornoLevel2.ToString());
+                        retorno.Append(list[i].retornoLevel3.ToString());
+                        retorno.Append(list[i].retornoFechaDiv.ToString());
                     }
                 }
             }
 
-            return retorno;
+            return retorno.ToString();
         }
         #endregion
 
