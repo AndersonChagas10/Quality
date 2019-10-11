@@ -206,7 +206,7 @@
     });
 
     $('#btnAdd').on("click", function () {
-        debugger
+
         let obj = $('#formNewColum').serializeFormToObjetc();
 
         if (!colunaIsValid(obj)) {
@@ -214,13 +214,12 @@
         }
 
         obj.ComponenteGenericoTipoColuna = {};
-
         obj.ComponenteGenericoTipoColuna.Id = obj.ComponenteGenericoTipoColuna_Id;
         obj.ComponenteGenericoTipoColuna.Name = $('#ComponenteGenericoTipoColuna_Id :selected').text();
         IdComponente = obj.ComponenteGenerico_Id;
 
         if (obj.ComponenteGenericoTipoColuna_Id == 9)
-            obj.TabelaVinculo = obj.Tabela + ':' + obj.Text + ':' + obj.Value;
+            obj.TabelaVinculo = obj.Tabela + ':' + obj.Value + ':' + obj.Text;
         else
             obj.TabelaVinculo = "";
 
@@ -248,12 +247,12 @@
                 return false;
             }
 
-            if (!obj.Tabela) {
+            if (!obj.Value) {
                 openMessageModal(Resources("alert"), Resources(""));
                 return false;
             }
 
-            if (!obj.Tabela) {
+            if (!obj.Text) {
                 openMessageModal(Resources("alert"), Resources(""));
                 return false;
             }
@@ -330,6 +329,12 @@
             obj.ComponenteGenericoTipoColuna.Name = $('#ComponenteGenericoTipoColuna_Id :selected').text();
             obj.IsRequired = Array.isArray(obj.IsRequired) ? obj.IsRequired[0] : obj.IsRequired;
             obj.IsActive = Array.isArray(obj.IsActive) ? obj.IsActive[0] : obj.IsActive;
+
+            if (obj.ComponenteGenericoTipoColuna_Id == 9)
+                obj.TabelaVinculo = obj.Tabela + ':' + obj.Value + ':' + obj.Text;
+            else
+                obj.TabelaVinculo = "";
+
 
             obj.ComponenteGenerico_Id = IdComponente;
 
@@ -422,7 +427,7 @@
         $('#IsActive').prop('checked', obj.IsActive);
         $('#formNewColum').parent().css('backgroundColor', 'lightgreen');
 
-        if (obj.ComponenteGenericoTipoColuna_Id == 9) {
+        if (obj.ComponenteGenericoTipoColuna_Id == 9 && obj.TabelaVinculo) {
 
             $('#Tabela').val(obj.TabelaVinculo.split(":")[0]);
             $('#Value').val(obj.TabelaVinculo.split(":")[1]);

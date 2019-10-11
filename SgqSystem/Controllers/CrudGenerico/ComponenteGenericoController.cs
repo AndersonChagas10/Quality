@@ -119,6 +119,8 @@ namespace SgqSystem.Controllers
             retorno.Valores = dados;
             retorno.ComponenteGenerico = db.ComponenteGenerico.Find(id);
 
+            retorno.Tabelas = getTabelasVinculadas(colunas);
+
             return View(retorno);
         }
 
@@ -232,7 +234,7 @@ namespace SgqSystem.Controllers
                     if (valores.Count > 0)
                     {
                         var tabela = new TabelaVinculada();
-                        tabela.Tabela = coluna.Name;
+                        tabela.ComponenteGenericoColuna_Id = coluna.Id;
                         tabela.Select = valores;
                         tabelasVinculadas.Add(tabela);
                     }

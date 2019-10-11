@@ -208,7 +208,7 @@
                                                         id = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Id).FirstOrDefault();
                                                         saveId = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.SaveId).FirstOrDefault();
                                                         value = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Valor).FirstOrDefault();
-                                                        var select = Model.Tabelas.Where(x => x.Tabela == item.Name).FirstOrDefault();
+                                                        var select = Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault();
                                                     }
 
                                                     @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -216,8 +216,16 @@
                                                         <select type="time" class="form-control formSave" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
                                                             @foreach (var options in select.Select)
                                                             {
-                                                                <option value="@options.Value">@options.Text</option>
+                                                                var selected = "";
+                                                                if (options.Value == value)
+                                                                {
+                                                                    selected = "selected";
+
+                                                                }
+
+                                                                <option value="@options.Value" @selected>@options.Text</option>
                                                             }
+
                                                         </select>
                                                     </div>
                                                 </div>

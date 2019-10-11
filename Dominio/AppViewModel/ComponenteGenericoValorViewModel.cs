@@ -17,7 +17,7 @@ namespace Dominio.AppViewModel
 
     public class TabelaVinculada
     {
-        public string Tabela { get; set; }
+        public int ComponenteGenericoColuna_Id { get; set; }
         public List<GenericSelect> Select { get; set; }
     }
 
