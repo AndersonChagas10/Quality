@@ -121,6 +121,22 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group" id="tabelaVinculo" hidden>
+                                                @Html.Label("Vincular Tabela", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-4">
+                                                    @Html.Label("Nome da Tabela", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.TextBox("Tabela", null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3">
+                                                    @Html.Label("Value", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.TextBox("Value", null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3">
+                                                    @Html.Label("Text", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.TextBox("Text", null, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+
                                             <div class="form-group">
                                                 @Html.Label("Ativo", htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
@@ -202,19 +218,44 @@
         obj.ComponenteGenericoTipoColuna.Id = obj.ComponenteGenericoTipoColuna_Id;
         obj.ComponenteGenericoTipoColuna.Name = $('#ComponenteGenericoTipoColuna_Id :selected').text();
 
+        if (obj.ComponenteGenericoTipoColuna_Id == 9)
+            obj.TabelaVinculo = obj.Tabela + ':' + obj.Text + ':' + obj.Value;
+        else
+            obj.TabelaVinculo = "";
+
         addRow(obj);
+
+        cleanForm();
 
     });
 
     function colunaIsValid(obj) {
 
         if (!obj.Name) {
-            openMessageModal(Resources("name_can_not_be_empty"), "");
+            openMessageModal(Resources("alert"), Resources("name_can_not_be_empty"));
             return false;
         }
 
         if (!obj.ComponenteGenericoTipoColuna_Id) {
             return false;
+        }
+
+        if (obj.ComponenteGenericoTipoColuna_Id == 9) {
+
+            if (!obj.Tabela) {
+                openMessageModal(Resources("alert"), Resources(""));
+                return false;
+            }
+
+            if (!obj.Tabela) {
+                openMessageModal(Resources("alert"), Resources(""));
+                return false;
+            }
+
+            if (!obj.Tabela) {
+                openMessageModal(Resources("alert"), Resources(""));
+                return false;
+            }
         }
 
         return true;
@@ -320,7 +361,6 @@
             type: 'POST',
             url: 'Edit',
             contentType: 'application/json; charset=utf-8',
-            //dataType: 'json',
             data: JSON.stringify(objSalvar),
             async: false,
             success: function (data, status) {
@@ -333,6 +373,19 @@
                 openMessageModal(Resources("error"), "");
             }
         });
+    });
+
+    $('#ComponenteGenericoTipoColuna_Id').on('change', function () {
+
+        if ($(this).find(':selected').val() == 9) {
+
+            $('#tabelaVinculo').show();
+
+        } else {
+
+            $('#tabelaVinculo').hide();
+        }
+
     });
 
     function serializeComponenteGenerico() {
@@ -357,16 +410,26 @@
     }
 
     function setForm(obj) {
+
         $('#Id').val(obj.Id);
         $('#Name').val(obj.Name);
-        $('#ComponenteGenericoTipoColuna_Id').val(obj.ComponenteGenericoTipoColuna_Id);
+        $('#ComponenteGenericoTipoColuna_Id').val(obj.ComponenteGenericoTipoColuna_Id).change();
         $('#IsRequired').prop('checked', obj.IsRequired);
         $('#ValorPadrao').val(obj.ValorPadrao);
         $('#IsActive').prop('checked', obj.IsActive);
         $('#formNewColum').parent().css('backgroundColor', 'lightgreen');
+
+        if (obj.ComponenteGenericoTipoColuna_Id == 9) {
+
+            $('#Tabela').val(obj.TabelaVinculo.split(":")[0]);
+            $('#Value').val(obj.TabelaVinculo.split(":")[1]);
+            $('#Text').val(obj.TabelaVinculo.split(":")[2]);
+
+        }
     }
 
     function cleanForm() {
+
         $('#Id').val("");
         $('#Name').val("");
         $('#ComponenteGenericoTipoColuna_Id').val("");
@@ -374,6 +437,9 @@
         $('#ValorPadrao').val("");
         $('#IsActive').prop('checked', false);
         $('#formNewColum').parent().css('backgroundColor', '');
+        $('#Tabela').val("");
+        $('#Text').val("");
+        $('#Value').val("");
 
         $('#btnAdd').removeClass("hide");
         $('#btnSaveEdit').addClass("hide");

@@ -201,6 +201,30 @@
 
                                                 break;
 
+                                            case 9: //Tabela
+
+                                                <div class="form-group">
+
+                                                    @{
+                                                        id = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Id).FirstOrDefault();
+                                                        saveId = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.SaveId).FirstOrDefault();
+                                                        value = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Valor).FirstOrDefault();
+                                                        var select = Model.Tabelas.Where(x => x.Tabela == item.Name).FirstOrDefault();
+                                                    }
+
+                                                    @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        <select type="time" class="form-control formSave" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
+                                                            @foreach (var options in select.Select)
+                                                            {
+                                                                <option value="@options.Value">@options.Text</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                break;
+
                                             default:
                                                 break;
 
@@ -257,11 +281,10 @@
             $("#limites").show();
         }
 
-
     });
 
     $('#save').on('click', function () {
-        
+
         let listObjToSave = [];
         let formIsValid = true;
 
@@ -320,7 +343,7 @@
             data: JSON.stringify(objToSave),
             async: false,
             success: function (data, status) {
-                
+
                 openMessageModal(Resources("saved_successfully"), "");
                 window.location.href = '@Url.Action("List", new { id = Model.ComponenteGenerico.Id })'
             },
