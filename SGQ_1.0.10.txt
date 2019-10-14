@@ -270,7 +270,7 @@ IF NOT EXISTS (SELECT * FROM ParFieldType WHERE Id = 11)
 	INSERT INTO ParFieldType VALUES (11, 'Componente', 'Componente Genérico', GETDATE(), NULL, 1)
 GO
 
-IF COL_LENGTH('ComponenteGenericoColuna','TabelaVinculo') IS NOT NULL
+IF COL_LENGTH('ComponenteGenericoColuna','TabelaVinculo') IS NULL
 BEGIN
 	ALTER TABLE ComponenteGenericoColuna add TabelaVinculo varchar(255)
 END
