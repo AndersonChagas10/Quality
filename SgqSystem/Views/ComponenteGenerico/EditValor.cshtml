@@ -240,7 +240,7 @@
 
                                     <div class="form-group">
                                         <div class="col-md-offset-2 col-md-10">
-                                            <table id="limites" class="table table-striped hidden">
+                                            <table id="limites" class="table table-striped" hidden>
                                                 <thead>
                                                     <tr>
                                                         <td>Tarefa</td>
@@ -280,7 +280,7 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
-        $('select').select2();
+        $('select').select2({ width: '100%' });
 
         if (Limite) {
             insertLimits(Limite);
@@ -293,7 +293,7 @@
 
         let listObjToSave = [];
         let formIsValid = true;
-        debugger
+        
         $('#setup_tab input.formSave, #setup_tab textarea.formSave, #setup_tab select.formSave').each(function () {
 
             $(this).css('background-color', '');
@@ -384,6 +384,8 @@
         let limitToInsert = level3 + ":" + limiteInferior + ":" + limiteSuperior;
 
         addLimit(limitToInsert);
+
+        $("#limites").show();
     });
 
     function insertIsValid(level3, limiteInferior, limiteSuperior) {

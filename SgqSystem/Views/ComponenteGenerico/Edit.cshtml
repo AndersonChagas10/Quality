@@ -357,7 +357,7 @@
         let componenteGenerico = serializeComponenteGenerico();
 
         if (!componenteIsValid(componenteGenerico))
-            return false;
+            return false;       
 
         let componentesGenericosColuna = serializeComponentesGenericosColuna();
 
@@ -366,7 +366,8 @@
         objSalvar = componenteGenerico;
         objSalvar.ComponentesGenericosColuna = componentesGenericosColuna;
 
-        console.log(objSalvar);
+        openLoader(Resources("please_wait"));
+        $('.btnSalvar').prop("disabled", true);
 
         $.ajax({
 
@@ -375,20 +376,19 @@
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(objSalvar),
             async: false,
-            success: function (data, status) {
-                openMessageModal(Resources("saved_successfully"), "");
+            success: function (data, status) {                               
                 window.location.replace(urlToRedirect);
+                closeLoader();
+                $('.btnSalvar').prop("disabled", false);
+                openMessageModal(Resources("saved_successfully"), "");
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest);
                 console.log(textStatus);
                 console.log(errorThrown);
                 openMessageModal(Resources("error"), "");
-            }, beforeSend: function () {
-                openLoader(Resources("please_wait"));
-            },
-            complete: function () {
                 closeLoader();
+                $('.btnSalvar').prop("disabled", false);
             }
         });
     });
