@@ -68,7 +68,14 @@
                                                             valor = @Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id && x.SaveId == saveId).FirstOrDefault().Valor;
                                                             if (item.ComponenteGenericoTipoColuna_Id == 9)
 
-                                                                valor = Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault().Select.Where(x => x.Value == valor).FirstOrDefault().Text;
+                                                                if (Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault() != null && 
+                                                                    Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault().Select.Where(x => x.Value == valor).FirstOrDefault() != null)
+
+                                                                    valor = Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault().Select.Where(x => x.Value == valor).FirstOrDefault().Text;
+
+                                                                else
+
+                                                                    valor = "";
 
                                                         }
 
