@@ -176,7 +176,7 @@
 
 
                         <div class="col-md-12">
-                            <input type="submit" value="Salvar" class="btn btn-primary btnSalvar" />
+                            <input type="button" value="Salvar" class="btn btn-primary btnSalvar" />
                             @Html.ActionLink("Voltar para a lista de componentes", "Index", null, new { @class = "btn btn-default" })
                         </div>
                     </div>
@@ -354,10 +354,14 @@
 
     $('.btnSalvar').on('click', function () {
 
+        $('.btnSalvar').prop("disabled", true);
+
         let componenteGenerico = serializeComponenteGenerico();
 
-        if (!componenteIsValid(componenteGenerico))
+        if (!componenteIsValid(componenteGenerico)) {
+            $('.btnSalvar').prop("disabled", false);
             return false;       
+        }
 
         let componentesGenericosColuna = serializeComponentesGenericosColuna();
 
@@ -367,7 +371,6 @@
         objSalvar.ComponentesGenericosColuna = componentesGenericosColuna;
 
         openLoader(Resources("please_wait"));
-        $('.btnSalvar').prop("disabled", true);
 
         $.ajax({
 
