@@ -1897,7 +1897,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                     return "";
                 }
 
-                var sqlComponenteGenericoValor = $@"select * from ComponenteGenericoValor where ComponenteGenerico_Id = { parHeaderFieldXComponenteGenerico.ComponenteGenerico_Id }";
+                var sqlComponenteGenericoValor = $@"select * from ComponenteGenericoValor where ComponenteGenerico_Id = { parHeaderFieldXComponenteGenerico.ComponenteGenerico_Id } AND IsActive = 1";
                 var componenteGenericoValores = factory.SearchQuery<ComponenteGenericoValor>(sqlComponenteGenericoValor).ToList();
                 //var hashValores = componenteGenericoValores.Select(x => x.SaveId).Distinct().ToList();
 

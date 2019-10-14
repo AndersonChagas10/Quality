@@ -61,14 +61,16 @@
                                                 @foreach (var item in Model.Colunas)
                                                 {
                                                     <td>
-
+                                                        @{
+                                                            valor = string.Empty;
+                                                        }
                                                         @if (Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id && x.SaveId == saveId).FirstOrDefault() != null)
                                                         {
 
                                                             valor = @Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id && x.SaveId == saveId).FirstOrDefault().Valor;
                                                             if (item.ComponenteGenericoTipoColuna_Id == 9)
 
-                                                                if (Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault() != null && 
+                                                                if (Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault() != null &&
                                                                     Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault().Select.Where(x => x.Value == valor).FirstOrDefault() != null)
 
                                                                     valor = Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault().Select.Where(x => x.Value == valor).FirstOrDefault().Text;
