@@ -78,6 +78,12 @@ namespace SgqSystem.Controllers
 
         private List<ComponenteGenericoColuna> SaveOrUpdateComponenteGenericoColuna(ComponenteGenericoViewModel collection)
         {
+
+            if(collection.ComponentesGenericosColuna == null || collection.ComponentesGenericosColuna.Count == 0)
+            {
+                return collection.ComponentesGenericosColuna;
+            }
+
             using (var db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;

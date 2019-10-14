@@ -191,6 +191,9 @@
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
     var IdComponente;
+
+    var urlToRedirect = '@Url.Action("Index","ComponenteGenerico")';
+
     $(document).ready(function () {
 
         closeLeftSidebar();
@@ -363,6 +366,8 @@
         objSalvar = componenteGenerico;
         objSalvar.ComponentesGenericosColuna = componentesGenericosColuna;
 
+        console.log(objSalvar);
+
         $.ajax({
 
             type: 'POST',
@@ -372,12 +377,18 @@
             async: false,
             success: function (data, status) {
                 openMessageModal(Resources("saved_successfully"), "");
+                window.location.replace(urlToRedirect);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest);
                 console.log(textStatus);
                 console.log(errorThrown);
                 openMessageModal(Resources("error"), "");
+            }, beforeSend: function () {
+                openLoader(Resources("please_wait"));
+            },
+            complete: function () {
+                closeLoader();
             }
         });
     });
