@@ -214,16 +214,19 @@
                                                     @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                                                     <div class="col-md-10">
                                                         <select type="time" class="form-control formSave" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
-                                                            @foreach (var options in select.Select)
+                                                            @if (select != null && select.Select != null && select.Select.Count > 0)
                                                             {
-                                                                var selected = "";
-                                                                if (options.Value == value)
+                                                                foreach (var options in select.Select)
                                                                 {
-                                                                    selected = "selected";
+                                                                    var selected = "";
+                                                                    if (options.Value == value)
+                                                                    {
+                                                                        selected = "selected";
 
+                                                                    }
+
+                                                                    <option value="@options.Value" @selected>@options.Text</option>
                                                                 }
-
-                                                                <option value="@options.Value" @selected>@options.Text</option>
                                                             }
 
                                                         </select>
@@ -293,7 +296,7 @@
 
         let listObjToSave = [];
         let formIsValid = true;
-        
+
         $('#setup_tab input.formSave, #setup_tab textarea.formSave, #setup_tab select.formSave').each(function () {
 
             $(this).css('background-color', '');
