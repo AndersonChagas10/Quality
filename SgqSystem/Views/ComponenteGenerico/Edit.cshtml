@@ -121,6 +121,22 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group" id="tabelaVinculo" hidden>
+                                                @Html.Label("Vincular Tabela", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-4">
+                                                    @Html.Label("Nome da Tabela", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.TextBox("Tabela", null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3">
+                                                    @Html.Label("Value", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.TextBox("Value", null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3">
+                                                    @Html.Label("Text", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.TextBox("Text", null, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+
                                             <div class="form-group">
                                                 @Html.Label("Ativo", htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
@@ -160,7 +176,7 @@
 
 
                         <div class="col-md-12">
-                            <input type="submit" value="Salvar" class="btn btn-primary btnSalvar" />
+                            <input type="button" value="Salvar" class="btn btn-primary btnSalvar" />
                             @Html.ActionLink("Voltar para a lista de componentes", "Index", null, new { @class = "btn btn-default" })
                         </div>
                     </div>
@@ -174,6 +190,9 @@
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
+    var IdComponente;
+
+    var urlToRedirect = '@Url.Action("Index","ComponenteGenerico")';
 
     $(document).ready(function () {
 
@@ -198,23 +217,48 @@
         }
 
         obj.ComponenteGenericoTipoColuna = {};
-
         obj.ComponenteGenericoTipoColuna.Id = obj.ComponenteGenericoTipoColuna_Id;
         obj.ComponenteGenericoTipoColuna.Name = $('#ComponenteGenericoTipoColuna_Id :selected').text();
+        IdComponente = obj.ComponenteGenerico_Id;
+
+        if (obj.ComponenteGenericoTipoColuna_Id == 9)
+            obj.TabelaVinculo = obj.Tabela + ':' + obj.Value + ':' + obj.Text;
+        else
+            obj.TabelaVinculo = "";
 
         addRow(obj);
+
+        cleanForm();
 
     });
 
     function colunaIsValid(obj) {
 
         if (!obj.Name) {
-            openMessageModal(Resources("name_can_not_be_empty"), "");
+            openMessageModal(Resources("alert"), Resources("name_can_not_be_empty"));
             return false;
         }
 
         if (!obj.ComponenteGenericoTipoColuna_Id) {
             return false;
+        }
+
+        if (obj.ComponenteGenericoTipoColuna_Id == 9) {
+
+            if (!obj.Tabela) {
+                openMessageModal(Resources("alert"), Resources(""));
+                return false;
+            }
+
+            if (!obj.Value) {
+                openMessageModal(Resources("alert"), Resources(""));
+                return false;
+            }
+
+            if (!obj.Text) {
+                openMessageModal(Resources("alert"), Resources(""));
+                return false;
+            }
         }
 
         return true;
@@ -257,12 +301,11 @@
     }
 
     $('#tableGenericoColuna').on('click', '.btnEditColuna', function () {
-
         //colocar o id no form
         let indexNumber = $(this).closest("tr").index();
 
         let obj = $(this).closest("tr").data('data');
-
+        IdComponente = obj.ComponenteGenerico_Id;
         setForm(obj);
 
         //trocar o botão inserir para o botão Ok
@@ -289,6 +332,14 @@
             obj.IsRequired = Array.isArray(obj.IsRequired) ? obj.IsRequired[0] : obj.IsRequired;
             obj.IsActive = Array.isArray(obj.IsActive) ? obj.IsActive[0] : obj.IsActive;
 
+            if (obj.ComponenteGenericoTipoColuna_Id == 9)
+                obj.TabelaVinculo = obj.Tabela + ':' + obj.Value + ':' + obj.Text;
+            else
+                obj.TabelaVinculo = "";
+
+
+            obj.ComponenteGenerico_Id = IdComponente;
+
             $('#tableGenericoColuna tbody tr:eq(' + indexNumber + ')').data('data', obj);
             $('#tableGenericoColuna tbody tr:eq(' + indexNumber + ')').find('td:eq(0)').html(obj.Name);
             $('#tableGenericoColuna tbody tr:eq(' + indexNumber + ')').find('td:eq(1)').html(obj.ComponenteGenericoTipoColuna.Name);
@@ -303,10 +354,14 @@
 
     $('.btnSalvar').on('click', function () {
 
+        $('.btnSalvar').prop("disabled", true);
+
         let componenteGenerico = serializeComponenteGenerico();
 
-        if (!componenteIsValid(componenteGenerico))
-            return false;
+        if (!componenteIsValid(componenteGenerico)) {
+            $('.btnSalvar').prop("disabled", false);
+            return false;       
+        }
 
         let componentesGenericosColuna = serializeComponentesGenericosColuna();
 
@@ -315,15 +370,19 @@
         objSalvar = componenteGenerico;
         objSalvar.ComponentesGenericosColuna = componentesGenericosColuna;
 
+        openLoader(Resources("please_wait"));
+
         $.ajax({
 
             type: 'POST',
             url: 'Edit',
             contentType: 'application/json; charset=utf-8',
-            //dataType: 'json',
             data: JSON.stringify(objSalvar),
             async: false,
-            success: function (data, status) {
+            success: function (data, status) {                               
+                window.location.replace(urlToRedirect);
+                closeLoader();
+                $('.btnSalvar').prop("disabled", false);
                 openMessageModal(Resources("saved_successfully"), "");
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -331,8 +390,23 @@
                 console.log(textStatus);
                 console.log(errorThrown);
                 openMessageModal(Resources("error"), "");
+                closeLoader();
+                $('.btnSalvar').prop("disabled", false);
             }
         });
+    });
+
+    $('#ComponenteGenericoTipoColuna_Id').on('change', function () {
+
+        if ($(this).find(':selected').val() == 9) {
+
+            $('#tabelaVinculo').show();
+
+        } else {
+
+            $('#tabelaVinculo').hide();
+        }
+
     });
 
     function serializeComponenteGenerico() {
@@ -357,16 +431,26 @@
     }
 
     function setForm(obj) {
+
         $('#Id').val(obj.Id);
         $('#Name').val(obj.Name);
-        $('#ComponenteGenericoTipoColuna_Id').val(obj.ComponenteGenericoTipoColuna_Id);
+        $('#ComponenteGenericoTipoColuna_Id').val(obj.ComponenteGenericoTipoColuna_Id).change();
         $('#IsRequired').prop('checked', obj.IsRequired);
         $('#ValorPadrao').val(obj.ValorPadrao);
         $('#IsActive').prop('checked', obj.IsActive);
         $('#formNewColum').parent().css('backgroundColor', 'lightgreen');
+
+        if (obj.ComponenteGenericoTipoColuna_Id == 9 && obj.TabelaVinculo) {
+
+            $('#Tabela').val(obj.TabelaVinculo.split(":")[0]);
+            $('#Value').val(obj.TabelaVinculo.split(":")[1]);
+            $('#Text').val(obj.TabelaVinculo.split(":")[2]);
+
+        }
     }
 
     function cleanForm() {
+
         $('#Id').val("");
         $('#Name').val("");
         $('#ComponenteGenericoTipoColuna_Id').val("");
@@ -374,6 +458,9 @@
         $('#ValorPadrao').val("");
         $('#IsActive').prop('checked', false);
         $('#formNewColum').parent().css('backgroundColor', '');
+        $('#Tabela').val("");
+        $('#Text').val("");
+        $('#Value').val("");
 
         $('#btnAdd').removeClass("hide");
         $('#btnSaveEdit').addClass("hide");

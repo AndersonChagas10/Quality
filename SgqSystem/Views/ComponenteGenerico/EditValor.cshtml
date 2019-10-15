@@ -43,7 +43,7 @@
                                 <div class="form-horizontal">
                                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                     @Html.HiddenFor(Model => Model.ComponenteGenerico.Id)
-
+                                    @Html.HiddenFor(Model => Model.Valores.FirstOrDefault().SaveId)
                                     @foreach (var item in Model.Colunas)
                                     {
 
@@ -126,8 +126,7 @@
 
                                                     @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                                                     <div class="col-md-10">
-                                                        <select class="form-control formSave" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
-                                                        </select>
+                                                        <select class="form-control formSave" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id"></select>
                                                     </div>
                                                 </div>
                                                 break;
@@ -201,6 +200,41 @@
 
                                                 break;
 
+                                            case 9: //Tabela
+
+                                                <div class="form-group">
+
+                                                    @{
+                                                        id = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Id).FirstOrDefault();
+                                                        saveId = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.SaveId).FirstOrDefault();
+                                                        value = Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id).Select(x => x.Valor).FirstOrDefault();
+                                                        var select = Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault();
+                                                    }
+
+                                                    @Html.Label(item.Name, item.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        <select type="time" class="form-control formSave" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
+                                                            @if (select != null && select.Select != null && select.Select.Count > 0)
+                                                            {
+                                                                foreach (var options in select.Select)
+                                                                {
+                                                                    var selected = "";
+                                                                    if (options.Value == value)
+                                                                    {
+                                                                        selected = "selected";
+
+                                                                    }
+
+                                                                    <option value="@options.Value" @selected>@options.Text</option>
+                                                                }
+                                                            }
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                break;
+
                                             default:
                                                 break;
 
@@ -209,7 +243,7 @@
 
                                     <div class="form-group">
                                         <div class="col-md-offset-2 col-md-10">
-                                            <table id="limites" class="table table-striped hidden">
+                                            <table id="limites" class="table table-striped" hidden>
                                                 <thead>
                                                     <tr>
                                                         <td>Tarefa</td>
@@ -218,8 +252,7 @@
                                                         <td></td>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                </tbody>
+                                                <tbody></tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -250,18 +283,17 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
-        $('select').select2();
+        $('select').select2({ width: '100%' });
 
         if (Limite) {
             insertLimits(Limite);
             $("#limites").show();
         }
 
-
     });
 
     $('#save').on('click', function () {
-        
+
         let listObjToSave = [];
         let formIsValid = true;
 
@@ -295,6 +327,12 @@
                 return false;
             }
 
+            if (objToSave.ComponenteGenerico_Id == null || objToSave.ComponenteGenerico_Id == "")
+                objToSave.ComponenteGenerico_Id = $("#ComponenteGenerico_Id").val();
+
+            if (objToSave.SaveId == null || objToSave.SaveId == "0")
+                objToSave.SaveId = $("#SaveId").val();
+
             listObjToSave.push(objToSave);
 
         });
@@ -320,7 +358,7 @@
             data: JSON.stringify(objToSave),
             async: false,
             success: function (data, status) {
-                
+
                 openMessageModal(Resources("saved_successfully"), "");
                 window.location.href = '@Url.Action("List", new { id = Model.ComponenteGenerico.Id })'
             },
@@ -349,6 +387,8 @@
         let limitToInsert = level3 + ":" + limiteInferior + ":" + limiteSuperior;
 
         addLimit(limitToInsert);
+
+        $("#limites").show();
     });
 
     function insertIsValid(level3, limiteInferior, limiteSuperior) {
@@ -399,7 +439,7 @@
     }
 
     function getLimits() {
-
+        debugger
         let arrValor = [];
 
         $('#limites tbody tr').each(function () {

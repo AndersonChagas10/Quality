@@ -78,6 +78,12 @@ namespace SgqSystem.Controllers
 
         private List<ComponenteGenericoColuna> SaveOrUpdateComponenteGenericoColuna(ComponenteGenericoViewModel collection)
         {
+
+            if(collection.ComponentesGenericosColuna == null || collection.ComponentesGenericosColuna.Count == 0)
+            {
+                return collection.ComponentesGenericosColuna;
+            }
+
             using (var db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
@@ -119,6 +125,8 @@ namespace SgqSystem.Controllers
             retorno.Valores = dados;
             retorno.ComponenteGenerico = db.ComponenteGenerico.Find(id);
 
+            retorno.Tabelas = getTabelasVinculadas(colunas);
+
             return View(retorno);
         }
 
@@ -135,6 +143,8 @@ namespace SgqSystem.Controllers
 
             db.Configuration.LazyLoadingEnabled = false;
             ViewBag.Level3 = db.ParLevel3.Where(x => x.IsActive).ToList();
+
+            retorno.Tabelas = getTabelasVinculadas(colunas);
 
             return View(retorno);
         }
@@ -180,7 +190,9 @@ namespace SgqSystem.Controllers
                         hash = DateTime.Now.GetHashCode();
 
                     componenteGenericoValor.IsActive = true;
-                    componenteGenericoValor.SaveId = hash;
+                    if(componenteGenericoValor.SaveId == 0)
+                        componenteGenericoValor.SaveId = hash;
+
                     db.ComponenteGenericoValor.Add(componenteGenericoValor);
 
                 }
@@ -211,6 +223,72 @@ namespace SgqSystem.Controllers
             {
                 return false;
             }
+
+        }
+
+        private List<TabelaVinculada> getTabelasVinculadas(List<ComponenteGenericoColuna> colunas)
+        {
+            var tabelasVinculadas = new List<TabelaVinculada>();
+
+            foreach (var coluna in colunas)
+            {
+
+                if (coluna.ComponenteGenericoTipoColuna_Id == 9)
+                {
+                    var valores = getValoresColunas(coluna);
+
+                    if (valores.Count > 0)
+                    {
+                        var tabela = new TabelaVinculada();
+                        tabela.ComponenteGenericoColuna_Id = coluna.Id;
+                        tabela.Select = valores;
+                        tabelasVinculadas.Add(tabela);
+                    }
+
+                }
+            }
+
+            return tabelasVinculadas;
+
+        }
+
+        private List<GenericSelect> getValoresColunas(ComponenteGenericoColuna coluna)
+        {
+
+            var valores = new List<GenericSelect>();
+
+            string[] TabelaVinculo;
+
+            try
+            {
+                TabelaVinculo = coluna.TabelaVinculo.Split(':');
+            }
+            catch (Exception ex)
+            {
+                return valores;
+            }
+
+            if (TabelaVinculo == null || TabelaVinculo.Length < 3)
+            {
+                return valores;
+            }
+
+            var nomeTabela = TabelaVinculo[0];
+            var value = TabelaVinculo[1];
+            var text = TabelaVinculo[2];
+
+            var sql = $@"SELECT CAST({value} as Varchar(MAX)) as Value, CAST({text} as Varchar(MAX)) as Text FROM {nomeTabela}";
+
+            try
+            {
+                valores = db.Database.SqlQuery<GenericSelect>(sql).ToList();
+            }
+            catch (Exception ex)
+            {
+                return valores;
+            }
+
+            return valores;
 
         }
     }

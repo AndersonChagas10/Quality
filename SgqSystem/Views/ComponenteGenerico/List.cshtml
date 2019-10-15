@@ -2,7 +2,8 @@
 @model Dominio.AppViewModel.ComponenteGenericoValorViewModel
 
 @{
-    ViewBag.Title = "";
+    ViewBag.Title = "Componente Genérico Valor";
+    var valor = "";
 }
 
 <div class="page-content-wrapper">
@@ -60,14 +61,33 @@
                                                 @foreach (var item in Model.Colunas)
                                                 {
                                                     <td>
-                                                        @Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id && x.SaveId == saveId).FirstOrDefault().Valor
+                                                        @{
+                                                            valor = string.Empty;
+                                                        }
+                                                        @if (Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id && x.SaveId == saveId).FirstOrDefault() != null)
+                                                        {
+
+                                                            valor = @Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id && x.SaveId == saveId).FirstOrDefault().Valor;
+                                                            if (item.ComponenteGenericoTipoColuna_Id == 9)
+
+                                                                if (Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault() != null &&
+                                                                    Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault().Select.Where(x => x.Value == valor).FirstOrDefault() != null)
+
+                                                                    valor = Model.Tabelas.Where(x => x.ComponenteGenericoColuna_Id == item.Id).FirstOrDefault().Select.Where(x => x.Value == valor).FirstOrDefault().Text;
+
+                                                                else
+
+                                                                    valor = "";
+
+                                                        }
+
+                                                        @valor
                                                     </td>
                                                 }
-                                            <td>
-                                                @Html.ActionLink("Editar", "EditValor", new { id = Model.ComponenteGenerico.Id, idValor = saveId }, new { @class = "btn btn-success btn-sm" })
-                                                @*@Html.ActionLink("Excluir", "DeleteValor", new { id = Model.ComponenteGenerico.Id, idValor = saveId }, new { @onclick = "return confirm(Resources('confirm_delete'));", @class = "btn btn-danger btn-sm" })*@
-                                                <button id="btnDelete" class="btn btn-danger btn-sm" saveId="@saveId" >Excluir</button>
-                                            </td>
+                                                <td>
+                                                    @Html.ActionLink("Editar", "EditValor", new { id = Model.ComponenteGenerico.Id, idValor = saveId }, new { @class = "btn btn-success btn-sm" })
+                                                    <button id="btnDelete" class="btn btn-danger btn-sm" saveId="@saveId">Excluir</button>
+                                                </td>
                                             </tr>
                                         }
                                     </tbody>

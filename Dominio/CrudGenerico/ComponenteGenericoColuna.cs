@@ -16,6 +16,7 @@ namespace Dominio
         public bool IsRequired { get; set; }
         public string ValorPadrao { get; set; }
         public bool IsActive { get; set; }
+        public string TabelaVinculo { get; set; }
 
         [ForeignKey("ComponenteGenerico_Id")]
         public ComponenteGenerico ComponenteGenerico { get; set; }

@@ -12,5 +12,18 @@ namespace Dominio.AppViewModel
         public List<ComponenteGenericoValor> Valores { get; set; }
         public ComponenteGenerico ComponenteGenerico{ get; set; }
         public int saveId { get; set; }
+        public List<TabelaVinculada> Tabelas { get; set; }
+    }
+
+    public class TabelaVinculada
+    {
+        public int ComponenteGenericoColuna_Id { get; set; }
+        public List<GenericSelect> Select { get; set; }
+    }
+
+    public class GenericSelect
+    {
+        public string Value { get; set; }
+        public string Text { get; set; }
     }
 }

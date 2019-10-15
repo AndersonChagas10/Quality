@@ -202,6 +202,8 @@ if not exists(select Id from ComponenteGenericoTipoColuna where id = 7)
 INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'hour');
 if not exists(select Id from ComponenteGenericoTipoColuna where id = 8)
 insert into ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'limite');
+if not exists(select Id from ComponenteGenericoTipoColuna where id = 9)
+insert into ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'tabela')
 
 GO
 
@@ -267,3 +269,8 @@ create table ParHeaderFieldXComponenteGenerico (
 IF NOT EXISTS (SELECT * FROM ParFieldType WHERE Id = 11)
 	INSERT INTO ParFieldType VALUES (11, 'Componente', 'Componente Genérico', GETDATE(), NULL, 1)
 GO
+
+IF COL_LENGTH('ComponenteGenericoColuna','TabelaVinculo') IS NULL
+BEGIN
+	ALTER TABLE ComponenteGenericoColuna add TabelaVinculo varchar(255)
+END
