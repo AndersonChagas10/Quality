@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Dominio;
+using Newtonsoft.Json;
 using NLog;
+using SgqSystem.Helpers;
 using System;
 using System.Diagnostics;
 
@@ -15,6 +17,33 @@ namespace DTO
         {
             GlobalDiagnosticsContext.Clear();
             LogException(e);
+        }
+
+        public static void CreateErrorLog(Exception ex, object obj = null)
+        {
+            LogError error = new LogError();
+            var create = new CreateLog(ex);
+
+            // Get stack trace for the exception with source file information
+            var st = new StackTrace(ex, true);
+            // Get the top stack frame
+            var frame = st.GetFrame(0);
+            // Get the line number from the stack frame
+            var line = frame.GetFileLineNumber();
+
+            //monta o objeto com as informações do log
+            error.AddDate = DateTime.Now;
+            error.Line = line;
+            error.Method = frame.GetMethod().Name;
+            error.Controller = frame.GetMethod().DeclaringType.Name;
+            error.Object = create.ToJson(obj).ToString();
+            error.StackTrace = ex.ToClient();
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                db.LogError.Add(error);
+                db.SaveChanges();
+            }
         }
 
         /// <summary>

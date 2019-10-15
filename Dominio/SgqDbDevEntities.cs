@@ -280,6 +280,7 @@ namespace Dominio
         public virtual DbSet<ParLevelHeaderField> ParLevelHeaderField { get; set; }
         public virtual DbSet<IntegCollectionData> IntegCollectionData { get; set; }
         public virtual DbSet<ParMultipleValuesGeral> ParMultipleValuesGeral { get; set; }
+        public virtual DbSet<LogError> LogError { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -17,8 +18,18 @@ namespace SgqSystem.Controllers
         // GET: ParModules
         public ActionResult Index()
         {
-            return View(db.ParModule.ToList());
+           
+            try
+            {
+                return View(db.ParModule.ToList());
+            }
+            catch (Exception ex)
+            {
+                DTO.CreateLog.CreateErrorLog(ex);
+                return null;
+            }
         }
+    
 
         // GET: ParModules/Details/5
         public ActionResult Details(int? id)
