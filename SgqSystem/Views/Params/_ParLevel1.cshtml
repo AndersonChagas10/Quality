@@ -4,15 +4,12 @@
 <!--MODAL-->
 
 @{
-    /**/
-
-    /**/
-
 
     var urlHeaderLevel1 = Url.Action("AddRemoveParHeaderDuplicate", "api/ParamsApi"); //URL relativa
     var urlHeaderLevel1HeaderFieldGroup = Url.Action("GroupParHeaderField", "api/ParamsApi"); //URL relativa
     var urlHeaderLevel1HeaderFieldGroupUnlink = Url.Action("UnlinkGroupParHeaderField", "api/ParamsApi"); //URL relativa
     Session["IsRecravacao"] = Model.paramsDto?.parLevel1Dto?.IsRecravacao ?? false;
+    var urlComponenteGenericoColunas = Url.Action("GetComponenteGenericoColunas", "api/ParamsApi");
 
 }
 
@@ -32,9 +29,6 @@
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_name as string), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.Name, null, new { @class = "text-danger" }))
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_description as string), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.Description, null, new { @class = "text-danger" }))
                         </tr>
-
-                        @*@if (!GlobalConfig.Eua)
-                            {*@
                         <tr class="row">
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-sm", @id = "selectConsolidacao" })
                             , @Html.Label(Resources.Resource.consolidation_type as string)
@@ -49,27 +43,13 @@
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParScoreType_Id", Model.paramsDdl.DdlScoretype, htmlAttributes: new { @class = "form-control input-sm", @id = "selectScoreType" }), @Html.Label(Resources.Resource.scorecard_type as string), Table.PosicaoLabel.top, info: Resources.Resource.scorecard_type as string, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParScoreType_Id, null, new { @class = "text-danger" }))
                         </tr>
 
-
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_alert as string), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover as string)
                         </tr>
 
-
-
-
-
-
-
                         <tr class="row">
-                            <!-- Table.GerarColunaRadioButton(Html.Label(Resources.Resource.standard), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { class = "icheck" }), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { class = "icheck" }), Resources.Resource.conform, Resources.Resource.not_conform, Table.PosicaoLabel.top, null, null)-->
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.standard as string, new { @class = "" }), Table.PosicaoLabel.left, null, null)
                         </tr>
-
-
-
-
-
-
 
                         <tr class="row" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.ShowInTablet, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.Pl1ShowInTablet as string), Table.PosicaoLabel.left, null, null)
@@ -82,12 +62,6 @@
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active as string), Table.PosicaoLabel.left, null, null)
                         </tr>
-
-
-
-                        @*<tr class="row">
-                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
-                            </tr>*@
 
                     </tbody>
                 </table>
@@ -186,8 +160,6 @@
                                         @Html.HiddenFor(model => model.paramsDto.parLevel1Dto.AllowEditPatternLevel3Task)
                                     }
 
-
-
                                     @if (!GlobalConfig.Eua)
                                     {
                                         <tr class="row hide">
@@ -197,9 +169,6 @@
                                             @Table.GerarColunaCheckbox(@Html.TextBox("paramsDto.parLevel1Dto.RealTimeConsolitationUpdate", Model.paramsDto.parLevel1Dto.RealTimeConsolitationUpdate, new { @class = "form-control checkbox-erp integer" }), @Html.Label(Resources.Resource.time_interval_consolidation as string, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.time_interval_above_item as string)
                                         </tr>
                                     }
-
-
-
 
                                     <!--16 - Indicador filho -->
                                     <tr class="row">
@@ -240,7 +209,6 @@
 
                 @*Meta*@
                 @Html.Partial("_Meta", Model)
-
 
                 @*Cabecalhos*@
                 <div class="panel-group accordion" id="level1_header_accordion">
@@ -299,7 +267,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="row" id="negativo">
-                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.negative as string))                                    
+                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.negative as string))
                                                     <td>
                                                         <input type="text" id="objBinarioPunishmentName2" class="form-control input-sm">
                                                         @Html.ErrorManual("punishmentNameCabecalho2", "O campo Nome deve ser preechido para o Cabecalho.")
@@ -316,7 +284,6 @@
                                         </table>
                                     </div>
 
-
                                     @*Obj Integrações*@
                                     <div id="objIntegracoes" style="display:none;">
                                         <table id="tblIntegracoes">
@@ -325,7 +292,6 @@
                                                 @if (GlobalConfig.Brasil)
                                                 {
                                                     <tr class="row">
-
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoEquipamento" value="integracaoEquipamentoValor"></td>
                                                         <td style="padding:5px;">
                                                             Equipamento
@@ -333,11 +299,9 @@
                                                         <td style="padding:5px;">
                                                             @Html.DropDownList("integracaoEquipamentoList", Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" })
                                                         </td>
-
                                                     </tr>
 
                                                     <tr class="row">
-
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
                                                         <td style="padding:5px;">
                                                             Câmara
@@ -345,89 +309,64 @@
                                                         <td style="padding:5px;">
                                                             @Html.DropDownList("integracaoCamaraList", Model.paramsDdl.DdlCamaras, new { @class = "form-control input-sm equipamentos" })
                                                         </td>
-
                                                     </tr>
 
                                                     <tr class="row">
-
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoPontoDeColeta" value="integracaoPontoDeColetaValor"></td>
                                                         <td style="padding:5px;"> Ponto de Coleta</td>
                                                         <td style="padding:5px;">
                                                             @Html.DropDownList("integracaoPontoDeColetaList", Model.paramsDdl.DdlPontosDeColeta, new { @class = "form-control input-sm equipamentos" })
                                                         </td>
-
-
                                                     </tr>
 
-
                                                     <tr class="row">
-
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoRaioX" value="integracaoRaioXValor"></td>
                                                         <td style="padding:5px;"> Detector de Metais</td>
                                                         <td style="padding:5px;">
                                                             @Html.DropDownList("integracaoRaioXList", Model.paramsDdl.DdlRaioX, new { @class = "form-control input-sm equipamentos" })
                                                         </td>
-
-
                                                     </tr>
 
                                                     <tr class="row">
-
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoSetor" value="integracaoSetorValor"></td>
                                                         <td style="padding:5px;"> Setor</td>
                                                         <td style="padding:5px;">
                                                             @Html.DropDownList("integracaoSetorList", Model.paramsDdl.DdlSetor, new { @class = "form-control input-sm equipamentos" })
                                                         </td>
-
-
                                                     </tr>
 
                                                     <tr class="row">
-
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoTipoCorte" value="integracaoTipoCorteValor"></td>
                                                         <td style="padding:5px;"> Tipo de Corte</td>
                                                         <td style="padding:5px;">
                                                             @Html.DropDownList("integracaoTipoCorteList", Model.paramsDdl.DdlTipoCorte, new { @class = "form-control input-sm equipamentos" })
                                                         </td>
-
-
                                                     </tr>
 
                                                     <tr class="row">
-
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoSetoresBPF" value="integracaoSetoresBPFValor"></td>
                                                         <td style="padding:5px;"> Setores BPF</td>
                                                         <td style="padding:5px;">
                                                             @Html.DropDownList("integracaoSetoresBPFList", Model.paramsDdl.DdlSetoresBPF, new { @class = "form-control input-sm equipamentos" })
                                                         </td>
-
-
                                                     </tr>
 
                                                     <tr class="row">
-
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoFamiliaProduto" value="integracaoFamiliaProduto"></td>
                                                         <td style="padding:5px;"> Família de Produtos</td>
                                                         <td style="padding:5px;"></td>
-
-
                                                     </tr>
 
-
                                                     <tr class="row">
-
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoEntrada" value="integracaoReprocessoEntrada"></td>
                                                         <td style="padding:5px;"> Reprocesso Entrada</td>
                                                         <td style="padding:5px;"></td>
-
                                                     </tr>
 
                                                     <tr class="row">
-
                                                         <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoReprocessoSaida" value="integracaoReprocessoSaida"></td>
                                                         <td style="padding:5px;"> Reprocesso Saída</td>
                                                         <td style="padding:5px;"></td>
-
                                                     </tr>
                                                 }
 
@@ -511,8 +450,18 @@
 
                                         @Html.Label(Resources.Resource.valueText as string): <input type="text" id="objInformacoesTextValue" />
 
-
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="@Resources.Resource.include_information" id="btnIncluirInformacao" onclick="Cabecalhos.IncluirInformacoes();" />
+
+                                    </div>
+
+                                    @*Componente*@
+                                    <div id="objComponente" style="display:none;">
+
+                                        Componente: @Html.DropDownList("ddlComponenteGenerico", Model.paramsDdl.DdlComponente, new { @class = "form-control input-sm" }) @*Componente*@
+                                        Valor: <select id="ddlComponenteValue" class="form-control input-sm"></select> @*Valor*@
+                                        Texto: <select id="ddlComponenteText" class="form-control input-sm"></select> @*Texto*@
+
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Componente" id="btnIncluirComponente" onclick="Cabecalhos.IncluirSalvarComponente();" />
 
                                     </div>
 
@@ -597,144 +546,159 @@
                                                 {
                                                     foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
                                                     {
-                                                        <tr class="alteracao"
-                                                            data-headerfield-id="@parLevel1XHeaderField.ParHeaderField.Id"
-                                                            data-headerfieldgroup="@parLevel1XHeaderField.HeaderFieldGroup">
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9 || parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 10)
-                                                            {
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name &nbsp;(Id: @parLevel1XHeaderField.ParHeaderField.Description)</td>
-                                                            }
-                                                            else
-                                                            {
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name</td>
+                                                <tr class="alteracao"
+                                                    data-headerfield-id="@parLevel1XHeaderField.ParHeaderField.Id"
+                                                    data-headerfieldgroup="@parLevel1XHeaderField.HeaderFieldGroup">
+                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9 || parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 10)
+                                                    {
+                                                        <td>@parLevel1XHeaderField.ParHeaderField.Name &nbsp;(Id: @parLevel1XHeaderField.ParHeaderField.Description)</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@parLevel1XHeaderField.ParHeaderField.Name</td>
+                                                    }
+
+                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
+                                                    {
+                                                        <td>
+                                                            @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })*@
+                                                        </td>
+                                                    }
+
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
+                                                    {
+
+                                                        <td>
+
+                                                            @{ var tipo = CommonData.PutSpaceBeforeCapitalLetter(parLevel1XHeaderField.ParHeaderField.Description);
+
+                                                                switch (tipo)
+                                                                {
+                                                                    case ("Equipamento|"):
+                                                                        tipo = "Equipamento";
+                                                                        break;
+                                                                    case ("Câmara|"):
+                                                                        tipo = "Câmara";
+                                                                        break;
+                                                                    case ("Ponto de Coleta|"):
+                                                                        tipo = "Ponto de Coleta de Água";
+                                                                        break;
+                                                                    case ("Detector de Metais|"):
+                                                                        tipo = "Detector de Metais";
+                                                                        break;
+                                                                    case ("Setor|"):
+                                                                        tipo = "Setor";
+                                                                        break;
+                                                                    case ("Tipo de Corte|"):
+                                                                        tipo = "Tipo de Corte";
+                                                                        break;
+                                                                    case ("Setores BPF|"):
+                                                                        tipo = "Setores BPF";
+                                                                        break;
+                                                                    case ("familiaProduto"):
+                                                                        tipo = "Família de Produtos";
+                                                                        break;
+                                                                    case ("Produto"):
+                                                                        tipo = Resources.Resource.products;
+                                                                        break;
+                                                                    default:
+                                                                        break;
+                                                                }
                                                             }
 
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                            @tipo;
 
-                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
+                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })*@
+
+                                                        </td>
+
+                                                    }
+
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
+                                                    {
+                                                        <td>
+                                                            @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
                                                             {
-                                                                <td>
-                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
-                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })*@
+                                                                <label>@radioOpt.Name</label>
+                                                                @Html.RadioButton("removerParHeaderField", true, new { @class = "" });
+                                                            }
+                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
+
+                                                        </td>
+                                                    }
+
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
+                                                    {
+                                                        <td>
+                                                            @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
+                                                        </td>
+                                                    }
+
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8)
+                                                    {
+                                                        <td>
+                                                            @Html.Raw(parLevel1XHeaderField.ParHeaderField.Description)
+                                                        </td>
+                                                    }
+
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
+                                                    {
+                                                        <td>
+                                                            <input type="number" class="fixed-width form-control input-sm" />
+
+                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
+
+                                                        </td>
+                                                    }
+
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
+                                                    {
+
+                                                        <td>
+                                                            <input type="text" class="dataInput active form-control input-sm">
+                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
+
+                                                        </td>
+                                                    }
+
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
+                                                    {
+
+                                                        <td>
+                                                            <input type="time" class="active form-control input-sm">
+                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
+
+                                                        </td>
+                                                    }
+
+                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9)
+                                                    {
+
+                                                        <td>
+                                                            <input type="text" class="active form-control input-sm">
+                                                            @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
+
                                                                 </td>
                                                             }
 
-                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
-                                                            {
-
-                                                                <td>
-
-                                                                    @{ var tipo = CommonData.PutSpaceBeforeCapitalLetter(parLevel1XHeaderField.ParHeaderField.Description);
-
-                                                                        switch (tipo)
-                                                                        {
-                                                                            case ("Equipamento|"):
-                                                                                tipo = "Equipamento";
-                                                                                break;
-                                                                            case ("Câmara|"):
-                                                                                tipo = "Câmara";
-                                                                                break;
-                                                                            case ("Ponto de Coleta|"):
-                                                                                tipo = "Ponto de Coleta de Água";
-                                                                                break;
-                                                                            case ("Detector de Metais|"):
-                                                                                tipo = "Detector de Metais";
-                                                                                break;
-                                                                            case ("Setor|"):
-                                                                                tipo = "Setor";
-                                                                                break;
-                                                                            case ("Tipo de Corte|"):
-                                                                                tipo = "Tipo de Corte";
-                                                                                break;
-                                                                            case ("Setores BPF|"):
-                                                                                tipo = "Setores BPF";
-                                                                                break;
-                                                                            case ("familiaProduto"):
-                                                                                tipo = "Família de Produtos";
-                                                                                break;
-                                                                            case ("Produto"):
-                                                                                tipo = Resources.Resource.products;
-                                                                                break;
-                                                                            default:
-                                                                                break;
-                                                                        }
-                                                                    }
-
-                                                                    @tipo;
-
-                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })*@
-
-                                                                </td>
-
-                                                                        }
-
-                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
-                                                            {
-                                                                <td>
-                                                                    @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
-                                                                    {
-                                                                        <label>@radioOpt.Name</label>
-                                                                        @Html.RadioButton("removerParHeaderField", true, new { @class = "" });
-                                                                    }
-                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
-
-                                                                </td>
-                                                            }
-
-                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
-                                                            {
-                                                                <td>
-                                                                    @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
-                                                                </td>
-                                                            }
-
-                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
-                                                            {
-                                                                <td>
-                                                                    <input type="number" class="fixed-width form-control input-sm" />
-
-                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
-
-                                                                </td>
-                                                            }
-
-                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
-                                                            {
-
-                                                                <td>
-                                                                    <input type="text" class="dataInput active form-control input-sm">
-                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
-
-                                                                </td>
-                                                            }
-
-                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
-                                                            {
-
-                                                                <td>
-                                                                    <input type="time" class="active form-control input-sm">
-                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
-
-                                                                </td>
-                                                            }
-
-                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 9)
-                                                            {
-
-                                                                <td>
-                                                                    <input type="text" class="active form-control input-sm">
-                                                                    @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
-
-                                                                </td>
-                                                            }
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 10)
                                                             {
-
                                                                 <td>
                                                                     <input type="text" class="active form-control input-sm">
                                                                     @*@Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })*@
 
+                                                        </td>
+                                                    }
+
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 11)
+                                                            {
+                                                                <td>
+                                                                    Value: @parLevel1XHeaderField.ParHeaderField.ParHeaderFieldXComponenteGenerico.ValueName
+                                                                    Text: @parLevel1XHeaderField.ParHeaderField.ParHeaderFieldXComponenteGenerico.TextName
                                                                 </td>
                                                             }
 
@@ -759,73 +723,69 @@
                                                                         <option value="1">@Resources.Resource.y</option>
                                                                     }
                                                                 </select>
-
-
-
-
                                                             </td>
 
-                                                            <td>
-                                                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
-                                                                {
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-btn">
-                                                                            <select class="form-control fixed-width input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
-                                                                                <option value="0" selected>@Resources.Resource.none</option>
-                                                                                @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
-                                                                                {
-                                                                                    if (radioOpt.IsDefaultOption == true)
-                                                                                    {
-                                                                                        <option value="@radioOpt.Id" selected>@radioOpt.Name</option>
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                        <option value="@radioOpt.Id">@radioOpt.Name</option>
-                                                                                    }
-                                                                                }
-                                                                            </select>
-                                                                            <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
-                                                                        </div>
-                                                                    </div>
-                                                                }
-                                                            </td>
-
-                                                            <td>
-                                                                @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
-                                                                {
-                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho - Ativado">
-                                                                        <span class="glyphicon glyphicon-duplicate"></span>
-                                                                    </button>
-
-                                                                }
-                                                                else
-                                                                {
-                                                                    <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho - Inativado">
-                                                                        <span class="fa fa-copy"></span>
-                                                                    </button>
-                                                                }
-
-                                                                <button type="button" class="btn btn-success btn-xs" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('@Resources.Resource.edit_header', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" title="@Resources.Resource.edit_header">
-                                                                    <span class="fa fa-pencil-square-o"></span>
-                                                                </button>
-
-                                                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" title="Remover Cabeçalho">
-                                                                    <span class="fa fa-close"></span>
-                                                                </button>
-
-                                                                <button type="button" class="btn btn-default btn-xs" id="AgruparCabecalho" onclick="HeaderLevel1.LinkGroup(@parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id, $(this));" title="Agrupar cabeçalho">
-                                                                    <span class="fa fa-link"></span>
-                                                                </button>
-
-                                                                <button type="button" class="btn btn-danger btn-xs" id="DesagruparCabecalho" onclick="HeaderLevel1.UnlinkGroup(@parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id, $(this));" title="Desagrupar cabeçalho">
-                                                                    <span class="fa fa-unlink"></span>
-                                                                </button>
-                                                            </td>
-
-                                                        </tr>
+                                                    <td>
+                                                        @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
+                                                        {
+                                                            <div class="input-group">
+                                                                <div class="input-group-btn">
+                                                                    <select class="form-control fixed-width input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
+                                                                        <option value="0" selected>@Resources.Resource.none</option>
+                                                                        @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
+                                                                        {
+                                                                            if (radioOpt.IsDefaultOption == true)
+                                                                            {
+                                                                                <option value="@radioOpt.Id" selected>@radioOpt.Name</option>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <option value="@radioOpt.Id">@radioOpt.Name</option>
                                                                             }
                                                                         }
+                                                                    </select>
+                                                                    <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </td>
+
+                                                    <td>
+                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                        @if (parLevel1XHeaderField.ParHeaderField.duplicate == true)
+                                                        {
+                                                            <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar Cabeçalho - Ativado">
+                                                                <span class="glyphicon glyphicon-duplicate"></span>
+                                                            </button>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <button type="button" class="btn btn-info btn-xs" id="DuplicarCabecalho" onclick="HeaderLevel1.Add(@parLevel1XHeaderField.ParHeaderField.Id, $(this));" data-toggle="modal" title="Clonar cabeçalho - Inativado">
+                                                                <span class="fa fa-copy"></span>
+                                                            </button>
+                                                        }
+
+                                                        <button type="button" class="btn btn-success btn-xs" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('@Resources.Resource.edit_header', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" title="@Resources.Resource.edit_header">
+                                                            <span class="fa fa-pencil-square-o"></span>
+                                                        </button>
+
+                                                        <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" title="Remover Cabeçalho">
+                                                            <span class="fa fa-close"></span>
+                                                        </button>
+
+                                                        <button type="button" class="btn btn-default btn-xs" id="AgruparCabecalho" onclick="HeaderLevel1.LinkGroup(@parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id, $(this));" title="Agrupar cabeçalho">
+                                                            <span class="fa fa-link"></span>
+                                                        </button>
+
+                                                        <button type="button" class="btn btn-danger btn-xs" id="DesagruparCabecalho" onclick="HeaderLevel1.UnlinkGroup(@parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id, $(this));" title="Desagrupar cabeçalho">
+                                                            <span class="fa fa-unlink"></span>
+                                                        </button>
+                                                    </td>
+
+                                                        </tr>
+                                                    }
+                                                }
                                             </tbody>
                                             <tfoot></tfoot>
                                         </table>
@@ -835,13 +795,11 @@
                                         <div id="multiplePreview"></div>
                                         <div id="binPreview"></div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
 
                 @Html.Partial("_CounterXLevel", Model)
 
@@ -861,15 +819,15 @@
                                         <tr class="row">
                                             @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
                                             @Table.GerarColuna(
-                                                                                                                                                @Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" })
-                                                                                                                                                , @Html.Label(Resources.Resource.not_conformity_rule as string)
-                                                                                                                                                , Table.PosicaoLabel.top)
+                                                                @Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" })
+                                                                , @Html.Label(Resources.Resource.not_conformity_rule as string)
+                                                                , Table.PosicaoLabel.top)
                                             @Table.GerarColuna(
-                                                                                                                                                @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" })
-                                                                                                                                                , @Html.Label(Resources.Resource.value as string), Table.PosicaoLabel.top)
+                                                               @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" })
+                                                               , @Html.Label(Resources.Resource.value as string), Table.PosicaoLabel.top)
                                             @Table.GerarColunaCheckbox(
-                                                                                                                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
-                                                                                                                                                , @Html.Label(Resources.Resource.reaudit as string), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm' onclick='RegraNcL1.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+                                                               @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
+                                                               , @Html.Label(Resources.Resource.reaudit as string), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm' onclick='RegraNcL1.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
 
                                         </tr>
                                     </tbody>
@@ -895,19 +853,22 @@
 
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
-
-
-
         </div>
-                                                                        }
+    }
+
 </div>
 
 <script>
 
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
     var semID =  @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion));
+    var urlHeaderLevel1 = '@Html.Raw(@urlHeaderLevel1)';
+    var urlHeaderLevel1HeaderFieldGroup = '@Html.Raw(@urlHeaderLevel1HeaderFieldGroup)';
+    var urlHeaderLevel1HeaderFieldGroupUnlink = '@Html.Raw(@urlHeaderLevel1HeaderFieldGroupUnlink)';
+    var urlComponenteGenericoColunas = '@Html.Raw(@urlComponenteGenericoColunas)';
 
     $('#paramsDto_parLevel1Dto_IsSpecific').on('switchChange.bootstrapSwitch', function (event, state) {
+
         if (state) {
             $('.groupCadastroEspecificoUnidade').fadeIn();
         } else {
@@ -916,63 +877,82 @@
     });
 
     $("#DuplicarCabecalho").on('click', function () {
+
         if ($('#DuplicarCabecalho').attr('title') == "Clonar Cabeçalho - Ativado")
-            $('#DuplicarCabecalho').attr('title', "Clonar Cabeçalho - Inativado")
+
+            $('#DuplicarCabecalho').attr('title', "Clonar Cabeçalho - Inativado");
         else
-            $('#DuplicarCabecalho').attr('title', "Clonar Cabeçalho - Ativado")
+            $('#DuplicarCabecalho').attr('title', "Clonar Cabeçalho - Ativado");
     })
 
     $('#paramsDto_parLevel1Dto_IsChildren').on('switchChange.bootstrapSwitch', function (event, state) {
+
         if (state) {
+
             $('.groupChildren').fadeIn();
+
         } else {
-            //$('#paramsDto_parLevel1Dto_ParLevel1Origin_Id').prop('selectedIndex',0);
-            //$('#paramsDto_parLevel1Dto_PointsDestiny').bootstrapSwitch('state', false);
-            //$('#paramsDto.parLevel1Dto.ParLevel1Destiny_Id').prop('selectedIndex',0);
+
             $('.groupChildren').fadeOut();
         }
+
     });
 
     $('#paramsDto_parLevel1Dto_haveRealTimeConsolidation').on('switchChange.bootstrapSwitch', function (event, state) {
+
         if (state) {
             $('.RealTimeConsolitationUpdate').fadeIn();
         } else {
             $('.RealTimeConsolitationUpdate').fadeOut();
         }
+
     });
 
     var binary = false;
     var Cabecalhos = {
-        SetMultipleDefault: function(elem){
+
+        SetMultipleDefault: function (elem) {
+
             var idMultiple = $(elem).siblings('select').children('option:selected').val();
             var idHeader = $(elem).siblings('select').attr('id');
-            $.post(urlSetDefaultCCAB + "/" + idHeader+"/"+idMultiple, function(r){
-                console.log(r);
-                if(r){
-                    if(r.IsDefaultOption == true){
+
+            $.post(urlSetDefaultCCAB + "/" + idHeader + "/" + idMultiple, function (r) {
+
+                if (r) {
+
+                    if (r.IsDefaultOption == true) {
+
                         openMessageModal("@Resources.Resource.success", r.Name+" se tornou o valor padrão.");
-                    }else{
+                    } else {
+
                         openMessageModal("@Resources.Resource.success", "@Resources.Resource.there_id_not_a_pattern_value");
                     }
                 }
             });
         },
-        SetRequired: function(e, id){
-            $.post(urlSetRequiredCCAB + "/" + id+"/"+parseInt($(e).val()), function(r){
-                if(r){
+        SetRequired: function (e, id) {
+
+            $.post(urlSetRequiredCCAB + "/" + id + "/" + parseInt($(e).val()), function (r) {
+
+                if (r) {
+
                     $(e).empty().append("<option value='0'>"+"@Resources.Resource.n"+"</option><option value='1' selected>"+"@Resources.Resource.y"+"</option>");
-                }else{
+                } else {
+
                     $(e).empty().append("<option value='0' selected>"+"@Resources.Resource.n" + "</option><option value='1'>"+"@Resources.Resource.y"+"</option>");
                 }
             });
         },
-        BtnExcluir:  function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>'; },
-        BtnExcluir2: function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length +', true);"><i class="fa fa-times"></i></button>'; },
+        BtnExcluir: function () {
 
+            return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>';
+        },
+        BtnExcluir2: function () {
+
+            return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length + ', true);"><i class="fa fa-times"></i></button>';
+        },
         ListaDeCabecalhos: [],
-
         listParHeaderFieldDto: [],
-
         ValidaCamposCabecalho: function (isValid) {
 
             if ($('#headerLevel option:selected').val() == -1) {
@@ -999,6 +979,7 @@
             ordering: true,
         }),
         tableMultiplaEscolhaReinicializa: function (e) {
+
             Cabecalhos.tableMultiplaEscolha.destroy();
 
             if (e)
@@ -1010,6 +991,7 @@
                 paging: false,
                 ordering: true,
             });
+
         },
         hideAllObj: function () {
 
@@ -1034,21 +1016,25 @@
             Cabecalhos.EscondeMensagemValidacaoCabecalho();
         },
         EscondeMensagemValidacaoCabecalho: function () {
+
             $('#nivelCampoCabecalho').hide();
             $('#tipoCampoCabecalho').hide();
             $('#nomeCampoCabecalho').hide();
-
             $('#multiplaEscolhaNameCabecalho').hide();
             $('#multiplaEscolhaPunishmentValueCabecalho').hide();
             $('#punishmentNameCabecalho1').hide();
             $('#punishmentNameCabecalho2').hide();
             $('#punishmentValueCabecalho1').hide();
             $('#punishmentValueCabecalho2').hide();
+
         },
         ShowLinkEvaluation: function (IsShow) {
+
             if (IsShow) {
+
                 $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').parent().parent().parent().show();
                 $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').prop("checked", false);
+
             } else {
                 $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').parent().parent().parent().hide();
             }
@@ -1066,9 +1052,12 @@
 
             if (escolhaSelecionada >= 1 && escolhaSelecionada <= 3) {
                 Cabecalhos.ShowLinkEvaluation(true);
+
             } else {
                 Cabecalhos.ShowLinkEvaluation(false);
             }
+
+            $('#objComponente').hide();
 
             switch (escolhaSelecionada) {
                 case 1: //Multipla Escolha
@@ -1101,21 +1090,21 @@
                 case 10: //Informacoes
                     Cabecalhos.ShowDinamico();
                     break;
+                case 11:
+                    Cabecalhos.ShowComponente();
+                    break;
                 default:
                     Cabecalhos.hideAllObj();
             }
         },
-
         //parametro
         ShowParametro: function() {
             $('#objParametro').show();
         },
-
         //dinamico
         ShowDinamico: function () {
             $('#objDinamico').show();
         },
-
         //MULTIPLA ESCOLHA
         Counter: 0,
         ParMultiplaEscolhaOpcoes: [],
@@ -1133,10 +1122,11 @@
                 $('#multiplaEscolhaPunishmentValueCabecalho').show();
                 isValid = false;
             }
+
             return isValid;
         },
-
         ShowMutiplaEscolha: function () {
+
             $('#objMultiplaEscolha').show();
             $('#btnIncluirCabecalho input').hide();
             $('#salvarCabecalho1').val('Salvar ' + $('#parFieldType option:selected').text());
@@ -1167,10 +1157,8 @@
             var valor = $('#objMultiplaEscolhaPunishmentValue').val();
             var obj = '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>';//Btn excluir;
 
-
             /*Obj*/
             Cabecalhos.ParMultiplaEscolhaOpcoes.push({
-                //'Id': ' ',
                 'Name': opcoes,
                 'ParHeaderField_Id': '0',
                 'Description': '',
@@ -1183,7 +1171,6 @@
 
             /*Table*/
             Cabecalhos.tableMultiplaEscolha.row.add([
-               //cod,
                nivelDoCampo,
                nome,
                vinculado,
@@ -1209,16 +1196,6 @@
 
             updateAllTables();
 
-            //var tempData = Cabecalhos.ParMultipleValues;
-            //tempData.Id =
-            //tempData.Name = opcoes
-            //tempData.Description = ''
-            //tempData.ParHeaderField_Id =  '0',
-            //tempData.PunishmentValue = valor
-            //tempData.ParHeaderField_Id = tipoVal
-
-            //Cabecalhos.ParHeaderField.ParMultipleValues.push(ParMultipleValues)
-
         },
         SalvaMultiplaEscolha: function () {
 
@@ -1228,8 +1205,8 @@
                 statusText = "Não";
             }
 
-
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
                 '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
                 '<td><select class="" id="" name="" class="form-control input-sm " >' + //Preview
@@ -1239,11 +1216,14 @@
                 example += '<option value="1">' + o.Name + '</option>';
                 Cabecalhos.ParMultiplaEscolhaOpcoes[c].IsRequired =  $('#paramsDto_parLevel1Dto_IsRequiredMultipleValue').bootstrapSwitch('state');
             });
+
             example += '</select>';
 
             /*Cria inputs para objeto: */
-            var obj1 = Cabecalhos.ParMultiplaEscolhaOpcoes[0]
-            for (var key in obj1 ) {
+            var obj1 = Cabecalhos.ParMultiplaEscolhaOpcoes[0];
+
+            for (var key in obj1) {
+
                 if(key == "Name")
                     example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
                 else
@@ -1264,7 +1244,6 @@
             example += '<td> <label> &nbsp; </label></td>'; //padrão em branco quando insere;
             example += '<td>' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
 
-
             $('#tableCabecalhosPreview').append(example);
 
             /*Limpa formulario Header*/
@@ -1279,7 +1258,6 @@
 
             updateAllTables();
         },
-
         //BINARIO
         CounterParBinario: 0,
         ParBinario: [],
@@ -1320,9 +1298,8 @@
                     setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
                     return;
                 }
-                if($('#headerLevel option:selected').val() == -1){
+                if ($('#headerLevel option:selected').val() == -1) {
                     openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
-                    //alert('Selecione o Nivel do Cabecalho')
                     return;
                 }
 
@@ -1366,7 +1343,6 @@
                 });
 
                 Cabecalhos.tableMultiplaEscolha.row.add([
-                   //cod,
                    nivelDoCampo,
                    nome,
                    vinculado,
@@ -1377,7 +1353,6 @@
                 ]).draw(false);
 
                 Cabecalhos.tableMultiplaEscolha.row.add([
-                   //cod,
                    nivelDoCampo,
                    nome,
                    vinculado,
@@ -1400,8 +1375,9 @@
                 $('#objBinarioPunishmentValue2').val('0');
 
                 updateAllTables();
-                binary =true;
-            }else
+                binary = true;
+
+            } else
                 openMessageModal("Máximo de dois binários permitidos.");
         },
         ShowInformacoes: function () {
@@ -1418,14 +1394,11 @@
 
             if($('#headerLevel option:selected').val() == -1){
                 openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
-                //alert('Selecione o Nivel do Cabecalho')
                 return;
             }
 
-
             if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
                 openMessageModal("@Resources.Resource.alert", "Digite o nome para o Campo Texto");
-                //alert('Digite o nome para o Campo Texto');
                 return;
             }
 
@@ -1446,13 +1419,13 @@
 
             updateAllTables();
 
-        },AtualizaPreviewCampoInformacoes: function (o) {
+        },
+        AtualizaPreviewCampoInformacoes: function (o) {
+
             var tipo = $('#parFieldType option:selected').val();
             var example = '<tr><td>' + $('#headerLevel :selected').text() +  '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
                        '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
-            //var example = '<div>';
-            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
             if(tipo == 6){
                 example += '<input type="text" class="dataInput form-control input-sm "/>';//Input Date
@@ -1505,8 +1478,7 @@
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
                        '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
-            //var example = '<div><label class="on-off fixed-width">';
-            //example += '<label>' + $('#paramsDto_parHeaderFieldDto_Name').val() + ':&nbsp;</label>';
+
             /*Cria preview*/
             example += '<td>';
             Cabecalhos.ParBinario.forEach(function (o, c) {
@@ -1557,8 +1529,6 @@
 
             updateAllTables();
         },
-
-        //TEXTO
         ShowTexto: function () {
 
             $('#btnIncluirTexto').show();
@@ -1566,17 +1536,15 @@
             $('#btnIncluirCabecalho input').hide();
         },
         IncluirSalvarTexto: function (isData) {
-
+            
             if($('#headerLevel option:selected').val() == -1){
                 openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
-                //alert('Selecione o Nivel do Cabecalho')
                 return;
             }
 
 
             if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
                 openMessageModal("@Resources.Resource.alert", "Digite o nome para o Campo Texto");
-                //alert('Digite o nome para o Campo Texto');
                 return;
             }
 
@@ -1585,10 +1553,11 @@
             var tipo = $('#parFieldType option:selected').val();
             var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
 
-            if ($('#objDinamicoName').val() != "")
-                var idDinamico = $('#objDinamicoName').val();
-            else
-                var idDinamico = $('#objParametroName').val();
+            var idParamDinamico = 0;
+            if ($('#objDinamicoName:visible').length > 0)
+                idParamDinamico = $('#objDinamicoName').val();
+            else if($('#objParametroName:visible').length > 0)
+                idParamDinamico = $('#objParametroName').val();
 
             Cabecalhos.AtualizaPreviewCampotexto({
                 Name: nome,
@@ -1598,26 +1567,32 @@
                 Description: "",
                 Link: linkedNumberEvaluation,
                 isDataDefined: isData,
-                Description: idDinamico
+                Description: idParamDinamico
             });
 
             updateAllTables();
 
         },
         AtualizaPreviewCampotexto: function (o) {
+
             var tipo = $('#parFieldType option:selected').val();
 
-            if ($('#objDinamicoName').val() != "")
-                var descricao = $('#objDinamicoName').val();
-            else
-                var descricao = $('#objParametroName').val();
+            var descricao = o.Description;
 
-            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '(' + 'Id:' + descricao +')' + '</label></td>' + // nome
-                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            if (tipo == 4 || tipo == 7 || tipo == 6) {
+                var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+                example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() +'</label></td>' + // nome
+                    '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>'; // Tipo
+            } else {
+                var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+                example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '(' + 'Id:' + descricao + ')' + '</label></td>' + // nome
+                    '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>'; // Tipo
+            }
+           
             //var example = '<div>';
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
+
             if(tipo == 6){
                 example += '<input type="text" class="dataInput form-control input-sm "/>';//Input Date
             }else if(tipo == 7){
@@ -1637,7 +1612,6 @@
             example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' +  Cabecalhos.BtnExcluir();
-            //example += '</div>';
             example += '</td>';
 
             $('#tableCabecalhosPreview').append(example);
@@ -1651,7 +1625,6 @@
             e.parent().remove();
             updateAllTables();
         },
-
         //INTEGRAÇÕES
         ShowIntegracoes: function () {
             $('#btnIncluirIntegracoes').show();
@@ -1659,7 +1632,6 @@
             $('#paramsDto_parHeaderFieldDto_Description').parents('td').show();
             $('#btnIncluirCabecalho input').hide();
         },
-
         //NUMERICO
         ShowNumerico: function () {
             $('#btnIncluirNumerico').show();
@@ -1670,13 +1642,11 @@
 
             if($('#headerLevel option:selected').val() == -1){
                 openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
-                //lert('Selecione o Nivel do Cabecalho');
                 return;
             }
 
             if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
                 openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_numeric_field_name");
-                //alert('Digite o nome para o Campo Numerico');
                 return;
             }
 
@@ -1703,8 +1673,6 @@
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
                        '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
 
-            //var example = '<div>';
-            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
             example += '<input class="form-control input-sm " type="number" />';//Input
 
@@ -1719,7 +1687,6 @@
             example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' + Cabecalhos.BtnExcluir();
-            //example += '</div>';
             example += '</td>';
             $('#tableCabecalhosPreview').append(example);
         },
@@ -1730,18 +1697,15 @@
 
             if($('#headerLevel option:selected').val() == -1){
                 openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
-                //lert('Selecione o Nivel do Cabecalho');
                 return;
             }
 
             if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
                 openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_integration_field_name");
-                //alert('Digite o nome para o Campo Numerico');
                 return;
             }
 
             var description = "";
-
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
 
             switch ($('input[name=integracaoRB]:checked').val()) {
@@ -1846,9 +1810,6 @@
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + nome + '</label></td>' + // nome
                        '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
-
-            //var example = '<div>';
-            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
             example += tipo;//Input
 
@@ -1863,7 +1824,6 @@
             example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' + Cabecalhos.BtnExcluir();
-            //example += '</div>';
             example += '</td>';
             $('#tableCabecalhosPreview').append(example);
         },
@@ -1873,18 +1833,129 @@
             $('#objData').show();
             $('#btnIncluirData').show();
         },
-
         //HORA
         ShowHora: function () {
             $('#btnIncluirCabecalho input').hide();
             $('#objHora').show();
             $('#btnIncluirHora').show();
         },
+        //COMPONENTE
+        ShowComponente: function () {
+            $('#btnIncluirCabecalho input').hide();
+            $('#objComponente').show();
+            $('#btnIncluirComponente').show();
+        },
+        IncluirSalvarComponente: function () {
 
+            let nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            let nivelCabecalho = $('#headerLevel option:selected').val();
+            let tipo = $('#parFieldType option:selected').val();
+            let linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
+            let componenteGenerico_Id = parseInt($('#ddlComponenteGenerico :selected').val());
+            let componenteValue = parseInt($('#ddlComponenteValue :selected').val());
+            let componenteText = parseInt($('#ddlComponenteText :selected').val());
+            let componenteValueName = $('#ddlComponenteValue :selected').text();
+            let componenteTextName = $('#ddlComponenteText :selected').text();
+
+            if (nivelCabecalho == -1) {
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
+                return;
+            }
+
+            if (nome.length == 0) {
+                openMessageModal("@Resources.Resource.alert", "Digite o nome para o Campo Texto");
+                return;
+            }
+
+            if (componenteGenerico_Id <= 0 || componenteGenerico_Id == undefined) {
+                openMessageModal("@Resources.Resource.alert", "Selecione o componente");
+                return;
+            }
+
+            if (componenteValue <= 0 || componenteValue == undefined) {
+                openMessageModal("@Resources.Resource.alert", "Selecione a coluna que representa o valor");
+                return;
+            }
+
+            if (componenteText <= 0 || componenteText == undefined) {
+                openMessageModal("@Resources.Resource.alert", "Selecione a coluna que representa o Texto");
+                return;
+            }
+
+            var fieldType = $('#parFieldType option:selected').val();
+
+            var example = `<tr>
+                            <td> ${ $('#headerLevel :selected').text() } </td>
+                            <td id=""><label class=""> ${ $('#paramsDto_parHeaderFieldDto_Name').val() } </label></td>
+                            <td id=""><label class=""> ${ $('#parFieldType :selected').text() } </label></td>` ;
+
+            /*Cria preview*/
+            example += '<td>';
+
+            example += `Value: ${ componenteValueName } </br>
+                        Text: ${ componenteTextName }`;
+
+            Cabecalhos.ParBinario.forEach(function (o, c) {
+
+                example += o.Name;
+                var a = c == 0 ? 'checked = "checked"' : '';
+                var b = c == 0 ? "true" : "false";
+                example += '<input disable="disabled" ' + a + ' type="radio" value="' + b + '" >';
+
+            });
+
+            /*Cria Hiddens*/
+            example += `<input type="hidden" name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id" value="${ $('#parFieldType option:selected').val() }" />
+                        <input type="hidden" name="paramsDto.listParHeaderFieldDto[~].Name" value="${ $('#paramsDto_parHeaderFieldDto_Name').val() }" />
+                        <input type="hidden" name="paramsDto.listParHeaderFieldDto[~].Description" value="" />
+                        <input type="hidden" name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id" value="${ nivelCabecalho }" />
+                        <input type="hidden" name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"  value="${ tipo }" />
+                        <input type="hidden" name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion" value="${ $('#paramsDto_parLevel1Dto_LinkNumberEvaluetion').is(':checked') }"/>
+                        <input type="hidden" name="paramsDto.listParHeaderFieldDto[~].IsActive" value="true" />`;
+
+            example += `<input type="hidden" name="paramsDto.listParHeaderFieldDto[~].ParHeaderFieldXComponenteGenerico.Id" value="${ 0 }" />
+                        <input type="hidden" name="paramsDto.listParHeaderFieldDto[~].ParHeaderFieldXComponenteGenerico.ComponenteGenerico_Id" value="${ componenteGenerico_Id }" />
+                        <input type="hidden" name="paramsDto.listParHeaderFieldDto[~].ParHeaderFieldXComponenteGenerico.ParHeaderField_Id" value="${ 0 }" />
+                        <input type="hidden" name="paramsDto.listParHeaderFieldDto[~].ParHeaderFieldXComponenteGenerico.Value" value="${ componenteValue }" />
+                        <input type="hidden" name="paramsDto.listParHeaderFieldDto[~].ParHeaderFieldXComponenteGenerico.Text" value="${ componenteText }" />`;
+
+            Cabecalhos.ParBinario.forEach(function (o, counter) {
+
+                /*Cria inputs para objeto: */
+                for (var key in o) {
+                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].' + key.toString() + '"     value="' + o[key].toString() + '" />';
+                }
+
+            });
+
+            example += '</td>';
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td>' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
+
+            $('#tableCabecalhosPreview').append(example);
+
+            $('#paramsDto_parHeaderFieldDto_Name').val('');
+
+            $('#headerLevel').val('-1').trigger('change');
+            $('#parFieldType').val('-1').trigger('change');
+
+            //Cabecalhos.tableMultiplaEscolha.clear().draw();
+
+            //$('#divCamposCabecalhoIncluidos').hide();
+            //$('#objBinario').hide();
+            //$('#salvarCabecalho2').hide();
+            //Cabecalhos.ParBinario = [];
+
+            updateAllTables();
+
+        },
         UpdateCabecalhos: function () {
-            //.not('#textPreview').not('#numericPreview')
+
             Cabecalhos.Counter = 0;
-            var objects = $('#tableCabecalhosPreview > tbody > tr').not('.alteracao')
+
+            var objects = $('#tableCabecalhosPreview > tbody > tr').not('.alteracao');
+
             objects.each(function (c, o) {
 
                 if($(o).find('select').length){
@@ -1912,7 +1983,6 @@
                 Cabecalhos.Counter++;
             });
         },
-
         //EDIÇÃO
         CounterRemoveCabecalhoEDICAO: 0,
         RemoveCabecalhoEDICAO: function (e) {
@@ -1922,7 +1992,6 @@
             console.log(e.parents('tr'));
             updateAllTables();
         },
-
         RemoverDaTabela: function(e, indexValueOfArray, isBinario){
 
             if (indexValueOfArray != undefined && isBinario == undefined) {
@@ -1944,7 +2013,7 @@
 
             }
             var indiceTabelaMultiplaEscolha = e.parents('tr').index();
-            if (!isBinario)
+            //if (!isBinario)
                 Cabecalhos.tableMultiplaEscolhaReinicializa(e);
 
             Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indiceTabelaMultiplaEscolha, 1);
@@ -1961,11 +2030,30 @@
             binary = false;
 
         },
+        ChangeComponente: function () {
 
-        ////INCLUSÃO
-        //RemoveCabecalhoINCLUSAO: function (e) {
-        //    e.parent().remove();
-        //},
+            //pegar o id do componente selecionado
+            let componenteGenerico_Id = $('#ddlComponenteGenerico :selected').val();
+
+            //se for 0 ou null -> zerar os campo Valor e Text
+            if (componenteGenerico_Id <= 0) {
+
+                 preencheDdl('ddlComponenteValue', []);
+                 preencheDdl('ddlComponenteText', []);
+
+            } else {
+
+                //buscar as colunas do componente selecionado
+                $.get(urlComponenteGenericoColunas + "/" + componenteGenerico_Id , function (r) {
+
+                    let listObj = r;
+
+                    preencheDdl('ddlComponenteValue', listObj.filter(x => x.Name));
+                    preencheDdl('ddlComponenteText', listObj.filter(x => x.Name));
+
+                });
+            }
+        }
     }
 
     var RegraNcL1 = {
@@ -2065,11 +2153,25 @@
                 });
             }
         },/*Ok*/
-
     };
+
+    function preencheDdl(idDdl, colunas) {
+
+        let options = "";
+
+        colunas.forEach(function (i) {
+
+            options += `<option value="${i.Id}">${i.Name}</option>`
+
+        });
+
+        $('#' + idDdl).html(options);
+
+    }
 
     $('#salvarCabecalho1').on('click', Cabecalhos.SalvaMultiplaEscolha);
     $('#salvarCabecalho2').on('click', Cabecalhos.SalvaBinario);
+    $('#ddlComponenteGenerico').on('change', Cabecalhos.ChangeComponente);
 
     Cabecalhos.hideAllObj();
     $('#parFieldType').on('change', Cabecalhos.TipoChange);
@@ -2224,11 +2326,6 @@
         HeaderLevel1.LinkGroupColors();
 
     });
-
-    var urlHeaderLevel1 = '@Html.Raw(@urlHeaderLevel1)';
-    var urlHeaderLevel1HeaderFieldGroup = '@Html.Raw(@urlHeaderLevel1HeaderFieldGroup)';
-    var urlHeaderLevel1HeaderFieldGroupUnlink = '@Html.Raw(@urlHeaderLevel1HeaderFieldGroupUnlink)';
-
 
     var HeaderLevel1 = {
         object: {

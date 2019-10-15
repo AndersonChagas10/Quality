@@ -285,6 +285,11 @@ namespace Dominio
         public virtual DbSet<Pa_FTA> Pa_FTA { get; set; }
         public virtual DbSet<Pa_Planejamento> Pa_Planejamento { get; set; }
         public virtual DbSet<CollectionLevel2XParHeaderFieldGeral> CollectionLevel2XParHeaderFieldGeral { get; set; }
+        public virtual DbSet<ComponenteGenerico> ComponenteGenerico { get; set; }
+        public virtual DbSet<ComponenteGenericoTipoColuna> ComponenteGenericoTipoColuna { get; set; }
+        public virtual DbSet<ComponenteGenericoColuna> ComponenteGenericoColuna { get; set; }
+        public virtual DbSet<ComponenteGenericoValor> ComponenteGenericoValor { get; set; }
+        public virtual DbSet<ParHeaderFieldXComponenteGenerico> ParHeaderFieldXComponenteGenerico { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -84,17 +84,18 @@
     });
 
     function abrirModalAgendamento(linha) {
-
         var obj = $(linha).parents('tr').data();
-
+        debugger
         if (obj.ParFrequency_Id == 10) {
 
             $("#tabelaAgendamentoIntervalo").attr('style', '');
+            $("#tabelaAgendamentoIntervalo").removeClass('hidden');
             $("#tabelaAgendamento").attr('hidden', 'hidden');
 
         } else {
 
             $("#tabelaAgendamento").attr('style', '');
+            $("#tabelaAgendamento").removeClass('hidden');
             $("#tabelaAgendamentoIntervalo").attr('hidden', 'hidden');
             valorAvaliacao = obj.evaluationNumber;
 
@@ -123,6 +124,14 @@
 
         $("#tabelaAgendamentoIntervalo tbody").html("");
         $("#tabelaAgendamento tbody").html("");
+
+
+        if (obj.ParFrequency_Id == 10) {
+            $("#tabelaAgendamentoIntervalo").removeAttr('hidden');
+        } else {
+            $("#tabelaAgendamento").removeAttr('hidden');
+        }
+
     }
 
     function EditaLinha(data, linha) {
@@ -228,7 +237,7 @@
     }
 
     function MontaNovaLinhaAgendamentoIntervalo(data, obj) {
-
+        
         if ($("#tabelaAgendamentoIntervalo tbody tr").length == 0) {
             $("#tabelaAgendamentoIntervalo thead tr:last").find("#acao").addClass('hidden');
             $("#tabelaAgendamentoIntervalo tbody").append("<tr>"

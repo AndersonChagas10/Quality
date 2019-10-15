@@ -458,22 +458,10 @@ function getAPPLevelsOnLine() {
         },
         timeout: 600000,
         error: function () {
-            contagem++;
-            if (contagem > 2) {
-                contagem = 0;
-                $('.loadingoverlay').hide();
-                openMessageModal(getResource("indicators_error_try_again"), null);
-                $('.modalSyncInd').remove();
-                //loadInd();
-                return;
-            }
-            wMessage($('#btnLoginOnline'), getResource("trying_again"));
-            setTimeout(function (e) {
-                wMessage($('#btnLoginOnline'), getResource('loading_indicators'));
-                setTimeout(function (e) {
-                    getAPPLevelsOnLine();
-                }, 500)
-            }, 1500);
+            $.LoadingOverlay("hide");
+            $('.loadingoverlay').hide();
+            openMessageModal(getResource("indicators_error_try_again"), null);
+            $('.modalSyncInd').remove();
         }
     });
 }

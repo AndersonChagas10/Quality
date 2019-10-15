@@ -66,7 +66,7 @@ function preparing(showMessage) {
         return;
     }
 
-    var arrayResultsSend = $('.level02Result[sync=false]:lt('+qtdeObjetos+')').slice(0, qtdeObjetos);
+    var arrayResultsSend = $('.level02Result[sync=false]:lt(' + qtdeObjetos + ')').slice(0, qtdeObjetos);
     arrayResultsSend.attr('send', 'true');
 
 }
@@ -94,7 +94,7 @@ function send(autoSend, callbackPCC1B, sendImediato) {
     $('.level02Result[sync=false][send=true]').each(function (e) {
 
         //BREAK NO FOREACH PARA LIMITAR A ENVIAR APENAS O NUMERO DEFINIDO DE LEVEL2
-        if(quantidadeDeObjetosParaSincronizar == 0)
+        if (quantidadeDeObjetosParaSincronizar == 0)
             return false;
         quantidadeDeObjetosParaSincronizar--;
 
@@ -289,14 +289,14 @@ function send(autoSend, callbackPCC1B, sendImediato) {
 
         if (hasReason) {
             level02Result += ";" + RetornaValor0SeUndefined(ParReason_Id); //[50]
-            level02Result += ";" + RetornaValor0SeUndefined(ParReasonType_Id); //[50]
+            level02Result += ";" + RetornaValor0SeUndefined(ParReasonType_Id); //[51]
         } else {
             level02Result += ";";
             level02Result += ";";
         }
 
         if (parDepartment_Id) {
-            level02Result += ";" + RetornaValor0SeUndefined(parDepartment_Id); //[50]
+            level02Result += ";" + RetornaValor0SeUndefined(parDepartment_Id); //[52]
         } else {
             level02Result += ";";
         }
@@ -450,7 +450,7 @@ function recivingData() {
         try {
             $.ajax({
                 type: 'POST'
-                , url: urlPreffix + '/api/SyncServiceApi/reciveData?unidadeId='+ $('.App').attr('unidadeid') + "&data=" + date
+                , url: urlPreffix + '/api/SyncServiceApi/reciveData?unidadeId=' + $('.App').attr('unidadeid') + "&data=" + date
                 , contentType: 'application/json; charset=utf-8'
                 , dataType: 'json'
                 //, data: '{' + "unidadeId: '" + $('.App').attr('unidadeid') + "', data: '" + date + "'" + '}'
