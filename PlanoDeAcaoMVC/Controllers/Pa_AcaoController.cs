@@ -457,7 +457,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 }
                 else
                 {
-                    fta.MetaFTA = "0";
+                    fta.MetaFTA = "Meta não definida";
                 }
 
 

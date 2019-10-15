@@ -67,7 +67,7 @@
                         <td colspan="4"><span class="tdLabels">@ResourcesPA.Resource.indicators_devices</span></td>
                         <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.supervisor</span></td>
                         <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.unit</span></td>
-                        <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.department</span></td>
+                        <td colspan="2"><span class="tdLabels">Cargo</span></td>
                     </tr>
                     <tr>
                         <td colspan="4">
@@ -86,24 +86,31 @@
                             @Html.HiddenFor(r => r.Unidade_Id)
                         </td>
                         <td colspan="2">
-                            @Model._Departamento
-                            @Html.HiddenFor(r => r.Departamento_Id)
+                            @Html.HiddenFor(r => r.ParCargo_Id)
+                            @Html.DisplayFor(r => r.ParCargoName)
+                            @Html.HiddenFor(r => r.ParCargoName)
                         </td>
+                        @Html.HiddenFor(r => r._Departamento)
+                        @Html.HiddenFor(r => r.Departamento_Id)
                     </tr>
                     <tr>
-                        <td colspan="8"><span class="tdLabels">Centro de Custo / Seção</span></td>
-                        <td colspan="4"><span class="tdLabels">Cargo</span></td>
+                        <td colspan="5"><span class="tdLabels">Centro de Custo</span></td>
+                        <td colspan="5"><span class="tdLabels">Seção</span></td>
                     </tr>
                     <tr>
-                        <td colspan="8">
-                            @Html.DisplayFor(r => r.ParDepartmentsName)
+                        <td colspan="5">
+
+                            @if (Model.ParDepartmentsName != null)
+                            {
+                                //o primeiro [0] é o Centro de custo
+                                @Html.DisplayFor(r => r.ParDepartmentsName.Split('|')[0]);
+                            }
+                            @Html.HiddenFor(r => r.ParDepartmentsName)
                             @Html.HiddenFor(r => r.ParDepartmentsName)
                             @Html.HiddenFor(r => r.ParDepartments_Hash)
                         </td>
-                        <td colspan="4">
-                            @Html.DisplayFor(r => r.ParCargoName)
-                            @Html.HiddenFor(r => r.ParCargoName)
-                            @Html.HiddenFor(r => r.ParCargo_Id)
+                        <td colspan="5">
+                            @Html.DisplayFor(r => r.SecaoName)
                         </td>
                     </tr>
                     <tr>
