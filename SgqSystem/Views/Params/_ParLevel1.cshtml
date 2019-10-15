@@ -1966,11 +1966,12 @@
             });
 
         },/*Ok*/
-        carregaDadosDoDb: function(){
+        carregaDadosDoDb: function () {
+            debugger;
             if( RegraNcL1.listObjSalvo != null){ /*Carrega regras de NC*/
                 RegraNcL1.listObjSalvo.forEach(function(o, c){
                     o["IsReauditShowTable"] = o.IsReaudit ? "@Resources.Resource.y" : "@Resources.Resource.n";
-                    o["CorrectiveActionShowTable"] = o.CorrectiveActionShowTable ? "@Resources.Resource.y" : "@Resources.Resource.n";
+                    o["CorrectiveActionShowTable"] = o.CorrectiveAction ? "@Resources.Resource.y" : "@Resources.Resource.n";
                     o["ParNotConformityRule_Name"] = o.ParNotConformityRule.Name;
                     crudNxN.adiciona(o, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
                 });
