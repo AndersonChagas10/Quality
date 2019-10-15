@@ -1910,7 +1910,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
                 foreach (var item in optionsData)
                 {
-                    options += "<option value=" + item + ">" + item + "</option>";
+                    options += "<option value=" + item.Replace(" ", "") + ">" + item + "</option>";
                 }
 
                 //foreach (var hashValor in hashValores)

@@ -4098,6 +4098,13 @@ namespace SgqServiceBusiness.Api
 
                     var listParHeaderFieldXComponenteGenerico = factory.SearchQuery<Dominio.AppViewModel.ComponenteGenericoValoresViewModel>(sql).ToList();
 
+                    foreach (var item in listParHeaderFieldXComponenteGenerico)
+                    {
+                        if (item.Valor != null)
+                            item.Valor = item.Valor.Replace(" ", "");
+                    }
+
+
                     supports += $@"<script>
 
                                 var listComponenteGenericoValores = " + Newtonsoft.Json.JsonConvert.SerializeObject(listParHeaderFieldXComponenteGenerico) + @";
