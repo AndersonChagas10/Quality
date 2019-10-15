@@ -42,6 +42,10 @@ namespace Dominio
 
         public bool ShowLevel3Limits { get; set; }
 
+        public bool? IsRequired { get; set; }
+
+        public bool? IsDefaultAnswer { get; set; }
+
         [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 

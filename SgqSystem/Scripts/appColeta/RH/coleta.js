@@ -133,13 +133,21 @@ function getInputLevel3(level3, level2, level1, striped) {
     if (level3.ParLevel3InputType && level3.ParLevel3InputType.Id) {
 
         var colorStriped = "";
+        var conforme = "";
 
         if (striped)
             colorStriped = "background-color: #e9ecef;";
 
+        if (level3.ParLevel3Value.IsRequired == "1")
+            conforme = "";
+        else 
+            conforme = level3.ParLevel3Value.IsDefaultAnswer
+
+
         retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-collapse-target="' + level1.Id + '-' + level2.Id + '"';
-        retorno += ' data-conforme="1"';
+        retorno += ' data-conforme="' + conforme + '"';
+        retorno += ' data-default-answer="' + level3.ParLevel3Value.IsDefaultAnswer + '"';
         retorno += ' data-min="' + level3.ParLevel3Value.IntervalMin + '"';
         retorno += ' data-max="' + level3.ParLevel3Value.IntervalMax + '"';
         retorno += ' data-level1="' + level1.Id + '"';
@@ -206,7 +214,7 @@ function getBinario(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '   <div class="col-xs-10">' +
-        '       <button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>' +
+        '       <button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-default="Selecione" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>' +
         '   </div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +
         '</div>' +
@@ -505,21 +513,47 @@ $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
 });
 
 $('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
+    debugger
     var linha = $(this).parents('[data-conforme]');
-    if (linha.attr('data-conforme') == '0') {
+    //if (linha.attr('data-conforme') == '0') {
+    //    resetarLinha(linha);
+    //    linha.attr('data-conforme', '1');
+    //    $(this).text($(this).attr('data-positivo'));
+    //    $(this).addClass('btn-default');
+    //    $(this).removeClass('btn-secundary');
+    //} else {
+    //    resetarLinha(linha);
+    //    linha.addClass('alert-secundary');
+    //    linha.attr('data-conforme', '0');
+    //    $(this).text($(this).attr('data-negativo'));
+    //    $(this).removeClass('btn-default');
+    //    $(this).addClass('btn-secundary');
+    //}
+
+    if (linha.attr('data-conforme') == "") {
+
         resetarLinha(linha);
-        linha.attr('data-conforme', '1');
+        linha.attr('data-conforme', linha.attr('data-default-answer'));
+        $(this).text($(this).attr('data-default'));
+        $(this).addClass('btn-default');
+        $(this).removeClass('btn-secundary');
+
+    } else if (linha.attr('data-conforme') == "0") {
+
+        resetarLinha(linha);
+        linha.attr('data-conforme', linha.attr('data-default-answer'));
         $(this).text($(this).attr('data-positivo'));
         $(this).addClass('btn-default');
         $(this).removeClass('btn-secundary');
+
     } else {
+
         resetarLinha(linha);
         linha.addClass('alert-secundary');
-        linha.attr('data-conforme', '0');
+        linha.attr('data-conforme', "");
         $(this).text($(this).attr('data-negativo'));
         $(this).removeClass('btn-default');
         $(this).addClass('btn-secundary');
-
     }
 });
 

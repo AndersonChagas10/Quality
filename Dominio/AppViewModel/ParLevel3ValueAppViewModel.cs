@@ -30,6 +30,10 @@ namespace Dominio.AppViewModel
 
         public bool IsActive { get; set; }
 
+        public bool? IsRequired { get; set; }
+
+        public bool? IsDefaultAnswer { get; set; }
+
         public int? ParLevel1_Id { get; set; }
 
         public int? ParLevel2_Id { get; set; }
