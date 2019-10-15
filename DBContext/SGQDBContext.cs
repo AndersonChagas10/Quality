@@ -3192,6 +3192,13 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
     public partial class ResultadoUmaColuna
     {
-        public string retorno { get; set; }
+        public String retorno { get; set; }
+    }
+
+    public partial class ResultadoH4B
+    {
+        public String retornoLevel2 { get; set; }
+        public String retornoLevel3 { get; set; }
+        public String retornoFechaDiv { get; set; }
     }
 }
