@@ -49,17 +49,6 @@ namespace SgqSystem.Controllers.Api.App
         }
 
         /// <summary>
-        /// Sobrescreve a tela do tablet para todas as unidades.
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("UpdateTelaDoTablet")]
-        public RetornoParaTablet UpdateTelaDoTablet()
-        {
-            return Business.UpdateTelaDoTablet();
-        }
-
-        /// <summary>
         /// Atualiza, se existir, a tela do tablet para determinada unidade.
         /// </summary>
         /// <param name="UnitId"></param>
@@ -68,7 +57,8 @@ namespace SgqSystem.Controllers.Api.App
         [Route("UpdateTelaDoTablet/{UnitId}")]
         public RetornoParaTablet UpdateTelaDoTablet(int UnitId)
         {
-            return Business.UpdateTelaDoTablet(UnitId);
+            bool liberarFilaSemaforoThread = false;
+            return Business.UpdateTelaDoTablet(UnitId, out liberarFilaSemaforoThread);
         }
 
         /// <summary>

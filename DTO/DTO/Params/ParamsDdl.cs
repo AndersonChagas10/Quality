@@ -9,7 +9,7 @@ namespace DTO.DTO.Params
 {
     public class ParamsDdl
     {
-       
+
 
         public IEnumerable<SelectListItem> DdlParConsolidation { get; set; }
         public IEnumerable<SelectListItem> DdlFrequency { get; set; }
@@ -51,6 +51,7 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlTipoCorte { get; set; }
         public IEnumerable<SelectListItem> DdlSetoresBPF { get; set; }
         public IEnumerable<SelectListItem> DdlRotina { get; set; }
+        public IEnumerable<SelectListItem> DdlComponente { get; set; }
 
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
@@ -70,7 +71,7 @@ namespace DTO.DTO.Params
             return retorno;
         }
 
-        public void SetDdls(List<ParConsolidationTypeDTO> ddlParConsolidation, 
+        public void SetDdls(List<ParConsolidationTypeDTO> ddlParConsolidation,
                             List<ParFrequencyDTO> ddlFrequency,
                             //List<ParLevel1DTO> ddlparLevel1, 
                             //List<ParLevel2DTO> ddlparLevel2, 
@@ -91,15 +92,17 @@ namespace DTO.DTO.Params
                             List<ParCriticalLevelDTO> ddlparCrit,
                             List<ParCompanyDTO> ddlParCompany,
                             List<RotinaIntegracaoDTO> ddlrotina,
-                             List<ParScoreTypeDTO> ddlScoretype
+                             List<ParScoreTypeDTO> ddlScoretype,
+                             List<ComponenteGenericoDTO> Ddlcomponente
                             )
         {
-           
+
 
             DdlParCompany = Guard.CreateDropDownList(ddlParCompany.OrderBy(r => r.Name));
             DdlRotina = Guard.CreateDropDownList(ddlrotina.Where(r => r.IsActive));
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation.Where(r => r.IsActive == true).OrderBy(r => r.Name));
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency.OrderBy(r => r.Name));
+            DdlFrequency.ElementAt(0).Value = "null";
             //DdlparLevel1 = Guard.CreateDropDownList(ddlparLevel1);
             //DdlparLevel2 = Guard.CreateDropDownList(ddlparLevel2);
             //DdlparLevel3 = Guard.CreateDropDownList(ddlparLevel3);
@@ -107,7 +110,7 @@ namespace DTO.DTO.Params
             DdlparLevelDefinition = Guard.CreateDropDownList(ddlparLevelDefinition.OrderBy(r => r.Name));
 
             DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType.OrderBy(r => r.Name));
-            
+
             DdlParDepartment = Guard.CreateDropDownList(ddlParDepartment.OrderBy(r => r.Name));
             DdlParCounter_Level1 = Guard.CreateDropDownList(ddlParCounter_Level1.OrderBy(r => r.Name));
             DdlParLocal_Level1 = Guard.CreateDropDownList(ddlParLocal_Level1.OrderBy(r => r.Name));
@@ -119,6 +122,7 @@ namespace DTO.DTO.Params
             DdlParLevel3BoolFalse = Guard.CreateDropDownList(ddlParLevel3BoolFalse.OrderBy(r => r.Name));
             DdlParLevel3BoolTrue = Guard.CreateDropDownList(ddlParLevel3BoolTrue.OrderBy(r => r.Name));
             DdlparCrit = Guard.CreateDropDownList(ddlparCrit.OrderBy(r => r.Name));
+            DdlComponente = Guard.CreateDropDownList(Ddlcomponente.OrderBy(r => r.Name));
 
             if (GlobalConfig.Brasil)
             {
@@ -187,17 +191,17 @@ namespace DTO.DTO.Params
         private IEnumerable<SelectListItem> CreateSelectListEquipamentos(string tipo)
         {
             IEnumerable<SelectListItem> retorno;
-            
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                string query = "SELECT                                                      "+
-                                "Tipo + '|' + ISNULL(Subtipo, '') as Value,          "+
-                                "Tipo + ' - ' + ISNULL(Subtipo, 'Todos') as Text            "+
-                                "FROM Equipamentos WHERE Tipo = '"+ tipo + "' GROUP BY Tipo, Subtipo ";
+                string query = "SELECT                                                      " +
+                                "Tipo + '|' + ISNULL(Subtipo, '') as Value,          " +
+                                "Tipo + ' - ' + ISNULL(Subtipo, 'Todos') as Text            " +
+                                "FROM Equipamentos WHERE Tipo = '" + tipo + "' GROUP BY Tipo, Subtipo ";
 
                 retorno = factory.SearchQuery<SelectListItem>(query);
             }
-            
+
             return retorno;
         }
 

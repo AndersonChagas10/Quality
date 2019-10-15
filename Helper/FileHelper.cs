@@ -24,6 +24,12 @@ namespace Helper
                 if (string.IsNullOrEmpty(usuarioServidor))
                 {
                     stream = File.OpenRead(fileAddress);
+
+                    if (stream != null)
+                    {
+                        bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+                    }
                 }
                 else
                 {
