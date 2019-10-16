@@ -451,7 +451,7 @@ namespace PlanoDeAcaoMVC.Controllers
                     fta.MetaFTA = decimal.Round(decimal.Parse(meta2), 2, MidpointRounding.AwayFromZero).ToString();
                 }
 
-                if (fta.MetaFTA != null)
+                if (fta.MetaFTA != "0,00")
                 {
                     fta.MetaFTA += " %";
                 }
