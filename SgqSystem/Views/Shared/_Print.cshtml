@@ -20,7 +20,6 @@
         }
 
     btnImpressao {
-        
     }
 </style>
 
@@ -30,16 +29,51 @@
 
     function ImprimirRelatorio() {
 
-        let nomeRelatorio = $('.text-center').text();
+        resetChartZoomBeforePrint();
 
-        PrepararImpressao(
-            nomeRelatorio,
-            "",
-            "",
-            "",
-            'impressao',
-            "",
-            "");
+        let nomeRelatorio = $('.text-center').text();
+        setTimeout(function () {
+
+            PrepararImpressao(
+                nomeRelatorio,
+                "",
+                "",
+                "",
+                'impressao',
+                "",
+                "");
+          
+        }, 1000);
+       
+    }
+
+    function resetChartZoomBeforePrint() {
+            if ($('#RGUnidadesGrafico').html() != "")
+                $('#RGUnidadesGrafico').highcharts().zoomOut();
+
+            if ($('#RGDepartamentosGrafico').html() != "")
+                $('#RGDepartamentosGrafico').highcharts().zoomOut();
+
+            if ($('#RGDepartamentosShiftGrafico').html() != "")
+                $('#RGDepartamentosShiftGrafico').highcharts().zoomOut();
+
+            if ($('#RGOperacoesGrafico').html() != "")
+                $('#RGOperacoesGrafico').highcharts().zoomOut();
+
+            if ($('#RGOperacoesShiftGrafico').html() != "")
+                $('#RGOperacoesShiftGrafico').highcharts().zoomOut();
+
+            if ($('#RGMonitoramentosShiftGrafico').html() != "")
+                $('#RGMonitoramentosShiftGrafico').highcharts().zoomOut();
+
+            if ($('#RGMonitoramentosGrafico').html() != "")
+                $('#RGMonitoramentosGrafico').highcharts().zoomOut();
+
+            if ($('#RGTarefasAcumuladasGrafico').html() != "")
+                $('#RGTarefasAcumuladasGrafico').highcharts().zoomOut();
+
+            if ($('#RGTarefasGrafico').html() != "")
+                $('#RGTarefasGrafico').highcharts().zoomOut();
     }
 
     function PrepararImpressao(titulo, elaborador, aprovador, codigoRodape, idImpressao, imagemCabecalhoLeft, imagemCabecalhoRight) {
@@ -63,7 +97,8 @@
             renderTableMargin: 0,
             pageMarginHeader: "25px 25px 10px 25px",
             pageMarginFooter: "10px 25px 25px 25px",
-            pageMarginBody: "0 25px 0 25px"
+            pageMarginBody: "0 25px 0 25px",
+            renderOrientation: "landscape"
 
         });
 
@@ -90,12 +125,12 @@
             </li></div>
         `;
 
-        $(botaoImpressao).insertAfter('#sidebar-wrapper .sidebar-nav li:first()');
+        //$(botaoImpressao).insertAfter('#sidebar-wrapper .sidebar-nav li:first()');
 
     });
 
 </script>
 
-@*<div>
+<div>
         <button onclick="ImprimirRelatorio()" id="btnImpressaoFloat"><i class="fa fa-print" aria-hidden="true"></i></button>
-    </div>*@
+    </div>
