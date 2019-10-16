@@ -344,11 +344,10 @@ SET IDENTITY_INSERT Pa_Planejamento OFF
    END
 END
 GO
-END
 
 --Scripts de CRUD dinâmico
 
- IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ComponenteGenerico' AND xtype='U')
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ComponenteGenerico' AND xtype='U')
 CREATE TABLE ComponenteGenerico (
 	Id int not null primary key identity,
 	AddDate Datetime2 not null,
