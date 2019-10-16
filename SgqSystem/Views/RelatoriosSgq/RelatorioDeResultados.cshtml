@@ -567,6 +567,7 @@
                             enviar2["ReincidenciaDesvioFTA"] = data["Nc"];
                             enviar2["PercentualNCFTA"] = data["Pc"];
                             enviar2["dimensaoData"] = enviar["dimensaoData"];
+                            enviar2["moduloId"] = enviar["moduloId"];
 
                             if ($(this).attr('data-target') == "#modalResultados")
                                 EasyAjax(UrlListaResultados, enviar2, GerarTabelaResultados, "DataTableResultados", null);
@@ -667,6 +668,7 @@
                             enviar2['QtdeAvaliado'] = data["Av"];
                             enviar2["ReincidenciaDesvioFTA"] = data["Nc"];
                             enviar2["PercentualNCFTA"] = data["Pc"];
+                            enviar2["moduloId"] = enviar["moduloId"];
 
                             if ($(this).attr('data-target') == "#modalResultados")
                                 EasyAjax(UrlListaResultados, enviar2, GerarTabelaResultados, "DataTableResultados", null);
@@ -3309,6 +3311,7 @@
             formControl.showCreateActionPlane();
             formControl.showDimensaoData();
             formControl.showClustRegUnitCriticalLevel123();
+            formControl.showModulo();
 
             setTimeout(function () {
                 $("#clusterGroupId").val(0).change();
@@ -3317,7 +3320,6 @@
             $('select').select2();
 
         });
-
 
         $('#IndicadorXAcaoModal').on('shown.bs.modal', function (e) {
 
@@ -4120,7 +4122,6 @@
 
             });
         }
-
 
         function clickFiltroData(this_) {
 
