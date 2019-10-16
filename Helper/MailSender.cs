@@ -50,6 +50,7 @@ namespace Helper
                 message.From = from;
                 foreach (var i in mails)
                     message.To.Add(i);
+
                 message.Bcc.Add("sgq.jbs@grtsolucoes.com.br");
                 message.Subject = mailEntry.Subject;
                 message.Body = mailEntry.Body;
