@@ -21,9 +21,6 @@ using SgqSystem.Helpers;
 
 namespace SgqSystem.Mail
 {
-    /// <summary>
-    /// Classe de serviços asyncronos, utilizada principalmnente pela instancia do HANGFIRE do SGQ
-    /// </summary>
     public class SimpleAsynchronous
     {
 
