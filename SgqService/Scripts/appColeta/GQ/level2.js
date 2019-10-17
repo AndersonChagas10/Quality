@@ -1,4 +1,4 @@
-﻿function openLevel2(level1) {
+function openLevel2(level1) {
 
     tempHDL2 = 0;
 

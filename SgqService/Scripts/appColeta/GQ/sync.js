@@ -1,4 +1,4 @@
-﻿var totalObj = 0; //Verifica total de Level02 a ser sincornizado
+var totalObj = 0; //Verifica total de Level02 a ser sincornizado
 var objsyncked = 0; //Ojetos j� sincronizados
 var qtdeObjetos = 10; //Quantidade de Objetos enviados por sincroniza��o
 
