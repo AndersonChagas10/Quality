@@ -728,7 +728,7 @@ function OpenCorrectiveAction(coleta) {
     //    }
     //});
     // + '<h4> Tarefa: "' + tarefa[0].Name + '"</h4>' verificar uma forma de mostrar a tarefa que esta nao conforme
-    var modal = '<h3 style="font-weight:bold;">Açao Corretiva</h3>';
+    var modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>';
     var selectUsers = '<option value="">Selecione...</option><option value="1">Pato Donald</option>';
 
     var date = stringToDate(currentCollectDate.toJSON());
