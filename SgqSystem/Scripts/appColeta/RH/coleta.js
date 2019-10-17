@@ -748,11 +748,11 @@ function OpenCorrectiveAction(coleta) {
         '</div>' +
         '<div class="form-group col-xs-12">' +
         '<label for="email">Ação Corretiva Imediata:</label>' +
-        '<input name="SlaughterId" id="slaughterId" class="form-control" style="height: 80px;">' +
+        '<input name="ImmediateCorrectiveAction" id="immediateCorrectiveAction" class="form-control" style="height: 80px;">' +
         '</div>' +
         '<div class="form-group col-xs-12">' +
         '<label for="email">Ação Preventiva:</label>' +
-        '<input name="TechinicalId" id="techinicalId" class="form-control" style="height: 80px;">' +
+        '<input name="PreventativeMeasure" id="preventativeMeasure" class="form-control" style="height: 80px;">' +
         '</div>';
 
     var corpo =
@@ -776,8 +776,8 @@ function OpenCorrectiveAction(coleta) {
 
         //Inserir collectionLevel2 dentro do obj
         correctiveAction.AuditorId = currentLogin.Id;
-        correctiveAction.SlaughterId = $('#slaughterId').val();
-        correctiveAction.TechinicalId = $('#techinicalId').val();
+        correctiveAction.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+        correctiveAction.PreventativeMeasure = $('#preventativeMeasure').val();
         correctiveAction.DescriptionFailure = $('#descriptionFailure').val();
 
         //Salvar corrective action na lista de correctiveAction
