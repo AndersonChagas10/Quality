@@ -32,6 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AppScript.cs" />
+    <Compile Include="AppViewModel\ComponenteGenericoValoresViewModel.cs" />
+    <Compile Include="AppViewModel\ComponenteGenericoValorViewModel.cs" />
+    <Compile Include="AppViewModel\ComponenteGenericoViewModel.cs" />
     <Compile Include="AppViewModel\ParCargoXDepartmentAppViewModel.cs" />
     <Compile Include="AppViewModel\ParCargoAppViewModel.cs" />
     <Compile Include="AppViewModel\ParDepartmentAppViewModel.cs" />
@@ -65,6 +68,10 @@
     <Compile Include="ConsolidationLevel1.cs" />
     <Compile Include="ConsolidationLevel2.cs" />
     <Compile Include="CorrectiveAction.cs" />
+    <Compile Include="CrudGenerico\ComponenteGenerico.cs" />
+    <Compile Include="CrudGenerico\ComponenteGenericoColuna.cs" />
+    <Compile Include="CrudGenerico\ComponenteGenericoTipoColuna.cs" />
+    <Compile Include="CrudGenerico\ComponenteGenericoValor.cs" />
     <Compile Include="DicionarioEstatico.cs" />
     <Compile Include="ErrorLog.cs" />
     <Compile Include="DatabaseLog.cs" />
@@ -106,6 +113,7 @@
     <Compile Include="ParColaboradorXCargo.cs" />
     <Compile Include="ParAlert.cs" />
     <Compile Include="ParHeaderFieldGeral.cs" />
+    <Compile Include="ParHeaderFieldXComponenteGenerico.cs" />
     <Compile Include="ParLevel3XHelp.cs" />
     <Compile Include="ParLevel3XModule.cs" />
     <Compile Include="ParLevelHeaderField.cs" />

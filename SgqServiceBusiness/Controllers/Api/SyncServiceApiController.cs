@@ -577,6 +577,7 @@ namespace SgqServiceBusiness.Api
                             string cluster = parCluster_Id;
                             string ParReason_Id = null;
                             string ParReasonType_Id = null;
+                            string parDepartment_Id = null;
 
                             if (result.Length > 47)
                             {
@@ -596,6 +597,11 @@ namespace SgqServiceBusiness.Api
                             {
                                 ParReason_Id = result[50];
                                 ParReasonType_Id = result[51];
+                            }
+
+                            if (result.Length > 51)
+                            {
+                                parDepartment_Id = result[52];
                             }
 
                             //Gera o Cabeçalho do Level02
@@ -633,6 +639,7 @@ namespace SgqServiceBusiness.Api
                             level02HeaderJSon += ";" + cluster; //[31]
                             level02HeaderJSon += ";" + ParReason_Id; //[32]
                             level02HeaderJSon += ";" + ParReasonType_Id; //[33]
+                            level02HeaderJSon += ";" + parDepartment_Id; //[34]
 
                             //level02HeaderJSon += ";" + alertaAtual;
 
@@ -1191,7 +1198,7 @@ namespace SgqServiceBusiness.Api
                     isemptylevel3 = BoolConverter(isemptylevel3);
 
                     string cluster = DefaultValueReturn(arrayHeader[31], null);
-                    string parDepartment_Id = DefaultValueReturn(arrayHeader[33], null);
+                    string parDepartment_Id = DefaultValueReturn(arrayHeader[34], null);
 
                     string haveReaudit = BoolConverter(c.haveReaudit.ToString());
 
@@ -1262,7 +1269,7 @@ namespace SgqServiceBusiness.Api
 
                     if (arrayHeader.Length > 33)
                     {
-                        parDepartment_Id = arrayHeader[33];
+                        parDepartment_Id = arrayHeader[34];
                     }
 
                     int parDepartmentId = 0;
@@ -3487,6 +3494,25 @@ namespace SgqServiceBusiness.Api
                 SET @datainicio = @data
                 SET @datafim = @data
                 
+				
+				SELECT 
+					row_number() over(partition by ParLevel1_id,ParLevel2_id,ParCluster_id order by ParCompany_id desc) as [rank]
+					,ParCompany_Id
+					,ParLevel2_Id
+					,Number
+					,ParLevel1_Id
+					,ParCluster_Id
+					,Sample
+					,ParFrequency_Id
+					INTO #PAREVALUATION
+					FROM PAREVALUATION  
+				WHERE 1=1
+				AND Isactive = 1
+				AND (ParCompany_id is null or ParCompany_id = @unidade)
+
+
+
+
                 CREATE TABLE #COLETASLEVEL3 (																																											  
                 	ROW INT NULL,																																															  
                 	COLUNA VARCHAR(153) NULL																																												  
@@ -3497,22 +3523,36 @@ namespace SgqServiceBusiness.Api
                 		ROW_NUMBER() OVER (ORDER BY R3.ParLevel3_Id) AS ROW
                 	   ,'<div id=""' + CAST(R3.ParLevel3_Id AS VARCHAR) + '"" class=""r3l2""></div>' COLUNA
                 	FROM CollectionLevel2 C2 (NOLOCK)
+					LEFT JOIN CollectionLevel2XCluster C2XCL (NOLOCK)
+						ON C2.ID = C2XCL.CollectionLevel2_Id
                 	INNER JOIN ParLevel1 L1 (NOLOCK)
                 		ON C2.ParLevel1_Id = L1.Id
                 			AND L1.IsPartialSave = 1
                 	INNER JOIN ParLevel2 L2 (NOLOCK)
                 		ON C2.ParLevel2_Id = L2.Id
+
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = C2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = C2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = C2XCL.ParCluster_Id
                 	INNER JOIN Result_Level3 R3 (NOLOCK)
                 		ON R3.CollectionLevel2_Id = C2.Id
-                	WHERE C2.UnitId = @unidade
+                	WHERE 1=1
+					AND C2.UnitId = @unidade
                 	AND CAST(C2.CollectionDate AS DATE) BETWEEN
                 	CASE
-                		WHEN (L2.ParFrequency_Id) IN (1, 2, 3, 10) THEN @datadiario
-                		WHEN (L2.ParFrequency_Id) IN (4) THEN @datasemanal
-                		WHEN (L2.ParFrequency_Id) IN (5) THEN @dataquinzenal
-                		WHEN (L2.ParFrequency_Id) IN (6) THEN @datamensal
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (1, 2, 3, 10) THEN @datadiario
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (4) THEN @datasemanal
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (5) THEN @dataquinzenal
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (6) THEN @datamensal
                 		ELSE @datadiario
                 	END AND @datafim
+
+					--AND C2.ParLevel1_Id =112 
+					--AND C2.ParLevel2_Id = 633
+	
                 DECLARE @HOMENSFORBRUNO INT = ( SELECT
                 		COUNT(1)
                 	FROM #COLETASLEVEL3);
@@ -3567,8 +3607,8 @@ namespace SgqServiceBusiness.Api
                 /*coletas diárias */
                 INSERT INTO #COLETA
                 	SELECT
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
                 		UnitId AS Unit_Id,--unidade
                 		Shift, --shift
                 		Period,--periodo
@@ -3601,11 +3641,18 @@ namespace SgqServiceBusiness.Api
                 		ON CL2C.CollectionLevel2_Id = CL2.Id
                 	INNER JOIN parlevel2 p2 WITH (NOLOCK)
                 		ON p2.id = CL2.ParLevel2_Id
-                	WHERE unitid = @unidade
-                	AND p2.ParFrequency_Id IN (1, 2, 3, 10)
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
+                	WHERE 1=1
+					AND unitid = @unidade
+                	AND FREQ_AV.ParFrequency_Id IN (1, 2, 3, 10)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @datadiario AND @data
-                	GROUP BY ParLevel1_Id
-                			,ParLevel2_Id
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
                 			,UnitId
                 			,Shift
                 			,Period
@@ -3615,8 +3662,8 @@ namespace SgqServiceBusiness.Api
                 /*coletas semanal */
                 INSERT INTO #COLETA
                 	SELECT
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
                 		UnitId AS Unit_Id,--unidade
                 		Shift, --shift
                 		Period,--periodo
@@ -3649,11 +3696,17 @@ namespace SgqServiceBusiness.Api
                 		ON CL2C.CollectionLevel2_Id = CL2.Id
                 	INNER JOIN parlevel2 p2 WITH (NOLOCK)
                 		ON p2.id = CL2.ParLevel2_Id
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
                 	WHERE unitid = @unidade
-                	AND p2.ParFrequency_Id IN (4)
+                	AND FREQ_AV.ParFrequency_Id IN (4)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @datasemanal AND @data
-                	GROUP BY ParLevel1_Id
-                			,ParLevel2_Id
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
                 			,UnitId
                 			,Shift
                 			,Period
@@ -3663,8 +3716,8 @@ namespace SgqServiceBusiness.Api
                 /*coletas quinzenal */
                 INSERT INTO #COLETA
                 	SELECT
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
                 		UnitId AS Unit_Id,--unidade
                 		Shift, --shift
                 		Period,--periodo
@@ -3697,11 +3750,17 @@ namespace SgqServiceBusiness.Api
                 		ON CL2C.CollectionLevel2_Id = CL2.Id
                 	INNER JOIN parlevel2 p2 WITH (NOLOCK)
                 		ON p2.id = CL2.ParLevel2_Id
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
                 	WHERE unitid = @unidade
-                	AND p2.ParFrequency_Id IN (5)
+                	AND FREQ_AV.ParFrequency_Id IN (5)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @dataquinzenal AND @data
-                	GROUP BY ParLevel1_Id
-                			,ParLevel2_Id
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
                 			,UnitId
                 			,Shift
                 			,Period
@@ -3711,8 +3770,8 @@ namespace SgqServiceBusiness.Api
                 /*coletas mensal */
                 INSERT INTO #COLETA
                 	SELECT
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
-                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
                 		UnitId AS Unit_Id,--unidade
                 		Shift, --shift
                 		Period,--periodo
@@ -3745,11 +3804,17 @@ namespace SgqServiceBusiness.Api
                 		ON CL2C.CollectionLevel2_Id = CL2.Id
                 	INNER JOIN parlevel2 p2 WITH (NOLOCK)
                 		ON p2.id = CL2.ParLevel2_Id
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
                 	WHERE unitid = @unidade
-                	AND p2.ParFrequency_Id IN (6)
+                	AND FREQ_AV.ParFrequency_Id IN (6)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @datamensal AND @data
-                	GROUP BY ParLevel1_Id
-                			,ParLevel2_Id
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
                 			,UnitId
                 			,Shift
                 			,Period
@@ -3844,7 +3909,9 @@ namespace SgqServiceBusiness.Api
                 ORDER BY Level2Result.CollectionDate ASC, Level2Result.ParLevel1_Id ASC, CDL2.ReauditNumber ASC
                 
                 DROP TABLE #COLETASLEVEL3
-                DROP TABLE #COLETA";
+                DROP TABLE #COLETA
+				DROP TABLE #PAREVALUATION
+				DROP TABLE #CollectionLevel2_HPA";
 
 
                 using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
@@ -3920,6 +3987,7 @@ namespace SgqServiceBusiness.Api
                 var listaProdutosJSON = listaProdutos.getProdutos();
 
                 supports += @" <script>
+
                                 var listaProdutosJson = " + Newtonsoft.Json.JsonConvert.SerializeObject(listaProdutosJSON) + @";
                                            
                                 function buscarProduto(a,valor){
@@ -3932,7 +4000,7 @@ namespace SgqServiceBusiness.Api
                                             return;
                                         }		                                               
                                     }
-                                    //$(a).val('');
+
                                     $(a).next().html('');
                                 }
 
@@ -3946,8 +4014,10 @@ namespace SgqServiceBusiness.Api
                                         }
                                                                                                        
                                     }
+
                                     $(a).val('');
                                 }
+
                                 </script> ";
             }
             catch (Exception ex)
@@ -3981,11 +4051,67 @@ namespace SgqServiceBusiness.Api
             }
 
 
+            try
+            {
 
-            //string resource = GetResource();
+                using (var db = new SgqDbDevEntities())
+                {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    var listaParLevel3XHelp = db.ParLevel3XHelp.Where(x => x.IsActive).ToList();
+
+                    supports += $@"<script>
+                                var listaParLevel3XHelp = " + Newtonsoft.Json.JsonConvert.SerializeObject(listaParLevel3XHelp) + @";
+                                           
+                                function getParLevel3XHelp(parLevel3_Id){
+                                    var valor = $.grep(listaParLevel3XHelp, function(obj) { 
+                                                       return obj.ParLevel3_Id == parLevel3_Id;  
+                                                });
+                                    return (valor && valor.length > 0) ? valor[0] : '';
+                                }
+
+                                </script> ";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            try
+            {
+
+                using (var factory = new Factory("DefaultConnection"))
+                {
+                    var sql = $@"SELECT
+                                	CGC.Name
+                                   ,CGC.ComponenteGenerico_Id
+                                   ,CGC.ComponenteGenericoTipoColuna_Id
+                                   ,CGC.IsActive
+                                   ,CGV.SaveId
+                                   ,CGV.ComponenteGenericoColuna_Id
+                                   ,CGV.Valor
+                                FROM ComponenteGenericoColuna CGC
+                                INNER JOIN ComponenteGenericoValor CGV
+                                	ON CGC.Id = CGV.ComponenteGenericoColuna_Id
+                                WHERE CGC.IsActive = 1
+                                AND CGV.IsActive = 1";
+
+                    var listParHeaderFieldXComponenteGenerico = factory.SearchQuery<Dominio.AppViewModel.ComponenteGenericoValoresViewModel>(sql).ToList();
+
+                    supports += $@"<script>
+
+                                var listComponenteGenericoValores = " + Newtonsoft.Json.JsonConvert.SerializeObject(listParHeaderFieldXComponenteGenerico) + @";
+
+                                </script> ";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
 
 
-            return APPMain + supports;// + resource;
+            return APPMain + supports;
         }
 
         public string getAPPLevelsVolume(GetAPPLevelsVolumeClass getAPPLevelsVolumeClass)
@@ -6048,6 +6174,14 @@ namespace SgqServiceBusiness.Api
                         form_control = $@"<input id="""" class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-din=""{ header.ParHeaderField_Description }"" readonly>";
                         form_control += $@"<label class=""""></label>";
                         break;
+
+                    case 11:
+
+                        var options = ParFieldTypeDB.getComponenteValues(header, ParCompany_id, id);
+
+                        form_control += options;
+
+                        break;
                 }
 
                 //Incrementar valor para o pai do elemento para Ytoara.
@@ -6119,6 +6253,7 @@ namespace SgqServiceBusiness.Api
                                                 ),
                                     classe: "btn-warning btnNotAvaliable na font11"
                                 );
+
 
 
             bool haveAccordeon = false;
@@ -6655,7 +6790,9 @@ namespace SgqServiceBusiness.Api
                             //tipo de input
                             string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
 
-                            string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
+                            bool hasInfo = dbEf.ParLevel3XHelp.Where(x => x.IsActive).Any(x => x.ParLevel3_Id == parLevel3.Id);
+
+                            string level3List = html.level3(parLevel3, input, classInput, labelsInputs, hasInfo);
                             level3Group.Append(level3List);
                         }
                     }
@@ -6838,6 +6975,7 @@ namespace SgqServiceBusiness.Api
         {
             var html = new Html();
             string input = null;
+
             if (parLevel3.ParLevel3InputType_Id == 1)
             {
                 classInput = " boolean";
@@ -7084,6 +7222,27 @@ namespace SgqServiceBusiness.Api
 
                 input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
             }
+            else if (parLevel3.ParLevel3InputType_Id == 13)
+            {
+                classInput = " inputData";
+                labels = html.div(
+                                  outerhtml: "",
+                                  classe: ""
+                                  );
+
+                input = html.campoData(id: parLevel3.Id.ToString());
+
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 14)
+            {
+                classInput = " inputHora";
+                labels = html.div(
+                                  outerhtml: "",
+                                  classe: ""
+                                  );
+
+                input = html.campoHora(id: parLevel3.Id.ToString());
+            }
             else
             {
                 ///Campo interval está repetindo , falta o campo defeitos
@@ -7118,6 +7277,8 @@ namespace SgqServiceBusiness.Api
                                                 intervalMax: parLevel3.IntervalMax,
                                                 unitName: parLevel3.ParMeasurementUnit_Name);
             }
+
+
             return input;
         }
 
@@ -8124,40 +8285,109 @@ namespace SgqServiceBusiness.Api
                     SqlCommand command;
 
                     string query = $@"
-                        DECLARE @ID INT=@CollectionLevel2_Id
-                        DECLARE @Defects DECIMAL(10,3)                                                                                            
-                        DECLARE @DefectsResult DECIMAL(10, 3)                                                                                     
-                        DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                  
-                        DECLARE @WeiEvaluation DECIMAL(10, 3)                                                                                     
-                        DECLARE @WeiDefects DECIMAL(10, 3)                                                                                        
-                        DECLARE @TotalLevel3Evaluation  DECIMAL(10, 3)                                                                            
-                        DECLARE @TotalLevel3WithDefects DECIMAL(10, 3)                                                                            
-                                                                                                                                                  
-                        select                                                                                                                    
-                                                                                                                                                  
-                        @Defects = isnull(sum(r3.Defects),0),                                                                                     
-                        @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                      
-                        @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   
-                        @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         
-                        @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               
+                       DECLARE @ID BIGINT=@CollectionLevel2_Id
+                    DECLARE @CL2 INT
+                    DECLARE @CL1 INT
+                    DECLARE @Defects DECIMAL(10,3)                                                                                           
+                    DECLARE @DefectsResult DECIMAL(10, 3)                                                                                    
+                    DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                 
+                    DECLARE @WeiEvaluation DECIMAL(10, 3)                                                                                    
+                    DECLARE @WeiDefects DECIMAL(10, 3)                                                                                       
+                    DECLARE @TotalLevel3Evaluation  DECIMAL(10, 3)                                                                           
+                    DECLARE @TotalLevel3WithDefects DECIMAL(10, 3)                                                                           
 
-                        @TotalLevel3Evaluation = count(1),
-                        @TotalLevel3WithDefects = (select count(1) from result_level3  WITH (NOLOCK) where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         
-                        from result_level3 r3 WITH (NOLOCK)                                                                                                    
-                        where collectionlevel2_id = @ID                                                                                           
-                        and r3.IsNotEvaluate = 0                                                                                                  
-                                                                                                                                                  
-                                                                                                                                                  
-                        UPDATE CollectionLevel2                                                                                                   
-                        SET Defects = @Defects                                                                                                    
-                        , DefectsResult = @DefectsResult                                                                                          
-                        , EvaluatedResult = @EvatuationResult                                                                                     
-                        , WeiEvaluation = @WeiEvaluation                                                                                          
-                        , WeiDefects = @WeiDefects                                                                                                
-                        , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                          
-                        , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        
-                        , AlterDate = GETDATE()                                                                                                   
-                        WHERE Id = @ID SELECT 1";
+                    select
+                                                                                                                         
+                    @Defects = isnull(sum(r3.Defects),0),                                                                                    
+                    @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                     
+                    @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                  
+                    @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                        
+                    @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                              
+                    @TotalLevel3Evaluation = count(1),                                                                                       
+                    @TotalLevel3WithDefects = SUM(IIF(r3.Defects > 0 AND r3.IsNotEvaluate = 0,1,0 ))
+                    from result_level3 r3 WITH (NOLOCK)                                                                                      
+                    where collectionlevel2_id = @ID                                                                                          
+                    and r3.IsNotEvaluate = 0                                                                                                 
+                                                                                                                         
+                    UPDATE CollectionLevel2                                                                                                  
+                    SET Defects = @Defects                                                                                                   
+                    , DefectsResult = @DefectsResult                                                                                         
+                    , EvaluatedResult = @EvatuationResult                                                                                    
+                    , WeiEvaluation = @WeiEvaluation                                                                                         
+                    , WeiDefects = @WeiDefects                                                                                               
+                    , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                         
+                    , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                       
+                    , AlterDate = GETDATE()                                                                                                  
+                    WHERE Id = @ID         --SELECT 1     
+
+                    DECLARE @MAXEVALERT INT
+                    DECLARE @LAST2ALERT INT
+
+
+                    SELECT @CL2 = ConsolidationLevel2_Id FROM CollectionLevel2 WITH (NOLOCK) WHERE ID = @ID
+
+
+                    SELECT 
+	                      @WeiEvaluation = SUM(WeiEvaluation) 
+	                    , @Defects = SUM(Defects) 
+	                    , @WeiDefects = SUM(WeiDefects) 
+	                    , @TotalLevel3WithDefects = SUM(TotalLevel3WithDefects) 
+	                    , @TotalLevel3Evaluation = SUM(TotalLevel3Evaluation) 
+	                    , @MAXEVALERT = MAX(LastEvaluationAlert) 
+	                    , @LAST2ALERT = (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 WHERE Id = max(c2.id)) 
+	                    , @EvatuationResult =  SUM(EvaluatedResult) 
+	                    , @DefectsResult  = SUM(DefectsResult)
+
+                    FROM CollectionLevel2 C2  (nolock) WHERE  ConsolidationLevel2_Id = @CL2 
+
+
+                    group by ConsolidationLevel2_Id
+
+                    UPDATE ConsolidationLevel2 
+                    SET AlertLevel=ISNULL(@LAST2ALERT,0)
+                       , WeiEvaluation=@WeiEvaluation
+                       , EvaluateTotal=@EvatuationResult
+                       , DefectsTotal=@DefectsResult
+                       , WeiDefects=@WeiDefects
+                       , TotalLevel3Evaluation=@TotalLevel3Evaluation
+                       , TotalLevel3WithDefects=@TotalLevel3WithDefects
+                       , LastEvaluationAlert = ISNULL(@MAXEVALERT,0)
+                       , LastLevel2Alert = ISNULL(@LAST2ALERT,0)
+                       , EvaluatedResult=@EvatuationResult
+                       , DefectsResult=@DefectsResult
+                    WHERE ID = @CL2   
+
+                    SELECT @CL1 = ConsolidationLevel1_Id FROM ConsolidationLevel2 WHERE ID = @CL2
+
+
+                    select 
+	                    @WeiEvaluation = SUM(WeiEvaluation) 
+	                    , @EvatuationResult =  SUM(EvaluateTotal)
+	                    , @Defects = SUM(DefectsTotal)
+	                    , @WeiDefects = SUM(WeiDefects) 
+	                    , @TotalLevel3Evaluation = SUM(TotalLevel3Evaluation) 
+	                    , @TotalLevel3WithDefects = SUM(TotalLevel3WithDefects) 
+	                    , @MAXEVALERT = MAX(LastEvaluationAlert) 
+	                    , @LAST2ALERT = (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 (nolock)  WHERE ConsolidationLevel2_Id = max(c2.id))
+	                    , @EvatuationResult = SUM(EvaluatedResult) 
+	                    , @DefectsResult = SUM(DefectsResult) 
+                    FROM ConsolidationLevel2 C2 (nolock)  
+                    where ConsolidationLevel1_Id=@CL1   
+
+                    UPDATE ConsolidationLevel1 
+	                    SET AtualAlert=@LAST2ALERT
+	                    , Evaluation= @TotalLevel3Evaluation
+	                    , WeiEvaluation=@WeiEvaluation
+	                    , EvaluateTotal=@EvatuationResult
+	                    , DefectsTotal=@Defects
+	                    , WeiDefects=@WeiDefects
+	                    , TotalLevel3Evaluation=@TotalLevel3Evaluation
+	                    , TotalLevel3WithDefects=@TotalLevel3WithDefects
+	                    , LastEvaluationAlert=@MAXEVALERT
+	                    , LastLevel2Alert=@LAST2ALERT
+	                    , EvaluatedResult= @EvatuationResult
+	                    , DefectsResult=@DefectsResult
+                    WHERE ID=@CL1";
 
 
                     command = new SqlCommand(query, connection);
@@ -8170,20 +8400,21 @@ namespace SgqServiceBusiness.Api
                     if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
 
-                using (var db = new Dominio.SgqDbDevEntities())
-                {
-                    int idl2 = Int32.Parse(collectionLevel2_Id);
-                    Dominio.CollectionLevel2 collectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == idl2);
+                //using (var db = new Dominio.SgqDbDevEntities())
+                //{
+                //    int idl2 = Int32.Parse(collectionLevel2_Id);
+                //    Dominio.CollectionLevel2 collectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == idl2);
 
 
-                    int company_Id = collectionLevel2.UnitId;
-                    int level1_Id = collectionLevel2.ParLevel1_Id;
-                    DateTime data = collectionLevel2.CollectionDate.Date;
+                //    int company_Id = collectionLevel2.UnitId;
+                //    int level1_Id = collectionLevel2.ParLevel1_Id;
+                //    DateTime data = collectionLevel2.CollectionDate.Date;
 
-                    var retorno = _ReConsolidationByLevel1(company_Id, level1_Id, data);
+                //    var retorno = _ReConsolidationByLevel1(company_Id, level1_Id, data);
 
-                    return "OK";
-                }
+                //    return "OK";
+                //}
+                return "OK";
             }
             catch (Exception e)
             {
@@ -8545,6 +8776,7 @@ namespace SgqServiceBusiness.Api
         {
             return Resources.Resource;
         }
+
     }
 }
 

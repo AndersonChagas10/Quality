@@ -34,7 +34,7 @@
                         @Html.TextBox("DestriptionParHeaderField", Model.paramsDto.parHeaderFieldDto.Description, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
-                            }
+            }
             <div class="col-md-3">
                 <div class="form-group">
                     @Html.Label(Resources.Resource.link_number_evaluation as string)
@@ -42,74 +42,76 @@
                 </div>
             </div>
         </div>
-                            if (Model.paramsDto.parHeaderFieldDto.ParFieldType.Id == 1)
-                            {
-                                <div id="multiplaEscolha">
-                                    @foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
-                                    {
-                                        @Html.EditorFor(r => i.Id, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 0px;visibility:hidden;" } })
+        if (Model.paramsDto.parHeaderFieldDto.ParFieldType.Id == 1)
+        {
+            <div id="multiplaEscolha">
+                @foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
+                {
+                    @Html.EditorFor(r => i.Id, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 0px;visibility:hidden;" } })
 
-                                        <div class="row">
-                                            <div class="col-xs-4">
-                                                <div class="form-group">
-                                                    @Html.Label(Resources.Resource.option as string)
-                                                    @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @class = "form-control" } })
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-4">
-                                                <div class="form-group">
-                                                    @Html.Label(Resources.Resource.punishment_value as string)
-                                                    @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-4">
-                                                <div class="form-group">
-                                                    @Html.Label(Resources.Resource.is_active as string)
-                                                    @Html.CheckBoxFor(r => i.IsActive, new { @value = i.IsActive, @class = "make-switch checkbox-erp" })
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            }
-                            if (Model.paramsDto.parHeaderFieldDto.ParFieldType.Id == 3)
-                            {
-                                <div id="binario">
-                                    @{int contador = 0; }
-                                    @foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
-                                    {
-                                        @Html.EditorFor(r => i.Id, new { htmlAttributes = new { @type = "text", @style = "max-width: 0px;visibility:hidden;" } })
-                                        <div id="binario">
-                                            <div class="row">
-                                                <div class="col-xs-5">
-                                                    <div class="form-group">
-                                                        <span class="hidden">@{ contador += 1; } </span>
-                                                        @Html.Label(Resources.Resource.option as string)
-                                                        @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @class = "form-control", @id=$"{contador}_Name"} })
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-5">
-                                                    <div class="form-group">
-                                                        @Html.Label(Resources.Resource.punishment_value as string)
-                                                        @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control", @id = $"{contador}_PunishmentValue" })                                                                                                          
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @Html.EditorFor(r => i.IsActive, new { htmlAttributes = new { @style = "max-width:0px; visibility:hidden;" } })
-                                        </div>
-                                    }
-                                </div>
-                            }
-                            <div>
-                                <button type="button" id="adicionar" onclick="addValores()" class="btn btn-primary" style="margin-top:30px;">@Resources.Resource.add</button>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                @Html.Label(Resources.Resource.option as string)
+                                @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @class = "form-control" } })
                             </div>
-                            }
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                @Html.Label(Resources.Resource.punishment_value as string)
+                                @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                @Html.Label(Resources.Resource.is_active as string)
+                                @Html.CheckBoxFor(r => i.IsActive, new { @value = i.IsActive, @class = "make-switch checkbox-erp" })
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        if (Model.paramsDto.parHeaderFieldDto.ParFieldType.Id == 3)
+        {
+            <div id="binario">
+                @{int contador = 0; }
+                @foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
+                {
+                    @Html.EditorFor(r => i.Id, new { htmlAttributes = new { @type = "text", @style = "max-width: 0px;visibility:hidden;" } })
+                    <div id="binario">
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <div class="form-group">
+                                    <span class="hidden">@{ contador += 1; } </span>
+                                    @Html.Label(Resources.Resource.option as string)
+                                    @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @class = "form-control", @id = $"{contador}_Name" } })
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="form-group">
+                                    @Html.Label(Resources.Resource.punishment_value as string)
+                                    @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control", @id = $"{contador}_PunishmentValue" })
+
+                                </div>
+                            </div>
+                        </div>
+                        @Html.EditorFor(r => i.IsActive, new { htmlAttributes = new { @style = "max-width:0px; visibility:hidden;" } })
+                    </div>
+                }
+            </div>
+        }
+        <div>
+            <button type="button" id="adicionar" onclick="addValores()" class="btn btn-primary" style="margin-top:30px;">@Resources.Resource.add</button>
+        </div>
+    }
 </div>
 @section Scripts {
     <script>
+
         $(function () {
             $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').bootstrapToggle();
-        })
+        });
+
     </script>
 }

@@ -39,11 +39,6 @@ namespace SgqSystem.Controllers.Api
         string conexao;
         string conexaoSGQ_GlobalADO;
 
-        protected SqlConnection db;
-        protected SqlConnection SGQ_GlobalADO;
-
-        Dominio.SgqDbDevEntities dbEf;
-
         public SyncServiceApiController()
         {
             conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -54,19 +49,10 @@ namespace SgqSystem.Controllers.Api
             }
 
             business = new SgqServiceBusiness.Api.SyncServiceApiController(conexao, conexaoSGQ_GlobalADO);
-
-            db = new SqlConnection(conexao);
-            SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                SGQ_GlobalADO.Dispose();
-                db.Dispose();
-            }
-
             base.Dispose(disposing);
         }
 

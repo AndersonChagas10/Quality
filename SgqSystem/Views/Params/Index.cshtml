@@ -460,7 +460,7 @@
         loading_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.loading)),
 
         enviarDadosParaApi: function (e) {
-            
+            debugger
             $("#paramsDto_parLevel1Dto_Name").val($.trim($("#paramsDto_parLevel1Dto_Name").val().replace(/  +/g, ' ')));
 
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
@@ -1446,7 +1446,7 @@
     var idLvl1;
     var indexCabecalho ={
         enviarDadosParaApi: function (e) {
-            
+            debugger
             var dados = $('#ediCab > form').serializeObject();
             dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] = idfieldType;
             dados['paramsDto.parHeaderFieldDto.Id'] = idpar;
