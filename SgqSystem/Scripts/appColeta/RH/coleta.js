@@ -910,17 +910,20 @@ function ColetasIsValid() {
         if ($(data).attr('data-conforme') == "" || $(data).attr('data-conforme') == null) {
             openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
             closeMensagem(2000);
-        }
+        }     
+    });
 
-        //verifica se tem campos obrigatorios que nao estao preenchidos e realiza o focus neles
-        $.each($('[data-conforme]'), function (i, o) {
-            if ($(o).val() == 0 || $(o).val() == "") {
-                $('html, body').animate({
-                    scrollTop: $(o).parent().offset().top
-                }, 300);
-                return false;
-            }
-        });
+    var flag = false;
+    //verifica se tem campos obrigatorios que nao estao preenchidos e realiza o focus neles
+    $.each($('[data-conforme]'), function (i, o) {
+
+        if (flag == false && ($(o).val() == 0 || $(o).val() == "")) {
+            flag = true;
+            $('html, body').animate({
+                scrollTop: $(o).parent().offset().top
+            }, 300);
+            return false;
+        }
     });
 }
 
