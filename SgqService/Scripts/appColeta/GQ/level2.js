@@ -240,11 +240,11 @@
 
             var linha = level2.parent().find('a');
 
-            var avaliacaoTotal = linha.attr('evaluate');
-            var amostraTotal = linha.attr('sample');
+            var avaliacaoTotal = parseInt(linha.attr('evaluate'));
+            var amostraTotal = parseInt(linha.attr('sample'));
 
-            var avaliacao = linha.attr('evaluatecurrent');
-            var amostra = linha.attr('samplecurrent');
+            var avaliacao = parseInt(linha.attr('evaluatecurrent'));
+            var amostra = parseInt(linha.attr('samplecurrent'));
 
             var avaliacaoAtual = 0;
             var amostraAtual = 0;
@@ -268,6 +268,12 @@
 
                 avaliacaoAtual = isNaN(avaliacaoAtual) ? 0 : avaliacaoAtual;
                 amostraAtual = isNaN(amostraAtual) ? 0 : amostraAtual;
+
+                var proximaAvaliacao = ((amostraAtual / parseInt(amostraTotal)) % 1 == 0) ? 1 : 0;
+				var avaliacao = Math.ceil(amostraAtual / parseInt(amostraTotal)) + proximaAvaliacao;
+				
+				level2.attr('evaluatecurrent',avaliacao);
+                level2.parent().find('.evaluateCurrent').html(Math.ceil(amostraAtual / parseInt(amostraTotal)));
 
                 level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
                 level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal);
