@@ -907,7 +907,9 @@ function getCollectionHeaderFields() {
 function ColetasIsValid() {
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
         var data = $(o);
-        if ($(data).attr('data-conforme') == "" || $(data).attr('data-conforme') == null) {
+        if ($(data).attr('data-conforme') == ""
+            || $(data).attr('data-conforme') == null
+            || $(data).attr('data-conforme') == "undefined") {
             openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
             closeMensagem(2000);
         }     
@@ -917,7 +919,7 @@ function ColetasIsValid() {
     //verifica se tem campos obrigatorios que nao estao preenchidos e realiza o focus neles
     $.each($('[data-conforme]'), function (i, o) {
 
-        if (flag == false && ($(o).val() == 0 || $(o).val() == "")) {
+        if (flag == false && ($(o).val() == 0 || $(o).val() == "0")) {
             flag = true;
             $('html, body').animate({
                 scrollTop: $(o).parent().offset().top

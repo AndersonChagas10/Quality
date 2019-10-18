@@ -416,7 +416,6 @@ CREATE TABLE ComponenteGenericoValor(
 )
 
 GO
-GO
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParHeaderFieldGeral' AND xtype='U')
 CREATE TABLE CollectionLevel2XParHeaderFieldGeral  (
@@ -450,3 +449,20 @@ create table ParHeaderFieldXComponenteGenerico (
 IF NOT EXISTS (SELECT * FROM ParFieldType WHERE Id = 11)
 	INSERT INTO ParFieldType VALUES (11, 'Componente', 'Componente Genérico', GETDATE(), NULL, 1)
 GO
+
+IF COL_LENGTH('ParLevel3Value','IsRequired') IS NULL
+    BEGIN
+	
+		ALTER table ParLevel3Value add IsRequired bit null 
+    END
+GO
+
+IF COL_LENGTH('ParLevel3Value','IsDefaultAnswer') IS NULL
+    BEGIN
+	
+	ALTER table ParLevel3Value add IsDefaultAnswer bit null l 
+    END
+GO
+
+
+
