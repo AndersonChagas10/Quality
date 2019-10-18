@@ -25,13 +25,13 @@ namespace SgqSystem.Controllers.Params
         {
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
 
-            var user = db2.UserSgq.FirstOrDefault(r => r.Id == userId); 
+            var user = db2.UserSgq.FirstOrDefault(r => r.Id == userId);
             var company = db2.ParCompany.FirstOrDefault(r => r.Id == user.ParCompany_Id);
             var parCompanyXUserSgq = db2.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == user.Id).ToList();
             var equipamentos = db.Equipamentos.ToList();
 
             var companys = db2.ParCompany.ToList();
-            var equipRetorno = new List<Equipamentos>();            
+            var equipRetorno = new List<Equipamentos>();
 
             if (!string.IsNullOrEmpty(Request.QueryString["ParCompany_Id"]))
             {
@@ -97,11 +97,12 @@ namespace SgqSystem.Controllers.Params
         {
 
             ValidaEquipamentos(equipamentos);
+            var unidade = db.Unidades.FirstOrDefault();
             if (ModelState.IsValid)
             {
                 equipamentos.DataInsercao = System.DateTime.Now;
                 equipamentos.UsuarioInsercao = Guard.GetUsuarioLogado_Id(HttpContext);
-                equipamentos.Unidade = 4;
+                equipamentos.Unidade = unidade.Id;
                 db.Equipamentos.Add(equipamentos);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -152,12 +153,16 @@ namespace SgqSystem.Controllers.Params
         public ActionResult Edit([Bind(Include = "Id,ParCompany_Id,Nome,Tipo,Subtipo")] Equipamentos equipamentos)
         {
             ValidaEquipamentos(equipamentos);
+            
+            db.Configuration.LazyLoadingEnabled = false;
+
+            var unidade = db.Unidades.FirstOrDefault();
 
             if (ModelState.IsValid)
             {
                 equipamentos.DataInsercao = System.DateTime.Now;
                 equipamentos.UsuarioAlteracao = Guard.GetUsuarioLogado_Id(HttpContext);
-                equipamentos.Unidade = 4;
+                equipamentos.Unidade = unidade.Id;
                 db.Entry(equipamentos).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
