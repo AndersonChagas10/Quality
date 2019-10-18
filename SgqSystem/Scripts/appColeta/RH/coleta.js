@@ -1,4 +1,4 @@
-﻿var coletaJson = [];
+var coletaJson = [];
 
 function openColeta(levels) {
 
