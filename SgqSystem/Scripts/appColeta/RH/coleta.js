@@ -905,28 +905,34 @@ function getCollectionHeaderFields() {
 }
 
 function ColetasIsValid() {
+    var errorCount = 0;
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
         var data = $(o);
         if ($(data).attr('data-conforme') == ""
             || $(data).attr('data-conforme') == null
             || $(data).attr('data-conforme') == "undefined") {
             openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
+            mostraPerguntasObrigatorias(data);
+            errorCount++;
             closeMensagem(2000);
-        }     
+        }  
     });
+    if (errorCount > 0)
+        return false;
+    else
+        return true;
+  
+}
 
-    var flag = false;
+function mostraPerguntasObrigatorias(data) {
+
     //verifica se tem campos obrigatorios que nao estao preenchidos e realiza o focus neles
-    $.each($('[data-conforme]'), function (i, o) {
-
-        if (flag == false && ($(o).val() == 0 || $(o).val() == "0")) {
-            flag = true;
-            $('html, body').animate({
-                scrollTop: $(o).parent().offset().top
-            }, 300);
-            return false;
-        }
-    });
+    if ($(data).attr('data-conforme') == 0 || $(data).attr('data-conforme') == "0") {
+        $('html, body').animate({
+            scrollTop: $(data).parent().offset().top
+        }, 300);
+        return false;
+    }
 }
 
 function HeaderFieldsIsValid() {
