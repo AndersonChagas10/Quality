@@ -40,7 +40,7 @@
         {
             get
             {
-                return IsDefaultAnswer == true ? 1 : 0;
+                return IsDefaultAnswer == false ? 0 : 1;
             }
         }
 
