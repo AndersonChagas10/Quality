@@ -85,12 +85,11 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label>É Obrigatorio:</label>
-                <br />
-                <label class="switch">
-                    <input type="checkbox" id="checkboxL3IsRequired" name="IsRequired">
-                    <span class="slider round"></span>
-                </label>
+                <label>Valor Padrão</label>
+                <select id="selectL3IsDefaultAnswer" class="input input-sm col-sm-12" name="IsDefaultAnswer">
+                    <option value="true">Valor Positivo</option>
+                    <option value="false">Valor Negativo</option>
+                </select>
             </div>
 
         </div>
@@ -98,11 +97,12 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label>Valor Padrão</label>
-                <select id="slectL3IsDefaultAnswer" class="input input-sm col-sm-12" name="IsDefaultAnswer">
-                    <option value="true" selected>Valor Positivo</option>
-                    <option value="false">Valor Negativo</option>
-                </select>
+                <label>É Obrigatorio:</label>
+                <br />
+                <label class="switch">
+                    <input type="checkbox" id="checkboxL3IsRequired" name="IsRequired">
+                    <span class="slider round"></span>
+                </label>
             </div>
 
         </div>
@@ -398,7 +398,7 @@
             $('table#table' + id + ' tbody').html('');
 
             $('#ShowLevel3Limits').prop('checked', true);
-
+            
             $(list).each(function (i, o) {
 
                 var html = '<tr>';
@@ -415,6 +415,9 @@
                 html += '<td>' + (o.IntervalMin == null ? "" : o.IntervalMin) + '</td>';
                 html += '<td>' + (o.IntervalMax == null ? "" : o.IntervalMax) + '</td>';
                 html += '<td>' + (o.DynamicValue == null ? "" : o.DynamicValue) + '</td>';
+
+                html += '<td class="hidden">' + valorDoSelect('#ParL3TipoDado select[name="IsDefaultAnswer"]', o.IsDefaultAnswer, "true") + '</td>';
+
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
 
@@ -451,6 +454,7 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
+                
                 scrollToForm();
                 var obj = $(this).parents('tr').data('sgq');
 
@@ -497,7 +501,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-                debugger        
+                        
                 ParL3TipoDado.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
@@ -540,7 +544,8 @@
                         showInput('selectL3TipoDadoParLevel3BoolTrue');
                         showInput('selectL3TipoDadoParLevel3BoolFalse');
                         showInput('checkboxL3IsRequired');
-                        showInput('slectL3IsDefaultAnswer');
+                        showInput('selectL3IsDefaultAnswer');
+                        $("#selectL3IsDefaultAnswer").val('true');
 
                         break;
 
@@ -679,7 +684,7 @@
         },
 
         prepareTipoDado: function (obj) {
-
+            
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};
@@ -707,8 +712,7 @@
             obj = ParL3TipoDado.prepareTipoDado(obj);
 
             $('#camposLikertIncluidos tbody').empty();
-
-
+  
             let IntervalMax = "";
             let IntervalMin = "";
             let IsActive = "";
@@ -790,7 +794,7 @@
         hideInput('selectL3TipoDadoParLevel3BoolTrue');
         hideInput('selectL3TipoDadoParLevel3BoolFalse');
         hideInput('checkboxL3IsRequired');
-        hideInput('slectL3IsDefaultAnswer');
+        hideInput('selectL3IsDefaultAnswer');
         hideInput('selectL3TipoDadoParMeasurementUnit');
         hideInput('IntervalMin');
         hideInput('IntervalMax');
