@@ -5497,7 +5497,7 @@ namespace SgqServiceBusiness.Api
             var auxDepto = "";
             var countDepto = 0;
 
-            if (ParLevel1.Id != "126" || ParLevel1.Id != "136" || ParLevel1.Id != "135")
+            if (ParLevel1.ParLevel1_Id == 126 || ParLevel1.ParLevel1_Id == 136 || ParLevel1DB.ParLevel1_Id == 135)
             {
                 foreach (var parlevel2count in parlevel02List) //LOOP3
                 {
