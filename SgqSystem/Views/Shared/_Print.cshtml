@@ -97,7 +97,8 @@
             renderTableMargin: 0,
             pageMarginHeader: "25px 25px 10px 25px",
             pageMarginFooter: "10px 25px 25px 25px",
-            pageMarginBody: "0 25px 0 25px"
+            pageMarginBody: "0 25px 0 25px",
+            renderOrientation: "landscape"
 
         });
 
@@ -124,12 +125,12 @@
             </li></div>
         `;
 
-        $(botaoImpressao).insertAfter('#sidebar-wrapper .sidebar-nav li:first()');
+        //$(botaoImpressao).insertAfter('#sidebar-wrapper .sidebar-nav li:first()');
 
     });
 
 </script>
 
-@*<div>
+<div>
         <button onclick="ImprimirRelatorio()" id="btnImpressaoFloat"><i class="fa fa-print" aria-hidden="true"></i></button>
-    </div>*@
+    </div>

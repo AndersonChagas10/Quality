@@ -3465,7 +3465,7 @@ namespace SgqServiceBusiness.Api
 
             string dataIni = data.ToString("yyyyMMdd");
 
-            string retorno = "";
+            StringBuilder retorno = new StringBuilder();
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -3515,7 +3515,7 @@ namespace SgqServiceBusiness.Api
 
                 CREATE TABLE #COLETASLEVEL3 (																																											  
                 	ROW INT NULL,																																															  
-                	COLUNA VARCHAR(153) NULL																																												  
+                	COLUNA VARCHAR(8000) NULL																																												  
                 )
                 
                 INSERT INTO #COLETASLEVEL3
@@ -3557,7 +3557,7 @@ namespace SgqServiceBusiness.Api
                 		COUNT(1)
                 	FROM #COLETASLEVEL3);
                 DECLARE @I INT = 1;
-                DECLARE @RESPOSTA VARCHAR(2000) = '';
+                DECLARE @RESPOSTA VARCHAR(8000) = '';
                 WHILE @I<@HOMENSFORBRUNO
                 BEGIN
                 SELECT
@@ -3865,9 +3865,9 @@ namespace SgqServiceBusiness.Api
                 	more3defectsEvaluate = ""0""
                 	CollectionLevel2_ID_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Id) AS VARCHAR), '.', ','), 'NULL') + '""
                 	CollectionLevel2_Period_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Period) AS VARCHAR), '.', ','), 'NULL') + '"" 
-                	HoraPrimeiraAvaliacao = ""' + ISNULL(Level2Result.HoraPrimeiraAvaliacao, 'NULL') + '"" >
-                	' + @RESPOSTA + '
-                	</div> ' AS retorno
+                	HoraPrimeiraAvaliacao = ""' + ISNULL(Level2Result.HoraPrimeiraAvaliacao, 'NULL') + '"" >' as retornoLevel2,
+                    @RESPOSTA as retornoLevel3,
+                    '</div> ' AS retornoFechaDiv
                 FROM #COLETA Level2Result
                 INNER JOIN ConsolidationLevel2 CDL2 WITH (NOLOCK)
                 	ON Level2Result.ConsolidationLevel2_Id = CDL2.Id
@@ -3920,16 +3920,18 @@ namespace SgqServiceBusiness.Api
                     cmd.Parameters.Add(new SqlParameter("@DataIni", dataIni));
                     cmd.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
 
-                    var list = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                    var list = factory.SearchQuery<ResultadoH4B>(cmd).ToList();
 
                     for (var i = 0; i < list.Count(); i++)
                     {
-                        retorno += list[i].retorno.ToString();
+                        retorno.Append(list[i].retornoLevel2.ToString());
+                        retorno.Append(list[i].retornoLevel3.ToString());
+                        retorno.Append(list[i].retornoFechaDiv.ToString());
                     }
                 }
             }
 
-            return retorno;
+            return retorno.ToString();
         }
         #endregion
 
@@ -5553,6 +5555,24 @@ namespace SgqServiceBusiness.Api
                 sampleGroup = sample;
             }
 
+            var departamento = "";
+
+            var index = 0;
+            var count = parlevel02List.Count();
+
+            var auxDepto = "";
+            var countDepto = 0;
+
+            foreach (var parlevel2count in parlevel02List) //LOOP3
+            {
+                if (parlevel2count.Departamento != auxDepto)
+                {
+                    countDepto++;
+                }
+                auxDepto = parlevel2count.Departamento;
+            }
+
+
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List) //LOOP3
             {
@@ -5744,6 +5764,8 @@ namespace SgqServiceBusiness.Api
                     ruleValue = parNCRuleDB.Value;
                 }
 
+
+
                 //podemos aplicar os defeitos
                 string level2 = html.level2(id: parlevel2.Id.ToString(),
                                             label: parlevel2.Name,
@@ -5776,15 +5798,64 @@ namespace SgqServiceBusiness.Api
                     continue;
 
                 //Gera linha do Level2
+
+                var inicioGrupo = false;
+                var fimGrupo = false;
+                var fimFinalGrupo = false;
+                var Grupo = "";
+
+                if (countDepto > 1)
+                {
+
+                    if (departamento == "")
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                    }
+                    else if (departamento == parlevel2.Departamento)
+                    {
+                        inicioGrupo = false;
+                    }
+                    else if (departamento != parlevel2.Departamento)
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                        fimGrupo = true;
+                    }
+
+                    if (++index == count)
+                    {
+                        fimFinalGrupo = true;
+                    }
+
+                    departamento = parlevel2.Departamento;
+
+                }
+
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
-                                                    classe: "row",
+                                                    classe: "row gabriel " + parlevel2.Departamento,
+                                                    tags: "departamento='" + parlevel2.Departamento + "'",
                                                     outerhtml: level2 +
-                                                               counters +
-                                                               buttons +
-                                                               html.div(classe: "level2Debug") +
-                                                               lineCounters
+                                                                counters +
+                                                                buttons +
+                                                                html.div(classe: "level2Debug") +
+                                                                lineCounters,
+                                                    inicioGrupo: inicioGrupo,
+                                                    fimGrupo: fimGrupo,
+                                                    fimFinalGrupo: fimFinalGrupo,
+                                                    Grupo: Grupo
                                                     );
+
+                //ParLevel2List += html.listgroupItem(
+                //                                    id: parlevel2.Id.ToString(),
+                //                                    classe: "row",
+                //                                    outerhtml: level2 +
+                //                                               counters +
+                //                                               buttons +
+                //                                               html.div(classe: "level2Debug") +
+                //                                               lineCounters
+                //                                    );
 
                 if (ParLevel1.HasGroupLevel2 == true)
                 {
