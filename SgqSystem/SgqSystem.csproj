@@ -1004,7 +1004,6 @@
     <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
     <Content Include="Scripts\appColeta\RH\routeConfig.js" />
     <Content Include="Scripts\appColeta\RH\utils.js" />
-    <Content Include="Scripts\appColeta\GQ\mock.js" />
     <Content Include="Scripts\appColeta\RH\zoom.js" />
     <Content Include="Scripts\jquery-1.12.1.min.js" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
@@ -1993,6 +1992,7 @@
     <Content Include="Views\RotinaIntegracao\Edit.cshtml" />
     <Content Include="Views\RotinaIntegracao\Delete.cshtml" />
     <Content Include="Views\Params\_Rotina.cshtml" />
+    <Content Include="Views\Shared\_Print.cshtml" />
     <Content Include="Views\ParStructureGroup\Index.cshtml" />
     <Content Include="Views\ParStructureGroup\Create.cshtml" />
     <Content Include="Views\ParStructureGroup\Edit.cshtml" />
@@ -2219,11 +2219,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>false</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:57506/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

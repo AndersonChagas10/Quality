@@ -454,20 +454,21 @@
     //Loader estava aqui//
     var gc = @Html.Raw(Json.Encode(GlobalConfig.Eua));
     /*LEVEL 1*/
+
     var indexParamsLevel1 = {
         new_level1: @Html.Raw(Json.Encode(@Resources.Resource.new_level1)),
         saving_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level1)),
         loading_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.loading)),
 
         enviarDadosParaApi: function (e) {
-            debugger
+
             $("#paramsDto_parLevel1Dto_Name").val($.trim($("#paramsDto_parLevel1Dto_Name").val().replace(/  +/g, ' ')));
 
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
             $.validator.unobtrusive.parse("form");
 
             if ($('#newLevel1Modal > form').valid()) {
-                
+
                 $("#newLevel1Modal :disabled").addClass('voltarDisabled').prop("disabled", false);
 
                 var $btn = $('#btnSaveNewLevel1');
@@ -497,7 +498,12 @@
                 dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
                 dados["paramsDto.level3Selected"] = $('#parLevel3Select2').val();
 
-                dados["paramsDto.parLevel1Dto.removerParHeaderField"] = []
+                dados["paramsDto.parLevel1Dto.removerParHeaderField"] = [];
+
+                if (!indexParamsLevel1.dataIsValid(dados)) {
+                    $btn.button('reset');
+                    return false;
+                }
 
                 $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
@@ -511,7 +517,7 @@
 
                 }).fail(function (e, h, x) {
                     //closeLoader();
-                    var $btn = $('#btnSaveNewLevel1'); 
+                    var $btn = $('#btnSaveNewLevel1');
                     try {
                         closeLoader();
                         $btn.button('reset');
@@ -629,11 +635,38 @@
             initialFormLevel1 = $($('form')[0]).clone();
             //closeLoader();
         },
-        resetDdlLevel3Level2: function(){
+        resetDdlLevel3Level2: function () {
             $('#parLevel2Select2').val('-1');
             indexParamsLevel2.GetLevel2('-1');
             $('#parLevel3Select2').val('-1');
             indexParamsLevel3.GetLevel2('-1');
+        },
+        dataIsValid: function (dados) {
+
+            let retorno = true;
+
+            if (dados["paramsDto.parLevel1Dto.ParConsolidationType_Id"] < 0) {
+                retorno = false;
+                openMessageModal("@Resources.Resource.alert", "@Resources.Resource.select_the_consolidation_type");
+            }
+
+            if (dados["paramsDto.parLevel1Dto.Name"] == "") {
+                retorno = false;
+                openMessageModal("@Resources.Resource.alert", "@Resources.Resource.name_can_not_be_empty");
+            }
+
+            if (dados["paramsDto.parLevel1Dto.Description"] == "") {
+                retorno = false;
+                openMessageModal("@Resources.Resource.alert", "@Resources.Resource.fill_the_description");
+            }
+
+            if (dados["paramsDto.parLevel1Dto.ParFrequency_Id"] <= 0) {
+                retorno = false;
+                openMessageModal("@Resources.Resource.alert", "@Resources.Resource.select_the_frequency");
+            }
+
+            return retorno;
+
         }
     }
 
@@ -675,6 +708,11 @@
                 GroupL2.incluiNoObjetoParaSubmit(dados);
                 AvAm2.incluiNoObjetoParaSubmit(dados);
                 //openLoader(indexParamsLevel2.saving_the_level2);
+
+                if (!indexParamsLevel2.dataIsValid(dados)) {
+                    return false;
+                }
+
                 $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                     //closeLoader();
                     var $btn = $('#btnSaveNewLevel2');
@@ -815,6 +853,33 @@
             $.validator.unobtrusive.parse("form");
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
             $.validator.unobtrusive.parse("form");
+        },
+        dataIsValid: function (dados) {
+
+            let retorno = true;
+
+            @*if (dados["paramsDto.parLevel2Dto.ParConsolidationType_Id"] < 0) {
+                retorno = false;
+                openMessageModal("@Resources.Resource.alert", "@Resources.Resource.select_the_consolidation_type");
+            }*@
+
+            if (dados["paramsDto.parLevel2Dto.Name"] == "") {
+                retorno = false;
+                openMessageModal("@Resources.Resource.alert", "@Resources.Resource.name_can_not_be_empty");
+            }
+
+            if (dados["paramsDto.parLevel2Dto.Description"] == "") {
+                retorno = false;
+                openMessageModal("@Resources.Resource.alert", "@Resources.Resource.fill_the_description");
+            }
+
+            @*if (dados["paramsDto.parLevel2Dto.ParFrequency_Id"] <= 0) {
+                retorno = false;
+                openMessageModal("@Resources.Resource.alert", "@Resources.Resource.select_the_frequency");
+            }*@
+
+            return retorno;
+
         }
     }
 
@@ -827,7 +892,7 @@
 
 
         enviarDadosParaApi: function (e) {
-            
+
             $("#paramsDto_parLevel3Dto_Name").val($.trim($("#paramsDto_parLevel3Dto_Name").val().replace(/  +/g, ' ')));
 
             $('#selectTipoInput').val(-1).change();
@@ -1446,7 +1511,7 @@
     var idLvl1;
     var indexCabecalho ={
         enviarDadosParaApi: function (e) {
-            debugger
+
             var dados = $('#ediCab > form').serializeObject();
             dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] = idfieldType;
             dados['paramsDto.parHeaderFieldDto.Id'] = idpar;
@@ -1523,7 +1588,7 @@
     var EditCabecalho = '@Html.Raw(@urlEditCabecalho)';
 
     function ModalEdicaoCabecalho(title, idpH, idL1, idFT) {
-        
+
         idpar = idpH;
         idfieldType = idFT;
         idLvl1 = idL1;
@@ -1532,7 +1597,7 @@
         $('#Header').html("@Resources.Resource.edit_header");
 
         $.get(EditCabecalho, { id: idpar, idLevel1: idL1 }, function (r) {
-            
+
             $('#modalEdicaoCabecalho').find('.modal-body').empty().append(r);
             $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').attr('disabled', true);
             if (parseInt($('#paramsDto_parHeaderFieldDto_ParFieldType_Id').val()) == 9 || parseInt($('#paramsDto_parHeaderFieldDto_ParFieldType_Id').val()) == 10) {

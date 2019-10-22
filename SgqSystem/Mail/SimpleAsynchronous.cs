@@ -273,7 +273,15 @@ namespace SgqSystem.Mail
                     /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
                     DateTime dateLimit = DateTime.Now.AddHours(-24);
                     DateTime dateLimitDeviation = DateTime.Now.AddHours(-72);
-                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimitDeviation && r.AddDate > dateLimit).OrderBy(r => r.AddDate).Take(tamanhoDoPool).ToList();
+                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0
+                    && (r.sendMail == null || r.sendMail == false)
+                    && r.DeviationMessage != null
+                    && r.DeviationMessage != "null"
+                    && r.DeviationDate > dateLimitDeviation
+                    && r.AddDate > dateLimit)
+                        .OrderBy(r => r.AddDate)
+                        .Take(tamanhoDoPool)
+                        .ToList();
 
                     if (Mails != null && Mails.Count() > 0)
                     {
@@ -406,6 +414,11 @@ namespace SgqSystem.Mail
             return newMail;
         }
 
+        public class ListaEmail
+        {
+            public string Email { get; set; }
+        }
+
         /// <summary>
         /// 1.1 - Os destinatários: Pela tabela DesvioNiveis, é possível encontrar as ROLES referentes aos níveis de desvio da JBS.
         /// 1.1.1 - Alerta de Nível 1: Supervisores da Unidade
@@ -420,18 +433,16 @@ namespace SgqSystem.Mail
         {
             try
             {
-                using (var dbLegado = new SgqDbDevEntities())
-                {
-                    //Alertas de nivel 4 acima enviam para Nivel 2 da tabela DesvioNiveis
-                    if (nivel > 3)
-                        nivel = 2;
+                //Alertas de nivel 4 acima enviam para Nivel 2 da tabela DesvioNiveis
+                if (nivel > 3)
+                    nivel = 2;
 
-                    //var query = "\n SELECT Email FROM UserSgq" +
-                    //            "\n WHERE Id in (SELECT UserSgq_Id FROM ParCompanyXUserSgq WHERE ParCompany_Id = " + companyId + " AND [Role] IN (SELECT Nivel FROM desvioNiveis WHERE Desvio = " + nivel + "))" +
-                    //            "\n  AND Email IS NOT NULL" +
-                    //            "\n  AND Email <> ''";
+                //var query = "\n SELECT Email FROM UserSgq" +
+                //            "\n WHERE Id in (SELECT UserSgq_Id FROM ParCompanyXUserSgq WHERE ParCompany_Id = " + companyId + " AND [Role] IN (SELECT Nivel FROM desvioNiveis WHERE Desvio = " + nivel + "))" +
+                //            "\n  AND Email IS NOT NULL" +
+                //            "\n  AND Email <> ''";
 
-                    var query = @"SELECT U.Email FROM UserSgq U
+                var query = @"SELECT U.Email FROM UserSgq U
                             INNER JOIN ParCompanyXUserSgq UU
                             ON UU.UserSgq_Id = U.id
                             INNER JOIN ParCompanyXStructure UniReg
@@ -456,19 +467,24 @@ namespace SgqSystem.Mail
                             ELSE(SELECT top 1 ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @" and Active = 1) END
                             AND U.Id NOT IN (" + DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.UsuariosComEmailBloqueado + ")"; //Tirar Célia e Mariana da JBS
 
-                    var listaEmails = dbLegado.Database.SqlQuery<string>(query).ToList();
-                    if (listaEmails != null && listaEmails.Count() > 0)
-                    {
-                        listaEmails = listaEmails.Distinct().ToList();
-                        return string.Join(",", listaEmails.ToArray());
-                    }
-                    else
-                    {
-                        //Caso não existam emails cadastrados
-                        //Preenche send status e não vai para a lista de envio.
-                        m.SendStatus = "Não existem destinatários para este email.";
-                        return string.Empty;
-                    }
+
+                List<ListaEmail> listaEmails = new List<ListaEmail>();
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    listaEmails = factory.SearchQuery<ListaEmail>(query);
+                }
+
+                if (listaEmails != null && listaEmails.Count() > 0)
+                {
+                    var listaEmailsIndividuais = string.Join(",", listaEmails.Select(x => x.Email)).Split(',').Distinct().ToArray();
+                    return string.Join(",", listaEmailsIndividuais);
+                }
+                else
+                {
+                    //Caso não existam emails cadastrados
+                    //Preenche send status e não vai para a lista de envio.
+                    m.SendStatus = "Não existem destinatários para este email.";
+                    return string.Empty;
                 }
             }
             catch (Exception e)

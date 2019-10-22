@@ -347,6 +347,9 @@ namespace Data.Repositories
         {
             using (var ts = db.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
+                if (paramLevel2.ParFrequency_Id <= 0)
+                    paramLevel2.ParFrequency_Id = null;
+
                 AddUpdateParLevel2(paramLevel2); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 
@@ -536,9 +539,9 @@ namespace Data.Repositories
         /// </summary>
         /// <param name="paramLevel3"></param>
         /// <param name="paramLevel3Value"></param>
-        public void SaveParLevel3(ParLevel3 paramLevel3, List<ParLevel3Value> listParamLevel3Value, 
-            List<ParLevel3EvaluationSample> listParLevel3EvaluationSample, 
-            List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos, 
+        public void SaveParLevel3(ParLevel3 paramLevel3, List<ParLevel3Value> listParamLevel3Value,
+            List<ParLevel3EvaluationSample> listParLevel3EvaluationSample,
+            List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos,
             int level1Id, List<ParLevel3XParDepartment> listSaveParLevel3XDepartment)
         {
             using (var ts = db.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
@@ -558,7 +561,7 @@ namespace Data.Repositories
                 if (listSaveParLevel3XDepartment != null)
                     if (listSaveParLevel3XDepartment.Count() > 0)
                         AddUpdateParLevel3XDepartment(listSaveParLevel3XDepartment, paramLevel3.Id);
-                
+
                 if (listParRelapse != null)
                     foreach (var parRelapse in listParRelapse)
                         SaveReincidenciaLevel3(parRelapse, paramLevel3.Id);
@@ -751,7 +754,7 @@ namespace Data.Repositories
 
                     }
 
-                    var listaParLevel3Level2Ids = listaParLevel3Level2.Select(x=>x.Id).ToList();
+                    var listaParLevel3Level2Ids = listaParLevel3Level2.Select(x => x.Id).ToList();
                     /**/
                     existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParCompany_Id == companyId && listaParLevel3Level2Ids.Any(y => y == r.ParLevel3Level2_Id));
                     if (existenteL3L2L1 == null)
@@ -1084,8 +1087,9 @@ namespace Data.Repositories
                             }
                         }
 
-                        db.SaveChanges();
                     }
+
+                    db.SaveChanges();
                 }
             }
         }
