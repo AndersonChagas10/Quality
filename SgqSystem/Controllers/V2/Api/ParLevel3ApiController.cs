@@ -357,6 +357,8 @@ namespace SgqSystem.Controllers.V2.Api
                         parVinculoPesoOld.ParCargo_Id = parLevel3Value.ParCargo_Id;
                         parVinculoPesoOld.ParDepartment_Id = parLevel3Value.ParDepartment_Id;
                         parVinculoPesoOld.ShowLevel3Limits = parLevel3Value.ShowLevel3Limits;
+                        parVinculoPesoOld.IsRequired = parLevel3Value.IsRequired;
+                        parVinculoPesoOld.IsDefaultAnswer = parLevel3Value.IsDefaultAnswer;
 
                         foreach (var item in parLevel3Value.ParInputTypeValues)
                         {

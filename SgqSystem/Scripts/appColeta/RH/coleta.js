@@ -21,26 +21,26 @@ function openColeta(levels) {
 
                 if (inputLevel3.length > 0) {
 
-                if (hasLevel3 == false) {
+                    if (hasLevel3 == false) {
 
-                    if (hasLevel2 == false) {
-                        coleta += getLevel1(level1);
-                        coleta += getParHeaderFieldLevel1(level1);
-                        hasLevel2 = true;
+                        if (hasLevel2 == false) {
+                            coleta += getLevel1(level1);
+                            coleta += getParHeaderFieldLevel1(level1);
+                            hasLevel2 = true;
+                        }
+
+                        coleta += getLevel2(level2, level1);
+                        coleta += getParHeaderFieldLevel2(level1, level2);
+                        hasLevel3 = true;
                     }
 
-                    coleta += getLevel2(level2, level1);
-                    coleta += getParHeaderFieldLevel2(level1, level2);
-                    hasLevel3 = true;
-                }
+                    coleta += inputLevel3;
 
-                coleta += inputLevel3;
-
-                if (inputLevel3)
-                    if (striped)
-                        striped = false;
-                    else
-                        striped = true;
+                    if (inputLevel3)
+                        if (striped)
+                            striped = false;
+                        else
+                            striped = true;
                 }
             });
         });
@@ -133,13 +133,21 @@ function getInputLevel3(level3, level2, level1, striped) {
     if (level3.ParLevel3InputType && level3.ParLevel3InputType.Id) {
 
         var colorStriped = "";
+        var conforme = "";
 
         if (striped)
             colorStriped = "background-color: #e9ecef;";
 
+        if (level3.ParLevel3Value.IsRequiredInt == "1")
+            conforme = "";
+        else
+            conforme = level3.ParLevel3Value.IsDefaultAnswerInt;
+
+
         retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-collapse-target="' + level1.Id + '-' + level2.Id + '"';
-        retorno += ' data-conforme="1"';
+        retorno += ' data-conforme="' + conforme + '"';
+        retorno += ' data-default-answer="' + level3.ParLevel3Value.IsDefaultAnswerInt + '"';
         retorno += ' data-min="' + level3.ParLevel3Value.IntervalMin + '"';
         retorno += ' data-max="' + level3.ParLevel3Value.IntervalMax + '"';
         retorno += ' data-level1="' + level1.Id + '"';
@@ -197,16 +205,29 @@ function getBinario(level3) {
 
     var html = '';
 
+    var respostaPadrao = "";
+
     if (level3.ParLevel3XHelp)
         html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
+    if (level3.ParLevel3Value.IsRequiredInt) {
+        respostaPadrao = "&nbsp;";
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+    } else {
+        if (level3.ParLevel3Value.IsDefaultAnswerInt == "0")
+            respostaPadrao = level3.ParLevel3BoolFalse.Name;
+        else
+            respostaPadrao = level3.ParLevel3BoolTrue.Name;
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+    }
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '   <div class="col-xs-10">' +
-        '       <button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>' +
+        botao +
         '   </div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +
         '</div>' +
@@ -506,21 +527,35 @@ $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
 
 $('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
     var linha = $(this).parents('[data-conforme]');
-    if (linha.attr('data-conforme') == '0') {
-        resetarLinha(linha);
-        linha.attr('data-conforme', '1');
-        $(this).text($(this).attr('data-positivo'));
-        $(this).addClass('btn-default');
-        $(this).removeClass('btn-secundary');
-    } else {
-        resetarLinha(linha);
-        linha.addClass('alert-secundary');
-        linha.attr('data-conforme', '0');
-        $(this).text($(this).attr('data-negativo'));
-        $(this).removeClass('btn-default');
-        $(this).addClass('btn-secundary');
 
+    resetarLinha(linha);
+
+    if (linha.attr('data-conforme') == "" || linha.attr('data-conforme') == null) {
+        linha.attr('data-conforme', linha.attr('data-default-answer'));
+
+    } else if (linha.attr('data-conforme') == linha.attr('data-default-answer')) {
+        linha.attr('data-conforme', linha.attr('data-default-answer') == "0" ? "1" : "0");
+    } else {
+        linha.addClass('alert-secundary');
+        if ($(this).attr('data-required-answer') == "1") {
+            linha.attr('data-conforme', "");
+        } else {
+            linha.attr('data-conforme', linha.attr('data-default-answer'));
+        }
     }
+
+    if (linha.attr('data-conforme') == "1") {
+        $(this).text($(this).attr('data-positivo'));
+    } else if (linha.attr('data-conforme') == "0") {
+        $(this).text($(this).attr('data-negativo'));
+    } else {
+        $(this).text('');
+        $(this).html('&nbsp;');
+    }
+
+    $(this).addClass('btn-default');
+    $(this).removeClass('btn-secundary');
+
 });
 
 $('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', function (e) {
@@ -570,7 +605,6 @@ $('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
 
 
 function resetarLinha(linha) {
-    linha.attr('data-conforme', '1');
     linha.removeClass('alert-secundary');
     linha.removeClass('alert-warning');
     linha.removeAttr('data-conforme-na');
@@ -581,6 +615,10 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     e.preventDefault();
 
     if (!HeaderFieldsIsValid()) {
+        return false;
+    }
+
+    if (!ColetasIsValid()) {
         return false;
     }
 
@@ -866,6 +904,37 @@ function getCollectionHeaderFields() {
     return collectionHeaderFied;
 }
 
+function ColetasIsValid() {
+    var errorCount = 0;
+    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
+        var data = $(o);
+        if ($(data).attr('data-conforme') == ""
+            || $(data).attr('data-conforme') == null
+            || $(data).attr('data-conforme') == "undefined") {
+            openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
+            mostraPerguntasObrigatorias(data);
+            errorCount++;
+            closeMensagem(2000);
+        }  
+    });
+    if (errorCount > 0)
+        return false;
+    else
+        return true;
+  
+}
+
+function mostraPerguntasObrigatorias(data) {
+
+    //verifica se tem campos obrigatorios que nao estao preenchidos e realiza o focus neles
+    if ($(data).attr('data-conforme') == 0 || $(data).attr('data-conforme') == "0") {
+        $('html, body').animate({
+            scrollTop: $(data).parent().offset().top
+        }, 300);
+        return false;
+    }
+}
+
 function HeaderFieldsIsValid() {
 
     retorno = true;
@@ -887,7 +956,7 @@ function HeaderFieldsIsValid() {
     });
 
     if (!retorno) {
-        openMensagem("Campos de cabe\347alho obrigat\363rios n\343o preenchidos", "blue", "white");
+        openMensagem("Campos de cabeçalho obrigatórios não preenchidos", "blue", "white");
         closeMensagem(2000);
     }
 

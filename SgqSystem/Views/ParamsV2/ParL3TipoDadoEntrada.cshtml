@@ -85,6 +85,31 @@
         <div class="col-sm-4">
 
             <div class="form-group">
+                <label>Valor Padrão</label>
+                <select id="selectL3IsDefaultAnswer" class="input input-sm col-sm-12" name="IsDefaultAnswer">
+                    <option value="true">Valor Positivo</option>
+                    <option value="false">Valor Negativo</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label>É Obrigatorio:</label>
+                <br />
+                <label class="switch">
+                    <input type="checkbox" id="checkboxL3IsRequired" name="IsRequired">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
                 <label for="ParMeasurementUnit_Id">Unidade de medida:</label>
                 <select id="selectL3TipoDadoParMeasurementUnit" class="input input-lg col-sm-12 required" name="ParMeasurementUnit_Id"></select>
             </div>
@@ -170,16 +195,16 @@
             </div>
 
             @*<div class="row">
-                    <div class="td-erp">
-                        <div id="divBtnSalvar" class="col-sm-6">
-                            <button class="form-control btn btn-primary" data-add>Salvar</button>
-                        </div>
-
-                        <div id="divBtnCancelar" class="col-sm-6" style="display:none">
-                            <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
-                        </div>
+                <div class="td-erp">
+                    <div id="divBtnSalvar" class="col-sm-6">
+                        <button class="form-control btn btn-primary" data-add>Salvar</button>
                     </div>
-                </div>*@
+
+                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                    </div>
+                </div>
+            </div>*@
         </div>
 
 
@@ -373,7 +398,7 @@
             $('table#table' + id + ' tbody').html('');
 
             $('#ShowLevel3Limits').prop('checked', true);
-
+            
             $(list).each(function (i, o) {
 
                 var html = '<tr>';
@@ -390,6 +415,9 @@
                 html += '<td>' + (o.IntervalMin == null ? "" : o.IntervalMin) + '</td>';
                 html += '<td>' + (o.IntervalMax == null ? "" : o.IntervalMax) + '</td>';
                 html += '<td>' + (o.DynamicValue == null ? "" : o.DynamicValue) + '</td>';
+
+                html += '<td class="hidden">' + valorDoSelect('#ParL3TipoDado select[name="IsDefaultAnswer"]', o.IsDefaultAnswer, "true") + '</td>';
+
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
 
@@ -426,6 +454,7 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
+                
                 scrollToForm();
                 var obj = $(this).parents('tr').data('sgq');
 
@@ -472,7 +501,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-
+                        
                 ParL3TipoDado.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
@@ -514,6 +543,9 @@
 
                         showInput('selectL3TipoDadoParLevel3BoolTrue');
                         showInput('selectL3TipoDadoParLevel3BoolFalse');
+                        showInput('checkboxL3IsRequired');
+                        showInput('selectL3IsDefaultAnswer');
+                        $("#selectL3IsDefaultAnswer").val('true');
 
                         break;
 
@@ -652,13 +684,15 @@
         },
 
         prepareTipoDado: function (obj) {
-
+            
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};
             obj['IntervalMax'] = formdata.IntervalMax;
             obj['IntervalMin'] = formdata.IntervalMin;
             obj['IsActive'] = true;
+            obj['IsRequired'] = formdata.IsRequired;
+            obj['IsDefaultAnswer'] = formdata.IsDefaultAnswer;
             obj['ParCompany_Id'] = formdata.ParCompany_Id;
             obj['ParLevel1_Id'] = formdata.ParLevel1_Id;
             obj['ParLevel3InputType_Id'] = formdata.ParLevel3InputType_Id;
@@ -678,8 +712,7 @@
             obj = ParL3TipoDado.prepareTipoDado(obj);
 
             $('#camposLikertIncluidos tbody').empty();
-
-
+  
             let IntervalMax = "";
             let IntervalMin = "";
             let IsActive = "";
@@ -760,6 +793,8 @@
 
         hideInput('selectL3TipoDadoParLevel3BoolTrue');
         hideInput('selectL3TipoDadoParLevel3BoolFalse');
+        hideInput('checkboxL3IsRequired');
+        hideInput('selectL3IsDefaultAnswer');
         hideInput('selectL3TipoDadoParMeasurementUnit');
         hideInput('IntervalMin');
         hideInput('IntervalMax');
