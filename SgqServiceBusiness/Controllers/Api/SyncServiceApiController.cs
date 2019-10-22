@@ -5497,13 +5497,16 @@ namespace SgqServiceBusiness.Api
             var auxDepto = "";
             var countDepto = 0;
 
-            foreach (var parlevel2count in parlevel02List) //LOOP3
+            if (ParLevel1.Id != "126" || ParLevel1.Id != "136" || ParLevel1.Id != "135")
             {
-                if (parlevel2count.Departamento != auxDepto)
+                foreach (var parlevel2count in parlevel02List) //LOOP3
                 {
-                    countDepto++;
+                    if (parlevel2count.Departamento != auxDepto)
+                    {
+                        countDepto++;
+                    }
+                    auxDepto = parlevel2count.Departamento;
                 }
-                auxDepto = parlevel2count.Departamento;
             }
 
 
