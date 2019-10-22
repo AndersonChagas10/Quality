@@ -18,14 +18,10 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>63128</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -252,6 +248,30 @@
     <Content Include="Scripts\appColeta\GQ\sync.js" />
     <Content Include="Scripts\appColeta\GQ\tempSave.js" />
     <Content Include="Scripts\appColeta\GQ\verificacaoTipificacao.js" />
+    <Content Include="Scripts\appColeta\RH\alert.js" />
+    <Content Include="Scripts\appColeta\RH\app.js" />
+    <Content Include="Scripts\appColeta\RH\coleta.js" />
+    <Content Include="Scripts\appColeta\RH\correctiveAction.js" />
+    <Content Include="Scripts\appColeta\RH\crypto.js" />
+    <Content Include="Scripts\appColeta\RH\guard.js" />
+    <Content Include="Scripts\appColeta\RH\index.css" />
+    <Content Include="Scripts\appColeta\RH\index2.js" />
+    <Content Include="Scripts\appColeta\RH\layout.js" />
+    <Content Include="Scripts\appColeta\RH\logado.js" />
+    <Content Include="Scripts\appColeta\RH\login.js" />
+    <Content Include="Scripts\appColeta\RH\mensagem.js" />
+    <Content Include="Scripts\appColeta\RH\menu.js" />
+    <Content Include="Scripts\appColeta\RH\parCargo.js" />
+    <Content Include="Scripts\appColeta\RH\parDepartment.js" />
+    <Content Include="Scripts\appColeta\RH\parFrequency.js" />
+    <Content Include="Scripts\appColeta\RH\parHeaderField.js" />
+    <Content Include="Scripts\appColeta\RH\parLevels.js" />
+    <Content Include="Scripts\appColeta\RH\planejamentoColeta.js" />
+    <Content Include="Scripts\appColeta\RH\resultado.js" />
+    <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
+    <Content Include="Scripts\appColeta\RH\routeConfig.js" />
+    <Content Include="Scripts\appColeta\RH\utils.js" />
+    <Content Include="Scripts\appColeta\RH\zoom.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
