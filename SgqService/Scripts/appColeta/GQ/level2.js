@@ -854,7 +854,11 @@ function atualizaCorAgendamento() {
 
                                     horaPrimeiraAv = $('.Resultlevel2[level1id=' + level1Id + '][unitid=' + unitId + '][level2id=' + level2Id + '][shift=' + $('.App').attr('shift') +']').attr('horaprimeiraavaliacao');
 
-                                    horaMinutoPrimeiraAv = horaPrimeiraAv.split(":");
+                                    if (!!horaPrimeiraAv) {
+                                        horaMinutoPrimeiraAv = horaPrimeiraAv.split(":");
+                                    } else {
+                                        return;
+                                    }
 
                                     if (typeof (horaMinutoPrimeiraAv) == 'undefined' || !horaMinutoPrimeiraAv) {
                                         return;
