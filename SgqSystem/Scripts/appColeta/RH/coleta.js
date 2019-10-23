@@ -922,14 +922,16 @@ function ColetasIsValid() {
     var errorCount = 0;
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
         var data = $(o);
-        if (($(data).attr('data-conforme') == ""
-            || $(data).attr('data-conforme') == null
-            || $(data).attr('data-conforme') == "undefined") && $(data).attr('data-conforme-na') == "undefined") {
-            openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
-            mostraPerguntasObrigatorias(data);
-            errorCount++;
-            closeMensagem(2000);
-        }  
+        if ($(data).attr('data-conforme-na') != "") {
+            if ($(data).attr('data-conforme') == ""
+                || $(data).attr('data-conforme') == null
+                || $(data).attr('data-conforme') == "undefined") {
+                openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
+                mostraPerguntasObrigatorias(data);
+                errorCount++;
+                closeMensagem(2000);
+            }
+        }
     });
     if (errorCount > 0)
         return false;

@@ -118,14 +118,6 @@ namespace SgqSystem.Controllers.Params
                 parCargo.AlterDate = DateTime.Now;
                 db.Entry(parCargo).State = EntityState.Modified;
 
-                var parCargoXDepartments = db.ParCargoXDepartment.Where(x => x.ParCargo_Id == parCargo.Id && x.IsActive).ToList();
-
-                foreach (var item in parCargoXDepartments)//inativa todos os inseridos
-                {
-                    item.AlterDate = DateTime.Now;
-                    item.IsActive = false;
-                }
-
                 if (parCargo.ParDepartment_Ids != null)
                 {
                     foreach (var item in parCargo.ParDepartment_Ids)//Insere novos
