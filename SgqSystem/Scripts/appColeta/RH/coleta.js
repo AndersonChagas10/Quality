@@ -519,11 +519,25 @@ $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
         resetarLinha(linha);
         linha.addClass('alert-warning');
         linha.attr('data-conforme-na', '');
+
+        var botao = $(linha).find('button[data-required-answer]');
+        if (botao.attr('data-required-answer') == "1") {
+            linha.attr('data-conforme', "");
+            $(botao).text('');
+            $(botao).html('&nbsp;');
+        }
     } else {
         resetarLinha(linha);
         $(linha).find('input[data-valor]').trigger('change');
     }
 });
+
+function validaCampoEmBrancoNA() {
+    if (linha.attr('data-default-answer') == "1") {
+        linha.attr('data-conforme', " ");
+    }
+  
+}
 
 $('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
     var linha = $(this).parents('[data-conforme]');
@@ -908,9 +922,9 @@ function ColetasIsValid() {
     var errorCount = 0;
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
         var data = $(o);
-        if ($(data).attr('data-conforme') == ""
+        if (($(data).attr('data-conforme') == ""
             || $(data).attr('data-conforme') == null
-            || $(data).attr('data-conforme') == "undefined") {
+            || $(data).attr('data-conforme') == "undefined") && $(data).attr('data-conforme-na') == "undefined") {
             openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
             mostraPerguntasObrigatorias(data);
             errorCount++;
