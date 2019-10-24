@@ -266,6 +266,12 @@
                     }
                 }
 
+                if ($(level1).hasClass("VF")) {
+                    amostraAtual = $('.ResultsKeysVF div[date="' + getCollectionDate() + '"][unidadeid=' + $('.App').attr('unidadeid') + ']').length + 1;
+                    if (amostraAtual != amostraTotal)
+                        amostraAtual -= 1;
+                }
+
                 avaliacaoAtual = isNaN(avaliacaoAtual) ? 0 : avaliacaoAtual;
                 amostraAtual = isNaN(amostraAtual) ? 0 : amostraAtual;
 
