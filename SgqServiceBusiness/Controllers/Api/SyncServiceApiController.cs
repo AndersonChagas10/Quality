@@ -3480,6 +3480,7 @@ namespace SgqServiceBusiness.Api
                 declare @datasemanal date
                 declare @dataquinzenal date
                 declare @datamensal date
+                DECLARE @dataBimestral date
                 DECLARE @dataTrimestral date
                 DECLARE @dataSemestral date
                 DECLARE @dataAnual date
@@ -3505,7 +3506,7 @@ namespace SgqServiceBusiness.Api
                 
                 SET @dataSemestral =
                 CASE
-                	WHEN MONTH(@data) < 6 
+                	WHEN MONTH(@data) <= 6 
                 	THEN CAST(CONCAT(DATEPART(yyyy, @data), '-01-01') AS DATE)
                 	ELSE CAST(CONCAT(DATEPART(yyyy, @data), '-07-01') AS DATE)
                 END
