@@ -266,6 +266,12 @@
                     }
                 }
 
+                if ($(level1).hasClass("VF")) {
+                    amostraAtual = $('.ResultsKeysVF div[date="' + getCollectionDate() + '"][unidadeid=' + $('.App').attr('unidadeid') + ']').length + 1;
+                    if (amostraAtual != amostraTotal)
+                        amostraAtual -= 1;
+                }
+
                 avaliacaoAtual = isNaN(avaliacaoAtual) ? 0 : avaliacaoAtual;
                 amostraAtual = isNaN(amostraAtual) ? 0 : amostraAtual;
 
@@ -854,7 +860,11 @@ function atualizaCorAgendamento() {
 
                                     horaPrimeiraAv = $('.Resultlevel2[level1id=' + level1Id + '][unitid=' + unitId + '][level2id=' + level2Id + '][shift=' + $('.App').attr('shift') +']').attr('horaprimeiraavaliacao');
 
-                                    horaMinutoPrimeiraAv = horaPrimeiraAv.split(":");
+                                    if (!!horaPrimeiraAv) {
+                                        horaMinutoPrimeiraAv = horaPrimeiraAv.split(":");
+                                    } else {
+                                        return;
+                                    }
 
                                     if (typeof (horaMinutoPrimeiraAv) == 'undefined' || !horaMinutoPrimeiraAv) {
                                         return;
