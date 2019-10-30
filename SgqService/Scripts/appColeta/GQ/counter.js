@@ -328,6 +328,11 @@ function updateCounterLinhaLevel2(level1, level2) {
         && $('.counter[indicador=' + level1.attr('id') + '][headerlevel=level2_line][counter=defects][level=1]').length == 0 && level1.attr('hasgrouplevel2') != 'true') {
         $('.list-group-item[id=' + level2.attr('id') + '] .defectstotal').addClass('hide');
     }
+
+    if ($('.counter[indicador=' + level2.attr('id') + '][headerlevel=level2_line][counter=frequency][level=2]').length == 0
+        && $('.counter[indicador=' + level1.attr('id') + '][headerlevel=level2_line][counter=frequency][level=1]').length == 0 && level1.attr('hasgrouplevel2') != 'true') {
+        $('.list-group-item[id=' + level2.attr('id') + '] .frequencyTotal').addClass('hide');
+    }
     //}
 }
 

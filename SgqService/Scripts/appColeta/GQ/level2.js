@@ -167,6 +167,10 @@
         $($('.headerCounter .col-xs-4 b')[2]).addClass('hide')
     }
 
+    if ($('.counter[headerlevel=level2_line][counter=frequency]').length == 0) {
+        $($('.headerCounter .col-xs-4 b')[3]).addClass('hide')
+    }
+
     $('#period').attr('disabled', 'disabled');
 
     $('#btnShowImage').remove();

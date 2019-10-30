@@ -453,6 +453,12 @@ function openLevel3(level2) {
         $('.painelLevel03 .sampleCurrent').parent().parent().parent().addClass('hide');
     }
 
+    if ($('.counter[indicador=' + level1.attr('id') + '][headerlevel=level3_header][counter=frequency]').length == 0 &&
+        $('.counter[indicador=' + level2.attr('id') + '][headerlevel=level3_header][counter=frequency]').length == 0
+        && level1.attr('hasgrouplevel2') != 'true') {
+        $('.painelLevel03 .frequency').parent().parent().parent().addClass('hide');
+    }
+
     if (level1.attr('hasgrouplevel2') == 'true') {
         $('.painelLevel03 .defects').parent().parent().parent().addClass('hide');
     }

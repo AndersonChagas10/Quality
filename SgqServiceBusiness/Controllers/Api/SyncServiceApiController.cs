@@ -47,7 +47,11 @@ namespace SgqServiceBusiness.Api
 
             dbEf = new Dominio.SgqDbDevEntities();
 
+            parFrequency = dbEf.ParFrequency.Where(x => x.IsActive).ToList();
+
         }
+
+        public static List<ParFrequency> parFrequency { get; set; } 
 
         #region Funções
 
@@ -5477,6 +5481,7 @@ namespace SgqServiceBusiness.Api
 
             #endregion
 
+            string frequencyName = "";
             int evaluate = 0;
             int sample = 0;
             int defect = 0;
@@ -5514,6 +5519,8 @@ namespace SgqServiceBusiness.Api
                 //Verifica se pega avaliações e amostras padrão ou da company
 
                 var parlevel2ParFrequency = getParFrequency_Id(ParLevel1, parlevel2, ParCompany_Id);
+
+                frequencyName = parFrequency.Where(x => x.Id == parlevel2ParFrequency).Select(x => x.Name).FirstOrDefault();
 
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
@@ -5557,17 +5564,22 @@ namespace SgqServiceBusiness.Api
                 string headerCounter =
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("ev").Value.ToString() + " </b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("sd").Value.ToString() + " </b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                               ) +
                                       html.div(
                                                outerhtml: "<b>" + CommonData.getResource("df").Value.ToString() + " </b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-3",
+                                               style: "text-align:center"
+                                             ) +
+                                      html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("frequency").Value.ToString() + " </b>",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                              );
 
@@ -5585,19 +5597,24 @@ namespace SgqServiceBusiness.Api
                 string counters =
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-4",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center; font-size:10px;"
                                               ) +
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
-                                                classe: "col-xs-4",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center; font-size:10px;"
                                               ) +
                                        html.div(
                                                 outerhtml: html.span(outerhtml: defect.ToString(), classe: "defectstotal"),
-                                                classe: "col-xs-4",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center; font-size:10px;"
-                                              );
+                                              ) +
+                                        html.div(
+                                                 outerhtml: html.span(outerhtml: frequencyName, classe: "frequencyTotal"),
+                                                 classe: "col-xs-3",
+                                                 style: "text-align:center; font-size:10px;"
+                                               );
 
 
 
@@ -5726,7 +5743,7 @@ namespace SgqServiceBusiness.Api
                 }
 
                 //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3);
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3, in frequencyName);
 
                 if (string.IsNullOrEmpty(groupLevel3))
                     continue;
@@ -6214,7 +6231,7 @@ namespace SgqServiceBusiness.Api
         /// <param name="ParLevel1"></param>
         /// <param name="ParLevel2"></param>
         /// <returns></returns>
-        protected string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, out StringBuilder painellevel3)
+        protected string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, out StringBuilder painellevel3, in string frequencyName)
         {
             var html = new Html();
 
@@ -6837,6 +6854,11 @@ namespace SgqServiceBusiness.Api
                                     "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(outerhtml: "0", classe: "defects") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
+                string frequencyhtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("frequency").Value.ToString() +
+                                    "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(outerhtml: frequencyName, classe: "frequency") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
 
                 string avaliacoes = html.div(
                                     outerhtml: avaliacoeshtml,
@@ -6848,6 +6870,10 @@ namespace SgqServiceBusiness.Api
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
                 string defeitos = html.div(
                                     outerhtml: defeitoshtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+                string frequency = html.div(
+                                    outerhtml: frequencyhtml,
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
 
@@ -6926,6 +6952,7 @@ namespace SgqServiceBusiness.Api
                 painellevel3 = new StringBuilder(html.listgroupItem(outerhtml: avaliacoes +
                                                              amostras +
                                                              defeitos +
+                                                             frequency +
                                                              painelLevel3HeaderListHtml.ToString(),
                                                   classe: "painel painelLevel03 row"));
                 painellevel3.Append(html.painelCounters(listCounter));
