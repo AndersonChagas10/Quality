@@ -156,19 +156,19 @@
     }
 
     if ($('.counter[headerlevel=level2_line][counter=evaluation]').length == 0) {
-        $($('.headerCounter .col-xs-4 b')[0]).addClass('hide')
+        $($('.headerCounter .col-xs-3 b')[0]).addClass('hide')
     }
 
     if ($('.counter[headerlevel=level2_line][counter=sample]').length == 0) {
-        $($('.headerCounter .col-xs-4 b')[1]).addClass('hide')
+        $($('.headerCounter .col-xs-3 b')[1]).addClass('hide')
     }
 
     if ($('.counter[headerlevel=level2_line][counter=defects]').length == 0 && isEUA == false) {
-        $($('.headerCounter .col-xs-4 b')[2]).addClass('hide')
+        $($('.headerCounter .col-xs-3 b')[2]).addClass('hide')
     }
 
     if ($('.counter[headerlevel=level2_line][counter=frequency]').length == 0) {
-        $($('.headerCounter .col-xs-4 b')[3]).addClass('hide')
+        $($('.headerCounter .col-xs-3 b')[3]).addClass('hide')
     }
 
     $('#period').attr('disabled', 'disabled');
