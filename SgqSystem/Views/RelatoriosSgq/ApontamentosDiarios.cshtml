@@ -604,7 +604,7 @@
             if ($("#intervalMax").text() == "" && $("#intervalMin").text() == "")
                 dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
 
-            $.post(urlSave, dadosResultLevel3, function (r, x, e) {
+            $.post(urlSave + "/" + @Html.Raw(ViewBag.UserId), dadosResultLevel3, function (r, x, e) {
 
                 $("#myModal").modal('hide');
                 openMessageModal(Resources('done'), Resources('registry_alter_success')); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
@@ -701,7 +701,7 @@
 
             if (isValid) {
 
-                $.post(urlSaveHeaderField, { "HeaderField": objToSave }, function (IsSaved) {
+                $.post(urlSaveHeaderField, { "HeaderField": objToSave, "UserSgq_Id" : @Html.Raw(ViewBag.UserId) }, function (IsSaved) {
 
                     if (IsSaved) {
 
