@@ -148,12 +148,12 @@ namespace SgqSystem.Controllers.Api
             {
                 databaseSgq.Configuration.LazyLoadingEnabled = false;
                 var resultlevel3 = databaseSgq.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
+                LogSystem.LogTrackBusiness.Register(resultlevel3, resultlevel3.Id, "Result_Level3", 1);
                 var parLevel3 = databaseSgq.ParLevel3.Where(x => x.Id == resultlevel3.ParLevel3_Id).FirstOrDefault();
                 parLevel3Value = databaseSgq.ParLevel3Value.Where(x => x.ParLevel3_Id == parLevel3.Id).FirstOrDefault();
                 var parInputTypeValues = databaseSgq.ParInputTypeValues.Where(x => x.ParLevel3Value_Id == parLevel3Value.Id && resultLevel3.Value == x.Intervalo.ToString()).FirstOrDefault();
                 if (parLevel3Value.ParLevel3InputType_Id == 8)
                     resultLevel3.ValueText = parInputTypeValues.Valor.ToString();
-
             }
 
             //[TODO] Inserir registro de log de edição (salvar resultlevel3_Id == resultLevel3.Id)
@@ -229,6 +229,7 @@ namespace SgqSystem.Controllers.Api
                         var original = db.CollectionLevel2XParHeaderField.FirstOrDefault(c => c.Id == item.Id);
 
                         //[TODO] Inserir registro de log de edição
+                        LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderField", 1);
 
                         if (string.IsNullOrEmpty(item.Value))//Remover
                         {

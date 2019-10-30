@@ -29,7 +29,6 @@ namespace SgqSystem
 
         protected void Application_Start()
         {
-
             AreaRegistration.RegisterAllAreas();
             ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
             System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);

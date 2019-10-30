@@ -89,6 +89,7 @@
     <Compile Include="LeftControlRole.cs" />
     <Compile Include="LogAlteracoes.cs" />
     <Compile Include="LogJson.cs" />
+    <Compile Include="LogTrack.cs" />
     <Compile Include="LogSgq.cs" />
     <Compile Include="LogSgqGlobal.cs" />
     <Compile Include="Metas.cs" />
