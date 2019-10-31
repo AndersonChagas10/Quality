@@ -1042,7 +1042,7 @@ function criarFiltroDeFrequencia(){
 
         var htmlSelect = "<select data-filtro='frequencyTotal'>";
         htmlSelect += "<option>-</option>";
-        $.each($('.counters .frequencyTotal:visible'), function (i,o) {
+        $.each($('.counters .frequencyTotal'), function (i,o) {
             var frequencia = $(o).text();
             if(frequenciasExistentes.indexOf(frequencia) < 0){
                 frequenciasExistentes.push(frequencia);
@@ -1069,8 +1069,10 @@ $('body').off('change','select[data-filtro]').on('change','select[data-filtro]',
 		return;
 	}
 	
-	//Mostra linhas que não batem o valor
-	$('.counters .frequencyTotal:contains("'+valorSelecionado+'")')
-		.parents('.list-group-item')
-		.removeClass('hide')
+    //Mostra linhas que não batem o valor
+    $('.counters .frequencyTotal').filter(function() {
+        return $(this).text() === valorSelecionado;
+    })
+        .parents('.list-group-item')
+        .removeClass('hide')
 });
