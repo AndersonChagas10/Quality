@@ -2075,6 +2075,7 @@
     <Content Include="Views\ParDepartments\Details.cshtml" />
     <Content Include="Views\ParDepartments\Edit.cshtml" />
     <Content Include="Views\ParDepartments\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_SelectTextAreaEditReason.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

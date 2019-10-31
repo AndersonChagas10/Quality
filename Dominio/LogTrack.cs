@@ -13,5 +13,8 @@ namespace Dominio
         public int Json_Id { get; set; }
         public string Json { get; set; }
         public DateTime AddDate { get; set; }
+
+        public int ParReason_Id { get; set; }
+        public string Motivo { get; set; }
     }
 }

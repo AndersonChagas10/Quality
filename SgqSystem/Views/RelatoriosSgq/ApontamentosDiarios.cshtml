@@ -65,6 +65,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+
+                @Html.Partial("~/Views/RelatoriosSgq/_SelectTextAreaEditReason.cshtml")
+
                 <button type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
                 <button type="button" onclick="SaveHeaderField()" class="btn btn-default non-printable">@Resources.Resource.save</button>
             </div>
@@ -74,7 +77,7 @@
 
 <div class="page-content-wrapper">
     <div class="page-content">
-        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml","")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml", "")
 
         <div id="formBodyContent">
 
@@ -604,8 +607,20 @@
             if ($("#intervalMax").text() == "" && $("#intervalMin").text() == "")
                 dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
 
-            $.post(urlSave + "/" + @Html.Raw(ViewBag.UserId), dadosResultLevel3, function (r, x, e) {
+            var selectParReasonEdit = $('select[name="selectParReasonEdit"]:visible').val();
+            var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
+            $('select[name="selectParReasonEdit"]:visible').removeClass('btn-danger');
+            $('textarea[name="textareaParReasonEdit"]:visible').removeClass('btn-danger');
 
+            if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length <= 0) {
+                $('select[name="selectParReasonEdit"]:visible').addClass('btn-danger');
+                $('textarea[name="textareaParReasonEdit"]:visible').addClass('btn-danger');
+                return;
+            }
+
+            $.post(urlSave + "/" + @Html.Raw(ViewBag.UserId) + "/" + selectParReasonEdit + "/" + textareaParReasonEdit, dadosResultLevel3, function (r, x, e) {
+                
+                $('textarea[name="textareaParReasonEdit"]:visible').val('');
                 $("#myModal").modal('hide');
                 openMessageModal(Resources('done'), Resources('registry_alter_success')); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
 
@@ -701,10 +716,29 @@
 
             if (isValid) {
 
-                $.post(urlSaveHeaderField, { "HeaderField": objToSave, "UserSgq_Id" : @Html.Raw(ViewBag.UserId) }, function (IsSaved) {
+                var selectParReasonEdit = $('select[name="selectParReasonEdit"]:visible').val();
+                var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
+                $('select[name="selectParReasonEdit"]:visible').removeClass('btn-danger');
+                $('textarea[name="textareaParReasonEdit"]:visible').removeClass('btn-danger');
+
+                if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length <= 0) {
+                    $('select[name="selectParReasonEdit"]:visible').addClass('btn-danger');
+                    $('textarea[name="textareaParReasonEdit"]:visible').addClass('btn-danger');
+                    return;
+                }
+
+                $.post(urlSaveHeaderField,
+                    {
+                        "HeaderField": objToSave,
+                        "UserSgq_Id": @Html.Raw(ViewBag.UserId),
+                        "ParReason_Id": selectParReasonEdit,
+                        "Motivo": textareaParReasonEdit
+                    },
+                    function (IsSaved) {
 
                     if (IsSaved) {
-
+                        
+                        $('textarea[name="textareaParReasonEdit"]:visible').val('');
                         openMessageModal(Resources('done'), Resources('registry_alter_success'));
                         $('#modalHeaderField').modal('hide');
 

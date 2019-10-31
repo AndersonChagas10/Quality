@@ -25,5 +25,22 @@ namespace LogSystem
             }
         }
 
+        public static void Register(object obj, int json_id, string table_name, int userSgq_Id, int parReason_Id, string motivo)
+        {
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+                Dominio.LogTrack logTrack = new Dominio.LogTrack();
+                logTrack.Json_Id = json_id;
+                logTrack.Json = JsonConvert.SerializeObject(obj);
+                logTrack.Tabela = table_name;
+                logTrack.UserSgq_Id = userSgq_Id;
+                logTrack.AddDate = DateTime.Now;
+                logTrack.ParReason_Id = parReason_Id;
+                logTrack.Motivo = motivo;
+                db.LogTrack.Add(logTrack);
+                db.SaveChanges();
+            }
+        }
+
     }
 }

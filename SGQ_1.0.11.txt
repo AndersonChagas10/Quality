@@ -29,18 +29,16 @@ create table ParHeaderFieldGeral (
 )
 go
 
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParMultipleValuesGeral' AND xtype='U')
-create table ParMultipleValuesGeral (
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='LogTrack' AND xtype='U')
+create table LogTrack (
 	Id int not null primary key identity,
-	ParHeaderFieldGeral_Id Int foreign key references ParHeaderFieldGeral(Id) not null,
-	Name varchar(100) not null,
-	Description varchar(255),
-	PunishmentValue decimal(38,10),
-	Conformity bit not null,
+	UserSgq_Id Int not null,
+	Tabela varchar(100) not null,
+	Json_Id Int not null,
+	Json varchar(900) not null,
 	AddDate datetime2 not null,
-	AlterDate datetime2,
-	IsActive bit not null default 1,
-	IsDefaultOption bit not null default 0
+	ParReason_Id Int foreign key references ParReason(Id) null,
+	Motivo varchar(900) null
 )
 go
 
@@ -76,15 +74,7 @@ BEGIN
    END
 END
 
-BEGIN
-   IF NOT EXISTS (Select * from parcounter where id = 20)
-   BEGIN
-	insert into parcounter values
-	(1,'frequency',getdate(),null,1,20)
-   END
-END
-
-GO 
+GO
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='LogTrack' AND xtype='U')
 create table LogTrack (
@@ -97,3 +87,11 @@ create table LogTrack (
 )
 
 GO
+
+BEGIN
+   IF NOT EXISTS (Select * from parreasontype where id = 3)
+   BEGIN
+	insert into parreasontype values
+	('Editar Resultado',getdate(),null,1)
+   END
+END
