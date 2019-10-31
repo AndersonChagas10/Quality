@@ -5489,6 +5489,7 @@ namespace SgqServiceBusiness.Api
                 sampleGroup = sample;
             }
 
+            #region Agrupamento departamento na listagem de level 2 no AppColeta
             var departamento = "";
 
             var index = 0;
@@ -5496,8 +5497,9 @@ namespace SgqServiceBusiness.Api
 
             var auxDepto = "";
             var countDepto = 0;
+            var listaParLevel1ParaAgrupar = (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.parLevel1ComAgrupamentoPorDepartamentoNaColeta as string)?.Split('|').ToList();
 
-            if (ParLevel1.ParLevel1_Id == 126 || ParLevel1.ParLevel1_Id == 136 || ParLevel1.ParLevel1_Id == 135)
+            if (listaParLevel1ParaAgrupar.Contains(ParLevel1.ParLevel1_Id.ToString()))
             {
                 foreach (var parlevel2count in parlevel02List) //LOOP3
                 {
@@ -5508,10 +5510,10 @@ namespace SgqServiceBusiness.Api
                     auxDepto = parlevel2count.Departamento;
                 }
             }
-
+            #endregion
 
             //Enquando houver lista de level2
-            foreach (var parlevel2 in parlevel02List) //LOOP3
+            foreach (var parlevel2 in parlevel02List.OrderBy(x=>x.Departamento)) //LOOP3
             {
                 string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
@@ -5735,7 +5737,7 @@ namespace SgqServiceBusiness.Api
                     continue;
 
                 //Gera linha do Level2
-
+                #region Agrupamento departamento na listagem de level 2 no AppColeta
                 var inicioGrupo = false;
                 var fimGrupo = false;
                 var fimFinalGrupo = false;
@@ -5768,6 +5770,7 @@ namespace SgqServiceBusiness.Api
                     departamento = parlevel2.Departamento;
 
                 }
+                #endregion
 
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
