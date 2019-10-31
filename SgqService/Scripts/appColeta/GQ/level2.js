@@ -292,6 +292,8 @@
 
             }
         }
+
+        criarFiltroDeFrequencia();
     }, 100);
 }
 
@@ -1030,3 +1032,45 @@ function atualizaCorAgendamento() {
         }, 2000);
     }, 200);
 }
+
+function criarFiltroDeFrequencia(){
+        if($('.headerCounter > div:last b').hasClass('hide') 
+        || $('select[data-filtro="frequencyTotal"]').length > 0)
+            return;
+
+        var frequenciasExistentes = [];
+
+        var htmlSelect = "<select data-filtro='frequencyTotal'>";
+        htmlSelect += "<option>-</option>";
+        $.each($('.counters .frequencyTotal:visible'), function (i,o) {
+            var frequencia = $(o).text();
+            if(frequenciasExistentes.indexOf(frequencia) < 0){
+                frequenciasExistentes.push(frequencia);
+                htmlSelect += "<option>"+frequencia+"</option>";
+            }
+        });
+            
+        htmlSelect += "</select>";
+        $('.headerCounter > div:last').append(htmlSelect);
+}
+
+$('body').off('change','select[data-filtro]').on('change','select[data-filtro]',function(){
+	var valorSelecionado = $(this).val();
+	
+	//Ocultar todas as linhas
+	$('.counters .frequencyTotal')
+		.parents('.list-group-item')
+		.addClass('hide');
+			
+	if(valorSelecionado.length == 1){
+		$('.counters .frequencyTotal')
+			.parents('.list-group-item')
+			.removeClass('hide');
+		return;
+	}
+	
+	//Mostra linhas que não batem o valor
+	$('.counters .frequencyTotal:contains("'+valorSelecionado+'")')
+		.parents('.list-group-item')
+		.removeClass('hide')
+});
