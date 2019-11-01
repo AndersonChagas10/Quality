@@ -16,5 +16,11 @@ namespace Dominio
 
         public int ParReason_Id { get; set; }
         public string Motivo { get; set; }
+
+        [ForeignKey("UserSgq_Id")]
+        public UserSgq UserSgq { get; set; }
+
+        [ForeignKey("ParReason_Id")]
+        public ParReason ParReason { get; set; }
     }
 }

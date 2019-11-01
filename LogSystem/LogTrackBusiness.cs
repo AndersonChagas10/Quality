@@ -25,12 +25,12 @@ namespace LogSystem
             }
         }
 
-        public static void Register(object obj, int json_id, string table_name, int userSgq_Id, int parReason_Id, string motivo)
+        public static void Register(object obj, int json_Id, string table_name, int userSgq_Id, int parReason_Id, string motivo)
         {
             using (var db = new Dominio.SgqDbDevEntities())
             {
                 Dominio.LogTrack logTrack = new Dominio.LogTrack();
-                logTrack.Json_Id = json_id;
+                logTrack.Json_Id = json_Id;
                 logTrack.Json = JsonConvert.SerializeObject(obj);
                 logTrack.Tabela = table_name;
                 logTrack.UserSgq_Id = userSgq_Id;
@@ -39,6 +39,46 @@ namespace LogSystem
                 logTrack.Motivo = motivo;
                 db.LogTrack.Add(logTrack);
                 db.SaveChanges();
+            }
+        }
+
+        public static IEnumerable<object> GetLogTrack(string table_name, int json_Id)
+        {
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+                return db.LogTrack
+                    .Include("UserSgq")
+                    .Include("ParReason")
+                    .Where(x => x.Tabela == table_name && x.Json_Id == json_Id)
+                    .OrderByDescending(x => x.AddDate)
+                    .ToList()
+                    .Select(x => new {
+                        obj = JsonConvert.DeserializeObject<object>(x.Json),
+                        addDate = x.AddDate.ToString("dd/MM/yyyy HH:ss"),
+                        userSgq_FullName = x.UserSgq.FullName,
+                        parReason = x.ParReason.Motivo,
+                        motivo = x.Motivo
+                    });
+            }
+        }
+
+        public static IEnumerable<object> GetLogTrack(string table_name, List<int> json_Ids)
+        {
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+                return db.LogTrack
+                    .Include("UserSgq")
+                    .Include("ParReason")
+                    .Where(x => x.Tabela == table_name && json_Ids.Contains(x.Json_Id))
+                    .OrderByDescending(x => x.AddDate)
+                    .ToList()
+                    .Select(x => new {
+                        obj = JsonConvert.DeserializeObject<object>(x.Json),
+                        addDate = x.AddDate.ToString("dd/MM/yyyy HH:ss"),
+                        userSgq_FullName = x.UserSgq.FullName,
+                        parReason = x.ParReason.Motivo,
+                        motivo = x.Motivo
+                    });
             }
         }
 

@@ -8,6 +8,9 @@
     var urlPhotos = Url.Action("Photos", "api/ApontamentosDiarios");
     var urlPhotoPreview = Url.Action("PhotoPreview", "api/ApontamentosDiarios");
     var urlGetCarousel = Url.Action("GetCarousel", "RelatoriosSgq");
+    var urlLogTrack = Url.Action("Get", "api/LogTrack");
+    var urlLogTrackHeaderField = Url.Action("GetHeaderFieldByResult_Level3", "api/LogTrack");
+    
 }
 
 <style>
@@ -88,6 +91,7 @@
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
             @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
             @Html.Partial("~/Views/RelatoriosSgq/_Image.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_LogTrackHistory.cshtml")
 
             <div id="load"></div>
             <div id="divTable">
@@ -109,6 +113,8 @@
         var urlPhotos = '@Html.Raw(urlPhotos)';
         var urlPhotoPreview = '@Html.Raw(urlPhotoPreview)';
         var urlGetCarousel = '@Html.Raw(urlGetCarousel)';
+        var urlLogTrack = '@Html.Raw(urlLogTrack)';
+        var urlLogTrackHeaderField = '@Html.Raw(urlLogTrackHeaderField)';
         var $btn = $('#btnSend');
         var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
         var urlEditCabecalho = '@Html.Raw(Url.Action("EditCabecalho", "api/ApontamentosDiarios"))';
@@ -194,8 +200,20 @@
                                 }
                             }, "visible": regraEdit
                         },
+                        {
+                            title: "Tarefa", mData: null, mRender: function (data, type, full) {
+                                return '<button id="viewHistory" class="btn btn-link custom-button"  data-toggle="modal" data-target="#modalLogTrackHistory">' + "Histórico" + '</button>';
+                            }
+                        },
 
                         { title: "@Resources.Resource.edit_header", mData: null, defaultContent: '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#modalHeaderField">' + "@Resources.Resource.edit_header" + '</button>', "visible": regraEdit },
+                        
+                        {
+                            title: "Cabeçalho", mData: null, mRender: function (data, type, full) {
+                                return '<button id="viewHeaderFieldHistory" class="btn btn-link custom-button"  data-toggle="modal" data-target="#modalLogTrackHistory">' + "Histórico" + '</button>';
+                            }
+                        },
+
                         { title: "@Resources.Resource.unit", mData: "Unidade" },
                         { title: "@Resources.Resource.cluster", mData: "Processo" },
                         { title: "@Resources.Resource.shift", mData: "Turno" },
@@ -318,6 +336,95 @@
                             }
                         })
                     });
+
+                    $('#resultsApontamentos tbody').on('click', 'button#viewHistory', function (data) {
+
+                        var data = table.row($(this).parents('tr')).data();
+
+                        $.get(urlLogTrack + "/Result_Level3/" + data.ResultLevel3Id, function (r) {
+                            var tableHead = $('#modalLogTrackHistory .modal-body table thead');
+                            var tableBody = $('#modalLogTrackHistory .modal-body table tbody');
+
+                            debugger
+
+                            $(tableHead).html('');
+                            $(tableBody).html('');
+
+                            var htmlHead = "<tr>";
+                            htmlHead += "<th>Data Alteração</th>";
+                            htmlHead += "<th>Quem</th>";
+                            htmlHead += "<th>Value</th>";
+                            htmlHead += "<th>ValueText</th>";
+                            htmlHead += "<th>IsConform</th>";
+                            htmlHead += "<th>Defects</th>";
+                            htmlHead += "<th>IsNotEvaluate</th>";
+                            htmlHead += "<th>Tipo Motivo</th>";
+                            htmlHead += "<th>Motivo</th>";
+                            htmlHead += "</tr>";
+                            
+                            var htmlBody = "";
+                            $.each(r, function (i, o){
+                                htmlBody += "<tr>";
+                                htmlBody += "<td>"+o.addDate+"</td>";
+                                htmlBody += "<td>"+o.userSgq_FullName+"</td>";
+                                htmlBody += "<td>"+o.obj.Value+"</td>";
+                                htmlBody += "<td>"+o.obj.ValueText+"</td>";
+                                htmlBody += "<td>"+o.obj.IsConform+"</td>";
+                                htmlBody += "<td>"+o.obj.Defects+"</td>";
+                                htmlBody += "<td>"+o.obj.IsNotEvaluate+"</td>";
+                                htmlBody += "<td>"+o.parReason+"</td>";
+                                htmlBody += "<td>"+o.motivo+"</td>";
+                                htmlBody += "</tr>";
+                            });
+                            
+                            $(tableHead).html(htmlHead);
+                            $(tableBody).html(htmlBody);
+
+                            
+                        })
+                    });
+
+                    $('#resultsApontamentos tbody').on('click', 'button#viewHeaderFieldHistory', function (data) {
+
+                        var data = table.row($(this).parents('tr')).data();
+
+                        $.get(urlLogTrackHeaderField + "/" + data.ResultLevel3Id, function (r) {
+                            var tableHead = $('#modalLogTrackHistory .modal-body table thead');
+                            var tableBody = $('#modalLogTrackHistory .modal-body table tbody');
+
+                            debugger
+
+                            $(tableHead).html('');
+                            $(tableBody).html('');
+
+                            var htmlHead = "<tr>";
+                            htmlHead += "<th>Data Alteração</th>";
+                            htmlHead += "<th>Quem</th>";
+                            htmlHead += "<th>ParHeaderField_Name</th>";
+                            htmlHead += "<th>Value</th>";
+                            htmlHead += "<th>Tipo Motivo</th>";
+                            htmlHead += "<th>Motivo</th>";
+                            htmlHead += "</tr>";
+                            
+                            var htmlBody = "";
+                            $.each(r, function (i, o){
+                                htmlBody += "<tr>";
+                                htmlBody += "<td>"+o.addDate+"</td>";
+                                htmlBody += "<td>"+o.userSgq_FullName+"</td>";
+                                htmlBody += "<td>"+o.obj.ParHeaderField_Name+"</td>";
+                                htmlBody += "<td>"+o.obj.Value+"</td>";
+                                htmlBody += "<td>"+o.parReason+"</td>";
+                                htmlBody += "<td>"+o.motivo+"</td>";
+                                htmlBody += "</tr>";
+                            });
+                            
+                            $(tableHead).html(htmlHead);
+                            $(tableBody).html(htmlBody);
+
+                            
+                        })
+                    });
+
                     $('#myModal').on('hidden.bs.modal', function () {
                         $("#myModal #mensagemErro").remove();
                     })
