@@ -8519,7 +8519,7 @@ namespace SgqServiceBusiness.Api
                                         cmd.CommandType = CommandType.Text;
                                         cmd.Parameters.Add(new SqlParameter("@WeiDefects", resultLevel3WeiDefects.WeiDefects.ToString().Replace(',', '.')));
                                         cmd.Parameters.Add(new SqlParameter("@PunishmentValue", resultLevel3.PunishmentValue.ToString().Replace(',', '.')));
-                                        cmd.Parameters.Add(new SqlParameter("@ResultLevel3WeiDefects_Id", resultLevel3.PunishmentValue.ToString().Replace(',', '.')));
+                                        cmd.Parameters.Add(new SqlParameter("@ResultLevel3WeiDefects_Id", resultLevel3WeiDefects.Id));
 
                                         cmd.ExecuteNonQuery();
                                         //factory.ExecuteSql(cmd.CommandText);
