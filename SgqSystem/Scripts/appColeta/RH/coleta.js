@@ -242,11 +242,32 @@ function getBinarioComTexto(level3) {
 
     var html = '';
 
+    var respostaPadrao = "";
+
     if (level3.ParLevel3XHelp)
         html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
-
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+
+    if (level3.ParLevel3Value.IsRequiredInt) {
+        respostaPadrao = "&nbsp;";
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+    } else {
+        if (level3.ParLevel3Value.IsDefaultAnswerInt == "0")
+            respostaPadrao = level3.ParLevel3BoolFalse.Name;
+        else
+            respostaPadrao = level3.ParLevel3BoolTrue.Name;
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+    }
+    //html +=
+    //    '<div class="col-xs-6 no-gutters">' +
+    //    '   <div class="col-xs-10">' +
+    //    botao +
+    //    '   </div>' +
+    //    '   <div class="col-xs-2">' + btnNA + '</div>' +
+    //    '</div>' +
+    //    '<div class="clearfix"></div>';
+
 
     html +=
         '<div class="col-xs-6 no-gutters">' +
@@ -254,7 +275,7 @@ function getBinarioComTexto(level3) {
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
         '</div>' +
         '<div class="col-xs-5">' +
-        '	<button type="button" class="btn btn-default btn-sm btn-block" data-binario data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>' +
+          botao +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
