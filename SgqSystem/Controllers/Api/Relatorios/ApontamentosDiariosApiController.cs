@@ -230,6 +230,9 @@ namespace SgqSystem.Controllers.Api
                     {
                         var original = db.CollectionLevel2XParHeaderField.FirstOrDefault(c => c.Id == item.Id);
 
+                        if (original.Value == item.Value)
+                            continue;
+                            
                         //[TODO] Inserir registro de log de edição
                         LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderField", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
 

@@ -57,6 +57,8 @@ public class ApontamentosDiariosResultSet
     public string Frequencia { get; set; }
 
     public bool HasPhoto { get; set; }
+    public bool HasHistoryResult_Level3 { get; set; }
+    public bool HasHistoryHeaderField { get; set; }
 
     public string Select(DataCarrierFormulario form)
     {
@@ -311,7 +313,9 @@ public class ApontamentosDiariosResultSet
 				 order by PL3V.id DESC,PL3V.parcompany_id DESC, PL3V.ParLevel2_Id DESC,PL3V.ParLevel1_Id DESC) as ParLevel3InputType_Id
 	            ,CASE WHEN MA.Motivo IS NULL THEN 0 ELSE 1 END AS IsLate
 	            ,CASE WHEN (SELECT TOP 1 Id FROM Result_Level3_Photos RL3P WHERE RL3P.Result_Level3_Id = R3.Id) IS NOT NULL THEN 1 ELSE 0 END AS HasPhoto
-	            ,ma.Motivo as ParReason
+	            ,CASE WHEN (SELECT TOP 1 Id FROM LogTrack LT WHERE LT.Tabela = 'Result_Level3' AND LT.Json_Id = R3.Id) IS NOT NULL THEN 1 ELSE 0 END AS HasHistoryResult_Level3
+	            ,CASE WHEN (SELECT TOP 1 Id FROM LogTrack LT WHERE LT.Tabela = 'CollectionLevel2XParHeaderField' AND LT.Json_Id IN (select CL2PHF_LT.ID from CollectionLevel2XParHeaderField CL2PHF_LT where CL2PHF_LT.collectionlevel2_ID = C2.ID)) IS NOT NULL THEN 1 ELSE 0 END AS HasHistoryHeaderField
+                ,ma.Motivo as ParReason
 	            ,PRT.Name as ParReasonType
                  FROM #CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     

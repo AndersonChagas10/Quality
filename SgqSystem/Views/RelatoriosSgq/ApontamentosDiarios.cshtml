@@ -200,19 +200,9 @@
                                 }
                             }, "visible": regraEdit
                         },
-                        {
-                            title: "Tarefa", mData: null, mRender: function (data, type, full) {
-                                return '<button id="viewHistory" class="btn btn-link custom-button"  data-toggle="modal" data-target="#modalLogTrackHistory">' + "Histórico" + '</button>';
-                            }
-                        },
 
                         { title: "@Resources.Resource.edit_header", mData: null, defaultContent: '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#modalHeaderField">' + "@Resources.Resource.edit_header" + '</button>', "visible": regraEdit },
-                        
-                        {
-                            title: "Cabeçalho", mData: null, mRender: function (data, type, full) {
-                                return '<button id="viewHeaderFieldHistory" class="btn btn-link custom-button"  data-toggle="modal" data-target="#modalLogTrackHistory">' + "Histórico" + '</button>';
-                            }
-                        },
+
 
                         { title: "@Resources.Resource.unit", mData: "Unidade" },
                         { title: "@Resources.Resource.cluster", mData: "Processo" },
@@ -294,6 +284,24 @@
                         },
                         { title: "@Resources.Resource.reason", mData: "ParReason", "width": "50%" },
                         {
+
+                            title: "Histórico Resultado", mData: null, mRender: function (data, type, full) {
+                                return full.HasHistoryResult_Level3 ?
+                                    '<button class="btn btn-info btn-sm" id="viewHistory" class="btn btn-link custom-button" height="60" style="width:80px;"  data-toggle="modal" data-target="#modalLogTrackHistory">' + "Visualizar" + '</button>'
+                                    :
+                                    '<button class="btn btn-default btn-sm" disabled="" title="Não há edições" style="width:80px;">-</button>';
+                            }
+                        },
+                        {
+
+                            title: "Histórico Cabeçalho", mData: null, mRender: function (data, type, full) {
+                                return full.HasHistoryHeaderField ?
+                                    '<button class="btn btn-info btn-sm" id="viewHeaderFieldHistory" class="btn btn-link custom-button" height="60" style="width:80px;"  data-toggle="modal" data-target="#modalLogTrackHistory">' + "Visualizar" + '</button>'
+                                    :
+                                    '<button class="btn btn-default btn-sm" disabled="" title="Não há edições" style="width:80px;">-</button>';
+                            }
+                        },
+                        {
                             title: "@Resources.Resource.photo", mData: "ResultLevel3Id", "width": "50%", mRender: function (data, type, full) {
                                 return full.HasPhoto ?
         "<button class='btn btn-info btn-sm' data-toggle='modal' data-target='#imageModal' data-photo='"+data+"' height='60' id='imgResult" + data +"' style='width:50px;'>@Resources.Resource.photo</button>"
@@ -345,42 +353,45 @@
                             var tableHead = $('#modalLogTrackHistory .modal-body table thead');
                             var tableBody = $('#modalLogTrackHistory .modal-body table tbody');
 
-                            debugger
-
                             $(tableHead).html('');
                             $(tableBody).html('');
 
                             var htmlHead = "<tr>";
                             htmlHead += "<th>Data Alteração</th>";
                             htmlHead += "<th>Quem</th>";
-                            htmlHead += "<th>Value</th>";
-                            htmlHead += "<th>ValueText</th>";
-                            htmlHead += "<th>IsConform</th>";
-                            htmlHead += "<th>Defects</th>";
-                            htmlHead += "<th>IsNotEvaluate</th>";
+                            htmlHead += "<th>Valor</th>";
+                            htmlHead += "<th>Valor do Texto</th>";
+                            htmlHead += "<th>Está conforme?</th>";
+                            htmlHead += "<th>Defeitos</th>";
+                            htmlHead += "<th>Não avaliado</th>";
                             htmlHead += "<th>Tipo Motivo</th>";
                             htmlHead += "<th>Motivo</th>";
                             htmlHead += "</tr>";
-                            
+
                             var htmlBody = "";
-                            $.each(r, function (i, o){
-                                htmlBody += "<tr>";
+                            var quantidadeNaLista = r.length;
+                            $.each(r, function (i, o) {
+                                if ((quantidadeNaLista - 1) == i) {
+                                    htmlBody += "<tr class='btn-warning' title='Original'>";
+                                } else {
+                                    htmlBody += "<tr>";
+                                }
                                 htmlBody += "<td>"+o.addDate+"</td>";
                                 htmlBody += "<td>"+o.userSgq_FullName+"</td>";
                                 htmlBody += "<td>"+o.obj.Value+"</td>";
                                 htmlBody += "<td>"+o.obj.ValueText+"</td>";
-                                htmlBody += "<td>"+o.obj.IsConform+"</td>";
+                                htmlBody += "<td>"+(o.obj.IsConform ? "SIM" : "NÃO")+"</td>";
                                 htmlBody += "<td>"+o.obj.Defects+"</td>";
-                                htmlBody += "<td>"+o.obj.IsNotEvaluate+"</td>";
+                                htmlBody += "<td>"+(o.obj.IsNotEvaluate ? "SIM" : "NÃO")+"</td>";
                                 htmlBody += "<td>"+o.parReason+"</td>";
                                 htmlBody += "<td>"+o.motivo+"</td>";
                                 htmlBody += "</tr>";
                             });
-                            
+
                             $(tableHead).html(htmlHead);
                             $(tableBody).html(htmlBody);
 
-                            
+
                         })
                     });
 
@@ -392,20 +403,18 @@
                             var tableHead = $('#modalLogTrackHistory .modal-body table thead');
                             var tableBody = $('#modalLogTrackHistory .modal-body table tbody');
 
-                            debugger
-
                             $(tableHead).html('');
                             $(tableBody).html('');
 
                             var htmlHead = "<tr>";
                             htmlHead += "<th>Data Alteração</th>";
                             htmlHead += "<th>Quem</th>";
-                            htmlHead += "<th>ParHeaderField_Name</th>";
-                            htmlHead += "<th>Value</th>";
+                            htmlHead += "<th>Nome Cabeçalho</th>";
+                            htmlHead += "<th>Valor</th>";
                             htmlHead += "<th>Tipo Motivo</th>";
                             htmlHead += "<th>Motivo</th>";
                             htmlHead += "</tr>";
-                            
+
                             var htmlBody = "";
                             $.each(r, function (i, o){
                                 htmlBody += "<tr>";
@@ -417,16 +426,21 @@
                                 htmlBody += "<td>"+o.motivo+"</td>";
                                 htmlBody += "</tr>";
                             });
-                            
+
                             $(tableHead).html(htmlHead);
                             $(tableBody).html(htmlBody);
 
-                            
+
                         })
                     });
 
                     $('#myModal').on('hidden.bs.modal', function () {
                         $("#myModal #mensagemErro").remove();
+                    })
+
+                    $('#myModal, #modalHeaderField').on('hidden.bs.modal', function () {
+                        $('select[name="selectParReasonEdit"]').removeClass('btn-danger');
+                        $('textarea[name="textareaParReasonEdit"]').removeClass('btn-danger');
                     })
                     //$("#botaoFecharModal").on('click', function () {
                     //    $("#myModal #mensagemErro").remove();
@@ -726,7 +740,7 @@
             }
 
             $.post(urlSave + "/" + @Html.Raw(ViewBag.UserId) + "/" + selectParReasonEdit + "/" + textareaParReasonEdit, dadosResultLevel3, function (r, x, e) {
-                
+
                 $('textarea[name="textareaParReasonEdit"]:visible').val('');
                 $("#myModal").modal('hide');
                 openMessageModal(Resources('done'), Resources('registry_alter_success')); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
@@ -844,7 +858,7 @@
                     function (IsSaved) {
 
                     if (IsSaved) {
-                        
+
                         $('textarea[name="textareaParReasonEdit"]:visible').val('');
                         openMessageModal(Resources('done'), Resources('registry_alter_success'));
                         $('#modalHeaderField').modal('hide');
