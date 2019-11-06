@@ -460,5 +460,8 @@ IF COL_LENGTH('ParLevel3Value','IsDefaultAnswer') IS NULL
     END
 GO
 
-
-
+IF COL_LENGTH('ItemMenu','PDCAMenuItem_Id') IS NULL
+    BEGIN
+		ALTER TABLE ItemMenu ADD PDCAMenuItem INT;
+    END
+GO

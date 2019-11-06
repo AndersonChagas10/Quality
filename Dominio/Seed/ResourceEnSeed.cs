@@ -895,6 +895,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "group_of_level3", Value = "Group of Level3" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "defects_per_level3_group", Value = "NC per Level3 group" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "no_group", Value = "No group" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "pdca_menu_item", Value = "Show in PDCA" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));
 
