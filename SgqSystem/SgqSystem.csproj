@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -403,6 +403,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
+    <Compile Include="Controllers\CrudGenerico\ComponenteGenericoController.cs" />
     <Compile Include="Controllers\DicionarioEstaticoController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
@@ -531,6 +532,7 @@
     <Compile Include="Mail\SimpleAsynchronous.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\ComponenteGenericoMapperProfile.cs" />
     <Compile Include="Mappers\DefectMapperProfile.cs" />
     <Compile Include="Mappers\EmailContentMapperProfile.cs" />
     <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
@@ -932,6 +934,54 @@
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_both.png" />
     <Content Include="images\sort_desc.png" />
+    <Content Include="Scripts\appColeta\GQ\alert.js" />
+    <Content Include="Scripts\appColeta\GQ\alert_new.js" />
+    <Content Include="Scripts\appColeta\GQ\breadCrumb.js" />
+    <Content Include="Scripts\appColeta\GQ\componente.js" />
+    <Content Include="Scripts\appColeta\GQ\config.js" />
+    <Content Include="Scripts\appColeta\GQ\consolidation.js" />
+    <Content Include="Scripts\appColeta\GQ\controleDeAlerta.js" />
+    <Content Include="Scripts\appColeta\GQ\correctiveAction.js" />
+    <Content Include="Scripts\appColeta\GQ\counter.js" />
+    <Content Include="Scripts\appColeta\GQ\counterLevel1.js" />
+    <Content Include="Scripts\appColeta\GQ\crypto.js" />
+    <Content Include="Scripts\appColeta\GQ\date.js" />
+    <Content Include="Scripts\appColeta\GQ\defect.js" />
+    <Content Include="Scripts\appColeta\GQ\defectEvaluation.js" />
+    <Content Include="Scripts\appColeta\GQ\email.js" />
+    <Content Include="Scripts\appColeta\GQ\eua.js" />
+    <Content Include="Scripts\appColeta\GQ\footer.js" />
+    <Content Include="Scripts\appColeta\GQ\geolocation.js" />
+    <Content Include="Scripts\appColeta\GQ\guard.js" />
+    <Content Include="Scripts\appColeta\GQ\header.js" />
+    <Content Include="Scripts\appColeta\GQ\index.css" />
+    <Content Include="Scripts\appColeta\GQ\index2.js" />
+    <Content Include="Scripts\appColeta\GQ\keys.js" />
+    <Content Include="Scripts\appColeta\GQ\lastSync.js" />
+    <Content Include="Scripts\appColeta\GQ\level1.js" />
+    <Content Include="Scripts\appColeta\GQ\level2.js" />
+    <Content Include="Scripts\appColeta\GQ\level3.js" />
+    <Content Include="Scripts\appColeta\GQ\login.js" />
+    <Content Include="Scripts\appColeta\GQ\message.js" />
+    <Content Include="Scripts\appColeta\GQ\mock_modulos.js" />
+    <Content Include="Scripts\appColeta\GQ\modal.js" />
+    <Content Include="Scripts\appColeta\GQ\module.js" />
+    <Content Include="Scripts\appColeta\GQ\navBar.js" />
+    <Content Include="Scripts\appColeta\GQ\overlay.js" />
+    <Content Include="Scripts\appColeta\GQ\pcc1b.js" />
+    <Content Include="Scripts\appColeta\GQ\phase.js" />
+    <Content Include="Scripts\appColeta\GQ\photo.js" />
+    <Content Include="Scripts\appColeta\GQ\reaudit.js" />
+    <Content Include="Scripts\appColeta\GQ\reauditByHeader.js" />
+    <Content Include="Scripts\appColeta\GQ\reprocesso.js" />
+    <Content Include="Scripts\appColeta\GQ\resource.js" />
+    <Content Include="Scripts\appColeta\GQ\rightBar.js" />
+    <Content Include="Scripts\appColeta\GQ\role.js" />
+    <Content Include="Scripts\appColeta\GQ\rotinaHeaderField.js" />
+    <Content Include="Scripts\appColeta\GQ\scriptfile.js" />
+    <Content Include="Scripts\appColeta\GQ\sync.js" />
+    <Content Include="Scripts\appColeta\GQ\tempSave.js" />
+    <Content Include="Scripts\appColeta\GQ\verificacaoTipificacao.js" />
     <Content Include="Scripts\appColeta\RH\alert.js" />
     <Content Include="Scripts\appColeta\RH\app.js" />
     <Content Include="Scripts\appColeta\RH\coleta.js" />
@@ -953,6 +1003,7 @@
     <Content Include="Scripts\appColeta\RH\parLevels.js" />
     <Content Include="Scripts\appColeta\RH\resultado.js" />
     <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
+    <Content Include="Scripts\appColeta\RH\routeConfig.js" />
     <Content Include="Scripts\appColeta\RH\utils.js" />
     <Content Include="Scripts\appColeta\RH\zoom.js" />
     <Content Include="Scripts\jquery-1.12.1.min.js" />
@@ -1416,6 +1467,7 @@
     <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
@@ -2078,6 +2130,12 @@
     <Content Include="Views\ParDepartments\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\_SelectTextAreaEditReason.cshtml" />
     <Content Include="Views\RelatoriosSgq\_LogTrackHistory.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Filhos.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\ParDepartmentXCompany.cshtml" />
+    <Content Include="Views\ComponenteGenerico\Index.cshtml" />
+    <Content Include="Views\ComponenteGenerico\Edit.cshtml" />
+    <Content Include="Views\ComponenteGenerico\List.cshtml" />
+    <Content Include="Views\ComponenteGenerico\EditValor.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

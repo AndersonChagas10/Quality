@@ -238,7 +238,7 @@
             return obj;
         },
         prepareToInsert: function (parFieldType_Id) {
-            debugger
+            
             if (!formIsValid(this.id)) {
                 return false;
             }
@@ -259,7 +259,6 @@
             switch (parFieldType_Id) {
 
                 case 1: // Multipla Escolha
-
                     $TblParMultipeValues = $('#ParL2Cabecalho #tblOpcaoMultiplaEscolha');
 
                     obj['ParMultipleValuesGeral'].push({
@@ -272,7 +271,7 @@
                         IsDefaultOption: 0,
                         IsActive: true
                     });
-
+                    $TblParMultipeValues.find('#objMultiplaEscolhaName').val('')
                     break;
 
                 case 3:	// Binario
@@ -371,6 +370,7 @@
         },
 
         excludeTable: function (i) {
+           
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
             $("#modalExclusao").show();
 
@@ -610,8 +610,7 @@
     //}
 
     $('#selectL2ParFieldType').on("change", function () {
-
-        debugger
+        
         hideAllOptionsMonitoramento();
 
         //limpar arr ParMultipleValues?

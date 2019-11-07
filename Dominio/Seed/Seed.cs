@@ -10,10 +10,10 @@ namespace Dominio.Seed
 {
     public static class Seed
     {
-        public static void SetSeedValues(bool isPT = false, bool runSetSeed = false)
+        public static void SetSeedValues(bool isEN = false, bool runSetSeed = false)
         {
 
-            if (isPT)
+            if (!isEN)
             {
                 var resourcePtSeed = new ResourcePtSeed();
                 if (runSetSeed)

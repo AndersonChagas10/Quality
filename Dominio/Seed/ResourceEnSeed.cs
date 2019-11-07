@@ -13,7 +13,7 @@ namespace Dominio.Seed
 
             using (var db = new SgqDbDevEntities())
             {
-                var resourceKeys = db.ResourcePT.Select(r => r.Key).ToList();
+                var resourceKeys = db.ResourceEN.Select(r => r.Key).ToList();
 
                 var ResourcesInserir = new List<ResourceEN>();
 

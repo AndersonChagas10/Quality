@@ -1,0 +1,141 @@
+﻿@using DTO
+@model Dominio.AppViewModel.ComponenteGenericoValorViewModel
+
+@{
+    ViewBag.Title = "";
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>CRUD</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">Novo</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <p>
+                                    @Html.ActionLink("Novo", "EditValor", new { id = Model.ComponenteGenerico.Id }, new { @class = "btn btn-primary" })
+                                </p>
+                                <table class="table table-condensed" id="tabela">
+                                    <thead>
+                                        <tr>
+                                            @foreach (var item in Model.Colunas)
+                                            {
+                                                <th>
+                                                    @item.Name
+                                                </th>
+                                            }
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var saveId in Model.Valores.Select(x => x.SaveId).Distinct())
+                                        {
+                                            <tr>
+                                                @foreach (var item in Model.Colunas)
+                                                {
+                                                    <td>
+                                                        @Model.Valores.Where(x => x.ComponenteGenericoColuna_Id == item.Id && x.SaveId == saveId).FirstOrDefault().Valor
+                                                    </td>
+                                                }
+                                            <td>
+                                                @Html.ActionLink("Editar", "EditValor", new { id = Model.ComponenteGenerico.Id, idValor = saveId }, new { @class = "btn btn-success btn-sm" })
+                                                @*@Html.ActionLink("Excluir", "DeleteValor", new { id = Model.ComponenteGenerico.Id, idValor = saveId }, new { @onclick = "return confirm(Resources('confirm_delete'));", @class = "btn btn-danger btn-sm" })*@
+                                                <button id="btnDelete" class="btn btn-danger btn-sm" saveId="@saveId" >Excluir</button>
+                                            </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+
+    //$(document).ready(function () {
+
+    //    closeLeftSidebar();
+
+    //    $('table').dataTable({
+    //        "aoPaging": true,
+    //        "aoSearching": true,
+    //        "order": [[1, "asc"]],
+    //        "language": {
+    //            "lengthMenu": "Mostrar _MENU_ resultados por página",
+    //            "emptyTable": "Sem dados"
+    //        }
+    //    });
+    //});
+
+    $('#btnDelete').on('click', function () {
+
+        if (!confirm(Resources('confirm_delete'))){
+            return false;
+        }
+
+        let saveId = $(this).attr("saveId");
+
+        let componenteGenerico_Id = JSON.parse('@Html.Raw(Json.Encode(Model.ComponenteGenerico.Id))');
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DeleteValor")/' + componenteGenerico_Id + "?idValor=" +  saveId,
+            contentType: 'application/json; charset=utf-8',
+            //data: JSON.stringify(objSalvar),
+            async: false,
+            success: function (data, status) {
+                openMessageModal(Resources("saved_successfully"), "");
+                location.reload();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+                openMessageModal(Resources("error"), "");
+            }
+        });
+
+
+    });
+
+</script>

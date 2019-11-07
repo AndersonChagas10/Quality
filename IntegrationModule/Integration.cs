@@ -47,7 +47,30 @@ namespace IntegrationModule
             ex = null;
             List<string> scripts = new List<string>();
             Setting setting = new Setting(configuration, script);
-            try
+            if (setting.Settings["JustCommand"] == "on")
+            {
+                using (var factory = new Factory(
+                    setting.Settings["DataSource"],
+                    setting.Settings["Catalog"],
+                    setting.Settings["Password"],
+                    setting.Settings["User"]))
+                {
+                    try
+                    {
+                        var sqlCommand = $"{script};SELECT CAST(1 AS int)";
+                        SqlCommand cmd = new SqlCommand(sqlCommand);
+
+                        int i = factory.InsertUpdateData(cmd);
+
+                    }
+                    catch (Exception e)
+                    {
+                        ex = e;
+                        return null;
+                    }
+                }
+            }
+            else
             {
                 using (var factory = new Factory(
                     setting.Settings["DataSource"],
@@ -85,16 +108,10 @@ namespace IntegrationModule
                         }
                         catch (Exception e)
                         {
-                            ex = e;
-                            return null;
+
                         }
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                ex = e;
-                return null;
             }
             return null;
         }

@@ -31,7 +31,7 @@ namespace SgqSystem.Controllers.Api
         [Route("SendMail")]
         public void SendMail()
         {
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.Brasil || GlobalConfig.SESMT)
             {
                 SimpleAsynchronous.SendMailFromDeviationSgqApp();
             }

@@ -1,4 +1,4 @@
-﻿using PlanoAcaoEF;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +7,7 @@ using System.Web;
 
 namespace PlanoDeAcaoMVC.ViewModel
 {
-    public class Pa_AcaoViewModel : Pa_Acao
+    public class Pa_AcaoViewModel : Dominio.Pa_Acao
     {
         //#region SGQ
 
