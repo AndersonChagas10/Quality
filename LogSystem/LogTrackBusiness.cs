@@ -54,7 +54,7 @@ namespace LogSystem
                     .ToList()
                     .Select(x => new {
                         obj = JsonConvert.DeserializeObject<object>(x.Json),
-                        addDate = x.AddDate.ToString("dd/MM/yyyy HH:ss"),
+                        addDate = x.AddDate.ToString("dd/MM/yyyy HH:mm"),
                         userSgq_FullName = x.UserSgq.FullName,
                         parReason = x.ParReason.Motivo,
                         motivo = x.Motivo
@@ -74,7 +74,7 @@ namespace LogSystem
                     .ToList()
                     .Select(x => new {
                         obj = JsonConvert.DeserializeObject<object>(x.Json),
-                        addDate = x.AddDate.ToString("dd/MM/yyyy HH:ss"),
+                        addDate = x.AddDate.ToString("dd/MM/yyyy HH:mm"),
                         userSgq_FullName = x.UserSgq.FullName,
                         parReason = x.ParReason.Motivo,
                         motivo = x.Motivo

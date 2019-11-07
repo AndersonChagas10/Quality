@@ -57,12 +57,14 @@ namespace SgqSystem
 
             #endregion
 
+
             //DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.RunScriptsSystem;
             Dominio.Seed.Seed.SetDicionario();
 
-            Dominio.Seed.Seed.SetSeedValues(isPT:GlobalConfig.LanguageBrasil, runSetSeed: bool.Parse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.RunScriptsSystem ?? "false"));
-
             SetGlobalConfigAmbient();
+
+            Dominio.Seed.Seed.SetSeedValues(isEN:GlobalConfig.LanguageEUA, runSetSeed: bool.Parse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.RunScriptsSystem ?? "false"));
+
             ThreadPool.QueueUserWorkItem(IntegrationJobFactory.ExecuteIntegrationJobFunction);
             ThreadPool.QueueUserWorkItem(CollectionDataJobFactory.ExecuteCollectionDataJobFunction);
 

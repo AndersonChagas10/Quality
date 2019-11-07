@@ -372,14 +372,14 @@
                             var quantidadeNaLista = r.length;
                             $.each(r, function (i, o) {
                                 if ((quantidadeNaLista - 1) == i) {
-                                    htmlBody += "<tr class='btn-warning' title='Original'>";
+                                    htmlBody += "<tr style='background-color:#ddd;' title='Original'>";
                                 } else {
                                     htmlBody += "<tr>";
                                 }
                                 htmlBody += "<td>"+o.addDate+"</td>";
                                 htmlBody += "<td>"+o.userSgq_FullName+"</td>";
                                 htmlBody += "<td>"+o.obj.Value+"</td>";
-                                htmlBody += "<td>"+o.obj.ValueText+"</td>";
+                                htmlBody += "<td>"+(o.obj.ValueText == 'null' ? "" : o.obj.ValueText)+"</td>";
                                 htmlBody += "<td>"+(o.obj.IsConform ? "SIM" : "NÃO")+"</td>";
                                 htmlBody += "<td>"+o.obj.Defects+"</td>";
                                 htmlBody += "<td>"+(o.obj.IsNotEvaluate ? "SIM" : "NÃO")+"</td>";
