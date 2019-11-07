@@ -40,6 +40,11 @@
         font-family: Tahoma;
         font-size: 16px;
     }
+
+    #Assinatura1 {
+        margin: auto !important;
+        width: 50% !important;
+    }
 </style>
 
 <script src="~/Scripts/Print/printGRT.js"></script>
@@ -206,16 +211,17 @@
                     <td colspan="10" style="border-bottom:0;"><span class="tdLabels">@ResourcesPA.Resource.seen</span></td>
                 </tr>
                 <tr>
-                    <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature<span style="color:red">*</span></strong></span></td>
+                    <td colspan="10" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature<span style="color:red">*</span></strong></span></td>
                     @*<td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature2<span style="color:red">*</span></strong></span></td>*@
                 </tr>
                 <tr>
-                    <td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                    <td colspan="10">
+                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new
+                        {@*@class = "form-control input-sm"*@})
                     </td>
                     @*<td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
-                    </td>*@
+                            @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                        </td>*@
                 </tr>
                 <tr style="display:none">
                     <td width="10%"></td>
@@ -300,7 +306,8 @@
 
                 setTimeout(function () {
                     $('select').select2({
-                        matcher: matchCustom
+                        matcher: matchCustom,
+                        width: '100%'
                     });
                 }, 500);
 
@@ -536,7 +543,8 @@
             HabilitaBotaoSalvar();
 
             $('select').select2({
-                matcher: matchCustom
+                matcher: matchCustom,
+                width: '100%'
             });
 
         });
