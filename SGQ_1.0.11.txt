@@ -666,3 +666,10 @@ SET IDENTITY_INSERT Pa_Planejamento OFF
 END
 GO
 
+
+IF COL_LENGTH('ParEvaluationSchedule','ParEvaluationXDepartmentXCargo_Id') IS NULL
+    BEGIN
+	
+		alter table ParEvaluationSchedule add ParEvaluationXDepartmentXCargo_Id int null;
+    END
+GO
