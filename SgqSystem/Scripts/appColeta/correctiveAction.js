@@ -11,6 +11,8 @@
 
     //Instancio o Level01.
     var level01 = $('.level1[id=' + level01Id + ']');
+	
+	var haveReaudit = $(level01).attr('reaudit') == "true";
 
     var correctiveActionModal = $('#correctiveActionModal');
 
@@ -30,7 +32,7 @@
     var ConsolidationResult = $('.ResultsConsolidation .Resultlevel2[level1id=' + level01.attr('id') + '][havecorrectiveaction=true][unitid=' +
         $('.App').attr('unidadeid') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']:first');
 
-    if (isEUA == true) { //Só serve para CCA e CFF
+    if (isEUA == true && haveReaudit) { //Só serve para CCA e CFF
         ConsolidationResult = $('.ResultsConsolidation .Resultlevel2[level1id=' + level01.attr('id') + '][havecorrectiveaction=true][unitid=' +
             $('.App').attr('unidadeid') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][havereaudit=true]:last');
     }
@@ -78,72 +80,6 @@
     //     falhas+= getResource("defectsTotal")+": "+ ConsolidationResult.attr('defectstotall2');
     //     $('#DescriptionFailure').val(falhas);
     // });
-
-    if (level01.attr('hasgrouplevel2') == 'true')
-        descreveFalhaCFF(level01);
-    else
-        descreveFalhaOffline(level01);
-
-    $('#DescriptionFailure').focus();
-}
-
-function correctiveActionOpenPesoHB(level01Id, date, shift, period) {
-
-    //Seleciona o Id do Level01 caso não tenha recebido nenhum parametro.
-    level01Id = level01Id ? level01Id : $('.level1.selected').attr('id');
-    //Seleciona a data caso não tenha recebido nenhum parametro.
-    date = date ? date : getCollectionDate();
-    //Seleciona o shift caso não tenha recebido nenhum parametro.
-    shift = shift ? shift : $('.App').attr('shift');
-    //period = period ? period : $('.App').attr('period');
-    period = period ? period : 1;
-
-    //Instancio o Level01.
-    var level01 = $('.level1[id=' + level01Id + ']');
-
-    var correctiveActionModal = $('#correctiveActionModal');
-
-    //Shit e Period estão pegando do APP para o Brasil, mas para o os EUA tem que pegar da consolidação
-
-    correctiveActionModal.attr('unidadeid', $('.App').attr('unidadeid'))
-    correctiveActionModal.attr('auditorid', $('.App').attr('userid'))
-    correctiveActionModal.attr('shift', shift)
-    correctiveActionModal.attr('period', period)
-    correctiveActionModal.attr('period', period)
-
-    $('#CorrectiveActionTaken').children('#datetime').text(dateTimeWithMinutes());
-    $('#CorrectiveActionTaken').children('#auditor').text(userlogado[0].getAttribute('username')); //Colocar o Usuário Atual
-    $('#CorrectiveActionTaken').children('#shift').text($('#shift option[value=' + shift + ']').text());
-    $('#AuditInformation').children('#auditText').text(level01.children('.levelName').text());
-
-    // var ConsolidationResult = $('.ResultsConsolidation .Resultlevel2[level1id=' + level01.attr('id') + '][havecorrectiveaction=true][unitid=' +
-    //     $('.App').attr('unidadeid') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']:first');
-
-    // ConsolidationResult.addClass('selected');
-
-    $('#AuditInformation').children('#starttime').text(dateTimeWithMinutes().slice(0, 16));
-    correctiveActionModal.attr('level01id', $(_level1).attr('id'));
-    correctiveActionModal.attr('level02id', $(_level2).attr('id'));
-	correctiveActionModal.attr('evaluationnumber', $(_level2).attr('evaluatecurrent'));
-    // correctiveActionModal.attr('collectionlevel2_id', ConsolidationResult.attr('collectionlevel2_id_correctiveaction'));
-
-    if (period) {
-        correctiveActionModal.attr('period', period);
-    }
-
-    correctiveActionModal.attr('parfrequency_id', level01.attr('parfrequency_id'));
-    //verificar data retroativa
-    correctiveActionModal.attr('date', dateTimeWithMinutes());
-
-    $('#AuditInformation').children('#correctivePeriod').text($('#period option[value=' + period + ']').text());
-
-    $('.overlay').show();
-    $('body').addClass('overflowNo');
-    correctiveActionModal.removeClass('hide');
-
-    correctiveActionModal.fadeIn("fast");
-
-    $('#DescriptionFailure, #ImmediateCorrectiveAction, #ProductDisposition, #PreventativeMeasure').val("");
 
     if (level01.attr('hasgrouplevel2') == 'true')
         descreveFalhaCFF(level01);
