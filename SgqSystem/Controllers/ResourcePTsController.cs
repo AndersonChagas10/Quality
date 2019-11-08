@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers
         [Route("AtualizarResource")]
         public ActionResult AtualizarResource()
         {
-            Dominio.Seed.Seed.SetSeedValues(isEN:DTO.GlobalConfig.LanguageBrasil);
+            Dominio.Seed.Seed.SetSeedValues(isEN:DTO.GlobalConfig.LanguageEUA);
             return RedirectToAction("Index", "ResourcePTs");
         }
 

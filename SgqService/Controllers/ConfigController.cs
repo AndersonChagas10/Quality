@@ -11,12 +11,12 @@ namespace SgqService.Controllers
     {
         public String UpdateAppScripts()
         {
-            Dominio.Seed.Seed.SetSeedValues(isEN: GlobalConfig.LanguageBrasil, runSetSeed: true);
+            Dominio.Seed.Seed.SetSeedValues(isEN: GlobalConfig.LanguageEUA, runSetSeed: true);
             return "Atualizado scripts do banco";
         }
         public String UpdateDicionarioEstatico()
         {
-            Dominio.Seed.Seed.SetSeedValues(isEN: GlobalConfig.LanguageBrasil, runSetSeed: true);
+            Dominio.Seed.Seed.SetSeedValues(isEN: GlobalConfig.LanguageEUA, runSetSeed: true);
             return "Atualizado dicionario estático";
         }
     }
