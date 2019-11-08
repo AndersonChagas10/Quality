@@ -241,9 +241,10 @@
 
                     @foreach (var item in lista)
                     {
-                        <div class="col-xs-12 item-menu">
-                            <a href="@Url.Content(item.Url)">@item.Name </a>
-                        </div>
+                        if (item.Url != null)
+                        {
+                            <div class="col-xs-12 item-menu"><a href="@Url.Content(item.Url)">@item.Name</a></div>
+                        }
                     }
 
                 </div>
@@ -256,7 +257,10 @@
 
                     @foreach (var item in lista)
                     {
-                        <div class="col-xs-12 item-menu"><a href="@Url.Content(item.Url)">@item.Name</a></div>
+                        if (item.Url != null)
+                        {
+                            <div class="col-xs-12 item-menu"><a href="@Url.Content(item.Url)">@item.Name</a></div>
+                        }
                     }
 
                 </div>
@@ -270,7 +274,10 @@
 
                     @foreach (var item in lista)
                     {
-                        <div class="col-xs-12 item-menu"><a href="@Url.Content(item.Url)">@item.Name</a></div>
+                        if (item.Url != null)
+                        {
+                            <div class="col-xs-12 item-menu"><a href="@Url.Content(item.Url)">@item.Name</a></div>
+                        }
                     }
 
                 </div>
@@ -284,7 +291,10 @@
 
                     @foreach (var item in lista)
                     {
-                        <div class="col-xs-12 item-menu"><a href="@Url.Content(item.Url)">@item.Name</a></div>
+                        if (item.Url != null)
+                        {
+                            <div class="col-xs-12 item-menu"><a href="@Url.Content(item.Url)">@item.Name</a></div>
+                        }
                     }
                 </div>
 
