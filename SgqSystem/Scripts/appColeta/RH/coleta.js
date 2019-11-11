@@ -940,25 +940,21 @@ function getCollectionHeaderFields() {
 }
 
 function ColetasIsValid() {
-    var errorCount = 0;
-    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
-        var data = $(o);
+    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
+    for (var i = 0; i < linhasDaColeta.length; i++) {
+        var data = linhasDaColeta[i];
         if ($(data).attr('data-conforme-na') != "") {
             if ($(data).attr('data-conforme') == ""
                 || $(data).attr('data-conforme') == null
                 || $(data).attr('data-conforme') == "undefined") {
                 openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
                 mostraPerguntasObrigatorias(data);
-                errorCount++;
                 closeMensagem(2000);
+                return false;
             }
         }
-    });
-    if (errorCount > 0)
-        return false;
-    else
-        return true;
-  
+    }
+    return true;
 }
 
 function mostraPerguntasObrigatorias(data) {
