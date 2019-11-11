@@ -18,16 +18,7 @@ namespace SgqSystem.Controllers
         // GET: ParModules
         public ActionResult Index()
         {
-           
-            try
-            {
-                return View(db.ParModule.ToList());
-            }
-            catch (Exception ex)
-            {
-                DTO.CreateLog.CreateErrorLog(ex);
-                return null;
-            }
+            return View(db.ParModule.ToList());
         }
     
 

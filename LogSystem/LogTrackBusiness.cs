@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogSystem
 {
-    public static class LogTrackBusiness
+    public class LogTrackBusiness : LogSystem
     {
 
         public static void Register(object obj, int json_id, string table_name, int userSgq_Id)

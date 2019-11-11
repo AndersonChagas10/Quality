@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LogErrorBusiness .cs" />
+    <Compile Include="LogSystem.cs" />
     <Compile Include="LogTrackBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -59,6 +61,10 @@
     <ProjectReference Include="..\Dominio\Dominio.csproj">
       <Project>{777d8e88-0d52-446a-bc77-2f50a7d936e5}</Project>
       <Name>Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
+      <Name>Helper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
