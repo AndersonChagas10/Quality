@@ -463,7 +463,24 @@ function techinicalSignatureLogin(user) {
     });
 }
 
+$(document).on('click', '#correctiveAction', function (e) {
+    if ($("#correctiveAction").is(':checked')) {
+        $("#PreventativeMeasure").val($("#mensagemPadrao").text());
+        $("#PreventativeMeasure").attr('readonly', true);
+    } else {
+        $("#PreventativeMeasure").removeAttr('readonly');
+        $("#PreventativeMeasure").val("");
+    }
+});
+
 $(document).on('click', '#btnSendCorrectiveAction', function (e) {
+
+    var techinicalSignature;
+    if ($("#divSelectSupervisor").is(':visible')) {
+         techinicalSignature = $('#TechinicalSignature :selected').val(); 
+    } else {
+         techinicalSignature = $('.TechinicalSignature').attr('userid');
+    }
 
     var message = '';
     var descriptionFailure = $('#DescriptionFailure').val();
@@ -471,9 +488,9 @@ $(document).on('click', '#btnSendCorrectiveAction', function (e) {
     var productDisposition = $('#ProductDisposition').val();
     var preventativeMeasure = $('#PreventativeMeasure').val();
     var slaugtherSignature = $('.SlaugtherSignature').attr('userid');
-    var techinicalSignature = $('.TechinicalSignature').attr('userid');
     var unidadeid = $('.App').attr('unidadeid');
     var auditorid = $('.App').attr('userid');
+    var horaLiberacao = $("#datetimeTechinicalHour").val();
 
     if ($('.App').attr('local') == "eua" || $('.App').attr('local') == "canada") {
         if (slaugtherSignature == null) {
@@ -521,7 +538,8 @@ $(document).on('click', '#btnSendCorrectiveAction', function (e) {
     correctiveAction.attr('auditorid', auditorid);
     correctiveAction.attr('date', date);
     correctiveAction.attr('shift', shift);
-    correctiveAction.attr('period', period)
+    correctiveAction.attr('period', period);
+    correctiveAction.attr('DatetimeTechinicalHour', horaLiberacao); //datetimeTechinicalHour
 
 
     //    correctiveAction.attr('level01id', level01Result.attr('level01id'))
@@ -638,7 +656,8 @@ function sendCorrectiveActionOnLine() {
                 "ImmediateCorrectiveAction": escape(correctiveAction.children('.immediateCorrectiveAction').html()),
                 "ProductDisposition": escape(correctiveAction.children('.productDisposition').html()),
                 "PreventativeMeasure": escape(correctiveAction.children('.preventativeMeasure').html()),
-                "reauditnumber": correctiveAction.attr('reauditnumber') == undefined ? 0 : correctiveAction.attr('reauditnumber')
+                "reauditnumber": correctiveAction.attr('reauditnumber') == undefined ? 0 : correctiveAction.attr('reauditnumber'),
+                "DatetimeTechinicalHour": correctiveAction.attr('datetimeTechinicalHour') == undefined ? 0 : correctiveAction.attr('datetimeTechinicalHour')
             };
 
             $.ajax({
