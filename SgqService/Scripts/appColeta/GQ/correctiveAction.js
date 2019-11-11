@@ -611,6 +611,9 @@ $(document).on('click', '#btnSendCorrectiveAction', function (e) {
     removeTechnicalSignature();
 
     $('#btnCA').addClass('hide');
+
+    $("#correctiveAction").trigger('click');
+    $("#datetimeTechinicalHour").val("");
 });
 
 function sendCorrectiveActionOnLine() {
