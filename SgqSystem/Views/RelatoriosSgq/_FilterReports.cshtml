@@ -90,27 +90,11 @@
                                 </div>
                             }
 
-                            @if (ViewBag.ShowParStructure == true)
-                            {
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label><strong>Estruturas</strong></label>
-                                        <button type="button"
-                                                data-filtroselect3-btn
-                                                data-filtroselect3-select="select[name=parStructure_Ids]"
-                                                data-filtroselect3-url="@Url.Action("GetFilteredParStructure", "api/Formulario")">
-                                            Abrir
-                                        </button>
-                                        <select class="form-control" name="parStructure_Ids" multiple></select>
-                                    </div>
-                                </div>
-                            }
-
                             @if (ViewBag.ShowParStructureGroup == true)
                             {
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label><strong>Grupo de Regional</strong></label>
+                                        <label><strong>Estruturas</strong></label>
                                         <button type="button"
                                                 data-filtroselect3-btn
                                                 data-filtroselect3-select="select[name=parStructureGroup_Ids]"
@@ -118,6 +102,22 @@
                                             Abrir
                                         </button>
                                         <select class="form-control" name="parStructureGroup_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParStructure == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Grupo de Regional</strong></label>
+                                        <button type="button"
+                                                data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parStructure_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParStructure", "api/Formulario")">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parStructure_Ids" multiple></select>
                                     </div>
                                 </div>
                             }

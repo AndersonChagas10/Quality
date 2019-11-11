@@ -1,0 +1,11 @@
+﻿<div class="col-sm-12" style="margin-top:10px;">
+    <select name="selectParReasonEdit" class="form-control">
+        @foreach (var item in (List<Dominio.ParReason>)ViewBag.ParReasonEdit)
+        {
+            <option value="@item.Id">@item.Motivo</option>
+        }
+    </select>
+</div>
+<div class="col-sm-12" style="margin-top:10px;margin-bottom:10px;">
+    <textarea class="form-control" name="textareaParReasonEdit" style="resize:none;"></textarea>
+</div>

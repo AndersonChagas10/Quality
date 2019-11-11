@@ -140,20 +140,25 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("Save")]
-        public Result_Level3DTO SaveResultLevel3([FromBody] Result_Level3DTO resultLevel3)
+        [Route("Save/{userSgq_Id}/{parReason_Id}/{motivo}")]
+        public Result_Level3DTO SaveResultLevel3([FromUri] int userSgq_Id, int parReason_Id, string motivo, [FromBody] Result_Level3DTO resultLevel3)
         {
             var parLevel3Value = new ParLevel3Value();
             using (var databaseSgq = new SgqDbDevEntities())
             {
+                databaseSgq.Configuration.LazyLoadingEnabled = false;
                 var resultlevel3 = databaseSgq.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
+
+                LogSystem.LogTrackBusiness.Register(resultlevel3, resultlevel3.Id, "Result_Level3", userSgq_Id, parReason_Id, motivo);
+
                 var parLevel3 = databaseSgq.ParLevel3.Where(x => x.Id == resultlevel3.ParLevel3_Id).FirstOrDefault();
                 parLevel3Value = databaseSgq.ParLevel3Value.Where(x => x.ParLevel3_Id == parLevel3.Id).FirstOrDefault();
                 var parInputTypeValues = databaseSgq.ParInputTypeValues.Where(x => x.ParLevel3Value_Id == parLevel3Value.Id && resultLevel3.Value == x.Intervalo.ToString()).FirstOrDefault();
                 if (parLevel3Value.ParLevel3InputType_Id == 8)
                     resultLevel3.ValueText = parInputTypeValues.Valor.ToString();
-
             }
+
+            //[TODO] Inserir registro de log de edição (salvar resultlevel3_Id == resultLevel3.Id)
             var query = resultLevel3.CreateUpdate();
             try
             {
@@ -224,6 +229,12 @@ namespace SgqSystem.Controllers.Api
                     if (item.Id > 0)//Update
                     {
                         var original = db.CollectionLevel2XParHeaderField.FirstOrDefault(c => c.Id == item.Id);
+
+                        if (original.Value == item.Value)
+                            continue;
+                            
+                        //[TODO] Inserir registro de log de edição
+                        LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderField", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
 
                         if (string.IsNullOrEmpty(item.Value))//Remover
                         {
@@ -387,6 +398,9 @@ namespace SgqSystem.Controllers.Api
 
         public class ListCollectionLevel2XParHeaderField
         {
+            public int ParReason_Id { get; set; }
+            public string Motivo { get; set; }
+            public int UserSgq_Id { get; set; } //Quem editou
             public List<CollectionLevel2XParHeaderField> HeaderField { get; set; }
         }
     }

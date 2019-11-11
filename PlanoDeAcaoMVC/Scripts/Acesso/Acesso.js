@@ -24,26 +24,25 @@ var modal = bootbox.dialog({
               }
               return false;
           }
-      },
+      }
     ],
     show: false,
     onEscape: function () {
-        //modal.modal("hide");
     },
-    closeButton: false,
+    closeButton: false
 });
+
 modal.attr("id", "formLogin");
 modal.modal("show");
 /*Config Modal END*/
 
 /*Trigger*/
 function checkSession() {
+
     if (!getCookie('webControlCookie')) {
         modal.modal("show");
-        //clearInterval(checkSessionControl);
     }
-    //else
-    //    console.log('logado')
+
 }
 /*Trigger END*/
 
@@ -53,31 +52,35 @@ var urlMaster = '@Html.Raw(Conn.SgqHost)';
 var isSgqIntegrado = '@Html.Raw(Conn.isSgqIntegrado)';
 
 function loginPaSgq(user) {
+
     $.LoadingOverlay('show');
+
     if (isSgqIntegrado) {
         $.post(urlMaster, user, function (r) {
-            $.LoadingOverlay('hide')
+
+            $.LoadingOverlay('hide');
+
             if (r.Mensagem == null && r.MensagemExcecao == null && r.Retorno != null) {
-                //console.log(r);
+
                 modal.modal("hide");
                 createCookie(r.Retorno);
                 identy = user;
             }
             else {
+
                 $('#formLogin #resultado').text('Usuário ou Senha inválidos.').fadeIn().fadeOut(2000, "swing");
-                console.log(r);
             }
         });
-        //} else {
-
-        //}
     }
 }
 
 function createUpdateCookie(dto) {
+
     $.post(urlCookie, dto, function (r, a, xhr) {
-        //console.log(r)
+
         xhr.getResponseHeader('Set-Cookie');
         checkSessionControl = setInterval(checkSession, 3000);
+
     });
+
 }

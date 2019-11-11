@@ -51,7 +51,7 @@
                                 </div>
 
                                 <div class="pull-right" style="padding:15px">
-                                    @using (Html.BeginForm("Index", "ParDepartments", FormMethod.Get))
+                                    @using (Html.BeginForm("Index", "ParDepartmentsRH", FormMethod.Get))
                                     {
                                         <label for="filtro">Buscar</label>
                                         <input id="filtro" name="filtro" value="@ViewBag.filtro" />
@@ -60,7 +60,7 @@
                                 </div>
 
 
-                                <table class="table" id="tabelaDepartamentos">
+                                <table class="table dataTable" id="tabelaDepartamentos">
                                     <thead>
                                         <tr>
                                             <th>
@@ -76,7 +76,6 @@
                                                 @Resources.Resource.is_active
                                             </th>
                                             <th>
-                                                @Resources.Resource.action
                                             </th>
 
                                         </tr>
@@ -85,14 +84,26 @@
                                         @foreach (var item in Model)
                                         {
                                             <tr>
+
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                    @if ( (item.Parent_Id != 0 && item.Parent_Id != null) || item.Hash != null)
+                                                    {
+                                                        @Html.Raw(item.Hash + " - " + item.Id + " / " + item.Name)
+                                                        @*@Html.DisplayFor(modelItem => item.Hash + "-").ToString() @Html.DisplayFor(modelItem => item.Id) @Html.DisplayFor(modelItem => item.Name)*@
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.Raw(item.Id + " / " + item.Name)
+                                                    }
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Description)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.ParDepartmentPai.Name)
+                                                    @if (item.ParDepartmentPai != null)
+                                                    {
+                                                        @Html.Raw(item.ParDepartmentPai.Id + " / " + item.ParDepartmentPai.Name)
+                                                    }
                                                 </td>
                                                 <td>
                                                     @*@Html.Raw(item.Active ? Resources.Resource.yes : Resources.Resource.no)*@
@@ -100,6 +111,7 @@
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.details as string, "Details", new { id = item.Id }, new { @class = "btn btn-info" })
                                                     @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |*@
                                                     @*@Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })*@
                                                 </td>
@@ -109,7 +121,7 @@
                                 </table>
                                 @*Html.PagedListPager(Model, page => Html.ActionWithParams("Index", new { page }))*@
                                 <div class="pull-right" style="padding: 25px;">
-                                    @Html.PagedListPager(Model, page => Url.Action("Index", "ParDepartments", new { page = page, filtro = ViewBag.filtro }))
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", "ParDepartmentsRH", new { page = page, filtro = ViewBag.filtro }))
                                 </div>
                             </div>
                         </div>

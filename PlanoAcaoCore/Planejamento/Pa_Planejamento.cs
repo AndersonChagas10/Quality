@@ -351,7 +351,7 @@ FROM (SELECT
 	   ,Pl2.Responsavel_Projeto
 	   ,Pl2.UnidadeDeMedida_Id
 	   ,Pl2.IsTatico
-	   ,Pl2.Tatico_Id
+	   ,IIF(Pl2.Tatico_Id IS NULL, Pl2.Id, Pl2.Tatico_Id) as Tatico_Id
 	   ,Pl1.IsFta
 	   ,Pl2.TemaProjeto_Id
 	   ,Pl2.TipoProjeto_Id
@@ -505,7 +505,7 @@ LEFT JOIN Pa_Dimensao DIME
 
                 if (acoesTmp.Count() > 0)
                 {
-                    foreach (var k in acoesTmp)
+                    foreach (var acao in acoesTmp)
                     {
                         var planTemp = new Pa_Planejamento();
                         foreach (var pt in planTemp.GetType().GetProperties())
@@ -518,20 +518,35 @@ LEFT JOIN Pa_Dimensao DIME
                                 //throw;
                             }
 
-                        if (k.QuandoInicio != DateTime.MinValue)
-                            k._QuandoInicio = k.QuandoInicio.ToString("dd/MM/yyyy");
+                        if (acao.QuandoInicio != DateTime.MinValue)
+                            acao._QuandoInicio = acao.QuandoInicio.ToString("dd/MM/yyyy");
                         else
-                            k._QuandoFim = string.Empty;
+                            acao._QuandoFim = string.Empty;
 
-                        if (k.QuandoFim != DateTime.MinValue)
-                            k._QuandoFim = k.QuandoFim.ToString("dd/MM/yyyy");
+                        if (acao.QuandoFim != DateTime.MinValue)
+                            acao._QuandoFim = acao.QuandoFim.ToString("dd/MM/yyyy");
                         else
-                            k._QuandoFim = string.Empty;
+                            acao._QuandoFim = string.Empty;
 
-                        if (k.QuantoCusta > 0)
-                            k._QuantoCusta = "R$ " + k.QuantoCusta.ToString("0.##");
+                        if (acao.QuantoCusta > 0)
+                            acao._QuantoCusta = "R$ " + acao.QuantoCusta.ToString("0.##");
 
-                        planTemp.Acao = k;
+                        if (!string.IsNullOrEmpty(acao.ParDepartments_Hash))
+                        {
+                            var departamentos_id = acao.ParDepartments_Hash.Split('-').ToList();
+                            var departamentosNames = acao.ParDepartmentsName.Split('|').ToList();
+
+                            acao.SecaoName = departamentosNames.Last();
+                            acao.Secao_Id = Int32.Parse(departamentos_id.Last());
+
+                            departamentos_id.RemoveAt(departamentos_id.Count - 1);
+                            departamentosNames.RemoveAt(departamentos_id.Count - 1);
+
+                            acao.ParDepartmentsName = string.Join("|", departamentosNames);
+                            acao.ParDepartments_Hash = string.Join("-", departamentos_id);
+                        }
+
+                        planTemp.Acao = acao;
                         retorno.Add(planTemp);
                     }
                 }
@@ -668,7 +683,7 @@ LEFT JOIN Pa_Dimensao DIME
                                 break;
                         }
 
-                        k._StatusName = k._StatusName ?? ""; 
+                        k._StatusName = k._StatusName ?? "";
                         planTemp.Acao = k;
                         retorno.Add(planTemp);
                     }
@@ -681,12 +696,12 @@ LEFT JOIN Pa_Dimensao DIME
                 }
             }
 
-            retorno = retorno.Where(r => 
+            retorno = retorno.Where(r =>
                 //(statusAberto.Contains(r.Acao.Status) && r.DataFim <= dtFim) //Ações abertas com projetos com data final menor que a selecionada
                 //|| (statusFechado.Contains(r.Acao.Status) && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date <= dtFim && r.Acao._Acompanhamento.LastOrDefault()?.AddDate.Date >= dtInit)
                 //|| (statusFechado.Contains(r.Acao.Status) && r.DataFim <= dtFim && r.DataFim >= dtInit) //Ações fechadas com projetos ainda em andamento
                 (r.Acao.Id == 0 //Projetos sem ações
-                || r.EmDia) && r.Acao.Status != (int) Enums.Status.Cancelado //Projetos que não estão em dia
+                || r.EmDia) && r.Acao.Status != (int)Enums.Status.Cancelado //Projetos que não estão em dia
             ).ToList();
 
             //retorno = retorno.Where(r => r.Acao.QuandoFim <= dtFim && r.Acao.QuandoInicio >= dtInit).ToList();

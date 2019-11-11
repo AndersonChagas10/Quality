@@ -1,7 +1,7 @@
 ﻿@model Dominio.ParDepartment
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Resources.Resource.department;
 }
 
 <div class="page-content-wrapper">
@@ -14,11 +14,11 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParDepartments")">@Resources.Resource.departments</a>
+                    <a href="@Url.Action("Index", "ParDepartmentsRH")">@Resources.Resource.departments</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.department</span>
+                    <span>@Resources.Resource.details </span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -32,12 +32,12 @@
         <!-- END PAGE BAR -->
         <!-- END PAGE HEADER-->
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-4">
                 <div class="portlet light bordered">
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.department</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.details @Resources.Resource.department</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -79,6 +79,22 @@
                                         </dd>
 
                                         <dt>
+                                           Grupo de Centro de Custo
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.ParDepartmentGroup.Name)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.unit
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.ParCompany.First().Name)
+                                        </dd>
+
+                                        <dt>
                                             @Resources.Resource.is_active
                                         </dt>
 
@@ -89,19 +105,28 @@
                                     </dl>
                                 </div>
                                 <p>
-                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = Model.Id }) |
-                                    @Html.ActionLink(Resources.Resource.back_to_list as string, "Index")
+                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = Model.Id }, new { @class = "btn btn-success" })
+                                    @Html.ActionLink(Resources.Resource.back_to_list as string, "Index", null, new { @class = "btn btn-default" })
                                 </p>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-xs-8">
+                @if (Model.ParDepartmentFilho.Count > 0)
+                {
+                    @Html.Partial("~/Views/ParDepartmentsRH/Filhos.cshtml", Model.ParDepartmentFilho)
+                }
+
+                @*@Html.Partial("~/Views/ParDepartmentsRH/ParDepartmentXCompany.cshtml", Model.ParCompany)*@
+            </div>
         </div>
+ 
     </div>
     <!-- END CONTENT BODY -->
 </div>
+
 
 <script>
 

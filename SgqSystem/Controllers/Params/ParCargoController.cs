@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Dominio;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Dominio;
 
 namespace SgqSystem.Controllers.Params
 {
@@ -16,7 +15,7 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult Index()
         {
-           
+
             return View(db.ParCargo.ToList());
         }
 
@@ -52,15 +51,18 @@ namespace SgqSystem.Controllers.Params
                 parCargo.AddDate = DateTime.Now;
                 db.ParCargo.Add(parCargo);
 
-                foreach (var item in parCargo.ParDepartment_Ids)
+                if (parCargo.ParDepartment_Ids != null)
                 {
-                    db.ParCargoXDepartment.Add(new ParCargoXDepartment()
+                    foreach (var item in parCargo.ParDepartment_Ids)
                     {
-                        AddDate = DateTime.Now,
-                        ParDepartment_Id = item,
-                        ParCargo_Id = parCargo.Id,
-                        IsActive = true
-                    });
+                        db.ParCargoXDepartment.Add(new ParCargoXDepartment()
+                        {
+                            AddDate = DateTime.Now,
+                            ParDepartment_Id = item,
+                            ParCargo_Id = parCargo.Id,
+                            IsActive = true
+                        });
+                    }
                 }
 
                 db.SaveChanges();
@@ -124,15 +126,18 @@ namespace SgqSystem.Controllers.Params
                     item.IsActive = false;
                 }
 
-                foreach (var item in parCargo.ParDepartment_Ids)//Insere novos
+                if (parCargo.ParDepartment_Ids != null)
                 {
-                    db.ParCargoXDepartment.Add(new ParCargoXDepartment()
+                    foreach (var item in parCargo.ParDepartment_Ids)//Insere novos
                     {
-                        AddDate = DateTime.Now,
-                        ParDepartment_Id = item,
-                        ParCargo_Id = parCargo.Id,
-                        IsActive = true
-                    });
+                        db.ParCargoXDepartment.Add(new ParCargoXDepartment()
+                        {
+                            AddDate = DateTime.Now,
+                            ParDepartment_Id = item,
+                            ParCargo_Id = parCargo.Id,
+                            IsActive = true
+                        });
+                    }
                 }
 
                 db.SaveChanges();

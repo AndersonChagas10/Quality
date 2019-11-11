@@ -26,7 +26,7 @@ namespace SgqService
 
             Dominio.Seed.Seed.SetDicionario();
 
-            Dominio.Seed.Seed.SetSeedValues(isPT: GlobalConfig.LanguageBrasil, runSetSeed: bool.Parse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.RunScriptsService ?? "false"));
+            Dominio.Seed.Seed.SetSeedValues(isEN: GlobalConfig.LanguageEUA, runSetSeed: bool.Parse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.RunScriptsService ?? "false"));
         }
     }
 }

@@ -79,5 +79,9 @@ namespace Dominio
         public string UnidadeName { get; set; }
 
         public int? UnidadeDeMedida_Id { get; set; }
+        public string ParDepartments_Hash { get; set; }
+        public string ParDepartmentsName { get; set; }
+        public int? ParCargo_Id { get; set; }
+        public string ParCargoName { get; set; }
     }
 }

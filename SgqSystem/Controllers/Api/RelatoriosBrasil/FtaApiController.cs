@@ -34,7 +34,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 if (isByname)
                     form.unitId = db.ParCompany.FirstOrDefault(r => r.Name.Equals(name)).Id;
                 else
-                    form.unitId = db.ParCompany.FirstOrDefault(r => r.Initials.Equals(name)).Id;
+                    form.unitId = db.ParCompany.FirstOrDefault(r => r.Name.Equals(name)).Id;
 
                 return form;
             }

@@ -17,182 +17,182 @@
         <tbody>
             <tr>
                 <td style="width: 24%;">
-                    @Html.LabelFor(model => model.Diretoria_Id, Resources.Resource.directorship ,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Diretoria_Id, ResourcesPA.Resource.directorship ,htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td style="min-width: 60%;">
-                    @Html.DropDownList("Diretoria_Id", new SelectList(ViewBag.Diretoria, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm required estrategico col-xs-12" })
+                    @Html.DropDownList("Diretoria_Id", new SelectList(ViewBag.Diretoria, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm required estrategico col-xs-12" })
                     @Html.ValidationMessageFor(model => model.Diretoria_Id, "", new { @class = "text-danger" })
                 </td>
                 <td style="width: 16%;"></td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.Gerencia_Id, Resources.Resource.management,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Gerencia_Id, ResourcesPA.Resource.management,htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownListFor(model => model.Gerencia_Id, new SelectList(ViewBag.Gerencia, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm required tatico " })
+                    @Html.DropDownListFor(model => model.Gerencia_Id, new SelectList(ViewBag.Gerencia, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm required tatico " })
                     @Html.ValidationMessageFor(model => model.Gerencia_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this)">@Resources.Resource.manage</button>
+                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this)">@ResourcesPA.Resource.manage</button>
                 </td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.Coordenacao_Id, Resources.Resource.coordination,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Coordenacao_Id, ResourcesPA.Resource.coordination,htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.DropDownList("Coordenacao_Id", new SelectList(ViewBag.Coordenacao, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm" })
+                    @Html.DropDownList("Coordenacao_Id", new SelectList(ViewBag.Coordenacao, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
                     @Html.ValidationMessageFor(model => model.Coordenacao_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'Gerencia_Id')">@Resources.Resource.manage</button>
+                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'Gerencia_Id')">@ResourcesPA.Resource.manage</button>
                 </td>
             </tr>
 
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.Missao_Id, Resources.Resource.mission,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Missao_Id, ResourcesPA.Resource.mission,htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("Missao_Id", new SelectList(ViewBag.Missao, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
+                    @Html.DropDownList("Missao_Id", new SelectList(ViewBag.Missao, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
                     @Html.ValidationMessageFor(model => model.Missao_Id, "", new { @class = "text-danger" })
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.Visao_Id, Resources.Resource.view,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Visao_Id, ResourcesPA.Resource.view,htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("Visao_Id", new SelectList(ViewBag.Visao, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
+                    @Html.DropDownList("Visao_Id", new SelectList(ViewBag.Visao, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
                     @Html.ValidationMessageFor(model => model.Visao_Id, "", new { @class = "text-danger" })
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.TemaAssunto_Id, Resources.Resource.theme_subject,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.TemaAssunto_Id, ResourcesPA.Resource.theme_subject,htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.DropDownList("TemaAssunto_Id", new SelectList(ViewBag.TemaAssunto, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm" })
+                    @Html.DropDownList("TemaAssunto_Id", new SelectList(ViewBag.TemaAssunto, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
                     @Html.ValidationMessageFor(model => model.TemaAssunto_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this)">@Resources.Resource.manage</button>
+                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this)">@ResourcesPA.Resource.manage</button>
                 </td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.Dimensao_Id, Resources.Resource.dimension,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Dimensao_Id, ResourcesPA.Resource.dimension,htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownListFor(model => model.Dimensao_Id, new SelectList(ViewBag.Dimensao, "Id", "Name", Model.Dimensao_Id), Resources.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
+                    @Html.DropDownListFor(model => model.Dimensao_Id, new SelectList(ViewBag.Dimensao, "Id", "Name", Model.Dimensao_Id), ResourcesPA.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
                     @Html.ValidationMessageFor(model => model.Dimensao_Id, "", new { @class = "text-danger" })
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.Objetivo_Id, Resources.Resource.guideline,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Objetivo_Id, ResourcesPA.Resource.guideline,htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("Objetivo_Id", new SelectList(ViewBag.Objetivo, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
+                    @Html.DropDownList("Objetivo_Id", new SelectList(ViewBag.Objetivo, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
                     @Html.ValidationMessageFor(model => model.Objetivo_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this, 'Dimensao_Id')">@Resources.Resource.manage</button>
+                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this, 'Dimensao_Id')">@ResourcesPA.Resource.manage</button>
                 </td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.IndicadoresDiretriz_Id, Resources.Resource.indicators_guidelines, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.IndicadoresDiretriz_Id, ResourcesPA.Resource.indicators_guidelines, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.DropDownList("IndicadoresDiretriz_Id", new SelectList(ViewBag.IndicadoresDiretriz, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm" })
+                    @Html.DropDownList("IndicadoresDiretriz_Id", new SelectList(ViewBag.IndicadoresDiretriz, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
                     @Html.ValidationMessageFor(model => model.IndicadoresDiretriz_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this, 'Objetivo_Id')">@Resources.Resource.manage</button>
+                    <button type="button" class="novoItem btn btn-default" onclick="Novo(this, 'Objetivo_Id')">@ResourcesPA.Resource.manage</button>
                 </td>
             </tr>
 
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.Responsavel_Diretriz, Resources.Resource.responsible_guideline, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Responsavel_Diretriz, ResourcesPA.Resource.responsible_guideline, htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("Responsavel_Diretriz", new SelectList(ViewBag.Quem, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
+                    @Html.DropDownList("Responsavel_Diretriz", new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.TipoProjeto_Id, Resources.Resource.type_of_project,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.TipoProjeto_Id, ResourcesPA.Resource.type_of_project,htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("TipoProjeto_Id", new SelectList(ViewBag.TipoProjeto, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm required tatico" })
+                    @Html.DropDownList("TipoProjeto_Id", new SelectList(ViewBag.TipoProjeto, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm required tatico" })
                     @Html.ValidationMessageFor(model => model.TipoProjeto_Id, "", new { @class = "text-danger" })
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.TemaProjeto_Id, Resources.Resource.project_theme,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.TemaProjeto_Id, ResourcesPA.Resource.project_theme,htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("TemaProjeto_Id", new SelectList(ViewBag.TemaProjeto, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm required tatico" })
+                    @Html.DropDownList("TemaProjeto_Id", new SelectList(ViewBag.TemaProjeto, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm required tatico" })
                     @Html.ValidationMessageFor(model => model.TemaProjeto_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
-                    <button type="button" class="btn btn-default" onclick="Novo(this)">@Resources.Resource.manage</button>
+                    <button type="button" class="btn btn-default" onclick="Novo(this)">@ResourcesPA.Resource.manage</button>
                 </td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.Iniciativa_Id, Resources.Resource.project_initiative,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Iniciativa_Id, ResourcesPA.Resource.project_initiative,htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("Iniciativa_Id", new SelectList(ViewBag.Iniciativa, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm  required tatico " })
+                    @Html.DropDownList("Iniciativa_Id", new SelectList(ViewBag.Iniciativa, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm  required tatico " })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this);">@Resources.Resource.manage</button>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.IndicadoresDeProjeto_Id, Resources.Resource.indicators_project_initiative, htmlAttributes: new { @class = "control-label " })
-
-                </td>
-                <td>
-                    @Html.DropDownList("IndicadoresDeProjeto_Id", new SelectList(ViewBag.IndicadoresDeProjeto, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm   " })
-                </td>
-                <td>
-                    <button type="button" title="Gerenciar Indicadores do Projeto / Iniciativa" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'Iniciativa_Id')">@Resources.Resource.manage</button>
+                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this);">@ResourcesPA.Resource.manage</button>
                 </td>
             </tr>
 
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.ObjetivoGerencial_Id, Resources.Resource.management_objective, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.IndicadoresDeProjeto_Id, ResourcesPA.Resource.indicators_project_initiative, htmlAttributes: new { @class = "control-label " })
+
+                </td>
+                <td>
+                    @Html.DropDownList("IndicadoresDeProjeto_Id", new SelectList(ViewBag.IndicadoresDeProjeto, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm   " })
+                </td>
+                <td>
+                    <button type="button" title="Gerenciar Indicadores do Projeto / Iniciativa" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'Iniciativa_Id')">@ResourcesPA.Resource.manage</button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ObjetivoGerencial_Id, ResourcesPA.Resource.management_objective, htmlAttributes: new { @class = "control-label " })
                     @*<i style="color:red">*</i>*@
                 </td>
                 <td>
-                    @Html.DropDownList("ObjetivoGerencial_Id", new SelectList(ViewBag.ObjetivoGerencial, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm tatico" })
+                    @Html.DropDownList("ObjetivoGerencial_Id", new SelectList(ViewBag.ObjetivoGerencial, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm tatico" })
                 </td>
                 <td>
-                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'IndicadoresDeProjeto_Id')">@Resources.Resource.manage</button>
+                    <button type="button" class="novoItem btn btn-default novoTatico" onclick="Novo(this, 'IndicadoresDeProjeto_Id')">@ResourcesPA.Resource.manage</button>
                 </td>
             </tr>
 
@@ -219,17 +219,17 @@
                 </tr>*@
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.UnidadeDeMedida_Id, Resources.Resource.unit_measurement, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.UnidadeDeMedida_Id, ResourcesPA.Resource.unit_measurement, htmlAttributes: new { @class = "control-label " })
 
                 </td>
                 <td>
-                    @Html.DropDownList("UnidadeDeMedida_Id", new SelectList(ViewBag.UnidadeMedida, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm UnidadeDeMedidaTatico" })
+                    @Html.DropDownList("UnidadeDeMedida_Id", new SelectList(ViewBag.UnidadeMedida, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm UnidadeDeMedidaTatico" })
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.ValorDe, Resources.Resource.value_of, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.ValorDe, ResourcesPA.Resource.value_of, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @Html.EditorFor(model => model._ValorDe, new { htmlAttributes = new { @class = "form-control ValorDe", @autocomplete = "off" } })
@@ -239,7 +239,7 @@
             <tr>
                 <td>
 
-                    @Html.LabelFor(model => model.ValorPara, Resources.Resource.value_for, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.ValorPara, ResourcesPA.Resource.value_for, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @Html.EditorFor(model => model._ValorPara, new { htmlAttributes = new { @class = "form-control ValorPara", @autocomplete = "off" } })
@@ -249,7 +249,7 @@
 
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.DataInicio, Resources.Resource.start_date_project_initiative, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.DataInicio, ResourcesPA.Resource.start_date_project_initiative, htmlAttributes: new { @class = "control-label" })
                     <i style="color:red">*</i>
                 </td>
                 <td>
@@ -260,7 +260,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.DataFim, Resources.Resource.date_end_project_initiative, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.DataFim, ResourcesPA.Resource.date_end_project_initiative, htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
@@ -272,11 +272,11 @@
 
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.Responsavel_Projeto, Resources.Resource.responsible_project_initiative, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Responsavel_Projeto, ResourcesPA.Resource.responsible_project_initiative, htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
-                    @Html.DropDownList("Responsavel_Projeto", new SelectList(ViewBag.Quem, "Id", "Name"), Resources.Resource.select2, new { @class = "form-control input-sm required tatico " })
+                    @Html.DropDownList("Responsavel_Projeto", new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm required tatico " })
                 </td>
                 <td></td>
             </tr>

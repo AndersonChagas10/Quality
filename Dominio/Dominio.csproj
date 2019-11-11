@@ -32,6 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AppScript.cs" />
+    <Compile Include="AppViewModel\ComponenteGenericoValoresViewModel.cs" />
+    <Compile Include="AppViewModel\ComponenteGenericoValorViewModel.cs" />
+    <Compile Include="AppViewModel\ComponenteGenericoViewModel.cs" />
     <Compile Include="AppViewModel\ParCargoXDepartmentAppViewModel.cs" />
     <Compile Include="AppViewModel\ParCargoAppViewModel.cs" />
     <Compile Include="AppViewModel\ParDepartmentAppViewModel.cs" />
@@ -59,11 +62,16 @@
     <Compile Include="CollectionLevel2XCluster.cs" />
     <Compile Include="CollectionLevel2XParCargo.cs" />
     <Compile Include="CollectionLevel2XParDepartment.cs" />
+    <Compile Include="CollectionLevel2XParHeaderFieldGeral.cs" />
     <Compile Include="CollectionLevel2XParReason.cs" />
     <Compile Include="CollectionLevel2XParHeaderField.cs" />
     <Compile Include="ConsolidationLevel1.cs" />
     <Compile Include="ConsolidationLevel2.cs" />
     <Compile Include="CorrectiveAction.cs" />
+    <Compile Include="CrudGenerico\ComponenteGenerico.cs" />
+    <Compile Include="CrudGenerico\ComponenteGenericoColuna.cs" />
+    <Compile Include="CrudGenerico\ComponenteGenericoTipoColuna.cs" />
+    <Compile Include="CrudGenerico\ComponenteGenericoValor.cs" />
     <Compile Include="DicionarioEstatico.cs" />
     <Compile Include="ErrorLog.cs" />
     <Compile Include="DatabaseLog.cs" />
@@ -90,6 +98,7 @@
     <Compile Include="LogAlteracoes.cs" />
     <Compile Include="LogError.cs" />
     <Compile Include="LogJson.cs" />
+    <Compile Include="LogTrack.cs" />
     <Compile Include="LogSgq.cs" />
     <Compile Include="LogSgqGlobal.cs" />
     <Compile Include="Metas.cs" />
@@ -106,6 +115,7 @@
     <Compile Include="ParColaboradorXCargo.cs" />
     <Compile Include="ParAlert.cs" />
     <Compile Include="ParHeaderFieldGeral.cs" />
+    <Compile Include="ParHeaderFieldXComponenteGenerico.cs" />
     <Compile Include="ParLevel3XHelp.cs" />
     <Compile Include="ParLevel3XModule.cs" />
     <Compile Include="ParLevelHeaderField.cs" />
@@ -177,6 +187,10 @@
     <Compile Include="ParStructure.cs" />
     <Compile Include="ParStructureGroup.cs" />
     <Compile Include="Pa_Acao.cs" />
+    <Compile Include="Pa_Acompanhamento.cs" />
+    <Compile Include="Pa_AcompanhamentoXQuem.cs" />
+    <Compile Include="Pa_FTA.cs" />
+    <Compile Include="Pa_Planejamento.cs" />
     <Compile Include="PenalidadeReincidencia.cs" />
     <Compile Include="Perfil.cs" />
     <Compile Include="Period.cs" />

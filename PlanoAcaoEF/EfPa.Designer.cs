@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\gcnun\Source\Repos\sgq_pa2\PlanoAcaoEF\EfPa.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\GRT1\source\repos\sgq_pa\PlanoAcaoEF\EfPa.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

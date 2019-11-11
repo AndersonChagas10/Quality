@@ -18,10 +18,10 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>63128</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -595,6 +595,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\GRT PA.pubxml" />
     <None Include="Properties\PublishProfiles\PA Local.pubxml" />
     <None Include="Properties\PublishProfiles\Plano De Acao .pubxml" />
@@ -1005,6 +1006,7 @@
     <Content Include="Views\Home2\Index2.cshtml" />
     <Content Include="Views\Centauro\Index.cshtml" />
     <Content Include="Views\Shared\_Rodape.cshtml" />
+    <Content Include="Views\Pa_Acao\NewFTASESMT.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
@@ -1012,7 +1014,7 @@
       <Name>ADOFactory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dominio\Dominio.csproj">
-      <Project>{777D8E88-0D52-446A-BC77-2F50A7D936E5}</Project>
+      <Project>{777d8e88-0d52-446a-bc77-2f50a7d936e5}</Project>
       <Name>Dominio</Name>
     </ProjectReference>
     <ProjectReference Include="..\DTO\DTO.csproj">
@@ -1027,10 +1029,6 @@
       <Project>{9f15cca3-ec01-46b6-91ec-3f408e7417bc}</Project>
       <Name>PlanoAcaoCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlanoAcaoEF\PlanoAcaoEF.csproj">
-      <Project>{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}</Project>
-      <Name>PlanoAcaoEF</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -1040,16 +1038,18 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\Resource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
+    <EmbeddedResource Include="App_GlobalResources\Resource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.designer.cs</LastGenOutput>
-    </Content>
+      <CustomToolNamespace>ResourcesPA</CustomToolNamespace>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\Resource.pt-br.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
+    <EmbeddedResource Include="App_GlobalResources\Resource.pt-br.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.pt-br1.designer.cs</LastGenOutput>
-    </Content>
+      <CustomToolNamespace>ResourcesPA</CustomToolNamespace>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -1065,11 +1065,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>false</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59907</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:59907/</IISUrl>
+          <IISUrl>http://localhost/PlanoDeAcaoMVC</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

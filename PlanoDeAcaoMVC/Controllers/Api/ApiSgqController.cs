@@ -18,11 +18,11 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     public class ApiSgqController : BaseApiController
     {
 
-        private PlanoAcaoEF.PlanoDeAcaoEntities db;
+        private Dominio.SgqDbDevEntities db;
 
         public ApiSgqController()
         {
-            db = new PlanoAcaoEF.PlanoDeAcaoEntities();
+            db = new Dominio.SgqDbDevEntities();
             db.Configuration.LazyLoadingEnabled = false;
             db.Configuration.AutoDetectChangesEnabled = false;
         }

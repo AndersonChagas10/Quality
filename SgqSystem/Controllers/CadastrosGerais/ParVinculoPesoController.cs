@@ -156,9 +156,6 @@ namespace SgqSystem.Controllers
 
                 if (ParVinculoPeso.ParGroupParLevel1_Id <= 0)
                     ModelState.AddModelError("ParGroupParLevel1_Id", Resources.Resource.required_field + " " + "Grupo Indicadores");
-
-                if(ParVinculoPeso.EffectiveDateStart > ParVinculoPeso.EffectiveDateEnd)
-                    ModelState.AddModelError("EffectiveDateStart", "O campo Data Efetiva de Início não pode ser maior que a Data de Término!");
             }
             else
             {

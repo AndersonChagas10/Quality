@@ -17,28 +17,31 @@ function openColeta(levels) {
 
             level2.ParLevel3.forEach(function (level3) {
 
-                if (hasLevel3 == false) {
-
-                    if (hasLevel2 == false) {
-                        coleta += getLevel1(level1);
-                        coleta += getParHeaderFieldLevel1(level1);
-                        hasLevel2 = true;
-                    }
-
-                    coleta += getLevel2(level2,level1);
-                    coleta += getParHeaderFieldLevel2(level1, level2);
-                    hasLevel3 = true;
-                }
-
                 var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
 
-                coleta += inputLevel3;
+                if (inputLevel3.length > 0) {
 
-                if (inputLevel3)
-                    if (striped)
-                        striped = false;
-                    else
-                        striped = true;
+                    if (hasLevel3 == false) {
+
+                        if (hasLevel2 == false) {
+                            coleta += getLevel1(level1);
+                            coleta += getParHeaderFieldLevel1(level1);
+                            hasLevel2 = true;
+                        }
+
+                        coleta += getLevel2(level2, level1);
+                        coleta += getParHeaderFieldLevel2(level1, level2);
+                        hasLevel3 = true;
+                    }
+
+                    coleta += inputLevel3;
+
+                    if (inputLevel3)
+                        if (striped)
+                            striped = false;
+                        else
+                            striped = true;
+                }
             });
         });
     });
@@ -49,13 +52,13 @@ function openColeta(levels) {
         '		<div class="col-xs-12">                                                                                                            ' +
         '			<div class="panel panel-primary">                                                                                              ' +
         '			  <div class="panel-heading">                                                                                                  ' +
-        '				<h3 class="panel-title"><a onclick="listarParCargo(currentParCargo_Id);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
+        '				<h3 class="panel-title"><a onclick="validaRota(listarParCargo,currentParCargo_Id);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
         '			  </div>                                                                                                                       ' +
         '			  <div class="panel-body">                                                                                                     ' +
-                        getContador() +
-                        getParHeaderFieldDeparment() +
+        getContador() +
+        getParHeaderFieldDeparment() +
         '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
-                            coleta +
+        coleta +
         '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       ' +
         '				</form>                                                                                                                    ' +
         '			  </div>                                                                                                                       ' +
@@ -71,24 +74,24 @@ function openColeta(levels) {
 }
 
 $('body')
-.off('click','[data-collapse-targeter]')
-.on('click','[data-collapse-targeter]',function(){ 
-	if($(this).attr('data-targeter-collapsed') == 'true'){
-		$('[data-collapse-target^="'+$(this).attr('data-collapse-targeter')+'-"]').removeClass('hide');
-		$('[data-collapse-target="'+$(this).attr('data-collapse-targeter')+'"]').removeClass('hide');
-		$(this).attr('data-targeter-collapsed', false);
-	}else{
-		$('[data-collapse-target^="'+$(this).attr('data-collapse-targeter')+'-"]').addClass('hide');
-		$('[data-collapse-target="'+$(this).attr('data-collapse-targeter')+'"]').addClass('hide');
-		$(this).attr('data-targeter-collapsed', true);
-	}
-});
+    .off('click', '[data-collapse-targeter]')
+    .on('click', '[data-collapse-targeter]', function () {
+        if ($(this).attr('data-targeter-collapsed') == 'true') {
+            $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').removeClass('hide');
+            $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').removeClass('hide');
+            $(this).attr('data-targeter-collapsed', false);
+        } else {
+            $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').addClass('hide');
+            $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').addClass('hide');
+            $(this).attr('data-targeter-collapsed', true);
+        }
+    });
 
 var currentEvaluationSample = {};
 
 function getContador() {
     currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, currentParCargo_Id);
-    return '<div class="col-xs-12 alert-info" style="padding-top:10px;padding-bottom:10px">' +
+    return '<div class="col-xs-12 alert-info" id="divColeta" style="padding-top:10px;padding-bottom:10px">' +
         '	<div class="col-xs-4">       ' +
         '		Avaliação                ' +
         '	</div>                       ' +
@@ -112,15 +115,15 @@ function getContador() {
 }
 
 function getLevel1(level1) {
-    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="'+level1.Id+'"><small>' + level1.Name + '</small></div>';
+    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><small>' + level1.Name + '</small></div>';
 }
 
-function getLevel2(level2,level1) {
-    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="'+level1.Id+'" data-collapse-targeter="'+level1.Id+'-'+level2.Id+'"><small>' + level2.Name + '</small></div>';
+function getLevel2(level2, level1) {
+    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="' + level1.Id + '" data-collapse-targeter="' + level1.Id + '-' + level2.Id + '"><small>' + level2.Name + '</small></div>';
 }
 
-function getLevel3(level3,level2,level1) {
-    return '<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px" data-collapse-target="'+level1.Id+'-'+level2.Id+'">' + level3.Name + '</div>';
+function getLevel3(level3, level2, level1) {
+    return '<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px" data-collapse-target="' + level1.Id + '-' + level2.Id + '">' + level3.Name + '</div>';
 }
 
 function getInputLevel3(level3, level2, level1, striped) {
@@ -130,13 +133,21 @@ function getInputLevel3(level3, level2, level1, striped) {
     if (level3.ParLevel3InputType && level3.ParLevel3InputType.Id) {
 
         var colorStriped = "";
+        var conforme = "";
 
         if (striped)
             colorStriped = "background-color: #e9ecef;";
 
+        if (level3.ParLevel3Value.IsRequiredInt == "1")
+            conforme = "";
+        else
+            conforme = level3.ParLevel3Value.IsDefaultAnswerInt;
+
+
         retorno += '<div class="col-xs-12" data-linha-coleta ';
-        retorno += ' data-collapse-target="'+level1.Id+'-'+level2.Id+'"';
-        retorno += ' data-conforme="1"';
+        retorno += ' data-collapse-target="' + level1.Id + '-' + level2.Id + '"';
+        retorno += ' data-conforme="' + conforme + '"';
+        retorno += ' data-default-answer="' + level3.ParLevel3Value.IsDefaultAnswerInt + '"';
         retorno += ' data-min="' + level3.ParLevel3Value.IntervalMin + '"';
         retorno += ' data-max="' + level3.ParLevel3Value.IntervalMax + '"';
         retorno += ' data-level1="' + level1.Id + '"';
@@ -194,16 +205,29 @@ function getBinario(level3) {
 
     var html = '';
 
+    var respostaPadrao = "";
+
     if (level3.ParLevel3XHelp)
         html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
+    if (level3.ParLevel3Value.IsRequiredInt) {
+        respostaPadrao = "&nbsp;";
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+    } else {
+        if (level3.ParLevel3Value.IsDefaultAnswerInt == "0")
+            respostaPadrao = level3.ParLevel3BoolFalse.Name;
+        else
+            respostaPadrao = level3.ParLevel3BoolTrue.Name;
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+    }
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '   <div class="col-xs-10">' +
-        '       <button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>' +
+        botao +
         '   </div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +
         '</div>' +
@@ -252,10 +276,12 @@ function getIntervalo(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
+    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '   <div class="col-xs-2 input-sm" style="font-size: 8px;">' +
-        '	    MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
+        level3LimitLabel +
         '   </div>' +
         '   <div class="col-xs-8 no-gutters">' +
         '       <div class="col-xs-2" style="padding-right: 0;">' +
@@ -288,10 +314,12 @@ function getIntervaloemMinutos(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
+    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-2 input-sm" style="font-size: 8px;">' +
-        '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
+        level3LimitLabel +
         '</div>' +
         '<div class="col-xs-3">' +
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
@@ -327,10 +355,13 @@ function getIntervaloComObservacao(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
+    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-2 input-sm" style="font-size: 8px;">' +
-        '	MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax +
+        level3LimitLabel +
         '</div>' +
         '<div class="col-xs-3">' +
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
@@ -441,10 +472,12 @@ function getLikert(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
+    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '   <div class="col-xs-2 input-sm" style="font-size: 8px;">' +
-        '	    Escala: ' + level3.ParLevel3Value.IntervalMin + ' a ' + level3.ParLevel3Value.IntervalMax +
+        level3LimitLabel +
         '   </div>' +
         '   <div class="col-xs-8">' +
         '	    <input type="text" class="col-xs-12 input-sm" data-valor/>' +
@@ -494,21 +527,35 @@ $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
 
 $('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
     var linha = $(this).parents('[data-conforme]');
-    if (linha.attr('data-conforme') == '0') {
-        resetarLinha(linha);
-        linha.attr('data-conforme', '1');
-        $(this).text($(this).attr('data-positivo'));
-        $(this).addClass('btn-default');
-        $(this).removeClass('btn-secundary');
-    } else {
-        resetarLinha(linha);
-        linha.addClass('alert-secundary');
-        linha.attr('data-conforme', '0');
-        $(this).text($(this).attr('data-negativo'));
-        $(this).removeClass('btn-default');
-        $(this).addClass('btn-secundary');
 
+    resetarLinha(linha);
+
+    if (linha.attr('data-conforme') == "" || linha.attr('data-conforme') == null) {
+        linha.attr('data-conforme', linha.attr('data-default-answer'));
+
+    } else if (linha.attr('data-conforme') == linha.attr('data-default-answer')) {
+        linha.attr('data-conforme', linha.attr('data-default-answer') == "0" ? "1" : "0");
+    } else {
+        linha.addClass('alert-secundary');
+        if ($(this).attr('data-required-answer') == "1") {
+            linha.attr('data-conforme', "");
+        } else {
+            linha.attr('data-conforme', linha.attr('data-default-answer'));
+        }
     }
+
+    if (linha.attr('data-conforme') == "1") {
+        $(this).text($(this).attr('data-positivo'));
+    } else if (linha.attr('data-conforme') == "0") {
+        $(this).text($(this).attr('data-negativo'));
+    } else {
+        $(this).text('');
+        $(this).html('&nbsp;');
+    }
+
+    $(this).addClass('btn-default');
+    $(this).removeClass('btn-secundary');
+
 });
 
 $('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', function (e) {
@@ -558,7 +605,6 @@ $('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
 
 
 function resetarLinha(linha) {
-    linha.attr('data-conforme', '1');
     linha.removeClass('alert-secundary');
     linha.removeClass('alert-warning');
     linha.removeAttr('data-conforme-na');
@@ -569,6 +615,10 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     e.preventDefault();
 
     if (!HeaderFieldsIsValid()) {
+        return false;
+    }
+
+    if (!ColetasIsValid()) {
         return false;
     }
 
@@ -710,21 +760,37 @@ function OpenCorrectiveAction(coleta) {
         CollectionDate: getCurrentDate()
     };
 
-    var modal = '<h4>Ação Corretiva</h4>';
+    //var tarefa = $.map(parametrization.listaParLevel3, function (val, i) {
+    //    if (val.Id == coleta.ParLevel3_Id) {
+    //        return val;
+    //    }
+    //});
+    // + '<h4> Tarefa: "' + tarefa[0].Name + '"</h4>' verificar uma forma de mostrar a tarefa que esta nao conforme
+    var modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>';
     var selectUsers = '<option value="">Selecione...</option><option value="1">Pato Donald</option>';
+
+    var date = stringToDate(currentCollectDate.toJSON());
 
     var body = '<div class="form-group">' +
         '<div class="form-group col-xs-12">' +
+        '<strong>Informações</strong>' +
+        '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString() +
+        '<br/>Monitor: ' + currentLogin.Name +
+        '<br/>Tarefa: ' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +
+        '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == parametrization.currentParFrequency_Id; })[0].Name +
+        '</small></div>' +
+
+        '<div class="form-group col-xs-12">' +
         '<label>Descrição da Falha:</label>' +
-        '<textarea name="DescriptionFailure" id="descriptionFailure" rows="7" class="col-sx-12 form-control"></textarea>' +
+        '<input name="DescriptionFailure" id="descriptionFailure" class="col-sx-12 form-control" style="height: 80px;">' +
         '</div>' +
-        '<div class="form-group col-xs-6">' +
-        '<label for="email">Slaughter :</label>' +
-        '<select name="SlaughterId" id="slaughterId" class="form-control">' + selectUsers + '</select>' +
+        '<div class="form-group col-xs-12">' +
+        '<label for="email">Ação Corretiva Imediata:</label>' +
+        '<input name="ImmediateCorrectiveAction" id="immediateCorrectiveAction" class="form-control" style="height: 80px;">' +
         '</div>' +
-        '<div class="form-group col-xs-6">' +
-        '<label for="email">Technical:</label>' +
-        '<select name="TechinicalId" id="techinicalId" class="form-control">' + selectUsers + '</select>' +
+        '<div class="form-group col-xs-12">' +
+        '<label for="email">Ação Preventiva:</label>' +
+        '<input name="PreventativeMeasure" id="preventativeMeasure" class="form-control" style="height: 80px;">' +
         '</div>';
 
     var corpo =
@@ -742,14 +808,14 @@ function OpenCorrectiveAction(coleta) {
         '</div>' +
         '</div>';
 
-    openModal(corpo);
+    openModal(corpo, 'white', 'black');
 
     $('#btnSendCA').off().on('click', function () {
 
         //Inserir collectionLevel2 dentro do obj
         correctiveAction.AuditorId = currentLogin.Id;
-        correctiveAction.SlaughterId = $('#slaughterId :selected').val();
-        correctiveAction.TechinicalId = $('#techinicalId :selected').val();
+        correctiveAction.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+        correctiveAction.PreventativeMeasure = $('#preventativeMeasure').val();
         correctiveAction.DescriptionFailure = $('#descriptionFailure').val();
 
         //Salvar corrective action na lista de correctiveAction
@@ -781,7 +847,8 @@ function getCollectionHeaderFields() {
                 ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
-                UserSgq_Id: currentLogin.Id
+                UserSgq_Id: currentLogin.Id,
+                Parfrequency_Id: parametrization.currentParFrequency_Id
             });
 
     });
@@ -803,12 +870,13 @@ function getCollectionHeaderFields() {
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
-                ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id')
+                ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
+                Parfrequency_Id: parametrization.currentParFrequency_Id
             });
 
     });
 
-    
+
     $('#headerFieldLevel2 input, #headerFieldLevel2 select').each(function () {
 
         $self = $(this);
@@ -827,12 +895,44 @@ function getCollectionHeaderFields() {
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
-                ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id')
+                ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
+                Parfrequency_Id: parametrization.currentParFrequency_Id
             });
 
     });
 
     return collectionHeaderFied;
+}
+
+function ColetasIsValid() {
+    var errorCount = 0;
+    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
+        var data = $(o);
+        if ($(data).attr('data-conforme') == ""
+            || $(data).attr('data-conforme') == null
+            || $(data).attr('data-conforme') == "undefined") {
+            openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
+            mostraPerguntasObrigatorias(data);
+            errorCount++;
+            closeMensagem(2000);
+        }  
+    });
+    if (errorCount > 0)
+        return false;
+    else
+        return true;
+  
+}
+
+function mostraPerguntasObrigatorias(data) {
+
+    //verifica se tem campos obrigatorios que nao estao preenchidos e realiza o focus neles
+    if ($(data).attr('data-conforme') == 0 || $(data).attr('data-conforme') == "0") {
+        $('html, body').animate({
+            scrollTop: $(data).parent().offset().top
+        }, 300);
+        return false;
+    }
 }
 
 function HeaderFieldsIsValid() {
@@ -860,6 +960,15 @@ function HeaderFieldsIsValid() {
         closeMensagem(2000);
     }
 
-    return retorno;
+    //verifica se tem campos obrigatorios que nao estao preenchidos e realiza o focus neles
+    $.each($('[data-required=true]'), function (i, o) {
+        if ($(o).val() == 0 || $(o).val() == "") {
+            $('html, body').animate({
+                scrollTop: $(o).parent().offset().top
+            }, 300);
+            return false;
+        }
+    });
 
+    return retorno;
 }

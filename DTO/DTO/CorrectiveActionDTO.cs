@@ -200,20 +200,44 @@ namespace DTO.DTO
 
                 if (Unit == null)
                     return string.Empty;
-
-
-                var body = "<div class='header' style='font-size:14px;font-weight:bold'>";
-                if (GlobalConfig.Eua)
+                if (GlobalConfig.LanguageEUA)
                 {
                     System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("");
                     System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-                    body += "    <div class='unitCode'>JBS <span id='estName'>" + Unit.Name + "</span> Beef, Est. <span id='estCode'>" + Unit.Code + "</span></div>";
                 }
-                if (GlobalConfig.Brasil)
+                else
                 {
                     System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
                     System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
+                }
+                var body = "<div class='header' style='font-size:14px;font-weight:bold'>";
+
+                if (GlobalConfig.LanguageEUA)
+                {
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+                }
+                else
+                {
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+                }
+
+                if (GlobalConfig.Eua)
+                {
+                    body += "    <div class='unitCode'>JBS <span id='estName'>" + Unit.Name + "</span> Beef, Est. <span id='estCode'>" + Unit.Code + "</span></div>";
+                }
+
+                if (GlobalConfig.Brasil)
+                {
                     body += "    <div class='unitCode'>JBS <span id='estName'>" + Unit.Name + "</span><span id='estCode'>" + Unit.Code + "</span></div>";
+                }
+
+
+                if (GlobalConfig.SESMT)
+                {
+                    body += "    <div class='unitCode'>SESMT <span id='estName'>" + Unit.Name + "</span><span id='estCode'>" + Unit.Code + "</span></div>";
                 }
 
                 body += "    <div>" + Resources.Resource.safe_program_audit_form + "</div>" +
@@ -267,22 +291,7 @@ namespace DTO.DTO
                 "            <div class='date'>" + DateTimeTechinicalFarmatado + "</div>" +
                 "    </div>" +
 
-                "</div>"; /*+
-                "    <div class='col-xs-4'>" +
-                "        <div>Origination Date: January 30, 2014</div> <!--O que fazer com a Data?-->" +
-                "<br>" +
-                "        <div>Revision Date:</div>" +
-                "<br>" +
-                "        <div>Supersedes Date:</div>" +
-                "    </div>" +
-                "    <div class='col-xs-4'>" +
-                "<br>" +
-                "        <div>This Document Contains Confidential</div>" +
-                "<br>" +
-                "        <div>Commercial Information Pursuant to</div>" +
-                "<br>" +
-                "        <div>5 U.S.C Sec. 552(b)(4).</div>" +
-                "    </div>";*/
+                "</div>";
 
                 return body;
             }

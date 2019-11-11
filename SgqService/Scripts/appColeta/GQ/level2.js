@@ -156,15 +156,19 @@
     }
 
     if ($('.counter[headerlevel=level2_line][counter=evaluation]').length == 0) {
-        $($('.headerCounter .col-xs-4 b')[0]).addClass('hide')
+        $($('.headerCounter .col-xs-3 b')[0]).addClass('hide')
     }
 
     if ($('.counter[headerlevel=level2_line][counter=sample]').length == 0) {
-        $($('.headerCounter .col-xs-4 b')[1]).addClass('hide')
+        $($('.headerCounter .col-xs-3 b')[1]).addClass('hide')
     }
 
     if ($('.counter[headerlevel=level2_line][counter=defects]').length == 0 && isEUA == false) {
-        $($('.headerCounter .col-xs-4 b')[2]).addClass('hide')
+        $($('.headerCounter .col-xs-3 b')[2]).addClass('hide')
+    }
+
+    if ($('.counter[headerlevel=level2_line][counter=frequency]').length == 0) {
+        $($('.headerCounter .col-xs-3 b')[3]).addClass('hide')
     }
 
     $('#period').attr('disabled', 'disabled');
@@ -240,11 +244,11 @@
 
             var linha = level2.parent().find('a');
 
-            var avaliacaoTotal = linha.attr('evaluate');
-            var amostraTotal = linha.attr('sample');
+            var avaliacaoTotal = parseInt(linha.attr('evaluate'));
+            var amostraTotal = parseInt(linha.attr('sample'));
 
-            var avaliacao = linha.attr('evaluatecurrent');
-            var amostra = linha.attr('samplecurrent');
+            var avaliacao = parseInt(linha.attr('evaluatecurrent'));
+            var amostra = parseInt(linha.attr('samplecurrent'));
 
             var avaliacaoAtual = 0;
             var amostraAtual = 0;
@@ -257,23 +261,39 @@
                         amostraAtual = avaliacaoAtual * amostraTotal;
                     }
                 } else {
-					if(amostra == undefined || avaliacao == undefined){
-						avaliacaoAtual = parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('evaluation'));
-						amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('sample'))));
-					}else{
-						avaliacaoAtual = RetornaValor0SeUndefined(avaliacao) > 0 ? RetornaValor0SeUndefined(avaliacao) : 1;
-						amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(amostra));
-					}
+                    if (amostra == undefined || avaliacao == undefined) {
+                        avaliacaoAtual = parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('evaluation'));
+                        amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('sample'))));
+                    } else {
+                        avaliacaoAtual = RetornaValor0SeUndefined(avaliacao) > 0 ? RetornaValor0SeUndefined(avaliacao) : 1;
+                        amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(amostra));
+                    }
+                }
+
+                if ($(level1).hasClass("VF")) {
+                    amostraAtual = $('.ResultsKeysVF div[date="' + getCollectionDate() + '"][unidadeid=' + $('.App').attr('unidadeid') + ']').length + 1;
+                    if (amostraAtual != amostraTotal)
+                        amostraAtual -= 1;
                 }
 
                 avaliacaoAtual = isNaN(avaliacaoAtual) ? 0 : avaliacaoAtual;
                 amostraAtual = isNaN(amostraAtual) ? 0 : amostraAtual;
 
+                var proximaAvaliacao = ((amostraAtual / parseInt(amostraTotal)) % 1 == 0) ? 1 : 0;
+                var avaliacaoColetaAtual = Math.ceil(amostraAtual / parseInt(amostraTotal)) + proximaAvaliacao;
+
+                if (!(level1.attr('islimitedevaluetionnumber') == "false")) {
+                    level2.attr('evaluatecurrent', avaliacaoColetaAtual);
+                    level2.parent().find('.evaluateCurrent').html(Math.ceil(amostraAtual / parseInt(amostraTotal)));
+                }
+
                 level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
                 level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal);
-				
+
             }
         }
+
+        criarFiltroDeFrequencia();
     }, 100);
 }
 
@@ -844,9 +864,13 @@ function atualizaCorAgendamento() {
 
                                 if (!!parseInt(avaliacaoAtual)) {
 
-                                    horaPrimeiraAv = $('.Resultlevel2[level1id=' + level1Id + '][unitid=' + unitId + '][level2id=' + level2Id + ']').attr('horaprimeiraavaliacao');
+                                    horaPrimeiraAv = $('.Resultlevel2[level1id=' + level1Id + '][unitid=' + unitId + '][level2id=' + level2Id + '][shift=' + $('.App').attr('shift') +']').attr('horaprimeiraavaliacao');
 
-                                    horaMinutoPrimeiraAv = horaPrimeiraAv.split(":");
+                                    if (!!horaPrimeiraAv) {
+                                        horaMinutoPrimeiraAv = horaPrimeiraAv.split(":");
+                                    } else {
+                                        return;
+                                    }
 
                                     if (typeof (horaMinutoPrimeiraAv) == 'undefined' || !horaMinutoPrimeiraAv) {
                                         return;
@@ -1008,3 +1032,61 @@ function atualizaCorAgendamento() {
         }, 2000);
     }, 200);
 }
+
+function criarFiltroDeFrequencia(){
+        if($('.headerCounter > div:last b').hasClass('hide') 
+        || $('select[data-filtro="frequencyTotal"]').length > 0)
+            return;
+
+        var frequenciasExistentes = [];
+
+        var htmlSelect = "<select data-filtro='frequencyTotal'>";
+        htmlSelect += "<option>-</option>";
+        $.each($('.counters .frequencyTotal'), function (i,o) {
+            var frequencia = $(o).text();
+            if(frequenciasExistentes.indexOf(frequencia) < 0){
+                frequenciasExistentes.push(frequencia);
+                htmlSelect += "<option>"+frequencia+"</option>";
+            }
+        });
+            
+        htmlSelect += "</select>";
+        $('.headerCounter > div:last').append(htmlSelect);
+}
+
+$('body').off('change', 'select[data-filtro]').on('change', 'select[data-filtro]', function () {
+    var valorSelecionado = $(this).val();
+
+    //Ocultar todas as linhas
+    $('.counters .frequencyTotal')
+        .parents('.list-group-item')
+        .addClass('hide');
+
+    $.each($('.accordion > .card'),
+        function (i, o) {
+            $(o).removeClass('hide')
+        }
+    )
+
+    if (valorSelecionado.length == 1) {
+        $('.counters .frequencyTotal')
+            .parents('.list-group-item')
+            .removeClass('hide');
+        return;
+    }
+
+    //Mostra linhas que não batem o valor
+    $('.counters .frequencyTotal').filter(function () {
+        return $(this).text() === valorSelecionado;
+    })
+        .parents('.list-group-item')
+        .removeClass('hide')
+
+    $.each($('.accordion > .card'),
+        function (i, o) {
+            if ($(o).find('.gabriel:not(.hide)').length == 0) {
+                $(o).addClass('hide');
+            }
+        }
+    );
+});

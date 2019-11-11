@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -403,12 +403,14 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
+    <Compile Include="Controllers\CrudGenerico\ComponenteGenericoController.cs" />
     <Compile Include="Controllers\DicionarioEstaticoController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\FotoController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
     <Compile Include="Controllers\IntegracaoSistemicasController.cs" />
+    <Compile Include="Controllers\Api\Log\LogTrackController.cs" />
     <Compile Include="Controllers\ParAlertTypesController.cs" />
     <Compile Include="Controllers\Params\ParCargoController.cs" />
     <Compile Include="Controllers\Params\ParColaboradorController.cs" />
@@ -530,6 +532,7 @@
     <Compile Include="Mail\SimpleAsynchronous.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\ComponenteGenericoMapperProfile.cs" />
     <Compile Include="Mappers\DefectMapperProfile.cs" />
     <Compile Include="Mappers\EmailContentMapperProfile.cs" />
     <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
@@ -934,6 +937,7 @@
     <Content Include="Scripts\appColeta\GQ\alert.js" />
     <Content Include="Scripts\appColeta\GQ\alert_new.js" />
     <Content Include="Scripts\appColeta\GQ\breadCrumb.js" />
+    <Content Include="Scripts\appColeta\GQ\componente.js" />
     <Content Include="Scripts\appColeta\GQ\config.js" />
     <Content Include="Scripts\appColeta\GQ\consolidation.js" />
     <Content Include="Scripts\appColeta\GQ\controleDeAlerta.js" />
@@ -960,6 +964,7 @@
     <Content Include="Scripts\appColeta\GQ\login.js" />
     <Content Include="Scripts\appColeta\GQ\message.js" />
     <Content Include="Scripts\appColeta\GQ\mock_modulos.js" />
+    <Content Include="Scripts\appColeta\GQ\modal.js" />
     <Content Include="Scripts\appColeta\GQ\module.js" />
     <Content Include="Scripts\appColeta\GQ\navBar.js" />
     <Content Include="Scripts\appColeta\GQ\overlay.js" />
@@ -998,8 +1003,8 @@
     <Content Include="Scripts\appColeta\RH\parLevels.js" />
     <Content Include="Scripts\appColeta\RH\resultado.js" />
     <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
+    <Content Include="Scripts\appColeta\RH\routeConfig.js" />
     <Content Include="Scripts\appColeta\RH\utils.js" />
-    <Content Include="Scripts\appColeta\GQ\mock.js" />
     <Content Include="Scripts\appColeta\RH\zoom.js" />
     <Content Include="Scripts\jquery-1.12.1.min.js" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
@@ -1462,6 +1467,7 @@
     <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
@@ -2122,6 +2128,14 @@
     <Content Include="Views\ParDepartments\Details.cshtml" />
     <Content Include="Views\ParDepartments\Edit.cshtml" />
     <Content Include="Views\ParDepartments\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_SelectTextAreaEditReason.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_LogTrackHistory.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Filhos.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\ParDepartmentXCompany.cshtml" />
+    <Content Include="Views\ComponenteGenerico\Index.cshtml" />
+    <Content Include="Views\ComponenteGenerico\Edit.cshtml" />
+    <Content Include="Views\ComponenteGenerico\List.cshtml" />
+    <Content Include="Views\ComponenteGenerico\EditValor.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2167,6 +2181,10 @@
       <Project>{B6DDBEB5-490D-4D8A-B55E-4E66C283DCD4}</Project>
       <Name>IntegrationModule</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LogSystem\LogSystem.csproj">
+      <Project>{2f2074d0-e013-46bb-99b9-e53603bfc44d}</Project>
+      <Name>LogSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlanoAcaoCore\PlanoAcaoCore.csproj">
       <Project>{9F15CCA3-EC01-46B6-91EC-3F408E7417BC}</Project>
       <Name>PlanoAcaoCore</Name>
@@ -2208,7 +2226,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>false</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -36,6 +36,8 @@ namespace DTO.DTO.Params
 
         public IEnumerable<SelectListItem> _DropDownList;
 
+        public ParHeaderFieldXComponenteGenericoDTO ParHeaderFieldXComponenteGenerico { get; set; }
+
         public IEnumerable<SelectListItem> DropDownList
         {
             get

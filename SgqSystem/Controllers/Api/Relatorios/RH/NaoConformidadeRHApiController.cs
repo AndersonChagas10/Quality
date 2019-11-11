@@ -87,7 +87,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             //{
             //    whereCriticalLevel = $@" AND PLC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")"; 
             //        //" AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id in (" + string.Join(",", form.ParCriticalLevel_Ids) + ")) ";
-                  
+
             //}
 
             var query = $@"
@@ -96,6 +96,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
                 SELECT 
 	                C.NAME AS UnidadeName,
+                    C.Id as Unidade_Id,
 	                SUM(WeiEvaluation) AS AV,
 	                SUM(WeiDefects) AS NC,
 	                SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
@@ -111,7 +112,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereSecao}
                     {whereCargo}
                 GROUP BY 
-	                C.NAME
+	                C.NAME, C.Id
 
                 ";
 
@@ -201,6 +202,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                                                                           
             SELECT 
 	            D1.NAME AS DepartamentoName,
+	            D1.Id AS Departamento_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
@@ -227,7 +229,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereSecao}
                 {whereCargo}
             GROUP BY 
-	            D1.NAME
+	            D1.NAME, D1.Id
             ORDER BY 4 DESC 
 ";
 
@@ -837,6 +839,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
             SELECT 
 	            L.NAME AS IndicadorName,
+	            L.Id AS Indicador_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
@@ -859,7 +862,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereSecao}
                 {whereCargo}
             GROUP BY 
-	            L.NAME
+	            L.NAME, L.Id
             ORDER BY 4 DESC
  ";
 
@@ -1255,6 +1258,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             SELECT 
 	            M.NAME AS MonitoramentoName,
+	            M.Id AS Monitoramento_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
@@ -1275,7 +1279,7 @@ DROP TABLE #AMOSTRATIPO4 ";
                     {whereDepartmentFiltro}
 
             GROUP BY 
-	            M.NAME
+	            M.NAME, M.Id
             ORDER BY 4 DESC ";
 
 
@@ -1368,6 +1372,7 @@ DROP TABLE #AMOSTRATIPO4 ";
  
         SELECT 
 	            T.NAME AS TarefaName,
+	            T.ID AS Tarefa_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
@@ -1389,7 +1394,7 @@ DROP TABLE #AMOSTRATIPO4 ";
                  {whereDepartment}
                  {whereDepartmentFiltro}
         GROUP BY 
-	        T.NAME
+	        T.NAME, T.ID
         ORDER BY 4 DESC
  ";
 
@@ -1451,6 +1456,7 @@ DROP TABLE #AMOSTRATIPO4 ";
  
         SELECT 
 	            T.NAME AS TarefaName,
+	            T.ID AS Tarefa_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
@@ -1475,7 +1481,7 @@ DROP TABLE #AMOSTRATIPO4 ";
                  {whereDepartmentFiltro}
 
         GROUP BY 
-	        T.NAME
+	        T.NAME, T.ID
         ORDER BY 4 DESC
 ";
 
@@ -1573,7 +1579,7 @@ DECLARE @HeaderField varchar(max);
 SELECT     @HeaderField =
 STUFF(   
 (SELECT DISTINCT ', '+ CONCAT(' [',ParHeaderField_Name,' - ',ROW_NUMBER() OVER(partition by cl2xph_.CollectionLevel2_id,cl2xph_.ParHeaderField_Name Order By cl2xph_.Id),']') 
-FROM CollectionLevel2XParHeaderField cl2xph_ 
+FROM CollectionLevel2XParHeaderFieldGeral cl2xph_ 
 INNER JOIN #CollectionLevel2 CL2
 	ON cl2xph_.CollectionLevel2_id = CL2.ID
 	 FOR XML PATH('')
@@ -1598,9 +1604,9 @@ SELECT
 				when CL2HF2.ParFieldType_Id = 2 then case when EQP.Nome is null then cast(PRD.nCdProduto as varchar(500)) + '' - '' + PRD.cNmProduto else EQP.Nome end 
 				when CL2HF2.ParFieldType_Id = 6 then CONVERT(varchar, CL2HF2.Value, 103)
 				else CL2HF2.Value end) as Valor
-FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) 
+FROM CollectionLevel2XParHeaderFieldGeral CL2HF2 (nolock) 
 inner join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
-left join ParHeaderField HF (nolock)on CL2HF2.ParHeaderField_Id = HF.Id
+left join ParHeaderFieldGeral HF (nolock)on CL2HF2.ParHeaderFieldGeral_Id = HF.Id
 left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
 left join ParMultipleValues PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
 left join Equipamentos EQP(nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2
@@ -1871,6 +1877,35 @@ DROP TABLE #CollectionLevel2
             }
 
             return _list;
+        }
+
+
+        [HttpPost]
+        [Route("GetHashDepartment/{centroCusto}")]
+        public string GetHashDepartment(int centroCusto)
+        {
+
+            int? parent_Id = centroCusto;
+            List<int> hash = new List<int>();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                do
+                {
+                    var parDepartment = factory.SearchQuery<ParDepartment>("select * from ParDepartment where Id = " + parent_Id).FirstOrDefault();
+
+                    hash.Add(parDepartment.Id);
+
+                    parent_Id = parDepartment.Parent_Id;
+
+                } while (parent_Id != null);
+
+            }
+
+            hash.Reverse();
+
+            return string.Join("-", hash);
+
         }
 
         internal List<NaoConformidadeRHResultsSet> CriaMockGraficoUnidades()

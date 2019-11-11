@@ -1,0 +1,383 @@
+﻿@model Dominio.AppViewModel.ComponenteGenericoViewModel
+
+@{
+    ViewBag.Title = "Novo Componente";
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Novo Componente</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div class="portlet light bordered">
+                    <div class="portlet-body row">
+
+                        <!-- COMPONENTE-->
+                        <div class="portlet light bordered">
+                            <div class="portlet-title tabbable-line">
+                                <div class="caption">
+                                    <i class="icon-share font-dark"></i>
+                                    <span class="caption-subject font-dark bold uppercase">Novo Componente</span>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="setup_tab">
+
+                                        <div class="form-horizontal">
+                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                            @Html.HiddenFor(model => model.ComponenteGenerico.Id)
+
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.ComponenteGenerico.Name, "Nome", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(model => model.ComponenteGenerico.Name, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.ComponenteGenerico.Name, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.ComponenteGenerico.IsActive, "Ativo", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.CheckBoxFor(model => model.ComponenteGenerico.IsActive)
+                                                    @Html.ValidationMessageFor(model => model.ComponenteGenerico.IsActive, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            @*<div class="form-group">
+                                                    <div class="col-md-offset-2 col-md-10">
+                                                        <input type="submit" value="Salvar" class="btn btn-primary btnSalvar" />
+                                                        @Html.ActionLink("Voltar para a lista de componentes", "Index", null, new { @class = "btn btn-default" })
+                                                    </div>
+                                                </div>*@
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- COMPONENTE GENERICO COLUNA-->
+                        <div class="portlet light bordered">
+                            <div class="portlet-title tabbable-line">
+                                <div class="caption">
+                                    <i class="icon-share font-dark"></i>
+                                    <span class="caption-subject font-dark bold uppercase">Nova Coluna</span>
+                                </div>
+                            </div>
+                            <div class="portlet-body row">
+                                <div class="tab-content col-sm-6" style="padding-top: 10px;">
+                                    <div class="tab-pane active" id="formNewColum">
+
+                                        <div class="form-horizontal">
+                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                            @Html.Hidden("Id")
+
+                                            <div class="form-group">
+                                                @Html.Label("Nome", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.TextBox("Name", null, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.Label("ComponenteGenericoTipoColuna_Id", "Tipo da coluna", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownList("ComponenteGenericoTipoColuna_Id", new SelectList(ViewBag.ComponentesGenericosTipoColuna, "Id", "Name"), new { @class = "form-control" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.Label("Obrigatório", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.CheckBox("IsRequired")
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.Label("Valor Padrão", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.TextBox("ValorPadrao", null, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.Label("Ativo", htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.CheckBox("IsActive", true)
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-offset-2 col-md-10">
+                                                    <input type="button" value="Adicionar" id="btnAdd" class="btn btn-primary btn-sm" />
+                                                    <input type="button" value="Alterar" id="btnSaveEdit" class="btn btn-success btn-sm hide" />
+                                                    <input type="button" value="Cancelar" id="btnCancel" class="btn btn-default btn-sm hide" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="portlet-title tabbable-line table-responsive col-sm-6">
+                                    <table id="tableGenericoColuna" class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <td>Nome da input</td>
+                                                <td>Tipo do input</td>
+                                                <td>Obrigatorio</td>
+                                                <td>Valor Padrao</td>
+                                                <td>Ativo</td>
+                                                <td></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <input type="submit" value="Salvar" class="btn btn-primary btnSalvar" />
+                            @Html.ActionLink("Voltar para a lista de componentes", "Index", null, new { @class = "btn btn-default" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+
+    $(document).ready(function () {
+
+        closeLeftSidebar();
+
+        let componentesGenericosColuna = JSON.parse('@Html.Raw(Json.Encode(Model.ComponentesGenericosColuna))');
+
+        if (componentesGenericosColuna.length > 0) {
+            componentesGenericosColuna.forEach((componenteGenericoColuna) => {
+                addRow(componenteGenericoColuna);
+            });
+        }
+
+    });
+
+    $('#btnAdd').on("click", function () {
+
+        let obj = $('#formNewColum').serializeFormToObjetc();
+
+        if (!colunaIsValid(obj)) {
+            return false;
+        }
+
+        obj.ComponenteGenericoTipoColuna = {};
+
+        obj.ComponenteGenericoTipoColuna.Id = obj.ComponenteGenericoTipoColuna_Id;
+        obj.ComponenteGenericoTipoColuna.Name = $('#ComponenteGenericoTipoColuna_Id :selected').text();
+
+        addRow(obj);
+
+    });
+
+    function colunaIsValid(obj) {
+
+        if (!obj.Name) {
+            openMessageModal(Resources("name_can_not_be_empty"), "");
+            return false;
+        }
+
+        if (!obj.ComponenteGenericoTipoColuna_Id) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+    function componenteIsValid(obj) {
+
+        if (!obj["ComponenteGenerico.Name"]) {
+            openMessageModal(Resources("name_can_not_be_empty"), "");
+            return false;
+        }
+
+        return true;
+    }
+
+    function addRow(obj) {
+
+        let btnEditar = `<button type="button" class="btn btn-success btn-xs btnEditColuna" title="Editar Coluna">
+                        	<span class="fa fa-pencil-square-o"></span>
+                         </button>`;
+
+        obj.IsRequired = Array.isArray(obj.IsRequired) ?  obj.IsRequired[0] : obj.IsRequired;
+        obj.IsActive = Array.isArray(obj.IsActive) ? obj.IsActive[0] : obj.IsActive;
+        obj.ValorPadrao = obj.ValorPadrao == null ? "" : obj.ValorPadrao;
+
+        let tr = `<tr>
+                    <td>${obj.Name}</td>
+                    <td>${obj.ComponenteGenericoTipoColuna.Name}</td>
+                    <td>${obj.IsRequired ? "Sim" : "Não"}</td>
+                    <td>${obj.ValorPadrao}</td>
+                    <td>${obj.IsActive ? "Sim" : "Não"}</td>
+                    <td>${btnEditar}</td>
+                  </tr>`;
+
+        $('#tableGenericoColuna tbody').append(tr);
+
+        $('#tableGenericoColuna tbody tr:last-child').data("data", obj);
+
+    }
+
+    $('#tableGenericoColuna').on('click', '.btnEditColuna', function () {
+
+        //colocar o id no form
+        let indexNumber = $(this).closest("tr").index();
+
+        let obj = $(this).closest("tr").data('data');
+
+        setForm(obj);
+
+        //trocar o botão inserir para o botão Ok
+        $('#btnAdd').addClass("hide");
+        $('#btnSaveEdit').removeClass("hide");
+        $('#btnCancel').removeClass("hide");
+
+        //botão cancelar
+        $('#btnCancel').off().on('click', function () {
+            cleanForm();
+        });
+
+        $('#btnSaveEdit').off().on('click', function () {
+
+            let obj = $('#formNewColum').serializeFormToObjetc();
+
+            if (!colunaIsValid(obj)) {
+                return false;
+            }
+
+            obj.ComponenteGenericoTipoColuna = {};
+            obj.ComponenteGenericoTipoColuna.Id = obj.ComponenteGenericoTipoColuna_Id;
+            obj.ComponenteGenericoTipoColuna.Name = $('#ComponenteGenericoTipoColuna_Id :selected').text();
+            obj.IsRequired = Array.isArray(obj.IsRequired) ? obj.IsRequired[0] : obj.IsRequired;
+            obj.IsActive = Array.isArray(obj.IsActive) ? obj.IsActive[0] : obj.IsActive;
+
+            $('#tableGenericoColuna tbody tr:eq(' + indexNumber + ')').data('data', obj);
+            $('#tableGenericoColuna tbody tr:eq(' + indexNumber + ')').find('td:eq(0)').html(obj.Name);
+            $('#tableGenericoColuna tbody tr:eq(' + indexNumber + ')').find('td:eq(1)').html(obj.ComponenteGenericoTipoColuna.Name);
+            $('#tableGenericoColuna tbody tr:eq(' + indexNumber + ')').find('td:eq(2)').html(obj.IsRequired ? "Sim" : "Não");
+            $('#tableGenericoColuna tbody tr:eq(' + indexNumber + ')').find('td:eq(3)').html(obj.ValorPadrao);
+            $('#tableGenericoColuna tbody tr:eq(' + indexNumber + ')').find('td:eq(4)').html(obj.IsActive ? "Sim" : "Não");
+
+            cleanForm();
+        });
+
+    });
+
+    $('.btnSalvar').on('click', function () {
+
+        let componenteGenerico = serializeComponenteGenerico();
+
+        if (!componenteIsValid(componenteGenerico))
+            return false;
+
+        let componentesGenericosColuna = serializeComponentesGenericosColuna();
+
+        let objSalvar = {};
+
+        objSalvar = componenteGenerico;
+        objSalvar.ComponentesGenericosColuna = componentesGenericosColuna;
+
+        $.ajax({
+
+            type: 'POST',
+            url: 'Edit',
+            contentType: 'application/json; charset=utf-8',
+            //dataType: 'json',
+            data: JSON.stringify(objSalvar),
+            async: false,
+            success: function (data, status) {
+                openMessageModal(Resources("saved_successfully"), "");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+                openMessageModal(Resources("error"), "");
+            }
+        });
+    });
+
+    function serializeComponenteGenerico() {
+
+        let obj = $('#setup_tab').serializeFormToObjetc();
+
+        obj["ComponenteGenerico.IsActive"] = Array.isArray(obj["ComponenteGenerico.IsActive"]) ? obj["ComponenteGenerico.IsActive"][0] : obj["ComponenteGenerico.IsActive"];
+
+        return obj;
+    }
+
+    function serializeComponentesGenericosColuna() {
+
+        let listObj = [];
+
+        $('#tableGenericoColuna tbody tr').each(function () {
+            listObj.push($(this).data("data"));
+        });
+
+        return listObj;
+
+    }
+
+    function setForm(obj) {
+        $('#Id').val(obj.Id);
+        $('#Name').val(obj.Name);
+        $('#ComponenteGenericoTipoColuna_Id').val(obj.ComponenteGenericoTipoColuna_Id);
+        $('#IsRequired').prop('checked', obj.IsRequired);
+        $('#ValorPadrao').val(obj.ValorPadrao);
+        $('#IsActive').prop('checked', obj.IsActive);
+        $('#formNewColum').parent().css('backgroundColor', 'lightgreen');
+    }
+
+    function cleanForm() {
+        $('#Id').val("");
+        $('#Name').val("");
+        $('#ComponenteGenericoTipoColuna_Id').val("");
+        $('#IsRequired').prop('checked', false);
+        $('#ValorPadrao').val("");
+        $('#IsActive').prop('checked', false);
+        $('#formNewColum').parent().css('backgroundColor', '');
+
+        $('#btnAdd').removeClass("hide");
+        $('#btnSaveEdit').addClass("hide");
+        $('#btnCancel').addClass("hide");
+    }
+
+</script>

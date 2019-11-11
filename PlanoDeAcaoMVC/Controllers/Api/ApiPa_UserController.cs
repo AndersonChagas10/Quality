@@ -1,4 +1,5 @@
 ﻿using ADOFactory;
+using DTO;
 using DTO.DTO;
 using DTO.Helpers;
 using Newtonsoft.Json.Linq;
@@ -45,12 +46,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public HttpResponseMessage GetUserCookie([FromBody]UserDTO userDto)
         {
             var resp = new HttpResponseMessage();
-            var cookie = CreateCookieFromUserDTO(userDto);
+            var cookie = CreateCookieFromUserDTO(userDto);           
             resp.Headers.AddCookies(new CookieHeaderValue[] { cookie });
             return resp;
         }
-
-      
-
     }
 }

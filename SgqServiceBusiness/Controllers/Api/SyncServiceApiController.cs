@@ -47,7 +47,11 @@ namespace SgqServiceBusiness.Api
 
             dbEf = new Dominio.SgqDbDevEntities();
 
+            parFrequency = dbEf.ParFrequency.Where(x => x.IsActive).ToList();
+
         }
+
+        public static List<ParFrequency> parFrequency { get; set; } 
 
         #region Funções
 
@@ -3465,7 +3469,7 @@ namespace SgqServiceBusiness.Api
 
             string dataIni = data.ToString("yyyyMMdd");
 
-            string retorno = "";
+            StringBuilder retorno = new StringBuilder();
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -3515,7 +3519,7 @@ namespace SgqServiceBusiness.Api
 
                 CREATE TABLE #COLETASLEVEL3 (																																											  
                 	ROW INT NULL,																																															  
-                	COLUNA VARCHAR(153) NULL																																												  
+                	COLUNA VARCHAR(8000) NULL																																												  
                 )
                 
                 INSERT INTO #COLETASLEVEL3
@@ -3557,7 +3561,7 @@ namespace SgqServiceBusiness.Api
                 		COUNT(1)
                 	FROM #COLETASLEVEL3);
                 DECLARE @I INT = 1;
-                DECLARE @RESPOSTA VARCHAR(2000) = '';
+                DECLARE @RESPOSTA VARCHAR(8000) = '';
                 WHILE @I<@HOMENSFORBRUNO
                 BEGIN
                 SELECT
@@ -3865,9 +3869,9 @@ namespace SgqServiceBusiness.Api
                 	more3defectsEvaluate = ""0""
                 	CollectionLevel2_ID_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Id) AS VARCHAR), '.', ','), 'NULL') + '""
                 	CollectionLevel2_Period_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Period) AS VARCHAR), '.', ','), 'NULL') + '"" 
-                	HoraPrimeiraAvaliacao = ""' + ISNULL(Level2Result.HoraPrimeiraAvaliacao, 'NULL') + '"" >
-                	' + @RESPOSTA + '
-                	</div> ' AS retorno
+                	HoraPrimeiraAvaliacao = ""' + ISNULL(Level2Result.HoraPrimeiraAvaliacao, 'NULL') + '"" >' as retornoLevel2,
+                    @RESPOSTA as retornoLevel3,
+                    '</div> ' AS retornoFechaDiv
                 FROM #COLETA Level2Result
                 INNER JOIN ConsolidationLevel2 CDL2 WITH (NOLOCK)
                 	ON Level2Result.ConsolidationLevel2_Id = CDL2.Id
@@ -3920,16 +3924,18 @@ namespace SgqServiceBusiness.Api
                     cmd.Parameters.Add(new SqlParameter("@DataIni", dataIni));
                     cmd.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
 
-                    var list = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                    var list = factory.SearchQuery<ResultadoH4B>(cmd).ToList();
 
                     for (var i = 0; i < list.Count(); i++)
                     {
-                        retorno += list[i].retorno.ToString();
+                        retorno.Append(list[i].retornoLevel2.ToString());
+                        retorno.Append(list[i].retornoLevel3.ToString());
+                        retorno.Append(list[i].retornoFechaDiv.ToString());
                     }
                 }
             }
 
-            return retorno;
+            return retorno.ToString();
         }
         #endregion
 
@@ -3987,6 +3993,7 @@ namespace SgqServiceBusiness.Api
                 var listaProdutosJSON = listaProdutos.getProdutos();
 
                 supports += @" <script>
+
                                 var listaProdutosJson = " + Newtonsoft.Json.JsonConvert.SerializeObject(listaProdutosJSON) + @";
                                            
                                 function buscarProduto(a,valor){
@@ -3999,7 +4006,7 @@ namespace SgqServiceBusiness.Api
                                             return;
                                         }		                                               
                                     }
-                                    //$(a).val('');
+
                                     $(a).next().html('');
                                 }
 
@@ -4013,8 +4020,10 @@ namespace SgqServiceBusiness.Api
                                         }
                                                                                                        
                                     }
+
                                     $(a).val('');
                                 }
+
                                 </script> ";
             }
             catch (Exception ex)
@@ -4048,11 +4057,67 @@ namespace SgqServiceBusiness.Api
             }
 
 
+            try
+            {
 
-            //string resource = GetResource();
+                using (var db = new SgqDbDevEntities())
+                {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    var listaParLevel3XHelp = db.ParLevel3XHelp.Where(x => x.IsActive).ToList();
+
+                    supports += $@"<script>
+                                var listaParLevel3XHelp = " + Newtonsoft.Json.JsonConvert.SerializeObject(listaParLevel3XHelp) + @";
+                                           
+                                function getParLevel3XHelp(parLevel3_Id){
+                                    var valor = $.grep(listaParLevel3XHelp, function(obj) { 
+                                                       return obj.ParLevel3_Id == parLevel3_Id;  
+                                                });
+                                    return (valor && valor.length > 0) ? valor[0] : '';
+                                }
+
+                                </script> ";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            try
+            {
+
+                using (var factory = new Factory("DefaultConnection"))
+                {
+                    var sql = $@"SELECT
+                                	CGC.Name
+                                   ,CGC.ComponenteGenerico_Id
+                                   ,CGC.ComponenteGenericoTipoColuna_Id
+                                   ,CGC.IsActive
+                                   ,CGV.SaveId
+                                   ,CGV.ComponenteGenericoColuna_Id
+                                   ,CGV.Valor
+                                FROM ComponenteGenericoColuna CGC
+                                INNER JOIN ComponenteGenericoValor CGV
+                                	ON CGC.Id = CGV.ComponenteGenericoColuna_Id
+                                WHERE CGC.IsActive = 1
+                                AND CGV.IsActive = 1";
+
+                    var listParHeaderFieldXComponenteGenerico = factory.SearchQuery<Dominio.AppViewModel.ComponenteGenericoValoresViewModel>(sql).ToList();
+
+                    supports += $@"<script>
+
+                                var listComponenteGenericoValores = " + Newtonsoft.Json.JsonConvert.SerializeObject(listParHeaderFieldXComponenteGenerico) + @";
+
+                                </script> ";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
 
 
-            return APPMain + supports;// + resource;
+            return APPMain + supports;
         }
 
         public string getAPPLevelsVolume(GetAPPLevelsVolumeClass getAPPLevelsVolumeClass)
@@ -4619,7 +4684,7 @@ namespace SgqServiceBusiness.Api
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
             string hide = string.Empty;
-            if (GlobalConfig.Brasil || GlobalConfig.Ytoara)
+            if (GlobalConfig.Brasil || GlobalConfig.Ytoara || GlobalConfig.SESMT || GlobalConfig.Eua)
             {
                 hide = "hide";
             }
@@ -4786,6 +4851,10 @@ namespace SgqServiceBusiness.Api
             if (GlobalConfig.Canada)
             {
                 local = "canada";
+            }
+            if (GlobalConfig.SESMT)
+            {
+                local = "msp";
             }
 
 
@@ -5475,6 +5544,7 @@ namespace SgqServiceBusiness.Api
 
             #endregion
 
+            string frequencyName = "";
             int evaluate = 0;
             int sample = 0;
             int defect = 0;
@@ -5487,13 +5557,38 @@ namespace SgqServiceBusiness.Api
                 sampleGroup = sample;
             }
 
+            #region Agrupamento departamento na listagem de level 2 no AppColeta
+            var departamento = "";
+
+            var index = 0;
+            var count = parlevel02List.Count();
+
+            var auxDepto = "";
+            var countDepto = 0;
+            var listaParLevel1ParaAgrupar = (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.parLevel1ComAgrupamentoPorDepartamentoNaColeta as string)?.Split('|').ToList();
+
+            if (listaParLevel1ParaAgrupar.Contains(ParLevel1.ParLevel1_Id.ToString()))
+            {
+                foreach (var parlevel2count in parlevel02List) //LOOP3
+                {
+                    if (parlevel2count.Departamento != auxDepto)
+                    {
+                        countDepto++;
+                    }
+                    auxDepto = parlevel2count.Departamento;
+                }
+            }
+            #endregion
+
             //Enquando houver lista de level2
-            foreach (var parlevel2 in parlevel02List) //LOOP3
+            foreach (var parlevel2 in parlevel02List.OrderBy(x=>x.Departamento)) //LOOP3
             {
                 string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
 
                 var parlevel2ParFrequency = getParFrequency_Id(ParLevel1, parlevel2, ParCompany_Id);
+
+                frequencyName = parFrequency.Where(x => x.Id == parlevel2ParFrequency).Select(x => x.Name).FirstOrDefault();
 
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
@@ -5537,17 +5632,22 @@ namespace SgqServiceBusiness.Api
                 string headerCounter =
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("ev").Value.ToString() + " </b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("sd").Value.ToString() + " </b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                               ) +
                                       html.div(
                                                outerhtml: "<b>" + CommonData.getResource("df").Value.ToString() + " </b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-3",
+                                               style: "text-align:center"
+                                             ) +
+                                      html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("frequency").Value.ToString() + " </b>",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                              );
 
@@ -5565,19 +5665,24 @@ namespace SgqServiceBusiness.Api
                 string counters =
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-4",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center; font-size:10px;"
                                               ) +
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
-                                                classe: "col-xs-4",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center; font-size:10px;"
                                               ) +
                                        html.div(
                                                 outerhtml: html.span(outerhtml: defect.ToString(), classe: "defectstotal"),
-                                                classe: "col-xs-4",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center; font-size:10px;"
-                                              );
+                                              ) +
+                                        html.div(
+                                                 outerhtml: html.span(outerhtml: frequencyName, classe: "frequencyTotal"),
+                                                 classe: "col-xs-3",
+                                                 style: "text-align:center; font-size:10px;"
+                                               );
 
 
 
@@ -5678,6 +5783,8 @@ namespace SgqServiceBusiness.Api
                     ruleValue = parNCRuleDB.Value;
                 }
 
+
+
                 //podemos aplicar os defeitos
                 string level2 = html.level2(id: parlevel2.Id.ToString(),
                                             label: parlevel2.Name,
@@ -5704,21 +5811,71 @@ namespace SgqServiceBusiness.Api
                 }
 
                 //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3);
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3, in frequencyName);
 
                 if (string.IsNullOrEmpty(groupLevel3))
                     continue;
 
                 //Gera linha do Level2
+                #region Agrupamento departamento na listagem de level 2 no AppColeta
+                var inicioGrupo = false;
+                var fimGrupo = false;
+                var fimFinalGrupo = false;
+                var Grupo = "";
+
+                if (countDepto > 1)
+                {
+
+                    if (departamento == "")
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                    }
+                    else if (departamento == parlevel2.Departamento)
+                    {
+                        inicioGrupo = false;
+                    }
+                    else if (departamento != parlevel2.Departamento)
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                        fimGrupo = true;
+                    }
+
+                    if (++index == count)
+                    {
+                        fimFinalGrupo = true;
+                    }
+
+                    departamento = parlevel2.Departamento;
+
+                }
+                #endregion
+
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
-                                                    classe: "row",
+                                                    classe: "row gabriel " + parlevel2.Departamento,
+                                                    tags: "departamento='" + parlevel2.Departamento + "'",
                                                     outerhtml: level2 +
-                                                               counters +
-                                                               buttons +
-                                                               html.div(classe: "level2Debug") +
-                                                               lineCounters
+                                                                counters +
+                                                                buttons +
+                                                                html.div(classe: "level2Debug") +
+                                                                lineCounters,
+                                                    inicioGrupo: inicioGrupo,
+                                                    fimGrupo: fimGrupo,
+                                                    fimFinalGrupo: fimFinalGrupo,
+                                                    Grupo: Grupo
                                                     );
+
+                //ParLevel2List += html.listgroupItem(
+                //                                    id: parlevel2.Id.ToString(),
+                //                                    classe: "row",
+                //                                    outerhtml: level2 +
+                //                                               counters +
+                //                                               buttons +
+                //                                               html.div(classe: "level2Debug") +
+                //                                               lineCounters
+                //                                    );
 
                 if (ParLevel1.HasGroupLevel2 == true)
                 {
@@ -6111,6 +6268,14 @@ namespace SgqServiceBusiness.Api
                         form_control = $@"<input id="""" class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-din=""{ header.ParHeaderField_Description }"" readonly>";
                         form_control += $@"<label class=""""></label>";
                         break;
+
+                    case 11:
+
+                        var options = ParFieldTypeDB.getComponenteValues(header, ParCompany_id, id);
+
+                        form_control += options;
+
+                        break;
                 }
 
                 //Incrementar valor para o pai do elemento para Ytoara.
@@ -6143,7 +6308,7 @@ namespace SgqServiceBusiness.Api
         /// <param name="ParLevel1"></param>
         /// <param name="ParLevel2"></param>
         /// <returns></returns>
-        protected string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, out StringBuilder painellevel3)
+        protected string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, out StringBuilder painellevel3, in string frequencyName)
         {
             var html = new Html();
 
@@ -6182,6 +6347,7 @@ namespace SgqServiceBusiness.Api
                                                 ),
                                     classe: "btn-warning btnNotAvaliable na font11"
                                 );
+
 
 
             bool haveAccordeon = false;
@@ -6718,7 +6884,9 @@ namespace SgqServiceBusiness.Api
                             //tipo de input
                             string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
 
-                            string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
+                            bool hasInfo = dbEf.ParLevel3XHelp.Where(x => x.IsActive).Any(x => x.ParLevel3_Id == parLevel3.Id);
+
+                            string level3List = html.level3(parLevel3, input, classInput, labelsInputs, hasInfo);
                             level3Group.Append(level3List);
                         }
                     }
@@ -6766,6 +6934,11 @@ namespace SgqServiceBusiness.Api
                                     "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(outerhtml: "0", classe: "defects") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
+                string frequencyhtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("frequency").Value.ToString() +
+                                    "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(outerhtml: frequencyName, classe: "frequency") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
 
                 string avaliacoes = html.div(
                                     outerhtml: avaliacoeshtml,
@@ -6777,6 +6950,10 @@ namespace SgqServiceBusiness.Api
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
                 string defeitos = html.div(
                                     outerhtml: defeitoshtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+                string frequency = html.div(
+                                    outerhtml: frequencyhtml,
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
 
@@ -6855,6 +7032,7 @@ namespace SgqServiceBusiness.Api
                 painellevel3 = new StringBuilder(html.listgroupItem(outerhtml: avaliacoes +
                                                              amostras +
                                                              defeitos +
+                                                             frequency +
                                                              painelLevel3HeaderListHtml.ToString(),
                                                   classe: "painel painelLevel03 row"));
                 painellevel3.Append(html.painelCounters(listCounter));
@@ -6862,7 +7040,7 @@ namespace SgqServiceBusiness.Api
                 //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 var botoesTodos = "";
-                if (GlobalConfig.Brasil)
+                if (GlobalConfig.Brasil || GlobalConfig.SESMT)
                 {
                     botoesTodos = "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
                                     "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
@@ -6901,6 +7079,7 @@ namespace SgqServiceBusiness.Api
         {
             var html = new Html();
             string input = null;
+
             if (parLevel3.ParLevel3InputType_Id == 1)
             {
                 classInput = " boolean";
@@ -7147,6 +7326,27 @@ namespace SgqServiceBusiness.Api
 
                 input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
             }
+            else if (parLevel3.ParLevel3InputType_Id == 13)
+            {
+                classInput = " inputData";
+                labels = html.div(
+                                  outerhtml: "",
+                                  classe: ""
+                                  );
+
+                input = html.campoData(id: parLevel3.Id.ToString());
+
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 14)
+            {
+                classInput = " inputHora";
+                labels = html.div(
+                                  outerhtml: "",
+                                  classe: ""
+                                  );
+
+                input = html.campoHora(id: parLevel3.Id.ToString());
+            }
             else
             {
                 ///Campo interval está repetindo , falta o campo defeitos
@@ -7181,6 +7381,8 @@ namespace SgqServiceBusiness.Api
                                                 intervalMax: parLevel3.IntervalMax,
                                                 unitName: parLevel3.ParMeasurementUnit_Name);
             }
+
+
             return input;
         }
 
@@ -7325,6 +7527,10 @@ namespace SgqServiceBusiness.Api
             if (GlobalConfig.Santander)
             {
                 empresa = "santander";
+            }
+            if (GlobalConfig.SESMT)
+            {
+                empresa = "SESMT";
             }
 
             string footOuterHtml = html.br() +
@@ -8442,7 +8648,7 @@ namespace SgqServiceBusiness.Api
                                         cmd.CommandType = CommandType.Text;
                                         cmd.Parameters.Add(new SqlParameter("@WeiDefects", resultLevel3WeiDefects.WeiDefects.ToString().Replace(',', '.')));
                                         cmd.Parameters.Add(new SqlParameter("@PunishmentValue", resultLevel3.PunishmentValue.ToString().Replace(',', '.')));
-                                        cmd.Parameters.Add(new SqlParameter("@ResultLevel3WeiDefects_Id", resultLevel3.PunishmentValue.ToString().Replace(',', '.')));
+                                        cmd.Parameters.Add(new SqlParameter("@ResultLevel3WeiDefects_Id", resultLevel3WeiDefects.Id));
 
                                         cmd.ExecuteNonQuery();
                                         //factory.ExecuteSql(cmd.CommandText);
@@ -8674,6 +8880,7 @@ namespace SgqServiceBusiness.Api
         {
             return Resources.Resource;
         }
+
     }
 }
 

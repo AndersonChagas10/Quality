@@ -684,4 +684,6 @@ update pe set ParFrequency_Id = L2.ParFrequency_Id
 from ParEvaluation pe inner join ParLevel2 L2 on pe.ParLevel2_Id = L2.Id
 where 1 = 1 
 and pe.IsActive = 1 
-and pe.ParFrequency_Id is null
+and pe.ParFrequency_Id is null 
+
+GO

@@ -100,12 +100,12 @@ namespace SgqSystem.Controllers.Api.App
             return Business.GetUnits();
         }
 
-        [HttpGet]
-        [Route("GetFiles")]
-        public string GetFiles()
-        {
-            return Business.GetFiles();
-        }
+        //[HttpGet]
+        //[Route("GetFiles")]
+        //public string GetFiles()
+        //{
+        //    return Business.GetFiles();
+        //}
 
         [HttpGet]
         [Route("GetAPP")]
