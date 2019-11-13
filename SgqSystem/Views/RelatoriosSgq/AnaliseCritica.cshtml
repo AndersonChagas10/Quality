@@ -1,0 +1,340 @@
+﻿@using DTO
+@{
+    ViewBag.Title = "Análise Critica";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h2>AnaliseCritica</h2>*@
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml", "")
+
+        <div id="formBodyContent">
+
+            <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+                <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+            </div>
+
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+            <div id="load"></div>
+            <div id="reports">
+
+                @*Gráfico Historico Consolidado*@
+                <div id="loaderNCUnidade"></div>
+                <div class="totalNC" id="NCUnidade" hidden data-toggle="collapse" data-target="#filtroUni" aria-expanded="false" aria-controls="filtroUni">
+                    <div style="background-color:white; text-align:center">
+                        <div id="showNCUnidade" class="alert alert-info col-lg-2" role="alert">
+                            <h1>0 %</h1>
+                            <br />
+                            <span>@Resources.Resource.non_conformities_in_period</span>
+                        </div>
+                        <button id="Udia" class="btn btn-default">Dia</button>
+                        <button id="Usemana" class="btn btn-default">Semana</button>
+                        <button id="Umes" class="btn btn-default">Mês</button>
+                        <div class="col-lg-10" id="GraficoHistoricoUnidade"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="collapse bloco-filtro multi-collapse" id="filtroUni"> _ </div>
+                    <br>
+                </div>
+
+                @*Gráfico Listagem do Indicador*@
+
+
+                @*Tabela com listagem das ações vinculadas somente ao indicador*@
+
+                @*Tabela de ação corretiva*@
+                @*Tabela com listagem das ações vinculadas somente ao monitorameto*@
+
+                @*Departamento tem Gráfico do monitoramento*@
+                @*Departamento tem uma tabela ação corretiva vinculada ao monitoramento*@
+
+                @*Gráfico tarefas acumuladas*@
+                @*Gráfico NC por tarefa*@
+                @*Listagem de ações*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        var urlGetGraficoHistoricoUnidade = '@Html.Raw(Url.Action("GetGraficoHistoricoUnidade", "api/AnaliseCritica"))';
+        var chartHistoricoGeral;
+
+        var $btn = $('#btnSend');
+
+        $(document).ready(function () {
+
+            closeLeftSidebar();
+
+            $("#btnSend").click(function () {
+
+                Send(true);
+
+            });
+
+        });
+
+        function Send(toggle) {
+
+            $btn.button('loading');
+
+            $('#resultsApontamentos').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            $('#reports').hide();
+            enviar["dimensaoData"] = 1;
+            enviar["auditorId"] = GetUsuarioId();
+
+            EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", toggle);
+        }
+
+        function ValidaDadosParaEnvio() {
+
+            return true;
+
+        }
+
+        $("#Udia").on('click', function () {
+            enviar["dimensaoData"] = 1;
+            EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
+        });
+
+        $("#Usemana").on('click', function () {
+            enviar["dimensaoData"] = 2;
+            EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
+        });
+
+        $("#Umes").on('click', function () {
+            enviar["dimensaoData"] = 4;
+            EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
+        });
+
+        //Graficos
+        function GerarGraficoHistoricoUnidade(data) {
+
+            var porc = [];
+
+            if (data.length > 0) {
+
+                $('#reports').show();
+
+                var isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+
+                if (enviar.dimensaoData == 1)
+                    var dia = (isBrazil == true ? MapeiaValorParaHC(data, "_Date") : MapeiaValorParaHC(data, "_DateEUA"));
+
+                if (enviar.dimensaoData == 2)
+                    var dia = MapeiaValorParaHC(data, "Semana");
+
+                if (enviar.dimensaoData == 4)
+                    var dia = MapeiaValorParaHC(data, "Mes");
+
+                var nc = MapeiaValorParaHC(data, "Nc");
+                var porc = MapeiaValorParaHC(data, "PorcentagemNc");
+                var qtdAv = MapeiaValorParaHC(data, "Av");
+                var avComPeso = MapeiaValorParaHC(data, "AvComPeso");
+                var ncComPeso = MapeiaValorParaHC(data, "NcComPeso");
+                var sumav = qtdAv.reduce(function (a, b) { return a + b; });
+                var sumnc = nc.reduce(function (a, b) { return a + b; });
+                var sumav = qtdAv.reduce(function (a, b) { return a + b; });
+                var sumnc = nc.reduce(function (a, b) { return a + b; });
+                var sumavComPeso = avComPeso.reduce(function (a, b) { return a + b; });
+                var sumncComPeso = ncComPeso.reduce(function (a, b) { return a + b; });
+                let TituloGrafico1 = Resources("consolidated_history");
+
+                if (sumav != 0 && sumnc != 0) {
+
+                    var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
+                    var SubtitleConsolidado = "";
+
+                    $('#GraficoHistoricoUnidade').removeClass('loader');
+                    $('#GraficoHistoricoUnidade').empty();
+
+                    chartHistoricoGeral = Highcharts.chart('GraficoHistoricoUnidade', {
+                        credits: {
+                            enabled: false
+                        },
+                        chart: {
+                            type: 'column',
+                            zoomType: 'x,y',
+                            height: 300
+                        },
+                        title: {
+                            text: TituloGrafico1
+                        },
+                        subtitle: {
+                            text: SubtitleConsolidado
+                        },
+                        xAxis: {
+                            categories: dia,
+                            title: {
+                                text: Resources("data"),
+                            },
+                        },
+                        yAxis: [
+                            {
+                                title: {
+                                    text: Resources("quantity")
+                                },
+                                labels: {
+                                    format: '{value}',
+                                    style: {
+                                        color: Highcharts.getOptions().colors[1]
+                                    }
+                                },
+                            }, {
+                                labels: {
+                                    format: '{value} %',
+                                    style: {
+                                        color: Highcharts.getOptions().colors[1]
+                                    }
+                                },
+                                title: {
+                                    text: "% " + Resources("nonconformity"),
+                                },
+                                opposite: true
+                            }],
+                        legend: {
+                            shadow: false
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            shared: true,
+                            format: '{point.y:.2f}',
+                            format: '{point:.2f}',
+                        },
+                        plotOptions: {
+                            column: {
+                                grouping: false,
+                                shadow: false,
+                                borderWidth: 0
+                            }
+                        },
+                        series: [{
+                            visible: false,
+                            name: 'NC',
+                            color: 'rgba(77,143,189,1)',
+                            data: nc,
+                            yAxis: 0,
+                            type: 'line',
+                            marker: {
+                                enabled: false
+                            },
+                            pointPadding: 0.2,
+                            //point: {
+                            //    events: {
+                            //        click: function () {
+                            //            clickFiltroData(this);
+                            //        }
+                            //    }
+                            //},
+                            dataLabels: {
+                                enabled: false,
+                                color: 'black',
+                                align: 'center',
+                                format: '{point.y:.2f}',
+                                style: {
+                                    fontSize: '10px',
+                                }
+                            },
+                            tooltip: {
+                                valueDecimals: 2,
+                                valueSuffix: '',
+                                format: '{point.y:.2f}',
+                                format: '{point:.2f}',
+                            }
+                        }, {
+                            visible: true,
+                            name: '% NC',
+                            color: 'rgba(240,124,0,1)',
+                            data: porc,
+                            yAxis: 1,
+                            type: 'line',
+                            marker: {
+                                enabled: false
+                            },
+                            //point: {
+                            //    events: {
+                            //        click: function () {
+                            //            clickFiltroData(this);
+                            //        }
+                            //    }
+                            //},
+                            dataLabels: {
+                                enabled: false,
+                                color: 'black',
+                                align: 'center',
+                                format: '{point.y:.2f}',
+                                style: {
+                                    fontSize: '10px',
+                                }
+                            },
+                            tooltip: {
+                                valueDecimals: 2,
+                                valueSuffix: ' %',
+                                format: '{point.y:.2f}',
+                                format: '{point:.2f}',
+                            }
+                        }, {
+                            visible: false,
+                            name: Resources("samples"),
+                            data: qtdAv,
+                            type: 'line',
+                            marker: {
+                                enabled: false
+                            },
+                            color: 'rgba(81,207,64,1)',
+                            //pointPadding: 0.3,
+                            //pointPlacement: 0.2,
+                            yAxis: 0,
+                            //point: {
+                            //    events: {
+                            //        click: function () {
+                            //            clickFiltroData(this);
+                            //        }
+                            //    }
+                            //},
+                            dataLabels: {
+                                enabled: false,
+                                color: 'black',
+                                align: 'center',
+                                format: '{point.y:.2f}',
+                                style: {
+                                    fontSize: '10px',
+                                }
+                            },
+                            tooltip: {
+                                valueDecimals: 2,
+                                valueSuffix: '',
+                                format: '{point.y:.2f}',
+                                format: '{point:.2f}',
+                            }
+                        }]
+                    }, function () {
+
+                            $('#showNCUnidade > h1').text(parseFloat(porcPeriodoComPeso.toFixed(2)) + " %");
+                            $('#NCUnidade').show();
+
+                    });
+
+                    if(chartHistoricoGeral.reflow)
+                        chartHistoricoGeral.reflow();
+
+                }
+            }
+        }
+
+    </script>
+}
+
