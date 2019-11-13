@@ -149,7 +149,7 @@ namespace SgqSystem.Controllers.Api
                 databaseSgq.Configuration.LazyLoadingEnabled = false;
                 var resultlevel3 = databaseSgq.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
 
-                LogSystem.LogTrackBusiness.Register(resultlevel3, resultlevel3.Id, "Result_Level3", userSgq_Id, parReason_Id, motivo);
+                LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3, resultlevel3.Id, "Result_Level3", userSgq_Id);
 
                 var parLevel3 = databaseSgq.ParLevel3.Where(x => x.Id == resultlevel3.ParLevel3_Id).FirstOrDefault();
                 parLevel3Value = databaseSgq.ParLevel3Value.Where(x => x.ParLevel3_Id == parLevel3.Id).FirstOrDefault();
@@ -164,6 +164,8 @@ namespace SgqSystem.Controllers.Api
             {
                 db.Database.ExecuteSqlCommand(query);
                 var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);
+
+                LogSystem.LogTrackBusiness.Register(level3Result, level3Result.Id, "Result_Level3", userSgq_Id, parReason_Id, motivo);
 
                 ConsolidacaoEdicao(resultLevel3.Id);
                 return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
@@ -234,7 +236,7 @@ namespace SgqSystem.Controllers.Api
                             continue;
                             
                         //[TODO] Inserir registro de log de edição
-                        LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderField", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
+                        LogSystem.LogTrackBusiness.RegisterIfNotExist(original, original.Id, "CollectionLevel2XParHeaderField", Lsc2xhf.UserSgq_Id);
 
                         if (string.IsNullOrEmpty(item.Value))//Remover
                         {
@@ -245,6 +247,7 @@ namespace SgqSystem.Controllers.Api
                             original.Value = item.Value;
                             original.ParHeaderField_Id = item.ParHeaderField_Id;
                             original.ParHeaderField_Name = item.ParHeaderField_Name;
+                            LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderField", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
                         }
                     }
                     else if (!string.IsNullOrEmpty(item.Value)) //Add

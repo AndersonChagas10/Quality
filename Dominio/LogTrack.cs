@@ -14,7 +14,7 @@ namespace Dominio
         public string Json { get; set; }
         public DateTime AddDate { get; set; }
 
-        public int ParReason_Id { get; set; }
+        public int? ParReason_Id { get; set; }
         public string Motivo { get; set; }
 
         [ForeignKey("UserSgq_Id")]

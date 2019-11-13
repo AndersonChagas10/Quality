@@ -349,20 +349,21 @@
 
                         var data = table.row($(this).parents('tr')).data();
 
-                        $.get(urlLogTrack + "/Result_Level3/" + data.ResultLevel3Id, function (r) {
-                            var tableHead = $('#modalLogTrackHistory .modal-body table thead');
-                            var tableBody = $('#modalLogTrackHistory .modal-body table tbody');
+                        var tableHead = $('#modalLogTrackHistory .modal-body table thead');
+                        var tableBody = $('#modalLogTrackHistory .modal-body table tbody');
 
-                            $(tableHead).html('');
-                            $(tableBody).html('');
+                        $(tableHead).html('');
+                        $(tableBody).html('');
+
+                        $.get(urlLogTrack + "/Result_Level3/" + data.ResultLevel3Id, function (r) {
 
                             var htmlHead = "<tr>";
+                            htmlHead += "<th>-</th>";
                             htmlHead += "<th>Data Alteração</th>";
                             htmlHead += "<th>Quem</th>";
                             htmlHead += "<th>Valor</th>";
                             htmlHead += "<th>Valor do Texto</th>";
                             htmlHead += "<th>Está conforme?</th>";
-                            htmlHead += "<th>Defeitos</th>";
                             htmlHead += "<th>Não avaliado</th>";
                             htmlHead += "<th>Tipo Motivo</th>";
                             htmlHead += "<th>Motivo</th>";
@@ -370,18 +371,23 @@
 
                             var htmlBody = "";
                             var quantidadeNaLista = r.length;
+                            r.splice(0, 0, r[r.length - 1]);
+                            r = r.slice(0, -1);
                             $.each(r, function (i, o) {
-                                if ((quantidadeNaLista - 1) == i) {
+                                
+                                if (i == 0) {
                                     htmlBody += "<tr style='background-color:#ddd;' title='Original'>";
+                                    htmlBody += "<td>Original</td>";
                                 } else {
                                     htmlBody += "<tr>";
+                                    htmlBody += "<td>Edição "+(quantidadeNaLista-i)+"</td>";
                                 }
+
                                 htmlBody += "<td>"+o.addDate+"</td>";
                                 htmlBody += "<td>"+o.userSgq_FullName+"</td>";
                                 htmlBody += "<td>"+o.obj.Value+"</td>";
-                                htmlBody += "<td>"+(o.obj.ValueText == 'null' ? "" : o.obj.ValueText)+"</td>";
+                                htmlBody += "<td>"+(o.obj.ValueText == 'null' || o.obj.ValueText == 'undefined' ? "" : o.obj.ValueText)+"</td>";
                                 htmlBody += "<td>"+(o.obj.IsConform ? "SIM" : "NÃO")+"</td>";
-                                htmlBody += "<td>"+o.obj.Defects+"</td>";
                                 htmlBody += "<td>"+(o.obj.IsNotEvaluate ? "SIM" : "NÃO")+"</td>";
                                 htmlBody += "<td>"+o.parReason+"</td>";
                                 htmlBody += "<td>"+o.motivo+"</td>";
@@ -399,12 +405,13 @@
 
                         var data = table.row($(this).parents('tr')).data();
 
-                        $.get(urlLogTrackHeaderField + "/" + data.ResultLevel3Id, function (r) {
-                            var tableHead = $('#modalLogTrackHistory .modal-body table thead');
-                            var tableBody = $('#modalLogTrackHistory .modal-body table tbody');
+                        var tableHead = $('#modalLogTrackHistory .modal-body table thead');
+                        var tableBody = $('#modalLogTrackHistory .modal-body table tbody');
 
-                            $(tableHead).html('');
-                            $(tableBody).html('');
+                        $(tableHead).html('');
+                        $(tableBody).html('');
+
+                        $.get(urlLogTrackHeaderField + "/" + data.ResultLevel3Id, function (r) {
 
                             var htmlHead = "<tr>";
                             htmlHead += "<th>Data Alteração</th>";
