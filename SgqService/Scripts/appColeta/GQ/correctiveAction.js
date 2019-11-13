@@ -22,7 +22,8 @@
     correctiveActionModal.attr('period', period)
     correctiveActionModal.attr('period', period)
 
-    $('#CorrectiveActionTaken').children('#datetime').text(dateTimeWithMinutes());
+    $('#CorrectiveActionTaken').children('#datetime').text(dateTimeWithMinutes().split(' ')[0]);
+    $('#CorrectiveActionTaken').children('#hour').text(dateTimeWithMinutes().split(' ')[1]);
     $('#CorrectiveActionTaken').children('#auditor').text(userlogado[0].getAttribute('username')); //Colocar o Usuário Atual
     $('#CorrectiveActionTaken').children('#shift').text($('#shift option[value=' + shift + ']').text());
     $('#AuditInformation').children('#auditText').text(level01.children('.levelName').text());
@@ -44,7 +45,9 @@
     */
     ConsolidationResult.addClass('selected');
 
-    $('#AuditInformation').children('#starttime').text(dateTimeWithMinutes().slice(0, 16));
+    $('#AuditInformation').children('#starttime').text(dateTimeWithMinutes().slice(0, 16).split(' ')[0]);
+    $('#AuditInformation').children('#starttimeHour').text(dateTimeWithMinutes().slice(0, 16).split(' ')[1]);
+
     correctiveActionModal.attr('level01id', ConsolidationResult.attr('level1id'));
     correctiveActionModal.attr('level02id', ConsolidationResult.attr('level2id'));
     correctiveActionModal.attr('evaluationnumber', ConsolidationResult.attr('evaluation'));
@@ -612,8 +615,10 @@ $(document).on('click', '#btnSendCorrectiveAction', function (e) {
 
     $('#btnCA').addClass('hide');
 
+    //reseta valor dos campos
     $("#correctiveAction").trigger('click');
     $("#datetimeTechinicalHour").val("");
+    $("#TechinicalSignature option[value='0']").prop('selected', true);
 });
 
 function sendCorrectiveActionOnLine() {

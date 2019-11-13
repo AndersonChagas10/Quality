@@ -980,6 +980,10 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "defects_per_level3_group", Value = "NC por Grupo de Tarefa" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "no_group", Value = "Sem grupo" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "free_time", Value = "Hora Liberação" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "hour", Value = "Hora" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "deviation_date", Value = "Data Desvio" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "deviation_hour", Value = "Hora Desvio" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "correction", Value = "Correção" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 

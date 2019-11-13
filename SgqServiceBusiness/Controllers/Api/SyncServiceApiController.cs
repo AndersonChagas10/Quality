@@ -4864,7 +4864,7 @@ namespace SgqServiceBusiness.Api
             var usuariosSupervisor = new List<UserSgq>();
             using (var db = new SgqDbDevEntities())
             {
-                usuariosSupervisor = db.UserSgq.Where(x => x.Role.Contains("Supervisor") && x.IsActive == true).ToList();
+                usuariosSupervisor = db.UserSgq.Where(x => x.Role.Contains("Supervisor") && x.IsActive == true).OrderBy(x => x.Name).ToList();
             }
 
             var htmlSelect = "";
@@ -4878,7 +4878,7 @@ namespace SgqServiceBusiness.Api
                 "<div id=\"correctiveActionModal\" class=\"container panel panel-default modal-padrao\" style=\"display:none\">" +
                     "<div class=\"panel-body\">" +
                         "<div class=\"modal-body\">" +
-                            "<h2>" + CommonData.getResource("corrective_action").Value.ToString() + " </h2>" +
+                            "<h2>" + CommonData.getResource("immediate_corrective_action").Value.ToString() + " </h2>" +
                             "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                 "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                             "</div>" +
@@ -4889,15 +4889,17 @@ namespace SgqServiceBusiness.Api
                                         "<div class=\"row\" style=\"padding:8px;\">" +
                                             "<div class=\"col-xs-6\" id=\"CorrectiveActionTaken\">" +
                                                 //"<b class=\"font16\">" + CommonData.getResource("corrective_action_taken").Value.ToString() + ":<br/></b>" +
-                                                "<b>" + CommonData.getResource("date_time").Value.ToString() + ":</b> <span id=\"datetime\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("date").Value.ToString() + ":</b> <span id=\"datetime\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("hour").Value.ToString() + ":</b> <span id=\"hour\"></span><br/>" +
                                                 "<b>" + CommonData.getResource("auditor").Value.ToString() + ": </b><span id=\"auditor\"></span><br/>" +
                                                 "<b>" + CommonData.getResource("shift").Value.ToString() + ": </b><span id=\"shift\"></span><br/>" +
                                             "</div>" +
                                             "<div class=\"col-xs-6\" id=\"AuditInformation\">" +
                                                 //"<b class=\"font16\">" + CommonData.getResource("audit_information").Value.ToString() + ":<br/></b>" +
                                                 "<b>" + CommonData.getResource("level1").Value.ToString() + ": </b><span id=\"auditText\"></span><br/>" +
-                                                "<b>" + CommonData.getResource("initial_date").Value.ToString() + ":</b><span id=\"starttime\"></span><br/>" +
                                                 "<b>" + CommonData.getResource("period").Value.ToString() + ":</b><span id=\"correctivePeriod\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("deviation_date").Value.ToString() + ":</b><span id=\"starttime\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("deviation_hour").Value.ToString() + ":</b><span id=\"starttimeHour\"></span><br/>" +
                                                 "<b>" + CommonData.getResource("free_time").Value.ToString() + ":</b><input id=\"datetimeTechinicalHour\" type='time' min='0' class='input-sm' /><br/>" +
                                             "</div>" +
                                         "</div>" +
