@@ -348,26 +348,23 @@
                     $('#resultsApontamentos tbody').on('click', 'button#viewHistory', function (data) {
 
                         var data = table.row($(this).parents('tr')).data();
-
-                        var tableHead = $('#modalLogTrackHistory .modal-body table thead');
-                        var tableBody = $('#modalLogTrackHistory .modal-body table tbody');
-
-                        $(tableHead).html('');
-                        $(tableBody).html('');
+                        
+                        var tableLogTrack = $('#modalLogTrackHistory .modal-body');
+                        $(tableLogTrack).html('');
 
                         $.get(urlLogTrack + "/Result_Level3/" + data.ResultLevel3Id, function (r) {
 
-                            var htmlHead = "<tr>";
-                            htmlHead += "<th>-</th>";
+                            var htmlHead = "<thead><tr>";
+                            htmlHead += "<th></th>";
                             htmlHead += "<th>Data Alteração</th>";
                             htmlHead += "<th>Quem</th>";
+                            htmlHead += "<th>Resultado</th>";
                             htmlHead += "<th>Valor</th>";
                             htmlHead += "<th>Valor do Texto</th>";
-                            htmlHead += "<th>Está conforme?</th>";
                             htmlHead += "<th>Não avaliado</th>";
                             htmlHead += "<th>Tipo Motivo</th>";
                             htmlHead += "<th>Motivo</th>";
-                            htmlHead += "</tr>";
+                            htmlHead += "</tr></thead>";
 
                             var htmlBody = "";
                             var quantidadeNaLista = r.length;
@@ -378,6 +375,9 @@
                                 if (i == 0) {
                                     htmlBody += "<tr style='background-color:#ddd;' title='Original'>";
                                     htmlBody += "<td>Original</td>";
+                                } else if(i == 1){
+                                    htmlBody += "<tr style='background-color:#5cb85c;' title='Atual'>";
+                                    htmlBody += "<td>Edição "+(quantidadeNaLista-i)+"</td>";
                                 } else {
                                     htmlBody += "<tr>";
                                     htmlBody += "<td>Edição "+(quantidadeNaLista-i)+"</td>";
@@ -385,17 +385,22 @@
 
                                 htmlBody += "<td>"+o.addDate+"</td>";
                                 htmlBody += "<td>"+o.userSgq_FullName+"</td>";
+                                htmlBody += "<td>"+(o.obj.IsConform ? "Conforme" : "Não Conforme")+"</td>";
                                 htmlBody += "<td>"+o.obj.Value+"</td>";
                                 htmlBody += "<td>"+(o.obj.ValueText == 'null' || o.obj.ValueText == 'undefined' ? "" : o.obj.ValueText)+"</td>";
-                                htmlBody += "<td>"+(o.obj.IsConform ? "SIM" : "NÃO")+"</td>";
-                                htmlBody += "<td>"+(o.obj.IsNotEvaluate ? "SIM" : "NÃO")+"</td>";
+                                htmlBody += "<td>"+(o.obj.IsNotEvaluate ? "Não Avaliado" : "Avaliado")+"</td>";
                                 htmlBody += "<td>"+o.parReason+"</td>";
                                 htmlBody += "<td>"+o.motivo+"</td>";
                                 htmlBody += "</tr>";
                             });
 
-                            $(tableHead).html(htmlHead);
-                            $(tableBody).html(htmlBody);
+                            var tableHtml = "<table>"+htmlHead+"<tbody>"+htmlBody+"</tbody>"+"</table>"
+                            $(tableLogTrack).html(tableHtml);
+
+                            $(tableLogTrack).find('table').dataTable({
+                                "ordering": false,
+                                "pageLength": 25
+                            } );
 
 
                         })
@@ -405,39 +410,78 @@
 
                         var data = table.row($(this).parents('tr')).data();
 
-                        var tableHead = $('#modalLogTrackHistory .modal-body table thead');
-                        var tableBody = $('#modalLogTrackHistory .modal-body table tbody');
-
-                        $(tableHead).html('');
-                        $(tableBody).html('');
+                        var tableLogTrack = $('#modalLogTrackHistory .modal-body');
+                        $(tableLogTrack).html('');
 
                         $.get(urlLogTrackHeaderField + "/" + data.ResultLevel3Id, function (r) {
 
-                            var htmlHead = "<tr>";
+                            var htmlHead = "<thead><tr>";
+                            htmlHead += "<th></th>";
                             htmlHead += "<th>Data Alteração</th>";
                             htmlHead += "<th>Quem</th>";
                             htmlHead += "<th>Nome Cabeçalho</th>";
                             htmlHead += "<th>Valor</th>";
                             htmlHead += "<th>Tipo Motivo</th>";
                             htmlHead += "<th>Motivo</th>";
-                            htmlHead += "</tr>";
+                            htmlHead += "</tr></thead>";
 
                             var htmlBody = "";
-                            $.each(r, function (i, o){
-                                htmlBody += "<tr>";
-                                htmlBody += "<td>"+o.addDate+"</td>";
-                                htmlBody += "<td>"+o.userSgq_FullName+"</td>";
-                                htmlBody += "<td>"+o.obj.ParHeaderField_Name+"</td>";
-                                htmlBody += "<td>"+(!!o.obj.ParHeaderField_ValueName ? o.obj.ParHeaderField_ValueName : o.obj.Value)+"</td>";
-                                htmlBody += "<td>"+o.parReason+"</td>";
-                                htmlBody += "<td>"+o.motivo+"</td>";
+                            var logTrack = r;
+                            var original = [];
+                            var atual = [];
+                            var passado = [];
+                            
+                            $.each(r, function (i, o) {
+                                var existeNaListaAtual = $.grep(atual, function (o2, i2) { return o2.obj.Id == o.obj.Id }).length;
+                                var quantidadeExistenteNaLista = $.grep(logTrack, function (o2, i2) { return o2.obj.Id == o.obj.Id }).length;
+                                o.numeroDaEdicao = quantidadeExistenteNaLista - existeNaListaAtual -1;
+                                if (!(o.motivo.length > 0)) {
+                                    original.push(o);
+                                } else if (existeNaListaAtual == 0) {
+                                    atual.push(o);
+                                } else {
+                                    passado.push(o);
+                                }
+                            });
+
+                            var htmlCorpo = function (o) {
+                                var html = "<td>"+o.addDate+"</td>";
+                                html += "<td>"+o.userSgq_FullName+"</td>";
+                                html += "<td>"+o.obj.ParHeaderField_Name+"</td>";
+                                html += "<td>"+(!!o.obj.ParHeaderField_ValueName ? o.obj.ParHeaderField_ValueName : o.obj.Value)+"</td>";
+                                html += "<td>"+o.parReason+"</td>";
+                                html += "<td>" + o.motivo + "</td>";
+                                return html;
+                            }
+
+                            $.each(original, function (i, o){
+                                htmlBody += "<tr style='background-color:#ddd;' title='Original'>";
+                                htmlBody += "<td>Original</td>";
+                                htmlBody += htmlCorpo(o);
                                 htmlBody += "</tr>";
                             });
 
-                            $(tableHead).html(htmlHead);
-                            $(tableBody).html(htmlBody);
+                            $.each(atual, function (i, o){
+                                htmlBody += "<tr style='background-color:#5cb85c;' title='Atual'>";
+                                htmlBody += "<td>Edição "+o.numeroDaEdicao+"</td>";
+                                htmlBody += htmlCorpo(o);
+                                htmlBody += "</tr>";
+                            });
 
+                            $.each(passado, function (i, o){
+                                htmlBody += "<tr>";
+                                htmlBody += "<td>Edição "+o.numeroDaEdicao+"</td>";
+                                htmlBody += htmlCorpo(o);
+                                htmlBody += "</tr>";
+                            });
+                            
+                            var tableHtml = "<table>"+htmlHead+"<tbody>"+htmlBody+"</tbody>"+"</table>"
+                            $(tableLogTrack).html(tableHtml);
 
+                            $(tableLogTrack).find('table').dataTable({
+                                "ordering": false,
+                                "pageLength": 25
+                            } );
                         })
                     });
 
