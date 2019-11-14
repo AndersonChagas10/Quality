@@ -466,4 +466,10 @@ IF COL_LENGTH('ParVinculoPeso','ParCluster_Id') IS NULL
     END
 GO
 
+IF COL_LENGTH('ParEvaluationXDepartmentXCargo','ParCluster_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParEvaluationXDepartmentXCargo ADD ParCluster_Id int null;
+    END
+GO
+
 
