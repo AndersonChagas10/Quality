@@ -460,5 +460,10 @@ IF COL_LENGTH('ParLevel3Value','IsDefaultAnswer') IS NULL
     END
 GO
 
+IF COL_LENGTH('ParVinculoPeso','ParCluster_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParVinculoPeso ADD ParCluster_Id int null;
+    END
+GO
 
 
