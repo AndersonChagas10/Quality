@@ -979,6 +979,9 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "group_of_level3", Value = "Grupo de Tarefa" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "defects_per_level3_group", Value = "NC por Grupo de Tarefa" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "no_group", Value = "Sem grupo" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "defects_per_costCenter_section", Value = "Centro de Custo/Seção" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "click_to_unfold", Value = "Clique no gráfico para desdobrar para o próximo nível" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "click_to_fta", Value = "Clique no gráfico para criar o Formulário de Tratamento de Anomalia" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
