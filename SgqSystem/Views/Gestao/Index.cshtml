@@ -1,4 +1,6 @@
 ﻿@using DTO
+@using Dominio.Enum
+@model IEnumerable<Dominio.ItemMenu>
 @{
     ViewBag.Title = Resources.Resource.management;
     var version = ViewBag.Asembly;
@@ -12,38 +14,14 @@
     var urlEvolutivo = Url.Action("RelatorioDeResultados", "RelatoriosSgq");
     var urlCEP = Url.Action("CartasCep", "RelatoriosSgq");
 
-    //EUA PROD
-    //ViewBag.urlRootPa = "https://sgq.jbssa.com/ActionPlan";
-    //ViewBag.urlRootPaFTA = "https://sgq.jbssa.com/ActionPlan/Pa_Acao/NewFTA?";
-
-    //EUA HML
-    //ViewBag.urlRootPa = "https://sgqtest.jbssa.com/actionPlanHML";
-    //ViewBag.urlRootPaFTA = "https://sgqtest.jbssa.com/actionPlanHML/Pa_Acao/NewFTA?";
-
-    //EUA GRT
-    //ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
-    //ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
-
-    //BR GRT
-    //ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcao";
-    //ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
-
-    //LOCAL RICARDO GABRIEL
-    //ViewBag.urlRootPa = "http://localhost/PlanoAcao";
-    //ViewBag.urlRootPaFTA = "http://localhost/PlanoAcao/Pa_Acao/NewFTA?";
-
-
-    //JBS HML / PROD
-    //ViewBag.urlRootPa = "http://mtzsvmqsc/PlanoDeAcao";
-    //ViewBag.urlRootPaFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
 }
 
 <style>
+
     #divMenu {
         width: 450px;
         height: 450px;
         margin: auto;
-        /*background-image: url('../Imagens/setas.png');*/
         background-repeat: no-repeat;
         background-position: center;
         background-size: 400px;
@@ -58,29 +36,27 @@
         height: 150px !important;
         font-weight: bold;
         color: #333;
-        background-repeat:no-repeat;
-        background-size:cover;
-        text-align:center;
-
+        background-repeat: no-repeat;
+        background-size: cover;
+        text-align: center;
         align-items: center;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-
-        padding:10px;
+        padding: 10px;
     }
 
-    .circuloPDCA, .circuloPDCA:focus{
-        outline:none !important;
-        border-radius: 50% !important;
-    }
+        .circuloPDCA, .circuloPDCA:focus {
+            outline: none !important;
+            border-radius: 50% !important;
+        }
 
-    .circuloPDCA p{
-        text-align:center;
-        display: block;
-    }
-    
+            .circuloPDCA p {
+                text-align: center;
+                display: block;
+            }
+
 
     #circulo1Plan {
         background-image: url('../Imagens/P.png');
@@ -97,46 +73,46 @@
     #circulo4Action {
         background-image: url('../Imagens/A.png');
     }
-    
+
 
     #circulo1Plan:hover, #circulo1Plan:focus {
-        background-color:#f89a1b;
+        background-color: #f89a1b;
     }
 
     #circulo2Do:hover, #circulo2Do:focus {
-        background-color:#99d01d;
+        background-color: #99d01d;
     }
 
     #circulo3Check:hover, #circulo3Check:focus {
-        background-color:#e94b4b;
+        background-color: #e94b4b;
     }
 
     #circulo4Action:hover, #circulo4Action:focus {
-        background-color:#0abdd5;
+        background-color: #0abdd5;
     }
 
     .seta {
         background-image: url('../Imagens/seta.png');
         background-size: 50px 50px;
-        background-position:left bottom;
+        background-position: left bottom;
     }
 
-    .seta90{
+    .seta90 {
         -webkit-transform: rotate(90deg);
         transform: rotate(90deg);
-        background-position:left bottom;
+        background-position: left bottom;
     }
 
-    .seta180{
+    .seta180 {
         -webkit-transform: rotate(180deg);
         transform: rotate(180deg);
-        background-position:left bottom;
+        background-position: left bottom;
     }
 
-    .seta270{
+    .seta270 {
         -webkit-transform: rotate(270deg);
         transform: rotate(270deg);
-        background-position:left bottom;
+        background-position: left bottom;
     }
 
     .fundoMenu {
@@ -165,49 +141,48 @@
             vertical-align: middle;
             line-height: 30px;
             padding: 1px 3px 1px 8px;
-            color:#959fae;
-            text-decoration:none;
+            color: #959fae;
+            text-decoration: none;
         }
 
-        .item-menu a:hover, .item-sub-menu a:hover {
-            text-decoration:none;
-        }
+            .item-menu a:hover, .item-sub-menu a:hover {
+                text-decoration: none;
+            }
 
         .item-menu a {
             display: block;
             background-color: rgb(44, 53, 66) !important;
         }
 
-        .item-menu a:hover {
-            background-color: #404f63 !important;
-        }
+            .item-menu a:hover {
+                background-color: #404f63 !important;
+            }
 
         .item-sub-menu a {
             background-color: #364150 !important;
             padding-left: 25px;
         }
 
-        .item-sub-menu a:hover {
-            background-color: #3e4b5c !important;
-        }
+            .item-sub-menu a:hover {
+                background-color: #3e4b5c !important;
+            }
 
     .under_construction {
         height: 20px;
         width: 20px;
         float: right;
-        margin-top:5px;
+        margin-top: 5px;
     }
 
     .popover-content {
         padding: 0px;
         width: 200px;
     }
-    
+
     .popover.right .arrow:after {
         border-right-color: rgb(44, 53, 66);
     }
 </style>
-@*<a class="btn btn-lg btn-danger" role="button" tabindex="0"  data-toggle="popover" data-trigger="focus" title="" data-content="">Dismissible popover</a>*@
 
 <div class="page-content-wrapper">
     <div class="page-content" style=" padding-right: 30px;">
@@ -257,50 +232,70 @@
 
             <!--Listagem-->
             <div id="fundoMenuSuperior">
-
+                @*Plan*@
                 <div id="menu1Plan">
-                    @if (GlobalConfig.Eua)
-                    {
-                        <div class="col-xs-12 item-menu"><a href="#">@Resources.Resource.general_view_of_the_area <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></div>
+
+                    @{
+                        var lista = Model.Where(x => x.PDCAMenuItem == (int)Enums.PDCAMenuItem.Plan).ToList();
                     }
-                    else
+
+                    @foreach (var item in lista)
                     {
-                        <div class="col-xs-12 item-menu"><a href="@urlVisaoGeralDaArea">@Resources.Resource.general_view_of_the_area</a></div>
+                        if (item.Url != null)
+                        {
+                            <div class="col-xs-12 item-menu"><a href="@Url.Content(item.Url)">@item.Name</a></div>
+                        }
                     }
-                    <div class="col-xs-12 item-menu"><a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a></div>
+
                 </div>
 
+                @*DO*@
                 <div id="menu2Do">
-                    <div class="col-xs-12 item-menu">
-                        <a href="#">@Resources.Resource.collection_reports</a>
-                    </div>
-                    <div class="col-xs-12 item-sub-menu">
-                        <a href="@urlApontamentosDiarios">@Resources.Resource.daily_apointments</a>
-                    </div>
-                    <div class="col-xs-12 item-menu">
-                        <a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a>
-                    </div>
+                    @{
+                        lista = Model.Where(x => x.PDCAMenuItem == (int)Enums.PDCAMenuItem.Do).ToList();
+                    }
+
+                    @foreach (var item in lista)
+                    {
+                        if (item.Url != null)
+                        {
+                            <div class="col-xs-12 item-menu"><a href="@Url.Content(item.Url)">@item.Name</a></div>
+                        }
+                    }
 
                 </div>
 
+                @*Check*@
                 <div id="menu3Check">
-                    <div class="col-xs-12 item-menu"><a href="@urlRelatorioDiario">@Resources.Resource.daily_report</a></div>
-                    <div class="col-xs-12 item-menu"><a href="@urlNaoConformidade">@Resources.Resource.defects_reports</a></div>
-                    <div class="col-xs-12 item-menu"><a href="@urlCEP">@Resources.Resource.spc_charts</a></div>
-                    @if (GlobalConfig.Eua)
-                    {
-                        <div class="col-xs-12 item-menu"><a href="#">@Resources.Resource.scorecard <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></div>
+
+                    @{
+                        lista = Model.Where(x => x.PDCAMenuItem == (int)Enums.PDCAMenuItem.Check).ToList();
                     }
-                    else
+
+                    @foreach (var item in lista)
                     {
-                        <div class="col-xs-12 item-menu"><a href="@urlScorecard">@Resources.Resource.scorecard</a></div>
+                        if (item.Url != null)
+                        {
+                            <div class="col-xs-12 item-menu"><a href="@Url.Content(item.Url)">@item.Name</a></div>
+                        }
                     }
-                    <div class="col-xs-12 item-menu"><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action_reports</a></div>
-                    <div class="col-xs-12 item-menu"><a href="@urlEvolutivo">@Resources.Resource.evolutional <img class="under_construction" src="~/Imagens/under_construction.png" alt="Under_construction" /></a></div>
+
                 </div>
 
+                @*Action*@
                 <div id="menu4Action">
-                    <div class="col-xs-12 item-menu"><a href="#">@Resources.Resource.recidivism <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></div>
+
+                    @{
+                        lista = Model.Where(x => x.PDCAMenuItem == (int)Enums.PDCAMenuItem.Action).ToList();
+                    }
+
+                    @foreach (var item in lista)
+                    {
+                        if (item.Url != null)
+                        {
+                            <div class="col-xs-12 item-menu"><a href="@Url.Content(item.Url)">@item.Name</a></div>
+                        }
+                    }
                 </div>
 
             </div>
