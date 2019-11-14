@@ -428,7 +428,7 @@
                                 htmlBody += "<td>"+o.addDate+"</td>";
                                 htmlBody += "<td>"+o.userSgq_FullName+"</td>";
                                 htmlBody += "<td>"+o.obj.ParHeaderField_Name+"</td>";
-                                htmlBody += "<td>"+o.obj.Value+"</td>";
+                                htmlBody += "<td>"+(!!o.obj.ParHeaderField_ValueName ? o.obj.ParHeaderField_ValueName : o.obj.Value)+"</td>";
                                 htmlBody += "<td>"+o.parReason+"</td>";
                                 htmlBody += "<td>"+o.motivo+"</td>";
                                 htmlBody += "</tr>";
