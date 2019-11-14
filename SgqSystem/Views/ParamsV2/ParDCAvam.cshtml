@@ -47,6 +47,16 @@
         <div class="col-sm-4">
 
             <div class="form-group">
+                <label for="ParCluster_Id">Cluster:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Expectativa do cliente" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <select id="selectL3PesoParClusters" class="input input-lg col-sm-12 required" name="ParCluster_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
                 <label for="Evaluation">Avaliação:</label>
                 <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Número de avaliações na amostragem" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <input type="text" class="form-control required" disabled="disabled" id="ParDCAvamEvaluation" name="Evaluation">
@@ -112,8 +122,8 @@
                     <thead>
                         <tr role="row">
                             @*<th>Empresa</th>
-                                <th>Cargo</th>
-                                <th>Frequência</th>*@
+                            <th>Cargo</th>
+                            <th>Frequência</th>*@
                             <th>Avaliação</th>
                             <th>Amostra</th>
                             <th>Intervalo</th>
@@ -133,8 +143,8 @@
                     <thead>
                         <tr role="row">
                             @*<th>Empresa</th>
-                                <th>Cargo</th>
-                                <th>Frequência</th>*@
+                            <th>Cargo</th>
+                            <th>Frequência</th>*@
                             <th>Avaliação</th>
                             <th>Amostra</th>
                             <th>Inicio</th>
@@ -176,6 +186,9 @@
                         </th>
                         <th class="col-sm-2">
                             Cargo
+                        </th>
+                        <th class="col-sm-1">
+                            Cluster
                         </th>
                         <th class="col-sm-1">
                             Frequencia
@@ -578,6 +591,7 @@
                 html += '<td>' + valorDoSelect('#ParDCAvam select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#selectDCDepartment', o.ParDepartment_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParDCAvam select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParDCAvam select[name="ParCluster_Id"]', o.ParCluster_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParDCAvam select[name="ParFrequency_Id"]', o.ParFrequencyId, 'Todos') + '</td>';
                 html += '<td>' + o.Evaluation + '</td>';
                 html += '<td class="hide">' + o.Id + '</td>';
@@ -639,7 +653,10 @@
                     obj.ParCargo_Id = 0;
 
                 $('#' + id + ' [data-form] select[name="ParCargo_Id"]').val(obj.ParCargo_Id);
-                $('#' + id + ' [data-form] select[name="ParCargo_Id"]').trigger('change')
+                $('#' + id + ' [data-form] select[name="ParCargo_Id"]').trigger('change');
+
+                $('#' + id + ' [data-form] select[name="ParCluster_Id"]').val(obj.ParCluster_Id);
+                $('#' + id + ' [data-form] select[name="ParCluster_Id"]').trigger('change');
 
                 $('#' + id + ' [data-form] select[name="ParFrequency_Id"]').val(obj.ParFrequencyId);
                 $('#' + id + ' [data-form] select[name="ParFrequency_Id"]').trigger('change')
@@ -751,12 +768,17 @@
                 } else {
                     $("#ParDCAvam #selectParFrequencyAV").prop('disabled', false);
                     $("#IsAgendamento").prop('disabled', false);
-                }
+                } 
+                //if (obj.Sample > 0 && obj.Evaluation > 0) {
+                //    Save(obj);
+                //} else {
+                //    openMessageModal("Alerta", "Os campos Avaliação e Amostra são obrigatórios.");
+                //}
 
-                if (obj.Sample > 0 && obj.Evaluation > 0) {
+                if ((obj.Sample > 0 && obj.Evaluation > 0) && obj.ParCluster_Id != "0") {
                     Save(obj);
                 } else {
-                    openMessageModal("Alerta", "Os campos Avaliação e Amostra são obrigatórios.");
+                    openMessageModal("Alerta", "Os campos obrigatórios devem ser preenchidos.");
                 }
 
             });
@@ -806,6 +828,7 @@
                 obj = {};
             obj['Evaluation'] = formdata.Evaluation;
             obj['ParCargo_Id'] = formdata.ParCargo_Id;
+            obj['ParCluster_Id'] = formdata.ParCluster_Id;
             obj['ParCompany_Id'] = formdata.ParCompany_Id;
             obj['Sample'] = formdata.Sample;
             obj['ParDepartment_Id'] = formdata.ParDepartment_Id;

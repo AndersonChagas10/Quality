@@ -460,6 +460,19 @@ IF COL_LENGTH('ParLevel3Value','IsDefaultAnswer') IS NULL
     END
 GO
 
+IF COL_LENGTH('ParVinculoPeso','ParCluster_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParVinculoPeso ADD ParCluster_Id int null;
+    END
+GO
+
+IF COL_LENGTH('ParEvaluationXDepartmentXCargo','ParCluster_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParEvaluationXDepartmentXCargo ADD ParCluster_Id int null;
+    END
+GO
+
+
 IF COL_LENGTH('ItemMenu','PDCAMenuItem') IS NULL
     BEGIN
 		ALTER TABLE ItemMenu ADD PDCAMenuItem INT;
