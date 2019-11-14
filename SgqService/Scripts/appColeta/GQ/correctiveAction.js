@@ -22,7 +22,8 @@
     correctiveActionModal.attr('period', period)
     correctiveActionModal.attr('period', period)
 
-    $('#CorrectiveActionTaken').children('#datetime').text(dateTimeWithMinutes());
+    $('#CorrectiveActionTaken').children('#datetime').text(dateTimeWithMinutes().split(' ')[0]);
+    $('#CorrectiveActionTaken').children('#hour').text(dateTimeWithMinutes().split(' ')[1]);
     $('#CorrectiveActionTaken').children('#auditor').text(userlogado[0].getAttribute('username')); //Colocar o Usuário Atual
     $('#CorrectiveActionTaken').children('#shift').text($('#shift option[value=' + shift + ']').text());
     $('#AuditInformation').children('#auditText').text(level01.children('.levelName').text());
@@ -44,7 +45,9 @@
     */
     ConsolidationResult.addClass('selected');
 
-    $('#AuditInformation').children('#starttime').text(dateTimeWithMinutes().slice(0, 16));
+    $('#AuditInformation').children('#starttime').text(dateTimeWithMinutes().slice(0, 16).split(' ')[0]);
+    $('#AuditInformation').children('#starttimeHour').text(dateTimeWithMinutes().slice(0, 16).split(' ')[1]);
+
     correctiveActionModal.attr('level01id', ConsolidationResult.attr('level1id'));
     correctiveActionModal.attr('level02id', ConsolidationResult.attr('level2id'));
     correctiveActionModal.attr('evaluationnumber', ConsolidationResult.attr('evaluation'));
@@ -463,7 +466,24 @@ function techinicalSignatureLogin(user) {
     });
 }
 
+$(document).on('click', '#correctiveAction', function (e) {
+    if ($("#correctiveAction").is(':checked')) {
+        $("#PreventativeMeasure").val($("#mensagemPadrao").text());
+        $("#PreventativeMeasure").attr('readonly', true);
+    } else {
+        $("#PreventativeMeasure").removeAttr('readonly');
+        $("#PreventativeMeasure").val("");
+    }
+});
+
 $(document).on('click', '#btnSendCorrectiveAction', function (e) {
+
+    var techinicalSignature;
+    if ($("#divSelectSupervisor").is(':visible')) {
+         techinicalSignature = $('#TechinicalSignature :selected').val(); 
+    } else {
+         techinicalSignature = $('.TechinicalSignature').attr('userid');
+    }
 
     var message = '';
     var descriptionFailure = $('#DescriptionFailure').val();
@@ -471,9 +491,9 @@ $(document).on('click', '#btnSendCorrectiveAction', function (e) {
     var productDisposition = $('#ProductDisposition').val();
     var preventativeMeasure = $('#PreventativeMeasure').val();
     var slaugtherSignature = $('.SlaugtherSignature').attr('userid');
-    var techinicalSignature = $('.TechinicalSignature').attr('userid');
     var unidadeid = $('.App').attr('unidadeid');
     var auditorid = $('.App').attr('userid');
+    var horaLiberacao = $("#datetimeTechinicalHour").val();
 
     if ($('.App').attr('local') == "eua" || $('.App').attr('local') == "canada") {
         if (slaugtherSignature == null) {
@@ -521,7 +541,8 @@ $(document).on('click', '#btnSendCorrectiveAction', function (e) {
     correctiveAction.attr('auditorid', auditorid);
     correctiveAction.attr('date', date);
     correctiveAction.attr('shift', shift);
-    correctiveAction.attr('period', period)
+    correctiveAction.attr('period', period);
+    correctiveAction.attr('DatetimeTechinicalHour', horaLiberacao); //datetimeTechinicalHour
 
 
     //    correctiveAction.attr('level01id', level01Result.attr('level01id'))
@@ -593,6 +614,11 @@ $(document).on('click', '#btnSendCorrectiveAction', function (e) {
     removeTechnicalSignature();
 
     $('#btnCA').addClass('hide');
+
+    //reseta valor dos campos
+    $("#correctiveAction").trigger('click');
+    $("#datetimeTechinicalHour").val("");
+    $("#TechinicalSignature option[value='0']").prop('selected', true);
 });
 
 function sendCorrectiveActionOnLine() {
@@ -638,7 +664,8 @@ function sendCorrectiveActionOnLine() {
                 "ImmediateCorrectiveAction": escape(correctiveAction.children('.immediateCorrectiveAction').html()),
                 "ProductDisposition": escape(correctiveAction.children('.productDisposition').html()),
                 "PreventativeMeasure": escape(correctiveAction.children('.preventativeMeasure').html()),
-                "reauditnumber": correctiveAction.attr('reauditnumber') == undefined ? 0 : correctiveAction.attr('reauditnumber')
+                "reauditnumber": correctiveAction.attr('reauditnumber') == undefined ? 0 : correctiveAction.attr('reauditnumber'),
+                "DatetimeTechinicalHour": correctiveAction.attr('datetimeTechinicalHour') == undefined ? 0 : correctiveAction.attr('datetimeTechinicalHour')
             };
 
             $.ajax({
