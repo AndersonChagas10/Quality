@@ -27,6 +27,19 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             return retornoHistoricoUnidade;
         }
+
+        [HttpPost]
+        [Route("GetGraficoTendenciaIndicador")]
+        public List<TendenciaResultSet> GetGraficoTendenciaIndicador([FromBody] FormularioParaRelatorioViewModel form)
+        {
+
+            var retornoHistoricoUnidade = new List<TendenciaResultSet>();
+
+            retornoHistoricoUnidade.Add(new TendenciaResultSet() { Av = 1, Av_Peso = 1, Level1Name = "Indicador 1", level1_Id = 1, NC = 1, NC_Peso = 1,  });
+
+
+            return retornoHistoricoUnidade;
+        }
     }
 
     public class HistoricoUnidade
@@ -69,4 +82,25 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
         }
     }
+
+    public class TendenciaResultSet
+    {
+        public int? level1_Id { get; set; }
+        public string Level1Name { get; set; }
+        public int? level2_Id { get; set; }
+        public string Level2Name { get; set; }
+        public int? level3_Id { get; set; }
+        public string Level3Name { get; set; }
+        public int? Unidade_Id { get; set; }
+        public string Unidade { get; set; }
+        public decimal Meta { get; set; }
+        public decimal ProcentagemNc { get; set; }
+        public decimal Av { get; set; }
+        public decimal Av_Peso { get; set; }
+        public decimal NC { get; set; }
+        public decimal NC_Peso { get; set; }
+        public double Data { get { return _Data.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; } }
+        public DateTime _Data { get; set; }
+    }
+
 }
