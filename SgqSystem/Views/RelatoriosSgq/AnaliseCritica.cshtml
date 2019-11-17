@@ -20,9 +20,22 @@
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
             @*div modelo para o clone*@
-            <div class="panel panel-info" id="PanelFull" style="display:none">
-                <div class="panel-heading"></div>
+            <div class="panel panel-info" id="PanelBase" style="display:none">
+                <div class="panel-heading" data-toggle="collapse" ></div>
                 <div class="panel-body primary-panel">
+
+                    <div class="panel-indicador"></div>
+
+                    <div class="panel-pivotable"></div>
+
+                    <div class="panel-monitoramento"></div>
+
+                    <div class="panel-monitoramento-departamento"></div>
+
+                    <div class="panel-tarefa-acumulada"></div>
+
+                    <div class="panel-tarefa"></div>
+
 
                 </div>
                 *O Peso atribuído as Tarefas influenciam no resultado gráfico.
@@ -67,6 +80,7 @@
                 @*Gráfico tarefas acumuladas*@
                 @*Gráfico NC por tarefa*@
                 @*Listagem de ações*@
+
             </div>
         </div>
     </div>
@@ -78,7 +92,6 @@
 
         var urlGetGraficoHistoricoUnidade = '@Html.Raw(Url.Action("GetGraficoHistoricoUnidade", "api/AnaliseCritica"))';
         var chartHistoricoGeral;
-
         var $btn = $('#btnSend');
 
         $(document).ready(function () {
@@ -89,6 +102,22 @@
 
                 Send(true);
 
+            });
+
+            //Grafico Historico
+            $("#Udia").on('click', function () {
+                enviar["dimensaoData"] = 1;
+                EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
+            });
+
+            $("#Usemana").on('click', function () {
+                enviar["dimensaoData"] = 2;
+                EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
+            });
+
+            $("#Umes").on('click', function () {
+                enviar["dimensaoData"] = 4;
+                EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
             });
 
         });
@@ -117,22 +146,6 @@
             return true;
 
         }
-
-        //Grafico Historico
-        $("#Udia").on('click', function () {
-            enviar["dimensaoData"] = 1;
-            EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
-        });
-
-        $("#Usemana").on('click', function () {
-            enviar["dimensaoData"] = 2;
-            EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
-        });
-
-        $("#Umes").on('click', function () {
-            enviar["dimensaoData"] = 4;
-            EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
-        });
 
         //Graficos
         function GerarGraficoHistoricoUnidade(data) {
@@ -349,7 +362,7 @@
                 ParLevel1_Name: "(%) NC nas Operações de Esfola"
             };
 
-            var panel = $('#PanelFull').clone();
+            var panel = $('#PanelBase').clone();
             var idPanel = 'panel' + data.ParLevel1_Id;
 
             panel.find(".panel-heading").html("Indicador: " + data.ParLevel1_Name);
@@ -382,9 +395,9 @@
 
             let $panel = $("#" + idPanel);
 
-            $panel.find(".panel-body").append('<div id="' + idChart + '"></div>');
+            $panel.find(".panel-body .panel-indicador").append('<div id="' + idChart + '"></div>');
             $panel.find(".panel-body").attr("id", idCollapse);
-            $panel.find('.panel-heading').attr('data-toggle', 'collapse').attr('data-target', '#' + idCollapse).attr('href', '#' + idCollapse).trigger("click");
+            $panel.find('.panel-heading').attr('data-target', '#' + idCollapse).attr('href', '#' + idCollapse).trigger("click");
 
             //para os valores estarem corretos, precisa ser feito um calculo
             var valoresYY = {
@@ -705,32 +718,16 @@
             //var titulo = Resources('level1') + ": " + MapeiaValorParaHC(data, "Level1Name")[0];
 
             let titulo = "NC por Monitoramento";
-
             let idChart = 'monitoramento' + data.ParLevel1_Id;
-
             let valoresX = ["Sangria", "Esfola da Pata TRS Esquerda", "Esfola da Pata TRS Direita"];
             let NC = [10, 5,  1];
             let TotalAvaliado = [10, 10, 10];
-
-            //Organiza dados do grafico
-
-            //Pareto
             let pareto = Chart.CalculaPareto(NC);
-
             let $panel = $("#" + idPanel);
+            let panelSeletor = idPanel + " .panel-monitoramento";
 
-            //enviar["level2names"] = valoresX
-            //enviar.isLevel = 2
-            //enviar.level1Name = MapeiaValorParaHC(data, "Level1Name")[0];
-
-            //$.post(preffixFta + 'api/sgq/getacoes', enviar, function (r) {
-            //    insereLabelFtaPelaColunName(valoresXCopia, r)
-            //    MonitoramentoFTA = MonitoramentoFTA.concat(valoresXCopia);
-            //});
-
-            $panel.find(".primary-panel").append('<div id="' + idChart + '"></div>');
-            GerarTabelaAcaoCorretivaMonitoramento(data, idPanel, idChart);
-
+            $panel.find(".primary-panel .panel-monitoramento").append('<div id="' + idChart + '"></div>');
+           
             //Cria Grafico
             Highcharts.chart(idChart, {
                 credits: Chart.Credits(),
@@ -772,10 +769,13 @@
                     , Chart.SimpleSerie(TotalAvaliado, Resources("total_evaluated"), Chart.CorTotalAv(), true)
                     , Chart.CurvaPareto(pareto)
                 ],
+            }, function () {
+
+                    GerarTabelaAcaoCorretivaMonitoramento(data, panelSeletor, idChart);
             });
         }
 
-        function GerarTabelaAcaoCorretivaMonitoramento(data, idPanel, idChart) {
+        function GerarTabelaAcaoCorretivaMonitoramento(data, seletorPanel, idChart) {
 
             let table = {
                 data: [{
@@ -815,7 +815,7 @@
 
             let idTable = "table" + idChart;
 
-            MontarTabela(idPanel, idTable, table);
+            MontarTabela(seletorPanel, idTable, table);
 
         }
 
@@ -832,27 +832,15 @@
             }
 
             let titulo = "NC por Monitoramento do Departamento: Departamento 1";
-
             let valoresX = ["Sangria", "Esfola da Pata TRS Esquerda", "Esfola da Pata TRS Direita"];
             let NC = [10, 5, 1];
             let TotalAvaliado = [10, 10, 10];
-
-            //Organiza dados do grafico
             let pareto = Chart.CalculaPareto(NC);
-
-            //enviar["level2names"] = valoresX
-            //enviar.isLevel = 2
-            //enviar.level1Name = MapeiaValorParaHC(data, "Level1Name")[0];
-
-            //$.post(preffixFta + 'api/sgq/getacoes', enviar, function (r) {
-            //    insereLabelFtaPelaColunName(valoresXCopia, r)
-            //    MonitoramentoFTA = MonitoramentoFTA.concat(valoresXCopia);
-            //});
-
             let departamentoName = "Departamento 1";
             let idCollapse = "indicador" + data.ParLevel1_Id + "departamento" + departamento.Id;
             let nomePanel = departamentoName + " | " + data.ParLevel1_Name;
             let idChart = 'monitoramentos' + data.ParLevel1_Id + "departamento" + departamento.Id;
+            let seletorPanel = idPanel + " .panel-monitoramento-departamento";
 
             let panel = `
             <div class="panel panel-info">
@@ -864,7 +852,7 @@
 
             let $panel = $("#" + idPanel);
             
-            $panel.find(".primary-panel").append(panel);
+            $panel.find(".primary-panel .panel-monitoramento-departamento").append(panel);
             $panel.find('[data-target="#' + idCollapse + '"]').trigger('click');         
 
             //Cria Grafico
@@ -907,17 +895,18 @@
                       Chart.SimpleSerie(NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true)
                     , Chart.SimpleSerie(TotalAvaliado, '@Resources.Resource.total_evaluated', Chart.CorTotalAv(), true)
                     , Chart.CurvaPareto(pareto)
-                ],
+                ]
+
             }, function () {
 
-                GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(data, idPanel, idChart);
+                GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(data, seletorPanel, idChart);
 
             });
 
 
         }
 
-        function GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(data, idPanel, idChart) {
+        function GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(data, seletorPanel, idChart) {
 
             let table = {
                 data: [{
@@ -957,25 +946,12 @@
 
             let idTable = "table" + idChart;
 
-            MontarTabela(idPanel, idTable, table);
+            MontarTabela(seletorPanel, idTable, table);
 
         }
 
         function GerarGraficoTarefasAcumuladas(data, idPanel) {
 
-            //var dados = DadoEspecificos.Tarefa(data);
-
-            //let valoresXCopia = dados.x
-            //enviar["level3names"] = dados.x
-            //enviar.isLevel = 3;
-
-            //$.post(preffixFta + 'api/sgq/getacoes', enviar, function (r) {
-            //    insereLabelFtaPelaColunName(valoresXCopia, r)
-            //    TarefaFTA = TarefaFTA.concat(valoresXCopia);
-            //});
-
-
-            //dados = DadoEspecificos.Tarefa(data);
             let titulo = "Tarefas Acumuladas";
             let subtitle = "";
             let xaxis = ["Lavagem de mãos", "Esfola de faca branca"];
@@ -986,7 +962,7 @@
 
             let $panel = $("#" + idPanel);
 
-            $panel.find(".primary-panel").append('<div id="' + idChart + '"></div>');
+            $panel.find(".primary-panel .panel-tarefa-acumulada").append('<div id="' + idChart + '"></div>');
 
             Highcharts.chart(idChart, {
                 credits: Chart.Credits(),
@@ -1025,18 +1001,6 @@
 
         function GerarGraficoTarefa(data, idPanel) {
 
-            //var dados = DadoEspecificos.Tarefa(data);
-
-            //let valoresXCopia = dados.x
-            //enviar["level3names"] = dados.x
-            //enviar.isLevel = 3;
-
-            //$.post(preffixFta + 'api/sgq/getacoes', enviar, function (r) {
-            //    insereLabelFtaPelaColunName(valoresXCopia, r)
-            //    TarefaFTA = TarefaFTA.concat(valoresXCopia);
-            //});
-
-            //dados = DadoEspecificos.Tarefa(data);
             var titulo = "NC por tarefas do monitoramento: Lavagem de mãos";
             var subtitle = "";
             var xaxis = ["Lavagem de mãos"];
@@ -1045,7 +1009,9 @@
 
             var idChart = 'indicador' + data.ParLevel1_Id + "monitoramento" + 1;
 
-            $("#" + idPanel).find(".primary-panel").append('<div id="' + idChart + '"></div>');        
+            let seletorPanel = idPanel + " .panel-tarefa";
+
+            $("#" + idPanel).find(".primary-panel .panel-tarefa").append('<div id="' + idChart + '"></div>');        
 
             Highcharts.chart(idChart, {
                 credits: Chart.Credits(),
@@ -1078,12 +1044,12 @@
                   Chart.CurvaPareto(pareto)
                 ],
             }, function (chart) {
-                GerarTabelaAcaoCorretivaTarefa(data, idPanel, idChart);
+                GerarTabelaAcaoCorretivaTarefa(data, seletorPanel, idChart);
             });
 
         }
 
-        function GerarTabelaAcaoCorretivaTarefa(data, idPanel, idChart) {
+        function GerarTabelaAcaoCorretivaTarefa(data, seletorPanel, idChart) {
 
             let table = {
                 data: [{
@@ -1123,7 +1089,7 @@
 
             let idTable = "table" + idChart;
 
-            MontarTabela(idPanel, idTable, table);
+            MontarTabela(seletorPanel, idTable, table);
 
         }
 
@@ -1403,10 +1369,10 @@
             }
         };
 
-        function MontarTabela(idPanel, idTable, table) {
+        function MontarTabela(seletorPanel, idTable, table) {
 
             //Criar a div onde a tabela será inserida
-            let $panel = $("#" + idPanel);
+            let $panel = $("#" + seletorPanel);
 
             let panel = `
             <div class="panel panel-info">
@@ -1416,7 +1382,7 @@
                 </div>
             </div>`;
 
-            $panel.find(".primary-panel").append(panel);
+            $panel.append(panel);
 
             $('#' + idTable).DataTable(table);
 
