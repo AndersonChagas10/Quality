@@ -1172,7 +1172,6 @@
     <Content Include="Content\gallery\README.md" />
     <Content Include="Scripts\mindmap.js" />
     <Content Include="Scripts\Select3\select3.js" />
-    <Content Include="WebConfig_Old.xml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
