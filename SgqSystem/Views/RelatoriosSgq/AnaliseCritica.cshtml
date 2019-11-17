@@ -22,7 +22,7 @@
             @*div modelo para o clone*@
             <div class="panel panel-info" id="PanelFull" style="display:none">
                 <div class="panel-heading"></div>
-                <div class="panel-body">
+                <div class="panel-body primary-panel">
 
                 </div>
                 *O Peso atribuído as Tarefas influenciam no resultado gráfico.
@@ -352,14 +352,13 @@
             var panel = $('#PanelFull').clone();
             var idPanel = 'panel' + data.ParLevel1_Id;
 
-            panel.find(".panel-heading").html("Indicador");
+            panel.find(".panel-heading").html("Indicador: " + data.ParLevel1_Name);
             panel.attr("id", idPanel);
             panel.css("display", "block");
 
             $('#reports').append(panel);
 
             GerarGraficoTendenciaIndicador(data, idPanel);
-
             GerarGraficoMonitoramento(data, idPanel);
 
             //fazer um forach para cada departamento
@@ -729,7 +728,8 @@
             //    MonitoramentoFTA = MonitoramentoFTA.concat(valoresXCopia);
             //});
 
-            $panel.find(".panel-body").append('<div id="' + idChart + '"></div>');
+            $panel.find(".primary-panel").append('<div id="' + idChart + '"></div>');
+            GerarTabelaAcaoCorretivaMonitoramento(data, idPanel, idChart);
 
             //Cria Grafico
             Highcharts.chart(idChart, {
@@ -775,7 +775,47 @@
             });
         }
 
-        function GerarTabelaAcaoCorretivaMonitoramento() {
+        function GerarTabelaAcaoCorretivaMonitoramento(data, idPanel, idChart) {
+
+            let table = {
+                data: [{
+                    Indicador: '(%) NC nas Operações de Esfola',
+                    Monitoramento: 'Sangria',
+                    Data_inicio_auditoria: new Date().toLocaleString(),
+                    Descricao_da_falha: 'Foi encontrada ingesta...',
+                    Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+                    Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+                },
+                {
+                    Indicador: '(%) NC nas Operações de Esfola',
+                    Monitoramento: 'Esfola da Pata TRS Esquerda',
+                    Data_inicio_auditoria: new Date().toLocaleString(),
+                    Descricao_da_falha: 'Foi encontrada ingesta...',
+                    Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+                    Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+                }],
+                columns: [
+                    { title: "Indicador", mData: "Indicador" },
+                    { title: "Monitoramento", mData: "Monitoramento" },
+                    { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
+                    { title: "Descrição da Falha", mData: "Descricao_da_falha" },
+                    { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
+                    { title: "Medida Preventiva", mData: "Medida_preventiva" }
+                ],
+                destroy: true,
+                scrollX: true,
+                paginate: false,
+                paging: false,
+                bSort: false,
+                loadingRecords: false,
+                destroy: true,
+                info: false,
+                responsive: true,
+            }
+
+            let idTable = "table" + idChart;
+
+            MontarTabela(idPanel, idTable, table);
 
         }
 
@@ -823,9 +863,9 @@
             </div>`;
 
             let $panel = $("#" + idPanel);
-
-            $panel.find(".panel-body").append(panel);
-            $panel.find('[data-target="#' + idCollapse +'"]').trigger('click');
+            
+            $panel.find(".primary-panel").append(panel);
+            $panel.find('[data-target="#' + idCollapse + '"]').trigger('click');         
 
             //Cria Grafico
             Highcharts.chart(idChart, {
@@ -868,11 +908,56 @@
                     , Chart.SimpleSerie(TotalAvaliado, '@Resources.Resource.total_evaluated', Chart.CorTotalAv(), true)
                     , Chart.CurvaPareto(pareto)
                 ],
+            }, function () {
+
+                GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(data, idPanel, idChart);
+
             });
+
 
         }
 
-        function GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento() {
+        function GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(data, idPanel, idChart) {
+
+            let table = {
+                data: [{
+                    Indicador: '(%) NC nas Operações de Esfola',
+                    Monitoramento: 'Sangria',
+                    Data_inicio_auditoria: new Date().toLocaleString(),
+                    Descricao_da_falha: 'Foi encontrada ingesta...',
+                    Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+                    Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+                },
+                {
+                    Indicador: '(%) NC nas Operações de Esfola',
+                    Monitoramento: 'Esfola da Pata TRS Esquerda',
+                    Data_inicio_auditoria: new Date().toLocaleString(),
+                    Descricao_da_falha: 'Foi encontrada ingesta...',
+                    Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+                    Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+                }],
+                columns: [
+                    { title: "Indicador", mData: "Indicador" },
+                    { title: "Monitoramento", mData: "Monitoramento" },
+                    { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
+                    { title: "Descrição da Falha", mData: "Descricao_da_falha" },
+                    { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
+                    { title: "Medida Preventiva", mData: "Medida_preventiva" }
+                ],
+                destroy: true,
+                scrollX: true,
+                paginate: false,
+                paging: false,
+                bSort: false,
+                loadingRecords: false,
+                destroy: true,
+                info: false,
+                responsive: true,
+            }
+
+            let idTable = "table" + idChart;
+
+            MontarTabela(idPanel, idTable, table);
 
         }
 
@@ -901,7 +986,7 @@
 
             let $panel = $("#" + idPanel);
 
-            $panel.find(".panel-body:first()").append('<div id="' + idChart + '"></div>');
+            $panel.find(".primary-panel").append('<div id="' + idChart + '"></div>');
 
             Highcharts.chart(idChart, {
                 credits: Chart.Credits(),
@@ -960,7 +1045,7 @@
 
             var idChart = 'indicador' + data.ParLevel1_Id + "monitoramento" + 1;
 
-            $("#" + idPanel).find(".panel-body:first()").append('<div id="' + idChart + '"></div>');
+            $("#" + idPanel).find(".primary-panel").append('<div id="' + idChart + '"></div>');        
 
             Highcharts.chart(idChart, {
                 credits: Chart.Credits(),
@@ -993,12 +1078,52 @@
                   Chart.CurvaPareto(pareto)
                 ],
             }, function (chart) {
-
+                GerarTabelaAcaoCorretivaTarefa(data, idPanel, idChart);
             });
 
         }
 
-        function GerarTabelaAcaoCorretivaTarefa() {
+        function GerarTabelaAcaoCorretivaTarefa(data, idPanel, idChart) {
+
+            let table = {
+                data: [{
+                    Indicador: '(%) NC nas Operações de Esfola',
+                    Monitoramento: 'Sangria',
+                    Data_inicio_auditoria: new Date().toLocaleString(),
+                    Descricao_da_falha: 'Foi encontrada ingesta...',
+                    Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+                    Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+                },
+                {
+                    Indicador: '(%) NC nas Operações de Esfola',
+                    Monitoramento: 'Esfola da Pata TRS Esquerda',
+                    Data_inicio_auditoria: new Date().toLocaleString(),
+                    Descricao_da_falha: 'Foi encontrada ingesta...',
+                    Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+                    Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+                }],
+                columns: [
+                    { title: "Indicador", mData: "Indicador" },
+                    { title: "Monitoramento", mData: "Monitoramento" },
+                    { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
+                    { title: "Descrição da Falha", mData: "Descricao_da_falha" },
+                    { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
+                    { title: "Medida Preventiva", mData: "Medida_preventiva" }
+                ],
+                destroy: true,
+                scrollX: true,
+                paginate: false,
+                paging: false,
+                bSort: false,
+                loadingRecords: false,
+                destroy: true,
+                info: false,
+                responsive: true,
+            }
+
+            let idTable = "table" + idChart;
+
+            MontarTabela(idPanel, idTable, table);
 
         }
 
@@ -1278,6 +1403,26 @@
             }
         };
 
+        function MontarTabela(idPanel, idTable, table) {
+
+            //Criar a div onde a tabela será inserida
+            let $panel = $("#" + idPanel);
+
+            let panel = `
+            <div class="panel panel-info">
+                <div class="panel-heading" data-toggle="collapse" data-target="#panel${idTable}" href="#panel${idTable}">Tabela</div>
+                <div class="panel-body" id="panel${ idTable }">
+                    <table id="${idTable}"></table>
+                </div>
+            </div>`;
+
+            $panel.find(".primary-panel").append(panel);
+
+            $('#' + idTable).DataTable(table);
+
+            //Criar a tabela com datatables dentro da div
+
+        }
 
     </script>
 }
