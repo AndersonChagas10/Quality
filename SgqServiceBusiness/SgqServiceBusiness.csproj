@@ -197,6 +197,10 @@
       <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
       <Name>Helper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LogSystem\LogSystem.csproj">
+      <Project>{2F2074D0-E013-46BB-99B9-E53603BFC44D}</Project>
+      <Name>LogSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
       <Project>{3ecf1d86-91f3-4140-a11a-1546b8f662a1}</Project>
       <Name>ServiceModel</Name>

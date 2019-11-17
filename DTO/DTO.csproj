@@ -59,10 +59,6 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
     </Reference>
@@ -93,7 +89,6 @@
   <ItemGroup>
     <Compile Include="BaseEntity\DataCollectionBase.cs" />
     <Compile Include="BaseEntity\EntityBase.cs" />
-    <Compile Include="CreateLog.cs" />
     <Compile Include="DataCarrierFormulario.cs" />
     <Compile Include="DTO\Params\ParCargoDTO.cs" />
     <Compile Include="DTO\ComponenteGenericoDTO.cs" />
@@ -202,7 +197,6 @@
     <Compile Include="Interfaces\Services\IExampleDomain.cs" />
     <Compile Include="Interfaces\Services\IParamsDomain.cs" />
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
-    <Compile Include="LogService\LoggerNLog.cs" />
     <Compile Include="ResultSet\ApontamentosDiariosDomingoResultSet.cs" />
     <Compile Include="ResultSet\ApontamentosDiariosResultSet.cs" />
     <Compile Include="ResultSet\ScorecardResultSet.cs" />
@@ -249,6 +243,10 @@
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
       <Name>Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogSystem\LogSystem.csproj">
+      <Project>{2F2074D0-E013-46BB-99B9-E53603BFC44D}</Project>
+      <Name>LogSystem</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

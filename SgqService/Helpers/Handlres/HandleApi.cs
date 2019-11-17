@@ -35,7 +35,7 @@ namespace SgqService.Handlres
         /// <param name="ex"></param>
         private void LogException(Exception ex)
         {
-            new CreateLog(ex);
+            LogSystem.LogErrorBusiness.Register(ex);
         }
 
     }

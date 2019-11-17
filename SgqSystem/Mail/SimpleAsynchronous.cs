@@ -134,7 +134,7 @@ namespace SgqSystem.Mail
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("Erro no metodo [SendEmail]", ex));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro no metodo [SendEmail]", ex));
                 //throw ex;
             }
         }
@@ -168,7 +168,7 @@ namespace SgqSystem.Mail
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("Erro no metodo [SendMailFromDeviationSgqApp]", ex));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro no metodo [SendMailFromDeviationSgqApp]", ex));
                 //throw ex;
             }
         }
@@ -246,12 +246,12 @@ namespace SgqSystem.Mail
                         Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
                     }
                 }
-                new CreateLog(new Exception(aMerdaQueDeu, ex1));
+                LogSystem.LogErrorBusiness.Register(new Exception(aMerdaQueDeu, ex1));
                 throw;
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("Erro ao enviar e mail", ex));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro ao enviar e mail", ex));
             }
         }
 
@@ -309,11 +309,11 @@ namespace SgqSystem.Mail
                         erro += error.PropertyName + ": " + error.ErrorMessage + " ";
                     }
 
-                    new CreateLog(new Exception($"Ocorreu um erro em: [CreateMailSgqAppDeviation] --- {erro} ---", e));
+                    LogSystem.LogErrorBusiness.Register(new Exception($"Ocorreu um erro em: [CreateMailSgqAppDeviation] --- {erro} ---", e));
                 }
                 catch (Exception e)
                 {
-                    new CreateLog(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviation] - " + e.ToClient(), e));
+                    LogSystem.LogErrorBusiness.Register(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviation] - " + e.ToClient(), e));
                 }
 
                 //return db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
@@ -489,7 +489,7 @@ namespace SgqSystem.Mail
             }
             catch (Exception e)
             {
-                new CreateLog(new Exception("Ocorreu um erro em: [DestinatariosSGQJBSBR] - " + e.ToClient(), e));
+                LogSystem.LogErrorBusiness.Register(new Exception("Ocorreu um erro em: [DestinatariosSGQJBSBR] - " + e.ToClient(), e));
                 throw e;
             }
         }
@@ -549,7 +549,7 @@ namespace SgqSystem.Mail
             }
             catch (Exception e)
             {
-                new CreateLog(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviation]", e));
+                LogSystem.LogErrorBusiness.Register(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviation]", e));
             }
 
         }

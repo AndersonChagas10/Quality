@@ -111,42 +111,6 @@ namespace SgqSystem
 
         }
 
-        /// <summary>
-        /// Verifica se coluna existe se não ele cria, gera arquivo de scripts em LOCA: ScriptFull, para evitar conflito entre clientes.
-        /// EXEMPLO:
-        ///  DATA - Responsavel - Breve desc
-        ///  VerifyColumnExistsNotExistisThenCreate("CollectionLevel2XParHeaderField", "Sample", "int", "default (null)", "Sample = null");
-        /// </summary>
-        /// <param name="table">Ex: "ParLevel1"</param>
-        /// <param name="colmun">Ex: "IsRecravacao"</param>
-        /// <param name="type">Ex: "bit"</param>
-        /// <param name="defaultValue">Ex: "default (0)"</param>
-        /// <param name="setValue">Ex: "IsRecravacao = 0"</param>
-        private void VerifyColumnExistsNotExistisThenCreate(string table, string colmun, string type, string defaultValue, string setValue)
-        {
-            using (var db = new Dominio.SgqDbDevEntities())
-            {
-                var sql = string.Empty;
-                try
-                {
-
-                    sql = string.Format(@"IF COL_LENGTH('{0}','{1}') IS NULL
-                        BEGIN
-                        /*Column does not exist or caller does not have permission to view the object*/
-                        Alter table {0} add {1} {2} {3}
-                        EXEC ('update {0} set {4}')
-                        END", table, colmun, type, defaultValue, setValue);
-
-                    ScriptFull += sql + "\n\n";
-                    db.Database.ExecuteSqlCommand(sql);
-                }
-                catch (Exception e)
-                {
-                    new CreateLog(new Exception("Erro ao criar a coluna " + colmun + " para tabela " + table + " em global.asax", e), ControllerAction: sql);
-                }
-            }
-        }
-
         protected void Application_End(object sender, EventArgs e)
         {
         }
