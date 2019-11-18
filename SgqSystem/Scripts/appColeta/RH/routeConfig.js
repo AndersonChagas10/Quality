@@ -17,9 +17,9 @@ function validaRota(callback, parameter) {
         }
     } else {
         if (parameter != null)
-            callback(parameterRota);
+            callback(parameterRota, true);
         else
-            callback();
+            callback(true);
     }
 }
 
