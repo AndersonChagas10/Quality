@@ -62,24 +62,7 @@
                 <br>
             </div>
 
-            @*Graficos nos quais são montados dinamicamente*@
             <div id="reports">
-
-                @*Gráfico Listagem do Indicador*@@*Grafico de Tendencia do Indicador*@
-                @*Tabela com listagem das ações vinculadas somente ao indicador*@
-                @*Tabela de ação corretiva Indicador*@
-                @*foi deixado por ultimo pois é o mais dificil*@
-
-                @*Gráfico Listagem do Monitoramento*@
-                @*Tabela com listagem das ações vinculadas somente ao monitorameto*@
-                @*Tabela de ação corretiva Monitoramento*@
-
-                @*Departamento tem Gráfico do monitoramento*@
-                @*Departamento tem uma tabela ação corretiva vinculada ao monitoramento*@
-
-                @*Gráfico tarefas acumuladas*@
-                @*Gráfico NC por tarefa*@
-                @*Listagem de ações*@
 
             </div>
         </div>
@@ -362,26 +345,22 @@
                     data: [{
                         Indicador: '(%) NC nas Operações de Esfola',
                         Monitoramento: 'Sangria',
+                        Tarefa: "Lavagem de Mãos",
                         Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    },
-                    {
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Esfola da Pata TRS Esquerda',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+                        Causa_Generica: "",
+                        Acao_Generica: "",
+                        Status: "Concluido"
                     }],
                     columns: [
                         { title: "Indicador", mData: "Indicador" },
                         { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
-                        { title: "Descrição da Falha", mData: "Descricao_da_falha" },
-                        { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
-                        { title: "Medida Preventiva", mData: "Medida_preventiva" }
+                        { title: "Tarefa", mData: "Tarefa" },
+                        { title: "Causa Generica", mData: "Causa_Generica" },
+                        { title: "Acao Generica", mData: "Acao_Generica" },
+                        { title: "Status", mData: "Status" },
+                        { title: "", mData: "", mRender: function (data, type, full) {
+                            return '<button class="btn btn-link custom-button" style="cursor: pointer;">Ver Mais</button>';
+                        }}
                     ]
                 }
             },{
@@ -394,27 +373,23 @@
                 Acoes: {
                     data: [{
                         Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Sangria',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    },
-                    {
-                        Indicador: '(%) NC nas Operações de Esfola',
                         Monitoramento: 'Esfola da Pata TRS Esquerda',
+                        Tarefa: "Esfola de faca branca",
                         Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+                        Causa_Generica: "",
+                        Acao_Generica: "",
+                        Status: "Concluido"
                     }],
                     columns: [
                         { title: "Indicador", mData: "Indicador" },
                         { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
-                        { title: "Descrição da Falha", mData: "Descricao_da_falha" },
-                        { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
-                        { title: "Medida Preventiva", mData: "Medida_preventiva" }
+                        { title: "Tarefa", mData: "Tarefa" },
+                        { title: "Causa Generica", mData: "Causa_Generica" },
+                        { title: "Acao Generica", mData: "Acao_Generica" },
+                        { title: "Status", mData: "Status" },
+                        { title: "", mData: "", mRender: function (data, type, full) {
+                            return '<button class="btn btn-link custom-button" style="cursor: pointer;">Ver Mais</button>';
+                        }}
                     ]
                 }
             }]
