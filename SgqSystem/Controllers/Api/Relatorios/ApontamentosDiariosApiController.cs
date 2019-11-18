@@ -146,6 +146,7 @@ namespace SgqSystem.Controllers.Api
             var parLevel3Value = new ParLevel3Value();
             using (var databaseSgq = new SgqDbDevEntities())
             {
+                databaseSgq.Configuration.LazyLoadingEnabled = false;
                 var resultlevel3 = databaseSgq.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
                 var parLevel3 = databaseSgq.ParLevel3.Where(x => x.Id == resultlevel3.ParLevel3_Id).FirstOrDefault();
                 parLevel3Value = databaseSgq.ParLevel3Value.Where(x => x.ParLevel3_Id == parLevel3.Id).FirstOrDefault();
@@ -154,6 +155,8 @@ namespace SgqSystem.Controllers.Api
                     resultLevel3.ValueText = parInputTypeValues.Valor.ToString();
 
             }
+
+            //[TODO] Inserir registro de log de edição (salvar resultlevel3_Id == resultLevel3.Id)
             var query = resultLevel3.CreateUpdate();
             try
             {
@@ -224,6 +227,8 @@ namespace SgqSystem.Controllers.Api
                     if (item.Id > 0)//Update
                     {
                         var original = db.CollectionLevel2XParHeaderField.FirstOrDefault(c => c.Id == item.Id);
+
+                        //[TODO] Inserir registro de log de edição
 
                         if (string.IsNullOrEmpty(item.Value))//Remover
                         {

@@ -3529,6 +3529,7 @@ ORDER BY 3
             var Wmonitoramento = "";
             var Wtarefa = "";
             var Wfuncao = "";
+            var WModulo = "";
 
             var WunidadeAcesso = GetUserUnits(form.auditorId);
 
@@ -3595,6 +3596,11 @@ ORDER BY 3
                 {
                     Wunidade = " AND CL1.UnitId IN (" + form.unitId + ")";
                 }
+            }
+
+            if (form.ModuloId > 0)
+            {
+                WModulo = $" AND P1M.ParModule_Id = { form.ModuloId }";
             }
 
 
@@ -3928,6 +3934,21 @@ FROM (SELECT
             	LEFT JOIN ParCriticalLevel CRL WITH (NOLOCK)
             		ON L1C.ParCriticalLevel_id = CRL.id 
             		AND CRL.IsActive = 1
+
+                LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+	                ON P1M.ParLevel1_Id = L1C.ParLevel1_Id
+	                	AND P1M.IsActive = 1
+	                	AND P1M.EffectiveDateStart <= @DATAINICIAL
+	                	AND (P1M.ParCluster_ID IS NULL
+	                		OR P1M.ParCluster_ID IN (SELECT
+	                				ParCluster_ID
+	                			FROM ParCompanyCluster
+	                			WHERE ParCompany_Id IN (" + WunidadeAcesso + @")
+
+                                AND Active = 1))
+
+                WHERE 1 = 1
+                " + WModulo + @"
             
             GROUP BY
             	 CL.id						
@@ -4308,6 +4329,21 @@ FROM (SELECT
             	LEFT JOIN ParCriticalLevel CRL WITH (NOLOCK)
             		ON L1C.ParCriticalLevel_id = CRL.id 
             		AND CRL.IsActive = 1
+
+                LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+	                ON P1M.ParLevel1_Id = L1C.ParLevel1_Id
+	                	AND P1M.IsActive = 1
+	                	AND P1M.EffectiveDateStart <= @DATAINICIAL
+	                	AND (P1M.ParCluster_ID IS NULL
+	                		OR P1M.ParCluster_ID IN (SELECT
+	                				ParCluster_ID
+	                			FROM ParCompanyCluster
+	                			WHERE ParCompany_Id IN (" + WunidadeAcesso + @")
+
+                                AND Active = 1))
+
+                WHERE 1 = 1
+                " + WModulo + @"
             
             GROUP BY
             	 CL.id						
@@ -4653,6 +4689,21 @@ FROM (SELECT
         	LEFT JOIN ParCriticalLevel CRL WITH (NOLOCK)
         		ON L1C.ParCriticalLevel_id = CRL.id 
         		AND CRL.IsActive = 1
+
+            LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+	            ON P1M.ParLevel1_Id = L1C.ParLevel1_Id
+	            	AND P1M.IsActive = 1
+	            	AND P1M.EffectiveDateStart <= @DATAINICIAL
+	            	AND (P1M.ParCluster_ID IS NULL
+	            		OR P1M.ParCluster_ID IN (SELECT
+	            				ParCluster_ID
+	            			FROM ParCompanyCluster
+	            			WHERE ParCompany_Id IN (" + WunidadeAcesso + @")
+
+                            AND Active = 1))
+
+            WHERE 1 = 1
+            " + WModulo + @"
         
         GROUP BY
         	 CL.id						
@@ -4872,6 +4923,7 @@ FROM (SELECT
             var whereLevel1 = "";
             var whereUnit = "";
             var WunidadeAcesso = GetUserUnits(form.auditorId);
+            var Wmodulo = "";
 
             if (form.departmentId != 0)
             {
@@ -4906,6 +4958,11 @@ FROM (SELECT
             if (form.unitIdArr.Length > 0 && form.unitId > 0)
             {
                 whereUnit = $@"AND CL2.UNITID IN({ string.Join(",", form.unitIdArr) })";
+            }
+
+            if (form.ModuloId > 0)
+            {
+                Wmodulo = $" AND P1M.ParModule_Id = { form.ModuloId }";
             }
 
             var queryGraficoTarefasAcumuladas = $@"
@@ -4950,6 +5007,18 @@ FROM (SELECT
             	ON MON.Id = CL2.ParLevel2_Id
             INNER JOIN ParLevel3 TAR (NOLOCK)
             	ON TAR.Id = R3.ParLevel3_Id
+
+            LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+            	ON P1M.ParLevel1_Id = IND.Id
+            		AND P1M.IsActive = 1
+            		AND Cast(P1M.EffectiveDateStart as date) <= cast('{ form._dataInicioSQL }' as date)
+            		AND (P1M.ParCluster_Id IS NULL
+            			OR P1M.ParCluster_Id IN (SELECT
+            					ParCluster_Id
+            				FROM ParCompanyCluster
+            				WHERE ParCompany_Id = UNI.Id
+            				AND Active = 1))
+
             WHERE 1 = 1 
             { whereLevel1 }
             { whereUnit }
@@ -4964,7 +5033,7 @@ FROM (SELECT
             { whereDepartment }
             { whereShift }            
             { whereCriticalLevel }
-
+            { Wmodulo }
             GROUP BY --IND.Id
             		--,IND.Name
             		--,MON.Id

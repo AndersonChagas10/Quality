@@ -156,15 +156,19 @@
     }
 
     if ($('.counter[headerlevel=level2_line][counter=evaluation]').length == 0) {
-        $($('.headerCounter .col-xs-4 b')[0]).addClass('hide')
+        $($('.headerCounter .col-xs-3 b')[0]).addClass('hide')
     }
 
     if ($('.counter[headerlevel=level2_line][counter=sample]').length == 0) {
-        $($('.headerCounter .col-xs-4 b')[1]).addClass('hide')
+        $($('.headerCounter .col-xs-3 b')[1]).addClass('hide')
     }
 
     if ($('.counter[headerlevel=level2_line][counter=defects]').length == 0 && isEUA == false) {
-        $($('.headerCounter .col-xs-4 b')[2]).addClass('hide')
+        $($('.headerCounter .col-xs-3 b')[2]).addClass('hide')
+    }
+
+    if ($('.counter[headerlevel=level2_line][counter=frequency]').length == 0) {
+        $($('.headerCounter .col-xs-3 b')[3]).addClass('hide')
     }
 
     $('#period').attr('disabled', 'disabled');
@@ -288,6 +292,8 @@
 
             }
         }
+
+        criarFiltroDeFrequencia();
     }, 100);
 }
 
@@ -1026,3 +1032,47 @@ function atualizaCorAgendamento() {
         }, 2000);
     }, 200);
 }
+
+function criarFiltroDeFrequencia(){
+        if($('.headerCounter > div:last b').hasClass('hide') 
+        || $('select[data-filtro="frequencyTotal"]').length > 0)
+            return;
+
+        var frequenciasExistentes = [];
+
+        var htmlSelect = "<select data-filtro='frequencyTotal'>";
+        htmlSelect += "<option>-</option>";
+        $.each($('.counters .frequencyTotal'), function (i,o) {
+            var frequencia = $(o).text();
+            if(frequenciasExistentes.indexOf(frequencia) < 0){
+                frequenciasExistentes.push(frequencia);
+                htmlSelect += "<option>"+frequencia+"</option>";
+            }
+        });
+            
+        htmlSelect += "</select>";
+        $('.headerCounter > div:last').append(htmlSelect);
+}
+
+$('body').off('change','select[data-filtro]').on('change','select[data-filtro]',function(){
+	var valorSelecionado = $(this).val();
+	
+	//Ocultar todas as linhas
+	$('.counters .frequencyTotal')
+		.parents('.list-group-item')
+		.addClass('hide');
+			
+	if(valorSelecionado.length == 1){
+		$('.counters .frequencyTotal')
+			.parents('.list-group-item')
+			.removeClass('hide');
+		return;
+	}
+	
+    //Mostra linhas que não batem o valor
+    $('.counters .frequencyTotal').filter(function() {
+        return $(this).text() === valorSelecionado;
+    })
+        .parents('.list-group-item')
+        .removeClass('hide')
+});
