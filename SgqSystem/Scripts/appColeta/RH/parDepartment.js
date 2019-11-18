@@ -27,10 +27,10 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
 	getCurrentPlanejamentoObj();
 
-	//caso for "" quer dizer que não tem mais filhos, então abre o próximo	
-	if (htmlParDepartment == "") {
-		currentParDepartmentParent_Id = department.Parent_Id;
-		listarParCargo();
+    //caso for "" quer dizer que não tem mais filhos, então abre o próximo	
+    if (htmlParDepartment == "") {
+        currentParDepartmentParent_Id = department.Parent_Id;
+        listarParCargo(isVoltar);
 		return;
 	}
 
