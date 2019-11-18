@@ -78,7 +78,14 @@
                                                     @Html.DisplayFor(modelItem => item.Key)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Value)
+                                                    @if (item.Value != null && item.Value.Length > 50)
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.Value).ToString().Substring(0, 50)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.Value)
+                                                    }
                                                 </td>
                                             </tr>
                                         }
@@ -111,6 +118,8 @@
             null,
             { "bSearchable": false }
         ];
+   
+
         $('#tabelaResourcesPt').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 
