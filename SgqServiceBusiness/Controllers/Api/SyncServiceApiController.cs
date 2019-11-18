@@ -3549,6 +3549,7 @@ namespace SgqServiceBusiness.Api
                 		WHEN (FREQ_AV.ParFrequency_Id) IN (6) THEN @datamensal
                 		ELSE @datadiario
                 	END AND @datafim
+					GROUP BY R3.ParLevel3_Id
 
 					--AND C2.ParLevel1_Id =112 
 					--AND C2.ParLevel2_Id = 633
