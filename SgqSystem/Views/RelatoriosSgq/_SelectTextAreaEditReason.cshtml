@@ -1,11 +1,20 @@
 ﻿<div class="col-sm-12" style="margin-top:10px;">
-    <select name="selectParReasonEdit" class="form-control">
-        @foreach (var item in (List<Dominio.ParReason>)ViewBag.ParReasonEdit)
-        {
-            <option value="@item.Id">@item.Motivo</option>
-        }
-    </select>
+    <div class="form-group">
+        <label for="inputParReasonEdit" class="pull-left">Motivo:</label>
+        <select name="selectParReasonEdit" id="inputParReasonEdit" class="form-control">
+            @foreach (var item in (List<Dominio.ParReason>)ViewBag.ParReasonEdit)
+            {
+                <option value="@item.Id">@item.Motivo</option>
+            }
+        </select>
+    </div>
 </div>
 <div class="col-sm-12" style="margin-top:10px;margin-bottom:10px;">
-    <textarea class="form-control" name="textareaParReasonEdit" style="resize:none;"></textarea>
+    <div class="form-group">
+        <label for="selectParReasonEdit" class="pull-left">Justificativa:</label>
+        <textarea class="form-control" id="selectParReasonEdit" name="textareaParReasonEdit" style="resize:none;"></textarea>
+    </div>
+</div>
+<div class="col-sm-12 text-left" style="margin-top:10px;margin-bottom:10px;">
+    <div class="alert alert-danger hide alertParReasonEditMinimo10">Preencha com pelo menos 10 caracteres a sua justificativa</div>
 </div>

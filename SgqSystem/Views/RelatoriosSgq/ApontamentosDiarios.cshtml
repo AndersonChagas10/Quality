@@ -10,7 +10,7 @@
     var urlGetCarousel = Url.Action("GetCarousel", "RelatoriosSgq");
     var urlLogTrack = Url.Action("Get", "api/LogTrack");
     var urlLogTrackHeaderField = Url.Action("GetHeaderFieldByResult_Level3", "api/LogTrack");
-    
+
 }
 
 <style>
@@ -348,7 +348,7 @@
                     $('#resultsApontamentos tbody').on('click', 'button#viewHistory', function (data) {
 
                         var data = table.row($(this).parents('tr')).data();
-                        
+
                         var tableLogTrack = $('#modalLogTrackHistory .modal-body');
                         $(tableLogTrack).html('');
 
@@ -371,7 +371,7 @@
                             r.splice(0, 0, r[r.length - 1]);
                             r = r.slice(0, -1);
                             $.each(r, function (i, o) {
-                                
+
                                 if (i == 0) {
                                     htmlBody += "<tr style='background-color:#ddd;' title='Original'>";
                                     htmlBody += "<td>Original</td>";
@@ -430,7 +430,7 @@
                             var original = [];
                             var atual = [];
                             var passado = [];
-                            
+
                             $.each(r, function (i, o) {
                                 var existeNaListaAtual = $.grep(atual, function (o2, i2) { return o2.obj.Id == o.obj.Id }).length;
                                 var quantidadeExistenteNaLista = $.grep(logTrack, function (o2, i2) { return o2.obj.Id == o.obj.Id }).length;
@@ -474,7 +474,7 @@
                                 htmlBody += htmlCorpo(o);
                                 htmlBody += "</tr>";
                             });
-                            
+
                             var tableHtml = "<table>"+htmlHead+"<tbody>"+htmlBody+"</tbody>"+"</table>"
                             $(tableLogTrack).html(tableHtml);
 
@@ -490,8 +490,9 @@
                     })
 
                     $('#myModal, #modalHeaderField').on('hidden.bs.modal', function () {
-                        $('select[name="selectParReasonEdit"]').removeClass('btn-danger');
-                        $('textarea[name="textareaParReasonEdit"]').removeClass('btn-danger');
+                        //$('select[name="selectParReasonEdit"]').attr('style','');
+                        $('textarea[name="textareaParReasonEdit"]').attr('style','');
+                        $('.alertParReasonEditMinimo10').addClass('hide');
                     })
                     //$("#botaoFecharModal").on('click', function () {
                     //    $("#myModal #mensagemErro").remove();
@@ -781,12 +782,14 @@
 
             var selectParReasonEdit = $('select[name="selectParReasonEdit"]:visible').val();
             var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
-            $('select[name="selectParReasonEdit"]:visible').removeClass('btn-danger');
-            $('textarea[name="textareaParReasonEdit"]:visible').removeClass('btn-danger');
+            //$('select[name="selectParReasonEdit"]:visible').attr('style','border:0px;');
+            $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
+                $('.alertParReasonEditMinimo10').addClass('hide');
 
-            if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length <= 0) {
-                $('select[name="selectParReasonEdit"]:visible').addClass('btn-danger');
-                $('textarea[name="textareaParReasonEdit"]:visible').addClass('btn-danger');
+            if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 10) {
+                $('.alertParReasonEditMinimo10').removeClass('hide');
+                //$('select[name="selectParReasonEdit"]:visible').attr('style','border:1px solid red;');
+                $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
                 return;
             }
 
@@ -890,12 +893,14 @@
 
                 var selectParReasonEdit = $('select[name="selectParReasonEdit"]:visible').val();
                 var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
-                $('select[name="selectParReasonEdit"]:visible').removeClass('btn-danger');
-                $('textarea[name="textareaParReasonEdit"]:visible').removeClass('btn-danger');
+                //$('select[name="selectParReasonEdit"]:visible').attr('style','border:0px;');
+                $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
+                $('.alertParReasonEditMinimo10').addClass('hide');
 
-                if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length <= 0) {
-                    $('select[name="selectParReasonEdit"]:visible').addClass('btn-danger');
-                    $('textarea[name="textareaParReasonEdit"]:visible').addClass('btn-danger');
+                if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 10) {
+                    $('.alertParReasonEditMinimo10').removeClass('hide');
+                    //$('select[name="selectParReasonEdit"]:visible').attr('style','border:1px solid red;');
+                    $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
                     return;
                 }
 
