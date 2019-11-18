@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using ADOFactory;
 using Dominio;
-//using SgqSystem.Handlres;
-using System.Net;
-using System.Data.SqlClient;
 using DTO;
-using ADOFactory;
-using System.Threading;
-using System.Globalization;
 using DTO.Helpers;
-using SGQDBContext;
-using SgqServiceBusiness.Helpers;
-using System.Net.Mail;
-using System.Text;
-using System.Collections;
-using System.Data;
 using ServiceModel;
+using SGQDBContext;
 using SgqServiceBusiness.Api.App;
+using SgqServiceBusiness.Helpers;
 using SgqServiceBusiness.Services;
 using SgqSystem.Helpers;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Linq;
+//using SgqSystem.Handlres;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
+using System.Threading;
+using System.Web;
 
 namespace SgqServiceBusiness.Api
 {
@@ -4928,11 +4928,24 @@ namespace SgqServiceBusiness.Api
 
         protected string correctiveAction()
         {
+            var usuariosSupervisor = new List<UserSgq>();
+            using (var db = new SgqDbDevEntities())
+            {
+                usuariosSupervisor = db.UserSgq.Where(x => x.Role.Contains("Supervisor") && x.IsActive == true).OrderBy(x => x.Name).ToList();
+            }
+
+            var htmlSelect = "";
+            htmlSelect += $@"<option value='0'> Selecione </option>";
+            foreach (var item in usuariosSupervisor)
+            {
+                htmlSelect += $@"<option value='{item.Id}'> {item.Name} </option>"; 
+            }
+
             string correctiveAction =
                 "<div id=\"correctiveActionModal\" class=\"container panel panel-default modal-padrao\" style=\"display:none\">" +
                     "<div class=\"panel-body\">" +
                         "<div class=\"modal-body\">" +
-                            "<h2>" + CommonData.getResource("corrective_action").Value.ToString() + " </h2>" +
+                            "<h2>" + CommonData.getResource("immediate_corrective_action").Value.ToString() + " </h2>" +
                             "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                 "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                             "</div>" +
@@ -4942,16 +4955,19 @@ namespace SgqServiceBusiness.Api
                                     "<div class=\"panel-body\" >" +
                                         "<div class=\"row\" style=\"padding:8px;\">" +
                                             "<div class=\"col-xs-6\" id=\"CorrectiveActionTaken\">" +
-                                                "<b class=\"font16\">" + CommonData.getResource("corrective_action_taken").Value.ToString() + ":<br/></b>" +
-                                                "<b>" + CommonData.getResource("date_time").Value.ToString() + ":</b> <span id=\"datetime\"></span><br/>" +
+                                                //"<b class=\"font16\">" + CommonData.getResource("corrective_action_taken").Value.ToString() + ":<br/></b>" +
+                                                "<b>" + CommonData.getResource("date").Value.ToString() + ":</b> <span id=\"datetime\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("hour").Value.ToString() + ":</b> <span id=\"hour\"></span><br/>" +
                                                 "<b>" + CommonData.getResource("auditor").Value.ToString() + ": </b><span id=\"auditor\"></span><br/>" +
                                                 "<b>" + CommonData.getResource("shift").Value.ToString() + ": </b><span id=\"shift\"></span><br/>" +
                                             "</div>" +
                                             "<div class=\"col-xs-6\" id=\"AuditInformation\">" +
-                                                "<b class=\"font16\">" + CommonData.getResource("audit_information").Value.ToString() + ":<br/></b>" +
+                                                //"<b class=\"font16\">" + CommonData.getResource("audit_information").Value.ToString() + ":<br/></b>" +
                                                 "<b>" + CommonData.getResource("level1").Value.ToString() + ": </b><span id=\"auditText\"></span><br/>" +
-                                                "<b>" + CommonData.getResource("initial_date").Value.ToString() + ":</b><span id=\"starttime\"></span><br/>" +
-                                                "<b>" + CommonData.getResource("period").Value.ToString() + ":</b><span id=\"correctivePeriod\"></span>" +
+                                                "<b>" + CommonData.getResource("period").Value.ToString() + ":</b><span id=\"correctivePeriod\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("deviation_date").Value.ToString() + ":</b><span id=\"starttime\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("deviation_hour").Value.ToString() + ":</b><span id=\"starttimeHour\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("free_time").Value.ToString() + ":</b><input id=\"datetimeTechinicalHour\" type='time' min='0' class='input-sm' /><br/>" +
                                             "</div>" +
                                         "</div>" +
                                     "</div>" +
@@ -4970,10 +4986,25 @@ namespace SgqServiceBusiness.Api
                                     "<label>" + CommonData.getResource("product_disposition").Value.ToString() + ":</label>" +
                                     "<textarea id=\"ProductDisposition\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>" +
-                                "<div class=\"form-group\">" +
-                                    "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
-                                    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                "</div>";
+                                //"<div class=\"form-group\">" +
+                                //    "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
+                                //    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+                                //"</div>" +
+                                $@"<div class='form-group'>
+                                        <label>{CommonData.getResource("corrective_action").Value.ToString()}:</label>
+                                        <div>
+		                                    <input type='checkbox' id='correctiveAction'>
+		                                    <label id='mensagemPadrao'> Mensagem padrão que será definida</label>
+                                        </div>
+	                                    <textarea id='PreventativeMeasure' class='form-control custom-control' rows='3' style='resize:none'></textarea>
+                                    </div>
+                                    <div id='divSelectSupervisor' class='form-group'>
+                                          <label>Supervisor</label>
+                                          <select id='TechinicalSignature' class='form-control custom-control'>
+		                                    {htmlSelect}
+	                                    </select>  
+                                    </div>
+                                </div>";
 
             if (GlobalConfig.Eua)
             {
@@ -7962,10 +7993,15 @@ namespace SgqServiceBusiness.Api
             string ProductDisposition = insertCorrectiveActionClass.ProductDisposition;
             string PreventativeMeasure = insertCorrectiveActionClass.PreventativeMeasure;
             string reauditnumber = insertCorrectiveActionClass.reauditnumber;
+            string datetimeTechinicalHour = insertCorrectiveActionClass.DatetimeTechinicalHour;
 
             try
             {
-
+                var dataLiberacao = "";
+                if (datetimeTechinicalHour != null || datetimeTechinicalHour != "")
+                {
+                     dataLiberacao = DateTimeTechinical.Replace(DateTimeTechinical.Split(' ')[1], datetimeTechinicalHour);
+                }
                 //inserir a acção corretiva com processo
 
                 string parCluster_Id_parLevel1_id = ParLevel1_Id.Replace(quebraProcesso, "|");
@@ -7998,7 +8034,9 @@ namespace SgqServiceBusiness.Api
                 ImmediateCorrectiveAction = HttpUtility.UrlDecode(ImmediateCorrectiveAction, System.Text.Encoding.Default);
                 ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
                 PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
-
+                if(dataLiberacao != null || dataLiberacao != ""){
+                    DateTimeTechinical = dataLiberacao;
+                }
                 int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure,
                     ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
 
@@ -8020,7 +8058,7 @@ namespace SgqServiceBusiness.Api
 
                         data = ano + "/" + mes + "/" + dia;
                     }
-
+                  
                     DateTime dataAPP = Convert.ToDateTime(data);
 
                     //Pega a data pela regra da frequencia
