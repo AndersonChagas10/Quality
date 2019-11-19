@@ -3484,17 +3484,49 @@ namespace SgqServiceBusiness.Api
                 declare @datasemanal date
                 declare @dataquinzenal date
                 declare @datamensal date
+                DECLARE @dataBimestral date
+                DECLARE @dataTrimestral date
+                DECLARE @dataSemestral date
+                DECLARE @dataAnual date
                 
                 SET @datainicio = @data
                 SET @datafim = @data
-                SET @datadiario = @data  --1,2,3
+                SET @datadiario = @data
                 SET @datasemanal = DATEADD(DAY, -(DATEPART(WEEKDAY, @data) - 1), @data)
                 SET @dataquinzenal =
                 CASE
-                	WHEN DAY(@data) < 16 THEN DATEADD(MONTH, 1, DATEADD(mm, DATEDIFF(mm, 0, @data) - 1, 0))
-                	ELSE DATEADD(DAY, 15, DATEADD(MONTH, 1, DATEADD(mm, DATEDIFF(mm, 0, @data) - 1, 0)))
+                	WHEN DAY(@data) < 16 THEN DATEFROMPARTS(YEAR(@data),MONTH(@data),01)
+                	ELSE DATEFROMPARTS(YEAR(@data),MONTH(@data),16)
                 END
-                SET @datamensal = DATEADD(MONTH, 1, DATEADD(mm, DATEDIFF(mm, 0, @data) - 1, 0))
+
+                SET @datamensal = DATEFROMPARTS(YEAR(@data),MONTH(@data),01)
+                
+                SET @dataBimestral =
+                CASE
+                	WHEN MONTH(@data) BETWEEN 1 AND 2  THEN DATEFROMPARTS(YEAR(@data),01,01)
+                	WHEN MONTH(@data) BETWEEN 3 AND 4  THEN DATEFROMPARTS(YEAR(@data),03,01)
+                	WHEN MONTH(@data) BETWEEN 5 AND 6  THEN DATEFROMPARTS(YEAR(@data),05,01)
+                	WHEN MONTH(@data) BETWEEN 7 AND 8  THEN DATEFROMPARTS(YEAR(@data),07,01)
+                	WHEN MONTH(@data) BETWEEN 9 AND 10 THEN DATEFROMPARTS(YEAR(@data),09,01)
+                	ELSE DATEFROMPARTS(YEAR(@data),11,01)
+                END
+
+                SET @dataTrimestral =
+                CASE
+                	WHEN MONTH(@data) BETWEEN 1 AND 3 THEN DATEFROMPARTS(YEAR(@data),01,01)
+                	WHEN MONTH(@data) BETWEEN 4 AND 6 THEN DATEFROMPARTS(YEAR(@data),04,01)
+                	WHEN MONTH(@data) BETWEEN 7 AND 9 THEN DATEFROMPARTS(YEAR(@data),07,01)
+                	ELSE DATEFROMPARTS(YEAR(@data),10,01)
+                END
+                
+                SET @dataSemestral =
+                CASE
+                	WHEN MONTH(@data) BETWEEN 1 AND 6 THEN DATEFROMPARTS(YEAR(@data),01,01)
+                	WHEN MONTH(@data) BETWEEN 7 AND 12 THEN DATEFROMPARTS(YEAR(@data),07,01)
+                END
+                
+                SET @dataAnual = DATEFROMPARTS(YEAR(@data),01,01)
+                
                 SET @datainicio = @data
                 SET @datafim = @data
                 
@@ -3551,8 +3583,13 @@ namespace SgqServiceBusiness.Api
                 		WHEN (FREQ_AV.ParFrequency_Id) IN (4) THEN @datasemanal
                 		WHEN (FREQ_AV.ParFrequency_Id) IN (5) THEN @dataquinzenal
                 		WHEN (FREQ_AV.ParFrequency_Id) IN (6) THEN @datamensal
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (12) THEN @databimestral
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (7) THEN @dataTrimestral
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (8) THEN @dataSemestral
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (9) THEN @dataAnual
                 		ELSE @datadiario
                 	END AND @datafim
+					GROUP BY R3.ParLevel3_Id
 
 					--AND C2.ParLevel1_Id =112 
 					--AND C2.ParLevel2_Id = 633
@@ -3817,6 +3854,254 @@ namespace SgqServiceBusiness.Api
                 	WHERE unitid = @unidade
                 	AND FREQ_AV.ParFrequency_Id IN (6)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @datamensal AND @data
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
+                			,UnitId
+                			,Shift
+                			,Period
+                			,CAST(CollectionDate AS DATE)
+                			,ConsolidationLevel2_Id
+
+                
+                /*coletas Bimestral */
+                INSERT INTO #COLETA
+                	SELECT
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                		UnitId AS Unit_Id,--unidade
+                		Shift, --shift
+                		Period,--periodo
+                		CAST(CollectionDate AS DATE) CollectionDate, --data da coleta
+                		MAX(EvaluationNumber) AS EvaluateLast,--maior avaliacao
+                		ConsolidationLevel2_Id,  --id da consolidaçao level2
+                		(SELECT
+                				MAX(sample)
+                			FROM CollectionLevel2 WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = MAX(cl2.EvaluationNumber))
+                		AS SampleLast
+                	   ,MAX(Phase) AS Phase
+                	   ,MAX(StartPhaseEvaluation) AS StartPhaseEvaluation
+                	   ,MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction
+                	   ,MAX(CAST(haveReaudit AS INT)) haveReaudit
+                	   ,MAX(ReauditLevel) ReauditLevel
+                	   ,MAX(Sequential) Sequential
+                	   ,MAX(Side) Side
+                	   ,MIN(CL2.Id) AS ID
+                	   ,(SELECT
+                				MIN(CAST(CollectionDate AS TIME))
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = 1
+                			AND [Sample] = 1)
+                		AS HoraPrimeiraAvaliacao
+                	FROM CollectionLevel2 CL2 WITH (NOLOCK)
+                	LEFT JOIN CollectionLevel2XCluster CL2C
+                		ON CL2C.CollectionLevel2_Id = CL2.Id
+                	INNER JOIN parlevel2 p2 WITH (NOLOCK)
+                		ON p2.id = CL2.ParLevel2_Id
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
+                	WHERE unitid = @unidade
+                	AND FREQ_AV.ParFrequency_Id IN (12)
+                	AND CAST(CollectionDate AS DATE) BETWEEN @dataBimestral AND @data
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
+                			,UnitId
+                			,Shift
+                			,Period
+                			,CAST(CollectionDate AS DATE)
+                			,ConsolidationLevel2_Id
+
+
+                /*coletas trimestral */
+                INSERT INTO #COLETA
+                	SELECT
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id
+                	   , --indicador
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id
+                	   , --monitoramento
+                		UnitId AS Unit_Id
+                	   ,--unidade
+                		Shift
+                	   , --shift
+                		Period
+                	   ,--periodo
+                		CAST(CollectionDate AS DATE) CollectionDate
+                	   , --data da coleta
+                		MAX(EvaluationNumber) AS EvaluateLast
+                	   ,--maior avaliacao
+                		ConsolidationLevel2_Id
+                	   ,  --id da consolidaçao level2
+                		(SELECT
+                				MAX(sample)
+                			FROM CollectionLevel2 WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = MAX(CL2.EvaluationNumber))
+                		AS SampleLast
+                	   ,MAX(Phase) AS Phase
+                	   ,MAX(StartPhaseEvaluation) AS StartPhaseEvaluation
+                	   ,MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction
+                	   ,MAX(CAST(haveReaudit AS INT)) haveReaudit
+                	   ,MAX(ReauditLevel) ReauditLevel
+                	   ,MAX(Sequential) Sequential
+                	   ,MAX(Side) Side
+                	   ,MIN(CL2.ID) AS ID
+                	   ,(SELECT
+                				MIN(CAST(CollectionDate AS TIME))
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = 1
+                			AND [Sample] = 1)
+                		AS HoraPrimeiraAvaliacao
+                	FROM CollectionLevel2 CL2 WITH (NOLOCK)
+                	LEFT JOIN CollectionLevel2XCluster CL2C
+                		ON CL2C.CollectionLevel2_Id = CL2.ID
+                	INNER JOIN ParLevel2 p2 WITH (NOLOCK)
+                		ON p2.ID = CL2.ParLevel2_Id
+                	LEFT JOIN (SELECT
+                			*
+                		FROM #PAREVALUATION
+                		WHERE 1 = 1
+                		AND [rank] = 1) FREQ_AV
+                		ON FREQ_AV.ParLevel2_Id = CL2.ParLevel2_Id
+                			AND FREQ_AV.ParLevel1_Id = CL2.ParLevel1_Id
+                			AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
+                	WHERE UnitId = @unidade
+                	AND FREQ_AV.ParFrequency_Id IN (7)
+                	AND CAST(CollectionDate AS DATE) BETWEEN @dataTrimestral AND @data
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
+                			,UnitId
+                			,Shift
+                			,Period
+                			,CAST(CollectionDate AS DATE)
+                			,ConsolidationLevel2_Id
+                
+                /*coletas Semestral */
+                INSERT INTO #COLETA
+                	SELECT
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id
+                	   , --indicador
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id
+                	   , --monitoramento
+                		UnitId AS Unit_Id
+                	   ,--unidade
+                		Shift
+                	   , --shift
+                		Period
+                	   ,--periodo
+                		CAST(CollectionDate AS DATE) CollectionDate
+                	   , --data da coleta
+                		MAX(EvaluationNumber) AS EvaluateLast
+                	   ,--maior avaliacao
+                		ConsolidationLevel2_Id
+                	   ,  --id da consolidaçao level2
+                		(SELECT
+                				MAX(sample)
+                			FROM CollectionLevel2 WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = MAX(CL2.EvaluationNumber))
+                		AS SampleLast
+                	   ,MAX(Phase) AS Phase
+                	   ,MAX(StartPhaseEvaluation) AS StartPhaseEvaluation
+                	   ,MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction
+                	   ,MAX(CAST(haveReaudit AS INT)) haveReaudit
+                	   ,MAX(ReauditLevel) ReauditLevel
+                	   ,MAX(Sequential) Sequential
+                	   ,MAX(Side) Side
+                	   ,MIN(CL2.ID) AS ID
+                	   ,(SELECT
+                				MIN(CAST(CollectionDate AS TIME))
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = 1
+                			AND [Sample] = 1)
+                		AS HoraPrimeiraAvaliacao
+                	FROM CollectionLevel2 CL2 WITH (NOLOCK)
+                	LEFT JOIN CollectionLevel2XCluster CL2C
+                		ON CL2C.CollectionLevel2_Id = CL2.ID
+                	INNER JOIN ParLevel2 p2 WITH (NOLOCK)
+                		ON p2.ID = CL2.ParLevel2_Id
+                	LEFT JOIN (SELECT
+                			*
+                		FROM #PAREVALUATION
+                		WHERE 1 = 1
+                		AND [rank] = 1) FREQ_AV
+                		ON FREQ_AV.ParLevel2_Id = CL2.ParLevel2_Id
+                			AND FREQ_AV.ParLevel1_Id = CL2.ParLevel1_Id
+                			AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
+                	WHERE UnitId = @unidade
+                	AND FREQ_AV.ParFrequency_Id IN (8)
+                	AND CAST(CollectionDate AS DATE) BETWEEN @dataSemestral AND @data
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
+                			,UnitId
+                			,Shift
+                			,Period
+                			,CAST(CollectionDate AS DATE)
+                			,ConsolidationLevel2_Id
+
+                /*coletas Anual */
+                INSERT INTO #COLETA
+                	SELECT
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id
+                	   , --indicador
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id
+                	   , --monitoramento
+                		UnitId AS Unit_Id
+                	   ,--unidade
+                		Shift
+                	   , --shift
+                		Period
+                	   ,--periodo
+                		CAST(CollectionDate AS DATE) CollectionDate
+                	   , --data da coleta
+                		MAX(EvaluationNumber) AS EvaluateLast
+                	   ,--maior avaliacao
+                		ConsolidationLevel2_Id
+                	   ,  --id da consolidaçao level2
+                		(SELECT
+                				MAX(sample)
+                			FROM CollectionLevel2 WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = MAX(CL2.EvaluationNumber))
+                		AS SampleLast
+                	   ,MAX(Phase) AS Phase
+                	   ,MAX(StartPhaseEvaluation) AS StartPhaseEvaluation
+                	   ,MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction
+                	   ,MAX(CAST(haveReaudit AS INT)) haveReaudit
+                	   ,MAX(ReauditLevel) ReauditLevel
+                	   ,MAX(Sequential) Sequential
+                	   ,MAX(Side) Side
+                	   ,MIN(CL2.ID) AS ID
+                	   ,(SELECT
+                				MIN(CAST(CollectionDate AS TIME))
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = 1
+                			AND [Sample] = 1)
+                		AS HoraPrimeiraAvaliacao
+                	FROM CollectionLevel2 CL2 WITH (NOLOCK)
+                	LEFT JOIN CollectionLevel2XCluster CL2C
+                		ON CL2C.CollectionLevel2_Id = CL2.ID
+                	INNER JOIN ParLevel2 p2 WITH (NOLOCK)
+                		ON p2.ID = CL2.ParLevel2_Id
+                	LEFT JOIN (SELECT
+                			*
+                		FROM #PAREVALUATION
+                		WHERE 1 = 1
+                		AND [rank] = 1) FREQ_AV
+                		ON FREQ_AV.ParLevel2_Id = CL2.ParLevel2_Id
+                			AND FREQ_AV.ParLevel1_Id = CL2.ParLevel1_Id
+                			AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
+                	WHERE UnitId = @unidade
+                	AND FREQ_AV.ParFrequency_Id IN (9)
+                	AND CAST(CollectionDate AS DATE) BETWEEN @dataAnual AND @data
                 	GROUP BY CL2.ParLevel1_Id
                 			,CL2.ParLevel2_Id
                 			,UnitId
