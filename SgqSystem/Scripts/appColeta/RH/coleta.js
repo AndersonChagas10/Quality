@@ -710,7 +710,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 
     if (coletaAgrupada.Sample == 1) {
         //atualiza tela de coleta e contadores
-        listarParCargo();
+        listarParCargo(true);
     } else {
         listarParLevels();
         $("html, body").animate({ scrollTop: 0 }, "fast");
