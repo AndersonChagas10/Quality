@@ -20,14 +20,14 @@ namespace LogSystem
             // Get the top stack frame
             var frame = st.GetFrame(0);
             // Get the line number from the stack frame
-            var line = frame.GetFileLineNumber();
+            var line = frame?.GetFileLineNumber();
 
             //monta o objeto com as informações do log
             error.AddDate = DateTime.Now;
-            error.Line = line;
-            error.Method = frame.GetMethod().Name;
-            error.Controller = frame.GetMethod().DeclaringType.Name;
-            error.Object = LogErrorBusiness.ToJson(obj).ToString();
+            error.Line = line ?? 0;
+            error.Method = frame?.GetMethod().Name;
+            error.Controller = frame?.GetMethod().DeclaringType.Name;
+            error.Object = obj?.GetType() != typeof(string) ? LogErrorBusiness.ToJson(obj).ToString() : "";
             error.StackTrace = ex.ToClient();
 
             using (var db = new Dominio.SgqDbDevEntities())

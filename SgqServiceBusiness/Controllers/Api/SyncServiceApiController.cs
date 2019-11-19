@@ -8283,7 +8283,7 @@ namespace SgqServiceBusiness.Api
             try
             {
                 var dataLiberacao = "";
-                if (datetimeTechinicalHour != null || datetimeTechinicalHour != "")
+                if (!string.IsNullOrEmpty(datetimeTechinicalHour))
                 {
                      dataLiberacao = DateTimeTechinical.Replace(DateTimeTechinical.Split(' ')[1], datetimeTechinicalHour);
                 }
@@ -8319,7 +8319,7 @@ namespace SgqServiceBusiness.Api
                 ImmediateCorrectiveAction = HttpUtility.UrlDecode(ImmediateCorrectiveAction, System.Text.Encoding.Default);
                 ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
                 PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
-                if(dataLiberacao != null || dataLiberacao != ""){
+                if(!string.IsNullOrEmpty(dataLiberacao)){
                     DateTimeTechinical = dataLiberacao;
                 }
                 int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure,
