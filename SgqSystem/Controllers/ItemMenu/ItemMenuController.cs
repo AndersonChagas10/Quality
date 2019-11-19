@@ -17,6 +17,14 @@ namespace SgqSystem.Controllers
         public ItemMenuController()
         {
             db = new SgqDbDevEntities();
+
+            var lista = Enum.GetValues(typeof(Dominio.Enum.Enums.PDCAMenuItem)).Cast<Dominio.Enum.Enums.PDCAMenuItem>().Select(t => new ItemMenu
+                        {
+                            Id = ((int)t),
+                            Name = t.ToString()
+                        });
+
+            ViewBag.PDCAMenuItems = lista;
         }
 
         // GET: ItemMenu
@@ -69,7 +77,7 @@ namespace SgqSystem.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return View();
             }

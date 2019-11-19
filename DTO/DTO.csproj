@@ -96,7 +96,9 @@
     <Compile Include="CreateLog.cs" />
     <Compile Include="DataCarrierFormulario.cs" />
     <Compile Include="DTO\Params\ParCargoDTO.cs" />
+    <Compile Include="DTO\ComponenteGenericoDTO.cs" />
     <Compile Include="DTO\Params\Result_Level3DTO.cs" />
+    <Compile Include="DTO\ParHeaderFieldXComponenteGenericoDTO.cs" />
     <Compile Include="Formulario\DataCarrierFormularioNew.cs" />
     <Compile Include="DTO\ColetaDTO.cs" />
     <Compile Include="DTO\CollectionHtmlDTO.cs" />

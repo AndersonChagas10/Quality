@@ -650,7 +650,8 @@
         } else {
 
             var departamentosVinculados = jQuery.grep(ParDepartmentsGlobal, function (n, i) {
-                return (n.ParCompany_Id === unidadeSelecionada || n.ParCompany_Id == null);
+                
+                return ((n.ParCompany_Id === unidadeSelecionada || n.ParCompany_Id == null) && n.Active == true);
             });
 
             preencheSelect(selectId, 'Name', 'Id', departamentosVinculados, mensagem);
@@ -803,7 +804,7 @@
             if (value == null)
                 value = 0;
 
-            element.val(value);
+            element.val(value.toString());
             element.trigger('change');
 
         } else if (element.is('div')) {
@@ -1074,12 +1075,14 @@
                 preencheSelect('selectL3PesoPesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
                 preencheSelect('selectL3PesoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3PesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
-                preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a Função');
+                
+                //preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a Função');
+                preencheSelect('selectL3PesoParClusters', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
 
                 preencheSelect('selectL3TipoDadoParLevel3InputType', 'Name', 'Id', data.ParLevel3InputTypes, 'Selecione o Tipo de dados para a coleta');
                 preencheSelect('selectL3TipoDadoParLevel3BoolFalse', 'Name', 'Id', data.ParLevel3BoolFalses, 'Valor negativo');
-
                 preencheSelect('selectL3TipoDadoParLevel3BoolTrue', 'Name', 'Id', data.ParLevel3BoolTrues, 'Valor positivo');
+
                 preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3TipoDadoParMeasurementUnit', 'Name', 'Id', data.ParMeasurementUnits, 'Selecione a unidade de medida');
 

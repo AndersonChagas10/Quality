@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dominio.AppViewModel
+﻿namespace Dominio.AppViewModel
 {
     public class ParLevel3ValueAppViewModel
     {
@@ -29,6 +23,26 @@ namespace Dominio.AppViewModel
         public decimal? IntervalMax { get; set; }
 
         public bool IsActive { get; set; }
+
+        public bool? IsRequired { get; set; }
+
+        public int IsRequiredInt
+        {
+            get
+            {
+                return IsRequired == true ? 1 : 0;
+            }
+        }
+
+        public bool? IsDefaultAnswer { get; set; }
+
+        public int IsDefaultAnswerInt
+        {
+            get
+            {
+                return IsDefaultAnswer == false ? 0 : 1;
+            }
+        }
 
         public int? ParLevel1_Id { get; set; }
 

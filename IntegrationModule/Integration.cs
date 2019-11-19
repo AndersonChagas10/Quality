@@ -42,8 +42,9 @@ namespace IntegrationModule
             return null;
         }
 
-        public static System.Action RunIntegrationOneValue(string configuration, string script, string tableName)
+        public static System.Action RunIntegrationOneValue(string configuration, string script, string tableName, out Exception ex)
         {
+            ex = null;
             List<string> scripts = new List<string>();
             Setting setting = new Setting(configuration, script);
             if (setting.Settings["JustCommand"] == "on")
@@ -64,7 +65,8 @@ namespace IntegrationModule
                     }
                     catch (Exception e)
                     {
-
+                        ex = e;
+                        return null;
                     }
                 }
             }
@@ -83,6 +85,8 @@ namespace IntegrationModule
                     }
                     catch (Exception e)
                     {
+                        ex = e;
+                        return null;
                     }
                 }
 

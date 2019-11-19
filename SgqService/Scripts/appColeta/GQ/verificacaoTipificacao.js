@@ -48,45 +48,53 @@ function sendVerificacaoTipificacao() {
                     VerificacaoTipificacaoResultados.push(data);
                 }); 
 
-                    var modelVerificacao = {
-                        EmpresaId: 1,
-                        DepartamentoId: 1,
-                        TarefaId: 1,
-                        MonitoramentoId: 1,
-                        ProdutoId: 1,
-                        UnidadeId: parseInt($('.App').attr('unidadeid')),
-                        OperacaoId: 1,
-                        VerificacaoTipificacao: VerificacaoTipificacao,
-                        AuditorId: $('.App').attr('userid'),
-                        VerificacaoTipificacaoResultados: VerificacaoTipificacaoResultados
-                    };
-                        
-                    sendVer = false;
-                    sendVerConf = false;
+                var modelVerificacao = {
+                    EmpresaId: 1,
+                    DepartamentoId: 1,
+                    TarefaId: 1,
+                    MonitoramentoId: 1,
+                    ProdutoId: 1,
+                    UnidadeId: parseInt($('.App').attr('unidadeid')),
+                    OperacaoId: 1,
+                    VerificacaoTipificacao: VerificacaoTipificacao,
+                    AuditorId: $('.App').attr('userid'),
+                    VerificacaoTipificacaoResultados: VerificacaoTipificacaoResultados
+                };
                     
-                    var abc = function callback(){
+                sendVer = false;
+                sendVerConf = false;
+                
+                var abc = function callback(){
 
-                        sendVerConf = true;
-                                
-                        var chave = $(self).attr('verificacaoTipificacaoChave');
-                        var dataChave = new Date(chave.substring(chave.length - 8, chave.length - 4), parseInt(chave.substring(chave.length - 4, chave.length - 2))-1, chave.substring(chave.length - 2, chave.length), 0, 0, 0, 0);
+                    sendVerConf = true;
+                            
+                    var chave = $(self).attr('verificacaoTipificacaoChave');
+                    var dataChave = new Date(chave.substring(chave.length - 8, chave.length - 4), parseInt(chave.substring(chave.length - 4, chave.length - 2))-1, chave.substring(chave.length - 2, chave.length), 0, 0, 0, 0);
 
-                        $(self).attr('sync', true);
-                        $('.VerificacaoTipificacaoResultados').children('div[sync=false][chave=' + $(self).attr('verificacaoTipificacaoChave') + ']').attr('sync', true);
+                    $(self).attr('sync', true);
+                    $('.VerificacaoTipificacaoResultados').children('div[sync=false][chave=' + $(self).attr('verificacaoTipificacaoChave') + ']').attr('sync', true);
 
-                        
                     
-                        _writeFile("VerificacaoTipificacaoResultados.txt", $(".VerificacaoTipificacaoResultados").html());
-                        _writeFile("VerificacaoTipificacao.txt", $(".VerificacaoTipificacao").html());
+                
+                    _writeFile("VerificacaoTipificacaoResultados.txt", $(".VerificacaoTipificacaoResultados").html());
+                    _writeFile("VerificacaoTipificacao.txt", $(".VerificacaoTipificacao").html());
 
-                    }
+                }
 
-                    $.post(urlPreffix + "/api/VTVerificacaoTipificacao/Save", modelVerificacao, function () {
-
+                $.ajax({
+                    type: 'POST'
+                    , url: urlPreffix + '/api/VTVerificacaoTipificacao/Save'
+                    , contentType: 'application/json; charset=utf-8'
+                    , headers: token()
+                    , dataType: 'json'
+                    , data: JSON.stringify(modelVerificacao)        
+                    , async: true //blocks window close
+                    , success: function (data, status) {
                         abc();
-
-                    }).fail(function(){
-                        sendVerConf = true;
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        sendVerConf = true
+                    }
                 });
             });
 

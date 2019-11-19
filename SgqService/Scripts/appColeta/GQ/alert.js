@@ -1,4 +1,4 @@
-﻿var acaoCorretivaObrigatoria = false;
+var acaoCorretivaObrigatoria = false;
 
 var defectsPerEvaluation = [];
 
@@ -87,8 +87,8 @@ function setValoresLevel3Alertas(level3) {
 
     var resultado = [];
 
-    var valor = parseFloat(level3.attr('value'));
-    var punicao = parseFloat(level3.attr('punishmentvalue'));
+    var valor = parseFloat(ReplaceVirgula(level3.attr('value')));
+    var punicao = parseFloat(ReplaceVirgula(level3.attr('punishmentvalue')));
     var numeroAmostragem = parseFloat(level3.parents('.level02Result').attr('sample'));
 
     //numeroAmostragem pagar do input
@@ -243,10 +243,10 @@ function setValoresLevel3Alertas(level3) {
             break;
         case 2:
             defeitos = parseFloat(level3.attr('value').replace(",", "."));
-            
-            if(isEUA )
+
+            if (isEUA)
                 defeitosPonderados = (parseFloat(level3.attr('value').replace(",", ".")) * peso) + (punicao * (parseFloat(level3.attr('value').replace(",", ".")) * peso));
-            else{
+            else {
                 defeitosPonderados = (parseFloat(level3.attr('value').replace(",", ".")) * peso) + (punicao * (parseFloat(level3.attr('value').replace(",", ".")) * peso));
                 defeitosPonderados = defeitosVar > 0 ? (parseFloat(level3.attr('value').replace(",", ".")) * peso) + (punicao * (parseFloat(level3.attr('value').replace(",", ".")) * peso)) : defeitosPonderados;
             }
@@ -490,35 +490,50 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
         //TEM QUE SOMAR OS DEFEITOS DO LEVEL1 AQUI POIS NO OUTRO RESULTADO, SOBRESCREVIA
         var totalDefeitosLevel1 = parseFloat(level1.attr('totaldefeitos'));
         var totalDefeitosL1L2 = 0;
+        var totalDefeitosL1L2Acumulado = 0;
 
         switch (leve1ConsolidationType) {
             case 1:
                 totalDefeitosLevel1 += totalDefeitosPonderadosL2 > totalAvaliacoesPonderadasL2 ? totalAvaliacoesPonderadasL2 : totalDefeitosPonderadosL2;
                 totalDefeitosL1L2 = totalDefeitosPonderadosL2 > totalAvaliacoesPonderadasL2 ? totalAvaliacoesPonderadasL2 : totalDefeitosPonderadosL2;
 
+                totalDefeitosL1L2Acumulado = isNaN(parseFloat(level2.attr('totaldefeitosponderados'))) ? 0 : parseFloat(level2.attr('totaldefeitosponderados'));
+                totalDefeitosL1L2Acumulado += totalDefeitosPonderadosL2 > totalAvaliacoesPonderadasL2 ? totalAvaliacoesPonderadasL2 : totalDefeitosPonderadosL2;
+
                 break;
             case 2:
                 totalDefeitosLevel1 += resultadoDefeitosL2;
                 totalDefeitosL1L2 = resultadoDefeitosL2;
+                totalDefeitosL1L2Acumulado = isNaN(parseFloat(level2.attr('totaldefeitos'))) ? 0 : parseFloat(level2.attr('totaldefeitos'));
+                totalDefeitosL1L2Acumulado += resultadoDefeitosL2;
+
                 break;
             case 3:
                 totalDefeitosLevel1 += totalDefeitosPonderadosL2 > 0 ? 1 : 0;
                 totalDefeitosL1L2 = totalDefeitosPonderadosL2 > 0 ? 1 : 0;
+                totalDefeitosL1L2Acumulado = isNaN(parseFloat(level2.attr('totaldefeitosponderados'))) ? 0 : parseFloat(level2.attr('totaldefeitosponderados'));
+                totalDefeitosL1L2Acumulado += totalDefeitosPonderadosL2 > 0 ? 1 : 0;
                 break;
             case 5:
                 totalDefeitosLevel1 += totalDefeitosPonderadosL2;
                 totalDefeitosL1L2 = totalDefeitosPonderadosL2;
+                totalDefeitosL1L2Acumulado = isNaN(parseFloat(level2.attr('totaldefeitosponderados'))) ? 0 : parseFloat(level2.attr('totaldefeitosponderados'));
+                totalDefeitosL1L2Acumulado += totalDefeitosPonderadosL2;
+
                 break;
             case 6:
                 totalDefeitosLevel1 += totalDefeitosPonderadosL2;
                 totalDefeitosL1L2 = totalDefeitosPonderadosL2;
+                totalDefeitosL1L2Acumulado = isNaN(parseFloat(level2.attr('totaldefeitosponderados'))) ? 0 : parseFloat(level2.attr('totaldefeitosponderados'));
+                totalDefeitosL1L2Acumulado += totalDefeitosPonderadosL2;
+
                 break;
             default:
         }
 
         //regra de alerta level2 -- comeco
 
-        //Esta regra n�o est� pronta Gabriel 2017-03-09
+        //Esta regra n?o est? pronta Gabriel 2017-03-09
 
         //if (level1.attr('hasalert') == "true" && !isLevelReaudit() && 1 == 2) {
         if (parseInt(level2.attr('parnotconformityrule_id')) > 0 && parseInt(level2.attr('parnotconformityrule_id')) < 5) {
@@ -529,8 +544,8 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
 
             var mensagem = "";
 
-            if (totalDefeitosL1L2 > valorDoAlerta) {
-                mensagem = getResource("nc_target_exceed") + " (" + (totalDefeitosL1L2).toFixed(2) + ") " + getResource("nc_of") + " (" + valorDoAlerta.toFixed(2) + ") " + getResource("allowed");
+            if (totalDefeitosL1L2Acumulado > valorDoAlerta) {
+                mensagem = getResource("nc_target_exceed") + " (" + (totalDefeitosL1L2Acumulado).toFixed(2) + ") " + getResource("nc_of") + " (" + valorDoAlerta.toFixed(2) + ") " + getResource("allowed");
 
                 switch (alertaatual) {
                     case 0: mensagem += "<br><br>" + getResource("supervisor_notification");
@@ -1396,7 +1411,7 @@ function setGravaAlertaDBLocal(level1, alertaatual, defeitos, mensagem) {
 
     var level1 = $('.level1.selected');
 
-    if(typeof(level1.attr('id')) == 'undefined'){
+    if (typeof (level1.attr('id')) == 'undefined') {
         level1 = $(_level1);
     }
 

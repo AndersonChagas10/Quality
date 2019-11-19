@@ -1,4 +1,4 @@
-﻿var sendToReaudit = false;
+var sendToReaudit = false;
 var clusterAtivo = '';
 var clusterAtivoName = '';
 

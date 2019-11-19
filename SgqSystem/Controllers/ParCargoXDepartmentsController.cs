@@ -84,8 +84,7 @@ namespace SgqSystem.Controllers
                 //return RedirectToAction("Index");
             }
 
-
-            ViewBag.ParCargo_Id = new SelectList(db.ParCargo, "Id", "Name", parCargoXDepartment.ParCargo_Id);
+            ViewBag.ParCargo_Id = parCargoXDepartment.ParCargo_Id;
             ViewBag.ParDepartment_Id = new SelectList(db.ParDepartment, "Id", "Name", parCargoXDepartment.ParDepartment_Id);
             return View(parCargoXDepartment);
         }

@@ -299,7 +299,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="row" id="negativo">
-                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.negative as string))                                    
+                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.negative as string))
                                                     <td>
                                                         <input type="text" id="objBinarioPunishmentName2" class="form-control input-sm">
                                                         @Html.ErrorManual("punishmentNameCabecalho2", "O campo Nome deve ser preechido para o Cabecalho.")
@@ -667,7 +667,7 @@
 
                                                                 </td>
 
-                                                                        }
+                                                            }
 
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
                                                             {
@@ -686,6 +686,13 @@
                                                             {
                                                                 <td>
                                                                     @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
+                                                                </td>
+                                                            }
+
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8)
+                                                            {
+                                                                <td>
+                                                                    @Html.Raw(parLevel1XHeaderField.ParHeaderField.Description)
                                                                 </td>
                                                             }
 
@@ -824,8 +831,8 @@
                                                             </td>
 
                                                         </tr>
-                                                                            }
-                                                                        }
+                                                    }
+                                                }
                                             </tbody>
                                             <tfoot></tfoot>
                                         </table>
@@ -896,10 +903,8 @@
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
 
-
-
         </div>
-                                                                        }
+    }
 </div>
 
 <script>
@@ -1585,10 +1590,11 @@
             var tipo = $('#parFieldType option:selected').val();
             var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
 
-            if ($('#objDinamicoName').val() != "")
-                var idDinamico = $('#objDinamicoName').val();
-            else
-                var idDinamico = $('#objParametroName').val();
+            var idParamDinamico = 0;
+            if ($('#objDinamicoName:visible').length > 0)
+                idParamDinamico = $('#objDinamicoName').val();
+            else if($('#objParametroName:visible').length > 0)
+                idParamDinamico = $('#objParametroName').val();
 
             Cabecalhos.AtualizaPreviewCampotexto({
                 Name: nome,
@@ -1598,7 +1604,7 @@
                 Description: "",
                 Link: linkedNumberEvaluation,
                 isDataDefined: isData,
-                Description: idDinamico
+                Description: idParamDinamico
             });
 
             updateAllTables();
@@ -1607,14 +1613,18 @@
         AtualizaPreviewCampotexto: function (o) {
             var tipo = $('#parFieldType option:selected').val();
 
-            if ($('#objDinamicoName').val() != "")
-                var descricao = $('#objDinamicoName').val();
-            else
-                var descricao = $('#objParametroName').val();
+            var descricao = o.Description;
 
-            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '(' + 'Id:' + descricao +')' + '</label></td>' + // nome
-                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            if (tipo == 4 || tipo == 7 || tipo == 6) {
+                var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+                example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() +'</label></td>' + // nome
+                    '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>'; // Tipo
+            } else {
+                var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+                example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '(' + 'Id:' + descricao + ')' + '</label></td>' + // nome
+                    '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>'; // Tipo
+            }
+
             //var example = '<div>';
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
@@ -1944,7 +1954,7 @@
 
             }
             var indiceTabelaMultiplaEscolha = e.parents('tr').index();
-            if (!isBinario)
+            //if (!isBinario)
                 Cabecalhos.tableMultiplaEscolhaReinicializa(e);
 
             Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indiceTabelaMultiplaEscolha, 1);

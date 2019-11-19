@@ -70,6 +70,7 @@ namespace DTO.Services
         private IParLevel3Repository _repoParLevel3;
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
+        private IBaseRepository<ComponenteGenerico> _baseComponenteGenerico;
 
         public ParamsDomain(IBaseRepository<ParLevel1> baseRepoParLevel1,
                             IBaseRepository<ParLevel2> baseRepoParLevel2,
@@ -115,7 +116,8 @@ namespace DTO.Services
                             IBaseRepositoryNoLazyLoad<ParLevel2Level1> baseRepoParLevel2Level1,
                             IBaseRepository<ParScoreType> baseRepoParScore,
                             IBaseRepository<RotinaIntegracao> baseRotinaIntegracao,
-                            IBaseRepositoryNoLazyLoad<ParLevel3Level2Level1> baseRepoParLevel3Level2Level1NNL
+                            IBaseRepositoryNoLazyLoad<ParLevel3Level2Level1> baseRepoParLevel3Level2Level1NNL,
+                            IBaseRepository<ComponenteGenerico> baseComponenteGenerico
             )
         {
             _baseRepoParLevel3Level2Level1NNL = baseRepoParLevel3Level2Level1NNL;
@@ -163,6 +165,7 @@ namespace DTO.Services
             _baseRepoParLevel3Level2Level1 = baseRepoParLevel3Level2Level1;
             _repoParLevel3 = repoParLevel3;
             _baseRotinaIntegracao = baseRotinaIntegracao;
+            _baseComponenteGenerico = baseComponenteGenerico;
 
 
             db.Configuration.LazyLoadingEnabled = false;
@@ -265,7 +268,7 @@ namespace DTO.Services
             var level2List = _baseRepoParLevel2NLL.GetAll().Where(r => r.IsActive == true);
 
             #endregion
-             
+
             #region DTO
 
             parlevel1Dto = Mapper.Map<ParLevel1DTO>(parlevel1);
@@ -279,6 +282,18 @@ namespace DTO.Services
             parlevel1Dto.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(notConformityrule);/*Regra de alerta (Regra de NC)*/
             parlevel1Dto.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(cabecalhos);/*Cabeçalhos*/
             parlevel1Dto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
+
+            foreach (var item in parlevel1Dto.cabecalhosInclusos)
+            {
+                var abc = db.ParHeaderFieldXComponenteGenerico.Where(x => x.ParHeaderField_Id == item.ParHeaderField_Id).FirstOrDefault();
+
+                if (abc != null)
+                {
+                    item.ParHeaderField.ParHeaderFieldXComponenteGenerico = Mapper.Map<ParHeaderFieldXComponenteGenericoDTO>(abc);
+                    item.ParHeaderField.ParHeaderFieldXComponenteGenerico.TextName = db.ComponenteGenericoColuna.Find(int.Parse(item.ParHeaderField.ParHeaderFieldXComponenteGenerico.Text)).Name;
+                    item.ParHeaderField.ParHeaderFieldXComponenteGenerico.ValueName = db.ComponenteGenericoColuna.Find(int.Parse(item.ParHeaderField.ParHeaderFieldXComponenteGenerico.Value)).Name;
+                }
+            }
 
             parlevel1Dto.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(level2List), parlevel1Dto.listParLevel3Level2Level1Dto);
 
@@ -386,7 +401,7 @@ namespace DTO.Services
 
             level2.RecuperaListaSampleEvaluation();
 
-            foreach(var item in level2.listParLevel2SampleEvaluationDTO)
+            foreach (var item in level2.listParLevel2SampleEvaluationDTO)
             {
                 item.TemAgendamento = db.ParEvaluationSchedule.Any(x => x.ParEvaluation_Id == item.evaluationId && x.IsActive);
             }
@@ -478,7 +493,7 @@ namespace DTO.Services
             if (paramsDto.parLevel3Dto.listParLevel3XDepartment != null)
                 if (paramsDto.parLevel3Dto.listParLevel3XDepartment.Count() > 0)
                     paramsDto.parLevel3Dto.listParLevel3XDepartment.ForEach(r => r.PreparaParaInsertEmBanco());
-            
+
 
             List<ParLevel3Value> listSaveParamLevel3Value = Mapper.Map<List<ParLevel3Value>>(paramsDto.parLevel3Dto.listLevel3Value);
             List<ParLevel3EvaluationSample> listSaveParLevel3EvaluationSample = Mapper.Map<List<ParLevel3EvaluationSample>>(paramsDto.parLevel3Dto.listParLevel3EvaluationSample);
@@ -509,7 +524,7 @@ namespace DTO.Services
             try
             {
 
-                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, null, listParRelapse, parLevel3Level2peso?.ToList(), paramsDto.level1Selected, null);
+                _paramsRepo.SaveParLevel3(saveParamLevel3, null, null, null, null, paramsDto.level1Selected,null);
 
                 db.Database.ExecuteSqlCommand(string.Format("Update ParLevel3 SET IsPointLess = {0} WHERE Id = {1}", paramsDto.parLevel3Dto.IsPointLess ? "1" : "0", saveParamLevel3.Id));
                 db.Database.ExecuteSqlCommand(string.Format("Update ParLevel3 SET AllowNA = {0} WHERE Id = {1}", paramsDto.parLevel3Dto.AllowNA ? "1" : "0", saveParamLevel3.Id));
@@ -549,8 +564,8 @@ namespace DTO.Services
                     }
 
                 db.SaveChanges();
-                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, 
-                    listSaveParLevel3EvaluationSample, listParRelapse, parLevel3Level2peso?.ToList(), 
+                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value,
+                    listSaveParLevel3EvaluationSample, listParRelapse, parLevel3Level2peso?.ToList(),
                     paramsDto.level1Selected, listSaveParLevel3XDepartment);
                 if (parLevel3Level2peso != null)
                     foreach (var i in parLevel3Level2peso?.Where(r => r.IsActive))
@@ -598,11 +613,11 @@ namespace DTO.Services
                 //level3Level2 = parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3 && r.IsActive == true).OrderByDescending(r => r.IsActive);
                 level3Level2 = parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3 && r.IsActive == true && r.ParLevel3Level2Level1.Any(c => c.ParLevel1_Id == idParlevel1 && c.Active == true)).OrderByDescending(r => r.IsActive);
             }
-        var level3Value = parlevel3.ParLevel3Value.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
+            var level3Value = parlevel3.ParLevel3Value.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
             var parlevel3Reencravacao = db.ParLevel3Value_Outer.Where(r => r.IsActive && r.ParLevel3_Id == parlevel3.Id).ToList();// (string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1", parlevel3.Id)).ToList();
             var level3EvaluationSample = parlevel3.ParLevel3EvaluationSample.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
             var level3XParDepartment = parlevel3.ParLevel3XParDepartment.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
-            
+
             #endregion
 
             #region Mapper
@@ -611,7 +626,7 @@ namespace DTO.Services
             level3.listGroupsLevel2 = Mapper.Map<List<ParLevel3GroupDTO>>(group);//DDL
             level3.listLevel3Level2 = Mapper.Map<List<ParLevel3Level2DTO>>(level3Level2);
             level3.listLevel3Value = Mapper.Map<List<ParLevel3ValueDTO>>(level3Value);
-            
+
             level3.listParLevel3EvaluationSample = Mapper.Map<List<ParLevel3EvaluationSampleDTO>>(level3EvaluationSample);
             level3.listParLevel3XDepartment = Mapper.Map<List<ParLevel3XDepartmentDTO>>(level3XParDepartment);
             retorno.parLevel3Value = new ParLevel3ValueDTO(); // Mini Gambi....
@@ -751,9 +766,9 @@ namespace DTO.Services
                 var DdlScoretype = Mapper.Map<List<ParScoreTypeDTO>>(_baseRepoParScore.GetAllAsNoTracking());
                 var DdlRotina = Mapper.Map<List<RotinaIntegracaoDTO>>(_baseRotinaIntegracao.GetAllAsNoTracking());
 
+                var DdlComponente = Mapper.Map<List<ComponenteGenericoDTO>>(_baseComponenteGenerico.GetAllAsNoTracking());
+
                 var retorno = new ParamsDdl();
-
-
 
                 retorno.SetDdlsNivel123(DdlparLevel1,
                                 DdlparLevel2,
@@ -761,7 +776,7 @@ namespace DTO.Services
 
                 retorno.SetDdls(DdlParConsolidation, DdlFrequency, DdlparCluster, DdlparLevelDefinition, DdlParFieldType, DdlParDepartment, DdlParCounter_Level1,
                                 DdlParLocal_Level1, DdlParCounter_Level2, DdlParLocal_Level2, DdlParNotConformityRule, DdlParLevel3InputType, DdlParMeasurementUnit,
-                                DdlParLevel3BoolFalse, DdlParLevel3BoolTrue, DdlparCrit, DdlparCompany, DdlRotina, DdlScoretype);
+                                DdlParLevel3BoolFalse, DdlParLevel3BoolTrue, DdlparCrit, DdlparCompany, DdlRotina, DdlScoretype, DdlComponente);
 
                 return retorno;
             }

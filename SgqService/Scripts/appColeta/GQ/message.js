@@ -1,4 +1,4 @@
-﻿
+
 var Geral = {
     exibirMensagemAlerta: function (mensagem, url, container) {
         var page = $("html, body");

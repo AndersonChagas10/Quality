@@ -1,11 +1,11 @@
 $(document).on('click', '#btnLogout', function (e) {
     var resultOThersUnits = $('.level02Result[sync=false][unidadeid=' + $('.App').attr('unidadeid') + ']:first');
     if (resultOThersUnits.length > 0) {
-        ping(function(e){
-            setTimeout(function(r){
+        ping(function (e) {
+            setTimeout(function (r) {
                 sendResults();
             }, 1000);
-            
+
         }, function (r) {
             openMessageCA(getResource('logout_confirm'), null, function (e) {
                 $('.messageConfirm, .overlay').fadeOut("fast");
@@ -47,7 +47,7 @@ function rightMenuHide() {
     }
 }
 
-$(document).on('click', '#btnSync', function (e) {
+$(document).off('click', '#btnSync').on('click', '#btnSync', function (e) {
     //if (connectionServer == true) {
     //    openSyncModal('Sync', 'Syncing the data collection...');
     //    Sync();
@@ -55,7 +55,19 @@ $(document).on('click', '#btnSync', function (e) {
     //} else {
     //    openMessageModal("Connection", 'The device is not connected to the server.');
     //}
-    sendResults();
+    if (!isDisabledSyncButton) {
+        disableSyncButtons();
+        sendResults();
+    }
+});
+
+var btnVolumeClicked = false;
+$(document).off('click', '#btnSyncVolume').on('click', '#btnSyncVolume', function (e) {
+    if (!isDisabledSyncButton) {
+        disableSyncButtons();
+        btnVolumeClicked = true;
+        ping(getAPPLevelsVolume, paramsUpdate_OffLine);
+    }
 });
 
 var loadFirst = false;
@@ -68,7 +80,7 @@ $(document).on('click', '#btnLoginOffline', function (e) {
     Geral.esconderMensagem();
     e.preventDefault();
     //offLineLogin();
-     ping(onlineLogin, offLineLogin);
+    ping(onlineLogin, offLineLogin);
 
     listIndUpdate = '';
     loadFirst = true;
@@ -83,12 +95,12 @@ $(document).on('click', '#btnLoginOnline', function (e) {
     $('#btnLoginOffline').attr('disabled', 'disabled');
     Geral.esconderMensagem();
     e.preventDefault();
-    
+
     //if($('#local').attr('empresa') == 'jbs' && $('#local').attr('local') == 'brasil')
-        //onlineLogin();
+    //onlineLogin();
     //else
-        ping(onlineLogin, offLineLogin);
-    
+    ping(onlineLogin, offLineLogin);
+
     listIndUpdate = '';
     loadFirst = true;
 });
@@ -100,12 +112,6 @@ $(document).on('click', '#btnLoginOnline', function (e) {
 //     $('#btnLoginOnline').click();
 
 // });
-
-var btnVolumeClicked = false;
-$(document).on('click', '#btnSyncVolume', function (e) {
-    btnVolumeClicked = true;
-    ping(getAPPLevelsVolume, paramsUpdate_OffLine);
-});
 
 $(document).on('click', '.btnCA', function (e) {
 
@@ -135,15 +141,15 @@ $(document).on('change', '#selectUnit', function (e) {
 });
 
 function rightMenuShow() {
-	
-	if($('.ClusterList a.cluster').length > 1 && $('#btnVoltarCluster').length == 0){
-		$('#btnLogout').after('<a href="#" id="btnVoltarCluster" class="list-group-item COMP006 hasRole">Trocar Processo</a>');
-		
-		$(document).on('click', '#btnVoltarCluster', function (e) {
-			voltarCluster()
-		});
-	}
-	
+
+    if ($('.ClusterList a.cluster').length > 1 && $('#btnVoltarCluster').length == 0) {
+        $('#btnLogout').after('<a href="#" id="btnVoltarCluster" class="list-group-item COMP006 hasRole">Trocar Processo</a>');
+
+        $(document).on('click', '#btnVoltarCluster', function (e) {
+            voltarCluster()
+        });
+    }
+
     $('.overlay').fadeIn('fast');
     $(".rightMenu").animate({
         right: "0px"
@@ -283,7 +289,7 @@ function deslogar(sync) {
             $('.login').removeClass('hide').show();
             $('#inputUserName').val("").focus();
             $('#inputPassword').val("");
-            Geral.exibirMensagemErro(getResource('data_not_synced')+" "+ getResource('of')+" " + $('.unit').text());
+            Geral.exibirMensagemErro(getResource('data_not_synced') + " " + getResource('of') + " " + $('.unit').text());
             $("#shift").val("0").change();
             createFileResult(false);
             initializeApp();
@@ -298,4 +304,10 @@ function deslogar(sync) {
             initializeApp();
         });
     }
+}
+
+var isDisabledSyncButton = false;
+function disableSyncButtons() {
+    isDisabledSyncButton = true;
+    setTimeout(function () { isDisabledSyncButton = false; }, 15000);
 }

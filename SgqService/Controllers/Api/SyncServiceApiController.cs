@@ -35,11 +35,6 @@ namespace SgqService.Controllers.Api
         string conexao;
         string conexaoSGQ_GlobalADO;
 
-        protected SqlConnection db;
-        protected SqlConnection SGQ_GlobalADO;
-
-        Dominio.SgqDbDevEntities dbEf;
-
         public SyncServiceApiController()
         {
 
@@ -56,12 +51,6 @@ namespace SgqService.Controllers.Api
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                SGQ_GlobalADO.Dispose();
-                db.Dispose();
-            }
-
             base.Dispose(disposing);
         }
 
@@ -264,7 +253,14 @@ namespace SgqService.Controllers.Api
         {
             return business.GetResource(language);
         }
+
+        #endregion
+
+        [HttpGet]
+        [Route("ReconsolidationToLevel3")]
+        public string ReconsolidationToLevel3(string collectionLevel2_Id)
+        {
+            return business.ReconsolidationToLevel3(collectionLevel2_Id);
+        }
     }
 }
-
-#endregion

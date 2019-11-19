@@ -1,4 +1,4 @@
-﻿
+
 
 var countHeaderFieldGroup = 0;
 
@@ -37,7 +37,9 @@ function removerHF(a){
 }
 
 $(document).ready(function(){
-    $('body').on('input', 'input.interval:visible, input.likert:visible', function(){
+    $('body')
+        .off('input', 'input.interval:visible, input.likert:visible, input.texto[type="date"], input.texto[type="time"]')
+        .on('input', 'input.interval:visible, input.likert:visible, input.texto[type="date"], input.texto[type="time"]', function () {
 
         var id = $(this).parents('li').attr('id');
         $.each($('input[resultado]:visible'), function(i, o){
@@ -60,11 +62,21 @@ $(document).ready(function(){
                         resultado = resultado.replace(m[0],valor);
                     else{
                         var valor = $('li[id="' + m[1].replace('?','') + '"] input.likert').val();
-                        if(valor)
-                            resultado = resultado.replace(m[0],valor);
-                        else{
-                            if(m[1].indexOf('?') >= 0){
-                                resultado = resultado.replace(m[0],0);
+                        if (valor)
+                            resultado = resultado.replace(m[0], valor);
+                        else {
+                            var valor = $('li[id="' + m[1].replace('?', '') + '"] input.texto[type="date"]').val();
+                            if (valor)
+                                resultado = resultado.replace(m[0], valor);
+                            else {
+                                var valor = $('li[id="' + m[1].replace('?', '') + '"] input.texto[type="time"]').val();
+                                if (valor)
+                                    resultado = resultado.replace(m[0], valor);
+                                else {
+                                    if (m[1].indexOf('?') >= 0) {
+                                        resultado = resultado.replace(m[0], 0);
+                                    }
+                                }
                             }
                         }
                     }
@@ -300,4 +312,24 @@ function RetornaValor0SeUndefined(valor){
     }else{
         return valor
     }
+}
+
+function datedif(data1, data2) {
+    var d1 = new Date(data1);
+    var d2 = new Date(data2);
+
+    var timeDifference = d2.getTime() - d1.getTime();
+    var DaysDifference = timeDifference / 86400000;
+
+    return DaysDifference;
+}
+
+function timedif(hora1, hora2) {
+    var shora1 = hora1.split(":");
+    var shora2 = hora2.split(":");
+
+    var min1 = (parseInt(shora1[0]) * 60) + parseInt(shora1[1]);
+    var min2 = (parseInt(shora2[0]) * 60) + parseInt(shora2[1]);
+
+    return min2 - min1;
 }

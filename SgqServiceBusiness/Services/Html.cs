@@ -254,9 +254,44 @@ namespace SgqServiceBusiness.Services
                     outerhtml +
                     "</ul>";
         }
-        public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null, string totalDefeitos = null)
+
+        public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null, string totalDefeitos = null, bool inicioGrupo = false, bool fimGrupo = false, bool fimFinalGrupo = false, string Grupo = "")
         {
             classe += " list-group-item";
+
+            var fim = "";
+            var fimFinal = "";
+            var inicio = "";
+
+            if (inicioGrupo)
+            {
+
+                inicio = @" <div class='accordion' id='accordionExample" + id + @"'>
+                  <div class='card z-depth-0 bordered'>
+                    <div class='card-header' id='headingThree" + id + @"'>
+                      <h5 class='row list-group-item'>
+                        <button class='btn btn-link collapsed' type='button' data-toggle='collapse'
+                          data-target='#collapseThree" + id + @"' aria-expanded='false' aria-controls='collapseThree" + id + @"'>" +
+                                      Grupo +
+                                      @"
+                        </button>
+                      </h5>
+                    </div>
+                    <div id = 'collapseThree" + id + @"' class='collapse' aria-labelledby='headingThree" + id + @"' data-parent='#accordionExample" + id + @"'>
+                      <div class='card-body'>";
+            }
+
+            if (fimGrupo)
+            {
+                fim = " </div>    </div>  </div>  </div> ";
+            }
+
+            if (fimFinalGrupo)
+            {
+                fimFinal = " </div>    </div>  </div>  </div> ";
+            }
+
+
 
             if (!string.IsNullOrEmpty(tags))
             {
@@ -264,8 +299,21 @@ namespace SgqServiceBusiness.Services
                 tags = tags.Trim();
             }
 
-            return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='" + totalDefeitos + "'>" + outerhtml + "</li>";
+            return fim + inicio + "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='" + totalDefeitos + "'>" + outerhtml + "</li>" + fimFinal;
         }
+
+        //public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null, string totalDefeitos = null)
+        //{
+        //    classe += " list-group-item";
+
+        //    if (!string.IsNullOrEmpty(tags))
+        //    {
+        //        tags = " " + tags;
+        //        tags = tags.Trim();
+        //    }
+
+        //    return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='" + totalDefeitos + "'>" + outerhtml + "</li>";
+        //}
 
         public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, string accordeonId = "", string othersTags = null)
         {
@@ -416,6 +464,36 @@ namespace SgqServiceBusiness.Services
             return texto;
         }
 
+        public string campoData(string id, string classe = null)
+        {
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string texto = $@"<div class=""input-group input-group-sm width180 pull-right"" + classe + "" style=""width: 100% !important;"">
+                               <span class=""input-group-btn btn-minus""> </span>
+                               <input type=""date"" class=""form-control text-center levelValue texto"" style=""width:100%;"">
+                           </div>";
+            return texto;
+        }
+
+        public string campoHora(string id, string classe = null)
+        {
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string texto = $@"<div class=""input-group input-group-sm width180 pull-right"" + classe + "" style=""width: 100% !important;"">
+                               <span class=""input-group-btn btn-minus""> </span>
+                               <input type=""time"" class=""form-control text-center levelValue texto"" style=""width:100%;"">
+                           </div>";
+            return texto;
+        }
+
         public string campoObservacao(string id, string classe = null)
         {
             //definir min value //min=\"0\" 
@@ -485,7 +563,7 @@ namespace SgqServiceBusiness.Services
             return intervalo;
         }
 
-        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null, 
+        public string campoRangeSlider(string id, decimal min, decimal max, string classe = null,
             string idRandomico = null, string paramns = null)
         {
             //var idRandomico = "valor_range_" + new Random().Next(999999);
@@ -578,9 +656,9 @@ namespace SgqServiceBusiness.Services
                              bool reaudit = false, bool correctiveaction = false, bool phase = false,
                              bool HasSampleTotal = false, bool IsEmptyLevel3 = false, string level1Group_Id = "",
                              int RuleId = 0, string RuleValue = null, decimal AlertValue = 0, int ParFrequency_Id = 0,
-                             bool HasTakePhoto = false, 
+                             bool HasTakePhoto = false,
                              //Frequencia
-                             string FrequenciaTipo = "", string FrequenciaValor = "", 
+                             string FrequenciaTipo = "", string FrequenciaValor = "",
                              string FrequenciaMensagemInativo = "")
         {
 
@@ -616,8 +694,8 @@ namespace SgqServiceBusiness.Services
                            outerhtml: span(outerhtml: label, classe: "levelName")
                        );
         }
-        public string level3(SGQDBContext.ParLevel3 parLevel3, string input, 
-            string classe = null, string labelsInputs = null)
+
+        public string level3(SGQDBContext.ParLevel3 parLevel3, string input, string classe = null, string labelsInputs = null, bool hasInfo = false)
         {
             //Coloca botão de não avaliado ParLevel3
             //vai ter que ter uma configuração na parametrização
@@ -630,22 +708,27 @@ namespace SgqServiceBusiness.Services
                                    );
 
 
+            //Verificar se existe informação para esta tarefa
+            string btnHelp = "";
+
+            if (hasInfo)
+                btnHelp = button(label: "", classe: "btn-info btn-xs btnHelp cursorPointer fa fa-info-circle", style: "border-radius: 70px !important");
+
+
             string peso = parLevel3.Weight.ToString();
 
             if (parLevel3.ParLevel3InputType_Id == 11)
                 peso = "0";
 
-            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") 
-                + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") 
-                + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id 
+            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".")
+                + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".")
+                + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id
                 + "\" hastakephoto=\"" + parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
 
 
             //Gera o level3
-            string level3 = link(
-                                        outerhtml: span(outerhtml: parLevel3.Name, classe: "levelName") + "<br>" + span(outerhtml: "", classe: "levelNameDebug"),
-                                        classe: "col-xs-4"
-                                        );
+            string level3 = link(outerhtml: span(outerhtml: parLevel3.Name, classe: "levelName") + "   " + span(outerhtml: btnHelp) + "<br>" + span(outerhtml: "", classe: "levelNameDebug"),
+                classe: "col-xs-4");
 
             //gera os labels
             string labels = "";
@@ -673,6 +756,7 @@ namespace SgqServiceBusiness.Services
 
             //gera os contadores
             string counters = "";
+
             if (parLevel3.ParLevel3InputType_Id == 5)
             {
                 counters = div(
@@ -700,7 +784,7 @@ namespace SgqServiceBusiness.Services
             string buttons = div(
                                         outerhtml: btnNaoAvaliado,
                                         classe: "col-xs-2",
-                                        style: "text-align:right"
+                                        style: "text-align:right; padding: 0px !important;"
                                         );
 
 

@@ -1,4 +1,4 @@
-﻿function correctiveActionOpen(level01Id, date, shift, period) {
+function correctiveActionOpen(level01Id, date, shift, period) {
 
     //Seleciona o Id do Level01 caso não tenha recebido nenhum parametro.
     level01Id = level01Id ? level01Id : $('.level1.selected').attr('id');

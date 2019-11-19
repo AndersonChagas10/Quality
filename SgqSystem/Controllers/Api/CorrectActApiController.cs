@@ -4,13 +4,16 @@ using Dominio;
 using DTO;
 using DTO.DTO;
 using DTO.Helpers;
+using Helper;
 using SgqService.ViewModels;
+using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api
@@ -135,7 +138,7 @@ namespace SgqSystem.Controllers.Api
             " \n DescriptionFailure, " +
             " \n AuditStartTime, " +
             " \n ImmediateCorrectiveAction, " +
-            " \n ProductDisposition, " + 
+            " \n ProductDisposition, " +
             " \n PreventativeMeasure, " +
             " \n CollectionLevel02Id, " +
             " \n CollectionLevel2_Id " +
@@ -230,6 +233,11 @@ namespace SgqSystem.Controllers.Api
                 try
                 {
 
+                    //sgq @jbs.com.br
+                    //Pi@ui1628
+                    //correio.jbs.com.br
+                    //587
+
                     foreach (var correctiveAction in correctiveActions)
                     {
 
@@ -247,15 +255,133 @@ namespace SgqSystem.Controllers.Api
                             AND C2XPD.ParDepartment_Id = { correctiveAction.CollectionLevel2.ParDepartment_Id }
                             AND C2XPC.ParCargo_Id = { correctiveAction.CollectionLevel2.ParCargo_Id }
                             AND CAST(C2.CollectionDate AS SMALLDATETIME) BETWEEN 
-                            DATEADD(MINUTE, -1, CAST('{ correctiveAction.CollectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") }' AS SMALLDATETIME)) AND 
-                            DATEADD(MINUTE, 1, CAST('{ correctiveAction.CollectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") }' AS SMALLDATETIME))";
+                            '{ correctiveAction.CollectionLevel2.CollectionDate.ToString("yyyy-MM-dd") }' AND 
+                            '{ correctiveAction.CollectionLevel2.CollectionDate.AddDays(1).ToString("yyyy-MM-dd") }'";
+
 
                         var collectionLevel2 = db.Database.SqlQuery<CollectionLevel2>(sql).FirstOrDefault();
 
-                        if(collectionLevel2 == null)
+                        if (collectionLevel2 == null)
                         {
-                            return correctiveActionsSave;
+                            continue;
                         }
+
+                        var cargo = db.ParCargo.Where(x => x.Id == correctiveAction.CollectionLevel2.ParCargo_Id).FirstOrDefault();
+                        var secao = db.ParDepartment.Where(x => x.Id == correctiveAction.CollectionLevel2.ParDepartment_Id).FirstOrDefault();
+                        var departamento = db.ParDepartment.Where(x => x.Id == secao.Parent_Id).FirstOrDefault();
+
+                        
+                             db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "emailMock: " + DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.emailMock as string });
+                        db.SaveChanges();
+
+                        Task.Run(() => MailSender.SendMail(
+                            "sgq@jbs.com.br",
+                            "Pi@ui1628",
+                            "correio.jbs.com.br",
+                            587,
+                            false,
+                            DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.emailMock as string,
+                            "Alerta KO emitido para o Indicador: Risco no uso de EPI´s, Monitoramento: Monitoramento do uso de EPI´s, Tarefa: O colaborador está utilizando luva anticorte sem folga nas pontas dos dedos, apertada ou esticada na palma da mão? Unidade: CGR - JBS S.A. - Campo Grande – CGR (02.916.265/0077-68)",
+                            $@"
+<p>{DateTime.Now.ToString("dd/MM/yyyy HH:mm")}, Alerta emitido para o <u>Indicador</u>: Risco no uso de EPI&acute;s,
+<u>Monitoramento</u>: Monitoramento do uso de EPI&acute;s, 
+<u>Tarefa</u>: O colaborador est&aacute; utilizando luva anticorte sem folga nas pontas dos dedos, apertada ou esticada na palma da m&atilde;o? 
+<u>Frequ&ecirc;ncia</u>: Semanal, <u>Cargo</u>: <strong>{cargo?.Name}</strong>, 
+<u>Se&ccedil;&atilde;o</u>: <strong>{secao?.Name}</strong> e 
+<u>Centro de Custo</u>: <strong>{departamento?.Name}</strong> da <u>Unidade</u>: CGR - JBS S.A. - Campo Grande &ndash; CGR (02.916.265/0077-68).<br /> <br /> Alerta KO disparado. N&atilde;o Conformidade em Tarefa de Risco Intoler&aacute;vel. O superior e o SESMT ser&atilde;o notificados para tomada de a&ccedil;&atilde;o corretiva imediata para o Posto de Trabalho.</p>
+<p>&nbsp;</p>
+<p><strong>CGR - JBS S.A. - Campo Grande &ndash; CGR (02.916.265/0077-68)</strong></p>
+<p><strong>Formul&aacute;rio de A&ccedil;&atilde;o Corretiva</strong></p>
+<table>
+<tbody>
+<tr>
+<td width='566'>
+<p><strong>A&ccedil;&atilde;o Corretiva Tomada: </strong></p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Data/Hora:</strong>&nbsp;{DateTime.Now.ToString("dd/MM/yyyy HH:mm")}</p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Auditor:&nbsp;</strong>{collectionLevel2.UserSgq?.Name }</p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Frequ&ecirc;ncia:</strong> Semanal</p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>&nbsp;</strong></p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Informa&ccedil;&atilde;o da Auditoria:</strong></p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Indicador:&nbsp;</strong>Risco no uso de EPI&acute;s</p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Monitoramento:</strong> Monitoramento do uso de EPI&acute;s</p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Tarefa:</strong> O colaborador est&aacute; utilizando luva anticorte sem folga nas pontas dos dedos, apertada ou esticada na palma da m&atilde;o?</p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>&nbsp;</strong></p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Centro de Custo:</strong> {departamento?.Name}
+
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Se&ccedil;&atilde;o:&nbsp;</strong>{secao?.Name}</p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Cargo:</strong> {cargo?.Name}</p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>&nbsp;</strong></p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Descrição da Falha:</strong> {correctiveAction.DescriptionFailure}
+
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Ação Corretiva Imediata;</strong>{correctiveAction.ImmediateCorrectiveAction}</p>
+</td>
+</tr>
+<tr>
+<td width='566'>
+<p><strong>Medida Preventiva:</strong> {correctiveAction.PreventativeMeasure}</p>
+</td>
+</tr>
+</tbody>
+</table>
+"));
 
                         collectionLevel2.HaveCorrectiveAction = true;
                         db.Entry(collectionLevel2).State = EntityState.Modified;
@@ -282,6 +408,8 @@ namespace SgqSystem.Controllers.Api
                 catch (Exception ex)
                 {
                     //deu ruim;
+                    db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "CA_RH " + ex.ToClient() });
+                    db.SaveChanges();
                 }
             }
 

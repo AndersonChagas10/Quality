@@ -40,6 +40,11 @@
         font-family: Tahoma;
         font-size: 16px;
     }
+
+    #Assinatura1 {
+        margin: auto !important;
+        width: 50% !important;
+    }
 </style>
 
 <script src="~/Scripts/Print/printGRT.js"></script>
@@ -67,7 +72,7 @@
                         <td colspan="4"><span class="tdLabels">@ResourcesPA.Resource.indicators_devices</span></td>
                         <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.supervisor</span></td>
                         <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.unit</span></td>
-                        <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.department</span></td>
+                        <td colspan="2"><span class="tdLabels">Cargo</span></td>
                     </tr>
                     <tr>
                         <td colspan="4">
@@ -86,24 +91,31 @@
                             @Html.HiddenFor(r => r.Unidade_Id)
                         </td>
                         <td colspan="2">
-                            @Model._Departamento
-                            @Html.HiddenFor(r => r.Departamento_Id)
+                            @Html.HiddenFor(r => r.ParCargo_Id)
+                            @Html.DisplayFor(r => r.ParCargoName)
+                            @Html.HiddenFor(r => r.ParCargoName)
                         </td>
+                        @Html.HiddenFor(r => r._Departamento)
+                        @Html.HiddenFor(r => r.Departamento_Id)
                     </tr>
                     <tr>
-                        <td colspan="8"><span class="tdLabels">Centro de Custo / Seção</span></td>
-                        <td colspan="4"><span class="tdLabels">Cargo</span></td>
+                        <td colspan="5"><span class="tdLabels">Centro de Custo</span></td>
+                        <td colspan="5"><span class="tdLabels">Seção</span></td>
                     </tr>
                     <tr>
-                        <td colspan="8">
-                            @Html.DisplayFor(r => r.ParDepartmentsName)
+                        <td colspan="5">
+
+                            @if (Model.ParDepartmentsName != null)
+                            {
+                                //o primeiro [0] é o Centro de custo
+                                @Html.DisplayFor(r => r.ParDepartmentsName.Split('|')[0]);
+                            }
+                            @Html.HiddenFor(r => r.ParDepartmentsName)
                             @Html.HiddenFor(r => r.ParDepartmentsName)
                             @Html.HiddenFor(r => r.ParDepartments_Hash)
                         </td>
-                        <td colspan="4">
-                            @Html.DisplayFor(r => r.ParCargoName)
-                            @Html.HiddenFor(r => r.ParCargoName)
-                            @Html.HiddenFor(r => r.ParCargo_Id)
+                        <td colspan="5">
+                            @Html.DisplayFor(r => r.SecaoName)
                         </td>
                     </tr>
                     <tr>
@@ -199,16 +211,17 @@
                     <td colspan="10" style="border-bottom:0;"><span class="tdLabels">@ResourcesPA.Resource.seen</span></td>
                 </tr>
                 <tr>
-                    <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature1<span style="color:red">*</span></strong></span></td>
-                    <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature2<span style="color:red">*</span></strong></span></td>
+                    <td colspan="10" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature<span style="color:red">*</span></strong></span></td>
+                    @*<td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature2<span style="color:red">*</span></strong></span></td>*@
                 </tr>
                 <tr>
-                    <td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                    <td colspan="10">
+                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new
+                        {@*@class = "form-control input-sm"*@})
                     </td>
-                    <td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
-                    </td>
+                    @*<td colspan="5">
+                            @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                        </td>*@
                 </tr>
                 <tr style="display:none">
                     <td width="10%"></td>
@@ -293,7 +306,8 @@
 
                 setTimeout(function () {
                     $('select').select2({
-                        matcher: matchCustom
+                        matcher: matchCustom,
+                        width: '100%'
                     });
                 }, 500);
 
@@ -337,7 +351,7 @@
         });
 
         var user0 = { Status: false };
-        var user1 = { Status: false };
+        //var user1 = { Status: false };
 
         function ValidaSenha(user, ddl) {
 
@@ -346,7 +360,7 @@
             $.post('@Url.Action("CheckPass", "api/Pa_User")', check, function (r) {
 
                 if (user == 0) { user0.Status = !r.isInvalid; }
-                if (user == 1) { user1.Status = !r.isInvalid; }
+                //if (user == 1) { user1.Status = !r.isInvalid; }
 
                 openMessageModal(r.response, '');
 
@@ -355,8 +369,8 @@
                 if (!user0.Status)
                     $('[id=Assinatura1]').val('').change();
 
-                if (!user1.Status)
-                    $('[id=Assinatura2]').val('').change();
+                //if (!user1.Status)
+                //    $('[id=Assinatura2]').val('').change();
 
                 $('#modalPass').modal("hide");
 
@@ -378,16 +392,16 @@
 
         });
 
-        $('[id=Assinatura2]').off('change').on('change', function () {
+        //$('[id=Assinatura2]').off('change').on('change', function () {
 
-            user1.Status = false;
-            $('#passCheck').find('#name').val($('[id=Assinatura2] :selected').text());
-            $('#btnOk').off('click').on('click', function () { ValidaSenha(1); });
-            $('#modalPass').modal();
-            $('#passCheck').find('[name=pass]').val('')
-            HabilitaBotaoSalvar();
+        //    user1.Status = false;
+        //    $('#passCheck').find('#name').val($('[id=Assinatura2] :selected').text());
+        //    $('#btnOk').off('click').on('click', function () { ValidaSenha(1); });
+        //    $('#modalPass').modal();
+        //    $('#passCheck').find('[name=pass]').val('')
+        //    HabilitaBotaoSalvar();
 
-        });
+        //});
 
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
         var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
@@ -529,7 +543,8 @@
             HabilitaBotaoSalvar();
 
             $('select').select2({
-                matcher: matchCustom
+                matcher: matchCustom,
+                width: '100%'
             });
 
         });
@@ -584,7 +599,8 @@
 
         function HabilitaBotaoSalvar() {
 
-            if (user0.Status && user1.Status) {
+            //if (user0.Status && user1.Status) {
+            if (user0.Status) {
 
                 $('#Salvar').attr('disabled', false);
 

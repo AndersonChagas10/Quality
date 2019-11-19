@@ -573,6 +573,10 @@ namespace SgqSystem.Services
                         if (result.Length > 50)
                         {
                             ParReason_Id = result[50];
+                        }
+
+                        if (result.Length > 51)
+                        {
                             ParReasonType_Id = result[51];
                         }
 
@@ -6790,289 +6794,262 @@ namespace SgqSystem.Services
         {
             var html = new Html();
             string input = null;
-            if (parLevel3.ParLevel3InputType_Id == 1)
+            //string valorMaximo = "";
+            //string valorMinimo = "";
+
+            switch (parLevel3.ParLevel3InputType_Id)
             {
-                classInput = " boolean";
-                input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
-            }
-            else if (parLevel3.ParLevel3InputType_Id == 2)
-            {
-                classInput = " defects";
-                labels = html.div(
-                           outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
-                           classe: "levelName",
-                           //style: "margin-top:7px;"
-                           style: "visibility: hidden;"
-                         );
+                case 1:
 
-                input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
-                                                intervalMin: parLevel3.IntervalMin,
-                                                intervalMax: parLevel3.IntervalMax,
-                                                unitName: parLevel3.ParMeasurementUnit_Name);
-            }
-            else if (parLevel3.ParLevel3InputType_Id == 3 || parLevel3.ParLevel3InputType_Id == 9)
-            {
-                classInput = " interval";
+                    classInput = " boolean";
+                    input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
 
-                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
-                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+                    break;
 
-                string valorCompleto = "";
+                case 2:
 
-                if (valorMinimo == "")
-                {
-                    valorCompleto = valorMaximo;
-                }
-                else if (valorMaximo == "")
-                {
-                    valorCompleto = valorMinimo;
-                }
-                else
-                {
-                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
-                }
+                    classInput = " defects";
+                    labels = html.div(
+                               outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
+                               classe: "levelName",
+                               style: "visibility: hidden;"
+                             );
 
+                    input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
+                                                    intervalMin: parLevel3.IntervalMin,
+                                                    intervalMax: parLevel3.IntervalMax,
+                                                    unitName: parLevel3.ParMeasurementUnit_Name);
+                    break;
 
-                labels = html.div(
+                case 3:
+                case 9:
 
+                    classInput = " interval";
 
+                    string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                    string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
 
-                                            outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,
-                                           classe: "levelName"
-                                       //style: "margin-top:7px;"
-                                       );
+                    string valorCompleto = "";
 
-                if (parLevel3.ParLevel3InputType_Id == 3)
-                {
+                    if (valorMinimo == "")
+                    {
+                        valorCompleto = valorMaximo;
+                    }
+                    else if (valorMaximo == "")
+                    {
+                        valorCompleto = valorMinimo;
+                    }
+                    else
+                    {
+                        valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                    }
 
-                    input = html.campoIntervalo(id: parLevel3.Id.ToString(),
-                                                intervalMin: parLevel3.IntervalMin,
-                                                intervalMax: parLevel3.IntervalMax,
-                                                unitName: parLevel3.ParMeasurementUnit_Name);
+                    labels = html.div(outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name, classe: "levelName");
 
-                }
-                else if (parLevel3.ParLevel3InputType_Id == 9)
-                {
+                    if (parLevel3.ParLevel3InputType_Id == 3)
+                    {
 
-                    input = html.campoIntervaloTexto(id: parLevel3.Id.ToString(),
+                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
                                                     intervalMin: parLevel3.IntervalMin,
                                                     intervalMax: parLevel3.IntervalMax,
                                                     unitName: parLevel3.ParMeasurementUnit_Name);
 
-                }
-            }
+                    }
+                    else if (parLevel3.ParLevel3InputType_Id == 9)
+                    {
 
-            else if (parLevel3.ParLevel3InputType_Id == 4)
-            {
-                classInput = " calculado";
+                        input = html.campoIntervaloTexto(id: parLevel3.Id.ToString(),
+                                                        intervalMin: parLevel3.IntervalMin,
+                                                        intervalMax: parLevel3.IntervalMax,
+                                                        unitName: parLevel3.ParMeasurementUnit_Name);
+                    }
 
-                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMin);
-                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax);
+                    break;
 
-                string valorCompleto = "";
+                case 4:
 
-                if (valorMinimo == "")
-                {
-                    valorCompleto = valorMaximo;
-                }
-                else if (valorMaximo == "")
-                {
-                    valorCompleto = valorMinimo;
-                }
-                else
-                {
-                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
-                }
+                    classInput = " calculado";
 
-                //var intervalMin = Guard.ConverteValorCalculado(parLevel3.IntervalMin);
-                //var intervalMax = Guard.ConverteValorCalculado(parLevel3.IntervalMax);
+                    valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMin);
+                    valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax);
 
-                labels = html.div(
+                    valorCompleto = "";
 
+                    if (valorMinimo == "")
+                    {
+                        valorCompleto = valorMaximo;
+                    }
+                    else if (valorMaximo == "")
+                    {
+                        valorCompleto = valorMinimo;
+                    }
+                    else
+                    {
+                        valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                    }
 
+                    labels = html.div(outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name, classe: "levelName");
 
-                                            outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,
-                                           classe: "levelName"
-                                       //style: "margin-top:7px;"
-                                       );
+                    input = html.campoCalculado(id: parLevel3.Id.ToString(),
+                                                    intervalMin: parLevel3.IntervalMin,
+                                                    intervalMax: parLevel3.IntervalMax,
+                                                    unitName: parLevel3.ParMeasurementUnit_Name);
 
-                //labels = html.div(
-                //                           outerhtml: "<b>Min: </b> " + Guard.ConverteValorCalculado(parLevel3.IntervalMin) + " ~ <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax) + " " + parLevel3.ParMeasurementUnit_Name,
-                //                           classe: "levelName"
-                //                       //style: "margin-top:7px;"
-                //                       );
+                    break;
 
-                input = html.campoCalculado(id: parLevel3.Id.ToString(),
-                                                intervalMin: parLevel3.IntervalMin,
-                                                intervalMax: parLevel3.IntervalMax,
-                                                unitName: parLevel3.ParMeasurementUnit_Name);
-            }
-            else if (parLevel3.ParLevel3InputType_Id == 5)
-            {
-                classInput = " texto naoValidarInput";
-                labels = html.div(
-                                           outerhtml: "",
-                                           classe: "levelName"
-                                       //style: "margin-top:7px;"
-                                       );
+                case 5:
 
-                input = html.campoTexto(id: parLevel3.Id.ToString());
-            }//Binário com texto
-            else if (parLevel3.ParLevel3InputType_Id == 6)
-            {
-                classInput = " boolean";
-                labels = html.campoTextoBinario(id: parLevel3.Id.ToString());
-                input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
-            }//Intervalo em minutos
-            else if (parLevel3.ParLevel3InputType_Id == 7)
-            {
-                //input = html.campoTextoMinutos(id: parLevel3.Id.ToString());
+                    classInput = " texto naoValidarInput";
+                    labels = html.div(outerhtml: "", classe: "levelName");
 
-                classInput = " interval";
+                    input = html.campoTexto(id: parLevel3.Id.ToString());
 
-                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
-                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+                    break;
 
-                string valorCompleto = "";
+                case 6:
 
-                if (valorMinimo == "")
-                {
-                    valorCompleto = valorMaximo;
-                }
-                else if (valorMaximo == "")
-                {
-                    valorCompleto = valorMinimo;
-                }
-                else
-                {
-                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
-                }
+                    classInput = " boolean";
+                    labels = html.campoTextoBinario(id: parLevel3.Id.ToString());
+                    input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
 
+                    break;
 
-                labels = html.div(
+                case 7:
 
+                    classInput = " interval";
 
+                    valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                    valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
 
-                                            outerhtml: valorCompleto + " " + Resources.Resource.minutes_initials,
-                                           classe: "levelName"
-                                       //style: "margin-top:7px;"
-                                       );
+                    valorCompleto = "";
 
-                //input = html.campoIntervalo(id: parLevel3.Id.ToString(),
-                //                                intervalMin: parLevel3.IntervalMin,
-                //                                intervalMax: parLevel3.IntervalMax,
-                //                                unitName: parLevel3.ParMeasurementUnit_Name);
+                    if (valorMinimo == "")
+                    {
+                        valorCompleto = valorMaximo;
+                    }
+                    else if (valorMaximo == "")
+                    {
+                        valorCompleto = valorMinimo;
+                    }
+                    else
+                    {
+                        valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                    }
 
-                input = html.campoTextoMinutos(id: parLevel3.Id.ToString(),
-                                                intervalMin: parLevel3.IntervalMin,
-                                                intervalMax: parLevel3.IntervalMax,
-                                                unitName: parLevel3.ParMeasurementUnit_Name);
+                    labels = html.div(outerhtml: valorCompleto + " " + Resources.Resource.minutes_initials, classe: "levelName");
 
-            }//Escala Likert
-            else if (parLevel3.ParLevel3InputType_Id == 8)
-            {
-                var ranges = dbEf.ParInputTypeValues
+                    input = html.campoTextoMinutos(id: parLevel3.Id.ToString(),
+                                                    intervalMin: parLevel3.IntervalMin,
+                                                    intervalMax: parLevel3.IntervalMax,
+                                                    unitName: parLevel3.ParMeasurementUnit_Name);
+                    break;
+                case 8:
+
+                    var ranges = dbEf.ParInputTypeValues
                     .Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id
                         && r.IsActive
                         && (r.Intervalo <= parLevel3.IntervalMax && r.Intervalo >= parLevel3.IntervalMin)).ToList();
 
-                var paramns = new List<string>();
+                    var paramns = new List<string>();
 
-                foreach (var item in ranges)
-                {
-                    paramns.Add(item.Intervalo + ":" + item.Cor + ":" + item.Valor);
-                }
-                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|", paramns));
+                    foreach (var item in ranges)
+                    {
+                        paramns.Add(item.Intervalo + ":" + item.Cor + ":" + item.Valor);
+                    }
+                    input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|", paramns));
 
-                //INSERE O MIN MAX
-                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : parLevel3.IntervalMin.ToString("G29");
-                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : parLevel3.IntervalMax.ToString("G29");
+                    valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : parLevel3.IntervalMin.ToString("G29");
+                    valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : parLevel3.IntervalMax.ToString("G29");
 
-                string valorCompleto = "";
+                    valorCompleto = "";
 
-                valorCompleto = "<strong>Escalas: </strong>" + valorMinimo + " a " + valorMaximo;
+                    valorCompleto = "<strong>Escalas: </strong>" + valorMinimo + " a " + valorMaximo;
 
-                labels = html.div(outerhtml: valorCompleto, classe: "levelName");
-            }//Resultado
-            else if (parLevel3.ParLevel3InputType_Id == 10)
-            {
-                classInput = " interval";
+                    labels = html.div(outerhtml: valorCompleto, classe: "levelName");
 
-                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
-                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+                    break;
 
-                string valorCompleto = "";
+                case 10:
 
-                if (valorMinimo == "")
-                {
-                    valorCompleto = valorMaximo;
-                }
-                else if (valorMaximo == "")
-                {
-                    valorCompleto = valorMinimo;
-                }
-                else
-                {
-                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
-                }
+                    classInput = " interval";
 
+                    valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                    valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
 
-                labels = html.div(
+                    valorCompleto = "";
 
+                    if (valorMinimo == "")
+                    {
+                        valorCompleto = valorMaximo;
+                    }
+                    else if (valorMaximo == "")
+                    {
+                        valorCompleto = valorMinimo;
+                    }
+                    else
+                    {
+                        valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                    }
 
+                    labels = html.div(outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name, classe: "levelName");
 
-                                            outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,
-                                           classe: "levelName"
-                                       //style: "margin-top:7px;"
-                                       );
+                    input = html.campoResultado(parLevel3.Id.ToString(), parLevel3.DynamicValue);
 
-                input = html.campoResultado(parLevel3.Id.ToString(), parLevel3.DynamicValue);
+                    break;
+
+                case 11:
+
+                    classInput = " texto naoValidarInput";
+                    labels = html.div(outerhtml: "", classe: "levelName");
+
+                    input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
+
+                    break;
+
+                case 12:
+
+                    classInput = " boolean";
+                    input = html.campoBinarioObrigatorio(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name, boolnullName: "Não Informado");
+
+                    break;
+
+                default:
+
+                    ///Campo interval está repetindo , falta o campo defeitos
+                    classInput = " interval";
+
+                    valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                    valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+
+                    valorCompleto = "";
+
+                    if (valorMinimo == "")
+                    {
+                        valorCompleto = valorMaximo;
+                    }
+                    else if (valorMaximo == "")
+                    {
+                        valorCompleto = valorMinimo;
+                    }
+                    else
+                    {
+                        valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                    }
+
+                    labels = html.div(
+                                        outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,  //"<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
+                                        classe: "levelName"
+                                    //style: "margin-top:7px;"
+                                    );
+
+                    input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                    intervalMin: parLevel3.IntervalMin,
+                                                    intervalMax: parLevel3.IntervalMax,
+                                                    unitName: parLevel3.ParMeasurementUnit_Name);
+
+                    break;
             }
-            else if (parLevel3.ParLevel3InputType_Id == 11)
-            {
-                classInput = " texto naoValidarInput";
-                labels = html.div(
-                                           outerhtml: "",
-                                           classe: "levelName"
-                                       //style: "margin-top:7px;"
-                                       );
 
-                input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
-            }
-            else
-            {
-                ///Campo interval está repetindo , falta o campo defeitos
-                classInput = " interval";
-
-                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
-                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
-
-                string valorCompleto = "";
-
-                if (valorMinimo == "")
-                {
-                    valorCompleto = valorMaximo;
-                }
-                else if (valorMaximo == "")
-                {
-                    valorCompleto = valorMinimo;
-                }
-                else
-                {
-                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
-                }
-
-                labels = html.div(
-                                    outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,  //"<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
-                                    classe: "levelName"
-                                //style: "margin-top:7px;"
-                                );
-
-                input = html.campoIntervalo(id: parLevel3.Id.ToString(),
-                                                intervalMin: parLevel3.IntervalMin,
-                                                intervalMax: parLevel3.IntervalMax,
-                                                unitName: parLevel3.ParMeasurementUnit_Name);
-            }
             return input;
         }
 
@@ -8470,43 +8447,113 @@ namespace SgqSystem.Services
 
                     SqlCommand command;
 
-                    string query = "                                                                                                          " +
-                "\n DECLARE @ID INT = " + collectionLevel2_Id +
-                "\n DECLARE @Defects DECIMAL(10,3)                                                                                            " +
-                "\n DECLARE @DefectsResult DECIMAL(10, 3)                                                                                     " +
-                "\n DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                  " +
-                "\n DECLARE @WeiEvaluation DECIMAL(10, 3)                                                                                     " +
-                "\n DECLARE @WeiDefects DECIMAL(10, 3)                                                                                        " +
-                "\n DECLARE @TotalLevel3Evaluation  DECIMAL(10, 3)                                                                            " +
-                "\n DECLARE @TotalLevel3WithDefects DECIMAL(10, 3)                                                                            " +
-                "\n                                                                                                                           " +
-                "\n select                                                                                                                    " +
-                "\n                                                                                                                           " +
-                "\n @Defects = isnull(sum(r3.Defects),0),                                                                                     " +
-                "\n @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                      " +
-                "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
-                "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         " +
-                "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
+                    string query = "" +
 
-                //"\n @WeiDefects = case when isnull(sum(r3.WeiDefects),0) > isnull(sum(r3.WeiEvaluation),0) then isnull(sum(r3.WeiEvaluation),0) else isnull(sum(r3.WeiDefects),0) end,                                                                               " +
+                   $@"
+                    DECLARE @ID BIGINT = {collectionLevel2_Id}
+                    DECLARE @CL2 INT
+                    DECLARE @CL1 INT
+                    DECLARE @Defects DECIMAL(10,3)                                                                                           
+                    DECLARE @DefectsResult DECIMAL(10, 3)                                                                                    
+                    DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                 
+                    DECLARE @WeiEvaluation DECIMAL(10, 3)                                                                                    
+                    DECLARE @WeiDefects DECIMAL(10, 3)                                                                                       
+                    DECLARE @TotalLevel3Evaluation  DECIMAL(10, 3)                                                                           
+                    DECLARE @TotalLevel3WithDefects DECIMAL(10, 3)                                                                           
 
-                "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
-                "\n @TotalLevel3WithDefects = (select count(1) from result_level3  WITH (NOLOCK) where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +
-                "\n from result_level3 r3 WITH (NOLOCK)                                                                                                    " +
-                "\n where collectionlevel2_id = @ID                                                                                           " +
-                "\n and r3.IsNotEvaluate = 0                                                                                                  " +
-                "\n                                                                                                                           " +
-                "\n                                                                                                                           " +
-                "\n UPDATE CollectionLevel2                                                                                                   " +
-                "\n SET Defects = @Defects                                                                                                    " +
-                "\n , DefectsResult = @DefectsResult                                                                                          " +
-                "\n , EvaluatedResult = @EvatuationResult                                                                                     " +
-                "\n , WeiEvaluation = @WeiEvaluation                                                                                          " +
-                "\n , WeiDefects = @WeiDefects                                                                                                " +
-                "\n , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                          " +
-                "\n , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        " +
-                "\n , AlterDate = GETDATE()                                                                                                   " +
-                "\n WHERE Id = @ID         SELECT 1                                                                                           ";
+                    select
+                                                                                                                         
+                    @Defects = isnull(sum(r3.Defects),0),                                                                                    
+                    @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                     
+                    @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                  
+                    @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                        
+                    @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                              
+                    @TotalLevel3Evaluation = count(1),                                                                                       
+                    @TotalLevel3WithDefects = SUM(IIF(r3.Defects > 0 AND r3.IsNotEvaluate = 0,1,0 ))
+                    from result_level3 r3 WITH (NOLOCK)                                                                                      
+                    where collectionlevel2_id = @ID                                                                                          
+                    and r3.IsNotEvaluate = 0                                                                                                 
+                                                                                                                         
+                    UPDATE CollectionLevel2                                                                                                  
+                    SET Defects = @Defects                                                                                                   
+                    , DefectsResult = @DefectsResult                                                                                         
+                    , EvaluatedResult = @EvatuationResult                                                                                    
+                    , WeiEvaluation = @WeiEvaluation                                                                                         
+                    , WeiDefects = @WeiDefects                                                                                               
+                    , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                         
+                    , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                       
+                    , AlterDate = GETDATE()                                                                                                  
+                    WHERE Id = @ID         --SELECT 1     
+
+                    DECLARE @MAXEVALERT INT
+                    DECLARE @LAST2ALERT INT
+
+
+                    SELECT @CL2 = ConsolidationLevel2_Id FROM CollectionLevel2 WITH (NOLOCK) WHERE ID = @ID
+
+
+                    SELECT 
+	                      @WeiEvaluation = SUM(WeiEvaluation) 
+	                    , @Defects = SUM(Defects) 
+	                    , @WeiDefects = SUM(WeiDefects) 
+	                    , @TotalLevel3WithDefects = SUM(TotalLevel3WithDefects) 
+	                    , @TotalLevel3Evaluation = SUM(TotalLevel3Evaluation) 
+	                    , @MAXEVALERT = MAX(LastEvaluationAlert) 
+	                    , @LAST2ALERT = (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 WHERE Id = max(c2.id)) 
+	                    , @EvatuationResult =  SUM(EvaluatedResult) 
+	                    , @DefectsResult  = SUM(DefectsResult)
+
+                    FROM CollectionLevel2 C2  (nolock) WHERE  ConsolidationLevel2_Id = @CL2 
+
+
+                    group by ConsolidationLevel2_Id
+
+                    UPDATE ConsolidationLevel2 
+                    SET AlertLevel=ISNULL(@LAST2ALERT,0)
+                       , WeiEvaluation=@WeiEvaluation
+                       , EvaluateTotal=@EvatuationResult
+                       , DefectsTotal=@DefectsResult
+                       , WeiDefects=@WeiDefects
+                       , TotalLevel3Evaluation=@TotalLevel3Evaluation
+                       , TotalLevel3WithDefects=@TotalLevel3WithDefects
+                       , LastEvaluationAlert = ISNULL(@MAXEVALERT,0)
+                       , LastLevel2Alert = ISNULL(@LAST2ALERT,0)
+                       , EvaluatedResult=@EvatuationResult
+                       , DefectsResult=@DefectsResult
+                    WHERE ID = @CL2   
+
+                    SELECT @CL1 = ConsolidationLevel1_Id FROM ConsolidationLevel2 WHERE ID = @CL2
+
+
+                    select 
+	                    @WeiEvaluation = SUM(WeiEvaluation) 
+	                    , @EvatuationResult =  SUM(EvaluateTotal)
+	                    , @Defects = SUM(DefectsTotal)
+	                    , @WeiDefects = SUM(WeiDefects) 
+	                    , @TotalLevel3Evaluation = SUM(TotalLevel3Evaluation) 
+	                    , @TotalLevel3WithDefects = SUM(TotalLevel3WithDefects) 
+	                    , @MAXEVALERT = MAX(LastEvaluationAlert) 
+	                    , @LAST2ALERT = (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 (nolock)  WHERE ConsolidationLevel2_Id = max(c2.id))
+	                    , @EvatuationResult = SUM(EvaluatedResult) 
+	                    , @DefectsResult = SUM(DefectsResult) 
+                    FROM ConsolidationLevel2 C2 (nolock)  
+                    where ConsolidationLevel1_Id=@CL1   
+
+                    UPDATE ConsolidationLevel1 
+	                    SET AtualAlert=@LAST2ALERT
+	                    , Evaluation= @TotalLevel3Evaluation
+	                    , WeiEvaluation=@WeiEvaluation
+	                    , EvaluateTotal=@EvatuationResult
+	                    , DefectsTotal=@Defects
+	                    , WeiDefects=@WeiDefects
+	                    , TotalLevel3Evaluation=@TotalLevel3Evaluation
+	                    , TotalLevel3WithDefects=@TotalLevel3WithDefects
+	                    , LastEvaluationAlert=@MAXEVALERT
+	                    , LastLevel2Alert=@LAST2ALERT
+	                    , EvaluatedResult= @EvatuationResult
+	                    , DefectsResult=@DefectsResult
+                    WHERE ID=@CL1  
+                    ";
 
                     command = new SqlCommand(query, connection);
 
@@ -8515,20 +8562,20 @@ namespace SgqSystem.Services
                     if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
 
-                using (var db = new Dominio.SgqDbDevEntities())
-                {
-                    int idl2 = Int32.Parse(collectionLevel2_Id);
-                    Dominio.CollectionLevel2 collectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == idl2);
+                //using (var db = new Dominio.SgqDbDevEntities())
+                //{
+                //    int idl2 = Int32.Parse(collectionLevel2_Id);
+                //    Dominio.CollectionLevel2 collectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == idl2);
 
 
-                    int company_Id = collectionLevel2.UnitId;
-                    int level1_Id = collectionLevel2.ParLevel1_Id;
-                    DateTime data = collectionLevel2.CollectionDate.Date;
+                //    int company_Id = collectionLevel2.UnitId;
+                //    int level1_Id = collectionLevel2.ParLevel1_Id;
+                //    DateTime data = collectionLevel2.CollectionDate.Date;
 
-                    var retorno = _ReConsolidationByLevel1(company_Id, level1_Id, data);
+                //    var retorno = _ReConsolidationByLevel1(company_Id, level1_Id, data);
 
-                    return "OK";
-                }
+                return "OK";
+                //}
             }
             catch (Exception e)
             {
@@ -8680,7 +8727,7 @@ namespace SgqSystem.Services
             }
         }
 
-        
+
 
         #endregion
 
