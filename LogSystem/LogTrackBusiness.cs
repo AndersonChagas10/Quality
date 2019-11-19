@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,14 @@ namespace LogSystem
 {
     public class LogTrackBusiness : LogSystem
     {
+
+        public static void RegisterIfNotExist(object obj, int json_id, string table_name, int userSgq_Id)
+        {
+            if(GetLogTrack(table_name,json_id).Count() == 0)
+            {
+                Register(obj, json_id, table_name, userSgq_Id);
+            }
+        }
 
         public static void Register(object obj, int json_id, string table_name, int userSgq_Id)
         {
@@ -46,19 +55,22 @@ namespace LogSystem
         {
             using (var db = new Dominio.SgqDbDevEntities())
             {
-                return db.LogTrack
+                var logs = db.LogTrack
                     .Include("UserSgq")
                     .Include("ParReason")
                     .Where(x => x.Tabela == table_name && x.Json_Id == json_Id)
                     .OrderByDescending(x => x.AddDate)
                     .ToList()
-                    .Select(x => new {
+                    .Select(x => new
+                    {
                         obj = JsonConvert.DeserializeObject<object>(x.Json),
                         addDate = x.AddDate.ToString("dd/MM/yyyy HH:mm"),
-                        userSgq_FullName = x.UserSgq.FullName,
-                        parReason = x.ParReason.Motivo,
-                        motivo = x.Motivo
-                    });
+                        userSgq_FullName = x.UserSgq?.FullName ?? "",
+                        parReason = x.ParReason?.Motivo ?? "",
+                        motivo = x.Motivo ?? ""
+                    })
+                    .ToList();
+                return logs;
             }
         }
 
@@ -66,7 +78,7 @@ namespace LogSystem
         {
             using (var db = new Dominio.SgqDbDevEntities())
             {
-                return db.LogTrack
+                var logs = db.LogTrack
                     .Include("UserSgq")
                     .Include("ParReason")
                     .Where(x => x.Tabela == table_name && json_Ids.Contains(x.Json_Id))
@@ -75,10 +87,12 @@ namespace LogSystem
                     .Select(x => new {
                         obj = JsonConvert.DeserializeObject<object>(x.Json),
                         addDate = x.AddDate.ToString("dd/MM/yyyy HH:mm"),
-                        userSgq_FullName = x.UserSgq.FullName,
-                        parReason = x.ParReason.Motivo,
-                        motivo = x.Motivo
-                    });
+                        userSgq_FullName = x.UserSgq?.FullName ?? "",
+                        parReason = x.ParReason?.Motivo ?? "",
+                        motivo = x.Motivo ?? ""
+                    })
+                    .ToList();
+                return logs;
             }
         }
 

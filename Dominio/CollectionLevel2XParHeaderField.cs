@@ -34,5 +34,8 @@ namespace Dominio
 
         [ForeignKey("ParHeaderField_Id")]
         public virtual ParHeaderField ParHeaderField { get; set; }
+
+        [NotMapped]
+        public string ParHeaderField_ValueName { get; set; }
     }
 }

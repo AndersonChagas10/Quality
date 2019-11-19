@@ -149,7 +149,7 @@ namespace SgqSystem.Controllers.Api
                 databaseSgq.Configuration.LazyLoadingEnabled = false;
                 var resultlevel3 = databaseSgq.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
 
-                LogSystem.LogTrackBusiness.Register(resultlevel3, resultlevel3.Id, "Result_Level3", userSgq_Id, parReason_Id, motivo);
+                LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3, resultlevel3.Id, "Result_Level3", userSgq_Id);
 
                 var parLevel3 = databaseSgq.ParLevel3.Where(x => x.Id == resultlevel3.ParLevel3_Id).FirstOrDefault();
                 parLevel3Value = databaseSgq.ParLevel3Value.Where(x => x.ParLevel3_Id == parLevel3.Id).FirstOrDefault();
@@ -164,6 +164,8 @@ namespace SgqSystem.Controllers.Api
             {
                 db.Database.ExecuteSqlCommand(query);
                 var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);
+
+                LogSystem.LogTrackBusiness.Register(level3Result, level3Result.Id, "Result_Level3", userSgq_Id, parReason_Id, motivo);
 
                 ConsolidacaoEdicao(resultLevel3.Id);
                 return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
@@ -224,47 +226,71 @@ namespace SgqSystem.Controllers.Api
         {
             try
             {
-                foreach (var item in Lsc2xhf.HeaderField)
+                CollectionLevel2 collectionLevel2 = null;
+                List<Select> headerFieldsValues = null;
+                if (Lsc2xhf.HeaderField.Count() > 0)
                 {
-                    if (item.Id > 0)//Update
-                    {
-                        var original = db.CollectionLevel2XParHeaderField.FirstOrDefault(c => c.Id == item.Id);
-
-                        if (original.Value == item.Value)
-                            continue;
-                            
-                        //[TODO] Inserir registro de log de edição
-                        LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderField", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
-
-                        if (string.IsNullOrEmpty(item.Value))//Remover
-                        {
-                            db.CollectionLevel2XParHeaderField.Remove(original);
-                        }
-                        else //Update
-                        {
-                            original.Value = item.Value;
-                            original.ParHeaderField_Id = item.ParHeaderField_Id;
-                            original.ParHeaderField_Name = item.ParHeaderField_Name;
-                        }
-                    }
-                    else if (!string.IsNullOrEmpty(item.Value)) //Add
-                    {
-                        db.CollectionLevel2XParHeaderField.Add(item);
-                    }
+                    int collectionLevel2_Id = Lsc2xhf.HeaderField[0].CollectionLevel2_Id;
+                    collectionLevel2 = db.CollectionLevel2.Where(x => x.Id == collectionLevel2_Id).FirstOrDefault();
+                    headerFieldsValues = GetSelectsByHeaderField(Lsc2xhf.HeaderField, collectionLevel2);
                 }
 
-                db.SaveChanges();
-
-                //Reconsolida
-                if (Lsc2xhf.HeaderField.Count > 0)
+                using (SgqDbDevEntities dbEntities = new SgqDbDevEntities())
                 {
-                    var syncServices = new SgqServiceBusiness.Api.SyncServiceApiController(conexao,conexao);
+                    dbEntities.Configuration.LazyLoadingEnabled = false;
+                    foreach (var item in Lsc2xhf.HeaderField)
+                    {
+                        if (item.Id > 0)//Update
+                        {
+                            var original = dbEntities.CollectionLevel2XParHeaderField.FirstOrDefault(c => c.Id == item.Id);
+                            original.CollectionLevel2 = null;
+                            original.ParHeaderField = null;
 
-                    syncServices.ReconsolidationToLevel3(Lsc2xhf.HeaderField[0].CollectionLevel2_Id.ToString());
+                            if (original.Value == item.Value)
+                                continue;
+
+                            var valueSelected = headerFieldsValues.Where(x => x.HeaderField.Id == item.ParHeaderField_Id).FirstOrDefault();
+                            if (valueSelected != null)
+                                original.ParHeaderField_ValueName = valueSelected.Values.Where(x => x.Id == Convert.ToInt32(original.Value)).FirstOrDefault()?.Name;
+
+                            //[TODO] Inserir registro de log de edição
+                            LogSystem.LogTrackBusiness.RegisterIfNotExist(original, original.Id, "CollectionLevel2XParHeaderField", Lsc2xhf.UserSgq_Id);
+
+                            if (string.IsNullOrEmpty(item.Value))//Remover
+                            {
+                                dbEntities.CollectionLevel2XParHeaderField.Remove(original);
+                            }
+                            else //Update
+                            {
+                                valueSelected = headerFieldsValues.Where(x => x.HeaderField.Id == item.ParHeaderField_Id).FirstOrDefault();
+                                if (valueSelected != null)
+                                    original.ParHeaderField_ValueName = valueSelected.Values.Where(x => x.Id == Convert.ToInt32(item.Value)).FirstOrDefault()?.Name;
+
+                                original.Value = item.Value;
+                                original.ParHeaderField_Id = item.ParHeaderField_Id;
+                                original.ParHeaderField_Name = item.ParHeaderField_Name;
+                                LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderField", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(item.Value)) //Add
+                        {
+                            dbEntities.CollectionLevel2XParHeaderField.Add(item);
+                        }
+                    }
+
+                    dbEntities.SaveChanges();
+
+                    //Reconsolida
+                    if (Lsc2xhf.HeaderField.Count > 0)
+                    {
+                        var syncServices = new SgqServiceBusiness.Api.SyncServiceApiController(conexao, conexao);
+
+                        syncServices.ReconsolidationToLevel3(Lsc2xhf.HeaderField[0].CollectionLevel2_Id.ToString());
+                    }
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
                 throw;
@@ -294,7 +320,6 @@ namespace SgqSystem.Controllers.Api
         public List<Select> getSelects(int ResultLevel3_Id)
         {
             //pegar os cabeçalhos
-            var resultHeaderField = new List<Select>();
             var collectionLevel2 = getCollectionLevel2ByResultLevel3(ResultLevel3_Id);
 
             var query = $@"SELECT *
@@ -308,6 +333,14 @@ namespace SgqSystem.Controllers.Api
             		WHERE id = { ResultLevel3_Id }))";
 
             var coletas = db.Database.SqlQuery<CollectionLevel2XParHeaderField>(query).ToList();
+
+            return GetSelectsByHeaderField(coletas, collectionLevel2);
+        }
+
+        public List<Select> GetSelectsByHeaderField(List<CollectionLevel2XParHeaderField> coletas, CollectionLevel2 collectionLevel2)
+        {
+
+            var resultHeaderField = new List<Select>();
 
             //Ids dos cabeçalhos de monitoramentos
             var level1HeaderFields_Id = db.ParLevel1XHeaderField.Include("ParHeaderField").Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.IsActive && r.ParHeaderField.ParLevelDefinition_Id == 1).Select(r => r.ParHeaderField_Id).ToList();
@@ -367,8 +400,7 @@ namespace SgqSystem.Controllers.Api
                             CollectionLevel2XParHeaderField_Id = select.CollectionLevel2XParHeaderField_Id,
                             HeaderField = select.HeaderField,
                             Values = select.Values,
-                            ValueSelected =
-                            select.ValueSelected
+                            ValueSelected = select.ValueSelected
                         });
                     }
                 }

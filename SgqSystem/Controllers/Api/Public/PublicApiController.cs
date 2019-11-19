@@ -193,7 +193,7 @@ namespace SgqSystem.Controllers.Api.Public
             collectionJson += cluster_id; //[49]
             collectionJson += "</level02>";
 
-            new SyncServiceApiController().InsertJson(new InsertJsonClass()
+            new SyncServiceApiController().InsertJsonExcel(new InsertJsonClass()
             {
                 ObjResultJSon = collectionJson,
                 deviceId = "1",
