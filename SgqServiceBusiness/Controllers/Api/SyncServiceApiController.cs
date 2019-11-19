@@ -3586,7 +3586,7 @@ namespace SgqServiceBusiness.Api
                 		WHEN (FREQ_AV.ParFrequency_Id) IN (12) THEN @databimestral
                 		WHEN (FREQ_AV.ParFrequency_Id) IN (7) THEN @dataTrimestral
                 		WHEN (FREQ_AV.ParFrequency_Id) IN (8) THEN @dataSemestral
-                		WHEN (FREQ_AV.ParFrequency_Id) IN (9) THEN @dataAnual
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (13) THEN @dataAnual
                 		ELSE @datadiario
                 	END AND @datafim
 					GROUP BY R3.ParLevel3_Id
