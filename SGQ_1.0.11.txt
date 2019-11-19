@@ -116,9 +116,9 @@ BEGIN
 END 
 GO
 BEGIN
-   IF NOT EXISTS (Select * from ParFrequency where Id = 10)
+   IF NOT EXISTS (Select * from ParFrequency where Id = 13)
    BEGIN
-		INSERT into ParFrequency (Id,Name,Description,AddDate,AlterDate,IsActive) VALUES (10,'Anual','Anual', getdate(),	NULL, 1);
+		INSERT into ParFrequency (Id,Name,Description,AddDate,AlterDate,IsActive) VALUES (13,'Anual','Anual', getdate(),	NULL, 1);
    END
 END 
 GO
