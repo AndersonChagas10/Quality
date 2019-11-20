@@ -624,6 +624,75 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\AppColeta\SEARA\alert.js">
+      <Link>Scripts\appColeta\SEARA\alert.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\app.js">
+      <Link>Scripts\appColeta\SEARA\app.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\coleta.js">
+      <Link>Scripts\appColeta\SEARA\coleta.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\correctiveAction.js">
+      <Link>Scripts\appColeta\SEARA\correctiveAction.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\crypto.js">
+      <Link>Scripts\appColeta\SEARA\crypto.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\guard.js">
+      <Link>Scripts\appColeta\SEARA\guard.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\index.css">
+      <Link>Scripts\appColeta\SEARA\index.css</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\index2.js">
+      <Link>Scripts\appColeta\SEARA\index2.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\layout.js">
+      <Link>Scripts\appColeta\SEARA\layout.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\logado.js">
+      <Link>Scripts\appColeta\SEARA\logado.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\login.js">
+      <Link>Scripts\appColeta\SEARA\login.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\mensagem.js">
+      <Link>Scripts\appColeta\SEARA\mensagem.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\menu.js">
+      <Link>Scripts\appColeta\SEARA\menu.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parHeaderField.js">
+      <Link>Scripts\appColeta\SEARA\parHeaderField.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parLevel1.js">
+      <Link>Scripts\appColeta\SEARA\parLevel1.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parLevel2.js">
+      <Link>Scripts\appColeta\SEARA\parLevel2.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parLevels.js">
+      <Link>Scripts\appColeta\SEARA\parLevels.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\planejamentoColeta.js">
+      <Link>Scripts\appColeta\SEARA\planejamentoColeta.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\resultado.js">
+      <Link>Scripts\appColeta\SEARA\resultado.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\rotinaHeaderField.js">
+      <Link>Scripts\appColeta\SEARA\rotinaHeaderField.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\routeConfig.js">
+      <Link>Scripts\appColeta\SEARA\routeConfig.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\utils.js">
+      <Link>Scripts\appColeta\SEARA\utils.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\zoom.js">
+      <Link>Scripts\appColeta\SEARA\zoom.js</Link>
+    </Content>
     <Content Include="admin-lte\css\AdminLTE.css" />
     <Content Include="admin-lte\css\AdminLTE.min.css" />
     <Content Include="admin-lte\css\skins\skin-black-light.css" />
