@@ -1915,6 +1915,15 @@ namespace ResourcesPA {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Signature.
+        /// </summary>
+        public static string signature {
+            get {
+                return ResourceManager.GetString("signature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Signature 1.
         /// </summary>
         public static string signature1 {

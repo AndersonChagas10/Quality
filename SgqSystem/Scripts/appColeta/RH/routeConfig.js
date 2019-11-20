@@ -17,15 +17,15 @@ function validaRota(callback, parameter) {
         }
     } else {
         if (parameter != null)
-            callback(parameterRota);
+            callback(parameterRota, true);
         else
-            callback();
+            callback(true);
     }
 }
 
 function executeCallbackRota() {
     if (parameterRota != null)
-        callbackRota(parameterRota);
+        callbackRota(parameterRota, true);
     else
-        callbackRota();
+        callbackRota(true);
 }

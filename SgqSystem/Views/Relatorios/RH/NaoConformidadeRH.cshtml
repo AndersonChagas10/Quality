@@ -18,6 +18,7 @@
     var UrlGraficoIndicadorPorShift = Url.Action("GraficoIndicadorPorShift", "api/NaoConformidadeRH");
     var urlGetHashDepartment = Url.Action("GetHashDepartment", "api/NaoConformidadeRH");
     var UnidadeUsuario = ViewBag.UnidadeUsuario;
+
     ViewBag.UnitIdArr = true;
 
     ViewBag.ShowCurrentDate = false;
@@ -70,6 +71,17 @@
                 margin-left: 1px;
                 margin-right: 1px;
             }
+
+        .geral-note {
+            padding: 2px;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            background-color: #ebe9e8;
+            text-align: center;
+            width: 60%;
+            margin: auto;
+            margin-bottom: 10px;
+        }
     </style>
 
     <div class="page-content-wrapper">
@@ -104,9 +116,7 @@
                         <div id="RGMonitoramentosShiftGrafico"></div>
                         <div id="RGTarefasAcumuladasGrafico"></div>
                         <div id="RGTarefasGrafico"></div>
-
                         <div id="RGTarefasPivotTable"></div>
-
                     </div>
                 </div>
             </div>
@@ -160,6 +170,8 @@
         var desdobramento = "";
         var ShiftSelected;
 
+        var GeralNote = "<div class='geral-note'>" + '@Html.Raw(Resources.Resource.click_to_unfold)' + "</div>";
+
         $('#simpleCallendar').hide().attr('disabled', true);
 
         $(document).ready(function () {
@@ -208,6 +220,7 @@
                 $btn.button('reset');
                 return;
             }
+            objFiltro.Param = {};
             objFiltro.Param.auditorId = GetUsuarioId();
 
             $.ajax({
@@ -220,13 +233,13 @@
                 }
             })
             .done(function (data) {
-                console.log(data);
+                //console.log(data);
                 GraficoUnidade(data);
                 $btn.button('reset');
                 closeLoader();
             })
             .fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
+                //console.log(msg);
                 $btn.button('reset');
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
@@ -264,12 +277,12 @@
                 }
             })
                 .done(function (data) {
-                console.log(data);
+                //console.log(data);
                 GraficoDepartamento(data);
                 closeLoader();
             })
             .fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
+                //console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
             });
@@ -293,12 +306,12 @@
                 }
             })
                 .done(function (data) {
-                console.log(data);
+                //console.log(data);
                 GraficoIndicadorUnidade(data);
                 closeLoader();
             })
             .fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
+                //console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
             });
@@ -322,12 +335,12 @@
                 }
             })
                 .done(function (data) {
-                console.log(data);
+                //console.log(data);
                 GraficoIndicadorUnidade(data);
                 closeLoader();
             })
             .fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
+                //console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
             });
@@ -428,12 +441,12 @@
                 }
             })
                 .done(function (data) {
-                console.log(data);
+                //console.log(data);
                 GraficoMonitoramento(data);
                 closeLoader();
             })
             .fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
+                //console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
             });
@@ -455,12 +468,12 @@
                 }
             })
                 .done(function (data) {
-                console.log(data);
+                //console.log(data);
                 GraficoTarefasAcumuladas(data);
                 closeLoader();
             })
             .fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
+                //console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
             });
@@ -482,12 +495,12 @@
                 }
             })
                 .done(function (data) {
-                console.log(data);
+                //console.log(data);
                 GraficoTarefas(data);
                 closeLoader();
             })
             .fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
+                //console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
             });
@@ -504,12 +517,12 @@
                 }
             })
                 .done(function (data) {
-                console.log(data);
+                //console.log(data);
                 CarregaPivotTable(data);
                 closeLoader();
             })
             .fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
+                //console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
             });
@@ -532,12 +545,12 @@
                     }
                 })
                     .done(function (data) {
-                    console.log(data);
+                    //console.log(data);
                     GraficoDepartamentoPorShift(data);
                     closeLoader();
                 })
                 .fail(function (jqXHR, textStatus, msg) {
-                    console.log(msg);
+                    //console.log(msg);
                     //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                     closeLoader();
                 });
@@ -555,12 +568,12 @@
                     }
                 })
                     .done(function (data) {
-                    console.log(data);
+                    //console.log(data);
                     GraficoIndicadorPorShift(data);
                     closeLoader();
                 })
                 .fail(function (jqXHR, textStatus, msg) {
-                    console.log(msg);
+                    //console.log(msg);
                     //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                     closeLoader();
                 });
@@ -571,7 +584,8 @@
         /*END GET*/
 
         /*Charts*/
-    function GraficoUnidade(data) {
+        function GraficoUnidade(data) {
+
             if(!(data.length > 0)){
                 GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
                 return;
@@ -583,7 +597,9 @@
             var Av = MapeiaValorParaHC(data, "Av");
             var Proc = MapeiaValorParaHC(data, "Proc");
 
-            $('#RGUnidadesGrafico').empty().highcharts({
+            $('#RGUnidadesGrafico').empty();
+
+            Highcharts.chart('RGUnidadesGrafico', {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
                 title: Chart.Titulo(setNameTitulos(Resources('defects_per_unit'))),
@@ -607,6 +623,8 @@
                     Chart.NC(Nc, GetPopover, null, null, null, "", dataX, null, dataXId),
                     Chart.Av(Av, GetPopover, null, null, null, "", dataX, null, dataXId)
                 ]
+            }, function () {
+                $('#RGUnidadesGrafico').append(GeralNote);
             });
 
             $('.body-content').css('height', '3350px');
@@ -621,11 +639,14 @@
             var Av = MapeiaValorParaHC(data, "Av");
             var Proc = MapeiaValorParaHC(data, "Proc");
             var selector = "RGDepartamentosGrafico";
+            $('#' + selector).empty();
 
-            $('#' + selector).empty().highcharts({
+            //$('#' + selector).empty().highcharts({
+
+            Highcharts.chart(selector, {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(Resources("defects_per_deparment")),
+                title: Chart.Titulo(Resources("defects_per_costCenter_section")),
                 subtitle: Chart.Subtitulo(Resources("unit"), objFiltro.Param.unitName),
                 xAxis: Chart.Xaxis(dataX),
                 yAxis: Chart.yAxisPadraoRelNc(),
@@ -649,7 +670,9 @@
                     Chart.NC(Nc, GetPopover, null, null, null, "Departamento", dataX, null, dataXId),
                     Chart.Av(Av, GetPopover, null, null, null, "Departamento", dataX, null, dataXId),
                 ]
-            })
+            }, function () {
+                $('#' + selector).append(GeralNote);
+            });
         }
 
         function GraficoDepartamentoPorShift(data) {
@@ -662,8 +685,10 @@
             var Proc = MapeiaValorParaHC(data, "Proc");
             var Shift = MapeiaValorParaHC(data, "Shift");
             var selector = "RGDepartamentosShiftGrafico";
+            $('#' + selector).empty();
 
-            $('#' + selector).empty().highcharts({
+            //$('#' + selector).empty().highcharts({
+            Highcharts.chart(selector, {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
                 title: Chart.Titulo(Resources("defects_per_deparment") + " | " + Resources("shift")),
@@ -690,6 +715,8 @@
                     Chart.NC(Nc, GetPopover, null, null, null, "DepartamentoShift", Name ,Shift, Ids),
                     Chart.Av(Av, GetPopover, null, null, null, "DepartamentoShift", Name,Shift, Ids),
                 ]
+            }, function () {
+                    $('#' + selector).append(GeralNote);
             })
         }
 
@@ -741,9 +768,11 @@
             var meta = MapeiaValorParaHC(data, "Meta");
             var selector = "RGOperacoesGrafico";
             //objFiltro.Param.level1names = nome
-            enviar.isLevel = 1
+            enviar.isLevel = 1;
+            $('#' + selector).empty();
 
-            $('#' + selector).empty().highcharts({
+            //$('#' + selector).empty().highcharts({
+            Highcharts.chart(selector, {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
                 title: Chart.Titulo(GraficoIndic),
@@ -774,6 +803,8 @@
                     Chart.Av(qtdAv, GetPopover, null, null, null, "Indicador", nome, null, Ids),
                     Chart.Meta(meta, GetPopover, null, null, null, "Indicador"),
                 ]
+            }, function () {
+                    $('#' + selector).append(GeralNote);
             })
         }
 
@@ -794,9 +825,11 @@
             var meta = MapeiaValorParaHC(data, "Meta");
             var selector = "RGOperacoesShiftGrafico";
             //objFiltro.Param.level1names = nome
-            enviar.isLevel = 1
+            enviar.isLevel = 1;
+            $('#' + selector).empty();
 
-            $('#' + selector).empty().highcharts({
+            //$('#' + selector).empty().highcharts({
+            Highcharts.chart(selector, {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
                 title: Chart.Titulo(GraficoIndic + " | " + Resources("shift")),
@@ -823,6 +856,8 @@
                     Chart.Av(qtdAv, GetPopover, null, null, null, "IndicadorShift", dataX, shift, dataXId),
                     Chart.Meta(meta, GetPopover, null, null, null, "IndicadorShift"),
                 ]
+            }, function () {
+                    $('#' + selector).append(GeralNote);
             })
         }
 
@@ -851,7 +886,10 @@
             if (objFiltro.Param.shift != "" && objFiltro.Param.shift != undefined)
                 subtitle += " | " + Resources("shift") + ": " + (objFiltro.Param.shift == 1 ? "1" : "2");
 
-            $('#' + selector).empty().highcharts({
+            $('#' + selector).empty();
+            //$('#' + selector).empty().highcharts({
+
+            Highcharts.chart(selector, {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
                 title: Chart.Titulo(GraficoMon),
@@ -878,6 +916,8 @@
                     Chart.Av(qtdAv, GetTarefa, null, null, null, "", nome, null, Ids),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
+            }, function () {
+                    $('#' + selector).append(GeralNote);
             })
 
 
@@ -906,7 +946,9 @@
             if (objFiltro.Param.shift != "" && objFiltro.Param.shift != undefined)
                 subtitle += " | " + Resources("shift") + ": " + (objFiltro.Param.shift == 1 ? "1" : "2");
 
-            $('#' + selector).empty().highcharts({
+            $('#' + selector).empty();
+
+            Highcharts.chart(selector, {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
                 title: Chart.Titulo(GraficoTarefasAcumuladasTit),
@@ -947,8 +989,9 @@
             var qtdAv = MapeiaValorParaHC(data, "Av");
             var porc = MapeiaValorParaHC(data, "Proc");
             var selector = "RGTarefasGrafico";
-            //objFiltro.Param.level3names = nome
             enviar.isLevel = 3;
+
+            var note = "<div class='geral-note'>" + Resources("click_to_fta") + "</div>"
 
             subtitle = Resources('unit') + ": " + objFiltro.Param.unitName;
 
@@ -963,7 +1006,9 @@
             var sentido = 'desc';
             var inverse = sentido == 'desc' ? undefined : 1;
 
-            $('#' + selector).empty().highcharts({
+            $('#' + selector).empty();
+
+            Highcharts.chart(selector, {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
                 title: Chart.Titulo(GraficoTarefa),
@@ -1003,23 +1048,23 @@
                                     //objFiltro.Param['Evaluated'] = qtdAv[this.x];
                                     //objFiltro.Param['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
                                     //objFiltro.Param['byName'] = true;
-                                    
+
                                     //enviar.unitName = objFiltro.Param["unitName"];
 
                                     //$.post(urlGetUnitId, enviar, function (c) {
-                                        
-                                        //objFiltro.Param.unitId = c.unitId;
-                                        //objFiltro.Param.MetaFTA = "80";
-                                        //objFiltro.Param.startDate = objFiltro.startDate;
-                                        //objFiltro.Param.endDate = objFiltro.endDate;
-                                        //RedirecionaParaFTA(objFiltro.Param);
-                                        
+
+                                    //objFiltro.Param.unitId = c.unitId;
+                                    //objFiltro.Param.MetaFTA = "80";
+                                    //objFiltro.Param.startDate = objFiltro.startDate;
+                                    //objFiltro.Param.endDate = objFiltro.endDate;
+                                    //RedirecionaParaFTA(objFiltro.Param);
+
                                     //});
                                     //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
                                     //RedirecionaParaFTA(enviar);
- 
+
                                     var self = this;
-                                    debugger
+
                                     if (objFiltro.Param.department_Id == null || objFiltro.Param.department_Id == "") {
                                         criaObjFTA(objFiltro, self, porc, nc, Ids, "")
                                     } else {
@@ -1068,23 +1113,23 @@
                                     //objFiltro.Param['Evaluated'] = qtdAv[this.x];
                                     //objFiltro.Param['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
                                     //objFiltro.Param['byName'] = true;
-                                    
+
                                     //enviar.unitName = objFiltro.Param["unitName"];
 
                                     //$.post(urlGetUnitId, enviar, function (c) {
-                                        
-                                        //objFiltro.Param.unitId = c.unitId;
-                                        //objFiltro.Param.MetaFTA = "80";
-                                        //objFiltro.Param.startDate = objFiltro.startDate;
-                                        //objFiltro.Param.endDate = objFiltro.endDate;
 
-                                        //RedirecionaParaFTA(objFiltro.Param);
+                                    //objFiltro.Param.unitId = c.unitId;
+                                    //objFiltro.Param.MetaFTA = "80";
+                                    //objFiltro.Param.startDate = objFiltro.startDate;
+                                    //objFiltro.Param.endDate = objFiltro.endDate;
+
+                                    //RedirecionaParaFTA(objFiltro.Param);
                                     //});
                                     //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
                                     //RedirecionaParaFTA(enviar);
 
                                     var self = this;
-                                    debugger
+
                                     if (objFiltro.Param.department_Id == null || objFiltro.Param.department_Id == "") {
                                         criaObjFTA(objFiltro, self, porc, Ids, "")
                                     } else {
@@ -1120,10 +1165,12 @@
                         }
                     },
 
-                    Chart.Av(qtdAv, function() {}),
+                    Chart.Av(qtdAv, function () { }),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
-            })
+            }, function () {
+                    $('#RGTarefasGrafico').append(note);
+            });
 
         }
 
@@ -1152,7 +1199,7 @@
                 criaObjFTA(objFiltro, self, porc, nc, Ids, data);
             });
 
-            
+
         }
 
         function btnOrdenacao(id, func, btn, sentido) {
@@ -1552,6 +1599,7 @@
                 $('#RGDepartamentosShiftGrafico').empty();
                 $('#RGOperacoesShiftGrafico').empty();
                 objFiltro.Param['departmentName'] = "";
+                objFiltro.Param['department_Id'] = "";
                 GetGraficoIndicadorUnidade(Aux, Aux2);
             } else {
                 $('#RGDepartamentosShiftGrafico').empty();
@@ -1619,7 +1667,7 @@
         function openFTA(obj) {
 
             let url = $.param(obj);
-            let preffix = @Html.Raw(Json.Encode(@ViewBag.urlRootPaFTA)); 
+            let preffix = @Html.Raw(Json.Encode(@ViewBag.urlRootPaFTA));
 
             $('#ftaModal').modal();
             $('#ftaModalSim').attr('href', preffix + url);

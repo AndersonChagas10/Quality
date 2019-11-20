@@ -900,6 +900,10 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "deviation_date", Value = "Deviation Date" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "deviation_hour", Value = "Deviation Hour" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "correction", Value = "Correction" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "defects_per_costCenter_section", Value = "Cost Center/Section" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "click_to_unfold", Value = "Click on chart to unfold next level" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "click_to_FTA", Value = "Click on chart to open Anomaly Treatment Form" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "pdca_menu_item", Value = "Show in PDCA" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));
 

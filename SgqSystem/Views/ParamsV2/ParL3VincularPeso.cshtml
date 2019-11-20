@@ -36,15 +36,15 @@
 
         </div>
 
-        @*<div class="col-sm-4">
+        <div class="col-sm-4">
 
             <div class="form-group">
-                <label for="ParGroupParLevel1_Id">Função:</label>
+                <label for="ParCluster_Id">Cluster:</label>
                 <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Expectativa do cliente" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
-                <select id="selectL3PesoParGroupParLevel1" class="input input-lg col-sm-12 required" name="ParGroupParLevel1_Id"></select>
+                <select id="selectL3PesoParClusters" class="input input-lg col-sm-12 required" name="ParCluster_Id"></select>
             </div>
 
-        </div>*@
+        </div>
 
         <div class="col-sm-4">
 
@@ -160,7 +160,7 @@
                             Centro de Custo
                         </th>
                         <th class="col-sm-1">
-                            Função
+                            Cluster
                         </th>
                         <th class="col-sm-1">
                             Cargo
@@ -257,8 +257,9 @@
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParLevel1_Id"]', o.ParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParLevel2_Id"]', o.ParLevel2_Id, 'Todos') + '</td>';
+               
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParDepartment_Id"]', o.ParDepartment_Id, 'Todos') + '</td>';
-                html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParGroupParLevel1_Id"]', o.ParGroupParLevel1_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParCluster_Id"]', o.ParCluster_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
                 var Av = o.Evaluation !== null ? o.Evaluation : "";
                 var Am = o.Sample !== null ? o.Sample : "";
@@ -363,6 +364,7 @@
                         item.ParCompany_Id == obj.ParCompany_Id &&
                         item.ParLevel1_Id == obj.ParLevel1_Id &&
                         item.ParLevel2_Id == obj.ParLevel2_Id &&
+                        item.ParCluster_Id == obj.ParCluster_Id &&
                         item.ParCargo_Id == obj.ParCargo_Id &&
                         item.ParDepartment_Id == obj.ParDepartment_Id &&
                         item.ParFrequencyId == obj.ParFrequencyId &&

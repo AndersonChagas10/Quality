@@ -242,11 +242,32 @@ function getBinarioComTexto(level3) {
 
     var html = '';
 
+    var respostaPadrao = "";
+
     if (level3.ParLevel3XHelp)
         html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
-
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+
+    if (level3.ParLevel3Value.IsRequiredInt) {
+        respostaPadrao = "&nbsp;";
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+    } else {
+        if (level3.ParLevel3Value.IsDefaultAnswerInt == "0")
+            respostaPadrao = level3.ParLevel3BoolFalse.Name;
+        else
+            respostaPadrao = level3.ParLevel3BoolTrue.Name;
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+    }
+    //html +=
+    //    '<div class="col-xs-6 no-gutters">' +
+    //    '   <div class="col-xs-10">' +
+    //    botao +
+    //    '   </div>' +
+    //    '   <div class="col-xs-2">' + btnNA + '</div>' +
+    //    '</div>' +
+    //    '<div class="clearfix"></div>';
+
 
     html +=
         '<div class="col-xs-6 no-gutters">' +
@@ -254,7 +275,7 @@ function getBinarioComTexto(level3) {
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
         '</div>' +
         '<div class="col-xs-5">' +
-        '	<button type="button" class="btn btn-default btn-sm btn-block" data-binario data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + level3.ParLevel3BoolTrue.Name + '</button>' +
+          botao +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -519,11 +540,25 @@ $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
         resetarLinha(linha);
         linha.addClass('alert-warning');
         linha.attr('data-conforme-na', '');
+
+        var botao = $(linha).find('button[data-required-answer]');
+        if (botao.attr('data-required-answer') == "1") {
+            linha.attr('data-conforme', "");
+            $(botao).text('');
+            $(botao).html('&nbsp;');
+        }
     } else {
         resetarLinha(linha);
         $(linha).find('input[data-valor]').trigger('change');
     }
 });
+
+function validaCampoEmBrancoNA() {
+    if (linha.attr('data-default-answer') == "1") {
+        linha.attr('data-conforme', " ");
+    }
+  
+}
 
 $('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
     var linha = $(this).parents('[data-conforme]');
@@ -645,46 +680,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     //console.table(collectionHeaderFields);
 
     //Insere valores da coleta
-    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
-        var data = $(o);
-        coletaJson.push(
-            {
-                Evaluation: coletaAgrupada.Evaluation,
-                Sample: coletaAgrupada.Sample,
-                ParDepartment_Id: currentParDepartment_Id,
-                ParCargo_Id: currentParCargo_Id,
-                ParLevel1_Id: $(data).attr('data-level1'),
-                ParLevel2_Id: $(data).attr('data-level2'),
-                ParLevel3_Id: $(data).attr('data-level3'),
-                ParCompany_Id: currentParCompany_Id,
-                IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),
-                IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),
-                IsConform: $(data).attr('data-conforme') == "1",
-                Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
-                ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
-                IsNotEvaluate: $(data).attr('data-conforme-na') == "",
-                CollectionDate: getCurrentDate(),
-                UserSgq_Id: currentLogin.Id,
-                Weigth: $(data).attr('data-peso'),
-                WeiEvaluation: $(data).attr('data-peso'),
-                Defects: $(data).attr('data-conforme') == "1" ? 0 : 1,
-                WeiDefects: ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
-                /*
-				"Shift_Id":1,
-				"Period_Id":1,
-				"ParCluster_Id":1,
-				"CollectionType":1,
-				"PunishimentValue":1,
-				"HasPhoto":"0",
-				"HaveCorrectiveAction":"0",
-				"AlertLevel":"0",
-				"ParHeaderField_Id":1,
-				"ParHeaderField_Value":""
-				*/
-            }
-        );
-    });
+    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {        var data = $(o);        var isNA = $(data).attr('data-conforme-na') == "";        coletaJson.push(            {                Evaluation: coletaAgrupada.Evaluation,                Sample: coletaAgrupada.Sample,                ParDepartment_Id: currentParDepartment_Id,                ParCargo_Id: currentParCargo_Id,                ParLevel1_Id: $(data).attr('data-level1'),                ParLevel2_Id: $(data).attr('data-level2'),                ParLevel3_Id: $(data).attr('data-level3'),                ParCompany_Id: currentParCompany_Id,                IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),                IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),                IsConform: isNA ? 1 : $(data).attr('data-conforme') == "1",                Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),                ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),                IsNotEvaluate: isNA,                CollectionDate: getCurrentDate(),                UserSgq_Id: currentLogin.Id,                Weigth: $(data).attr('data-peso'),                WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),                Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),                Parfrequency_Id: parametrization.currentParFrequency_Id                /*				"Shift_Id":1,				"Period_Id":1,				"ParCluster_Id":1,				"CollectionType":1,				"PunishimentValue":1,				"HasPhoto":"0",				"HaveCorrectiveAction":"0",				"AlertLevel":"0",				"ParHeaderField_Id":1,				"ParHeaderField_Value":""				*/            }        );    });
 
     processAlertRole(coletaJson);
 
@@ -714,7 +710,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 
     if (coletaAgrupada.Sample == 1) {
         //atualiza tela de coleta e contadores
-        listarParCargo();
+        listarParCargo(true);
     } else {
         listarParLevels();
         $("html, body").animate({ scrollTop: 0 }, "fast");
@@ -905,23 +901,21 @@ function getCollectionHeaderFields() {
 }
 
 function ColetasIsValid() {
-    var errorCount = 0;
-    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
-        var data = $(o);
-        if ($(data).attr('data-conforme') == ""
-            || $(data).attr('data-conforme') == null
-            || $(data).attr('data-conforme') == "undefined") {
-            openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
-            mostraPerguntasObrigatorias(data);
-            errorCount++;
-            closeMensagem(2000);
-        }  
-    });
-    if (errorCount > 0)
-        return false;
-    else
-        return true;
-  
+    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
+    for (var i = 0; i < linhasDaColeta.length; i++) {
+        var data = linhasDaColeta[i];
+        if ($(data).attr('data-conforme-na') != "") {
+            if ($(data).attr('data-conforme') == ""
+                || $(data).attr('data-conforme') == null
+                || $(data).attr('data-conforme') == "undefined") {
+                openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
+                mostraPerguntasObrigatorias(data);
+                closeMensagem(2000);
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 function mostraPerguntasObrigatorias(data) {

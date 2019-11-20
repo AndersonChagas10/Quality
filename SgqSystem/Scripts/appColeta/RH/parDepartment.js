@@ -1,8 +1,9 @@
-function listarParDepartment(parDepartmentId) {
+function listarParDepartment(parDepartmentId, isVoltar) {
 
 	//listaDepartamentos = getParDepartmentPlanejado(); parametrization.listaParDepartment
 
-	var listaDepartamentos = retornaDepartamentos(parDepartmentId, true, getParDepartmentPlanejado());
+
+    var listaDepartamentos = retornaDepartamentos(parDepartmentId, true, getParDepartmentPlanejado());
 
 	var htmlParDepartment = "";
 
@@ -26,10 +27,10 @@ function listarParDepartment(parDepartmentId) {
 
 	getCurrentPlanejamentoObj();
 
-	//caso for "" quer dizer que não tem mais filhos, então abre o próximo	
-	if (htmlParDepartment == "") {
-		currentParDepartmentParent_Id = department.Parent_Id;
-		listarParCargo();
+    //caso for "" quer dizer que não tem mais filhos, então abre o próximo	
+    if (htmlParDepartment == "") {
+        currentParDepartmentParent_Id = department.Parent_Id;
+        listarParCargo(isVoltar);
 		return;
 	}
 
@@ -64,9 +65,15 @@ function listarParDepartment(parDepartmentId) {
 		'	</div>                                                         ' +
 		'</div>';
 
-	$('div#app').html(html);
+    $('div#app').html(html);
 
-	setBreadcrumbs();
+    setBreadcrumbs();
+
+    if ($(".list-group button").length == 1 && (isVoltar == false || isVoltar == undefined)) {
+        $("[data-par-department-id]").trigger('click');
+    }
+
+	
 }
 
 function retornaDepartamentos(parDepartmentId, retornaDepartamentoAtual, listaParDepartment) {
@@ -102,7 +109,7 @@ $('body').off('click', '[data-par-department-id]').on('click', '[data-par-depart
 
 	var parDepartmentId = $(this).attr('data-par-department-id');
 
-	listarParDepartment(parDepartmentId);
+	listarParDepartment(parDepartmentId, false);
 
 });
 
@@ -110,5 +117,5 @@ function voltarDepartment(parent_Id) {
 
 	currentParDepartment_Id = parent_Id;
 
-	listarParDepartment(currentParDepartment_Id);
+	listarParDepartment(currentParDepartment_Id, true);
 }

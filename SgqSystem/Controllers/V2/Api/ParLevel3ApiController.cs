@@ -298,6 +298,7 @@ namespace SgqSystem.Controllers.V2.Api
                         parVinculoPesoOld.Sample = parVinculoPeso.Sample;
                         parVinculoPesoOld.Evaluation = parVinculoPeso.Evaluation;
                         parVinculoPesoOld.ParFrequencyId = parVinculoPeso.ParFrequencyId;
+                        parVinculoPesoOld.ParCluster_Id = parVinculoPeso.ParCluster_Id;
                     }
                     else
                     {
