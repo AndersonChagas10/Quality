@@ -947,6 +947,7 @@
     <Content Include="Scripts\appColeta\RH\mensagem.js" />
     <Content Include="Scripts\appColeta\RH\menu.js" />
     <Content Include="Scripts\appColeta\RH\parCargo.js" />
+    <Content Include="Scripts\appColeta\RH\parCluster.js" />
     <Content Include="Scripts\appColeta\RH\parDepartment.js" />
     <Content Include="Scripts\appColeta\RH\planejamentoColeta.js" />
     <Content Include="Scripts\appColeta\RH\parFrequency.js" />

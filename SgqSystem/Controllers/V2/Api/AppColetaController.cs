@@ -109,6 +109,7 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParDepartmentXRotinaIntegracao> listaParDepartmentXRotinaIntegracao;
             List<RotinaIntegracao> listaRotinaIntegracao;
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
+            List<ParCluster> listaParCluster;
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -133,7 +134,8 @@ namespace SgqSystem.Controllers.V2.Api
                         ParCargo_Id = x.ParCargo_Id,
                         ParFrequency_Id = x.ParFrequencyId,
                         Evaluation = x.Evaluation,
-                        Sample = x.Sample
+                        Sample = x.Sample,
+                        ParCluster_Id = x.ParCluster_Id
 
                     }).ToList();
 
@@ -390,6 +392,10 @@ namespace SgqSystem.Controllers.V2.Api
                 //Rotina Integração Offline
                 listaRotinaIntegracaoOffline = GetRotinaIntegracaoComResultados();
 
+                //lista de Cluster
+
+                listaParCluster = db.ParCluster.Where(x => x.IsActive).ToList();
+
             }
 
             return Ok(new
@@ -416,7 +422,8 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParMultipleValuesGeral,
                 listaParDepartmentXRotinaIntegracao,
                 listaRotinaIntegracao,
-                listaRotinaIntegracaoOffline
+                listaRotinaIntegracaoOffline,
+                listaParCluster
             });
         }
 
