@@ -50,6 +50,22 @@
                                 </div>
                             }
 
+
+                            @if (ViewBag.ShowParModule == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Módulo</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parModule_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParModule", "api/Formulario")">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parModule_Ids"></select>
+                                    </div>
+                                </div>
+                            }
+
                             @*@if (ViewBag.ShowParStructure == true)
                                 {
                                     <div class="col-sm-12">
@@ -206,7 +222,7 @@
                             {
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label><strong>Centro de Custo</strong></label>
+                                        <label><strong>@Resources.Resource.department</strong></label>
                                         <button type="button"
                                                 data-filtroselect3-btn
                                                 data-filtroselect3-select="select[name=parDepartment_Ids]"
@@ -354,18 +370,20 @@
                                 </div>
                             }
 
-
-                            @if (ViewBag.ShowParModule == true)
+                            @if (ViewBag.ShowNCComPeso == true)
                             {
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label><strong>Módulo</strong></label>
-                                        <button type="button" data-filtroselect3-btn
-                                                data-filtroselect3-select="select[name=parModule_Ids]"
-                                                data-filtroselect3-url="@Url.Action("GetFilteredParModule", "api/Formulario")">
-                                            Abrir
-                                        </button>
-                                        <select class="form-control" name="parModule_Ids"></select>
+                                        <label><strong>Exibe NC Com peso</strong></label>
+                                        @*<button type="button" data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=peso]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredPeso", "api/Formulario")">
+                                                Abrir
+                                            </button>*@
+                                        <select class="form-control" name="ncComPeso">
+                                            <option value="1">Sim</option>
+                                            <option value="2">Não</option>
+                                        </select>
                                     </div>
                                 </div>
                             }
@@ -534,6 +552,7 @@
             $('select[name="acaoStatus"]').select2();
             $('select[name="periodo"]').select2();
             $('select[name="parModule_Ids"]').select2();
+            $('select[name="ncComPeso"]').select2();
             $('select[name="peso"]').select2();
             $('select[name="desdobramento"]').select2();
             $('select[name="userSgqSurpervisor_Ids"]').select2();
@@ -543,7 +562,7 @@
         preencheFiltrosAjax();
 
         function preencheFiltros(data) {
-            
+
             dataFiltro = data;
 
             $('#filterReports select').off('change');
@@ -572,16 +591,14 @@
                 retornaOptionsPeloArray(dataFiltro.ParLevel3s, "Id", "Name", objFiltro["parLevel3_Ids"]));
             $('select[name="parLevel3Status_Ids"]').html(
                 retornaOptionsPeloArray(dataFiltro.ParLevel3Status, "Id", "Name", objFiltro["parLevel3Status_Ids"]));
-
             $('select[name="acaoStatus"]').html(
                 retornaOptionsPeloArray(dataFiltro.AcaoStatus, "Id", "Name", objFiltro["acaoStatus"]));
             $('select[name="periodo"]').html(
                 retornaOptionsPeloArray(dataFiltro.Periodo, "Id", "Name", objFiltro["periodo"]));
-            
             $('select[name="parModule_Ids"]').html(
                 retornaOptionsPeloArray(dataFiltro.ParModules, "Id", "Name", objFiltro["parModule_Ids"]));
             $('select[name="peso"]').html(
-                retornaOptionsPeloArray(dataFiltro.Pesos, "Weight", "Weight", objFiltro["peso"]));
+                retornaOptionsPeloArray(dataFiltro.Pesos, "Id", "name", objFiltro["peso"]));
             $('select[name="desdobramento"]').html(
                 retornaOptionsPeloArray(dataFiltro.Desdobramentos, "Id", "Name", objFiltro["desdobramento"]));
             $('select[name="userSgqSurpervisor_Ids"]').html(
@@ -605,6 +622,7 @@
             $('select[name="acaoStatus"]').trigger('change');
             $('select[name="periodo"]').trigger('change');
             $('select[name="parModule_Ids"]').trigger('change');
+            $('select[name="ncComPeso"]').trigger('change');
             $('select[name="peso"]').trigger('change');
             $('select[name="desdobramento"]').trigger('change');
             $('select[name="userSgqSurpervisor_Ids"]').trigger('change');

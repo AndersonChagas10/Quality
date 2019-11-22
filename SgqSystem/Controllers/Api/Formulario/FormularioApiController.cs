@@ -74,8 +74,8 @@ namespace SgqSystem.Controllers.Api.Formulario
             using (var factory = new Factory("DefaultConnection"))
             {
 
-                var query = $@"Select SELECT DISTINCT TOP 500
-                        	PCL.Id, PCL.Name from ParGroupParLevel1 Where IsActive = 1 AND Name like '%{search}%'";
+                var query = $@" SELECT DISTINCT TOP 500
+                        	Id, Name from ParGroupParLevel1 Where IsActive = 1 AND Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<ParGroupParLevel1>(query).ToList();
 
@@ -388,14 +388,18 @@ namespace SgqSystem.Controllers.Api.Formulario
 
         [HttpPost]
         [Route("GetFilteredPeso")]
-        public List<ParLevel1> GetFilteredPeso(string search, [FromBody] DataCarrierFormularioNew form)
+        public List<Peso> GetFilteredPeso(string search, [FromBody] DataCarrierFormularioNew form)
         {
             using (var factory = new Factory("DefaultConnection"))
             {
-                var query = $@"SELECT DISTINCT TOP 500 Weight as Id, Weight as Name FROM parlevel3level2
-                    WHERE weight like '%{search}%'";
+                var query = $@"SELECT '' AS Id, 'Todos' as Name
+                            UNION ALL
+                            SELECT DISTINCT TOP 500 
+                            cast(CONVERT(DECIMAL(18,2), Weight) as varchar(255)) AS Id, 
+                            cast(CONVERT(DECIMAL(18,2), Weight) as varchar(255)) AS Name
+                            FROM parlevel3level2 WHERE weight like '%{search}%' AND IsActive = 1 order by Id asc ";
 
-                var retorno = factory.SearchQuery<ParLevel1>(query).ToList();
+                var retorno = factory.SearchQuery<Peso>(query).ToList();
 
                 return retorno;
             }
@@ -617,6 +621,12 @@ namespace SgqSystem.Controllers.Api.Formulario
             var retorno = factory.SearchQuery<ParLevel3>(query).ToList();
 
             return retorno;
+        }
+
+        public class Peso
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
         }
     }
 }

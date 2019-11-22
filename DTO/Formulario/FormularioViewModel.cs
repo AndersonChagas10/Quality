@@ -20,5 +20,6 @@ namespace DTO.Formulario
         public List<ParLevel1> ParLevel1s { get; set; }
         public List<ParLevel2> ParLevel2s { get; set; }
         public List<ParLevel3> ParLevel3s { get; set; }
+        public List<ParLevel1> Pesos { get; set; }
     }
 }

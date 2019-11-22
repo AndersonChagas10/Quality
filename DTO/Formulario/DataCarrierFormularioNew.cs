@@ -55,11 +55,13 @@ namespace DTO
 
         public int[] ParModule_Ids { get; set; } = new int[] { };
 
-        public int[] Peso { get; set; } = new int[] { };
+        public int?[] Peso { get; set; } = new int?[] { };
 
         public int[] Desdobramento { get; set; } = new int[] { };
 
         public int[] UserSgqSurpervisor_Ids { get; set; } = new int[] { };
+
+        public int[] NcComPeso { get; set; } = new int[] { };
 
         public JObject Param { get; set; }
 
