@@ -1,4 +1,5 @@
-﻿using SgqService.ViewModels;
+﻿using DTO;
+using SgqService.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         [HttpPost]
         [Route("GetGraficoHistoricoUnidade")]
-        public List<HistoricoUnidade> GetGraficoHistoricoUnidade([FromBody] FormularioParaRelatorioViewModel form)
+        public List<HistoricoUnidade> GetGraficoHistoricoUnidade([FromBody] DataCarrierFormularioNew form)
         {
 
             var retornoHistoricoUnidade = new List<HistoricoUnidade>();
@@ -30,7 +31,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         [HttpPost]
         [Route("GetGraficoTendenciaIndicador")]
-        public List<TendenciaResultSet> GetGraficoTendenciaIndicador([FromBody] FormularioParaRelatorioViewModel form)
+        public List<TendenciaResultSet> GetGraficoTendenciaIndicador([FromBody] DataCarrierFormularioNew form)
         {
 
             var retornoHistoricoUnidade = new List<TendenciaResultSet>();

@@ -10,6 +10,8 @@ namespace DTO.Formulario
     public class FormularioViewModel
     {
         public List<ParStructure> ParStructures { get; set; }
+        public List<ParStructure> ParStructuresRegional { get; set; }
+        public List<ParGroupParLevel1> ParGroupParLevel1s { get; set; }
         public List<ParCompany> ParCompanies { get; set; }
         public List<Shift> Shifts { get; set; }
         public List<ParDepartment> ParDepartments { get; set; }

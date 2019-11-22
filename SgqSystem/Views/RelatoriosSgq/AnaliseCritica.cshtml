@@ -1,74 +1,103 @@
 ﻿@using DTO
 @{
     ViewBag.Title = "Análise Critica";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~\\Views\\RelatoriosSgq\\_FilterReports.cshtml";
+
+
+    var UnidadeUsuario = ViewBag.UnidadeUsuario;
+    ViewBag.UnitIdArr = true;
+
+    ViewBag.ShowCurrentDate = false;
+    ViewBag.ShowRangeDate = true;
+    ViewBag.ShowParStructureRegional = true;
+    ViewBag.ShowParCompany = true;
+    ViewBag.ShowShift = true;
+    ViewBag.ShowParDepartment = true;
+    ViewBag.ShowParSecao = true;
+    ViewBag.ShowParCargo = true;
+    ViewBag.ShowParCriticalLevel = true;
+    ViewBag.ShowParGroupParLevel1 = true;
+    ViewBag.ShowParLevel1 = true;
+    ViewBag.ShowParLevel2 = true;
+    ViewBag.ShowParLevel3 = true;
+    ViewBag.ShowParCluster = true;
+    ViewBag.ShowParClusterGroup = true;
+    ViewBag.ShowParLevel1Status = true;
+    ViewBag.ShowAcaoStatus = true;
+    ViewBag.ShowPeriodo = true;
+    ViewBag.ShowParModule = true;
+    ViewBag.ShowPeso = true;
+    ViewBag.ShowDesdobramentoTipo = true;
+    ViewBag.ShowUserSgqSurpervisor = true;
+
 }
 
-@*<h2>AnaliseCritica</h2>*@
+@section Content {
+    @*<h2>AnaliseCritica</h2>*@
 
-<div class="page-content-wrapper">
-    <div class="page-content">
+    <div class="page-content-wrapper">
+        <div class="page-content">
 
-        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml", "")
+            @*@Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml", "")*@
 
-        <div id="formBodyContent">
+            <div id="formBodyContent">
 
-            <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
-                <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
-            </div>
+                @*<div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+                    <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+                </div>*@
 
-            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+                @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-            @*div modelo para o clone*@
-            <div class="panel panel-info" id="PanelBase" style="display:none">
-                <div class="panel-heading" data-toggle="collapse"></div>
-                <div class="panel-body primary-panel">
+                @*div modelo para o clone*@
+                <div class="panel panel-info" id="PanelBase" style="display:none">
+                    <div class="panel-heading" data-toggle="collapse"></div>
+                    <div class="panel-body primary-panel">
 
-                    <div class="panel-indicador"></div>
+                        <div class="panel-indicador"></div>
 
-                    <div class="panel-pivotable"></div>
+                        <div class="panel-pivotable"></div>
 
-                    <div class="panel-monitoramento"></div>
+                        <div class="panel-monitoramento"></div>
 
-                    <div class="panel-monitoramento-departamento"></div>
+                        <div class="panel-monitoramento-departamento"></div>
 
-                    <div class="panel-tarefa-acumulada"></div>
+                        <div class="panel-tarefa-acumulada"></div>
 
-                    <div class="panel-tarefa"></div>
+                        <div class="panel-tarefa"></div>
 
 
-                </div>
-                *O Peso atribuído as Tarefas influenciam no resultado gráfico.
-            </div>
-
-            <div id="load"></div>
-
-            @*Gráfico Historico Consolidado*@
-            <div id="loaderNCUnidade"></div>
-            <div id="NCUnidade" hidden>
-                <div style="background-color:white; text-align:center">
-                    <div id="showNCUnidade" class="alert alert-info col-lg-2" role="alert">
-                        <h1>0 %</h1>
-                        <br />
-                        <span>@Resources.Resource.non_conformities_in_period</span>
                     </div>
-                    <button id="Udia" class="btn btn-default">Dia</button>
-                    <button id="Usemana" class="btn btn-default">Semana</button>
-                    <button id="Umes" class="btn btn-default">Mês</button>
-                    <div class="col-lg-10" id="GraficoHistoricoUnidade"></div>
+                    *O Peso atribuído as Tarefas influenciam no resultado gráfico.
                 </div>
-                <div class="clearfix"></div>
-                <div class="collapse bloco-filtro multi-collapse" id="filtroUni"> _ </div>
-                <br>
-            </div>
 
-            <div id="reports">
+                <div id="load"></div>
 
+                @*Gráfico Historico Consolidado*@
+                <div id="loaderNCUnidade"></div>
+                <div id="NCUnidade" hidden>
+                    <div style="background-color:white; text-align:center">
+                        <div id="showNCUnidade" class="alert alert-info col-lg-2" role="alert">
+                            <h1>0 %</h1>
+                            <br />
+                            <span>@Resources.Resource.non_conformities_in_period</span>
+                        </div>
+                        <button id="Udia" class="btn btn-default">Dia</button>
+                        <button id="Usemana" class="btn btn-default">Semana</button>
+                        <button id="Umes" class="btn btn-default">Mês</button>
+                        <div class="col-lg-10" id="GraficoHistoricoUnidade"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="collapse bloco-filtro multi-collapse" id="filtroUni"> _ </div>
+                    <br>
+                </div>
+
+                <div id="reports">
+
+                </div>
             </div>
         </div>
     </div>
-</div>
-
+}
 @section Scripts {
 
     <script type="text/javascript">
@@ -412,7 +441,7 @@
             //Grafico Historico
             $("#Udia").on('click', function () {
                 enviar["dimensaoData"] = 1;
-                EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
+                EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
             });
 
             $("#Usemana").on('click', function () {
@@ -440,7 +469,7 @@
             enviar["dimensaoData"] = 1;
             enviar["auditorId"] = GetUsuarioId();
 
-            EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade", toggle);
+            EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade", toggle);
 
             GerarRelatorios();
 
