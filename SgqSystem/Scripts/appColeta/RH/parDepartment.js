@@ -76,7 +76,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 	
 }
 
-function retornaDepartamentosPorCluster(parClusterId, retornaDepartamentoAtual, listaParVinculoPeso) {
+function retornaDepartamentosPorCluster(parClusterId, retornaDepartamentoAtual, listaParEvaluationXDepartmentXCargo) {
     currentParCluster_Id = parClusterId;
 
     currentParDepartment_Id = null;
@@ -85,32 +85,43 @@ function retornaDepartamentosPorCluster(parClusterId, retornaDepartamentoAtual, 
     var listaParDepartment_Ids = [];
     var listaSecao = [];
 
-    $(listaParVinculoPeso).each(function (i, o) {
+    $(listaParEvaluationXDepartmentXCargo).each(function (i, o) {
         if (o.ParCluster_Id == parClusterId) {
             listaParDepartment_Ids.push(o.ParDepartment_Id);
         }
     });
 
-    for (var i = 0; i < parametrization.listaParDepartment.length; i++) {
-        for (var j = 0; j < listaParDepartment_Ids.length; j++) {
-            if (parametrization.listaParDepartment[i].Id == listaParDepartment_Ids[j]) {
-                listaSecao.push(parametrization.listaParDepartment[i]);
+    var parDepartmentList = $.map(listaParDepartment_Ids, function (a) {
+        if (a == null) {
+            return parametrization.listaParDepartment;
+        }
+    });
+
+    if (parDepartmentList != null && parDepartmentList.length > 0) {
+         listaDepartamentos = parDepartmentList;
+    }
+    else {
+        for (var i = 0; i < parametrization.listaParDepartment.length; i++) {
+            for (var j = 0; j < listaParDepartment_Ids.length; j++) {
+                if (parametrization.listaParDepartment[i].Id == listaParDepartment_Ids[j]) {
+                    listaSecao.push(parametrization.listaParDepartment[i]);
+                }
             }
         }
-    }
-    //pegar o id do pai pelo hash para caso o select se tornar multiplo a manutenção seja mais fácil 
-    //hash.slice(0,hash.indexOf("|"))
-    var hash;
-    for (var i = 0; i < parametrization.listaParDepartment.length; i++) {
-        for (var j = 0; j < listaSecao.length; j++) {
-            hash = listaSecao[j].Hash;
-            if (hash.indexOf("|") != -1) {
-                hash = hash.slice(0, hash.indexOf("|"));
-            } else {
-                hash = listaSecao[j].Parent_Id;
-            }
-            if (parametrization.listaParDepartment[i].Id == hash) {
-                listaDepartamentos.push(parametrization.listaParDepartment[i]);
+        //pegar o id do pai pelo hash para caso o select se tornar multiplo a manutenção seja mais fácil 
+        //hash.slice(0,hash.indexOf("|"))
+        var hash;
+        for (var i = 0; i < parametrization.listaParDepartment.length; i++) {
+            for (var j = 0; j < listaSecao.length; j++) {
+                hash = listaSecao[j].Hash;
+                if (hash.indexOf("|") != -1) {
+                    hash = hash.slice(0, hash.indexOf("|"));
+                } else {
+                    hash = listaSecao[j].Parent_Id;
+                }
+                if (parametrization.listaParDepartment[i].Id == hash) {
+                    listaDepartamentos.push(parametrization.listaParDepartment[i]);
+                }
             }
         }
     }

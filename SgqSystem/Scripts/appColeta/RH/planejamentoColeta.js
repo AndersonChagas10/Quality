@@ -190,7 +190,7 @@ $('body').off('change', '[data-selects-cluster] select').on('change', '[data-sel
     planejamento = {};
 
     if (parCluster_Id > 0) {
-        var options = retornaDepartamentosPorCluster(parCluster_Id, undefined, parametrization.listaParVinculoPeso);
+        var options = retornaDepartamentosPorCluster(parCluster_Id, undefined, parametrization.listaParEvaluationXDepartmentXCargoAppViewModel);
 
         currentParCluster_Id = $(this).val();
         planejamento.parCluster_Id = currentParCluster_Id;

@@ -192,7 +192,8 @@ namespace SgqSystem.Controllers.V2.Api
                         ParDepartment_Id = x.ParDepartment_Id,
                         ParCargo_Id = x.ParCargo_Id,
                         Sample = x.Sample,
-                        Evaluation = x.Evaluation
+                        Evaluation = x.Evaluation,
+                        ParCluster_Id = x.ParCluster_Id
                     })
                     .ToList();
 
@@ -393,9 +394,10 @@ namespace SgqSystem.Controllers.V2.Api
                 listaRotinaIntegracaoOffline = GetRotinaIntegracaoComResultados();
 
                 //lista de Cluster
-
-                listaParCluster = db.ParCluster.Where(x => x.IsActive).ToList();
-
+                listaParCluster = db.ParCluster
+                    .Where(x => x.IsActive)
+                    .ToList()
+                     .Where(x => listaParEvaluationXDepartmentXCargoAppViewModel.Any(y => y.ParCluster_Id == x.Id)).ToList();
             }
 
             return Ok(new
