@@ -1,6 +1,8 @@
 var coletaJson = [];
+var interacaoComFormulario = 0;
 
 function openColeta(levels) {
+    interacaoComFormulario = 0;
 
     coletaJson = [];
     var html = '';
@@ -966,3 +968,8 @@ function HeaderFieldsIsValid() {
 
     return retorno;
 }
+
+$('body').off('click', '.panel-body button, .panel-body input, .panel-body select')
+         .on('click', '.panel-body button, .panel-body input, .panel-body select', function (e) {
+    interacaoComFormulario++;
+});

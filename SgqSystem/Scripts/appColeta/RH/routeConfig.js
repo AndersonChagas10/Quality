@@ -7,7 +7,7 @@ function validaRota(callback, parameter) {
     parameterRota = null;
 
     //verifica se esta na tela de coleta se sim informa que os dados serão perdidos, se nao executa o callback direto
-    if ($('#divColeta').is(":visible")) {
+    if ($('#divColeta').is(":visible") && interacaoComFormulario > 0) {
         if (callback != null) {
             callbackRota = callback;
             parameterRota = parameter;
