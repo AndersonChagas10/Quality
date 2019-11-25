@@ -71,6 +71,10 @@ function openColeta(levels) {
 
     $('div#app').html(html);
 
+    $('.panel-body button, .panel-body input, .panel-body select').off('click').on('click', function (e) {
+        interacaoComFormulario++;
+    });
+
     setBreadcrumbs();
 
 }
@@ -969,7 +973,9 @@ function HeaderFieldsIsValid() {
     return retorno;
 }
 
-$('body').off('click', '.panel-body button, .panel-body input, .panel-body select')
-         .on('click', '.panel-body button, .panel-body input, .panel-body select', function (e) {
-    interacaoComFormulario++;
-});
+
+
+//$('body').off('click', '.panel-body button, .panel-body input, .panel-body select')
+//         .on('click', '.panel-body button, .panel-body input, .panel-body select', function (e) {
+//    interacaoComFormulario++;
+//});
