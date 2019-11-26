@@ -25,7 +25,7 @@ namespace LogSystem
             {
                 Dominio.LogTrack logTrack = new Dominio.LogTrack();
                 logTrack.Json_Id = json_id;
-                logTrack.Json = JsonConvert.SerializeObject(obj);
+                logTrack.Json = ToJson(obj);
                 logTrack.Tabela = table_name;
                 logTrack.UserSgq_Id = userSgq_Id;
                 logTrack.AddDate = DateTime.Now;
@@ -40,7 +40,7 @@ namespace LogSystem
             {
                 Dominio.LogTrack logTrack = new Dominio.LogTrack();
                 logTrack.Json_Id = json_Id;
-                logTrack.Json = JsonConvert.SerializeObject(obj);
+                logTrack.Json = ToJson(obj);
                 logTrack.Tabela = table_name;
                 logTrack.UserSgq_Id = userSgq_Id;
                 logTrack.AddDate = DateTime.Now;
@@ -65,7 +65,7 @@ namespace LogSystem
                     {
                         obj = JsonConvert.DeserializeObject<object>(x.Json),
                         addDate = x.AddDate.ToString("dd/MM/yyyy HH:mm"),
-                        userSgq_FullName = x.UserSgq?.FullName ?? "",
+                        userSgq_Name = x.UserSgq?.Name ?? "",
                         parReason = x.ParReason?.Motivo ?? "",
                         motivo = x.Motivo ?? ""
                     })
@@ -87,7 +87,7 @@ namespace LogSystem
                     .Select(x => new {
                         obj = JsonConvert.DeserializeObject<object>(x.Json),
                         addDate = x.AddDate.ToString("dd/MM/yyyy HH:mm"),
-                        userSgq_FullName = x.UserSgq?.FullName ?? "",
+                        userSgq_Name = x.UserSgq?.Name ?? "",
                         parReason = x.ParReason?.Motivo ?? "",
                         motivo = x.Motivo ?? ""
                     })

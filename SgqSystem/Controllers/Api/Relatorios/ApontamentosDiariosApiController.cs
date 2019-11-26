@@ -148,9 +148,9 @@ namespace SgqSystem.Controllers.Api
             {
                 databaseSgq.Configuration.LazyLoadingEnabled = false;
                 var resultlevel3 = databaseSgq.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
+                var auditorId = databaseSgq.CollectionLevel2.Where(x => x.Id == resultlevel3.CollectionLevel2_Id).Select(x=>x.AuditorId).First();
 
-                LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3, resultlevel3.Id, "Result_Level3", userSgq_Id);
-
+                LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3, resultlevel3.Id, "Result_Level3", auditorId);
                 var parLevel3 = databaseSgq.ParLevel3.Where(x => x.Id == resultlevel3.ParLevel3_Id).FirstOrDefault();
                 parLevel3Value = databaseSgq.ParLevel3Value.Where(x => x.ParLevel3_Id == parLevel3.Id).FirstOrDefault();
                 var parInputTypeValues = databaseSgq.ParInputTypeValues.Where(x => x.ParLevel3Value_Id == parLevel3Value.Id && resultLevel3.Value == x.Intervalo.ToString()).FirstOrDefault();
@@ -254,7 +254,8 @@ namespace SgqSystem.Controllers.Api
                                 original.ParHeaderField_ValueName = valueSelected.Values.Where(x => x.Id == Convert.ToInt32(original.Value)).FirstOrDefault()?.Name;
 
                             //[TODO] Inserir registro de log de edição
-                            LogSystem.LogTrackBusiness.RegisterIfNotExist(original, original.Id, "CollectionLevel2XParHeaderField", Lsc2xhf.UserSgq_Id);
+                            var auditorId = dbEntities.CollectionLevel2.Where(x => x.Id == original.CollectionLevel2_Id).Select(x => x.AuditorId).First();
+                            LogSystem.LogTrackBusiness.RegisterIfNotExist(original, original.Id, "CollectionLevel2XParHeaderField", auditorId);
 
                             if (string.IsNullOrEmpty(item.Value))//Remover
                             {
