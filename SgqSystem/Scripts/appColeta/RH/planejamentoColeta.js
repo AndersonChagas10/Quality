@@ -100,7 +100,7 @@ function renderPlanejamentoColeta(frequencia) {
 
 function renderPlanejamentos() {
 	var html = '<table class="table table-hover"><thead>' +
-		'<tr><th>Cluster</th><th>Departamento</th><th>Cargo</th><th>Indicador</th><th></th></tr></thead><tbody>';
+		'<tr><th>Cluster</th><th>Centro de Custo</th><th>Cargo</th><th>Indicador</th><th></th></tr></thead><tbody>';
 
 	$(currentPlanejamento).each(function (i, o) {
         html += '<tr data-table-planejado="' + i + '"><td>' + o.parCluster_Name + '</td><td>' + o.parDepartment_Name + '</td><td>' +
