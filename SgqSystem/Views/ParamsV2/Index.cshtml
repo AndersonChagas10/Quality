@@ -536,9 +536,8 @@
                     $(`select#${id}`).append('<optgroup label="' + groupName + '">');
 
                     listVinculados.filter(x => x.GroupName == groupName).forEach((o) => {
-
-                        if (o.Hash != undefined)
-                            $(`select#${id}`).append(`<option value="${o[value]}">${o.Hash} / ${o[value]} - ${o[name]}</option>`);
+                        if (o.Hash != undefined && o.ParDepartmentPai != undefined) 
+                            $(`select#${id}`).append(`<option title="${o.ParDepartmentPai.Name}" value="${o[value]}">${o.Hash} / ${o[value]} - ${o[name]}</option>`);
                         else
                             $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
 
@@ -550,8 +549,8 @@
             }
 
             $(listNaoVinculados).each(function (i, o) {
-                if (o.Hash != undefined)
-                    $(`select#${id}`).append(`<option value="${o[value]}">${o.Hash} / ${o[value]} - ${o[name]}</option>`);
+                if (o.Hash != undefined && o.ParDepartmentPai != undefined) 
+                    $(`select#${id}`).append(`<option title="Centro de Custo: ${o.ParDepartmentPai.Name}" value="${o[value]}">${o.Hash} / ${o[value]} - ${o[name]}</option>`);
                 else
                     $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
             });
@@ -567,10 +566,13 @@
 
     let listaTipoDadoDeEntradaVinculadosaEmpresaSelecionada = function (listaTipoDado) {
         if (listaTipoDado != null) {
-            if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+            
+            let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
+
+            if (parCompanySelectecId != 0) {
 
                 var listaVinculadaAUnidade = jQuery.grep(listaTipoDado, function (n, i) {
-                    return (n.ParCompany_Id === parseInt($("#selectParCompanyGeral :selected").val()) || n.ParCompany_Id == null);
+                    return (n.ParCompany_Id === parCompanySelectecId || n.ParCompany_Id == null);
                 });
 
                 ParL3TipoDado.load(listaVinculadaAUnidade);
@@ -582,12 +584,15 @@
     }
 
     let listaVinculoPesoVinculadosaEmpresaSelecionada = function (lista) {
+        
         if (lista != null) {
 
-            if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+            let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
+
+            if (parCompanySelectecId != 0) {
 
                 var listaPesoVinculadaAUnidade = jQuery.grep(lista, function (n, i) {
-                    return (n.ParCompany_Id === parseInt($("#selectParCompanyGeral :selected").val()) || n.ParCompany_Id == null);
+                    return (n.ParCompany_Id === parCompanySelectecId || n.ParCompany_Id == null);
                 });
 
                 ParL3Peso.load(listaPesoVinculadaAUnidade);
@@ -599,12 +604,15 @@
     }
 
     let listaAvaliacaoAmostraVinculadosaEmpresaSelecionada = function (lista) {
+        
         if (lista != null) {
+            
+            let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
 
-            if (parseInt($("#selectParCompanyGeral :selected").val()) != 0) {
+            if (parCompanySelectecId != 0) {
 
                 var listaAvAmVinculadaAUnidade = jQuery.grep(lista, function (n, i) {
-                    return (n.ParCompany_Id === parseInt($("#selectParCompanyGeral :selected").val()) || n.ParCompany_Id == null);
+                    return (n.ParCompany_Id === parCompanySelectecId || n.ParCompany_Id == null);
                 });
 
                 parDCAvam.load(listaAvAmVinculadaAUnidade);
@@ -617,10 +625,10 @@
 
 
     let MontaSelectDepartamentoVinculadoAUnidadeSelecionada = function (selectId, empresaSelecionada, mensagem) {
-        debugger
+        
         var unidadeSelecionada;
         if (empresaSelecionada == null) {
-             unidadeSelecionada = parseInt($("#selectParCompanyGeral :selected").val());
+            unidadeSelecionada = parseInt($("#selectParCompanyGeral :selected").val());
         } else {
             unidadeSelecionada = empresaSelecionada
         }
@@ -642,7 +650,8 @@
         } else {
 
             var departamentosVinculados = jQuery.grep(ParDepartmentsGlobal, function (n, i) {
-                return (n.ParCompany_Id === unidadeSelecionada);
+                
+                return ((n.ParCompany_Id === unidadeSelecionada || n.ParCompany_Id == null) && n.Active == true);
             });
 
             preencheSelect(selectId, 'Name', 'Id', departamentosVinculados, mensagem);
@@ -654,7 +663,7 @@
     let GetParDepartmentsByUnit = function (unit) {
         
         if (!unit) {
-            MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', null, null);
+            MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', 0, null);
             MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL2GeralParDepartment', null, null);
             MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', null, null);
 
@@ -701,17 +710,21 @@
     }
 
     let MontaSelectUnidades = function () {
-
+        
         var unidadeSelecionadaTeste = parseInt($("#selectParCompanyGeral :selected").val());
 
         if (unidadeSelecionadaTeste == 0) {
+
             preencheSelect('selectDCAvamParCompany', 'Name', 'Id', parCompanysGlobal, "Todos");
             preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', parCompanysGlobal, "Todos");
             preencheSelect('selectL3PesoParCompany', 'Name', 'Id', parCompanysGlobal, "Todos");
+
         } else {
+
             var unidadesVinculadas = jQuery.grep(parCompanysGlobal, function (n, i) {
                 return (n.Id === unidadeSelecionadaTeste);
             });
+
             preencheSelect('selectDCAvamParCompany', 'Name', 'Id', unidadesVinculadas, "Todos");
             preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', unidadesVinculadas, "Todos");
             preencheSelect('selectL3PesoParCompany', 'Name', 'Id', unidadesVinculadas, "Todos");
@@ -791,7 +804,7 @@
             if (value == null)
                 value = 0;
 
-            element.val(value);
+            element.val(value.toString());
             element.trigger('change');
 
         } else if (element.is('div')) {
@@ -1062,12 +1075,14 @@
                 preencheSelect('selectL3PesoPesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
                 preencheSelect('selectL3PesoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3PesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
-                preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a Função');
+                
+                //preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a Função');
+                preencheSelect('selectL3PesoParClusters', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
 
                 preencheSelect('selectL3TipoDadoParLevel3InputType', 'Name', 'Id', data.ParLevel3InputTypes, 'Selecione o Tipo de dados para a coleta');
                 preencheSelect('selectL3TipoDadoParLevel3BoolFalse', 'Name', 'Id', data.ParLevel3BoolFalses, 'Valor negativo');
-
                 preencheSelect('selectL3TipoDadoParLevel3BoolTrue', 'Name', 'Id', data.ParLevel3BoolTrues, 'Valor positivo');
+
                 preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3TipoDadoParMeasurementUnit', 'Name', 'Id', data.ParMeasurementUnits, 'Selecione a unidade de medida');
 
@@ -1274,7 +1289,7 @@
 
         if (hasLevel3Selected)
             return;
-
+        
         let idUnidadeGeral = parseInt($('#selectParCompanyGeral :selected').val())
 
         if (!idUnidadeGeral) {

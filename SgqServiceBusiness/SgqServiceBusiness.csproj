@@ -101,6 +101,7 @@
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
     <Compile Include="Mappers\Audit\CorrectiveActionMapperProfile.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
+    <Compile Include="Mappers\ComponenteGenericoMapperProfile.cs" />
     <Compile Include="Mappers\DefectMapperProfile.cs" />
     <Compile Include="Mappers\EmailContentMapperProfile.cs" />
     <Compile Include="Mappers\ExampleMapperProfile.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
     <Compile Include="Mappers\ParClusterXModuleMapperProfile.cs" />
     <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
+    <Compile Include="Mappers\ParHeaderFieldXComponenteGenericoMapperProfile.cs" />
     <Compile Include="Mappers\ParLevel1XRotinaIntegracaoMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\ResultLevel3MapperProfile.cs" />
@@ -194,6 +196,10 @@
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
       <Name>Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogSystem\LogSystem.csproj">
+      <Project>{2F2074D0-E013-46BB-99B9-E53603BFC44D}</Project>
+      <Name>LogSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
       <Project>{3ecf1d86-91f3-4140-a11a-1546b8f662a1}</Project>

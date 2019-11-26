@@ -46,7 +46,7 @@ namespace Jobs
                 }
                 catch (Exception ex)
                 {
-                    new CreateLog(new Exception("Erro no metodo [ReProcessJsonJobFunction]", ex));
+                    LogSystem.LogErrorBusiness.Register(new Exception("Erro no metodo [ReProcessJsonJobFunction]", ex));
                 }
             }
         }

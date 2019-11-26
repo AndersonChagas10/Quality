@@ -64,7 +64,6 @@
 
         </div>
 
-
         <div class="col-sm-4">
 
             <div class="form-group">
@@ -79,6 +78,31 @@
             <div class="form-group">
                 <label for="ParLevel3BoolFalse_Id">Valor negativo:</label>
                 <select id="selectL3TipoDadoParLevel3BoolFalse" class="input input-lg col-sm-12 required" name="ParLevel3BoolFalse_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label>Valor Padrão</label>
+                <select id="selectL3IsDefaultAnswer" class="input input-sm col-sm-12" name="IsDefaultAnswer">
+                    <option value="true">Valor Positivo</option>
+                    <option value="false">Valor Negativo</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label>É Obrigatorio:</label>
+                <br />
+                <label class="switch">
+                    <input type="checkbox" id="checkboxL3IsRequired" name="IsRequired">
+                    <span class="slider round"></span>
+                </label>
             </div>
 
         </div>
@@ -107,6 +131,17 @@
                 <label for="IntervalMax">Limite superior:</label>
                 <input type="number" class="form-control required" id="IntervalMax" name="IntervalMax">
             </div>
+
+        </div>
+
+        <div class="col-sm-4">
+            Exibir limites
+            <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Exibe os limites superior e inferior na linha da tarefa" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+            <br />
+            <label class="switch">
+                <input type="checkbox" name="ShowLevel3Limits" id="ShowLevel3Limits">
+                <span class="slider round"></span>
+            </label>
 
         </div>
 
@@ -160,16 +195,16 @@
             </div>
 
             @*<div class="row">
-                    <div class="td-erp">
-                        <div id="divBtnSalvar" class="col-sm-6">
-                            <button class="form-control btn btn-primary" data-add>Salvar</button>
-                        </div>
-
-                        <div id="divBtnCancelar" class="col-sm-6" style="display:none">
-                            <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
-                        </div>
+                <div class="td-erp">
+                    <div id="divBtnSalvar" class="col-sm-6">
+                        <button class="form-control btn btn-primary" data-add>Salvar</button>
                     </div>
-                </div>*@
+
+                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                    </div>
+                </div>
+            </div>*@
         </div>
 
 
@@ -254,7 +289,7 @@
     //    }
     //});
 
-    
+
 
     $("#ParL3TipoDado #selectL3TipoDadoParDepartment").on('change', function () {
 
@@ -339,7 +374,7 @@
     }
 
     //$("#selectL3TipoDadoParCompany").on('change', function () {
-    //    debugger
+    //
     //    var empresaSelecionada = parseInt($("#selectL3TipoDadoParCompany :selected").val());
 
     //    MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3TipoDadoParDepartment', empresaSelecionada, "Todos");
@@ -362,6 +397,8 @@
 
             $('table#table' + id + ' tbody').html('');
 
+            $('#ShowLevel3Limits').prop('checked', true);
+            
             $(list).each(function (i, o) {
 
                 var html = '<tr>';
@@ -378,6 +415,9 @@
                 html += '<td>' + (o.IntervalMin == null ? "" : o.IntervalMin) + '</td>';
                 html += '<td>' + (o.IntervalMax == null ? "" : o.IntervalMax) + '</td>';
                 html += '<td>' + (o.DynamicValue == null ? "" : o.DynamicValue) + '</td>';
+
+                html += '<td class="hidden">' + valorDoSelect('#ParL3TipoDado select[name="IsDefaultAnswer"]', o.IsDefaultAnswer, "true") + '</td>';
+
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
 
@@ -414,6 +454,7 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
+                
                 scrollToForm();
                 var obj = $(this).parents('tr').data('sgq');
 
@@ -425,12 +466,6 @@
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
 
                 ParL3TipoDado.insertTable(obj);
-
-                //if ($("#camposLikertIncluidos tbody tr").length > 0) {
-                //    $("#btnAvancado").prop('disabled', true);
-                //} else {
-                //    $("#btnAvancado").prop('disabled', false);
-                //}
 
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
@@ -462,12 +497,11 @@
                 $('#divEscalaLikert').hide();
                 $('#divCamposLikertIncluidos').hide();
                 $("#camposLikertIncluidos tbody").empty();
-                //$("#btnAvancado").prop('disabled', false);
             });
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-
+                        
                 ParL3TipoDado.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
@@ -492,17 +526,6 @@
                     return false;
                 }
 
-                //debugger
-                //var itensNulos = obj.ParInputTypeValues.map(function (element) {
-                //    if (element.Valor == null)
-                //        return element;
-                //});
-                //if (itensNulos.length > 0) {
-                //    openMessageModal("Erro", "O campo Valor é obrigátorio");
-                //    //obj.ParInputTypeValues = [];
-                //    return false;
-                //}
-
                 Save(obj);
             });
 
@@ -520,6 +543,9 @@
 
                         showInput('selectL3TipoDadoParLevel3BoolTrue');
                         showInput('selectL3TipoDadoParLevel3BoolFalse');
+                        showInput('checkboxL3IsRequired');
+                        showInput('selectL3IsDefaultAnswer');
+                        $("#selectL3IsDefaultAnswer").val('true');
 
                         break;
 
@@ -530,6 +556,7 @@
                         showInput('selectL3TipoDadoParMeasurementUnit');
                         showInput('IntervalMin');
                         showInput('IntervalMax');
+                        showInput('ShowLevel3Limits');
 
                         break;
 
@@ -538,6 +565,7 @@
 
                         showInput('IntervalMin');
                         showInput('IntervalMax');
+                        showInput('ShowLevel3Limits');
 
                         break;
 
@@ -558,6 +586,7 @@
                         showInput('IntervalMin');
                         showInput('IntervalMax');
                         showInput('DynamicValue');
+                        showInput('ShowLevel3Limits');
 
                         break;
 
@@ -655,13 +684,15 @@
         },
 
         prepareTipoDado: function (obj) {
-
+            
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};
             obj['IntervalMax'] = formdata.IntervalMax;
             obj['IntervalMin'] = formdata.IntervalMin;
             obj['IsActive'] = true;
+            obj['IsRequired'] = formdata.IsRequired;
+            obj['IsDefaultAnswer'] = formdata.IsDefaultAnswer;
             obj['ParCompany_Id'] = formdata.ParCompany_Id;
             obj['ParLevel1_Id'] = formdata.ParLevel1_Id;
             obj['ParLevel3InputType_Id'] = formdata.ParLevel3InputType_Id;
@@ -671,6 +702,7 @@
             obj['ParLevel3BoolFalse_Id'] = formdata.ParLevel3BoolFalse_Id;
             obj['ParDepartment_Id'] = formdata.ParDepartment_Id;
             obj['ParCargo_Id'] = formdata.ParCargo_Id;
+            obj['ShowLevel3Limits'] = formdata.ShowLevel3Limits;
             return obj;
         },
 
@@ -680,8 +712,7 @@
             obj = ParL3TipoDado.prepareTipoDado(obj);
 
             $('#camposLikertIncluidos tbody').empty();
-
-
+  
             let IntervalMax = "";
             let IntervalMin = "";
             let IsActive = "";
@@ -750,11 +781,6 @@
                 obj['ParInputTypeValues'][i].IsActive = false;
 
                 this.insertTable(obj);
-                //if ($("#camposLikertIncluidos tbody tr").length > 0) {
-                //    $("#btnAvancado").prop('disabled', true);
-                //} else {
-                //    $("#btnAvancado").prop('disabled', false);
-                //}
 
             } else {
                 $('#camposLikertIncluidos tbody').empty();
@@ -767,10 +793,13 @@
 
         hideInput('selectL3TipoDadoParLevel3BoolTrue');
         hideInput('selectL3TipoDadoParLevel3BoolFalse');
+        hideInput('checkboxL3IsRequired');
+        hideInput('selectL3IsDefaultAnswer');
         hideInput('selectL3TipoDadoParMeasurementUnit');
         hideInput('IntervalMin');
         hideInput('IntervalMax');
         hideInput('DynamicValue');
+        hideInput('ShowLevel3Limits');
     }
 
     let hideInput = function (id) {

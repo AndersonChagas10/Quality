@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -147,20 +147,12 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=4.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\NHibernate.4.1.1.4000\lib\net40\NHibernate.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject.Extensions.Logging, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.Extensions.Logging.3.2.0.0\lib\net45-full\Ninject.Extensions.Logging.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ninject.Extensions.Logging.NLog4, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.Extensions.Logging.nlog4.3.2.3.0\lib\net45-full\Ninject.Extensions.Logging.NLog4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -177,10 +169,6 @@
     </Reference>
     <Reference Include="Ninject.WebApi.DependencyResolver, Version=0.1.4758.24814, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.WebApi.DependencyResolver.0.1.4758.24814\lib\net45\Ninject.WebApi.DependencyResolver.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
@@ -350,7 +338,6 @@
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\Formulario\FormularioApiController.cs" />
-    <Compile Include="Controllers\Api\HangFireServicesController.cs" />
     <Compile Include="Controllers\Api\Integracao\IntegracaoApiController.cs" />
     <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
     <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
@@ -403,12 +390,14 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
+    <Compile Include="Controllers\CrudGenerico\ComponenteGenericoController.cs" />
     <Compile Include="Controllers\DicionarioEstaticoController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\FotoController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
     <Compile Include="Controllers\IntegracaoSistemicasController.cs" />
+    <Compile Include="Controllers\Api\Log\LogTrackController.cs" />
     <Compile Include="Controllers\ParAlertTypesController.cs" />
     <Compile Include="Controllers\Params\ParCargoController.cs" />
     <Compile Include="Controllers\Params\ParColaboradorController.cs" />
@@ -530,6 +519,7 @@
     <Compile Include="Mail\SimpleAsynchronous.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\ComponenteGenericoMapperProfile.cs" />
     <Compile Include="Mappers\DefectMapperProfile.cs" />
     <Compile Include="Mappers\EmailContentMapperProfile.cs" />
     <Compile Include="Mappers\ItemMenuMapperProfile.cs" />
@@ -952,6 +942,7 @@
     <Content Include="Scripts\appColeta\RH\parLevels.js" />
     <Content Include="Scripts\appColeta\RH\resultado.js" />
     <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
+    <Content Include="Scripts\appColeta\RH\routeConfig.js" />
     <Content Include="Scripts\appColeta\RH\utils.js" />
     <Content Include="Scripts\appColeta\RH\zoom.js" />
     <Content Include="Scripts\jquery-1.12.1.min.js" />
@@ -1072,10 +1063,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -1177,7 +1164,6 @@
     <Content Include="Content\gallery\README.md" />
     <Content Include="Scripts\mindmap.js" />
     <Content Include="Scripts\Select3\select3.js" />
-    <Content Include="WebConfig_Old.xml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1274,9 +1260,6 @@
     <Content Include="Content\lobi\LICENSE" />
     <Content Include="Content\lobi\package.json" />
     <Content Include="Content\lobi\README.md" />
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Properties\PublishProfiles\Brasil.pubxml" />
     <None Include="Properties\PublishProfiles\BuildSqgMaster.pubxml" />
     <None Include="Properties\PublishProfiles\DeployInterno.pubxml" />
@@ -1415,6 +1398,7 @@
     <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
@@ -2075,6 +2059,14 @@
     <Content Include="Views\ParDepartments\Details.cshtml" />
     <Content Include="Views\ParDepartments\Edit.cshtml" />
     <Content Include="Views\ParDepartments\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_SelectTextAreaEditReason.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_LogTrackHistory.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\Filhos.cshtml" />
+    <Content Include="Views\ParDepartmentsRH\ParDepartmentXCompany.cshtml" />
+    <Content Include="Views\ComponenteGenerico\Index.cshtml" />
+    <Content Include="Views\ComponenteGenerico\Edit.cshtml" />
+    <Content Include="Views\ComponenteGenerico\List.cshtml" />
+    <Content Include="Views\ComponenteGenerico\EditValor.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2083,6 +2075,7 @@
     <Folder Include="App_Data\Uploads\" />
     <Folder Include="Arquivos\uploads\" />
     <Folder Include="obj\" />
+    <Folder Include="Scripts\appColeta\GQ\" />
     <Folder Include="Scripts\BootStrapRecravacao\" />
     <Folder Include="Scripts\i18n\" />
     <Folder Include="Views\WebService\" />
@@ -2119,6 +2112,10 @@
     <ProjectReference Include="..\IntegrationModule\IntegrationModule.csproj">
       <Project>{B6DDBEB5-490D-4D8A-B55E-4E66C283DCD4}</Project>
       <Name>IntegrationModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogSystem\LogSystem.csproj">
+      <Project>{2f2074d0-e013-46bb-99b9-e53603bfc44d}</Project>
+      <Name>LogSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlanoAcaoCore\PlanoAcaoCore.csproj">
       <Project>{9F15CCA3-EC01-46B6-91EC-3F408E7417BC}</Project>
@@ -2161,11 +2158,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>false</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57506/</IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

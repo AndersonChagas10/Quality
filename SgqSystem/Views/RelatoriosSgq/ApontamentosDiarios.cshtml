@@ -8,6 +8,9 @@
     var urlPhotos = Url.Action("Photos", "api/ApontamentosDiarios");
     var urlPhotoPreview = Url.Action("PhotoPreview", "api/ApontamentosDiarios");
     var urlGetCarousel = Url.Action("GetCarousel", "RelatoriosSgq");
+    var urlLogTrack = Url.Action("Get", "api/LogTrack");
+    var urlLogTrackHeaderField = Url.Action("GetHeaderFieldByResult_Level3", "api/LogTrack");
+
 }
 
 <style>
@@ -65,6 +68,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+
+                @Html.Partial("~/Views/RelatoriosSgq/_SelectTextAreaEditReason.cshtml")
+
                 <button type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
                 <button type="button" onclick="SaveHeaderField()" class="btn btn-default non-printable">@Resources.Resource.save</button>
             </div>
@@ -74,7 +80,7 @@
 
 <div class="page-content-wrapper">
     <div class="page-content">
-        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml","")
+        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml", "")
 
         <div id="formBodyContent">
 
@@ -85,6 +91,7 @@
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
             @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
             @Html.Partial("~/Views/RelatoriosSgq/_Image.cshtml")
+            @Html.Partial("~/Views/RelatoriosSgq/_LogTrackHistory.cshtml")
 
             <div id="load"></div>
             <div id="divTable">
@@ -106,6 +113,8 @@
         var urlPhotos = '@Html.Raw(urlPhotos)';
         var urlPhotoPreview = '@Html.Raw(urlPhotoPreview)';
         var urlGetCarousel = '@Html.Raw(urlGetCarousel)';
+        var urlLogTrack = '@Html.Raw(urlLogTrack)';
+        var urlLogTrackHeaderField = '@Html.Raw(urlLogTrackHeaderField)';
         var $btn = $('#btnSend');
         var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
         var urlEditCabecalho = '@Html.Raw(Url.Action("EditCabecalho", "api/ApontamentosDiarios"))';
@@ -193,6 +202,8 @@
                         },
 
                         { title: "@Resources.Resource.edit_header", mData: null, defaultContent: '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#modalHeaderField">' + "@Resources.Resource.edit_header" + '</button>', "visible": regraEdit },
+
+
                         { title: "@Resources.Resource.unit", mData: "Unidade" },
                         { title: "@Resources.Resource.cluster", mData: "Processo" },
                         { title: "@Resources.Resource.shift", mData: "Turno" },
@@ -273,6 +284,24 @@
                         },
                         { title: "@Resources.Resource.reason", mData: "ParReason", "width": "50%" },
                         {
+
+                            title: "Histórico Resultado", mData: null, mRender: function (data, type, full) {
+                                return full.HasHistoryResult_Level3 ?
+                                    '<button class="btn btn-info btn-sm" id="viewHistory" class="btn btn-link custom-button" height="60" style="width:80px;"  data-toggle="modal" data-target="#modalLogTrackHistory">' + "Visualizar" + '</button>'
+                                    :
+                                    '<button class="btn btn-default btn-sm" disabled="" title="Não há edições" style="width:80px;">-</button>';
+                            }
+                        },
+                        {
+
+                            title: "Histórico Cabeçalho", mData: null, mRender: function (data, type, full) {
+                                return full.HasHistoryHeaderField ?
+                                    '<button class="btn btn-info btn-sm" id="viewHeaderFieldHistory" class="btn btn-link custom-button" height="60" style="width:80px;"  data-toggle="modal" data-target="#modalLogTrackHistory">' + "Visualizar" + '</button>'
+                                    :
+                                    '<button class="btn btn-default btn-sm" disabled="" title="Não há edições" style="width:80px;">-</button>';
+                            }
+                        },
+                        {
                             title: "@Resources.Resource.photo", mData: "ResultLevel3Id", "width": "50%", mRender: function (data, type, full) {
                                 return full.HasPhoto ?
         "<button class='btn btn-info btn-sm' data-toggle='modal' data-target='#imageModal' data-photo='"+data+"' height='60' id='imgResult" + data +"' style='width:50px;'>@Resources.Resource.photo</button>"
@@ -315,8 +344,164 @@
                             }
                         })
                     });
+
+                    $('#resultsApontamentos tbody').on('click', 'button#viewHistory', function (data) {
+
+                        var data = table.row($(this).parents('tr')).data();
+
+                        var tableLogTrack = $('#modalLogTrackHistory .modal-body');
+                        $(tableLogTrack).html('');
+
+                        $.get(urlLogTrack + "/Result_Level3/" + data.ResultLevel3Id, function (r) {
+
+                            var htmlHead = "<thead><tr>";
+                            htmlHead += "<th></th>";
+                            htmlHead += "<th>Data Alteração</th>";
+                            htmlHead += "<th>Quem</th>";
+                            htmlHead += "<th>Resultado</th>";
+                            htmlHead += "<th>Valor</th>";
+                            htmlHead += "<th>Valor do Texto</th>";
+                            htmlHead += "<th>Não avaliado</th>";
+                            htmlHead += "<th>Tipo Motivo</th>";
+                            htmlHead += "<th>Motivo</th>";
+                            htmlHead += "</tr></thead>";
+
+                            var htmlBody = "";
+                            var quantidadeNaLista = r.length;
+                            r.splice(0, 0, r[r.length - 1]);
+                            r = r.slice(0, -1);
+                            $.each(r, function (i, o) {
+
+                                if (i == 0) {
+                                    htmlBody += "<tr style='background-color:#ddd;' title='Original'>";
+                                    htmlBody += "<td>Original</td>";
+                                } else if(i == 1){
+                                    htmlBody += "<tr style='background-color:#5cb85c;' title='Atual'>";
+                                    htmlBody += "<td>Edição "+(quantidadeNaLista-i)+"</td>";
+                                } else {
+                                    htmlBody += "<tr>";
+                                    htmlBody += "<td>Edição "+(quantidadeNaLista-i)+"</td>";
+                                }
+
+                                htmlBody += "<td>"+o.addDate+"</td>";
+                                htmlBody += "<td>"+o.userSgq_Name+"</td>";
+                                htmlBody += "<td>"+(o.obj.IsConform ? "Conforme" : "Não Conforme")+"</td>";
+                                htmlBody += "<td>"+o.obj.Value+"</td>";
+                                htmlBody += "<td>"+(o.obj.ValueText == 'null' || o.obj.ValueText == 'undefined' ? "" : o.obj.ValueText)+"</td>";
+                                htmlBody += "<td>"+(o.obj.IsNotEvaluate ? "Não Avaliado" : "Avaliado")+"</td>";
+                                htmlBody += "<td>"+o.parReason+"</td>";
+                                htmlBody += "<td>"+o.motivo+"</td>";
+                                htmlBody += "</tr>";
+                            });
+
+                            var tableHtml = "<table>"+htmlHead+"<tbody>"+htmlBody+"</tbody>"+"</table>"
+                            $(tableLogTrack).html(tableHtml);
+
+                            $(tableLogTrack).find('table').dataTable({
+                                "ordering": false,
+                                "pageLength": 25,
+                                "scrollX": true,
+                                "initComplete": function (settings, json) {
+                                    setTimeout(function () {$.fn.dataTable.tables({ visible: true, api: true }).columns.adjust(); },500)
+                                }
+                            } );
+
+                        })
+                    });
+
+                    $('#resultsApontamentos tbody').on('click', 'button#viewHeaderFieldHistory', function (data) {
+
+                        var data = table.row($(this).parents('tr')).data();
+
+                        var tableLogTrack = $('#modalLogTrackHistory .modal-body');
+                        $(tableLogTrack).html('');
+
+                        $.get(urlLogTrackHeaderField + "/" + data.ResultLevel3Id, function (r) {
+
+                            var htmlHead = "<thead><tr>";
+                            htmlHead += "<th></th>";
+                            htmlHead += "<th>Data Alteração</th>";
+                            htmlHead += "<th>Quem</th>";
+                            htmlHead += "<th>Nome Cabeçalho</th>";
+                            htmlHead += "<th>Valor</th>";
+                            htmlHead += "<th>Tipo Motivo</th>";
+                            htmlHead += "<th>Motivo</th>";
+                            htmlHead += "</tr></thead>";
+
+                            var htmlBody = "";
+                            var logTrack = r;
+                            var original = [];
+                            var atual = [];
+                            var passado = [];
+
+                            $.each(r, function (i, o) {
+                                var existeNaListaAtual = $.grep(atual, function (o2, i2) { return o2.obj.Id == o.obj.Id }).length;
+                                var quantidadeExistenteNaLista = $.grep(logTrack, function (o2, i2) { return o2.obj.Id == o.obj.Id }).length;
+                                o.numeroDaEdicao = quantidadeExistenteNaLista - existeNaListaAtual -1;
+                                if (!(o.motivo.length > 0)) {
+                                    original.push(o);
+                                } else if (existeNaListaAtual == 0) {
+                                    atual.push(o);
+                                } else {
+                                    passado.push(o);
+                                }
+                            });
+
+                            var htmlCorpo = function (o) {
+                                var html = "<td>"+o.addDate+"</td>";
+                                html += "<td>"+o.userSgq_Name+"</td>";
+                                html += "<td>"+o.obj.ParHeaderField_Name+"</td>";
+                                html += "<td>"+(!!o.obj.ParHeaderField_ValueName ? o.obj.ParHeaderField_ValueName : o.obj.Value)+"</td>";
+                                html += "<td>"+o.parReason+"</td>";
+                                html += "<td>" + o.motivo + "</td>";
+                                return html;
+                            }
+
+                            $.each(original, function (i, o){
+                                htmlBody += "<tr style='background-color:#ddd;' title='Original'>";
+                                htmlBody += "<td>Original</td>";
+                                htmlBody += htmlCorpo(o);
+                                htmlBody += "</tr>";
+                            });
+
+                            $.each(atual, function (i, o){
+                                htmlBody += "<tr style='background-color:#5cb85c;' title='Atual'>";
+                                htmlBody += "<td>Edição "+o.numeroDaEdicao+"</td>";
+                                htmlBody += htmlCorpo(o);
+                                htmlBody += "</tr>";
+                            });
+
+                            $.each(passado, function (i, o){
+                                htmlBody += "<tr>";
+                                htmlBody += "<td>Edição "+o.numeroDaEdicao+"</td>";
+                                htmlBody += htmlCorpo(o);
+                                htmlBody += "</tr>";
+                            });
+
+                            var tableHtml = "<table>"+htmlHead+"<tbody>"+htmlBody+"</tbody>"+"</table>"
+                            $(tableLogTrack).html(tableHtml);
+
+                            $(tableLogTrack).find('table').dataTable({
+                                "ordering": false,
+                                "pageLength": 25,
+                                "scrollX": true,
+                                "initComplete": function (settings, json) {
+                                    setTimeout(function () {$.fn.dataTable.tables({ visible: true, api: true }).columns.adjust(); },500)
+                                }
+                            });
+
+                        })
+                    });
+
                     $('#myModal').on('hidden.bs.modal', function () {
                         $("#myModal #mensagemErro").remove();
+                    })
+
+                    $('#myModal, #modalHeaderField').on('hidden.bs.modal', function () {
+                        //$('select[name="selectParReasonEdit"]').attr('style','');
+                        $('textarea[name="textareaParReasonEdit"]').attr('style','');
+                        $('textarea[name="textareaParReasonEdit"]').val('');
+                        $('.alertParReasonEditMinimo10').addClass('hide');
                     })
                     //$("#botaoFecharModal").on('click', function () {
                     //    $("#myModal #mensagemErro").remove();
@@ -604,8 +789,22 @@
             if ($("#intervalMax").text() == "" && $("#intervalMin").text() == "")
                 dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
 
-            $.post(urlSave, dadosResultLevel3, function (r, x, e) {
+            var selectParReasonEdit = $('select[name="selectParReasonEdit"]:visible').val();
+            var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
+            //$('select[name="selectParReasonEdit"]:visible').attr('style','border:0px;');
+            $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
+                $('.alertParReasonEditMinimo10').addClass('hide');
 
+            if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 10) {
+                $('.alertParReasonEditMinimo10').removeClass('hide');
+                //$('select[name="selectParReasonEdit"]:visible').attr('style','border:1px solid red;');
+                $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
+                return;
+            }
+
+            $.post(urlSave + "/" + @Html.Raw(ViewBag.UserId) + "/" + selectParReasonEdit + "/" + textareaParReasonEdit, dadosResultLevel3, function (r, x, e) {
+
+                $('textarea[name="textareaParReasonEdit"]:visible').val('');
                 $("#myModal").modal('hide');
                 openMessageModal(Resources('done'), Resources('registry_alter_success')); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
 
@@ -701,10 +900,31 @@
 
             if (isValid) {
 
-                $.post(urlSaveHeaderField, { "HeaderField": objToSave }, function (IsSaved) {
+                var selectParReasonEdit = $('select[name="selectParReasonEdit"]:visible').val();
+                var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
+                //$('select[name="selectParReasonEdit"]:visible').attr('style','border:0px;');
+                $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
+                $('.alertParReasonEditMinimo10').addClass('hide');
+
+                if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 10) {
+                    $('.alertParReasonEditMinimo10').removeClass('hide');
+                    //$('select[name="selectParReasonEdit"]:visible').attr('style','border:1px solid red;');
+                    $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
+                    return;
+                }
+
+                $.post(urlSaveHeaderField,
+                    {
+                        "HeaderField": objToSave,
+                        "UserSgq_Id": @Html.Raw(ViewBag.UserId),
+                        "ParReason_Id": selectParReasonEdit,
+                        "Motivo": textareaParReasonEdit
+                    },
+                    function (IsSaved) {
 
                     if (IsSaved) {
 
+                        $('textarea[name="textareaParReasonEdit"]:visible').val('');
                         openMessageModal(Resources('done'), Resources('registry_alter_success'));
                         $('#modalHeaderField').modal('hide');
 

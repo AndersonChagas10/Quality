@@ -2,6 +2,7 @@
 using Dominio;
 using DTO;
 using DTO.Helpers;
+using LogSystem;
 using Newtonsoft.Json;
 using ServiceModel;
 using SgqServiceBusiness.Helpers;
@@ -97,7 +98,7 @@ namespace SgqServiceBusiness.Api.App
                 }
                 catch (Exception e)
                 {
-                    new CreateLog(e, UnitId);
+                    LogSystem.LogErrorBusiness.Register(e, UnitId);
                 }
 
                 System.GC.Collect();
@@ -152,7 +153,7 @@ namespace SgqServiceBusiness.Api.App
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("GetTela - " + ex.Message, ex), UnitId);
+                LogSystem.LogErrorBusiness.Register(new Exception("GetTela - " + ex.Message, ex), UnitId);
             }
             return retorno;
         }

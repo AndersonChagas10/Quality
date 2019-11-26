@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using ADOFactory;
 using Dominio;
-//using SgqSystem.Handlres;
-using System.Net;
-using System.Data.SqlClient;
 using DTO;
-using ADOFactory;
-using System.Threading;
-using System.Globalization;
 using DTO.Helpers;
-using SGQDBContext;
-using SgqServiceBusiness.Helpers;
-using System.Net.Mail;
-using System.Text;
-using System.Collections;
-using System.Data;
 using ServiceModel;
+using SGQDBContext;
 using SgqServiceBusiness.Api.App;
+using SgqServiceBusiness.Helpers;
 using SgqServiceBusiness.Services;
 using SgqSystem.Helpers;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Linq;
+//using SgqSystem.Handlres;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
+using System.Threading;
+using System.Web;
 
 namespace SgqServiceBusiness.Api
 {
@@ -4278,6 +4278,7 @@ namespace SgqServiceBusiness.Api
                 var listaProdutosJSON = listaProdutos.getProdutos();
 
                 supports += @" <script>
+
                                 var listaProdutosJson = " + Newtonsoft.Json.JsonConvert.SerializeObject(listaProdutosJSON) + @";
                                            
                                 function buscarProduto(a,valor){
@@ -4290,7 +4291,7 @@ namespace SgqServiceBusiness.Api
                                             return;
                                         }		                                               
                                     }
-                                    //$(a).val('');
+
                                     $(a).next().html('');
                                 }
 
@@ -4304,8 +4305,10 @@ namespace SgqServiceBusiness.Api
                                         }
                                                                                                        
                                     }
+
                                     $(a).val('');
                                 }
+
                                 </script> ";
             }
             catch (Exception ex)
@@ -4339,11 +4342,67 @@ namespace SgqServiceBusiness.Api
             }
 
 
+            try
+            {
 
-            //string resource = GetResource();
+                using (var db = new SgqDbDevEntities())
+                {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    var listaParLevel3XHelp = db.ParLevel3XHelp.Where(x => x.IsActive).ToList();
+
+                    supports += $@"<script>
+                                var listaParLevel3XHelp = " + Newtonsoft.Json.JsonConvert.SerializeObject(listaParLevel3XHelp) + @";
+                                           
+                                function getParLevel3XHelp(parLevel3_Id){
+                                    var valor = $.grep(listaParLevel3XHelp, function(obj) { 
+                                                       return obj.ParLevel3_Id == parLevel3_Id;  
+                                                });
+                                    return (valor && valor.length > 0) ? valor[0] : '';
+                                }
+
+                                </script> ";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            try
+            {
+
+                using (var factory = new Factory("DefaultConnection"))
+                {
+                    var sql = $@"SELECT
+                                	CGC.Name
+                                   ,CGC.ComponenteGenerico_Id
+                                   ,CGC.ComponenteGenericoTipoColuna_Id
+                                   ,CGC.IsActive
+                                   ,CGV.SaveId
+                                   ,CGV.ComponenteGenericoColuna_Id
+                                   ,CGV.Valor
+                                FROM ComponenteGenericoColuna CGC
+                                INNER JOIN ComponenteGenericoValor CGV
+                                	ON CGC.Id = CGV.ComponenteGenericoColuna_Id
+                                WHERE CGC.IsActive = 1
+                                AND CGV.IsActive = 1";
+
+                    var listParHeaderFieldXComponenteGenerico = factory.SearchQuery<Dominio.AppViewModel.ComponenteGenericoValoresViewModel>(sql).ToList();
+
+                    supports += $@"<script>
+
+                                var listComponenteGenericoValores = " + Newtonsoft.Json.JsonConvert.SerializeObject(listParHeaderFieldXComponenteGenerico) + @";
+
+                                </script> ";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
 
 
-            return APPMain + supports;// + resource;
+            return APPMain + supports;
         }
 
         public string getAPPLevelsVolume(GetAPPLevelsVolumeClass getAPPLevelsVolumeClass)
@@ -4910,7 +4969,7 @@ namespace SgqServiceBusiness.Api
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
             string hide = string.Empty;
-            if (GlobalConfig.Brasil || GlobalConfig.Ytoara)
+            if (GlobalConfig.Brasil || GlobalConfig.Ytoara || GlobalConfig.SESMT || GlobalConfig.Eua)
             {
                 hide = "hide";
             }
@@ -5078,6 +5137,10 @@ namespace SgqServiceBusiness.Api
             {
                 local = "canada";
             }
+            if (GlobalConfig.SESMT)
+            {
+                local = "msp";
+            }
 
 
             return html.div(
@@ -5150,11 +5213,24 @@ namespace SgqServiceBusiness.Api
 
         protected string correctiveAction()
         {
+            var usuariosSupervisor = new List<UserSgq>();
+            using (var db = new SgqDbDevEntities())
+            {
+                usuariosSupervisor = db.UserSgq.Where(x => x.Role.Contains("Supervisor") && x.IsActive == true).OrderBy(x => x.Name).ToList();
+            }
+
+            var htmlSelect = "";
+            htmlSelect += $@"<option value='0'> Selecione </option>";
+            foreach (var item in usuariosSupervisor)
+            {
+                htmlSelect += $@"<option value='{item.Id}'> {item.Name} </option>"; 
+            }
+
             string correctiveAction =
                 "<div id=\"correctiveActionModal\" class=\"container panel panel-default modal-padrao\" style=\"display:none\">" +
                     "<div class=\"panel-body\">" +
                         "<div class=\"modal-body\">" +
-                            "<h2>" + CommonData.getResource("corrective_action").Value.ToString() + " </h2>" +
+                            "<h2>" + CommonData.getResource("immediate_corrective_action").Value.ToString() + " </h2>" +
                             "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                 "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                             "</div>" +
@@ -5164,16 +5240,19 @@ namespace SgqServiceBusiness.Api
                                     "<div class=\"panel-body\" >" +
                                         "<div class=\"row\" style=\"padding:8px;\">" +
                                             "<div class=\"col-xs-6\" id=\"CorrectiveActionTaken\">" +
-                                                "<b class=\"font16\">" + CommonData.getResource("corrective_action_taken").Value.ToString() + ":<br/></b>" +
-                                                "<b>" + CommonData.getResource("date_time").Value.ToString() + ":</b> <span id=\"datetime\"></span><br/>" +
+                                                //"<b class=\"font16\">" + CommonData.getResource("corrective_action_taken").Value.ToString() + ":<br/></b>" +
+                                                "<b>" + CommonData.getResource("date").Value.ToString() + ":</b> <span id=\"datetime\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("hour").Value.ToString() + ":</b> <span id=\"hour\"></span><br/>" +
                                                 "<b>" + CommonData.getResource("auditor").Value.ToString() + ": </b><span id=\"auditor\"></span><br/>" +
                                                 "<b>" + CommonData.getResource("shift").Value.ToString() + ": </b><span id=\"shift\"></span><br/>" +
                                             "</div>" +
                                             "<div class=\"col-xs-6\" id=\"AuditInformation\">" +
-                                                "<b class=\"font16\">" + CommonData.getResource("audit_information").Value.ToString() + ":<br/></b>" +
+                                                //"<b class=\"font16\">" + CommonData.getResource("audit_information").Value.ToString() + ":<br/></b>" +
                                                 "<b>" + CommonData.getResource("level1").Value.ToString() + ": </b><span id=\"auditText\"></span><br/>" +
-                                                "<b>" + CommonData.getResource("initial_date").Value.ToString() + ":</b><span id=\"starttime\"></span><br/>" +
-                                                "<b>" + CommonData.getResource("period").Value.ToString() + ":</b><span id=\"correctivePeriod\"></span>" +
+                                                "<b>" + CommonData.getResource("period").Value.ToString() + ":</b><span id=\"correctivePeriod\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("deviation_date").Value.ToString() + ":</b><span id=\"starttime\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("deviation_hour").Value.ToString() + ":</b><span id=\"starttimeHour\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("free_time").Value.ToString() + ":</b><input id=\"datetimeTechinicalHour\" type='time' min='0' class='input-sm' /><br/>" +
                                             "</div>" +
                                         "</div>" +
                                     "</div>" +
@@ -5192,10 +5271,25 @@ namespace SgqServiceBusiness.Api
                                     "<label>" + CommonData.getResource("product_disposition").Value.ToString() + ":</label>" +
                                     "<textarea id=\"ProductDisposition\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>" +
-                                "<div class=\"form-group\">" +
-                                    "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
-                                    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                "</div>";
+                                //"<div class=\"form-group\">" +
+                                //    "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
+                                //    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+                                //"</div>" +
+                                $@"<div class='form-group'>
+                                        <label>{CommonData.getResource("corrective_action").Value.ToString()}:</label>
+                                        <div>
+		                                    <input type='checkbox' id='correctiveAction'>
+		                                    <label id='mensagemPadrao'> Mensagem padrão que será definida</label>
+                                        </div>
+	                                    <textarea id='PreventativeMeasure' class='form-control custom-control' rows='3' style='resize:none'></textarea>
+                                    </div>
+                                    <div id='divSelectSupervisor' class='form-group'>
+                                          <label>Supervisor</label>
+                                          <select id='TechinicalSignature' class='form-control custom-control'>
+		                                    {htmlSelect}
+	                                    </select>  
+                                    </div>
+                                </div>";
 
             if (GlobalConfig.Eua)
             {
@@ -6490,6 +6584,14 @@ namespace SgqServiceBusiness.Api
                         form_control = $@"<input id="""" class=""form-control input-sm"" type=""text"" Id=""cb{ header.ParHeaderField_Id }"" ParHeaderField_Id=""{ header.ParHeaderField_Id }"" ParFieldType_Id=""{ header.ParFieldType_Id }"" data-din=""{ header.ParHeaderField_Description }"" readonly>";
                         form_control += $@"<label class=""""></label>";
                         break;
+
+                    case 11:
+
+                        var options = ParFieldTypeDB.getComponenteValues(header, ParCompany_id, id);
+
+                        form_control += options;
+
+                        break;
                 }
 
                 //Incrementar valor para o pai do elemento para Ytoara.
@@ -6561,6 +6663,7 @@ namespace SgqServiceBusiness.Api
                                                 ),
                                     classe: "btn-warning btnNotAvaliable na font11"
                                 );
+
 
 
             bool haveAccordeon = false;
@@ -7097,7 +7200,9 @@ namespace SgqServiceBusiness.Api
                             //tipo de input
                             string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
 
-                            string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
+                            bool hasInfo = dbEf.ParLevel3XHelp.Where(x => x.IsActive).Any(x => x.ParLevel3_Id == parLevel3.Id);
+
+                            string level3List = html.level3(parLevel3, input, classInput, labelsInputs, hasInfo);
                             level3Group.Append(level3List);
                         }
                     }
@@ -7251,7 +7356,7 @@ namespace SgqServiceBusiness.Api
                 //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 var botoesTodos = "";
-                if (GlobalConfig.Brasil)
+                if (GlobalConfig.Brasil || GlobalConfig.SESMT)
                 {
                     botoesTodos = "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
                                     "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
@@ -7290,6 +7395,7 @@ namespace SgqServiceBusiness.Api
         {
             var html = new Html();
             string input = null;
+
             if (parLevel3.ParLevel3InputType_Id == 1)
             {
                 classInput = " boolean";
@@ -7536,6 +7642,27 @@ namespace SgqServiceBusiness.Api
 
                 input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
             }
+            else if (parLevel3.ParLevel3InputType_Id == 13)
+            {
+                classInput = " inputData";
+                labels = html.div(
+                                  outerhtml: "",
+                                  classe: ""
+                                  );
+
+                input = html.campoData(id: parLevel3.Id.ToString());
+
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 14)
+            {
+                classInput = " inputHora";
+                labels = html.div(
+                                  outerhtml: "",
+                                  classe: ""
+                                  );
+
+                input = html.campoHora(id: parLevel3.Id.ToString());
+            }
             else
             {
                 ///Campo interval está repetindo , falta o campo defeitos
@@ -7570,6 +7697,8 @@ namespace SgqServiceBusiness.Api
                                                 intervalMax: parLevel3.IntervalMax,
                                                 unitName: parLevel3.ParMeasurementUnit_Name);
             }
+
+
             return input;
         }
 
@@ -7714,6 +7843,10 @@ namespace SgqServiceBusiness.Api
             if (GlobalConfig.Santander)
             {
                 empresa = "santander";
+            }
+            if (GlobalConfig.SESMT)
+            {
+                empresa = "SESMT";
             }
 
             string footOuterHtml = html.br() +
@@ -8145,10 +8278,15 @@ namespace SgqServiceBusiness.Api
             string ProductDisposition = insertCorrectiveActionClass.ProductDisposition;
             string PreventativeMeasure = insertCorrectiveActionClass.PreventativeMeasure;
             string reauditnumber = insertCorrectiveActionClass.reauditnumber;
+            string datetimeTechinicalHour = insertCorrectiveActionClass.DatetimeTechinicalHour;
 
             try
             {
-
+                var dataLiberacao = "";
+                if (!string.IsNullOrEmpty(datetimeTechinicalHour))
+                {
+                     dataLiberacao = DateTimeTechinical.Replace(DateTimeTechinical.Split(' ')[1], datetimeTechinicalHour);
+                }
                 //inserir a acção corretiva com processo
 
                 string parCluster_Id_parLevel1_id = ParLevel1_Id.Replace(quebraProcesso, "|");
@@ -8181,7 +8319,9 @@ namespace SgqServiceBusiness.Api
                 ImmediateCorrectiveAction = HttpUtility.UrlDecode(ImmediateCorrectiveAction, System.Text.Encoding.Default);
                 ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
                 PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
-
+                if(!string.IsNullOrEmpty(dataLiberacao)){
+                    DateTimeTechinical = dataLiberacao;
+                }
                 int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure,
                     ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
 
@@ -8203,7 +8343,7 @@ namespace SgqServiceBusiness.Api
 
                         data = ano + "/" + mes + "/" + dia;
                     }
-
+                  
                     DateTime dataAPP = Convert.ToDateTime(data);
 
                     //Pega a data pela regra da frequencia
@@ -9063,6 +9203,7 @@ namespace SgqServiceBusiness.Api
         {
             return Resources.Resource;
         }
+
     }
 }
 

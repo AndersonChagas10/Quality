@@ -43,7 +43,7 @@ namespace PlanoAcaoEF
         public Nullable<int> UnidadeDeMedida_Id { get; set; }
         public bool IsTatico { get; set; }
         public Nullable<int> Tatico_Id { get; set; }
-        public Nullable<bool> IsFta { get; set; }
+        public bool IsFta { get; set; }
         public Nullable<int> TemaProjeto_Id { get; set; }
         public Nullable<int> TipoProjeto_Id { get; set; }
     }

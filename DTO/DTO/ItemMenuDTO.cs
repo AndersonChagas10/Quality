@@ -17,7 +17,11 @@ namespace DTO.DTO
         public bool IsActive { get; set; }
 
         public bool IsSubItem { get; set; }
+
+        public int? PDCAMenuItem { get; set; }
+
         public ItemMenuDTO MenuPredecessor { get; set; }
         public List<ItemMenuDTO> ListaFilho { get; set; } = new List<ItemMenuDTO>();
+ 
     }
 }

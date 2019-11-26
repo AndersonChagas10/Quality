@@ -16,7 +16,7 @@
     <AssemblyName>SgqService</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
@@ -231,6 +231,7 @@
     <Content Include="Scripts\appColeta\GQ\message.js" />
     <Content Include="Scripts\appColeta\GQ\mock.js" />
     <Content Include="Scripts\appColeta\GQ\mock_modulos.js" />
+    <Content Include="Scripts\appColeta\GQ\modal.js" />
     <Content Include="Scripts\appColeta\GQ\module.js" />
     <Content Include="Scripts\appColeta\GQ\navBar.js" />
     <Content Include="Scripts\appColeta\GQ\overlay.js" />
@@ -248,6 +249,30 @@
     <Content Include="Scripts\appColeta\GQ\sync.js" />
     <Content Include="Scripts\appColeta\GQ\tempSave.js" />
     <Content Include="Scripts\appColeta\GQ\verificacaoTipificacao.js" />
+    <Content Include="Scripts\appColeta\RH\alert.js" />
+    <Content Include="Scripts\appColeta\RH\app.js" />
+    <Content Include="Scripts\appColeta\RH\coleta.js" />
+    <Content Include="Scripts\appColeta\RH\correctiveAction.js" />
+    <Content Include="Scripts\appColeta\RH\crypto.js" />
+    <Content Include="Scripts\appColeta\RH\guard.js" />
+    <Content Include="Scripts\appColeta\RH\index.css" />
+    <Content Include="Scripts\appColeta\RH\index2.js" />
+    <Content Include="Scripts\appColeta\RH\layout.js" />
+    <Content Include="Scripts\appColeta\RH\logado.js" />
+    <Content Include="Scripts\appColeta\RH\login.js" />
+    <Content Include="Scripts\appColeta\RH\mensagem.js" />
+    <Content Include="Scripts\appColeta\RH\menu.js" />
+    <Content Include="Scripts\appColeta\RH\parCargo.js" />
+    <Content Include="Scripts\appColeta\RH\parDepartment.js" />
+    <Content Include="Scripts\appColeta\RH\parFrequency.js" />
+    <Content Include="Scripts\appColeta\RH\parHeaderField.js" />
+    <Content Include="Scripts\appColeta\RH\parLevels.js" />
+    <Content Include="Scripts\appColeta\RH\planejamentoColeta.js" />
+    <Content Include="Scripts\appColeta\RH\resultado.js" />
+    <Content Include="Scripts\appColeta\RH\rotinaHeaderField.js" />
+    <Content Include="Scripts\appColeta\RH\routeConfig.js" />
+    <Content Include="Scripts\appColeta\RH\utils.js" />
+    <Content Include="Scripts\appColeta\RH\zoom.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
@@ -309,6 +334,10 @@
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
       <Name>Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogSystem\LogSystem.csproj">
+      <Project>{2f2074d0-e013-46bb-99b9-e53603bfc44d}</Project>
+      <Name>LogSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
       <Project>{3ecf1d86-91f3-4140-a11a-1546b8f662a1}</Project>

@@ -46,6 +46,10 @@ namespace Dominio
         [Index(IsUnique = true)]
         public int? ParLevel2_Id { get; set; }
 
+        [DisplayName("Cluster")]
+        [Index(IsUnique = true)]
+        public int? ParCluster_Id { get; set; }
+
         [DisplayName("Grupo")]
         //[Index(IsUnique = true)]
         public int? ParLevel3Group_Id { get; set; }
@@ -55,10 +59,6 @@ namespace Dominio
         public int? Evaluation { get; set; }
 
         public int? Sample { get; set; }
-
-        public DateTime? EffectiveDateStart { get; set; }
-
-        public DateTime? EffectiveDateEnd { get; set; }
          
         [DisplayName("Cargo")]
         //[Index(IsUnique = true)]
@@ -87,5 +87,8 @@ namespace Dominio
 
         [ForeignKey("ParCargo_Id")]
         public virtual ParCargo ParCargo { get; set; }
+
+        [ForeignKey("ParCluster_Id")]
+        public virtual ParCluster ParCluster { get; set; }
     }
 }

@@ -57,13 +57,13 @@
                                 <table class="table" id="tabelaResourceEN">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>
                                                 @Html.DisplayNameFor(model => model.Key)
                                             </th>
                                             <th>
                                                 @Html.DisplayNameFor(model => model.Value)
                                             </th>
-                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -71,13 +71,20 @@
                                         {
                                             <tr>
                                                 <td>
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                </td>
+                                                <td>
                                                     @Html.DisplayFor(modelItem => item.Key)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Value)
-                                                </td>
-                                                <td>
-                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @if (item.Value != null && item.Value.Length > 50)
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.Value).ToString().Substring(0, 50)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.Value)
+                                                    }
                                                 </td>
                                             </tr>
                                         }

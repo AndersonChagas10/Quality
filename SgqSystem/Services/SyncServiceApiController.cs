@@ -43,7 +43,7 @@ namespace SgqSystem.Controllers.Api
         {
             conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.Brasil || GlobalConfig.SESMT)
             {
                 conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             }

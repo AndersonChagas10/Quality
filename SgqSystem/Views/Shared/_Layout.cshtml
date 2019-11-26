@@ -347,7 +347,17 @@
                     "previous": '@Resources.Resource.previous',
                     "next": '@Resources.Resource.next'
                 }
-            }
+            },
+            'columnDefs': [
+                {
+                    'targets': 3,
+                    "mRender": function (data, type, row) {
+                        var trimmedString = data.substring(0, 100);
+                        return trimmedString + '...';
+                    }
+                }
+            ]
+            
         };
 
         /*DataTable Padrão BR*/

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using Dominio;
 using DTO.DTO;
 using DTO.Helpers;
 using Helper;
 using PlanoAcaoCore;
-using PlanoAcaoEF;
 using System;
 using System.ComponentModel;
 using System.Data.Entity.Validation;
@@ -22,7 +22,7 @@ namespace PlanoDeAcaoMVC.PaMail
 
             try
             {
-                using (var db = new PlanoDeAcaoEntities())
+                using (var db = new SgqDbDevEntities())
                 {
                     SaveEmailContenteEF(email, db);
                     Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(email), Conn.emailFrom, Guard.DecryptStringAES(Conn.emailPass), Conn.emailSmtp, Conn.emailPort, Conn.emailSSL, SendCompletedCallbackPA, true));
@@ -30,7 +30,7 @@ namespace PlanoDeAcaoMVC.PaMail
             }
             catch (Exception ex)
             {
-                using (var db = new PlanoDeAcaoEntities())
+                using (var db = new SgqDbDevEntities())
                 {
                     db.Configuration.ValidateOnSaveEnabled = false;
                     email.SendStatus = ex.Message;
@@ -50,7 +50,7 @@ namespace PlanoDeAcaoMVC.PaMail
 
         }
 
-        private static void SaveEmailContenteEF(EmailContent email, PlanoDeAcaoEntities dbPa)
+        private static void SaveEmailContenteEF(Dominio.EmailContent email, SgqDbDevEntities dbPa)
         {
             if (email.Id > 0)
             {
@@ -73,7 +73,7 @@ namespace PlanoDeAcaoMVC.PaMail
         {
             try
             {
-                using (var db = new PlanoDeAcaoEntities())
+                using (var db = new SgqDbDevEntities())
                 {
 
                     db.Configuration.ValidateOnSaveEnabled = false;

@@ -27,7 +27,7 @@ namespace Helper
         /// <param name="ex"></param>
         private void LogException(Exception ex)
         {
-            new CreateLog(ex);
+            LogSystem.LogErrorBusiness.Register(ex);
         }
 
         /// <summary>
@@ -36,7 +36,8 @@ namespace Helper
         /// <param name="ex"></param>
         private void LogException(Exception ex, string controllerAction)
         {
-            new CreateLog(ex, controllerAction);
+            //new CreateLog(ex, controllerAction);
+            LogSystem.LogErrorBusiness.Register(ex);
         }
 
         /// <summary>

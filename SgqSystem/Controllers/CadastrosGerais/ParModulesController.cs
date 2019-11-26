@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -19,6 +20,7 @@ namespace SgqSystem.Controllers
         {
             return View(db.ParModule.ToList());
         }
+    
 
         // GET: ParModules/Details/5
         public ActionResult Details(int? id)

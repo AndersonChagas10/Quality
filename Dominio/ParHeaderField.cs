@@ -53,5 +53,8 @@ namespace Dominio
         public virtual ICollection<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
 
         public virtual ICollection<ParMultipleValues> ParMultipleValues { get; set; }
+
+        [NotMapped]
+        public virtual ParHeaderFieldXComponenteGenerico ParHeaderFieldXComponenteGenerico { get; set; }
     }
 }

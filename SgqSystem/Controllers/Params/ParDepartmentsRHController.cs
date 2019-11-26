@@ -24,12 +24,12 @@ namespace SgqSystem.Controllers
             var listaUnidades = db.ParCompany.ToList();
             listaUnidades.Add(new ParCompany() { Id = -1, Name = "Selecione" });
             ViewBag.ParCompany_Id = new SelectList(listaUnidades, "Id", "Name", -1);
-            
+
             List<ParDepartment> departamentos = new List<ParDepartment>();
 
             departamentos = db.ParDepartment.OrderBy(x => x.Id).ToList();
 
-            if(filtro != "")
+            if (filtro != "")
             {
                 departamentos = db.ParDepartment.Where(x => x.Name.Contains(filtro)).OrderBy(x => x.Id).ToList();
                 ViewBag.filtro = filtro;
@@ -49,18 +49,22 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParDepartment parDepartment = db.ParDepartment.Find(id);
+            ParDepartment parDepartment = db.ParDepartment.FirstOrDefault(x => x.Id == id);
             if (parDepartment == null)
             {
                 return HttpNotFound();
             }
+            parDepartment.ParCompany = db.ParCompany.Where(x => x.Id == parDepartment.ParCompany_Id).ToList();
+            parDepartment.ParDepartmentFilho = db.ParDepartment.Where(x => x.Parent_Id == id).ToList();
             return View(parDepartment);
         }
 
         // GET: ParDepartments/Create
-        public ActionResult Create()
+        public ActionResult Create(int? parent_Id = null)
         {
-            MontaLista(new ParDepartment());
+            ParDepartment parDepartment = db.ParDepartment.Find(parent_Id);
+            MontaLista(new ParDepartment(), parent_Id);
+            ViewBag.Parent_Id = parent_Id;
             return View();
         }
 
@@ -83,15 +87,18 @@ namespace SgqSystem.Controllers
             if (parDepartment.ParDepartmentGroup_Id == 0)
                 parDepartment.ParDepartmentGroup_Id = null;
 
-            DepartamentoDuplicado(parDepartment);
+            //DepartamentoDuplicado(parDepartment);
             if (ModelState.IsValid)
             {
                 db.ParDepartment.Add(parDepartment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                if(parDepartment.Parent_Id == null || parDepartment.Parent_Id == 0)
+                    return RedirectToAction("Index");
+                else
+                    return RedirectToAction("Details/" + parDepartment.Parent_Id);
             }
 
-            MontaLista(parDepartment);
+            MontaLista(parDepartment, null);
             return View(parDepartment);
         }
 
@@ -116,7 +123,7 @@ namespace SgqSystem.Controllers
                 return HttpNotFound();
             }
 
-            MontaLista(parDepartment);
+            MontaLista(parDepartment, null);
             return View(parDepartment);
         }
 
@@ -128,7 +135,7 @@ namespace SgqSystem.Controllers
         public ActionResult Edit([Bind(Include = "Id,Name,Description,AddDate,AlterDate,Active,Parent_Id,ParCompany_Id,ParDepartmentGroup_Id")] ParDepartment parDepartment)
         {
             MontaHash(parDepartment);
-            DepartamentoDuplicado(parDepartment);
+            //DepartamentoDuplicado(parDepartment);
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
@@ -146,7 +153,7 @@ namespace SgqSystem.Controllers
                 if (ModelState.IsValid)
                 {
                     db.Entry(parDepartment).State = EntityState.Modified;
-                    
+
                     if (parDepartment.Parent_Id > 0)
                         db.Entry(parDepartment).Property(x => x.ParCompany_Id).IsModified = false;
 
@@ -155,7 +162,7 @@ namespace SgqSystem.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            MontaLista(parDepartment);
+            MontaLista(parDepartment, null);
             return View(parDepartment);
         }
 
@@ -213,7 +220,10 @@ namespace SgqSystem.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             ParDepartment parDepartment = db.ParDepartment.Find(id);
-            db.ParDepartment.Remove(parDepartment);
+
+            db.Entry(parDepartment).State = EntityState.Modified;
+            parDepartment.Active = false;
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -254,7 +264,7 @@ namespace SgqSystem.Controllers
             }
         }
 
-        private void MontaLista(ParDepartment parDepartment)
+        private void MontaLista(ParDepartment parDepartment, int? parent_Id)
         {
             ViewBag.TemFilhos = db.ParDepartment.Any(x => x.Parent_Id == parDepartment.Id && x.Active);
 
@@ -271,13 +281,13 @@ namespace SgqSystem.Controllers
             listaGrupoDepartamentos.Insert(0, new ParDepartmentGroup() { Id = 0, Name = "Selecione" });
             ViewBag.ParDepartmentGroup_Id = new SelectList(listaGrupoDepartamentos, "Id", "Name", parDepartment.ParDepartmentGroup_Id);
 
-            //ViewBag.Parents = new SelectList(parDepartment as IEnumerable<ParDepartment>, "Id", "Name", parDepartment.ParCompany_Id);
-
+   
             ViewBag.Parents = db.ParDepartment.Where(x => x.Id == parDepartment.Parent_Id).ToList()
-             .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
-             .ToList();
-
+                .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+                .ToList();
+           
             if (ViewBag.Parents.Count == 0)
+
             {
                 var semDados = new List<KeyValuePair<int, string>>() {
                 new KeyValuePair<int, string>(0, ""),
@@ -286,6 +296,18 @@ namespace SgqSystem.Controllers
                 ViewBag.Parents = semDados;
             }
 
+                ViewBag.ParentsCreate = db.ParDepartment.Where(x => x.Id == parent_Id).ToList()
+               .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+               .ToList();
+
+                if (ViewBag.ParentsCreate.Count == 0)
+                {
+                    var semDados = new List<KeyValuePair<int, string>>() {
+                    new KeyValuePair<int, string>(0, ""),
+                    };
+                    ViewBag.ParentsCreate = semDados;
+                }
+            
         }
 
         private void DepartamentoDuplicado(ParDepartment parDepartment)

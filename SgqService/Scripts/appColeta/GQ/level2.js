@@ -1054,25 +1054,39 @@ function criarFiltroDeFrequencia(){
         $('.headerCounter > div:last').append(htmlSelect);
 }
 
-$('body').off('change','select[data-filtro]').on('change','select[data-filtro]',function(){
-	var valorSelecionado = $(this).val();
-	
-	//Ocultar todas as linhas
-	$('.counters .frequencyTotal')
-		.parents('.list-group-item')
-		.addClass('hide');
-			
-	if(valorSelecionado.length == 1){
-		$('.counters .frequencyTotal')
-			.parents('.list-group-item')
-			.removeClass('hide');
-		return;
-	}
-	
+$('body').off('change', 'select[data-filtro]').on('change', 'select[data-filtro]', function () {
+    var valorSelecionado = $(this).val();
+
+    //Ocultar todas as linhas
+    $('.counters .frequencyTotal')
+        .parents('.list-group-item')
+        .addClass('hide');
+
+    $.each($('.accordion > .card'),
+        function (i, o) {
+            $(o).removeClass('hide')
+        }
+    )
+
+    if (valorSelecionado.length == 1) {
+        $('.counters .frequencyTotal')
+            .parents('.list-group-item')
+            .removeClass('hide');
+        return;
+    }
+
     //Mostra linhas que não batem o valor
-    $('.counters .frequencyTotal').filter(function() {
+    $('.counters .frequencyTotal').filter(function () {
         return $(this).text() === valorSelecionado;
     })
         .parents('.list-group-item')
         .removeClass('hide')
+
+    $.each($('.accordion > .card'),
+        function (i, o) {
+            if ($(o).find('.gabriel:not(.hide)').length == 0) {
+                $(o).addClass('hide');
+            }
+        }
+    );
 });

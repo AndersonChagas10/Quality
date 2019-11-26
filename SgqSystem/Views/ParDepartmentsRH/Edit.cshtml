@@ -16,7 +16,7 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParDepartments")">@Resources.Resource.department</a>
+                    <a href="@Url.Action("Index", "ParDepartmentsRH")">@Resources.Resource.department</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -129,7 +129,7 @@
                                             <div class="col-md-offset-3 col-md-9">
                                                 <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
                                                 @Html.ActionLink(Resources.Resource.back as string, "Index", null, new { @class = "btn btn-default" })
-                                                @Html.ActionLink("Voltar para detalhes Grupo de Departamentos", "Details", "ParDepartmentGroups", new { id = Model.ParDepartmentGroup_Id }, new { @class = "btn btn-default" })
+                                                @*@Html.ActionLink("Voltar para detalhes Grupo de Departamentos", "Details", "ParDepartmentGroups", new { id = Model.ParDepartmentGroup_Id }, new { @class = "btn btn-default" })*@
                                             </div>
                                         </div>
                                     </div>
@@ -178,18 +178,21 @@
     };
 
     function validaFilhoEEmpresaVinculados() {
-        if ($("#ParCompany_Id :selected").val() == 0 && $("#Parent_Id").val() == 0) {
+        if ($("#ParCompany_Id :selected").val() == "0" && ($("[name=Parent_Id]").val() == "0" || $("[name=Parent_Id]").val() == null)) {
             $("#ParCompany_Id").prop('disabled', false);
-            $("#Parent").prop('disabled', false);
+            $("[name=Parent_Id]").prop('disabled', false);
+            $("#btnBuscarDepartamentos").prop('disabled', false);
             $("#infoFilho").hide();
             $("#infoVinculoUnidade").hide();
-        } else if ($("#Parent_Id").val() > 0) {
+        } else if ($("[name=Parent_Id]").val() != "0" && $("[name=Parent_Id]").val() != null) {
             $("#ParCompany_Id").prop('disabled', true);
-            $("#Parent").prop('disabled', false);
+            $("[name=Parent_Id]").prop('disabled', false);
+            $("#btnBuscarDepartamentos").prop('disabled', false);
             $("#infoFilho").hide();
             $("#infoVinculoUnidade").show();
         } else {
-            $("#Parent").prop('disabled', true);
+            $("[name=Parent_Id]").prop('disabled', true);
+            $("#btnBuscarDepartamentos").prop('disabled', true);
             $("#ParCompany_Id").prop('disabled', false);
             $("#infoFilho").show();
             $("#infoVinculoUnidade").hide();
@@ -198,6 +201,7 @@
 
     $(document).ready(function () {
         closeLeftSidebar();
+        validaFilhoEEmpresaVinculados();
     });
 
 </script>

@@ -1,4 +1,4 @@
-function listarParCargo() {
+function listarParCargo(isVoltar) {
 
     cleanGlobalVarParCargo();
 
@@ -53,8 +53,7 @@ function listarParCargo() {
         }
 
     });
-
-    var voltar = '<a onclick="listarParDepartment(' + currentParDepartmentParent_Id + ');" class="btn btn-warning">Voltar</a>';
+    var voltar = '<a onclick="listarParDepartment(' + currentParDepartmentParent_Id + "," + isVoltar +'  );" class="btn btn-warning">Voltar</a>';
 
     html = getHeader() +
         '<div class="container-fluid">                                       ' +
@@ -77,6 +76,10 @@ function listarParCargo() {
     $('div#app').html(html);
 
     setBreadcrumbs();
+
+    if ($(".list-group button").length == 1 && (isVoltar == false || isVoltar == undefined)) {
+        $("[data-par-cargo-id]").trigger('click');
+    }
 
 }
 
@@ -353,7 +356,7 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
     }, 200);
     
 
-}function listarParCargo() {
+}function listarParCargo(isVoltar) {
 
     cleanGlobalVarParCargo();
 
@@ -408,8 +411,7 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
         }
 
     });
-
-    var voltar = '<a onclick="listarParDepartment(' + currentParDepartmentParent_Id + ');" class="btn btn-warning">Voltar</a>';
+    var voltar = '<a onclick="listarParDepartment(' + currentParDepartmentParent_Id + "," + isVoltar + ');" class="btn btn-warning">Voltar</a>';
 
     html = getHeader() +
         '<div class="container-fluid">                                       ' +
@@ -433,6 +435,9 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
 
     setBreadcrumbs();
 
+    if ($(".list-group button").length == 1 && (isVoltar == false || isVoltar == undefined)) {
+        $("[data-par-cargo-id]").trigger('click');
+    }
 }
 
 function retornaCargos(parDepartmentId) {

@@ -112,6 +112,9 @@ namespace SgqServiceBusiness.Mappers
 
                 x.AddProfile<ParLevel1XRotinaIntegracaoMapperProfile>();
 
+                x.AddProfile<ComponenteGenericoMapperProfile>();
+
+                x.AddProfile<ParHeaderFieldXComponenteGenericoMapperProfile>();
 
                 ///*PA............*/
                 //x.AddProfile<AcompanhamentoTarefaProfile>();
