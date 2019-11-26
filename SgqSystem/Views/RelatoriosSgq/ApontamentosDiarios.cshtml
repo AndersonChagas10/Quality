@@ -399,9 +399,12 @@
 
                             $(tableLogTrack).find('table').dataTable({
                                 "ordering": false,
-                                "pageLength": 25
+                                "pageLength": 25,
+                                "scrollX": true,
+                                "initComplete": function (settings, json) {
+                                    setTimeout(function () {$.fn.dataTable.tables({ visible: true, api: true }).columns.adjust(); },500)
+                                }
                             } );
-
 
                         })
                     });
@@ -480,8 +483,13 @@
 
                             $(tableLogTrack).find('table').dataTable({
                                 "ordering": false,
-                                "pageLength": 25
-                            } );
+                                "pageLength": 25,
+                                "scrollX": true,
+                                "initComplete": function (settings, json) {
+                                    setTimeout(function () {$.fn.dataTable.tables({ visible: true, api: true }).columns.adjust(); },500)
+                                }
+                            });
+
                         })
                     });
 
@@ -492,6 +500,7 @@
                     $('#myModal, #modalHeaderField').on('hidden.bs.modal', function () {
                         //$('select[name="selectParReasonEdit"]').attr('style','');
                         $('textarea[name="textareaParReasonEdit"]').attr('style','');
+                        $('textarea[name="textareaParReasonEdit"]').val('');
                         $('.alertParReasonEditMinimo10').addClass('hide');
                     })
                     //$("#botaoFecharModal").on('click', function () {
