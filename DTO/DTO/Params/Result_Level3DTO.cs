@@ -265,7 +265,7 @@ namespace DTO.DTO.Params
                         var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
                         var valorDefinido = Guard.ConverteValorCalculado(_Value);
                         var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
-                        return dentroDoRange ? "0" : "1";
+                        return dentroDoRange ? "1" : "0";
                     }
                     else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 4) != null)//CALCULADO
                     {
