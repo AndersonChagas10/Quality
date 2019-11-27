@@ -8,14 +8,14 @@ var coletasAgrupadas = [];
 }
 */
 
-function getResultEvaluationSample(parDepartment_Id, parCargo_Id) {
+function getResultEvaluationSample(parDepartment_Id, parCargo_Id, parCluster_Id) {
 
 	var obj = {
 		ParDepartment_Id: parDepartment_Id,
 		ParCargo_Id: parCargo_Id,
 		Evaluation: 1,
         Sample: 1,
-        ParCluster_Id: currentParCluster_Id
+        ParCluster_Id: parCluster_Id
 	};
 
     $(coletasAgrupadas).each(function (i, o) {

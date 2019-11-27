@@ -13,7 +13,7 @@ function listarParCargo(isVoltar) {
     var htmlParCargo = "";
 
     $(listaParCargo).each(function (i, o) {
-        currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, o.Id);
+        currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, o.Id, currentParCluster_Id);
 
         //FIX para trabalhar de forma correta os valores 
         //que são recebidos do backend com os resultados
