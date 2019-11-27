@@ -89,13 +89,21 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             using (var factory = new Factory("DefaultConnection"))
             {
+                var sqlFiltro = "";
+                if(form.ParClusterGroup_Ids.Length > 0)
+                {
+                    sqlFiltro = $@" AND PCG.Id in ({string.Join(",", form.ParClusterGroup_Ids)})";
+                }
 
                 var query = $@"SELECT DISTINCT TOP 500
-                        	PCL.Id, PCL.Name
-                        FROM ParCluster PCL
-						WHERE 1 = 1
-                        AND PCL.IsActive = 1
-                        AND PCL.Name like '%{search}%'";
+                                	PC.Id
+                                   ,PC.Name
+                                FROM ParCluster PC
+                                LEFT JOIN ParClusterGroup PCG ON PCG.Id = PC.ParClusterGroup_Id
+                                WHERE 1 = 1
+                                AND PC.IsActive = 1
+                                {sqlFiltro}
+                                AND PC.Name LIKE '%{search}%'";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
@@ -319,6 +327,158 @@ namespace SgqSystem.Controllers.Api.Formulario
 
                 var query = $@"SELECT DISTINCT TOP 500 PL3.ID, PL3.NAME FROM parLevel3 PL3 {sqlFilter}
                 AND Pl3.Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredParLevel1GQ")]
+        public List<Select3ViewModel> GetFilteredParLevel1GQ(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                //var retornoFormulario = new FormularioViewModel();
+                //retornoFormulario.ParDepartments = GetParDepartments(form, factory);
+                //retornoFormulario.ParSecoes = GetParSecoes(form, factory, retornoFormulario);
+                //retornoFormulario.ParCargos = GetParCargos(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
+                //var parDepartment_Ids = form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList();
+
+                //string sqlFilter = "";
+                //string sqlWhereFilter = "";
+
+                //if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)
+                //{
+                //    sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel1_Id = PL1.Id ";
+                //    sqlWhereFilter += $@"AND (PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)}) OR PVP.ParDepartment_Id IS NULL)";
+                //}
+
+                var query = $@"SELECT DISTINCT
+                                	p1.Id AS Id
+                                   ,p1.Name AS Name
+                                FROM ParLevel3Level2Level1 p321
+                                INNER JOIN ParLevel3Level2 p32
+                                	ON p321.ParLevel3Level2_Id = p32.Id
+                                INNER JOIN ParLevel1 p1
+                                	ON p321.ParLevel1_Id = p1.Id
+                                INNER JOIN ParLevel2 p2
+                                	ON p32.ParLevel2_Id = p2.Id
+                                INNER JOIN ParLevel3 p3
+                                	ON p32.ParLevel3_Id = p3.Id
+                                WHERE p1.Id IS NOT NULL
+                                AND p1.IsActive = 1
+                                AND p2.IsActive = 1
+                                AND p3.IsActive = 1
+                                AND p321.Active = 1
+                                AND p32.IsActive = 1
+                                AND p1.Name like '%{search}%'
+                                ORDER BY p1.Id";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredParLevel2GQ")]
+        public List<Select3ViewModel> GetFilteredParLevel2GQ(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                //var retornoFormulario = new FormularioViewModel();
+                //retornoFormulario.ParStructures = GetParStructure(form, factory);
+                //retornoFormulario.ParCompanies = GetParCompanies(form, factory);
+                //retornoFormulario.Shifts = GetShifts(factory);
+                //retornoFormulario.ParDepartments = GetParDepartments(form, factory);
+                //retornoFormulario.ParSecoes = GetParSecoes(form, factory, retornoFormulario);
+                //retornoFormulario.ParCargos = GetParCargos(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
+                //retornoFormulario.ParLevel1s = GetParLevel1s(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
+                //var parLevel1_Ids = form.ParLevel1_Ids.Length > 0 ? form.ParLevel1_Ids.ToList() : retornoFormulario.ParLevel1s.Select(x => x.Id).ToList();
+
+                string sqlFilter = "";
+                if (form.ParLevel1_Ids.Length > 0)
+                {
+                    sqlFilter = $@" AND p1.Id IN ({ string.Join(",", form.ParLevel1_Ids)})";
+                }
+
+                var query = $@"SELECT DISTINCT p2.Id AS Id
+                                   ,p2.Name AS name
+                               FROM ParLevel3Level2Level1 p321
+                               INNER JOIN ParLevel3Level2 p32
+                               	ON p321.ParLevel3Level2_Id = p32.Id
+                               INNER JOIN ParLevel1 p1
+                               	ON p321.ParLevel1_Id = p1.Id
+                               INNER JOIN ParLevel2 p2
+                               	ON p32.ParLevel2_Id = p2.Id
+                               INNER JOIN ParLevel3 p3
+                               	ON p32.ParLevel3_Id = p3.Id
+                               WHERE p1.Id IS NOT NULL
+                               AND p1.IsActive = 1
+                               AND p2.IsActive = 1
+                               AND p3.IsActive = 1
+                               AND p321.Active = 1
+                               AND p32.IsActive = 1
+                               AND P2.Name like '%{search}%'
+                               {sqlFilter}
+                               ORDER BY p2.Id";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredParLevel3GQ")]
+        public List<Select3ViewModel> GetFilteredParLevel3GQ(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                //var retornoFormulario = new FormularioViewModel();
+                //retornoFormulario.ParStructures = GetParStructure(form, factory);
+                //retornoFormulario.ParCompanies = GetParCompanies(form, factory);
+                //retornoFormulario.Shifts = GetShifts(factory);
+                //retornoFormulario.ParDepartments = GetParDepartments(form, factory);
+                //retornoFormulario.ParSecoes = GetParSecoes(form, factory, retornoFormulario);
+                //retornoFormulario.ParCargos = GetParCargos(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
+                //retornoFormulario.ParLevel1s = GetParLevel1s(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
+                //var parLevel1_Ids = form.ParLevel1_Ids.Length > 0 ? form.ParLevel1_Ids.ToList() : retornoFormulario.ParLevel1s.Select(x => x.Id).ToList();
+                //retornoFormulario.ParLevel2s = GetParLevel2sGQ(form, factory, parLevel1_Ids);
+                //var parLevel2_Ids = form.ParLevel2_Ids.Length > 0 ? form.ParLevel2_Ids.ToList() : retornoFormulario.ParLevel2s.Select(x => x.Id).ToList();
+
+                string sqlFilter = "";
+                if (form.ParLevel1_Ids.Length > 0 || form.ParLevel2_Ids.Length > 0)
+                {
+                    if (form.ParLevel1_Ids.Length > 0)
+                        sqlFilter += $@" AND p1.Id IN ({ string.Join(",", form.ParLevel1_Ids)})";
+
+                    if (form.ParLevel2_Ids.Length > 0)
+                        sqlFilter += $@" AND p2.Id IN ({ string.Join(",", form.ParLevel2_Ids)})";
+                }
+
+                var query = $@"SELECT DISTINCT p3.Id AS Id
+                                   ,p3.Name AS name
+                               FROM ParLevel3Level2Level1 p321
+                               INNER JOIN ParLevel3Level2 p32
+                               	ON p321.ParLevel3Level2_Id = p32.Id
+                               INNER JOIN ParLevel1 p1
+                               	ON p321.ParLevel1_Id = p1.Id
+                               INNER JOIN ParLevel2 p2
+                               	ON p32.ParLevel2_Id = p2.Id
+                               INNER JOIN ParLevel3 p3
+                               	ON p32.ParLevel3_Id = p3.Id
+                               WHERE p1.Id IS NOT NULL
+                               AND p1.IsActive = 1
+                               AND p2.IsActive = 1
+                               AND p3.IsActive = 1
+                               AND p321.Active = 1
+                               AND p32.IsActive = 1
+                               AND P3.Name like '%{search}%'
+                               {sqlFilter}
+                               ORDER BY p3.Id";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 

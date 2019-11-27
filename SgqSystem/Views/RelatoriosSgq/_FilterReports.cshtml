@@ -68,14 +68,14 @@
                             }
 
                             @*@if (ViewBag.ShowParStructure == true)
-                                {
-                                    <div class="col-sm-12">
-                                        <div class="form-group">
-                                            <label><strong>@Resources.Resource.structure</strong></label>
-                                            <select class="form-control" name="parStructure_Ids" multiple></select>
-                                        </div>
-                                    </div>
-                                }*@
+        {
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label><strong>@Resources.Resource.structure</strong></label>
+                    <select class="form-control" name="parStructure_Ids" multiple></select>
+                </div>
+            </div>
+        }*@
 
                             @if (ViewBag.ShowParClusterGroup == true)
                             {
@@ -319,6 +319,54 @@
                                         <button type="button" data-filtroselect3-btn
                                                 data-filtroselect3-select="select[name=parLevel3_Ids]"
                                                 data-filtroselect3-url="@Url.Action("GetFilteredParLevel3", "api/Formulario")"
+                                                data-filtroselect3-default-select="@ViewBag.ShowParLevel3Default">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parLevel3_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParLevel1GQ == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.level1</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parLevel1_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParLevel1GQ", "api/Formulario")"
+                                                data-filtroselect3-default-select="@ViewBag.ShowParLevel1Default">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parLevel1_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParLevel2GQ == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.level2</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parLevel2_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParLevel2GQ", "api/Formulario")"
+                                                data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parLevel2_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParLevel3GQ == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.level3</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parLevel3_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParLevel3GQ", "api/Formulario")"
                                                 data-filtroselect3-default-select="@ViewBag.ShowParLevel3Default">
                                             Abrir
                                         </button>
