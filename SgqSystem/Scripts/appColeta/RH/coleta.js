@@ -90,7 +90,7 @@ $('body')
 var currentEvaluationSample = {};
 
 function getContador() {
-    currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, currentParCargo_Id);
+    currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, currentParCargo_Id, currentParCluster_Id);
     return '<div class="col-xs-12 alert-info" id="divColeta" style="padding-top:10px;padding-bottom:10px">' +
         '	<div class="col-xs-4">       ' +
         '		Avaliação                ' +
