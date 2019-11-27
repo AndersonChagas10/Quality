@@ -15,6 +15,7 @@ var currentAlertsAgrupados = [];
 var listaParFrequency = [];
 var currentsParDepartments_Ids = [];
 var currentPlanejamento = [];
+var currentParCluster_Id = [];
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
@@ -209,6 +210,7 @@ function setBreadcrumbs() {
     var breadcrumbLi = "";
     var isCurrent = true;
 
+
     if (currentParCargo_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParCargo, function (item) {
             return item.Id == currentParCargo_Id;
@@ -241,7 +243,15 @@ function setBreadcrumbs() {
         breadcrumbLi = deparment + breadcrumbLi;
         isCurrent = false;
     }
+    var cluster = "";
+    if (currentParCluster_Id) {
+        cluster = getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
+            return item.Id == currentParCluster_Id;
+        })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
 
+        breadcrumbLi = cluster + breadcrumbLi;
+        isCurrent = false;
+    }
 
     if (currentParFrequency_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
@@ -250,6 +260,9 @@ function setBreadcrumbs() {
 
         isCurrent = false;
     }
+
+
+
 
     breadcrumb += breadcrumbLi + '</ol>';
 

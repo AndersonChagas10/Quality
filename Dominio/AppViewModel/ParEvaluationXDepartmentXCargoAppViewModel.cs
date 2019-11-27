@@ -12,6 +12,7 @@ namespace Dominio.AppViewModel
         public int? ParCargo_Id { get; set; }
         public int ParDepartment_Id { get; set; }
         public int? ParCompany_Id { get; set; }
+        public int? ParCluster_Id { get; set; }
 
         public int Evaluation { get; set; }
         public int Sample { get; set; }

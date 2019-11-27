@@ -35,5 +35,7 @@ namespace Dominio.AppViewModel
         public int? Evaluation { get; set; }
 
         public int? Sample { get; set; }
+
+        public int? ParCluster_Id { get; set; }
     }
 }

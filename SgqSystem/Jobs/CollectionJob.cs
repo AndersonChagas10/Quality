@@ -166,7 +166,9 @@ namespace SgqSystem.Jobs
                         FROM Collection
                         WHERE IsProcessed = 0
                         AND ParHeaderField_Id IS NULL
-                        AND ParHeaderField_Value IS NULL";
+                        AND ParHeaderField_Value IS NULL
+                        AND Evaluation is not null
+						AND Sample is not null";
 
             var collectionLevel2 = new List<CollectionLevel2>();
 

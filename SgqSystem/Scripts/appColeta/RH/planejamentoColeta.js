@@ -62,9 +62,11 @@ function renderPlanejamentoColeta(frequencia) {
 		'	<input type="hidden"value="' + frequencia.Id + '">' +
 		'	<input type="text" class="form-control" value="' + frequencia.Name + '" readonly>' +
 		'</div>' +
-		'<div data-selects-cc>' +
-		criaHtmlSelect('Centro de Custo:', retornaOptionsPeloArray(retornaDepartamentos(0, undefined, parametrization.listaParDepartment), 'Id', 'Name', 'Selecione')) +
-		'</div>' +
+		'<div data-selects-cluster>' +
+        criaHtmlSelect('Cluster:', retornaOptionsPeloArray(retornaDepartamentos(0, undefined, parametrization.listaParCluster), 'Id', 'Name', 'Selecione')) +
+        '</div>' +
+        '<div data-selects-cc>' +
+        '</div>' +
 		'<div data-selects-cargo>' +
 		'</div>' +
 		'<div data-selects-indicador>' +
@@ -98,10 +100,10 @@ function renderPlanejamentoColeta(frequencia) {
 
 function renderPlanejamentos() {
 	var html = '<table class="table table-hover"><thead>' +
-		'<tr><th>Departamento</th><th>Cargo</th><th>Indicador</th><th></th></tr></thead><tbody>';
+		'<tr><th>Cluster</th><th>Centro de Custo</th><th>Cargo</th><th>Indicador</th><th></th></tr></thead><tbody>';
 
 	$(currentPlanejamento).each(function (i, o) {
-		html += '<tr data-table-planejado="' + i + '"><td>' + o.parDepartment_Name + '</td><td>' +
+        html += '<tr data-table-planejado="' + i + '"><td>' + o.parCluster_Name + '</td><td>' + o.parDepartment_Name + '</td><td>' +
 			(typeof (o.parCargo_Name) == 'undefined' ? '-' : o.parCargo_Name) + '</td><td>' +
 			(typeof (o.indicador_Name) == 'undefined' ? '-' : o.indicador_Name) + '</td><td>' +
 			'<button class="btn btn-danger" onclick="removePlanejamento(' + i + ')">X</button></td></tr>';
@@ -166,7 +168,8 @@ function saveInFilePlanejamento() {
 function downloadPlanejamento() {
 	console.log(JSON.stringify({
 		ParCompany_Id: currentParCompany_Id
-		, ParFrequency_Id: currentParFrequency_Id
+        , ParFrequency_Id: currentParFrequency_Id
+        , ParCluster_Id: currentParCluster_Id
 		, AppDate: currentCollectDate
 		, Planejamento: currentPlanejamento.map(function (obj) {
 			return {
@@ -178,13 +181,37 @@ function downloadPlanejamento() {
 	}));
 }
 
+$('body').off('change', '[data-selects-cluster] select').on('change', '[data-selects-cluster] select', function (e) {
+    var parCluster_Id = $(this).val();
+
+    $(this).parent().nextAll().remove();
+    $('[data-selects-cc]').html('');
+    $('[data-selects-cargo]').html('');
+    planejamento = {};
+
+    if (parCluster_Id > 0) {
+        var options = retornaDepartamentosPorCluster(parCluster_Id, undefined, parametrization.listaParEvaluationXDepartmentXCargoAppViewModel);
+
+        currentParCluster_Id = $(this).val();
+        planejamento.parCluster_Id = currentParCluster_Id;
+        planejamento.parCluster_Name = $(this).find(':selected').text();
+
+        if (options.length > 0) {
+            var departamentos = retornaOptionsPeloArray(options, 'Id', 'Name', 'Selecione');
+
+            $('[data-selects-cc]').append(criaHtmlSelect('Centro de Custo', departamentos));
+        } else {
+            $('[data-selects-cargo]').html(criaHtmlSelect('Cargo:', retornaOptionsPeloArray(retornaCargos($(this).val()), 'Id', 'Name', 'Selecione')));
+        }
+    }
+});
+
 $('body').off('change', '[data-selects-cc] select').on('change', '[data-selects-cc] select', function (e) {
 	var parDepartment_Id = $(this).val();
 
 	$(this).parent().nextAll().remove();
 	$('[data-selects-cargo]').html('');
 	$('[data-selects-indicador]').html('');
-	planejamento = {};
 
 	if (parDepartment_Id > 0) {
 		var options = retornaDepartamentos(parDepartment_Id, undefined, parametrization.listaParDepartment);
