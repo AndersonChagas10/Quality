@@ -28,6 +28,16 @@
     ViewBag.ShowDesdobramentoTipo = true;
     ViewBag.ShowUserSgqSurpervisor = true;
 
+
+    ViewBag.ShowShiftDefault = "Todos";
+    ViewBag.ShowParCriticalLevelDefault = "Selecione...";
+    ViewBag.ShowParLevel1StatusDefault = "Todos";
+    ViewBag.ShowAcaoStatusDefault = "Todos";
+    ViewBag.ShowParModuleDefault = "Selecione...";
+    ViewBag.ShowPesoDefault = "Todos";
+    ViewBag.ShowDesdobramentoTipoDefault = "Selecione...";
+    ViewBag.ShowParDepartmentDefault = "Todos";
+    ViewBag.ShowUserSgqSurpervisorDefault = "Todos";
 }
 
 @section Content {
@@ -41,8 +51,8 @@
             <div id="formBodyContent">
 
                 @*<div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
-                    <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
-                </div>*@
+                        <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+                    </div>*@
 
                 @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
@@ -452,7 +462,60 @@
                 EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
             });
 
+            $('#filterReports select').on('change', function () {
+                ChangeFilters();
+            });
+
+            ChangeFilters();
+
         });
+
+        function ChangeFilters() {
+
+            let $nivelCriticidade = $('select[name="parCriticalLevel_Ids"]');
+            let $statusIndicador = $('select[name="parLevel1Status_Ids"]');
+            let $peso = $('select[name="peso"]');
+
+            
+            //Nivel Criticidade
+            if (objFiltro.parCluster_Ids && objFiltro.parCluster_Ids.length > 0) {
+                AtivaSelect($nivelCriticidade);
+            } else {
+                LimpaSelect($nivelCriticidade);
+                InativaSelect($nivelCriticidade);
+            }
+
+            //Peso
+            if (objFiltro.ncComPeso && parseInt(objFiltro.ncComPeso[0]) == 1) {
+                AtivaSelect($peso);
+            } else {
+                LimpaSelect($nivelCriticidade);
+                InativaSelect($peso);
+            }
+
+            //status indicador
+            if (objFiltro.parLevel1_Ids && objFiltro.parLevel1_Ids.length > 0) {
+                AtivaSelect($statusIndicador);
+            } else {
+                InativaSelect($statusIndicador);
+            }
+
+        }
+
+        function LimpaSelect(select) {
+            select.empty();
+        }
+
+        function AtivaSelect(select) {
+            select.prop("disabled", false);
+            select.parent().find('button').attr("disabled", false);
+        }
+
+        function InativaSelect(select) {
+            select.find('option:first()').attr("selected",true)
+            select.prop("disabled", true);
+            select.parent().find('button').attr("disabled", true);
+        }
 
         function Send(toggle) {
 
@@ -474,6 +537,45 @@
         }
 
         function ValidaDadosParaEnvio() {
+
+            GuardJs.esconderMensagem();
+
+            //Modulo
+            if (!objFiltro.parModule_Ids || objFiltro.parModule_Ids.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Módulo é obrigatório")
+                return false;
+            }
+
+            //grupo de processo
+            if (!objFiltro.parClusterGroup_Ids || objFiltro.parClusterGroup_Ids <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Grupo de Processo é obrigatório");
+                return false;
+            }
+
+            //processo
+            if (!objFiltro.parCluster_Ids || objFiltro.parCluster_Ids.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Processo é obrigatório");
+                return false;
+            }
+
+            //Indicador
+            if (!objFiltro.parLevel1_Ids || objFiltro.parLevel1_Ids.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Indicador é obrigatório");
+                return false;
+            }
+
+
+            //Desdobramento
+            if (!objFiltro.ncComPeso || objFiltro.ncComPeso.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Exbibe Nc com peso é obrigatório");
+                return false;
+            }
+
+            //Desdobramento
+            if (!objFiltro.desdobramento || objFiltro.desdobramento.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Desdobramento é obrigatório");
+                return false;
+            }
 
             return true;
 

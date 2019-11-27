@@ -392,12 +392,16 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             using (var factory = new Factory("DefaultConnection"))
             {
-                var query = $@"SELECT '' AS Id, 'Todos' as Name
-                            UNION ALL
-                            SELECT DISTINCT TOP 500 
-                            cast(CONVERT(DECIMAL(18,2), Weight) as varchar(255)) AS Id, 
-                            cast(CONVERT(DECIMAL(18,2), Weight) as varchar(255)) AS Name
-                            FROM parlevel3level2 WHERE weight like '%{search}%' AND IsActive = 1 order by Id asc ";
+                var query = $@"SELECT
+                               	*
+                               FROM (
+                               	SELECT DISTINCT TOP 500
+                               		CAST(CAST(Weight AS INT) AS VARCHAR(255)) AS Id
+                               	   ,CAST(CAST(Weight AS INT) AS VARCHAR(255)) AS Name
+                               	FROM ParLevel3Level2
+                               	WHERE Weight LIKE '%{search}%'
+                               	AND IsActive = 1) A
+                               ORDER BY CAST(Id AS INT)";
 
                 var retorno = factory.SearchQuery<Peso>(query).ToList();
 

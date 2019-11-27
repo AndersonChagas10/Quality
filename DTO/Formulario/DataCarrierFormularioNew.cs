@@ -37,7 +37,7 @@ namespace DTO
 
         public int[] ParLevel3_Ids { get; set; } = new int[] { };
 
-        public int[] ParLevel3Status_Ids { get; set; } = new int[] { };
+        public int[] ParLevel1Status_Ids { get; set; } = new int[] { };
 
         public int[] ParCriticalLevel_Ids { get; set; } = new int[] { };
 
