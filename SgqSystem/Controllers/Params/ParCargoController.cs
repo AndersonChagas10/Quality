@@ -120,11 +120,11 @@ namespace SgqSystem.Controllers.Params
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,IsActive,AddDate,AlterDate,ParDepartment_Ids")] ParCargo parCargo)
         {
-            var exist = db.ParCargo.Any(x => x.Name == parCargo.Name);
+            var exist = db.ParCargo.Any(x => x.Name == parCargo.Name && x.Id != parCargo.Id);
 
             if (exist)
             {
-                ModelState.AddModelError("Name", "Já existe um Cargo com este nome!");
+                ModelState.AddModelError("Name", "Já existe um cargo idêntico cadastrado.");
             } 
 
             if (ModelState.IsValid && exist == false)
