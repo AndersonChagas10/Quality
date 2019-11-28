@@ -302,7 +302,7 @@
             }
 
             $('#' + id).off('click');
-
+            
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
                 scrollToForm();
@@ -383,7 +383,7 @@
             $('#' + id).on('click', '[data-cancel]', function (e) {
                 apagaCampos(id);
             });
-
+            
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
 

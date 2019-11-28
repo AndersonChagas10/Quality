@@ -310,11 +310,11 @@
                                             Itens avançados
                                         </a>
                                     </li>
-                                    @*<li>
+                                    <li>
                                             <a href="#l2_avam" data-toggle="tab">
                                                 Avaliação e Amostra
                                             </a>
-                                        </li>*@
+                                        </li>
                                     <li>
                                         <a href="#l2_cabecalho" data-toggle="tab">
                                             Campos de cabeçalhos
@@ -335,9 +335,9 @@
                                     <div class="tab-pane" id="l2_avancados">
                                         @Html.Partial("ParL2Avancados")
                                     </div>
-                                    @*<div class="tab-pane" id="l2_avam">
+                                    <div class="tab-pane" id="l2_avam">
                                             @Html.Partial("ParL2Avam")
-                                        </div>*@
+                                        </div>
                                     <div class="tab-pane" id="l2_cabecalho">
                                         @Html.Partial("ParL2Cabecalho")
                                     </div>
@@ -576,11 +576,11 @@
                 });
 
                 ParL3TipoDado.load(listaVinculadaAUnidade);
-
-            } else {
-                ParL3TipoDado.load(listaTipoDado);
-            }
+                
+                return;
+            } 
         }
+        ParL3TipoDado.load(listaTipoDado);
     }
 
     let listaVinculoPesoVinculadosaEmpresaSelecionada = function (lista) {
@@ -597,10 +597,10 @@
 
                 ParL3Peso.load(listaPesoVinculadaAUnidade);
 
-            } else {
-                ParL3Peso.load(lista);
-            }
+                return;
+            } 
         }
+        ParL3Peso.load(lista);
     }
 
     let listaAvaliacaoAmostraVinculadosaEmpresaSelecionada = function (lista) {
@@ -617,10 +617,10 @@
 
                 parDCAvam.load(listaAvAmVinculadaAUnidade);
 
-            } else {
-                parDCAvam.load(lista);
-            }
+                return;
+            } 
         }
+        parDCAvam.load(lista);
     }
 
 
@@ -915,6 +915,7 @@
                     ParL2Geral.set(data.Parlevel2);
                     ParL2Avancados.set(data.Parlevel2);
                     parL2Cabecalho.load(data.Parlevel2.ParHeaderFieldsGeral);
+                    parL2Avam.load(data.Parlevel2.ParEvaluation);
                     verifyTabs('selectL2', 'l2');
                     closeLoader();
                 },

@@ -41,7 +41,7 @@ function listarParLevel2DCA(isVoltar) {
                 '	<div class="col-xs-4 text-center">20%</div>      ' +
                 '	<div class="col-xs-4 text-center">100%</div>              ' +
                 '</button>';
-            atualizaCorAgendamento(o, currentEvaluationSample);
+            //atualizaCorAgendamento(o, currentEvaluationSample);
 		};
 	});
 

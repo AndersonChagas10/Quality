@@ -109,6 +109,7 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParDepartmentXRotinaIntegracao> listaParDepartmentXRotinaIntegracao;
             List<RotinaIntegracao> listaRotinaIntegracao;
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
+            List<ParEvaluation> listaParEvaluation;
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -175,6 +176,14 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList()
                     .Where(x => listaParVinculoPeso.Any(y => y.ParLevel3_Id == x.Id))
+                    .ToList();
+
+                listaParEvaluation = db.ParEvaluation
+                    .AsNoTracking()
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.ParFrequency_Id == appParametrization.ParFrequency_Id || x.ParFrequency_Id == null)
+                    .Where(x => x.IsActive)
+                    .OrderByDescending(x => x.ParCompany_Id)
                     .ToList();
 
                 listaParEvaluationXDepartmentXCargoAppViewModel = db.ParEvaluationXDepartmentXCargo
@@ -416,7 +425,8 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParMultipleValuesGeral,
                 listaParDepartmentXRotinaIntegracao,
                 listaRotinaIntegracao,
-                listaRotinaIntegracaoOffline
+                listaRotinaIntegracaoOffline,
+                listaParEvaluation
             });
         }
 

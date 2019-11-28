@@ -25,7 +25,8 @@ function getFrequenciaSelecionada() {
 		$(data).each(function (i, o) {
 			if (currentParFrequency_Id == o.Id) {
 				frequenciaSelecionada = o;
-				renderPlanejamentoColeta(frequenciaSelecionada);
+				//getPlanejamentoPorFrequencia(currentParFrequency_Id);
+				//renderPlanejamentoColeta(frequenciaSelecionada);
 				return;
 			}
 		});

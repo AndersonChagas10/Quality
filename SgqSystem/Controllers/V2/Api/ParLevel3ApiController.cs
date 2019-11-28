@@ -311,7 +311,7 @@ namespace SgqSystem.Controllers.V2.Api
                 }
                 catch (Exception ex)
                 {
-
+                    LogSystem.LogErrorBusiness.Register(ex, parVinculoPeso);
                     return false;
                 }
 

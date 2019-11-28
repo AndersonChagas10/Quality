@@ -15,8 +15,23 @@ namespace Dominio
         public int Line { get; set; }
         public string Method { get; set; }
         public string Controller { get; set; }
-        public string Object { get; set; }
-        public string StackTrace { get; set; }
+
+        private string _object;
+
+        public string Object
+        {
+            get { return _object.Substring(0, _object.Length > 900 ? 900 : _object.Length); }
+            set { _object = value; }
+        }
+
+        private string _stackTrace;
+
+        public string StackTrace
+        {
+            get { return _stackTrace.Substring(0, _stackTrace.Length > 900 ? 900 : _stackTrace.Length); }
+            set { _stackTrace = value; }
+        }
+
         public DateTime AddDate { get; set; }
     }
 }

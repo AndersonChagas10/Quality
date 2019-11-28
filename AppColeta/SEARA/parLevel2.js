@@ -16,6 +16,8 @@ function listarParLevel2(isVoltar) {
             currentEvaluationSample.Sample = 1;
         }
 
+        o.Evaluation.Evaluation = o.Evaluation.Number; 
+
         var style = '';
         if (!podeRealizarColeta(currentEvaluationSample.Evaluation, o.Evaluation.Evaluation)) {
             style = 'style="background-color:#ddd;cursor:not-allowed"';
@@ -43,7 +45,7 @@ function listarParLevel2(isVoltar) {
                 '	<div class="col-xs-4">Av: ' + currentEvaluationSample.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>      ' +
                 '	<div class="col-xs-4">Am: ' + currentEvaluationSample.Sample + '/' + o.Evaluation.Sample + ' </div>              ' +
                 '</button>';
-            atualizaCorAgendamento(o, currentEvaluationSample);
+            //atualizaCorAgendamento(o, currentEvaluationSample);
 		};
 	});
 
@@ -127,8 +129,8 @@ function retornaParLevel2(parLevel1Id) {
             var listaEvaluation = [];
 
             //Caso não existir, buscar os que possuem todas as unidades
-			listaEvaluation = $.grep(parametrization.listaParVinculoPeso, function (parEvaluation) {
-				return parEvaluation.ParLevel1_Id == parLevel1Id
+			listaEvaluation = $.grep(parametrization.listaParEvaluation, function (parEvaluation) {
+				return parEvaluation.ParLevel1_Id == parLevel1Id && parEvaluation.ParLevel2_Id == item.Id
 			});
 
             if (listaEvaluation.length > 0) {
@@ -139,4 +141,9 @@ function retornaParLevel2(parLevel1Id) {
     });
 
     return listaParLevel2;
+}
+
+function podeRealizarColeta(_currentEvaluation, _currentTotalEvaluation) {
+    _currentTotalEvaluation = parseInt(_currentTotalEvaluation) > 0 ? _currentTotalEvaluation : 1;
+    return parseInt(_currentEvaluation) <= parseInt(_currentTotalEvaluation);
 }
