@@ -1,6 +1,8 @@
 function openMenu() {
 
-	listarParLevel1();
+	//listarParLevel1();
+
+	openParFrequency();
 
 	//preencheCurrentPPlanejamento(showMenu);
 

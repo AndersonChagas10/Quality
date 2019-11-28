@@ -633,6 +633,9 @@
     <Content Include="..\AppColeta\SEARA\coleta.js">
       <Link>Scripts\appColeta\SEARA\coleta.js</Link>
     </Content>
+    <Content Include="..\AppColeta\SEARA\coletaDCA.js">
+      <Link>Scripts\appColeta\SEARA\coletaDCA.js</Link>
+    </Content>
     <Content Include="..\AppColeta\SEARA\correctiveAction.js">
       <Link>Scripts\appColeta\SEARA\correctiveAction.js</Link>
     </Content>
@@ -663,6 +666,9 @@
     <Content Include="..\AppColeta\SEARA\menu.js">
       <Link>Scripts\appColeta\SEARA\menu.js</Link>
     </Content>
+    <Content Include="..\AppColeta\SEARA\parFrequency.js">
+      <Link>Scripts\appColeta\SEARA\parFrequency.js</Link>
+    </Content>
     <Content Include="..\AppColeta\SEARA\parHeaderField.js">
       <Link>Scripts\appColeta\SEARA\parHeaderField.js</Link>
     </Content>
@@ -672,8 +678,14 @@
     <Content Include="..\AppColeta\SEARA\parLevel2.js">
       <Link>Scripts\appColeta\SEARA\parLevel2.js</Link>
     </Content>
+    <Content Include="..\AppColeta\SEARA\parLevel2DCA.js">
+      <Link>Scripts\appColeta\SEARA\parLevel2DCA.js</Link>
+    </Content>
     <Content Include="..\AppColeta\SEARA\parLevels.js">
       <Link>Scripts\appColeta\SEARA\parLevels.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parLevelsDCA.js">
+      <Link>Scripts\appColeta\SEARA\parLevelsDCA.js</Link>
     </Content>
     <Content Include="..\AppColeta\SEARA\planejamentoColeta.js">
       <Link>Scripts\appColeta\SEARA\planejamentoColeta.js</Link>
