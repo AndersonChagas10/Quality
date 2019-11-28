@@ -68,14 +68,14 @@
                             }
 
                             @*@if (ViewBag.ShowParStructure == true)
-        {
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label><strong>@Resources.Resource.structure</strong></label>
-                    <select class="form-control" name="parStructure_Ids" multiple></select>
-                </div>
-            </div>
-        }*@
+                                {
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label><strong>@Resources.Resource.structure</strong></label>
+                                            <select class="form-control" name="parStructure_Ids" multiple></select>
+                                        </div>
+                                    </div>
+                                }*@
 
                             @if (ViewBag.ShowParClusterGroup == true)
                             {
@@ -189,7 +189,13 @@
                                                 data-filtroselect3-default-select="@ViewBag.ShowShiftDefault">
                                             Abrir
                                         </button>
-                                        <select class="form-control" name="shift_Ids" multiple></select>
+                                        <select class="form-control" name="shift_Ids" multiple>
+                                            @if (ViewBag.ShowShiftDefault != null)
+                                            {
+                                                <option value="">@ViewBag.ShowShiftDefault</option>
+                                            }
+
+                                        </select>
                                     </div>
                                 </div>
                             }
@@ -240,7 +246,12 @@
                                                 data-filtroselect3-default-select="@ViewBag.ShowParDepartmentDefault">
                                             Abrir
                                         </button>
-                                        <select class="form-control" name="parDepartment_Ids" multiple></select>
+                                        <select class="form-control" name="parDepartment_Ids" multiple>
+                                            @if (ViewBag.ShowParDepartmentDefault != null)
+                                            {
+                                                <option value="">@ViewBag.ShowParDepartmentDefault</option>
+                                            }
+                                        </select>
                                     </div>
                                 </div>
                             }
