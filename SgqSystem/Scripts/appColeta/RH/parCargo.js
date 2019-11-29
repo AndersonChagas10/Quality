@@ -13,17 +13,9 @@ function listarParCargo(isVoltar) {
     var htmlParCargo = "";
 
     $(listaParCargo).each(function (i, o) {
-        currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, o.Id);
-
-        //FIX para trabalhar de forma correta os valores 
-        //que são recebidos do backend com os resultados
-        if (currentEvaluationSample.Sample > o.Evaluation.Sample){
-            currentEvaluationSample.Evaluation += 1;
-            currentEvaluationSample.Sample = 1;
-        }
 
         var style = '';
-        if (!podeRealizarColeta(currentEvaluationSample.Evaluation, o.Evaluation.Evaluation)) {
+        if (bloqueiaCargoParaColeta(o)) {
             style = 'style="background-color:#ddd;cursor:not-allowed"';
 
             htmlParCargo += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
@@ -38,7 +30,7 @@ function listarParCargo(isVoltar) {
                 '	<div class="col-xs-4">Am: ' + o.Evaluation.Sample + '/' + o.Evaluation.Sample + ' </div>  ' +
                 '</button>';
         } else {
-            htmlParCargo += '<button type="button" class="list-group-item col-xs-12"                                       ' +
+            htmlParCargo += '<button type="button" ' + style + ' class="list-group-item col-xs-12"                                       ' +
                 'data-par-cargo-id="' + o.Id + '"                                                                                ' +
                 'data-total-evaluation="' + o.Evaluation.Evaluation + '"                                                         ' +
                 'data-total-sample="' + o.Evaluation.Sample + '"                                                                 ' +
