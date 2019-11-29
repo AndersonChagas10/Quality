@@ -343,7 +343,7 @@ namespace SgqSystem.Jobs
                         AddDate = DateTime.Now,
                         UnitId = db.ParCompany.FirstOrDefault()?.Id ?? 1,
                         DepartmentId = getDepartment(),
-                        ParLevel1_Id = 1,
+                        ParLevel1_Id = db.ParLevel1.FirstOrDefault()?.Id ?? 1,
                         ConsolidationDate = DateTime.Now
                     };
 
@@ -367,9 +367,9 @@ namespace SgqSystem.Jobs
                 var consolidationLevel2 = new ConsolidationLevel2()
                 {
                     ConsolidationLevel1_Id = consolidationLevel1_Id,
-                    ParLevel2_Id = 1,
+                    ParLevel2_Id = db.ParLevel2.FirstOrDefault()?.Id ?? 1,
                     AddDate = DateTime.Now,
-                    UnitId = 1
+                    UnitId = db.ParCompany.FirstOrDefault()?.Id ?? 1
                 };
 
                 try
