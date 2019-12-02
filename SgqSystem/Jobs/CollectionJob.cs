@@ -118,14 +118,14 @@ namespace SgqSystem.Jobs
 
                             if (headerFields.Count > 0)
                             {
-                                var collectionIds = headerFields.Select(x => x.Id).ToList();
+                                var collectionIds = headerFields.Select(x => x.ParHeaderFieldGeral_Id).ToList();
 
                                 try
                                 {
                                     db.CollectionLevel2XParHeaderFieldGeral.AddRange(headerFields);
                                     db.SaveChanges();
 
-                                    db.Database.ExecuteSqlCommand("UPDATE Collection set IsProcessed = 1 where Id in (" + string.Join(",", collectionIds) + ")");
+                                    db.Database.ExecuteSqlCommand("UPDATE Collection set IsProcessed = 1 where ParHeaderField_Id in (" + string.Join(",", collectionIds) + ")");
                                 }
                                 catch (Exception ex)
                                 {
@@ -263,13 +263,7 @@ namespace SgqSystem.Jobs
             var sql = $@"delete CollectionLevel2XParHeaderFieldGeral WHERE Id in(
                          select CL2XHF.Id FROM CollectionLevel2XParHeaderFieldGeral CL2XHF
                          inner JOIN CollectionLevel2 C2 on C2.Id = CL2XHF.CollectionLevel2_Id
-                         AND C2.Shift = { collectionLevel2.Shift }
-                         AND C2.Period = { collectionLevel2.Period }
-                         AND C2.ParCargo_Id = { collectionLevel2.ParCargo_Id }
-                         AND C2.UnitId = { collectionLevel2.UnitId }
-                         AND C2.ParDepartment_Id = { collectionLevel2.ParDepartment_Id }
-                         AND C2.EvaluationNumber = { collectionLevel2.EvaluationNumber }
-                         AND C2.Sample = { collectionLevel2.Sample }
+                         AND C2.[Key] = '{ collectionLevel2.Key }'
                          AND CL2XHF.CollectionLevel2_Id = { collectionLevel2.Id }
                          AND Cast(C2.CollectionDate as DATE) = Cast('{ collectionLevel2.CollectionDate.ToString("yyyy-MM-dd")}' as DATE)
                          )";
@@ -289,6 +283,20 @@ namespace SgqSystem.Jobs
 
                 var collectionDate = collectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss");
 
+                var queryParCargo = "";
+                var queryParDepartment = "";
+
+                if (collectionLevel2.ParCargo_Id == null || collectionLevel2.ParCargo_Id == 0)
+                    queryParCargo = "Is NULL";
+                else
+                    queryParCargo = " = " + collectionLevel2.ParCargo_Id;
+         
+
+                if (collectionLevel2.ParDepartment_Id == null || collectionLevel2.ParDepartment_Id == 0)
+                    queryParDepartment = "Is NULL";
+                else
+                    queryParDepartment = " = " + collectionLevel2.ParDepartment_Id;
+
                 var sql = $@"SELECT
                             	CL.ParHeaderField_Id as ParHeaderFieldGeral_Id
                                ,CL.ParHeaderField_Value as Value
@@ -304,11 +312,11 @@ namespace SgqSystem.Jobs
                             AND CL.UserSgq_Id = {collectionLevel2.AuditorId}
                             AND cl.Shift_Id = {collectionLevel2.Shift}
                             AND cl.Period_Id = {collectionLevel2.Period}
-                            AND CL.ParCargo_Id = {collectionLevel2.ParCargo_Id}
+                            AND CL.ParCargo_Id {queryParCargo}
                             AND cl.ParCompany_Id = {collectionLevel2.UnitId}
-                            AND ((cl.ParDepartment_Id = {collectionLevel2.ParDepartment_Id} AND cl.ParLevel1_Id IS NULL AND cl.ParLevel2_Id IS NULL) OR
-                                (cl.ParDepartment_Id = {collectionLevel2.ParDepartment_Id} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
-                                (cl.ParDepartment_Id = {collectionLevel2.ParDepartment_Id} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))
+                            AND ((cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id IS NULL AND cl.ParLevel2_Id IS NULL) OR
+                                (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
+                                (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))
                             AND cl.Evaluation = {collectionLevel2.EvaluationNumber}
                             AND cl.Sample = {collectionLevel2.Sample}
                             AND Cl.CollectionDate BETWEEN DATEADD(minute, -5, '{collectionDate}') and DATEADD(minute, 5, '{collectionDate}')";
