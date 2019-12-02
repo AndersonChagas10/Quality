@@ -47,7 +47,7 @@ namespace DTO
 
         public int[] ParLevel1Group_Ids { get; set; } = new int[] { };
 
-        public int[] ParLevel1Status { get; set; } = new int[] { };
+        //public int[] ParLevel1Status { get; set; } = new int[] { };
 
         public int[] AcaoStatus { get; set; } = new int[] { };
 
@@ -62,6 +62,8 @@ namespace DTO
         public int[] UserSgqSurpervisor_Ids { get; set; } = new int[] { };
 
         public int[] NcComPeso { get; set; } = new int[] { };
+
+        public int DimensaoData { get; set; }
 
         public JObject Param { get; set; }
 

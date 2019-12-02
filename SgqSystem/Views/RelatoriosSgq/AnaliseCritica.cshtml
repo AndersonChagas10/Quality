@@ -448,17 +448,17 @@
 
             //Grafico Historico
             $("#Udia").on('click', function () {
-                enviar["dimensaoData"] = 1;
+                objFiltro["DimensaoData"] = 1;
                 EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
             });
 
             $("#Usemana").on('click', function () {
-                enviar["dimensaoData"] = 2;
+                objFiltro["DimensaoData"] = 2;
                 EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
             });
 
             $("#Umes").on('click', function () {
-                enviar["dimensaoData"] = 4;
+                objFiltro["DimensaoData"] = 4;
                 EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
             });
 
@@ -527,7 +527,7 @@
             }
 
             $('#reports').empty();
-            enviar["dimensaoData"] = 1;
+            objFiltro["DimensaoData"] = 1;
             enviar["auditorId"] = GetUsuarioId();
 
             EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade", toggle);
@@ -591,13 +591,14 @@
                 let isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
                 let dia;
 
-                if (enviar.dimensaoData == 1)
-                    dia = (isBrazil == true ? MapeiaValorParaHC(data, "_Date") : MapeiaValorParaHC(data, "_DateEUA"));
+                if (objFiltro.DimensaoData == 1)
+                    //dia = (isBrazil == true ? MapeiaValorParaHC(data, "_Date") : MapeiaValorParaHC(data, "_DateEUA"));
+                    dia = MapeiaValorParaHC(data, "_Date");
 
-                if (enviar.dimensaoData == 2)
+                if (objFiltro.DimensaoData == 2)
                     dia = MapeiaValorParaHC(data, "Semana");
 
-                if (enviar.dimensaoData == 4)
+                if (objFiltro.DimensaoData == 4)
                     dia = MapeiaValorParaHC(data, "Mes");
 
                 let nc = MapeiaValorParaHC(data, "Nc");
