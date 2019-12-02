@@ -50,7 +50,7 @@ namespace SgqSystem.Controllers.Params
 
             if (exist)
             {
-                ModelState.AddModelError("Name", "Já existe um Cargo com este nome!");
+                ModelState.AddModelError("Name", "Já existe um cargo idêntico cadastrado.");
             }
 
             if (ModelState.IsValid && exist == false)
