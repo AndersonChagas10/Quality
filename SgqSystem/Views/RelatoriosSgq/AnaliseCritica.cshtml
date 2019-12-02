@@ -540,9 +540,9 @@
 
             GuardJs.esconderMensagem();
 
-            //Modulo
-            if (!objFiltro.parModule_Ids || objFiltro.parModule_Ids.length <= 0) {
-                GuardJs.exibirMensagemAlerta("O filtro Módulo é obrigatório")
+            //Unidade
+            if (!objFiltro.parCompany_Ids || objFiltro.parCompany_Ids.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Unidade é obrigatório")
                 return false;
             }
 
