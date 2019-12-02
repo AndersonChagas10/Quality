@@ -476,7 +476,6 @@
             let $statusIndicador = $('select[name="parLevel1Status_Ids"]');
             let $peso = $('select[name="peso"]');
 
-            
             //Nivel Criticidade
             if (objFiltro.parCluster_Ids && objFiltro.parCluster_Ids.length > 0) {
                 AtivaSelect($nivelCriticidade);
@@ -540,6 +539,13 @@
 
             GuardJs.esconderMensagem();
 
+            //Modulo
+            if (!objFiltro.parModule_Ids || objFiltro.parModule_Ids.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Módulo é obrigatório")
+                return false;
+            }
+
+
             //Unidade
             if (!objFiltro.parCompany_Ids || objFiltro.parCompany_Ids.length <= 0) {
                 GuardJs.exibirMensagemAlerta("O filtro Unidade é obrigatório")
@@ -549,12 +555,6 @@
             //grupo de processo
             if (!objFiltro.parClusterGroup_Ids || objFiltro.parClusterGroup_Ids <= 0) {
                 GuardJs.exibirMensagemAlerta("O filtro Grupo de Processo é obrigatório");
-                return false;
-            }
-
-            //processo
-            if (!objFiltro.parCluster_Ids || objFiltro.parCluster_Ids.length <= 0) {
-                GuardJs.exibirMensagemAlerta("O filtro Processo é obrigatório");
                 return false;
             }
 
