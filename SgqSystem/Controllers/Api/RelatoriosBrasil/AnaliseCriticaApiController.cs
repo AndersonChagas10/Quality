@@ -52,7 +52,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 GROUP BY 
                 		ConsolidationDate
-                ORDER BY 1
+                ORDER BY 3
                 ";
             }
             else if (tipoConsolidacao == 2)
@@ -71,9 +71,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     FROM #CUBO Cubo WITH (NOLOCK)
                     WHERE 1 = 1
 
-                    GROUP BY 
+                    GROUP BY
                     CONCAT(CONCAT(DATEPART(YEAR, ConsolidationDate), '-'), DATEPART(Week, ConsolidationDate))
-                    ORDER BY 1
+                    ORDER BY 3
                     ";
             }
             else
@@ -93,7 +93,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 GROUP BY --Indicador
                 CONCAT(CONCAT(DATEPART(YEAR, ConsolidationDate), '-'), DATEPART(MONTH, ConsolidationDate))
-                ORDER BY 1
+                ORDER BY 3 desc
                 ";
             }
 
