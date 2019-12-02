@@ -454,12 +454,12 @@
 
             $("#Usemana").on('click', function () {
                 objFiltro["DimensaoData"] = 2;
-                EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
+                EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
             });
 
             $("#Umes").on('click', function () {
                 objFiltro["DimensaoData"] = 4;
-                EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
+                EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
             });
 
             $('#filterReports select').on('change', function () {
@@ -476,7 +476,7 @@
             let $statusIndicador = $('select[name="parLevel1Status_Ids"]');
             let $peso = $('select[name="peso"]');
 
-            
+
             //Nivel Criticidade
             if (objFiltro.parCluster_Ids && objFiltro.parCluster_Ids.length > 0) {
                 AtivaSelect($nivelCriticidade);
@@ -612,10 +612,20 @@
                 let sumncComPeso = ncComPeso.reduce(function (a, b) { return a + b; });
                 let TituloGrafico1 = Resources("consolidated_history");
 
+                let subtitle = [];
+
+                $('[name="parCompany_Ids"]').text().split(',').forEach((i) => {
+
+                    subtitle.push(i.slice(i.indexOf("-") + 2, i.lenght));
+
+                });
+
+                subtitle = (subtitle.length > 1 ? "Unidades: " : "Unidade: ") + subtitle.join(", ");
+
                 if (sumav != 0 && sumnc != 0) {
 
-                    var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
-                    var SubtitleConsolidado = "Unidade: Alta Floresta";
+                    let porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
+                    let SubtitleConsolidado = subtitle;
 
                     $('#GraficoHistoricoUnidade').removeClass('loader');
                     $('#GraficoHistoricoUnidade').empty();
