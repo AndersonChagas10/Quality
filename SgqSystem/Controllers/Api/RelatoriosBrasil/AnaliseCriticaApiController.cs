@@ -93,7 +93,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 GROUP BY --Indicador
                 CONCAT(CONCAT(DATEPART(YEAR, ConsolidationDate), '-'), DATEPART(MONTH, ConsolidationDate))
-                ORDER BY 3 desc
+                ORDER BY CAST(CONCAT(CONCAT(DATEPART(YEAR, ConsolidationDate), '-'), DATEPART(MONTH, ConsolidationDate)) + '-01' AS DATE)
                 ";
             }
 

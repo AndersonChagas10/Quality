@@ -787,14 +787,16 @@
 
                     }, function () {
 
-                            $('#showNCUnidade > h1').text(parseFloat(porcPeriodoComPeso.toFixed(2)) + " %");
-                            $('#NCUnidade').show();
+                        $('#showNCUnidade > h1').text(parseFloat(porcPeriodoComPeso.toFixed(2)) + " %");
+                        $('#NCUnidade').show();
                     });
 
-                    if(chartHistoricoGeral.reflow)
+                    if (chartHistoricoGeral.reflow)
                         chartHistoricoGeral.reflow();
 
                 }
+            } else {
+                GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"))
             }
         }
 
