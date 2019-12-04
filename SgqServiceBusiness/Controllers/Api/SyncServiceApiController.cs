@@ -1312,7 +1312,15 @@ namespace SgqServiceBusiness.Api
 
                         var isRecravacao = new SGQDBContext.ParLevel1(db, quebraProcesso).getById(c.level01_Id).IsRecravacao == true;
 
-                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao || (c.Unit_Id == 4 && c.level01_Id == 22) || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
+                        if (IsBEA == 3 
+                            || IsBEA == 2
+                            || isRecravacao
+                            || c.level01_Id == 43
+                            || c.level01_Id == 42
+                            || c.level01_Id == 7
+                            || c.level01_Id == 90
+                            || (c.Unit_Id == 4 && c.level01_Id == 22) 
+                            || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
