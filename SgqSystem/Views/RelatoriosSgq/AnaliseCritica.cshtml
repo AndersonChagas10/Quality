@@ -433,6 +433,7 @@
         }
 
         var urlGetGraficoHistoricoUnidade = '@Html.Raw(Url.Action("GetGraficoHistoricoUnidade", "api/AnaliseCritica"))';
+        var urlGetAnaliseCritica = '@Html.Raw(Url.Action("GetAnaliseCritica", "api/AnaliseCritica"))';
         var chartHistoricoGeral;
         var $btn = $('#btnSend');
 
@@ -529,9 +530,10 @@
             objFiltro["DimensaoData"] = 1;
             enviar["auditorId"] = GetUsuarioId();
 
-            EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade", toggle);
+            $('#reports').empty();
 
-            GerarRelatorios();
+            EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade", toggle);
+            EasyAjax(urlGetAnaliseCritica, objFiltro, GerarRelatorios, "", false);
 
         }
 
@@ -612,15 +614,7 @@
                 let sumncComPeso = ncComPeso.reduce(function (a, b) { return a + b; });
                 let TituloGrafico1 = Resources("consolidated_history");
 
-                let subtitle = [];
-
-                $('[name="parCompany_Ids"]').text().split(',').forEach((i) => {
-
-                    subtitle.push(i.slice(i.indexOf("-") + 2, i.lenght));
-
-                });
-
-                subtitle = (subtitle.length > 1 ? "Unidades: " : "Unidade: ") + subtitle.join(", ");
+                let subtitle = GetSubtitleUnidade();
 
                 if (sumav != 0 && sumnc != 0) {
 
@@ -800,40 +794,52 @@
             }
         }
 
-        function GerarRelatorios() {
+        function GerarRelatorios(dados) {
 
-            $('#reports').empty();
+            if (dados.lenght <= 0) {
+                return false;
+            }
 
-            var panel = $('#PanelBase').clone();
-            var idPanel = 'panel' + objMock.ParLevel1_Id;
+            dados.forEach((obj) => {
 
-            panel.find(".panel-heading").html("Indicador: " + objMock.ParLevel1_Name);
-            panel.attr("id", idPanel);
-            panel.css("display", "block");
+                var panel = $('#PanelBase').clone();
+                var idPanel = 'panel' + obj.ParLevel1_Id;
 
-            $('#reports').append(panel);
+                panel.find(".panel-heading").html("Indicador: " + obj.ParLevel1_Name);
+                panel.attr("id", idPanel);
+                panel.css("display", "block");
 
-            GerarGraficoTendenciaIndicador(objMock, idPanel);
-            GerarGraficoMonitoramento(objMock, idPanel);
+                $('#reports').append(panel);
 
-            //fazer um forach para cada departamento
-            objMock.MonitoramentoDepartamento.forEach(function (o, i) {
-                GerarGraficoMonitoramentoPorDepartamento(objMock, idPanel, i);
-            });
+                GerarGraficoTendenciaIndicador(obj, idPanel);
 
-            GerarGraficoTarefasAcumuladas(objMock, idPanel);
+                //GerarGraficoMonitoramento(objMock, idPanel);
 
-            //fazer um foreach para cada monitoramento
-            objMock.Tarefa.forEach(function (o, i) {
-                GerarGraficoTarefa(objMock, idPanel, i);
+                ////fazer um forach para cada departamento
+                //objMock.MonitoramentoDepartamento.forEach(function (o, i) {
+                //    GerarGraficoMonitoramentoPorDepartamento(objMock, idPanel, i);
+                //});
+
+                //GerarGraficoTarefasAcumuladas(objMock, idPanel);
+
+                ////fazer um foreach para cada monitoramento
+                //objMock.Tarefa.forEach(function (o, i) {
+                //    GerarGraficoTarefa(objMock, idPanel, i);
+                //});
+
             });
 
         }
 
         function GerarGraficoTendenciaIndicador(objMock, idPanel) {
 
+            debugger
+
+            //Transformar o arr dentro do objMock nos dados prontos para inserir no grafico
+            //Somar as %CN e dividir pelo valor da Média das %NC passadas
+
             let titulo = "Tendência do Indicador: " + objMock.ParLevel1_Name;
-            let subtitulo = "Unidade: Alta Floresta";
+            let subtitulo = "Unidade: " + GetSubtitleUnidade();
             let dtInicio = "";
 
             let idChart = 'tendencia' + objMock.ParLevel1_Id;
@@ -1624,6 +1630,17 @@
 
             //Criar a tabela com datatables dentro da div
 
+        }
+
+        function GetSubtitleUnidade() {
+
+            $('[name="parCompany_Ids"]').text().split(',').forEach((i) => {
+
+                subtitle.push(i.slice(i.indexOf("-") + 2, i.lenght));
+
+            });
+
+            return (subtitle.length > 1 ? "Unidades: " : "Unidade: ") + subtitle.join(", ");
         }
 
     </script>

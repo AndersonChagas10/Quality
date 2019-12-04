@@ -16,10 +16,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         [HttpPost]
         [Route("GetGraficoHistoricoUnidade")]
-        public List<HistoricoUnidade> GetGraficoHistoricoUnidade([FromBody] DataCarrierFormularioNew form)
+        public List<HistoricoUnidades> GetGraficoHistoricoUnidade([FromBody] DataCarrierFormularioNew form)
         {
 
-            var retornoHistoricoUnidade = new List<HistoricoUnidade>();
+            var retornoHistoricoUnidade = new List<HistoricoUnidades>();
 
             //retornoHistoricoUnidade.Add(new HistoricoUnidade() { Av = 1, AvComPeso = 1, Date = DateTime.Now, Mes = "2019-06", Nc = 1, NcComPeso = 1, PorcentagemNc = 100, Semana = "2019/1" });
             //retornoHistoricoUnidade.Add(new HistoricoUnidade() { Av = 2, AvComPeso = 1, Date = DateTime.Now, Mes = "2019-06", Nc = 2, NcComPeso = 1, PorcentagemNc = 100, Semana = "2019/2" });
@@ -99,21 +99,311 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                retornoHistoricoUnidade = factory.SearchQuery<HistoricoUnidade>(script).ToList();
+                retornoHistoricoUnidade = factory.SearchQuery<HistoricoUnidades>(script).ToList();
             }
 
             return retornoHistoricoUnidade;
         }
 
+
+
         [HttpPost]
-        [Route("GetGraficoTendenciaIndicador")]
-        public List<TendenciaResultSet> GetGraficoTendenciaIndicador([FromBody] DataCarrierFormularioNew form)
+        [Route("GetAnaliseCritica")]
+        public List<AnaliseCriticaResultSet> GetAnaliseCritica([FromBody] DataCarrierFormularioNew form)
+        {
+            var listParLevel1_Id = form.ParLevel1_Ids.ToList();
+            var listTendenciaResultSet = new List<AnaliseCriticaResultSet>();
+
+            foreach (var parLevel1_Id in listParLevel1_Id)
+            {
+                //TODO: Fazer a busca de todos os graficos de tendencia pelo Indicador
+                var analiseCriticaResultSet = new AnaliseCriticaResultSet();
+                var tendencia = GetGraficoTendenciaIndicador(form, parLevel1_Id);
+
+                if (tendencia.Count > 0)
+                {
+                    analiseCriticaResultSet.ListaTendenciaResultSet = tendencia;
+                    analiseCriticaResultSet.ParLevel1_Id = tendencia[0].level1_Id.GetValueOrDefault();
+                    analiseCriticaResultSet.ParLevel1_Name = tendencia[0].Level1Name;
+                    listTendenciaResultSet.Add(analiseCriticaResultSet);
+                }
+
+                //TODO: Resto dos Indicadores
+
+            }
+
+            return listTendenciaResultSet;
+        }
+
+        private List<TendenciaResultSet> GetGraficoTendenciaIndicador(DataCarrierFormularioNew form, int ParLevel1_Id)
         {
 
             var retornoHistoricoUnidade = new List<TendenciaResultSet>();
 
-            retornoHistoricoUnidade.Add(new TendenciaResultSet() { Av = 1, Av_Peso = 1, Level1Name = "Indicador 1", level1_Id = 1, NC = 1, NC_Peso = 1, });
+            //retornoHistoricoUnidade.Add(new TendenciaResultSet() { Av = 1, Av_Peso = 1, Level1Name = "Indicador 1", level1_Id = 1, NC = 1, NC_Peso = 1, });
 
+            var query = $@" 
+            DECLARE @dataFim_ date = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
+            DECLARE @dataInicio_ date = DATEADD(MONTH, 0, '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00')
+            
+            SET @dataInicio_ = DATEFROMPARTS(YEAR(@dataInicio_), MONTH(@dataInicio_), 01)
+              
+            declare @ListaDatas_ table(data_ date)
+              
+            WHILE @dataInicio_ <= @dataFim_ 
+            
+            BEGIN
+            INSERT INTO @ListaDatas_
+            	SELECT
+            		@dataInicio_
+            SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_)
+            END
+              
+            DECLARE @DATAFINAL DATE = @dataFim_
+            DECLARE @DATAINICIAL DATE = DateAdd(mm, DateDiff(mm, 0, @DATAFINAL) - 1, 0)
+            
+            DECLARE @INDICADOR INT = { ParLevel1_Id }
+             
+            CREATE TABLE #AMOSTRATIPO4 (   
+            UNIDADE INT NULL,   
+            INDICADOR INT NULL,   
+            AM INT NULL,   
+            DEF_AM INT NULL  
+            )
+            
+            INSERT INTO #AMOSTRATIPO4
+            	SELECT
+            		UNIDADE
+            	   ,INDICADOR
+            	   ,COUNT(1) AM
+            	   ,SUM(DEF_AM) DEF_AM
+            	FROM (SELECT
+            			CAST(C2.CollectionDate AS DATE) AS DATA
+            		   ,C.Id AS UNIDADE
+            		   ,C2.ParLevel1_id AS INDICADOR
+            		   ,C2.EvaluationNumber AS AV
+            		   ,C2.Sample AS AM
+            		   ,CASE
+            				WHEN SUM(C2.WeiDefects) = 0 THEN 0
+            				ELSE 1
+            			END DEF_AM
+            		FROM CollectionLevel2 C2 (NOLOCK)
+            		INNER JOIN ParLevel1 L1 (NOLOCK)
+            			ON L1.Id = C2.ParLevel1_id
+            		INNER JOIN ParCompany C (NOLOCK)
+            			ON C.Id = C2.UnitId
+            		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
+            		AND C2.NotEvaluatedIs = 0
+            		AND C2.Duplicated = 0
+            		AND L1.ParConsolidationType_Id = 4
+            		GROUP BY C.Id
+            				,ParLevel1_id
+            				,EvaluationNumber
+            				,Sample
+            				,CAST(CollectionDate AS DATE)) TAB
+            	GROUP BY UNIDADE
+            			,INDICADOR
+            			,Data
+              
+            DECLARE @RESS INT
+            
+            SELECT
+            	@RESS =
+            	COUNT(1)
+            FROM (SELECT
+            		COUNT(1) AS NA
+            	FROM CollectionLevel2 C2 (NOLOCK)
+            	LEFT JOIN Result_Level3 C3 (NOLOCK)
+            		ON C3.CollectionLevel2_Id = C2.Id
+            	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
+            	AND C2.ParLevel1_id = (SELECT TOP 1
+            			Id
+            		FROM ParLevel1(nolock)
+            		WHERE hashKey = 1)
+            	AND C2.UnitId IN ({ string.Join(",", form.ParCompany_Ids) })
+            	AND IsNotEvaluate = 1
+            	GROUP BY C2.Id) NA
+            WHERE NA = 2
+            SELECT
+            	level1_Id
+               ,Level1Name
+            	--,Level2Name AS Level2Name
+            	--,Unidade_Id
+            	--,UNIDADE
+               ,PorcentagemNc
+               ,(CASE
+            		WHEN IsRuleConformity = 1 THEN (100 - Meta)
+            		WHEN IsRuleConformity IS NULL THEN 0
+            		ELSE Meta
+            	END) AS Meta
+               ,NcSemPeso AS NC
+               ,AvSemPeso AS Av
+               ,Data AS _Data
+            FROM (SELECT
+            		*
+            	   ,CASE
+            			WHEN Av IS NULL OR
+            				Av = 0 THEN 0
+            			ELSE NC / Av * 100
+            		END AS PorcentagemNc
+            	   ,CASE
+            			WHEN CASE
+            					WHEN Av IS NULL OR
+            						Av = 0 THEN 0
+            					ELSE NC / Av * 100
+            				END >= (CASE
+            					WHEN IsRuleConformity = 1 THEN (100 - Meta)
+            					ELSE Meta
+            				END) THEN 1
+            			ELSE 0
+            		END RELATORIO_DIARIO
+            	FROM (SELECT
+            			level1_Id
+            		   ,IsRuleConformity
+            		   ,Level1Name
+            		   ,Level2Name
+            		   ,Unidade_Id
+            		   ,UNIDADE
+            		   ,Data
+            		   ,SUM(Av) AS Av
+            		   ,SUM(AvSemPeso) AS AvSemPeso
+            		   ,SUM(NC) AS NC
+            		   ,SUM(NCSemPeso) AS NCSemPeso
+            		   ,MAX(Meta) AS Meta
+            		FROM (SELECT
+            				NOMES.A1 AS level1_Id
+            			   ,NOMES.A2 AS Level1Name
+            			   ,'Tendência do Indicador ' + NOMES.A2 AS Level2Name
+            			   ,IND.IsRuleConformity
+            			   ,NOMES.A4 AS Unidade_Id
+            			   ,NOMES.A5 AS Unidade
+            			   ,CASE
+            					WHEN IND.hashKey = 1 THEN (SELECT TOP 1
+            								SUM(Quartos) - @RESS
+            							FROM VolumePcc1b(nolock)
+            							WHERE ParCompany_id = UNI.Id
+            							AND Data = DD.data_)
+            					WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
+            					WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
+            					ELSE 0
+            				END AS Av
+            			   ,CASE
+            					WHEN IND.hashKey = 1 THEN (SELECT TOP 1
+            								SUM(Quartos) - @RESS
+            							FROM VolumePcc1b(nolock)
+            							WHERE ParCompany_id = UNI.Id
+            							AND Data = DD.data_)
+            					WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal
+            					WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
+            					WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
+            					ELSE 0
+            				END AS AvSemPeso
+            			   ,CASE
+            					WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult
+            					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
+            					ELSE 0
+            				END AS NC
+            			   ,CASE
+            					WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal
+            					WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal
+            					WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult
+            					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
+            					ELSE 0
+            				END AS NCSemPeso
+            			   ,CASE
+            
+            					WHEN (SELECT
+            								COUNT(1)
+            							FROM ParGoal G (NOLOCK)
+            							WHERE G.ParLevel1_id = CL1.ParLevel1_id
+            							AND (G.ParCompany_id = CL1.UnitId
+            							OR G.ParCompany_id IS NULL)
+            							AND G.IsActive = 1
+            							AND G.EffectiveDate <= @DATAFINAL)
+            						> 0 THEN (SELECT TOP 1
+            								ISNULL(G.PercentValue, 0)
+            							FROM ParGoal G (NOLOCK)
+            							WHERE G.ParLevel1_id = CL1.ParLevel1_id
+            							AND (G.ParCompany_id = CL1.UnitId
+            							OR G.ParCompany_id IS NULL)
+            							AND G.IsActive = 1
+            							AND G.EffectiveDate <= @DATAFINAL
+            							ORDER BY G.ParCompany_id DESC, EffectiveDate DESC)
+            
+            					ELSE (SELECT TOP 1
+            								ISNULL(G.PercentValue, 0)
+            							FROM ParGoal G (NOLOCK)
+            							WHERE G.ParLevel1_id = CL1.ParLevel1_id
+            							AND (G.ParCompany_id = CL1.UnitId
+            							OR G.ParCompany_id IS NULL)
+            							ORDER BY G.ParCompany_id DESC, EffectiveDate ASC)
+            				END
+            				AS Meta
+            			   ,DD.data_ AS Data
+            			FROM @ListaDatas_ DD
+            			LEFT JOIN (SELECT
+            					*
+            				FROM ConsolidationLevel1(nolock)
+            				WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+            				AND UnitId <> 12341614) CL1
+            				ON DD.data_ = CAST(CL1.ConsolidationDate AS DATE)
+            			LEFT JOIN ParLevel1 IND (NOLOCK)
+            				ON IND.Id = CL1.ParLevel1_id
+            			LEFT JOIN ParCompany UNI (NOLOCK)
+            				ON UNI.Id = CL1.UnitId
+            			LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
+            				ON A4.Unidade = UNI.Id
+            				AND A4.INDICADOR = IND.Id
+            			LEFT JOIN (SELECT
+            					IND.Id A1
+            				   ,IND.Name A2
+            				   ,'Tendência do Indicador ' + IND.Name AS A3
+            				   ,CL1.UnitId A4
+            				   ,UNI.Name A5
+            				   ,0 AS A6
+            				FROM (SELECT
+            						*
+            					FROM ConsolidationLevel1(nolock)
+            					WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+            					AND UnitId <> 11514) CL1
+            				LEFT JOIN ParLevel1 IND (NOLOCK)
+            					ON IND.Id = CL1.ParLevel1_id
+            				LEFT JOIN ParCompany UNI (NOLOCK)
+            					ON UNI.Id = CL1.UnitId
+            				LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
+            					ON A4.Unidade = UNI.Id
+            					AND A4.INDICADOR = IND.Id
+            				WHERE 1 = 1
+            				-- Aqui coloca a merda do filtro
+            				GROUP BY IND.Id
+            						,IND.Name
+            						,CL1.UnitId
+            						,UNI.Name) NOMES
+            				ON 1 = 1
+            				AND (NOMES.A1 = CL1.ParLevel1_id
+            				AND NOMES.A4 = UNI.Id)
+            				OR (IND.Id IS NULL)) AGRUPAMENTO
+            		GROUP BY level1_Id
+            				,IsRuleConformity
+            				,Level1Name
+            				,Unidade_Id
+            				,UNIDADE
+            				,Level2Name
+            				,Data) S1) S2
+            WHERE 1 = 1
+            AND S2.Unidade_Id IN ({ string.Join(",", form.ParCompany_Ids) })
+            AND S2.level1_Id = @INDICADOR
+            DROP TABLE #AMOSTRATIPO4";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                retornoHistoricoUnidade = factory.SearchQuery<TendenciaResultSet>(query).ToList();
+            }
 
             return retornoHistoricoUnidade;
         }
@@ -472,66 +762,4 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return Query;
         }
     }
-
-    public class HistoricoUnidade
-    {
-        public decimal? Nc { get; set; }
-        public decimal? PorcentagemNc { get; set; }
-        public decimal? Av { get; set; }
-        public decimal? AvComPeso { get; set; }
-        public decimal? NcComPeso { get; set; }
-        public string Semana { get; set; }
-        public string Mes { get; set; }
-        public DateTime? Date { get; set; }
-        public string _Date
-        {
-            get
-            {
-                if (Date.HasValue)
-                {
-                    return Date.Value.ToString("dd/MM/yyyy");
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-        }
-        public string _DateEUA
-        {
-            get
-            {
-
-                if (Date.HasValue)
-                {
-                    return Date.Value.ToString("MM-dd-yyyy");
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-        }
-    }
-
-    public class TendenciaResultSet
-    {
-        public int? level1_Id { get; set; }
-        public string Level1Name { get; set; }
-        public int? level2_Id { get; set; }
-        public string Level2Name { get; set; }
-        public int? level3_Id { get; set; }
-        public string Level3Name { get; set; }
-        public int? Unidade_Id { get; set; }
-        public string Unidade { get; set; }
-        public decimal Meta { get; set; }
-        public decimal PorcentagemNc { get; set; }
-        public decimal Av { get; set; }
-        public decimal Av_Peso { get; set; }
-        public decimal NC { get; set; }
-        public decimal NC_Peso { get; set; }
-        public double Data { get { return _Data.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; } }
-        public DateTime _Data { get; set; }
-    }
-
 }
