@@ -86,7 +86,7 @@
                                                 }
                                                 <td>
                                                     @Html.ActionLink("Editar", "EditValor", new { id = Model.ComponenteGenerico.Id, idValor = saveId }, new { @class = "btn btn-success btn-sm" })
-                                                    <button id="btnDelete" class="btn btn-danger btn-sm" saveId="@saveId">Excluir</button>
+                                                    <button id="" class="btn btn-danger btn-sm btnDelete" saveId="@saveId">Excluir</button>
                                                 </td>
                                             </tr>
                                         }
@@ -127,7 +127,7 @@
     //    });
     //});
 
-    $('#btnDelete').on('click', function () {
+    $('.btnDelete').on('click', function () {
 
         if (!confirm(Resources('confirm_delete'))){
             return false;
