@@ -478,3 +478,9 @@ IF COL_LENGTH('ItemMenu','PDCAMenuItem') IS NULL
 		ALTER TABLE ItemMenu ADD PDCAMenuItem INT;
     END
 GO
+
+IF COL_LENGTH('ParLevel3Value','ParCluster_Id') IS NULL
+    BEGIN	
+		ALTER TABLE ParLevel3Value ADD ParCluster_Id int null;
+    END
+GO

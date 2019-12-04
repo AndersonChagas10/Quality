@@ -67,6 +67,16 @@
         <div class="col-sm-4">
 
             <div class="form-group">
+                <label for="ParCluster_Id">Cluster:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Expectativa do cliente" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <select id="selectL3PesoParClusters" class="input input-lg col-sm-12 required" name="ParCluster_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
                 <label for="ParLevel3BoolTrue_Id">Valor positivo:</label>
                 <select id="selectL3TipoDadoParLevel3BoolTrue" class="input input-lg col-sm-12 required" name="ParLevel3BoolTrue_Id"></select>
             </div>
@@ -90,19 +100,6 @@
                     <option value="true">Valor Positivo</option>
                     <option value="false">Valor Negativo</option>
                 </select>
-            </div>
-
-        </div>
-
-        <div class="col-sm-4">
-
-            <div class="form-group">
-                <label>É Obrigatorio:</label>
-                <br />
-                <label class="switch">
-                    <input type="checkbox" id="checkboxL3IsRequired" name="IsRequired">
-                    <span class="slider round"></span>
-                </label>
             </div>
 
         </div>
@@ -158,6 +155,19 @@
             <div class="form-group">
                 <label for="DynamicValue">Equação:</label>
                 <input type="text" class="form-control required" id="DynamicValue" name="DynamicValue">
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label>É Obrigatorio:</label>
+                <br />
+                <label class="switch">
+                    <input type="checkbox" id="checkboxL3IsRequired" name="IsRequired">
+                    <span class="slider round"></span>
+                </label>
             </div>
 
         </div>
@@ -235,6 +245,9 @@
                         <th class="col-sm-2">
                             Cargo
                         </th>
+                        <th class="col-sm-1">
+                            Cluster
+                        </th>
                         <th class="col-sm-2">
                             Indicador
                         </th>
@@ -256,7 +269,7 @@
                         <th class="col-sm-1 hide">
                             Equação
                         </th>
-                        <th class="col-sm-2">
+                        <th class="col-sm-1">
 
                         </th>
                     </tr>
@@ -406,6 +419,7 @@
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParDepartment_Id"]', o.ParDepartment_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCluster_Id"]', o.ParCluster_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel1_Id"]', o.ParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel2_Id"]', o.ParLevel2_Id, 'Todos') + '</td>';
                 var boleanoTrue = (o.ParLevel3BoolTrue_Id == null ? "0" : o.ParLevel3BoolTrue_Id);
@@ -702,6 +716,7 @@
             obj['ParLevel3BoolFalse_Id'] = formdata.ParLevel3BoolFalse_Id;
             obj['ParDepartment_Id'] = formdata.ParDepartment_Id;
             obj['ParCargo_Id'] = formdata.ParCargo_Id;
+            obj['ParCluster_Id'] = formdata.ParCluster_Id;
             obj['ShowLevel3Limits'] = formdata.ShowLevel3Limits;
             return obj;
         },

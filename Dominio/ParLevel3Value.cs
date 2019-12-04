@@ -45,7 +45,12 @@ namespace Dominio
         public bool? IsRequired { get; set; }
 
         public bool? IsDefaultAnswer { get; set; }
-        
+
+        public int? ParCluster_Id { get; set; }
+
+        [ForeignKey("ParCluster_Id")]
+        public virtual ParCluster ParCluster { get; set; }
+
         [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 
