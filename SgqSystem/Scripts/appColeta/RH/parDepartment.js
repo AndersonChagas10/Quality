@@ -132,7 +132,7 @@ function bloqueiaCentroDeCustoParaColeta(departmentId){
 	var listaDeDepartamentos = retornaDepartamentos(departmentId, false, getParDepartmentPlanejado());
 	
 	currentParDepartment_Id = departmentId;
-		
+
 	if(listaDeDepartamentos.length > 0){
 		for(var i = 0; i < listaDeDepartamentos.length; i++){
 			var d = listaDeDepartamentos[i];
@@ -141,6 +141,8 @@ function bloqueiaCentroDeCustoParaColeta(departmentId){
 			}
 		}
 	}else{
+		currentPlanejamentoArr = [];
+		getCurrentPlanejamentoObj();
 		
 		var listaParCargo = retornaCargos(currentParDepartment_Id);
 		listaParCargo = retornaCargosPlanejados(listaParCargo);
