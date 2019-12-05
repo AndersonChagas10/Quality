@@ -20,9 +20,8 @@ function GetLevels() {
 function montarLevel1(level1List) {
 
     var parVinculos = $.grep(parametrization.listaParVinculoPeso, function (obj) {
-        return (obj.ParDepartment_Id == currentParDepartment_Id || obj.ParDepartment_Id == null) 
-            && (obj.ParCargo_Id == currentParCargo_Id || obj.ParCargo_Id == null)
-            && (obj.ParCluster_Id == currentParCluster_Id);
+        return (obj.ParDepartment_Id == currentParDepartment_Id || obj.ParDepartment_Id == null)
+            && (obj.ParCargo_Id == currentParCargo_Id || obj.ParCargo_Id == null);
     });
 
     var level1_Ids_Aux = $.map(parVinculos, function (obj) {
@@ -91,8 +90,7 @@ function montarLevel3(parLevel1, parLevel2, index) {
         return (obj.ParDepartment_Id == currentParDepartment_Id || obj.ParDepartment_Id == null) &&
             (obj.ParCargo_Id == currentParCargo_Id || obj.ParCargo_Id == null) &&
             obj.ParLevel1_Id == parLevel1.Id &&
-            obj.ParLevel2_Id == parLevel2.Id &&
-            obj.ParCluster_Id == currentParCluster_Id;
+            obj.ParLevel2_Id == parLevel2.Id;
     });
 
     var level3_Ids = $.map(parVinculosMontarLevel3, function (obj) {

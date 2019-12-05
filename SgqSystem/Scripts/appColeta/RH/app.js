@@ -4,6 +4,7 @@ var parametrization = null;
 var currentParDepartment_Id;
 var currentParDepartmentParent_Id;
 var currentParCargo_Id;
+var currentParCluster_Id;
 var globalColetasRealizadas = [];
 var globalAcoesCorretivasRealizadas = [];
 var currentLogin = {};
@@ -15,7 +16,6 @@ var currentAlertsAgrupados = [];
 var listaParFrequency = [];
 var currentsParDepartments_Ids = [];
 var currentPlanejamento = [];
-var currentParCluster_Id = [];
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
@@ -55,6 +55,7 @@ function getAppParametrization(frequencyId) {
                 ParCompany_Id: currentParCompany_Id
                 , ParFrequency_Id: currentParFrequency_Id
                 , AppDate: currentCollectDate
+                , ParCluster_Id: currentParCluster_Id
             }),
             type: 'POST',
             url: urlPreffix + '/api/AppColeta/GetAppParametrization',
@@ -243,15 +244,15 @@ function setBreadcrumbs() {
         breadcrumbLi = deparment + breadcrumbLi;
         isCurrent = false;
     }
-    var cluster = "";
-    if (currentParCluster_Id) {
-        cluster = getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
-            return item.Id == currentParCluster_Id;
-        })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
+    //var cluster = "";
+    //if (currentParCluster_Id) {
+    //    cluster = getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
+    //        return item.Id == currentParCluster_Id;
+    //    })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
 
-        breadcrumbLi = cluster + breadcrumbLi;
-        isCurrent = false;
-    }
+    //    breadcrumbLi = cluster + breadcrumbLi;
+    //    isCurrent = false;
+    //}
 
     if (currentParFrequency_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
