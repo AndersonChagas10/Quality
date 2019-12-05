@@ -56,6 +56,13 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <div class="control-label col-md-2"></div>
+                                                <div class="col-md-10">
+                                                    <button id="btnExcluirComponente" class="btn btn-danger control-label">@Resources.Resource.delete</button>
+                                                </div>
+                                            </div>
+
                                             @*<div class="form-group">
                                                     @Html.LabelFor(model => model.ComponenteGenerico.IsActive, "Ativo", htmlAttributes: new { @class = "control-label col-md-2" })
                                                     <div class="col-md-10">
@@ -207,6 +214,18 @@
                 addRow(componenteGenericoColuna);
             });
         }
+
+    });
+
+    $('#btnExcluirComponente').on("click", function () {
+
+        if (!confirm(Resources('confirm_delete'))){
+            return false;
+        }
+
+        $('#ComponenteGenerico_IsActive').attr('value', 'false');
+
+        $('.btnSalvar').trigger('click');
 
     });
 

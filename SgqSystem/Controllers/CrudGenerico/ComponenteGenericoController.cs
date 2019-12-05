@@ -15,7 +15,7 @@ namespace SgqSystem.Controllers
         // GET: ComponenteGenerico
         public ActionResult Index()
         {
-            return View(db.ComponenteGenerico.ToList());
+            return View(db.ComponenteGenerico.Where(x => x.IsActive).ToList());
         }
 
         // GET: ComponenteGenerico/Create
