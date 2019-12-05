@@ -27,7 +27,7 @@ namespace SgqSystem.Controllers
             if (id != null && id > 0)
             {
                 componenteGenerico.ComponenteGenerico = db.ComponenteGenerico.Find(id);
-                componenteGenerico.ComponentesGenericosColuna = db.ComponenteGenericoColuna.Include("ComponenteGenericoTipoColuna").Where(x => x.ComponenteGenerico_Id == id).ToList();
+                componenteGenerico.ComponentesGenericosColuna = db.ComponenteGenericoColuna.Include("ComponenteGenericoTipoColuna").Where(x => x.ComponenteGenerico_Id == id && x.IsActive).ToList();
             }
 
             ViewBag.ComponentesGenericosTipoColuna = db.ComponenteGenericoTipoColuna.Where(x => x.IsActive).ToList();

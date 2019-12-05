@@ -179,7 +179,7 @@
                                                         <input type="hidden" name="limitInfo" class="form-control" isRequired="@item.IsRequired" required="@item.IsRequired" id="@id" saveId="@saveId" value="@value" componenteGenericoId="@item.ComponenteGenerico_Id" componenteGenericoColunaId="@item.Id">
                                                         <div class="col-md-4">
                                                             Tarefa:
-                                                            @Html.DropDownList("ParLevel3_Id", new SelectList(ViewBag.Level3, "Id", "Name"), (string)Resources.Resource.select, new { @class = "form-control" })
+                                                            @Html.DropDownList("ParLevel3_Id", new SelectList(ViewBag.Level3, "Id", "IdAndName"), (string)Resources.Resource.select, new { @class = "form-control" })
                                                         </div>
                                                         <div class="col-md-3">
                                                             Limite Inferior:
@@ -439,7 +439,7 @@
     }
 
     function getLimits() {
-        debugger
+        
         let arrValor = [];
 
         $('#limites tbody tr').each(function () {
