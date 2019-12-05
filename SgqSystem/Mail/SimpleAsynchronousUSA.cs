@@ -274,7 +274,7 @@ namespace SgqSystem.Mail
                             {
                                 CorrectiveActionDTO caDTO;
                                 EmailContent newMail = GetMailByDeviationUSA(db, m, m.AlertNumber, out caDTO);
-                                newMail.To = DestinatariosSGQJBSUSAPorAlertaEAssinatura(newMail, m.ParCompany_Id, m.AlertNumber, caDTO);
+                                newMail.To = DestinatariosSGQJBSUSAPorRegraDeUsuarioPorDepartamentoDoLevel2(newMail, m.ParCompany_Id, m.AlertNumber, caDTO);
                                 db.EmailContent.Add(newMail);
                                 db.SaveChanges();
 
@@ -416,6 +416,47 @@ namespace SgqSystem.Mail
                         listaEmails.Add(usuario.Email);
                     foreach (var usuario in usersQueRecebemALertaNivelDois)
                         listaEmails.Add(usuario.Email);
+                }
+
+                if (listaEmails != null && listaEmails.Count() > 0)
+                    return string.Join(",", listaEmails.Distinct().ToArray());
+                else
+                {
+                    mail.SendStatus = "Não existem destinatários para este email.";
+                    return string.Empty;
+                }
+            }
+        }
+
+        private static string DestinatariosSGQJBSUSAPorRegraDeUsuarioPorDepartamentoDoLevel2(EmailContent mail, int parCompany_Id, int alertNumber, CorrectiveActionDTO modelCa)
+        {
+
+            using (var db = new SgqDbDevEntities())
+            {
+                var Roles = new List<string>();
+                var listaEmails = new List<string>();
+                var emailAssinatura = string.Empty;
+                var listaUserComEmailNaoNulo = db.UserSgq.Where(r => r.Email != null && r.Email.Length > 0);
+
+                if (modelCa != null)
+                {
+                    var departmentLevel02 = db.ParLevel2.Where(x => x.Id == modelCa.Level02Id).Select(x => x.ParDepartment.Name).FirstOrDefault();
+
+                    if (!string.IsNullOrEmpty(departmentLevel02))
+                    {
+                        var usuariosComRegraIgualAoDepartamento = listaUserComEmailNaoNulo.Where(r => r.Role.Contains(departmentLevel02) && r.ParCompany_Id == parCompany_Id).ToList();
+
+                        foreach (var usuario in usuariosComRegraIgualAoDepartamento)
+                            listaEmails.Add(usuario.Email);
+                    }
+
+                    var usuarioQueAssinouSlaugther = listaUserComEmailNaoNulo.FirstOrDefault(r => r.Id == modelCa.SlaughterId);
+                    var usuarioQueAssinouTechinical = listaUserComEmailNaoNulo.FirstOrDefault(r => r.Id == modelCa.TechinicalId);
+
+                    if (usuarioQueAssinouSlaugther != null)
+                        listaEmails.Add(usuarioQueAssinouSlaugther.Email);
+                    if (usuarioQueAssinouTechinical != null)
+                        listaEmails.Add(usuarioQueAssinouTechinical.Email);
                 }
 
                 if (listaEmails != null && listaEmails.Count() > 0)
