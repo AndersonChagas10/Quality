@@ -79,7 +79,7 @@ namespace SgqSystem.Controllers
         private List<ComponenteGenericoColuna> SaveOrUpdateComponenteGenericoColuna(ComponenteGenericoViewModel collection)
         {
 
-            if(collection.ComponentesGenericosColuna == null || collection.ComponentesGenericosColuna.Count == 0)
+            if (collection.ComponentesGenericosColuna == null || collection.ComponentesGenericosColuna.Count == 0)
             {
                 return collection.ComponentesGenericosColuna;
             }
@@ -175,6 +175,8 @@ namespace SgqSystem.Controllers
 
             int hash = 0;
 
+            InativaComponenteValorExcluido(componenteGenericoValores);
+
             foreach (var componenteGenericoValor in componenteGenericoValores)
             {
 
@@ -190,7 +192,7 @@ namespace SgqSystem.Controllers
                         hash = DateTime.Now.GetHashCode();
 
                     componenteGenericoValor.IsActive = true;
-                    if(componenteGenericoValor.SaveId == 0)
+                    if (componenteGenericoValor.SaveId == 0)
                         componenteGenericoValor.SaveId = hash;
 
                     db.ComponenteGenericoValor.Add(componenteGenericoValor);
@@ -206,7 +208,35 @@ namespace SgqSystem.Controllers
 
             db.SaveChanges();
 
+
+
             return componenteGenericoValores;
+        }
+
+        private void InativaComponenteValorExcluido(List<ComponenteGenericoValor> componenteGenericoValores)
+        {
+            var componenteSave = new Dictionary<int, int>();
+
+            foreach (var componenteGenericoValor in componenteGenericoValores)
+            {
+                if (componenteGenericoValor.SaveId != 0 && componenteGenericoValor.Id != 0)
+                    componenteSave.Add(componenteGenericoValor.Id, componenteGenericoValor.SaveId);
+            }
+
+            var componenteGenericoValoresParaInativar = db.ComponenteGenericoValor.Where(x => componenteSave.Values.Contains(x.SaveId) && !componenteSave.Keys.Contains(x.Id) && x.IsActive).ToList();
+
+            if (componenteGenericoValoresParaInativar.Count > 0)
+            {
+
+                foreach (var componenteGenericoValorParaInativar in componenteGenericoValoresParaInativar)
+                {
+                    componenteGenericoValorParaInativar.AlterDate = DateTime.Now;
+                    componenteGenericoValorParaInativar.IsActive = false;
+                    db.Entry(componenteGenericoValorParaInativar).State = System.Data.Entity.EntityState.Modified;
+                }
+
+                //db.SaveChanges();
+            }
         }
 
         [HttpPost]
