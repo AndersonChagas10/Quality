@@ -4,6 +4,15 @@ var defectsPerEvaluation = [];
 
 var listaDefeitos = [];
 
+function adicionaNaListaDeDefeitos(obj) {
+    if (listaDefeitos.length > 0) {
+        if (!!listaDefeitos[0].datetime && !!obj.datetime && listaDefeitos[0].datetime.substring(0, 10) != obj.datetime.substring(0, 10)) {
+            listaDefeitos = [];
+        }
+    }
+    listaDefeitos.push(obj);
+}
+
 
 /***********************************************************************************************
 INICIO DOS METODOS QUE GERAM ALERTA
@@ -363,7 +372,7 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
 
     if (defeitosPonderados > 0) {
 
-        listaDefeitos.push(
+        adicionaNaListaDeDefeitos(
             {
                 tipo: "defeito"
                 , parlevel1_id: level2Resultado.attr('level01id')
@@ -1192,7 +1201,7 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result) {
                     mensagem += " Critical "
                 }
 
-                listaDefeitos.push(
+                adicionaNaListaDeDefeitos(
                     {
                         tipo: "alerta"
                         , parlevel1_id: level2Result.attr('level01id')
@@ -1260,7 +1269,7 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result) {
                     mensagem += " One recurring defect "
                 }
 
-                listaDefeitos.push(
+                adicionaNaListaDeDefeitos(
                     {
                         tipo: "alerta"
                         , parlevel1_id: level2Result.attr('level01id')
@@ -1324,7 +1333,7 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result) {
                     mensagem += listaAmostraDefeitoUnica.length + " defected pieces "
                 }
 
-                listaDefeitos.push(
+                adicionaNaListaDeDefeitos(
                     {
                         tipo: "alerta"
                         , parlevel1_id: level2Result.attr('level01id')
