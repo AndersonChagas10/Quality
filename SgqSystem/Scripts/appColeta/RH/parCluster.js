@@ -107,6 +107,7 @@ function getPlanejamentoPorCluster(frequencyId) {
             data: JSON.stringify({
                 ParCompany_Id: currentParCompany_Id
                 , ParFrequency_Id: currentParFrequency_Id
+                , ParCluster_Id: currentParCluster_Id
                 , AppDate: currentCollectDate
             }),
             type: 'POST',
