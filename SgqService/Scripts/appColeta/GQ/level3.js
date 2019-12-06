@@ -1549,7 +1549,8 @@ function saveResultLevel3() {
             } else if (inputType == 2) { //Número de defeitos
 
                 if (parseFloat(value) > 0) {
-                    conform = false;
+                    value = parseFloat(value);
+                    conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
                 }
 
             } else if (inputType == 3) { //Intervalos

@@ -159,6 +159,7 @@ namespace SgqServiceBusiness.Api.App
 
         public void UpdateDbRemoto(int UnitId)
         {
+            return;
             var user = "sa";
             var pass = "1qazmko0";
             var unidade = db.ParCompany.FirstOrDefault(r => r.Id == UnitId);

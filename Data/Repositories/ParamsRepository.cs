@@ -326,6 +326,9 @@ namespace Data.Repositories
         {
             using (var ts = db.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
+                if (paramLevel2.ParFrequency_Id <= 0)
+                    paramLevel2.ParFrequency_Id = null;
+
                 AddUpdateParLevel2(paramLevel2); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 

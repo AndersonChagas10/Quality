@@ -1312,7 +1312,15 @@ namespace SgqServiceBusiness.Api
 
                         var isRecravacao = new SGQDBContext.ParLevel1(db, quebraProcesso).getById(c.level01_Id).IsRecravacao == true;
 
-                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao || (c.Unit_Id == 4 && c.level01_Id == 22) || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
+                        if (IsBEA == 3 
+                            || IsBEA == 2
+                            || isRecravacao
+                            || c.level01_Id == 43
+                            || c.level01_Id == 42
+                            || c.level01_Id == 7
+                            || c.level01_Id == 90
+                            || (c.Unit_Id == 4 && c.level01_Id == 22) 
+                            || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -1744,12 +1752,12 @@ namespace SgqServiceBusiness.Api
             }
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_ParLevel1");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_Pl1");
                 return 0;
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_ParLevel1");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_Pl1");
                 return 0;
             }
         }
@@ -3465,7 +3473,7 @@ namespace SgqServiceBusiness.Api
 
             string dataIni = data.ToString("yyyyMMdd");
 
-            string retorno = "";
+            StringBuilder retorno = new StringBuilder();
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -3515,7 +3523,7 @@ namespace SgqServiceBusiness.Api
 
                 CREATE TABLE #COLETASLEVEL3 (																																											  
                 	ROW INT NULL,																																															  
-                	COLUNA VARCHAR(153) NULL																																												  
+                	COLUNA VARCHAR(8000) NULL																																												  
                 )
                 
                 INSERT INTO #COLETASLEVEL3
@@ -3549,6 +3557,7 @@ namespace SgqServiceBusiness.Api
                 		WHEN (FREQ_AV.ParFrequency_Id) IN (6) THEN @datamensal
                 		ELSE @datadiario
                 	END AND @datafim
+					GROUP BY R3.ParLevel3_Id
 
 					--AND C2.ParLevel1_Id =112 
 					--AND C2.ParLevel2_Id = 633
@@ -3557,7 +3566,7 @@ namespace SgqServiceBusiness.Api
                 		COUNT(1)
                 	FROM #COLETASLEVEL3);
                 DECLARE @I INT = 1;
-                DECLARE @RESPOSTA VARCHAR(2000) = '';
+                DECLARE @RESPOSTA VARCHAR(8000) = '';
                 WHILE @I<@HOMENSFORBRUNO
                 BEGIN
                 SELECT
@@ -3865,9 +3874,9 @@ namespace SgqServiceBusiness.Api
                 	more3defectsEvaluate = ""0""
                 	CollectionLevel2_ID_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Id) AS VARCHAR), '.', ','), 'NULL') + '""
                 	CollectionLevel2_Period_CorrectiveAction = ""' + ISNULL(REPLACE(CAST(MIN(Level2Result.Period) AS VARCHAR), '.', ','), 'NULL') + '"" 
-                	HoraPrimeiraAvaliacao = ""' + ISNULL(Level2Result.HoraPrimeiraAvaliacao, 'NULL') + '"" >
-                	' + @RESPOSTA + '
-                	</div> ' AS retorno
+                	HoraPrimeiraAvaliacao = ""' + ISNULL(Level2Result.HoraPrimeiraAvaliacao, 'NULL') + '"" >' as retornoLevel2,
+                    @RESPOSTA as retornoLevel3,
+                    '</div> ' AS retornoFechaDiv
                 FROM #COLETA Level2Result
                 INNER JOIN ConsolidationLevel2 CDL2 WITH (NOLOCK)
                 	ON Level2Result.ConsolidationLevel2_Id = CDL2.Id
@@ -3920,16 +3929,18 @@ namespace SgqServiceBusiness.Api
                     cmd.Parameters.Add(new SqlParameter("@DataIni", dataIni));
                     cmd.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
 
-                    var list = factory.SearchQuery<ResultadoUmaColuna>(cmd).ToList();
+                    var list = factory.SearchQuery<ResultadoH4B>(cmd).ToList();
 
                     for (var i = 0; i < list.Count(); i++)
                     {
-                        retorno += list[i].retorno.ToString();
+                        retorno.Append(list[i].retornoLevel2.ToString());
+                        retorno.Append(list[i].retornoLevel3.ToString());
+                        retorno.Append(list[i].retornoFechaDiv.ToString());
                     }
                 }
             }
 
-            return retorno;
+            return retorno.ToString();
         }
         #endregion
 
@@ -4292,7 +4303,16 @@ namespace SgqServiceBusiness.Api
                         .OrderByDescending(x => new { x.ParCompany_Id, x.ParLevel1_Id })
                         .FirstOrDefault();
 
-                    var list = conexaoEF.ParEvaluationSchedule.Where(x => x.ParEvaluation_Id == parEvaluation.Id && x.IsActive).ToList();
+                    var list = conexaoEF.ParEvaluationSchedule
+                        .Where(x => x.ParEvaluation_Id == parEvaluation.Id
+                        && (x.Shift_Id == shift_Id || x.Shift_Id == null)
+                        && x.IsActive).ToList();
+
+                    if (list.Any(x => x.Shift_Id != null))
+                    {
+                        list = list.Where(x => x.Shift_Id != null)
+                            .ToList();
+                    }
 
                     foreach (var item in list)
                     {
@@ -5487,8 +5507,31 @@ namespace SgqServiceBusiness.Api
                 sampleGroup = sample;
             }
 
+            #region Agrupamento departamento na listagem de level 2 no AppColeta
+            var departamento = "";
+
+            var index = 0;
+            var count = parlevel02List.Count();
+
+            var auxDepto = "";
+            var countDepto = 0;
+            var listaParLevel1ParaAgrupar = (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.parLevel1ComAgrupamentoPorDepartamentoNaColeta as string)?.Split('|').ToList();
+
+            if (listaParLevel1ParaAgrupar.Contains(ParLevel1.ParLevel1_Id.ToString()))
+            {
+                foreach (var parlevel2count in parlevel02List) //LOOP3
+                {
+                    if (parlevel2count.Departamento != auxDepto)
+                    {
+                        countDepto++;
+                    }
+                    auxDepto = parlevel2count.Departamento;
+                }
+            }
+            #endregion
+
             //Enquando houver lista de level2
-            foreach (var parlevel2 in parlevel02List) //LOOP3
+            foreach (var parlevel2 in parlevel02List.OrderBy(x=>x.Departamento)) //LOOP3
             {
                 string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
@@ -5678,6 +5721,8 @@ namespace SgqServiceBusiness.Api
                     ruleValue = parNCRuleDB.Value;
                 }
 
+
+
                 //podemos aplicar os defeitos
                 string level2 = html.level2(id: parlevel2.Id.ToString(),
                                             label: parlevel2.Name,
@@ -5710,15 +5755,65 @@ namespace SgqServiceBusiness.Api
                     continue;
 
                 //Gera linha do Level2
+                #region Agrupamento departamento na listagem de level 2 no AppColeta
+                var inicioGrupo = false;
+                var fimGrupo = false;
+                var fimFinalGrupo = false;
+                var Grupo = "";
+
+                if (countDepto > 1)
+                {
+
+                    if (departamento == "")
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                    }
+                    else if (departamento == parlevel2.Departamento)
+                    {
+                        inicioGrupo = false;
+                    }
+                    else if (departamento != parlevel2.Departamento)
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                        fimGrupo = true;
+                    }
+
+                    if (++index == count)
+                    {
+                        fimFinalGrupo = true;
+                    }
+
+                    departamento = parlevel2.Departamento;
+
+                }
+                #endregion
+
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
-                                                    classe: "row",
+                                                    classe: "row gabriel " + parlevel2.Departamento,
+                                                    tags: "departamento='" + parlevel2.Departamento + "'",
                                                     outerhtml: level2 +
-                                                               counters +
-                                                               buttons +
-                                                               html.div(classe: "level2Debug") +
-                                                               lineCounters
+                                                                counters +
+                                                                buttons +
+                                                                html.div(classe: "level2Debug") +
+                                                                lineCounters,
+                                                    inicioGrupo: inicioGrupo,
+                                                    fimGrupo: fimGrupo,
+                                                    fimFinalGrupo: fimFinalGrupo,
+                                                    Grupo: Grupo
                                                     );
+
+                //ParLevel2List += html.listgroupItem(
+                //                                    id: parlevel2.Id.ToString(),
+                //                                    classe: "row",
+                //                                    outerhtml: level2 +
+                //                                               counters +
+                //                                               buttons +
+                //                                               html.div(classe: "level2Debug") +
+                //                                               lineCounters
+                //                                    );
 
                 if (ParLevel1.HasGroupLevel2 == true)
                 {
@@ -7735,6 +7830,7 @@ namespace SgqServiceBusiness.Api
 
         public string InsertCorrectiveAction(InsertCorrectiveActionClass insertCorrectiveActionClass)
         {
+            int phpDebug = 0;
             string CollectionLevel2_Id = insertCorrectiveActionClass.CollectionLevel2_Id;
             string ParLevel1_Id = insertCorrectiveActionClass.ParLevel1_Id;
             string ParLevel2_Id = insertCorrectiveActionClass.ParLevel2_Id;
@@ -7756,48 +7852,65 @@ namespace SgqServiceBusiness.Api
             string ProductDisposition = insertCorrectiveActionClass.ProductDisposition;
             string PreventativeMeasure = insertCorrectiveActionClass.PreventativeMeasure;
             string reauditnumber = insertCorrectiveActionClass.reauditnumber;
-
+            phpDebug = 1;
             try
             {
 
                 //inserir a acção corretiva com processo
 
                 string parCluster_Id_parLevel1_id = ParLevel1_Id.Replace(quebraProcesso, "|");
+                phpDebug = 2;
                 string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : "0";
+                phpDebug = 3;
                 ParLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
+                phpDebug = 4;
 
                 string parCluster_Id_parLevel2_id = ParLevel2_Id.Replace(quebraProcesso, "|");
+                phpDebug = 5;
                 ParLevel2_Id = parCluster_Id_parLevel2_id.Split('|').Length > 1 ? parCluster_Id_parLevel2_id.Split('|')[1] : parCluster_Id_parLevel2_id.Split('|')[0];
-
-
+                phpDebug = 6;
 
                 //using (var transacao = new TransactionScope())
                 //{
                 SlaughterId = DefaultValueReturn(SlaughterId, "1");
+                phpDebug = 7;
                 TechinicalId = DefaultValueReturn(TechinicalId, "1");
+                phpDebug = 8;
                 DateTimeSlaughter = DefaultValueReturn(DateTimeSlaughter, "03012017 00:00:00");
+                phpDebug = 9;
                 DateTimeTechinical = DateTimeSlaughter;
+                phpDebug = 10;
                 Period = DefaultValueReturn(Period, "1");
+                phpDebug = 11;
 
                 if (string.IsNullOrEmpty(CollectionLevel2_Id) || CollectionLevel2_Id == "0")
                 {
+                    phpDebug = 12;
                     CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber, reauditnumber, data, parCluster_Id).ToString();
+                    phpDebug = 13;
                     if (CollectionLevel2_Id == "0")
                     {
                         return "erro na InsertCorrectiveAction!";
                     }
                 }
 
+                phpDebug = 14;
                 DescriptionFailure = HttpUtility.UrlDecode(DescriptionFailure, System.Text.Encoding.Default);
+                phpDebug = 15;
                 ImmediateCorrectiveAction = HttpUtility.UrlDecode(ImmediateCorrectiveAction, System.Text.Encoding.Default);
+                phpDebug = 16;
                 ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
+                phpDebug = 17;
                 PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
+                phpDebug = 18;
 
                 int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure,
                     ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
+                phpDebug = 19;
 
                 if (id > 0)
                 {
+                    phpDebug = 20;
                     //01/20/2017
 
 
@@ -7805,26 +7918,37 @@ namespace SgqServiceBusiness.Api
                     string dataFim = null;
 
                     data = data.Trim();
+                    phpDebug = 21;
 
                     if (!data.Contains("/"))
                     {
+                        phpDebug = 22;
                         string dia = data.Substring(2, 2);
+                        phpDebug = 23;
                         string mes = data.Substring(0, 2);
+                        phpDebug = 24;
                         string ano = data.Substring(4, 4);
+                        phpDebug = 25;
 
                         data = ano + "/" + mes + "/" + dia;
+                        phpDebug = 26;
                     }
 
+                    phpDebug = 27;
                     DateTime dataAPP = Convert.ToDateTime(data);
+                    phpDebug = 28;
 
                     //Pega a data pela regra da frequencia
                     getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
+                    phpDebug = 29;
                     var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim, reauditnumber);
+                    phpDebug = 30;
                     //transacao.complete();
                     return null;
                 }
                 else
                 {
+                    phpDebug = 60;
                     int insertLog = insertLogJson("", "", "N/A", "N/A", "Na InsertCorrectiveAction não achou uma referencia");
                     throw new Exception();
                 }
@@ -7832,9 +7956,9 @@ namespace SgqServiceBusiness.Api
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson("", ex.Message, "N/A", "N/A", "InsertCorrectiveAction");
+                int insertLog = insertLogJson("", "PHPDebug="+ phpDebug + " | " + ex.Message, "N/A", "N/A", "InsertCorrectiveAction");
 
-                return "erro";
+                return "erro="+ phpDebug;
                 throw ex;
             }
         }
@@ -8442,7 +8566,7 @@ namespace SgqServiceBusiness.Api
                                         cmd.CommandType = CommandType.Text;
                                         cmd.Parameters.Add(new SqlParameter("@WeiDefects", resultLevel3WeiDefects.WeiDefects.ToString().Replace(',', '.')));
                                         cmd.Parameters.Add(new SqlParameter("@PunishmentValue", resultLevel3.PunishmentValue.ToString().Replace(',', '.')));
-                                        cmd.Parameters.Add(new SqlParameter("@ResultLevel3WeiDefects_Id", resultLevel3.PunishmentValue.ToString().Replace(',', '.')));
+                                        cmd.Parameters.Add(new SqlParameter("@ResultLevel3WeiDefects_Id", resultLevel3WeiDefects.Id));
 
                                         cmd.ExecuteNonQuery();
                                         //factory.ExecuteSql(cmd.CommandText);
