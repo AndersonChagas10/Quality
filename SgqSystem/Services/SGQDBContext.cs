@@ -1261,7 +1261,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
             sql = "SELECT * FROM (" + sql;
 
-            sql += "\n  ) TOTAL  ORDER BY ISNULL(TOTAL.ParLevel3Group_Name,'ZZZ') ASC, 2 ASC,  15  DESC , 16  DESC    ";
+            sql += "\n  ) TOTAL  ORDER BY TOTAL.ParCompany_Id2 desc, ISNULL(TOTAL.ParLevel3Group_Name,'ZZZ') ASC, 2 ASC,  15  DESC , 16  DESC    ";
 
             List<ParLevel3> parLevel3List = new List<ParLevel3>();
             using (Factory factory = new Factory("DefaultConnection"))
