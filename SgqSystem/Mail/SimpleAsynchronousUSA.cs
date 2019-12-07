@@ -264,21 +264,21 @@ namespace SgqSystem.Mail
                     /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
                     DateTime dateLimit = DateTime.Now.AddHours(-24);
                     DateTime dateLimitDeviation = DateTime.Now.AddHours(-72);
-                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimitDeviation && r.AddDate > dateLimit).OrderBy(r => r.AddDate).Take(tamanhoDoPool).ToList();
+                    var listDeviations = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null && r.DeviationDate > dateLimitDeviation && r.AddDate > dateLimit).OrderBy(r => r.AddDate).Take(tamanhoDoPool).ToList();
 
-                    if (Mails != null && Mails.Count() > 0)
+                    if (listDeviations != null && listDeviations.Count() > 0)
                     {
-                        foreach (var m in Mails)
+                        foreach (var deviation in listDeviations)
                         {
-                            if (!(db.Deviation.FirstOrDefault(d => d.Id == m.Id)?.EmailContent_Id > 0))
+                            if (!(db.Deviation.FirstOrDefault(d => d.Id == deviation.Id)?.EmailContent_Id > 0))
                             {
                                 CorrectiveActionDTO caDTO;
-                                EmailContent newMail = GetMailByDeviationUSA(db, m, m.AlertNumber, out caDTO);
-                                newMail.To = DestinatariosSGQJBSUSAPorRegraDeUsuarioPorDepartamentoDoLevel2(newMail, m.ParCompany_Id, m.AlertNumber, caDTO);
+                                EmailContent newMail = GetMailByDeviationUSA(db, deviation, deviation.AlertNumber, out caDTO);
+                                newMail.To = DestinatariosSGQJBSUSAPorRegraDeUsuarioPorDepartamentoDoLevel2(newMail, deviation, caDTO);
                                 db.EmailContent.Add(newMail);
                                 db.SaveChanges();
 
-                                db.Database.ExecuteSqlCommand($"UPDATE Deviation SET sendMail = 1, EmailContent_Id = { newMail.Id } WHERE ID = { m.Id }");
+                                db.Database.ExecuteSqlCommand($"UPDATE Deviation SET sendMail = 1, EmailContent_Id = { newMail.Id } WHERE ID = { deviation.Id }");
                                 db.SaveChanges();
                             }
                         }
@@ -428,7 +428,7 @@ namespace SgqSystem.Mail
             }
         }
 
-        private static string DestinatariosSGQJBSUSAPorRegraDeUsuarioPorDepartamentoDoLevel2(EmailContent mail, int parCompany_Id, int alertNumber, CorrectiveActionDTO modelCa)
+        private static string DestinatariosSGQJBSUSAPorRegraDeUsuarioPorDepartamentoDoLevel2(EmailContent mail, Deviation deviation, CorrectiveActionDTO modelCa)
         {
 
             using (var db = new SgqDbDevEntities())
@@ -438,18 +438,18 @@ namespace SgqSystem.Mail
                 var emailAssinatura = string.Empty;
                 var listaUserComEmailNaoNulo = db.UserSgq.Where(r => r.Email != null && r.Email.Length > 0);
 
+                var departmentLevel02 = db.ParLevel2.Where(x => x.Id == deviation.ParLevel2_Id).Select(x => x.ParDepartment.Name).FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(departmentLevel02))
+                {
+                    var usuariosComRegraIgualAoDepartamento = listaUserComEmailNaoNulo.Where(r => r.Role.Contains(departmentLevel02) && r.ParCompany_Id == deviation.ParCompany_Id).ToList();
+
+                    foreach (var usuario in usuariosComRegraIgualAoDepartamento)
+                        listaEmails.Add(usuario.Email);
+                }
+
                 if (modelCa != null)
                 {
-                    var departmentLevel02 = db.ParLevel2.Where(x => x.Id == modelCa.Level02Id).Select(x => x.ParDepartment.Name).FirstOrDefault();
-
-                    if (!string.IsNullOrEmpty(departmentLevel02))
-                    {
-                        var usuariosComRegraIgualAoDepartamento = listaUserComEmailNaoNulo.Where(r => r.Role.Contains(departmentLevel02) && r.ParCompany_Id == parCompany_Id).ToList();
-
-                        foreach (var usuario in usuariosComRegraIgualAoDepartamento)
-                            listaEmails.Add(usuario.Email);
-                    }
-
                     var usuarioQueAssinouSlaugther = listaUserComEmailNaoNulo.FirstOrDefault(r => r.Id == modelCa.SlaughterId);
                     var usuarioQueAssinouTechinical = listaUserComEmailNaoNulo.FirstOrDefault(r => r.Id == modelCa.TechinicalId);
 
