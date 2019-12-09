@@ -83,7 +83,6 @@ function listarParCluster() {
 function cleanGlobalVarParCluster() {
     currentParDepartment_Id = null;
     currentParCargo_Id = null;
-    currentParCluster_Id = null;
     currentsParDepartments_Ids = [];
 }
 
