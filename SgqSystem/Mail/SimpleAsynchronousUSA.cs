@@ -275,6 +275,7 @@ namespace SgqSystem.Mail
                                 CorrectiveActionDTO caDTO;
                                 EmailContent newMail = GetMailByDeviationUSA(db, deviation, deviation.AlertNumber, out caDTO);
                                 newMail.To = DestinatariosSGQJBSUSAPorRegraDeUsuarioPorDepartamentoDoLevel2(newMail, deviation, caDTO);
+                                newMail.To = newMail.To.Substring(0, newMail.To.Length > 500 ? 500 : newMail.To.Length);
                                 db.EmailContent.Add(newMail);
                                 db.SaveChanges();
 
@@ -567,7 +568,14 @@ namespace SgqSystem.Mail
                 foreach (var i in deviationMessage.Split('>'))
                     result += i.TrimStart().TrimEnd() + "> ";
 
-                return result.Substring(0, result.IndexOf("<button"));
+                var indexOfButton = result.IndexOf("<button");
+                if (indexOfButton >= 0) {
+                    return result.Substring(0, indexOfButton);
+                }
+                else
+                {
+                    return result;
+                }
             }
             catch (Exception e)
             {
