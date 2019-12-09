@@ -138,38 +138,134 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         private List<TendenciaResultSet> GetGraficoTendenciaIndicador(DataCarrierFormularioNew form, int ParLevel1_Id)
         {
 
-            var retornoHistoricoUnidade = new List<TendenciaResultSet>();
+            var retornoTendencia = new List<TendenciaResultSet>();
+            var wModulo = "";
+            var wParClusterGroup = "";
+            var wParCluster = "";
+            var wParStructure = "";
+            var wParCompany = "";
+            var wTurno = "";
+            var wParCriticalLevel = "";
+            var wParGroupParLevel1 = "";
+            var wParDepartment = "";
+            var wParLevel1 = "";
+            var wParLevel2 = "";
+            var wParLevel3 = "";
+            var wLevel1Status = "";
+            var wAcaoStatus = "";
+            var wPeriodo = "";
+            var wNCComPeso = "";
+            var wPeso = "";
+            var wDesdobramento = "";
+            var wSurpervisor = "";
 
-            //retornoHistoricoUnidade.Add(new TendenciaResultSet() { Av = 1, Av_Peso = 1, Level1Name = "Indicador 1", level1_Id = 1, NC = 1, NC_Peso = 1, });
+            //Módulo
+            if (form.ParModule_Ids != null && form.ParModule_Ids.Length > 0)
+                wModulo = $" AND PL1XM.ParModule_Id = {form.ParModule_Ids[0]}";
+
+            //Grupo de Processo
+            if (form.ParClusterGroup_Ids != null && form.ParClusterGroup_Ids.Length > 0)
+                wParClusterGroup = $" AND PCL.ParClusterGroup_Id IN ({string.Join(",", form.ParClusterGroup_Ids)})";
+
+            //Processo
+            if (form.ParCluster_Ids != null && form.ParCluster_Ids.Length > 0)
+                wParCluster = $" AND PCL.Id IN ({string.Join(",", form.ParCluster_Ids)})";
+
+            //Regional
+            if (form.ParStructure_Ids != null && form.ParStructure_Ids.Length > 0)
+                wParStructure = $" AND PS.Id IN ({ string.Join(",", form.ParStructure_Ids)})";
+
+            //Unidade
+            if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
+                wParCompany = $" AND UNI.Id IN ({string.Join(",", form.ParCompany_Ids)})";
+
+            //Turno
+            if (form.Shift_Ids != null && form.Shift_Ids.Length > 0)
+                wTurno = $" AND CL1.Shift IN ({string.Join(",", form.Shift_Ids)})";
+
+            //Nível Criticidade
+            if (form.ParCriticalLevel_Ids != null && form.ParCriticalLevel_Ids.Length > 0)
+                wParCriticalLevel = $" AND PL1XC.ParCriticalLevel_Id IN ({string.Join(",", form.ParCriticalLevel_Ids)})";
+
+            //Função
+            if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
+                wParGroupParLevel1 = $" AND PGPL1G.ParGroupParLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)})";
+
+            //Departamento
+            if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
+                wParDepartment = $" AND CL2.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)})";
+
+            //Indicador
+            if (form.ParLevel1_Ids != null && form.ParLevel1_Ids.Length > 0)
+                wParLevel1 = $" AND CL1.ParLevel1_Id IN ({string.Join(",", form.ParLevel1_Ids)})";
+
+            //Monitoramento
+            if (form.ParLevel2_Ids != null && form.ParLevel2_Ids.Length > 0)
+                wParLevel2 = $" AND CL2.ParLevel2_Id IN ({string.Join(",", form.ParLevel2_Ids)})";
+
+            //Tarefa
+            if (form.ParLevel3_Ids != null && form.ParLevel3_Ids.Length > 0)
+                wParLevel3 = $" AND RL3.ParLevel3_Id IN ({string.Join(",", form.ParLevel3_Ids)})";
+
+            //Status do Indicador
+            if (form.ParLevel1Status_Ids != null && form.ParLevel1Status_Ids.Length > 0)
+                wLevel1Status = $"";
+
+            //Plano de Ação Concluido
+            if (form.AcaoStatus != null && form.AcaoStatus.Length > 0)
+                if (form.AcaoStatus[0] == 1)
+                    wAcaoStatus = "";
+                else
+                    wAcaoStatus = "";
+
+            //Periodo
+            if (form.Periodo != null && form.Periodo.Length > 0)
+                wPeriodo = "";
+
+            //Exibe NC Com peso
+            if (form.NcComPeso != null && form.NcComPeso.Length > 0)
+                wNCComPeso = "";
+
+            //Peso
+            if (form.Peso != null && form.Peso.Length > 0)
+                wPeso = "";
+
+            //Desdobramento
+            if (form.Desdobramento != null && form.Desdobramento.Length > 0)
+                wDesdobramento = "";
+
+            //Surpervisor
+            if (form.UserSgqSurpervisor_Ids != null && form.UserSgqSurpervisor_Ids.Length > 0)
+                wSurpervisor = "";
 
             var query = $@" 
             DECLARE @dataFim_ date = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
             DECLARE @dataInicio_ date = DATEADD(MONTH, 0, '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00')
             
             SET @dataInicio_ = DATEFROMPARTS(YEAR(@dataInicio_), MONTH(@dataInicio_), 01)
-              
-            declare @ListaDatas_ table(data_ date)
-              
-            WHILE @dataInicio_ <= @dataFim_ 
-            
-            BEGIN
+                          
+                        declare @ListaDatas_ table(data_ date)
+                          
+                        WHILE @dataInicio_ <= @dataFim_ 
+                        
+                        BEGIN
             INSERT INTO @ListaDatas_
             	SELECT
             		@dataInicio_
             SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_)
-            END
-              
-            DECLARE @DATAFINAL DATE = @dataFim_
-            DECLARE @DATAINICIAL DATE = DateAdd(mm, DateDiff(mm, 0, @DATAFINAL) - 1, 0)
-            
-            DECLARE @INDICADOR INT = { ParLevel1_Id }
-             
-            CREATE TABLE #AMOSTRATIPO4 (   
-            UNIDADE INT NULL,   
-            INDICADOR INT NULL,   
-            AM INT NULL,   
-            DEF_AM INT NULL  
-            )
+                        END
+                          
+                        DECLARE @DATAFINAL DATE = @dataFim_
+                        DECLARE @DATAINICIAL DATE = DateAdd(mm, DateDiff(mm, 0, @DATAFINAL) - 1, 0)
+                        
+                        DECLARE @INDICADOR INT = 1
+                         
+                        CREATE TABLE #AMOSTRATIPO4 (   
+                        UNIDADE INT NULL,   
+                        INDICADOR INT NULL,   
+                        AM INT NULL,   
+                        DEF_AM INT NULL  
+                        )
             
             INSERT INTO #AMOSTRATIPO4
             	SELECT
@@ -180,7 +276,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             	FROM (SELECT
             			CAST(C2.CollectionDate AS DATE) AS DATA
             		   ,C.Id AS UNIDADE
-            		   ,C2.ParLevel1_id AS INDICADOR
+            		   ,C2.ParLevel1_Id AS INDICADOR
             		   ,C2.EvaluationNumber AS AV
             		   ,C2.Sample AS AM
             		   ,CASE
@@ -189,7 +285,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			END DEF_AM
             		FROM CollectionLevel2 C2 (NOLOCK)
             		INNER JOIN ParLevel1 L1 (NOLOCK)
-            			ON L1.Id = C2.ParLevel1_id
+            			ON L1.Id = C2.ParLevel1_Id
             		INNER JOIN ParCompany C (NOLOCK)
             			ON C.Id = C2.UnitId
             		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
@@ -197,15 +293,15 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             		AND C2.Duplicated = 0
             		AND L1.ParConsolidationType_Id = 4
             		GROUP BY C.Id
-            				,ParLevel1_id
+            				,ParLevel1_Id
             				,EvaluationNumber
             				,Sample
             				,CAST(CollectionDate AS DATE)) TAB
             	GROUP BY UNIDADE
             			,INDICADOR
             			,Data
-              
-            DECLARE @RESS INT
+                          
+                        DECLARE @RESS INT
             
             SELECT
             	@RESS =
@@ -216,11 +312,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             	LEFT JOIN Result_Level3 C3 (NOLOCK)
             		ON C3.CollectionLevel2_Id = C2.Id
             	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
-            	AND C2.ParLevel1_id = (SELECT TOP 1
+            	AND C2.ParLevel1_Id = (SELECT TOP 1
             			Id
             		FROM ParLevel1(nolock)
             		WHERE hashKey = 1)
-            	AND C2.UnitId IN ({ string.Join(",", form.ParCompany_Ids) })
+            	AND C2.UnitId IN (4, 5, 6, 7, 8, 2, 1)
             	AND IsNotEvaluate = 1
             	GROUP BY C2.Id) NA
             WHERE NA = 2
@@ -281,11 +377,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             					WHEN IND.hashKey = 1 THEN (SELECT TOP 1
             								SUM(Quartos) - @RESS
             							FROM VolumePcc1b(nolock)
-            							WHERE ParCompany_id = UNI.Id
+            							WHERE ParCompany_Id = UNI.Id
             							AND Data = DD.data_)
-            					WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation
-            					WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
-            					WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
             					WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
             					ELSE 0
             				END AS Av
@@ -293,25 +389,25 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             					WHEN IND.hashKey = 1 THEN (SELECT TOP 1
             								SUM(Quartos) - @RESS
             							FROM VolumePcc1b(nolock)
-            							WHERE ParCompany_id = UNI.Id
+            							WHERE ParCompany_Id = UNI.Id
             							AND Data = DD.data_)
-            					WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal
-            					WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation
-            					WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.EvaluateTotal
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
             					WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
             					ELSE 0
             				END AS AvSemPeso
             			   ,CASE
-            					WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects
-            					WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects
-            					WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
             					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
             					ELSE 0
             				END AS NC
             			   ,CASE
-            					WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal
-            					WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal
-            					WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.DefectsTotal
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
             					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
             					ELSE 0
             				END AS NCSemPeso
@@ -320,28 +416,28 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             					WHEN (SELECT
             								COUNT(1)
             							FROM ParGoal G (NOLOCK)
-            							WHERE G.ParLevel1_id = CL1.ParLevel1_id
-            							AND (G.ParCompany_id = CL1.UnitId
-            							OR G.ParCompany_id IS NULL)
+            							WHERE G.ParLevel1_Id = CL1.ParLevel1_Id
+            							AND (G.ParCompany_Id = CL1.UnitId
+            							OR G.ParCompany_Id IS NULL)
             							AND G.IsActive = 1
             							AND G.EffectiveDate <= @DATAFINAL)
             						> 0 THEN (SELECT TOP 1
             								ISNULL(G.PercentValue, 0)
             							FROM ParGoal G (NOLOCK)
-            							WHERE G.ParLevel1_id = CL1.ParLevel1_id
-            							AND (G.ParCompany_id = CL1.UnitId
-            							OR G.ParCompany_id IS NULL)
+            							WHERE G.ParLevel1_Id = CL1.ParLevel1_Id
+            							AND (G.ParCompany_Id = CL1.UnitId
+            							OR G.ParCompany_Id IS NULL)
             							AND G.IsActive = 1
             							AND G.EffectiveDate <= @DATAFINAL
-            							ORDER BY G.ParCompany_id DESC, EffectiveDate DESC)
+            							ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
             
             					ELSE (SELECT TOP 1
             								ISNULL(G.PercentValue, 0)
             							FROM ParGoal G (NOLOCK)
-            							WHERE G.ParLevel1_id = CL1.ParLevel1_id
-            							AND (G.ParCompany_id = CL1.UnitId
-            							OR G.ParCompany_id IS NULL)
-            							ORDER BY G.ParCompany_id DESC, EffectiveDate ASC)
+            							WHERE G.ParLevel1_Id = CL1.ParLevel1_Id
+            							AND (G.ParCompany_Id = CL1.UnitId
+            							OR G.ParCompany_Id IS NULL)
+            							ORDER BY G.ParCompany_Id DESC, EffectiveDate ASC)
             				END
             				AS Meta
             			   ,DD.data_ AS Data
@@ -352,8 +448,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             				WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
             				AND UnitId <> 12341614) CL1
             				ON DD.data_ = CAST(CL1.ConsolidationDate AS DATE)
+            			LEFT JOIN (SELECT
+            					*
+            				FROM ConsolidationLevel2(nolock)
+            				WHERE 1 = 1
+            				AND UnitId <> 11514) CSL2
+            				ON CSL2.ConsolidationLevel1_Id = CL1.Id
+            			LEFT JOIN dbo.CollectionLevel2 CL2
+            				ON CL2.ConsolidationLevel2_Id = CSL2.Id
             			LEFT JOIN ParLevel1 IND (NOLOCK)
-            				ON IND.Id = CL1.ParLevel1_id
+            				ON IND.Id = CL1.ParLevel1_Id
             			LEFT JOIN ParCompany UNI (NOLOCK)
             				ON UNI.Id = CL1.UnitId
             			LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
@@ -372,14 +476,50 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             					WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
             					AND UnitId <> 11514) CL1
             				LEFT JOIN ParLevel1 IND (NOLOCK)
-            					ON IND.Id = CL1.ParLevel1_id
+            					ON IND.Id = CL1.ParLevel1_Id
             				LEFT JOIN ParCompany UNI (NOLOCK)
             					ON UNI.Id = CL1.UnitId
             				LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
             					ON A4.Unidade = UNI.Id
             					AND A4.INDICADOR = IND.Id
+            				LEFT JOIN ParLevel1XModule PL1XM WITH (NOLOCK)
+            					ON PL1XM.ParLevel1_Id = CL1.ParLevel1_Id
+            				LEFT JOIN ParLevel1XCluster PL1XC
+            					ON PL1XC.ParLevel1_Id = CL1.ParLevel1_Id
+            					AND PL1XC.IsActive = 1
+            				LEFT JOIN ParCluster PCL
+            					ON PCL.Id = PL1XC.ParCluster_Id
+            					AND PCL.IsActive = 1
+            				LEFT JOIN ParCompanyXStructure PCXS
+            					ON UNI.ParCompany_Id = PCXS.ParCompany_Id
+            					AND PCXS.Active = 1
+            				LEFT JOIN ParStructure PS
+            					ON PS.ParStructureGroup_Id = 2
+            					AND PS.Active = 1
+            				LEFT JOIN ParGroupParLevel1XParLevel1 PGPL1G WITH (NOLOCK)
+            					ON CL1.ParLevel1_Id = PGPL1G.ParLevel1_Id
+            					AND PGPL1G.IsActive = 1
             				WHERE 1 = 1
-            				-- Aqui coloca a merda do filtro
+                            { wModulo }
+                            { wParClusterGroup }
+                            { wParCluster }
+                            { wParStructure }
+                            { wParCompany }
+                            { wTurno }
+                            { wParCriticalLevel }
+                            { wParGroupParLevel1 }
+                            { wParDepartment }
+                            { wParLevel1 }
+                            { wParLevel2 }
+                            { wParLevel3 }
+                            { wAcaoStatus }
+                            { wLevel1Status }
+                            { wAcaoStatus }
+                            { wPeriodo }
+                            { wNCComPeso }
+                            { wPeso }
+                            { wDesdobramento }
+                            { wSurpervisor }
             				GROUP BY IND.Id
             						,IND.Name
             						,CL1.UnitId
@@ -398,14 +538,15 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             WHERE 1 = 1
             AND S2.Unidade_Id IN ({ string.Join(",", form.ParCompany_Ids) })
             AND S2.level1_Id = @INDICADOR
+            ORDER BY _Data
             DROP TABLE #AMOSTRATIPO4";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                retornoHistoricoUnidade = factory.SearchQuery<TendenciaResultSet>(query).ToList();
+                retornoTendencia = factory.SearchQuery<TendenciaResultSet>(query).ToList();
             }
 
-            return retornoHistoricoUnidade;
+            return retornoTendencia;
         }
 
         private static string getQuery(DataCarrierFormularioNew form, int? nivel)

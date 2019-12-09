@@ -831,19 +831,52 @@
 
         }
 
-        function GerarGraficoTendenciaIndicador(objMock, idPanel) {
+        function GerarGraficoTendenciaIndicador(objRetorno, idPanel) {
 
             debugger
 
             //Transformar o arr dentro do objMock nos dados prontos para inserir no grafico
+
+            let objTendencia = {
+                ProcNC: [],
+                MetaEstatica: 0,
+                Tendencia: [],
+                NC: [],
+                AV: [],
+            };
+
+            let somaPercentNC = 0;
+            let ncAcumulada = 0;
+            let avCumulada = 0;
+
+            objRetorno.ListaTendenciaResultSet.forEach((o, i) => {
+
+                somaPercentNC = (somaPercentNC + o.PorcentagemNc);
+
+                //let qtdeAmotra = (i + 1);
+                //let tendencia = (somaPercentNC / qtdeAmotra);
+
+                ncAcumulada += o.NC;
+                avCumulada += o.Av;
+
+                let tendencia = o.Av == 0 ? 0 : ncAcumulada / avCumulada * 100;
+
+                objTendencia.Tendencia.push([o.Data, tendencia]);
+                objTendencia.MetaEstatica = o.Meta;
+                objTendencia.ProcNC.push([o.Data, o.PorcentagemNc]); //Porcentagem não muda com o peso?
+                objTendencia.NC.push([o.Data, o.NC]); //Ou NC_Peso
+                objTendencia.AV.push([o.Data, o.Av]); //Ou Av_Peso
+
+            });
+
             //Somar as %CN e dividir pelo valor da Média das %NC passadas
 
-            let titulo = "Tendência do Indicador: " + objMock.ParLevel1_Name;
+            let titulo = "Tendência do Indicador: " + objRetorno.ParLevel1_Name;
             let subtitulo = "Unidade: " + GetSubtitleUnidade();
             let dtInicio = "";
 
-            let idChart = 'tendencia' + objMock.ParLevel1_Id;
-            let idCollapse = "collapse" + objMock.ParLevel1_Id;
+            let idChart = 'tendencia' + objRetorno.ParLevel1_Id;
+            let idCollapse = "collapse" + objRetorno.ParLevel1_Id;
 
             let $panel = $("#" + idPanel);
 
@@ -859,7 +892,7 @@
                 }
             });
 
-            Highcharts.chart(idChart , {
+            Highcharts.chart(idChart, {
 
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
@@ -904,19 +937,19 @@
                         }
                     },
                     plotLines: [{ //Linha da meta (pontilhada)
-                        value: objMock.TendenciaIndicador.metaEstatica,
+                        value: objTendencia.MetaEstatica,
                         width: 2,
                         color: 'black',
                         dashStyle: 'dash',
                         zIndex: 4,
                         label: {
-                            text: 'Meta %' + objMock.TendenciaIndicador.metaEstatica,
+                            text: 'Meta %' + objTendencia.MetaEstatica,
                             align: 'right',
                             y: -10,
                             x: 0
                         }
                     }],
-                },{
+                }, {
                     gridLineWidth: 0,
                     title: {
                         text: Resources('number_samplers'),
@@ -937,37 +970,37 @@
                     yAxis: 0,
                     name: '% ' + Resources('defects'),
                     color: Chart.CorTotalProcNc(),
-                    data: objMock.TendenciaIndicador.ProcNC,
+                    data: objTendencia.ProcNC,
                     tooltip: {
                         valueDecimals: 2,
                         valueSuffix: ' % (NC * Peso)'
                     },
                     dataLabels: Chart.DataLabelPadrao('%'),
-                },{
+                }, {
                     type: 'spline',
                     name: Resources('accumulated_tendency'),
                     color: Chart.CorTotalPareto(),
-                    data: objMock.TendenciaIndicador.linhaTendencia,
+                    data: objTendencia.Tendencia,
                     yAxis: 0,
                     marker: {
                         enabled: false
                     },
                     zones: [{
-                        value: objMock.TendenciaIndicador.metaEstatica,
+                        value: objTendencia.MetaEstatica,
                         color: 'Black'
-                    },{
+                    }, {
                         color: 'Red'
                     }],
                     tooltip: {
                         valueDecimals: 2,
                         valueSuffix: ' %'
-                        }
+                    }
 
                 }, {
                     yAxis: 1,
                     name: Resources('derivations'),
                     color: Chart.CorTotalNc(),
-                    data: objMock.TendenciaIndicador.NC,
+                    data: objTendencia.NC,
                     visible: false,
                     dataLabels: {
                         enabled: true,
@@ -991,7 +1024,7 @@
                 }, {
                     yAxis: 1,
                     name: Resources('total_evaluated'),
-                    data: objMock.TendenciaIndicador.totalAvaliado,
+                    data: objTendencia.AV,
                     color: Chart.CorTotalAv(),
                     visible: false,
                     dataLabels: {
@@ -1633,6 +1666,8 @@
         }
 
         function GetSubtitleUnidade() {
+
+            let subtitle = [];
 
             $('[name="parCompany_Ids"]').text().split(',').forEach((i) => {
 
