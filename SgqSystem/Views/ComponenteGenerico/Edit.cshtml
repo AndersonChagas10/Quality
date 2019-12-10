@@ -56,12 +56,12 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            @*<div class="form-group">
                                                 <div class="control-label col-md-2"></div>
                                                 <div class="col-md-10">
                                                     <button id="btnExcluirComponente" class="btn btn-danger control-label">@Resources.Resource.delete</button>
                                                 </div>
-                                            </div>
+                                            </div>*@
 
                                             @*<div class="form-group">
                                                     @Html.LabelFor(model => model.ComponenteGenerico.IsActive, "Ativo", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -186,6 +186,7 @@
 
                         <div class="col-md-12">
                             <input type="button" value="Salvar" class="btn btn-primary btnSalvar" />
+                            <button id="btnExcluirComponente" class="btn btn-danger control-label">@Resources.Resource.delete</button>
                             @Html.ActionLink("Voltar para a lista de componentes", "Index", null, new { @class = "btn btn-default" })
                         </div>
                     </div>
@@ -240,6 +241,7 @@
         obj.ComponenteGenericoTipoColuna = {};
         obj.ComponenteGenericoTipoColuna.Id = obj.ComponenteGenericoTipoColuna_Id;
         obj.ComponenteGenericoTipoColuna.Name = $('#ComponenteGenericoTipoColuna_Id :selected').text();
+        obj.IsActive = true;
         IdComponente = obj.ComponenteGenerico_Id;
 
         if (obj.ComponenteGenericoTipoColuna_Id == 9)
@@ -301,7 +303,7 @@
         let btnEditar = `<button type="button" class="btn btn-success btn-xs btnEditColuna" title="Editar Coluna">
                         	<span class="fa fa-pencil-square-o"></span>
                          </button>
-                         <button type="button" class="btn btn-danger btn-xs btnDeleteColuna" title="Editar Coluna">
+                         <button type="button" class="btn btn-danger btn-xs btnDeleteColuna" title="Excluir Coluna">
                         	<span class="fa fa-times"></span>
                          </button>`;
 
