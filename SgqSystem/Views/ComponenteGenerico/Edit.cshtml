@@ -57,11 +57,11 @@
                                             </div>
 
                                             @*<div class="form-group">
-                                                <div class="control-label col-md-2"></div>
-                                                <div class="col-md-10">
-                                                    <button id="btnExcluirComponente" class="btn btn-danger control-label">@Resources.Resource.delete</button>
-                                                </div>
-                                            </div>*@
+                                                    <div class="control-label col-md-2"></div>
+                                                    <div class="col-md-10">
+                                                        <button id="btnExcluirComponente" class="btn btn-danger control-label">@Resources.Resource.delete</button>
+                                                    </div>
+                                                </div>*@
 
                                             @*<div class="form-group">
                                                     @Html.LabelFor(model => model.ComponenteGenerico.IsActive, "Ativo", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -186,7 +186,10 @@
 
                         <div class="col-md-12">
                             <input type="button" value="Salvar" class="btn btn-primary btnSalvar" />
-                            <button id="btnExcluirComponente" class="btn btn-danger control-label">@Resources.Resource.delete</button>
+                            @if (Model.ComponenteGenerico != null)
+                            {
+                                <button id="btnExcluirComponente" class="btn btn-danger control-label">@Resources.Resource.delete</button>
+                            }
                             @Html.ActionLink("Voltar para a lista de componentes", "Index", null, new { @class = "btn btn-default" })
                         </div>
                     </div>
