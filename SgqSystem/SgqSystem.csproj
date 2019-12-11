@@ -364,6 +364,7 @@
     <Compile Include="Controllers\Api\MandalaApiController.cs" />
     <Compile Include="Controllers\Api\ParHeaderFieldApiController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\AnaliseCriticaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDeResultadosApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\SIFReportsApiController.cs" />
@@ -2081,6 +2082,7 @@
     <Content Include="Views\ParDepartments\Details.cshtml" />
     <Content Include="Views\ParDepartments\Edit.cshtml" />
     <Content Include="Views\ParDepartments\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\AnaliseCritica.cshtml" />
     <Content Include="Views\ParDepartmentsRH\Filhos.cshtml" />
     <Content Include="Views\ParDepartmentsRH\ParDepartmentXCompany.cshtml" />
     <Content Include="Views\ComponenteGenerico\Index.cshtml" />
