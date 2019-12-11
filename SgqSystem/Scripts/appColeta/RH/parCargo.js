@@ -350,7 +350,6 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
             }
         }
         setTimeout(function () {
-            console.log('atualizou');
             atualizaCorAgendamento(cargo, currentEvaluationSample);
         }, 500);
     }, 200);
@@ -707,7 +706,6 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
             }
         }
         setTimeout(function () {
-            console.log('atualizou');
             atualizaCorAgendamento(cargo, currentEvaluationSample);
         }, 500);
     }, 200);
