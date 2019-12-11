@@ -95,6 +95,7 @@ function sincronizarResultado(frequencyId) {
         data: JSON.stringify({
             ParCompany_Id: currentParCompany_Id,
             ParFrequency_Id: currentParFrequency_Id,
+            ParCluster_Id: currentParCluster_Id,
             CollectionDate: convertDateToJson(currentCollectDate)
         }),
         url: urlPreffix + '/api/AppColeta/GetResults/',
