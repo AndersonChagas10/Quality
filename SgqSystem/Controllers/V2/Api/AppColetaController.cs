@@ -109,6 +109,7 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParDepartmentXRotinaIntegracao> listaParDepartmentXRotinaIntegracao;
             List<RotinaIntegracao> listaRotinaIntegracao;
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
+            List<ParCluster> listaParCluster;
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -118,6 +119,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id)
+                    .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id)
                     .Where(x => x.IsActive)
                     .OrderByDescending(x => x.ParCompany_Id)
                     .Select(x => new ParVinculoPesoAppViewModel()
@@ -133,7 +135,8 @@ namespace SgqSystem.Controllers.V2.Api
                         ParCargo_Id = x.ParCargo_Id,
                         ParFrequency_Id = x.ParFrequencyId,
                         Evaluation = x.Evaluation,
-                        Sample = x.Sample
+                        Sample = x.Sample,
+                        ParCluster_Id = x.ParCluster_Id
 
                     }).ToList();
 
@@ -181,6 +184,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id || x.ParFrequencyId == null)
+                    .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id || x.ParCluster_Id == null)
                     .Where(x => x.IsActive)
                     .OrderByDescending(x => x.ParCompany_Id)
                     .Select(x => new ParEvaluationXDepartmentXCargoAppViewModel()
@@ -190,7 +194,8 @@ namespace SgqSystem.Controllers.V2.Api
                         ParDepartment_Id = x.ParDepartment_Id,
                         ParCargo_Id = x.ParCargo_Id,
                         Sample = x.Sample,
-                        Evaluation = x.Evaluation
+                        Evaluation = x.Evaluation,
+                        ParCluster_Id = x.ParCluster_Id
                     })
                     .ToList();
 
@@ -390,6 +395,11 @@ namespace SgqSystem.Controllers.V2.Api
                 //Rotina Integração Offline
                 listaRotinaIntegracaoOffline = GetRotinaIntegracaoComResultados();
 
+                //lista de Cluster
+                listaParCluster = db.ParCluster
+                    .Where(x => x.IsActive)
+                    .ToList()
+                     .Where(x => listaParEvaluationXDepartmentXCargoAppViewModel.Any(y => y.ParCluster_Id == x.Id)).ToList();
             }
 
             return Ok(new
@@ -416,7 +426,8 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParMultipleValuesGeral,
                 listaParDepartmentXRotinaIntegracao,
                 listaRotinaIntegracao,
-                listaRotinaIntegracaoOffline
+                listaRotinaIntegracaoOffline,
+                listaParCluster
             });
         }
 

@@ -1,6 +1,8 @@
 var coletaJson = [];
+var interacaoComFormulario = 0;
 
 function openColeta(levels) {
+    interacaoComFormulario = 0;
 
     coletaJson = [];
     var html = '';
@@ -69,6 +71,10 @@ function openColeta(levels) {
 
     $('div#app').html(html);
 
+    $('.panel-body button, .panel-body input, .panel-body select').off('click').on('click', function (e) {
+        interacaoComFormulario++;
+    });
+
     setBreadcrumbs();
 
 }
@@ -90,7 +96,7 @@ $('body')
 var currentEvaluationSample = {};
 
 function getContador() {
-    currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, currentParCargo_Id);
+    currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, currentParCargo_Id, currentParCluster_Id);
     return '<div class="col-xs-12 alert-info" id="divColeta" style="padding-top:10px;padding-bottom:10px">' +
         '	<div class="col-xs-4">       ' +
         '		Avaliação                ' +
@@ -672,7 +678,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
             ParDepartment_Id: currentParDepartment_Id,
             ParCargo_Id: currentParCargo_Id,
             Evaluation: currentEvaluationSample.Evaluation,
-            Sample: currentEvaluationSample.Sample
+            Sample: currentEvaluationSample.Sample,
+            ParCluster_Id : currentParCluster_Id
         };
     }
 
@@ -680,7 +687,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     //console.table(collectionHeaderFields);
 
     //Insere valores da coleta
-    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {        var data = $(o);        var isNA = $(data).attr('data-conforme-na') == "";        coletaJson.push(            {                Evaluation: coletaAgrupada.Evaluation,                Sample: coletaAgrupada.Sample,                ParDepartment_Id: currentParDepartment_Id,                ParCargo_Id: currentParCargo_Id,                ParLevel1_Id: $(data).attr('data-level1'),                ParLevel2_Id: $(data).attr('data-level2'),                ParLevel3_Id: $(data).attr('data-level3'),                ParCompany_Id: currentParCompany_Id,                IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),                IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),                IsConform: isNA ? 1 : $(data).attr('data-conforme') == "1",                Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),                ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),                IsNotEvaluate: isNA,                CollectionDate: getCurrentDate(),                UserSgq_Id: currentLogin.Id,                Weigth: $(data).attr('data-peso'),                WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),                Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),                Parfrequency_Id: parametrization.currentParFrequency_Id                /*				"Shift_Id":1,				"Period_Id":1,				"ParCluster_Id":1,				"CollectionType":1,				"PunishimentValue":1,				"HasPhoto":"0",				"HaveCorrectiveAction":"0",				"AlertLevel":"0",				"ParHeaderField_Id":1,				"ParHeaderField_Value":""				*/            }        );    });
+    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {        var data = $(o);        var isNA = $(data).attr('data-conforme-na') == "";        coletaJson.push(            {                Evaluation: coletaAgrupada.Evaluation,                Sample: coletaAgrupada.Sample,                ParDepartment_Id: currentParDepartment_Id,                ParCargo_Id: currentParCargo_Id,                ParLevel1_Id: $(data).attr('data-level1'),                ParLevel2_Id: $(data).attr('data-level2'),                ParLevel3_Id: $(data).attr('data-level3'),                ParCompany_Id: currentParCompany_Id,                IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),                IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),                IsConform: isNA ? 1 : $(data).attr('data-conforme') == "1",                Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),                ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),                IsNotEvaluate: isNA,                CollectionDate: getCurrentDate(),                UserSgq_Id: currentLogin.Id,                Weigth: $(data).attr('data-peso'),                WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),                Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),                Parfrequency_Id: parametrization.currentParFrequency_Id,                ParCluster_Id : currentParCluster_Id                /*				"Shift_Id":1,				"Period_Id":1,				"ParCluster_Id":1,				"CollectionType":1,				"PunishimentValue":1,				"HasPhoto":"0",				"HaveCorrectiveAction":"0",				"AlertLevel":"0",				"ParHeaderField_Id":1,				"ParHeaderField_Value":""				*/            }        );    });
 
     processAlertRole(coletaJson);
 
@@ -841,6 +848,7 @@ function getCollectionHeaderFields() {
                 Sample: currentEvaluationSample.Sample,
                 ParDepartment_Id: currentParDepartment_Id,
                 ParCargo_Id: currentParCargo_Id,
+                ParCluster_Id: currentParCluster_Id,
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
@@ -863,6 +871,7 @@ function getCollectionHeaderFields() {
                 Sample: currentEvaluationSample.Sample,
                 ParDepartment_Id: currentParDepartment_Id,
                 ParCargo_Id: currentParCargo_Id,
+                ParCluster_Id: currentParCluster_Id,
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
@@ -887,6 +896,7 @@ function getCollectionHeaderFields() {
                 Sample: currentEvaluationSample.Sample,
                 ParDepartment_Id: currentParDepartment_Id,
                 ParCargo_Id: currentParCargo_Id,
+                ParCluster_Id: currentParCluster_Id,
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
@@ -966,3 +976,10 @@ function HeaderFieldsIsValid() {
 
     return retorno;
 }
+
+
+
+//$('body').off('click', '.panel-body button, .panel-body input, .panel-body select')
+//         .on('click', '.panel-body button, .panel-body input, .panel-body select', function (e) {
+//    interacaoComFormulario++;
+//});

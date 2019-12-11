@@ -8,17 +8,18 @@ var coletasAgrupadas = [];
 }
 */
 
-function getResultEvaluationSample(parDepartment_Id, parCargo_Id) {
+function getResultEvaluationSample(parDepartment_Id, parCargo_Id, parCluster_Id) {
 
 	var obj = {
 		ParDepartment_Id: parDepartment_Id,
 		ParCargo_Id: parCargo_Id,
 		Evaluation: 1,
-		Sample: 1
+        Sample: 1,
+        ParCluster_Id: parCluster_Id
 	};
 
-	$(coletasAgrupadas).each(function (i, o) {
-		if (o.ParDepartment_Id == parDepartment_Id && o.ParCargo_Id == parCargo_Id) {
+    $(coletasAgrupadas).each(function (i, o) {
+        if (o.ParDepartment_Id == parDepartment_Id && o.ParCargo_Id == parCargo_Id && o.ParCluster_Id == currentParCluster_Id) {
 			obj = o;
 		}
 	});

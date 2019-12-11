@@ -351,6 +351,7 @@
     <Compile Include="Controllers\Api\MandalaApiController.cs" />
     <Compile Include="Controllers\Api\ParHeaderFieldApiController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\AnaliseCriticaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDeResultadosApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\SIFReportsApiController.cs" />
@@ -456,6 +457,7 @@
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
     <Compile Include="Controllers\V2\Api\AppColetaController.cs" />
     <Compile Include="Controllers\V2\Api\DepartmentXRotinaApiController.cs" />
+    <Compile Include="Controllers\V2\Api\ParClusterApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParDepartmentXHeaderFieldApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParFrequencyController.cs" />
     <Compile Include="Controllers\V2\Api\ParDepartmentController.cs" />
@@ -935,6 +937,7 @@
     <Content Include="Scripts\appColeta\RH\mensagem.js" />
     <Content Include="Scripts\appColeta\RH\menu.js" />
     <Content Include="Scripts\appColeta\RH\parCargo.js" />
+    <Content Include="Scripts\appColeta\RH\parCluster.js" />
     <Content Include="Scripts\appColeta\RH\parDepartment.js" />
     <Content Include="Scripts\appColeta\RH\planejamentoColeta.js" />
     <Content Include="Scripts\appColeta\RH\parFrequency.js" />
@@ -2059,6 +2062,7 @@
     <Content Include="Views\ParDepartments\Details.cshtml" />
     <Content Include="Views\ParDepartments\Edit.cshtml" />
     <Content Include="Views\ParDepartments\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\AnaliseCritica.cshtml" />
     <Content Include="Views\RelatoriosSgq\_SelectTextAreaEditReason.cshtml" />
     <Content Include="Views\RelatoriosSgq\_LogTrackHistory.cshtml" />
     <Content Include="Views\ParDepartmentsRH\Filhos.cshtml" />

@@ -7,18 +7,20 @@ function validaRota(callback, parameter) {
     parameterRota = null;
 
     //verifica se esta na tela de coleta se sim informa que os dados serão perdidos, se nao executa o callback direto
-    if ($('#divColeta').is(":visible")) {
+    if ($('#divColeta').is(":visible") && interacaoComFormulario > 0) {
         if (callback != null) {
             callbackRota = callback;
+
             parameterRota = parameter;
             var titulo1 = "Confirmação de saída";
             var mensagem1 = "Deseja sair sem salvar? <br/>";
             openMessageConfirm(titulo1, mensagem1, executeCallbackRota, closeMensagemImediatamente, "orange", "white");
         }
     } else {
-        if (parameter != null)
+        if (parameter != null) {
+            parameterRota = parameter;
             callback(parameterRota, true);
-        else
+        }else
             callback(true);
     }
 }

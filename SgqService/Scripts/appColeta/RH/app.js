@@ -192,8 +192,11 @@ function changeDate(that) {
     _writeFile("appParametrization.txt", '', function () {
         var oldFrequency_Id = currentParFrequency_Id + 0;
         currentParFrequency_Id = 0;
-        getPlanejamentoPorFrequencia(oldFrequency_Id);
-        openParFrequency();
+
+
+        openParCluster() 
+        //getPlanejamentoPorFrequencia(oldFrequency_Id);
+        //openParFrequency();
     });
 
     var horas = "00:00:00";

@@ -76,6 +76,22 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
+        [Route("GetFilteredParGroupParLevel1s")]
+        public List<ParGroupParLevel1> GetFilteredParGroupParLevel1s(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                var query = $@" SELECT DISTINCT TOP 500
+                        	Id, Name from ParGroupParLevel1 Where IsActive = 1 AND Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<ParGroupParLevel1>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
         [Route("GetFilteredParClusters")]
         public List<Select3ViewModel> GetFilteredParClusters(string search, [FromBody] DataCarrierFormularioNew form)
         {
@@ -352,6 +368,21 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
+        [Route("GetFilteredParStructureRegional")]
+        public List<Select3ViewModel> GetFilteredParStructureRegional(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT DISTINCT TOP 500 ID, Name FROM ParStructure
+                    WHERE ParStructureGroup_Id = 2 AND Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
         [Route("GetFilteredParStructureGroup")]
         public List<Select3ViewModel> GetFilteredParStructureGroup(string search, [FromBody] DataCarrierFormularioNew form)
         {
@@ -367,6 +398,54 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
+        [Route("GetFilteredParModule")]
+        public List<ParModule> GetFilteredParModule(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT DISTINCT TOP 500 Id, Name FROM ParModule
+                    WHERE IsActive = 1 AND Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<ParModule>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredPeso")]
+        public List<Peso> GetFilteredPeso(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT '' AS Id, 'Todos' as Name
+                            UNION ALL
+                            SELECT DISTINCT TOP 500 
+                            cast(CONVERT(DECIMAL(18,2), Weight) as varchar(255)) AS Id, 
+                            cast(CONVERT(DECIMAL(18,2), Weight) as varchar(255)) AS Name
+                            FROM parlevel3level2 WHERE weight like '%{search}%' AND IsActive = 1 order by Id asc ";
+
+                var retorno = factory.SearchQuery<Peso>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredUserSgqSurpervisor")]
+        public List<UserSgq> GetFilteredUserSgqSurpervisor(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT DISTINCT TOP 500 Id, Name from UserSgq Where role like '%Supervisor%' AND Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<UserSgq>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
         [Route("GetForm")]
         public FormularioViewModel GetForm([FromBody] DataCarrierFormularioNew form)
         {
@@ -375,16 +454,19 @@ namespace SgqSystem.Controllers.Api.Formulario
             using (var factory = new Factory("DefaultConnection"))
             {
                 retornoFormulario.ParStructures = GetParStructure(form, factory);
+                retornoFormulario.ParStructuresRegional = GetParStructureRegional(form, factory);
                 retornoFormulario.ParCompanies = GetParCompanies(form, factory);
                 retornoFormulario.Shifts = GetShifts(factory);
                 retornoFormulario.ParDepartments = GetParDepartments(form, factory);
                 retornoFormulario.ParSecoes = GetParSecoes(form, factory, retornoFormulario);
+                retornoFormulario.ParGroupParLevel1s = GetParGroupParLevel1s(form, factory);
                 retornoFormulario.ParCargos = GetParCargos(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
                 retornoFormulario.ParLevel1s = GetParLevel1s(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
                 var listaParLevel1_Ids = form.ParLevel1_Ids.Length > 0 ? form.ParLevel1_Ids.ToList() : retornoFormulario.ParLevel1s.Select(x => x.Id).ToList();
                 retornoFormulario.ParLevel2s = GetParLevel2s(form, factory, listaParLevel1_Ids);
                 var listaParLevel2_Ids = form.ParLevel2_Ids.Length > 0 ? form.ParLevel2_Ids.ToList() : retornoFormulario.ParLevel2s.Select(x => x.Id).ToList();
                 retornoFormulario.ParLevel3s = GetParLevel3s(form, factory, listaParLevel1_Ids, listaParLevel2_Ids);
+
             }
 
             return retornoFormulario;
@@ -396,6 +478,24 @@ namespace SgqSystem.Controllers.Api.Formulario
             var sql = "Select Id, Name from ParStructure where Active = 1";
 
             var retorno = factory.SearchQuery<ParStructure>(sql).ToList();
+
+            return retorno;
+        }
+
+        private List<ParStructure> GetParStructureRegional(DataCarrierFormularioNew form, Factory factory)
+        {
+            var sql = "Select Id, Name from ParStructure where ParStructureGroup_Id = 2 AND Active = 1";
+
+            var retorno = factory.SearchQuery<ParStructure>(sql).ToList();
+
+            return retorno;
+        }
+
+        private List<ParGroupParLevel1> GetParGroupParLevel1s(DataCarrierFormularioNew form, Factory factory)
+        {
+            var sql = "Select Id, Name from ParGroupParLevel1 where AND Active = 1";
+
+            var retorno = factory.SearchQuery<ParGroupParLevel1>(sql).ToList();
 
             return retorno;
         }
@@ -547,6 +647,12 @@ namespace SgqSystem.Controllers.Api.Formulario
             var retorno = factory.SearchQuery<ParLevel3>(query).ToList();
 
             return retorno;
+        }
+
+        public class Peso
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
         }
     }
 }
