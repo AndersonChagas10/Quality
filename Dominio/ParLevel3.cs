@@ -32,7 +32,6 @@ namespace Dominio
         [StringLength(1000)]
         public string Description { get; set; }
 
-
         public int? ParRiskCharacteristicType_Id { get; set; }
 
         public bool IsActive { get; set; }
@@ -50,7 +49,14 @@ namespace Dominio
         {
             get
             {
-                return Id + " - " + Name;
+                if (Id > 0)
+                    return Id + " - " + Name;
+                else
+                    return "";
+            }
+            protected internal set
+            {
+
             }
         }
 

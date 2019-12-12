@@ -122,7 +122,7 @@ namespace DTO.DTO.Params
             DdlParLevel3BoolFalse = Guard.CreateDropDownList(ddlParLevel3BoolFalse.OrderBy(r => r.Name));
             DdlParLevel3BoolTrue = Guard.CreateDropDownList(ddlParLevel3BoolTrue.OrderBy(r => r.Name));
             DdlparCrit = Guard.CreateDropDownList(ddlparCrit.OrderBy(r => r.Name));
-            DdlComponente = Guard.CreateDropDownList(Ddlcomponente.OrderBy(r => r.Name));
+            DdlComponente = Guard.CreateDropDownList(Ddlcomponente.Where(x => x.IsActive).OrderBy(r => r.Name));
 
             if (GlobalConfig.Brasil)
             {

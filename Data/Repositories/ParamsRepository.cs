@@ -546,9 +546,17 @@ namespace Data.Repositories
         {
             using (var ts = db.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
-                db.Configuration.AutoDetectChangesEnabled = false;
-                AddUpdateParLevel3(paramLevel3); /*Salva paramLevel1*/
-                db.SaveChanges(); //Obtem Id do paramLevel1
+                try
+                {
+                    db.Configuration.AutoDetectChangesEnabled = false;
+                    AddUpdateParLevel3(paramLevel3); /*Salva paramLevel1*/
+                    db.SaveChanges(); //Obtem Id do paramLevel1
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+
 
                 if (listParamLevel3Value != null)
                     if (listParamLevel3Value.Count() > 0)
