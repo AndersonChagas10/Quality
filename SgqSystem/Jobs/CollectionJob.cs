@@ -139,7 +139,7 @@ namespace SgqSystem.Jobs
                     }
                 }
 
-                Thread.Sleep(580);
+                Thread.Sleep(15000);
             }
 
         }
