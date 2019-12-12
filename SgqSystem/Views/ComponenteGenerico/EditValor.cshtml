@@ -454,7 +454,7 @@
 
             objToSave = {};
             objToSave.Id = $('[name="limitInfo"]').attr('id');
-            objToSave.SaveId = $('[name="limitInfo"]').attr('saveId');
+            objToSave.SaveId = $("#SaveId").val();;
             objToSave.ComponenteGenerico_Id = $('[name="limitInfo"]').attr('componenteGenericoId');
             objToSave.ComponenteGenericoColuna_Id = $('[name="limitInfo"]').attr('componenteGenericoColunaId');
             objToSave.Valor = arrValor.join("|");
