@@ -918,7 +918,7 @@ function ColetasIsValid() {
             if ($(data).attr('data-conforme') == ""
                 || $(data).attr('data-conforme') == null
                 || $(data).attr('data-conforme') == "undefined") {
-                openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
+                openMensagem("Atenção! Obrigatório responder todas as Tarefas.", "yellow", "black");
                 mostraPerguntasObrigatorias(data);
                 closeMensagem(2000);
                 return false;
@@ -960,7 +960,7 @@ function HeaderFieldsIsValid() {
     });
 
     if (!retorno) {
-        openMensagem("Campos de cabeçalho obrigatórios não preenchidos", "blue", "white");
+        openMensagem("Atenção! Campos de cabeçalho obrigatórios não preenchidos", "yellow", "black");
         closeMensagem(2000);
     }
 
