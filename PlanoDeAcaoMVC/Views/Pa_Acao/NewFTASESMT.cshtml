@@ -206,44 +206,44 @@
                             @Html.EditorFor(r => r.ComoPontosimportantes)
                         </td>
                     </tr>
-                </tbody>
-                <tr>
-                    <td colspan="10" style="border-bottom:0;"><span class="tdLabels">@ResourcesPA.Resource.seen</span></td>
-                </tr>
-                <tr>
-                    <td colspan="10" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature<span style="color:red">*</span></strong></span></td>
-                    @*<td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature2<span style="color:red">*</span></strong></span></td>*@
-                </tr>
-                <tr>
-                    <td colspan="10">
-                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new
-                        {@*@class = "form-control input-sm"*@})
-                    </td>
-                    @*<td colspan="5">
+
+                    <tr>
+                        <td colspan="10" style="border-bottom:0;"><span class="tdLabels">@ResourcesPA.Resource.seen</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature1<span style="color:red">*</span></strong></span></td>
+                        <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature2<span style="color:red">*</span></strong></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="col-md-6">
+                            @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                        </td>
+                        <td colspan="5" class="col-md-6">
                             @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
-                        </td>*@
-                </tr>
-                <tr style="display:none">
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                </tr>
-                <tr>
-                    <td colspan="10">
-                        <input id="Panejamento_Id" name="Panejamento_Id" type="hidden">
-                        <table id="tabelaModalTaticoSelecionado" class="table table-bordered"></table>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                    <tr style="display:none">
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="10">
+                            <input id="Panejamento_Id" name="Panejamento_Id" type="hidden">
+                            <table id="tabelaModalTaticoSelecionado" class="table table-bordered"></table>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
-            <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">@ResourcesPA.Resource.save</button>
         </div>
+        <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">@ResourcesPA.Resource.save</button>
     </div>
 }
 
@@ -293,6 +293,30 @@
 @section Scripts {
 
     <script>
+        var user0 = { Status: false };
+        var user1 = { Status: false };
+        $(document).ready(function () {
+            $('#Assinatura1').off('change').on('change', function () {
+                user0.Status = false;
+                $('#passCheck').find('#name').val($('#Assinatura1 :selected').text());
+                $('#btnOk').off('click').on('click', function () { ValidaSenha(0); });
+                $('#modalPass').modal();
+                $('#passCheck').find('[name=pass]').val('')
+                HabilitaBotaoSalvar();
+
+            });
+
+            $('#Assinatura2').off('change').on('change', function () {
+                user1.Status = false;
+                $('#passCheck').find('#name').val($('#Assinatura2 :selected').text());
+                $('#btnOk').off('click').on('click', function () { ValidaSenha(1); });
+                $('#modalPass').modal();
+                $('#passCheck').find('[name=pass]').val('')
+                HabilitaBotaoSalvar();
+
+            });
+
+        })
 
         var app = angular.module("App", []);
 
@@ -350,8 +374,7 @@
             };
         });
 
-        var user0 = { Status: false };
-        //var user1 = { Status: false };
+
 
         function ValidaSenha(user, ddl) {
 
@@ -360,17 +383,17 @@
             $.post('@Url.Action("CheckPass", "api/Pa_User")', check, function (r) {
 
                 if (user == 0) { user0.Status = !r.isInvalid; }
-                //if (user == 1) { user1.Status = !r.isInvalid; }
+                if (user == 1) { user1.Status = !r.isInvalid; }
 
                 openMessageModal(r.response, '');
 
                 HabilitaBotaoSalvar();
 
                 if (!user0.Status)
-                    $('[id=Assinatura1]').val('').change();
+                    $('#Assinatura1').val('').change();
 
-                //if (!user1.Status)
-                //    $('[id=Assinatura2]').val('').change();
+                if (!user1.Status)
+                    $('#Assinatura2').val('').change();
 
                 $('#modalPass').modal("hide");
 
@@ -381,27 +404,6 @@
             });
         }
 
-        $('[id=Assinatura1]').off('change').on('change', function () {
-
-            user0.Status = false;
-            $('#passCheck').find('#name').val($('[id=Assinatura1] :selected').text());
-            $('#btnOk').off('click').on('click', function () { ValidaSenha(0); });
-            $('#modalPass').modal();
-            $('#passCheck').find('[name=pass]').val('')
-            HabilitaBotaoSalvar();
-
-        });
-
-        //$('[id=Assinatura2]').off('change').on('change', function () {
-
-        //    user1.Status = false;
-        //    $('#passCheck').find('#name').val($('[id=Assinatura2] :selected').text());
-        //    $('#btnOk').off('click').on('click', function () { ValidaSenha(1); });
-        //    $('#modalPass').modal();
-        //    $('#passCheck').find('[name=pass]').val('')
-        //    HabilitaBotaoSalvar();
-
-        //});
 
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
         var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
@@ -599,8 +601,8 @@
 
         function HabilitaBotaoSalvar() {
 
-            //if (user0.Status && user1.Status) {
-            if (user0.Status) {
+            if (user0.Status && user1.Status) {
+            //if (user0.Status) {
 
                 $('#Salvar').attr('disabled', false);
 
