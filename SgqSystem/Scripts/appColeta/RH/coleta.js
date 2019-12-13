@@ -221,13 +221,13 @@ function getBinario(level3) {
 
     if (level3.ParLevel3Value.IsRequiredInt) {
         respostaPadrao = "&nbsp;";
-        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-tarefa data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     } else {
         if (level3.ParLevel3Value.IsDefaultAnswerInt == "0")
             respostaPadrao = level3.ParLevel3BoolFalse.Name;
         else
             respostaPadrao = level3.ParLevel3BoolTrue.Name;
-        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-tarefa data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     }
 
     html +=
@@ -257,13 +257,13 @@ function getBinarioComTexto(level3) {
 
     if (level3.ParLevel3Value.IsRequiredInt) {
         respostaPadrao = "&nbsp;";
-        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-tarefa data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     } else {
         if (level3.ParLevel3Value.IsDefaultAnswerInt == "0")
             respostaPadrao = level3.ParLevel3BoolFalse.Name;
         else
             respostaPadrao = level3.ParLevel3BoolTrue.Name;
-        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-tarefa data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     }
     //html +=
     //    '<div class="col-xs-6 no-gutters">' +
@@ -315,7 +315,7 @@ function getIntervalo(level3) {
         '	        <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '       </div>' +
         '       <div class="col-xs-8" style="padding: 0;">' +
-        '	        <input type="text" class="col-xs-12 input input-sm" data-valor/>' +
+        '	        <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor/>' +
         '       </div>' +
         '       <div class="col-xs-2" style="padding-left: 0;">' +
         '	        <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
@@ -356,7 +356,7 @@ function getIntervaloemMinutos(level3) {
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '   </div>' +
         '   <div class="col-xs-8" style="padding: 0;">' +
-        '	    <input type="text" class="col-xs-12 input input-sm" data-valor/>' +
+        '	    <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor/>' +
         '   </div>' +
         '   <div class="col-xs-2" style="padding-left: 0;">' +
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
@@ -398,7 +398,7 @@ function getIntervaloComObservacao(level3) {
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '   </div>' +
         '   <div class="col-xs-8" style="padding: 0;">' +
-        '	    <input type="text" class="col-xs-12 input input-sm" data-valor/>' +
+        '	    <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor/>' +
         '   </div>' +
         '   <div class="col-xs-2" style="padding-left: 0;">' +
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
@@ -427,7 +427,7 @@ function getObservacao(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-10">' +
-        '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
+        '	<input type="text" class="col-xs-12 input-sm" data-tarefa data-texto/>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -452,7 +452,7 @@ function getTexto(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-10">' +
-        '	<input type="text" class="col-xs-12 input-sm" data-valor/>' +
+        '	<input type="text" class="col-xs-12 input-sm" data-tarefa data-valor/>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -477,7 +477,7 @@ function getNumerodeDefeitos(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-10">' +
-        '	<input type="number" class="col-xs-12 input-sm" data-valor/>' +
+        '	<input type="number" class="col-xs-12 input-sm" data-tarefa data-valor/>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -507,7 +507,7 @@ function getLikert(level3) {
         level3LimitLabel +
         '   </div>' +
         '   <div class="col-xs-8">' +
-        '	    <input type="text" class="col-xs-12 input-sm" data-valor/>' +
+        '	    <input type="text" class="col-xs-12 input-sm" data-tarefa data-valor/>' +
         '   </div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -912,20 +912,30 @@ function getCollectionHeaderFields() {
 
 function ColetasIsValid() {
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
+    var errorCount = 0;
+    var data;
     for (var i = 0; i < linhasDaColeta.length; i++) {
-        var data = linhasDaColeta[i];
+        data = linhasDaColeta[i];
+        
         if ($(data).attr('data-conforme-na') != "") {
             if ($(data).attr('data-conforme') == ""
                 || $(data).attr('data-conforme') == null
                 || $(data).attr('data-conforme') == "undefined") {
-                openMensagem("Atenção! Obrigatório responder todas as Tarefas.", "yellow", "black");
-                mostraPerguntasObrigatorias(data);
-                closeMensagem(2000);
-                return false;
+
+                $(data).find("[data-tarefa]").css("background-color", "#ffc1c1");
+                errorCount++;
+            } else {
+                $(data).find("[data-tarefa]").css("background-color", "white");
             }
-        }
+        } 
     }
-    return true;
+    if (errorCount > 0) {
+        openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
+        mostraPerguntasObrigatorias(data);
+        closeMensagem(2000);
+        return false;
+    }else 
+        return true;
 }
 
 function mostraPerguntasObrigatorias(data) {
