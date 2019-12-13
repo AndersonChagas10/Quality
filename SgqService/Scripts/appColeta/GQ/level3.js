@@ -309,6 +309,7 @@ function openLevel3(level2) {
         level3Group.find('.level3').show();
         level3Group.find('.panel').show();
 
+
         var resultLevel2 = $('.Resultlevel2[level1id=' + level1.attr('id') + '][level2id=' + level2.attr('id') + '][collectiondate="' + getCollectionDate() + '"][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']');
         if (resultLevel2.length) {
             var resultLevel3InLevel2 = resultLevel2.children('.r3l2');
@@ -357,7 +358,7 @@ function openLevel3(level2) {
 
     $('.painelLevel03:visible').prepend(painelClone);
 
-	/*Paleativo permanente para os tipos de cabeçalho do tipo data. Algum bug
+    /*Paleativo permanente para os tipos de cabeçalho do tipo data. Algum bug
 	que precisou fazer a gambiarra abaixo para conseguir setar o valor corretamente*/
     $('.painelLevel03:visible').find('input[type="date"]').each(function (i, e) {
         var element = $('.painelLevel03:visible')
@@ -609,19 +610,8 @@ function resetHeaderLevel3(levelGroup) {
 
 function resetBooleanInput(inputs) {
     inputs.each(function (e) {
-
-        //Se for Binário Obrigatório 
-        if ($(this).attr('boolnullname')) {
-
-            $(this).attr("value", "");
-            $(this).text($(this).attr('boolnullname'));
-
-        } else {
-
-            $(this).attr("value", "1");
-            $(this).text($(this).attr('booltruename'));
-
-        }
+        $(this).attr("value", "1");
+        $(this).text($(this).attr('booltruename'));
     });
 }
 
@@ -852,6 +842,8 @@ function validaCamposLevel3(tipo) {
 
             var chave = $('.App').attr('unidadeid') + "" + $(".level3Group.VF").attr('level1id') + "" + $('.sequencial:visible').val() + "" + $('.banda:visible').val() + "" + yyyyMMdd();
 
+
+
             $('.VerificacaoTipificacaoResultados div[chave=' + chave + ']').remove();
 
             $(".level3.VF .items").children("div:visible").each(function (index, self) {
@@ -901,25 +893,17 @@ function validaCamposLevel3(tipo) {
             return;
         }
 
-        //TODO fazer foreach com validação no campo binario Obrigatorio
-        if (level3IsValid()) {
+        var that = $(this);
 
-            var that = $(this);
+        that.addClass('disabled');
 
-            that.addClass('disabled');
+        $('.level3').find('.value').text("");
+        $('.level3').find('.valueDecimal').text("");
 
-            $('.level3').find('.value').text("");
-            $('.level3').find('.valueDecimal').text("");
+        retorno = acoesSalvar(1);
+        that.removeClass('disabled');
 
-            retorno = acoesSalvar(1);
-            that.removeClass('disabled');
-
-            showDebugAlertas();
-
-        } else {
-
-            return false;
-        }
+        showDebugAlertas();
 
     } else {
         if (tipo == 1) {
@@ -947,29 +931,6 @@ function validaCamposLevel3(tipo) {
         }
     }
     return retorno;
-}
-
-function level3IsValid() {
-
-    //Caso for binario obrigatorio, não for coleta parcial e não tiver sido coletado retorna false
-    var isValid = true;
-
-    var isNotPartialSave = ($(_level1).attr('ispartialsave') == "false");
-
-    $('.level3:visible').each(function (index, self) {
-
-        var isBinarioObrigatorio = !!($(self).find('span.response').attr('boolnullname'));
-        var value = $(self).find('span.response').attr('value');
-
-        if (isNotPartialSave && isBinarioObrigatorio && value == '') {
-
-            openMessageModal("Alerta", "Existem campos binários que são obrigatórios");
-            isValid = false;
-        }
-
-    });
-
-    return isValid;
 }
 
 $(document).on('click', '#btnAllNC', function (e) {
@@ -1718,10 +1679,6 @@ function saveResultLevel3() {
 
         responseList.each(function (e) {
 
-            if ($(_level1).attr('ispartialsave') == "true" && $(this).attr('value') == "") {
-                return;
-            }
-
             var valorDefeito = 0;
 
             var level3 = $(this).parents('.level3');
@@ -1762,8 +1719,8 @@ function saveResultLevel3() {
                     level3.attr('notavaliable'),
                     valorDefeito));
             }
-
             appendDevice(level03Save, level02Save);
+
 
         });
 
@@ -2314,61 +2271,22 @@ $(document).on('click', '.level3.boolean a, .level3.boolean .counters', function
 
     //acho que demvemos fazer um atrivuto direto no level03 para nao ficar tentando executar para todos
     if (response.length) {
-
-        //valida se é binario Obrigatorio
-        if (response.attr('boolnullname')) {
-
-            if (response.attr('value') == '1') {
-
-                level03.addClass('lightred').attr('notConform', 'notCoform');
-                response.text(response.attr('boolfalsename')).attr('value', '0');
-                defectsLevel1Total++;
-                defectsLevel2Total++;
-                defectsLevel2Sample++;
-
-            } else if (response.attr('value') == '0') {
-
-                response.text(response.attr('boolnullname')).attr('value', '');
-                level03.removeClass('lightred').removeAttr('notconform');
-                if ($('.level3Group .level03[notConform]').length == 0) {
-                    level02.removeAttr('limitexceeded').parents('li').removeClass('bgLimitExceeded');
-                }
-
-            } else {
-
-                response.text(response.attr('booltruename')).attr('value', '1');
-                level03.removeClass('lightred').removeAttr('notconform');
-                if ($('.level3Group .level03[notConform]').length == 0) {
-                    level02.removeAttr('limitexceeded').parents('li').removeClass('bgLimitExceeded');
-                }
-
-                defectsLevel1Total--;
-                defectsLevel2Total--;
-                defectsLevel2Sample--;
-
+        if (response.attr('value') == '0') {
+            response.text(response.attr('booltruename')).attr('value', '1');
+            level03.removeClass('lightred').removeAttr('notconform');
+            if ($('.level3Group .level03[notConform]').length == 0) {
+                level02.removeAttr('limitexceeded').parents('li').removeClass('bgLimitExceeded');
             }
-
-
-        } else {
-
-            if (response.attr('value') == '0') {
-
-                response.text(response.attr('booltruename')).attr('value', '1');
-                level03.removeClass('lightred').removeAttr('notconform');
-                if ($('.level3Group .level03[notConform]').length == 0) {
-                    level02.removeAttr('limitexceeded').parents('li').removeClass('bgLimitExceeded');
-                }
-                defectsLevel1Total--;
-                defectsLevel2Total--;
-                defectsLevel2Sample--;
-            }
-            else {
-                level03.addClass('lightred').attr('notConform', 'notCoform');
-                response.text(response.attr('boolfalsename')).attr('value', '0');
-                defectsLevel1Total++;
-                defectsLevel2Total++;
-                defectsLevel2Sample++;
-            }
+            defectsLevel1Total--;
+            defectsLevel2Total--;
+            defectsLevel2Sample--;
+        }
+        else {
+            level03.addClass('lightred').attr('notConform', 'notCoform');
+            response.text(response.attr('boolfalsename')).attr('value', '0');
+            defectsLevel1Total++;
+            defectsLevel2Total++;
+            defectsLevel2Sample++;
         }
     }
 
@@ -2756,22 +2674,11 @@ function ReplaceVirgula(value) {
 function resetCollapseLevel2() {
     var collapses = $('.level2.panel-group:visible');
     collapses.each(function (i, o) {
-
-        var isBinarioObrigatorio = !!($(o).find('span.response').attr('boolnullName'));
-
-        var textDefaultBool = $(o).find('span.response').attr('booltruename');
-        var valueDefault = 1
-
-        if (isBinarioObrigatorio) {
-            textDefaultBool = $(o).find('span.response').attr('boolnullName');
-            valueDefault = "";
-        }
-
         $(o).find('input.defects').val(0);
         $(o).find('input.texto').val("");
         $(o).find('input.texto').parent().parent().parent().removeAttr('value');
-        $(o).find('span.response').text(textDefaultBool);
-        $(o).find('span.response').attr('value', valueDefault);
+        $(o).find('span.response').text(($(o).find('span.response').attr('booltruename')));
+        $(o).find('span.response').attr('value', 1);
         $(o).find('.lightred').removeClass('lightred');
         $(o).find('.levelValue').text('');
         $(o).find('.level3').removeAttr('notconform');
@@ -2781,22 +2688,11 @@ function resetCollapseLevel2() {
 
     collapses = $('.level3List:visible')
     collapses.each(function (i, o) {
-
-        var isBinarioObrigatorio = !!($(o).find('span.response').attr('boolnullName'));
-
-        var textDefaultBool = $(o).find('span.response').attr('booltruename');
-        var valueDefault = 1
-
-        if (isBinarioObrigatorio) {
-            textDefaultBool = $(o).find('span.response').attr('boolnullName');
-            valueDefault = "";
-        }
-
         $(o).find('input.defects').val(0);
         $(o).find('input.texto').val("");
         $(o).find('input.texto').parent().parent().parent().removeAttr('value');
-        $(o).find('span.response').text(textDefaultBool);
-        $(o).find('span.response').attr('value', valueDefault);
+        $(o).find('span.response').text(($(o).find('span.response').attr('booltruename')));
+        $(o).find('span.response').attr('value', 1);
         $(o).find('.lightred').removeClass('lightred');
         $(o).find('.levelValue').text('');
         $(o).find('.level3').removeAttr('notconform');
@@ -2804,14 +2700,7 @@ function resetCollapseLevel2() {
         $(o).find('.level3').removeClass('bgNoAvaliable');
     });
 
-    $('span[booltruename]').each(function (i, o) {
-
-        var textDefaultBool = $(o).attr('boolnullName') ?
-            $(o).attr('boolnullName') :
-            $(o).attr('booltruename');
-
-        $(o).html(textDefaultBool);
-    });
+    $('span[booltruename]').each(function (i, o) { $(o).html($(o).attr('booltruename')) });
 
 }
 

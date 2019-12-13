@@ -6790,262 +6790,289 @@ namespace SgqSystem.Services
         {
             var html = new Html();
             string input = null;
-            //string valorMaximo = "";
-            //string valorMinimo = "";
-
-            switch (parLevel3.ParLevel3InputType_Id)
+            if (parLevel3.ParLevel3InputType_Id == 1)
             {
-                case 1:
+                classInput = " boolean";
+                input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 2)
+            {
+                classInput = " defects";
+                labels = html.div(
+                           outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
+                           classe: "levelName",
+                           //style: "margin-top:7px;"
+                           style: "visibility: hidden;"
+                         );
 
-                    classInput = " boolean";
-                    input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+                input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
+                                                intervalMin: parLevel3.IntervalMin,
+                                                intervalMax: parLevel3.IntervalMax,
+                                                unitName: parLevel3.ParMeasurementUnit_Name);
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 3 || parLevel3.ParLevel3InputType_Id == 9)
+            {
+                classInput = " interval";
 
-                    break;
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
 
-                case 2:
+                string valorCompleto = "";
 
-                    classInput = " defects";
-                    labels = html.div(
-                               outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
-                               classe: "levelName",
-                               style: "visibility: hidden;"
-                             );
+                if (valorMinimo == "")
+                {
+                    valorCompleto = valorMaximo;
+                }
+                else if (valorMaximo == "")
+                {
+                    valorCompleto = valorMinimo;
+                }
+                else
+                {
+                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                }
 
-                    input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
-                                                    intervalMin: parLevel3.IntervalMin,
-                                                    intervalMax: parLevel3.IntervalMax,
-                                                    unitName: parLevel3.ParMeasurementUnit_Name);
-                    break;
 
-                case 3:
-                case 9:
+                labels = html.div(
 
-                    classInput = " interval";
 
-                    string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
-                    string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
 
-                    string valorCompleto = "";
+                                            outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
 
-                    if (valorMinimo == "")
-                    {
-                        valorCompleto = valorMaximo;
-                    }
-                    else if (valorMaximo == "")
-                    {
-                        valorCompleto = valorMinimo;
-                    }
-                    else
-                    {
-                        valorCompleto = valorMinimo + " ~ " + valorMaximo;
-                    }
+                if (parLevel3.ParLevel3InputType_Id == 3)
+                {
 
-                    labels = html.div(outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name, classe: "levelName");
+                    input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                intervalMin: parLevel3.IntervalMin,
+                                                intervalMax: parLevel3.IntervalMax,
+                                                unitName: parLevel3.ParMeasurementUnit_Name);
 
-                    if (parLevel3.ParLevel3InputType_Id == 3)
-                    {
+                }
+                else if (parLevel3.ParLevel3InputType_Id == 9)
+                {
 
-                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
-                                                    intervalMin: parLevel3.IntervalMin,
-                                                    intervalMax: parLevel3.IntervalMax,
-                                                    unitName: parLevel3.ParMeasurementUnit_Name);
-
-                    }
-                    else if (parLevel3.ParLevel3InputType_Id == 9)
-                    {
-
-                        input = html.campoIntervaloTexto(id: parLevel3.Id.ToString(),
-                                                        intervalMin: parLevel3.IntervalMin,
-                                                        intervalMax: parLevel3.IntervalMax,
-                                                        unitName: parLevel3.ParMeasurementUnit_Name);
-                    }
-
-                    break;
-
-                case 4:
-
-                    classInput = " calculado";
-
-                    valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMin);
-                    valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax);
-
-                    valorCompleto = "";
-
-                    if (valorMinimo == "")
-                    {
-                        valorCompleto = valorMaximo;
-                    }
-                    else if (valorMaximo == "")
-                    {
-                        valorCompleto = valorMinimo;
-                    }
-                    else
-                    {
-                        valorCompleto = valorMinimo + " ~ " + valorMaximo;
-                    }
-
-                    labels = html.div(outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name, classe: "levelName");
-
-                    input = html.campoCalculado(id: parLevel3.Id.ToString(),
+                    input = html.campoIntervaloTexto(id: parLevel3.Id.ToString(),
                                                     intervalMin: parLevel3.IntervalMin,
                                                     intervalMax: parLevel3.IntervalMax,
                                                     unitName: parLevel3.ParMeasurementUnit_Name);
 
-                    break;
+                }
+            }
 
-                case 5:
+            else if (parLevel3.ParLevel3InputType_Id == 4)
+            {
+                classInput = " calculado";
 
-                    classInput = " texto naoValidarInput";
-                    labels = html.div(outerhtml: "", classe: "levelName");
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMin);
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax);
 
-                    input = html.campoTexto(id: parLevel3.Id.ToString());
+                string valorCompleto = "";
 
-                    break;
+                if (valorMinimo == "")
+                {
+                    valorCompleto = valorMaximo;
+                }
+                else if (valorMaximo == "")
+                {
+                    valorCompleto = valorMinimo;
+                }
+                else
+                {
+                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                }
 
-                case 6:
+                //var intervalMin = Guard.ConverteValorCalculado(parLevel3.IntervalMin);
+                //var intervalMax = Guard.ConverteValorCalculado(parLevel3.IntervalMax);
 
-                    classInput = " boolean";
-                    labels = html.campoTextoBinario(id: parLevel3.Id.ToString());
-                    input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+                labels = html.div(
 
-                    break;
 
-                case 7:
 
-                    classInput = " interval";
+                                            outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
 
-                    valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
-                    valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+                //labels = html.div(
+                //                           outerhtml: "<b>Min: </b> " + Guard.ConverteValorCalculado(parLevel3.IntervalMin) + " ~ <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax) + " " + parLevel3.ParMeasurementUnit_Name,
+                //                           classe: "levelName"
+                //                       //style: "margin-top:7px;"
+                //                       );
 
-                    valorCompleto = "";
+                input = html.campoCalculado(id: parLevel3.Id.ToString(),
+                                                intervalMin: parLevel3.IntervalMin,
+                                                intervalMax: parLevel3.IntervalMax,
+                                                unitName: parLevel3.ParMeasurementUnit_Name);
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 5)
+            {
+                classInput = " texto naoValidarInput";
+                labels = html.div(
+                                           outerhtml: "",
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
 
-                    if (valorMinimo == "")
-                    {
-                        valorCompleto = valorMaximo;
-                    }
-                    else if (valorMaximo == "")
-                    {
-                        valorCompleto = valorMinimo;
-                    }
-                    else
-                    {
-                        valorCompleto = valorMinimo + " ~ " + valorMaximo;
-                    }
+                input = html.campoTexto(id: parLevel3.Id.ToString());
+            }//Binário com texto
+            else if (parLevel3.ParLevel3InputType_Id == 6)
+            {
+                classInput = " boolean";
+                labels = html.campoTextoBinario(id: parLevel3.Id.ToString());
+                input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+            }//Intervalo em minutos
+            else if (parLevel3.ParLevel3InputType_Id == 7)
+            {
+                //input = html.campoTextoMinutos(id: parLevel3.Id.ToString());
 
-                    labels = html.div(outerhtml: valorCompleto + " " + Resources.Resource.minutes_initials, classe: "levelName");
+                classInput = " interval";
 
-                    input = html.campoTextoMinutos(id: parLevel3.Id.ToString(),
-                                                    intervalMin: parLevel3.IntervalMin,
-                                                    intervalMax: parLevel3.IntervalMax,
-                                                    unitName: parLevel3.ParMeasurementUnit_Name);
-                    break;
-                case 8:
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
 
-                    var ranges = dbEf.ParInputTypeValues
+                string valorCompleto = "";
+
+                if (valorMinimo == "")
+                {
+                    valorCompleto = valorMaximo;
+                }
+                else if (valorMaximo == "")
+                {
+                    valorCompleto = valorMinimo;
+                }
+                else
+                {
+                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                }
+
+
+                labels = html.div(
+
+
+
+                                            outerhtml: valorCompleto + " " + Resources.Resource.minutes_initials,
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
+
+                //input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                //                                intervalMin: parLevel3.IntervalMin,
+                //                                intervalMax: parLevel3.IntervalMax,
+                //                                unitName: parLevel3.ParMeasurementUnit_Name);
+
+                input = html.campoTextoMinutos(id: parLevel3.Id.ToString(),
+                                                intervalMin: parLevel3.IntervalMin,
+                                                intervalMax: parLevel3.IntervalMax,
+                                                unitName: parLevel3.ParMeasurementUnit_Name);
+
+            }//Escala Likert
+            else if (parLevel3.ParLevel3InputType_Id == 8)
+            {
+                var ranges = dbEf.ParInputTypeValues
                     .Where(r => r.ParLevel3Value_Id == parLevel3.ParLevel3Value_Id
                         && r.IsActive
                         && (r.Intervalo <= parLevel3.IntervalMax && r.Intervalo >= parLevel3.IntervalMin)).ToList();
 
-                    var paramns = new List<string>();
+                var paramns = new List<string>();
 
-                    foreach (var item in ranges)
-                    {
-                        paramns.Add(item.Intervalo + ":" + item.Cor + ":" + item.Valor);
-                    }
-                    input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|", paramns));
+                foreach (var item in ranges)
+                {
+                    paramns.Add(item.Intervalo + ":" + item.Cor + ":" + item.Valor);
+                }
+                input = html.campoRangeSlider(parLevel3.Id.ToString(), parLevel3.IntervalMin, parLevel3.IntervalMax, null, "valor_range_" + parLevel3.Id.ToString(), string.Join("|", paramns));
 
-                    valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : parLevel3.IntervalMin.ToString("G29");
-                    valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : parLevel3.IntervalMax.ToString("G29");
+                //INSERE O MIN MAX
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : parLevel3.IntervalMax.ToString("G29");
 
-                    valorCompleto = "";
+                string valorCompleto = "";
 
-                    valorCompleto = "<strong>Escalas: </strong>" + valorMinimo + " a " + valorMaximo;
+                valorCompleto = "<strong>Escalas: </strong>" + valorMinimo + " a " + valorMaximo;
 
-                    labels = html.div(outerhtml: valorCompleto, classe: "levelName");
+                labels = html.div(outerhtml: valorCompleto, classe: "levelName");
+            }//Resultado
+            else if (parLevel3.ParLevel3InputType_Id == 10)
+            {
+                classInput = " interval";
 
-                    break;
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
 
-                case 10:
+                string valorCompleto = "";
 
-                    classInput = " interval";
+                if (valorMinimo == "")
+                {
+                    valorCompleto = valorMaximo;
+                }
+                else if (valorMaximo == "")
+                {
+                    valorCompleto = valorMinimo;
+                }
+                else
+                {
+                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                }
 
-                    valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
-                    valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : " <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
 
-                    valorCompleto = "";
+                labels = html.div(
 
-                    if (valorMinimo == "")
-                    {
-                        valorCompleto = valorMaximo;
-                    }
-                    else if (valorMaximo == "")
-                    {
-                        valorCompleto = valorMinimo;
-                    }
-                    else
-                    {
-                        valorCompleto = valorMinimo + " ~ " + valorMaximo;
-                    }
 
-                    labels = html.div(outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name, classe: "levelName");
 
-                    input = html.campoResultado(parLevel3.Id.ToString(), parLevel3.DynamicValue);
+                                            outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
 
-                    break;
-
-                case 11:
-
-                    classInput = " texto naoValidarInput";
-                    labels = html.div(outerhtml: "", classe: "levelName");
-
-                    input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
-
-                    break;
-
-                case 12:
-
-                    classInput = " boolean";
-                    input = html.campoBinarioObrigatorio(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name, boolnullName: "Não Informado");
-
-                    break;
-
-                default:
-
-                    ///Campo interval está repetindo , falta o campo defeitos
-                    classInput = " interval";
-
-                    valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
-                    valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
-
-                    valorCompleto = "";
-
-                    if (valorMinimo == "")
-                    {
-                        valorCompleto = valorMaximo;
-                    }
-                    else if (valorMaximo == "")
-                    {
-                        valorCompleto = valorMinimo;
-                    }
-                    else
-                    {
-                        valorCompleto = valorMinimo + " ~ " + valorMaximo;
-                    }
-
-                    labels = html.div(
-                                        outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,  //"<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
-                                        classe: "levelName"
-                                    //style: "margin-top:7px;"
-                                    );
-
-                    input = html.campoIntervalo(id: parLevel3.Id.ToString(),
-                                                    intervalMin: parLevel3.IntervalMin,
-                                                    intervalMax: parLevel3.IntervalMax,
-                                                    unitName: parLevel3.ParMeasurementUnit_Name);
-
-                    break;
+                input = html.campoResultado(parLevel3.Id.ToString(), parLevel3.DynamicValue);
             }
+            else if (parLevel3.ParLevel3InputType_Id == 11)
+            {
+                classInput = " texto naoValidarInput";
+                labels = html.div(
+                                           outerhtml: "",
+                                           classe: "levelName"
+                                       //style: "margin-top:7px;"
+                                       );
 
+                input = html.campoTexto(id: parLevel3.Id.ToString(), classe: classInput);
+            }
+            else
+            {
+                ///Campo interval está repetindo , falta o campo defeitos
+                classInput = " interval";
+
+                string valorMinimo = parLevel3.IntervalMin.ToString("G29") == "-9999999999999,9" ? "" : "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29");
+                string valorMaximo = parLevel3.IntervalMax.ToString("G29") == "9999999999999,9" ? "" : "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29");
+
+                string valorCompleto = "";
+
+                if (valorMinimo == "")
+                {
+                    valorCompleto = valorMaximo;
+                }
+                else if (valorMaximo == "")
+                {
+                    valorCompleto = valorMinimo;
+                }
+                else
+                {
+                    valorCompleto = valorMinimo + " ~ " + valorMaximo;
+                }
+
+                labels = html.div(
+                                    outerhtml: valorCompleto + " " + parLevel3.ParMeasurementUnit_Name,  //"<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
+                                    classe: "levelName"
+                                //style: "margin-top:7px;"
+                                );
+
+                input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                intervalMin: parLevel3.IntervalMin,
+                                                intervalMax: parLevel3.IntervalMax,
+                                                unitName: parLevel3.ParMeasurementUnit_Name);
+            }
             return input;
         }
 
@@ -8719,7 +8746,7 @@ namespace SgqSystem.Services
             }
         }
 
-
+        
 
         #endregion
 
