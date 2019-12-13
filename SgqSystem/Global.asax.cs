@@ -55,13 +55,10 @@ namespace SgqSystem
             //    });
 
             //};
-
+			
             #endregion
 
-            //DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.RunScriptsSystem;
-            Dominio.Seed.Seed.SetDicionario();
-
-            Dominio.Seed.Seed.SetSeedValues(isPT:GlobalConfig.LanguageBrasil, runSetSeed: bool.Parse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.RunScriptsSystem ?? "false"));
+            Dominio.Seed.Seed.SetSeedValues(isPT:GlobalConfig.LanguageBrasil, runSetSeed: false);
 
             SetGlobalConfigAmbient();
             ThreadPool.QueueUserWorkItem(IntegrationJobFactory.ExecuteIntegrationJobFunction);

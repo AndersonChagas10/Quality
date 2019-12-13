@@ -27,7 +27,6 @@
 		</script>
 	*/
     sumPage: 0,
-    renderOrientation: "portrait",
     renderDivName: "divRenderPrint",
     renderTableName: "renderPrint",
     headerName: "renderPrintHeader",
@@ -49,7 +48,7 @@
 		"	}                                                                      " +
 		"	@page {                                                                " +
 		"		margin:0;                                                          " +
-        "		size: A4 " + this.renderOrientation +";                            " +
+		"		size: A4;                                                          " +
 		"	}                                                                      " +
 		"	                                                                       " +
 		"	#" + this.footerName + ":last-child {                                      " +
@@ -195,8 +194,6 @@
             this.pageMarginBody = config.pageMarginBody;
         if (config.pageMarginFooter != undefined)
             this.pageMarginFooter = config.pageMarginFooter;
-        if (config.renderOrientation != undefined)
-            this.renderOrientation = config.renderOrientation;
 
         //use: <div style="clear:both"></div> to fix float usage
         this.RemoveExistente();
@@ -214,7 +211,7 @@
             document.getElementById(this.bodyName).innerHTML = config.bodyHtml;
         if (config.footerHtml != undefined)
             document.getElementById(this.footerName).innerHTML = config.footerHtml;
-        
+
         document.getElementById(this.renderTableName).style.width = this.width + "px";
         var header = document.getElementById(this.headerName).offsetHeight;
         var footer = document.getElementById(this.footerName).offsetHeight;
@@ -255,22 +252,6 @@
         $('body').append(printContents)
 
         setTimeout(function () { 
-
-            var css = '@page { size: landscape; }',
-                head = document.head || document.getElementsByTagName('head')[0],
-                style = document.createElement('style');
-
-            style.type = 'text/css';
-            style.media = 'print';
-
-            if (style.styleSheet) {
-                style.styleSheet.cssText = css;
-            } else {
-                style.appendChild(document.createTextNode(css));
-            }
-
-            head.appendChild(style);
-
             window.print();
         }, 1);
 

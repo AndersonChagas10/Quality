@@ -1940,7 +1940,6 @@
     <Content Include="Views\RotinaIntegracao\Edit.cshtml" />
     <Content Include="Views\RotinaIntegracao\Delete.cshtml" />
     <Content Include="Views\Params\_Rotina.cshtml" />
-    <Content Include="Views\Shared\_Print.cshtml" />
     <Content Include="Views\ParStructureGroup\Index.cshtml" />
     <Content Include="Views\ParStructureGroup\Create.cshtml" />
     <Content Include="Views\ParStructureGroup\Edit.cshtml" />

@@ -124,7 +124,5 @@ namespace DTO
         public int ItemMenu_Id { get; set; }
 
         public int avaliacao { get; set; }
-
-        public int? GrupoTarefa_Id { get; set; }
     }
 }
