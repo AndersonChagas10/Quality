@@ -930,7 +930,7 @@ function ColetasIsValid() {
         } 
     }
     if (errorCount > 0) {
-        openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
+        openMensagem("Atenção! Obrigatório responder todas as Tarefas.", "yellow", "black");
         mostraPerguntasObrigatorias(data);
         closeMensagem(2000);
         return false;
