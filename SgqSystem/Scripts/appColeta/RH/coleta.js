@@ -570,19 +570,23 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
     var linha = $(this).parents('[data-conforme]');
 
     resetarLinha(linha);
-
     if (linha.attr('data-conforme') == "" || linha.attr('data-conforme') == null) {
         linha.attr('data-conforme', linha.attr('data-default-answer'));
-
+        setFieldColorGray($(this));
     } else if (linha.attr('data-conforme') == linha.attr('data-default-answer')) {
         linha.attr('data-conforme', linha.attr('data-default-answer') == "0" ? "1" : "0");
+        setFieldColorGray($(this));
     } else {
         linha.addClass('alert-secundary');
         if ($(this).attr('data-required-answer') == "1") {
             linha.attr('data-conforme', "");
+            setFieldColorWhite($(this));
+
         } else {
             linha.attr('data-conforme', linha.attr('data-default-answer'));
+            setFieldColorWhite($(this));
         }
+
     }
 
     if (linha.attr('data-conforme') == "1") {
@@ -598,6 +602,14 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
     $(this).removeClass('btn-secundary');
 
 });
+
+function setFieldColorGray(campo) {
+    $(campo).css('background-color', '#E8E8E8');
+}
+
+function setFieldColorWhite(campo) {
+    $(campo).css('background-color', '#FFFFFF');
+}
 
 $('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', function (e) {
     var linha = $(this).parents('[data-conforme]');
