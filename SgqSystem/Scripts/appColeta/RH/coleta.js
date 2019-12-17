@@ -86,10 +86,13 @@ $('body')
             $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').removeClass('hide');
             $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').removeClass('hide');
             $(this).attr('data-targeter-collapsed', false);
+            $(this).find('[ data-toggle]').removeClass('fa fa-caret-right').addClass('fa fa-caret-down');
+            $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').find('[data-toggle]').removeClass('fa fa-caret-right').addClass('fa fa-caret-down');
         } else {
             $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').addClass('hide');
             $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').addClass('hide');
             $(this).attr('data-targeter-collapsed', true);
+            $(this).find('[ data-toggle]').removeClass('fa fa-caret-down').addClass('fa fa-caret-right');
         }
     });
 
@@ -121,11 +124,11 @@ function getContador() {
 }
 
 function getLevel1(level1) {
-    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><small>' + level1.Name + '</small></div>';
+    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><i class="fa fa-caret-down pull-right" data-toggle></i><small>' + level1.Name + '</small></div>';
 }
 
 function getLevel2(level2, level1) {
-    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="' + level1.Id + '" data-collapse-targeter="' + level1.Id + '-' + level2.Id + '"><small>' + level2.Name + '</small></div>';
+    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="' + level1.Id + '" data-collapse-targeter="' + level1.Id + '-' + level2.Id + '"><i class="fa fa-caret-down pull-right" data-toggle></i><small>' + level2.Name + '</small></div>';
 }
 
 function getLevel3(level3, level2, level1) {
@@ -281,7 +284,7 @@ function getBinarioComTexto(level3) {
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
         '</div>' +
         '<div class="col-xs-5">' +
-          botao +
+        botao +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -563,7 +566,7 @@ function validaCampoEmBrancoNA() {
     if (linha.attr('data-default-answer') == "1") {
         linha.attr('data-conforme', " ");
     }
-  
+
 }
 
 $('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
@@ -691,7 +694,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
             ParCargo_Id: currentParCargo_Id,
             Evaluation: currentEvaluationSample.Evaluation,
             Sample: currentEvaluationSample.Sample,
-            ParCluster_Id : currentParCluster_Id
+            ParCluster_Id: currentParCluster_Id
         };
     }
 
@@ -699,7 +702,48 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     //console.table(collectionHeaderFields);
 
     //Insere valores da coleta
-    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {        var data = $(o);        var isNA = $(data).attr('data-conforme-na') == "";        coletaJson.push(            {                Evaluation: coletaAgrupada.Evaluation,                Sample: coletaAgrupada.Sample,                ParDepartment_Id: currentParDepartment_Id,                ParCargo_Id: currentParCargo_Id,                ParLevel1_Id: $(data).attr('data-level1'),                ParLevel2_Id: $(data).attr('data-level2'),                ParLevel3_Id: $(data).attr('data-level3'),                ParCompany_Id: currentParCompany_Id,                IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),                IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),                IsConform: isNA ? 1 : $(data).attr('data-conforme') == "1",                Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),                ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),                IsNotEvaluate: isNA,                CollectionDate: getCurrentDate(),                UserSgq_Id: currentLogin.Id,                Weigth: $(data).attr('data-peso'),                WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),                Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),                Parfrequency_Id: parametrization.currentParFrequency_Id,                ParCluster_Id : currentParCluster_Id                /*				"Shift_Id":1,				"Period_Id":1,				"ParCluster_Id":1,				"CollectionType":1,				"PunishimentValue":1,				"HasPhoto":"0",				"HaveCorrectiveAction":"0",				"AlertLevel":"0",				"ParHeaderField_Id":1,				"ParHeaderField_Value":""				*/            }        );    });
+    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
+        var data = $(o);
+        var isNA = $(data).attr('data-conforme-na') == "";
+        coletaJson.push(
+            {
+                Evaluation: coletaAgrupada.Evaluation,
+                Sample: coletaAgrupada.Sample,
+                ParDepartment_Id: currentParDepartment_Id,
+                ParCargo_Id: currentParCargo_Id,
+                ParLevel1_Id: $(data).attr('data-level1'),
+                ParLevel2_Id: $(data).attr('data-level2'),
+                ParLevel3_Id: $(data).attr('data-level3'),
+                ParCompany_Id: currentParCompany_Id,
+                IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),
+                IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),
+                IsConform: isNA ? 1 : $(data).attr('data-conforme') == "1",
+                Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
+                ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
+                IsNotEvaluate: isNA,
+                CollectionDate: getCurrentDate(),
+                UserSgq_Id: currentLogin.Id,
+                Weigth: $(data).attr('data-peso'),
+                WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
+                Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
+                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
+                Parfrequency_Id: parametrization.currentParFrequency_Id,
+                ParCluster_Id: currentParCluster_Id
+                /*
+				"Shift_Id":1,
+				"Period_Id":1,
+				"ParCluster_Id":1,
+				"CollectionType":1,
+				"PunishimentValue":1,
+				"HasPhoto":"0",
+				"HaveCorrectiveAction":"0",
+				"AlertLevel":"0",
+				"ParHeaderField_Id":1,
+				"ParHeaderField_Value":""
+				*/
+            }
+        );
+    });
 
     processAlertRole(coletaJson);
 
