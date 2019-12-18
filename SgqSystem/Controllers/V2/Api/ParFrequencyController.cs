@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Dominio;
 using SgqSystem.Controllers.Api;
+using SgqSystem.ViewModels;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -19,10 +20,25 @@ namespace SgqSystem.Controllers.V2.Api
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
         // GET: api/ParFrequency
-        public IHttpActionResult GetParFrequency()
+        [HttpPost]
+        public IHttpActionResult GetParFrequency(PlanejamentoColetaViewModel appParametrization)
         {
             db.Configuration.LazyLoadingEnabled = false;
-            return Ok(db.ParFrequency.Where(x=>x.IsActive).ToList());
+
+            var listaParFrequencyVinculada_Id = db.ParEvaluationXDepartmentXCargo
+                   .AsNoTracking()
+                   .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                   .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id || x.ParCluster_Id == null)
+                   .Where(x => x.IsActive)
+                   .Select(x => x.ParFrequencyId)
+                   .Distinct()
+                   .ToList();
+
+            var listaParFrequency = db.ParFrequency
+                .Where(x => x.IsActive && listaParFrequencyVinculada_Id.Any(y=>y == x.Id))
+                .ToList();
+
+            return Ok(listaParFrequency);
         }
 
         protected override void Dispose(bool disposing)
