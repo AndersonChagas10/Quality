@@ -151,7 +151,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var wParLevel1 = "";
             var wParLevel2 = "";
             var wParLevel3 = "";
-            var wLevel1Status = "";
             var wAcaoStatus = "";
             var wPeriodo = "";
             var wNCComPeso = "";
@@ -194,7 +193,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
-                wParDepartment = $" AND C2.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
+                wParDepartment = $" AND CL2XPD.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
 
             //Indicador
             //if (form.ParLevel1_Ids != null && form.ParLevel1_Ids.Length > 0)
@@ -208,15 +207,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.ParLevel3_Ids != null && form.ParLevel3_Ids.Length > 0)
                 wParLevel3 = $" AND R3.ParLevel3_Id IN ({string.Join(",", form.ParLevel3_Ids)}) --Tarefa";
 
-            //Status do Indicador
-            if (form.ParLevel1Status_Ids != null && form.ParLevel1Status_Ids.Length > 0)
-            {
-                if (form.ParLevel1Status_Ids[0] == 1)//Dentro da meta
-                    wLevel1Status = $" AND S3.PorcentagemNc >= S3.Meta --Status do Indicador";
 
-                if (form.ParLevel1Status_Ids[0] == 2) //Fora da meta
-                    wLevel1Status = $" AND S3.PorcentagemNc < S3.Meta --Status do Indicador";
-            }
 
             //Plano de Ação Concluido
             if (form.AcaoStatus != null && form.AcaoStatus.Length > 0) { 
@@ -231,7 +222,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.Periodo != null && form.Periodo.Length > 0) {
                 if (form.Periodo[0] == 1)//Diario
                 {
-                    wPeriodo = "Data";
+                    wPeriodo = "convert(NVARCHAR, Data, 111)";
                 }
 
                 if (form.Periodo[0] == 2)//Semanal
@@ -251,7 +242,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             {
                 if(form.NcComPeso[0] == 1) //Com Peso
                     wNCComPeso = "'NcComPeso'";
-                if (form.NcComPeso[0] == 1) //Sem Peso
+                if (form.NcComPeso[0] == 2) //Sem Peso
                     wNCComPeso = "'NcSemPeso'";
             }
 
@@ -409,6 +400,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
             			INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
             			INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
+            			LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
+			            LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
             			OUTER APPLY (SELECT TOP 1
             					*
             				FROM ParLevel1XModule L1XM WITH (NOLOCK)
@@ -420,11 +413,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             					*
             				FROM ParLevel1XCluster L1XC WITH (NOLOCK)
             				WHERE L1XC.ParLevel1_Id = C2.ParLevel1_Id
-            				AND L1XC.ParCluster_Id = C2.ParCluster_Id
+            				AND L1XC.ParCluster_Id = C2XC.ParCluster_Id
             				AND L1XC.EffectiveDate <= C2.CollectionDate
             				AND L1XC.IsActive = 1
             				ORDER BY L1XM.EffectiveDateStart DESC) AS L1XC
-            			LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
             			INNER JOIN ParCluster PCL WITH (NOLOCK) ON PCL.Id = C2XC.ParCluster_Id AND PCL.IsActive = 1
             			LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = C2.UnitId AND PCXS.Active = 1 --ParCriticalLevel
             			LEFT JOIN CorrectiveAction CA WITH (NOLOCK) ON CA.CollectionLevel02Id = C2.Id
@@ -464,8 +456,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             				,S1.Unidade_Id
             				,S1.Unidade_Name
             				,{wPeriodo}) S2) S3
-            	Where 1 = 1
-                {wLevel1Status}           	
+            	Where 1 = 1           	
             ORDER BY {orderBy}";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -473,7 +464,26 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 retornoTendencia = factory.SearchQuery<TendenciaResultSet>(query).ToList();
             }
 
-            return retornoTendencia;
+            //Status do Indicador
+            if (form.ParLevel1Status_Ids != null && form.ParLevel1Status_Ids.Length > 0)
+            {
+                var somaPorcentagemNC = retornoTendencia.Select(x => x.PorcentagemNc).Aggregate((somaNC, NC) => somaNC + NC);
+                var mediaPorcentagem = (somaPorcentagemNC / retornoTendencia.Count);
+                var dentroMeta = mediaPorcentagem <= retornoTendencia[0].Meta;
+
+                if (form.ParLevel1Status_Ids[0] == 1 && dentroMeta)//Dentro da meta
+                    return retornoTendencia;
+
+                if (form.ParLevel1Status_Ids[0] == 2 && !dentroMeta)//Fora da meta
+                    return retornoTendencia;
+
+                return new List<TendenciaResultSet>();
+            }
+            else
+            {
+                return retornoTendencia;
+            }
+
         }
 
         private static string getQuery(DataCarrierFormularioNew form, int? nivel)

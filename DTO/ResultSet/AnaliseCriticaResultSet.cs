@@ -76,8 +76,8 @@ namespace DTO
         public decimal Av_Peso { get; set; }
         public decimal NC { get; set; }
         public decimal NC_Peso { get; set; }
-        public double Data { get { return _Data.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; } }
-        public DateTime _Data { get; set; }
+        //public double Data { get { return _Data.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; } }
+        public string _Data { get; set; }
 
         //Aqui dentro colocar a lista de Monitoramentos de cada indicador
         public List<AcaoResultSet> Acoes { get; set; }

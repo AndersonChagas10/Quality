@@ -153,7 +153,7 @@ namespace SgqSystem.Controllers.Api.Formulario
             using (var factory = new Factory("DefaultConnection"))
             {
                 var sqlParCompany = "";
-                if (form.ParCompany_Ids.Length > 0)
+                if (form.ParCompany_Ids.Length > 0 && GetDicionarioEstatico("AppFiles") != "GQ")
                 {
                     sqlParCompany = $@" AND PD.ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)}) ";
                 }
