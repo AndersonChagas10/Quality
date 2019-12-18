@@ -52,5 +52,7 @@ namespace Dominio
 
         [ForeignKey("ParAlertType_Id")]
         public virtual ParAlertType ParAlertType { get; set; }
+
+        public virtual List<ParAlertXUser> ParAlertXUsers { get; set; }
     }
 }

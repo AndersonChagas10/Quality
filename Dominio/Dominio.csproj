@@ -106,6 +106,7 @@
     <Compile Include="MigrationHistory.cs" />
     <Compile Include="Monitoramentos.cs" />
     <Compile Include="ParAlertType.cs" />
+    <Compile Include="ParAlertXUser.cs" />
     <Compile Include="ParCargo.cs" />
     <Compile Include="ParCargoXDepartment.cs" />
     <Compile Include="ParColaborador.cs" />

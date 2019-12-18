@@ -293,6 +293,7 @@ namespace Dominio
         public virtual DbSet<ComponenteGenericoValor> ComponenteGenericoValor { get; set; }
         public virtual DbSet<ParHeaderFieldXComponenteGenerico> ParHeaderFieldXComponenteGenerico { get; set; }
         public virtual DbSet<LogError> LogError { get; set; }
+        public virtual DbSet<ParAlertXUser> ParAlertXUser { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
