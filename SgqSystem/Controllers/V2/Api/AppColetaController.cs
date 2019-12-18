@@ -16,6 +16,7 @@ using ADOFactory;
 using System.Web.Http.Cors;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
+using SgqSystem.Jobs;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -74,12 +75,39 @@ namespace SgqSystem.Controllers.V2.Api
                 db.SaveChanges();
             }
 
-
             var lista = listSimpleCollect.Where(x => x.HasError == true).ToList();
             if (lista.Count == listSimpleCollect.Count)
                 return BadRequest("Ocorreu erro em todas as tentativas de registrar as coletas.");
 
-            return Ok(listSimpleCollect.Where(x => x.HasError != true).ToList());
+            var coletasRegistradas = listSimpleCollect.Where(x => x.HasError != true).ToList();
+
+            var coletasRegistradasPorCollectionLevel2 = coletasRegistradas
+                .Where(x => x.ParHeaderField_Id == null
+                && x.ParHeaderField_Value == null
+                && x.Evaluation != null
+                && x.Sample != null)
+                .Select(x => new CollectionLevel2()
+                {
+                    EvaluationNumber = (int)x.Evaluation,
+                    Sample = x.Sample.Value,
+                    ParLevel1_Id = x.ParLevel1_Id.Value,
+                    ParLevel2_Id = x.ParLevel2_Id.Value,
+                    Shift = x.Shift_Id.Value,
+                    Period = x.Period_Id.Value,
+                    UnitId = x.ParCompany_Id.Value,
+                    ParCargo_Id = x.ParCargo_Id,
+                    ParCluster_Id = x.ParCluster_Id,
+                    ParDepartment_Id = x.ParDepartment_Id,
+                    ParFrequency_Id = x.Parfrequency_Id,
+                    AuditorId = x.UserSgq_Id ?? 0,
+                    CollectionDate = x.CollectionDate.Value
+                })
+                .Distinct()
+                .ToList();
+
+            CollectionJob.ConsolidarCollectionLevel2(coletasRegistradasPorCollectionLevel2);
+
+            return Ok(coletasRegistradas);
         }
 
         [HttpPost]
