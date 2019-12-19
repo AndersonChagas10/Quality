@@ -147,7 +147,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id)
-                    .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id)
+                    .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id || x.ParCluster_Id == null)
                     .Where(x => x.IsActive)
                     .OrderByDescending(x => x.ParCompany_Id)
                     .Select(x => new ParVinculoPesoAppViewModel()
@@ -211,8 +211,8 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParEvaluationXDepartmentXCargoAppViewModel = db.ParEvaluationXDepartmentXCargo
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
-                    .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id || x.ParFrequencyId == null)
-                    .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id || x.ParCluster_Id == null)
+                    .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id)
+                    .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id)
                     .Where(x => x.IsActive)
                     .OrderByDescending(x => x.ParCompany_Id)
                     .Select(x => new ParEvaluationXDepartmentXCargoAppViewModel()
@@ -337,10 +337,15 @@ namespace SgqSystem.Controllers.V2.Api
                 //else
                 //{
 
+                var listaDepartamentoFiltrado_Id = listaParEvaluationXDepartmentXCargoAppViewModel
+                    .Select(x => x.ParDepartment_Id)
+                    .ToList();
+
                 listaParDepartment = db.ParDepartment
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.Active)
+                    .Where(x => listaDepartamentoFiltrado_Id.Any(y => y == x.Id))
                     .Select(x => new ParDepartmentAppViewModel()
                     {
                         Id = x.Id,
@@ -350,11 +355,25 @@ namespace SgqSystem.Controllers.V2.Api
                         Hash = x.Hash
                     })
                     .ToList();
-                //}
+
+                var listaDepartamentoPaFiltrado_Id = listaParDepartment.Select(x => x.Parent_Id).Distinct().ToList();
+                var listaDepartamentoPaFiltrado = db.ParDepartment.Where(x => listaDepartamentoPaFiltrado_Id.Any(y => y == x.Id))
+                            .Select(x => new ParDepartmentAppViewModel()
+                            {
+                                Id = x.Id,
+                                Name = x.Name,
+                                Description = x.Description,
+                                Parent_Id = x.Parent_Id,
+                                Hash = x.Hash
+                            }).ToList();
+                listaParDepartment.AddRange(listaDepartamentoPaFiltrado);
+
+                var listaCargoFiltrado_Id = listaParEvaluationXDepartmentXCargoAppViewModel.Select(x => x.ParCargo_Id).ToList();
 
                 listaParCargo = db.ParCargo
                     .AsNoTracking()
                     .Where(x => x.IsActive)
+                    .Where(x => listaCargoFiltrado_Id.Any(y => y == x.Id))
                     .Select(x => new ParCargoAppViewModel()
                     {
                         Id = x.Id,
@@ -365,6 +384,8 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParCargoXDepartment = db.ParCargoXDepartment
                     .AsNoTracking()
                     .Where(x => x.IsActive)
+                    .Where(x => listaCargoFiltrado_Id.Any(y => y == x.ParCargo_Id))
+                    .Where(x => listaDepartamentoFiltrado_Id.Any(y => y == x.ParDepartment_Id))
                     .Select(x => new ParCargoXDepartmentAppViewModel()
                     {
                         Id = x.Id,
