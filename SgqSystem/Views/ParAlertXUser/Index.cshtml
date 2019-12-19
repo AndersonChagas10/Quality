@@ -28,7 +28,10 @@
                                 @Resources.Resource.company
                             </th>
                             <th>
-                                Usuario
+                                Usuário
+                            </th>
+                            <th>
+                                Nome
                             </th>
                             <th>
                                 @Resources.Resource.active
@@ -48,6 +51,9 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.UserSgq.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserSgq.FullName)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.IsActive)
@@ -75,6 +81,7 @@
         closeLeftSidebar();
 
         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
             null,
             null,
             null,

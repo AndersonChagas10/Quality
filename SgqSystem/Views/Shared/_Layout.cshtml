@@ -352,8 +352,13 @@
                 {
                     'targets': 3,
                     "mRender": function (data, type, row) {
-                        var trimmedString = data.substring(0, 100);
-                        return trimmedString + '...';
+                        if (data.length >= 100) {
+                            var trimmedString = data.substring(0, 100);
+                            return trimmedString + '...';
+                        } else {
+                            return data;
+                        }
+                        
                     }
                 }
             ]

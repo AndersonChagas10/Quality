@@ -14,7 +14,7 @@ namespace Dominio
         public bool IsActive { get; set; }
 
         [Column("ParCompany_Id")]
-        public int ParCompany_Ids { get; set; }
+        public int? ParCompany_Ids { get; set; }
 
         public int ParAlert_Id { get; set; }
 

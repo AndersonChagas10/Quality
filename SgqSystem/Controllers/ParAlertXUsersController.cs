@@ -49,7 +49,7 @@ namespace SgqSystem.Controllers
 
             //buscar se ja existe um vinculo entre departamento e cargo, se sim bloquear a criação
             var parAlertXUserExistente = db.ParAlertXUser
-                                                    .Where(x => x.ParCompany_Ids == parAlertXUser.ParCompany_Ids && x.UserSgq_Id == parAlertXUser.UserSgq_Id)
+                                                    .Where(x => x.ParAlert_Id == parAlertXUser.ParAlert_Id && x.UserSgq_Id == parAlertXUser.UserSgq_Id)
                                                     .FirstOrDefault();
 
             if (parAlertXUserExistente != null)
@@ -103,9 +103,6 @@ namespace SgqSystem.Controllers
 
         private void ValidaVinculoAlertaxUsuario(ParAlertXUser parAlertXUser)
         {
-            if(parAlertXUser.ParCompany_Ids == 0)
-                ModelState.AddModelError("ParCompany_Ids", Resources.Resource.required_field + " " + Resources.Resource.company);
-
             if (parAlertXUser.UserSgq_Id == 0)
                 ModelState.AddModelError("UserSgq_Id", Resources.Resource.required_field + " " + "Usuário");
         }
