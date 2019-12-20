@@ -30,7 +30,7 @@ namespace SgqSystem.Controllers
 
             var parCargos = db.ParCargo.Where(x => x.IsActive).ToList();
             parCargos.Insert(0, new ParCargo() { Id = 0, Name = Resources.Resource.all });
-            ViewBag.ParCargo_Id = new SelectList(parCargos, "Id", "Name", parAlert.ParCargo_Id);
+            ViewBag.ParCargo_Id = new SelectList(parCargos, "Id", "Name", parAlert.ParCargo_Ids);
 
             var parLevel1s = db.ParLevel1.Where(x => x.IsActive).ToList();
             parLevel1s.Insert(0, new ParLevel1() { Id = 0, Name = Resources.Resource.all });
@@ -46,13 +46,13 @@ namespace SgqSystem.Controllers
 
             var parCompanys = db.ParCompany.Where(x => x.IsActive).ToList();
             parCompanys.Insert(0, new ParCompany() { Id = 0, Name = Resources.Resource.all });
-            ViewBag.ParCompany_Id = new SelectList(parCompanys, "Id", "Name", parAlert.ParCompany_Id);
+            ViewBag.ParCompany_Id = new SelectList(parCompanys, "Id", "Name", parAlert.ParCompany_Ids);
 
             var parAlertTypes = db.ParAlertType.Where(x => x.IsActive).ToList();
             ViewBag.ParAlertType_Id = new SelectList(parAlertTypes, "Id", "Name", parAlert.ParAlertType_Id);
 
 
-            ViewBag.Department = db.ParDepartment.Where(x => x.Id == parAlert.ParDepartment_Id).ToList()
+            ViewBag.Department = db.ParDepartment.Where(x => x.Id == parAlert.ParSecao_Ids).ToList()
              .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
              .ToList();
 
@@ -65,7 +65,7 @@ namespace SgqSystem.Controllers
                 ViewBag.Department = semDados;
             }
 
-            ViewBag.SonDepartments = db.ParDepartment.Where(x => x.Id == parAlert.ParDepartment_Id).ToList()
+            ViewBag.SonDepartments = db.ParDepartment.Where(x => x.Id == parAlert.ParSecao_Ids).ToList()
              .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
              .ToList();
 
@@ -78,7 +78,7 @@ namespace SgqSystem.Controllers
                 ViewBag.SonDepartments = semDados;
             }
 
-            ViewBag.Company = db.ParCompany.Where(x => x.Id == parAlert.ParCompany_Id).ToList()
+            ViewBag.Company = db.ParCompany.Where(x => x.Id == parAlert.ParCompany_Ids).ToList()
              .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
              .ToList();
 
@@ -91,7 +91,7 @@ namespace SgqSystem.Controllers
                 ViewBag.Company = semDados;
             }
 
-            ViewBag.Cargo = db.ParCargo.Where(x => x.Id == parAlert.ParCargo_Id).ToList()
+            ViewBag.Cargo = db.ParCargo.Where(x => x.Id == parAlert.ParCargo_Ids).ToList()
             .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
             .ToList();
 
@@ -146,7 +146,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,ParDepartment_Id,ParCargo_Id,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParAlertType_Id,IsCollectAlert,HasCorrectiveAction,IsActive")] ParAlert parAlert)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,ParSecao_Ids,ParCargo_Ids,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Ids,ParAlertType_Id,IsCollectAlert,HasCorrectiveAction,IsActive")] ParAlert parAlert)
         {
             SetValues(parAlert);
             ValidarAlerta(parAlert);
@@ -185,7 +185,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,ParDepartment_Id,ParCargo_Id,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Id,ParAlertType_Id,IsCollectAlert,HasCorrectiveAction,IsActive")] ParAlert parAlert)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,ParSecao_Ids,ParCargo_Ids,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id,ParCompany_Ids,ParAlertType_Id,IsCollectAlert,HasCorrectiveAction,IsActive")] ParAlert parAlert)
         {
 
             SetValues(parAlert);
@@ -240,8 +240,9 @@ namespace SgqSystem.Controllers
 
         private void SetValues(ParAlert parAlert)
         {
-            parAlert.ParDepartment_Id = parAlert.ParDepartment_Id == 0 ? null : parAlert.ParDepartment_Id;
-            parAlert.ParCargo_Id = parAlert.ParCargo_Id == 0 ? null : parAlert.ParCargo_Id;
+            parAlert.ParSecao_Ids = parAlert.ParSecao_Ids == 0 ? null : parAlert.ParSecao_Ids;
+            parAlert.ParCompany_Ids = parAlert.ParCompany_Ids == 0 ? null : parAlert.ParCompany_Ids;
+            parAlert.ParCargo_Ids = parAlert.ParCargo_Ids == 0 ? null : parAlert.ParCargo_Ids;
             parAlert.ParLevel1_Id = parAlert.ParLevel1_Id == 0 ? null : parAlert.ParLevel1_Id;
             parAlert.ParLevel2_Id = parAlert.ParLevel2_Id == 0 ? null : parAlert.ParLevel2_Id;
             parAlert.ParLevel3_Id = parAlert.ParLevel3_Id == 0 ? null : parAlert.ParLevel3_Id;

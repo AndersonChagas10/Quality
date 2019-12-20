@@ -55,6 +55,7 @@ namespace Dominio
             var entities = ChangeTracker.Entries().Where(x =>
             !(x.Entity is DatabaseLog)
             && !(x.Entity is LogTrack)
+            && !(x.Entity is LogError)
             && !(x.Entity is ErrorLog)
             && !(x.Entity is UserSgq)
             && !(x.Entity is Result_Level3)

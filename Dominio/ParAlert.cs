@@ -12,9 +12,11 @@ namespace Dominio
 
         public string Name { get; set; }
 
-        public int? ParDepartment_Id { get; set; }
+        [Column("ParDepartment_Id")]
+        public int? ParSecao_Ids { get; set; }
 
-        public int? ParCargo_Id { get; set; }
+        [Column("ParCargo_Id")]
+        public int? ParCargo_Ids { get; set; }
 
         public int? ParLevel1_Id { get; set; }
 
@@ -22,7 +24,8 @@ namespace Dominio
 
         public int? ParLevel3_Id { get; set; }
 
-        public int? ParCompany_Id { get; set; }
+        [Column("ParCompany_Id")]
+        public int? ParCompany_Ids { get; set; }
 
         public int ParAlertType_Id { get; set; }
 
@@ -32,10 +35,10 @@ namespace Dominio
 
         public bool HasCorrectiveAction { get; set; } = true;
 
-        [ForeignKey("ParDepartment_Id")]
+        [ForeignKey("ParSecao_Ids")]
         public virtual ParDepartment ParDepartment { get; set; }
 
-        [ForeignKey("ParCargo_Id")]
+        [ForeignKey("ParCargo_Ids")]
         public virtual ParCargo ParCargo { get; set; }
 
         [ForeignKey("ParLevel1_Id")]
@@ -47,7 +50,7 @@ namespace Dominio
         [ForeignKey("ParLevel3_Id")]
         public virtual ParLevel3 ParLevel3 { get; set; }
 
-        [ForeignKey("ParCompany_Id")]
+        [ForeignKey("ParCompany_Ids")]
         public virtual ParCompany ParCompany { get; set; }
 
         [ForeignKey("ParAlertType_Id")]
