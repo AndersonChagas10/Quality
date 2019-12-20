@@ -20,13 +20,7 @@
                 </p>
                 <table class="table" id="tabelaCargoXDepartment">
                     <thead>
-                        <tr>
-                            <th>
-                                @Resources.Resource.alert
-                            </th>
-                            <th>
-                                @Resources.Resource.company
-                            </th>
+                        <tr>  
                             <th>
                                 Usuário
                             </th>
@@ -34,7 +28,7 @@
                                 Nome
                             </th>
                             <th>
-                                @Resources.Resource.active
+                                Email
                             </th>
                             <th></th>
                         </tr>
@@ -42,26 +36,20 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ParAlert.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ParCompany.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserSgq.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserSgq.FullName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.IsActive)
-                                </td>
-                                <td>
-                                    @Html.ActionLink(Resources.Resource.delete as string, "Delete", "ParAlertXUser", new { id = item.Id }, new { @class = "btn btn-danger" })
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserSgq.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserSgq.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserSgq.Email)
+                            </td>
+                            <td>
+                                @Html.ActionLink(Resources.Resource.delete as string, "Delete", "ParAlertXUser", new { id = item.Id }, new { @class = "btn btn-danger" })
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -81,8 +69,6 @@
         closeLeftSidebar();
 
         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
-            null,
-            null,
             null,
             null,
             null,

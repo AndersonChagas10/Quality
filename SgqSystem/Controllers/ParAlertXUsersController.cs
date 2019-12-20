@@ -22,22 +22,6 @@ namespace SgqSystem.Controllers
         public ActionResult Create(int parAlertId)
         {
             ViewBag.ParAlertId = parAlertId;
-            //var listaDeCargosSalvos = db.ParCargoXDepartment.Where(x => x.ParCargo_Id == parCargoId && x.IsActive == true).Select(m => m.ParDepartment_Id).ToList();
-
-           // ViewBag.ParDepartment_Id = db.ParDepartment.ToList()
-           //.Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
-           //.ToList();
-
-           // if (ViewBag.ParDepartment_Id.Count == 0)
-           // {
-           //     var semDados = new List<KeyValuePair<int, string>>() {
-           //     new KeyValuePair<int, string>(0, ""),
-
-           // };
-           //     ViewBag.ParDepartment_Id = semDados;
-           // }
-
-            //ViewBag.ParDepartment_Id = new SelectList(db.ParDepartment.Where(m => !listaDeCargosSalvos.Contains(m.Id) && m.Active).Select(m => m).ToList(), "Id", "Name");
 
             return View(new ParAlertXUser() { ParAlert_Id = parAlertId });
         }

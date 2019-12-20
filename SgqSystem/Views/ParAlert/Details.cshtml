@@ -55,6 +55,14 @@
                                         </dd>
 
                                         <dt>
+                                            @Resources.Resource.unit
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.ParCompany.Name)
+                                        </dd>
+
+                                        <dt>
                                             Centro de Custo/Seção
                                         </dt>
 
@@ -103,7 +111,7 @@
                                         </dd>
 
                                         <dt>
-                                            Está Ativo?
+                                           @Resources.Resource.active?
                                         </dt>
 
                                         <dd>
@@ -127,11 +135,19 @@
                                         </dd>
 
                                         <dt>
-                                            Data de Inserção
+                                            @Resources.Resource.add_date
                                         </dt>
 
                                         <dd>
                                             @Html.DisplayFor(model => model.AddDate)
+                                        </dd>
+
+                                        <dt>
+                                            @Resources.Resource.alter_date
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.AlterDate)
                                         </dd>
                                     </dl>
                                 </div>
