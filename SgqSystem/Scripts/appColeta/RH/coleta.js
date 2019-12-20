@@ -124,11 +124,11 @@ function getContador() {
 }
 
 function getLevel1(level1) {
-    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><i class="fa fa-caret-down pull-right" data-toggle></i><small>' + level1.Name + '</small></div>';
+    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><i class="fa fa-caret-down" data-toggle></i><small>' + level1.Name + '</small></div>';
 }
 
 function getLevel2(level2, level1) {
-    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="' + level1.Id + '" data-collapse-targeter="' + level1.Id + '-' + level2.Id + '"><i class="fa fa-caret-down pull-right" data-toggle></i><small>' + level2.Name + '</small></div>';
+    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="' + level1.Id + '" data-collapse-targeter="' + level1.Id + '-' + level2.Id + '"><i class="fa fa-caret-down" data-toggle></i><small>' + level2.Name + '</small></div>';
 }
 
 function getLevel3(level3, level2, level1) {

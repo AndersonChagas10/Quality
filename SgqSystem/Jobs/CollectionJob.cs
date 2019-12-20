@@ -30,12 +30,28 @@ namespace SgqSystem.Jobs
         {
             while (true)
             {
-                //Pegar as collectionsLevel2 da Collection
-                List<CollectionLevel2> collectionsLevel2MontadoDaCollection = GetCollectionsLevel2NotProcess();
+                int intervalTimeCollectionJob = 0;
+                try
+                {
+                    Int32.TryParse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.CollectionJobTime0IsDisabled, out intervalTimeCollectionJob);
+                }catch(Exception)
+                {
 
-                ConsolidarCollectionLevel2(collectionsLevel2MontadoDaCollection);
+                }
 
-                Thread.Sleep(15000);
+                if (intervalTimeCollectionJob > 0)
+                {
+                    //Pegar as collectionsLevel2 da Collection
+                    List<CollectionLevel2> collectionsLevel2MontadoDaCollection = GetCollectionsLevel2NotProcess();
+
+                    ConsolidarCollectionLevel2(collectionsLevel2MontadoDaCollection);
+
+                    Thread.Sleep(intervalTimeCollectionJob);
+                }
+                else
+                {
+                    Thread.Sleep(30000);
+                }
             }
 
         }
