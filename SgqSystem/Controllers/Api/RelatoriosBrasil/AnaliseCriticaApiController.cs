@@ -105,8 +105,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return retornoHistoricoUnidade;
         }
 
-
-
         [HttpPost]
         [Route("GetAnaliseCritica")]
         public List<AnaliseCriticaResultSet> GetAnaliseCritica([FromBody] DataCarrierFormularioNew form)
@@ -465,7 +463,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
 
             //Status do Indicador
-            if (form.ParLevel1Status_Ids != null && form.ParLevel1Status_Ids.Length > 0)
+            if (retornoTendencia.Count > 0 && form.ParLevel1Status_Ids != null && form.ParLevel1Status_Ids.Length > 0)
             {
                 var somaPorcentagemNC = retornoTendencia.Select(x => x.PorcentagemNc).Aggregate((somaNC, NC) => somaNC + NC);
                 var mediaPorcentagem = (somaPorcentagemNC / retornoTendencia.Count);
@@ -483,7 +481,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             {
                 return retornoTendencia;
             }
-
         }
 
         private static string getQuery(DataCarrierFormularioNew form, int? nivel)
@@ -839,5 +836,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             return Query;
         }
+
     }
 }
