@@ -12,6 +12,7 @@ namespace DTO
         public int ParLevel1_Id { get; set; }
         public string ParLevel1_Name { get; set; }
         public List<TendenciaResultSet> ListaTendenciaResultSet { get; set; } //Aqui tem tabela de acoes
+        public List<AcaoResultSet> ListaAcaoIndicador { get; set; }
         //public List<GraficoNC> Monitoramentos { get; set; }
         //public List<GraficosNC> MonitoramentosDepartamentos { get; set; } //Aqui tem tabela
         //public List<GraficoNC> TarefasAcumuladas { get; set; }
@@ -85,7 +86,15 @@ namespace DTO
 
     public class AcaoResultSet
     {
-
+        public int Id { get; set; }
+        public int ParLevel1_Id { get; set; }
+        public string ParLevel1_Name { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public string ParLevel2_Name { get; set; }
+        public DateTime AuditStartTime { get; set; }
+        public string DescriptionFailure { get; set; }
+        public string ImmediateCorrectiveAction { get; set; }
+        public string PreventativeMeasure { get; set; }
     }
 
     public class GraficosNC

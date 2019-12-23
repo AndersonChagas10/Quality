@@ -123,6 +123,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     analiseCriticaResultSet.ListaTendenciaResultSet = tendencia;
                     analiseCriticaResultSet.ParLevel1_Id = tendencia[0].level1_Id.GetValueOrDefault();
                     analiseCriticaResultSet.ParLevel1_Name = tendencia[0].Level1Name;
+                    analiseCriticaResultSet.ListaAcaoIndicador = GetAcaoCorretivaIndicador(form, parLevel1_Id);
+
                     listTendenciaResultSet.Add(analiseCriticaResultSet);
                 }
 
@@ -463,7 +465,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
 
             //Status do Indicador
-            if (retornoTendencia.Count > 0 && form.ParLevel1Status_Ids != null && form.ParLevel1Status_Ids.Length > 0)
+            if (retornoTendencia.Count > 0 && form.ParLevel1Status_Ids != null && form.ParLevel1Status_Ids.Length > 0 && form.ParLevel1Status_Ids[0] != 0)
             {
                 var somaPorcentagemNC = retornoTendencia.Select(x => x.PorcentagemNc).Aggregate((somaNC, NC) => somaNC + NC);
                 var mediaPorcentagem = (somaPorcentagemNC / retornoTendencia.Count);
@@ -481,6 +483,158 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             {
                 return retornoTendencia;
             }
+        }
+
+        private List<AcaoResultSet> GetAcaoCorretivaIndicador(DataCarrierFormularioNew form, int ParLevel1_Id)
+        {
+            var retornoAcaoCorretivaIndicador = new List<AcaoResultSet>();
+
+            var wModulo = "";
+            var wParClusterGroup = "";
+            var wParCluster = "";
+            var wParStructure = "";
+            var wParCompany = "";
+            var wTurno = "";
+            var wParCriticalLevel = "";
+            var wParGroupParLevel1 = "";
+            var wParDepartment = "";
+            var wParLevel2 = "";
+            var wParLevel3 = "";
+            var wAcaoStatus = "";
+            var wPeso = "";
+            var wSurpervisor = "";
+
+            //Módulo
+            if (form.ParModule_Ids != null && form.ParModule_Ids.Length > 0)
+                wModulo = $" AND L1XM.ParModule_Id IN ({form.ParModule_Ids[0]}) --Modulo";
+
+            //Grupo de Processo
+            if (form.ParClusterGroup_Ids != null && form.ParClusterGroup_Ids.Length > 0)
+                wParClusterGroup = $" AND PCL.ParClusterGroup_Id IN ({string.Join(",", form.ParClusterGroup_Ids)}) --Grupo de Processo";
+
+            //Processo
+            if (form.ParCluster_Ids != null && form.ParCluster_Ids.Length > 0)
+                wParCluster = $" AND C2XC.ParCluster_Id IN ({string.Join(",", form.ParCluster_Ids)}) --Processo";
+
+            //Regional
+            if (form.ParStructure_Ids != null && form.ParStructure_Ids.Length > 0)
+                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure_Ids)}) --Regional)";
+
+            //Unidade
+            if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
+                wParCompany = $" AND PC.Id in ({string.Join(",", form.ParCompany_Ids)}) --Unidade";
+
+            //Turno
+            if (form.Shift_Ids != null && form.Shift_Ids.Length > 0)
+                wTurno = $" AND C2.Shift in ({string.Join(",", form.Shift_Ids)}) --Turno";
+
+            //Nível Criticidade
+            if (form.ParCriticalLevel_Ids != null && form.ParCriticalLevel_Ids.Length > 0)
+                wParCriticalLevel = $" AND L1XC.ParCriticalLevel_Id IN ({string.Join(",", form.ParCriticalLevel_Ids)}) --Nível Criticidade";
+
+            //Função
+            if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
+                wParGroupParLevel1 = $" AND PL1.ParGroupLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
+
+            //Departamento
+            if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
+                wParDepartment = $" AND CL2XPD.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
+
+            //Indicador
+            //if (form.ParLevel1_Ids != null && form.ParLevel1_Ids.Length > 0)
+            //    wParLevel1 = $" {string.Join(",", form.ParLevel1_Ids)})";
+
+            //Monitoramento
+            if (form.ParLevel2_Ids != null && form.ParLevel2_Ids.Length > 0)
+                wParLevel2 = $" AND C2.ParLevel2_Id IN ({string.Join(",", form.ParLevel2_Ids)}) --Monitoramento";
+
+            //Tarefa
+            if (form.ParLevel3_Ids != null && form.ParLevel3_Ids.Length > 0)
+                wParLevel3 = $" AND R3.ParLevel3_Id IN ({string.Join(",", form.ParLevel3_Ids)}) --Tarefa";
+
+
+
+            //Plano de Ação Concluido
+            if (form.AcaoStatus != null && form.AcaoStatus.Length > 0)
+            {
+                if (form.AcaoStatus[0] == 1) //Concluido
+                    wAcaoStatus = " AND (SELECT IIF(COUNT(*) > 0, 1, 0) as HaveAcoesConcluidas FROM Pa_Acao Acao WHERE 1 = 1 AND Acao.Level1Id = 1 AND Acao.Status IN (3, 4, 7, 8) AND Acao.Status NOT IN (1, 5, 6, 9, 10)) = 1 --Plano de Ação Concluido";
+
+                if (form.AcaoStatus[0] == 2)//Não Concluido
+                    wAcaoStatus = " AND(SELECT IIF(COUNT(*) > 0, 1, 0) as HaveAcoesEmAndamento FROM Pa_Acao Acao WHERE 1 = 1 AND Acao.Level1Id = 1 AND Acao.Status IN(1, 5, 6, 9, 10)) = 1 --Plano de Ação Concluido";
+            }
+
+            //Peso
+            if (form.Peso != null && form.Peso.Length > 0 && form.Peso[0] != null)
+                wPeso = $" AND R3.Weight IN ({ string.Join(",", form.Peso) })--Peso";
+
+            //Desdobramento
+            //if (form.Desdobramento != null && form.Desdobramento.Length > 0)
+            //    wDesdobramento = "";
+
+            //Surpervisor
+            if (form.UserSgqSurpervisor_Ids != null && form.UserSgqSurpervisor_Ids.Length > 0)
+                wSurpervisor = $" AND C2.AuditorId IN ({string.Join(",", form.UserSgqSurpervisor_Ids)}) --Surpervisor";
+
+            var sql = $@"SELECT
+                        	CA.Id
+                           ,C2.ParLevel1_Id
+                           ,PL1.Name AS ParLevel1_Name
+                           ,ParLevel2_Id
+                           ,PL2.Name AS ParLevel2_Name
+                           ,AuditStartTime
+                           ,CA.DescriptionFailure
+                           ,CA.ImmediateCorrectiveAction
+                           ,CA.PreventativeMeasure
+                        FROM CorrectiveAction CA
+                        INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.Id = CA.CollectionLevel02Id
+                        INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON C2.ParLevel1_Id = PL1.Id
+                        INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
+                        INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
+                        --INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
+                        LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
+                        LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+                        OUTER APPLY (SELECT TOP 1
+                        		*
+                        	FROM ParLevel1XModule L1XM WITH (NOLOCK)
+                        	WHERE L1XM.ParLevel1_Id = C2.ParLevel1_Id
+                        	AND L1XM.IsActive = 1
+                        	AND L1XM.EffectiveDateStart <= C2.CollectionDate
+                        	ORDER BY L1XM.EffectiveDateStart DESC) AS L1XM
+                        OUTER APPLY (SELECT TOP 1
+                        		*
+                        	FROM ParLevel1XCluster L1XC WITH (NOLOCK)
+                        	WHERE L1XC.ParLevel1_Id = C2.ParLevel1_Id
+                        	AND L1XC.ParCluster_Id = C2XC.ParCluster_Id
+                        	AND L1XC.EffectiveDate <= C2.CollectionDate
+                        	AND L1XC.IsActive = 1
+                        	ORDER BY L1XM.EffectiveDateStart DESC) AS L1XC
+                        INNER JOIN ParCluster PCL WITH (NOLOCK) ON PCL.Id = C2XC.ParCluster_Id AND PCL.IsActive = 1
+                        LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = C2.UnitId AND PCXS.Active = 1 --ParCriticalLevel
+                        WHERE 1 = 1
+                        AND C2.ParLevel1_Id = 2 --Indicador
+                        {wModulo}
+                        {wParClusterGroup}
+                        {wParCluster}	
+                        {wParStructure}
+                        {wParCompany}
+                        {wTurno}
+                        {wParCriticalLevel}
+                        {wParGroupParLevel1}   
+                        {wParDepartment}
+                        {wParLevel2}
+                        {wParLevel3}            			
+                        --Periodo
+                        {wAcaoStatus}
+                        {wPeso}
+                        {wSurpervisor}           			";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                retornoAcaoCorretivaIndicador = factory.SearchQuery<AcaoResultSet>(sql).ToList();
+            }
+
+            return retornoAcaoCorretivaIndicador;
         }
 
         private static string getQuery(DataCarrierFormularioNew form, int? nivel)

@@ -834,10 +834,6 @@
 
         function GerarGraficoTendenciaIndicador(objRetorno, idPanel) {
 
-            debugger
-
-            //Transformar o arr dentro do objMock nos dados prontos para inserir no grafico
-
             let objTendencia = {
                 ProcNC: [],
                 MetaEstatica: 0,
@@ -881,6 +877,8 @@
             let idCollapse = "collapse" + objRetorno.ParLevel1_Id;
 
             let $panel = $("#" + idPanel);
+            let panelSeletor = idPanel;
+            let acoesCorretivas = objRetorno.ListaAcaoIndicador;
 
             $panel.find(".panel-body .panel-indicador").append('<div id="' + idChart + '"></div>');
             $panel.find(".panel-body").attr("id", idCollapse);
@@ -1050,11 +1048,51 @@
                         },
                     }
                 }]
+            }, () => {
+                GerarTabelaAcaoCorretivaIndicador(acoesCorretivas, panelSeletor, idChart)
             });
         }
 
         function GerarPivotable() {
 
+        }
+
+        function GerarTabelaAcaoCorretivaIndicador(data, seletorPanel, idChart) {
+
+            let columns = [
+                { title: "Indicador", mData: "ParLevel1_Name" },
+                { title: "Monitoramento", mData: "ParLevel2_Name" },
+                {
+                    title: "Tarefa", mData: null, render: function (data) {
+                        let html = "";
+                        if (data.AuditStartTime != null && data.AuditStartTime != "0001-01-01T00:00:00")
+                            html = "<span style='display:none'>" + data.AuditStartTime + "</span>" + new Date(data.AuditStartTime).toLocaleDateString();
+
+                        return html;
+                    }
+                },
+                { title: "Descrição da Falha", mData: "DescriptionFailure" },
+                { title: "Ação Corretiva Imediata", mData: "ImmediateCorrectiveAction" },
+                { title: "Medida Preventiva", mData: "PreventativeMeasure" }
+            ];
+
+            let table = {
+                data: data,
+                columns: columns,
+                destroy: true,
+                scrollX: true,
+                paginate: false,
+                paging: false,
+                bSort: false,
+                loadingRecords: false,
+                destroy: true,
+                info: false,
+                responsive: true,
+            }
+
+            let idTable = "table" + idChart;
+
+            MontarTabela(seletorPanel, idTable, table);
         }
 
         function GerarGraficoMonitoramento(data, idPanel) {
@@ -1665,6 +1703,7 @@
             $('#' + idTable).DataTable(table);
 
             //Criar a tabela com datatables dentro da div
+            $panel.find('[data-target="#panel' + idTable + '"]').trigger('click');
 
         }
 
