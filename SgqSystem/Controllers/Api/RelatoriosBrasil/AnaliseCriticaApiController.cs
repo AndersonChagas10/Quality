@@ -265,7 +265,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             DECLARE @dataInicio_ date = DATEADD(MONTH, 0, '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00')
             DECLARE @dataFim_ date = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
             
-            SET @dataInicio_ = DATEFROMPARTS(YEAR(@dataInicio_), MONTH(@dataInicio_), 01)
+            --SET @dataInicio_ = DATEFROMPARTS(YEAR(@dataInicio_), MONTH(@dataInicio_), 01)
             DECLARE @ListaDatas_ table(data_ date)
             WHILE @dataInicio_ <= @dataFim_ 
             BEGIN
@@ -613,6 +613,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = C2.UnitId AND PCXS.Active = 1 --ParCriticalLevel
                         WHERE 1 = 1
                         AND C2.ParLevel1_Id = 2 --Indicador
+                        AND CA.DateCorrectiveAction BETWEEN '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00' AND '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
                         {wModulo}
                         {wParClusterGroup}
                         {wParCluster}	

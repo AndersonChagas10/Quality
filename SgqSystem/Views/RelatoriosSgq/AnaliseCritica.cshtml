@@ -1063,7 +1063,7 @@
                 { title: "Indicador", mData: "ParLevel1_Name" },
                 { title: "Monitoramento", mData: "ParLevel2_Name" },
                 {
-                    title: "Tarefa", mData: null, render: function (data) {
+                    title: "Data Início Auditoria", mData: null, render: function (data) {
                         let html = "";
                         if (data.AuditStartTime != null && data.AuditStartTime != "0001-01-01T00:00:00")
                             html = "<span style='display:none'>" + data.AuditStartTime + "</span>" + new Date(data.AuditStartTime).toLocaleDateString();
