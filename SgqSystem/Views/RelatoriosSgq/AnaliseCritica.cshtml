@@ -1711,7 +1711,7 @@
 
             let subtitle = [];
 
-            $('[name="parCompany_Ids"]').text().split(',').forEach((i) => {
+            $('[name="parCompany_Ids"] :selected').text().split(',').forEach((i) => {
 
                 subtitle.push(i.slice(i.indexOf("-") + 2, i.lenght));
 
