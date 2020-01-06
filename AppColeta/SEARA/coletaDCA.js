@@ -1,4 +1,6 @@
 var coletaJson = [];
+var currentEvaluationSample = {};
+var coletasDCA = [];
 
 function openColetaDCA(levels) {
 
@@ -47,19 +49,19 @@ function openColetaDCA(levels) {
     });
 
     html = getHeader() +
-        '<div class="container-fluid">                                                                                                                   ' +
-        '	<div class="">                                                                                                                      ' +
+        '<div class="container-fluid">                                                                                                             ' +
+        '	<div class="">                                                                                                                         ' +
         '		<div class="col-xs-12">                                                                                                            ' +
         '			<div class="panel panel-primary">                                                                                              ' +
         '			  <div class="panel-heading">                                                                                                  ' +
         '				<h3 class="panel-title"><a onclick="listarParLevel2DCA();" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
         '			  </div>                                                                                                                       ' +
         '			  <div class="panel-body">                                                                                                     ' +
-        getContador() +
+        //getContador() +
         getParHeaderFieldDeparment() +
         '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
         coleta +
-        '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       ' +
+        '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px" disabled>Salvar</button>       ' +
         '				</form>                                                                                                                    ' +
         '			  </div>                                                                                                                       ' +
         '       </div>                                                                                                                             ' +
@@ -73,46 +75,30 @@ function openColetaDCA(levels) {
 
 }
 
-$('body')
-    .off('click', '[data-collapse-targeter]')
-    .on('click', '[data-collapse-targeter]', function () {
-        if ($(this).attr('data-targeter-collapsed') == 'true') {
-            $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').removeClass('hide');
-            $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').removeClass('hide');
-            $(this).attr('data-targeter-collapsed', false);
-        } else {
-            $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').addClass('hide');
-            $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').addClass('hide');
-            $(this).attr('data-targeter-collapsed', true);
-        }
-    });
-
-var currentEvaluationSample = {};
-
-function getContador() {
-    currentEvaluationSample = getResultEvaluationSample(currentParLevel1_Id, currentParLevel2_Id);
-    return '<div class="col-xs-12 alert-info" id="divColeta" style="padding-top:10px;padding-bottom:10px">' +
-        '	<div class="col-xs-4">       ' +
-        '		Avaliação                ' +
-        '	</div>                       ' +
-        '	<div class="col-xs-4">       ' +
-        '		Amostra                  ' +
-        '	</div>                       ' +
-        '	<div class="col-xs-4">       ' +
-        '		&nbsp;                   ' +
-        '	</div>                       ' +
-        '	<div class="col-xs-4">       ' +
-        '		<strong>' + currentEvaluationSample.Evaluation + '/' + currentTotalEvaluationValue + '</strong>    ' +
-        '	</div>                       ' +
-        '	<div class="col-xs-4">       ' +
-        '		<strong>' + currentEvaluationSample.Sample + '/' + currentTotalSampleValue + '</strong>    ' +
-        '	</div>                       ' +
-        '	<div class="col-xs-4">       ' +
-        '		 &nbsp;                  ' +
-        '	</div>                       ' +
-        '	<div class="clearfix"></div> ' +
-        '</div>                          ';
-}
+//function getContador() {
+//    currentEvaluationSample = getResultEvaluationSample(currentParLevel1_Id, currentParLevel2_Id);
+//    return '<div class="col-xs-12 alert-info" id="divColeta" style="padding-top:10px;padding-bottom:10px">' +
+//        '	<div class="col-xs-4">       ' +
+//        '		Avaliação                ' +
+//        '	</div>                       ' +
+//        '	<div class="col-xs-4">       ' +
+//        '		Amostra                  ' +
+//        '	</div>                       ' +
+//        '	<div class="col-xs-4">       ' +
+//        '		&nbsp;                   ' +
+//        '	</div>                       ' +
+//        '	<div class="col-xs-4">       ' +
+//        '		<strong>' + currentEvaluationSample.Evaluation + '/' + currentTotalEvaluationValue + '</strong>    ' +
+//        '	</div>                       ' +
+//        '	<div class="col-xs-4">       ' +
+//        '		<strong>' + currentEvaluationSample.Sample + '/' + currentTotalSampleValue + '</strong>    ' +
+//        '	</div>                       ' +
+//        '	<div class="col-xs-4">       ' +
+//        '		 &nbsp;                  ' +
+//        '	</div>                       ' +
+//        '	<div class="clearfix"></div> ' +
+//        '</div>                          ';
+//}
 
 function getLevel1(level1) {
     return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><small>' + level1.Name + '</small></div>';
@@ -143,6 +129,11 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
         else
             conforme = level3.ParLevel3Value.IsDefaultAnswerInt;
 
+        var amostraNC = getQuantidadeNC(level1, level2, level3);
+        var amostraAtual = getAmostraAtual(level1, level2, level3);
+        var amostraTotal = getAmostraTotal(level1, level2, level3);
+
+        var amostraCompleta = amostraAtual == amostraTotal ? true : false; //inativar botão de coleta
 
         retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-collapse-target="' + level1.Id + '-' + level2.Id + '"';
@@ -154,36 +145,39 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
         retorno += ' data-level2="' + level2.Id + '"';
         retorno += ' data-level3="' + level3.Id + '"';
         retorno += ' data-peso="' + level3.Peso + '"';
+        retorno += ' data-qtdeNc="' + amostraNC + '"';
+        retorno += ' data-sample="' + amostraAtual + '"';
+        retorno += ' data-sampleMax="' + amostraTotal + '"';
         retorno += ' style="padding-left:10px;' + colorStriped + '">';
 
         switch (level3.ParLevel3InputType.Id) {
 
             case 1: //Binário
-                retorno += getBinario(level3);
+                retorno += getBinarioDCA(level3, amostraAtual, amostraTotal, amostraNC);
                 break;
             case 2: //Numerodedefeitos
-                retorno += getNumerodeDefeitos(level3);
+                retorno += getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC);
                 break;
             case 6: //BinárioComTexto
-                retorno += getBinarioComTexto(level3);
+                retorno += getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC);
                 break;
             case 3: //Intervalo
-                retorno += getIntervalo(level3);
+                retorno += getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC);
                 break;
             case 7: //IntervaloemMinutos
-                retorno += getIntervaloemMinutos(level3);
+                retorno += getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC);
                 break;
             case 9: //IntervaloComObservacao
-                retorno += getIntervaloComObservacao(level3);
+                retorno += getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC);
                 break;
             case 11: //Observacao
-                retorno += getObservacao(level3);
+                retorno += getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC);
                 break;
             case 8: //Likert
-                retorno += getLikert(level3);
+                retorno += getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC);
                 break;
             case 5: //Texto
-                retorno += getTexto(level3);
+                retorno += getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC);
                 break;
 
             default:
@@ -199,36 +193,53 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
 
 }
 
-function getBinario(level3) {
+function getBinarioDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
-
     var html = '';
-
+    var botao = '';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    //var amostraAtual = 0;
+    //var amostraTotal = 10;
+    //var amostraNC = 0;
     var respostaPadrao = "";
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     if (level3.ParLevel3Value.IsRequiredInt) {
+
         respostaPadrao = "&nbsp;";
         botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+
     } else {
+
         if (level3.ParLevel3Value.IsDefaultAnswerInt == "0")
             respostaPadrao = level3.ParLevel3BoolFalse.Name;
         else
             respostaPadrao = level3.ParLevel3BoolTrue.Name;
+
         botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     }
 
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
+    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    //var htmlEsconder = '<div class="col-xs-1></div>';
+
     html +=
-        '<div class="col-xs-6 no-gutters">' +
-        '   <div class="col-xs-10">' +
+        htmlAmostra +
+        htmlMaxMin +
+        htmlAmostraNC +
+        //htmlEsconder +
+        '<div class="col-xs-4 no-gutters">' +
+        '   <div class="col-xs-8">' +
         botao +
         '   </div>' +
+        '   <div class="col-xs-2">' + btnColeta + '</div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -236,18 +247,22 @@ function getBinario(level3) {
     return html;
 }
 
-function getBinarioComTexto(level3) {
+function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    //var amostraAtual = 0;
+    //var amostraTotal = 10;
+    //var amostraNC = 0;
 
     var html = '';
 
     var respostaPadrao = "";
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     if (level3.ParLevel3Value.IsRequiredInt) {
         respostaPadrao = "&nbsp;";
@@ -268,16 +283,24 @@ function getBinarioComTexto(level3) {
     //    '</div>' +
     //    '<div class="clearfix"></div>';
 
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
+    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
-        '<div class="col-xs-6 no-gutters">' +
-        '<div class="col-xs-5">' +
-        '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
-        '</div>' +
-        '<div class="col-xs-5">' +
-          botao +
-        '</div>' +
-        '<div class="col-xs-2">' + btnNA + '</div>' +
+        htmlAmostra +
+        htmlMaxMin +
+        htmlAmostraNC +
+        '<div class="col-xs-4 no-gutters">' +
+        '   <div class="col-xs-4">' +
+        '	    <input type="text" class="col-xs-12 input-sm" data-texto/>' +
+        '   </div>' +
+        '   <div class="col-xs-4">' +
+        botao +
+        '   </div>' +
+        '   <div class="col-xs-2">' + btnColeta + '</div>' +
+        '   <div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -285,26 +308,38 @@ function getBinarioComTexto(level3) {
     return html;
 }
 
-function getIntervalo(level3) {
+function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    //var amostraAtual = 0;
+    //var amostraTotal = 10;
+    //var amostraNC = 0;
 
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
+    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    //var htmlEsconder = '<div class="col-xs-1></div>';
+
     html +=
-        '<div class="col-xs-6 no-gutters">' +
+        htmlAmostra +
+        htmlMaxMin +
+        htmlAmostraNC +
+        '<div class="col-xs-4 no-gutters">' +
         '   <div class="col-xs-2 input-sm" style="font-size: 8px;">' +
         level3LimitLabel +
         '   </div>' +
-        '   <div class="col-xs-8 no-gutters">' +
+        '   <div class="col-xs-6 no-gutters">' +
         '       <div class="col-xs-2" style="padding-right: 0;">' +
         '	        <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '       </div>' +
@@ -315,6 +350,7 @@ function getIntervalo(level3) {
         '	        <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
         '       </div>' +
         '   </div>' +
+        '   <div class="col-xs-2">' + btnColeta + '</div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
@@ -323,29 +359,41 @@ function getIntervalo(level3) {
     return html;
 }
 
-function getIntervaloemMinutos(level3) {
+function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    //var amostraAtual = 0;
+    //var amostraTotal = 10;
+    //var amostraNC = 0;
 
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
+    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostra">' + amostraNC + '</spam></div>';
+    //var htmlEsconder = '<div class="col-xs-1></div>';
+
     html +=
-        '<div class="col-xs-6 no-gutters">' +
+        htmlAmostra +
+        htmlMaxMin +
+        htmlAmostraNC +
+        '<div class="col-xs-4 no-gutters">' +
         '<div class="col-xs-2 input-sm" style="font-size: 8px;">' +
         level3LimitLabel +
         '</div>' +
         '<div class="col-xs-3">' +
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
         '</div>' +
-        '<div class="col-xs-5 no-gutters">' +
+        '<div class="col-xs-3 no-gutters">' +
         '   <div class="col-xs-2" style="padding-right: 0;">' +
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '   </div>' +
@@ -356,6 +404,7 @@ function getIntervaloemMinutos(level3) {
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
         '   </div>' +
         '</div>' +
+        '<div class="col-xs-2">' + btnColeta + '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
@@ -364,30 +413,42 @@ function getIntervaloemMinutos(level3) {
     return html;
 }
 
-function getIntervaloComObservacao(level3) {
+function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    //var amostraAtual = 0;
+    //var amostraTotal = 10;
+    //var amostraNC = 0;
 
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
 
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '<spam>/' + amostraTotal + '</div>';
+    var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
+    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    //var htmlEsconder = '<div class="col-xs-1></div>';
+
     html +=
-        '<div class="col-xs-6 no-gutters">' +
+        htmlAmostra +
+        htmlMaxMin +
+        htmlAmostraNC +
+        '<div class="col-xs-4 no-gutters">' +
         '<div class="col-xs-2 input-sm" style="font-size: 8px;">' +
         level3LimitLabel +
         '</div>' +
         '<div class="col-xs-3">' +
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
         '</div>' +
-        '<div class="col-xs-5 no-gutters">' +
+        '<div class="col-xs-3 no-gutters">' +
         '   <div class="col-xs-2" style="padding-right: 0;">' +
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '   </div>' +
@@ -398,6 +459,7 @@ function getIntervaloComObservacao(level3) {
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
         '   </div>' +
         '</div>' +
+        '<div class="col-xs-2">' + btnColeta + '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
@@ -406,23 +468,36 @@ function getIntervaloComObservacao(level3) {
     return html;
 }
 
-function getObservacao(level3) {
+function getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    //var amostraAtual = 0;
+    //var amostraTotal = 10;
+    //var amostraNC = 0;
 
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
+    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
-        '<div class="col-xs-6 no-gutters">' +
-        '<div class="col-xs-10">' +
+        htmlAmostra +
+        htmlMaxMin +
+        htmlAmostraNC +
+        '<div class="col-xs-4 no-gutters">' +
+        '<div class="col-xs-8">' +
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
         '</div>' +
+        '<div class="col-xs-2">' + btnColeta + '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
@@ -431,23 +506,36 @@ function getObservacao(level3) {
     return html;
 }
 
-function getTexto(level3) {
+function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    //var amostraAtual = 0;
+    //var amostraTotal = 10;
+    //var amostraNC = 0;
 
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
+    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
-        '<div class="col-xs-6 no-gutters">' +
-        '<div class="col-xs-10">' +
+        htmlAmostra +
+        htmlMaxMin +
+        htmlAmostraNC +
+        '<div class="col-xs-4 no-gutters">' +
+        '<div class="col-xs-8">' +
         '	<input type="text" class="col-xs-12 input-sm" data-valor/>' +
         '</div>' +
+        '<div class="col-xs-2">' + btnColeta + '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
@@ -456,23 +544,36 @@ function getTexto(level3) {
     return html;
 }
 
-function getNumerodeDefeitos(level3) {
+function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    //var amostraAtual = 0;
+    //var amostraTotal = 10;
+    //var amostraNC = 0;
 
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
+    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
-        '<div class="col-xs-6 no-gutters">' +
-        '<div class="col-xs-10">' +
+        htmlAmostra +
+        htmlMaxMin +
+        htmlAmostraNC +
+        '<div class="col-xs-4 no-gutters">' +
+        '<div class="col-xs-8">' +
         '	<input type="number" class="col-xs-12 input-sm" data-valor/>' +
         '</div>' +
+        '<div class="col-xs-2">' + btnColeta + '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
@@ -481,28 +582,41 @@ function getNumerodeDefeitos(level3) {
     return html;
 }
 
-function getLikert(level3) {
+function getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    //var amostraAtual = 0;
+    //var amostraTotal = 10;
+    //var amostraNC = 0;
 
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
+    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    //var htmlEsconder = '<div class="col-xs-1></div>';
+
     html +=
-        '<div class="col-xs-6 no-gutters">' +
+        htmlAmostra +
+        htmlMaxMin +
+        htmlAmostraNC +
+        '<div class="col-xs-4 no-gutters">' +
         '   <div class="col-xs-2 input-sm" style="font-size: 8px;">' +
         level3LimitLabel +
         '   </div>' +
-        '   <div class="col-xs-8">' +
+        '   <div class="col-xs-6">' +
         '	    <input type="text" class="col-xs-12 input-sm" data-valor/>' +
         '   </div>' +
+        '   <div class="col-xs-2">' + btnColeta + '</div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
@@ -510,6 +624,24 @@ function getLikert(level3) {
 
     return html;
 }
+
+function validaCampoEmBrancoNA() {
+    if (linha.attr('data-default-answer') == "1") {
+        linha.attr('data-conforme', " ");
+    }
+}
+
+$('body').off('click', '[data-collapse-targeter]').on('click', '[data-collapse-targeter]', function () {
+    if ($(this).attr('data-targeter-collapsed') == 'true') {
+        $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').removeClass('hide');
+        $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').removeClass('hide');
+        $(this).attr('data-targeter-collapsed', false);
+    } else {
+        $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').addClass('hide');
+        $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').addClass('hide');
+        $(this).attr('data-targeter-collapsed', true);
+    }
+});
 
 $('body').off('click', '[data-plus]').on('click', '[data-plus]', function (e) {
     var value = parseInt($(this).parent().parent().find('input').val());
@@ -553,14 +685,8 @@ $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
     }
 });
 
-function validaCampoEmBrancoNA() {
-    if (linha.attr('data-default-answer') == "1") {
-        linha.attr('data-conforme', " ");
-    }
-  
-}
-
 $('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
+
     var linha = $(this).parents('[data-conforme]');
 
     resetarLinha(linha);
@@ -638,6 +764,79 @@ $('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
 
 });
 
+$('body').off('click', '[data-coleta]').on('click', '[data-coleta]', function () {
+
+    $(this).prop("disabled", true);
+
+    var data = $(this).parents('[data-linha-coleta]');
+    var currentEvaluation = 1; //$(data).attr('data-evaluation');
+    var currentSample = parseInt($(data).attr('data-sample'));
+    var isNA = $(data).attr('data-conforme-na') == "";
+    var qtdeNC = parseInt($(data).attr('data-qtdeNc'));
+    var maxSample = parseInt($(data).attr('data-samplemax'));
+
+    var coletaDCA = {
+
+        Id: 0,
+        CollectionDate: currentCollectDate.toJSON(),
+        UserSgq_Id: currentLogin.Id,
+        Shift_Id: 1,
+        Period_Id: 1,
+        //ParCargo_Id: 
+        ParCompany_Id: currentParCompany_Id,
+        //ParDepartment_Id: 
+        ParLevel1_Id: currentParLevel1_Id,
+        //ParCluster_Id
+        ParLevel2_Id: currentParLevel2_Id,
+        ParLevel3_Id: parseInt($(data).attr('data-level3')),
+        //CollectionType
+        Weigth: $(data).attr('data-peso'),
+        IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),
+        IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),
+        Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
+        ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
+        IsConform: isNA ? 1 : $(data).attr('data-conforme') == "1",
+        IsNotEvaluate: isNA,
+        Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
+        //PunishimentValue: 
+        WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
+        Evaluation: currentEvaluation,
+        WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
+        //HasPhoto: 
+        Sample: currentSample,
+        //HaveCorrectiveAction: 
+        Parfrequency_Id: currentParFrequency_Id
+        //AlertLevel: 
+        //ParHeaderField_Id: 
+        //ParHeaderField_Value: 
+        //ParHeaderField_Value: 
+        //IsProcessed: 
+
+    };
+
+    coletasDCA.push(coletaDCA);
+
+    //Contar quantidade de NC
+    qtdeNC += coletaDCA.WeiDefects;
+
+    var numeroProximaAmostra = currentSample + 1;
+
+    $(data).attr('data-qtdeNc', qtdeNC);
+    $(data).find('.amostraNC').html(qtdeNC);
+
+    $(data).attr('data-sample', numeroProximaAmostra);
+    $(data).find('.amostra').html(numeroProximaAmostra);
+
+    if (numeroProximaAmostra > maxSample) {
+
+        $(data).prop("disabled", true);
+
+    } else {
+
+        $(this).prop("disabled", false);
+    }
+
+});
 
 function resetarLinha(linha) {
     linha.removeClass('alert-secundary');
@@ -645,117 +844,117 @@ function resetarLinha(linha) {
     linha.removeAttr('data-conforme-na');
 }
 
-$('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
+//$('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
 
-    e.preventDefault();
+//    e.preventDefault();
 
-    if (!HeaderFieldsIsValid()) {
-        return false;
-    }
+//    if (!HeaderFieldsIsValid()) {
+//        return false;
+//    }
 
-    if (!ColetasIsValid()) {
-        return false;
-    }
+//    if (!ColetasIsValid()) {
+//        return false;
+//    }
 
-    //Verifica se existe coleta já realizada para este cargo.
-    var coletaAgrupada = null;
-    $(coletasAgrupadas).each(function (i, o) {
-            if (o.ParLevel1_Id == currentParLevel1_Id
-            && o.ParLevel2_Id == currentParLevel2_Id) {
-            coletaAgrupada = o;
-        }
-    });
+//    //Verifica se existe coleta já realizada para este cargo.
+//    var coletaAgrupada = null;
+//    $(coletasAgrupadas).each(function (i, o) {
+//            if (o.ParLevel1_Id == currentParLevel1_Id
+//            && o.ParLevel2_Id == currentParLevel2_Id) {
+//            coletaAgrupada = o;
+//        }
+//    });
 
-    //Se não existir, cria uma zerada
-    if (coletaAgrupada == null) {
-        coletaAgrupada = {
-            ParLevel1_Id: currentParLevel1_Id,
-            ParLevel2_Id: currentParLevel2_Id,
-            Evaluation: currentEvaluationSample.Evaluation,
-            Sample: currentEvaluationSample.Sample
-        };
-    }
+//    //Se não existir, cria uma zerada
+//    if (coletaAgrupada == null) {
+//        coletaAgrupada = {
+//            ParLevel1_Id: currentParLevel1_Id,
+//            ParLevel2_Id: currentParLevel2_Id,
+//            Evaluation: currentEvaluationSample.Evaluation,
+//            Sample: currentEvaluationSample.Sample
+//        };
+//    }
 
-    //var collectionHeaderFields = getCollectionHeaderFields();
-    //console.table(collectionHeaderFields);
+//    //var collectionHeaderFields = getCollectionHeaderFields();
+//    //console.table(collectionHeaderFields);
 
-    //Insere valores da coleta
-    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
-        var data = $(o);
-        var isNA = $(data).attr('data-conforme-na') == "";
-        coletaJson.push(
-            {
-                Evaluation: coletaAgrupada.Evaluation,
-                Sample: coletaAgrupada.Sample,
-                ParDepartment_Id: currentParDepartment_Id,
-                ParCargo_Id: currentParCargo_Id,
-                ParLevel1_Id: $(data).attr('data-level1'),
-                ParLevel2_Id: $(data).attr('data-level2'),
-                ParLevel3_Id: $(data).attr('data-level3'),
-                ParCompany_Id: currentParCompany_Id,
-                IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),
-                IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),
-                IsConform: isNA ? 1 : $(data).attr('data-conforme') == "1",
-                Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
-                ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
-                IsNotEvaluate: isNA,
-                CollectionDate: getCurrentDate(),
-                UserSgq_Id: currentLogin.Id,
-                Weigth: $(data).attr('data-peso'),
-                WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
-                Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
-                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
-                /*
-				"Shift_Id":1,
-				"Period_Id":1,
-				"ParCluster_Id":1,
-				"CollectionType":1,
-				"PunishimentValue":1,
-				"HasPhoto":"0",
-				"HaveCorrectiveAction":"0",
-				"AlertLevel":"0",
-				"ParHeaderField_Id":1,
-				"ParHeaderField_Value":""
-				*/
-            }
-        );
-    });
+//    //Insere valores da coleta
+//    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
+//        var data = $(o);
+//        var isNA = $(data).attr('data-conforme-na') == "";
+//        coletaJson.push(
+//            {
+//                Evaluation: coletaAgrupada.Evaluation,
+//                Sample: coletaAgrupada.Sample,
+//                ParDepartment_Id: currentParDepartment_Id,
+//                ParCargo_Id: currentParCargo_Id,
+//                ParLevel1_Id: $(data).attr('data-level1'),
+//                ParLevel2_Id: $(data).attr('data-level2'),
+//                ParLevel3_Id: $(data).attr('data-level3'),
+//                ParCompany_Id: currentParCompany_Id,
+//                IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),
+//                IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),
+//                IsConform: isNA ? 1 : $(data).attr('data-conforme') == "1",
+//                Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
+//                ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
+//                IsNotEvaluate: isNA,
+//                CollectionDate: getCurrentDate(),
+//                UserSgq_Id: currentLogin.Id,
+//                Weigth: $(data).attr('data-peso'),
+//                WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
+//                Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
+//                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
+//                Parfrequency_Id: parametrization.currentParFrequency_Id
+//                /*
+//				"Shift_Id":1,
+//				"Period_Id":1,
+//				"ParCluster_Id":1,
+//				"CollectionType":1,
+//				"PunishimentValue":1,
+//				"HasPhoto":"0",
+//				"HaveCorrectiveAction":"0",
+//				"AlertLevel":"0",
+//				"ParHeaderField_Id":1,
+//				"ParHeaderField_Value":""
+//				*/
+//            }
+//        );
+//    });
 
-    processAlertRole(coletaJson);
+//    processAlertRole(coletaJson);
 
-    var cabecalhos = getCollectionHeaderFields();
+//    var cabecalhos = getCollectionHeaderFields();
 
-    if (cabecalhos) {
-        cabecalhos.forEach(function (cabecalho) {
-            //campos de cabeçalhos
-            coletaJson.push(cabecalho);
-        });
-    }
+//    if (cabecalhos) {
+//        cabecalhos.forEach(function (cabecalho) {
+//            //campos de cabeçalhos
+//            coletaJson.push(cabecalho);
+//        });
+//    }
 
-    //Se for a primeira, insere na lista de resultados
-    if (coletaAgrupada.Evaluation == 1 && coletaAgrupada.Sample == 1) {
-        coletasAgrupadas.push(coletaAgrupada);
-    }
+//    //Se for a primeira, insere na lista de resultados
+//    if (coletaAgrupada.Evaluation == 1 && coletaAgrupada.Sample == 1) {
+//        coletasAgrupadas.push(coletaAgrupada);
+//    }
 
-    //Salva a coleta realizada numa variavel global
-    SalvarColetas(coletaJson);
+//    //Salva a coleta realizada numa variavel global
+//    SalvarColetas(coletaJson);
 
-    //Atualiza para a proxima coleta (se precisar adicionar amostra ou avaliação)
-    coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
+//    //Atualiza para a proxima coleta (se precisar adicionar amostra ou avaliação)
+//    coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
 
-    //Mostra mensagem de que a coleta foi realizada com sucesso e fecha após 3 segundos
-    openMensagem("Amostra salva com sucesso!", "blue", "white");
-    closeMensagem(3000);
+//    //Mostra mensagem de que a coleta foi realizada com sucesso e fecha após 3 segundos
+//    openMensagem("Amostra salva com sucesso!", "blue", "white");
+//    closeMensagem(3000);
 
-    if (coletaAgrupada.Sample == 1) {
-        //atualiza tela de coleta e contadores
-        listarParLevel2(true);
-    } else {
-        listarParLevels();
-        $("html, body").animate({ scrollTop: 0 }, "fast");
-    }
-});
+//    if (coletaAgrupada.Sample == 1) {
+//        //atualiza tela de coleta e contadores
+//        listarParLevel2(true);
+//    } else {
+//        listarParLevels();
+//        $("html, body").animate({ scrollTop: 0 }, "fast");
+//    }
+//});
 
 function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
     coletaAgrupada.Sample++; //Incrementa a amostra
@@ -801,6 +1000,7 @@ function OpenCorrectiveAction(coleta) {
     //        return val;
     //    }
     //});
+
     // + '<h4> Tarefa: "' + tarefa[0].Name + '"</h4>' verificar uma forma de mostrar a tarefa que esta nao conforme
     var modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>';
     var selectUsers = '<option value="">Selecione...</option><option value="1">Pato Donald</option>';
@@ -1005,4 +1205,72 @@ function HeaderFieldsIsValid() {
     });
 
     return retorno;
+}
+
+//DCA coletasDCA
+function getQuantidadeNC(parLevel1, parLevel2, parLevel3) {
+
+    var qtdeNC = 0;
+
+    if (coletasDCA.length == 0) {
+        return qtdeNC;
+    }
+
+    var coletasDCAFilter = $.grep(coletasDCA, function (o) {
+
+        return o.ParLevel1_Id == parLevel1.Id &&
+            o.ParLevel2_Id == parLevel2.Id &&
+            o.ParLevel3_Id == parLevel3.Id;
+
+    });
+
+    if (coletasDCAFilter.length == 0) {
+        return qtdeNC;
+    }
+
+    coletasDCAFilter.forEach(function (o) {
+        qtdeNC += parseInt(o.WeiDefects);
+    });
+
+    return qtdeNC;
+}
+
+function getAmostraAtual(parLevel1, parLevel2, parLevel3) {
+
+    var amostra = 1;
+
+    if (coletasDCA.length == 0) {
+        return amostra;
+    }
+
+    var coletasDCAFilter = $.grep(coletasDCA, function (o) {
+
+        return o.ParLevel1_Id == parLevel1.Id &&
+            o.ParLevel2_Id == parLevel2.Id &&
+            o.ParLevel3_Id == parLevel3.Id;
+    });
+
+    //Melhorar essa bosta
+    if (coletasDCAFilter.length == 0) {
+        return amostra;
+    }
+
+    amostra = coletasDCAFilter[coletasDCAFilter.length - 1].Evaluation;
+
+    return amostra + 1;
+
+}
+
+function getAmostraTotal(parLevel1, parLevel2, parLevel3) {
+
+    var vinculosPeso = $.grep(parVinculosMontarLevel3, function (o) {
+        return o.ParLevel1_Id == parLevel1.Id && o.ParLevel2_Id == parLevel2.Id && o.ParLevel3_Id == parLevel3.Id;
+    });
+
+    if (vinculosPeso == null || vinculosPeso.length == 0 || !vinculosPeso[0].Sample) {
+        return 0;
+    }
+
+    return parseInt(vinculosPeso[0].Sample);
+
 }
