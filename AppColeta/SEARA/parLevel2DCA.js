@@ -2,22 +2,27 @@ function listarParLevel2DCA(isVoltar) {
 	
 	currentParLevel2_Id = null;
 
-	var listaParLevel2 = retornaParLevel2DCA(currentParLevel1_Id);
+    var listaParLevel2 = retornaParLevel2DCA(currentParLevel1_Id);
 
-	var htmlLista = "";
+    var htmlLista = "";
 
-	$(listaParLevel2).each(function (i, o) {
+    $(listaParLevel2).each(function (i, o) {
+
 		currentEvaluationSample = getResultEvaluationSample(currentParLevel1_Id, o.Id);
 
         //FIX para trabalhar de forma correta os valores 
         //que são recebidos do backend com os resultados
-        if (currentEvaluationSample.Sample > o.Evaluation.Sample){
+        if (currentEvaluationSample.Sample > o.Evaluation.Sample) {
+
             currentEvaluationSample.Evaluation += 1;
             currentEvaluationSample.Sample = 1;
+
         }
 
         var style = '';
+
         if (!podeRealizarColeta(currentEvaluationSample.Evaluation, o.Evaluation.Evaluation)) {
+
             style = 'style="background-color:#ddd;cursor:not-allowed"';
 
             htmlLista += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
@@ -30,7 +35,9 @@ function listarParLevel2DCA(isVoltar) {
                 '	<div class="col-xs-4 text-center">20%</div>      ' +
                 '	<div class="col-xs-4 text-center">100%</div>              ' +
                 '</button>';
+
         } else {
+
             htmlLista += '<button type="button" class="list-group-item col-xs-12"                                       ' +
 			'" data-dca-par-level2-id="' + o.Id + '" '+
                 'data-total-evaluation="' + o.Evaluation.Evaluation + '"                                                         ' +
@@ -41,11 +48,10 @@ function listarParLevel2DCA(isVoltar) {
                 '	<div class="col-xs-4 text-center">20%</div>      ' +
                 '	<div class="col-xs-4 text-center">100%</div>              ' +
                 '</button>';
-            //atualizaCorAgendamento(o, currentEvaluationSample);
-		};
-	});
 
-	var voltar = "";
+            //atualizaCorAgendamento(o, currentEvaluationSample);
+		}
+	});
 
     var voltar = '<a onclick="listarParLevel1(' + isVoltar +'  );" class="btn btn-warning">Voltar</a>';
 
@@ -58,7 +64,7 @@ function listarParLevel2DCA(isVoltar) {
         '				<h3 class="panel-title">' + voltar + ' Selecione o centro de custo desejado</h3>            ' +
 		'			  </div>                                               ' +
 		'			  <div class="panel-body">                             ' +
-        '               <div class="col-sm-12 btn-warning text-center" style="padding:20px;margin-bottom:5px">Avaliação 10</div>'+
+        '               <div class="col-sm-12 btn-warning text-center" style="padding:20px;margin-bottom:5px">Avaliação ' + currentEvaluationSample.Evaluation + '</div>'+
         '               <h2 class="col-xs-6 btn-info text-center" style="height:100px;padding-top: 35px;margin: 0px;">80%</h2>'+
         '               <div class="col-xs-6 text-center" style="padding:0px !important">'+
         '<select name="sometext" size="5" class="form-control" style="height:100px;">'+
@@ -83,23 +89,28 @@ function listarParLevel2DCA(isVoltar) {
     setBreadcrumbs();
 
     if ($(".list-group button").length == 1 && (isVoltar == false || isVoltar == undefined)) {
+
         $("[data-par-department-id]").trigger('click');
+
     }
+
 }
 
 $('body').off('click', '[data-dca-par-level2-id]').on('click', '[data-dca-par-level2-id]', function (e) {
 
+    debugger
 	currentParLevel2_Id = parseInt($(this).attr('data-dca-par-level2-id'));
 	
 	currentTotalEvaluationValue = $(this).attr('data-total-evaluation');
     currentTotalSampleValue = $(this).attr('data-total-sample');
-    var currentEvaluationValue = $(this).attr('data-current-evaluation');
+    //var currentEvaluationValue = $(this).attr('data-current-evaluation');
 
     listarParLevelsDCA();
 
 });
 
 function retornaParLevel2DCA(parLevel1Id) {
+
     var listaLevel2 = $.grep(parametrization.listaParVinculoPeso, function (item) {
         return item.ParLevel1_Id == parLevel1Id;
     });

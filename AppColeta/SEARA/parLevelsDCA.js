@@ -20,8 +20,7 @@ function GetLevelsDCA() {
 function montarLevel1DCA(level1List) {
 
     var parVinculos = $.grep(parametrization.listaParVinculoPeso, function (obj) {
-        return obj.ParLevel1_Id == currentParLevel1_Id
-        && obj.ParLevel2_Id == currentParLevel2_Id;
+        return obj.ParLevel1_Id == currentParLevel1_Id && obj.ParLevel2_Id == currentParLevel2_Id;
     });
 
     var level1_Ids_Aux = $.map(parVinculos, function (obj) {
@@ -30,6 +29,7 @@ function montarLevel1DCA(level1List) {
 
     //Força que o ID seja unico
     var level1_Ids = [];
+
     level1_Ids_Aux.forEach(function (level1_Id) {
 
         if (level1_Ids.indexOf(level1_Id) < 0) {
@@ -39,15 +39,19 @@ function montarLevel1DCA(level1List) {
     });
 
     level1_Ids.forEach(function (level1_Id) {
+
         var levels1 = $.grep(parametrization.listaParLevel1, function (obj) {
             return obj.Id == level1_Id;
         });
 
         levels1.forEach(function (parLevel1) {
+
             level1List.push(parLevel1);
 
-            montarLevel2(parLevel1,parVinculos);
+            montarLevel2(parLevel1, parVinculos);
+
         });
+
     });
 }
 
@@ -69,7 +73,7 @@ function montarLevel2DCA(parLevel1,parVinculos) {
 
         Level2.forEach(function (parLevel2, index) {
             level2List.push(parLevel2);
-            montarLevel3(parLevel1, parLevel2, parVinculos)
+            montarLevel3(parLevel1, parLevel2, parVinculos);
         });
 
     });
@@ -79,10 +83,11 @@ function montarLevel2DCA(parLevel1,parVinculos) {
 }
 
 var parVinculosMontarLevel3 = [];
+
 function montarLevel3DCA(parLevel1, parLevel2, parVinculos) {
 
     parVinculosMontarLevel3 = $.grep(parVinculos, function (obj) {
-        return true
+        return true;
     });
 
     var level3_Ids = $.map(parVinculosMontarLevel3, function (obj) {
