@@ -20,6 +20,7 @@ function listarParLevel2DCA(isVoltar) {
         var style = '';
 
         if (consolidadoAmostraTotal.AmostraTotalColetada >= consolidadoAmostraTotal.AmostraTotal) {
+
             style = 'style="background-color:#ddd;cursor:not-allowed"';
         }
 
@@ -71,8 +72,11 @@ function listarParLevel2DCA(isVoltar) {
     setBreadcrumbs();
 
     if ($(".list-group button").length == 1 && (isVoltar == false || isVoltar == undefined)) {
+
         $("[data-par-department-id]").trigger('click');
+
     }
+
 }
 
 $('body').off('click', '[data-dca-par-level2-id]').on('click', '[data-dca-par-level2-id]', function (e) {

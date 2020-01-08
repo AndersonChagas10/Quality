@@ -26,12 +26,12 @@ function openColetaDCA(levels) {
                     if (hasLevel3 == false) {
 
                         if (hasLevel2 == false) {
-                            coleta += getLevel1(level1);
+                            coleta += getLevel1DCA(level1);
                             coleta += getParHeaderFieldLevel1(level1);
                             hasLevel2 = true;
                         }
 
-                        coleta += getLevel2(level2, level1);
+                        coleta += getLevel2DCA(level2, level1);
                         coleta += getParHeaderFieldLevel2(level1, level2);
                         hasLevel3 = true;
                     }
@@ -57,11 +57,11 @@ function openColetaDCA(levels) {
         '				<h3 class="panel-title"><a onclick="listarParLevel2DCA();" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
         '			  </div>                                                                                                                       ' +
         '			  <div class="panel-body">                                                                                                     ' +
-        //getContador() +
-        getParHeaderFieldDeparment() +
+                        //getContador() +
+                        getParHeaderFieldDeparment() +
         '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
-        coleta +
-        '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px" disabled>Salvar</button>       ' +
+                            coleta +
+        '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar-dca style="margin-top:10px" disabled>Salvar</button>       ' +
         '				</form>                                                                                                                    ' +
         '			  </div>                                                                                                                       ' +
         '       </div>                                                                                                                             ' +
@@ -100,16 +100,16 @@ function openColetaDCA(levels) {
 //        '</div>                          ';
 //}
 
-function getLevel1(level1) {
-    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><small>' + level1.Name + '</small></div>';
+function getLevel1DCA(level1) {
+    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;"><small>' + level1.Name + '</small></div>';
 }
 
-function getLevel2(level2, level1) {
-    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="' + level1.Id + '" data-collapse-targeter="' + level1.Id + '-' + level2.Id + '"><small>' + level2.Name + '</small></div>';
+function getLevel2DCA(level2, level1) {
+    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;"><small>' + level2.Name + '</small></div>';
 }
 
-function getLevel3(level3, level2, level1) {
-    return '<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px" data-collapse-target="' + level1.Id + '-' + level2.Id + '">' + level3.Name + '</div>';
+function getLevel3DCA(level3, level2, level1) {
+    return '<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px">' + level3.Name + '</div>';
 }
 
 function getInputLevel3DCA(level3, level2, level1, striped) {
@@ -133,7 +133,10 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
         var amostraAtual = getAmostraAtual(level1, level2, level3);
         var amostraTotal = getAmostraTotal(level1, level2, level3);
 
-        var amostraCompleta = amostraAtual == amostraTotal ? true : false; //inativar botão de coleta
+        if(amostraTotal == 0)
+            return [];
+
+        var amostraCompleta = amostraAtual == amostraTotal ? 1 : 0;
 
         retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-collapse-target="' + level1.Id + '-' + level2.Id + '"';
@@ -148,6 +151,7 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
         retorno += ' data-qtdeNc="' + amostraNC + '"';
         retorno += ' data-sample="' + amostraAtual + '"';
         retorno += ' data-sampleMax="' + amostraTotal + '"';
+        retorno += ' data-amostra-completa="' + amostraCompleta + '"';
         retorno += ' style="padding-left:10px;' + colorStriped + '">';
 
         switch (level3.ParLevel3InputType.Id) {
@@ -179,7 +183,6 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
             case 5: //Texto
                 retorno += getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC);
                 break;
-
             default:
                 retorno += "";
                 return '';
@@ -195,20 +198,21 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
 
 function getBinarioDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
     var html = '';
     var botao = '';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
     var respostaPadrao = "";
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     if (level3.ParLevel3Value.IsRequiredInt) {
 
@@ -232,15 +236,15 @@ function getBinarioDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     html +=
         htmlAmostra +
-        htmlMaxMin +
+        //htmlMaxMin +
         htmlAmostraNC +
         //htmlEsconder +
         '<div class="col-xs-4 no-gutters">' +
         '   <div class="col-xs-8">' +
         botao +
         '   </div>' +
-        '   <div class="col-xs-2">' + btnColeta + '</div>' +
-        '   <div class="col-xs-2">' + btnNA + '</div>' +
+        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
+        '   <div class="col-xs-2" >' + btnNA + '</div>' +
         '</div>' +
         '<div class="clearfix"></div>';
 
@@ -249,8 +253,9 @@ function getBinarioDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
 function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -260,9 +265,9 @@ function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var respostaPadrao = "";
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
     else
-        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     if (level3.ParLevel3Value.IsRequiredInt) {
         respostaPadrao = "&nbsp;";
@@ -290,7 +295,7 @@ function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     html +=
         htmlAmostra +
-        htmlMaxMin +
+        //htmlMaxMin +
         htmlAmostraNC +
         '<div class="col-xs-4 no-gutters">' +
         '   <div class="col-xs-4">' +
@@ -299,8 +304,8 @@ function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '   <div class="col-xs-4">' +
         botao +
         '   </div>' +
-        '   <div class="col-xs-2">' + btnColeta + '</div>' +
-        '   <div class="col-xs-2">' + btnNA + '</div>' +
+        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
+        '   <div class="col-xs-2" >' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -310,8 +315,9 @@ function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
 function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -319,10 +325,10 @@ function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
@@ -333,7 +339,7 @@ function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     html +=
         htmlAmostra +
-        htmlMaxMin +
+        //htmlMaxMin +
         htmlAmostraNC +
         '<div class="col-xs-4 no-gutters">' +
         '   <div class="col-xs-2 input-sm" style="font-size: 8px;">' +
@@ -350,8 +356,8 @@ function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '	        <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
         '       </div>' +
         '   </div>' +
-        '   <div class="col-xs-2">' + btnColeta + '</div>' +
-        '   <div class="col-xs-2">' + btnNA + '</div>' +
+        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
+        '   <div class="col-xs-2" >' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -361,8 +367,9 @@ function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
 function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -370,10 +377,10 @@ function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC)
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
@@ -384,7 +391,7 @@ function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC)
 
     html +=
         htmlAmostra +
-        htmlMaxMin +
+        //htmlMaxMin +
         htmlAmostraNC +
         '<div class="col-xs-4 no-gutters">' +
         '<div class="col-xs-2 input-sm" style="font-size: 8px;">' +
@@ -404,8 +411,8 @@ function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC)
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
         '   </div>' +
         '</div>' +
-        '<div class="col-xs-2">' + btnColeta + '</div>' +
-        '<div class="col-xs-2">' + btnNA + '</div>' +
+        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        '<div class="col-xs-2" >' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -415,8 +422,9 @@ function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC)
 
 function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -424,10 +432,10 @@ function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostr
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
@@ -439,7 +447,7 @@ function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostr
 
     html +=
         htmlAmostra +
-        htmlMaxMin +
+        //htmlMaxMin +
         htmlAmostraNC +
         '<div class="col-xs-4 no-gutters">' +
         '<div class="col-xs-2 input-sm" style="font-size: 8px;">' +
@@ -459,8 +467,8 @@ function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostr
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
         '   </div>' +
         '</div>' +
-        '<div class="col-xs-2">' + btnColeta + '</div>' +
-        '<div class="col-xs-2">' + btnNA + '</div>' +
+        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        '<div class="col-xs-2" >' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -470,8 +478,9 @@ function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostr
 
 function getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -479,10 +488,10 @@ function getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
@@ -491,14 +500,14 @@ function getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     html +=
         htmlAmostra +
-        htmlMaxMin +
+        //htmlMaxMin +
         htmlAmostraNC +
         '<div class="col-xs-4 no-gutters">' +
         '<div class="col-xs-8">' +
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
         '</div>' +
-        '<div class="col-xs-2">' + btnColeta + '</div>' +
-        '<div class="col-xs-2">' + btnNA + '</div>' +
+        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        '<div class="col-xs-2" >' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -508,8 +517,9 @@ function getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
 function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -517,10 +527,10 @@ function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
@@ -529,14 +539,14 @@ function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     html +=
         htmlAmostra +
-        htmlMaxMin +
+        //htmlMaxMin +
         htmlAmostraNC +
         '<div class="col-xs-4 no-gutters">' +
         '<div class="col-xs-8">' +
         '	<input type="text" class="col-xs-12 input-sm" data-valor/>' +
         '</div>' +
-        '<div class="col-xs-2">' + btnColeta + '</div>' +
-        '<div class="col-xs-2">' + btnNA + '</div>' +
+        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        '<div class="col-xs-2" >' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -546,8 +556,9 @@ function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
 function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -555,10 +566,10 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
@@ -567,14 +578,14 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     html +=
         htmlAmostra +
-        htmlMaxMin +
+        //htmlMaxMin +
         htmlAmostraNC +
         '<div class="col-xs-4 no-gutters">' +
         '<div class="col-xs-8">' +
         '	<input type="number" class="col-xs-12 input-sm" data-valor/>' +
         '</div>' +
-        '<div class="col-xs-2">' + btnColeta + '</div>' +
-        '<div class="col-xs-2">' + btnNA + '</div>' +
+        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        '<div class="col-xs-2" >' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -584,8 +595,9 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
 function getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta>Salvar</button>';
+    var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -593,10 +605,10 @@ function getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-3"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
@@ -607,7 +619,7 @@ function getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     html +=
         htmlAmostra +
-        htmlMaxMin +
+        //htmlMaxMin +
         htmlAmostraNC +
         '<div class="col-xs-4 no-gutters">' +
         '   <div class="col-xs-2 input-sm" style="font-size: 8px;">' +
@@ -616,8 +628,8 @@ function getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '   <div class="col-xs-6">' +
         '	    <input type="text" class="col-xs-12 input-sm" data-valor/>' +
         '   </div>' +
-        '   <div class="col-xs-2">' + btnColeta + '</div>' +
-        '   <div class="col-xs-2">' + btnNA + '</div>' +
+        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
+        '   <div class="col-xs-2" >' + btnNA + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -631,149 +643,162 @@ function validaCampoEmBrancoNA() {
     }
 }
 
-$('body').off('click', '[data-collapse-targeter]').on('click', '[data-collapse-targeter]', function () {
-    if ($(this).attr('data-targeter-collapsed') == 'true') {
-        $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').removeClass('hide');
-        $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').removeClass('hide');
-        $(this).attr('data-targeter-collapsed', false);
-    } else {
-        $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').addClass('hide');
-        $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').addClass('hide');
-        $(this).attr('data-targeter-collapsed', true);
-    }
-});
+// $('body').off('click', '[data-collapse-targeter]').on('click', '[data-collapse-targeter]', function () {
+//     if ($(this).attr('data-targeter-collapsed') == 'true') {
+//         $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').removeClass('hide');
+//         $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').removeClass('hide');
+//         $(this).attr('data-targeter-collapsed', false);
+//     } else {
+//         $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').addClass('hide');
+//         $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').addClass('hide');
+//         $(this).attr('data-targeter-collapsed', true);
+//     }
+// });
 
-$('body').off('click', '[data-plus]').on('click', '[data-plus]', function (e) {
-    var value = parseInt($(this).parent().parent().find('input').val());
-    if (isNaN(value))
-        value = 1;
-    else
-        value += 1;
-    var input = $(this).parent().parent().find('input');
-    input.val(value);
-    input.trigger('change');
+// $('body').off('click', '[data-plus]').on('click', '[data-plus]', function (e) {
+//     var value = parseInt($(this).parent().parent().find('input').val());
+//     if (isNaN(value))
+//         value = 1;
+//     else
+//         value += 1;
+//     var input = $(this).parent().parent().find('input');
+//     input.val(value);
+//     input.trigger('change');
 
-});
+// });
 
-$('body').off('click', '[data-minus]').on('click', '[data-minus]', function (e) {
-    var value = parseInt($(this).parent().parent().find('input').val());
-    if (isNaN(value))
-        value = -1;
-    else
-        value -= 1;
-    var input = $(this).parent().parent().find('input');
-    input.val(value);
-    input.trigger('change');
-});
+// $('body').off('click', '[data-minus]').on('click', '[data-minus]', function (e) {
+//     var value = parseInt($(this).parent().parent().find('input').val());
+//     if (isNaN(value))
+//         value = -1;
+//     else
+//         value -= 1;
+//     var input = $(this).parent().parent().find('input');
+//     input.val(value);
+//     input.trigger('change');
+// });
 
-$('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
-    var linha = $(this).parents('[data-conforme]');
-    if (typeof (linha.attr('data-conforme-na')) == 'undefined') {
+$('body').off('click', '[data-na-dca]').on('click', '[data-na-dca]', function (e) {
+
+    var linha = $(this).parents('[data-linha-coleta]');
+
+    if (typeof(linha.attr('data-conforme-na')) == 'undefined') {
+
         resetarLinha(linha);
         linha.addClass('alert-warning');
         linha.attr('data-conforme-na', '');
 
         var botao = $(linha).find('button[data-required-answer]');
+
         if (botao.attr('data-required-answer') == "1") {
+
             linha.attr('data-conforme', "");
             $(botao).text('');
             $(botao).html('&nbsp;');
+
         }
+
     } else {
+
         resetarLinha(linha);
         $(linha).find('input[data-valor]').trigger('change');
+
     }
-});
-
-$('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
-
-    var linha = $(this).parents('[data-conforme]');
-
-    resetarLinha(linha);
-
-    if (linha.attr('data-conforme') == "" || linha.attr('data-conforme') == null) {
-        linha.attr('data-conforme', linha.attr('data-default-answer'));
-
-    } else if (linha.attr('data-conforme') == linha.attr('data-default-answer')) {
-        linha.attr('data-conforme', linha.attr('data-default-answer') == "0" ? "1" : "0");
-    } else {
-        linha.addClass('alert-secundary');
-        if ($(this).attr('data-required-answer') == "1") {
-            linha.attr('data-conforme', "");
-        } else {
-            linha.attr('data-conforme', linha.attr('data-default-answer'));
-        }
-    }
-
-    if (linha.attr('data-conforme') == "1") {
-        $(this).text($(this).attr('data-positivo'));
-    } else if (linha.attr('data-conforme') == "0") {
-        $(this).text($(this).attr('data-negativo'));
-    } else {
-        $(this).text('');
-        $(this).html('&nbsp;');
-    }
-
-    $(this).addClass('btn-default');
-    $(this).removeClass('btn-secundary');
 
 });
 
-$('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', function (e) {
-    var linha = $(this).parents('[data-conforme]');
+// $('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
 
-    if (parseFloat($(this).val()) >= parseFloat($(linha).attr('data-min'))
-        && parseFloat($(this).val()) <= parseFloat($(linha).attr('data-max'))) {
-        resetarLinha(linha);
-        linha.attr('data-conforme', '1');
-    } else {
-        resetarLinha(linha);
-        linha.addClass('alert-secundary');
-        linha.attr('data-conforme', '0');
-    }
-});
+//     var linha = $(this).parents('[data-conforme]');
 
-$('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
+//     resetarLinha(linha);
 
-    var l3Id = $(this).attr('l3id');
+//     if (linha.attr('data-conforme') == "" || linha.attr('data-conforme') == null) {
+//         linha.attr('data-conforme', linha.attr('data-default-answer'));
 
-    var l3xHelp = $.grep(parametrization.listaParLevel3XHelp, function (obj) {
-        return obj.ParLevel3_Id == l3Id;
+//     } else if (linha.attr('data-conforme') == linha.attr('data-default-answer')) {
+//         linha.attr('data-conforme', linha.attr('data-default-answer') == "0" ? "1" : "0");
+//     } else {
+//         linha.addClass('alert-secundary');
+//         if ($(this).attr('data-required-answer') == "1") {
+//             linha.attr('data-conforme', "");
+//         } else {
+//             linha.attr('data-conforme', linha.attr('data-default-answer'));
+//         }
+//     }
 
-    })[0];
+//     if (linha.attr('data-conforme') == "1") {
+//         $(this).text($(this).attr('data-positivo'));
+//     } else if (linha.attr('data-conforme') == "0") {
+//         $(this).text($(this).attr('data-negativo'));
+//     } else {
+//         $(this).text('');
+//         $(this).html('&nbsp;');
+//     }
 
-    var body = l3xHelp.Corpo;
-    var title = l3xHelp.Titulo;
+//     $(this).addClass('btn-default');
+//     $(this).removeClass('btn-secundary');
 
-    var btnClose = '<button class="btn btn-primary pull-right" onclick="closeModal()">Fechar</button>';
-    var modal = '<h4>' + title + '</h4>';
-    var corpo =
-        '<div class="container">' +
-        '<div class="row" style="overflow:auto">' +
-        modal +
-        '<hr>' +
-        '<div style="text-align:center">' +
-        body +
-        '</div>' +
-        '<hr>' +
-        btnClose +
-        '</div>' +
-        '</div>';
+// });
 
-    openModal(corpo);
+// $('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', function (e) {
+//     var linha = $(this).parents('[data-conforme]');
 
-});
+//     if (parseFloat($(this).val()) >= parseFloat($(linha).attr('data-min'))
+//         && parseFloat($(this).val()) <= parseFloat($(linha).attr('data-max'))) {
+//         resetarLinha(linha);
+//         linha.attr('data-conforme', '1');
+//     } else {
+//         resetarLinha(linha);
+//         linha.addClass('alert-secundary');
+//         linha.attr('data-conforme', '0');
+//     }
+// });
 
-$('body').off('click', '[data-coleta]').on('click', '[data-coleta]', function () {
+// $('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
 
-    $(this).prop("disabled", true);
+//     var l3Id = $(this).attr('l3id');
 
-    var data = $(this).parents('[data-linha-coleta]');
-    var currentEvaluation = 1; //$(data).attr('data-evaluation');
-    var currentSample = parseInt($(data).attr('data-sample'));
-    var isNA = $(data).attr('data-conforme-na') == "";
-    var qtdeNC = parseInt($(data).attr('data-qtdeNc'));
-    var maxSample = parseInt($(data).attr('data-samplemax'));
+//     var l3xHelp = $.grep(parametrization.listaParLevel3XHelp, function (obj) {
+//         return obj.ParLevel3_Id == l3Id;
+
+//     })[0];
+
+//     var body = l3xHelp.Corpo;
+//     var title = l3xHelp.Titulo;
+
+//     var btnClose = '<button class="btn btn-primary pull-right" onclick="closeModal()">Fechar</button>';
+//     var modal = '<h4>' + title + '</h4>';
+//     var corpo =
+//         '<div class="container">' +
+//         '<div class="row" style="overflow:auto">' +
+//         modal +
+//         '<hr>' +
+//         '<div style="text-align:center">' +
+//         body +
+//         '</div>' +
+//         '<hr>' +
+//         btnClose +
+//         '</div>' +
+//         '</div>';
+
+//     openModal(corpo);
+
+// });
+
+$('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', function () {
+
+    var $botaoColeta = $(this);  
+    var linhaTarefa = $(this).parents('[data-linha-coleta]');
+    var currentEvaluation = currentEvaluationSample.Evaluation;
+    var currentSample = parseInt($(linhaTarefa).attr('data-sample'));
+    var isNA = $(linhaTarefa).attr('data-conforme-na') == "";
+    var qtdeNC = parseInt($(linhaTarefa).attr('data-qtdeNc'));
+    var maxSample = parseInt($(linhaTarefa).attr('data-samplemax'));
+    var $botaoNa = $(linhaTarefa).find('[data-na-dca]');
+
+    $botaoColeta.prop("disabled", true);
+    $botaoNa.prop("disabled", true);
 
     var coletaDCA = {
 
@@ -788,20 +813,20 @@ $('body').off('click', '[data-coleta]').on('click', '[data-coleta]', function ()
         ParLevel1_Id: currentParLevel1_Id,
         //ParCluster_Id
         ParLevel2_Id: currentParLevel2_Id,
-        ParLevel3_Id: parseInt($(data).attr('data-level3')),
+        ParLevel3_Id: parseInt($(linhaTarefa).attr('data-level3')),
         //CollectionType
-        Weigth: $(data).attr('data-peso'),
-        IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),
-        IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),
-        Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
-        ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
-        IsConform: isNA ? 1 : $(data).attr('data-conforme') == "1",
+        Weigth: $(linhaTarefa).attr('data-peso'),
+        IntervalMin: $(linhaTarefa).attr('data-min') == "null" ? null : $(linhaTarefa).attr('data-min'),
+        IntervalMax: $(linhaTarefa).attr('data-max') == "null" ? null : $(linhaTarefa).attr('data-max'),
+        Value: typeof ($(linhaTarefa).find('input[data-valor]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-valor]').val(),
+        ValueText: typeof ($(linhaTarefa).find('input[data-texto]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-texto]').val(),
+        IsConform: isNA ? 1 : $(linhaTarefa).attr('data-conforme') == "1",
         IsNotEvaluate: isNA,
-        Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
+        Defects: isNA ? 0 : $(linhaTarefa).attr('data-conforme') == "1" ? 0 : 1,
         //PunishimentValue: 
-        WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
+        WeiEvaluation: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')) * currentEvaluation,
         Evaluation: currentEvaluation,
-        WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
+        WeiDefects: isNA ? 0 : ($(linhaTarefa).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(linhaTarefa).attr('data-peso')),
         //HasPhoto: 
         Sample: currentSample,
         //HaveCorrectiveAction: 
@@ -821,27 +846,38 @@ $('body').off('click', '[data-coleta]').on('click', '[data-coleta]', function ()
 
     var numeroProximaAmostra = currentSample + 1;
 
-    $(data).attr('data-qtdeNc', qtdeNC);
-    $(data).find('.amostraNC').html(qtdeNC);
+    $(linhaTarefa).attr('data-qtdeNc', qtdeNC);
+    $(linhaTarefa).find('.amostraNC').html(qtdeNC);
 
-    $(data).attr('data-sample', numeroProximaAmostra);
-    $(data).find('.amostra').html(numeroProximaAmostra);
+    $(linhaTarefa).attr('data-sample', numeroProximaAmostra);
+    $(linhaTarefa).find('.amostra').html(numeroProximaAmostra);
 
     if (numeroProximaAmostra > maxSample) {
 
-        $(data).prop("disabled", true);
+        $(linhaTarefa).attr('data-amostra-completa', 1);
+        resetarLinha(linhaTarefa);
+        verificaSalvar();
 
     } else {
 
-        $(this).prop("disabled", false);
+        setTimeout(function(){
+
+            $botaoColeta.prop("disabled", false);
+            $botaoNa.prop("disabled", false);
+
+            resetarLinha(linhaTarefa);
+
+        }, 1000);
     }
 
 });
 
 function resetarLinha(linha) {
+
     linha.removeClass('alert-secundary');
     linha.removeClass('alert-warning');
     linha.removeAttr('data-conforme-na');
+
 }
 
 //$('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
@@ -974,7 +1010,7 @@ function SalvarColetas(coletaJson) {
         globalColetasRealizadas.push(coletaJson[i]);
     }
 
-    AtualizarArquivoDeColetas();
+    //AtualizarArquivoDeColetas();
 }
 
 function OpenCorrectiveAction(coleta) {
@@ -1063,82 +1099,82 @@ function OpenCorrectiveAction(coleta) {
 
 }
 
-function getCollectionHeaderFields() {
+// function getCollectionHeaderFields() {
 
-    var collectionHeaderFied = [];
+//     var collectionHeaderFied = [];
 
-    $('#headerFieldDepartment input, #headerFieldDepartment select').each(function () {
+//     $('#headerFieldDepartment input, #headerFieldDepartment select').each(function () {
 
-        $self = $(this);
+//         $self = $(this);
 
-        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
-        if ($self.val())
+//         //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
+//         if ($self.val())
 
-            collectionHeaderFied.push({
-                ParHeaderField_Id: $self.attr("parheaderfield_id"),
-                ParHeaderField_Value: $self.val(),
-                Evaluation: currentEvaluationSample.Evaluation,
-                Sample: currentEvaluationSample.Sample,
-                ParDepartment_Id: currentParDepartment_Id,
-                ParCargo_Id: currentParCargo_Id,
-                ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
-                UserSgq_Id: currentLogin.Id,
-                Parfrequency_Id: parametrization.currentParFrequency_Id
-            });
+//             collectionHeaderFied.push({
+//                 ParHeaderField_Id: $self.attr("parheaderfield_id"),
+//                 ParHeaderField_Value: $self.val(),
+//                 Evaluation: currentEvaluationSample.Evaluation,
+//                 Sample: currentEvaluationSample.Sample,
+//                 ParDepartment_Id: currentParDepartment_Id,
+//                 ParCargo_Id: currentParCargo_Id,
+//                 ParCompany_Id: currentParCompany_Id,
+//                 CollectionDate: getCurrentDate(),
+//                 UserSgq_Id: currentLogin.Id,
+//                 Parfrequency_Id: parametrization.currentParFrequency_Id
+//             });
 
-    });
+//     });
 
-    $('#headerFieldLevel1 input, #headerFieldLevel1 select').each(function () {
+//     $('#headerFieldLevel1 input, #headerFieldLevel1 select').each(function () {
 
-        $self = $(this);
+//         $self = $(this);
 
-        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
-        if ($self.val())
+//         //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
+//         if ($self.val())
 
-            collectionHeaderFied.push({
-                ParHeaderField_Id: $self.attr("parheaderfield_id"),
-                ParHeaderField_Value: $self.val(),
-                Evaluation: currentEvaluationSample.Evaluation,
-                Sample: currentEvaluationSample.Sample,
-                ParDepartment_Id: currentParDepartment_Id,
-                ParCargo_Id: currentParCargo_Id,
-                ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
-                UserSgq_Id: currentLogin.Id,
-                ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
-            });
+//             collectionHeaderFied.push({
+//                 ParHeaderField_Id: $self.attr("parheaderfield_id"),
+//                 ParHeaderField_Value: $self.val(),
+//                 Evaluation: currentEvaluationSample.Evaluation,
+//                 Sample: currentEvaluationSample.Sample,
+//                 ParDepartment_Id: currentParDepartment_Id,
+//                 ParCargo_Id: currentParCargo_Id,
+//                 ParCompany_Id: currentParCompany_Id,
+//                 CollectionDate: getCurrentDate(),
+//                 UserSgq_Id: currentLogin.Id,
+//                 ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
+//                 Parfrequency_Id: parametrization.currentParFrequency_Id
+//             });
 
-    });
+//     });
 
 
-    $('#headerFieldLevel2 input, #headerFieldLevel2 select').each(function () {
+//     $('#headerFieldLevel2 input, #headerFieldLevel2 select').each(function () {
 
-        $self = $(this);
+//         $self = $(this);
 
-        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
-        if ($self.val())
+//         //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
+//         if ($self.val())
 
-            collectionHeaderFied.push({
-                ParHeaderField_Id: $self.attr("parheaderfield_id"),
-                ParHeaderField_Value: $self.val(),
-                Evaluation: currentEvaluationSample.Evaluation,
-                Sample: currentEvaluationSample.Sample,
-                ParDepartment_Id: currentParDepartment_Id,
-                ParCargo_Id: currentParCargo_Id,
-                ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
-                UserSgq_Id: currentLogin.Id,
-                ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
-                ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
-            });
+//             collectionHeaderFied.push({
+//                 ParHeaderField_Id: $self.attr("parheaderfield_id"),
+//                 ParHeaderField_Value: $self.val(),
+//                 Evaluation: currentEvaluationSample.Evaluation,
+//                 Sample: currentEvaluationSample.Sample,
+//                 ParDepartment_Id: currentParDepartment_Id,
+//                 ParCargo_Id: currentParCargo_Id,
+//                 ParCompany_Id: currentParCompany_Id,
+//                 CollectionDate: getCurrentDate(),
+//                 UserSgq_Id: currentLogin.Id,
+//                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
+//                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
+//                 Parfrequency_Id: parametrization.currentParFrequency_Id
+//             });
 
-    });
+//     });
 
-    return collectionHeaderFied;
-}
+//     return collectionHeaderFied;
+// }
 
 function ColetasIsValid() {
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
@@ -1255,7 +1291,7 @@ function getAmostraAtual(parLevel1, parLevel2, parLevel3) {
         return amostra;
     }
 
-    amostra = coletasDCAFilter[coletasDCAFilter.length - 1].Evaluation;
+    amostra = coletasDCAFilter[coletasDCAFilter.length - 1].Sample;
 
     return amostra + 1;
 
@@ -1273,4 +1309,122 @@ function getAmostraTotal(parLevel1, parLevel2, parLevel3) {
 
     return parseInt(vinculosPeso[0].Sample);
 
+}
+
+function avaliacaoIsCompleta() {
+
+    var avIsComplet = $.grep($('[data-linha-coleta]'), function(o){
+        return $(o).attr('data-amostra-completa') == 0;
+    }).length == 0 ? true : false;
+
+    return avIsComplet;
+}
+
+function habilitaBotaoSalvar(){
+
+    $('[data-salvar-dca]').attr("disabled", false);
+
+}
+
+function verificaSalvar(){
+
+    if(avaliacaoIsCompleta())
+        habilitaBotaoSalvar();
+
+}
+
+$('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', function (e) {
+
+    e.preventDefault();
+
+    //TODO: aplicar função para inserir arr de coletas no arr de salvar coletas
+    var cabecalhosDCA = getCollectionHeaderFieldsDCA();
+
+    if (cabecalhosDCA) {
+        cabecalhosDCA.forEach(function (cabecalho) {
+            coletasDCA.push(cabecalho);
+        });
+    }
+
+    SalvarColetas(coletasDCA);
+
+    openMensagem("Avaliacao salva com sucesso!", "blue", "white");
+    closeMensagem(3000);
+
+});
+
+function getCollectionHeaderFieldsDCA() {
+
+    var collectionHeaderFiedDCA = [];
+
+    // $('#headerFieldDepartment input, #headerFieldDepartment select').each(function () {
+
+    //     $self = $(this);
+
+    //     //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
+    //     if ($self.val())
+
+    //         collectionHeaderFied.push({
+    //             ParHeaderField_Id: $self.attr("parheaderfield_id"),
+    //             ParHeaderField_Value: $self.val(),
+    //             Evaluation: currentEvaluationSample.Evaluation,
+    //             Sample: currentEvaluationSample.Sample,
+    //             ParDepartment_Id: currentParDepartment_Id,
+    //             ParCargo_Id: currentParCargo_Id,
+    //             ParCompany_Id: currentParCompany_Id,
+    //             CollectionDate: getCurrentDate(),
+    //             UserSgq_Id: currentLogin.Id,
+    //             Parfrequency_Id: parametrization.currentParFrequency_Id
+    //         });
+
+    // });
+
+    // $('#headerFieldLevel1 input, #headerFieldLevel1 select').each(function () {
+
+    //     $self = $(this);
+
+    //     //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
+    //     if ($self.val())
+
+    //         collectionHeaderFied.push({
+    //             ParHeaderField_Id: $self.attr("parheaderfield_id"),
+    //             ParHeaderField_Value: $self.val(),
+    //             Evaluation: currentEvaluationSample.Evaluation,
+    //             Sample: currentEvaluationSample.Sample,
+    //             ParDepartment_Id: currentParDepartment_Id,
+    //             ParCargo_Id: currentParCargo_Id,
+    //             ParCompany_Id: currentParCompany_Id,
+    //             CollectionDate: getCurrentDate(),
+    //             UserSgq_Id: currentLogin.Id,
+    //             ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
+    //             Parfrequency_Id: parametrization.currentParFrequency_Id
+    //         });
+
+    // });
+
+
+    $('#headerFieldLevel2 input, #headerFieldLevel2 select').each(function () {
+
+        $self = $(this);
+
+        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
+        if ($self.val())
+
+            collectionHeaderFiedDCA.push({
+                ParHeaderField_Id: $self.attr("parheaderfield_id"),
+                ParHeaderField_Value: $self.val(),
+                Evaluation: currentEvaluationSample.Evaluation,
+                Sample: currentEvaluationSample.Sample,
+                //ParDepartment_Id: currentParDepartment_Id,
+                //ParCargo_Id: currentParCargo_Id,
+                ParCompany_Id: currentParCompany_Id,
+                CollectionDate: getCurrentDate(),
+                UserSgq_Id: currentLogin.Id,
+                ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
+                ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
+                Parfrequency_Id: parametrization.currentParFrequency_Id
+            });
+    });
+
+    return collectionHeaderFiedDCA;
 }
