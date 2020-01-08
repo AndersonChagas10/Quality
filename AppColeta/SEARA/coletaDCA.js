@@ -1,5 +1,5 @@
 var coletaJson = [];
-var currentEvaluationSample = {};
+var currentEvaluationDCA = {};
 var coletasDCA = [];
 
 function openColetaDCA(levels) {
@@ -76,7 +76,7 @@ function openColetaDCA(levels) {
 }
 
 //function getContador() {
-//    currentEvaluationSample = getResultEvaluationSample(currentParLevel1_Id, currentParLevel2_Id);
+//    currentEvaluationDCA = getResultEvaluationSample(currentParLevel1_Id, currentParLevel2_Id);
 //    return '<div class="col-xs-12 alert-info" id="divColeta" style="padding-top:10px;padding-bottom:10px">' +
 //        '	<div class="col-xs-4">       ' +
 //        '		Avaliação                ' +
@@ -88,10 +88,10 @@ function openColetaDCA(levels) {
 //        '		&nbsp;                   ' +
 //        '	</div>                       ' +
 //        '	<div class="col-xs-4">       ' +
-//        '		<strong>' + currentEvaluationSample.Evaluation + '/' + currentTotalEvaluationValue + '</strong>    ' +
+//        '		<strong>' + currentEvaluationDCA.Evaluation + '/' + currentTotalEvaluationValue + '</strong>    ' +
 //        '	</div>                       ' +
 //        '	<div class="col-xs-4">       ' +
-//        '		<strong>' + currentEvaluationSample.Sample + '/' + currentTotalSampleValue + '</strong>    ' +
+//        '		<strong>' + currentEvaluationDCA.Sample + '/' + currentTotalSampleValue + '</strong>    ' +
 //        '	</div>                       ' +
 //        '	<div class="col-xs-4">       ' +
 //        '		 &nbsp;                  ' +
@@ -790,7 +790,7 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
 
     var $botaoColeta = $(this);  
     var linhaTarefa = $(this).parents('[data-linha-coleta]');
-    var currentEvaluation = currentEvaluationSample.Evaluation;
+    var currentEvaluation = currentEvaluationDCA.Evaluation;
     var currentSample = parseInt($(linhaTarefa).attr('data-sample'));
     var isNA = $(linhaTarefa).attr('data-conforme-na') == "";
     var qtdeNC = parseInt($(linhaTarefa).attr('data-qtdeNc'));
@@ -801,7 +801,6 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
     $botaoNa.prop("disabled", true);
 
     var coletaDCA = {
-
         Id: 0,
         CollectionDate: currentCollectDate.toJSON(),
         UserSgq_Id: currentLogin.Id,
@@ -906,8 +905,8 @@ function resetarLinha(linha) {
 //        coletaAgrupada = {
 //            ParLevel1_Id: currentParLevel1_Id,
 //            ParLevel2_Id: currentParLevel2_Id,
-//            Evaluation: currentEvaluationSample.Evaluation,
-//            Sample: currentEvaluationSample.Sample
+//            Evaluation: currentEvaluationDCA.Evaluation,
+//            Sample: currentEvaluationDCA.Sample
 //        };
 //    }
 
@@ -1113,8 +1112,8 @@ function OpenCorrectiveAction(coleta) {
 //             collectionHeaderFied.push({
 //                 ParHeaderField_Id: $self.attr("parheaderfield_id"),
 //                 ParHeaderField_Value: $self.val(),
-//                 Evaluation: currentEvaluationSample.Evaluation,
-//                 Sample: currentEvaluationSample.Sample,
+//                 Evaluation: currentEvaluationDCA.Evaluation,
+//                 Sample: currentEvaluationDCA.Sample,
 //                 ParDepartment_Id: currentParDepartment_Id,
 //                 ParCargo_Id: currentParCargo_Id,
 //                 ParCompany_Id: currentParCompany_Id,
@@ -1135,8 +1134,8 @@ function OpenCorrectiveAction(coleta) {
 //             collectionHeaderFied.push({
 //                 ParHeaderField_Id: $self.attr("parheaderfield_id"),
 //                 ParHeaderField_Value: $self.val(),
-//                 Evaluation: currentEvaluationSample.Evaluation,
-//                 Sample: currentEvaluationSample.Sample,
+//                 Evaluation: currentEvaluationDCA.Evaluation,
+//                 Sample: currentEvaluationDCA.Sample,
 //                 ParDepartment_Id: currentParDepartment_Id,
 //                 ParCargo_Id: currentParCargo_Id,
 //                 ParCompany_Id: currentParCompany_Id,
@@ -1159,8 +1158,8 @@ function OpenCorrectiveAction(coleta) {
 //             collectionHeaderFied.push({
 //                 ParHeaderField_Id: $self.attr("parheaderfield_id"),
 //                 ParHeaderField_Value: $self.val(),
-//                 Evaluation: currentEvaluationSample.Evaluation,
-//                 Sample: currentEvaluationSample.Sample,
+//                 Evaluation: currentEvaluationDCA.Evaluation,
+//                 Sample: currentEvaluationDCA.Sample,
 //                 ParDepartment_Id: currentParDepartment_Id,
 //                 ParCargo_Id: currentParCargo_Id,
 //                 ParCompany_Id: currentParCompany_Id,
@@ -1367,8 +1366,8 @@ function getCollectionHeaderFieldsDCA() {
     //         collectionHeaderFied.push({
     //             ParHeaderField_Id: $self.attr("parheaderfield_id"),
     //             ParHeaderField_Value: $self.val(),
-    //             Evaluation: currentEvaluationSample.Evaluation,
-    //             Sample: currentEvaluationSample.Sample,
+    //             Evaluation: currentEvaluationDCA.Evaluation,
+    //             Sample: currentEvaluationDCA.Sample,
     //             ParDepartment_Id: currentParDepartment_Id,
     //             ParCargo_Id: currentParCargo_Id,
     //             ParCompany_Id: currentParCompany_Id,
@@ -1389,8 +1388,8 @@ function getCollectionHeaderFieldsDCA() {
     //         collectionHeaderFied.push({
     //             ParHeaderField_Id: $self.attr("parheaderfield_id"),
     //             ParHeaderField_Value: $self.val(),
-    //             Evaluation: currentEvaluationSample.Evaluation,
-    //             Sample: currentEvaluationSample.Sample,
+    //             Evaluation: currentEvaluationDCA.Evaluation,
+    //             Sample: currentEvaluationDCA.Sample,
     //             ParDepartment_Id: currentParDepartment_Id,
     //             ParCargo_Id: currentParCargo_Id,
     //             ParCompany_Id: currentParCompany_Id,
@@ -1413,8 +1412,8 @@ function getCollectionHeaderFieldsDCA() {
             collectionHeaderFiedDCA.push({
                 ParHeaderField_Id: $self.attr("parheaderfield_id"),
                 ParHeaderField_Value: $self.val(),
-                Evaluation: currentEvaluationSample.Evaluation,
-                Sample: currentEvaluationSample.Sample,
+                Evaluation: currentEvaluationDCA.Evaluation,
+                Sample: currentEvaluationDCA.Sample,
                 //ParDepartment_Id: currentParDepartment_Id,
                 //ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: currentParCompany_Id,

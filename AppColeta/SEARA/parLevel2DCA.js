@@ -1,3 +1,4 @@
+currentEvaluationDCA = {};
 function listarParLevel2DCA(isVoltar) {
 
     currentParLevel2_Id = null;
