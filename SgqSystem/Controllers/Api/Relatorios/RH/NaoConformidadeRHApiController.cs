@@ -1220,9 +1220,9 @@ DROP TABLE #AMOSTRATIPO4 ";
             var whereStructure = "";
             var whereUnit = "";
             //var whereShift = "";
-            //var whereCluster = "";
+            var whereCluster = "";
             //var whereCriticalLevel = "";
-            //var whereClusterGroup = "";
+            var whereClusterGroup = "";
 
             if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
             {
@@ -1262,15 +1262,15 @@ DROP TABLE #AMOSTRATIPO4 ";
             //    			WHERE UserSgq_Id = { form.Param["auditorId"] })";
             //}
 
-            //if (form.ParClusterGroup_Ids.Length > 0)
-            //{
-            //    whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
-            //}
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            }
 
-            //if (form.ParCluster_Ids.Length > 0)
-            //{
-            //    whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
-            //}
+            if (form.ParCluster_Ids.Length > 0)
+            {
+                whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
+            }
 
             if (form.ParStructure_Ids.Length > 0)
             {
@@ -1305,12 +1305,24 @@ DROP TABLE #AMOSTRATIPO4 ";
 		            ON L2.Parlevel2_Id = M.ID
 	            INNER JOIN ParDepartment D WITH (NOLOCK)
 		            ON L2.Secao_Id = D.ID
+                LEFT JOIN ParVinculoPeso PVP
+		                ON L2.ParLevel2_Id = PVP.ParLevel2_Id
+						AND L2.ParLevel1_Id = PVP.ParLevel1_Id
+						AND L2.Cargo_Id = PVP.ParCargo_Id
+						AND L2.ParFrequency_Id = PVP.ParFrequencyId
+						--AND L2.Centro_De_Custo_Id = PVP.ParDepartment_Id
+				LEFT JOIN ParCluster PC
+		                ON PVP.ParCluster_Id = PC.Id
+		        LEFT JOIN ParClusterGroup PCG
+		                ON PC.ParClusterGroup_Id = PCG.Id
 	            WHERE 1=1
                 AND L2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
                 	AND (C.Name = '{form.Param["unitName"] }' OR C.Initials = '{ form.Param["unitName"] }')
                 	AND L.Name = '{form.Param["level1Name"]}' 
                     {whereDepartment}
                     {whereDepartmentFiltro}
+                    {whereCluster}
+                    {whereClusterGroup}
 
             GROUP BY 
 	            M.NAME, M.Id
@@ -1337,9 +1349,9 @@ DROP TABLE #AMOSTRATIPO4 ";
             var whereStructure = "";
             var whereUnit = "";
             //var whereShift = "";
-            //var whereCluster = "";
+            var whereCluster = "";
             //var whereCriticalLevel = "";
-            //var whereClusterGroup = "";
+            var whereClusterGroup = "";
 
             if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
             {
@@ -1379,15 +1391,15 @@ DROP TABLE #AMOSTRATIPO4 ";
             //    			WHERE UserSgq_Id = { form.Param["auditorId"] })";
             //}
 
-            //if (form.ParClusterGroup_Ids.Length > 0)
-            //{
-            //    whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
-            //}
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            }
 
-            //if (form.ParCluster_Ids.Length > 0)
-            //{
-            //    whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
-            //}
+            if (form.ParCluster_Ids.Length > 0)
+            {
+                whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
+            }
 
             if (form.ParStructure_Ids.Length > 0)
             {
@@ -1421,12 +1433,24 @@ DROP TABLE #AMOSTRATIPO4 ";
 		            ON L3.Parlevel3_Id = T.ID
 	            INNER JOIN ParDepartment D WITH (NOLOCK)
 		            ON L3.Secao_Id = D.ID
+                LEFT JOIN ParVinculoPeso PVP
+		                ON L3.ParLevel2_Id = PVP.ParLevel2_Id
+						AND L3.ParLevel1_Id = PVP.ParLevel1_Id
+						AND L3.Cargo_Id = PVP.ParCargo_Id
+						AND L3.ParFrequency_Id = PVP.ParFrequencyId
+						--AND L3.Centro_De_Custo_Id = PVP.ParDepartment_Id
+				    LEFT JOIN ParCluster PC
+		                ON PVP.ParCluster_Id = PC.Id
+		            LEFT JOIN ParClusterGroup PCG
+		                ON PC.ParClusterGroup_Id = PCG.Id
 	            WHERE 1=1
                  AND L.Name IN ('{ form.Param["level1Name"] }') 
                  AND C.Name = '{ form.Param["unitName"] }'
                  AND CollectionDate BETWEEN '{ form.startDate.ToString("yyyy-MM-dd") }' AND '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
                  {whereDepartment}
                  {whereDepartmentFiltro}
+                 {whereCluster}
+                 {whereClusterGroup}
         GROUP BY 
 	        T.NAME, T.ID
         ORDER BY 4 DESC
@@ -1466,12 +1490,12 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             if (form.ParClusterGroup_Ids.Length > 0)
             {
-                whereClusterGroup = $@"AND L3.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
             }
 
             if (form.ParCluster_Ids.Length > 0)
             {
-                whereCluster = $@"AND UNI.Id IN(SELECT PCC.ParCompany_Id FROM ParCompanyCluster PCC WHERE pcc.ParCluster_Id in (" + string.Join(",", form.ParCluster_Ids) + ") AND PCC.Active = 1)";
+                whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
             }
 
             if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
@@ -1505,6 +1529,16 @@ DROP TABLE #AMOSTRATIPO4 ";
 		            ON L3.Parlevel3_Id = T.ID
 	            INNER JOIN ParDepartment D WITH (NOLOCK)
 		            ON L3.Secao_Id = D.ID
+                LEFT JOIN ParVinculoPeso PVP
+		                ON L3.ParLevel2_Id = PVP.ParLevel2_Id
+						AND L3.ParLevel1_Id = PVP.ParLevel1_Id
+						AND L3.Cargo_Id = PVP.ParCargo_Id
+						AND L3.ParFrequency_Id = PVP.ParFrequencyId
+						--AND L3.Centro_De_Custo_Id = PVP.ParDepartment_Id
+				    LEFT JOIN ParCluster PC
+		                ON PVP.ParCluster_Id = PC.Id
+		            LEFT JOIN ParClusterGroup PCG
+		                ON PC.ParClusterGroup_Id = PCG.Id
 	            WHERE 1=1
                  AND L.Name IN ('{ form.Param["level1Name"] }') 
                  AND M.Name = '{ form.Param["level2Name"] }'
