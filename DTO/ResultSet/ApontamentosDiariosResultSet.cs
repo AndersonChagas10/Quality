@@ -15,6 +15,7 @@ public class ApontamentosDiariosResultSet
     public string IntervaloMinimo { get; set; }
     public string IntervaloMaximo { get; set; }
     public string Lancado { get; set; }
+    public string ClusterName { get; set; }
 
     public Nullable<bool> Conforme { get; set; }
     public string _Conforme { get { return Conforme.Value ? Resources.Resource.according : Resources.Resource.not_accordance; } }
@@ -601,7 +602,8 @@ public class ApontamentosDiariosResultSet
                  SELECT                                
                   C2.CollectionDate AS Data            
                  ,L1.Name AS Indicador                 
-                 ,L2.Name AS Monitoramento             
+                 ,L2.Name AS Monitoramento    
+                 ,PCluster.Name as ClusterName   
                  ,R3.ParLevel3_Name AS Tarefa  
 				 ,PF.Name AS Frequencia             
                  ,R3.Weight AS Peso                    
@@ -696,7 +698,10 @@ public class ApontamentosDiariosResultSet
                  ON PCargo.Id = CL2PC.ParCargo_Id
 
                  LEFT JOIN ParFrequency PF (nolock)        
-                 ON C2.ParFrequency_Id = PF.Id     
+                 ON C2.ParFrequency_Id = PF.Id    
+
+                LEFT JOIN ParCluster PCluster
+				ON C2XC.ParCluster_Id = PCluster.Id
 
                  WHERE 1=1 
                   { sqlDepartment }
