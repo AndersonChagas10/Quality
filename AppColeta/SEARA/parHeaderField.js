@@ -4,7 +4,7 @@ function getParHeaderFieldDeparment() {
 
     return '<div id="headerFieldDepartment" class="col-xs-12 alert-warning" style="padding-top:10px;padding-bottom:10px;display:table;">' +
         montarBotoesRotinaIntegracao() +
-        montarHeaderFields(ParLevelHeaderFiel_Id, currentParDepartment_Id) +
+        montarHeaderFields(ParLevelHeaderFiel_Id, 0) +
         '</div>';
 
 
@@ -172,56 +172,6 @@ function getParMultipleValues(parheaderField) {
         return "";
     }
 
-}
-
-function montarBotoesRotinaIntegracao() {
-
-    var html = "";
-
-    //pegar os listaParDepartmentXRotinaIntegracao do DepartmentCurrent
-    var ParDepartmentXRotinaIntegracoes = $.grep(parametrization.listaParDepartmentXRotinaIntegracao, function (parDepartmentXRotinaIntegracao) {
-        return parDepartmentXRotinaIntegracao.ParDepartment_Id == currentParDepartment_Id;
-    });
-
-    var botoes = [];
-
-    ParDepartmentXRotinaIntegracoes.forEach(function (parDepartmentXRotinaIntegracao) {
-
-        //Listar listar as listaRotinaIntegracao do departamento
-        var rotinaIntegracao = $.grep(parametrization.listaRotinaIntegracao, function (rotinaIntegracao) {
-
-            return rotinaIntegracao.Id == parDepartmentXRotinaIntegracao.RotinaIntegracao_Id;
-
-        })[0];
-
-        //lista os botoes que buscam dados offline
-        if (!rotinaIntegracao)
-            rotinaIntegracao = $.grep(parametrization.listaRotinaIntegracaoOffline, function (rotinaIntegracaoOffline) {
-                return rotinaIntegracaoOffline.Id == parDepartmentXRotinaIntegracao.RotinaIntegracao_Id;
-            })[0];
-
-        if (rotinaIntegracao)
-            botoes.push(rotinaIntegracao);
-
-    });
-
-    //fazer foreach nos botoes
-    if (botoes && botoes.length > 0) {
-        botoes.forEach(function (botao) {
-
-            //criar os botões de pegar as rotinas 
-            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
-            html += '<button type="button" class="btn btn-primary" data-id-rotina="' + botao.Id +
-                '" data-headerFields="' + botao.Parametro +
-                '" data-isoffline="' + botao.IsOffline +
-                '" onclick="getRotina(this);" data-headerFieldsClean="' + botao.Retornos +
-                '" data-loading-text="">' + botao.Name + '</button>';
-            html += '</div>';
-
-        });
-    }
-
-    return html;
 }
 
 function showInfo(btn) {

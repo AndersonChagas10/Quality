@@ -1,88 +1,33 @@
 function openMenu() {
-
-	//listarParLevel1();
-
-	openParFrequency();
-
-	//preencheCurrentPPlanejamento(showMenu);
-
+	GetAppParametrization123();
 }
 
-function showMenu() {
-	cleanGlobalVarParFrequency();
+function GetAppParametrization123() {
 
-	var html = '';
+	openMensagem('Por favor, aguarde até que seja feito o download das parametrizações', 'blue', 'white');
 
-	var htmlButtonColetarDesabilitado = "";
-	if (!(currentPlanejamento && currentPlanejamento.length > 0)) {
-		htmlButtonColetarDesabilitado = ' disabled="true"';
-	}
-
-	html = getHeader() +
-		'<div class="container-fluid">                               ' +
-		'	<div class="">                                  ' +
-		'		<div class="col-xs-2">                        ' +
-		'		</div>                                         ' +
-		'		<div class="col-xs-4">   ' +
-		'			<button class="btn btn-lg btn-info btn-block" onclick="clickPlanejar()">Planejar</button>' +
-		'		</div>   ' +
-		'		<div class="col-xs-4">   ' +
-		'<button class="btn btn-lg btn-success btn-block" onclick="clickColetar()" ' + htmlButtonColetarDesabilitado + '>Coletar</button>' +
-		'		</div>   ' +
-		'		<div class="col-xs-2">                        ' +
-		'		</div>                                         ' +
-		'	</div>                                             ' +
-		'</div>';
-
-	$('div#app').html(html);
-
-	changeStateButtonColetar();
-}
-
-function clickPlanejar() {
-	if (currentParFrequency_Id > 0) {
-		openPlanejamentoColeta();
-	} else {
-		openParFrequency();
-	}
-}
-
-function clickColetar() {
-	listarParDepartment(0);
-}
-
-function changeStateButtonColetar() {
-
-	if (currentPlanejamento.length > 0) {
-
-		$(".btncoletar").removeClass("disabled");
-
-	} else {
-
-		$(".btncoletar").addClass("disabled");
-
-	}
-
-	if (currentParFrequency_Id > 0) {
-
-		$(".btnGetParams").removeClass("disabled");
-
-	} else {
-
-		$(".btnGetParams").addClass("disabled");
-
-	}
-}
-
-function getParametrizationByButon() {
-
-	var frequencyId = currentParFrequency_Id;
-
-	if (frequencyId) {
-
-		currentParFrequency_Id = null;
-
-		getPlanejamentoPorFrequencia(frequencyId);
-
-	}
+	$.ajax({
+		data: JSON.stringify({
+			ParCompany_Id: currentParCompany_Id
+			, AppDate: currentCollectDate
+		}),
+		type: 'POST',
+		url: urlPreffix + '/api/AppColeta/GetAppParametrization123',
+		contentType: "application/json",
+		success: function (data) {
+			data.listaParFrequency = listaParFrequency;
+			_writeFile("appParametrization.txt", JSON.stringify(data), function () {
+				parametrization = data;
+				listarParLevel1();
+				closeMensagem();
+			});
+			sincronizarResultado();
+		},
+		timeout: 600000,
+		error: function () {
+			$(this).html($(this).attr('data-initial-text'));
+			closeMensagem();
+		}
+		
+	});
 }

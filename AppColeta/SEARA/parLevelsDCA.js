@@ -12,8 +12,6 @@ function GetLevelsDCA() {
 
     montarLevel1DCA(level1List);
 
-    level1List = retornaLevels1Planejados(level1List);
-
     return level1List;
 }
 

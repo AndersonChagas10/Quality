@@ -1,6 +1,5 @@
 function openLogado() {
     openMenu();
-    //openParDepartment();
     AtualizarVariaveisDeColetas();
     AtualizarVariaveisDeAcoesCorretivas();
 

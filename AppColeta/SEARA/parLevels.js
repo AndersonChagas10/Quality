@@ -12,8 +12,6 @@ function GetLevels() {
 
     montarLevel1(level1List);
 
-    level1List = retornaLevels1Planejados(level1List);
-
     return level1List;
 }
 
@@ -132,15 +130,6 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
         return true;
     }
 
-    var x = $.grep(coletasAgrupadas, function (obj) {
-        return obj.ParCargo_Id == currentParCargo_Id &&
-            obj.ParDepartment_Id == currentParDepartment_Id
-    });
-
-    if (x.length == 0) {
-        return true;
-    }
-
     //Level1, Level2, Level3 e Frequencia são obrigatorios
     //Posteriormente se não existir o retorno dos dados acima, validar um por um como null ou não
     var parVinculo = [];
@@ -150,7 +139,7 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
         return obj.ParLevel3_Id == parLevel3.Id &&
             obj.ParLevel2_Id == parLevel2.Id &&
             obj.ParLevel1_Id == parLevel1.Id &&
-            obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
+            //obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
             obj.ParCompany_Id == currentLogin.ParCompany_Id;
     });
 
@@ -160,7 +149,7 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
             return obj.ParLevel3_Id == parLevel3.Id &&
                 obj.ParLevel2_Id == parLevel2.Id &&
                 obj.ParLevel1_Id == parLevel1.Id &&
-                obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
+                //obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
                 obj.ParCompany_Id == null;
         });
     }
@@ -171,7 +160,7 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
     else
         parVinculo = parVinculo[0]; // Deverá ter somente um, porém caso tiver mais do que um não irá quebrar
 
-    return $.grep(x, function (obj) {
+    return $.grep(coletasAgrupadas, function (obj) {
         return (parVinculo.Evaluation == null || obj.Evaluation <= parVinculo.Evaluation) &&
             (parVinculo.Sample == null || obj.Sample <= parVinculo.Sample)
     }).length > 0;

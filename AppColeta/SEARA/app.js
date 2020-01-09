@@ -1,9 +1,5 @@
 var currentParCompany_Id;
-var currentParFrequency_Id;
 var parametrization = null;
-var currentParDepartment_Id;
-var currentParDepartmentParent_Id;
-var currentParCargo_Id;
 var globalColetasRealizadas = [];
 var globalAcoesCorretivasRealizadas = [];
 var currentLogin = {};
@@ -43,51 +39,6 @@ function onOpenAppColeta() {
     });
 }
 
-function getAppParametrization(frequencyId) {
-
-    sincronizarResultado(frequencyId);
-
-    if (frequencyId != currentParFrequency_Id) {
-
-        currentParFrequency_Id = frequencyId;
-        openMensagem('Por favor, aguarde até que seja feito o download do planejamento selecionado', 'blue', 'white');
-
-        $.ajax({
-            data: JSON.stringify({
-                ParCompany_Id: currentParCompany_Id
-                , ParFrequency_Id: currentParFrequency_Id
-                , AppDate: currentCollectDate
-            }),
-            type: 'POST',
-            url: urlPreffix + '/api/AppColeta/GetAppParametrization',
-            contentType: "application/json",
-            success: function (data) {
-                data.currentParFrequency_Id = currentParFrequency_Id;
-                _writeFile("appParametrization.txt", JSON.stringify(data), function () {
-                    parametrization = data;
-                    listarParDepartment(0);
-                    closeMensagem();
-                });
-            },
-            timeout: 600000,
-            error: function () {
-                $(this).html($(this).attr('data-initial-text'));
-                closeMensagem();
-            }
-        });
-
-    } else {
-        openMensagem('Carregando parametrização', 'blue', 'white');
-        _readFile("appParametrization.txt", function (data) {
-            if (data)
-                parametrization = JSON.parse(data);
-
-            listarParDepartment(0);
-            closeMensagem();
-        });
-    }
-}
-
 function sincronizarResultado(frequencyId) {
 
     openMensagem('Sincronizando resultado', 'blue', 'white');
@@ -95,10 +46,9 @@ function sincronizarResultado(frequencyId) {
     $.ajax({
         data: JSON.stringify({
             ParCompany_Id: currentParCompany_Id,
-            ParFrequency_Id: currentParFrequency_Id,
             CollectionDate: convertDateToJson(currentCollectDate)
         }),
-        url: urlPreffix + '/api/AppColeta/GetResults/',
+        url: urlPreffix + '/api/AppColeta/GetResults123/',
         type: 'POST',
         contentType: "application/json",
         success: function (data) {
@@ -124,11 +74,7 @@ function sincronizarColeta() {
 function showAllGlobalVar() {
 
     console.log("ParCompany:" + currentParCompany_Id);
-    console.log("Frequencia: " + currentParFrequency_Id);
-    console.log("Departamento: " + currentParDepartment_Id);
-    console.log("Cargo: " + currentParCargo_Id);
     console.log("parametrization: " + parametrization);
-    console.log("currentParDepartmentParent_Id: " + currentParDepartmentParent_Id);
     console.log("globalColetasRealizadas: " + globalColetasRealizadas);
     console.log("globalAcoesCorretivasRealizadas: " + globalAcoesCorretivasRealizadas);
     console.log("currentLogin: " + currentLogin);
@@ -193,10 +139,6 @@ function changeDate(that) {
     openMensagem("Alterando data...", "blue", "White");
 
     _writeFile("appParametrization.txt", '', function () {
-        var oldFrequency_Id = currentParFrequency_Id + 0;
-        currentParFrequency_Id = 0;
-        getPlanejamentoPorFrequencia(oldFrequency_Id);
-        openParFrequency();
     });
 
     var horas = "00:00:00";
@@ -227,14 +169,6 @@ function setBreadcrumbs() {
 
         isCurrent = false;
     }
-
-    // if (currentParFrequency_Id) {
-    //     breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
-    //         return item.Id == currentParFrequency_Id;
-    //     })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
-
-    //     isCurrent = false;
-    // }
 
     breadcrumb += breadcrumbLi + '</ol>';
 

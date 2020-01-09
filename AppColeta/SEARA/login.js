@@ -193,10 +193,7 @@ function loginSuccess(data) {
 
 function cleanGlobalVarLogin() {
 
-    currentParFrequency_Id = null;
     currentParCompany_Id = null;
-    currentParDepartment_Id = null;
-    currentParCargo_Id = null;
 
 }
 

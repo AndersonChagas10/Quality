@@ -1,12 +1,4 @@
 var coletasAgrupadas = [];
-/*
-{
-	ParDepartment_Id,
-	ParCargo_Id,
-	Evaluation,
-	Sample
-}
-*/
 
 function getResultEvaluationSample(parLevel1_Id, parLevel2_Id) {
 
@@ -102,7 +94,7 @@ function enviarColeta() {
 			function () {
 				$.ajax({
 					data: JSON.stringify(retornaProximasColetasParaSincronizar()),
-					url: urlPreffix + '/api/AppColeta/SetCollect',
+					url: urlPreffix + '/api/AppColeta/SetCollect123',
 					type: 'POST',
 					contentType: "application/json",
 					success: function (data) {

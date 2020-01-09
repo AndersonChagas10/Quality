@@ -53,13 +53,6 @@ function onDeviceReady() {
     $('#btn-reload').attr('style', $('#btn-reload').attr('style') + ";z-index:9999");
 
     openLogin();
-
-    // _readFile("login.txt", function (data) {
-    //     if (data)
-    //         openLogado();
-    //     else
-    //         openLogin();
-    // });
 }
 
 function starterReload() {

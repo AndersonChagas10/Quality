@@ -687,8 +687,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
             {
                 Evaluation: coletaAgrupada.Evaluation,
                 Sample: coletaAgrupada.Sample,
-                ParDepartment_Id: currentParDepartment_Id,
-                ParCargo_Id: currentParCargo_Id,
+                //ParDepartment_Id: currentParDepartment_Id,
+                //ParCargo_Id: currentParCargo_Id,
                 ParLevel1_Id: $(data).attr('data-level1'),
                 ParLevel2_Id: $(data).attr('data-level2'),
                 ParLevel3_Id: $(data).attr('data-level3'),
@@ -705,7 +705,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
                 Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
                 WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                //Parfrequency_Id: parametrization.currentParFrequency_Id
                 /*
 				"Shift_Id":1,
 				"Period_Id":1,
@@ -778,91 +778,6 @@ function SalvarColetas(coletaJson) {
     AtualizarArquivoDeColetas();
 }
 
-function OpenCorrectiveAction(coleta) {
-
-    var correctiveAction = {};
-
-    //Pegar os dados correntes
-    correctiveAction.CollectionLevel2 = {
-        ParLevel1_Id: coleta.ParLevel1_Id,
-        ParLevel2_Id: coleta.ParLevel2_Id,
-        UnitId: coleta.ParCompany_Id,
-        //Shift: 1,
-        EvaluationNumber: coleta.Evaluation,
-        Sample: coleta.Sample,
-        ParDepartment_Id: coleta.ParDepartment_Id,
-        ParCargo_Id: coleta.ParCargo_Id,
-        //ParCluster_Id: 1,
-        CollectionDate: getCurrentDate()
-    };
-
-    //var tarefa = $.map(parametrization.listaParLevel3, function (val, i) {
-    //    if (val.Id == coleta.ParLevel3_Id) {
-    //        return val;
-    //    }
-    //});
-    // + '<h4> Tarefa: "' + tarefa[0].Name + '"</h4>' verificar uma forma de mostrar a tarefa que esta nao conforme
-    var modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>';
-    var selectUsers = '<option value="">Selecione...</option><option value="1">Pato Donald</option>';
-
-    var date = stringToDate(currentCollectDate.toJSON());
-
-    var body = '<div class="form-group">' +
-        '<div class="form-group col-xs-12">' +
-        '<strong>Informações</strong>' +
-        '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString() +
-        '<br/>Monitor: ' + currentLogin.Name +
-        '<br/>Tarefa: ' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +
-        '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == parametrization.currentParFrequency_Id; })[0].Name +
-        '</small></div>' +
-
-        '<div class="form-group col-xs-12">' +
-        '<label>Descrição da Falha:</label>' +
-        '<input name="DescriptionFailure" id="descriptionFailure" class="col-sx-12 form-control" style="height: 80px;">' +
-        '</div>' +
-        '<div class="form-group col-xs-12">' +
-        '<label for="email">Ação Corretiva Imediata:</label>' +
-        '<input name="ImmediateCorrectiveAction" id="immediateCorrectiveAction" class="form-control" style="height: 80px;">' +
-        '</div>' +
-        '<div class="form-group col-xs-12">' +
-        '<label for="email">Ação Preventiva:</label>' +
-        '<input name="PreventativeMeasure" id="preventativeMeasure" class="form-control" style="height: 80px;">' +
-        '</div>';
-
-    var corpo =
-        '<div class="container">' +
-        '<div class="row" style="overflow:auto">' +
-        modal +
-        '<hr>' +
-        '<div>' +
-        body +
-        '</div>' +
-        '<hr>' +
-        '<div class="form-group col-xs-6">' +
-        '<button class="btn btn-primary" id="btnSendCA">Salvar Ação Corretiva</button>' +
-        '</div>' +
-        '</div>' +
-        '</div>';
-
-    openModal(corpo, 'white', 'black');
-
-    $('#btnSendCA').off().on('click', function () {
-
-        //Inserir collectionLevel2 dentro do obj
-        correctiveAction.AuditorId = currentLogin.Id;
-        correctiveAction.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
-        correctiveAction.PreventativeMeasure = $('#preventativeMeasure').val();
-        correctiveAction.DescriptionFailure = $('#descriptionFailure').val();
-
-        //Salvar corrective action na lista de correctiveAction
-        globalAcoesCorretivasRealizadas.push(correctiveAction);
-
-        closeModal();
-
-    });
-
-}
-
 function getCollectionHeaderFields() {
 
     var collectionHeaderFied = [];
@@ -879,12 +794,12 @@ function getCollectionHeaderFields() {
                 ParHeaderField_Value: $self.val(),
                 Evaluation: currentEvaluationSample.Evaluation,
                 Sample: currentEvaluationSample.Sample,
-                ParDepartment_Id: currentParDepartment_Id,
-                ParCargo_Id: currentParCargo_Id,
+                //ParDepartment_Id: currentParDepartment_Id,
+                //ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                //Parfrequency_Id: parametrization.currentParFrequency_Id
             });
 
     });
@@ -901,13 +816,13 @@ function getCollectionHeaderFields() {
                 ParHeaderField_Value: $self.val(),
                 Evaluation: currentEvaluationSample.Evaluation,
                 Sample: currentEvaluationSample.Sample,
-                ParDepartment_Id: currentParDepartment_Id,
-                ParCargo_Id: currentParCargo_Id,
+                //ParDepartment_Id: currentParDepartment_Id,
+                //ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                //Parfrequency_Id: parametrization.currentParFrequency_Id
             });
 
     });
@@ -925,14 +840,14 @@ function getCollectionHeaderFields() {
                 ParHeaderField_Value: $self.val(),
                 Evaluation: currentEvaluationSample.Evaluation,
                 Sample: currentEvaluationSample.Sample,
-                ParDepartment_Id: currentParDepartment_Id,
-                ParCargo_Id: currentParCargo_Id,
+                //ParDepartment_Id: currentParDepartment_Id,
+                //ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                //Parfrequency_Id: parametrization.currentParFrequency_Id
             });
 
     });
