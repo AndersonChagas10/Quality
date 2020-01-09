@@ -8,9 +8,14 @@ function openParFrequency() {
 			openMensagem('Carregando lista de frequencia', 'blue', 'white');
 
 			$.ajax({
-				data: {},
+                data: JSON.stringify({
+                    ParCompany_Id: currentParCompany_Id
+                    , ParCluster_Id: currentParCluster_Id
+                    , AppDate: currentCollectDate
+                }),
+                contentType: "application/json",
+                type: 'POST',
 				url: urlPreffix + '/api/parFrequency',
-				type: 'GET',
 				success: function (data) {
 
 					_writeFile("parFrequency.txt", JSON.stringify(data), function () {
@@ -105,7 +110,8 @@ function getPlanejamentoPorFrequencia(frequencyId) {
 		$.ajax({
 			data: JSON.stringify({
 				ParCompany_Id: currentParCompany_Id
-				, ParFrequency_Id: currentParFrequency_Id
+                , ParFrequency_Id: currentParFrequency_Id
+                , ParCluster_Id: currentParCluster_Id
 				, AppDate: currentCollectDate
 			}),
 			type: 'POST',

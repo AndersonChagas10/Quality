@@ -1316,7 +1316,15 @@ namespace SgqServiceBusiness.Api
 
                         var isRecravacao = new SGQDBContext.ParLevel1(db, quebraProcesso).getById(c.level01_Id).IsRecravacao == true;
 
-                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao || (c.Unit_Id == 4 && c.level01_Id == 22) || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
+                        if (IsBEA == 3 
+                            || IsBEA == 2
+                            || isRecravacao
+                            || c.level01_Id == 43
+                            || c.level01_Id == 42
+                            || c.level01_Id == 7
+                            || c.level01_Id == 90
+                            || (c.Unit_Id == 4 && c.level01_Id == 22) 
+                            || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -1748,12 +1756,12 @@ namespace SgqServiceBusiness.Api
             }
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_ParLevel1");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_Pl1");
                 return 0;
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_ParLevel1");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_Pl1");
                 return 0;
             }
         }
@@ -4642,7 +4650,16 @@ namespace SgqServiceBusiness.Api
                         .OrderByDescending(x => new { x.ParCompany_Id, x.ParLevel1_Id })
                         .FirstOrDefault();
 
-                    var list = conexaoEF.ParEvaluationSchedule.Where(x => x.ParEvaluation_Id == parEvaluation.Id && x.IsActive).ToList();
+                    var list = conexaoEF.ParEvaluationSchedule
+                        .Where(x => x.ParEvaluation_Id == parEvaluation.Id
+                        && (x.Shift_Id == shift_Id || x.Shift_Id == null)
+                        && x.IsActive).ToList();
+
+                    if (list.Any(x => x.Shift_Id != null))
+                    {
+                        list = list.Where(x => x.Shift_Id != null)
+                            .ToList();
+                    }
 
                     foreach (var item in list)
                     {
@@ -8257,6 +8274,7 @@ namespace SgqServiceBusiness.Api
 
         public string InsertCorrectiveAction(InsertCorrectiveActionClass insertCorrectiveActionClass)
         {
+            int phpDebug = 0;
             string CollectionLevel2_Id = insertCorrectiveActionClass.CollectionLevel2_Id;
             string ParLevel1_Id = insertCorrectiveActionClass.ParLevel1_Id;
             string ParLevel2_Id = insertCorrectiveActionClass.ParLevel2_Id;
@@ -8280,6 +8298,7 @@ namespace SgqServiceBusiness.Api
             string reauditnumber = insertCorrectiveActionClass.reauditnumber;
             string datetimeTechinicalHour = insertCorrectiveActionClass.DatetimeTechinicalHour;
 
+            phpDebug = 1;
             try
             {
                 var dataLiberacao = "";
@@ -8290,43 +8309,61 @@ namespace SgqServiceBusiness.Api
                 //inserir a acção corretiva com processo
 
                 string parCluster_Id_parLevel1_id = ParLevel1_Id.Replace(quebraProcesso, "|");
+                phpDebug = 2;
                 string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : "0";
+                phpDebug = 3;
                 ParLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
+                phpDebug = 4;
 
                 string parCluster_Id_parLevel2_id = ParLevel2_Id.Replace(quebraProcesso, "|");
+                phpDebug = 5;
                 ParLevel2_Id = parCluster_Id_parLevel2_id.Split('|').Length > 1 ? parCluster_Id_parLevel2_id.Split('|')[1] : parCluster_Id_parLevel2_id.Split('|')[0];
-
-
+                phpDebug = 6;
 
                 //using (var transacao = new TransactionScope())
                 //{
                 SlaughterId = DefaultValueReturn(SlaughterId, "1");
+                phpDebug = 7;
                 TechinicalId = DefaultValueReturn(TechinicalId, "1");
+                phpDebug = 8;
                 DateTimeSlaughter = DefaultValueReturn(DateTimeSlaughter, "03012017 00:00:00");
+                phpDebug = 9;
                 DateTimeTechinical = DateTimeSlaughter;
+                phpDebug = 10;
                 Period = DefaultValueReturn(Period, "1");
+                phpDebug = 11;
 
                 if (string.IsNullOrEmpty(CollectionLevel2_Id) || CollectionLevel2_Id == "0")
                 {
+                    phpDebug = 12;
                     CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber, reauditnumber, data, parCluster_Id).ToString();
+                    phpDebug = 13;
                     if (CollectionLevel2_Id == "0")
                     {
                         return "erro na InsertCorrectiveAction!";
                     }
                 }
 
+                phpDebug = 14;
                 DescriptionFailure = HttpUtility.UrlDecode(DescriptionFailure, System.Text.Encoding.Default);
+                phpDebug = 15;
                 ImmediateCorrectiveAction = HttpUtility.UrlDecode(ImmediateCorrectiveAction, System.Text.Encoding.Default);
+                phpDebug = 16;
                 ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
+                phpDebug = 17;
                 PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
+                phpDebug = 18;
+
                 if(!string.IsNullOrEmpty(dataLiberacao)){
                     DateTimeTechinical = dataLiberacao;
                 }
                 int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure,
                     ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
+                phpDebug = 19;
 
                 if (id > 0)
                 {
+                    phpDebug = 20;
                     //01/20/2017
 
 
@@ -8334,26 +8371,37 @@ namespace SgqServiceBusiness.Api
                     string dataFim = null;
 
                     data = data.Trim();
+                    phpDebug = 21;
 
                     if (!data.Contains("/"))
                     {
+                        phpDebug = 22;
                         string dia = data.Substring(2, 2);
+                        phpDebug = 23;
                         string mes = data.Substring(0, 2);
+                        phpDebug = 24;
                         string ano = data.Substring(4, 4);
+                        phpDebug = 25;
 
                         data = ano + "/" + mes + "/" + dia;
+                        phpDebug = 26;
                     }
-                  
+
+                    phpDebug = 27;
                     DateTime dataAPP = Convert.ToDateTime(data);
+                    phpDebug = 28;
 
                     //Pega a data pela regra da frequencia
                     getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
+                    phpDebug = 29;
                     var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim, reauditnumber);
+                    phpDebug = 30;
                     //transacao.complete();
                     return null;
                 }
                 else
                 {
+                    phpDebug = 60;
                     int insertLog = insertLogJson("", "", "N/A", "N/A", "Na InsertCorrectiveAction não achou uma referencia");
                     throw new Exception();
                 }
@@ -8361,9 +8409,9 @@ namespace SgqServiceBusiness.Api
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson("", ex.Message, "N/A", "N/A", "InsertCorrectiveAction");
+                int insertLog = insertLogJson("", "PHPDebug="+ phpDebug + " | " + ex.Message, "N/A", "N/A", "InsertCorrectiveAction");
 
-                return "erro";
+                return "erro="+ phpDebug;
                 throw ex;
             }
         }

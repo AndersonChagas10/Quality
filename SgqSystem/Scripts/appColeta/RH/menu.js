@@ -38,8 +38,9 @@ function showMenu() {
 function clickPlanejar() {
 	if (currentParFrequency_Id > 0) {
 		openPlanejamentoColeta();
-	} else {
-		openParFrequency();
+    } else {
+        openParCluster();
+		//openParFrequency();
 	}
 }
 

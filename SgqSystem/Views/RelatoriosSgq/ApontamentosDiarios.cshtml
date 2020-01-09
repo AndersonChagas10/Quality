@@ -384,7 +384,7 @@
                                 }
 
                                 htmlBody += "<td>"+o.addDate+"</td>";
-                                htmlBody += "<td>"+o.userSgq_FullName+"</td>";
+                                htmlBody += "<td>"+o.userSgq_Name+"</td>";
                                 htmlBody += "<td>"+(o.obj.IsConform ? "Conforme" : "Não Conforme")+"</td>";
                                 htmlBody += "<td>"+o.obj.Value+"</td>";
                                 htmlBody += "<td>"+(o.obj.ValueText == 'null' || o.obj.ValueText == 'undefined' ? "" : o.obj.ValueText)+"</td>";
@@ -399,9 +399,12 @@
 
                             $(tableLogTrack).find('table').dataTable({
                                 "ordering": false,
-                                "pageLength": 25
+                                "pageLength": 25,
+                                "scrollX": true,
+                                "initComplete": function (settings, json) {
+                                    setTimeout(function () {$.fn.dataTable.tables({ visible: true, api: true }).columns.adjust(); },500)
+                                }
                             } );
-
 
                         })
                     });
@@ -446,7 +449,7 @@
 
                             var htmlCorpo = function (o) {
                                 var html = "<td>"+o.addDate+"</td>";
-                                html += "<td>"+o.userSgq_FullName+"</td>";
+                                html += "<td>"+o.userSgq_Name+"</td>";
                                 html += "<td>"+o.obj.ParHeaderField_Name+"</td>";
                                 html += "<td>"+(!!o.obj.ParHeaderField_ValueName ? o.obj.ParHeaderField_ValueName : o.obj.Value)+"</td>";
                                 html += "<td>"+o.parReason+"</td>";
@@ -480,8 +483,13 @@
 
                             $(tableLogTrack).find('table').dataTable({
                                 "ordering": false,
-                                "pageLength": 25
-                            } );
+                                "pageLength": 25,
+                                "scrollX": true,
+                                "initComplete": function (settings, json) {
+                                    setTimeout(function () {$.fn.dataTable.tables({ visible: true, api: true }).columns.adjust(); },500)
+                                }
+                            });
+
                         })
                     });
 
@@ -492,6 +500,7 @@
                     $('#myModal, #modalHeaderField').on('hidden.bs.modal', function () {
                         //$('select[name="selectParReasonEdit"]').attr('style','');
                         $('textarea[name="textareaParReasonEdit"]').attr('style','');
+                        $('textarea[name="textareaParReasonEdit"]').val('');
                         $('.alertParReasonEditMinimo10').addClass('hide');
                     })
                     //$("#botaoFecharModal").on('click', function () {

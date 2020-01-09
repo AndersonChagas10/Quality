@@ -4,6 +4,7 @@ var parametrization = null;
 var currentParDepartment_Id;
 var currentParDepartmentParent_Id;
 var currentParCargo_Id;
+var currentParCluster_Id;
 var globalColetasRealizadas = [];
 var globalAcoesCorretivasRealizadas = [];
 var currentLogin = {};
@@ -54,6 +55,7 @@ function getAppParametrization(frequencyId) {
                 ParCompany_Id: currentParCompany_Id
                 , ParFrequency_Id: currentParFrequency_Id
                 , AppDate: currentCollectDate
+                , ParCluster_Id: currentParCluster_Id
             }),
             type: 'POST',
             url: urlPreffix + '/api/AppColeta/GetAppParametrization',
@@ -93,6 +95,7 @@ function sincronizarResultado(frequencyId) {
         data: JSON.stringify({
             ParCompany_Id: currentParCompany_Id,
             ParFrequency_Id: currentParFrequency_Id,
+            ParCluster_Id: currentParCluster_Id,
             CollectionDate: convertDateToJson(currentCollectDate)
         }),
         url: urlPreffix + '/api/AppColeta/GetResults/',
@@ -209,6 +212,7 @@ function setBreadcrumbs() {
     var breadcrumbLi = "";
     var isCurrent = true;
 
+
     if (currentParCargo_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParCargo, function (item) {
             return item.Id == currentParCargo_Id;
@@ -241,7 +245,15 @@ function setBreadcrumbs() {
         breadcrumbLi = deparment + breadcrumbLi;
         isCurrent = false;
     }
+    //var cluster = "";
+    //if (currentParCluster_Id) {
+    //    cluster = getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
+    //        return item.Id == currentParCluster_Id;
+    //    })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
 
+    //    breadcrumbLi = cluster + breadcrumbLi;
+    //    isCurrent = false;
+    //}
 
     if (currentParFrequency_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
@@ -250,6 +262,9 @@ function setBreadcrumbs() {
 
         isCurrent = false;
     }
+
+
+
 
     breadcrumb += breadcrumbLi + '</ol>';
 

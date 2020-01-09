@@ -93,6 +93,8 @@ namespace Dominio.Seed
 
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "parLevel1ComAgrupamentoPorDepartamentoNaColeta", Value = "126|136|135", ControllerName = "SyncServiceApiController", Descricao = "Agrupar na coleta por departamento os Ids especificados" });
 
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "CollectionJobTime0IsDisabled", Value = "0", ControllerName = "CollectionJob", Descricao = "Intervalo que o CollectionJob será executado, 0 = desligado" });
+
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys).ToList();
 
                 if (add.Count > 0)

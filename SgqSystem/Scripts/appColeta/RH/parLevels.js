@@ -20,8 +20,8 @@ function GetLevels() {
 function montarLevel1(level1List) {
 
     var parVinculos = $.grep(parametrization.listaParVinculoPeso, function (obj) {
-        return (obj.ParDepartment_Id == currentParDepartment_Id || obj.ParDepartment_Id == null) 
-        && (obj.ParCargo_Id == currentParCargo_Id || obj.ParCargo_Id == null);
+        return (obj.ParDepartment_Id == currentParDepartment_Id || obj.ParDepartment_Id == null)
+            && (obj.ParCargo_Id == currentParCargo_Id || obj.ParCargo_Id == null);
     });
 
     var level1_Ids_Aux = $.map(parVinculos, function (obj) {
