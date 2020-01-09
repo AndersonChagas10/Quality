@@ -68,14 +68,14 @@
                             }
 
                             @*@if (ViewBag.ShowParStructure == true)
-                                {
-                                    <div class="col-sm-12">
-                                        <div class="form-group">
-                                            <label><strong>@Resources.Resource.structure</strong></label>
-                                            <select class="form-control" name="parStructure_Ids" multiple></select>
-                                        </div>
-                                    </div>
-                                }*@
+        {
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label><strong>@Resources.Resource.structure</strong></label>
+                    <select class="form-control" name="parStructure_Ids" multiple></select>
+                </div>
+            </div>
+        }*@
 
                             @if (ViewBag.ShowParClusterGroup == true)
                             {
@@ -506,6 +506,63 @@
                                 </div>
                             }
 
+                            @if (ViewBag.ShowUserSgqMonitor == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Monitor</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=userSgqMonitor_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredUserSgqMonitor", "api/Formulario")"
+                                                data-filtroselect3-default-select="@ViewBag.ShowUserSgqSurpervisorDefault">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="userSgqMonitor_Ids" multiple>
+                                            @if (ViewBag.ShowUserSgqMonitorDefault != null)
+                                            {
+                                                <option value="">@ViewBag.ShowUserSgqMonitorDefault</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowTipoEdicao = true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Tipo de Edição</strong></label>
+                                        <select class="form-control" name="tipoEdicao">
+                                            <option value="0">Todos</option>
+                                            <option value="1">Edição de Resultados</option>
+                                            <option value="2">Edição de Cabeçalho</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParReason = true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Tipo de Motivos</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=ParReason_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetParReason", "api/Formulario")"
+                                                data-filtroselect3-default-select="@ViewBag.ShowParReasonDefault">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="ParReason_Ids" multiple>
+                                            @if (ViewBag.ShowParReasonDefault != null)
+                                            {
+                                                <option value="">@ViewBag.ShowParReasonDefault</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                            }
+
 
                         </div>
                         <div class="col-sm-12">
@@ -603,6 +660,7 @@
         }
 
         function inicializaSelect2() {
+
             $('select[name="parStructure_Ids"]').select2();
             $('select[name="parCompany_Ids"]').select2();
             $('select[name="shift_Ids"]').select2();
@@ -626,6 +684,9 @@
             $('select[name="peso"]').select2();
             $('select[name="desdobramento"]').select2();
             $('select[name="userSgqSurpervisor_Ids"]').select2();
+            $('select[name="userSgqMonitor_Ids"]').select2();
+            $('select[name="ParReason_Ids"]').select2();
+            $('select[name="tipoEdicao"]').select2();
         }
 
         inicializaSelect2();

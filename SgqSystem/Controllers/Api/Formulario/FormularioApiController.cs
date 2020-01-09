@@ -584,6 +584,34 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
+        [Route("GetFilteredUserSgqMonitor")]
+        public List<UserSgq> GetFilteredUserSgqMonitor(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT DISTINCT TOP 500 Id, Name from UserSgq Where LOWER(role) like '%monitor%' AND Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<UserSgq>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetParReason")]
+        public List<UserSgq> GetParReason(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT TOP 500 Id, Motivo as Name from ParReason Where Motivo like '%{search}%'";
+
+                var retorno = factory.SearchQuery<UserSgq>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
         [Route("GetForm")]
         public FormularioViewModel GetForm([FromBody] DataCarrierFormularioNew form)
         {
