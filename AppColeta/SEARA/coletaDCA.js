@@ -229,7 +229,7 @@ function getBinarioDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     }
 
-    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
     var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
@@ -243,8 +243,8 @@ function getBinarioDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '   <div class="col-xs-8">' +
         botao +
         '   </div>' +
-        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
         '   <div class="col-xs-2" >' + btnNA + '</div>' +
+        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
         '</div>' +
         '<div class="clearfix"></div>';
 
@@ -288,7 +288,7 @@ function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     //    '</div>' +
     //    '<div class="clearfix"></div>';
 
-    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
     var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
@@ -304,8 +304,8 @@ function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '   <div class="col-xs-4">' +
         botao +
         '   </div>' +
-        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
         '   <div class="col-xs-2" >' + btnNA + '</div>' +
+        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -332,7 +332,7 @@ function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
-    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
     var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
@@ -356,8 +356,8 @@ function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '	        <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
         '       </div>' +
         '   </div>' +
-        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
         '   <div class="col-xs-2" >' + btnNA + '</div>' +
+        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -384,7 +384,7 @@ function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC)
 
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
-    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
     var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostra">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
@@ -411,8 +411,8 @@ function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC)
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
         '   </div>' +
         '</div>' +
-        '<div class="col-xs-2" >' + btnColeta + '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
+        '<div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -440,7 +440,7 @@ function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostr
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
 
-    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '<spam>/' + amostraTotal + '</div>';
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '<spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
     var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
@@ -467,8 +467,8 @@ function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostr
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
         '   </div>' +
         '</div>' +
-        '<div class="col-xs-2" >' + btnColeta + '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
+        '<div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -493,7 +493,7 @@ function getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     else
         html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
-    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
     var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
@@ -506,8 +506,8 @@ function getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '<div class="col-xs-8">' +
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
         '</div>' +
-        '<div class="col-xs-2" >' + btnColeta + '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
+        '<div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -532,7 +532,7 @@ function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     else
         html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
-    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
     var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
@@ -545,8 +545,8 @@ function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '<div class="col-xs-8">' +
         '	<input type="text" class="col-xs-12 input-sm" data-valor/>' +
         '</div>' +
-        '<div class="col-xs-2" >' + btnColeta + '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
+        '<div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -571,7 +571,7 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     else
         html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
-    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
     var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
@@ -584,8 +584,8 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '<div class="col-xs-8">' +
         '	<input type="number" class="col-xs-12 input-sm" data-valor/>' +
         '</div>' +
-        '<div class="col-xs-2" >' + btnColeta + '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
+        '<div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -628,8 +628,8 @@ function getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '   <div class="col-xs-6">' +
         '	    <input type="text" class="col-xs-12 input-sm" data-valor/>' +
         '   </div>' +
-        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
         '   <div class="col-xs-2" >' + btnNA + '</div>' +
+        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -848,11 +848,8 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
     $(linhaTarefa).attr('data-qtdeNc', qtdeNC);
     $(linhaTarefa).find('.amostraNC').html(qtdeNC);
 
-    $(linhaTarefa).attr('data-sample', numeroProximaAmostra);
-    $(linhaTarefa).find('.amostra').html(numeroProximaAmostra);
-
     if (numeroProximaAmostra > maxSample) {
-
+        numeroProximaAmostra = maxSample;
         $(linhaTarefa).attr('data-amostra-completa', 1);
         resetarLinha(linhaTarefa);
         verificaSalvar();
@@ -868,6 +865,9 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
 
         }, 1000);
     }
+
+    $(linhaTarefa).attr('data-sample', numeroProximaAmostra);
+    $(linhaTarefa).find('.amostra').html(numeroProximaAmostra);
 
 });
 
@@ -1212,7 +1212,7 @@ function getAmostraAtual(parLevel1, parLevel2, parLevel3) {
 
 function getAmostraTotal(parLevel1, parLevel2, parLevel3) {
 
-    var vinculosPeso = $.grep(parVinculosMontarLevel3, function (o) {
+    var vinculosPeso = $.grep(parVinculosMontarLevel3DCA, function (o) {
         return o.ParLevel1_Id == parLevel1.Id && o.ParLevel2_Id == parLevel2.Id && o.ParLevel3_Id == parLevel3.Id;
     });
 

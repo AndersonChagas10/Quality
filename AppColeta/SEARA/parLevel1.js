@@ -53,6 +53,6 @@ $('body').off('click', '[data-par-level1-id]').on('click', '[data-par-level1-id]
 
     currentParLevel1_Id = parseInt($(this).attr('data-par-level1-id'));
 
-    listarParLevel2();
+	level1BusinessRoute(currentParLevel1_Id);
 
 });

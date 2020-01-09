@@ -3,7 +3,6 @@ function getParHeaderFieldDeparment() {
     var ParLevelHeaderFiel_Id = 3; //ParDepartment
 
     return '<div id="headerFieldDepartment" class="col-xs-12 alert-warning" style="padding-top:10px;padding-bottom:10px;display:table;">' +
-        montarBotoesRotinaIntegracao() +
         montarHeaderFields(ParLevelHeaderFiel_Id, 0) +
         '</div>';
 
@@ -19,7 +18,6 @@ function getParHeaderFieldLevel1(parLevel1) {
     if (cabecalhos)
 
         return '<div id="headerFieldLevel1" data-collapse-target="'+parLevel1.Id+'" class="col-xs-12" parLevel1Id=' + parLevel1.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;background-color:#edf5fc;">' +
-            montarBotoesRotinaIntegracao() +
             cabecalhos +
             '</div>';
 
@@ -36,14 +34,12 @@ function getParHeaderFieldLevel2(parLevel1, parLevel2) {
     if (cabecalhos)
 
         return '<div id="headerFieldLevel2" data-collapse-target="'+parLevel1.Id+'-'+parLevel2.Id+'" class="col-xs-12" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;background-color:#fcf4e3;">' +
-            montarBotoesRotinaIntegracao() +
             cabecalhos +
             '</div>';
 
     else
         return '';
 }
-
 
 function montarHeaderFields(parLevelHeaderFiel_Id, Generic_Id) {
 

@@ -1,4 +1,5 @@
 var currentParCompany_Id;
+var globalDicionarioEstatico = {};
 var parametrization = null;
 var globalColetasRealizadas = [];
 var globalAcoesCorretivasRealizadas = [];

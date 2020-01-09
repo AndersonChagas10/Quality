@@ -32,8 +32,8 @@ function listarParLevel2DCA(isVoltar) {
             '" data-dca-par-level2-id="' + o.Id + '" ' +
             'data-current-evaluation="' + currentEvaluationDCA.Evaluation + '">                       ' +
             '	<div class="col-xs-4">' + o.Name + '</div>                                      ' +
-            '	<div class="col-xs-4 text-center">'+ZeroSeForNaN(porcentagemDeConformidadePorLevel2)+'%</div>      ' +
-            '	<div class="col-xs-4 text-center">'+ZeroSeForNaN(parseInt(consolidadoAmostraTotal.AmostraTotalColetada/consolidadoAmostraTotal.AmostraTotal*100))+'%</div>              ' +
+            '	<div class="col-xs-4 text-center">Conforme: '+ZeroSeForNaN(porcentagemDeConformidadePorLevel2)+'%</div>      ' +
+            '	<div class="col-xs-4 text-center">Respondido: '+ZeroSeForNaN(parseInt(consolidadoAmostraTotal.AmostraTotalColetada/consolidadoAmostraTotal.AmostraTotal*100))+'%</div>              ' +
             '</button>';
     });
 
@@ -152,8 +152,8 @@ function getAmostraTotalEColetadaEConformePorMonitoramento(parLevel1, parLevel2)
             }
         });
 
-        if (o.Sample > 0) {
-            if (o.Sample < quantidadeDeColetasPorTarefa.length) {
+        if (o.Sample > 0 && quantidadeDeColetasPorTarefa.length > 0) {
+            if (o.Sample > quantidadeDeColetasPorTarefa.length) {
                 totalDeAmostrasColetadas += quantidadeDeColetasPorTarefa.length;
             } else {
                 totalDeAmostrasColetadas += o.Sample;
@@ -162,7 +162,7 @@ function getAmostraTotalEColetadaEConformePorMonitoramento(parLevel1, parLevel2)
             totalDeAmostrasColetadas += 1;
         }
 
-        totalDeAmostras += (o.Sample > 0) ? o.Sample : 1;
+        totalDeAmostras += (o.Sample > 0) ? o.Sample : 0;
     });
 
     return {AmostraTotal: parseInt(totalDeAmostras)

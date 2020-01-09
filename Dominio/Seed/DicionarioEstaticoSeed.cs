@@ -19,7 +19,6 @@ namespace Dominio.Seed
 
                 var DicionariosInserir = new List<DicionarioEstatico>();
 
-
                 //Acompanhamento Embarque
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "TipoVeiculo", Value = "198", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho tipo de veículo" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "Transportador", Value = "199", ControllerName = "AcompanhamentoEmbarqueApi", Descricao = "Id do campo de cabeçalho Transportador" });
@@ -94,6 +93,8 @@ namespace Dominio.Seed
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "parLevel1ComAgrupamentoPorDepartamentoNaColeta", Value = "126|136|135", ControllerName = "SyncServiceApiController", Descricao = "Agrupar na coleta por departamento os Ids especificados" });
 
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "CollectionJobTime0IsDisabled", Value = "0", ControllerName = "CollectionJob", Descricao = "Intervalo que o CollectionJob será executado, 0 = desligado" });
+
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "ParLevel1DCA", Value = "140", ControllerName = "", Descricao = "Id do indicador DCA da SEARA" });
 
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys).ToList();
 
