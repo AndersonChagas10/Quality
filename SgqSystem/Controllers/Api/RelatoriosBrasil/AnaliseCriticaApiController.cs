@@ -612,7 +612,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         INNER JOIN ParCluster PCL WITH (NOLOCK) ON PCL.Id = C2XC.ParCluster_Id AND PCL.IsActive = 1
                         LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = C2.UnitId AND PCXS.Active = 1 --ParCriticalLevel
                         WHERE 1 = 1
-                        AND C2.ParLevel1_Id = 2 --Indicador
+                        AND C2.ParLevel1_Id = { ParLevel1_Id } --Indicador
                         AND CA.DateCorrectiveAction BETWEEN '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00' AND '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
                         {wModulo}
                         {wParClusterGroup}
