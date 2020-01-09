@@ -61,6 +61,12 @@ namespace DTO
 
         public int[] UserSgqSurpervisor_Ids { get; set; } = new int[] { };
 
+        public int[] userSgqMonitor_Ids { get; set; } = new int[] { };
+
+        public int[] tipoEdicao { get; set; } = new int[] { };
+
+        public int[] ParReason_Ids { get; set; } = new int[] { };
+
         public int[] NcComPeso { get; set; } = new int[] { };
 
         public int DimensaoData { get; set; }

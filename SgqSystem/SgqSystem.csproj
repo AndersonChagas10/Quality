@@ -2077,6 +2077,7 @@
     <Content Include="Views\ParDepartments\Edit.cshtml" />
     <Content Include="Views\ParDepartments\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\AnaliseCritica.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioEdicao.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
