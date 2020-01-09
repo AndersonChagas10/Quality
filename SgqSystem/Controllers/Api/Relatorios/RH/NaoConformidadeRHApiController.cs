@@ -1321,6 +1321,9 @@ DROP TABLE #AMOSTRATIPO4 ";
                 	AND L.Name = '{form.Param["level1Name"]}' 
                     {whereDepartment}
                     {whereDepartmentFiltro}
+                    {whereSecao}
+                    {whereUnit}
+                    {whereCargo}
                     {whereCluster}
                     {whereClusterGroup}
 
@@ -1449,6 +1452,9 @@ DROP TABLE #AMOSTRATIPO4 ";
                  AND CollectionDate BETWEEN '{ form.startDate.ToString("yyyy-MM-dd") }' AND '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
                  {whereDepartment}
                  {whereDepartmentFiltro}
+                 {whereSecao}
+                 {whereCargo}
+                 {whereUnit}
                  {whereCluster}
                  {whereClusterGroup}
         GROUP BY 
@@ -1477,15 +1483,21 @@ DROP TABLE #AMOSTRATIPO4 ";
             //Proc = proc + i,
             //TarefaName = tarefaName + i.ToString()
 
-            var whereDepartmentFiltro = "";
+            //var whereDepartmentFiltro = "";
             var whereDepartment = "";
             var whereShift = "";
             var whereClusterGroup = "";
             var whereCluster = "";
+            var whereUnit = "";
 
             if (form.Shift_Ids.Length > 0)
             {
                 whereShift = "\n AND L3.Shift   in (" + string.Join(",", form.Shift_Ids) + ") ";
+            }
+
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+            {
+                whereUnit = $@"AND L3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -1544,10 +1556,10 @@ DROP TABLE #AMOSTRATIPO4 ";
                  AND M.Name = '{ form.Param["level2Name"] }'
                  AND C.Name = '{ form.Param["unitName"] }'
                  AND CollectionDate BETWEEN '{ form.startDate.ToString("yyyy-MM-dd") }' AND '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
-                
                  {whereDepartment}
-                 {whereDepartmentFiltro}
-
+                 {whereCluster}
+                 {whereClusterGroup}
+                 {whereUnit}
         GROUP BY 
 	        T.NAME, T.ID
         ORDER BY 4 DESC
