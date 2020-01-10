@@ -1,5 +1,6 @@
 ﻿using ADOFactory;
 using Dominio;
+using Helper;
 using Quartz;
 using System;
 using System.Collections.Generic;
@@ -87,6 +88,15 @@ namespace SgqSystem.Jobs
 
                             if (collectionLevel2MontadoDaCollection.ParDepartment_Id != null)
                                 db.CollectionLevel2XParDepartment.Add(new CollectionLevel2XParDepartment() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParDepartment_Id = collectionLevel2MontadoDaCollection.ParDepartment_Id.Value });
+
+                            if (collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("SearaFamiliaProduto_Id") != null)
+                                db.CollectionLevel2XSearaFamiliaProdutoXProduto.Add(
+                                    new Dominio.Seara.CollectionLevel2XSearaFamiliaProdutoXProduto() {
+                                        AddDate = DateTime.Now,
+                                        CollectionLevel2_Id = collectionLevel2Save.Id,
+                                        SearaFamiliaProduto_Id = collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("SearaFamiliaProduto_Id").Value,
+                                        SearaProduto_Id = collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("SearaProduto_Id")
+                                    });
 
                             db.SaveChanges();
                         }
@@ -279,7 +289,8 @@ namespace SgqSystem.Jobs
             collection.Key = collection.CollectionDate.ToString("yyyy-MM-dd") + "-" + collection.UnitId + "-" +
                 collection.ParLevel1_Id + "-" + collection.ParLevel2_Id + "-" + collection.Shift + "-" +
                 collection.ParCluster_Id + "-" + collection.ParCargo_Id + "-" + collection.ParDepartment_Id + "-" +
-                collection.EvaluationNumber + "-" + collection.Sample + "-" + collection.ParFrequency_Id;
+                collection.EvaluationNumber + "-" + collection.Sample + "-" + collection.ParFrequency_Id + "-" + 
+                collection.Outros.GetFromJsonText("SearaFamiliaProduto_Id");
 
             return collection;
         }

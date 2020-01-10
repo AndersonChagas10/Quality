@@ -1,0 +1,51 @@
+
+IF COL_LENGTH('Collection','Outros') IS NULL
+    BEGIN
+		ALTER TABLE Collection
+		ADD Outros varchar(max) null;
+    END
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SearaFamiliaProduto' AND xtype='U')
+create table SearaFamiliaProduto (
+	Id int not null primary key identity,
+	Name varchar(512) not null,
+	[ParCompany_Id] [int] NULL FOREIGN KEY REFERENCES ParCompany(Id),
+	[AddDate] [datetime] NOT NULL,
+	[AlterDate] [datetime] NULL,
+	[IsActive] [bit] NOT NULL DEFAULT ((1))
+)
+go
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SearaProduto' AND xtype='U')
+create table SearaProduto (
+	Id int not null primary key identity,
+	Name varchar(512) not null,
+	[ParCompany_Id] [int] NULL FOREIGN KEY REFERENCES ParCompany(Id),
+	[AddDate] [datetime] NOT NULL,
+	[AlterDate] [datetime] NULL,
+	[IsActive] [bit] NOT NULL DEFAULT ((1))
+)
+go
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SearaFamiliaProdutoXProduto' AND xtype='U')
+create table SearaFamiliaProdutoXProduto (
+	Id int not null primary key identity,
+	[ParCompany_Id] [int] NULL FOREIGN KEY REFERENCES ParCompany(Id),
+	SearaFamiliaProduto_Id [int] NULL FOREIGN KEY REFERENCES SearaFamiliaProduto(Id),
+	SearaProduto_Id [int] NULL FOREIGN KEY REFERENCES SearaProduto(Id),
+	[AddDate] [datetime] NOT NULL,
+	[AlterDate] [datetime] NULL,
+	[IsActive] [bit] NOT NULL DEFAULT ((1))
+)
+go
+ 
+ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XSearaFamiliaProdutoXProduto' AND xtype='U')
+ create table CollectionLevel2XSearaFamiliaProdutoXProduto (
+	Id int primary key identity not null,
+	AddDate datetime not null,
+	AlterDate datetime,
+	CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
+	SearaFamiliaProduto_Id [int] not NULL FOREIGN KEY REFERENCES SearaFamiliaProduto(Id),
+	SearaProduto_Id [int] NULL FOREIGN KEY REFERENCES SearaProduto(Id),
+)

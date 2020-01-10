@@ -151,14 +151,14 @@ function changeDate(that) {
 
 function setBreadcrumbs() {
 
-    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="validaRota(openMenu,null)">Inicio</a></li>';
+    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="validaRota(listarParLevel1,null)">Inicio</a></li>';
     var breadcrumbLi = "";
     var isCurrent = true;
 
     if (currentParLevel2_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParLevel2, function (item) {
             return item.Id == currentParLevel2_Id;
-        })[0].Name, 'validaRota(listarParLevel2)', isCurrent) + breadcrumbLi;
+        })[0].Name, '', isCurrent) + breadcrumbLi;
 
         isCurrent = false;
     }
@@ -166,7 +166,7 @@ function setBreadcrumbs() {
     if (currentParLevel1_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParLevel1, function (item) {
             return item.Id == currentParLevel1_Id;
-        })[0].Name, 'validaRota(listarParLevel1)', isCurrent) + breadcrumbLi;
+        })[0].Name, 'validaRota(listarParLevel2)', isCurrent) + breadcrumbLi;
 
         isCurrent = false;
     }

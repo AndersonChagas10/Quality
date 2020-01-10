@@ -54,7 +54,7 @@ function openColetaDCA(levels) {
         '		<div class="col-xs-12">                                                                                                            ' +
         '			<div class="panel panel-primary">                                                                                              ' +
         '			  <div class="panel-heading">                                                                                                  ' +
-        '				<h3 class="panel-title"><a onclick="listarParLevel2DCA();" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
+        '				<h3 class="panel-title"><a onclick="listarParLevel2DCA();" class="btn btn-warning">Voltar</a> Questionario de Coleta DCA</h3>                                   ' +
         '			  </div>                                                                                                                       ' +
         '			  <div class="panel-body">                                                                                                     ' +
                         //getContador() +
@@ -71,7 +71,7 @@ function openColetaDCA(levels) {
 
     $('div#app').html(html);
 
-    setBreadcrumbs();
+    setBreadcrumbsDCA();
 
 }
 
@@ -835,6 +835,7 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
         //ParHeaderField_Value: 
         //ParHeaderField_Value: 
         //IsProcessed: 
+        Outros: '{SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', SearaProduto_Id:'+currentProdutoDCA_Id+'}'
 
     };
 

@@ -640,7 +640,8 @@ WHERE 1 = 1
                     ParDepartment_Id = x.ParDepartment_Id,
                     ParFrequency_Id = x.Parfrequency_Id,
                     AuditorId = x.UserSgq_Id ?? 0,
-                    CollectionDate = x.CollectionDate.Value
+                    CollectionDate = x.CollectionDate.Value,
+                    Outros = x.Outros
                 })
                 .Distinct()
                 .ToList();
@@ -675,6 +676,10 @@ WHERE 1 = 1
             List<RotinaIntegracao> listaRotinaIntegracao;
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
             List<ParEvaluation> listaParEvaluation;
+
+            List<Dominio.Seara.SearaFamiliaProduto> listaSearaFamiliaProduto;
+            List<Dominio.Seara.SearaFamiliaProdutoXProduto> listaSearaFamiliaProdutoXProduto;
+            List<Dominio.Seara.SearaProduto> listaSearaProduto;
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -852,28 +857,6 @@ WHERE 1 = 1
                     })
                     .ToList();
 
-                //if (departamentosFiltrados.Count > 0)
-                //{
-                //    var idsDosDepartamentos = departamentosFiltrados.Select(x => x.Id).ToList();
-
-                //    listaParDepartment = db.ParDepartment
-                //        .AsNoTracking()
-                //        .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
-                //        .Where(x => idsDosDepartamentos.Contains(x.Id))
-                //        .Where(x => x.Active)
-                //        .Select(x => new ParDepartmentAppViewModel()
-                //        {
-                //            Id = x.Id,
-                //            Name = x.Name,
-                //            Description = x.Description,
-                //            Parent_Id = x.Parent_Id,
-                //            Hash = x.Hash
-                //        })
-                //        .ToList();
-                //}
-                //else
-                //{
-
                 listaParDepartment = db.ParDepartment
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
@@ -887,7 +870,6 @@ WHERE 1 = 1
                         Hash = x.Hash
                     })
                     .ToList();
-                //}
 
                 listaParCargo = db.ParCargo
                     .AsNoTracking()
@@ -920,22 +902,6 @@ WHERE 1 = 1
                     .Where(x => x.IsActive && x.IsCollectAlert)
                     .ToList();
 
-                //listaParDepartmentXHeaderField = db.ParDepartmentXHeaderField
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .ToList();
-
-                //listaParHeaderField = db.ParHeaderField
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .ToList();
-
-                //listaParMultipleValues = db.ParMultipleValues
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .ToList();
-
-
                 listaParHeaderFieldGeral = db.ParHeaderFieldGeral
                     .AsNoTracking()
                     .Where(x => x.IsActive)
@@ -960,6 +926,20 @@ WHERE 1 = 1
                 //Rotina Integração Offline
                 listaRotinaIntegracaoOffline = GetRotinaIntegracaoComResultados();
 
+                listaSearaFamiliaProduto = db.SearaFamiliaProduto
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaSearaFamiliaProdutoXProduto = db.SearaFamiliaProdutoXProduto
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaSearaProduto = db.SearaProduto
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
             }
 
             return Ok(new
@@ -979,15 +959,15 @@ WHERE 1 = 1
                 listaParCargoXDepartment,
                 listaParLevel3XHelp,
                 listaParAlert,
-                //listaParDepartmentXHeaderField,
-                //listaParHeaderField,
-                //listaParMultipleValues,
                 listaParHeaderFieldGeral,
                 listaParMultipleValuesGeral,
                 listaParDepartmentXRotinaIntegracao,
                 listaRotinaIntegracao,
                 listaRotinaIntegracaoOffline,
-                listaParEvaluation
+                listaParEvaluation,
+                listaSearaFamiliaProduto,
+                listaSearaFamiliaProdutoXProduto,
+                listaSearaProduto
             });
         }
 

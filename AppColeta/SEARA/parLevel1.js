@@ -18,7 +18,7 @@ function listarParLevel1(isVoltar) {
 
 	var voltar = "";
 
-	voltar = '<a onclick="validaRota(openMenu,null);" class="btn btn-warning">Voltar</a>';
+	//voltar = '<a onclick="validaRota(openMenu,null);" class="btn btn-warning">Voltar</a>';
 
 	html = getHeader() +
 		'<div class="container-fluid">                                           ' +
@@ -27,7 +27,7 @@ function listarParLevel1(isVoltar) {
 		'                                                                  ' +
 		'			<div class="panel panel-primary">                      ' +
 		'			  <div class="panel-heading">                          ' +
-		'				<h3 class="panel-title">' + voltar + ' Selecione o centro de custo desejado</h3>            ' +
+		'				<h3 class="panel-title">' + voltar + ' Selecione o Indicador</h3>            ' +
 		'			  </div>                                               ' +
 		'			  <div class="panel-body">                             ' +
 		'				<div class="list-group">                           ' +

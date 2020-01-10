@@ -294,6 +294,11 @@ namespace Dominio
         public virtual DbSet<ParHeaderFieldXComponenteGenerico> ParHeaderFieldXComponenteGenerico { get; set; }
         public virtual DbSet<LogError> LogError { get; set; }
 
+        public virtual DbSet<Seara.SearaFamiliaProduto> SearaFamiliaProduto { get; set; }
+        public virtual DbSet<Seara.SearaProduto> SearaProduto { get; set; }
+        public virtual DbSet<Seara.SearaFamiliaProdutoXProduto> SearaFamiliaProdutoXProduto { get; set; }
+        public virtual DbSet<Seara.CollectionLevel2XSearaFamiliaProdutoXProduto> CollectionLevel2XSearaFamiliaProdutoXProduto { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

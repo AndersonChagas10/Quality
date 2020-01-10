@@ -51,6 +51,7 @@ namespace Dominio
 
         //outros
         public bool? IsProcessed { get; set; }
+        public string Outros { get; set; }
 
         [NotMapped]
         public bool? HasError { get; set; }

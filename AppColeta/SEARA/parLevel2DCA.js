@@ -37,7 +37,7 @@ function listarParLevel2DCA(isVoltar) {
             '</button>';
     });
 
-    var voltar = '<a onclick="listarParLevel1(' + isVoltar + ');" class="btn btn-warning">Voltar</a>';
+    var voltar = '<a onclick="listarFamiliaProdutoDCA(' + isVoltar + ');" class="btn btn-warning">Voltar</a>';
 
     html = getHeader() +
         '<div class="container-fluid">                                           ' +
@@ -45,20 +45,15 @@ function listarParLevel2DCA(isVoltar) {
         '		<div class="col-xs-12">                                    ' +
         '			<div class="panel panel-primary">                      ' +
         '			  <div class="panel-heading">                          ' +
-        '				<h3 class="panel-title">' + voltar + ' Selecione o centro de custo desejado</h3>            ' +
+        '				<h3 class="panel-title">' + voltar + ' Selecione o Monitoramento/SKU para coletar</h3>            ' +
         '			  </div>                                               ' +
         '			  <div class="panel-body">                             ' +
-        '               <div class="col-sm-12 text-center" style="padding:20px;margin-bottom:5px">Item: Familia de Produto</div>' +
+        '               <div class="col-sm-12 text-center" style="padding:20px;margin-bottom:5px">Item: '+getSearaFamiliaProduto().Name+'</div>' +
         '               <div class="col-sm-12 btn-warning text-center" style="padding:20px;margin-bottom:5px">Avaliação ' + avaliacaoAtual + '</div>' +
         '               <h2 class="col-xs-6 btn-info text-center" style="height:100px;padding-top: 35px;margin: 0px;">'+ZeroSeForNaN(parseInt(totalDeConformidadeDeColetas/listaParLevel2.length))+'%</h2>' +
         '               <div class="col-xs-6 text-center" style="padding:0px !important">' +
-        '<select name="sometext" size="5" class="form-control" style="height:100px;">' +
-        '<option>text1</option>' +
-        '<option>text2</option>' +
-        '<option>text3</option>' +
-        '<option>text4</option>' +
-        '<option>text5</option>' +
-        '</select></div>' +
+        getSelectProdutosDCA()+
+        '</div>' +
         '				<div class="list-group" style="padding-top:5px;clear:both !important">                           ' +
         htmlLista +
         '				</div>                                             ' +
@@ -70,7 +65,7 @@ function listarParLevel2DCA(isVoltar) {
 
     $('div#app').html(html);
 
-    setBreadcrumbs();
+    setBreadcrumbsDCA();
 
     if ($(".list-group button").length == 1 && (isVoltar == false || isVoltar == undefined)) {
 
