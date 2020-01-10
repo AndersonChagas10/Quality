@@ -9,10 +9,24 @@ namespace DTO
 {
     public class AnaliseCriticaResultSet
     {
+        //Indicador
         public int ParLevel1_Id { get; set; }
         public string ParLevel1_Name { get; set; }
         public List<TendenciaResultSet> ListaTendenciaResultSet { get; set; } //Aqui tem tabela de acoes
         public List<AcaoResultSet> ListaAcaoIndicador { get; set; }
+
+        //Monitoramento Acumulado
+        public List<GraficoNC> ListaMonitoramento { get; set; }
+        public List<AcaoResultSet> ListaAcaoMonitoramento { get; set; }
+
+        //Monitoramento por Departamento
+        public List<GraficoTabela> MonitoramentosDepartamentos { get; set; }
+
+        public List<GraficoNC> TarefasAcumuladas { get; set; }
+
+        public GraficosNC Tarefas { get; set; }
+
+
         //public List<GraficoNC> Monitoramentos { get; set; }
         //public List<GraficosNC> MonitoramentosDepartamentos { get; set; } //Aqui tem tabela
         //public List<GraficoNC> TarefasAcumuladas { get; set; }
@@ -100,6 +114,14 @@ namespace DTO
     public class GraficosNC
     {
         public List<GraficoNC> GraficosDeNC { get; set; }
+
+        public List<AcaoResultSet> ListaAcaoMonitoramento { get; set; }
+    }
+
+    public class GraficoTabela
+    {
+        public List<GraficoNC> ListaMonitoramentoDepartamento { get; set; }
+        public List<AcaoResultSet> ListaAcaoMonitoramentoDepartamento { get; set; }
     }
 
     public class GraficoNC
@@ -110,7 +132,7 @@ namespace DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public string ChartName { get; set; }
-        public List<AcaoResultSet> Acoes { get; set; }
+        //public List<AcaoResultSet> Acoes { get; set; }
     }
 
 }
