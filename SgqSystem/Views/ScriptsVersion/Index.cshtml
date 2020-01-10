@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "Versão dos Scripts";
+    var @urlBuscarScript = Url.Action("GetScriptsVersion", "api/ScriptsVersion");
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "ScriptsVersion")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Script Version</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-xs-12 form-group">
+
+                    <div class="col-xs-12 form-group">
+                        <h4> <label class="">Script Version</label></h4>
+                    </div>
+                    <div class="col-xs-12 form-group">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-xs-12 form-group">
+                                    <label for="version"> Escolha a versão: </label>
+                                    <select name="version" id="version">
+                                        <option>selecione</option>
+                                        <option value="12">versão 1.0.12</option>
+                                        <option value="13">versão 1.0.13</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <label for="version"> Escolha o numero do card: </label>
+                                    <select name="card" id="card">
+                                        <option>selecione</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-12 ">
+                                    <button class="btn btn-success" type="button" id="buscarScript">Pesquisar Scripts</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="divXml" class="col-xs-12">
+                    <label for="xml">DB Scripts</label>
+                    <textarea class="form-control" id="xml" rows="8"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+
+        var urlBuscarScript = '@Html.Raw(@urlBuscarScript)';
+
+        $("#buscarScript").on("click", function () {
+            var version = $("#version :selected").val();
+            var cardNumber = $("#card :selected").val();
+
+            $.ajax({
+                type: "Get",
+                url: urlBuscarScript + "?cardNumber=" + cardNumber,
+                dataType: "json",
+                contentType: "application/json",
+                data: {version: version},
+                success: function (data) {
+                    $("#xml").val(data);
+                    $("#xml").text(data);
+                    debugger
+                },
+                error: function (retorno) {
+                    alert("erro!");
+                }
+            });
+        })
+
+
+
+            @*var urlExcel = '@Html.Raw(@urlExcel)';
+
+            $("#carregarArquivo").submit(function (e) {
+                if ($('input[name="arquivo"]').val().length == 0) {
+                    $("#ModalErro").html("<p>Selecione um arquivo para sua importação.</p>")
+                    $("#ModalErro").show();
+                    e.preventDefault();
+                }
+            });
+
+            $("#salvar").on('click', function () {
+
+                $("#ModalConfirmacao").modal('show');
+
+                $("#modalSalvar").off('click');
+                $("#modalSalvar").on('click', function () {
+
+                    if ($('#formato').val() > 0) {
+                        $("#ModalConfirmacao").modal('hide');
+                        var dadosPreenchidos = "";
+                        if ($("#tabela tbody tr").find('[type="checkbox"]:checked').length > 0) {
+                            dadosPreenchidos = PreencherDadosArquivo();
+                        }
+                        var formatoId = $("#formato").val();
+                        var dados = JSON.stringify(dadosPreenchidos);
+
+                        $('body').LoadingOverlay("show");
+                        $.ajax({
+                            type: "Post",
+                            url: urlExcel + "?formatoId=" + formatoId,
+                            dataType: "json",
+                            contentType: "application/json",
+                            data: dados,
+                            success: function (retorno) {
+                                $('body').LoadingOverlay("hide");
+                                $("#mensagemAposImportacao").html(retorno);
+                                $("#ModalErro").hide();
+                                $("#ModalInformacao").modal('show');
+                            },
+                            error: function (retorno) {
+                                $('body').LoadingOverlay("hide");
+                                $("#ModalErro").html("<p>" + retorno.responseJSON.Message + "</p>");
+                                $("#ModalErro").show();
+                            }
+                        });
+                    } else {
+                        $("#ModalConfirmacao").modal('hide');
+                        $("#ModalErro").html("<p>Selecione qual formato deseja considerar para sua importação.</p>")
+                        $("#ModalErro").show();
+                    }
+                });
+
+                function PreencherDadosArquivo() {
+                    var lista = [];
+                    var objeto = {};
+
+                    $.each($("#tabela tbody tr").find('[type="checkbox"]:checked'), function () {
+                        objeto = {};
+                        $.each($(this).parents("tr").find("[data-header]"), function (i, o) {
+
+                            objeto[$(this).attr("data-header")] = $(this).text();
+                        });
+                        lista.push(objeto);
+                    })
+                    return lista;
+                }
+            })*@
+
+
+        </script>
+}
