@@ -816,11 +816,10 @@
 
                 GerarGraficoMonitoramento(obj, idPanel);
 
-
-                ////fazer um forach para cada departamento
-                //objMock.MonitoramentoDepartamento.forEach(function (o, i) {
-                //    GerarGraficoMonitoramentoPorDepartamento(objMock, idPanel, i);
-                //});
+                //fazer um forach para cada departamento
+                obj.MonitoramentosDepartamentos.forEach(function (objDepartamento) {
+                    GerarGraficoMonitoramentoPorDepartamento(objDepartamento, idPanel, obj);
+                });
 
                 //GerarGraficoTarefasAcumuladas(objMock, idPanel);
 
@@ -1098,7 +1097,7 @@
 
         function GerarGraficoMonitoramento(data, idPanel) {
 
-            let titulo = "NC por Monitoramento";
+            let titulo = "Indicador: " + data.ParLevel1_Name;
             let idChart = 'monitoramento' + data.ParLevel1_Id;
             let valoresX = MapeiaValorParaHC(data.ListaMonitoramento, "Name");
             let NC = MapeiaValorParaHC(data.ListaMonitoramento, "NC");
@@ -1152,7 +1151,7 @@
                 ],
             }, function () {
 
-                    //GerarTabelaAcaoCorretivaMonitoramento(data, panelSeletor, idChart);
+                    GerarTabelaAcaoCorretivaMonitoramento(data, panelSeletor, idChart);
             });
         }
 
@@ -1176,7 +1175,7 @@
             ];
 
             let table = {
-                data: data.Monitoramento.Acoes.data,
+                data: data.ListaAcaoMonitoramento,
                 columns: columns,
                 destroy: true,
                 scrollX: true,
@@ -1195,24 +1194,19 @@
 
         }
 
-        function GerarGraficoMonitoramentoPorDepartamento(objMock, idPanel, indexDepartamento) {
+        function GerarGraficoMonitoramentoPorDepartamento(obj, idPanel, objInteiro) {
 
-            //var valoresX = MapeiaValorParaHC(data, "Level2Name");
-            //var NC = MapeiaValorParaHC(data, "NC");
-            //var TotalAvaliado = MapeiaValorParaHC(data, "Av");
-            //var titulo = Resources('level1') + ": " + MapeiaValorParaHC(data, "Level1Name")[0];
+            debugger
 
-            let data = objMock.MonitoramentoDepartamento[indexDepartamento];
-
-            let titulo = "NC por Monitoramento do Departamento: " + data.Grafico.Departamento_Name;
-            let valoresX = data.Grafico.xAxis;
-            let NC = data.Grafico.NC;
-            let TotalAvaliado = data.Grafico.AV;
+            let titulo = "NC por Monitoramento do Departamento: " + obj.ParDepartment;
+            let valoresX = MapeiaValorParaHC(obj.ListaMonitoramentoDepartamento, "Name");
+            let NC = MapeiaValorParaHC(obj.ListaMonitoramentoDepartamento, "NC");
+            let TotalAvaliado = MapeiaValorParaHC(obj.ListaMonitoramentoDepartamento, "AV");
             let pareto = Chart.CalculaPareto(NC);
-            let departamentoName = data.Grafico.Departamento_Name;
-            let idCollapse = "indicador" + objMock.ParLevel1_Id + "departamento" + data.Grafico.Departamento_Id;
-            let nomePanel = departamentoName + " | " + objMock.ParLevel1_Name;
-            let idChart = 'monitoramentos' + objMock.ParLevel1_Id + "departamento" + data.Grafico.Departamento_Id;
+            let departamentoName = obj.ParDepartment;
+            let idCollapse = "indicador" + objInteiro.ParLevel1_Id + "departamento" + obj.ParDepartment_Id;
+            let nomePanel = departamentoName + " | " + objInteiro.ParLevel1_Name;
+            let idChart = 'monitoramentos' + objInteiro.ParLevel1_Id + "departamento" + obj.ParDepartment_Id;
             let seletorPanel = idPanel + " .panel-monitoramento-departamento";
 
             let panel = `
@@ -1272,16 +1266,33 @@
 
             }, function () {
 
-                GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(data, seletorPanel, idChart);
+                GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(obj, seletorPanel, idChart);
 
             });
         }
 
         function GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(data, seletorPanel, idChart) {
 
+            let columns = [
+                { title: "Indicador", mData: "ParLevel1_Name" },
+                { title: "Monitoramento", mData: "ParLevel2_Name" },
+                {
+                    title: "Data Início Auditoria", mData: null, render: function (data) {
+                        let html = "";
+                        if (data.AuditStartTime != null && data.AuditStartTime != "0001-01-01T00:00:00")
+                            html = "<span style='display:none'>" + data.AuditStartTime + "</span>" + new Date(data.AuditStartTime).toLocaleDateString();
+
+                        return html;
+                    }
+                },
+                { title: "Descrição da Falha", mData: "DescriptionFailure" },
+                { title: "Correção", mData: "ImmediateCorrectiveAction" },
+                { title: "Ação Corretiva", mData: "PreventativeMeasure" }
+            ];
+
             let table = {
-                data: data.Acoes.data,
-                columns: data.Acoes.columns,
+                data: data.ListaAcaoMonitoramentoDepartamento,
+                columns: columns,
                 destroy: true,
                 scrollX: true,
                 paginate: false,

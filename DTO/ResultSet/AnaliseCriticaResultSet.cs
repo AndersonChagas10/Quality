@@ -120,6 +120,8 @@ namespace DTO
 
     public class GraficoTabela
     {
+        public string ParDepartment { get; set; }
+        public int ParDepartment_Id { get; set; }
         public List<GraficoNC> ListaMonitoramentoDepartamento { get; set; }
         public List<AcaoResultSet> ListaAcaoMonitoramentoDepartamento { get; set; }
     }
@@ -132,6 +134,9 @@ namespace DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public string ChartName { get; set; }
+        public string ParDepartment_Name { get; set; }
+        public int ParDepartment_Id { get; set; }
+
         //public List<AcaoResultSet> Acoes { get; set; }
     }
 
