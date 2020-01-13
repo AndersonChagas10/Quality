@@ -802,7 +802,7 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
 
     var coletaDCA = {
         Id: 0,
-        CollectionDate: currentCollectDate.toJSON(),
+        CollectionDate: getCurrentDate(),
         UserSgq_Id: currentLogin.Id,
         Shift_Id: 1,
         Period_Id: 1,
@@ -1251,16 +1251,25 @@ $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', fun
 
     e.preventDefault();
 
+    debugger
+
     //TODO: aplicar função para inserir arr de coletas no arr de salvar coletas
     var cabecalhosDCA = getCollectionHeaderFieldsDCA();
 
     if (cabecalhosDCA) {
         cabecalhosDCA.forEach(function (cabecalho) {
-            coletasDCA.push(cabecalho);
+            coletasDCA.unshift(cabecalho);
         });
     }
 
-    SalvarColetas(coletasDCA);
+    var coletasDoMonitoramentoSendoSalvo = $.grep(coletasDCA, function (coleta) {
+            return coleta.ParLevel1_Id == currentParLevel1_Id 
+                && (coleta.ParLevel2_Id == currentParLevel2_Id || coleta.ParLevel2_Id == null)
+                && coleta.Outros != null 
+                && coleta.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0;
+        });
+
+    SalvarColetas(coletasDoMonitoramentoSendoSalvo);
 
     openMensagem("Avaliacao salva com sucesso!", "blue", "white");
     closeMensagem(3000);
@@ -1271,50 +1280,27 @@ function getCollectionHeaderFieldsDCA() {
 
     var collectionHeaderFiedDCA = [];
 
-    // $('#headerFieldDepartment input, #headerFieldDepartment select').each(function () {
+    $('#headerFieldLevel1 input, #headerFieldLevel1 select').each(function () {
 
-    //     $self = $(this);
+        $self = $(this);
 
-    //     //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
-    //     if ($self.val())
+        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
+        if ($self.val())
 
-    //         collectionHeaderFied.push({
-    //             ParHeaderField_Id: $self.attr("parheaderfield_id"),
-    //             ParHeaderField_Value: $self.val(),
-    //             Evaluation: currentEvaluationDCA.Evaluation,
-    //             Sample: currentEvaluationDCA.Sample,
-    //             ParDepartment_Id: currentParDepartment_Id,
-    //             ParCargo_Id: currentParCargo_Id,
-    //             ParCompany_Id: currentParCompany_Id,
-    //             CollectionDate: getCurrentDate(),
-    //             UserSgq_Id: currentLogin.Id,
-    //             Parfrequency_Id: parametrization.currentParFrequency_Id
-    //         });
+            collectionHeaderFiedDCA.push({
+                ParHeaderField_Id: $self.attr("parheaderfield_id"),
+                ParHeaderField_Value: $self.val(),
+                Evaluation: currentEvaluationDCA.Evaluation,
+                Sample: currentEvaluationDCA.Sample,
+                ParCompany_Id: currentParCompany_Id,
+                CollectionDate: getCurrentDate(),
+                UserSgq_Id: currentLogin.Id,
+                ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
+                ParLevel2_Id: $self.parents('#headerFieldLevel1').attr('parLevel2Id'),
+                Outros: '{SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', SearaProduto_Id:'+currentProdutoDCA_Id+'}'
+            });
 
-    // });
-
-    // $('#headerFieldLevel1 input, #headerFieldLevel1 select').each(function () {
-
-    //     $self = $(this);
-
-    //     //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
-    //     if ($self.val())
-
-    //         collectionHeaderFied.push({
-    //             ParHeaderField_Id: $self.attr("parheaderfield_id"),
-    //             ParHeaderField_Value: $self.val(),
-    //             Evaluation: currentEvaluationDCA.Evaluation,
-    //             Sample: currentEvaluationDCA.Sample,
-    //             ParDepartment_Id: currentParDepartment_Id,
-    //             ParCargo_Id: currentParCargo_Id,
-    //             ParCompany_Id: currentParCompany_Id,
-    //             CollectionDate: getCurrentDate(),
-    //             UserSgq_Id: currentLogin.Id,
-    //             ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
-    //             Parfrequency_Id: parametrization.currentParFrequency_Id
-    //         });
-
-    // });
+    });
 
 
     $('#headerFieldLevel2 input, #headerFieldLevel2 select').each(function () {
@@ -1329,14 +1315,12 @@ function getCollectionHeaderFieldsDCA() {
                 ParHeaderField_Value: $self.val(),
                 Evaluation: currentEvaluationDCA.Evaluation,
                 Sample: currentEvaluationDCA.Sample,
-                //ParDepartment_Id: currentParDepartment_Id,
-                //ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
-                //Parfrequency_Id: parametrization.currentParFrequency_Id
+                Outros: '{SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', SearaProduto_Id:'+currentProdutoDCA_Id+'}'
             });
     });
 

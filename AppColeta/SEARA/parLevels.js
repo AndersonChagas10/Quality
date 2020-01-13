@@ -160,10 +160,10 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
     else
         parVinculo = parVinculo[0]; // Deverá ter somente um, porém caso tiver mais do que um não irá quebrar
 
-    return $.grep(coletasAgrupadas, function (obj) {
+    return coletasAgrupadas.length <= 0 || (coletasAgrupadas.length > 0 && $.grep(coletasAgrupadas, function (obj) {
         return (parVinculo.Evaluation == null || obj.Evaluation <= parVinculo.Evaluation) &&
             (parVinculo.Sample == null || obj.Sample <= parVinculo.Sample)
-    }).length > 0;
+    }).length > 0);
 
 }
 

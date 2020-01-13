@@ -89,7 +89,7 @@ namespace SgqSystem.Jobs
                             if (collectionLevel2MontadoDaCollection.ParDepartment_Id != null)
                                 db.CollectionLevel2XParDepartment.Add(new CollectionLevel2XParDepartment() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParDepartment_Id = collectionLevel2MontadoDaCollection.ParDepartment_Id.Value });
 
-                            if (collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("SearaFamiliaProduto_Id") != null)
+                            if (collectionLevel2MontadoDaCollection.Outros?.GetIntFromJsonText("SearaFamiliaProduto_Id") != null)
                                 db.CollectionLevel2XSearaFamiliaProdutoXProduto.Add(
                                     new Dominio.Seara.CollectionLevel2XSearaFamiliaProdutoXProduto() {
                                         AddDate = DateTime.Now,
@@ -290,7 +290,7 @@ namespace SgqSystem.Jobs
                 collection.ParLevel1_Id + "-" + collection.ParLevel2_Id + "-" + collection.Shift + "-" +
                 collection.ParCluster_Id + "-" + collection.ParCargo_Id + "-" + collection.ParDepartment_Id + "-" +
                 collection.EvaluationNumber + "-" + collection.Sample + "-" + collection.ParFrequency_Id + "-" + 
-                collection.Outros.GetFromJsonText("SearaFamiliaProduto_Id");
+                collection.Outros?.GetFromJsonText("SearaFamiliaProduto_Id");
 
             return collection;
         }
@@ -376,7 +376,8 @@ namespace SgqSystem.Jobs
                                 (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
                                 (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))
                             AND cl.Evaluation = {collectionLevel2.EvaluationNumber}
-                            AND cl.Sample = {collectionLevel2.Sample}
+                            AND (cl.Sample = {collectionLevel2.Sample} 
+                                OR cl.Outros like '%SearaFamiliaProduto_Id%') 
                             AND Cl.CollectionDate BETWEEN DATEADD(minute, -5, '{collectionDate}') and DATEADD(minute, 5, '{collectionDate}')";
 
                 headerFields = factory.SearchQuery<CollectionLevel2XParHeaderFieldGeral>(sql).ToList();

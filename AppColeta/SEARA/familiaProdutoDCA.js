@@ -72,7 +72,7 @@ function getSearaProdutoPorFamiliaDeProduto(){
 		
         return $.grep(produtosVinculados, function (vinculo) {
 			return vinculo.SearaProduto_Id == produto_Id;
-		});
+		}).length > 0;
 	});
 
 	return produtos;
