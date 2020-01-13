@@ -4,53 +4,61 @@
     <number>sgq-1</number>
     <version>1.0.13</version>
     <description>Teste XML</description>
+    <script> lorem ipsum </script>
+  </card>
+
+  <card>
+    <number>sgq-2</number>
+    <version>1.0.13</version>
+    <description>Teste XML 2 </description>
     <script>
-      lorem ipsum
+      lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
     </script>
   </card>
 
-  <<!--number>sgq-2</number>
-  <version>1.0.13</version>
-  <description>Teste XML 2 </description>
-  <script>
-    lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-  </script>
+  <card>
+    <number>sgq-3</number>
+    <version>1.0.13</version>
+    <description>Teste XML 3 </description>
+    <script>
+      lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+    </script>
+  </card>
 
-  <number>sgq-3</number>
-  <version>1.0.13</version>
-  <description>Teste XML 3 </description>
-  <script>
-    lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-  </script>
+  <card>
+    <number>sgq-4</number>
+    <version>1.0.13</version>
+    <description>Teste XML 3 </description>
+    <script>
+      lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+    </script>
+  </card>
 
-  <number>sgq-4</number>
-  <version>1.0.13</version>
-  <description>Teste XML 3 </description>
-  <script>
-    lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-  </script>
+  <card>
+    <number>sgq-5</number>
+    <version>1.0.13</version>
+    <description>Teste XML 5 </description>
+    <script>
+      lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+    </script>
+  </card>
 
-  <number>sgq-5</number>
-  <version>1.0.13</version>
-  <description>Teste XML 5 </description>
-  <script>
-    lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-  </script>
+  <card>
+    <number>sgq-1</number>
+    <version>1.0.12</version>
+    <description>Teste XML 1 </description>
+    <script>
+      lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+    </script>
+  </card>
 
-
-  <number>sgq-1</number>
-  <version>1.0.12</version>
-  <description>Teste XML 1 </description>
-  <script>
-    lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-  </script>
-
-  <number>sgq-2</number>
-  <version>1.0.12</version>
-  <description>Teste XML 2 </description>
-  <script>
-    lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-  </script>-->
-
+  <card>
+    <number>sgq-2</number>
+    <version>1.0.12</version>
+    <description>Teste XML 2 </description>
+    <script>
+      lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+    </script>
+  </card>
 
 </cards>

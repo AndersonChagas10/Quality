@@ -41,11 +41,11 @@
                                     <label for="version"> Escolha o numero do card: </label>
                                     <select name="card" id="card">
                                         <option>selecione</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
+                                        <option value="sgq-1">1</option>
+                                        <option value="sgq-2">2</option>
+                                        <option value="sgq-3">3</option>
+                                        <option value="sgq-4">4</option>
+                                        <option value="sgq-5">5</option>
                                     </select>
                                 </div>
                                 <div class="col-xs-12 ">
@@ -79,9 +79,9 @@
                 contentType: "application/json",
                 data: {version: version},
                 success: function (data) {
-                    $("#xml").val(data);
-                    $("#xml").text(data);
-                    debugger
+                    $("#xml").val(data.m_StringValue);
+                    $("#xml").text(data.m_StringValue);
+
                 },
                 error: function (retorno) {
                     alert("erro!");

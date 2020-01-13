@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
 using System.Xml;
 using System.Xml.Linq;
@@ -33,27 +34,38 @@ namespace SgqSystem.Controllers.Api
             //XmlDocument doc = new XmlDocument();
             //doc.Load("C:\\Users\\GRT\\source\\repos\\sgq_pa\\DbScriptsVersion.xml");
 
-            List<XmlObj> objList = new List<XmlObj>();
+            //var xmlString = File.ReadAllText("C:\\Users\\GRT\\source\\repos\\sgq_pa\\DbScriptsVersion.xml");
+            //var stringReader = new StringReader(xmlString);
+            //var dsSet = new DataSet();
+            //dsSet.ReadXml(stringReader);
 
-            var xmlString = File.ReadAllText("C:\\Users\\GRT\\source\\repos\\sgq_pa\\DbScriptsVersion.xml");
-            var stringReader = new StringReader(xmlString);
-            var dsSet = new DataSet();
-            dsSet.ReadXml(stringReader);
-
-            // Loading from a file, you can also load from a stream
-            var xml = XDocument.Load("C:\\Users\\GRT\\source\\repos\\sgq_pa\\DbScriptsVersion.xml");
+            //// Loading from a file, you can also load from a stream
+            //var xml = XDocument.Load("C:\\Users\\GRT\\source\\repos\\sgq_pa\\DbScriptsVersion.xml");
 
 
-            // Query the data and write out a subset of contacts
-            var query = from c in xml.Root.Descendants("card")
-                        //where c.Element("number").Value == cardNumber
-                        //&& c.Element("version").Value == version
-                        select c.Element("number").Value + " " +
-                               c.Element("version").Value + " " +
-                               c.Element("description").Value + " " +
-                               c.Element("script").Value;
+            //// Query the data and write out a subset of contacts
+            //var query = from c in xml.Root.Descendants("card")
+            //            //where c.Element("number").Value == cardNumber
+            //            //&& c.Element("version").Value == version
+            //            select c.Element("number").Value + " " +
+            //                   c.Element("version").Value + " " +
+            //                   c.Element("description").Value + " " +
+            //                   c.Element("script").Value;
 
-            return Ok(dsSet);
+            StringBuilder result = new StringBuilder();
+            foreach (XElement level1Element in XElement.Load("C:\\Users\\GRT\\source\\repos\\sgq_pa\\DbScriptsVersion.xml").Elements("card"))
+            {
+                if (level1Element.Element("number").Value.Contains(cardNumber) || level1Element.Element("version").Value.Contains(version))
+                {
+                    result.AppendLine("<number> " + level1Element.Element("number").Value + " </number>");
+                    result.AppendLine("<version> " + level1Element.Element("version").Value + "< /version>");
+                    result.AppendLine("<description> " + level1Element.Element("description").Value + " </description>");
+                    result.AppendLine("<script> " + level1Element.Element("script").Value + " </script>");
+                    result.AppendLine(" ");
+                }
+            }
+
+            return Ok(result);
         }
     }
 }
