@@ -22,15 +22,12 @@ namespace DTO
         //Monitoramento por Departamento
         public List<GraficoTabela> MonitoramentosDepartamentos { get; set; }
 
-        public List<GraficoNC> TarefasAcumuladas { get; set; }
+        public List<GraficoNC> ListaTarefasAcumuladas { get; set; }
 
         public GraficosNC Tarefas { get; set; }
 
-
-        //public List<GraficoNC> Monitoramentos { get; set; }
-        //public List<GraficosNC> MonitoramentosDepartamentos { get; set; } //Aqui tem tabela
-        //public List<GraficoNC> TarefasAcumuladas { get; set; }
-        //public List<GraficosNC> Tarefas { get; set; } //Aqui tem tabela
+        //Tarefas por Monitoramentos
+        //public List<GraficoTabela> TarefaMonitoramentos { get; set; }
 
     }
 
@@ -122,6 +119,8 @@ namespace DTO
     {
         public string ParDepartment { get; set; }
         public int ParDepartment_Id { get; set; }
+        public string ParLevel2_Name { get; set; }
+        public int ParLevel2_Id { get; set; }
         public List<GraficoNC> ListaMonitoramentoDepartamento { get; set; }
         public List<AcaoResultSet> ListaAcaoMonitoramentoDepartamento { get; set; }
     }
@@ -134,10 +133,10 @@ namespace DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public string ChartName { get; set; }
+        public string ParLevel2_Name { get; set; }
+        public int ParLevel2_Id{ get; set; }
         public string ParDepartment_Name { get; set; }
         public int ParDepartment_Id { get; set; }
-
-        //public List<AcaoResultSet> Acoes { get; set; }
     }
 
 }

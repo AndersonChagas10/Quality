@@ -821,7 +821,7 @@
                     GerarGraficoMonitoramentoPorDepartamento(objDepartamento, idPanel, obj);
                 });
 
-                //GerarGraficoTarefasAcumuladas(objMock, idPanel);
+                GerarGraficoTarefasAcumuladas(obj, idPanel);
 
                 ////fazer um foreach para cada monitoramento
                 //objMock.Tarefa.forEach(function (o, i) {
@@ -1196,8 +1196,6 @@
 
         function GerarGraficoMonitoramentoPorDepartamento(obj, idPanel, objInteiro) {
 
-            debugger
-
             let titulo = "NC por Monitoramento do Departamento: " + obj.ParDepartment;
             let valoresX = MapeiaValorParaHC(obj.ListaMonitoramentoDepartamento, "Name");
             let NC = MapeiaValorParaHC(obj.ListaMonitoramentoDepartamento, "NC");
@@ -1310,15 +1308,19 @@
 
         }
 
-        function GerarGraficoTarefasAcumuladas(data, idPanel) {
+        function GerarGraficoTarefasAcumuladas(obj, idPanel) {
+
+            debugger
+
+            //MapeiaValorParaHC(obj.ListaTarefasAcumuladas, 
 
             let titulo = "Tarefas Acumuladas";
             let subtitle = "";
-            let xaxis = data.TarefaAcumulada.Grafico.xAxis;
-            let nc = data.TarefaAcumulada.Grafico.Serie;
+            let xaxis = MapeiaValorParaHC(obj.ListaTarefasAcumuladas, "Name");
+            let nc = MapeiaValorParaHC(obj.ListaTarefasAcumuladas, "NC");
             let pareto = Chart.CalculaPareto(nc);
 
-            let idChart = 'tarefaAcumulada' + data.ParLevel1_Id;
+            let idChart = 'tarefaAcumulada' + obj.ParLevel1_Id;
 
             let $panel = $("#" + idPanel);
 
@@ -1351,7 +1353,7 @@
                     shadow: true
                 },
                 series: [
-                  Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, data),
+                  Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, obj),
                   Chart.CurvaPareto(pareto)
                 ],
             }, function (chart) {

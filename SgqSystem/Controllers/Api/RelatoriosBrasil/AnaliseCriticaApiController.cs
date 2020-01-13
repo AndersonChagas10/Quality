@@ -160,9 +160,33 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     }
 
                     //TarefasAc
-
+                    analiseCriticaResultSet.ListaTarefasAcumuladas = GetTarefas(form, parLevel1_Id);
 
                     //Tarefa
+
+                    //analiseCriticaResultSet.Tarefas = new List<GraficoTabela>();
+                    //var monitoramentos_Ids = analiseCriticaResultSet.ListaMonitoramento.Select(x => x.Id).Distinct();
+
+                    //foreach (var monitoramento_Id in monitoramentos_Ids)
+                    //{
+
+                    //    var grafico = new List<GraficoNC>();
+                    //    var tabela = new List<AcaoResultSet>();
+
+                    //    tabela = GetAcaoCorretivaTarefa(form, parLevel1_Id, monitoramento_Id);
+                    //    grafico = tarefasAcumuladas.Where(x => x.monitoramentoId == monitoramento_Id).ToList();
+
+                    //    analiseCriticaResultSet.Tarefas.Add(new GraficoTabela
+                    //    {
+                    //        ListaMonitoramentoDepartamento = grafico,
+                    //        ListaAcaoMonitoramentoDepartamento = tabela,
+                    //        Monitoramento = grafico[0].Monitoramento_Id,
+                    //        Monitoramento_Id = monitoramento_Id
+                    //    });
+
+                    //}
+
+                    //analiseCriticaResultSet.TarefasPorMonitoramento = GetTarefas(form, parLevel1_Id);
 
                     listTendenciaResultSet.Add(analiseCriticaResultSet);
                 }
@@ -1160,11 +1184,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var wParLevel2 = "";
             var wParLevel3 = "";
             var wAcaoStatus = "";
-            var wPeriodo = "";
+            //var wPeriodo = "";
             var wNCComPeso = "";
             var wPeso = "";
             var wSurpervisor = "";
-            var orderBy = "S3.Data";
+            //var orderBy = "S3.Data";
 
             //Módulo
             if (form.ParModule_Ids != null && form.ParModule_Ids.Length > 0)
@@ -1227,24 +1251,24 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
 
             //Periodo
-            if (form.Periodo != null && form.Periodo.Length > 0)
-            {
-                if (form.Periodo[0] == 1)//Diario
-                {
-                    wPeriodo = "convert(NVARCHAR, Data, 111)";
-                }
+            //if (form.Periodo != null && form.Periodo.Length > 0)
+            //{
+            //    if (form.Periodo[0] == 1)//Diario
+            //    {
+            //        wPeriodo = "convert(NVARCHAR, Data, 111)";
+            //    }
 
-                if (form.Periodo[0] == 2)//Semanal
-                {
-                    wPeriodo = "CONCAT(CONCAT(DATEPART(YEAR, S1.Data), '-'), DatePart(WEEK, S1.Data))";
-                    orderBy = "CONVERT(INT,replace(S3.Data, '-', ''))";
-                }
-                if (form.Periodo[0] == 3)//Mensal
-                {
-                    wPeriodo = "CONCAT(CONCAT(DATEPART(YEAR, S1.Data), '-'), DatePart(MONTH, S1.Data))";
-                    orderBy = "CONVERT(INT,replace(S3.Data, '-', ''))";
-                }
-            }
+            //    if (form.Periodo[0] == 2)//Semanal
+            //    {
+            //        wPeriodo = "CONCAT(CONCAT(DATEPART(YEAR, S1.Data), '-'), DatePart(WEEK, S1.Data))";
+            //        orderBy = "CONVERT(INT,replace(S3.Data, '-', ''))";
+            //    }
+            //    if (form.Periodo[0] == 3)//Mensal
+            //    {
+            //        wPeriodo = "CONCAT(CONCAT(DATEPART(YEAR, S1.Data), '-'), DatePart(MONTH, S1.Data))";
+            //        orderBy = "CONVERT(INT,replace(S3.Data, '-', ''))";
+            //    }
+            //}
 
             //Exibe NC Com peso
             if (form.NcComPeso != null && form.NcComPeso.Length > 0)
@@ -1464,18 +1488,360 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return retornoMonitoramentosDepartamento;
         }
 
+        private List<GraficoNC> GetTarefas(DataCarrierFormularioNew form, int parLevel1_Id, int? monitoramento_Id = null)
+        {
+            var retornoTarefas = new List<GraficoNC>();
+
+            var wModulo = "";
+            var wParClusterGroup = "";
+            var wParCluster = "";
+            var wParStructure = "";
+            var wParCompany = "";
+            var wTurno = "";
+            var wParCriticalLevel = "";
+            var wParGroupParLevel1 = "";
+            var wParDepartment = "";
+            var wParLevel2 = "";
+            var wParLevel3 = "";
+            var wAcaoStatus = "";
+            var wNCComPeso = "";
+            var wPeso = "";
+            var wSurpervisor = "";
+
+            //Módulo
+            if (form.ParModule_Ids != null && form.ParModule_Ids.Length > 0)
+                wModulo = $" AND L1XM.ParModule_Id IN ({form.ParModule_Ids[0]}) --Modulo";
+
+            //Grupo de Processo
+            if (form.ParClusterGroup_Ids != null && form.ParClusterGroup_Ids.Length > 0)
+                wParClusterGroup = $" AND PCL.ParClusterGroup_Id IN ({string.Join(",", form.ParClusterGroup_Ids)}) --Grupo de Processo";
+
+            //Processo
+            if (form.ParCluster_Ids != null && form.ParCluster_Ids.Length > 0)
+                wParCluster = $" AND C2XC.ParCluster_Id IN ({string.Join(",", form.ParCluster_Ids)}) --Processo";
+
+            //Regional
+            if (form.ParStructure_Ids != null && form.ParStructure_Ids.Length > 0)
+                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure_Ids)}) --Regional)";
+
+            //Unidade
+            if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
+                wParCompany = $" AND PC.Id in ({string.Join(",", form.ParCompany_Ids)}) --Unidade";
+
+            //Turno
+            if (form.Shift_Ids != null && form.Shift_Ids.Length > 0)
+                wTurno = $" AND C2.Shift in ({string.Join(",", form.Shift_Ids)}) --Turno";
+
+            //Nível Criticidade
+            if (form.ParCriticalLevel_Ids != null && form.ParCriticalLevel_Ids.Length > 0)
+                wParCriticalLevel = $" AND L1XC.ParCriticalLevel_Id IN ({string.Join(",", form.ParCriticalLevel_Ids)}) --Nível Criticidade";
+
+            //Função
+            if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
+                wParGroupParLevel1 = $" AND PL1.ParGroupLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
+
+            //Departamento
+            if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
+                wParDepartment = $" AND CL2XPD.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
+
+            //Indicador
+            //if (form.ParLevel1_Ids != null && form.ParLevel1_Ids.Length > 0)
+            //    wParLevel1 = $" {string.Join(",", form.ParLevel1_Ids)})";
+
+            //Monitoramento
+            if (form.ParLevel2_Ids != null && form.ParLevel2_Ids.Length > 0)
+                wParLevel2 = $" AND C2.ParLevel2_Id IN ({string.Join(",", form.ParLevel2_Ids)}) --Monitoramento";
+
+            if (monitoramento_Id != null)
+                wParLevel2 += $" AND C2.ParLevel2_Id IN ({monitoramento_Id.ToString()})";
+
+            //Tarefa
+            if (form.ParLevel3_Ids != null && form.ParLevel3_Ids.Length > 0)
+                wParLevel3 = $" AND R3.ParLevel3_Id IN ({string.Join(",", form.ParLevel3_Ids)}) --Tarefa";
+
+
+            //Plano de Ação Concluido
+            if (form.AcaoStatus != null && form.AcaoStatus.Length > 0)
+            {
+                if (form.AcaoStatus[0] == 1) //Concluido
+                    wAcaoStatus = " AND (SELECT IIF(COUNT(*) > 0, 1, 0) as HaveAcoesConcluidas FROM Pa_Acao Acao WHERE 1 = 1 AND Acao.Level1Id = 1 AND Acao.Status IN (3, 4, 7, 8) AND Acao.Status NOT IN (1, 5, 6, 9, 10)) = 1 --Plano de Ação Concluido";
+
+                if (form.AcaoStatus[0] == 2)//Não Concluido
+                    wAcaoStatus = " AND(SELECT IIF(COUNT(*) > 0, 1, 0) as HaveAcoesEmAndamento FROM Pa_Acao Acao WHERE 1 = 1 AND Acao.Level1Id = 1 AND Acao.Status IN(1, 5, 6, 9, 10)) = 1 --Plano de Ação Concluido";
+            }
+
+            //Periodo
+            //if (form.Periodo != null && form.Periodo.Length > 0)
+            //{
+            //    if (form.Periodo[0] == 1)//Diario
+            //    {
+            //        wPeriodo = "convert(NVARCHAR, Data, 111)";
+            //    }
+
+            //    if (form.Periodo[0] == 2)//Semanal
+            //    {
+            //        wPeriodo = "CONCAT(CONCAT(DATEPART(YEAR, S1.Data), '-'), DatePart(WEEK, S1.Data))";
+            //        orderBy = "CONVERT(INT,replace(S3.Data, '-', ''))";
+            //    }
+            //    if (form.Periodo[0] == 3)//Mensal
+            //    {
+            //        wPeriodo = "CONCAT(CONCAT(DATEPART(YEAR, S1.Data), '-'), DatePart(MONTH, S1.Data))";
+            //        orderBy = "CONVERT(INT,replace(S3.Data, '-', ''))";
+            //    }
+            //}
+
+            //Exibe NC Com peso
+            if (form.NcComPeso != null && form.NcComPeso.Length > 0)
+            {
+                if (form.NcComPeso[0] == 1) //Com Peso
+                    wNCComPeso = "'NcComPeso'";
+                if (form.NcComPeso[0] == 2) //Sem Peso
+                    wNCComPeso = "'NcSemPeso'";
+            }
+
+            //Peso
+            if (form.Peso != null && form.Peso.Length > 0 && form.Peso[0] != null)
+                wPeso = $" AND R3.Weight IN ({ string.Join(",", form.Peso) })--Peso";
+
+            //Surpervisor
+            if (form.UserSgqSurpervisor_Ids != null && form.UserSgqSurpervisor_Ids.Length > 0)
+                wSurpervisor = $" AND C2.AuditorId IN ({string.Join(",", form.UserSgqSurpervisor_Ids)}) --Surpervisor";
+
+            var query = $@"
+
+DECLARE @INDICADOR INT = { parLevel1_Id }
+DECLARE @DATAINICIAL date = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
+DECLARE @DATAFINAL date = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
+DECLARE @RESS INT
+
+SELECT
+	@RESS = COUNT(1)
+FROM (SELECT
+		COUNT(1) AS NA
+	FROM CollectionLevel2 C2 WITH (NOLOCK)
+	LEFT JOIN Result_Level3 C3 WITH (NOLOCK)
+		ON C3.CollectionLevel2_Id = C2.Id
+	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
+	AND C2.ParLevel1_id = (SELECT TOP 1
+			Id
+		FROM ParLevel1 WITH (NOLOCK)
+		WHERE hashKey = 1)
+	AND C2.UnitId IN (1)
+	AND IsNotEvaluate = 1
+	GROUP BY C2.Id) NA
+WHERE NA = 2
+
+SELECT
+	*
+   ,CASE
+		WHEN Av IS NULL OR
+			Av = 0 THEN 0
+		ELSE NC / Av * 100
+	END AS NCPercent
+FROM (SELECT
+		level3_Id AS Id
+	   ,Level3Name AS Name
+		--,PorcentagemNc as NCPercent
+		--  ,(CASE
+		--	WHEN IsRuleConformity = 1 THEN (100 - Meta)
+		--	WHEN IsRuleConformity IS NULL THEN 0
+		--	ELSE Meta
+		--END) AS Meta				   
+	   ,SUM(IIF({wNCComPeso} = 'NcComPeso', NC, NcSemPeso)) AS NC --Exibe NC Com peso 
+	   ,SUM(IIF({wNCComPeso} = 'NcComPeso', AV, AvSemPeso)) AS AV --Exibe Av Com peso 
+	FROM (SELECT
+			*
+			--,CASE WHEN Av IS NULL OR Av = 0 THEN 0 ELSE NC / Av * 100 END AS PorcentagemNc
+			--,CASE WHEN Av IS NULL OR Av = 0 THEN 0 ELSE NCSemPeso / Av * 100 END AS PorcentagemNcSemPeso
+		   ,CASE
+				WHEN CASE
+						WHEN AV IS NULL OR
+							AV = 0 THEN 0
+						ELSE NC / AV * 100
+					END >= (CASE
+						WHEN IsRuleConformity = 1 THEN (100 - Meta)
+						ELSE Meta
+					END) THEN 1
+				ELSE 0
+			END RELATORIO_DIARIO
+		FROM (SELECT
+				level3_Id
+			   ,IsRuleConformity
+			   ,Level3Name
+			   ,TituloGrafico
+			   ,Unidade_Id
+			   ,Unidade_Name
+			   ,SUM(Av) AS Av
+			   ,SUM(AvSemPeso) AS AvSemPeso
+			   ,SUM(NC) AS NC
+			   ,SUM(NCSemPeso) AS NCSemPeso
+			   ,MAX(Meta) AS Meta
+			FROM (SELECT
+					L3.Id AS level3_Id
+				   ,L3.Name AS Level3Name
+				   ,'Tendência do Indicador ' + L3.Name AS TituloGrafico
+				   ,PL1.IsRuleConformity
+				   ,PC.Id AS Unidade_Id
+				   ,PC.Name AS Unidade_Name
+				   ,CASE
+						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1
+									SUM(Quartos) - @RESS
+								FROM VolumePcc1b WITH (NOLOCK)
+								WHERE ParCompany_id = PC.Id
+								AND Data = C2.CollectionDate)
+						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiEvaluation)
+						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
+						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.WeiEvaluation)
+						WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.WeiEvaluation)
+						ELSE 0
+					END AS Av
+				   ,CASE
+						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1
+									SUM(Quartos) - @RESS
+								FROM VolumePcc1b WITH (NOLOCK)
+								WHERE ParCompany_id = PC.Id
+								AND Data = C2.CollectionDate)
+						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
+						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.Evaluation)
+						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Evaluation)
+						WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.Evaluation)
+						ELSE 0
+					END AS AvSemPeso
+				   ,CASE
+						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiDefects)
+						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiDefects)
+						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Defects)
+						WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.WeiDefects)
+						ELSE 0
+					END AS NC
+				   ,CASE
+						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Defects)
+						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.Defects)
+						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Defects)
+						WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.WeiDefects)
+						ELSE 0
+					END AS NCSemPeso
+				   ,CASE
+						WHEN (SELECT
+									COUNT(1)
+								FROM ParGoal G WITH (NOLOCK)
+								WHERE G.ParLevel1_id = C2.ParLevel1_id
+								AND (G.ParCompany_id = C2.UnitId
+								OR G.ParCompany_id IS NULL)
+								AND G.IsActive = 1
+								AND G.EffectiveDate <= @DATAFINAL)
+							> 0 THEN (SELECT TOP 1
+									ISNULL(G.PercentValue, 0)
+								FROM ParGoal G WITH (NOLOCK)
+								WHERE G.ParLevel1_id = C2.ParLevel1_id
+								AND (G.ParCompany_id = C2.UnitId
+								OR G.ParCompany_id IS NULL)
+								AND G.IsActive = 1
+								AND G.EffectiveDate <= @DATAFINAL
+								ORDER BY G.ParCompany_id DESC, EffectiveDate DESC)
+
+						ELSE (SELECT TOP 1
+									ISNULL(G.PercentValue, 0)
+								FROM ParGoal G WITH (NOLOCK)
+								WHERE G.ParLevel1_id = C2.ParLevel1_id
+								AND (G.ParCompany_id = C2.UnitId
+								OR G.ParCompany_id IS NULL)
+								ORDER BY G.ParCompany_id DESC, EffectiveDate ASC)
+					END
+					AS Meta
+				FROM ConsolidationLevel1 CL1
+				INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
+				INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON CL1.ParLevel1_id = PL1.Id
+				INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
+				INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
+				INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
+				INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
+				INNER JOIN ParLevel3 L3 WITH (NOLOCK) ON L3.Id = R3.ParLevel3_Id
+				LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
+				LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+				LEFT JOIN ParDepartment PD WITH (NOLOCK) ON PD.Id = CL2XPD.ParDepartment_Id
+				OUTER APPLY (SELECT TOP 1
+						*
+					FROM ParLevel1XModule L1XM WITH (NOLOCK)
+					WHERE L1XM.ParLevel1_id = C2.ParLevel1_id
+					AND L1XM.IsActive = 1
+					AND L1XM.EffectiveDateStart <= C2.CollectionDate
+					ORDER BY L1XM.EffectiveDateStart DESC) AS L1XM
+				OUTER APPLY (SELECT TOP 1
+						*
+					FROM ParLevel1XCluster L1XC WITH (NOLOCK)
+					WHERE L1XC.ParLevel1_id = C2.ParLevel1_id
+					AND L1XC.ParCluster_Id = C2XC.ParCluster_Id
+					AND L1XC.EffectiveDate <= C2.CollectionDate
+					AND L1XC.IsActive = 1
+					ORDER BY L1XM.EffectiveDateStart DESC) AS L1XC
+				INNER JOIN ParCluster PCL WITH (NOLOCK) ON PCL.Id = C2XC.ParCluster_Id AND PCL.IsActive = 1
+				LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_id = C2.UnitId AND PCXS.Active = 1 --ParCriticalLevel
+				LEFT JOIN CorrectiveAction CA WITH (NOLOCK) ON CA.CollectionLevel02Id = C2.Id
+				WHERE 1 = 1
+				AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+				AND C2.ParLevel1_id = @INDICADOR --Indicador
+                {wModulo}
+                {wParClusterGroup}
+                {wParCluster}	
+                {wParStructure}
+                {wParCompany}
+                {wTurno}
+                {wParCriticalLevel}
+                {wParGroupParLevel1}   
+                {wParDepartment}
+                {wParLevel2}
+                {wParLevel3}
+                {wAcaoStatus}
+                {wPeso}
+                {wSurpervisor} 
+				GROUP BY L3.Id
+						,PL1.IsRuleConformity
+						,L3.Name
+						,PC.Id
+						,PC.Name
+						,C2.CollectionDate
+						,PL1.hashKey
+						,PL1.ParConsolidationType_Id
+						,C2.ParLevel1_id
+						,C2.UnitId) S1
+			GROUP BY S1.level3_Id
+					,S1.IsRuleConformity
+					,S1.Level3Name
+					,S1.TituloGrafico
+					,S1.Unidade_Id
+					,S1.Unidade_Name) S2) S3
+	GROUP BY S3.Level3Name
+			,S3.level3_Id) S4
+WHERE 1 = 1
+GROUP BY S4.Name
+		,S4.Id
+		,S4.NC
+		,S4.AV
+ORDER BY NCPercent DESC";
+
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                retornoTarefas = factory.SearchQuery<GraficoNC>(query).ToList();
+            }
+
+            return retornoTarefas;
+
+        }
+
         private static string getQuery(DataCarrierFormularioNew form, int? nivel)
         {
 
             var Wunidade = "";
-            var Query = "";
+            var query = "";
 
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] != 0)
             {
                 Wunidade = " AND C1.UnitId IN (" + string.Join(",", form.ParCompany_Ids) + ")";
             }
 
-            Query = $@"  
+            query = $@"  
 
                 DECLARE @DATEINI DATETIME = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
                 DECLARE @DATEFIM DATETIME = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
@@ -1815,7 +2181,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 SET Meta = IIF(IsRuleConformity = 0, Meta, (100 - Meta))";
 
 
-            return Query;
+            return query;
         }
 
     }
