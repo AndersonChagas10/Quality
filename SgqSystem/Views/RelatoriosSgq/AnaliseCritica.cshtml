@@ -1403,16 +1403,30 @@
                   Chart.CurvaPareto(pareto)
                 ],
             }, function (chart) {
-                //GerarTabelaAcaoCorretivaTarefa(obj, seletorPanel, idChart);
+                GerarTabelaPlanoAcao(obj, seletorPanel, idChart);
             });
 
         }
 
-        function GerarTabelaAcaoCorretivaTarefa(data, seletorPanel, idChart) {
+        function GerarTabelaPlanoAcao(data, seletorPanel, idChart) {
+
+            let columns = [
+                { title: "Indicador", mData: "ParLevel1" },
+                { title: "Monitoramento", mData: "ParLevel2" },
+                { title: "Tarefa", mData: "ParLevel3" },
+                { title: "Causa Genérica", mData: "CausaGenerica" },
+                { title: "Ação Genérica", mData: "AcaoGenerica" },
+                { title: "Status", mData: "Satus" },
+                {
+                    title: "", mData: "", render: function (data) {
+                        return "<a>Ver mais</a>";
+                    }
+                }
+            ];
 
             let table = {
-                data: data.Acoes.data,
-                columns: data.Acoes.columns,
+                data: data.ListaTabelaPlanoAcao,
+                columns: columns,
                 destroy: true,
                 scrollX: true,
                 paginate: false,

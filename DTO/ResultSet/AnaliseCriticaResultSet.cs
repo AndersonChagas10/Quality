@@ -144,6 +144,8 @@ namespace DTO
         public string CausaGenerica { get; set; }
         public int AcaoGenerica_Id { get; set; }
         public string AcaoGenerica { get; set; }
+        public int Status_Id { get; set; }
+        public string Status { get; set; }
 
     }
 }
