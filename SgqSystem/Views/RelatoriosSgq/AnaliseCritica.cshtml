@@ -1740,9 +1740,11 @@
 
             let subtitle = [];
 
-            $('[name="parCompany_Ids"] :selected').text().split(',').forEach((i) => {
+            objFiltro.parCompany_Ids.forEach(function (i) {
 
-                subtitle.push(i.slice(i.indexOf("-") + 2, i.lenght));
+                let valor = $('[name="parCompany_Ids"] option[value="' + i + '"]').text()
+
+                subtitle.push(valor.slice(valor.indexOf("-") + 2, valor.lenght));
 
             });
 
