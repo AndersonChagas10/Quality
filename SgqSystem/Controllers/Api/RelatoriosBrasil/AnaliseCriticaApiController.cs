@@ -198,6 +198,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                             ListaTabelaPlanoAcao = tabela,
                             ParLevel2_Name = grafico[0].ParLevel2_Name,
                             ParLevel2_Id = monitoramento_Id
+
                         });
 
                     }
@@ -235,6 +236,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             var wDesdobramento = "";
             var wSurpervisor = "";
             var orderBy = "S3.Data";
+            var groupBy = "";
+            var data = "";
+            var data2 = "";
 
             //Módulo
             if (form.ParModule_Ids != null && form.ParModule_Ids.Length > 0)
@@ -299,7 +303,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.Periodo != null && form.Periodo.Length > 0) {
                 if (form.Periodo[0] == 1)//Diario
                 {
-                    wPeriodo = "convert(NVARCHAR, Data, 111)";
+                    wPeriodo = "convert(NVARCHAR, Data, 103)";
+                    orderBy = "S3._Data";
+                    groupBy = ",Data";
+                    data = ",Data as _Data";
                 }
 
                 if (form.Periodo[0] == 2)//Semanal
@@ -404,6 +411,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             		   ,SUM(NC) AS NC
             		   ,SUM(NCSemPeso) AS NCSemPeso
             		   ,MAX(Meta) AS Meta
+                       {data}
             		FROM (SELECT
             				PL1.Id AS level1_Id
             			   ,PL1.Name AS Level1Name
@@ -509,12 +517,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         {wParGroupParLevel1}   
                         {wParDepartment}
             			{wParLevel2}
-            			{wParLevel3}            			
-            			--Periodo
+            			{wParLevel3}
                         {wAcaoStatus}
             			{wPeso}
                         {wSurpervisor}           			
-
             			GROUP BY PL1.Id
             					,PL1.IsRuleConformity
             					,PL1.Name
@@ -532,7 +538,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             				,S1.TituloGrafico
             				,S1.Unidade_Id
             				,S1.Unidade_Name
-            				,{wPeriodo}) S2) S3
+            				,{wPeriodo}
+                            {groupBy}) S2) S3
             	Where 1 = 1           	
             ORDER BY {orderBy}";
 
