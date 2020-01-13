@@ -823,10 +823,10 @@
 
                 GerarGraficoTarefasAcumuladas(obj, idPanel);
 
-                ////fazer um foreach para cada monitoramento
-                //objMock.Tarefa.forEach(function (o, i) {
-                //    GerarGraficoTarefa(objMock, idPanel, i);
-                //});
+                //fazer um foreach para cada monitoramento
+                obj.TarefaMonitoramentos.forEach(function (o, i) {
+                    GerarGraficoTarefa(o, idPanel, obj);
+                });
 
             });
 
@@ -1197,9 +1197,9 @@
         function GerarGraficoMonitoramentoPorDepartamento(obj, idPanel, objInteiro) {
 
             let titulo = "NC por Monitoramento do Departamento: " + obj.ParDepartment;
-            let valoresX = MapeiaValorParaHC(obj.ListaMonitoramentoDepartamento, "Name");
-            let NC = MapeiaValorParaHC(obj.ListaMonitoramentoDepartamento, "NC");
-            let TotalAvaliado = MapeiaValorParaHC(obj.ListaMonitoramentoDepartamento, "AV");
+            let valoresX = MapeiaValorParaHC(obj.ListaGrafico, "Name");
+            let NC = MapeiaValorParaHC(obj.ListaGrafico, "NC");
+            let TotalAvaliado = MapeiaValorParaHC(obj.ListaGrafico, "AV");
             let pareto = Chart.CalculaPareto(NC);
             let departamentoName = obj.ParDepartment;
             let idCollapse = "indicador" + objInteiro.ParLevel1_Id + "departamento" + obj.ParDepartment_Id;
@@ -1289,7 +1289,7 @@
             ];
 
             let table = {
-                data: data.ListaAcaoMonitoramentoDepartamento,
+                data: data.ListaTabelaAcaoCorretiva,
                 columns: columns,
                 destroy: true,
                 scrollX: true,
@@ -1309,10 +1309,6 @@
         }
 
         function GerarGraficoTarefasAcumuladas(obj, idPanel) {
-
-            debugger
-
-            //MapeiaValorParaHC(obj.ListaTarefasAcumuladas, 
 
             let titulo = "Tarefas Acumuladas";
             let subtitle = "";
@@ -1361,17 +1357,16 @@
             });
         }
 
-        function GerarGraficoTarefa(objMock, idPanel, indexTarefa) {
+        function GerarGraficoTarefa(obj, idPanel, objInteiro) {
 
-            let data = objMock.Tarefa[indexTarefa];
 
-            var titulo = "NC por tarefas do monitoramento: " + data.Grafico.ParLevel2_Name;
+            var titulo = "NC por tarefas do monitoramento: " + obj.ParLevel2_Name;
             var subtitle = "";
-            var xaxis = data.Grafico.xAxis;
-            var nc = data.Grafico.Serie;
+            var xaxis = MapeiaValorParaHC(obj.ListaGrafico, "Name");
+            var nc = MapeiaValorParaHC(obj.ListaGrafico, "NC");
             var pareto = Chart.CalculaPareto(nc);
 
-            var idChart = 'indicador' + objMock.ParLevel1_Id + "monitoramento" + data.Grafico.ParLevel2_Id;
+            var idChart = 'indicador' + objInteiro.ParLevel1_Id + "monitoramento" + obj.ParLevel2_Id;
 
             let seletorPanel = idPanel + " .panel-tarefa";
 
@@ -1404,11 +1399,11 @@
                     shadow: true
                 },
                 series: [
-                  Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, data),
+                  Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, obj),
                   Chart.CurvaPareto(pareto)
                 ],
             }, function (chart) {
-                GerarTabelaAcaoCorretivaTarefa(data, seletorPanel, idChart);
+                //GerarTabelaAcaoCorretivaTarefa(obj, seletorPanel, idChart);
             });
 
         }

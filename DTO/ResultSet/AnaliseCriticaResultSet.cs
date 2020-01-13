@@ -24,10 +24,8 @@ namespace DTO
 
         public List<GraficoNC> ListaTarefasAcumuladas { get; set; }
 
-        public GraficosNC Tarefas { get; set; }
-
         //Tarefas por Monitoramentos
-        //public List<GraficoTabela> TarefaMonitoramentos { get; set; }
+        public List<GraficoTabela> TarefaMonitoramentos { get; set; }
 
     }
 
@@ -108,21 +106,15 @@ namespace DTO
         public string PreventativeMeasure { get; set; }
     }
 
-    public class GraficosNC
-    {
-        public List<GraficoNC> GraficosDeNC { get; set; }
-
-        public List<AcaoResultSet> ListaAcaoMonitoramento { get; set; }
-    }
-
     public class GraficoTabela
     {
         public string ParDepartment { get; set; }
         public int ParDepartment_Id { get; set; }
         public string ParLevel2_Name { get; set; }
         public int ParLevel2_Id { get; set; }
-        public List<GraficoNC> ListaMonitoramentoDepartamento { get; set; }
-        public List<AcaoResultSet> ListaAcaoMonitoramentoDepartamento { get; set; }
+        public List<GraficoNC> ListaGrafico { get; set; }
+        public List<AcaoResultSet> ListaTabelaAcaoCorretiva { get; set; }
+        public List<PAAcao> ListaTabelaPlanoAcao { get; set; }
     }
 
     public class GraficoNC
@@ -134,9 +126,24 @@ namespace DTO
         public string Name { get; set; }
         public string ChartName { get; set; }
         public string ParLevel2_Name { get; set; }
-        public int ParLevel2_Id{ get; set; }
+        public int ParLevel2_Id { get; set; }
         public string ParDepartment_Name { get; set; }
         public int ParDepartment_Id { get; set; }
     }
 
+    public class PAAcao
+    {
+        public int Id { get; set; }
+        public int ParLevel1_Id { get; set; }
+        public string ParLevel1 { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public string ParLevel2 { get; set; }
+        public int ParLevel3_Id { get; set; }
+        public string ParLevel3 { get; set; }
+        public int CausaGenerica_Id { get; set; }
+        public string CausaGenerica { get; set; }
+        public int AcaoGenerica_Id { get; set; }
+        public string AcaoGenerica { get; set; }
+
+    }
 }
