@@ -174,7 +174,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     //Tarefas por monitoramento
                     analiseCriticaResultSet.TarefaMonitoramentos = new List<GraficoTabela>();
 
-                    var monitoramentos_Ids = analiseCriticaResultSet.ListaMonitoramento.Select(x => x.Id).Distinct();
+                    var monitoramentos_Ids = analiseCriticaResultSet.ListaMonitoramento.Select(x => x.Id).Distinct().ToList();
 
                     var tarefasMonitoramento = GetTarefasMonitramentos(form, parLevel1_Id);
 
@@ -188,6 +188,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                         tabela = acoesPA.Where(x => x.ParLevel2_Id == monitoramento_Id).ToList();
                         grafico = tarefasMonitoramento.Where(x => x.ParLevel2_Id == monitoramento_Id).ToList();
+
+                        if (grafico.Count == 0)
+                            continue;
 
                         analiseCriticaResultSet.TarefaMonitoramentos.Add(new GraficoTabela
                         {
@@ -1958,7 +1961,7 @@ ORDER BY NCPercent DESC";
 
             var query = $@"
 
-DECLARE @INDICADOR INT = 2
+DECLARE @INDICADOR INT = {parLevel1_Id}
 DECLARE @DATAINICIAL date = '2019-01-01 00:00:00'
 DECLARE @DATAFINAL date = '2020-02-01 23:59:59'
 DECLARE @RESS INT

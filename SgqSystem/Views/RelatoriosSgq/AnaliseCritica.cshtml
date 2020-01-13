@@ -111,326 +111,326 @@
     <script type="text/javascript">
 
         //Mocks
-        var objMock = {
-            ParLevel1_Id: 1,
-            ParLevel1_Name: "(%) NC nas Operações de Esfola",
+        //var objMock = {
+        //    ParLevel1_Id: 1,
+        //    ParLevel1_Name: "(%) NC nas Operações de Esfola",
 
-            //Tendencia Indicador
-            TendenciaIndicador: {
-                start: 0,
-                //dataInicio: new Date(parseInt(dtInicio)),
-                metaEstatica: 20,
-                NC: [[1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 1]
-                    , [1573430400000, 4]],
-                totalNC: [
-                    [1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 100]
-                    , [1573430400000, 100]],
-                ProcNC: [
-                    [1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 1]
-                    , [1573430400000, 4]],
-                totalAvaliado: [
-                    [1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 1]
-                    , [1573430400000, 4]],
-                linhaTendencia: [
-                    [1570233600000, null]
-                    , [1570320000000, null]
-                    , [1570406400000, null]
-                    , [1570492800000, null]
-                    , [1570579200000, null]
-                    , [1570665600000, null]
-                    , [1570752000000, null]
-                    , [1570838400000, null]
-                    , [1570924800000, null]
-                    , [1571011200000, null]
-                    , [1571097600000, null]
-                    , [1571184000000, null]
-                    , [1571270400000, null]
-                    , [1571356800000, null]
-                    , [1571443200000, null]
-                    , [1571529600000, null]
-                    , [1571616000000, null]
-                    , [1571702400000, null]
-                    , [1571788800000, null]
-                    , [1571875200000, null]
-                    , [1571961600000, null]
-                    , [1572048000000, null]
-                    , [1572134400000, null]
-                    , [1572220800000, null]
-                    , [1572307200000, null]
-                    , [1572393600000, null]
-                    , [1572480000000, null]
-                    , [1572566400000, null]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572825600000, 0]
-                    , [1572912000000, 0]
-                    , [1572998400000, 0]
-                    , [1573084800000, 0]
-                    , [1573171200000, 0]
-                    , [1573257600000, 0]
-                    , [1573344000000, 0]
-                    , [1573430400000, 100]],
-                ContaTA: [
-                    [1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 1]
-                    , [1573430400000, 5]],
-                ContaNC: [
-                    [1569888000000, null]
-                    , [1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 1]
-                    , [1573430400000, 5]],
+        //    //Tendencia Indicador
+        //    TendenciaIndicador: {
+        //        start: 0,
+        //        //dataInicio: new Date(parseInt(dtInicio)),
+        //        metaEstatica: 20,
+        //        NC: [[1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 1]
+        //            , [1573430400000, 4]],
+        //        totalNC: [
+        //            [1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 100]
+        //            , [1573430400000, 100]],
+        //        ProcNC: [
+        //            [1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 1]
+        //            , [1573430400000, 4]],
+        //        totalAvaliado: [
+        //            [1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 1]
+        //            , [1573430400000, 4]],
+        //        linhaTendencia: [
+        //            [1570233600000, null]
+        //            , [1570320000000, null]
+        //            , [1570406400000, null]
+        //            , [1570492800000, null]
+        //            , [1570579200000, null]
+        //            , [1570665600000, null]
+        //            , [1570752000000, null]
+        //            , [1570838400000, null]
+        //            , [1570924800000, null]
+        //            , [1571011200000, null]
+        //            , [1571097600000, null]
+        //            , [1571184000000, null]
+        //            , [1571270400000, null]
+        //            , [1571356800000, null]
+        //            , [1571443200000, null]
+        //            , [1571529600000, null]
+        //            , [1571616000000, null]
+        //            , [1571702400000, null]
+        //            , [1571788800000, null]
+        //            , [1571875200000, null]
+        //            , [1571961600000, null]
+        //            , [1572048000000, null]
+        //            , [1572134400000, null]
+        //            , [1572220800000, null]
+        //            , [1572307200000, null]
+        //            , [1572393600000, null]
+        //            , [1572480000000, null]
+        //            , [1572566400000, null]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572825600000, 0]
+        //            , [1572912000000, 0]
+        //            , [1572998400000, 0]
+        //            , [1573084800000, 0]
+        //            , [1573171200000, 0]
+        //            , [1573257600000, 0]
+        //            , [1573344000000, 0]
+        //            , [1573430400000, 100]],
+        //        ContaTA: [
+        //            [1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 1]
+        //            , [1573430400000, 5]],
+        //        ContaNC: [
+        //            [1569888000000, null]
+        //            , [1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 1]
+        //            , [1573430400000, 5]],
 
-            },
-            //Monitoramento
-            Monitoramento: {
-                Grafico: {
-                    xAxis: ["Sangria", "Esfola da Pata TRS Esquerda", "Esfola da Pata TRS Direita"],
-                    NC: [10, 5,  1],
-                    AV: [10, 10, 10]
-                },
-                Acoes: {
-                    data: [{
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Sangria',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    },
-                    {
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Esfola da Pata TRS Esquerda',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    }],
-                    columns: [
-                        { title: "Indicador", mData: "Indicador" },
-                        { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
-                        { title: "Descrição da Falha", mData: "Descricao_da_falha" },
-                        { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
-                        { title: "Medida Preventiva", mData: "Medida_preventiva" }
-                    ]
-                }
-            },
-            //Monitoramento Departamento
-            MonitoramentoDepartamento: [{
-                Grafico: {
-                    Departamento_Id: 1,
-                    Departamento_Name: "Departamento 1",
-                    xAxis: ["Sangria", "Esfola da Pata TRS Esquerda", "Esfola da Pata TRS Direita"],
-                    NC: [5, 5, 1],
-                    AV: [5, 5, 5]
+        //    },
+        //    //Monitoramento
+        //    Monitoramento: {
+        //        Grafico: {
+        //            xAxis: ["Sangria", "Esfola da Pata TRS Esquerda", "Esfola da Pata TRS Direita"],
+        //            NC: [10, 5,  1],
+        //            AV: [10, 10, 10]
+        //        },
+        //        Acoes: {
+        //            data: [{
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Sangria',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            },
+        //            {
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Esfola da Pata TRS Esquerda',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            }],
+        //            columns: [
+        //                { title: "Indicador", mData: "Indicador" },
+        //                { title: "Monitoramento", mData: "Monitoramento" },
+        //                { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
+        //                { title: "Descrição da Falha", mData: "Descricao_da_falha" },
+        //                { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
+        //                { title: "Medida Preventiva", mData: "Medida_preventiva" }
+        //            ]
+        //        }
+        //    },
+        //    //Monitoramento Departamento
+        //    MonitoramentoDepartamento: [{
+        //        Grafico: {
+        //            Departamento_Id: 1,
+        //            Departamento_Name: "Departamento 1",
+        //            xAxis: ["Sangria", "Esfola da Pata TRS Esquerda", "Esfola da Pata TRS Direita"],
+        //            NC: [5, 5, 1],
+        //            AV: [5, 5, 5]
 
-                },
-                Acoes: {
-                    data: [{
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Sangria',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    },
-                    {
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Esfola da Pata TRS Esquerda',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    }],
-                    columns: [
-                        { title: "Indicador", mData: "Indicador" },
-                        { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
-                        { title: "Descrição da Falha", mData: "Descricao_da_falha" },
-                        { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
-                        { title: "Medida Preventiva", mData: "Medida_preventiva" }
-                    ]
-                }
-            },
-            {
-                Grafico: {
-                    Departamento_Id: 2,
-                    Departamento_Name: "Departamento 2",
-                    xAxis: ["Sangria"],
-                    NC: [5],
-                    AV: [5]
-                },
-                Acoes: {
-                    data: [{
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Sangria',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    },
-                    {
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Esfola da Pata TRS Esquerda',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    }],
-                    columns: [
-                        { title: "Indicador", mData: "Indicador" },
-                        { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
-                        { title: "Descrição da Falha", mData: "Descricao_da_falha" },
-                        { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
-                        { title: "Medida Preventiva", mData: "Medida_preventiva" }
-                    ]
-                }
-            }],
-            //Tarefas Acumuladas
-            TarefaAcumulada: {
-                Grafico: {
-                    xAxis: ["Lavagem de mãos", "Esfola de faca branca"],
-                    Serie: [10, 6]
-                }
-            },
-            //Tarefas
-            Tarefa: [{
-                Grafico: {
-                    ParLevel2_Id: 1,
-                    ParLevel2_Name: "Sangria",
-                    xAxis: ["Lavagem de Mãos"],
-                    Serie: [10]
-                },
-                Acoes: {
-                    data: [{
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Sangria',
-                        Tarefa: "Lavagem de Mãos",
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Causa_Generica: "",
-                        Acao_Generica: "",
-                        Status: "Concluido"
-                    }],
-                    columns: [
-                        { title: "Indicador", mData: "Indicador" },
-                        { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Tarefa", mData: "Tarefa" },
-                        { title: "Causa Generica", mData: "Causa_Generica" },
-                        { title: "Acao Generica", mData: "Acao_Generica" },
-                        { title: "Status", mData: "Status" },
-                        { title: "", mData: "", mRender: function (data, type, full) {
-                            return '<button class="btn btn-link custom-button" style="cursor: pointer;">Ver Mais</button>';
-                        }}
-                    ]
-                }
-            },{
-                Grafico: {
-                    ParLevel2_Id: 2,
-                    ParLevel2_Name: "Esfola da Pata TRS Esquerda",
-                    xAxis: ["Esfola de faca branca"],
-                    Serie: [6]
-                },
-                Acoes: {
-                    data: [{
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Esfola da Pata TRS Esquerda',
-                        Tarefa: "Esfola de faca branca",
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Causa_Generica: "",
-                        Acao_Generica: "",
-                        Status: "Concluido"
-                    }],
-                    columns: [
-                        { title: "Indicador", mData: "Indicador" },
-                        { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Tarefa", mData: "Tarefa" },
-                        { title: "Causa Generica", mData: "Causa_Generica" },
-                        { title: "Acao Generica", mData: "Acao_Generica" },
-                        { title: "Status", mData: "Status" },
-                        { title: "", mData: "", mRender: function (data, type, full) {
-                            return '<button class="btn btn-link custom-button" style="cursor: pointer;">Ver Mais</button>';
-                        }}
-                    ]
-                }
-            }]
-        }
+        //        },
+        //        Acoes: {
+        //            data: [{
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Sangria',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            },
+        //            {
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Esfola da Pata TRS Esquerda',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            }],
+        //            columns: [
+        //                { title: "Indicador", mData: "Indicador" },
+        //                { title: "Monitoramento", mData: "Monitoramento" },
+        //                { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
+        //                { title: "Descrição da Falha", mData: "Descricao_da_falha" },
+        //                { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
+        //                { title: "Medida Preventiva", mData: "Medida_preventiva" }
+        //            ]
+        //        }
+        //    },
+        //    {
+        //        Grafico: {
+        //            Departamento_Id: 2,
+        //            Departamento_Name: "Departamento 2",
+        //            xAxis: ["Sangria"],
+        //            NC: [5],
+        //            AV: [5]
+        //        },
+        //        Acoes: {
+        //            data: [{
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Sangria',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            },
+        //            {
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Esfola da Pata TRS Esquerda',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            }],
+        //            columns: [
+        //                { title: "Indicador", mData: "Indicador" },
+        //                { title: "Monitoramento", mData: "Monitoramento" },
+        //                { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
+        //                { title: "Descrição da Falha", mData: "Descricao_da_falha" },
+        //                { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
+        //                { title: "Medida Preventiva", mData: "Medida_preventiva" }
+        //            ]
+        //        }
+        //    }],
+        //    //Tarefas Acumuladas
+        //    TarefaAcumulada: {
+        //        Grafico: {
+        //            xAxis: ["Lavagem de mãos", "Esfola de faca branca"],
+        //            Serie: [10, 6]
+        //        }
+        //    },
+        //    //Tarefas
+        //    Tarefa: [{
+        //        Grafico: {
+        //            ParLevel2_Id: 1,
+        //            ParLevel2_Name: "Sangria",
+        //            xAxis: ["Lavagem de Mãos"],
+        //            Serie: [10]
+        //        },
+        //        Acoes: {
+        //            data: [{
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Sangria',
+        //                Tarefa: "Lavagem de Mãos",
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Causa_Generica: "",
+        //                Acao_Generica: "",
+        //                Status: "Concluido"
+        //            }],
+        //            columns: [
+        //                { title: "Indicador", mData: "Indicador" },
+        //                { title: "Monitoramento", mData: "Monitoramento" },
+        //                { title: "Tarefa", mData: "Tarefa" },
+        //                { title: "Causa Generica", mData: "Causa_Generica" },
+        //                { title: "Acao Generica", mData: "Acao_Generica" },
+        //                { title: "Status", mData: "Status" },
+        //                { title: "", mData: "", mRender: function (data, type, full) {
+        //                    return '<button class="btn btn-link custom-button" style="cursor: pointer;">Ver Mais</button>';
+        //                }}
+        //            ]
+        //        }
+        //    },{
+        //        Grafico: {
+        //            ParLevel2_Id: 2,
+        //            ParLevel2_Name: "Esfola da Pata TRS Esquerda",
+        //            xAxis: ["Esfola de faca branca"],
+        //            Serie: [6]
+        //        },
+        //        Acoes: {
+        //            data: [{
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Esfola da Pata TRS Esquerda',
+        //                Tarefa: "Esfola de faca branca",
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Causa_Generica: "",
+        //                Acao_Generica: "",
+        //                Status: "Concluido"
+        //            }],
+        //            columns: [
+        //                { title: "Indicador", mData: "Indicador" },
+        //                { title: "Monitoramento", mData: "Monitoramento" },
+        //                { title: "Tarefa", mData: "Tarefa" },
+        //                { title: "Causa Generica", mData: "Causa_Generica" },
+        //                { title: "Acao Generica", mData: "Acao_Generica" },
+        //                { title: "Status", mData: "Status" },
+        //                { title: "", mData: "", mRender: function (data, type, full) {
+        //                    return '<button class="btn btn-link custom-button" style="cursor: pointer;">Ver Mais</button>';
+        //                }}
+        //            ]
+        //        }
+        //    }]
+        //}
 
         var urlGetGraficoHistoricoUnidade = '@Html.Raw(Url.Action("GetGraficoHistoricoUnidade", "api/AnaliseCritica"))';
         var urlGetAnaliseCritica = '@Html.Raw(Url.Action("GetAnaliseCritica", "api/AnaliseCritica"))';
@@ -440,12 +440,6 @@
         $(document).ready(function () {
 
             closeLeftSidebar();
-
-            $("#btnSend").click(function () {
-
-                Send(true);
-
-            });
 
             //Grafico Historico
             $("#Udia").on('click', function () {
@@ -870,7 +864,7 @@
             //Somar as %CN e dividir pelo valor da Média das %NC passadas
 
             let titulo = "Tendência do Indicador: " + objRetorno.ParLevel1_Name;
-            let subtitulo = "Unidade: " + GetSubtitleUnidade();
+            let subtitulo = GetSubtitleUnidade();
             let dtInicio = "";
 
             let idChart = 'tendencia' + objRetorno.ParLevel1_Id;
@@ -907,7 +901,7 @@
                 plotOptions: {
                     series: {
                         //pointRange: 24 * 3600 * 1000,
-                        pointStart: objMock.TendenciaIndicador.start,
+                        //pointStart: objMock.TendenciaIndicador.start,
                     }
                 },
                 xAxis: {
@@ -1756,7 +1750,8 @@
         }
 
         function enviarFiltro() {
-
+            $("#NCUnidade").hide();
+            Send(true);
         }
 
     </script>
