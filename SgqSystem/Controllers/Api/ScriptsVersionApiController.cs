@@ -57,13 +57,19 @@ namespace SgqSystem.Controllers.Api
             {
                 if (level1Element.Element("number").Value.Contains(cardNumber) || level1Element.Element("version").Value.Contains(version))
                 {
-                    result.AppendLine("<number> " + level1Element.Element("number").Value + " </number>");
-                    result.AppendLine("<version> " + level1Element.Element("version").Value + "< /version>");
-                    result.AppendLine("<description> " + level1Element.Element("description").Value + " </description>");
-                    result.AppendLine("<script> " + level1Element.Element("script").Value + " </script>");
-                    result.AppendLine(" ");
+                    //result.AppendLine("<number> " + level1Element.Element("number").Value + " </number>");
+                    //result.AppendLine("<version> " + level1Element.Element("version").Value + "< /version>");
+                    //result.AppendLine("<description> " + level1Element.Element("description").Value + " </description>");
+                    //result.AppendLine("<script> " + level1Element.Element("script").Value + " </script>");
+                    //result.AppendLine(" ");
+
+                    result.AppendLine("Insert into MigrationHistory(" + level1Element.Element("description").Value + "," + DateTime.Now.ToString() + ") VALUES({{" + level1Element.Element("version").Value + "}}|{{"+ level1Element.Element("description").Value +"}}, GetDate()); {{ " + level1Element.Element("script").Value + "}}" );
                 }
             }
+
+
+            //Insert into MigrationHistory(Name, AddDate) VALUES('{{SGQ-xxx}}|{{1.0.1}}|{{breve descrição}}', GetDate());
+            //{ { script} }
 
             return Ok(result);
         }
