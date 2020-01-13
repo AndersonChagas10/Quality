@@ -632,6 +632,12 @@
     <Content Include="..\AppColeta\SEARA\app.js">
       <Link>Scripts\appColeta\SEARA\app.js</Link>
     </Content>
+    <Content Include="..\AppColeta\SEARA\appDCA.js">
+      <Link>Scripts\appColeta\SEARA\appDCA.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\businessRoute.js">
+      <Link>Scripts\appColeta\SEARA\businessRoute.js</Link>
+    </Content>
     <Content Include="..\AppColeta\SEARA\coleta.js">
       <Link>Scripts\appColeta\SEARA\coleta.js</Link>
     </Content>
@@ -643,6 +649,9 @@
     </Content>
     <Content Include="..\AppColeta\SEARA\crypto.js">
       <Link>Scripts\appColeta\SEARA\crypto.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\familiaProdutoDCA.js">
+      <Link>Scripts\appColeta\SEARA\familiaProdutoDCA.js</Link>
     </Content>
     <Content Include="..\AppColeta\SEARA\guard.js">
       <Link>Scripts\appColeta\SEARA\guard.js</Link>
@@ -668,9 +677,6 @@
     <Content Include="..\AppColeta\SEARA\menu.js">
       <Link>Scripts\appColeta\SEARA\menu.js</Link>
     </Content>
-    <Content Include="..\AppColeta\SEARA\parFrequency.js">
-      <Link>Scripts\appColeta\SEARA\parFrequency.js</Link>
-    </Content>
     <Content Include="..\AppColeta\SEARA\parHeaderField.js">
       <Link>Scripts\appColeta\SEARA\parHeaderField.js</Link>
     </Content>
@@ -688,9 +694,6 @@
     </Content>
     <Content Include="..\AppColeta\SEARA\parLevelsDCA.js">
       <Link>Scripts\appColeta\SEARA\parLevelsDCA.js</Link>
-    </Content>
-    <Content Include="..\AppColeta\SEARA\planejamentoColeta.js">
-      <Link>Scripts\appColeta\SEARA\planejamentoColeta.js</Link>
     </Content>
     <Content Include="..\AppColeta\SEARA\resultado.js">
       <Link>Scripts\appColeta\SEARA\resultado.js</Link>
