@@ -400,6 +400,7 @@
     <Compile Include="Controllers\IntegracaoSistemicasController.cs" />
     <Compile Include="Controllers\Api\Log\LogTrackController.cs" />
     <Compile Include="Controllers\ParAlertTypesController.cs" />
+    <Compile Include="Controllers\ParAlertXUsersController.cs" />
     <Compile Include="Controllers\Params\ParCargoController.cs" />
     <Compile Include="Controllers\Params\ParColaboradorController.cs" />
     <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
@@ -2071,6 +2072,10 @@
     <Content Include="Views\ComponenteGenerico\Edit.cshtml" />
     <Content Include="Views\ComponenteGenerico\List.cshtml" />
     <Content Include="Views\ComponenteGenerico\EditValor.cshtml" />
+    <Content Include="Views\ParAlert\Details.cshtml" />
+    <Content Include="Views\ParAlertXUser\Index.cshtml" />
+    <Content Include="Views\ParAlertXUser\Create.cshtml" />
+    <Content Include="Views\ParAlertXUser\Delete.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

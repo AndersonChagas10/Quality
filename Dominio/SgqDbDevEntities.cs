@@ -55,6 +55,7 @@ namespace Dominio
             var entities = ChangeTracker.Entries().Where(x =>
             !(x.Entity is DatabaseLog)
             && !(x.Entity is LogTrack)
+            && !(x.Entity is LogError)
             && !(x.Entity is ErrorLog)
             && !(x.Entity is UserSgq)
             && !(x.Entity is Result_Level3)
@@ -293,6 +294,7 @@ namespace Dominio
         public virtual DbSet<ComponenteGenericoValor> ComponenteGenericoValor { get; set; }
         public virtual DbSet<ParHeaderFieldXComponenteGenerico> ParHeaderFieldXComponenteGenerico { get; set; }
         public virtual DbSet<LogError> LogError { get; set; }
+        public virtual DbSet<ParAlertXUser> ParAlertXUser { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
