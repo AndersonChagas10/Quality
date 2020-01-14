@@ -708,7 +708,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         {wParGroupParLevel1}   
                         {wParDepartment}
                         {wParLevel2}
-                        {wParLevel3}            			
+                        --{wParLevel3}            			
                         --Periodo
                         {wAcaoStatus}
                         {wPeso}
@@ -1175,7 +1175,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         {wParGroupParLevel1}   
                         {wParDepartment}
                         {wParLevel2}
-                        {wParLevel3}            			
+                        --{wParLevel3}            			
                         --Periodo
                         {wAcaoStatus}
                         {wPeso}
