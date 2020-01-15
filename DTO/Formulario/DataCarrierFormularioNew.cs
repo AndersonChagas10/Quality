@@ -13,7 +13,7 @@ namespace DTO
 
         public DateTime endDate { get; set; }
 
-        public int[] CascadeLevel2Level3 { get; set; } = new int[] { };
+        public int[] IsCascadeLevel2Level3 { get; set; } = new int[] { };
 
         public int[] ParStructure_Ids { get; set; } = new int[] { };
 
