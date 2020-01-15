@@ -667,14 +667,14 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                         "\n WHERE P321.ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "'              " +
                          "\n AND PL2.IsActive = 1  AND P32.IsActive = 1 AND P321.Active = 1                                        " +
                          "\n AND " +
-                         "\n  (select sum(a) from " +
+                         "\n  (select count(a) from " +
                          "\n ( " +
                          "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
                          "\n union all " +
                          "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
                          "\n ) temAv) > 0 " +
                          "\n AND " +
-                         "\n  (select sum(a) from " +
+                         "\n  (select count(a) from " +
                          "\n ( " +
                          "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
                          "\n union all " +

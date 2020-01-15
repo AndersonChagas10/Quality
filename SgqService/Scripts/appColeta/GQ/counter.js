@@ -421,6 +421,6 @@ function setAvaliationAndSampleLvl2Line(level2) {
     if (parseInt(evaluatecurrent) == 0)
         $(level2).next().find('.evaluateCurrent').html($(level2).attr('evaluatecurrent'));
     var samplecurrent = parseInt($(level2).attr('samplecurrent'));
-    $(level2).next().find('.sampleCurrentTotal').html(samplecurrent == 0 ? $(level2).attr('sample') : samplecurrent);
+    $(level2).next().find('.sampleCurrentTotal').html(samplecurrent);
 
 }
