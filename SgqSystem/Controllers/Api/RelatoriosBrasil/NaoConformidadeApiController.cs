@@ -1363,9 +1363,8 @@ SELECT
 	CONVERT(VARCHAR(153), Unidade) AS UnidadeName
    ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
     ,ParModule_Id
-,CONVERT(VARCHAR(153), Level1Name) AS IndicadorName
+    ,CONVERT(VARCHAR(153), Level1Name) AS IndicadorName
    ,CONVERT(VARCHAR(153), level1_Id) AS Indicador_Id
-   ,ParModule_Id
    ,ProcentagemNc AS [proc]
    ,IIF(IsRuleConformity = 1, (100 - META),Meta) AS Meta
    ,NC
@@ -1529,14 +1528,13 @@ FROM (SELECT
             SELECT
             	UnidadeName
                ,Unidade_Id
-               ,Indicador_Id
-               ,IndicadorName
                ,ParModule_Id
+               ,IndicadorName
+               ,Indicador_Id
                ,IIF(SUM(avComPeso) IS NULL OR SUM(avComPeso) = 0, 0, SUM(ncComPeso) / SUM(avComPeso) * 100) AS [proc]
                ,AVG(Meta) as Meta
                ,SUM(NC) AS NC
                ,SUM(Av) AS Av
-               ,ParModule_Id
             FROM (SELECT
             		CONVERT(VARCHAR(153), Unidade) AS UnidadeName
             	   ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
