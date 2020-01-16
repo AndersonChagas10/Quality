@@ -612,7 +612,7 @@
                 if (sumav != 0 && sumnc != 0) {
 
                     let porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
-                    let SubtitleConsolidado =  subtitle;
+                    let SubtitleConsolidado =  "NCs por Unidades selecionadas <br/>" + subtitle;
 
                     $('#GraficoHistoricoUnidade').removeClass('loader');
                     $('#GraficoHistoricoUnidade').empty();
@@ -917,7 +917,7 @@
                 },
                 yAxis: [{
                     min: 10,
-                    max: 100,
+                    //max: 120,
                     labels: {
                         format: '{value} %',
                         style: {
@@ -1081,6 +1081,9 @@
                 destroy: true,
                 info: false,
                 responsive: true,
+                language: {
+                    emptyTable: "Sem dados."
+                }
             }
 
             let idTable = "table" + idChart;
@@ -1090,7 +1093,8 @@
 
         function GerarGraficoMonitoramento(data, idPanel) {
 
-            let titulo = "Indicador: " + data.ParLevel1_Name;
+            let titulo = "NC por Monitoramento";
+            let subtitulo = "Indicador: " + data.ParLevel1_Name;
             let idChart = 'monitoramento' + data.ParLevel1_Id;
             let valoresX = MapeiaValorParaHC(data.ListaMonitoramento, "Name");
             let NC = MapeiaValorParaHC(data.ListaMonitoramento, "NC");
@@ -1105,6 +1109,7 @@
             Highcharts.chart(idChart, {
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
+                subtitle: Chart.Subtitulo(subtitulo),
                 xAxis: Chart.Xaxis(valoresX),
                 //tooltip: {
                 //    formatter: function() {
@@ -1179,6 +1184,9 @@
                 destroy: true,
                 info: false,
                 responsive: true,
+                language: {
+                    emptyTable: "Sem dados."
+                }
             }
 
             let idTable = "table" + idChart;
@@ -1189,7 +1197,8 @@
 
         function GerarGraficoMonitoramentoPorDepartamento(obj, idPanel, objInteiro) {
 
-            let titulo = "NC por Monitoramento do Departamento: " + obj.ParDepartment;
+            let titulo = "NC por Monitoramento";
+            let subtitulo = "Departamento: " + obj.ParDepartment;
             let valoresX = MapeiaValorParaHC(obj.ListaGrafico, "Name");
             let NC = MapeiaValorParaHC(obj.ListaGrafico, "NC");
             let TotalAvaliado = MapeiaValorParaHC(obj.ListaGrafico, "AV");
@@ -1217,6 +1226,7 @@
             Highcharts.chart(idChart, {
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
+                subtitle: Chart.Subtitulo(subtitulo),
                 xAxis: Chart.Xaxis(valoresX),
                 //tooltip: {
                 //    formatter: function() {
@@ -1293,6 +1303,9 @@
                 destroy: true,
                 info: false,
                 responsive: true,
+                language: {
+                    emptyTable: "Sem dados."
+                }
             }
 
             let idTable = "table" + idChart;
@@ -1353,8 +1366,8 @@
         function GerarGraficoTarefa(obj, idPanel, objInteiro) {
 
 
-            var titulo = "NC por tarefas do monitoramento: " + obj.ParLevel2_Name;
-            var subtitle = "";
+            var titulo = "NC por tarefas";
+            var subtitle = "Monitoramento: " + obj.ParLevel2_Name;
             var xaxis = MapeiaValorParaHC(obj.ListaGrafico, "Name");
             var nc = MapeiaValorParaHC(obj.ListaGrafico, "NC");
             var pareto = Chart.CalculaPareto(nc);
@@ -1429,6 +1442,9 @@
                 destroy: true,
                 info: false,
                 responsive: true,
+                language: {
+                    emptyTable: "Sem dados."
+                }
             }
 
             let idTable = "table" + idChart;
@@ -1720,7 +1736,7 @@
 
             let panel = `
             <div class="panel panel-info">
-                <div class="panel-heading" data-toggle="collapse" data-target="#panel${idTable}" href="#panel${idTable}">Ações vinculadas</div>
+                <div class="panel-heading" data-toggle="collapse" data-target="#panel${idTable}" href="#panel${idTable}">Corretivas vinculadas</div>
                 <div class="panel-body" id="panel${ idTable }">
                     <table id="${idTable}"></table>
                 </div>
