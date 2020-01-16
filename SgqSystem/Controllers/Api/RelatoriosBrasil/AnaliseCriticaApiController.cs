@@ -21,12 +21,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var retornoHistoricoUnidade = new List<HistoricoUnidades>();
 
-            //retornoHistoricoUnidade.Add(new HistoricoUnidade() { Av = 1, AvComPeso = 1, Date = DateTime.Now, Mes = "2019-06", Nc = 1, NcComPeso = 1, PorcentagemNc = 100, Semana = "2019/1" });
-            //retornoHistoricoUnidade.Add(new HistoricoUnidade() { Av = 2, AvComPeso = 1, Date = DateTime.Now, Mes = "2019-06", Nc = 2, NcComPeso = 1, PorcentagemNc = 100, Semana = "2019/2" });
-            //retornoHistoricoUnidade.Add(new HistoricoUnidade() { Av = 3, AvComPeso = 1, Date = DateTime.Now, Mes = "2019-07", Nc = 3, NcComPeso = 1, PorcentagemNc = 100, Semana = "2019/4" });
-            //retornoHistoricoUnidade.Add(new HistoricoUnidade() { Av = 4, AvComPeso = 1, Date = DateTime.Now, Mes = "2019-07", Nc = 4, NcComPeso = 1, PorcentagemNc = 100, Semana = "2019/4" });
-            //retornoHistoricoUnidade.Add(new HistoricoUnidade() { Av = 5, AvComPeso = 1, Date = DateTime.Now, Mes = "2019-07", Nc = 5, NcComPeso = 1, PorcentagemNc = 100, Semana = "2019/4" });
-
             var titulo = "Histórico Consolidado";
             var SQLcentro = getQuery(form, 1);
             var script = SQLcentro;
@@ -1628,6 +1622,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             var query = $@"
 
+
 DECLARE @INDICADOR INT = { parLevel1_Id }
 DECLARE @DATAINICIAL date = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
 DECLARE @DATAFINAL date = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
@@ -1638,13 +1633,9 @@ SELECT
 FROM (SELECT
 		COUNT(1) AS NA
 	FROM CollectionLevel2 C2 WITH (NOLOCK)
-	LEFT JOIN Result_Level3 C3 WITH (NOLOCK)
-		ON C3.CollectionLevel2_Id = C2.Id
+	LEFT JOIN Result_Level3 C3 WITH (NOLOCK) ON C3.CollectionLevel2_Id = C2.Id
 	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
-	AND C2.ParLevel1_id = (SELECT TOP 1
-			Id
-		FROM ParLevel1 WITH (NOLOCK)
-		WHERE hashKey = 1)
+	AND C2.ParLevel1_Id = (SELECT TOP 1 Id FROM ParLevel1 WITH (NOLOCK) WHERE hashKey = 1)
 	AND C2.UnitId IN (1)
 	AND IsNotEvaluate = 1
 	GROUP BY C2.Id) NA
@@ -1652,11 +1643,7 @@ WHERE NA = 2
 
 SELECT
 	*
-   ,CASE
-		WHEN Av IS NULL OR
-			Av = 0 THEN 0
-		ELSE NC / Av * 100
-	END AS NCPercent
+   ,CASE WHEN AV IS NULL OR AV = 0 THEN 0 ELSE NC / AV * 100 END AS NCPercent
 FROM (SELECT
 		level3_Id AS Id
 	   ,Level3Name AS Name
@@ -1672,17 +1659,7 @@ FROM (SELECT
 			*
 			--,CASE WHEN Av IS NULL OR Av = 0 THEN 0 ELSE NC / Av * 100 END AS PorcentagemNc
 			--,CASE WHEN Av IS NULL OR Av = 0 THEN 0 ELSE NCSemPeso / Av * 100 END AS PorcentagemNcSemPeso
-		   ,CASE
-				WHEN CASE
-						WHEN AV IS NULL OR
-							AV = 0 THEN 0
-						ELSE NC / AV * 100
-					END >= (CASE
-						WHEN IsRuleConformity = 1 THEN (100 - Meta)
-						ELSE Meta
-					END) THEN 1
-				ELSE 0
-			END RELATORIO_DIARIO
+		   ,CASE WHEN CASE WHEN AV IS NULL OR AV = 0 THEN 0 ELSE NC / AV * 100 END >= (CASE WHEN IsRuleConformity = 1 THEN (100 - Meta) ELSE Meta END) THEN 1 ELSE 0 END RELATORIO_DIARIO
 		FROM (SELECT
 				level3_Id
 			   ,IsRuleConformity
@@ -1703,11 +1680,7 @@ FROM (SELECT
 				   ,PC.Id AS Unidade_Id
 				   ,PC.Name AS Unidade_Name
 				   ,CASE
-						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1
-									SUM(Quartos) - @RESS
-								FROM VolumePcc1b WITH (NOLOCK)
-								WHERE ParCompany_id = PC.Id
-								AND Data = C2.CollectionDate)
+						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
 						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiEvaluation)
 						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
 						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.WeiEvaluation)
@@ -1715,62 +1688,58 @@ FROM (SELECT
 						ELSE 0
 					END AS Av
 				   ,CASE
-						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1
-									SUM(Quartos) - @RESS
-								FROM VolumePcc1b WITH (NOLOCK)
-								WHERE ParCompany_id = PC.Id
-								AND Data = C2.CollectionDate)
+						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
 						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
-						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.Evaluation)
+						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
 						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Evaluation)
-						WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.Evaluation)
+						WHEN PL1.ParConsolidationType_Id = 4 THEN SUM(R3.Evaluation)
 						ELSE 0
 					END AS AvSemPeso
 				   ,CASE
 						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiDefects)
 						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiDefects)
-						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Defects)
-						WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.WeiDefects)
+						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.WeiDefects)
+						WHEN PL1.ParConsolidationType_Id = 4 THEN SUM(R3.WeiDefects)
 						ELSE 0
 					END AS NC
 				   ,CASE
 						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Defects)
 						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.Defects)
 						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Defects)
-						WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.WeiDefects)
+						WHEN PL1.ParConsolidationType_Id = 4 THEN SUM(R3.Defects)
 						ELSE 0
 					END AS NCSemPeso
 				   ,CASE
 						WHEN (SELECT
 									COUNT(1)
 								FROM ParGoal G WITH (NOLOCK)
-								WHERE G.ParLevel1_id = C2.ParLevel1_id
-								AND (G.ParCompany_id = C2.UnitId
-								OR G.ParCompany_id IS NULL)
+								WHERE G.ParLevel1_Id = C2.ParLevel1_Id
+								AND (G.ParCompany_Id = C2.UnitId
+								OR G.ParCompany_Id IS NULL)
 								AND G.IsActive = 1
 								AND G.EffectiveDate <= @DATAFINAL)
 							> 0 THEN (SELECT TOP 1
 									ISNULL(G.PercentValue, 0)
 								FROM ParGoal G WITH (NOLOCK)
-								WHERE G.ParLevel1_id = C2.ParLevel1_id
-								AND (G.ParCompany_id = C2.UnitId
-								OR G.ParCompany_id IS NULL)
+								WHERE G.ParLevel1_Id = C2.ParLevel1_Id
+								AND (G.ParCompany_Id = C2.UnitId
+								OR G.ParCompany_Id IS NULL)
 								AND G.IsActive = 1
 								AND G.EffectiveDate <= @DATAFINAL
-								ORDER BY G.ParCompany_id DESC, EffectiveDate DESC)
+								ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
 
 						ELSE (SELECT TOP 1
 									ISNULL(G.PercentValue, 0)
 								FROM ParGoal G WITH (NOLOCK)
-								WHERE G.ParLevel1_id = C2.ParLevel1_id
-								AND (G.ParCompany_id = C2.UnitId
-								OR G.ParCompany_id IS NULL)
-								ORDER BY G.ParCompany_id DESC, EffectiveDate ASC)
+								WHERE G.ParLevel1_Id = C2.ParLevel1_Id
+								AND (G.ParCompany_Id = C2.UnitId
+								OR G.ParCompany_Id IS NULL)
+								ORDER BY G.ParCompany_Id DESC, EffectiveDate ASC)
 					END
 					AS Meta
 				FROM ConsolidationLevel1 CL1
 				INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
-				INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON CL1.ParLevel1_id = PL1.Id
+				INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
 				INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
 				INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
 				INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
@@ -1782,24 +1751,24 @@ FROM (SELECT
 				OUTER APPLY (SELECT TOP 1
 						*
 					FROM ParLevel1XModule L1XM WITH (NOLOCK)
-					WHERE L1XM.ParLevel1_id = C2.ParLevel1_id
+					WHERE L1XM.ParLevel1_Id = C2.ParLevel1_Id
 					AND L1XM.IsActive = 1
 					AND L1XM.EffectiveDateStart <= C2.CollectionDate
 					ORDER BY L1XM.EffectiveDateStart DESC) AS L1XM
 				OUTER APPLY (SELECT TOP 1
 						*
 					FROM ParLevel1XCluster L1XC WITH (NOLOCK)
-					WHERE L1XC.ParLevel1_id = C2.ParLevel1_id
+					WHERE L1XC.ParLevel1_Id = C2.ParLevel1_Id
 					AND L1XC.ParCluster_Id = C2XC.ParCluster_Id
 					AND L1XC.EffectiveDate <= C2.CollectionDate
 					AND L1XC.IsActive = 1
 					ORDER BY L1XC.EffectiveDate DESC) AS L1XC
 				INNER JOIN ParCluster PCL WITH (NOLOCK) ON PCL.Id = C2XC.ParCluster_Id AND PCL.IsActive = 1
-				LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_id = C2.UnitId AND PCXS.Active = 1 --ParCriticalLevel
+				LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = C2.UnitId AND PCXS.Active = 1 --ParCriticalLevel
 				LEFT JOIN CorrectiveAction CA WITH (NOLOCK) ON CA.CollectionLevel02Id = C2.Id
 				WHERE 1 = 1
 				AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-				AND C2.ParLevel1_id = @INDICADOR --Indicador
+				AND C2.ParLevel1_Id = @INDICADOR --Indicador
                 {wModulo}
                 {wParClusterGroup}
                 {wParCluster}	
@@ -1822,7 +1791,7 @@ FROM (SELECT
 						,C2.CollectionDate
 						,PL1.hashKey
 						,PL1.ParConsolidationType_Id
-						,C2.ParLevel1_id
+						,C2.ParLevel1_Id
 						,C2.UnitId) S1
 			GROUP BY S1.level3_Id
 					,S1.IsRuleConformity
@@ -1838,7 +1807,6 @@ GROUP BY S4.Name
 		,S4.NC
 		,S4.AV
 ORDER BY NCPercent DESC";
-
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -1967,10 +1935,9 @@ ORDER BY NCPercent DESC";
                 wSurpervisor = $" AND C2.AuditorId IN ({string.Join(",", form.UserSgqSurpervisor_Ids)}) --Surpervisor";
 
             var query = $@"
-
 DECLARE @INDICADOR INT = {parLevel1_Id}
-DECLARE @DATAINICIAL date = '2019-01-01 00:00:00'
-DECLARE @DATAFINAL date = '2020-02-01 23:59:59'
+DECLARE @DATAINICIAL date = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
+DECLARE @DATAFINAL date = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
 DECLARE @RESS INT
 
 SELECT
@@ -1978,13 +1945,9 @@ SELECT
 FROM (SELECT
 		COUNT(1) AS NA
 	FROM CollectionLevel2 C2 WITH (NOLOCK)
-	LEFT JOIN Result_Level3 C3 WITH (NOLOCK)
-		ON C3.CollectionLevel2_Id = C2.Id
+	LEFT JOIN Result_Level3 C3 WITH (NOLOCK) ON C3.CollectionLevel2_Id = C2.Id
 	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
-	AND C2.ParLevel1_id = (SELECT TOP 1
-			Id
-		FROM ParLevel1 WITH (NOLOCK)
-		WHERE hashKey = 1)
+	AND C2.ParLevel1_Id = (SELECT TOP 1 Id FROM ParLevel1 WITH (NOLOCK) WHERE hashKey = 1)
 	AND C2.UnitId IN (1)
 	AND IsNotEvaluate = 1
 	GROUP BY C2.Id) NA
@@ -1994,8 +1957,8 @@ SELECT
 	level3_Id AS Id
    ,Level3Name AS Name
    ,PorcentagemNc AS NCPercent
-   ,level2_Id as ParLevel2_Id
-   ,Level2Name as ParLevel2_Name
+   ,level2_Id AS ParLevel2_Id
+   ,Level2Name AS ParLevel2_Name
    ,(CASE
 		WHEN IsRuleConformity = 1 THEN (100 - Meta)
 		WHEN IsRuleConformity IS NULL THEN 0
@@ -2034,103 +1997,95 @@ FROM (SELECT
 			   ,PC.Id AS Unidade_Id
 			   ,PC.Name AS Unidade_Name
 			   ,CASE
-					WHEN PL1.hashKey = 1 THEN (SELECT TOP 1
-								SUM(Quartos) - @RESS
-							FROM VolumePcc1b WITH (NOLOCK)
-							WHERE ParCompany_id = PC.Id
-							AND Data = C2.CollectionDate)
+					WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
 					WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiEvaluation)
 					WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
-					WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.WeiEvaluation)
-					WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.WeiEvaluation)
+					WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
+                    WHEN PL1.ParConsolidationType_Id = 4 THEN COUNT(DISTINCT ""KEY"")
 					ELSE 0
-				END AS Av
+                END AS Av
 			   ,CASE
-					WHEN PL1.hashKey = 1 THEN (SELECT TOP 1
-								SUM(Quartos) - @RESS
-							FROM VolumePcc1b WITH (NOLOCK)
-							WHERE ParCompany_id = PC.Id
-							AND Data = C2.CollectionDate)
-					WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
-					WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.Evaluation)
-					WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Evaluation)
-					WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.Evaluation)
+                    WHEN PL1.hashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH(NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
+                    WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
+                    WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
+                    WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
+					WHEN PL1.ParConsolidationType_Id = 4 THEN COUNT(DISTINCT ""KEY"")
 					ELSE 0
-				END AS AvSemPeso
+                END AS AvSemPeso
 			   ,CASE
-					WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiDefects)
-					WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiDefects)
-					WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Defects)
-					WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.WeiDefects)
+                    WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiDefects)
+                    WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiDefects)
+                    WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
+					WHEN PL1.ParConsolidationType_Id = 4 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
 					ELSE 0
-				END AS NC
+                END AS NC
 			   ,CASE
-					WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Defects)
-					WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.Defects)
-					WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Defects)
-					WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.WeiDefects)
+                    WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Defects)
+                    WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiDefects)
+                    WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
+					WHEN PL1.ParConsolidationType_Id = 4 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
 					ELSE 0
-				END AS NCSemPeso
+                END AS NCSemPeso
 			   ,CASE
-					WHEN (SELECT
-								COUNT(1)
-							FROM ParGoal G WITH (NOLOCK)
-							WHERE G.ParLevel1_id = C2.ParLevel1_id
-							AND (G.ParCompany_id = C2.UnitId
-							OR G.ParCompany_id IS NULL)
-							AND G.IsActive = 1
-							AND G.EffectiveDate <= @DATAFINAL)
-						> 0 THEN (SELECT TOP 1
-								ISNULL(G.PercentValue, 0)
-							FROM ParGoal G WITH (NOLOCK)
-							WHERE G.ParLevel1_id = C2.ParLevel1_id
-							AND (G.ParCompany_id = C2.UnitId
-							OR G.ParCompany_id IS NULL)
-							AND G.IsActive = 1
-							AND G.EffectiveDate <= @DATAFINAL
-							ORDER BY G.ParCompany_id DESC, EffectiveDate DESC)
+                    WHEN(SELECT
+                                COUNT(1)
 
-					ELSE (SELECT TOP 1
-								ISNULL(G.PercentValue, 0)
-							FROM ParGoal G WITH (NOLOCK)
-							WHERE G.ParLevel1_id = C2.ParLevel1_id
-							AND (G.ParCompany_id = C2.UnitId
-							OR G.ParCompany_id IS NULL)
-							ORDER BY G.ParCompany_id DESC, EffectiveDate ASC)
-				END
-				AS Meta
-			FROM ConsolidationLevel1 CL1
-			INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
-			INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON CL1.ParLevel1_id = PL1.Id
-			INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
-			INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
-			INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
-			INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
-			INNER JOIN ParLevel3 PL3 WITH (NOLOCK) ON R3.ParLevel3_Id = PL3.Id
-			LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK)ON C2XC.CollectionLevel2_Id = C2.Id
-			LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
-			LEFT JOIN ParDepartment PD WITH (NOLOCK) ON PD.Id = CL2XPD.ParDepartment_Id
-			OUTER APPLY (SELECT TOP 1
-					*
-				FROM ParLevel1XModule L1XM WITH (NOLOCK)
-				WHERE L1XM.ParLevel1_id = C2.ParLevel1_id
-				AND L1XM.IsActive = 1
-				AND L1XM.EffectiveDateStart <= C2.CollectionDate
-				ORDER BY L1XM.EffectiveDateStart DESC) AS L1XM
-			OUTER APPLY (SELECT TOP 1
-					*
-				FROM ParLevel1XCluster L1XC WITH (NOLOCK)
-				WHERE L1XC.ParLevel1_id = C2.ParLevel1_id
-				AND L1XC.ParCluster_Id = C2XC.ParCluster_Id
-				AND L1XC.EffectiveDate <= C2.CollectionDate
-				AND L1XC.IsActive = 1
-				ORDER BY L1XC.EffectiveDate DESC) AS L1XC
-			INNER JOIN ParCluster PCL WITH (NOLOCK) ON PCL.Id = C2XC.ParCluster_Id AND PCL.IsActive = 1
-			LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_id = C2.UnitId AND PCXS.Active = 1 --ParCriticalLevel
-			LEFT JOIN CorrectiveAction CA WITH (NOLOCK) ON CA.CollectionLevel02Id = C2.Id
-			WHERE 1 = 1
-			AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-			AND C2.ParLevel1_id = @INDICADOR --Indicador
+                            FROM ParGoal G WITH(NOLOCK)
+                            WHERE G.ParLevel1_Id = C2.ParLevel1_Id
+                            AND(G.ParCompany_Id = C2.UnitId
+                            OR G.ParCompany_Id IS NULL)
+                            AND G.IsActive = 1
+                            AND G.EffectiveDate <= @DATAFINAL)
+                        > 0 THEN(SELECT TOP 1
+                                ISNULL(G.PercentValue, 0)
+                            FROM ParGoal G WITH(NOLOCK)
+                            WHERE G.ParLevel1_Id = C2.ParLevel1_Id
+                            AND(G.ParCompany_Id = C2.UnitId
+                            OR G.ParCompany_Id IS NULL)
+                            AND G.IsActive = 1
+                            AND G.EffectiveDate <= @DATAFINAL
+                            ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
+                    ELSE(SELECT TOP 1
+                                ISNULL(G.PercentValue, 0)
+                            FROM ParGoal G WITH(NOLOCK)
+                            WHERE G.ParLevel1_Id = C2.ParLevel1_Id
+                            AND(G.ParCompany_Id = C2.UnitId
+                            OR G.ParCompany_Id IS NULL)
+                            ORDER BY G.ParCompany_Id DESC, EffectiveDate ASC)
+                END
+                AS Meta
+            FROM ConsolidationLevel1 CL1
+            INNER JOIN ConsolidationLevel2 CL2 WITH(NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
+            INNER JOIN ParLevel1 PL1 WITH(NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
+            INNER JOIN CollectionLevel2 C2 WITH(NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
+            INNER JOIN ParLevel2 PL2 WITH(NOLOCK) ON C2.ParLevel2_Id = PL2.Id
+            INNER JOIN ParCompany PC WITH(NOLOCK) ON C2.UnitId = PC.Id
+            INNER JOIN Result_Level3 R3 WITH(NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
+            INNER JOIN ParLevel3 PL3 WITH(NOLOCK) ON R3.ParLevel3_Id = PL3.Id
+            LEFT JOIN CollectionLevel2XCluster C2XC WITH(NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
+            LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH(NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+            LEFT JOIN ParDepartment PD WITH(NOLOCK) ON PD.Id = CL2XPD.ParDepartment_Id
+            OUTER APPLY(SELECT TOP 1
+                   *
+               FROM ParLevel1XModule L1XM WITH(NOLOCK)
+                WHERE L1XM.ParLevel1_Id = C2.ParLevel1_Id
+                AND L1XM.IsActive = 1
+                AND L1XM.EffectiveDateStart <= C2.CollectionDate
+                ORDER BY L1XM.EffectiveDateStart DESC) AS L1XM
+            OUTER APPLY(SELECT TOP 1
+                   *
+               FROM ParLevel1XCluster L1XC WITH(NOLOCK)
+                WHERE L1XC.ParLevel1_Id = C2.ParLevel1_Id
+                AND L1XC.ParCluster_Id = C2XC.ParCluster_Id
+                AND L1XC.EffectiveDate <= C2.CollectionDate
+                AND L1XC.IsActive = 1
+                ORDER BY L1XC.EffectiveDate DESC) AS L1XC
+            INNER JOIN ParCluster PCL WITH(NOLOCK) ON PCL.Id = C2XC.ParCluster_Id AND PCL.IsActive = 1
+            LEFT JOIN ParCompanyXStructure PCXS WITH(NOLOCK) ON PCXS.ParCompany_Id = C2.UnitId AND PCXS.Active = 1--ParCriticalLevel
+          LEFT JOIN CorrectiveAction CA WITH(NOLOCK) ON CA.CollectionLevel02Id = C2.Id
+            WHERE 1 = 1
+            AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+            AND C2.ParLevel1_Id = @INDICADOR --Indicador
             {wModulo}
             {wParClusterGroup}
             {wParCluster}	
@@ -2145,21 +2100,21 @@ FROM (SELECT
             {wAcaoStatus}
             {wPeso}
             {wSurpervisor} 
-			GROUP BY PL3.Id
+            GROUP BY PL3.Id
 					,PL1.IsRuleConformity
 					,PL3.Name
 					,PC.Id
 					,PC.Name
-					,PL2.Id 
+					,PL2.Id
 					,PL2.Name
 					,C2.CollectionDate
 					,PL1.hashKey
 					,PL1.ParConsolidationType_Id
-					,C2.ParLevel1_id
+					,C2.ParLevel1_Id
 					,C2.UnitId
 					,PD.Id
 					,PD.Name) S1
-		GROUP BY S1.level3_Id
+        GROUP BY S1.level3_Id
 				,S1.IsRuleConformity
 				,S1.Level3Name
 				,S1.TituloGrafico
