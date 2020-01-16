@@ -1320,6 +1320,7 @@
             let subtitle = "";
             let xaxis = MapeiaValorParaHC(obj.ListaTarefasAcumuladas, "Name");
             let nc = MapeiaValorParaHC(obj.ListaTarefasAcumuladas, "NC");
+            let av = MapeiaValorParaHC(obj.ListaTarefasAcumuladas, "AV");
             let pareto = Chart.CalculaPareto(nc);
 
             let idChart = 'tarefaAcumulada' + obj.ParLevel1_Id;
@@ -1355,8 +1356,9 @@
                     shadow: true
                 },
                 series: [
-                  Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, obj),
-                  Chart.CurvaPareto(pareto)
+                    Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, obj),
+                    Chart.SimpleSerie(av, Resources("total_evaluated"), Chart.CorTotalAv(), true),
+                    Chart.CurvaPareto(pareto)
                 ],
             }, function (chart) {
 
@@ -1370,6 +1372,7 @@
             var subtitle = "Monitoramento: " + obj.ParLevel2_Name;
             var xaxis = MapeiaValorParaHC(obj.ListaGrafico, "Name");
             var nc = MapeiaValorParaHC(obj.ListaGrafico, "NC");
+            var av = MapeiaValorParaHC(obj.ListaGrafico, "AV");
             var pareto = Chart.CalculaPareto(nc);
 
             var idChart = 'indicador' + objInteiro.ParLevel1_Id + "monitoramento" + obj.ParLevel2_Id;
@@ -1405,8 +1408,9 @@
                     shadow: true
                 },
                 series: [
-                  Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, obj),
-                  Chart.CurvaPareto(pareto)
+                    Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, obj),
+                    Chart.SimpleSerie(av, Resources("total_evaluated"), Chart.CorTotalAv(), true),
+                    Chart.CurvaPareto(pareto)
                 ],
             }, function (chart) {
                 GerarTabelaPlanoAcao(obj, seletorPanel, idChart);

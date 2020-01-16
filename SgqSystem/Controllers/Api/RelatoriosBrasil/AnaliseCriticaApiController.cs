@@ -268,7 +268,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
-                wParDepartment = $" AND CL2XPD.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
+                wParDepartment = $" AND PL2.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
 
             //Indicador
             //if (form.ParLevel1_Ids != null && form.ParLevel1_Ids.Length > 0)
@@ -480,7 +480,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
             			INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
             			LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
-			            LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+			            --LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+						INNER JOIN ParLevel2 Pl2 WITH (NOLOCK) ON CL2.ParLevel2_Id = PL2.Id
+                        LEFT JOIN ParDepartment PD WITH (NOLOCK) on PD.Id = PL2.ParDepartment_Id
             			OUTER APPLY (SELECT TOP 1
             					*
             				FROM ParLevel1XModule L1XM WITH (NOLOCK)
@@ -616,7 +618,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
-                wParDepartment = $" AND CL2XPD.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
+                wParDepartment = $" AND PL2.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
 
             //Indicador
             //if (form.ParLevel1_Ids != null && form.ParLevel1_Ids.Length > 0)
@@ -671,7 +673,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
                         --INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
                         LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
-                        LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+                        --LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+                        LEFT JOIN ParDepartment PD WITH (NOLOCK) on PD.Id = PL2.ParDepartment_Id
                         OUTER APPLY (SELECT TOP 1
                         		*
                         	FROM ParLevel1XModule L1XM WITH (NOLOCK)
@@ -772,7 +775,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
-                wParDepartment = $" AND CL2XPD.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
+                wParDepartment = $" AND PL2.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
 
             //Indicador
             //if (form.ParLevel1_Ids != null && form.ParLevel1_Ids.Length > 0)
@@ -840,8 +843,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              
             DECLARE @INDICADOR INT = {ParLevel1_Id}
             
-            DECLARE @DATAINICIAL date = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
-            DECLARE @DATAFINAL date = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
+            DECLARE @DATAINICIAL datetime = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
+            DECLARE @DATAFINAL datetime = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
              
             DECLARE @RESS INT
             
@@ -961,7 +964,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
             			INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
             			LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
-			            LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+			            --LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+                        LEFT JOIN ParDepartment PD WITH (NOLOCK) on PD.Id = PL2.ParDepartment_Id
             			OUTER APPLY (SELECT TOP 1
             					*
             				FROM ParLevel1XModule L1XM WITH (NOLOCK)
@@ -1015,7 +1019,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             				,S1.Unidade_Id
             				,S1.Unidade_Name
 							) S2) S3
-            	Where 1 = 1           	
+            	Where 1 = 1     
+                AND S3.NC > 0
             ORDER BY S3.PorcentagemNc DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -1080,10 +1085,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
-                wParDepartment = $" AND CL2XPD.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
+                wParDepartment = $" AND PL2.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
 
             if(ParDepartment_Id != null)
-                wParDepartment += $" AND CL2XPD.ParDepartment_Id IN ({ParDepartment_Id.ToString()}) --Departamento";
+                wParDepartment += $" AND PL2.ParDepartment_Id IN ({ParDepartment_Id.ToString()}) --Departamento";
 
             //Indicador
             //if (form.ParLevel1_Ids != null && form.ParLevel1_Ids.Length > 0)
@@ -1138,7 +1143,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
                         --INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
                         LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
-                        LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+                        --LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+                        LEFT JOIN ParDepartment PD WITH (NOLOCK) on PD.Id = PL2.ParDepartment_Id
                         OUTER APPLY (SELECT TOP 1
                         		*
                         	FROM ParLevel1XModule L1XM WITH (NOLOCK)
@@ -1239,7 +1245,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
-                wParDepartment = $" AND CL2XPD.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
+                wParDepartment = $" AND PL2.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
 
             //Indicador
             //if (form.ParLevel1_Ids != null && form.ParLevel1_Ids.Length > 0)
@@ -1307,8 +1313,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
              
             DECLARE @INDICADOR INT = {ParLevel1_Id}
             
-            DECLARE @DATAINICIAL date = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
-            DECLARE @DATAFINAL date = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
+            DECLARE @DATAINICIAL datetime = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
+            DECLARE @DATAFINAL datetime = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
              
             DECLARE @RESS INT
             
@@ -1433,8 +1439,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
             			INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
             			LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
-			            LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
-						LEFT JOIN ParDepartment PD WITH (NOLOCK) on PD.Id = CL2XPD.ParDepartment_Id
+			            --LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+						--LEFT JOIN ParDepartment PD WITH (NOLOCK) on PD.Id = CL2XPD.ParDepartment_Id
+                        LEFT JOIN ParDepartment PD WITH (NOLOCK) on PD.Id = PL2.ParDepartment_Id
             			OUTER APPLY (SELECT TOP 1
             					*
             				FROM ParLevel1XModule L1XM WITH (NOLOCK)
@@ -1492,7 +1499,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 							,S1.ParDepartment_Id
 							,S1.ParDepartment_Name
 							) S2) S3
-            	Where 1 = 1           	
+            	Where 1 = 1
+                AND S3.NC > 0
             ORDER BY S3.PorcentagemNc DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -1557,7 +1565,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
-                wParDepartment = $" AND CL2XPD.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
+                wParDepartment = $" AND PL2.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
 
             //Indicador
             //if (form.ParLevel1_Ids != null && form.ParLevel1_Ids.Length > 0)
@@ -1624,8 +1632,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 
 DECLARE @INDICADOR INT = { parLevel1_Id }
-DECLARE @DATAINICIAL date = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
-DECLARE @DATAFINAL date = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
+DECLARE @DATAINICIAL datetime = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
+DECLARE @DATAFINAL datetime = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
 DECLARE @RESS INT
 
 SELECT
@@ -1746,8 +1754,9 @@ FROM (SELECT
 				INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
 				INNER JOIN ParLevel3 L3 WITH (NOLOCK) ON L3.Id = R3.ParLevel3_Id
 				LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
-				LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
-				LEFT JOIN ParDepartment PD WITH (NOLOCK) ON PD.Id = CL2XPD.ParDepartment_Id
+				--LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH (NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+				--LEFT JOIN ParDepartment PD WITH (NOLOCK) ON PD.Id = CL2XPD.ParDepartment_Id
+                LEFT JOIN ParDepartment PD WITH (NOLOCK) on PD.Id = PL2.ParDepartment_Id
 				OUTER APPLY (SELECT TOP 1
 						*
 					FROM ParLevel1XModule L1XM WITH (NOLOCK)
@@ -1802,6 +1811,7 @@ FROM (SELECT
 	GROUP BY S3.Level3Name
 			,S3.level3_Id) S4
 WHERE 1 = 1
+AND S4.NC > 0
 GROUP BY S4.Name
 		,S4.Id
 		,S4.NC
@@ -1871,7 +1881,7 @@ ORDER BY NCPercent DESC";
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
-                wParDepartment = $" AND CL2XPD.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
+                wParDepartment = $" AND PL2.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
 
             //Indicador
             //if (form.ParLevel1_Ids != null && form.ParLevel1_Ids.Length > 0)
@@ -1936,8 +1946,8 @@ ORDER BY NCPercent DESC";
 
             var query = $@"
 DECLARE @INDICADOR INT = {parLevel1_Id}
-DECLARE @DATAINICIAL date = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
-DECLARE @DATAFINAL date = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
+DECLARE @DATAINICIAL datetime = '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00'
+DECLARE @DATAFINAL datetime = '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59'
 DECLARE @RESS INT
 
 SELECT
@@ -2063,8 +2073,9 @@ FROM (SELECT
             INNER JOIN Result_Level3 R3 WITH(NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
             INNER JOIN ParLevel3 PL3 WITH(NOLOCK) ON R3.ParLevel3_Id = PL3.Id
             LEFT JOIN CollectionLevel2XCluster C2XC WITH(NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
-            LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH(NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
-            LEFT JOIN ParDepartment PD WITH(NOLOCK) ON PD.Id = CL2XPD.ParDepartment_Id
+            --LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH(NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
+            --LEFT JOIN ParDepartment PD WITH(NOLOCK) ON PD.Id = CL2XPD.ParDepartment_Id
+            LEFT JOIN ParDepartment PD WITH (NOLOCK) on PD.Id = PL2.ParDepartment_Id
             OUTER APPLY(SELECT TOP 1
                    *
                FROM ParLevel1XModule L1XM WITH(NOLOCK)
@@ -2123,6 +2134,7 @@ FROM (SELECT
 				,S1.level2_Id
 				,S1.Level2Name) S2) S3
 WHERE 1 = 1
+AND S3.NC > 0
 ORDER BY S3.PorcentagemNc DESC";
 
             using (Factory factory = new Factory("DefaultConnection"))
