@@ -1687,36 +1687,36 @@ FROM (SELECT
 				   ,PL1.IsRuleConformity
 				   ,PC.Id AS Unidade_Id
 				   ,PC.Name AS Unidade_Name
-				   ,CASE
-						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
-						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiEvaluation)
-						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
-						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.WeiEvaluation)
-						WHEN PL1.ParConsolidationType_Id = 4 THEN MAX(R3.WeiEvaluation)
-						ELSE 0
-					END AS Av
-				   ,CASE
-						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
-						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
-						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
-						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Evaluation)
-						WHEN PL1.ParConsolidationType_Id = 4 THEN SUM(R3.Evaluation)
-						ELSE 0
-					END AS AvSemPeso
-				   ,CASE
-						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiDefects)
-						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiDefects)
-						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.WeiDefects)
-						WHEN PL1.ParConsolidationType_Id = 4 THEN SUM(R3.WeiDefects)
-						ELSE 0
-					END AS NC
-				   ,CASE
-						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Defects)
-						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.Defects)
-						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Defects)
-						WHEN PL1.ParConsolidationType_Id = 4 THEN SUM(R3.Defects)
-						ELSE 0
-					END AS NCSemPeso
+			       ,CASE
+			       	WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
+			       	WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiEvaluation)
+			       	WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
+			       	WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
+                        WHEN PL1.ParConsolidationType_Id = 4 THEN COUNT(DISTINCT ""KEY"")
+			       	ELSE 0
+                    END AS Av
+			       ,CASE
+                        WHEN PL1.hashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH(NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
+                        WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
+                        WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
+                        WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
+			       	WHEN PL1.ParConsolidationType_Id = 4 THEN COUNT(DISTINCT ""KEY"")
+			       	ELSE 0
+                    END AS AvSemPeso
+			       ,CASE
+                        WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiDefects)
+                        WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiDefects)
+                        WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
+			       	WHEN PL1.ParConsolidationType_Id = 4 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
+			       	ELSE 0
+                    END AS NC
+			       ,CASE
+                        WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Defects)
+                        WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiDefects)
+                        WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
+			       	WHEN PL1.ParConsolidationType_Id = 4 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
+			       	ELSE 0
+                    END AS NCSemPeso
 				   ,CASE
 						WHEN (SELECT
 									COUNT(1)
