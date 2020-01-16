@@ -414,7 +414,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			   ,PC.Id AS Unidade_Id
             			   ,PC.Name AS Unidade_Name
 			               ,CASE
-			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
+			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
 			            		WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiEvaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
@@ -422,7 +422,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 			            		ELSE 0
 			            	END AS Av
 			               ,CASE
-			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
+			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
 			            		WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
@@ -896,7 +896,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			   ,PC.Id AS Unidade_Id
             			   ,PC.Name AS Unidade_Name
 			               ,CASE
-			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
+			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
 			            		WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiEvaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
@@ -904,7 +904,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 			            		ELSE 0
 			            	END AS Av
 			               ,CASE
-			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
+			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
 			            		WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
@@ -1368,7 +1368,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			   ,PC.Id AS Unidade_Id
             			   ,PC.Name AS Unidade_Name
 			               ,CASE
-			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
+			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
 			            		WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiEvaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
@@ -1376,7 +1376,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 			            		ELSE 0
 			            	END AS Av
 			               ,CASE
-			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
+			            		WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
 			            		WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
 			            		WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
@@ -1680,7 +1680,7 @@ FROM (SELECT
 				   ,PC.Id AS Unidade_Id
 				   ,PC.Name AS Unidade_Name
 				   ,CASE
-						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
+						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
 						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiEvaluation)
 						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
 						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.WeiEvaluation)
@@ -1688,7 +1688,7 @@ FROM (SELECT
 						ELSE 0
 					END AS Av
 				   ,CASE
-						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
+						WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
 						WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
 						WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
 						WHEN PL1.ParConsolidationType_Id = 3 THEN SUM(R3.Evaluation)
@@ -1997,7 +1997,7 @@ FROM (SELECT
 			   ,PC.Id AS Unidade_Id
 			   ,PC.Name AS Unidade_Name
 			   ,CASE
-					WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
+					WHEN PL1.hashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH (NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
 					WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiEvaluation)
 					WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
 					WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
@@ -2005,7 +2005,7 @@ FROM (SELECT
 					ELSE 0
                 END AS Av
 			   ,CASE
-                    WHEN PL1.hashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH(NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = C2.CollectionDate)
+                    WHEN PL1.hashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH(NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
                     WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
                     WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
                     WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
