@@ -20,8 +20,7 @@ function listarParLevel2DCA(isVoltar) {
 
         var style = '';
 
-        if (consolidadoAmostraTotal.AmostraTotalColetada >= consolidadoAmostraTotal.AmostraTotal) {
-
+        if (consolidadoAmostraTotal.ColetasSincronizadas) {
             style = 'style="background-color:#ddd;cursor:not-allowed"';
         }
 
@@ -138,14 +137,21 @@ function getAmostraTotalEColetadaEConformePorMonitoramento(parLevel1, parLevel2)
     var totalDeAmostras = 0;
     var totalDeAmostrasColetadas = 0;
     var totalDeAmostrasColetadasConforme = 0;
+    var coletasSincronizadas = false;
     $(tarefasVinculadas).each(function (i, o) {
         var vinculoPeso = o;
         var quantidadeDeColetasPorTarefa = $.grep(coletasDCA, function (coletas) {
-            if(coletas.ParLevel1_Id == parLevel1.Id && coletas.ParLevel2_Id == parLevel2.Id && coletas.ParLevel3_Id == vinculoPeso.ParLevel3_Id){
+            if(coletas.ParLevel1_Id == parLevel1.Id 
+                && coletas.ParLevel2_Id == parLevel2.Id 
+                && coletas.ParLevel3_Id == vinculoPeso.ParLevel3_Id
+                && coletas.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0){
                 totalDeAmostrasColetadasConforme += coletas.IsConform ? 1 : 0;
                 return true;
             }
         });
+
+        if(coletasSincronizadas == false && quantidadeDeColetasPorTarefa.length > 0)
+            coletasSincronizadas = quantidadeDeColetasPorTarefa[0].Synced == true;
 
         if (o.Sample > 0 && quantidadeDeColetasPorTarefa.length > 0) {
             if (o.Sample > quantidadeDeColetasPorTarefa.length) {
@@ -162,7 +168,8 @@ function getAmostraTotalEColetadaEConformePorMonitoramento(parLevel1, parLevel2)
 
     return {AmostraTotal: parseInt(totalDeAmostras)
         , AmostraTotalColetada: parseInt(totalDeAmostrasColetadas)
-        , AmostraTotalColetadasConforme: parseInt(totalDeAmostrasColetadasConforme)};
+        , AmostraTotalColetadasConforme: parseInt(totalDeAmostrasColetadasConforme)
+        , ColetasSincronizadas: coletasSincronizadas};
 
 }
 

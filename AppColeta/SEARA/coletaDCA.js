@@ -71,6 +71,10 @@ function openColetaDCA(levels) {
 
     $('div#app').html(html);
 
+    if($("[data-linha-coleta][data-synced='false'][data-amostra-completa='1']").length == $("[data-linha-coleta]").length){
+        habilitaBotaoSalvar();
+    }
+
     setBreadcrumbsDCA();
 
 }
@@ -132,11 +136,12 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
         var amostraNC = getQuantidadeNC(level1, level2, level3);
         var amostraAtual = getAmostraAtual(level1, level2, level3);
         var amostraTotal = getAmostraTotal(level1, level2, level3);
+        var synced = getSynced(level1,level2,level3);
 
         if(amostraTotal == 0)
             return [];
 
-        var amostraCompleta = amostraAtual == amostraTotal ? 1 : 0;
+        var amostraCompleta = amostraAtual >= amostraTotal ? 1 : 0;
 
         retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-collapse-target="' + level1.Id + '-' + level2.Id + '"';
@@ -152,6 +157,7 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
         retorno += ' data-sample="' + amostraAtual + '"';
         retorno += ' data-sampleMax="' + amostraTotal + '"';
         retorno += ' data-amostra-completa="' + amostraCompleta + '"';
+        retorno += ' data-synced="' + synced + '"';
         retorno += ' style="padding-left:10px;' + colorStriped + '">';
 
         switch (level3.ParLevel3InputType.Id) {
@@ -1004,13 +1010,13 @@ function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
     return coletaAgrupada;
 }
 
-function SalvarColetas(coletaJson) {
+function SalvarColetasDCA(coletaJson) {
 
     for (var i = 0; i < coletaJson.length; i++) {
         globalColetasRealizadas.push(coletaJson[i]);
     }
 
-    //AtualizarArquivoDeColetas();
+    AtualizarArquivoDeColetas();
 }
 
 // function getCollectionHeaderFields() {
@@ -1170,7 +1176,9 @@ function getQuantidadeNC(parLevel1, parLevel2, parLevel3) {
 
         return o.ParLevel1_Id == parLevel1.Id &&
             o.ParLevel2_Id == parLevel2.Id &&
-            o.ParLevel3_Id == parLevel3.Id;
+            o.ParLevel3_Id == parLevel3.Id && 
+            o.Evaluation == currentEvaluationDCA.Evaluation &&
+            o.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0;
 
     });
 
@@ -1197,7 +1205,9 @@ function getAmostraAtual(parLevel1, parLevel2, parLevel3) {
 
         return o.ParLevel1_Id == parLevel1.Id &&
             o.ParLevel2_Id == parLevel2.Id &&
-            o.ParLevel3_Id == parLevel3.Id;
+            o.ParLevel3_Id == parLevel3.Id && 
+            o.Evaluation == currentEvaluationDCA.Evaluation &&
+            o.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0
     });
 
     //Melhorar essa bosta
@@ -1208,6 +1218,26 @@ function getAmostraAtual(parLevel1, parLevel2, parLevel3) {
     amostra = coletasDCAFilter[coletasDCAFilter.length - 1].Sample;
 
     return amostra + 1;
+
+}
+
+function getSynced(parLevel1, parLevel2, parLevel3) {
+
+    if (coletasDCA.length == 0) {
+        return false;
+    }
+
+    var coletasSincronizadas = $.grep(coletasDCA, function (o) {
+
+        return o.ParLevel1_Id == parLevel1.Id &&
+            o.ParLevel2_Id == parLevel2.Id &&
+            o.ParLevel3_Id == parLevel3.Id && 
+            o.Evaluation == currentEvaluationDCA.Evaluation &&
+            o.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0 &&
+            o.Synced == true
+    });
+
+    return coletasSincronizadas.length > 0;
 
 }
 
@@ -1235,9 +1265,11 @@ function avaliacaoIsCompleta() {
 }
 
 function habilitaBotaoSalvar(){
+    $('button[data-salvar-dca]').attr("disabled", false);
+}
 
-    $('[data-salvar-dca]').attr("disabled", false);
-
+function desabilitaBotaoSalvar(){
+    $('button[data-salvar-dca]').attr("disabled", true);
 }
 
 function verificaSalvar(){
@@ -1250,8 +1282,6 @@ function verificaSalvar(){
 $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', function (e) {
 
     e.preventDefault();
-
-    debugger
 
     //TODO: aplicar função para inserir arr de coletas no arr de salvar coletas
     var cabecalhosDCA = getCollectionHeaderFieldsDCA();
@@ -1269,10 +1299,22 @@ $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', fun
                 && coleta.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0;
         });
 
-    SalvarColetas(coletasDoMonitoramentoSendoSalvo);
+    SalvarColetasDCA(coletasDoMonitoramentoSendoSalvo);
+
+    for(var i = coletasDCA.length-1; i >= 0; i--){
+        var coleta = coletasDCA[i];
+        var exist = $.grep(coletasDoMonitoramentoSendoSalvo, function (coletaSalva) {
+            return JSON.stringify(coletaSalva) == JSON.stringify(coleta);
+        });
+        if (exist.length > 0) {
+            coletasDCA[i].Synced = true;
+            //coletasDCA.splice(i, 1);
+        }
+    }
 
     openMensagem("Avaliacao salva com sucesso!", "blue", "white");
     closeMensagem(3000);
+    desabilitaBotaoSalvar();
 
 });
 
