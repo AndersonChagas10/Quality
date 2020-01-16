@@ -9,14 +9,23 @@ namespace DTO
 {
     public class AnaliseCriticaResultSet
     {
+        //Indicador
         public int ParLevel1_Id { get; set; }
         public string ParLevel1_Name { get; set; }
         public List<TendenciaResultSet> ListaTendenciaResultSet { get; set; } //Aqui tem tabela de acoes
         public List<AcaoResultSet> ListaAcaoIndicador { get; set; }
-        //public List<GraficoNC> Monitoramentos { get; set; }
-        //public List<GraficosNC> MonitoramentosDepartamentos { get; set; } //Aqui tem tabela
-        //public List<GraficoNC> TarefasAcumuladas { get; set; }
-        //public List<GraficosNC> Tarefas { get; set; } //Aqui tem tabela
+
+        //Monitoramento Acumulado
+        public List<GraficoNC> ListaMonitoramento { get; set; }
+        public List<AcaoResultSet> ListaAcaoMonitoramento { get; set; }
+
+        //Monitoramento por Departamento
+        public List<GraficoTabela> MonitoramentosDepartamentos { get; set; }
+
+        public List<GraficoNC> ListaTarefasAcumuladas { get; set; }
+
+        //Tarefas por Monitoramentos
+        public List<GraficoTabela> TarefaMonitoramentos { get; set; }
 
     }
 
@@ -97,9 +106,15 @@ namespace DTO
         public string PreventativeMeasure { get; set; }
     }
 
-    public class GraficosNC
+    public class GraficoTabela
     {
-        public List<GraficoNC> GraficosDeNC { get; set; }
+        public string ParDepartment { get; set; }
+        public int ParDepartment_Id { get; set; }
+        public string ParLevel2_Name { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public List<GraficoNC> ListaGrafico { get; set; }
+        public List<AcaoResultSet> ListaTabelaAcaoCorretiva { get; set; }
+        public List<PAAcao> ListaTabelaPlanoAcao { get; set; }
     }
 
     public class GraficoNC
@@ -110,7 +125,27 @@ namespace DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public string ChartName { get; set; }
-        public List<AcaoResultSet> Acoes { get; set; }
+        public string ParLevel2_Name { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public string ParDepartment_Name { get; set; }
+        public int ParDepartment_Id { get; set; }
     }
 
+    public class PAAcao
+    {
+        public int Id { get; set; }
+        public int ParLevel1_Id { get; set; }
+        public string ParLevel1 { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public string ParLevel2 { get; set; }
+        public int ParLevel3_Id { get; set; }
+        public string ParLevel3 { get; set; }
+        public int CausaGenerica_Id { get; set; }
+        public string CausaGenerica { get; set; }
+        public int AcaoGenerica_Id { get; set; }
+        public string AcaoGenerica { get; set; }
+        public int Status_Id { get; set; }
+        public string Status { get; set; }
+
+    }
 }
