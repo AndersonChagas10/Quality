@@ -14,6 +14,7 @@
     ViewBag.ShowParLevel1 = true;
     ViewBag.ShowParLevel2 = true;
     ViewBag.ShowParLevel3 = true;
+    ViewBag.ShowParCluster = true;
 
     var urlGet = Url.Action("GetApontamentosDiariosRH", "api/ApontamentosDiarios");
 }
@@ -91,6 +92,7 @@
                 var colunas =
                     [
                         { title: "@Resources.Resource.unit", mData: "Unidade" },
+                        { title: "Cluster", mData: "ClusterName" },
                         //{ title: "@Resources.Resource.cluster", mData: "Processo" },
                         //{ title: "@Resources.Resource.shift", mData: "Turno" },
                         //{ title: "@Resources.Resource.period", mData: "Periodo" },

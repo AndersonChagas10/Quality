@@ -263,6 +263,13 @@ function setBreadcrumbs() {
         isCurrent = false;
     }
 
+    if (currentParCluster_Id) {
+        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
+            return item.Id == currentParCluster_Id;
+        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
+
+        isCurrent = false;
+    }
 
 
 
