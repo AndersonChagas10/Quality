@@ -612,7 +612,7 @@
                 if (sumav != 0 && sumnc != 0) {
 
                     let porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
-                    let SubtitleConsolidado =  subtitle;
+                    let SubtitleConsolidado =  "NCs por Unidades selecionadas <br/>" + subtitle;
 
                     $('#GraficoHistoricoUnidade').removeClass('loader');
                     $('#GraficoHistoricoUnidade').empty();
