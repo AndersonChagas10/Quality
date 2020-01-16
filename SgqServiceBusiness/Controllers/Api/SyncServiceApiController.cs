@@ -5296,7 +5296,7 @@ namespace SgqServiceBusiness.Api
                                         <label>{CommonData.getResource("corrective_action").Value.ToString()}:</label>
                                         <div>
 		                                    <input type='checkbox' id='correctiveAction'>
-		                                    <label id='mensagemPadrao'> Mensagem padrão que será definida</label>
+		                                    <label id='mensagemPadrao'>{DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.DefaultMessageCorrectiveAction}</label>
                                         </div>
 	                                    <textarea id='PreventativeMeasure' class='form-control custom-control' rows='3' style='resize:none'></textarea>
                                     </div>
