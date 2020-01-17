@@ -790,7 +790,7 @@
 
         function GerarRelatorios(dados) {
 
-            if (dados.lenght <= 0) {
+            if (dados.length <= 0) {
                 return false;
             }
 
@@ -817,9 +817,11 @@
                 GerarGraficoTarefasAcumuladas(obj, idPanel);
 
                 //fazer um foreach para cada monitoramento
-                obj.TarefaMonitoramentos.forEach(function (o, i) {
-                    GerarGraficoTarefa(o, idPanel, obj);
-                });
+
+                if (obj.TarefaMonitoramentos != null)
+                    obj.TarefaMonitoramentos.forEach(function (o, i) {
+                        GerarGraficoTarefa(o, idPanel, obj);
+                    });
 
             });
 
@@ -1316,6 +1318,10 @@
 
         function GerarGraficoTarefasAcumuladas(obj, idPanel) {
 
+            if (obj.ListaTarefasAcumuladas == null) {
+                return;
+            }
+
             let titulo = "Tarefas Acumuladas";
             let subtitle = "";
             let xaxis = MapeiaValorParaHC(obj.ListaTarefasAcumuladas, "Name");
@@ -1763,7 +1769,7 @@
 
                 let valor = $('[name="parCompany_Ids"] option[value="' + i + '"]').text()
 
-                subtitle.push(valor.slice(valor.indexOf("-") + 2, valor.lenght));
+                subtitle.push(valor.slice(valor.indexOf("-") + 2, valor.length));
 
             });
 
