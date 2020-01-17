@@ -381,6 +381,9 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 		                ON PVP.ParCluster_Id = PC.Id
 		            LEFT JOIN ParClusterGroup PCG
 		                ON PC.ParClusterGroup_Id = PCG.Id
+	                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on L2.Holding = Holding.Id
+					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on L2.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on L2.Regional = Regional.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 
@@ -391,6 +394,9 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereCargo}
                     {whereCluster}
                     {whereClusterGroup}
+                    AND Holding.Id = {form.Param["holding_Id"]}
+					AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
+					AND Regional.Id = {form.Param["regional_Id"]} 
                 GROUP BY 
 	                C.NAME, C.Id ";
 
@@ -507,6 +513,9 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 		                ON PVP.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG
 		                ON PC.ParClusterGroup_Id = PCG.Id
+                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on L2.Holding = Holding.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on L2.GrupoDeEmpresa = GrupoDeEmpresa.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on L2.Regional = Regional.Id
 	            WHERE 1=1
                 AND L2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
                 AND C.Name  = '{ form.Param["unitName"] }'
@@ -518,6 +527,9 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereCargo}
                 {whereCluster}
                 {whereClusterGroup}
+                AND Holding.Id = {form.Param["holding_Id"]}
+				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
+				AND Regional.Id = {form.Param["regional_Id"]} 
             GROUP BY 
 	            D1.NAME, D1.Id
             ORDER BY 4 DESC 
@@ -1150,6 +1162,9 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 		                ON PVP.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG
 		                ON PC.ParClusterGroup_Id = PCG.Id
+                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on L2.Holding = Holding.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on L2.GrupoDeEmpresa = GrupoDeEmpresa.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on L2.Regional = Regional.Id
 	            WHERE 1=1
 	            AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		            AND C.Name = '{form.Param["unitName"] }'
@@ -1163,6 +1178,9 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereCargo}
                 {whereCluster}
                 {whereClusterGroup}
+                AND Holding.Id = {form.Param["holding_Id"]}
+				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
+				AND Regional.Id = {form.Param["regional_Id"]} 
             GROUP BY 
 	            L.NAME, L.Id
             ORDER BY 4 DESC
@@ -1583,6 +1601,9 @@ DROP TABLE #AMOSTRATIPO4 ";
 		                ON PVP.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG
 		                ON PC.ParClusterGroup_Id = PCG.Id
+                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on L2.Holding = Holding.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on L2.GrupoDeEmpresa = GrupoDeEmpresa.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on L2.Regional = Regional.Id
 	            WHERE 1=1
                 AND L2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
                 	AND (C.Name = '{form.Param["unitName"] }' OR C.Initials = '{ form.Param["unitName"] }')
@@ -1594,6 +1615,9 @@ DROP TABLE #AMOSTRATIPO4 ";
                     {whereCargo}
                     {whereCluster}
                     {whereClusterGroup}
+                AND Holding.Id = {form.Param["holding_Id"]}
+				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
+				AND Regional.Id = {form.Param["regional_Id"]} 
 
             GROUP BY 
 	            M.NAME, M.Id
@@ -1714,6 +1738,9 @@ DROP TABLE #AMOSTRATIPO4 ";
 		                ON PVP.ParCluster_Id = PC.Id
 		            LEFT JOIN ParClusterGroup PCG
 		                ON PC.ParClusterGroup_Id = PCG.Id
+                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on L3.Holding = Holding.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on L3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on L3.Regional = Regional.Id
 	            WHERE 1=1
                  AND L.Name IN ('{ form.Param["level1Name"] }') 
                  AND C.Name = '{ form.Param["unitName"] }'
@@ -1725,6 +1752,9 @@ DROP TABLE #AMOSTRATIPO4 ";
                  {whereUnit}
                  {whereCluster}
                  {whereClusterGroup}
+                AND Holding.Id = {form.Param["holding_Id"]}
+				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
+				AND Regional.Id = {form.Param["regional_Id"]} 
         GROUP BY 
 	        T.NAME, T.ID
         ORDER BY 4 DESC
@@ -1819,6 +1849,9 @@ DROP TABLE #AMOSTRATIPO4 ";
 		                ON PVP.ParCluster_Id = PC.Id
 		            LEFT JOIN ParClusterGroup PCG
 		                ON PC.ParClusterGroup_Id = PCG.Id
+                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on L3.Holding = Holding.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on L3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on L3.Regional = Regional.Id
 	            WHERE 1=1
                  AND L.Name IN ('{ form.Param["level1Name"] }') 
                  AND M.Name = '{ form.Param["level2Name"] }'
@@ -1828,6 +1861,9 @@ DROP TABLE #AMOSTRATIPO4 ";
                  {whereCluster}
                  {whereClusterGroup}
                  {whereUnit}
+                AND Holding.Id = {form.Param["holding_Id"]}
+				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
+				AND Regional.Id = {form.Param["regional_Id"]} 
         GROUP BY 
 	        T.NAME, T.ID
         ORDER BY 4 DESC

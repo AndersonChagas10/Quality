@@ -7,6 +7,7 @@
     var url = Url.Action("Index", "Home");
     var urlGraficoUnidades = Url.Action("GraficoUnidades", "api/NaoConformidadeRH");
     var urlGraficoHolding = Url.Action("GraficoHolding", "api/NaoConformidadeRH");
+    var urlGraficoRegional = Url.Action("GraficoRegional", "api/NaoConformidadeRH");
     var urlGraficoNegocio = Url.Action("GraficoNegocio", "api/NaoConformidadeRH");
     var urlGraficoDepartamentos = Url.Action("GraficoDepartamentos", "api/NaoConformidadeRH");
     var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidadeRH");
@@ -155,6 +156,7 @@
         var urlGraficoUnidades = @Html.Raw(Json.Encode(urlGraficoUnidades));
         var urlGraficoHolding = @Html.Raw(Json.Encode(urlGraficoHolding));
         var urlGraficoNegocio = @Html.Raw(Json.Encode(urlGraficoNegocio));
+        var urlGraficoRegional = @Html.Raw(Json.Encode(urlGraficoRegional));
         var urlGraficoIndicador = @Html.Raw(Json.Encode(urlGraficoNcPorUnidadeIndicador));
         var urlGraficoMonitoramento = @Html.Raw(Json.Encode(urlGraficoMonitoramento));
         var urlGraficoTarefasAcumuladas = @Html.Raw(Json.Encode(urlGraficoTarefasAcumuladas));
@@ -257,53 +259,42 @@
             $('#RGTarefasPivotTable').hide();
         };
 
-        //function enviarFiltro() {
+        function GetGraficoUnidade(holdingName, holding_Id, grupoEmpresaName, grupoEmpresa_Id, regionalName, regional_Id) {
+            debugger
+            objFiltro.Param.holdingName = holdingName;
+            objFiltro.Param.holding_Id = holding_Id;
 
-        //    openLoader('Aguarde...');
-        //    $btn.button('loading');
-        //    $('#results').empty();
-        //    $("#RGOperacoesGrafico").empty();
-        //    $('#RGDepartamentosGrafico').empty();
-        //    $('#RGDepartamentosShiftGrafico').empty();
-        //    $('#RGOperacoesShiftGrafico').empty();
-        //    $("#RGUnidadesGrafico").empty()
-        //    $("#PanelFull0").hide();
+            objFiltro.Param.grupoEmpresa = grupoEmpresaName;
+            objFiltro.Param.grupoEmpresa_Id = grupoEmpresa_Id;
 
-        //    ShiftSelected = $('#shift :selected').val();
+            objFiltro.Param.regionalName = regionalName;
+            objFiltro.Param.regional_Id = regional_Id;
 
-        //    popoverMain.addClass('hide');
+            $("#PanelFull0").hide();
+            pathDirect = 1;
 
-        //    if (!ValidaDadosParaEnvio()) {
-        //        $btn.button('reset');
-        //        return;
-        //    }
-        //    objFiltro.Param = {};
-        //    objFiltro.Param.auditorId = GetUsuarioId();
+            $.ajax({
+                url: urlGraficoUnidades,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+            .done(function (data) {
+                //console.log(data);
+                GraficoUnidade(data);
+                closeLoader();
+            })
+            .fail(function (jqXHR, textStatus, msg) {
+                //console.log(msg);
+                //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                closeLoader();
+            });
 
-        //    $.ajax({
-        //        url: urlGraficoUnidades,
-        //        type: 'post',
-        //        data: JSON.stringify(objFiltro),
-        //        dataType: "JSON",
-        //        contentType: "APPLICATION/JSON; CHARSET=UTF-8",
-        //        beforeSend: function () {
-        //        }
-        //    })
-        //    .done(function (data) {
-        //        //console.log(data);
-        //        GraficoUnidade(data);
-        //        $btn.button('reset');
-        //        closeLoader();
-        //    })
-        //    .fail(function (jqXHR, textStatus, msg) {
-        //        //console.log(msg);
-        //        $btn.button('reset');
-        //        //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
-        //        closeLoader();
-        //    });
-
-        //    $('#RGTarefasPivotTable').hide();
-        //};
+            $('#RGTarefasPivotTable').hide();
+        };
 
     function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation(objFiltro);
@@ -406,7 +397,7 @@
         }
 
         function GetPopover(param, grafico, shift, param_Id) {
-            debugger
+            
             popoverMain.addClass('hide');
 
             hidePopoverItems();
@@ -472,13 +463,16 @@
                     break;
 
                 case "Negocio":
-                    debugger
                     GetGraficoNegocio(Aux, Aux2);
                     break;
 
                 case "Regional":
+                    GetGraficoRegional(objFiltro.Param["holdingName"], objFiltro.Param["holding_Id"],Aux, Aux2);
+                    break;
+
+                case "Unidade":
                     debugger
-                    GetGraficoRegional(Aux, Aux2);
+                    GetGraficoUnidade(objFiltro.Param["holdingName"], objFiltro.Param["holding_Id"], objFiltro.Param["grupoEmpresa"], objFiltro.Param["grupoEmpresa_Id"], Aux, Aux2);
                     break;
 
                 default:
@@ -664,7 +658,8 @@
                 })
                 .done(function (data) {
                     //console.log(data);
-                    GraficoNegocio(data);
+                    debugger
+                    GraficoNegocio(data, objFiltro);
                     closeLoader();
                 })
                 .fail(function (jqXHR, textStatus, msg) {
@@ -676,24 +671,27 @@
             $('#RGTarefasPivotTable').hide();
         }
 
-        function GetGraficoRegional(holding, holding_Id) {
+        function GetGraficoRegional(holding, holding_Id, grupoEmpresa, grupoEmpresa_Id) {
             objFiltro.Param.holdingName = holding;
             objFiltro.Param.holding_Id = holding_Id;
+            objFiltro.Param.grupoEmpresa = grupoEmpresa;
+            objFiltro.Param.grupoEmpresa_Id = grupoEmpresa_Id;
+
             $("#PanelFull0").hide();
             pathDirect = 1;
 
-            $.ajax({
-                url: urlGraficoNegocio,
-                type: 'post',
-                data: JSON.stringify(objFiltro),
-                dataType: "JSON",
-                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
-                beforeSend: function () {
-                }
-            })
+                $.ajax({
+                    url: urlGraficoRegional,
+                    type: 'post',
+                    data: JSON.stringify(objFiltro),
+                    dataType: "JSON",
+                    contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                    beforeSend: function () {
+                    }
+                })
                 .done(function (data) {
                     //console.log(data);
-                    GraficoNegocio(data);
+                    GraficoRegional(data);
                     closeLoader();
                 })
                 .fail(function (jqXHR, textStatus, msg) {
@@ -748,7 +746,7 @@
                     Chart.Av(Av, GetPopover, null, null, null, "Negocio", dataX, null, dataXId)
                 ]
             }, function () {
-                $('#RGHoldingGrafico').append(GeralNote);
+                //$('#RGHoldingGrafico').append(GeralNote);
             });
 
             $('.body-content').css('height', '3350px');
@@ -756,12 +754,12 @@
         }
 
         function GraficoNegocio(data, data2) {
-            debugger
+            
             if (!(data.length > 0)) {
                 GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
                 return;
             }
-
+           
             var dataX = MapeiaValorParaHC(data, "GrupoDeEmpresaName");
             var dataXId = MapeiaValorParaHC(data, "GrupoDeEmpresa_Id");
             var Nc = MapeiaValorParaHC(data, "Nc");
@@ -795,7 +793,7 @@
                     Chart.Av(Av, GetPopover, null, null, null, "Regional", dataX, null, dataXId),
                 ]
             }, function () {
-                $('#RGNegocioGrafico').append(GeralNote);
+                //$('#RGNegocioGrafico').append(GeralNote);
             });
 
             $('.body-content').css('height', '3350px');
@@ -803,7 +801,6 @@
         }
 
         function GraficoRegional(data, data2) {
-            debugger
             if (!(data.length > 0)) {
                 GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
                 return;
@@ -817,7 +814,7 @@
 
             $('#RGRegionalGrafico').empty();
 
-            Highcharts.chart('RGNegocioGrafico', {
+            Highcharts.chart('RGRegionalGrafico', {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
                 title: Chart.Titulo(setNameTitulos("NC por Regional")),
@@ -837,12 +834,12 @@
                     }
                 },
                 series: [
-                    Chart.ProcNc(Proc, GetPopover, null, "", dataX, null, dataXId),
-                    Chart.NC(Nc, GetPopover, null, null, null, "", dataX, null, dataXId),
-                    Chart.Av(Av, GetPopover, null, null, null, "", dataX, null, dataXId),
+                    Chart.ProcNc(Proc, GetPopover, null, "Unidade", dataX, null, dataXId),
+                    Chart.NC(Nc, GetPopover, null, null, null, "Unidade", dataX, null, dataXId),
+                    Chart.Av(Av, GetPopover, null, null, null, "Unidade", dataX, null, dataXId),
                 ]
             }, function () {
-                $('#RGRegionalGrafico').append(GeralNote);
+                //$('#RGRegionalGrafico').append(GeralNote);
             });
 
             $('.body-content').css('height', '3350px');
