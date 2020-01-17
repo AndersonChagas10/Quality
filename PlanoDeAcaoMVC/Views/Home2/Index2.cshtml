@@ -317,15 +317,15 @@
 <div class="container-fluid">
     <div class="row" style="width:100% !important">
         <div class="col-md-12" style="margin-left:10px;">
-            <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('@Resources.Resource.strategic_planning', undefined, NovoPlanejamento);" data-toggle="modal" disabled>@Resources.Resource.new_strategic_planning</button>
+            <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('@ResourcesPA.Resource.strategic_planning', undefined, NovoPlanejamento);" data-toggle="modal" disabled>@ResourcesPA.Resource.new_strategic_planning</button>
 
-            <button type="button" class="btn btn-success showModalNovoTatico" onclick="AbrirModalNovoApartirDeAlgo('tatico','@Resources.Resource.tactical', '@Resources.Resource.strategic')" id="btnModalNovoTatico" data-toggle="modal">@Resources.Resource.new_tactic</button>
+            <button type="button" class="btn btn-success showModalNovoTatico" onclick="AbrirModalNovoApartirDeAlgo('tatico','@ResourcesPA.Resource.tactical', '@ResourcesPA.Resource.strategic')" id="btnModalNovoTatico" data-toggle="modal">@ResourcesPA.Resource.new_tactic</button>
 
-            <button type="button" class="btn btn-success showModalNovaAcao" onclick="AbrirModalNovoApartirDeAlgo('acao','@Resources.Resource.action', '@Resources.Resource.tactical')" id="btnModalNovaAcao" data-toggle="modal">@Resources.Resource.new_action</button>
+            <button type="button" class="btn btn-success showModalNovaAcao" onclick="AbrirModalNovoApartirDeAlgo('acao','@ResourcesPA.Resource.action', '@ResourcesPA.Resource.tactical')" id="btnModalNovaAcao" data-toggle="modal">@ResourcesPA.Resource.new_action</button>
 
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">@Resources.Resource.project_overview_management</button>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">@ResourcesPA.Resource.project_overview_management</button>
 
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Diretriz');">@Resources.Resource.project_overview_guideline</button>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Diretriz');">@ResourcesPA.Resource.project_overview_guideline</button>
         </div>
     </div>
 </div>
@@ -337,7 +337,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">@Resources.Resource.project_overview</h4>
+                <h4 class="modal-title">@ResourcesPA.Resource.project_overview</h4>
                 <div id="divPrioridade">
                     <button type="button" class="btn btn-primary hide" id="btnFiltraPrioridade" style="float:right;" onclick="getVisaoGeralProjetos(true)">Diretrizes com Prioridade</button>
                     <button type="button" class="btn btn-primary hide" id="btnFiltraSemPrioridade" style="float:right;" onclick="getVisaoGeralProjetos(false)">Todas Diretrizes</button>
@@ -348,7 +348,7 @@
                     <div class="col-sm-12">
                         <div class="col-sm-4">
                             <div class="col-sm-12 panel panel-inf" style="background-color:dimgray; color:whitesmoke; text-align:center">
-                                <h4 class="panel-heading">@Resources.Resource.percent_completed</h4>
+                                <h4 class="panel-heading">@ResourcesPA.Resource.percent_completed</h4>
                                 <div id="percentualConclusao" class="panel-body">0 %</div>
                             </div>
                             <div>
@@ -362,29 +362,29 @@
                     </div>
                     <div class="col-sm-12">
                         <div class="col-sm-6">
-                            <h4>@Resources.Resource.ongoing_tasks</h4>
+                            <h4>@ResourcesPA.Resource.ongoing_tasks</h4>
                             <table id="tableAndamento" class="table table-striped"></table>
                         </div>
                         <div class="col-sm-6">
-                            <h4>@Resources.Resource.delayed_tasks</h4>
+                            <h4>@ResourcesPA.Resource.delayed_tasks</h4>
                             <table id="tableAtrasadas" class="table table-striped"></table>
                         </div>
                     </div>
                     <div style="clear:both; height: 40px;"></div>
                     <div class="col-sm-12">
                         <div class="col-sm-6">
-                            <h4>@Resources.Resource.next_tasks</h4>
+                            <h4>@ResourcesPA.Resource.next_tasks</h4>
                             <table id="tableProximas" class="table table-striped"></table>
                         </div>
                         <div class="col-sm-6">
-                            <h4>@Resources.Resource.completed_tasks</h4>
+                            <h4>@ResourcesPA.Resource.completed_tasks</h4>
                             <table id="tableConcluidas" class="table table-striped"></table>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">@ResourcesPA.Resource.close</button>
             </div>
         </div>
 
@@ -398,7 +398,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDivInternal defaultDivFilter">
             <div class="defaultGroupTitle" style="width:auto; float:left; background-color:transparent;">
-                <span class="defaultTitle" style="line-height:27px;">@Resources.Resource.filters</span>
+                <span class="defaultTitle" style="line-height:27px;">@ResourcesPA.Resource.filters</span>
             </div>
             <div class="defaultFilter input-group" style="width:auto; float:right; background-color:transparent; border-bottom: 0px; margin-bottom:0px;">
                 <div class="input-group-btn" style="width: 100px;">
@@ -406,64 +406,64 @@
                 </div>
                 &nbsp;
                 <select style="font-size:xx-small;width:25% !important;" id="campo1Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor1Filtro');">
-                    <option value="">@Resources.Resource.all</option>
-                    <option value="Diretoria">@Resources.Resource.directorship</option>
-                    <option value="Dimensao">@Resources.Resource.dimension</option>
-                    <option value="Objetivo">@Resources.Resource.guideline</option>
-                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
-                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
-                    <option value="Gerencia">@Resources.Resource.management</option>
-                    <option value="Coordenacao">@Resources.Resource.coordination</option>
-                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
-                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
-                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
-                    <option value="_GrupoCausa">@Resources.Resource.group_cause</option>
-                    <option value="_CausaGenerica">@Resources.Resource.generic_cause</option>
-                    <option value="_ContramedidaGenerica">@Resources.Resource.generic_action</option>
-                    <option value="UnidadeName">@Resources.Resource.unit</option>
-                    <option value="_Quem">@Resources.Resource.who</option>
-                    <option value="_StatusName">@Resources.Resource.status</option>
-                    <option value="Regional">@Resources.Resource.regional</option>
-                    <option value="Level1Name">@Resources.Resource.indicator</option>
-                    <option value="Level2Name">@Resources.Resource.monitoring</option>
-                    <option value="Level3Name">@Resources.Resource.task</option>
-                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                    <option value="">@ResourcesPA.Resource.all</option>
+                    <option value="Diretoria">@ResourcesPA.Resource.directorship</option>
+                    <option value="Dimensao">@ResourcesPA.Resource.dimension</option>
+                    <option value="Objetivo">@ResourcesPA.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@ResourcesPA.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@ResourcesPA.Resource.theme_subject</option>
+                    <option value="Gerencia">@ResourcesPA.Resource.management</option>
+                    <option value="Coordenacao">@ResourcesPA.Resource.coordination</option>
+                    <option value="TipoProjeto">@ResourcesPA.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@ResourcesPA.Resource.project_theme</option>
+                    <option value="Iniciativa">@ResourcesPA.Resource.project_initiative</option>
+                    <option value="_GrupoCausa">@ResourcesPA.Resource.group_cause</option>
+                    <option value="_CausaGenerica">@ResourcesPA.Resource.generic_cause</option>
+                    <option value="_ContramedidaGenerica">@ResourcesPA.Resource.generic_action</option>
+                    <option value="UnidadeName">@ResourcesPA.Resource.unit</option>
+                    <option value="_Quem">@ResourcesPA.Resource.who</option>
+                    <option value="_StatusName">@ResourcesPA.Resource.status</option>
+                    <option value="Regional">@ResourcesPA.Resource.regional</option>
+                    <option value="Level1Name">@ResourcesPA.Resource.indicator</option>
+                    <option value="Level2Name">@ResourcesPA.Resource.monitoring</option>
+                    <option value="Level3Name">@ResourcesPA.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@ResourcesPA.Resource.indicator_type</option>
 
                 </select>
                 &nbsp;
                 <select id="valor1Filtro">
-                    <option>@Resources.Resource.all</option>
+                    <option>@ResourcesPA.Resource.all</option>
                 </select>
                 &nbsp;
 
                 <select style="font-size:xx-small;width:25% !important;" id="campo2Filtro" onchange="distinctFilter(dados, $(this).val(), 'valor2Filtro');">
-                    <option value="">@Resources.Resource.all</option>
-                    <option value="Diretoria">@Resources.Resource.directorship</option>
-                    <option value="Dimensao">@Resources.Resource.dimension</option>
-                    <option value="Objetivo">@Resources.Resource.guideline</option>
-                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
-                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
-                    <option value="Gerencia">@Resources.Resource.management</option>
-                    <option value="Coordenacao">@Resources.Resource.coordination</option>
-                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
-                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
-                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
-                    <option value="_GrupoCausa">@Resources.Resource.group_cause</option>
-                    <option value="_CausaGenerica">@Resources.Resource.generic_cause</option>
-                    <option value="_ContramedidaGenerica">@Resources.Resource.generic_action</option>
-                    <option value="UnidadeName">@Resources.Resource.unit</option>
-                    <option value="_Quem">@Resources.Resource.who</option>
-                    <option value="_StatusName">@Resources.Resource.status</option>
-                    <option value="Regional">@Resources.Resource.regional</option>
-                    <option value="Level1Name">@Resources.Resource.indicator</option>
-                    <option value="Level2Name">@Resources.Resource.monitoring</option>
-                    <option value="Level3Name">@Resources.Resource.task</option>
-                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                    <option value="">@ResourcesPA.Resource.all</option>
+                    <option value="Diretoria">@ResourcesPA.Resource.directorship</option>
+                    <option value="Dimensao">@ResourcesPA.Resource.dimension</option>
+                    <option value="Objetivo">@ResourcesPA.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@ResourcesPA.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@ResourcesPA.Resource.theme_subject</option>
+                    <option value="Gerencia">@ResourcesPA.Resource.management</option>
+                    <option value="Coordenacao">@ResourcesPA.Resource.coordination</option>
+                    <option value="TipoProjeto">@ResourcesPA.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@ResourcesPA.Resource.project_theme</option>
+                    <option value="Iniciativa">@ResourcesPA.Resource.project_initiative</option>
+                    <option value="_GrupoCausa">@ResourcesPA.Resource.group_cause</option>
+                    <option value="_CausaGenerica">@ResourcesPA.Resource.generic_cause</option>
+                    <option value="_ContramedidaGenerica">@ResourcesPA.Resource.generic_action</option>
+                    <option value="UnidadeName">@ResourcesPA.Resource.unit</option>
+                    <option value="_Quem">@ResourcesPA.Resource.who</option>
+                    <option value="_StatusName">@ResourcesPA.Resource.status</option>
+                    <option value="Regional">@ResourcesPA.Resource.regional</option>
+                    <option value="Level1Name">@ResourcesPA.Resource.indicator</option>
+                    <option value="Level2Name">@ResourcesPA.Resource.monitoring</option>
+                    <option value="Level3Name">@ResourcesPA.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@ResourcesPA.Resource.indicator_type</option>
                 </select>
                 &nbsp;
 
                 <select id="valor2Filtro">
-                    <option>@Resources.Resource.all</option>
+                    <option>@ResourcesPA.Resource.all</option>
                 </select>
                 &nbsp;
 
@@ -489,39 +489,39 @@
             <div class="defaultFilter ">
 
                 <select style="font-size:xx-small;width:25% !important;" id="campo1FiltroPie2" onchange="distinctFilter(dados, $(this).val(), 'valor1FiltroPie2');">
-                    <option value="Diretoria">@Resources.Resource.directorship</option>
-                    <option value="Dimensao">@Resources.Resource.dimension</option>
-                    <option value="Objetivo">@Resources.Resource.guideline</option>
-                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
-                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
-                    <option value="Gerencia">@Resources.Resource.management</option>
-                    <option value="Coordenacao">@Resources.Resource.coordination</option>
-                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
-                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
-                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
-                    <option value="_GrupoCausa">@Resources.Resource.group_cause</option>
-                    <option value="_CausaGenerica">@Resources.Resource.generic_cause</option>
-                    <option value="_ContramedidaGenerica">@Resources.Resource.generic_action</option>
-                    <option value="UnidadeName">@Resources.Resource.unit</option>
-                    <option value="_Quem">@Resources.Resource.who</option>
-                    <option value="_StatusName">@Resources.Resource.status</option>
-                    <option value="Regional">@Resources.Resource.regional</option>
-                    <option value="Level1Name">@Resources.Resource.indicator</option>
-                    <option value="Level2Name">@Resources.Resource.monitoring</option>
-                    <option value="Level3Name">@Resources.Resource.task</option>
-                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                    <option value="Diretoria">@ResourcesPA.Resource.directorship</option>
+                    <option value="Dimensao">@ResourcesPA.Resource.dimension</option>
+                    <option value="Objetivo">@ResourcesPA.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@ResourcesPA.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@ResourcesPA.Resource.theme_subject</option>
+                    <option value="Gerencia">@ResourcesPA.Resource.management</option>
+                    <option value="Coordenacao">@ResourcesPA.Resource.coordination</option>
+                    <option value="TipoProjeto">@ResourcesPA.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@ResourcesPA.Resource.project_theme</option>
+                    <option value="Iniciativa">@ResourcesPA.Resource.project_initiative</option>
+                    <option value="_GrupoCausa">@ResourcesPA.Resource.group_cause</option>
+                    <option value="_CausaGenerica">@ResourcesPA.Resource.generic_cause</option>
+                    <option value="_ContramedidaGenerica">@ResourcesPA.Resource.generic_action</option>
+                    <option value="UnidadeName">@ResourcesPA.Resource.unit</option>
+                    <option value="_Quem">@ResourcesPA.Resource.who</option>
+                    <option value="_StatusName">@ResourcesPA.Resource.status</option>
+                    <option value="Regional">@ResourcesPA.Resource.regional</option>
+                    <option value="Level1Name">@ResourcesPA.Resource.indicator</option>
+                    <option value="Level2Name">@ResourcesPA.Resource.monitoring</option>
+                    <option value="Level3Name">@ResourcesPA.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@ResourcesPA.Resource.indicator_type</option>
                 </select>
                 &nbsp;
                 <select id="valor1FiltroPie2">
-                    <option>@Resources.Resource.all</option>
+                    <option>@ResourcesPA.Resource.all</option>
                 </select>
                 &nbsp;
                 <button class="btn btn-warning btn-filter" style="font-size:12px;" id="btnFiltroPie2"><span class="glyphicon glyphicon-filter"></span></button>
             </div>
             <div class="defaultGroupTitle">
-                <span class="defaultTitle">@Resources.Resource.tasks_status</span>
+                <span class="defaultTitle">@ResourcesPA.Resource.tasks_status</span>
                 <br />
-                <span class="defaultSubtitle" id="spanPie2">@Resources.Resource.all2</span><span class="defaultSubtitle">&nbsp;@Resources.Resource.by_status</span><br />
+                <span class="defaultSubtitle" id="spanPie2">@ResourcesPA.Resource.all2</span><span class="defaultSubtitle">&nbsp;@ResourcesPA.Resource.by_status</span><br />
             </div>
             <div id="panel2" class="defaultSizeMinPanel"></div>
         </div>
@@ -530,9 +530,9 @@
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 defaultDiv">
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMin">
             <div class="defaultGroupTitle">
-                <span class="defaultTitle">@Resources.Resource.stocks_in_action</span>
+                <span class="defaultTitle">@ResourcesPA.Resource.stocks_in_action</span>
                 <br />
-                <span class="defaultSubtitle">@Resources.Resource.formation_of_stocks_in_action</span>
+                <span class="defaultSubtitle">@ResourcesPA.Resource.formation_of_stocks_in_action</span>
             </div>
             <div id="panel4" class="defaultSizeMinPanel2"></div>
         </div>
@@ -546,54 +546,54 @@
             <div class="defaultFilter">
                 <select style="font-size:xx-small;width:25% !important;" id="campo1Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel5');" oncancel="filterEixoY('valor1Panel5')">
 
-                    <option value="Diretoria" selected>@Resources.Resource.directorship</option>
-                    <option value="Dimensao">@Resources.Resource.dimension</option>
-                    <option value="Objetivo">@Resources.Resource.guideline</option>
-                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
-                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
-                    <option value="Gerencia">@Resources.Resource.management</option>
-                    <option value="Coordenacao">@Resources.Resource.coordination</option>
-                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
-                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
-                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
-                    <option value="Acao._GrupoCausa">@Resources.Resource.group_cause</option>
-                    <option value="Acao._CausaGenerica">@Resources.Resource.generic_cause</option>
-                    <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
-                    <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
-                    <option value="Acao._Quem">@Resources.Resource.who</option>
-                    <option value="Acao._StatusName">@Resources.Resource.status</option>
-                    <option value="Acao.Regional">@Resources.Resource.regional</option>
-                    <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
-                    <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
-                    <option value="Acao.Level3Name">@Resources.Resource.task</option>
-                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                    <option value="Diretoria" selected>@ResourcesPA.Resource.directorship</option>
+                    <option value="Dimensao">@ResourcesPA.Resource.dimension</option>
+                    <option value="Objetivo">@ResourcesPA.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@ResourcesPA.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@ResourcesPA.Resource.theme_subject</option>
+                    <option value="Gerencia">@ResourcesPA.Resource.management</option>
+                    <option value="Coordenacao">@ResourcesPA.Resource.coordination</option>
+                    <option value="TipoProjeto">@ResourcesPA.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@ResourcesPA.Resource.project_theme</option>
+                    <option value="Iniciativa">@ResourcesPA.Resource.project_initiative</option>
+                    <option value="Acao._GrupoCausa">@ResourcesPA.Resource.group_cause</option>
+                    <option value="Acao._CausaGenerica">@ResourcesPA.Resource.generic_cause</option>
+                    <option value="Acao._ContramedidaGenerica">@ResourcesPA.Resource.generic_action</option>
+                    <option value="Acao.UnidadeName">@ResourcesPA.Resource.unit</option>
+                    <option value="Acao._Quem">@ResourcesPA.Resource.who</option>
+                    <option value="Acao._StatusName">@ResourcesPA.Resource.status</option>
+                    <option value="Acao.Regional">@ResourcesPA.Resource.regional</option>
+                    <option value="Acao.Level1Name">@ResourcesPA.Resource.indicator</option>
+                    <option value="Acao.Level2Name">@ResourcesPA.Resource.monitoring</option>
+                    <option value="Acao.Level3Name">@ResourcesPA.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@ResourcesPA.Resource.indicator_type</option>
                 </select>
 
                 <select id="valor1Panel5"></select>
 
                 <select style="font-size:xx-small;width:25% !important;" id="campo2Panel5" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel5');">
 
-                    <option value="Diretoria">@Resources.Resource.directorship</option>
-                    <option value="Dimensao">@Resources.Resource.dimension</option>
-                    <option value="Objetivo">@Resources.Resource.guideline</option>
-                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
-                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
-                    <option value="Gerencia">@Resources.Resource.management</option>
-                    <option value="Coordenacao">@Resources.Resource.coordination</option>
-                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
-                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
-                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
-                    <option value="Acao._GrupoCausa">@Resources.Resource.group_cause</option>
-                    <option value="Acao._CausaGenerica">@Resources.Resource.generic_cause</option>
-                    <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
-                    <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
-                    <option value="Acao._Quem">@Resources.Resource.who</option>
-                    <option value="Acao._StatusName" selected>@Resources.Resource.status</option>
-                    <option value="Acao.Regional">@Resources.Resource.regional</option>
-                    <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
-                    <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
-                    <option value="Acao.Level3Name">@Resources.Resource.task</option>
-                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                    <option value="Diretoria">@ResourcesPA.Resource.directorship</option>
+                    <option value="Dimensao">@ResourcesPA.Resource.dimension</option>
+                    <option value="Objetivo">@ResourcesPA.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@ResourcesPA.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@ResourcesPA.Resource.theme_subject</option>
+                    <option value="Gerencia">@ResourcesPA.Resource.management</option>
+                    <option value="Coordenacao">@ResourcesPA.Resource.coordination</option>
+                    <option value="TipoProjeto">@ResourcesPA.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@ResourcesPA.Resource.project_theme</option>
+                    <option value="Iniciativa">@ResourcesPA.Resource.project_initiative</option>
+                    <option value="Acao._GrupoCausa">@ResourcesPA.Resource.group_cause</option>
+                    <option value="Acao._CausaGenerica">@ResourcesPA.Resource.generic_cause</option>
+                    <option value="Acao._ContramedidaGenerica">@ResourcesPA.Resource.generic_action</option>
+                    <option value="Acao.UnidadeName">@ResourcesPA.Resource.unit</option>
+                    <option value="Acao._Quem">@ResourcesPA.Resource.who</option>
+                    <option value="Acao._StatusName" selected>@ResourcesPA.Resource.status</option>
+                    <option value="Acao.Regional">@ResourcesPA.Resource.regional</option>
+                    <option value="Acao.Level1Name">@ResourcesPA.Resource.indicator</option>
+                    <option value="Acao.Level2Name">@ResourcesPA.Resource.monitoring</option>
+                    <option value="Acao.Level3Name">@ResourcesPA.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@ResourcesPA.Resource.indicator_type</option>
                 </select>
 
                 <select id="valor2Panel5"></select>
@@ -601,16 +601,16 @@
                 <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel5','campo2Panel5','panel5', this.id);" id="btnOrderFilterPanel5"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Ordem por Valor" id="spanOrder"></span></button>
             </div>
             <div class="defaultGroupTitle">
-                <span class="defaultTitle">@Resources.Resource.comparative</span>
+                <span class="defaultTitle">@ResourcesPA.Resource.comparative</span>
                 <br />
-                <span class="defaultSubtitle" id="FirstParamPanel5">@Resources.Resource.status </span>
-                <span class="defaultSubtitle">&nbsp;@Resources.Resource.by&nbsp;</span>
-                <span class="defaultSubtitle" id="LastParamPanel5"> @Resources.Resource.management</span>
+                <span class="defaultSubtitle" id="FirstParamPanel5">@ResourcesPA.Resource.status </span>
+                <span class="defaultSubtitle">&nbsp;@ResourcesPA.Resource.by&nbsp;</span>
+                <span class="defaultSubtitle" id="LastParamPanel5"> @ResourcesPA.Resource.management</span>
             </div>
             <div id="panel5" class="defaultSizeMedPanel"></div>
             <div id="semDados1" class="semDados">
                 <h1>
-                    @Resources.Resource.no_data
+                    @ResourcesPA.Resource.no_data
                 </h1>
             </div>
         </div>
@@ -619,54 +619,54 @@
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMed">
             <div class="defaultFilter">
                 <select style="font-size:xx-small;width:25% !important;" id="campo1Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor1Panel6');">
-                    <option value="Diretoria">@Resources.Resource.directorship</option>
-                    <option value="Dimensao">@Resources.Resource.dimension</option>
-                    <option value="Objetivo">@Resources.Resource.guideline</option>
-                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
-                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
-                    <option value="Gerencia" selected>@Resources.Resource.management</option>
-                    <option value="Coordenacao">@Resources.Resource.coordination</option>
-                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
-                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
-                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
-                    <option value="Acao._GrupoCausa">@Resources.Resource.group_cause</option>
-                    <option value="Acao._CausaGenerica">@Resources.Resource.generic_cause</option>
-                    <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
-                    <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
-                    <option value="Acao._Quem">@Resources.Resource.who</option>
-                    <option value="Acao._StatusName">@Resources.Resource.status</option>
-                    <option value="Acao.Regional">@Resources.Resource.regional</option>
-                    <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
-                    <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
-                    <option value="Acao.Level3Name">@Resources.Resource.task</option>
-                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                    <option value="Diretoria">@ResourcesPA.Resource.directorship</option>
+                    <option value="Dimensao">@ResourcesPA.Resource.dimension</option>
+                    <option value="Objetivo">@ResourcesPA.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@ResourcesPA.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@ResourcesPA.Resource.theme_subject</option>
+                    <option value="Gerencia" selected>@ResourcesPA.Resource.management</option>
+                    <option value="Coordenacao">@ResourcesPA.Resource.coordination</option>
+                    <option value="TipoProjeto">@ResourcesPA.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@ResourcesPA.Resource.project_theme</option>
+                    <option value="Iniciativa">@ResourcesPA.Resource.project_initiative</option>
+                    <option value="Acao._GrupoCausa">@ResourcesPA.Resource.group_cause</option>
+                    <option value="Acao._CausaGenerica">@ResourcesPA.Resource.generic_cause</option>
+                    <option value="Acao._ContramedidaGenerica">@ResourcesPA.Resource.generic_action</option>
+                    <option value="Acao.UnidadeName">@ResourcesPA.Resource.unit</option>
+                    <option value="Acao._Quem">@ResourcesPA.Resource.who</option>
+                    <option value="Acao._StatusName">@ResourcesPA.Resource.status</option>
+                    <option value="Acao.Regional">@ResourcesPA.Resource.regional</option>
+                    <option value="Acao.Level1Name">@ResourcesPA.Resource.indicator</option>
+                    <option value="Acao.Level2Name">@ResourcesPA.Resource.monitoring</option>
+                    <option value="Acao.Level3Name">@ResourcesPA.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@ResourcesPA.Resource.indicator_type</option>
                 </select>
 
                 <select id="valor1Panel6"></select>
 
                 <select style="font-size:xx-small;width:25% !important;" id="campo2Panel6" onchange="distinctFilter(dados, $(this).val(), 'valor2Panel6');">
 
-                    <option value="Diretoria">@Resources.Resource.directorship</option>
-                    <option value="Dimensao">@Resources.Resource.dimension</option>
-                    <option value="Objetivo">@Resources.Resource.guideline</option>
-                    <option value="IndicadoresDiretriz">@Resources.Resource.indicators_guideline</option>
-                    <option value="TemaAssunto">@Resources.Resource.theme_subject</option>
-                    <option value="Gerencia">@Resources.Resource.management</option>
-                    <option value="Coordenacao">@Resources.Resource.coordination</option>
-                    <option value="TipoProjeto">@Resources.Resource.type_of_project</option>
-                    <option value="TemaProjeto">@Resources.Resource.project_theme</option>
-                    <option value="Iniciativa">@Resources.Resource.project_initiative</option>
-                    <option value="Acao._GrupoCausa">@Resources.Resource.group_cause</option>
-                    <option value="Acao._CausaGenerica">@Resources.Resource.generic_cause</option>
-                    <option value="Acao._ContramedidaGenerica">@Resources.Resource.generic_action</option>
-                    <option value="Acao.UnidadeName">@Resources.Resource.unit</option>
-                    <option value="Acao._Quem">@Resources.Resource.who</option>
-                    <option value="Acao._StatusName" selected>@Resources.Resource.status</option>
-                    <option value="Acao.Regional">@Resources.Resource.regional</option>
-                    <option value="Acao.Level1Name">@Resources.Resource.indicator</option>
-                    <option value="Acao.Level2Name">@Resources.Resource.monitoring</option>
-                    <option value="Acao.Level3Name">@Resources.Resource.task</option>
-                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@Resources.Resource.indicator_type</option>
+                    <option value="Diretoria">@ResourcesPA.Resource.directorship</option>
+                    <option value="Dimensao">@ResourcesPA.Resource.dimension</option>
+                    <option value="Objetivo">@ResourcesPA.Resource.guideline</option>
+                    <option value="IndicadoresDiretriz">@ResourcesPA.Resource.indicators_guideline</option>
+                    <option value="TemaAssunto">@ResourcesPA.Resource.theme_subject</option>
+                    <option value="Gerencia">@ResourcesPA.Resource.management</option>
+                    <option value="Coordenacao">@ResourcesPA.Resource.coordination</option>
+                    <option value="TipoProjeto">@ResourcesPA.Resource.type_of_project</option>
+                    <option value="TemaProjeto">@ResourcesPA.Resource.project_theme</option>
+                    <option value="Iniciativa">@ResourcesPA.Resource.project_initiative</option>
+                    <option value="Acao._GrupoCausa">@ResourcesPA.Resource.group_cause</option>
+                    <option value="Acao._CausaGenerica">@ResourcesPA.Resource.generic_cause</option>
+                    <option value="Acao._ContramedidaGenerica">@ResourcesPA.Resource.generic_action</option>
+                    <option value="Acao.UnidadeName">@ResourcesPA.Resource.unit</option>
+                    <option value="Acao._Quem">@ResourcesPA.Resource.who</option>
+                    <option value="Acao._StatusName" selected>@ResourcesPA.Resource.status</option>
+                    <option value="Acao.Regional">@ResourcesPA.Resource.regional</option>
+                    <option value="Acao.Level1Name">@ResourcesPA.Resource.indicator</option>
+                    <option value="Acao.Level2Name">@ResourcesPA.Resource.monitoring</option>
+                    <option value="Acao.Level3Name">@ResourcesPA.Resource.task</option>
+                    <option class="optionAlternativeRole" value="Acao.TipoIndicador">@ResourcesPA.Resource.indicator_type</option>
                 </select>
 
                 <select id="valor2Panel6"></select>
@@ -675,16 +675,16 @@
                 <button class="btn btn-danger btn-filter" onclick="btnOrder('campo1Panel6','campo2Panel6','panel6', this.id);" id="btnOrderFilterPanel6"><span class="glyphicon glyphicon-sort-by-attributes-alt" title="Orderm por Valor" id="spanOrder"></span></button>
             </div>
             <div class="defaultGroupTitle">
-                <span class="defaultTitle">@Resources.Resource.comparative</span>
+                <span class="defaultTitle">@ResourcesPA.Resource.comparative</span>
                 <br />
-                <span class="defaultSubtitle" id="FirstParamPanel6">@Resources.Resource.status</span>
-                <span class="defaultSubtitle">&nbsp;@Resources.Resource.by&nbsp;</span>
-                <span class="defaultSubtitle" id="LastParamPanel6">@Resources.Resource.person</span>
+                <span class="defaultSubtitle" id="FirstParamPanel6">@ResourcesPA.Resource.status</span>
+                <span class="defaultSubtitle">&nbsp;@ResourcesPA.Resource.by&nbsp;</span>
+                <span class="defaultSubtitle" id="LastParamPanel6">@ResourcesPA.Resource.person</span>
             </div>
             <div id="panel6" class="defaultSizeMedPanel"></div>
             <div id="semDados2" class="semDados">
                 <h1>
-                    @Resources.Resource.no_data
+                    @ResourcesPA.Resource.no_data
                 </h1>
             </div>
         </div>
@@ -697,7 +697,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a class="accordion-toggle collapsed" onclick="tableAcaoRedrown()" data-toggle="collapse" data-target="#divPlanejamentoAcao" aria-expanded="false" style="display:block;cursor:pointer">@Resources.Resource.table_of_actions</a>
+                    <a class="accordion-toggle collapsed" onclick="tableAcaoRedrown()" data-toggle="collapse" data-target="#divPlanejamentoAcao" aria-expanded="false" style="display:block;cursor:pointer">@ResourcesPA.Resource.table_of_actions</a>
                 </h4>
             </div>
         </div>
@@ -707,9 +707,9 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamentoAcao">
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMax">
             <div class="defaultGroupTitle">
-                <span class="defaultTitle">@Resources.Resource.tasks_manager</span>
+                <span class="defaultTitle">@ResourcesPA.Resource.tasks_manager</span>
                 <br />
-                <span class="defaultSubtitle" id="spanSubTable">@Resources.Resource.all_tasks_to_filter</span>
+                <span class="defaultSubtitle" id="spanSubTable">@ResourcesPA.Resource.all_tasks_to_filter</span>
             </div>
 
             <br /><br /><br />
@@ -818,7 +818,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a class="accordion-toggle collapsed" onclick="tablePlanejamentoRedrown()" data-toggle="collapse" data-target="#divPlanejamento" aria-expanded="false" style="display:block;cursor:pointer">@Resources.Resource.table_of_projects</a>
+                    <a class="accordion-toggle collapsed" onclick="tablePlanejamentoRedrown()" data-toggle="collapse" data-target="#divPlanejamento" aria-expanded="false" style="display:block;cursor:pointer">@ResourcesPA.Resource.table_of_projects</a>
                 </h4>
             </div>
         </div>
@@ -827,9 +827,9 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 defaultDiv collapse" id="divPlanejamento">
         <div class="col-lg-12 col-md-12 col-sm-12 defaultDivInternal defaultSizeMax">
             <div class="defaultGroupTitle">
-                <span class="defaultTitle">@Resources.Resource.tasks_manager</span>
+                <span class="defaultTitle">@ResourcesPA.Resource.tasks_manager</span>
                 <br />
-                <span class="defaultSubtitle" id="spanSubTable">@Resources.Resource.all_plannings_to_filter</span>
+                <span class="defaultSubtitle" id="spanSubTable">@ResourcesPA.Resource.all_plannings_to_filter</span>
             </div>
 
             <br /><br /><br />
@@ -914,15 +914,15 @@
                     ID: Body
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="Fechar" onclick="Clicked(false, false, false);" data-dismiss="modal" style="display:none">@Resources.Resource.close</button>
-                    <button type="button" class="btn btn-default" id="Fechar2" onclick="" style="display:none">@Resources.Resource.close</button>
-                    <button type="button" class="btn btn-primary" id="Selecionar" onclick="" style="display:none" disabled>@Resources.Resource.select</button>
-                    <button type="button" class="btn btn-primary" id="Salvar" onclick="" style="display:none">@Resources.Resource.save</button>
-                    <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">@Resources.Resource.search_planning</button>
-                    <button type="button" class="btn btn-info" id="TaticoVinculado" onclick="BuscarPlanejamentos(); Clicked(true, false, true);" style="display:none">@Resources.Resource.new_tactical_planning_linked_strategic_planning</button>
-                    <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="">@Resources.Resource.new_action</button>
-                    <button type="button" class="btn btn-default" value="" id="new" style="display:none">@Resources.Resource.add_action</button>
-                    <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'), true)">@Resources.Resource.edit_action</button>
+                    <button type="button" class="btn btn-default" id="Fechar" onclick="Clicked(false, false, false);" data-dismiss="modal" style="display:none">@ResourcesPA.Resource.close</button>
+                    <button type="button" class="btn btn-default" id="Fechar2" onclick="" style="display:none">@ResourcesPA.Resource.close</button>
+                    <button type="button" class="btn btn-primary" id="Selecionar" onclick="" style="display:none" disabled>@ResourcesPA.Resource.select</button>
+                    <button type="button" class="btn btn-primary" id="Salvar" onclick="" style="display:none">@ResourcesPA.Resource.save</button>
+                    <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">@ResourcesPA.Resource.search_planning</button>
+                    <button type="button" class="btn btn-info" id="TaticoVinculado" onclick="BuscarPlanejamentos(); Clicked(true, false, true);" style="display:none">@ResourcesPA.Resource.new_tactical_planning_linked_strategic_planning</button>
+                    <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="">@ResourcesPA.Resource.new_action</button>
+                    <button type="button" class="btn btn-default" value="" id="new" style="display:none">@ResourcesPA.Resource.add_action</button>
+                    <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'), true)">@ResourcesPA.Resource.edit_action</button>
                 </div>
             </div>
         </div>
@@ -934,13 +934,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">@Resources.Resource.change_planning</h4>
+                    <h4 class="modal-title">@ResourcesPA.Resource.change_planning</h4>
                 </div>
                 <div class="modal-body">
                     <table id="tablePessego" class="table table-striped"></table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@ResourcesPA.Resource.close</button>
                 </div>
             </div>
         </div>
@@ -958,26 +958,26 @@
 
                 <div class="col-sm-5">
                     <div class="panel panel-primary">
-                        <div class="panel-heading">@Resources.Resource.form_of <span id="nomeItemNovo"></span></div>
+                        <div class="panel-heading">@ResourcesPA.Resource.form_of <span id="nomeItemNovo"></span></div>
                         <div class="panel-body">
                             <form>
                                 <div class="form-group">
                                     <div style="display:none" id="encadeado">
-                                        <label id="labelPredecessora">@Resources.Resource.predecessor </label>
+                                        <label id="labelPredecessora">@ResourcesPA.Resource.predecessor </label>
                                     </div>
                                     <div class="col-sm-12 borderedNinja" id="divPredecessora">
-                                        <label>@Resources.Resource.predecessor</label>
+                                        <label>@ResourcesPA.Resource.predecessor</label>
                                         <label id="labelPredecessoraValue"></label>
                                         <br />
                                     </div>
                                     <div class="col-sm-12 borderedNinja">
-                                        <label>@Resources.Resource.item_name</label>
+                                        <label>@ResourcesPA.Resource.item_name</label>
                                         <textarea style="min-width: 95%; height:150px;" type="text" class="form-control" id="newItem"></textarea>
                                         <input type="hidden" id="newIdItem" />
                                         <br />
                                     </div>
                                     <div class="col-sm-12 borderedNinja" id="divIsActive">
-                                        <label for="newIsActiveItem">@Resources.Resource.active</label>
+                                        <label for="newIsActiveItem">@ResourcesPA.Resource.active</label>
                                         <input class="custom-control-input" type="checkbox" checked="checked" name="newIsActiveItem" id="newIsActiveItem" />
                                         <br />
                                     </div>
@@ -987,9 +987,9 @@
                                         <br />
                                     </div>
                                     <div class="col-sm-12 borderedNinja">
-                                        <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">@Resources.Resource.save</button>
-                                        <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="SalvarNovo();">@Resources.Resource.save_edition</button>
-                                        <button type="button" class="btn btn-default hide" id="btnCancelarNovo">@Resources.Resource.cancel</button>
+                                        <button type="button" class="btn btn-primary" id="btnSalvarNovo" onclick="SalvarNovo();">@ResourcesPA.Resource.save</button>
+                                        <button type="button" class="btn btn-success hide" id="btnEditarNovo" onclick="SalvarNovo();">@ResourcesPA.Resource.save_edition</button>
+                                        <button type="button" class="btn btn-default hide" id="btnCancelarNovo">@ResourcesPA.Resource.cancel</button>
                                     </div>
                                 </div>
                             </form>
@@ -1001,7 +1001,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>@Resources.Resource.name</th>
+                                <th>@ResourcesPA.Resource.name</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -1011,7 +1011,7 @@
             <div class="clearfix"></div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">@ResourcesPA.Resource.close</button>
         </div>
     </div>
 </div>
@@ -1028,7 +1028,7 @@
                 <table class="table table-striped"></table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">@ResourcesPA.Resource.close</button>
             </div>
         </div>
     </div>
@@ -2545,26 +2545,26 @@
                     pageLength: 3,
                     "bInfo": false,
                     language: {
-                        "sEmptyTable": "@Html.Raw(Resources.Resource.no_records_found)",
-                        "sInfo": "@Html.Raw(Resources.Resource.showing_start_to_end_of_total_records)",
-                        "sInfoEmpty": "@Html.Raw(Resources.Resource.showing_0_to_0_of_0_records)",
-                        "sInfoFiltered": "@Html.Raw(Resources.Resource.filtered_max_records)",
+                        "sEmptyTable": "@Html.Raw(ResourcesPA.Resource.no_records_found)",
+                        "sInfo": "@Html.Raw(ResourcesPA.Resource.showing_start_to_end_of_total_records)",
+                        "sInfoEmpty": "@Html.Raw(ResourcesPA.Resource.showing_0_to_0_of_0_records)",
+                        "sInfoFiltered": "@Html.Raw(ResourcesPA.Resource.filtered_max_records)",
                         "sInfoPostFix": "",
                         "sInfoThousands": ".",
-                        "sLengthMenu": "@Html.Raw(Resources.Resource.menu_results_per_page)",
-                        "sLoadingRecords": "@Html.Raw(Resources.Resource.loading)",
-                        "sProcessing": "@Html.Raw(Resources.Resource.processing)",
-                        "sZeroRecords": "@Html.Raw(Resources.Resource.no_records_found)",
-                        "sSearch": "@Html.Raw(Resources.Resource.search)",
+                        "sLengthMenu": "@Html.Raw(ResourcesPA.Resource.menu_results_per_page)",
+                        "sLoadingRecords": "@Html.Raw(ResourcesPA.Resource.loading)",
+                        "sProcessing": "@Html.Raw(ResourcesPA.Resource.processing)",
+                        "sZeroRecords": "@Html.Raw(ResourcesPA.Resource.no_records_found)",
+                        "sSearch": "@Html.Raw(ResourcesPA.Resource.search)",
                         "oPaginate": {
-                            "sNext": "@Html.Raw(Resources.Resource.next)",
-                            "sPrevious": "@Html.Raw(Resources.Resource.back)",
-                            "sFirst": "@Html.Raw(Resources.Resource.first)",
-                            "sLast": "@Html.Raw(Resources.Resource.last)"
+                            "sNext": "@Html.Raw(ResourcesPA.Resource.next)",
+                            "sPrevious": "@Html.Raw(ResourcesPA.Resource.back)",
+                            "sFirst": "@Html.Raw(ResourcesPA.Resource.first)",
+                            "sLast": "@Html.Raw(ResourcesPA.Resource.last)"
                         },
                         "oAria": {
-                            "sSortAscending": "@Html.Raw(Resources.Resource.sort_columns_ascending)",
-                            "sSortDescending": "@Html.Raw(Resources.Resource.sort_columns_downward)"
+                            "sSortAscending": "@Html.Raw(ResourcesPA.Resource.sort_columns_ascending)",
+                            "sSortDescending": "@Html.Raw(ResourcesPA.Resource.sort_columns_downward)"
                         }
                     },
                     columns: columns,
@@ -2695,10 +2695,10 @@
                 }
 
                 if (model.Tatico_Id > 0)
-                    $('#modalLindo').find('.modal-body .content1').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>@Resources.Resource.change_strategic_link</button>");
+                    $('#modalLindo').find('.modal-body .content1').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>@ResourcesPA.Resource.change_strategic_link</button>");
 
                 if (IsAdmin) {
-                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"isClickedEstrategico=true;isClickedTaticoVinculado=false;SalvarPlanejamentoEditado($('#formEditEstrategy'))\">@Resources.Resource.save_strategic</button><hr>");
+                    $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"isClickedEstrategico=true;isClickedTaticoVinculado=false;SalvarPlanejamentoEditado($('#formEditEstrategy'))\">@ResourcesPA.Resource.save_strategic</button><hr>");
                 }
 
                 DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
@@ -2725,11 +2725,11 @@
                 formReset();
 
                 $('#btnTop').click();
-                openMessageModal('@Html.Raw(Resources.Resource.registry_successfully_saved)', '');
+                openMessageModal('@Html.Raw(ResourcesPA.Resource.registry_successfully_saved)', '');
 
             }).fail(function (e, h, x) {
 
-                  openMessageModal("@Html.Raw(Resources.Resource.could_not_save_record)", e.responseJSON.Message);
+                  openMessageModal("@Html.Raw(ResourcesPA.Resource.could_not_save_record)", e.responseJSON.Message);
 
             });
         }
@@ -3208,28 +3208,28 @@
                 columns: columnsSet,
                 destroy: true,
                 pageLength: 5,
-                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "@Html.Raw(Resources.Resource.all)"]],
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "@Html.Raw(ResourcesPA.Resource.all)"]],
                 language: {
-                    "sEmptyTable": "@Html.Raw(Resources.Resource.no_records_found)",
-                    "sInfo": "@Html.Raw(Resources.Resource.showing_start_to_end_of_total_records)",
-                    "sInfoEmpty": "@Html.Raw(Resources.Resource.showing_0_to_0_of_0_records)",
-                    "sInfoFiltered": "@Html.Raw(Resources.Resource.filtered_max_records)",
+                    "sEmptyTable": "@Html.Raw(ResourcesPA.Resource.no_records_found)",
+                    "sInfo": "@Html.Raw(ResourcesPA.Resource.showing_start_to_end_of_total_records)",
+                    "sInfoEmpty": "@Html.Raw(ResourcesPA.Resource.showing_0_to_0_of_0_records)",
+                    "sInfoFiltered": "@Html.Raw(ResourcesPA.Resource.filtered_max_records)",
                     "sInfoPostFix": "",
                     "sInfoThousands": ".",
-                    "sLengthMenu": "@Html.Raw(Resources.Resource.menu_results_per_page)",
-                    "sLoadingRecords": "@Html.Raw(Resources.Resource.loading)",
-                    "sProcessing": "@Html.Raw(Resources.Resource.processing)",
-                    "sZeroRecords": "@Html.Raw(Resources.Resource.no_records_found)",
-                    "sSearch": "@Html.Raw(Resources.Resource.search)",
+                    "sLengthMenu": "@Html.Raw(ResourcesPA.Resource.menu_results_per_page)",
+                    "sLoadingRecords": "@Html.Raw(ResourcesPA.Resource.loading)",
+                    "sProcessing": "@Html.Raw(ResourcesPA.Resource.processing)",
+                    "sZeroRecords": "@Html.Raw(ResourcesPA.Resource.no_records_found)",
+                    "sSearch": "@Html.Raw(ResourcesPA.Resource.search)",
                     "oPaginate": {
-                        "sNext": "@Html.Raw(Resources.Resource.next)",
-                        "sPrevious": "@Html.Raw(Resources.Resource.back)",
-                        "sFirst": "@Html.Raw(Resources.Resource.first)",
-                        "sLast": "@Html.Raw(Resources.Resource.last)"
+                        "sNext": "@Html.Raw(ResourcesPA.Resource.next)",
+                        "sPrevious": "@Html.Raw(ResourcesPA.Resource.back)",
+                        "sFirst": "@Html.Raw(ResourcesPA.Resource.first)",
+                        "sLast": "@Html.Raw(ResourcesPA.Resource.last)"
                     },
                     "oAria": {
-                        "sSortAscending": "@Html.Raw(Resources.Resource.sort_columns_ascending)",
-                        "sSortDescending": "@Html.Raw(Resources.Resource.sort_columns_downward)"
+                        "sSortAscending": "@Html.Raw(ResourcesPA.Resource.sort_columns_ascending)",
+                        "sSortDescending": "@Html.Raw(ResourcesPA.Resource.sort_columns_downward)"
                     }
                  }
             });
