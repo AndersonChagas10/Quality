@@ -1,0 +1,8 @@
+BEGIN
+   IF NOT EXISTS (Select * from parcounter where id = 19)
+   BEGIN
+	insert into parcounter values
+	(19,'frequency',getdate(),null,1,19)
+   END
+END
+GO
