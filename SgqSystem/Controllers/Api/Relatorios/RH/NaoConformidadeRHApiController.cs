@@ -16,6 +16,277 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
         private List<NaoConformidadeRHResultsSet> _list { get; set; }
 
         [HttpPost]
+        [Route("GraficoHolding")]
+        public List<NaoConformidadeRHResultsSet> GraficoHolding([FromBody] DTO.DataCarrierFormularioNew form)
+        {
+            var whereDepartment = "";
+            var whereSecao = "";
+            var whereCargo = "";
+            var whereStructure = "";
+            var whereUnit = "";
+            var whereCluster = "";
+            var whereClusterGroup = "";
+
+            if (form.ParDepartment_Ids.Length > 0)
+            {
+                whereDepartment = $@" AND L2.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
+            }
+
+            if (form.ParSecao_Ids.Length > 0)
+            {
+                whereSecao = $@" AND L2.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
+            }
+
+            if (form.ParCargo_Ids.Length > 0)
+            {
+                whereCargo = $@" AND L2.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
+            }
+
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            }
+
+            if (form.ParCluster_Ids.Length > 0)
+            {
+                whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
+            }
+
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+            }
+
+            var query = $@"
+                
+                 DECLARE @DATAINICIAL DATETIME = '2020-01-01  00:00:00'
+                 DECLARE @DATAFINAL   DATETIME = '2020-01-16  23:59:59'
+
+                SELECT 
+	                Holding.NAME AS HoldingName,
+                    Holding.Id as Holding_Id,
+	                SUM(WeiEvaluation) AS AV,
+	                SUM(WeiDefects) AS NC,
+	                SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	                FROM DW.Cubo_Coleta_L2 L2 WITH (NOLOCK)
+	                INNER JOIN ParCompany C WITH (NOLOCK) ON L2.Unitid = C.ID
+					LEFT JOIN ParVinculoPeso PVP ON L2.ParLevel2_Id = PVP.ParLevel2_Id
+						AND L2.ParLevel1_Id = PVP.ParLevel1_Id
+						AND L2.Cargo_Id = PVP.ParCargo_Id
+						AND L2.ParFrequency_Id = PVP.ParFrequencyId
+				    LEFT JOIN ParCluster PC ON PVP.ParCluster_Id = PC.Id
+		            LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
+					LEft Join (select * from ParStructure where ParStructureGroup_Id = 1) Holding on L2.Holding = Holding.Id
+	                WHERE 1=1
+	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                    {whereCluster}
+                    {whereClusterGroup}
+                GROUP BY 
+	                Holding.NAME, Holding.Id 
+                ";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<NaoConformidadeRHResultsSet>(query).ToList();
+            }
+
+            return _list;
+        }
+
+        [HttpPost]
+        [Route("GraficoNegocio")]
+        public List<NaoConformidadeRHResultsSet> GraficoNegocio([FromBody] DTO.DataCarrierFormularioNew form)
+        {
+            var whereDepartment = "";
+            var whereSecao = "";
+            var whereCargo = "";
+            var whereStructure = "";
+            var whereUnit = "";
+            var whereCluster = "";
+            var whereClusterGroup = "";
+
+            if (form.ParDepartment_Ids.Length > 0)
+            {
+                whereDepartment = $@" AND L2.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
+            }
+
+            if (form.ParSecao_Ids.Length > 0)
+            {
+                whereSecao = $@" AND L2.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
+            }
+
+            if (form.ParCargo_Ids.Length > 0)
+            {
+                whereCargo = $@" AND L2.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
+            }
+
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            }
+
+            if (form.ParCluster_Ids.Length > 0)
+            {
+                whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
+            }
+
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+            }
+
+            var query = $@"
+                
+                 DECLARE @DATAINICIAL DATETIME = '2020-01-01  00:00:00'
+                 DECLARE @DATAFINAL   DATETIME = '2020-01-16  23:59:59'
+
+                SELECT 
+	                GrupoDeEmpresa.NAME AS GrupoDeEmpresaName,
+                    GrupoDeEmpresa.Id as GrupoDeEmpresa_Id,
+	                SUM(WeiEvaluation) AS AV,
+	                SUM(WeiDefects) AS NC,
+	                SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	                FROM DW.Cubo_Coleta_L2 L2 WITH (NOLOCK)
+	                INNER JOIN ParCompany C WITH (NOLOCK) ON L2.Unitid = C.ID
+					LEFT JOIN ParVinculoPeso PVP ON L2.ParLevel2_Id = PVP.ParLevel2_Id
+						AND L2.ParLevel1_Id = PVP.ParLevel1_Id
+						AND L2.Cargo_Id = PVP.ParCargo_Id
+						AND L2.ParFrequency_Id = PVP.ParFrequencyId
+				    LEFT JOIN ParCluster PC ON PVP.ParCluster_Id = PC.Id
+		            LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
+					LEft Join (select * from ParStructure where ParStructureGroup_Id = 1) Holding on L2.Holding = Holding.Id
+					LEft Join (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on L2.GrupoDeEmpresa = GrupoDeEmpresa.Id
+	                WHERE 1=1
+	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                    {whereCluster}
+                    {whereClusterGroup}
+					AND Holding.Id = {form.Param["holding_Id"]}
+                GROUP BY 
+	                GrupoDeEmpresa.NAME, GrupoDeEmpresa.Id 
+                ";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<NaoConformidadeRHResultsSet>(query).ToList();
+            }
+
+            return _list;
+        }
+
+        [HttpPost]
+        [Route("GraficoRegional")]
+        public List<NaoConformidadeRHResultsSet> GraficoRegional([FromBody] DTO.DataCarrierFormularioNew form)
+        {
+            var whereDepartment = "";
+            var whereSecao = "";
+            var whereCargo = "";
+            var whereStructure = "";
+            var whereUnit = "";
+            var whereCluster = "";
+            var whereClusterGroup = "";
+
+            if (form.ParDepartment_Ids.Length > 0)
+            {
+                whereDepartment = $@" AND L2.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
+            }
+
+            if (form.ParSecao_Ids.Length > 0)
+            {
+                whereSecao = $@" AND L2.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
+            }
+
+            if (form.ParCargo_Ids.Length > 0)
+            {
+                whereCargo = $@" AND L2.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
+            }
+
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            }
+
+            if (form.ParCluster_Ids.Length > 0)
+            {
+                whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
+            }
+
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+            }
+
+            var query = $@"
+
+                 DECLARE @DATAINICIAL DATETIME = '2020-01-01  00:00:00'
+                 DECLARE @DATAFINAL   DATETIME = '2020-01-16  23:59:59'
+
+                SELECT 
+	                Regional.NAME AS RegionalName,
+                    Regional.Id as Regional_Id,
+	                SUM(WeiEvaluation) AS AV,
+	                SUM(WeiDefects) AS NC,
+	                SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	                FROM DW.Cubo_Coleta_L2 L2 WITH (NOLOCK)
+	                INNER JOIN ParCompany C WITH (NOLOCK) ON L2.Unitid = C.ID
+					LEFT JOIN ParVinculoPeso PVP ON L2.ParLevel2_Id = PVP.ParLevel2_Id
+						AND L2.ParLevel1_Id = PVP.ParLevel1_Id
+						AND L2.Cargo_Id = PVP.ParCargo_Id
+						AND L2.ParFrequency_Id = PVP.ParFrequencyId
+				    LEFT JOIN ParCluster PC ON PVP.ParCluster_Id = PC.Id
+		            LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
+					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on L2.Holding = Holding.Id
+					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on L2.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on L2.Regional = Regional.Id
+	                WHERE 1=1
+	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                    {whereCluster}
+                    {whereClusterGroup}
+				    AND Holding.Id = {form.Param["holding_Id"]}
+					AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
+                GROUP BY 
+	                Regional.NAME, Regional.Id 
+                ";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<NaoConformidadeRHResultsSet>(query).ToList();
+            }
+
+            return _list;
+        }
+
+
+        [HttpPost]
         [Route("GraficoUnidades")]
         public List<NaoConformidadeRHResultsSet> GraficoUnidades([FromBody] DTO.DataCarrierFormularioNew form)
         {
@@ -1913,6 +2184,12 @@ public class NaoConformidadeRHResultsSet
 
     public string Indicador_Id { get; set; }
     public string IndicadorName { get; set; }
+    public string GrupoDeEmpresa_Id { get; set; }
+    public string GrupoDeEmpresaName { get; set; }
+    public string Holding_Id { get; set; }
+    public string HoldingName { get; set; }
+    public string Regional_Id { get; set; }
+    public string RegionalName { get; set; }
     public string DepartamentoName { get; set; }
     public string Departamento_Id { get; set; }
     public string Unidade_Id { get; set; }

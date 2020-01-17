@@ -6,6 +6,8 @@
 
     var url = Url.Action("Index", "Home");
     var urlGraficoUnidades = Url.Action("GraficoUnidades", "api/NaoConformidadeRH");
+    var urlGraficoHolding = Url.Action("GraficoHolding", "api/NaoConformidadeRH");
+    var urlGraficoNegocio = Url.Action("GraficoNegocio", "api/NaoConformidadeRH");
     var urlGraficoDepartamentos = Url.Action("GraficoDepartamentos", "api/NaoConformidadeRH");
     var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidadeRH");
     var urlGraficoNcPorUnidadeIndicador = Url.Action("GraficoIndicador", "api/NaoConformidadeRH");
@@ -102,6 +104,9 @@
             <div id="formBodyContent">
                 @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
+                <div id="RGHoldingGrafico"></div>
+                <div id="RGNegocioGrafico"></div>
+                <div id="RGRegionalGrafico"></div>
                 <div id="RGUnidadesGrafico"></div>
                 <div id="RGDepartamentosGrafico"></div>
                 <div id="RGDepartamentosShiftGrafico"></div>
@@ -148,6 +153,8 @@
         var GraficoMoncomTarefa = '@Resources.Resource.defects_per_monitoring_at_tasks'; //'NC por Monitoramento na Tarefa: ';
         var $btn = $('#btnSend');
         var urlGraficoUnidades = @Html.Raw(Json.Encode(urlGraficoUnidades));
+        var urlGraficoHolding = @Html.Raw(Json.Encode(urlGraficoHolding));
+        var urlGraficoNegocio = @Html.Raw(Json.Encode(urlGraficoNegocio));
         var urlGraficoIndicador = @Html.Raw(Json.Encode(urlGraficoNcPorUnidadeIndicador));
         var urlGraficoMonitoramento = @Html.Raw(Json.Encode(urlGraficoMonitoramento));
         var urlGraficoTarefasAcumuladas = @Html.Raw(Json.Encode(urlGraficoTarefasAcumuladas));
@@ -210,7 +217,8 @@
             $('#RGDepartamentosGrafico').empty();
             $('#RGDepartamentosShiftGrafico').empty();
             $('#RGOperacoesShiftGrafico').empty();
-            $("#RGUnidadesGrafico").empty()
+            $("#RGUnidadesGrafico").empty();
+            $("#RGHoldingGrafico").empty();
             $("#PanelFull0").hide();
 
             ShiftSelected = $('#shift :selected').val();
@@ -225,7 +233,7 @@
             objFiltro.Param.auditorId = GetUsuarioId();
 
             $.ajax({
-                url: urlGraficoUnidades,
+                url: urlGraficoHolding,
                 type: 'post',
                 data: JSON.stringify(objFiltro),
                 dataType: "JSON",
@@ -233,21 +241,69 @@
                 beforeSend: function () {
                 }
             })
-            .done(function (data) {
-                //console.log(data);
-                GraficoUnidade(data);
-                $btn.button('reset');
-                closeLoader();
-            })
-            .fail(function (jqXHR, textStatus, msg) {
-                //console.log(msg);
-                $btn.button('reset');
-                //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
-                closeLoader();
-            });
+                .done(function (data) {
+                    //console.log(data);
+                    GraficoHolding(data);
+                    $btn.button('reset');
+                    closeLoader();
+                })
+                .fail(function (jqXHR, textStatus, msg) {
+                    //console.log(msg);
+                    $btn.button('reset');
+                    //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                    closeLoader();
+                });
 
             $('#RGTarefasPivotTable').hide();
         };
+
+        //function enviarFiltro() {
+
+        //    openLoader('Aguarde...');
+        //    $btn.button('loading');
+        //    $('#results').empty();
+        //    $("#RGOperacoesGrafico").empty();
+        //    $('#RGDepartamentosGrafico').empty();
+        //    $('#RGDepartamentosShiftGrafico').empty();
+        //    $('#RGOperacoesShiftGrafico').empty();
+        //    $("#RGUnidadesGrafico").empty()
+        //    $("#PanelFull0").hide();
+
+        //    ShiftSelected = $('#shift :selected').val();
+
+        //    popoverMain.addClass('hide');
+
+        //    if (!ValidaDadosParaEnvio()) {
+        //        $btn.button('reset');
+        //        return;
+        //    }
+        //    objFiltro.Param = {};
+        //    objFiltro.Param.auditorId = GetUsuarioId();
+
+        //    $.ajax({
+        //        url: urlGraficoUnidades,
+        //        type: 'post',
+        //        data: JSON.stringify(objFiltro),
+        //        dataType: "JSON",
+        //        contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+        //        beforeSend: function () {
+        //        }
+        //    })
+        //    .done(function (data) {
+        //        //console.log(data);
+        //        GraficoUnidade(data);
+        //        $btn.button('reset');
+        //        closeLoader();
+        //    })
+        //    .fail(function (jqXHR, textStatus, msg) {
+        //        //console.log(msg);
+        //        $btn.button('reset');
+        //        //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+        //        closeLoader();
+        //    });
+
+        //    $('#RGTarefasPivotTable').hide();
+        //};
 
     function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation(objFiltro);
@@ -350,7 +406,7 @@
         }
 
         function GetPopover(param, grafico, shift, param_Id) {
-
+            debugger
             popoverMain.addClass('hide');
 
             hidePopoverItems();
@@ -397,29 +453,38 @@
 
                     if (ShiftSelected || @Json.Encode(GlobalConfig.Brasil)) {
                         GetGraficoIndicadorDepartamento(Aux, Aux2);
-                    return;
-            } else {
+                        return;
+                    } else {
                         showPopover2();
-            break;
-        }
+                    break;
+                    }
 
                 case "Indicador":
+                    if (IsDepartmentShift || ShiftSelected || @Json.Encode(GlobalConfig.Brasil)) {
+                        GetMonitoramento(Aux, Aux2);
+                        GetTarefasAcumuladas(Aux, Aux2);
+                        return;
+                    }
 
-        if (IsDepartmentShift || ShiftSelected || @Json.Encode(GlobalConfig.Brasil)) {
-            GetMonitoramento(Aux, Aux2);
-            GetTarefasAcumuladas(Aux, Aux2);
-            return;
-        }
+                    objFiltro.Param.shift = shift;
+                    IsIndicador = true;
+                    showPopover3();
+                    break;
 
-        objFiltro.Param.shift = shift;
-        IsIndicador = true;
-        showPopover3();
-        break;
+                case "Negocio":
+                    debugger
+                    GetGraficoNegocio(Aux, Aux2);
+                    break;
+
+                case "Regional":
+                    debugger
+                    GetGraficoRegional(Aux, Aux2);
+                    break;
 
                 default:
-        IsDepartmentShift = false;
-        showPopover1();
-        break;
+                    IsDepartmentShift = false;
+                    showPopover1();
+                    break;
         }
 
         popoverMain.removeClass('hide');
@@ -582,9 +647,208 @@
             }
         }
 
+        function GetGraficoNegocio(holding, holding_Id) {
+            objFiltro.Param.holdingName = holding;
+            objFiltro.Param.holding_Id = holding_Id;
+            $("#PanelFull0").hide();
+            pathDirect = 1;
+
+                $.ajax({
+                    url: urlGraficoNegocio,
+                    type: 'post',
+                    data: JSON.stringify(objFiltro),
+                    dataType: "JSON",
+                    contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                    beforeSend: function () {
+                    }
+                })
+                .done(function (data) {
+                    //console.log(data);
+                    GraficoNegocio(data);
+                    closeLoader();
+                })
+                .fail(function (jqXHR, textStatus, msg) {
+                    //console.log(msg);
+                    //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                    closeLoader();
+                });
+
+            $('#RGTarefasPivotTable').hide();
+        }
+
+        function GetGraficoRegional(holding, holding_Id) {
+            objFiltro.Param.holdingName = holding;
+            objFiltro.Param.holding_Id = holding_Id;
+            $("#PanelFull0").hide();
+            pathDirect = 1;
+
+            $.ajax({
+                url: urlGraficoNegocio,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+                .done(function (data) {
+                    //console.log(data);
+                    GraficoNegocio(data);
+                    closeLoader();
+                })
+                .fail(function (jqXHR, textStatus, msg) {
+                    //console.log(msg);
+                    //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                    closeLoader();
+                });
+
+            $('#RGTarefasPivotTable').hide();
+        }
+
         /*END GET*/
 
         /*Charts*/
+        function GraficoHolding(data) {
+
+            if (!(data.length > 0)) {
+                GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
+                return;
+            }
+
+            var dataX = MapeiaValorParaHC(data, "HoldingName");
+            var dataXId = MapeiaValorParaHC(data, "Holding_Id");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var Proc = MapeiaValorParaHC(data, "Proc");
+
+            $('#RGHoldingGrafico').empty();
+
+            Highcharts.chart('RGHoldingGrafico', {
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(setNameTitulos("NC por Holding")),
+                subtitle: Chart.Subtitulo(setNameSubtitulos(Resources('defects_per_unit'))),
+                xAxis: Chart.Xaxis(dataX),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    Chart.ProcNc(Proc, GetPopover, null, "Negocio", dataX, null, dataXId),
+                    Chart.NC(Nc, GetPopover, null, null, null, "Negocio", dataX, null, dataXId),
+                    Chart.Av(Av, GetPopover, null, null, null, "Negocio", dataX, null, dataXId)
+                ]
+            }, function () {
+                $('#RGHoldingGrafico').append(GeralNote);
+            });
+
+            $('.body-content').css('height', '3350px');
+
+        }
+
+        function GraficoNegocio(data, data2) {
+            debugger
+            if (!(data.length > 0)) {
+                GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
+                return;
+            }
+
+            var dataX = MapeiaValorParaHC(data, "GrupoDeEmpresaName");
+            var dataXId = MapeiaValorParaHC(data, "GrupoDeEmpresa_Id");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var Proc = MapeiaValorParaHC(data, "Proc");
+
+            $('#RGNegocioGrafico').empty();
+
+            Highcharts.chart('RGNegocioGrafico', {
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(setNameTitulos("NC por Negócio")),
+                subtitle: Chart.Subtitulo(setNameSubtitulos(Resources('defects_per_unit'))),
+                xAxis: Chart.Xaxis(dataX),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    Chart.ProcNc(Proc, GetPopover, null, "Regional", dataX, null, dataXId),
+                    Chart.NC(Nc, GetPopover, null, null, null, "Regional", dataX, null, dataXId),
+                    Chart.Av(Av, GetPopover, null, null, null, "Regional", dataX, null, dataXId),
+                ]
+            }, function () {
+                $('#RGNegocioGrafico').append(GeralNote);
+            });
+
+            $('.body-content').css('height', '3350px');
+
+        }
+
+        function GraficoRegional(data, data2) {
+            debugger
+            if (!(data.length > 0)) {
+                GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
+                return;
+            }
+
+            var dataX = MapeiaValorParaHC(data, "RegionalName");
+            var dataXId = MapeiaValorParaHC(data, "Regional_Id");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var Proc = MapeiaValorParaHC(data, "Proc");
+
+            $('#RGRegionalGrafico').empty();
+
+            Highcharts.chart('RGNegocioGrafico', {
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(setNameTitulos("NC por Regional")),
+                subtitle: Chart.Subtitulo(setNameSubtitulos(Resources('defects_per_unit'))),
+                xAxis: Chart.Xaxis(dataX),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    Chart.ProcNc(Proc, GetPopover, null, "", dataX, null, dataXId),
+                    Chart.NC(Nc, GetPopover, null, null, null, "", dataX, null, dataXId),
+                    Chart.Av(Av, GetPopover, null, null, null, "", dataX, null, dataXId),
+                ]
+            }, function () {
+                $('#RGRegionalGrafico').append(GeralNote);
+            });
+
+            $('.body-content').css('height', '3350px');
+
+        }
+
         function GraficoUnidade(data) {
 
             if(!(data.length > 0)){
