@@ -998,15 +998,8 @@ function resetarLinha(linha) {
 //    }
 //});
 
-function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
-    coletaAgrupada.Sample++; //Incrementa a amostra
-    if (coletaAgrupada.Sample > currentTotalSampleValue) {
-        coletaAgrupada.Sample = 1;
-        coletaAgrupada.Evaluation++;
-        if (coletaAgrupada.Evaluation > currentTotalEvaluationValue) {
-            //Acabou as avaliações
-        }
-    }
+function AtualizaContadorDaAvaliacao(coletaAgrupada) {
+    coletaAgrupada.Evaluation++;
     return coletaAgrupada;
 }
 
@@ -1312,6 +1305,8 @@ $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', fun
         }
     }
 
+    SalvarColetasAgrupadasDCA();
+
     openMensagem("Avaliacao salva com sucesso!", "blue", "white");
     closeMensagem(3000);
     desabilitaBotaoSalvar();
@@ -1367,4 +1362,30 @@ function getCollectionHeaderFieldsDCA() {
     });
 
     return collectionHeaderFiedDCA;
+}
+
+function SalvarColetasAgrupadasDCA(){
+    //Verifica se existe coleta já realizada para este cargo.
+    var coletaAgrupada = null;
+    $(coletasAgrupadas).each(function (i, o) {
+            if (o.ParLevel1_Id == currentParLevel1_Id
+            && o.ParLevel2_Id == currentParLevel2_Id
+            && o.SearaFamiliaProduto_Id == currentFamiliaProdutoDCA_Id) {
+            coletaAgrupada = o;
+        }
+    });
+
+    //Se não existir, cria uma zerada
+    if (coletaAgrupada == null) {
+        coletaAgrupada = {
+            ParLevel1_Id: currentParLevel1_Id,
+            ParLevel2_Id: currentParLevel2_Id,
+            Evaluation: currentEvaluationDCA.Evaluation,
+            SearaFamiliaProduto_Id: currentFamiliaProdutoDCA_Id
+        };
+        
+        coletasAgrupadas.push(coletaAgrupada);
+    }else{
+        coletaAgrupada = AtualizaContadorDaAvaliacao(coletaAgrupada);
+    }
 }

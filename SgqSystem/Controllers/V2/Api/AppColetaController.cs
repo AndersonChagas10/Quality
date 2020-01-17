@@ -1023,10 +1023,8 @@ SELECT
 	ParLevel1_Id,
 	ParLevel2_Id,
 	UnitId,
-	Shift--,
-	--ParDepartment_Id,
-	--ParCargo_Id,
-	--ParCluster_Id
+	Shift,
+	SearaFamiliaProduto_Id
 FROM (
 
 SELECT
@@ -1036,28 +1034,19 @@ SELECT
         ,C2.ParLevel2_Id
         ,C2.UnitId
         ,C2.Shift
-       --,C2XPD.ParDepartment_Id AS ParDepartment_Id
-       --,C2XPC.ParCargo_Id AS ParCargo_Id
-       --,C2XC.ParCluster_Id AS ParCluster_Id
+		,CL2XSFP.SearaFamiliaProduto_Id
     FROM CollectionLevel2 C2 WITH (NOLOCK)
     LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
-    --INNER JOIN CollectionLevel2XParCargo C2XPC WITH (NOLOCK) ON C2XPC.CollectionLevel2_Id = C2.Id
-    --INNER JOIN CollectionLevel2XParDepartment C2XPD WITH (NOLOCK) ON C2XPD.CollectionLevel2_Id = C2.Id
 	INNER JOIN ParEvaluationXDepartmentXCargo PEDC WITH(NOLOCK) ON C2.UnitId = PEDC.ParCompany_Id 
-	--															AND C2XPC.ParCargo_Id      = ISNULL(PEDC.ParCargo_Id,C2XPC.ParCargo_Id)
-	--															AND C2XPD.ParDepartment_Id = ISNULL(PEDC.ParDepartment_Id,C2XPD.ParDepartment_Id)
-	--															AND C2.ParFrequency_Id     = PEDC.ParFrequencyId
+	LEFT JOIN CollectionLevel2XSearaFamiliaProdutoXProduto CL2XSFP ON CL2XSFP.CollectionLevel2_Id = c2.Id
 WHERE 1 = 1
 		AND C2.CollectionDate BETWEEN @DateTimeInicio AND @DateTimeFinal
 		AND C2.UnitId = @ParCompany_Id
-		--AND PEDC.ParFrequencyId = @ParFrequency_Id
     GROUP BY C2.ParLevel1_Id
             ,C2.ParLevel2_Id
             ,C2.UnitId
             ,C2.Shift
-		   -- ,C2XPD.ParDepartment_Id
-		   -- ,C2XPC.ParCargo_Id
-		   -- ,C2XC.ParCluster_Id
+            ,CL2XSFP.SearaFamiliaProduto_Id
 		) A";
 
             using (var factory = new Factory("DefaultConnection"))
@@ -1089,6 +1078,7 @@ WHERE 1 = 1
             public int ParDepartment_Id { get; set; }
             public int ParCargo_Id { get; set; }
             public int ParCluster_Id { get; set; }
+            public int? SearaFamiliaProduto_Id { get; set; }
         }
 
         public class AppParametrization

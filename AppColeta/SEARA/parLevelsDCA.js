@@ -99,7 +99,7 @@ function montarLevel3DCA(parLevel1, parLevel2, parVinculos) {
     level3_Ids.forEach(function (parLevel3_Id) {
 
         var Level3 = $.grep(parametrization.listaParLevel3, function (parLevel3) {
-            return parLevel3.Id == parLevel3_Id && vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculosMontarLevel3DCA);
+            return parLevel3.Id == parLevel3_Id && vinculoPesoIsValidDCA(parLevel1, parLevel2, parLevel3, parVinculosMontarLevel3DCA);
         });
 
         Level3.forEach(function (level3) {
@@ -127,4 +127,52 @@ function montarLevel3DCA(parLevel1, parLevel2, parVinculos) {
     });
 
     parLevel2.ParLevel3 = level3List;
+}
+
+function vinculoPesoIsValidDCA(parLevel1, parLevel2, parLevel3, parVinculos) {
+
+    if (!coletasAgrupadas) {
+        return true;
+    }
+
+    //Level1, Level2, Level3 e Frequencia são obrigatorios
+    //Posteriormente se não existir o retorno dos dados acima, validar um por um como null ou não
+    var parVinculo = [];
+
+    //Considerar Level1, Level2, Level3, Frequencia, Cargo, Departamento e Unidade
+    parVinculo = $.grep(parVinculos, function (obj) {
+        return obj.ParLevel3_Id == parLevel3.Id &&
+            obj.ParLevel2_Id == parLevel2.Id &&
+            obj.ParLevel1_Id == parLevel1.Id &&
+            obj.ParCompany_Id == currentLogin.ParCompany_Id;
+    });
+
+    //Considerar Level1, Level2, Level3, Frequencia, Cargo, Departamento e todas as Unidades
+    if (parVinculo.length == 0) {
+        parVinculo = $.grep(parVinculos, function (obj) {
+            return obj.ParLevel3_Id == parLevel3.Id &&
+                obj.ParLevel2_Id == parLevel2.Id &&
+                obj.ParLevel1_Id == parLevel1.Id &&
+                obj.ParCompany_Id == null;
+        });
+    }
+
+    //Level3 não possui peso
+    if (parVinculo.length == 0)
+        return false;
+    else
+        return true; // Deverá ter somente um, porém caso tiver mais do que um não irá quebrar
+
+    /*return coletasAgrupadas.length <= 0 
+    || 
+        (
+            coletasAgrupadas.length > 0 
+            && $.grep(coletasAgrupadas, function (obj) {
+                return (parVinculo.Evaluation == null 
+                    || obj.Evaluation <= parVinculo.Evaluation)
+                    && obj.ParLevel1_Id == currentParLevel1_Id 
+                    && obj.ParLevel2_Id == currentParLevel2_Id
+            }).length > 0
+        );*/
+
 }
