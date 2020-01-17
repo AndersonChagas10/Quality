@@ -140,7 +140,15 @@ namespace SgqSystem.Controllers.Api.Formulario
                 var query = $@"SELECT DISTINCT TOP 500 ID, Description as Name FROM shift
                         WHERE Description like '%{search}%'";
 
-                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+                var retorno = new List<Select3ViewModel>();
+
+                Select3ViewModel shiftTodos = new Select3ViewModel();
+                shiftTodos.Hash = null;
+                shiftTodos.Name = "Todos";
+                shiftTodos.Id = 0;
+
+                retorno.Add(shiftTodos);
+                retorno.AddRange(factory.SearchQuery<Select3ViewModel>(query).ToList());
 
                 return retorno;
             }
@@ -397,11 +405,13 @@ namespace SgqSystem.Controllers.Api.Formulario
                 //retornoFormulario.ParCargos = GetParCargos(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
                 //retornoFormulario.ParLevel1s = GetParLevel1s(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
                 //var parLevel1_Ids = form.ParLevel1_Ids.Length > 0 ? form.ParLevel1_Ids.ToList() : retornoFormulario.ParLevel1s.Select(x => x.Id).ToList();
-
                 string sqlFilter = "";
-                if (form.ParLevel1_Ids.Length > 0)
+                if (form.IsCascadeLevel2Level3[0] == 1)
                 {
-                    sqlFilter = $@" AND p1.Id IN ({ string.Join(",", form.ParLevel1_Ids)})";
+                    if (form.ParLevel1_Ids.Length > 0)
+                    {
+                        sqlFilter = $@" AND p1.Id IN ({ string.Join(",", form.ParLevel1_Ids)})";
+                    }
                 }
 
                 var query = $@"SELECT DISTINCT p2.Id AS Id
@@ -450,13 +460,16 @@ namespace SgqSystem.Controllers.Api.Formulario
                 //var parLevel2_Ids = form.ParLevel2_Ids.Length > 0 ? form.ParLevel2_Ids.ToList() : retornoFormulario.ParLevel2s.Select(x => x.Id).ToList();
 
                 string sqlFilter = "";
-                if (form.ParLevel1_Ids.Length > 0 || form.ParLevel2_Ids.Length > 0)
+                if (form.IsCascadeLevel2Level3[0] == 1)
                 {
-                    if (form.ParLevel1_Ids.Length > 0)
-                        sqlFilter += $@" AND p1.Id IN ({ string.Join(",", form.ParLevel1_Ids)})";
+                    if (form.ParLevel1_Ids.Length > 0 || form.ParLevel2_Ids.Length > 0)
+                    {
+                        if (form.ParLevel1_Ids.Length > 0)
+                            sqlFilter += $@" AND p1.Id IN ({ string.Join(",", form.ParLevel1_Ids)})";
 
-                    if (form.ParLevel2_Ids.Length > 0)
-                        sqlFilter += $@" AND p2.Id IN ({ string.Join(",", form.ParLevel2_Ids)})";
+                        if (form.ParLevel2_Ids.Length > 0)
+                            sqlFilter += $@" AND p2.Id IN ({ string.Join(",", form.ParLevel2_Ids)})";
+                    }
                 }
 
                 var query = $@"SELECT DISTINCT p3.Id AS Id

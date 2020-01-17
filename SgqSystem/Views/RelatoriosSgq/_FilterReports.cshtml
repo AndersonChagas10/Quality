@@ -345,6 +345,17 @@
                                 </div>
                             }
 
+                                <select class="form-control hidden" name="IsCascadeLevel2Level3">
+                                    @if (ViewBag.IsCascadeLevel2Level3 == 0)
+                                    {
+                                        <option value="0" selected></option>
+                                    }
+                                    else
+                                    {
+                                        <option value="1" selected></option>
+                                    }
+                                </select>
+
                             @if (ViewBag.ShowParLevel1GQ == true)
                             {
                                 <div class="col-sm-12">
@@ -631,6 +642,7 @@
         var objFiltro = { Param: {}};
 
         function atualizaObjFiltro() {
+            debugger
             var objFiltroParam = objFiltro.Param;
             objFiltro = $('#filterReports').serializeObject();
             $(Object.keys(objFiltro)).each(function (i, o) {
