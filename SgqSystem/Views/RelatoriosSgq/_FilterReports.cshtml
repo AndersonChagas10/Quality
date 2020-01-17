@@ -1,4 +1,5 @@
-﻿@{
+﻿@using DTO
+@{
     Layout = "../Shared/_LayoutReports.cshtml";
 }
 
@@ -74,14 +75,14 @@
                             }
 
                             @*@if (ViewBag.ShowParStructure == true)
-        {
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label><strong>@Resources.Resource.structure</strong></label>
-                    <select class="form-control" name="parStructure_Ids" multiple></select>
-                </div>
-            </div>
-        }*@
+                                {
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label><strong>@Resources.Resource.structure</strong></label>
+                                            <select class="form-control" name="parStructure_Ids" multiple></select>
+                                        </div>
+                                    </div>
+                                }*@
 
                             @if (ViewBag.ShowParClusterGroup == true)
                             {
@@ -797,6 +798,88 @@
 
         /*DATE RANGE PICKER*/
 
+        var rangesEUA = {
+            '⊲ Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            '⊲ Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            '⊲ Last 365 Days': [moment().subtract(12, 'month'), moment()],
+            '⬚ This Month': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ This Year': [moment().startOf('year'), moment().endOf('year')],
+            '⬚ Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+        }
+
+        var rangesBR = {
+            '⊲ Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+            '⊲ Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+            '⊲ Últimos 365 Dias': [moment().subtract(12, 'month'), moment()],
+            '⬚ Este Mês': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Último Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ Este Ano': [moment().startOf('year'), moment().endOf('year')],
+            '⬚ Último Ano': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+        }
+
+        var configLayout = @Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));
+        var rangesCalendar;
+
+        /*Configura date range picker para PT-BR*/
+        if (configLayout) {
+
+            moment.locale("Pt-Br");
+            moment.defaultFormat = "DD/MM/YYYY";
+
+            $.fn.daterangepicker('locale', {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "fromLabel": "de",
+                "toLabel": "até",
+                "customRangeLabel": "Customizado",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Dom",
+                    "Seg",
+                    "Ter",
+                    "Qua",
+                    "Qui",
+                    "Sex",
+                    "Sab"
+                ],
+                "monthNames": [
+                    "Janeiro",
+                    "Fevereiro",
+                    "Março",
+                    "Abril",
+                    "Maio",
+                    "Junho",
+                    "Julho",
+                    "Agosto",
+                    "Setembro",
+                    "Outubro",
+                    "Novembro",
+                    "Dezembro"
+                ],
+            });
+
+            rangesCalendar = rangesBR;
+
+        } else {
+
+            moment.defaultFormat = "MM/DD/YYYY";
+
+            $.fn.daterangepicker('locale', {
+                "format": "MM/DD/YYYY",
+                "separator": " - ",
+            });
+
+            rangesCalendar = rangesEUA;
+
+        }
+
+        $.fn.daterangepicker('ranges', rangesCalendar);
+
         var start = moment();
         var end = moment();
 
@@ -805,7 +888,7 @@
             $('input[name=endDate]').val(end.format("YYYY-MM-DD"));
             atualizaObjFiltro();
         }
-
+        debugger
         var configCallendar = {};
         moment.locale('pt-BR');
         $('input[name=dateRange]').daterangepicker({
@@ -820,7 +903,8 @@
             },
             alwaysShowCalendars: true,
             showDropdowns: true,
-            linkedCalendars: false
+            linkedCalendars: false,
+            ranges: rangesCalendar
         }, callbackDateRange);
 
         /*SIMPLE DATE PICKER*/
