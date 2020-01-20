@@ -64,8 +64,8 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
             var query = $@"
                 
-                 DECLARE @DATAINICIAL DATETIME = '2020-01-01  00:00:00'
-                 DECLARE @DATAFINAL   DATETIME = '2020-01-16  23:59:59'
+                 DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+                 DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
 
                 SELECT 
 	                Holding.NAME AS HoldingName,
@@ -152,8 +152,8 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
             var query = $@"
                 
-                 DECLARE @DATAINICIAL DATETIME = '2020-01-01  00:00:00'
-                 DECLARE @DATAFINAL   DATETIME = '2020-01-16  23:59:59'
+                 DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+                 DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
 
                 SELECT 
 	                GrupoDeEmpresa.NAME AS GrupoDeEmpresaName,
@@ -242,8 +242,8 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
             var query = $@"
 
-                 DECLARE @DATAINICIAL DATETIME = '2020-01-01  00:00:00'
-                 DECLARE @DATAFINAL   DATETIME = '2020-01-16  23:59:59'
+                 DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+                 DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
 
                 SELECT 
 	                Regional.NAME AS RegionalName,
