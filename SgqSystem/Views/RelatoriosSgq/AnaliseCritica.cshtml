@@ -1090,7 +1090,9 @@
 
             let idTable = "table" + idChart;
 
-            MontarTabela(seletorPanel, idTable, table);
+            let panelTitle = 'Ações Corretivas vinculadas';
+
+            MontarTabela(seletorPanel, idTable, table, panelTitle);
         }
 
         function GerarGraficoMonitoramento(data, idPanel) {
@@ -1193,7 +1195,9 @@
 
             let idTable = "table" + idChart;
 
-            MontarTabela(seletorPanel, idTable, table);
+            let panelTitle = 'Ações Corretivas vinculadas';
+
+            MontarTabela(seletorPanel, idTable, table, panelTitle);
 
         }
 
@@ -1312,7 +1316,9 @@
 
             let idTable = "table" + idChart;
 
-            MontarTabela(seletorPanel, idTable, table);
+            let panelTitle = 'Ações Corretivas vinculadas';
+
+            MontarTabela(seletorPanel, idTable, table, panelTitle);
 
         }
 
@@ -1459,7 +1465,9 @@
 
             let idTable = "table" + idChart;
 
-            MontarTabela(seletorPanel, idTable, table);
+            let panelTitle = 'Plano de Ação';
+
+            MontarTabela(seletorPanel, idTable, table, panelTitle);
 
         }
 
@@ -1746,7 +1754,7 @@
 
             let panel = `
             <div class="panel panel-info">
-                <div class="panel-heading" data-toggle="collapse" data-target="#panel${idTable}" href="#panel${idTable}">Corretivas vinculadas</div>
+                <div class="panel-heading" data-toggle="collapse" data-target="#panel${idTable}" href="#panel${idTable}">${panelTitle}</div>
                 <div class="panel-body" id="panel${ idTable }">
                     <table id="${idTable}"></table>
                 </div>
