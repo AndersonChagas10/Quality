@@ -251,7 +251,7 @@ namespace PlanoDeAcaoMVC.Controllers
             try
             {
 
-                System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+                System.Resources.ResourceManager resourceManager = ResourcesPA.Resource.ResourceManager;
 
                 ViewBag.Resources = resourceManager.GetResourceSet(
                     Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
