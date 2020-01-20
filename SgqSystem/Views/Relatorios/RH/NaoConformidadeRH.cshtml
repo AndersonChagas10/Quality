@@ -221,6 +221,8 @@
             $('#RGOperacoesShiftGrafico').empty();
             $("#RGUnidadesGrafico").empty();
             $("#RGHoldingGrafico").empty();
+            $("#RGNegocioGrafico").empty();
+            $("#RGRegionalGrafico").empty();
             $("#PanelFull0").hide();
 
             ShiftSelected = $('#shift :selected').val();
@@ -746,7 +748,8 @@
                     Chart.Av(Av, GetPopover, null, null, null, "Negocio", dataX, null, dataXId)
                 ]
             }, function () {
-                //$('#RGHoldingGrafico').append(GeralNote);
+                $('#RGHoldingGrafico').append(GeralNote);
+                $("#CustomPopover").addClass("hide");
             });
 
             $('.body-content').css('height', '3350px');
@@ -793,7 +796,8 @@
                     Chart.Av(Av, GetPopover, null, null, null, "Regional", dataX, null, dataXId),
                 ]
             }, function () {
-                //$('#RGNegocioGrafico').append(GeralNote);
+                $('#RGNegocioGrafico').append(GeralNote);
+                $("#CustomPopover").addClass("hide");
             });
 
             $('.body-content').css('height', '3350px');
@@ -839,7 +843,8 @@
                     Chart.Av(Av, GetPopover, null, null, null, "Unidade", dataX, null, dataXId),
                 ]
             }, function () {
-                //$('#RGRegionalGrafico').append(GeralNote);
+                $('#RGRegionalGrafico').append(GeralNote);
+                $("#CustomPopover").addClass("hide");
             });
 
             $('.body-content').css('height', '3350px');
@@ -887,6 +892,7 @@
                 ]
             }, function () {
                 $('#RGUnidadesGrafico').append(GeralNote);
+                $("#CustomPopover").addClass("hide");
             });
 
             $('.body-content').css('height', '3350px');
