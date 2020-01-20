@@ -368,7 +368,6 @@
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\RetornaQueryRotinaApiController.cs" />
-    <Compile Include="Controllers\Api\ScriptsVersionApiController.cs" />
     <Compile Include="Controllers\Api\SelectVinculado\SelectVinculadoApiController.cs" />
     <Compile Include="Controllers\Api\ShiftApiController.cs" />
     <Compile Include="Controllers\Api\SIF\AcompanhamentoEmbarqueApiController.cs" />
@@ -664,6 +663,7 @@
     <Content Include="Angular\Level321Chain.js" />
     <Content Include="Angular\SelectVinculado.js" />
     <Content Include="App_Readme\readme.txt" />
+    <Content Include="ChangeLog\ChangeLog.xml" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker.min.css" />
     <Content Include="Content\bootstrap-datepicker.standalone.css" />

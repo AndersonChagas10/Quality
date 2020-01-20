@@ -1,4 +1,6 @@
-﻿@{
+﻿@model  List<SgqSystem.Controllers.ChangeLog>
+
+@{
     ViewBag.Title = "Versão dos Scripts";
     var @urlBuscarScript = Url.Action("GetScriptsVersion", "api/ScriptsVersion");
 }
@@ -20,145 +22,102 @@
         </div>
 
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6 col-xs-12 form-group">
 
-                    <div class="col-xs-12 form-group">
-                        <h4> <label class="">Script Version</label></h4>
+            <div class="row">
+                <div class="col-sm-2 form-group">
+                    <ul>
+                        <li>
+                            <strong>Versões</strong>
+                            <ul>
+
+                                @foreach (var v in (List<string>)ViewBag.Versions)
+                                {
+                                    <li>
+                                        <a href="?version=@Html.Raw(v)">@Html.Raw(v)</a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                @if (Model.Count > 0)
+                {
+                <div class="panel-group col-sm-10">
+                    <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
+                        <h2 class="panel-title">
+                            <a id="v103" class="ing">
+                                Versão @Html.Raw(Model[0].Version)
+                                <button class="btn btn-sm btn-primary pull-right" 
+                                        id="btnBaixarScripts"
+                                        style="margin-top:-5px !important;">Baixar Scripts</button>
+                            </a>
+                        </h2>
                     </div>
-                    <div class="col-xs-12 form-group">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div class="col-xs-12 form-group">
-                                    <label for="version"> Escolha a versão: </label>
-                                    <select name="version" id="version">
-                                        <option>selecione</option>
-                                        <option value="12">versão 1.0.12</option>
-                                        <option value="13">versão 1.0.13</option>
-                                    </select>
-                                </div>
-                                <div class="col-xs-12 form-group">
-                                    <label for="version"> Escolha o numero do card: </label>
-                                    <select name="card" id="card">
-                                        <option>selecione</option>
-                                        <option value="sgq-1">1</option>
-                                        <option value="sgq-2">2</option>
-                                        <option value="sgq-3">3</option>
-                                        <option value="sgq-4">4</option>
-                                        <option value="sgq-5">5</option>
-                                    </select>
-                                </div>
-                                <div class="col-xs-12 ">
-                                    <button class="btn btn-success" type="button" id="buscarScript">Pesquisar Scripts</button>
+
+                    @for(int i = 0; i < Model.Count; i++)
+                    {
+                        <div id="pt1" class="panel panel-default ">
+                            <div class="panel-heading accordion-toggle question-toggle collapsed" 
+                                 data-toggle="collapse" data-target="@Html.Raw("#changeLog"+i)">
+                                <h4 class="panel-title">
+                                    <a href="#" id="" class="ing">@Html.Raw(Model[i].CardNumber) - @Html.Raw(Model[i].Description)</a>
+                                </h4>
+                            </div>
+                            <div id="@Html.Raw("changeLog"+i)" class="panel-collapse collapse" style="height: 0px;">
+                                <div class="panel-body">
+                                    @if (Model[i].Script.Length > 0)
+                                    {
+                                        <pre>Insert into MigrationHistory (Name, AddDate) VALUES ('@Html.Raw(Model[i].CardNumber)',GetDate())</pre>
+
+                                        <pre>@Html.Raw(Model[i].Script)</pre>
+                                    }
+                                    else
+                                    {
+                                        <small>Não há scripts nesta entrega</small>
+                                    }
                                 </div>
                             </div>
                         </div>
+                    }
                     </div>
-                </div>
-                <div id="divXml" class="col-xs-12">
-                    <label for="xml">DB Scripts</label>
-                    <textarea class="form-control" id="xml" rows="8"></textarea>
-                </div>
+                }
             </div>
         </div>
     </div>
 </div>
 @section Scripts {
     <script>
+        
+        function download(filename, text) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
 
         var urlBuscarScript = '@Html.Raw(@urlBuscarScript)';
 
-        $("#buscarScript").on("click", function () {
-            var version = $("#version :selected").val();
-            var cardNumber = $("#card :selected").val();
+        $("#btnBaixarScripts").on("click", function () {
 
-            $.ajax({
-                type: "Get",
-                url: urlBuscarScript + "?cardNumber=" + cardNumber,
-                dataType: "json",
-                contentType: "application/json",
-                data: {version: version},
-                success: function (data) {
-                    $("#xml").val(data.m_StringValue);
-                    $("#xml").text(data.m_StringValue);
-
-                },
-                error: function (retorno) {
-                    alert("erro!");
-                }
+            var script = '';
+            $($('pre')).each(function (i, o) {
+                script += $(o).text();
+                script += '\nGO\n'
             });
+
+            // Start file download.
+            @if (Model.Count > 0) {
+                <text>download("@Html.Raw(Model[0].Version+".txt")", script);</text>
+            }
+
         })
 
-
-
-            @*var urlExcel = '@Html.Raw(@urlExcel)';
-
-            $("#carregarArquivo").submit(function (e) {
-                if ($('input[name="arquivo"]').val().length == 0) {
-                    $("#ModalErro").html("<p>Selecione um arquivo para sua importação.</p>")
-                    $("#ModalErro").show();
-                    e.preventDefault();
-                }
-            });
-
-            $("#salvar").on('click', function () {
-
-                $("#ModalConfirmacao").modal('show');
-
-                $("#modalSalvar").off('click');
-                $("#modalSalvar").on('click', function () {
-
-                    if ($('#formato').val() > 0) {
-                        $("#ModalConfirmacao").modal('hide');
-                        var dadosPreenchidos = "";
-                        if ($("#tabela tbody tr").find('[type="checkbox"]:checked').length > 0) {
-                            dadosPreenchidos = PreencherDadosArquivo();
-                        }
-                        var formatoId = $("#formato").val();
-                        var dados = JSON.stringify(dadosPreenchidos);
-
-                        $('body').LoadingOverlay("show");
-                        $.ajax({
-                            type: "Post",
-                            url: urlExcel + "?formatoId=" + formatoId,
-                            dataType: "json",
-                            contentType: "application/json",
-                            data: dados,
-                            success: function (retorno) {
-                                $('body').LoadingOverlay("hide");
-                                $("#mensagemAposImportacao").html(retorno);
-                                $("#ModalErro").hide();
-                                $("#ModalInformacao").modal('show');
-                            },
-                            error: function (retorno) {
-                                $('body').LoadingOverlay("hide");
-                                $("#ModalErro").html("<p>" + retorno.responseJSON.Message + "</p>");
-                                $("#ModalErro").show();
-                            }
-                        });
-                    } else {
-                        $("#ModalConfirmacao").modal('hide');
-                        $("#ModalErro").html("<p>Selecione qual formato deseja considerar para sua importação.</p>")
-                        $("#ModalErro").show();
-                    }
-                });
-
-                function PreencherDadosArquivo() {
-                    var lista = [];
-                    var objeto = {};
-
-                    $.each($("#tabela tbody tr").find('[type="checkbox"]:checked'), function () {
-                        objeto = {};
-                        $.each($(this).parents("tr").find("[data-header]"), function (i, o) {
-
-                            objeto[$(this).attr("data-header")] = $(this).text();
-                        });
-                        lista.push(objeto);
-                    })
-                    return lista;
-                }
-            })*@
-
-
-        </script>
+    </script>
 }
