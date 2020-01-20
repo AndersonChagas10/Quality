@@ -1815,7 +1815,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment = $@" AND L3.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
+                whereDepartment += $@" AND L3.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
             }
 
             var query = "" +
