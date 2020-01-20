@@ -273,7 +273,8 @@ namespace PlanoAcaoCore
             get
             {
 
-                return $@"SELECT
+                return $@"
+SELECT
 	Pl.Id
    ,Pl.AddDate
    ,Pl.AlterDate
@@ -323,110 +324,91 @@ namespace PlanoAcaoCore
    ,OBJ.Name AS Objetivo
    ,OBJ.IsPriority AS ObjetivoPriorizado
 FROM (SELECT
-		Pl1.Id
-	   ,Pl1.AddDate
-	   ,Pl1.AlterDate
-	   ,Pl1.Diretoria_Id
-	   ,Pl2.Gerencia_Id
-	   ,Pl2.Coordenacao_Id
-	   ,Pl1.Missao_Id
-	   ,Pl1.Visao_Id
-	   ,Pl1.TemaAssunto_Id
-	   ,Pl1.Indicadores_Id
-	   ,Pl2.Iniciativa_Id
-	   ,Pl2.ObjetivoGerencial_Id
-	   ,Pl1.Dimensao
-	   ,Pl1.Objetivo
-	   ,Pl2.ValorDe
-	   ,Pl2.ValorPara
-	   ,Pl2.DataInicio
-	   ,Pl2.DataFim
-	   ,Pl1.[Order]
-	   ,Pl1.Dimensao_Id
-	   ,Pl1.Objetivo_Id
-	   ,Pl1.IndicadoresDiretriz_Id
-	   ,Pl2.IndicadoresDeProjeto_Id
-	   ,Pl2.Estrategico_Id
-	   ,Pl1.Responsavel_Diretriz
-	   ,Pl2.Responsavel_Projeto
-	   ,Pl2.UnidadeDeMedida_Id
-	   ,Pl2.IsTatico
-	   ,Pl2.Tatico_Id
-	   ,Pl1.IsFta
-	   ,Pl2.TemaProjeto_Id
-	   ,Pl2.TipoProjeto_Id
-	FROM Pa_Planejamento Pl1
-	INNER JOIN Pa_Planejamento Pl2
-		ON Pl1.Id = Pl2.Estrategico_Id
+		Estrategico.Id
+	   ,Estrategico.AddDate
+	   ,Estrategico.AlterDate
+	   ,Estrategico.Diretoria_Id
+	   ,Tatico.Gerencia_Id
+	   ,Tatico.Coordenacao_Id
+	   ,Estrategico.Missao_Id
+	   ,Estrategico.Visao_Id
+	   ,Estrategico.TemaAssunto_Id
+	   ,Estrategico.Indicadores_Id
+	   ,Tatico.Iniciativa_Id
+	   ,Tatico.ObjetivoGerencial_Id
+	   ,Estrategico.Dimensao
+	   ,Estrategico.Objetivo
+	   ,Tatico.ValorDe
+	   ,Tatico.ValorPara
+	   ,Tatico.DataInicio
+	   ,Tatico.DataFim
+	   ,Estrategico.[Order]
+	   ,Estrategico.Dimensao_Id
+	   ,Estrategico.Objetivo_Id
+	   ,Estrategico.IndicadoresDiretriz_Id
+	   ,Tatico.IndicadoresDeProjeto_Id
+	   ,Tatico.Estrategico_Id
+	   ,Estrategico.Responsavel_Diretriz
+	   ,Tatico.Responsavel_Projeto
+	   ,Tatico.UnidadeDeMedida_Id
+	   ,Tatico.IsTatico
+	   ,Tatico.Id as Tatico_Id
+	   ,Estrategico.IsFta
+	   ,Tatico.TemaProjeto_Id
+	   ,Tatico.TipoProjeto_Id
+	FROM Pa_Planejamento Estrategico
+	INNER JOIN Pa_Planejamento Tatico ON Estrategico.Id = Tatico.Estrategico_Id
 	UNION ALL
 	SELECT DISTINCT
-		pl1.Id
-	   ,pl1.AddDate
-	   ,pl1.AlterDate
-	   ,pl1.Diretoria_Id
-	   ,pl1.Gerencia_Id
-	   ,pl1.Coordenacao_Id
-	   ,pl1.Missao_Id
-	   ,pl1.Visao_Id
-	   ,pl1.TemaAssunto_Id
-	   ,pl1.Indicadores_Id
-	   ,pl1.Iniciativa_Id
-	   ,pl1.ObjetivoGerencial_Id
-	   ,pl1.Dimensao
-	   ,pl1.Objetivo
-	   ,pl1.ValorDe
-	   ,pl1.ValorPara
-	   ,pl1.DataInicio
-	   ,pl1.DataFim
-	   ,pl1.[Order]
-	   ,pl1.Dimensao_Id
-	   ,pl1.Objetivo_Id
-	   ,pl1.IndicadoresDiretriz_Id
-	   ,pl1.IndicadoresDeProjeto_Id
-	   ,pl1.Estrategico_Id
-	   ,pl1.Responsavel_Diretriz
-	   ,pl1.Responsavel_Projeto
-	   ,pl1.UnidadeDeMedida_Id
-	   ,pl1.IsTatico
-	   ,pl1.Tatico_Id
-	   ,pl1.IsFta
-	   ,pl1.TemaProjeto_Id
-	   ,pl1.TipoProjeto_Id
-	FROM Pa_Planejamento Pl1
-	LEFT JOIN Pa_Planejamento Pl2
-		ON Pl1.Id = Pl2.Estrategico_Id
-	WHERE Pl1.Estrategico_Id IS NULL
-	AND Pl2.Estrategico_Id IS NULL) Pl
-LEFT JOIN Pa_Iniciativa INI
-	ON INI.Id = Pl.Iniciativa_Id
-LEFT JOIN Pa_Diretoria DIR
-	ON DIR.Id = Pl.Diretoria_Id
-LEFT JOIN Pa_Gerencia GER
-	ON Pl.Gerencia_Id = GER.Id
-LEFT JOIN Pa_Coordenacao CORD
-	ON CORD.Id = Pl.Coordenacao_Id
-LEFT JOIN Pa_Missao MISS
-	ON MISS.Id = Pl.Missao_Id
-LEFT JOIN Pa_Visao VIS
-	ON VIS.Id = Pl.Visao_Id
-LEFT JOIN Pa_TemaAssunto TEM
-	ON TEM.Id = Pl.TemaAssunto_Id
-LEFT JOIN Pa_TemaProjeto TEMPROJ
-	ON TEMPROJ.Id = Pl.TemaProjeto_Id
-LEFT JOIN Pa_TipoProjeto TIPPROJ
-	ON TIPPROJ.Id = Pl.TipoProjeto_Id
-LEFT JOIN Pa_IndicadoresDiretriz INDIC
-	ON INDIC.Id = Pl.IndicadoresDiretriz_Id
-LEFT JOIN Pa_IndicadoresDeProjeto INDICProj
-	ON INDICProj.Id = Pl.IndicadoresDeProjeto_Id
-LEFT JOIN Pa_Iniciativa INICI
-	ON INICI.Id = Pl.Iniciativa_Id
-LEFT JOIN Pa_ObjetivoGeral OBJT
-	ON OBJT.Id = Pl.ObjetivoGerencial_Id
-LEFT JOIN Pa_Objetivo OBJ
-	ON OBJ.Id = Pl.Objetivo_Id
-LEFT JOIN Pa_Dimensao DIME
-	ON DIME.Id = Pl.Dimensao_Id";
+		Estrategico.Id
+	   ,Estrategico.AddDate
+	   ,Estrategico.AlterDate
+	   ,Estrategico.Diretoria_Id
+	   ,Estrategico.Gerencia_Id
+	   ,Estrategico.Coordenacao_Id
+	   ,Estrategico.Missao_Id
+	   ,Estrategico.Visao_Id
+	   ,Estrategico.TemaAssunto_Id
+	   ,Estrategico.Indicadores_Id
+	   ,Estrategico.Iniciativa_Id
+	   ,Estrategico.ObjetivoGerencial_Id
+	   ,Estrategico.Dimensao
+	   ,Estrategico.Objetivo
+	   ,Estrategico.ValorDe
+	   ,Estrategico.ValorPara
+	   ,Estrategico.DataInicio
+	   ,Estrategico.DataFim
+	   ,Estrategico.[Order]
+	   ,Estrategico.Dimensao_Id
+	   ,Estrategico.Objetivo_Id
+	   ,Estrategico.IndicadoresDiretriz_Id
+	   ,Estrategico.IndicadoresDeProjeto_Id
+	   ,Estrategico.Estrategico_Id
+	   ,Estrategico.Responsavel_Diretriz
+	   ,Estrategico.Responsavel_Projeto
+	   ,Estrategico.UnidadeDeMedida_Id
+	   ,Estrategico.IsTatico
+	   ,Estrategico.Tatico_Id
+	   ,Estrategico.IsFta
+	   ,Estrategico.TemaProjeto_Id
+	   ,Estrategico.TipoProjeto_Id
+	FROM Pa_Planejamento Estrategico LEFT JOIN Pa_Planejamento Tatico ON Estrategico.Id = Tatico.Estrategico_Id
+	WHERE Estrategico.Estrategico_Id IS NULL AND Tatico.Estrategico_Id IS NULL) Pl 
+LEFT JOIN Pa_Iniciativa INI ON INI.Id = Pl.Iniciativa_Id
+LEFT JOIN Pa_Diretoria DIR ON DIR.Id = Pl.Diretoria_Id
+LEFT JOIN Pa_Gerencia GER ON Pl.Gerencia_Id = GER.Id
+LEFT JOIN Pa_Coordenacao CORD ON CORD.Id = Pl.Coordenacao_Id
+LEFT JOIN Pa_Missao MISS ON MISS.Id = Pl.Missao_Id
+LEFT JOIN Pa_Visao VIS ON VIS.Id = Pl.Visao_Id
+LEFT JOIN Pa_TemaAssunto TEM ON TEM.Id = Pl.TemaAssunto_Id
+LEFT JOIN Pa_TemaProjeto TEMPROJ ON TEMPROJ.Id = Pl.TemaProjeto_Id
+LEFT JOIN Pa_TipoProjeto TIPPROJ ON TIPPROJ.Id = Pl.TipoProjeto_Id
+LEFT JOIN Pa_IndicadoresDiretriz INDIC ON INDIC.Id = Pl.IndicadoresDiretriz_Id
+LEFT JOIN Pa_IndicadoresDeProjeto INDICProj ON INDICProj.Id = Pl.IndicadoresDeProjeto_Id
+LEFT JOIN Pa_Iniciativa INICI ON INICI.Id = Pl.Iniciativa_Id
+LEFT JOIN Pa_ObjetivoGeral OBJT ON OBJT.Id = Pl.ObjetivoGerencial_Id
+LEFT JOIN Pa_Objetivo OBJ ON OBJ.Id = Pl.Objetivo_Id
+LEFT JOIN Pa_Dimensao DIME ON DIME.Id = Pl.Dimensao_Id";
 
             }
         }
