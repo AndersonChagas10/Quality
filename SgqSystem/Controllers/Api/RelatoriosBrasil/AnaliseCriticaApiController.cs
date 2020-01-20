@@ -2261,7 +2261,7 @@ INNER JOIN ParCompany PC WITH (NOLOCK) ON Acao.Unidade_Id = PC.Id
 LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = Acao.Unidade_Id AND PCXS.Active = 1 
 WHERE 1 = 1
 AND Acao.QuandoInicio BETWEEN '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00' AND '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59' --Data
-AND PL1.Id = 2 --Indicador
+AND PL1.Id = {ParLevel1_Id} --Indicador
 {wModulo}
 {wParClusterGroup}
 {wParCluster}	
