@@ -755,7 +755,7 @@
             subtitle = Resources("unit") + ": " + objFiltro.Param.unitName;
 
             if (pathDirect == 1)
-                subtitle += " | " + Resources("department") + ": " + objFiltro.Param.departmentName;
+                subtitle += " | " + "Centro de custo/Seção" + ": " + objFiltro.Param.departmentName;
 
             if (objFiltro.Param.shift != "" && objFiltro.Param.shift != undefined)
                 subtitle += " | " + Resources("shift") + ": " + (objFiltro.Param.shift == 1 ? "1" : "2");
@@ -812,7 +812,7 @@
         function GraficoIndicadorPorShift(data) {
 
             if (pathDirect == 1)
-                subtitle = Resources("unit") + ": " + objFiltro.Param.unitName + " | " + Resources("department") + ": " + objFiltro.Param.departmentName;
+                subtitle = Resources("unit") + ": " + objFiltro.Param.unitName + " | " + "Centro de custo/Seção" + ": " + objFiltro.Param.departmentName;
             else
                 subtitle = Resources("unit") + ": " + objFiltro.Param.unitName;
 

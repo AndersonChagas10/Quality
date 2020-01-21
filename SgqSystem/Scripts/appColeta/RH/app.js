@@ -5,6 +5,7 @@ var currentParDepartment_Id;
 var currentParDepartmentParent_Id;
 var currentParCargo_Id;
 var currentParCluster_Id;
+var currentParClusterGroup_Id;
 var globalColetasRealizadas = [];
 var globalAcoesCorretivasRealizadas = [];
 var currentLogin = {};
