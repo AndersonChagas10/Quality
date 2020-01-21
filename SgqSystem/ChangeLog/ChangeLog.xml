@@ -1,0 +1,1937 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Cards>
+
+  <Card>
+    <CardNumber>Versão 1.0.06</CardNumber>
+    <Version>1.0.06</Version>
+    <Description>Scripts de GMUD versão 1.0.06</Description>
+    <Script>
+      Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.6_InsercaoReportXUserSgq',GetDate());
+
+      GO
+
+      IF EXISTS (SELECT * FROM sysobjects WHERE name='ReportXUserSgq' AND xtype='U')
+      drop table ReportXUserSgq
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ReportXUserSgq' AND xtype='U')
+      create table ReportXUserSgq(
+      Id int not null identity primary key,
+      AddDate Date not null,
+      AlterDate Date,
+      ItemMenu_Id int not null FOREIGN KEY REFERENCES ItemMenu(Id),
+      Elaborador varchar(100) null,
+      Aprovador varchar(100) null,
+      CodigoRelatorio varchar(100) null,
+      ParLevel1_Id int not null FOREIGN key REFERENCES ParLevel1(Id),
+      ParCompany_Id int FOREIGN key REFERENCES ParCompany(Id),
+      IsActive bit not null
+      )
+
+      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>Versão 1.0.07</CardNumber>
+    <Version>1.0.07</Version>
+    <Description>Scripts de GMUD versão 1.0.07</Description>
+    <Script>
+      Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.6_InsercaoReportXUserSgq',GetDate());
+
+      GO
+
+      IF EXISTS (SELECT * FROM sysobjects WHERE name='ReportXUserSgq' AND xtype='U')
+      drop table ReportXUserSgq
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ReportXUserSgq' AND xtype='U')
+      create table ReportXUserSgq(
+      Id int not null identity primary key,
+      AddDate Date not null,
+      AlterDate Date,
+      ItemMenu_Id int not null FOREIGN KEY REFERENCES ItemMenu(Id),
+      Elaborador varchar(100) null,
+      Aprovador varchar(100) null,
+      CodigoRelatorio varchar(100) null,
+      ParLevel1_Id int not null FOREIGN key REFERENCES ParLevel1(Id),
+      ParCompany_Id int FOREIGN key REFERENCES ParCompany(Id),
+      IsActive bit not null
+      )
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('20180927_1600_AdicionarParCluster_Id_na_PARLEVEL1XMODULE',GetDate())
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+      BEGIN
+      SET ANSI_NULLS ON
+      END
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+      BEGIN
+      SET QUOTED_IDENTIFIER ON
+      END
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel1XModule' AND xtype='U')
+      BEGIN
+      CREATE TABLE [dbo].[ParLevel1XModule](
+      [Id] [int] IDENTITY(1,1) NOT NULL,
+      [ParLevel1_Id] [int] NOT NULL,
+      [ParModule_Id] [int] NOT NULL,
+      [Points] [decimal](38, 5) NOT NULL,
+      [AddDate] [datetime2](7) NOT NULL,
+      [AlterDate] [datetime2](7) NULL,
+      [IsActive] [bit] NOT NULL CONSTRAINT [DF_ParLevel1Module_Active]  DEFAULT ((1)),
+      [EffectiveDateStart] [datetime] NULL DEFAULT ('2000-01-01'),
+      [EffectiveDateEnd] [datetime] NULL DEFAULT ('2000-01-01'),
+      [ParCluster_Id] [int] NULL,
+      CONSTRAINT [PK_ParLevel1Module] PRIMARY KEY CLUSTERED
+      (
+      [Id] ASC
+      )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+      ) ON [PRIMARY]
+      END
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+      BEGIN
+
+      ALTER TABLE [dbo].[ParLevel1XModule]  WITH CHECK ADD  CONSTRAINT [FK_ParLevel1XModule_ParCluster] FOREIGN KEY([ParCluster_Id])
+      REFERENCES [dbo].[ParCluster] ([Id])
+
+      END
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+      BEGIN
+      ALTER TABLE [dbo].[ParLevel1XModule] CHECK CONSTRAINT [FK_ParLevel1XModule_ParCluster]
+
+      END
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+      BEGIN
+      ALTER TABLE [dbo].[ParLevel1XModule]  WITH CHECK ADD  CONSTRAINT [FK_ParLevel1XModule_ParLevel1] FOREIGN KEY([ParLevel1_Id])
+      REFERENCES [dbo].[ParLevel1] ([Id])
+
+      END
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+      BEGIN
+
+      ALTER TABLE [dbo].[ParLevel1XModule] CHECK CONSTRAINT [FK_ParLevel1XModule_ParLevel1]
+
+      END
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+      BEGIN
+      ALTER TABLE [dbo].[ParLevel1XModule]  WITH CHECK ADD  CONSTRAINT [FK_ParLevel1XModule_ParModule] FOREIGN KEY([ParModule_Id])
+      REFERENCES [dbo].[ParModule] ([Id])
+
+      END
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+      BEGIN
+      ALTER TABLE [dbo].[ParLevel1XModule] CHECK CONSTRAINT [FK_ParLevel1XModule_ParModule]
+
+      END
+
+      GO
+
+      IF NOT EXISTS
+      (
+      SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+      WHERE 1=1
+      AND TABLE_NAME = 'ParGroupParLevel1'
+      AND COLUMN_NAME = 'Id'
+      )
+      BEGIN
+      ALTER TABLE ParGroupParLevel1
+      ADD PRIMARY KEY (Id)
+      END
+
+      GO
+
+      IF COL_LENGTH('PARLEVEL1XMODULE','ParCluster_Id') IS NULL
+      BEGIN
+      ALTER TABLE PARLEVEL1XMODULE
+      ADD ParCluster_Id Int null;
+
+      ALTER TABLE [dbo].[ParLevel1XModule]  WITH CHECK ADD  CONSTRAINT [FK_ParLevel1XModule_ParCluster] FOREIGN KEY([ParCluster_Id])
+      REFERENCES [dbo].[ParCluster] ([Id])
+      END
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_InsercaoParVinculoPeso',GetDate());
+
+      GO
+
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPeso' AND xtype='U')
+      create table ParVinculoPeso(
+      Id int not null identity primary key,
+      Name varchar(max) NOT NULL,
+      AddDate datetime not null,
+      AlterDate datetime,
+      IsActive bit not null,
+      Peso int not null,
+      ParCompany_Id int not null FOREIGN key REFERENCES ParCompany(Id),
+      ParDepartment_Id int not null FOREIGN key REFERENCES ParDepartment(Id),
+      ParLevel2_Id int not null FOREIGN key REFERENCES ParLevel2(Id),
+      ParGroupParLevel1_Id int NOT NULL FOREIGN key REFERENCES ParGroupParLevel1(Id),
+      ParLevel1_Id int not null FOREIGN key REFERENCES ParLevel1(Id),
+      ParLevel3_Id int not null FOREIGN key REFERENCES ParLevel3(Id),
+      )
+
+      GO
+
+
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_InsercaoDeTabelaDeLogDeBanco',GetDate());
+
+      GO
+
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='DatabaseLog' AND xtype='U')
+      create table DatabaseLog(
+      Id bigint not null identity primary key,
+      Tabela varchar(200) NOT NULL,
+      Json varchar(max) NOT NULL,
+      Operacao int NOT NULL,
+      AddDate datetime not null
+      )
+
+      GO
+
+
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_InsercaoDeTabelaDeLogDeErro',GetDate());
+
+      GO
+
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ErrorLog' AND xtype='U')
+      create table ErrorLog(
+      Id bigint not null identity primary key,
+      StackTrace varchar(max) NOT NULL,
+      AddDate datetime not null
+      )
+
+      GO
+
+      IF COL_LENGTH('ParGroupParLevel1','Parent_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParGroupParLevel1
+      ADD Parent_Id int;
+      END
+
+      go
+
+      IF COL_LENGTH('ParGroupParLevel1','Hash') IS NULL
+      BEGIN
+      ALTER TABLE ParGroupParLevel1
+      ADD Hash varchar(900);
+      END
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_InsercaoDepartamentoCentroCusto',GetDate());
+
+      GO
+
+      IF COL_LENGTH('ParDepartment','Parent_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParDepartment
+      ADD Parent_Id int;
+      END
+
+      go
+
+      IF COL_LENGTH('ParDepartment','Hash') IS NULL
+      BEGIN
+      ALTER TABLE ParDepartment
+      ADD Hash varchar(900);
+      END
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.7_VolumePorTurno',GetDate());
+
+      GO
+
+      IF COL_LENGTH('VolumePCC1b','Shift_Id') IS NULL
+      BEGIN
+      ALTER TABLE VolumePCC1b
+      ADD Shift_Id int null
+      END
+
+      GO
+
+      IF COL_LENGTH('VolumeCEPDesossa','Shift_Id') IS NULL
+      BEGIN
+      ALTER TABLE VolumeCEPDesossa
+      ADD Shift_Id int null
+      END
+
+      GO
+
+      IF COL_LENGTH('VolumeVacuoGRD','Shift_Id') IS NULL
+      BEGIN
+      ALTER TABLE VolumeVacuoGRD
+      ADD Shift_Id int null
+      END
+
+      GO
+
+      IF COL_LENGTH('VolumeCepRecortes','Shift_Id') IS NULL
+      BEGIN
+      ALTER TABLE VolumeCepRecortes
+      ADD Shift_Id int null
+      END
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('PA_DiretrizesPriorizadas',GetDate());
+
+      GO
+
+      IF COL_LENGTH('Pa_Objetivo','IsPriority') IS NULL
+      BEGIN
+      ALTER TABLE Pa_Objetivo
+      ADD IsPriority bit not null default 0;
+      END
+      GO
+
+      IF COL_LENGTH('ReportXUserSgq','NomeRelatorio') IS NULL
+      BEGIN
+      ALTER TABLE ReportXUserSgq
+      ADD NomeRelatorio varchar(100);
+      END
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('DescriçõesCampoCabeçalhos',GetDate());
+
+      update ParLevelDefiniton set Name = 'Cabeçalho na lista de Monitoramentos', Description = 'Cabeçalho na lista de Monitoramentos' where id = 1
+      update ParLevelDefiniton set Name = 'Cabeçalho na lista de Tarefas', Description = 'Cabeçalho na lista de Tarefas' where id = 2
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>Versão 1.0.08</CardNumber>
+    <Version>1.0.08</Version>
+    <Description>Scripts de GMUD versão 1.0.08</Description>
+    <Script>
+      Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.8CreateTabelaMotivoseSchedule',GetDate());
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReasonType' AND xtype='U')
+      create table ParReasonType(
+      Id int not null identity primary key,
+      Name varchar(20) NOT NULL,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1
+      )
+
+      GO
+      SET IDENTITY_INSERT ParReasonType ON
+      GO
+
+      IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Antecipado')
+      begin
+      insert into ParReasonType(Id,Name,AddDate, AlterDate, IsActive)
+      values(1,'Antecipado',GETDATE(),NULL,1)
+      end
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM ParReasonType WHERE Name = 'Atrasado')
+      begin
+      insert into ParReasonType(Id,Name,AddDate, AlterDate, IsActive)
+      values(2,'Atrasado',GETDATE(),NULL,1)
+      end
+
+      GO
+
+      SET IDENTITY_INSERT ParReasonType OFF
+
+      GO
+
+      SET IDENTITY_INSERT ParReasonType OFF
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReason' AND xtype='U')
+      Create Table ParReason (
+      Id int not null identity PRIMARY KEY,
+      Motivo varchar(250) not null,
+      AddDate datetime not null,
+      AlterDate datetime,
+      IsActive bit not null default 1,
+      ParReasonType_Id int not null FOREIGN key REFERENCES ParReasonType(Id),
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReasonXReasonType' AND xtype='U')
+      create table ParReasonXReasonType(
+      Id int not null identity primary key,
+      ParReason_Id int not null FOREIGN key REFERENCES ParReason(Id),
+      ParReasonType_Id int not null FOREIGN key REFERENCES ParReasonType(Id),
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParEvaluationSchedule' AND xtype='U')
+      Create Table ParEvaluationSchedule (
+      Id int not null identity PRIMARY KEY,
+      ParEvaluation_Id int not null FOREIGN KEY REFERENCES ParEvaluation(Id),
+      Av int not null,
+      Inicio  int not null,
+      Fim  int not null,
+      Shift_Id  int null,
+      AddDate datetime not null,
+      AlterDate datetime,
+      IsActive bit not null default 1
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParReason' AND xtype='U')
+      create table CollectionLevel2XParReason (
+      Id int primary key identity not null,
+      AddDate datetime not null,
+      AlterDate datetime,
+      CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
+      ParReason_Id int not null foreign key references ParReason(Id),
+      ParReasonType_Id int not null foreign key references ParReasonType(Id)
+      )
+
+      GO
+
+
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.8',GetDate())
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParInputTypeValues' AND xtype='U')
+      create table ParInputTypeValues(
+      Id int not null identity primary key,
+      Intervalo int NOT NULL,
+      Valor int NOT NULL,
+      Cor varchar(7) NOT NULL,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      ParLevel3Value_Id int not null FOREIGN key REFERENCES ParLevel3Value(Id),
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='DicionarioEstatico' AND xtype='U')
+      create table DicionarioEstatico(
+      Id int primary key identity not null,
+      [Key] varchar(255) unique not null,
+      ControllerName varchar(155),
+      Value varchar(255) not null,
+      Descricao varchar(255)
+      )
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('SGQ_1.0.8 Criação das colunas necessarias para o cadastro de agendamento nos volumes',GetDate())
+
+      GO
+      SET IDENTITY_INSERT ParFrequency ON
+      GO
+
+      IF NOT EXISTS (SELECT * FROM ParFrequency WHERE Name = 'Diario com Intervalo')
+      begin
+      insert into ParFrequency(Id,Name,[Description],AddDate, AlterDate, IsActive)
+      values(10,'Diario com Intervalo','Diario com Intervalo',GETDATE(),NULL,1)
+      end
+
+      GO
+
+      SET IDENTITY_INSERT ParFrequency OFF
+
+      GO
+      IF COL_LENGTH('VolumeCepDesossa','Agendamento') IS NULL
+      BEGIN
+      ALTER TABLE VolumeCepDesossa
+      add Agendamento VARCHAR(255) NULL;
+
+      END
+      GO
+
+      IF COL_LENGTH('VolumeVacuoGRD','Agendamento') IS NULL
+      BEGIN
+      ALTER TABLE VolumeVacuoGRD
+      add Agendamento VARCHAR(255) NULL;
+      END
+      GO
+
+      if  exists (select DATA_TYPE from Information_Schema.COLUMNS where TABLE_NAME = 'ParEvaluationSchedule' and COLUMN_NAME = 'Fim' and DATA_TYPE = 'int')
+      BEGIN
+      ALTER table ParEvaluationSchedule  alter COLUMN Fim VARCHAR(5) NULL;
+      END
+
+      GO
+
+      if  exists (select DATA_TYPE from Information_Schema.COLUMNS where TABLE_NAME = 'ParEvaluationSchedule' and COLUMN_NAME = 'Inicio' and DATA_TYPE = 'int')
+      BEGIN
+      ALTER table ParEvaluationSchedule  alter COLUMN Inicio VARCHAR(5) NULL;
+      END
+
+      GO
+      IF COL_LENGTH('ParEvaluationSchedule','Intervalo') IS NULL
+      BEGIN
+      ALTER TABLE ParEvaluationSchedule
+      add Intervalo VARCHAR(5) NULL;
+      END
+      GO
+
+      IF COL_LENGTH('VolumeCepRecortes','Agendamento') IS NULL
+      BEGIN
+      ALTER TABLE VolumeCepRecortes
+      add Agendamento VARCHAR(255) NULL;
+      END
+      GO
+
+
+      IF not Exists (select 1 from MigrationHistory where Name = '20190207_AlterarTamanhoColunaDynamicValue')
+      BEGIN
+      Insert into MigrationHistory (Name, AddDate) VALUES ('20190207_AlterarTamanhoColunaDynamicValue',GetDate())
+
+      ALTER TABLE ParLevel3Value
+      ALTER COLUMN DynamicValue varchar(900) null
+      END
+
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='IntegracaoSistemica' AND xtype='U')
+      create table IntegracaoSistemica(
+      Id int not null identity primary key,
+      Name varchar(20) NOT NULL,
+      Configuration varchar(255) NOT NULL,
+      Script text NOT NULL,
+      TableName varchar(50) NOT NULL,
+      Intervalo int NOT NULL,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1
+      )
+
+      IF EXISTS (
+      SELECT  schema_name
+      FROM    information_schema.schemata
+      WHERE   schema_name = 'INTEG' )
+
+      BEGIN
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionData' AND xtype='U')
+      CREATE TABLE INTEG.CollectionData
+      (
+      Table_Id			INT NULL,
+      Key_Integ			VARCHAR(500),
+      ParLevel1_id		INT NULL,
+      ParLevel2_id		INT NULL,
+      ParLevel3_id		INT NULL,
+      ParCompany_id		INT NULL,
+      [Weight]			DECIMAL(38,10) NULL,
+      Value				DECIMAL(38,10) NULL,
+      ValueText			VARCHAR(500)   NULL,
+      MinInterval			DECIMAL(38,10) NULL,
+      MaxInterval			DECIMAL(38,10) NULL,
+      IsConform			BIT NULL,
+      IsNotEvaluate		BIT NULL,
+      Evaluation			DECIMAL(38,10) NULL,
+      [Sample]			INT NULL,
+      WeiEvaluation		DECIMAL(38,10) NULL,
+      Defects				DECIMAL(38,10) NULL,
+      WeiDefects			DECIMAL(38,10) NULL,
+      Coletado			INT NULL
+      )
+
+      IF COL_LENGTH('Integ.CollectionData','CollectionDate') IS NULL
+      alter table Integ.CollectionData
+      add CollectionDate Datetime null
+
+      END
+      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>Versão 1.0.09</CardNumber>
+    <Version>1.0.09</Version>
+    <Description>Scripts de GMUD versão 1.0.09</Description>
+    <Script>
+      Insert into MigrationHistory (Name, AddDate) VALUES ('20190120_CriacaoDepartamento',GetDate())
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3XParDepartment' AND xtype='U')
+      CREATE TABLE ParLevel3XParDepartment(
+      [Id] [int] IDENTITY(1,1) NOT NULL primary key,
+      [ParDepartment_Id] [int] NOT NULL FOREIGN KEY REFERENCES ParDepartment(Id),
+      [ParLevel1_Id] [int] NULL FOREIGN KEY REFERENCES ParLevel1(Id),
+      [ParLevel2_Id] [int] NULL FOREIGN KEY REFERENCES ParLevel2(Id),
+      [ParLevel3_Id] [int] NULL FOREIGN KEY REFERENCES ParLevel3(Id),
+      [ParCompany_Id] [int] NULL FOREIGN KEY REFERENCES ParCompany(Id),
+      [AddDate] [datetime] NOT NULL,
+      [AlterDate] [datetime] NULL,
+      [IsActive] [bit] NOT NULL DEFAULT ((1))
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParDepartment' AND xtype='U')
+      create table CollectionLevel2XParDepartment (
+      Id int primary key identity not null,
+      AddDate datetime not null,
+      AlterDate datetime,
+      CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
+      ParDepartment_Id int not null foreign key references ParDepartment(Id)
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel2XParDepartment' AND xtype='U')
+      create table ConsolidationLevel2XParDepartment (
+      Id int primary key identity not null,
+      AddDate datetime not null,
+      AlterDate datetime,
+      ConsolidationLevel2_Id int foreign key references ConsolidationLevel2(Id),
+      ParDepartment_Id int not null foreign key references ParDepartment(Id)
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ConsolidationLevel1XParDepartment' AND xtype='U')
+      create table ConsolidationLevel1XParDepartment (
+      Id int primary key identity not null,
+      AddDate datetime not null,
+      AlterDate datetime,
+      ConsolidationLevel1_Id int foreign key references ConsolidationLevel1(Id),
+      ParDepartment_Id int not null foreign key references ParDepartment(Id)
+      )
+
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('20190301_CriarRotinaIntegracao',GetDate())
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='RotinaIntegracao' AND xtype='U')
+      CREATE TABLE RotinaIntegracao (
+      Id int NOT NULL Identity,
+      DataSource varchar(100) NOT NULL,
+      InitialCatalog  varchar(100),
+      AddDate datetime not null,
+      AlterDate datetime,
+      [User]  varchar(50),
+      [Password] varchar(50),
+      IsActive bit not null default 1,
+      Query varchar(MAX),
+      Parametro  varchar(900),
+      Name  varchar(255),
+      PRIMARY KEY (Id)
+      );
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel1XRotinaIntegracao' AND xtype='U')
+      CREATE TABLE ParLevel1XRotinaIntegracao (
+      Id int NOT NULL Identity,
+      Name  varchar(100),
+      ParLevel1_Id  int,
+      AddDate datetime not null,
+      AlterDate datetime,
+      RotinaIntegracao_Id int,
+      IsActive bit not null default 1,
+      FOREIGN KEY (RotinaIntegracao_Id) REFERENCES RotinaIntegracao(Id),
+      FOREIGN KEY (ParLevel1_Id) REFERENCES ParLevel1(Id),
+      PRIMARY KEY (Id)
+      );
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM ParFieldType  WHERE Name = 'Parâmetro')
+      insert into ParFieldType(Id,Name, description, addDate, IsActive) values (9,'Parâmetro', 'Parâmetro', GetDate(), 1)
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM ParFieldType  WHERE Name = 'Dinâmico')
+      insert into ParFieldType(Id,Name, description, addDate, IsActive) values (10,'Dinâmico ', 'Dinâmico ', GetDate(), 1)
+
+      GO
+
+      IF COL_LENGTH('RotinaIntegracao','Retornos') IS NULL
+      BEGIN
+      ALTER TABLE RotinaIntegracao ADD Retornos varchar(250);
+      END
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='IntegracaoSistemica' AND xtype='U')
+      create table IntegracaoSistemica(
+      Id int not null identity primary key,
+      Name varchar(20) NOT NULL,
+      Configuration varchar(255) NOT NULL,
+      Script text NOT NULL,
+      TableName varchar(50) NOT NULL,
+      Intervalo int NOT NULL,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1
+      )
+
+      GO
+
+      IF COL_LENGTH('Result_Level3_Photos','IsProcess') IS NULL
+      BEGIN
+      ALTER table Result_Level3_Photos add IsProcess bit not null default 0
+      END
+
+      GO
+
+      IF COL_LENGTH('ParLevel1XRotinaIntegracao','ParLevelDefinition_Id') IS NULL
+      BEGIN
+      ALTER table ParLevel1XRotinaIntegracao add ParLevelDefinition_Id int not null default 1 references ParLevelDefiniton (Id)
+      END
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='AppScript' AND xtype='U')
+      CREATE TABLE AppScript(
+      Id int IDENTITY(1,1) NOT NULL primary key,
+      [Version] varchar(150) NOT NULL,
+      ArchiveName varchar(150) NOT NULL,
+      Script text NOT NULL
+      )
+
+      GO
+
+      IF COL_LENGTH('ParLevel2Level1','AlterDate') IS NOT NULL
+      BEGIN
+      ALTER TABLE ParLevel2Level1
+      ALTER COLUMN AlterDate datetime2(7) null;
+      END
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('Criar_ParLevel2EvaluationSample',GetDate())
+
+      GO
+
+      IF COL_LENGTH('ParEvaluation','Sample') IS NULL
+      BEGIN
+      ALTER TABLE ParEvaluation ADD Sample int null;
+      END
+
+      GO
+
+      IF COL_LENGTH('ParLevel2','ParDepartment_Id') IS NOT NULL
+      BEGIN
+      ALTER TABLE ParLevel2
+      ALTER COLUMN ParDepartment_Id int null;
+      END
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('Alter_ParVinculoPeso_Add_ParLevel3Group_ParCargo',GetDate())
+
+      GO
+
+
+      IF COL_LENGTH('ParVinculoPeso','ParLevel3Group_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso
+      ADD ParLevel3Group_Id int NULL,
+      FOREIGN KEY (ParLevel3Group_Id) REFERENCES ParLevel3Group(Id);
+      END
+
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','ParCargo_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso
+      ADD ParCargo_Id int NULL
+      END
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('Add_ParCargo_ParCargoXDepartment_ParColaborador_ParColaboradorXCargo',GetDate())
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParCargo' AND xtype='U')
+      create table ParCargo(
+      Id int not null identity(1,1) primary key,
+      Name varchar(50) NOT NULL,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParCargoXDepartment' AND xtype='U')
+      create table ParCargoXDepartment(
+      Id int not null identity(1,1) primary key,
+      ParDepartment_Id int not null FOREIGN key REFERENCES ParDepartment(Id),
+      ParCargo_Id int not null FOREIGN key REFERENCES ParCargo(Id),
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParColaborador' AND xtype='U')
+      create table ParColaborador(
+      Id int not null identity(1,1) primary key,
+      Name varchar(100) NOT NULL,
+      Documento varchar(100) NOT NULL,
+      ParCargo_Id int not null FOREIGN key REFERENCES ParCargo(Id),
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParColaboradorXCargo' AND xtype='U')
+      create table ParColaboradorXCargo(
+      Id int not null identity(1,1) primary key,
+      ParCargo_Id int not null FOREIGN key REFERENCES ParCargo(Id),
+      ParColaborador_Id int not null FOREIGN key REFERENCES ParColaborador(Id),
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('Alter_ParVinculoPeso_ParCompany_Id_ParDepartment_Id_Null',GetDate())
+
+
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','ParCompany_Id') IS NOT NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso ALTER COLUMN ParCompany_Id int NULL
+      END
+
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','ParDepartment_Id') IS NOT NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso ALTER COLUMN ParDepartment_Id int NULL
+      END
+
+      GO
+
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParEvaluationXDepartmentXCargo' AND xtype='U')
+      create table ParEvaluationXDepartmentXCargo(
+      Id int not null identity(1,1) primary key,
+      ParCargo_Id int null FOREIGN key REFERENCES ParCargo(Id),
+      ParCompany_Id int null FOREIGN key REFERENCES ParCompany(Id),
+      ParDepartment_Id int null FOREIGN key REFERENCES ParDepartment(Id),
+      Evaluation int not null,
+      Sample int not null,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParCargo' AND xtype='U')
+      create table CollectionLevel2XParCargo (
+      Id int primary key identity not null,
+      AddDate datetime not null,
+      AlterDate datetime,
+      CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
+      ParCargo_Id int not null foreign key references ParCargo(Id)
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Collection' AND xtype='U')
+      create table Collection (
+      Id bigint identity,
+      CollectionDate datetime,
+      AddDate datetime,
+      UserSgq_Id int,
+      Shift_Id int,
+      Period_Id int,
+      ParCargo_Id int,
+      ParCompany_Id int,
+      ParDepartment_Id int,
+      ParCluster_Id int,
+      ParLevel1_Id int,
+      ParLevel2_Id int,
+      ParLevel3_Id int,
+      CollectionType int,
+      --Result_Level3
+      Weigth decimal(38,10),
+      IntervalMin decimal(38,10),
+      IntervalMax decimal(38,10),
+      Value varchar(255),
+      ValueText varchar(255),
+      IsNotEvaluate bit,
+      IsConform bit,
+      Defects decimal(38,10),
+      PunishimentValue decimal(38,10),
+      WeiEvaluation decimal(38,10),
+      Evaluation decimal(38,10),
+      WeiDefects decimal(38,10),
+      HasPhoto bit,
+      --CollectionLevel2
+      Sample int,
+      HaveCorrectiveAction bit,
+      Parfrequency_Id int,
+      AlertLevel int,
+      --HeaderField
+      ParHeaderField_Id int,
+      ParHeaderField_Value varchar(255),
+      --outros
+      IsProcessed bit default 0
+      )
+
+      GO
+
+      IF COL_LENGTH('ParEvaluationSchedule','ParEvaluation_Id') IS NOT NULL
+      BEGIN
+      ALTER TABLE ParEvaluationSchedule ALTER COLUMN ParEvaluation_Id int NULL
+      END
+
+      GO
+
+      IF COL_LENGTH('ParEvaluationXDepartmentXCargo','ParFrequencyId') IS NULL
+      BEGIN
+      ALTER TABLE ParEvaluationXDepartmentXCargo ADD ParFrequencyId int null;
+      END
+
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','ParFrequencyId') IS NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso ADD ParFrequencyId int null
+      END
+
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','Evaluation') IS NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso ADD Evaluation int null
+
+      END
+
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','Evaluation') IS NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso ADD Evaluation int null
+      END
+
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','Sample') IS NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso ADD Sample int null
+      END
+
+      GO
+
+      IF COL_LENGTH('ParLevel3','CaracteristicaDeRisco') IS NULL
+      BEGIN
+      ALTER TABLE ParLevel3 ADD CaracteristicaDeRisco varchar(100) null
+      END
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3XHelp' AND xtype='U')
+      create table ParLevel3XHelp (
+      Id int primary key identity not null,
+      ParLevel3_Id int not null,
+      Titulo varchar(155),
+      Corpo varchar(max),
+      AddDate datetime2 not null,
+      AlterDate datetime2,
+      IsActive bit not null default 1
+      )
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('Criar_EstruturaDasTabelasDeAlerta',GetDate())
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParAlertType' AND xtype='U')
+      create table ParAlertType(
+      Id int not null primary key,
+      Name varchar(50) NOT NULL,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParAlert' AND xtype='U')
+      create table ParAlert(
+      Id int not null identity(1,1) primary key,
+      Name varchar(50) NOT NULL,
+      ParDepartment_Id int null FOREIGN key REFERENCES ParDepartment(Id),
+      ParCargo_Id int null FOREIGN key REFERENCES ParCargo(Id),
+      ParLevel1_Id int null FOREIGN key REFERENCES ParLevel1(Id),
+      ParLevel2_Id int null FOREIGN key REFERENCES ParLevel2(Id),
+      ParLevel3_Id int null FOREIGN key REFERENCES ParLevel3(Id),
+      ParCompany_Id int null FOREIGN key REFERENCES ParCompany(Id),
+      ParAlertType_Id int not null FOREIGN key REFERENCES ParAlertType(Id),
+      IsCollectAlert bit not null default 1,
+      HasCorrectiveAction bit not null default 0,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM ParAlertType WHERE Name = 'KO')
+      begin
+      insert into ParAlertType values (1,'KO',getdate(),null,1)
+      end
+
+      GO
+
+      IF COL_LENGTH('ParLevel3Value','ParDepartment_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParLevel3Value ADD ParDepartment_Id int null
+      END
+
+      GO
+
+      IF COL_LENGTH('ParLevel3Value','ParCargo_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParLevel3Value ADD ParCargo_Id int null
+      END
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParRiskCharacteristicType' AND xtype='U')
+      CREATE TABLE ParRiskCharacteristicType
+      (
+      Id INT NOT NULL IDENTITY(1,1),
+      Name VARCHAR(500),
+      AddDate DATETIME,
+      AlterDate DATETIME,
+      IsActive BIT NULL
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM ParRiskCharacteristicType WHERE Name = '1 - Vulnerabilidade' OR
+      Name = '2 - Probabilidade')
+      BEGIN
+      INSERT INTO
+      ParRiskCharacteristicType (Name,AddDate,IsActive)
+      VALUES
+      ('1 - Vulnerabilidade',GETDATE(),1), ('2 - Probabilidade',GETDATE(),1);
+      END
+
+      GO
+
+      IF EXISTS (SELECT * FROM ParRiskCharacteristicType WHERE Name = '1 - Vulnerabilidade' OR
+      Name = '2 - Probabilidade')
+      BEGIN
+      DELETE ParRiskCharacteristicType WHERE id >= 3;
+      END
+
+      GO
+
+
+      IF COL_LENGTH('ParLevel3','ParRiskCharacteristicType_id') IS NULL
+      BEGIN
+      ALTER TABLE ParLevel3 Add ParRiskCharacteristicType_id INT
+      END
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParDepartmentXRotinaIntegracao' AND xtype='U')
+      CREATE TABLE ParDepartmentXRotinaIntegracao  (
+      Id int NOT NULL Identity,
+      Name  varchar(100),
+      ParDepartment_Id  int,
+      AddDate datetime not null,
+      AlterDate datetime,
+      RotinaIntegracao_Id int,
+      IsActive bit not null default 1,
+      FOREIGN KEY (RotinaIntegracao_Id) REFERENCES RotinaIntegracao(Id),
+      FOREIGN KEY (ParDepartment_Id) REFERENCES ParDepartment(Id),
+      PRIMARY KEY (Id)
+      );
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParDepartmentXHeaderField' AND xtype='U')
+      CREATE TABLE ParDepartmentXHeaderField  (
+      Id int NOT NULL Identity,
+      ParDepartment_Id  int,
+      ParHeaderField_Id int,
+      AddDate datetime not null,
+      AlterDate datetime,
+      IsActive bit not null default 1,
+      IsRequired bit null,
+      DefaultSelected bit null,
+      HeaderFieldGroup varchar(100) null,
+      FOREIGN KEY (ParHeaderField_Id) REFERENCES ParHeaderField(Id),
+      FOREIGN KEY (ParDepartment_Id) REFERENCES ParDepartment(Id),
+      PRIMARY KEY (Id)
+      );
+
+      GO
+
+      IF COL_LENGTH('ParDepartment','ParCompany_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParDepartment
+      ADD ParCompany_Id INT null REFERENCES ParCompany(Id)
+      END
+
+      GO
+
+      IF COL_LENGTH('ParLevel1','ParFrequency_Id') IS NOT NULL
+      BEGIN
+      alter table ParLevel1
+      alter column ParFrequency_Id int null
+      END
+
+      GO
+
+      IF COL_LENGTH('ParLevel2','ParFrequency_Id') IS NOT NULL
+      BEGIN
+      alter table ParLevel2
+      alter column ParFrequency_Id int null
+      END
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParDepartmentGroup' AND xtype='U')
+      create table ParDepartmentGroup(
+      Id int not null identity(1,1) primary key,
+      Name varchar(50) NOT NULL,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+
+      GO
+
+      IF COL_LENGTH('ParDepartment','ParDepartmentGroup_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParDepartment
+      ADD ParDepartmentGroup_Id int NULL,
+      FOREIGN KEY (ParDepartmentGroup_Id) REFERENCES ParDepartmentGroup(Id);
+      END
+
+      IF COL_LENGTH('RotinaIntegracao','IsOffline') IS NULL
+      BEGIN
+      ALTER TABLE RotinaIntegracao
+      ADD IsOffline bit default 0 not null
+      END
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ResourcePT' AND xtype='U')
+      create table ResourcePT(
+      Id int not null identity(1,1) primary key,
+      [Key] varchar(120),
+      Value varchar(120)
+      )
+
+      GO
+
+      IF COL_LENGTH('ResourcePT','Value') IS NOT NULL
+      BEGIN
+      ALTER TABLE ResourcePT
+      ALTER COLUMN Value varchar(500);
+      END
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ResourceEN' AND xtype='U')
+      create table ResourceEN(
+      Id int not null identity(1,1) primary key,
+      [Key] varchar(120),
+      Value varchar(120)
+      )
+
+      GO
+
+      IF COL_LENGTH('ResourceEN','Value') IS NOT NULL
+      BEGIN
+      ALTER TABLE ResourceEN
+      ALTER COLUMN Value varchar(500);
+      END
+
+      GO
+
+      IF COL_LENGTH('ParCargo','Name') IS NOT NULL
+      BEGIN
+      ALTER TABLE ParCargo
+      ALTER COLUMN Name varchar(255) not null;
+      END
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel3XModule' AND xtype='U')
+      create table [ParLevel3XModule](
+      Id int not null identity(1,1) primary key,
+      Name varchar(100) NOT NULL,
+      ParLevel1_Id int NOT NULL FOREIGN key REFERENCES ParLevel1(Id),
+      ParLevel2_Id int NOT NULL FOREIGN key REFERENCES ParLevel2(Id),
+      ParLevel3_Id int NOT NULL FOREIGN key REFERENCES ParLevel3(Id),
+      ParModule_Id int NOT NULL FOREIGN key REFERENCES ParModule(Id),
+      ParDepartment_Id int NOT NULL FOREIGN key REFERENCES ParDepartment(Id),
+      ParCompany_Id int NOT NULL FOREIGN key REFERENCES ParCompany(Id),
+      Points [decimal](38, 5) NOT NULL,
+      EffectiveDateEnd datetime null,
+      EffectiveDateStart datetime null,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+
+      GO
+
+      IF COL_LENGTH('DicionarioEstatico','Value') IS NOT NULL
+      BEGIN
+      ALTER TABLE DicionarioEstatico ALTER COLUMN Value Text
+      END
+
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','EffectiveDateStart') IS NULL
+      BEGIN
+      alter table ParVinculoPeso
+      add EffectiveDateStart datetime null
+      END
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','EffectiveDateEnd') IS NULL
+      BEGIN
+      alter table ParVinculoPeso
+      add EffectiveDateEnd datetime null
+      END
+      GO
+
+      ---------------------------------------------------
+      --GRAVAR PARLEVEL3GROUP----------------------------
+      ---------------------------------------------------
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Result_Level3XGroup' AND xtype='U')
+      CREATE TABLE [dbo].[Result_Level3XGroup](
+      [Id] [int] IDENTITY(1,1) NOT NULL,
+      [Result_Level3_Id] [int] NOT NULL FOREIGN KEY REFERENCES [dbo].[Result_Level3] ([Id]),
+      [ParLevel3Group_Id] [int] NOT NULL FOREIGN KEY REFERENCES [dbo].[ParLevel3Group] ([Id]),
+      [AddDate] [datetime2](7) NOT NULL,
+      [AlterDate] [datetime2](7) NULL,
+      [IsActive] [bit] NULL default 1,
+      ) ON [PRIMARY]
+
+      GO
+
+      IF COL_LENGTH('ParEvaluation','ParFrequency_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParEvaluation ADD ParFrequency_Id int foreign key(ParFrequency_Id) references ParFrequency(Id);
+      END
+      GO
+
+      update pe set ParFrequency_Id = L2.ParFrequency_Id
+      from ParEvaluation pe inner join ParLevel2 L2 on pe.ParLevel2_Id = L2.Id
+      where 1 = 1
+      and pe.IsActive = 1
+      and pe.ParFrequency_Id is null
+
+      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>Versão 1.0.09</CardNumber>
+    <Version>1.0.09</Version>
+    <Description>Scripts Integração Sistemica de GMUD versão 1.0.09</Description>
+    <Script>
+      IF NOT EXISTS (
+      SELECT  schema_name
+      FROM    information_schema.schemata
+      WHERE   schema_name = 'INTEG' )
+      BEGIN
+      exec('CREATE SCHEMA INTEG;')
+      END
+      GO
+
+      IF EXISTS (
+      SELECT  schema_name
+      FROM    information_schema.schemata
+      WHERE   schema_name = 'INTEG' )
+
+      BEGIN
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionData' AND xtype='U')
+      CREATE TABLE [INTEG].[CollectionData](
+      [Table_Id] [int] NULL,
+      [Key_Integ] [varchar](500) NOT NULL,
+      [ParLevel1_id] [int] NULL,
+      [ParLevel2_id] [int] NULL,
+      [ParLevel3_id] [int] NULL,
+      [ParCompany_id] [int] NULL,
+      [Weight] [decimal](38, 10) NULL,
+      [Value] [decimal](38, 10) NULL,
+      [ValueText] [varchar](500) NULL,
+      [MinInterval] [decimal](38, 10) NULL,
+      [MaxInterval] [decimal](38, 10) NULL,
+      [IsConform] [bit] NULL,
+      [IsNotEvaluate] [bit] NULL,
+      [Evaluation] [decimal](38, 10) NULL,
+      [Sample] [int] NULL,
+      [WeiEvaluation] [decimal](38, 10) NULL,
+      [Defects] [decimal](38, 10) NULL,
+      [WeiDefects] [decimal](38, 10) NULL,
+      [Coletado] [int] NULL,
+      [CollectionDate] [datetime] NULL
+      ) ON [PRIMARY]
+
+      END
+      GO
+
+
+      IF EXISTS (
+      SELECT  schema_name
+      FROM    information_schema.schemata
+      WHERE   schema_name = 'INTEG' )
+
+      BEGIN
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionAnaliseLaboratorial' AND xtype='U')
+      CREATE TABLE [INTEG].[CollectionAnaliseLaboratorial](
+      [nCdEmpresa] [decimal](38, 0) NULL,
+      [dColetaAmostra] [datetime] NULL,
+      [dProducao] [datetime] NULL,
+      [nCdProduto] [decimal](38, 0) NULL,
+      [nCdAnalise] [decimal](38, 0) NULL,
+      [cNmAnalise] [varchar](400) NULL,
+      [cGrupoColeta] [varchar](400) NULL,
+      [nCdSetor] [decimal](38, 0) NULL,
+      [cNmSetor] [varchar](400) NULL,
+      [nCdTpColeta] [decimal](38, 0) NULL,
+      [cNmTpColeta] [varchar](400) NULL,
+      [nResultadoAnalise] [decimal](38, 5) NULL,
+      [cSgUnidadeMedidaLaboratorio] [varchar](400) NULL,
+      [dMovimento] [datetime] NULL,
+      [iLote] [int] NULL,
+      [nCdPontoColeta] [decimal](38, 0) NULL,
+      [cNmPontoColeta] [varchar](400) NULL,
+      [cNmDetalhePontoColeta] [varchar](400) NULL,
+      [nCdRequisicaoAnalise] [decimal](38, 0) NULL,
+      [nCdRequisicaoFilial] [decimal](38, 0) NULL,
+      [nCdLaboratorio] [decimal](38, 0) NULL,
+      [cNmLaboratorio] [varchar](400) NULL,
+      [iAmostra] [int] NULL,
+      [cCdBarraAmostra] [varchar](400) NULL,
+      [nCdMatriz] [decimal](38, 0) NULL,
+      [cNmMatriz] [varchar](400) NULL,
+      [nCdGrupoAnalise] [decimal](38, 0) NULL,
+      [cNmGrupoAnalise] [varchar](400) NULL,
+      [nCdMetodologia] [decimal](38, 0) NULL,
+      [cCdMetodologia] [varchar](400) NULL,
+      [cNmMetodologia] [varchar](400) NULL,
+      [dAnaliseCritica] [datetime] NULL,
+      [dAnaliseInicial] [datetime] NULL,
+      [dAnaliseFinal] [datetime] NULL,
+      [dPrevisaoFinalAnalise] [datetime] NULL,
+      [nCdValorPadrao] [decimal](38, 0) NULL,
+      [cSinal1] [varchar](400) NULL,
+      [nValor1] [decimal](38, 5) NULL,
+      [cOperadorPadrao] [varchar](400) NULL,
+      [cSinal2] [varchar](400) NULL,
+      [nValor2] [decimal](38, 5) NULL,
+      [cRastreabilidadeLaudo] [varchar](400) NULL,
+      [Key_Integ] [varchar](500) NULL,
+      [AddDate] [datetime] NULL
+      ) ON [PRIMARY]
+
+      END
+      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>Versão 1.0.10</CardNumber>
+    <Version>1.0.10</Version>
+    <Description>Scripts de GMUD versão 1.0.10</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>Versão 1.0.11</CardNumber>
+    <Version>1.0.11</Version>
+    <Description>Scripts de GMUD versão 1.0.11</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevelHeaderField' AND xtype='U')
+      create table ParLevelHeaderField (
+      Id int primary key not null identity,
+      Name varchar(100) not null,
+      TableName varchar(100) not null,
+      AddDate datetime2 not null,
+      AlterDate datetime2,
+      IsActive bit not null default 1
+      )
+
+      go
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParHeaderFieldGeral' AND xtype='U')
+      create table ParHeaderFieldGeral (
+      Id int not null primary key identity,
+      Name varchar(100) not null,
+      ParFieldType_Id int not null,
+      Description varchar(100),
+      ParLevelHeaderField_Id int not null,
+      Generic_Id int not null,
+      LinkNumberEvaluation bit not null default 0,
+      IsActive bit not null default 1,
+      IsRequired bit not null default 0,
+      Duplicate bit not null default 0,
+      AddDate datetime2 not null,
+      AlterDate datetime2,
+      Foreign key (ParFieldType_Id) references ParFieldType(Id),
+      Foreign key (ParLevelHeaderField_Id) references ParLevelHeaderField(Id)
+      )
+      go
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParHeaderFieldGeral' AND xtype='U')
+      CREATE TABLE CollectionLevel2XParHeaderFieldGeral  (
+      [Id] [int] IDENTITY(1,1) NOT NULL,
+      [CollectionLevel2_Id] [int] NOT NULL,
+      [ParHeaderFieldGeral_Id] [int] NOT NULL,
+      [ParHeaderField_Name] [nvarchar](max) NOT NULL,
+      [ParFieldType_Id] [int] NOT NULL,
+      [Value] [nvarchar](max) NOT NULL,
+      [Evaluation] [int] NULL,
+      [Sample] [int] NULL,
+      FOREIGN KEY ([CollectionLevel2_Id]) REFERENCES CollectionLevel2(Id),
+      FOREIGN KEY ([ParFieldType_Id]) REFERENCES ParFieldType(Id),
+      FOREIGN KEY ([ParHeaderFieldGeral_Id]) REFERENCES ParHeaderFieldGeral(Id),
+      PRIMARY KEY (Id)
+      );
+
+      GO
+
+      IF COL_LENGTH('ParCompany','Identification') IS NULL
+      BEGIN
+      ALTER TABLE ParCompany ADD Identification varchar(50) null;
+      END
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParMultipleValuesGeral' AND xtype='U')
+      create table ParMultipleValuesGeral (
+      Id int not null primary key identity,
+      ParHeaderFieldGeral_Id Int foreign key references ParHeaderFieldGeral(Id) not null,
+      Name varchar(100) not null,
+      Description varchar(255),
+      PunishmentValue decimal(38,10),
+      Conformity bit not null,
+      AddDate datetime2 not null,
+      AlterDate datetime2,
+      IsActive bit not null default 1,
+      IsDefaultOption bit not null default 0
+      )
+      go
+
+      BEGIN
+      IF NOT EXISTS (Select * from ParLevel3InputType where Id = 13)
+      BEGIN
+      INSERT into ParLevel3InputType (Id,Name, Description, AddDate, IsActive) VALUES (13,'Data', 'Data',  GETDATE(), 1)
+      END
+      END
+
+      GO
+
+      BEGIN
+      IF NOT EXISTS (Select * from ParLevel3InputType where Id = 14)
+      BEGIN
+      INSERT into ParLevel3InputType (Id,Name, Description, AddDate, IsActive) VALUES (14,'Hora', 'Hora',  GETDATE(), 1)
+      END
+      END
+
+      GO
+
+      IF COL_LENGTH('ParLevel3Value','ShowLevel3Limits') IS NULL
+      BEGIN
+      ALTER table ParLevel3Value add ShowLevel3Limits bit not null default 1
+      END
+      GO
+
+      SET IDENTITY_INSERT ParFrequency ON;
+      GO
+      BEGIN
+      IF NOT EXISTS (Select * from ParFrequency where Id = 12)
+      BEGIN
+      INSERT into ParFrequency (Id,Name,Description,AddDate,AlterDate,IsActive) VALUES (12,'Bimestral','Bimestral', getdate(), NULL, 1);
+      END
+      END
+      GO
+      BEGIN
+      IF NOT EXISTS (Select * from ParFrequency where Id = 7)
+      BEGIN
+      INSERT into ParFrequency (Id,Name,Description,AddDate,AlterDate,IsActive) VALUES (7,'Trimestral','Trimestral', getdate(),	NULL, 1);
+      END
+      END
+      GO
+      BEGIN
+      IF NOT EXISTS (Select * from ParFrequency where Id = 8)
+      BEGIN
+      INSERT into ParFrequency (Id,Name,Description,AddDate,AlterDate,IsActive) VALUES (8,'Semestral','Semestral', getdate(),	NULL, 1);
+      END
+      END
+      GO
+      BEGIN
+      IF NOT EXISTS (Select * from ParFrequency where Id = 13)
+      BEGIN
+      INSERT into ParFrequency (Id,Name,Description,AddDate,AlterDate,IsActive) VALUES (13,'Anual','Anual', getdate(),	NULL, 1);
+      END
+      END
+      GO
+      SET IDENTITY_INSERT ParFrequency OFF
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','ParGroupParlevel1_id') IS NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso ADD ParGroupParlevel1_id int null;
+      END
+
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','EffectiveDateStart') IS NOT NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso
+      DROP COLUMN EffectiveDateStart
+      END
+
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','EffectiveDateEnd') IS NOT NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso
+      DROP COLUMN EffectiveDateEnd
+      END
+
+      GO
+
+      IF COL_LENGTH('ParVinculoPeso','ParGroupParlevel1_id') IS NOT NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso ALTER COLUMN ParGroupParlevel1_id int NULL
+      END
+
+      GO
+      --Scripts de CRUD dinâmico / Componente generico
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ComponenteGenerico' AND xtype='U')
+      CREATE TABLE ComponenteGenerico (
+      Id int not null primary key identity,
+      AddDate Datetime2 not null,
+      AlterDate Datetime2,
+      Name varchar(255) not null,
+      IsActive bit not null default 1
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ComponenteGenericoTipoColuna' AND xtype='U')
+      CREATE TABLE ComponenteGenericoTipoColuna (
+      Id int not null primary key identity,
+      AddDate Datetime2 not null,
+      AlterDate Datetime2,
+      Name varchar(255) not null,
+      IsActive bit not null default 1
+      )
+
+      go
+
+      if not exists(select Id from ComponenteGenericoTipoColuna where id = 1)
+      INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'text');
+      if not exists(select Id from ComponenteGenericoTipoColuna where id = 2)
+      INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'number');
+      if not exists(select Id from ComponenteGenericoTipoColuna where id = 3)
+      INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'checkbox');
+      if not exists(select Id from ComponenteGenericoTipoColuna where id = 4)
+      INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'textarea');
+      if not exists(select Id from ComponenteGenericoTipoColuna where id = 5)
+      INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'select');
+      if not exists(select Id from ComponenteGenericoTipoColuna where id = 6)
+      INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'date');
+      if not exists(select Id from ComponenteGenericoTipoColuna where id = 7)
+      INSERT INTO ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'hour');
+      if not exists(select Id from ComponenteGenericoTipoColuna where id = 8)
+      insert into ComponenteGenericoTipoColuna(AddDate, Name) VALUES (getdate(), 'limite');
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ComponenteGenericoColuna' AND xtype='U')
+      CREATE TABLE ComponenteGenericoColuna (
+      Id int not null primary key identity,
+      AddDate Datetime2 not null,
+      AlterDate Datetime2,
+      Name varchar(255) not null,
+      ComponenteGenerico_Id int not null foreign key references ComponenteGenerico(Id),
+      ComponenteGenericoTipoColuna_Id int not null foreign key references ComponenteGenericoTipoColuna(Id),
+      IsRequired bit not null default 0,
+      ValorPadrao varchar(255),
+      IsActive bit not null default 1
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ComponenteGenericoValor' AND xtype='U')
+      CREATE TABLE ComponenteGenericoValor(
+      Id int not null primary key identity,
+      SaveId int not null,
+      AddDate Datetime2 not null,
+      AlterDate Datetime2,
+      ComponenteGenerico_Id int not null foreign key references ComponenteGenerico(Id),
+      ComponenteGenericoColuna_Id int not null foreign key references ComponenteGenericoColuna(Id),
+      Valor varchar(255),
+      IsActive bit not null default 1
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParHeaderFieldXComponenteGenerico' AND xtype='U')
+      create table ParHeaderFieldXComponenteGenerico (
+      Id int primary key not null identity,
+      AddDate datetime2 not null,
+      AlterDate datetime2,
+      ComponenteGenerico_Id int foreign key references ComponenteGenerico(Id),
+      ParHeaderField_Id int foreign key references ParHeaderField(Id),
+      Value varchar(255) not null,
+      Text varchar(255) not null
+      )
+
+      IF NOT EXISTS (SELECT * FROM ParFieldType WHERE Id = 11)
+      INSERT INTO ParFieldType VALUES (11, 'Componente', 'Componente Genérico', GETDATE(), NULL, 1)
+      GO
+
+      IF COL_LENGTH('ParLevel3Value','IsRequired') IS NULL
+      BEGIN
+
+      ALTER table ParLevel3Value add IsRequired bit null
+      END
+      GO
+
+      IF COL_LENGTH('ParLevel3Value','IsDefaultAnswer') IS NULL
+      BEGIN
+
+      ALTER table ParLevel3Value add IsDefaultAnswer bit null
+      END
+      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>Versão 1.0.12</CardNumber>
+    <Version>1.0.12</Version>
+    <Description>Scripts de GMUD versão 1.0.12</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='LogTrack' AND xtype='U')
+      create table LogTrack (
+      Id int not null primary key identity,
+      UserSgq_Id Int not null,
+      Tabela varchar(100) not null,
+      Json_Id Int not null,
+      Json varchar(900) not null,
+      AddDate datetime2 not null,
+      ParReason_Id Int foreign key references ParReason(Id) null,
+      Motivo varchar(900) null
+      )
+      go
+
+      BEGIN
+      IF NOT EXISTS (Select * from ParLevelHeaderField where id = 1)
+      BEGIN
+      INSERT into ParLevelHeaderField (Name, TableName, AddDate) VALUES ('Indicador', 'ParLevel1', GETDATE())
+      END
+      END
+      GO
+
+      BEGIN
+      IF NOT EXISTS (Select * from ParLevelHeaderField where id = 2)
+      BEGIN
+      INSERT into ParLevelHeaderField (Name, TableName, AddDate) VALUES ('Monitoramento', 'ParLevel2', GETDATE())
+      END
+      END
+      GO
+
+      BEGIN
+      IF NOT EXISTS (Select * from ParLevelHeaderField where id = 3)
+      BEGIN
+      INSERT into ParLevelHeaderField (Name, TableName, AddDate) VALUES ('Centro de Custo / Seção', 'ParDeparment',  GETDATE())
+      END
+      END
+      GO
+
+      BEGIN
+      IF NOT EXISTS (Select * from parcounter where id = 19)
+      BEGIN
+      insert into parcounter values
+      (2,'frequency',getdate(),null,1,19)
+      END
+      END
+
+      GO
+
+      BEGIN
+      IF NOT EXISTS (Select * from parreasontype where id = 3)
+      BEGIN
+      insert into parreasontype values
+      ('Editar Resultado',getdate(),null,1)
+      END
+      END
+
+      GO
+
+      -- Prioridade na tabela de Diretrizes
+      IF COL_LENGTH('Pa_Objetivo','IsPriority') IS NULL
+      BEGIN
+      ALTER TABLE Pa_Objetivo
+      ADD IsPriority bit not null default 0;
+      END
+      GO
+
+      ------------------------------------------------- script de nivelamento do PA -------------------------------
+
+      /****** Object:  Table [dbo].[Pa_FTA]    Script Date: 09/08/2019 15:59:36 ******/
+      SET ANSI_NULLS ON
+      GO
+
+      SET QUOTED_IDENTIFIER ON
+      GO
+
+      IF NOT EXISTS (SELECT
+      *
+      FROM sysobjects
+      WHERE Name = 'Pa_FTA'
+      AND xtype = 'U')
+      CREATE TABLE [dbo].[Pa_FTA] (
+      [Id] [INT] IDENTITY (1, 1) NOT NULL
+      ,[AddDate] [DATETIME2](7) NULL DEFAULT (getdate())
+      ,[AlterDate] [DATETIME2](7) NULL
+      ,[MetaFTA] [NVARCHAR](MAX) NOT NULL
+      ,[PercentualNCFTA] [NVARCHAR](MAX) NOT NULL
+      ,[ReincidenciaDesvioFTA] [NVARCHAR](MAX) NOT NULL
+      ,[Supervisor_Id] [INT] NULL
+      ,[Order] [INT] NULL
+      ,CONSTRAINT [PK_Pa_FTA] PRIMARY KEY CLUSTERED
+      (
+      [Id] ASC
+      ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+      ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+      GO
+
+      /****** Object:  Table [dbo].[Pa_AcompanhamentoXQuem]    Script Date: 09/08/2019 16:00:16 ******/
+      SET ANSI_NULLS ON
+      GO
+
+      SET QUOTED_IDENTIFIER ON
+      GO
+
+      IF NOT EXISTS (SELECT
+      *
+      FROM sysobjects
+      WHERE Name = 'Pa_AcompanhamentoXQuem'
+      AND xtype = 'U')
+      CREATE TABLE [dbo].[Pa_AcompanhamentoXQuem] (
+      [Id] [INT] IDENTITY (1, 1) NOT NULL
+      ,[Acompanhamento_Id] [INT] NOT NULL
+      ,[Quem_Id] [INT] NOT NULL
+      ,CONSTRAINT [PK_Pa_AcompanhamentoXQuem] PRIMARY KEY CLUSTERED
+      (
+      [Id] ASC
+      ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+      ) ON [PRIMARY]
+
+      GO
+
+
+      IF COL_LENGTH('Pa_Coordenacao','IsActive') IS NULL
+      BEGIN
+      ALTER TABLE Pa_Coordenacao
+      Add IsActive bit not null default(1)
+      END
+      GO
+
+      IF COL_LENGTH('Pa_Gerencia','IsActive') IS NULL
+      BEGIN
+      ALTER TABLE Pa_Gerencia
+      Add IsActive bit not null default(1)
+      END
+      GO
+
+      IF COL_LENGTH('Pa_Planejamento','IsTatico') IS NULL
+      BEGIN
+      ALTER TABLE Pa_Planejamento
+      Add IsTatico bit not null default(0)
+      END
+      GO
+
+      IF COL_LENGTH('Pa_Planejamento','Tatico_Id') IS NULL
+      BEGIN
+      ALTER TABLE Pa_Planejamento
+      Add Tatico_Id int null
+      END
+      GO
+
+      IF COL_LENGTH('Pa_Planejamento','IsFta') IS NULL
+      BEGIN
+      ALTER TABLE Pa_Planejamento
+      Add IsFta bit not null default(0)
+      END
+      GO
+
+      IF COL_LENGTH('Pa_Unidade','Sgq_Id') IS NULL
+      BEGIN
+      ALTER TABLE Pa_Unidade
+      Add Sgq_Id int null
+      END
+      GO
+
+      -- Script de novas colunas do SESMT
+
+      IF COL_LENGTH('Pa_Acao','ParDepartments_Hash') IS NULL
+      BEGIN
+
+      alter table Pa_Acao add ParDepartments_Hash varchar(50) null;
+      END
+      GO
+      IF COL_LENGTH('Pa_Acao','ParDepartmentsName') IS NULL
+      BEGIN
+
+      alter table Pa_Acao add ParDepartmentsName varchar(max) null;
+      END
+      GO
+      IF COL_LENGTH('Pa_Acao','ParCargo_Id') IS NULL
+      BEGIN
+
+      alter table Pa_Acao add ParCargo_Id int null;
+      END
+      GO
+      IF COL_LENGTH('Pa_Acao','ParCargoName') IS NULL
+      BEGIN
+
+      alter table Pa_Acao add ParCargoName varchar(50) null;
+      END
+      GO
+
+      BEGIN
+      IF NOT EXISTS (SELECT
+      *
+      FROM Pa_Planejamento
+      WHERE Id = 1)
+      BEGIN
+      SET IDENTITY_INSERT Pa_Planejamento ON
+      INSERT INTO Pa_Planejamento (Id, AddDate, IsTatico, IsFta)
+      VALUES (1, GETDATE(), 1, 0)
+      SET IDENTITY_INSERT Pa_Planejamento OFF
+      END
+      END
+      GO
+
+      BEGIN
+      IF NOT EXISTS (SELECT
+      *
+      FROM Pa_Planejamento
+      WHERE Id = 128)
+      BEGIN
+      SET IDENTITY_INSERT Pa_Planejamento ON
+      INSERT INTO Pa_Planejamento (Id, AddDate, IsTatico, IsFta)
+      VALUES (128, GETDATE(), 1, 0)
+      SET IDENTITY_INSERT Pa_Planejamento OFF
+      END
+      END
+      GO
+
+
+      IF COL_LENGTH('ParEvaluationSchedule','ParEvaluationXDepartmentXCargo_Id') IS NULL
+      BEGIN
+
+      alter table ParEvaluationSchedule add ParEvaluationXDepartmentXCargo_Id int null;
+      END
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='LogError' AND xtype='U')
+      create table LogError (
+      Id int not null primary key identity,
+      ErrorMessage varchar(900) null,
+      Line Int null,
+      Method varchar(150) null,
+      Controller varchar(150) null,
+      Object varchar(900) null,
+      StackTrace varchar(900) null,
+      AddDate datetime null,
+      )
+
+
+
+      IF COL_LENGTH('ParVinculoPeso','ParCluster_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso ADD ParCluster_Id int null;
+      END
+      GO
+
+      IF COL_LENGTH('ParEvaluationXDepartmentXCargo','ParCluster_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParEvaluationXDepartmentXCargo ADD ParCluster_Id int null;
+      END
+      GO
+
+
+      IF COL_LENGTH('ItemMenu','PDCAMenuItem') IS NULL
+      BEGIN
+      ALTER TABLE ItemMenu ADD PDCAMenuItem INT;
+      END
+      GO
+
+      IF COL_LENGTH('ParLevel3Value','ParCluster_Id') IS NULL
+      BEGIN
+      ALTER TABLE ParLevel3Value ADD ParCluster_Id int null;
+      END
+      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>Versão 1.0.13</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Scripts de GMUD versão 1.0.13</Description>
+    <Script>
+    </Script>
+  </Card>
+
+</Cards>

@@ -453,6 +453,7 @@
     <Compile Include="Controllers\ResourceENsController.cs" />
     <Compile Include="Controllers\ResourcePTsController.cs" />
     <Compile Include="Controllers\RotinaIntegracaoController.cs" />
+    <Compile Include="Controllers\ScriptsVersionController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
@@ -663,6 +664,7 @@
     <Content Include="Angular\Level321Chain.js" />
     <Content Include="Angular\SelectVinculado.js" />
     <Content Include="App_Readme\readme.txt" />
+    <Content Include="ChangeLog\ChangeLog.xml" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker.min.css" />
     <Content Include="Content\bootstrap-datepicker.standalone.css" />
@@ -2077,6 +2079,7 @@
     <Content Include="Views\ParAlertXUser\Create.cshtml" />
     <Content Include="Views\ParAlertXUser\Delete.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioEdicao.cshtml" />
+    <Content Include="Views\ScriptsVersion\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
