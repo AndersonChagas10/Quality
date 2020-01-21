@@ -2076,6 +2076,7 @@
     <Content Include="Views\ParAlertXUser\Index.cshtml" />
     <Content Include="Views\ParAlertXUser\Create.cshtml" />
     <Content Include="Views\ParAlertXUser\Delete.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioEdicao.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
