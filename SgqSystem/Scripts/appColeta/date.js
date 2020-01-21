@@ -354,3 +354,18 @@ function dateInternacionalFormat(date){
     return (new Date(date)).toLocaleDateString("pt-BR")
 }
 
+function dateConvertToDefault(date){
+
+    var dateDefault = "";
+
+    var day = date.substr(0,2);
+    var month = date.substr(3,2);
+    var year =  date.substr(6, 4);
+    var hour = date.substr(11,6);
+    
+    dateDefault = year + "-" + month + "-" + day + " " + hour;
+
+    return dateDefault
+
+}
+
