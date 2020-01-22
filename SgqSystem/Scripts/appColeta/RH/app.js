@@ -15,6 +15,7 @@ var appIsOnline = false;
 var currentAlerts = [];
 var currentAlertsAgrupados = [];
 var listaParFrequency = [];
+var listaParClusterGroup = [];
 var currentsParDepartments_Ids = [];
 var currentPlanejamento = [];
 
@@ -57,6 +58,7 @@ function getAppParametrization(frequencyId) {
                 , ParFrequency_Id: currentParFrequency_Id
                 , AppDate: currentCollectDate
                 , ParCluster_Id: currentParCluster_Id
+                , ParClusterGroup_Id: currentParClusterGroup_Id
             }),
             type: 'POST',
             url: urlPreffix + '/api/AppColeta/GetAppParametrization',
@@ -267,6 +269,14 @@ function setBreadcrumbs() {
     if (currentParCluster_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
             return item.Id == currentParCluster_Id;
+        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
+
+        isCurrent = false;
+    }
+
+    if (currentParClusterGroup_Id) {
+        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParClusterGroup, function (item) {
+            return item.Id == currentParClusterGroup_Id;
         })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
 
         isCurrent = false;

@@ -1,21 +1,20 @@
-﻿function openParCluster() {
+﻿function openParClusterGroup() {
 
     var html = '';
 
-    _readFile("parCluster.txt", function (data) {
+    _readFile("parClusterGroup.txt", function (data) {
         if (globalLoginOnline) {
 
-            openMensagem('Carregando lista de clusters', 'blue', 'white');
+            openMensagem('Carregando lista de grupo de clusters', 'blue', 'white');
 
             $.ajax({
-                data: { parClusterGroupId: currentParClusterGroup_Id},
-                url: urlPreffix + '/api/parCluster',
+                data: { parCompany_Id: currentParCompany_Id },
+                url: urlPreffix + '/api/parClusterGroup',
                 type: 'GET',
                 success: function (data) {
-
-                    _writeFile("parCluster.txt", JSON.stringify(data), function () {
-                        listaParCluster = data;
-                        listarParCluster();
+                    _writeFile("parClusterGroup.txt", JSON.stringify(data), function () {
+                        listaParClusterGroup = data;
+                        listarParClusterGroup();
                     });
 
                     closeMensagem();
@@ -28,35 +27,35 @@
             });
 
         } else {
-            listarParCluster();
+            listarParClusterGroup();
         }
 
     });
 }
 
-function listarParCluster() {
-
+function listarParClusterGroup() {
+    
     cleanGlobalVarParCluster();
 
-    _readFile("parCluster.txt", function (data) {
+    _readFile("parClusterGroup.txt", function (data) {
 
         data = JSON.parse(data);
 
-        listaParCluster = data;
+        listaParClusterGroup = data;
 
-        var cluster = {};
+        var clusterGroup = {};
 
-        var htmlParCluster = "";
+        var htmlParClusterGroup = "";
 
         $(data).each(function (i, o) {
 
-            htmlParCluster += '<button type="button" class="list-group-item col-xs-12" data-par-cluster-id="' + o.Id + '" ' +
-                ((currentParCluster_Id == o.Id || !(currentParCluster_Id > 0)) ? '' : 'style="background-color:#eee;cursor:not-allowed"')
+            htmlParClusterGroup += '<button type="button" class="list-group-item col-xs-12" data-par-cluster-group-id="' + o.Id + '" ' +
+                ((currentParClusterGroup_Id == o.Id || !(currentParClusterGroup_Id > 0)) ? '' : 'style="background-color:#eee;cursor:not-allowed"')
                 + '>' + o.Name +
                 '</button>';
         });
 
-        var voltar = '<a onclick="validaRota(openParClusterGroup,null);" class="btn btn-warning">Voltar</a>';
+        var voltar = '<a onclick="validaRota(openMenu,null);" class="btn btn-warning">Voltar</a>';
 
         html = getHeader() +
             '<div class="container-fluid">                               ' +
@@ -64,11 +63,11 @@ function listarParCluster() {
             '		<div class="col-xs-12">                        ' +
             '			<div class="panel panel-primary">          ' +
             '			  <div class="panel-heading">              ' +
-            '				<h3 class="panel-title">' + voltar +   'Qual cluster deseja realizar coleta?</h3>'+
+            '				<h3 class="panel-title">' + voltar + 'Qual grupo de cluster deseja realizar coleta?</h3>' +
             '			  </div>                                   ' +
             '			  <div class="panel-body">                 ' +
             '				<div class="list-group">               ' +
-            htmlParCluster +
+            htmlParClusterGroup +
             '				</div>                                 ' +
             '			  </div>                                   ' +
             '			</div>                                     ' +
@@ -80,17 +79,17 @@ function listarParCluster() {
     });
 }
 
-function cleanGlobalVarParCluster() {
+function cleanGlobalVarParClusterGroup() {
     currentParDepartment_Id = null;
     currentParCargo_Id = null;
     currentsParDepartments_Ids = [];
 }
 
-$('body').off('click', '[data-par-cluster-id]').on('click', '[data-par-cluster-id]', function (e) {
+$('body').off('click', '[data-par-cluster-group-id]').on('click', '[data-par-cluster-group-id]', function (e) {
 
-    currentParCluster_Id = parseInt($(this).attr('data-par-cluster-id'));
+    currentParClusterGroup_Id = parseInt($(this).attr('data-par-cluster-group-id'));
 
-    openParFrequency();
+    openParCluster(currentParClusterGroup_Id);
     //getPlanejamentoPorFrequencia(frequencyId);
 
 });
@@ -108,7 +107,6 @@ function getPlanejamentoPorCluster(frequencyId) {
                 , ParFrequency_Id: currentParFrequency_Id
                 , ParCluster_Id: currentParCluster_Id
                 , AppDate: currentCollectDate
-                , ParClusterGroup_Id: currentParClusterGroup_Id
             }),
             type: 'POST',
             url: urlPreffix + '/api/AppColeta/GetAppParametrization',

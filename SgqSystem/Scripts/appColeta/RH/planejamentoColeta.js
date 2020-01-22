@@ -16,38 +16,46 @@ function preencheCurrentPPlanejamento(callback) {
 
 function getFrequenciaSelecionada() {
 
-    var frequenciaSelecionada = {};
-
     _readFile("parFrequency.txt", function (data) {
         var frequencia = JSON.parse(data);
         _readFile("parCluster.txt", function (data2) {
-            data = frequencia;
-            data2 = JSON.parse(data2);
+            _readFile("parClusterGroup.txt", function (data3) {
 
-            var frequenciaSelecionada = $.map(data, function (n) {
-                if (currentParFrequency_Id == n.Id) {
-                    return n;
-                }
-            });
+                data = frequencia;
+                data2 = JSON.parse(data2);
+                data3 = JSON.parse(data3);
 
-            var clusterSelecionado = $.map(data2, function (n) {
-                if (currentParCluster_Id == n.Id) {
-                    return n;
-                }
+                var frequenciaSelecionada = $.map(data, function (n) {
+                    if (currentParFrequency_Id == n.Id) {
+                        return n;
+                    }
+                });
+
+                var clusterSelecionado = $.map(data2, function (n) {
+                    if (currentParCluster_Id == n.Id) {
+                        return n;
+                    }
+                });
+
+                var clusterGroupSelecionado = $.map(data3, function (n) {
+                    if (currentParClusterGroup_Id == n.Id) {
+                        return n;
+                    }
+                });
+                renderPlanejamentoColeta(frequenciaSelecionada[0], clusterSelecionado[0], clusterGroupSelecionado[0]);
+                //$(data).each(function (i, o) {
+                //    if (currentParFrequency_Id == o.Id) {
+                //        frequenciaSelecionada = o;
+                //        renderPlanejamentoColeta(frequenciaSelecionada);
+                //        return;
+                //    }
+                //});
             });
-            renderPlanejamentoColeta(frequenciaSelecionada[0], clusterSelecionado[0]);
-            //$(data).each(function (i, o) {
-            //    if (currentParFrequency_Id == o.Id) {
-            //        frequenciaSelecionada = o;
-            //        renderPlanejamentoColeta(frequenciaSelecionada);
-            //        return;
-            //    }
-            //});
         });
     });
 }
 
-function renderPlanejamentoColeta(frequencia, cluster) {
+function renderPlanejamentoColeta(frequencia, cluster, clusterGroup) {
 
     var html = '';
 
@@ -71,6 +79,12 @@ function renderPlanejamentoColeta(frequencia, cluster) {
         '			  <div class="panel-body" style="padding-top: 10px !important">                 ' +
         '				<div class="list-group">               ' +
         '					<div class="col-sm-6">               ' +
+
+        '	<div class="form-group">' +
+        '	<label>Grupo de Cluster:</label>' +
+        '	<input type="hidden"value="' + clusterGroup.Id + '">' +
+        '	<input type="text" class="form-control" value="' + clusterGroup.Name + '" readonly>' +
+        '</div>' +
 
         '	<div class="form-group">' +
         '	<label>Cluster:</label>' +

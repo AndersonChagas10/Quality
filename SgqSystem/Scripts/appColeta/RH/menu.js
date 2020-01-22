@@ -40,7 +40,7 @@ function clickPlanejar() {
 		openPlanejamentoColeta();
     } else {
         openParClusterGroup();
-        openParCluster();//antigo
+        //openParCluster(); //antigo
 	}
 }
 
