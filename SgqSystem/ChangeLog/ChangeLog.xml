@@ -1934,4 +1934,17 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-327</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>Possibilitar inserir peso no formato decimal</Description>
+    <Script>
+      IF COL_LENGTH('ParVinculoPeso','Peso') IS NOT NULL
+      BEGIN
+      ALTER TABLE ParVinculoPeso ALTER COLUMN Peso DECIMAL(38,10) NULL
+      END
+      GO
+    </Script>
+  </Card>
+
 </Cards>
