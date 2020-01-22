@@ -261,6 +261,18 @@ function convertDate(date) {
     return mes + "/" + dia + "/" + ano;
 }
 
+function convertDateBRToUSA(date) {
+
+    var dateArray = date.split('/');
+
+    var dia = dateArray[1];
+    var mes = dateArray[0];
+    var ano = dateArray[2];
+
+    return mes + "/" + dia + "/" + ano;
+
+}
+
 function toDateTime(datetime){
     if(datetime){
         var day = parseInt(datetime.substring(0, 2));
