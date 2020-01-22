@@ -1943,7 +1943,18 @@
       BEGIN
       ALTER TABLE ParVinculoPeso ALTER COLUMN Peso DECIMAL(38,10) NULL
       END
-      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-328</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>Alterar o formato DECIMAL para INT do campo Evaluation na tabela Collection</Description>
+    <Script>
+      IF COL_LENGTH('Collection','Evaluation') IS NOT NULL
+      BEGIN
+      ALTER TABLE Collection ALTER COLUMN Evaluation INT NULL
+      END
     </Script>
   </Card>
 
