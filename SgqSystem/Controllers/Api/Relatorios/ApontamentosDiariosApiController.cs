@@ -26,7 +26,7 @@ namespace SgqSystem.Controllers.Api
 
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/ApontamentosDiarios")]
-    public class ApontamentosDiariosApiController : ApiController
+    public class ApontamentosDiariosApiController : BaseApiController
     {
         private string conexao;
         public ApontamentosDiariosApiController()
@@ -62,7 +62,7 @@ namespace SgqSystem.Controllers.Api
         public List<ApontamentosDiariosResultSet> GetApontamentosDiariosRH([FromBody] DataCarrierFormularioNew form)
         {
 
-            var query = new ApontamentosDiariosResultSet().SelectRH(form);
+            var query = new ApontamentosDiariosResultSet().SelectRH(form, GetUserUnitsIds(form.ShowUserCompanies));
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
