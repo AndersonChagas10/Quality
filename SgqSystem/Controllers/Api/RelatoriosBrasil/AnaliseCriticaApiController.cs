@@ -629,8 +629,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 wParLevel2 = $" AND C2.ParLevel2_Id IN ({string.Join(",", form.ParLevel2_Ids)}) --Monitoramento";
 
             //Tarefa
-            if (form.ParLevel3_Ids != null && form.ParLevel3_Ids.Length > 0)
-                wParLevel3 = $" AND R3.ParLevel3_Id IN ({string.Join(",", form.ParLevel3_Ids)}) --Tarefa";
+            //if (form.ParLevel3_Ids != null && form.ParLevel3_Ids.Length > 0)
+            //    wParLevel3 = $" AND R3.ParLevel3_Id IN ({string.Join(",", form.ParLevel3_Ids)}) --Tarefa";
 
 
 
@@ -645,8 +645,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
 
             //Peso
-            if (form.Peso != null && form.Peso.Length > 0 && form.Peso[0] != null)
-                wPeso = $" AND R3.Weight IN ({ string.Join(",", form.Peso) })--Peso";
+            //if (form.Peso != null && form.Peso.Length > 0 && form.Peso[0] != null)
+            //    wPeso = $" AND R3.Weight IN ({ string.Join(",", form.Peso) })--Peso";
 
             //Desdobramento
             //if (form.Desdobramento != null && form.Desdobramento.Length > 0)
@@ -1099,9 +1099,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 wParLevel2 = $" AND C2.ParLevel2_Id IN ({string.Join(",", form.ParLevel2_Ids)}) --Monitoramento";
 
             //Tarefa
-            if (form.ParLevel3_Ids != null && form.ParLevel3_Ids.Length > 0)
-                wParLevel3 = $" AND R3.ParLevel3_Id IN ({string.Join(",", form.ParLevel3_Ids)}) --Tarefa";
-
+            //if (form.ParLevel3_Ids != null && form.ParLevel3_Ids.Length > 0)
+            //    wParLevel3 = $" AND R3.ParLevel3_Id IN ({string.Join(",", form.ParLevel3_Ids)}) --Tarefa";
 
 
             //Plano de Ação Concluido
@@ -1115,8 +1114,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
 
             //Peso
-            if (form.Peso != null && form.Peso.Length > 0 && form.Peso[0] != null)
-                wPeso = $" AND R3.Weight IN ({ string.Join(",", form.Peso) })--Peso";
+            //if (form.Peso != null && form.Peso.Length > 0 && form.Peso[0] != null)
+            //    wPeso = $" AND R3.Weight IN ({ string.Join(",", form.Peso) })--Peso";
 
             //Desdobramento
             //if (form.Desdobramento != null && form.Desdobramento.Length > 0)
