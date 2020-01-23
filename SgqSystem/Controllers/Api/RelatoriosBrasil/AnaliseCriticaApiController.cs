@@ -2250,13 +2250,13 @@ SELECT
    ,[Status].Id as Status_Id
    ,[Status].Name as Status
 FROM Pa_Acao Acao
-INNER JOIN Pa_CausaGenerica CG ON Acao.CausaGenerica_Id = CG.Id
-INNER JOIN Pa_ContramedidaGenerica CMG ON Acao.ContramedidaGenerica_Id = CMG.Id
-INNER JOIN Pa_Status [Status] WITH (NOLOCK) ON [Status].Id = Acao.Status 
-INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON Acao.Level1Id = PL1.Id
-INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON Acao.Level2Id = PL2.Id
-INNER JOIN ParLevel3 PL3 WITH (NOLOCK) ON Acao.Level3Id = PL3.Id
-INNER JOIN ParCompany PC WITH (NOLOCK) ON Acao.Unidade_Id = PC.Id
+LEFT JOIN Pa_CausaGenerica CG ON Acao.CausaGenerica_Id = CG.Id
+LEFT JOIN Pa_ContramedidaGenerica CMG ON Acao.ContramedidaGenerica_Id = CMG.Id
+LEFT JOIN Pa_Status [Status] WITH (NOLOCK) ON [Status].Id = Acao.Status 
+LEFT JOIN ParLevel1 PL1 WITH (NOLOCK) ON Acao.Level1Id = PL1.Id
+LEFT JOIN ParLevel2 PL2 WITH (NOLOCK) ON Acao.Level2Id = PL2.Id
+LEFT JOIN ParLevel3 PL3 WITH (NOLOCK) ON Acao.Level3Id = PL3.Id
+LEFT JOIN ParCompany PC WITH (NOLOCK) ON Acao.Unidade_Id = PC.Id
 LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = Acao.Unidade_Id AND PCXS.Active = 1 
 WHERE 1 = 1
 AND Acao.QuandoInicio BETWEEN '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00' AND '{form.endDate.ToString("yyyy-MM-dd")} 23:59:59' --Data
