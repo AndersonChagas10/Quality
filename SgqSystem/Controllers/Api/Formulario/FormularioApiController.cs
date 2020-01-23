@@ -24,10 +24,11 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredParCompany")]
         public List<Select3ViewModel> GetFilteredParCompany(string search, [FromBody] DataCarrierFormularioNew form)
         {
+
             using (var factory = new Factory("DefaultConnection"))
             {
-                var filtroStructure = 
-                                   form.ParStructure_Ids.Length > 0 
+                var filtroStructure =
+                                   form.ParStructure_Ids.Length > 0
                                  ? $@"  AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
                                         OR  PS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
                                         OR  PS1.Id IN ({ string.Join(",", form.ParStructure_Ids) })" : "";
@@ -35,16 +36,13 @@ namespace SgqSystem.Controllers.Api.Formulario
                 var query = $@"SELECT DISTINCT TOP 500
                         	PC.Id, PC.Name
                         FROM ParCompany PC
-                        LEFT JOIN ParCompanyXStructure PCXS
-                        	ON PC.Id = PCXS.ParCompany_Id
-                        		AND PCXS.Active = 1
-						LEFT JOIN ParStructure PS
-							ON PS.Id = PCXS.ParStructure_Id
-						LEFT JOIN ParStructure PS1
-							ON PS.ParStructureParent_Id = PS1.ID
+                        LEFT JOIN ParCompanyXStructure PCXS ON PC.Id = PCXS.ParCompany_Id AND PCXS.Active = 1
+						LEFT JOIN ParStructure PS ON PS.Id = PCXS.ParStructure_Id
+						LEFT JOIN ParStructure PS1 ON PS.ParStructureParent_Id = PS1.ID
                         WHERE 1 = 1
                         AND PC.IsActive = 1
                         --Filtros
+                        AND PC.Id IN ({ GetUserUnitsIds(form.ShowUserCompanies) })
                         AND PC.Name like '%{search}%'
                         {filtroStructure}";
 
@@ -162,6 +160,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                                 WHERE 1=1 
                                 AND PD.Active = 1 
                                 AND PD.Name like '%{search}%'
+                                AND PD.ParCompany_Id IN ({GetUserUnitsIds(form.ShowUserCompanies)})
                                 AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
@@ -187,7 +186,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             AND (PD.Parent_Id IS not NULL OR PD.Parent_Id <> 0)  ";
                 }
 
-                if(form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
+                if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
                 {
                     sqlDepartamentoPelaHash += $@"AND ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)})";
                 }
@@ -196,6 +195,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 WHERE 1=1 
                 AND PD.Active = 1 
                 AND PD.Name like '%{search}%'
+                AND PD.ParCompany_Id IN ({GetUserUnitsIds(form.ShowUserCompanies)})
                 AND PD.Parent_Id IS NOT NULL " + sqlDepartamentoPelaHash;
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
@@ -350,7 +350,7 @@ namespace SgqSystem.Controllers.Api.Formulario
             {
                 var wSG = "";
 
-                if(form.ParStructureGroup_Ids.Length > 0)
+                if (form.ParStructureGroup_Ids.Length > 0)
                 {
                     wSG += "AND ParStructureGroup_Id IN(" + string.Join(",", form.ParStructureGroup_Ids) + ") ";
                 }
@@ -508,12 +508,11 @@ namespace SgqSystem.Controllers.Api.Formulario
             var query = $@"SELECT
                         	PC.Id, PC.Name
                         FROM ParCompany PC
-                        LEFT JOIN ParCompanyXStructure PCXS
-                        	ON PC.Id = PCXS.ParCompany_Id
-                        		AND PCXS.Active = 1
+                        LEFT JOIN ParCompanyXStructure PCXS ON PC.Id = PCXS.ParCompany_Id AND PCXS.Active = 1
                         WHERE 1 = 1
                         AND PC.IsActive = 1
                         --Filtros
+                        AND PC.Id IN ({GetUserUnitsIds(form.ShowUserCompanies)})
                         {filtroStructure}";
 
             var retorno = factory.SearchQuery<ParCompany>(query).ToList();
@@ -541,6 +540,7 @@ namespace SgqSystem.Controllers.Api.Formulario
             var query = $@"SELECT Distinct PD.Id,PD.Name FROM ParDepartment PD 
                             WHERE 1=1 
                             AND PD.Active = 1 
+                            AND PD.ParCompany_Id IN ({GetUserUnitsIds(form.ShowUserCompanies)})
                             AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
 
             var retorno = factory.SearchQuery<ParDepartment>(query).ToList();
