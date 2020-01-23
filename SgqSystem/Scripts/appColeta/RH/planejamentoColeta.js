@@ -65,8 +65,8 @@ function renderPlanejamentoColeta(frequencia, cluster) {
         '			  <div class="panel-heading" style="display: table;width: 100%;">              ' +
         '				<h3 class="panel-title">' + voltar +
         btnColetar +
-        btnbaixarParams +
-        '<br><br> Qual frequencia deseja realizar coleta?' +
+        //btnbaixarParams +
+        '<br>' +
         '			  </h3></div>                                   ' +
         '			  <div class="panel-body" style="padding-top: 10px !important">                 ' +
         '				<div class="list-group">               ' +
@@ -91,8 +91,11 @@ function renderPlanejamentoColeta(frequencia, cluster) {
         '<div data-selects-indicador>' +
         '</div>' +
         '<div class="form-group">' +
-        '	<button type="button" class="btn btn-primary" onClick="savePlanejar()">Planejar</button>' +
+        '<button type="button" style="margin-right:10px;" class="btn btn-primary" onClick="savePlanejar()">Planejar</button>' +
+           '<button type="button" class="btn btn-success btncoletar" onclick="clickColetar()">Coletar</button>' +
         '</div>' +
+      
+
         '</div>                                 ' +
         '	<div class="col-sm-6">               ' +
         '			<div class="panel panel-warning">          ' +
@@ -143,15 +146,46 @@ function voltarPlanejamentoColeta() {
 
 var planejamento = {};
 function savePlanejar() {
+    var levels1 = $('body [data-selects-indicador] button');
 
-    if (!planejamentoIsValid())
-        return false;
+    var todos = true;
+    $(levels1).each(function (i, o) {
+        if ($(o).hasClass('btn-default')) {
+            todos = false;
+            return false;
+        }
+    });
 
-    if (planejamento.parDepartment_Id > 0) {
-        currentPlanejamento.push($.extend({}, planejamento));
-        $('[data-save-planned]').html(renderPlanejamentos());
-        saveInFilePlanejamento();
-        changeStateButtonColetar();
+    planejamento.indicador_Id = undefined;
+    planejamento.indicador_Name = undefined;
+
+    if (todos != true) {
+        $(levels1).each(function (i, o) {
+            if ($(o).hasClass('btn-success')) {
+                planejamento.indicador_Id = $(o).attr('data-level1-id');
+                planejamento.indicador_Name = $(o).text();
+
+                if (!planejamentoIsValid())
+                    return false;
+
+                if (planejamento.parDepartment_Id > 0) {
+                    currentPlanejamento.push($.extend({}, planejamento));
+                    $('[data-save-planned]').html(renderPlanejamentos());
+                    saveInFilePlanejamento();
+                    changeStateButtonColetar();
+                }
+            }
+        });
+    } else {
+        if (!planejamentoIsValid())
+            return false;
+
+        if (planejamento.parDepartment_Id > 0) {
+            currentPlanejamento.push($.extend({}, planejamento));
+            $('[data-save-planned]').html(renderPlanejamentos());
+            saveInFilePlanejamento();
+            changeStateButtonColetar();
+        }
     }
 }
 
@@ -227,7 +261,7 @@ $('body').off('change', '[data-selects-cc] select').on('change', '[data-selects-
 
 $('body').off('change', '[data-selects-cargo] select').on('change', '[data-selects-cargo] select', function (e) {
     var cargo_Id = $(this).val();
-
+    
     $('[data-selects-indicador]').html('');
     planejamento.indicador_Id = undefined;
     planejamento.indicador_Name = undefined;
@@ -240,7 +274,11 @@ $('body').off('change', '[data-selects-cargo] select').on('change', '[data-selec
         var level1List = [];
         montarLevel1(level1List);
 
-        $('[data-selects-indicador]').html(criaHtmlSelect('Indicador:', retornaOptionsPeloArray(level1List, 'Id', 'Name', 'Selecione')));
+        listaLevel1Selecionados = level1List;
+
+        //$('[data-selects-indicador]').html(criaHtmlSelect('Indicador:', retornaOptionsPeloArray(level1List, 'Id', 'Name', 'Selecione')));
+
+        $('[data-selects-indicador]').html(criaHtmlButtonsIndicador('Indicador:', level1List));
     } else {
         planejamento.parCargo_Id = undefined;
         planejamento.parCargo_Name = undefined;
@@ -248,17 +286,38 @@ $('body').off('change', '[data-selects-cargo] select').on('change', '[data-selec
 
 });
 
-$('body').off('change', '[data-selects-indicador] select').on('change', '[data-selects-indicador] select', function (e) {
-    var indicador_Id = $(this).val();
+//$('body').off('change', '[data-selects-indicador] select').on('change', '[data-selects-indicador] select', function (e) {
+//    var indicador_Id = $(this).val();
 
-    if (indicador_Id > 0) {
-        planejamento.indicador_Id = indicador_Id;
-        planejamento.indicador_Name = $(this).find(':selected').text();
+//    if (indicador_Id > 0) {
+//        planejamento.indicador_Id = indicador_Id;
+//        planejamento.indicador_Name = $(this).find(':selected').text();
+//    } else {
+//        planejamento.indicador_Id = undefined;
+//        planejamento.indicador_Name = undefined;
+//    }
+//});
+
+function criaHtmlButtonsIndicador(titulo, level1List) {
+    var htmlLevel1Button = "";
+    htmlLevel1Button += '<label>Indicador:</label> <div class="form-group">';
+    $(level1List).each(function (i, o) {
+        htmlLevel1Button += '<button type="button" data-level1-id="' + o.Id + '" onclick="flagSelectedLevel1(this)" class="btn btn-md btn-success">' + o.Name + '</button>'
+    });
+    htmlLevel1Button += '</div>';
+    return htmlLevel1Button;
+}
+
+function flagSelectedLevel1(data) {
+    if ($(data).hasClass('btn-success')) {
+        $(data).removeClass('btn-success');
+        $(data).addClass('btn-default');
     } else {
-        planejamento.indicador_Id = undefined;
-        planejamento.indicador_Name = undefined;
+        $(data).removeClass('btn-default');
+        $(data).addClass('btn-success');
     }
-});
+}
+
 
 //Filtros de planejamento de coleta
 function getParDepartmentPlanejado() {
