@@ -84,7 +84,7 @@ function renderPlanejamentoColeta(frequencia, cluster) {
         '	<input type="text" class="form-control" value="' + frequencia.Name + '" readonly>' +
         '</div>' +
         '<div data-selects-cc>' +
-        criaHtmlSelect('Centro de Custo:', retornaOptionsPeloArray(retornaDepartamentos(0, undefined, parametrization.listaParDepartment), 'Id', 'Name', 'Selecione')) +
+        criaHtmlSelect('Centro de Custo:', retornaOptions(retornaDepartamentos(0, undefined, parametrization.listaParDepartment), 'Id', 'Name', 'Selecione')) +
         '</div>' +
         '<div data-selects-cargo>' +
         '</div>' +
@@ -203,7 +203,6 @@ function downloadPlanejamento() {
 
 $('body').off('change', '[data-selects-cc] select').on('change', '[data-selects-cc] select', function (e) {
     var parDepartment_Id = $(this).val();
-
     $(this).parent().nextAll().remove();
     $('[data-selects-cargo]').html('');
     $('[data-selects-indicador]').html('');
@@ -216,11 +215,11 @@ $('body').off('change', '[data-selects-cc] select').on('change', '[data-selects-
         planejamento.parDepartment_Name = $(this).find(':selected').text();
 
         if (options.length > 0) {
-            var departamentos = retornaOptionsPeloArray(options, 'Id', 'Name', 'Selecione');
+            var departamentos = retornaOptions(options, 'Id', 'Name', 'Selecione');
 
             $('[data-selects-cc]').append(criaHtmlSelect('', departamentos));
         } else {
-            $('[data-selects-cargo]').html(criaHtmlSelect('Cargo:', retornaOptionsPeloArray(retornaCargos($(this).val()), 'Id', 'Name', 'Selecione')));
+            $('[data-selects-cargo]').html(criaHtmlSelect('Cargo:', retornaOptions(retornaCargos($(this).val()), 'Id', 'Name', 'Selecione')));
         }
     }
 });
@@ -240,7 +239,7 @@ $('body').off('change', '[data-selects-cargo] select').on('change', '[data-selec
         var level1List = [];
         montarLevel1(level1List);
 
-        $('[data-selects-indicador]').html(criaHtmlSelect('Indicador:', retornaOptionsPeloArray(level1List, 'Id', 'Name', 'Selecione')));
+        $('[data-selects-indicador]').html(criaHtmlSelect('Indicador:', retornaOptions(level1List, 'Id', 'Name', 'Selecione')));
     } else {
         planejamento.parCargo_Id = undefined;
         planejamento.parCargo_Name = undefined;
