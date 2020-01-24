@@ -365,7 +365,7 @@ public class ApontamentosDiariosResultSet
         return query;
     }
 
-    public string SelectRH(DataCarrierFormularioNew form)
+    public string SelectRH(DataCarrierFormularioNew form, string userUnits)
     {
         var dtInit = form.startDate.ToString("yyyyMMdd");
         var dtF = form.endDate.ToString("yyyyMMdd");
@@ -470,6 +470,7 @@ public class ApontamentosDiariosResultSet
                          AND NotEvaluatedIs <> 999
                          AND Duplicated <> 999
                          AND CL2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
+                         AND UnitId in ({userUnits})
                          { sqlTurno } 
                          { sqlUnidade } 
                          { sqlLevel1 } 
