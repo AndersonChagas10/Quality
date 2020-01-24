@@ -156,6 +156,12 @@ function savePlanejar() {
 
     var levels1 = $('body [data-selects-indicador] button');
 
+    //caso seja planejado antes de mostrar os indicadores
+    if (planejamento.parCargo_Name == null || planejamento.parCargo_Name == undefined) {
+        validaPlanejamentoESalva(planejamento);
+        return false;
+    }
+
     if (verificaAlgumIndicadorClicado(levels1)) {
 
         var todos = true;
@@ -175,33 +181,29 @@ function savePlanejar() {
                     planejamento.indicador_Id = $(o).attr('data-level1-id');
                     planejamento.indicador_Name = $(o).text();
 
-                    if (!planejamentoIsValid())
-                        return false;
-
-                    if (planejamento.parDepartment_Id > 0) {
-                        currentPlanejamento.push($.extend({}, planejamento));
-                        $('[data-save-planned]').html(renderPlanejamentos());
-                        saveInFilePlanejamento();
-                        changeStateButtonColetar();
-                    }
+                    validaPlanejamentoESalva(planejamento);
                 }
             });
         } else {
-            if (!planejamentoIsValid())
-                return false;
-
-            if (planejamento.parDepartment_Id > 0) {
-                currentPlanejamento.push($.extend({}, planejamento));
-                $('[data-save-planned]').html(renderPlanejamentos());
-                saveInFilePlanejamento();
-                changeStateButtonColetar();
-            }
+            validaPlanejamentoESalva(planejamento);
         }
 
     } else {
         openMensagem("Selecione um ou mais indicadores para planejar", '#428bca', 'white');
         closeMensagem(2000);
         return false;
+    }
+}
+
+function validaPlanejamentoESalva(planejamento) {
+    if (!planejamentoIsValid())
+        return false;
+
+    if (planejamento.parDepartment_Id > 0) {
+        currentPlanejamento.push($.extend({}, planejamento));
+        $('[data-save-planned]').html(renderPlanejamentos());
+        saveInFilePlanejamento();
+        changeStateButtonColetar();
     }
 }
 
