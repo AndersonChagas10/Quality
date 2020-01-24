@@ -58,6 +58,7 @@
                                 <table class="table" id="tabelaDicionario">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>
                                                 @Resources.Resource.key
                                             </th>
@@ -70,7 +71,6 @@
                                             <th>
                                                 @Resources.Resource.description
                                             </th>
-                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -78,19 +78,26 @@
                                         {
                                             <tr>
                                                 <td>
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                </td>
+                                                <td>
                                                     @Html.DisplayFor(modelItem => item.Key)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.ControllerName)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Value)
+                                                    @if (item.Value != null && item.Value.Length > 50)
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.Value).ToString().Substring(0, 50)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.Value)
+                                                    }
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Descricao)
-                                                </td>
-                                                <td>
-                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                                                 </td>
                                             </tr>
                                         }

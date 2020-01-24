@@ -199,7 +199,7 @@ namespace SgqServiceBusiness.Api
                 }
                 catch (Exception e)
                 {
-                    new CreateLog(new Exception("Erro ao Savar verificação da Tipificação, Objeto bkp salvo.", e), model);
+                    LogSystem.LogErrorBusiness.Register(new Exception("Erro ao Savar verificação da Tipificação, Objeto bkp salvo.", e), model);
                     controleErro = true;
                     //throw ;
                 }
@@ -421,7 +421,7 @@ namespace SgqServiceBusiness.Api
                     }
                     catch (Exception e)
                     {
-                        new CreateLog(new Exception("Erro ao Salvar GORDURA E CONTUSAO verificação da Tipificação, Objeto bkp salvo.", e), model);
+                        LogSystem.LogErrorBusiness.Register(new Exception("Erro ao Salvar GORDURA E CONTUSAO verificação da Tipificação, Objeto bkp salvo.", e), model);
                         //throw ;
                     }
                 }
@@ -474,7 +474,7 @@ namespace SgqServiceBusiness.Api
             }
             catch (Exception e)
             {
-                new CreateLog(new Exception("Erro ao listar VTVerificacaoTipificacao.", e));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro ao listar VTVerificacaoTipificacao.", e));
             }
 
             return retorno;

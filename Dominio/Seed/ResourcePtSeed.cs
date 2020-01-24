@@ -291,7 +291,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "evolutionary_chart_by_company", Value = "Gráfico Evolutivo por Empresa" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "excel_file", Value = "Arquivo Excel" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "fail_description_is_empty", Value = "A falha da descrição está vazia." });
-                ResourcesInserir.Add(new ResourcePT() { Key = "failure_description", Value = "Descrição da Falha" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "failure_description", Value = "Deficiência" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "family", Value = "Familias" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "family_list", Value = "Lista de Famílias" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "february", Value = "Fevereiro" });
@@ -366,7 +366,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "home", Value = "Home" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "icon", Value = "Icone" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "id", Value = "ID" });
-                ResourcesInserir.Add(new ResourcePT() { Key = "immediate_corrective_action", Value = "Ação Corretiva Imediata" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "immediate_corrective_action", Value = "Correção" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "immediate_corrective_action_is_empty", Value = "A ação corretiva imediata está vazia." });
                 ResourcesInserir.Add(new ResourcePT() { Key = "import", Value = "Importação" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "import_excel", Value = "Importar Excel" });
@@ -979,6 +979,11 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "group_of_level3", Value = "Grupo de Tarefa" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "defects_per_level3_group", Value = "NC por Grupo de Tarefa" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "no_group", Value = "Sem grupo" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "free_time", Value = "Hora Liberação" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "hour", Value = "Hora" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "deviation_date", Value = "Data Desvio" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "deviation_hour", Value = "Hora Desvio" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "correction", Value = "Correção" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "defects_per_costCenter_section", Value = "Centro de Custo/Seção" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "click_to_unfold", Value = "Clique no gráfico para desdobrar para o próximo nível" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "click_to_fta", Value = "Clique no gráfico para criar o Formulário de Tratamento de Anomalia" });

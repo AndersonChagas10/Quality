@@ -1,4 +1,4 @@
-
+﻿
 var trocarSequencial = false;
 function getPCC1BNext() {
     

@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using ADOFactory;
 using Dominio;
-//using SgqSystem.Handlres;
-using System.Net;
-using System.Data.SqlClient;
 using DTO;
-using ADOFactory;
-using System.Threading;
-using System.Globalization;
 using DTO.Helpers;
-using SGQDBContext;
-using SgqServiceBusiness.Helpers;
-using System.Net.Mail;
-using System.Text;
-using System.Collections;
-using System.Data;
 using ServiceModel;
+using SGQDBContext;
 using SgqServiceBusiness.Api.App;
+using SgqServiceBusiness.Helpers;
 using SgqServiceBusiness.Services;
 using SgqSystem.Helpers;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Linq;
+//using SgqSystem.Handlres;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
+using System.Threading;
+using System.Web;
 
 namespace SgqServiceBusiness.Api
 {
@@ -47,7 +47,11 @@ namespace SgqServiceBusiness.Api
 
             dbEf = new Dominio.SgqDbDevEntities();
 
+            parFrequency = dbEf.ParFrequency.Where(x => x.IsActive).ToList();
+
         }
+
+        public static List<ParFrequency> parFrequency { get; set; } 
 
         #region Funções
 
@@ -1312,7 +1316,15 @@ namespace SgqServiceBusiness.Api
 
                         var isRecravacao = new SGQDBContext.ParLevel1(db, quebraProcesso).getById(c.level01_Id).IsRecravacao == true;
 
-                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42 || isRecravacao || (c.Unit_Id == 4 && c.level01_Id == 22) || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
+                        if (IsBEA == 3 
+                            || IsBEA == 2
+                            || isRecravacao
+                            || c.level01_Id == 43
+                            || c.level01_Id == 42
+                            || c.level01_Id == 7
+                            || c.level01_Id == 90
+                            || (c.Unit_Id == 4 && c.level01_Id == 22) 
+                            || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -1744,12 +1756,12 @@ namespace SgqServiceBusiness.Api
             }
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_ParLevel1");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_Pl1");
                 return 0;
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_ParLevel1");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_Pl1");
                 return 0;
             }
         }
@@ -3480,17 +3492,49 @@ namespace SgqServiceBusiness.Api
                 declare @datasemanal date
                 declare @dataquinzenal date
                 declare @datamensal date
+                DECLARE @dataBimestral date
+                DECLARE @dataTrimestral date
+                DECLARE @dataSemestral date
+                DECLARE @dataAnual date
                 
                 SET @datainicio = @data
                 SET @datafim = @data
-                SET @datadiario = @data  --1,2,3
+                SET @datadiario = @data
                 SET @datasemanal = DATEADD(DAY, -(DATEPART(WEEKDAY, @data) - 1), @data)
                 SET @dataquinzenal =
                 CASE
-                	WHEN DAY(@data) < 16 THEN DATEADD(MONTH, 1, DATEADD(mm, DATEDIFF(mm, 0, @data) - 1, 0))
-                	ELSE DATEADD(DAY, 15, DATEADD(MONTH, 1, DATEADD(mm, DATEDIFF(mm, 0, @data) - 1, 0)))
+                	WHEN DAY(@data) < 16 THEN DATEFROMPARTS(YEAR(@data),MONTH(@data),01)
+                	ELSE DATEFROMPARTS(YEAR(@data),MONTH(@data),16)
                 END
-                SET @datamensal = DATEADD(MONTH, 1, DATEADD(mm, DATEDIFF(mm, 0, @data) - 1, 0))
+
+                SET @datamensal = DATEFROMPARTS(YEAR(@data),MONTH(@data),01)
+                
+                SET @dataBimestral =
+                CASE
+                	WHEN MONTH(@data) BETWEEN 1 AND 2  THEN DATEFROMPARTS(YEAR(@data),01,01)
+                	WHEN MONTH(@data) BETWEEN 3 AND 4  THEN DATEFROMPARTS(YEAR(@data),03,01)
+                	WHEN MONTH(@data) BETWEEN 5 AND 6  THEN DATEFROMPARTS(YEAR(@data),05,01)
+                	WHEN MONTH(@data) BETWEEN 7 AND 8  THEN DATEFROMPARTS(YEAR(@data),07,01)
+                	WHEN MONTH(@data) BETWEEN 9 AND 10 THEN DATEFROMPARTS(YEAR(@data),09,01)
+                	ELSE DATEFROMPARTS(YEAR(@data),11,01)
+                END
+
+                SET @dataTrimestral =
+                CASE
+                	WHEN MONTH(@data) BETWEEN 1 AND 3 THEN DATEFROMPARTS(YEAR(@data),01,01)
+                	WHEN MONTH(@data) BETWEEN 4 AND 6 THEN DATEFROMPARTS(YEAR(@data),04,01)
+                	WHEN MONTH(@data) BETWEEN 7 AND 9 THEN DATEFROMPARTS(YEAR(@data),07,01)
+                	ELSE DATEFROMPARTS(YEAR(@data),10,01)
+                END
+                
+                SET @dataSemestral =
+                CASE
+                	WHEN MONTH(@data) BETWEEN 1 AND 6 THEN DATEFROMPARTS(YEAR(@data),01,01)
+                	WHEN MONTH(@data) BETWEEN 7 AND 12 THEN DATEFROMPARTS(YEAR(@data),07,01)
+                END
+                
+                SET @dataAnual = DATEFROMPARTS(YEAR(@data),01,01)
+                
                 SET @datainicio = @data
                 SET @datafim = @data
                 
@@ -3547,8 +3591,13 @@ namespace SgqServiceBusiness.Api
                 		WHEN (FREQ_AV.ParFrequency_Id) IN (4) THEN @datasemanal
                 		WHEN (FREQ_AV.ParFrequency_Id) IN (5) THEN @dataquinzenal
                 		WHEN (FREQ_AV.ParFrequency_Id) IN (6) THEN @datamensal
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (12) THEN @databimestral
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (7) THEN @dataTrimestral
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (8) THEN @dataSemestral
+                		WHEN (FREQ_AV.ParFrequency_Id) IN (13) THEN @dataAnual
                 		ELSE @datadiario
                 	END AND @datafim
+					GROUP BY R3.ParLevel3_Id
 
 					--AND C2.ParLevel1_Id =112 
 					--AND C2.ParLevel2_Id = 633
@@ -3813,6 +3862,254 @@ namespace SgqServiceBusiness.Api
                 	WHERE unitid = @unidade
                 	AND FREQ_AV.ParFrequency_Id IN (6)
                 	AND CAST(CollectionDate AS DATE) BETWEEN @datamensal AND @data
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
+                			,UnitId
+                			,Shift
+                			,Period
+                			,CAST(CollectionDate AS DATE)
+                			,ConsolidationLevel2_Id
+
+                
+                /*coletas Bimestral */
+                INSERT INTO #COLETA
+                	SELECT
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id, --indicador
+                		CAST(ISNULL(MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id, --monitoramento
+                		UnitId AS Unit_Id,--unidade
+                		Shift, --shift
+                		Period,--periodo
+                		CAST(CollectionDate AS DATE) CollectionDate, --data da coleta
+                		MAX(EvaluationNumber) AS EvaluateLast,--maior avaliacao
+                		ConsolidationLevel2_Id,  --id da consolidaçao level2
+                		(SELECT
+                				MAX(sample)
+                			FROM CollectionLevel2 WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = MAX(cl2.EvaluationNumber))
+                		AS SampleLast
+                	   ,MAX(Phase) AS Phase
+                	   ,MAX(StartPhaseEvaluation) AS StartPhaseEvaluation
+                	   ,MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction
+                	   ,MAX(CAST(haveReaudit AS INT)) haveReaudit
+                	   ,MAX(ReauditLevel) ReauditLevel
+                	   ,MAX(Sequential) Sequential
+                	   ,MAX(Side) Side
+                	   ,MIN(CL2.Id) AS ID
+                	   ,(SELECT
+                				MIN(CAST(CollectionDate AS TIME))
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_id = cl2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = 1
+                			AND [Sample] = 1)
+                		AS HoraPrimeiraAvaliacao
+                	FROM CollectionLevel2 CL2 WITH (NOLOCK)
+                	LEFT JOIN CollectionLevel2XCluster CL2C
+                		ON CL2C.CollectionLevel2_Id = CL2.Id
+                	INNER JOIN parlevel2 p2 WITH (NOLOCK)
+                		ON p2.id = CL2.ParLevel2_Id
+					LEFT JOIN ( 
+						SELECT * FROM #PAREVALUATION 
+					WHERE 1=1
+					AND [rank] = 1
+					) FREQ_AV 
+					ON FREQ_AV.PARLEVEL2_ID = CL2.PARLEVEL2_ID AND FREQ_AV.PARLEVEL1_ID = CL2.PARLEVEL1_ID AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
+                	WHERE unitid = @unidade
+                	AND FREQ_AV.ParFrequency_Id IN (12)
+                	AND CAST(CollectionDate AS DATE) BETWEEN @dataBimestral AND @data
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
+                			,UnitId
+                			,Shift
+                			,Period
+                			,CAST(CollectionDate AS DATE)
+                			,ConsolidationLevel2_Id
+
+
+                /*coletas trimestral */
+                INSERT INTO #COLETA
+                	SELECT
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id
+                	   , --indicador
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id
+                	   , --monitoramento
+                		UnitId AS Unit_Id
+                	   ,--unidade
+                		Shift
+                	   , --shift
+                		Period
+                	   ,--periodo
+                		CAST(CollectionDate AS DATE) CollectionDate
+                	   , --data da coleta
+                		MAX(EvaluationNumber) AS EvaluateLast
+                	   ,--maior avaliacao
+                		ConsolidationLevel2_Id
+                	   ,  --id da consolidaçao level2
+                		(SELECT
+                				MAX(sample)
+                			FROM CollectionLevel2 WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = MAX(CL2.EvaluationNumber))
+                		AS SampleLast
+                	   ,MAX(Phase) AS Phase
+                	   ,MAX(StartPhaseEvaluation) AS StartPhaseEvaluation
+                	   ,MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction
+                	   ,MAX(CAST(haveReaudit AS INT)) haveReaudit
+                	   ,MAX(ReauditLevel) ReauditLevel
+                	   ,MAX(Sequential) Sequential
+                	   ,MAX(Side) Side
+                	   ,MIN(CL2.ID) AS ID
+                	   ,(SELECT
+                				MIN(CAST(CollectionDate AS TIME))
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = 1
+                			AND [Sample] = 1)
+                		AS HoraPrimeiraAvaliacao
+                	FROM CollectionLevel2 CL2 WITH (NOLOCK)
+                	LEFT JOIN CollectionLevel2XCluster CL2C
+                		ON CL2C.CollectionLevel2_Id = CL2.ID
+                	INNER JOIN ParLevel2 p2 WITH (NOLOCK)
+                		ON p2.ID = CL2.ParLevel2_Id
+                	LEFT JOIN (SELECT
+                			*
+                		FROM #PAREVALUATION
+                		WHERE 1 = 1
+                		AND [rank] = 1) FREQ_AV
+                		ON FREQ_AV.ParLevel2_Id = CL2.ParLevel2_Id
+                			AND FREQ_AV.ParLevel1_Id = CL2.ParLevel1_Id
+                			AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
+                	WHERE UnitId = @unidade
+                	AND FREQ_AV.ParFrequency_Id IN (7)
+                	AND CAST(CollectionDate AS DATE) BETWEEN @dataTrimestral AND @data
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
+                			,UnitId
+                			,Shift
+                			,Period
+                			,CAST(CollectionDate AS DATE)
+                			,ConsolidationLevel2_Id
+                
+                /*coletas Semestral */
+                INSERT INTO #COLETA
+                	SELECT
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id
+                	   , --indicador
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id
+                	   , --monitoramento
+                		UnitId AS Unit_Id
+                	   ,--unidade
+                		Shift
+                	   , --shift
+                		Period
+                	   ,--periodo
+                		CAST(CollectionDate AS DATE) CollectionDate
+                	   , --data da coleta
+                		MAX(EvaluationNumber) AS EvaluateLast
+                	   ,--maior avaliacao
+                		ConsolidationLevel2_Id
+                	   ,  --id da consolidaçao level2
+                		(SELECT
+                				MAX(sample)
+                			FROM CollectionLevel2 WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = MAX(CL2.EvaluationNumber))
+                		AS SampleLast
+                	   ,MAX(Phase) AS Phase
+                	   ,MAX(StartPhaseEvaluation) AS StartPhaseEvaluation
+                	   ,MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction
+                	   ,MAX(CAST(haveReaudit AS INT)) haveReaudit
+                	   ,MAX(ReauditLevel) ReauditLevel
+                	   ,MAX(Sequential) Sequential
+                	   ,MAX(Side) Side
+                	   ,MIN(CL2.ID) AS ID
+                	   ,(SELECT
+                				MIN(CAST(CollectionDate AS TIME))
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = 1
+                			AND [Sample] = 1)
+                		AS HoraPrimeiraAvaliacao
+                	FROM CollectionLevel2 CL2 WITH (NOLOCK)
+                	LEFT JOIN CollectionLevel2XCluster CL2C
+                		ON CL2C.CollectionLevel2_Id = CL2.ID
+                	INNER JOIN ParLevel2 p2 WITH (NOLOCK)
+                		ON p2.ID = CL2.ParLevel2_Id
+                	LEFT JOIN (SELECT
+                			*
+                		FROM #PAREVALUATION
+                		WHERE 1 = 1
+                		AND [rank] = 1) FREQ_AV
+                		ON FREQ_AV.ParLevel2_Id = CL2.ParLevel2_Id
+                			AND FREQ_AV.ParLevel1_Id = CL2.ParLevel1_Id
+                			AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
+                	WHERE UnitId = @unidade
+                	AND FREQ_AV.ParFrequency_Id IN (8)
+                	AND CAST(CollectionDate AS DATE) BETWEEN @dataSemestral AND @data
+                	GROUP BY CL2.ParLevel1_Id
+                			,CL2.ParLevel2_Id
+                			,UnitId
+                			,Shift
+                			,Period
+                			,CAST(CollectionDate AS DATE)
+                			,ConsolidationLevel2_Id
+
+                /*coletas Anual */
+                INSERT INTO #COLETA
+                	SELECT
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel1_Id AS VARCHAR) AS ParLevel1_Id
+                	   , --indicador
+                		CAST(ISNULL (MAX(CL2C.ParCluster_Id), 0) AS VARCHAR) + '98789' + CAST(CL2.ParLevel2_Id AS VARCHAR) AS ParLevel2_Id
+                	   , --monitoramento
+                		UnitId AS Unit_Id
+                	   ,--unidade
+                		Shift
+                	   , --shift
+                		Period
+                	   ,--periodo
+                		CAST(CollectionDate AS DATE) CollectionDate
+                	   , --data da coleta
+                		MAX(EvaluationNumber) AS EvaluateLast
+                	   ,--maior avaliacao
+                		ConsolidationLevel2_Id
+                	   ,  --id da consolidaçao level2
+                		(SELECT
+                				MAX(sample)
+                			FROM CollectionLevel2 WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = MAX(CL2.EvaluationNumber))
+                		AS SampleLast
+                	   ,MAX(Phase) AS Phase
+                	   ,MAX(StartPhaseEvaluation) AS StartPhaseEvaluation
+                	   ,MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction
+                	   ,MAX(CAST(haveReaudit AS INT)) haveReaudit
+                	   ,MAX(ReauditLevel) ReauditLevel
+                	   ,MAX(Sequential) Sequential
+                	   ,MAX(Side) Side
+                	   ,MIN(CL2.ID) AS ID
+                	   ,(SELECT
+                				MIN(CAST(CollectionDate AS TIME))
+                			FROM #CollectionLevel2_HPA WITH (NOLOCK)
+                			WHERE ConsolidationLevel2_Id = CL2.ConsolidationLevel2_Id
+                			AND EvaluationNumber = 1
+                			AND [Sample] = 1)
+                		AS HoraPrimeiraAvaliacao
+                	FROM CollectionLevel2 CL2 WITH (NOLOCK)
+                	LEFT JOIN CollectionLevel2XCluster CL2C
+                		ON CL2C.CollectionLevel2_Id = CL2.ID
+                	INNER JOIN ParLevel2 p2 WITH (NOLOCK)
+                		ON p2.ID = CL2.ParLevel2_Id
+                	LEFT JOIN (SELECT
+                			*
+                		FROM #PAREVALUATION
+                		WHERE 1 = 1
+                		AND [rank] = 1) FREQ_AV
+                		ON FREQ_AV.ParLevel2_Id = CL2.ParLevel2_Id
+                			AND FREQ_AV.ParLevel1_Id = CL2.ParLevel1_Id
+                			AND FREQ_AV.ParCluster_Id = CL2C.ParCluster_Id
+                	WHERE UnitId = @unidade
+                	AND FREQ_AV.ParFrequency_Id IN (9)
+                	AND CAST(CollectionDate AS DATE) BETWEEN @dataAnual AND @data
                 	GROUP BY CL2.ParLevel1_Id
                 			,CL2.ParLevel2_Id
                 			,UnitId
@@ -4353,7 +4650,16 @@ namespace SgqServiceBusiness.Api
                         .OrderByDescending(x => new { x.ParCompany_Id, x.ParLevel1_Id })
                         .FirstOrDefault();
 
-                    var list = conexaoEF.ParEvaluationSchedule.Where(x => x.ParEvaluation_Id == parEvaluation.Id && x.IsActive).ToList();
+                    var list = conexaoEF.ParEvaluationSchedule
+                        .Where(x => x.ParEvaluation_Id == parEvaluation.Id
+                        && (x.Shift_Id == shift_Id || x.Shift_Id == null)
+                        && x.IsActive).ToList();
+
+                    if (list.Any(x => x.Shift_Id != null))
+                    {
+                        list = list.Where(x => x.Shift_Id != null)
+                            .ToList();
+                    }
 
                     foreach (var item in list)
                     {
@@ -4924,11 +5230,24 @@ namespace SgqServiceBusiness.Api
 
         protected string correctiveAction()
         {
+            var usuariosSupervisor = new List<UserSgq>();
+            using (var db = new SgqDbDevEntities())
+            {
+                usuariosSupervisor = db.UserSgq.Where(x => x.Role.Contains("Supervisor") && x.IsActive == true).OrderBy(x => x.Name).ToList();
+            }
+
+            var htmlSelect = "";
+            htmlSelect += $@"<option value='0'> Selecione </option>";
+            foreach (var item in usuariosSupervisor)
+            {
+                htmlSelect += $@"<option value='{item.Id}'> {item.Name} </option>"; 
+            }
+
             string correctiveAction =
                 "<div id=\"correctiveActionModal\" class=\"container panel panel-default modal-padrao\" style=\"display:none\">" +
                     "<div class=\"panel-body\">" +
                         "<div class=\"modal-body\">" +
-                            "<h2>" + CommonData.getResource("corrective_action").Value.ToString() + " </h2>" +
+                            "<h2>" + CommonData.getResource("immediate_corrective_action").Value.ToString() + " </h2>" +
                             "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                 "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                             "</div>" +
@@ -4938,16 +5257,19 @@ namespace SgqServiceBusiness.Api
                                     "<div class=\"panel-body\" >" +
                                         "<div class=\"row\" style=\"padding:8px;\">" +
                                             "<div class=\"col-xs-6\" id=\"CorrectiveActionTaken\">" +
-                                                "<b class=\"font16\">" + CommonData.getResource("corrective_action_taken").Value.ToString() + ":<br/></b>" +
-                                                "<b>" + CommonData.getResource("date_time").Value.ToString() + ":</b> <span id=\"datetime\"></span><br/>" +
+                                                //"<b class=\"font16\">" + CommonData.getResource("corrective_action_taken").Value.ToString() + ":<br/></b>" +
+                                                "<b>" + CommonData.getResource("date").Value.ToString() + ":</b> <span id=\"datetime\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("hour").Value.ToString() + ":</b> <span id=\"hour\"></span><br/>" +
                                                 "<b>" + CommonData.getResource("auditor").Value.ToString() + ": </b><span id=\"auditor\"></span><br/>" +
                                                 "<b>" + CommonData.getResource("shift").Value.ToString() + ": </b><span id=\"shift\"></span><br/>" +
                                             "</div>" +
                                             "<div class=\"col-xs-6\" id=\"AuditInformation\">" +
-                                                "<b class=\"font16\">" + CommonData.getResource("audit_information").Value.ToString() + ":<br/></b>" +
+                                                //"<b class=\"font16\">" + CommonData.getResource("audit_information").Value.ToString() + ":<br/></b>" +
                                                 "<b>" + CommonData.getResource("level1").Value.ToString() + ": </b><span id=\"auditText\"></span><br/>" +
-                                                "<b>" + CommonData.getResource("initial_date").Value.ToString() + ":</b><span id=\"starttime\"></span><br/>" +
-                                                "<b>" + CommonData.getResource("period").Value.ToString() + ":</b><span id=\"correctivePeriod\"></span>" +
+                                                "<b>" + CommonData.getResource("period").Value.ToString() + ":</b><span id=\"correctivePeriod\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("deviation_date").Value.ToString() + ":</b><span id=\"starttime\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("deviation_hour").Value.ToString() + ":</b><span id=\"starttimeHour\"></span><br/>" +
+                                                "<b>" + CommonData.getResource("free_time").Value.ToString() + ":</b><input id=\"datetimeTechinicalHour\" type='time' min='0' class='input-sm' /><br/>" +
                                             "</div>" +
                                         "</div>" +
                                     "</div>" +
@@ -4966,10 +5288,25 @@ namespace SgqServiceBusiness.Api
                                     "<label>" + CommonData.getResource("product_disposition").Value.ToString() + ":</label>" +
                                     "<textarea id=\"ProductDisposition\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>" +
-                                "<div class=\"form-group\">" +
-                                    "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
-                                    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                "</div>";
+                                //"<div class=\"form-group\">" +
+                                //    "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
+                                //    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+                                //"</div>" +
+                                $@"<div class='form-group'>
+                                        <label>{CommonData.getResource("corrective_action").Value.ToString()}:</label>
+                                        <div>
+		                                    <input type='checkbox' id='correctiveAction'>
+		                                    <label id='mensagemPadrao'> Mensagem padrão que será definida</label>
+                                        </div>
+	                                    <textarea id='PreventativeMeasure' class='form-control custom-control' rows='3' style='resize:none'></textarea>
+                                    </div>
+                                    <div id='divSelectSupervisor' class='form-group'>
+                                          <label>Supervisor</label>
+                                          <select id='TechinicalSignature' class='form-control custom-control'>
+		                                    {htmlSelect}
+	                                    </select>  
+                                    </div>
+                                </div>";
 
             if (GlobalConfig.Eua)
             {
@@ -5540,6 +5877,7 @@ namespace SgqServiceBusiness.Api
 
             #endregion
 
+            string frequencyName = "";
             int evaluate = 0;
             int sample = 0;
             int defect = 0;
@@ -5552,6 +5890,7 @@ namespace SgqServiceBusiness.Api
                 sampleGroup = sample;
             }
 
+            #region Agrupamento departamento na listagem de level 2 no AppColeta
             var departamento = "";
 
             var index = 0;
@@ -5559,24 +5898,30 @@ namespace SgqServiceBusiness.Api
 
             var auxDepto = "";
             var countDepto = 0;
+            var listaParLevel1ParaAgrupar = (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.parLevel1ComAgrupamentoPorDepartamentoNaColeta as string)?.Split('|').ToList();
 
-            foreach (var parlevel2count in parlevel02List) //LOOP3
+            if (listaParLevel1ParaAgrupar.Contains(ParLevel1.ParLevel1_Id.ToString()))
             {
-                if (parlevel2count.Departamento != auxDepto)
+                foreach (var parlevel2count in parlevel02List) //LOOP3
                 {
-                    countDepto++;
+                    if (parlevel2count.Departamento != auxDepto)
+                    {
+                        countDepto++;
+                    }
+                    auxDepto = parlevel2count.Departamento;
                 }
-                auxDepto = parlevel2count.Departamento;
             }
-
+            #endregion
 
             //Enquando houver lista de level2
-            foreach (var parlevel2 in parlevel02List) //LOOP3
+            foreach (var parlevel2 in parlevel02List.OrderBy(x=>x.Departamento)) //LOOP3
             {
                 string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
 
                 var parlevel2ParFrequency = getParFrequency_Id(ParLevel1, parlevel2, ParCompany_Id);
+
+                frequencyName = parFrequency.Where(x => x.Id == parlevel2ParFrequency).Select(x => x.Name).FirstOrDefault();
 
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
@@ -5620,17 +5965,22 @@ namespace SgqServiceBusiness.Api
                 string headerCounter =
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("ev").Value.ToString() + " </b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("sd").Value.ToString() + " </b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                               ) +
                                       html.div(
                                                outerhtml: "<b>" + CommonData.getResource("df").Value.ToString() + " </b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-3",
+                                               style: "text-align:center"
+                                             ) +
+                                      html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("frequency").Value.ToString() + " </b>",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                              );
 
@@ -5648,19 +5998,24 @@ namespace SgqServiceBusiness.Api
                 string counters =
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-4",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center; font-size:10px;"
                                               ) +
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
-                                                classe: "col-xs-4",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center; font-size:10px;"
                                               ) +
                                        html.div(
                                                 outerhtml: html.span(outerhtml: defect.ToString(), classe: "defectstotal"),
-                                                classe: "col-xs-4",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center; font-size:10px;"
-                                              );
+                                              ) +
+                                        html.div(
+                                                 outerhtml: html.span(outerhtml: frequencyName, classe: "frequencyTotal"),
+                                                 classe: "col-xs-3",
+                                                 style: "text-align:center; font-size:10px;"
+                                               );
 
 
 
@@ -5789,13 +6144,13 @@ namespace SgqServiceBusiness.Api
                 }
 
                 //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3);
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, out painelLevel3, in frequencyName);
 
                 if (string.IsNullOrEmpty(groupLevel3))
                     continue;
 
                 //Gera linha do Level2
-
+                #region Agrupamento departamento na listagem de level 2 no AppColeta
                 var inicioGrupo = false;
                 var fimGrupo = false;
                 var fimFinalGrupo = false;
@@ -5828,6 +6183,7 @@ namespace SgqServiceBusiness.Api
                     departamento = parlevel2.Departamento;
 
                 }
+                #endregion
 
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
@@ -6285,7 +6641,7 @@ namespace SgqServiceBusiness.Api
         /// <param name="ParLevel1"></param>
         /// <param name="ParLevel2"></param>
         /// <returns></returns>
-        protected string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, out StringBuilder painellevel3)
+        protected string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, out StringBuilder painellevel3, in string frequencyName)
         {
             var html = new Html();
 
@@ -6911,6 +7267,11 @@ namespace SgqServiceBusiness.Api
                                     "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(outerhtml: "0", classe: "defects") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
+                string frequencyhtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("frequency").Value.ToString() +
+                                    "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(outerhtml: frequencyName, classe: "frequency") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
 
                 string avaliacoes = html.div(
                                     outerhtml: avaliacoeshtml,
@@ -6922,6 +7283,10 @@ namespace SgqServiceBusiness.Api
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
                 string defeitos = html.div(
                                     outerhtml: defeitoshtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+                string frequency = html.div(
+                                    outerhtml: frequencyhtml,
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
 
@@ -7000,6 +7365,7 @@ namespace SgqServiceBusiness.Api
                 painellevel3 = new StringBuilder(html.listgroupItem(outerhtml: avaliacoes +
                                                              amostras +
                                                              defeitos +
+                                                             frequency +
                                                              painelLevel3HeaderListHtml.ToString(),
                                                   classe: "painel painelLevel03 row"));
                 painellevel3.Append(html.painelCounters(listCounter));
@@ -7908,6 +8274,7 @@ namespace SgqServiceBusiness.Api
 
         public string InsertCorrectiveAction(InsertCorrectiveActionClass insertCorrectiveActionClass)
         {
+            int phpDebug = 0;
             string CollectionLevel2_Id = insertCorrectiveActionClass.CollectionLevel2_Id;
             string ParLevel1_Id = insertCorrectiveActionClass.ParLevel1_Id;
             string ParLevel2_Id = insertCorrectiveActionClass.ParLevel2_Id;
@@ -7929,48 +8296,74 @@ namespace SgqServiceBusiness.Api
             string ProductDisposition = insertCorrectiveActionClass.ProductDisposition;
             string PreventativeMeasure = insertCorrectiveActionClass.PreventativeMeasure;
             string reauditnumber = insertCorrectiveActionClass.reauditnumber;
+            string datetimeTechinicalHour = insertCorrectiveActionClass.DatetimeTechinicalHour;
 
+            phpDebug = 1;
             try
             {
-
+                var dataLiberacao = "";
+                if (!string.IsNullOrEmpty(datetimeTechinicalHour))
+                {
+                     dataLiberacao = DateTimeTechinical.Replace(DateTimeTechinical.Split(' ')[1], datetimeTechinicalHour);
+                }
                 //inserir a acção corretiva com processo
 
                 string parCluster_Id_parLevel1_id = ParLevel1_Id.Replace(quebraProcesso, "|");
+                phpDebug = 2;
                 string parCluster_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[0] : "0";
+                phpDebug = 3;
                 ParLevel1_Id = parCluster_Id_parLevel1_id.Split('|').Length > 1 ? parCluster_Id_parLevel1_id.Split('|')[1] : parCluster_Id_parLevel1_id.Split('|')[0];
+                phpDebug = 4;
 
                 string parCluster_Id_parLevel2_id = ParLevel2_Id.Replace(quebraProcesso, "|");
+                phpDebug = 5;
                 ParLevel2_Id = parCluster_Id_parLevel2_id.Split('|').Length > 1 ? parCluster_Id_parLevel2_id.Split('|')[1] : parCluster_Id_parLevel2_id.Split('|')[0];
-
-
+                phpDebug = 6;
 
                 //using (var transacao = new TransactionScope())
                 //{
                 SlaughterId = DefaultValueReturn(SlaughterId, "1");
+                phpDebug = 7;
                 TechinicalId = DefaultValueReturn(TechinicalId, "1");
+                phpDebug = 8;
                 DateTimeSlaughter = DefaultValueReturn(DateTimeSlaughter, "03012017 00:00:00");
+                phpDebug = 9;
                 DateTimeTechinical = DateTimeSlaughter;
+                phpDebug = 10;
                 Period = DefaultValueReturn(Period, "1");
+                phpDebug = 11;
 
                 if (string.IsNullOrEmpty(CollectionLevel2_Id) || CollectionLevel2_Id == "0")
                 {
+                    phpDebug = 12;
                     CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber, reauditnumber, data, parCluster_Id).ToString();
+                    phpDebug = 13;
                     if (CollectionLevel2_Id == "0")
                     {
                         return "erro na InsertCorrectiveAction!";
                     }
                 }
 
+                phpDebug = 14;
                 DescriptionFailure = HttpUtility.UrlDecode(DescriptionFailure, System.Text.Encoding.Default);
+                phpDebug = 15;
                 ImmediateCorrectiveAction = HttpUtility.UrlDecode(ImmediateCorrectiveAction, System.Text.Encoding.Default);
+                phpDebug = 16;
                 ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
+                phpDebug = 17;
                 PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
+                phpDebug = 18;
 
+                if(!string.IsNullOrEmpty(dataLiberacao)){
+                    DateTimeTechinical = dataLiberacao;
+                }
                 int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure,
                     ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
+                phpDebug = 19;
 
                 if (id > 0)
                 {
+                    phpDebug = 20;
                     //01/20/2017
 
 
@@ -7978,26 +8371,37 @@ namespace SgqServiceBusiness.Api
                     string dataFim = null;
 
                     data = data.Trim();
+                    phpDebug = 21;
 
                     if (!data.Contains("/"))
                     {
+                        phpDebug = 22;
                         string dia = data.Substring(2, 2);
+                        phpDebug = 23;
                         string mes = data.Substring(0, 2);
+                        phpDebug = 24;
                         string ano = data.Substring(4, 4);
+                        phpDebug = 25;
 
                         data = ano + "/" + mes + "/" + dia;
+                        phpDebug = 26;
                     }
 
+                    phpDebug = 27;
                     DateTime dataAPP = Convert.ToDateTime(data);
+                    phpDebug = 28;
 
                     //Pega a data pela regra da frequencia
                     getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
+                    phpDebug = 29;
                     var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim, reauditnumber);
+                    phpDebug = 30;
                     //transacao.complete();
                     return null;
                 }
                 else
                 {
+                    phpDebug = 60;
                     int insertLog = insertLogJson("", "", "N/A", "N/A", "Na InsertCorrectiveAction não achou uma referencia");
                     throw new Exception();
                 }
@@ -8005,9 +8409,9 @@ namespace SgqServiceBusiness.Api
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson("", ex.Message, "N/A", "N/A", "InsertCorrectiveAction");
+                int insertLog = insertLogJson("", "PHPDebug="+ phpDebug + " | " + ex.Message, "N/A", "N/A", "InsertCorrectiveAction");
 
-                return "erro";
+                return "erro="+ phpDebug;
                 throw ex;
             }
         }
@@ -8615,7 +9019,7 @@ namespace SgqServiceBusiness.Api
                                         cmd.CommandType = CommandType.Text;
                                         cmd.Parameters.Add(new SqlParameter("@WeiDefects", resultLevel3WeiDefects.WeiDefects.ToString().Replace(',', '.')));
                                         cmd.Parameters.Add(new SqlParameter("@PunishmentValue", resultLevel3.PunishmentValue.ToString().Replace(',', '.')));
-                                        cmd.Parameters.Add(new SqlParameter("@ResultLevel3WeiDefects_Id", resultLevel3.PunishmentValue.ToString().Replace(',', '.')));
+                                        cmd.Parameters.Add(new SqlParameter("@ResultLevel3WeiDefects_Id", resultLevel3WeiDefects.Id));
 
                                         cmd.ExecuteNonQuery();
                                         //factory.ExecuteSql(cmd.CommandText);

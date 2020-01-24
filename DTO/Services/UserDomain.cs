@@ -264,7 +264,7 @@ namespace DTO.Services
             }
             catch (Exception e)
             {
-                new CreateLog(e);
+                LogSystem.LogErrorBusiness.Register(e);
                 return new GenericReturn<UserDTO>(e, "");
             }
 
@@ -749,7 +749,7 @@ namespace DTO.Services
                 }
                 catch (Exception e)
                 {
-                    new CreateLog(new Exception("Realizando Rollback em CriaUSerSgqPeloUserSgqBR", e));
+                    LogSystem.LogErrorBusiness.Register(new Exception("Realizando Rollback em CriaUSerSgqPeloUserSgqBR", e));
                     throw e;
                 }
             }

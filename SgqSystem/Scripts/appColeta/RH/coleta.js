@@ -86,10 +86,13 @@ $('body')
             $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').removeClass('hide');
             $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').removeClass('hide');
             $(this).attr('data-targeter-collapsed', false);
+            $(this).find('[ data-toggle]').removeClass('fa fa-caret-right').addClass('fa fa-caret-down');
+            $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').find('[data-toggle]').removeClass('fa fa-caret-right').addClass('fa fa-caret-down');
         } else {
             $('[data-collapse-target^="' + $(this).attr('data-collapse-targeter') + '-"]').addClass('hide');
             $('[data-collapse-target="' + $(this).attr('data-collapse-targeter') + '"]').addClass('hide');
             $(this).attr('data-targeter-collapsed', true);
+            $(this).find('[ data-toggle]').removeClass('fa fa-caret-down').addClass('fa fa-caret-right');
         }
     });
 
@@ -121,11 +124,11 @@ function getContador() {
 }
 
 function getLevel1(level1) {
-    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><small>' + level1.Name + '</small></div>';
+    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><i class="fa fa-caret-down" data-toggle style="margin-right: 5px;"></i><small>' + level1.Name + '</small></div>';
 }
 
 function getLevel2(level2, level1) {
-    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="' + level1.Id + '" data-collapse-targeter="' + level1.Id + '-' + level2.Id + '"><small>' + level2.Name + '</small></div>';
+    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;" data-collapse-target="' + level1.Id + '" data-collapse-targeter="' + level1.Id + '-' + level2.Id + '"><i class="fa fa-caret-down" data-toggle style="margin-right: 5px;"></i><small>' + level2.Name + '</small></div>';
 }
 
 function getLevel3(level3, level2, level1) {
@@ -221,13 +224,13 @@ function getBinario(level3) {
 
     if (level3.ParLevel3Value.IsRequiredInt) {
         respostaPadrao = "&nbsp;";
-        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-tarefa data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     } else {
         if (level3.ParLevel3Value.IsDefaultAnswerInt == "0")
             respostaPadrao = level3.ParLevel3BoolFalse.Name;
         else
             respostaPadrao = level3.ParLevel3BoolTrue.Name;
-        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-tarefa data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     }
 
     html +=
@@ -257,13 +260,13 @@ function getBinarioComTexto(level3) {
 
     if (level3.ParLevel3Value.IsRequiredInt) {
         respostaPadrao = "&nbsp;";
-        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-tarefa data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     } else {
         if (level3.ParLevel3Value.IsDefaultAnswerInt == "0")
             respostaPadrao = level3.ParLevel3BoolFalse.Name;
         else
             respostaPadrao = level3.ParLevel3BoolTrue.Name;
-        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
+        botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-tarefa data-required-answer="0" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     }
     //html +=
     //    '<div class="col-xs-6 no-gutters">' +
@@ -281,7 +284,7 @@ function getBinarioComTexto(level3) {
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
         '</div>' +
         '<div class="col-xs-5">' +
-          botao +
+        botao +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -315,7 +318,7 @@ function getIntervalo(level3) {
         '	        <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '       </div>' +
         '       <div class="col-xs-8" style="padding: 0;">' +
-        '	        <input type="text" class="col-xs-12 input input-sm" data-valor/>' +
+        '	        <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor/>' +
         '       </div>' +
         '       <div class="col-xs-2" style="padding-left: 0;">' +
         '	        <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
@@ -356,7 +359,7 @@ function getIntervaloemMinutos(level3) {
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '   </div>' +
         '   <div class="col-xs-8" style="padding: 0;">' +
-        '	    <input type="text" class="col-xs-12 input input-sm" data-valor/>' +
+        '	    <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor/>' +
         '   </div>' +
         '   <div class="col-xs-2" style="padding-left: 0;">' +
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
@@ -398,7 +401,7 @@ function getIntervaloComObservacao(level3) {
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '   </div>' +
         '   <div class="col-xs-8" style="padding: 0;">' +
-        '	    <input type="text" class="col-xs-12 input input-sm" data-valor/>' +
+        '	    <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor/>' +
         '   </div>' +
         '   <div class="col-xs-2" style="padding-left: 0;">' +
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
@@ -427,7 +430,7 @@ function getObservacao(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-10">' +
-        '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
+        '	<input type="text" class="col-xs-12 input-sm" data-tarefa data-texto/>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -452,7 +455,7 @@ function getTexto(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-10">' +
-        '	<input type="text" class="col-xs-12 input-sm" data-valor/>' +
+        '	<input type="text" class="col-xs-12 input-sm" data-tarefa data-valor/>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -477,7 +480,7 @@ function getNumerodeDefeitos(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-10">' +
-        '	<input type="number" class="col-xs-12 input-sm" data-valor/>' +
+        '	<input type="number" class="col-xs-12 input-sm" data-tarefa data-valor/>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -507,7 +510,7 @@ function getLikert(level3) {
         level3LimitLabel +
         '   </div>' +
         '   <div class="col-xs-8">' +
-        '	    <input type="text" class="col-xs-12 input-sm" data-valor/>' +
+        '	    <input type="text" class="col-xs-12 input-sm" data-tarefa data-valor/>' +
         '   </div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -563,26 +566,30 @@ function validaCampoEmBrancoNA() {
     if (linha.attr('data-default-answer') == "1") {
         linha.attr('data-conforme', " ");
     }
-  
+
 }
 
 $('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
     var linha = $(this).parents('[data-conforme]');
 
     resetarLinha(linha);
-
     if (linha.attr('data-conforme') == "" || linha.attr('data-conforme') == null) {
         linha.attr('data-conforme', linha.attr('data-default-answer'));
-
+        setFieldColorGray($(this));
     } else if (linha.attr('data-conforme') == linha.attr('data-default-answer')) {
         linha.attr('data-conforme', linha.attr('data-default-answer') == "0" ? "1" : "0");
+        setFieldColorGray($(this));
     } else {
         linha.addClass('alert-secundary');
         if ($(this).attr('data-required-answer') == "1") {
             linha.attr('data-conforme', "");
+            setFieldColorWhite($(this));
+
         } else {
             linha.attr('data-conforme', linha.attr('data-default-answer'));
+            setFieldColorWhite($(this));
         }
+
     }
 
     if (linha.attr('data-conforme') == "1") {
@@ -598,6 +605,14 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
     $(this).removeClass('btn-secundary');
 
 });
+
+function setFieldColorGray(campo) {
+    $(campo).css('background-color', '#E8E8E8');
+}
+
+function setFieldColorWhite(campo) {
+    $(campo).css('background-color', '#FFFFFF');
+}
 
 $('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', function (e) {
     var linha = $(this).parents('[data-conforme]');
@@ -679,7 +694,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
             ParCargo_Id: currentParCargo_Id,
             Evaluation: currentEvaluationSample.Evaluation,
             Sample: currentEvaluationSample.Sample,
-            ParCluster_Id : currentParCluster_Id
+            ParCluster_Id: currentParCluster_Id
         };
     }
 
@@ -687,7 +702,48 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     //console.table(collectionHeaderFields);
 
     //Insere valores da coleta
-    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {        var data = $(o);        var isNA = $(data).attr('data-conforme-na') == "";        coletaJson.push(            {                Evaluation: coletaAgrupada.Evaluation,                Sample: coletaAgrupada.Sample,                ParDepartment_Id: currentParDepartment_Id,                ParCargo_Id: currentParCargo_Id,                ParLevel1_Id: $(data).attr('data-level1'),                ParLevel2_Id: $(data).attr('data-level2'),                ParLevel3_Id: $(data).attr('data-level3'),                ParCompany_Id: currentParCompany_Id,                IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),                IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),                IsConform: isNA ? 1 : $(data).attr('data-conforme') == "1",                Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),                ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),                IsNotEvaluate: isNA,                CollectionDate: getCurrentDate(),                UserSgq_Id: currentLogin.Id,                Weigth: $(data).attr('data-peso'),                WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),                Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),                Parfrequency_Id: parametrization.currentParFrequency_Id,                ParCluster_Id : currentParCluster_Id                /*				"Shift_Id":1,				"Period_Id":1,				"ParCluster_Id":1,				"CollectionType":1,				"PunishimentValue":1,				"HasPhoto":"0",				"HaveCorrectiveAction":"0",				"AlertLevel":"0",				"ParHeaderField_Id":1,				"ParHeaderField_Value":""				*/            }        );    });
+    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
+        var data = $(o);
+        var isNA = $(data).attr('data-conforme-na') == "";
+        coletaJson.push(
+            {
+                Evaluation: coletaAgrupada.Evaluation,
+                Sample: coletaAgrupada.Sample,
+                ParDepartment_Id: currentParDepartment_Id,
+                ParCargo_Id: currentParCargo_Id,
+                ParLevel1_Id: $(data).attr('data-level1'),
+                ParLevel2_Id: $(data).attr('data-level2'),
+                ParLevel3_Id: $(data).attr('data-level3'),
+                ParCompany_Id: currentParCompany_Id,
+                IntervalMin: $(data).attr('data-min') == "null" ? null : $(data).attr('data-min'),
+                IntervalMax: $(data).attr('data-max') == "null" ? null : $(data).attr('data-max'),
+                IsConform: isNA ? 1 : $(data).attr('data-conforme') == "1",
+                Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
+                ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
+                IsNotEvaluate: isNA,
+                CollectionDate: getCurrentDate(),
+                UserSgq_Id: currentLogin.Id,
+                Weigth: $(data).attr('data-peso'),
+                WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
+                Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
+                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
+                Parfrequency_Id: parametrization.currentParFrequency_Id,
+                ParCluster_Id: currentParCluster_Id
+                /*
+				"Shift_Id":1,
+				"Period_Id":1,
+				"ParCluster_Id":1,
+				"CollectionType":1,
+				"PunishimentValue":1,
+				"HasPhoto":"0",
+				"HaveCorrectiveAction":"0",
+				"AlertLevel":"0",
+				"ParHeaderField_Id":1,
+				"ParHeaderField_Value":""
+				*/
+            }
+        );
+    });
 
     processAlertRole(coletaJson);
 
@@ -912,20 +968,30 @@ function getCollectionHeaderFields() {
 
 function ColetasIsValid() {
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
+    var errorCount = 0;
+    var data;
     for (var i = 0; i < linhasDaColeta.length; i++) {
-        var data = linhasDaColeta[i];
+        data = linhasDaColeta[i];
+        
         if ($(data).attr('data-conforme-na') != "") {
             if ($(data).attr('data-conforme') == ""
                 || $(data).attr('data-conforme') == null
                 || $(data).attr('data-conforme') == "undefined") {
-                openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
-                mostraPerguntasObrigatorias(data);
-                closeMensagem(2000);
-                return false;
+
+                $(data).find("[data-tarefa]").css("background-color", "#ffc1c1");
+                errorCount++;
+            } else {
+                $(data).find("[data-tarefa]").css("background-color", "white");
             }
-        }
+        } 
     }
-    return true;
+    if (errorCount > 0) {
+        openMensagem("Atenção! Obrigatório responder todas as Tarefas.", "yellow", "black");
+        mostraPerguntasObrigatorias(data);
+        closeMensagem(2000);
+        return false;
+    }else 
+        return true;
 }
 
 function mostraPerguntasObrigatorias(data) {
@@ -960,7 +1026,7 @@ function HeaderFieldsIsValid() {
     });
 
     if (!retorno) {
-        openMensagem("Campos de cabeçalho obrigatórios não preenchidos", "blue", "white");
+        openMensagem("Atenção! Campos de cabeçalho obrigatórios não preenchidos", "yellow", "black");
         closeMensagem(2000);
     }
 

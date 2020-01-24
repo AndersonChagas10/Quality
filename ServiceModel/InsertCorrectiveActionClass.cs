@@ -29,5 +29,6 @@ namespace ServiceModel
         public string ProductDisposition { get; set; }
         public string PreventativeMeasure { get; set; }
         public string reauditnumber { get; set; }
+        public string DatetimeTechinicalHour { get; set; }
     }
 }

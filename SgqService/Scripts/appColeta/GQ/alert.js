@@ -1,4 +1,4 @@
-var acaoCorretivaObrigatoria = false;
+﻿var acaoCorretivaObrigatoria = false;
 
 var defectsPerEvaluation = [];
 

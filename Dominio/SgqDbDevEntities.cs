@@ -54,6 +54,8 @@ namespace Dominio
         {
             var entities = ChangeTracker.Entries().Where(x =>
             !(x.Entity is DatabaseLog)
+            && !(x.Entity is LogTrack)
+            && !(x.Entity is LogError)
             && !(x.Entity is ErrorLog)
             && !(x.Entity is UserSgq)
             && !(x.Entity is Result_Level3)
@@ -280,6 +282,7 @@ namespace Dominio
         public virtual DbSet<ParLevelHeaderField> ParLevelHeaderField { get; set; }
         public virtual DbSet<IntegCollectionData> IntegCollectionData { get; set; }
         public virtual DbSet<ParMultipleValuesGeral> ParMultipleValuesGeral { get; set; }
+        public virtual DbSet<LogTrack> LogTrack { get; set; }
         public virtual DbSet<Pa_Acompanhamento> Pa_Acompanhamento { get; set; }
         public virtual DbSet<Pa_AcompanhamentoXQuem> Pa_AcompanhamentoXQuem { get; set; }
         public virtual DbSet<Pa_FTA> Pa_FTA { get; set; }
@@ -290,6 +293,8 @@ namespace Dominio
         public virtual DbSet<ComponenteGenericoColuna> ComponenteGenericoColuna { get; set; }
         public virtual DbSet<ComponenteGenericoValor> ComponenteGenericoValor { get; set; }
         public virtual DbSet<ParHeaderFieldXComponenteGenerico> ParHeaderFieldXComponenteGenerico { get; set; }
+        public virtual DbSet<LogError> LogError { get; set; }
+        public virtual DbSet<ParAlertXUser> ParAlertXUser { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

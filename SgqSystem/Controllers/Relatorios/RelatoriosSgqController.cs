@@ -155,6 +155,11 @@ namespace SgqSystem.Controllers
 
             //Fim da Role
 
+            using (var dbEntity = new Dominio.SgqDbDevEntities())
+            {
+                ViewBag.ParReasonEdit = dbEntity.ParReason.Where(x => x.IsActive && x.ParReasonType_Id == 3).ToList();
+            }
+
             return View(form);
         }
 

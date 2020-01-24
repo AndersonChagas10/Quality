@@ -97,13 +97,16 @@
     <Compile Include="ItemMenu.cs" />
     <Compile Include="LeftControlRole.cs" />
     <Compile Include="LogAlteracoes.cs" />
+    <Compile Include="LogError.cs" />
     <Compile Include="LogJson.cs" />
+    <Compile Include="LogTrack.cs" />
     <Compile Include="LogSgq.cs" />
     <Compile Include="LogSgqGlobal.cs" />
     <Compile Include="Metas.cs" />
     <Compile Include="MigrationHistory.cs" />
     <Compile Include="Monitoramentos.cs" />
     <Compile Include="ParAlertType.cs" />
+    <Compile Include="ParAlertXUser.cs" />
     <Compile Include="ParCargo.cs" />
     <Compile Include="ParCargoXDepartment.cs" />
     <Compile Include="ParColaborador.cs" />
@@ -266,10 +269,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
