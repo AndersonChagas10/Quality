@@ -15,7 +15,11 @@ namespace DTO
 
         public int[] ParStructure_Ids { get; set; } = new int[] { };
 
-        public int[] ParStructureRegional_Ids { get; set; } = new int[] { };
+        public int[] ParStructure1_Ids { get; set; } = new int[] { };
+
+        public int[] ParStructure2_Ids { get; set; } = new int[] { };
+
+        public int[] ParStructure3_Ids { get; set; } = new int[] { };
 
         public int[] ParStructureGroup_Ids { get; set; } = new int[] { };
 

@@ -66,16 +66,6 @@
                                 </div>
                             }
 
-                            @*@if (ViewBag.ShowParStructure == true)
-        {
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label><strong>@Resources.Resource.structure</strong></label>
-                    <select class="form-control" name="parStructure_Ids" multiple></select>
-                </div>
-            </div>
-        }*@
-
                             @if (ViewBag.ShowParClusterGroup == true)
                             {
                                 <div class="col-sm-12">
@@ -122,7 +112,7 @@
                                 </div>
                             }
 
-                            @if (ViewBag.ShowParStructureGroup == true)
+                            @if (ViewBag.ShowParStructureGroup == true) //Grupo de estrutura
                             {
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -138,18 +128,50 @@
                                 </div>
                             }
 
-                            @if (ViewBag.ShowParStructureRegional == true)
+                            @if (ViewBag.ShowParStructure1 == true)
                             {
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label><strong>Regional</strong></label>
+                                        <label><strong>Structure 1</strong></label>
                                         <button type="button"
                                                 data-filtroselect3-btn
-                                                data-filtroselect3-select="select[name=parStructureRegional_Ids]"
-                                                data-filtroselect3-url="@Url.Action("GetFilteredParStructureRegional", "api/Formulario")">
+                                                data-filtroselect3-select="select[name=parStructure1_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParStructure1", "api/Formulario")">
                                             Abrir
                                         </button>
-                                        <select class="form-control" name="parStructureRegional_Ids"></select>
+                                        <select class="form-control" name="parStructure1_Ids"></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParStructure2 == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Structure 2</strong></label>
+                                        <button type="button"
+                                                data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parStructure2_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParStructure2", "api/Formulario")">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parStructure2_Ids"></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParStructure3 == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Structure 3</strong></label>
+                                        <button type="button"
+                                                data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parStructure3_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParStructure3", "api/Formulario")">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parStructure3_Ids"></select>
                                     </div>
                                 </div>
                             }
@@ -182,22 +204,6 @@
                                             Abrir
                                         </button>
                                         <select class="form-control" name="shift_Ids" multiple></select>
-                                    </div>
-                                </div>
-                            }
-
-                            @if (ViewBag.ShowParCriticalLevel == true)
-                            {
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label><strong>@Resources.Resource.criticalLevel</strong></label>
-                                        <button type="button"
-                                                data-filtroselect3-btn
-                                                data-filtroselect3-select="select[name=parCriticalLevel_Ids]"
-                                                data-filtroselect3-url="@Url.Action("GetFilteredParCriticalLevels", "api/Formulario")">
-                                            Abrir
-                                        </button>
-                                        <select class="form-control" name="parCriticalLevel_Ids" multiple></select>
                                     </div>
                                 </div>
                             }
@@ -266,6 +272,22 @@
                                 </div>
                             }
 
+                            @if (ViewBag.ShowParCriticalLevel == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.criticalLevel</strong></label>
+                                        <button type="button"
+                                                data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parCriticalLevel_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParCriticalLevels", "api/Formulario")">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parCriticalLevel_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
                             @if (ViewBag.ShowParLevel1 == true)
                             {
                                 <div class="col-sm-12">
@@ -318,10 +340,10 @@
                                     <div class="form-group">
                                         <label><strong>Status do Indicador</strong></label>
                                         @*<button type="button" data-filtroselect3-btn
-                            data-filtroselect3-select="select[name=parLevel3_Ids]"
-                            data-filtroselect3-url="@Url.Action("GetFilteredParLevel3", "api/Formulario")">
-                        Abrir
-                    </button>*@
+                                                    data-filtroselect3-select="select[name=parLevel3_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParLevel3", "api/Formulario")">
+                                                Abrir
+                                            </button>*@
                                         <select class="form-control" name="parLevel3Status_Ids">
                                             <option value="0">Todos</option>
                                             <option value="1">Dentro da meta</option>
@@ -338,10 +360,10 @@
                                     <div class="form-group">
                                         <label><strong>Status da Ação</strong></label>
                                         @*<button type="button" data-filtroselect3-btn
-                            data-filtroselect3-select="select[name=parLevel3_Ids]"
-                            data-filtroselect3-url="@Url.Action("GetFilteredParLevel3", "api/Formulario")">
-                        Abrir
-                    </button>*@
+                                                    data-filtroselect3-select="select[name=parLevel3_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParLevel3", "api/Formulario")">
+                                                Abrir
+                                            </button>*@
                                         <select class="form-control" name="acaoStatus">
                                             <option value="0">Todas</option>
                                             <option value="1">Em Andamento</option>
@@ -357,10 +379,10 @@
                                     <div class="form-group">
                                         <label><strong>Periodo</strong></label>
                                         @*<button type="button" data-filtroselect3-btn
-                            data-filtroselect3-select="select[name=parLevel3_Ids]"
-                            data-filtroselect3-url="@Url.Action("GetFilteredParLevel3", "api/Formulario")">
-                        Abrir
-                    </button>*@
+                                                    data-filtroselect3-select="select[name=parLevel3_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParLevel3", "api/Formulario")">
+                                                Abrir
+                                            </button>*@
                                         <select class="form-control" name="periodo">
                                             <option value="1">Dia</option>
                                             <option value="2">Semana</option>
@@ -376,10 +398,10 @@
                                     <div class="form-group">
                                         <label><strong>Exibe NC Com peso</strong></label>
                                         @*<button type="button" data-filtroselect3-btn
-                            data-filtroselect3-select="select[name=peso]"
-                            data-filtroselect3-url="@Url.Action("GetFilteredPeso", "api/Formulario")">
-                        Abrir
-                    </button>*@
+                                                    data-filtroselect3-select="select[name=peso]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredPeso", "api/Formulario")">
+                                                Abrir
+                                            </button>*@
                                         <select class="form-control" name="ncComPeso">
                                             <option value="1">Sim</option>
                                             <option value="2">Não</option>
@@ -409,10 +431,10 @@
                                     <div class="form-group">
                                         <label><strong>Desdobramento</strong></label>
                                         @*<button type="button" data-filtroselect3-btn
-                            data-filtroselect3-select="select[name=desdobramento]"
-                            data-filtroselect3-url="@Url.Action("GetFilteredPeso", "api/Formulario")">
-                        Abrir
-                    </button>*@
+                                                    data-filtroselect3-select="select[name=desdobramento]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredPeso", "api/Formulario")">
+                                                Abrir
+                                            </button>*@
                                         <select class="form-control" name="desdobramento">
                                             <option value="1">Monitoramento</option>
                                             <option value="2">Tarefa</option>
@@ -545,7 +567,9 @@
             $('select[name="parLevel3_Ids"]').select2();
             $('select[name="parCriticalLevel_Ids"]').select2();
             $('select[name="parStructureGroup_Ids"]').select2();
-            $('select[name="parStructureRegional_Ids"]').select2();
+            $('select[name="parStructure1_Ids"]').select2();
+            $('select[name="parStructure2_Ids"]').select2();
+            $('select[name="parStructure3_Ids"]').select2();
             $('select[name="parCluster_Ids"]').select2();
             $('select[name="parClusterGroup_Ids"]').select2();
             $('select[name="parLevel3Status_Ids"]').select2();
@@ -569,8 +593,8 @@
 
             $('select[name="parStructure_Ids"]').html(
                 retornaOptionsPeloArray(dataFiltro.ParStructures, "Id", "Name", objFiltro["parStructure_Ids"]));
-            $('select[name="parStructureRegional_Ids"]').html(
-                retornaOptionsPeloArray(dataFiltro.ParStructuresRegional, "Id", "Name", objFiltro["parStructureRegional_Ids"]));
+            $('select[name="parStructure2_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParStructuresRegional, "Id", "Name", objFiltro["parStructure2_Ids"]));
             $('select[name="parCompany_Ids"]').html(
                 retornaOptionsPeloArray(dataFiltro.ParCompanies, "Id", "Name", objFiltro["parCompany_Ids"]));
             $('select[name="shift_Ids"]').html(
@@ -614,7 +638,9 @@
             $('select[name="parLevel3_Ids"]').trigger('change');
             $('select[name="parCriticalLevel_Ids"]').trigger('change');
             $('select[name="parStructure_Ids"]').trigger('change');
-            $('select[name="parStructureRegional_Ids"]').trigger('change');
+            $('select[name="parStructure1_Ids"]').trigger('change');
+            $('select[name="parStructure2_Ids"]').trigger('change');
+            $('select[name="parStructure3_Ids"]').trigger('change');
             $('select[name="parCluster_Ids"]').trigger('change');
             $('select[name="parClusterGroup_Ids"]').trigger('change');
             $('select[name="parGroupParLevel1_Ids"]').trigger('change');

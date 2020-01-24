@@ -24,33 +24,79 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredParCompany")]
         public List<Select3ViewModel> GetFilteredParCompany(string search, [FromBody] DataCarrierFormularioNew form)
         {
+
+            var whereStructure = "";
+            var whereClusterGroup = "";
+            var whereCluster = "";
+
+            //Module
+
+            //ParStructure
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure_Ids) })";
+            }
+
+            if (form.ParStructure1_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure1_Ids) })";
+            }
+
+            //Grupo de empresa
+            if (form.ParStructure2_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure2_Ids) })";
+            }
+
+            //Regional
+            if (form.ParStructure3_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure3_Ids) })";
+            }
+
+            //Grupo de Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $" AND PCG.Id IN ({ string.Join(",", form.ParClusterGroup_Ids) })";
+            }
+
+            //Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+                whereCluster = $" AND PCL.Id IN ({ string.Join(",", form.ParCluster_Ids) })";
+
+
             using (var factory = new Factory("DefaultConnection"))
             {
-                var filtroStructure = 
-                                   form.ParStructure_Ids.Length > 0 
-                                 ? $@"  AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
-                                        OR  PS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
-                                        OR  PS1.Id IN ({ string.Join(",", form.ParStructure_Ids) })" : "";
 
                 var query = $@"SELECT DISTINCT TOP 500
                         	PC.Id, PC.Name
-                        FROM ParCompany PC
-                        LEFT JOIN ParCompanyXStructure PCXS
-                        	ON PC.Id = PCXS.ParCompany_Id
-                        		AND PCXS.Active = 1
-						LEFT JOIN ParStructure PS
-							ON PS.Id = PCXS.ParStructure_Id
-						LEFT JOIN ParStructure PS1
-							ON PS.ParStructureParent_Id = PS1.ID
+                        FROM ParCompany PC WITH (NOLOCK)
+                        LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PC.Id = PCXS.ParCompany_Id AND PCXS.Active = 1 
+						LEFT JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
+						LEFT JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.ID
+                        LEFT JOIN ParEvaluationXDepartmentXCargo PEDC WITH (NOLOCK) on (PEDC.ParCompany_Id = PC.Id OR PEDC.ParCompany_Id IS NULL) AND PEDC.IsActive = 1
+                        INNER JOIN ParCluster PCL WITH (NOLOCK) on (PCL.Id = PEDC.ParCluster_Id OR PEDC.ParCluster_Id IS NULL)
+                        INNER JOIN ParClusterGroup PCG WITH (NOLOCK) on PCG.Id = PCL.ParClusterGroup_Id
                         WHERE 1 = 1
                         AND PC.IsActive = 1
                         --Filtros
                         AND PC.Name like '%{search}%'
-                        {filtroStructure}";
+                        {whereStructure}
+                        {whereClusterGroup}
+                        {whereCluster}";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
                 return retorno;
+
             }
         }
 
@@ -64,7 +110,7 @@ namespace SgqSystem.Controllers.Api.Formulario
 
                 var query = $@"SELECT DISTINCT TOP 500
                         	PCL.Id, PCL.Name
-                        FROM ParCriticalLevel PCL
+                        FROM ParCriticalLevel PCL WITH (NOLOCK)
 						WHERE 1 = 1
                         AND PCL.IsActive = 1
                         AND PCL.Name like '%{search}%'";
@@ -83,7 +129,7 @@ namespace SgqSystem.Controllers.Api.Formulario
             {
 
                 var query = $@" SELECT DISTINCT TOP 500
-                        	Id, Name from ParGroupParLevel1 Where IsActive = 1 AND Name like '%{search}%'";
+                        	Id, Name from ParGroupParLevel1 WITH (NOLOCK) Where IsActive = 1 AND Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<ParGroupParLevel1>(query).ToList();
 
@@ -95,14 +141,22 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredParClusters")]
         public List<Select3ViewModel> GetFilteredParClusters(string search, [FromBody] DataCarrierFormularioNew form)
         {
+            var whereClusterGroup = "";
+
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $" AND PCL.ParClusterGroup_Id IN ({string.Join(",", form.ParClusterGroup_Ids)})";
+            }
+
             using (var factory = new Factory("DefaultConnection"))
             {
 
                 var query = $@"SELECT DISTINCT TOP 500
                         	PCL.Id, PCL.Name
-                        FROM ParCluster PCL
+                        FROM ParCluster PCL WITH (NOLOCK)
 						WHERE 1 = 1
                         AND PCL.IsActive = 1
+                        { whereClusterGroup }
                         AND PCL.Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
@@ -120,7 +174,7 @@ namespace SgqSystem.Controllers.Api.Formulario
 
                 var query = $@"SELECT DISTINCT TOP 500
                         	PCLG.Id, PCLG.Name
-                        FROM ParClusterGroup PCLG
+                        FROM ParClusterGroup PCLG WITH (NOLOCK)
 						WHERE 1 = 1
                         AND PCLG.IsActive = 1
                         AND PCLG.Name like '%{search}%'";
@@ -137,7 +191,7 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             using (var factory = new Factory("DefaultConnection"))
             {
-                var query = $@"SELECT DISTINCT TOP 500 ID, Description as Name FROM shift
+                var query = $@"SELECT DISTINCT TOP 500 ID, Description as Name FROM shift WITH (NOLOCK)
                         WHERE Description like '%{search}%'";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
@@ -150,19 +204,86 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredParDepartment")]
         public List<Select3ViewModel> GetFilteredParDepartment(string search, [FromBody] DataCarrierFormularioNew form)
         {
+            var sqlParCompany = "";
+            var whereClusterGroup = "";
+            var whereStructure = "";
+            var whereCluster = "";
+
+            //Module
+
+            //ParStructure
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure_Ids) })";
+            }
+
+            if (form.ParStructure1_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure1_Ids) })";
+            }
+
+            //Grupo de empresa
+            if (form.ParStructure2_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure2_Ids) })";
+            }
+
+            //Regional
+            if (form.ParStructure3_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure3_Ids) })";
+            }
+
+            //Grupo de Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $" AND PCG.Id IN ({ string.Join(",", form.ParClusterGroup_Ids) })";
+            }
+
+            //Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+                whereCluster = $" AND PCL.Id IN ({ string.Join(",", form.ParCluster_Ids) })";
+
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                sqlParCompany = $@" AND PD.ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)}) ";
+            }
+
+
             using (var factory = new Factory("DefaultConnection"))
             {
-                var sqlParCompany = "";
-                if (form.ParCompany_Ids.Length > 0)
-                {
-                    sqlParCompany = $@" AND PD.ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)}) ";
-                }
 
-                var query = $@"SELECT DISTINCT TOP 500 PD.Id,PD.Name FROM ParDepartment PD 
-                                WHERE 1=1 
-                                AND PD.Active = 1 
-                                AND PD.Name like '%{search}%'
-                                AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
+                //var query = $@"SELECT DISTINCT TOP 500 PD.Id,PD.Name FROM ParDepartment PD 
+                //                WHERE 1=1 
+                //                AND PD.Active = 1 
+                //                AND PD.Name like '%{search}%'
+                //                AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
+
+                var query = $@"
+                            SELECT DISTINCT TOP 500 PD.Id,PD.Name 
+                            FROM ParDepartment PD WITH (NOLOCK)
+                            LEFT JOIN ParEvaluationXDepartmentXCargo PEDC WITH (NOLOCK) on (PEDC.ParDepartment_Id = PD.Id OR PEDC.ParDepartment_Id IS NULL) AND PEDC.IsActive = 1
+                            LEFT JOIN ParCompany PC WITH (NOLOCK) on (PEDC.ParCompany_Id = PC.Id OR PEDC.ParCompany_Id IS NULL) AND PEDC.IsActive = 1
+                            LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PC.Id = PCXS.ParCompany_Id AND PCXS.Active = 1
+                            LEFT JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
+                            LEFT JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.ID
+                            LEFT JOIN ParCluster PCL WITH (NOLOCK) on (PCL.Id = PEDC.ParCluster_Id OR PEDC.ParCluster_Id IS NULL)
+                            LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) on PCG.Id = PCL.ParClusterGroup_Id
+                            WHERE 1=1 
+                            AND PD.Active = 1 
+                            AND PD.Name like '%{search}%'
+                            {whereClusterGroup}
+                            {whereCluster}
+                            {whereStructure}
+                            AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
@@ -174,6 +295,54 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredParDepartmentFilho")]
         public List<Select3ViewModel> GetFilteredParDepartmentFilho(string search, [FromBody] DataCarrierFormularioNew form)
         {
+
+            var whereClusterGroup = "";
+            var whereStructure = "";
+            var whereCluster = "";
+
+            //Module
+
+            //ParStructure
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure_Ids) })";
+            }
+
+            if (form.ParStructure1_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure1_Ids) })";
+            }
+
+            //Grupo de empresa
+            if (form.ParStructure2_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure2_Ids) })";
+            }
+
+            //Regional
+            if (form.ParStructure3_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure3_Ids) })";
+            }
+
+            //Grupo de Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $" AND PCG.Id IN ({ string.Join(",", form.ParClusterGroup_Ids) })";
+            }
+
+            //Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+                whereCluster = $" AND PCL.Id IN ({ string.Join(",", form.ParCluster_Ids) })";
+
 
             using (var factory = new Factory("DefaultConnection"))
             {
@@ -187,14 +356,26 @@ namespace SgqSystem.Controllers.Api.Formulario
                             AND (PD.Parent_Id IS not NULL OR PD.Parent_Id <> 0)  ";
                 }
 
-                if(form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
+                if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
                 {
-                    sqlDepartamentoPelaHash += $@"AND ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)})";
+                    sqlDepartamentoPelaHash += $@" AND PC.Id IN ({string.Join(",", form.ParCompany_Ids)})";
                 }
 
-                var query = $@"SELECT DISTINCT TOP 500 PD.Hash,PD.Id,PD.Name  FROM ParDepartment PD 
+
+                var query = $@"SELECT DISTINCT TOP 500 PD.Hash,PD.Id,PD.Name 
+                FROM ParDepartment PD WITH (NOLOCK)
+                LEFT JOIN ParEvaluationXDepartmentXCargo PEDC WITH (NOLOCK) on (PEDC.ParDepartment_Id = PD.Id OR PEDC.ParDepartment_Id IS NULL) AND PEDC.IsActive = 1
+                LEFT JOIN ParCompany PC WITH (NOLOCK) on (PEDC.ParCompany_Id = PC.Id OR PEDC.ParCompany_Id IS NULL) AND PEDC.IsActive = 1
+                LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PC.Id = PCXS.ParCompany_Id AND PCXS.Active = 1
+                LEFT JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
+                LEFT JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.ID
+                LEFT JOIN ParCluster PCL WITH (NOLOCK) on (PCL.Id = PEDC.ParCluster_Id OR PEDC.ParCluster_Id IS NULL)
+                LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) on PCG.Id = PCL.ParClusterGroup_Id
                 WHERE 1=1 
                 AND PD.Active = 1 
+                {whereClusterGroup}
+                {whereCluster}
+                {whereStructure}
                 AND PD.Name like '%{search}%'
                 AND PD.Parent_Id IS NOT NULL " + sqlDepartamentoPelaHash;
 
@@ -208,6 +389,61 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredParCargo")]
         public List<Select3ViewModel> GetFilteredParCargo(string search, [FromBody] DataCarrierFormularioNew form)
         {
+
+            var sqlParCompany = "";
+            var whereClusterGroup = "";
+            var whereStructure = "";
+            var whereCluster = "";
+
+            //Module
+
+            //ParStructure
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure_Ids) })";
+            }
+
+            if (form.ParStructure1_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure1_Ids) })";
+            }
+
+            //Grupo de empresa
+            if (form.ParStructure2_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure2_Ids) })";
+            }
+
+            //Regional
+            if (form.ParStructure3_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure3_Ids) })";
+            }
+
+            //Grupo de Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $" AND PCG.Id IN ({ string.Join(",", form.ParClusterGroup_Ids) })";
+            }
+
+            //Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+                whereCluster = $" AND PCL.Id IN ({ string.Join(",", form.ParCluster_Ids) })";
+
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                sqlParCompany = $@" AND PCN.Id in ({string.Join(",", form.ParCompany_Ids)}) ";
+            }
+
+
             using (var factory = new Factory("DefaultConnection"))
             {
                 var retornoFormulario = new FormularioViewModel();
@@ -216,18 +452,28 @@ namespace SgqSystem.Controllers.Api.Formulario
                 var parDepartment_Ids = form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList();
 
 
-
                 var sqlParDepartment = "";
+
                 if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)
                 {
                     sqlParDepartment = $@" AND PCXD.ParDepartment_Id IN ({string.Join(",", parDepartment_Ids)})";
                 }
 
-                var query = $@"SELECT DISTINCT TOP 500 PC.Id,PC.Name FROM ParCargo PC
-                        LEFT JOIN ParCargoXDepartment PCXD ON PCXD.ParCargo_Id = PC.Id
+                var query = $@"SELECT DISTINCT TOP 500 PC.Id,PC.Name FROM ParCargo PC WITH (NOLOCK)
+                        LEFT JOIN ParCargoXDepartment PCXD WITH (NOLOCK) ON PCXD.ParCargo_Id = PC.Id
+                        LEFT JOIN ParEvaluationXDepartmentXCargo PEDC WITH (NOLOCK) on (PEDC.ParDepartment_Id = PCXD.ParDepartment_Id OR PEDC.ParDepartment_Id IS NULL) AND PEDC.IsActive = 1
+                        LEFT JOIN ParCompany PCN WITH (NOLOCK) on (PEDC.ParCompany_Id = PC.Id OR PEDC.ParCompany_Id IS NULL) AND PEDC.IsActive = 1
+                        LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PC.Id = PCXS.ParCompany_Id AND PCXS.Active = 1
+                        LEFT JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
+                        LEFT JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.ID
+                        LEFT JOIN ParCluster PCL WITH (NOLOCK) on (PCL.Id = PEDC.ParCluster_Id OR PEDC.ParCluster_Id IS NULL)
+                        LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) on PCG.Id = PCL.ParClusterGroup_Id
                         WHERE 1 = 1
                         AND PC.Name like '%{search}%'
-                        {sqlParDepartment}";
+                        { sqlParDepartment }
+                        { whereClusterGroup }
+                        { whereCluster }
+                        { whereStructure }";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
@@ -239,6 +485,62 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredParLevel1")]
         public List<Select3ViewModel> GetFilteredParLevel1(string search, [FromBody] DataCarrierFormularioNew form)
         {
+
+            var sqlParCompany = "";
+            var whereClusterGroup = "";
+            var whereStructure = "";
+            var whereCluster = "";
+
+            //Module
+
+            //ParStructure
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure_Ids) })";
+            }
+
+            if (form.ParStructure1_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure1_Ids) })";
+            }
+
+            //Grupo de empresa
+            if (form.ParStructure2_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure2_Ids) })";
+            }
+
+            //Regional
+            if (form.ParStructure3_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure3_Ids) })";
+            }
+
+            //Grupo de Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $" AND PCG.Id IN ({ string.Join(",", form.ParClusterGroup_Ids) })";
+            }
+
+            //Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+                whereCluster = $" AND PCL.Id IN ({ string.Join(",", form.ParCluster_Ids) })";
+
+            //Unidade
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                sqlParCompany = $@" AND PC.Id in ({string.Join(",", form.ParCompany_Ids)}) ";
+            }
+
+
             using (var factory = new Factory("DefaultConnection"))
             {
                 var retornoFormulario = new FormularioViewModel();
@@ -247,18 +549,28 @@ namespace SgqSystem.Controllers.Api.Formulario
                 retornoFormulario.ParCargos = GetParCargos(form, factory, form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList());
                 var parDepartment_Ids = form.ParSecao_Ids.Length > 0 ? form.ParSecao_Ids.ToList() : retornoFormulario.ParSecoes?.Select(x => x.Id).ToList();
 
-                string sqlFilter = "";
                 string sqlWhereFilter = "";
+
                 if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)
                 {
-                    sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel1_Id = PL1.Id ";
                     sqlWhereFilter += $@"AND (PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)}) OR PVP.ParDepartment_Id IS NULL)";
                 }
+
                 var query = $@"SELECT DISTINCT TOP 500 PL1.ID, PL1.NAME 
-                                FROM parLevel1 PL1 
-                                {sqlFilter}
+                                FROM parLevel1 PL1  
+                                LEFT JOIN ParVinculoPeso PVP WITH (NOLOCK) ON PVP.ParLevel1_Id = PL1.Id 
+                                LEFT JOIN ParCompany PC WITH (NOLOCK) on (PVP.ParCompany_Id = PC.Id OR PVP.ParCompany_Id IS NULL) AND PVP.IsActive = 1
+                                LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PC.Id = PCXS.ParCompany_Id AND PCXS.Active = 1
+                                LEFT JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
+                                LEFT JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.ID
+                                LEFT JOIN ParCluster PCL WITH (NOLOCK) on (PCL.Id = PVP.ParCluster_Id OR PVP.ParCluster_Id IS NULL)
+                                LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) on PCG.Id = PCL.ParClusterGroup_Id
                                 WHERE 1 = 1
-                                {sqlWhereFilter}
+                                { sqlWhereFilter }
+                                { sqlParCompany }
+                                { whereClusterGroup }
+                                { whereStructure }
+                                { whereCluster }
                                 AND PL1.ISACTIVE = 1
                                 AND Pl1.Name like '%{search}%'";
 
@@ -272,6 +584,61 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredParLevel2")]
         public List<Select3ViewModel> GetFilteredParLevel2(string search, [FromBody] DataCarrierFormularioNew form)
         {
+
+            var sqlParCompany = "";
+            var whereClusterGroup = "";
+            var whereStructure = "";
+            var whereCluster = "";
+
+            //Module
+
+            //ParStructure
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure_Ids) })";
+            }
+
+            if (form.ParStructure1_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure1_Ids) })";
+            }
+
+            //Grupo de empresa
+            if (form.ParStructure2_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure2_Ids) })";
+            }
+
+            //Regional
+            if (form.ParStructure3_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure3_Ids) })";
+            }
+
+            //Grupo de Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $" AND PCG.Id IN ({ string.Join(",", form.ParClusterGroup_Ids) })";
+            }
+
+            //Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+                whereCluster = $" AND PCL.Id IN ({ string.Join(",", form.ParCluster_Ids) })";
+
+            //Unidade
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                sqlParCompany = $@" AND PC.Id in ({string.Join(",", form.ParCompany_Ids)}) ";
+            }
+
             using (var factory = new Factory("DefaultConnection"))
             {
                 var retornoFormulario = new FormularioViewModel();
@@ -288,11 +655,25 @@ namespace SgqSystem.Controllers.Api.Formulario
                 string sqlFilter = "";
                 if (parLevel1_Ids.Count > 0)
                 {
-                    sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel2_Id = PL2.Id
-                                WHERE PVP.ParLevel1_Id IN ({string.Join(",", parLevel1_Ids)}) OR PVP.ParLevel1_Id IS NULL";
+                    sqlFilter = $@"  WHERE PVP.ParLevel1_Id IN ({string.Join(",", parLevel1_Ids)}) OR PVP.ParLevel1_Id IS NULL";
                 }
 
-                var query = $@"SELECT DISTINCT TOP 500 PL2.ID, PL2.NAME FROM parLevel2 PL2 {sqlFilter}
+                var query = $@"SELECT DISTINCT TOP 500 PL2.ID, PL2.NAME 
+                FROM parLevel2 PL2 WITH (NOLOCK) 
+                LEFT JOIN ParVinculoPeso PVP WITH (NOLOCK) ON PVP.ParLevel2_Id = PL2.Id
+                LEFT JOIN ParCompany PC WITH (NOLOCK) on (PVP.ParCompany_Id = PC.Id OR PVP.ParCompany_Id IS NULL) AND PVP.IsActive = 1
+                LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PC.Id = PCXS.ParCompany_Id AND PCXS.Active = 1
+                LEFT JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
+                LEFT JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.ID
+                LEFT JOIN ParCluster PCL WITH (NOLOCK) on (PCL.Id = PVP.ParCluster_Id OR PVP.ParCluster_Id IS NULL)
+                LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) on PCG.Id = PCL.ParClusterGroup_Id
+
+                { sqlFilter }
+                { sqlParCompany }
+                { whereClusterGroup }
+                { whereStructure }
+                { whereCluster }
+
                 AND Pl2.Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
@@ -305,6 +686,61 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredParLevel3")]
         public List<Select3ViewModel> GetFilteredParLevel3(string search, [FromBody] DataCarrierFormularioNew form)
         {
+            var sqlParCompany = "";
+            var whereClusterGroup = "";
+            var whereStructure = "";
+            var whereCluster = "";
+
+            //Module
+
+            //ParStructure
+            if (form.ParStructure_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure_Ids) })";
+            }
+
+            if (form.ParStructure1_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure1_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure1_Ids) })";
+            }
+
+            //Grupo de empresa
+            if (form.ParStructure2_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure2_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure2_Ids) })";
+            }
+
+            //Regional
+            if (form.ParStructure3_Ids.Length > 0)
+            {
+                whereStructure = $@" AND PCXS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS.Id IN ({ string.Join(",", form.ParStructure3_Ids) }) 
+                 OR  PS1.Id IN ({ string.Join(",", form.ParStructure3_Ids) })";
+            }
+
+            //Grupo de Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $" AND PCG.Id IN ({ string.Join(",", form.ParClusterGroup_Ids) })";
+            }
+
+            //Cluster
+            if (form.ParClusterGroup_Ids.Length > 0)
+                whereCluster = $" AND PCL.Id IN ({ string.Join(",", form.ParCluster_Ids) })";
+
+            //Unidade
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                sqlParCompany = $@" AND PC.Id in ({string.Join(",", form.ParCompany_Ids)}) ";
+            }
+
+
             using (var factory = new Factory("DefaultConnection"))
             {
                 var retornoFormulario = new FormularioViewModel();
@@ -322,7 +758,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 string sqlFilter = "";
                 if (parLevel1_Ids.Count > 0 || parLevel2_Ids.Count > 0)
                 {
-                    sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel3_Id = PL3.Id WHERE 1 = 1 ";
+                    sqlFilter = $@"";
                     if (parLevel1_Ids.Count > 0)
                     {
                         sqlFilter += $@" AND PVP.ParLevel1_Id IN ({ string.Join(",", parLevel1_Ids)}) OR PVP.ParLevel1_Id IS NULL ";
@@ -333,7 +769,20 @@ namespace SgqSystem.Controllers.Api.Formulario
                     }
                 }
 
-                var query = $@"SELECT DISTINCT TOP 500 PL3.ID, PL3.NAME FROM parLevel3 PL3 {sqlFilter}
+                var query = $@"SELECT DISTINCT TOP 500 PL3.ID, PL3.NAME 
+                FROM parLevel3 PL3 WITH (NOLOCK) 
+                LEFT JOIN ParVinculoPeso PVP WITH (NOLOCK) ON PVP.ParLevel3_Id = PL3.Id
+                LEFT JOIN ParCompany PC WITH (NOLOCK) on (PVP.ParCompany_Id = PC.Id OR PVP.ParCompany_Id IS NULL) AND PVP.IsActive = 1
+                LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PC.Id = PCXS.ParCompany_Id AND PCXS.Active = 1
+                LEFT JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
+                LEFT JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.ID
+                LEFT JOIN ParCluster PCL WITH (NOLOCK) on (PCL.Id = PVP.ParCluster_Id OR PVP.ParCluster_Id IS NULL)
+                LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) on PCG.Id = PCL.ParClusterGroup_Id
+                { sqlFilter }
+                { sqlParCompany }
+                { whereClusterGroup }
+                { whereStructure }
+                { whereCluster }
                 AND Pl3.Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
@@ -350,13 +799,13 @@ namespace SgqSystem.Controllers.Api.Formulario
             {
                 var wSG = "";
 
-                if(form.ParStructureGroup_Ids.Length > 0)
+                if (form.ParStructureGroup_Ids.Length > 0)
                 {
                     wSG += "AND ParStructureGroup_Id IN(" + string.Join(",", form.ParStructureGroup_Ids) + ") ";
                 }
 
                 var query = $@"
-                    SELECT DISTINCT TOP 500 ID, Name FROM ParStructure
+                    SELECT DISTINCT TOP 500 ID, Name FROM ParStructure WITH (NOLOCK)
                     WHERE 1=1
                     AND Name like '%{search}%'
                     {wSG}";
@@ -368,13 +817,88 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
-        [Route("GetFilteredParStructureRegional")]
-        public List<Select3ViewModel> GetFilteredParStructureRegional(string search, [FromBody] DataCarrierFormularioNew form)
+        [Route("GetFilteredParStructure1")]
+        public List<Select3ViewModel> GetFilteredParStructure1(string search, [FromBody] DataCarrierFormularioNew form)
         {
+
+            var whereStructParent = "";
+
+            if (form.ParStructure2_Ids.Length > 0)
+                whereStructParent = $" AND Structure2.Id IN ({string.Join(",", form.ParStructure2_Ids)})";
+
+            if (form.ParStructure3_Ids.Length > 0)
+                whereStructParent += $" AND Structure3.Id IN ({string.Join(",", form.ParStructure3_Ids)})";
+
+
             using (var factory = new Factory("DefaultConnection"))
             {
-                var query = $@"SELECT DISTINCT TOP 500 ID, Name FROM ParStructure
-                    WHERE ParStructureGroup_Id = 2 AND Name like '%{search}%'";
+
+                var query = $@"
+                            SELECT DISTINCT Structure1.* FROM (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 1) Structure1 
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 2) Structure2 on Structure1.Id = Structure2.ParStructureParent_Id
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 3) Structure3 on Structure2.Id = Structure3.ParStructureParent_Id
+                            WHERE Structure1.ParStructureGroup_Id = 1 
+                            {whereStructParent}
+                            AND Structure1.Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredParStructure2")]
+        public List<Select3ViewModel> GetFilteredParStructure2(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            var whereStructParent = "";
+
+            if (form.ParStructure1_Ids.Length > 0)
+                whereStructParent = $" AND Structure1.Id IN ({string.Join(",", form.ParStructure1_Ids)})";
+
+            if (form.ParStructure3_Ids.Length > 0)
+                whereStructParent += $" AND Structure3.Id IN ({string.Join(",", form.ParStructure3_Ids)})";
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                var query = $@"
+                            SELECT DISTINCT Structure2.* FROM (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 1) Structure1 
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 2) Structure2 on Structure1.Id = Structure2.ParStructureParent_Id
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 3) Structure3 on Structure2.Id = Structure3.ParStructureParent_Id
+                            WHERE Structure2.ParStructureGroup_Id = 2
+                            {whereStructParent}
+                            AND Structure1.Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredParStructure3")]
+        public List<Select3ViewModel> GetFilteredParStructure3(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            var whereStructParent = "";
+
+            if (form.ParStructure1_Ids.Length > 0)
+                whereStructParent = $" AND Structure1.Id IN ({string.Join(",", form.ParStructure1_Ids)})";
+
+            if (form.ParStructure2_Ids.Length > 0)
+                whereStructParent += $" AND Structure2.Id IN ({string.Join(",", form.ParStructure2_Ids)})";
+
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                var query = $@"
+                            SELECT DISTINCT Structure3.* FROM (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 1) Structure1 
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 2) Structure2 on Structure1.Id = Structure2.ParStructureParent_Id
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 3) Structure3 on Structure2.Id = Structure3.ParStructureParent_Id
+                            WHERE Structure3.ParStructureGroup_Id = 3
+                            {whereStructParent}
+                            AND Structure1.Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
@@ -388,7 +912,7 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             using (var factory = new Factory("DefaultConnection"))
             {
-                var query = $@"SELECT DISTINCT TOP 500 ID, Name FROM ParStructureGroup
+                var query = $@"SELECT DISTINCT TOP 500 ID, Name FROM ParStructureGroup WITH (NOLOCK)
                     WHERE Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
@@ -403,7 +927,7 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             using (var factory = new Factory("DefaultConnection"))
             {
-                var query = $@"SELECT DISTINCT TOP 500 Id, Name FROM ParModule
+                var query = $@"SELECT DISTINCT TOP 500 Id, Name FROM ParModule WITH (NOLOCK)
                     WHERE IsActive = 1 AND Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<ParModule>(query).ToList();
@@ -423,7 +947,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             SELECT DISTINCT TOP 500 
                             cast(CONVERT(DECIMAL(18,2), Weight) as varchar(255)) AS Id, 
                             cast(CONVERT(DECIMAL(18,2), Weight) as varchar(255)) AS Name
-                            FROM parlevel3level2 WHERE weight like '%{search}%' AND IsActive = 1 order by Id asc ";
+                            FROM parlevel3level2 WITH (NOLOCK) WHERE weight like '%{search}%' AND IsActive = 1 order by Id asc ";
 
                 var retorno = factory.SearchQuery<Peso>(query).ToList();
 
@@ -438,7 +962,7 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             using (var factory = new Factory("DefaultConnection"))
             {
-                var query = $@"SELECT DISTINCT TOP 500 Id, Name from UserSgq Where role like '%Supervisor%' AND Name like '%{search}%'";
+                var query = $@"SELECT DISTINCT TOP 500 Id, Name from UserSgq WITH (NOLOCK) Where role like '%Supervisor%' AND Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<UserSgq>(query).ToList();
 
@@ -446,7 +970,7 @@ namespace SgqSystem.Controllers.Api.Formulario
             }
         }
 
-        
+
 
         [HttpPost]
         [Route("GetFilteredUserSgqByCompany")]
@@ -459,10 +983,10 @@ namespace SgqSystem.Controllers.Api.Formulario
 
             using (var factory = new Factory("DefaultConnection"))
             {
-                if(usuarios_Ids.Count > 0)
-                     query = $@"SELECT DISTINCT TOP 500 Id, Name from UserSgq Where Name like '%{search}%' AND ParCompany_Id IN(" + string.Join(",", usuarios_Ids) + ")";
+                if (usuarios_Ids.Count > 0)
+                    query = $@"SELECT DISTINCT TOP 500 Id, Name from UserSgq WITH (NOLOCK) Where Name like '%{search}%' AND ParCompany_Id IN(" + string.Join(",", usuarios_Ids) + ")";
                 else
-                     query = $@"SELECT DISTINCT TOP 500 Id, Name from UserSgq Where Name like '%{search}%'";
+                    query = $@"SELECT DISTINCT TOP 500 Id, Name from UserSgq WITH (NOLOCK) Where Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<UserSgq>(query).ToList();
 
@@ -500,7 +1024,7 @@ namespace SgqSystem.Controllers.Api.Formulario
 
         private List<ParStructure> GetParStructure(DataCarrierFormularioNew form, Factory factory)
         {
-            var sql = "Select Id, Name from ParStructure where Active = 1";
+            var sql = "Select Id, Name from ParStructure WITH (NOLOCK) where Active = 1";
 
             var retorno = factory.SearchQuery<ParStructure>(sql).ToList();
 
@@ -509,7 +1033,7 @@ namespace SgqSystem.Controllers.Api.Formulario
 
         private List<ParStructure> GetParStructureRegional(DataCarrierFormularioNew form, Factory factory)
         {
-            var sql = "Select Id, Name from ParStructure where ParStructureGroup_Id = 2 AND Active = 1";
+            var sql = "Select Id, Name from ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 2 AND Active = 1";
 
             var retorno = factory.SearchQuery<ParStructure>(sql).ToList();
 
@@ -518,7 +1042,7 @@ namespace SgqSystem.Controllers.Api.Formulario
 
         private List<ParGroupParLevel1> GetParGroupParLevel1s(DataCarrierFormularioNew form, Factory factory)
         {
-            var sql = "Select Id, Name from ParGroupParLevel1 where AND Active = 1";
+            var sql = "Select Id, Name from ParGroupParLevel1 WITH (NOLOCK) where AND Active = 1";
 
             var retorno = factory.SearchQuery<ParGroupParLevel1>(sql).ToList();
 
@@ -532,10 +1056,8 @@ namespace SgqSystem.Controllers.Api.Formulario
 
             var query = $@"SELECT
                         	PC.Id, PC.Name
-                        FROM ParCompany PC
-                        LEFT JOIN ParCompanyXStructure PCXS
-                        	ON PC.Id = PCXS.ParCompany_Id
-                        		AND PCXS.Active = 1
+                        FROM ParCompany PC WITH (NOLOCK)
+                        LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PC.Id = PCXS.ParCompany_Id AND PCXS.Active = 1
                         WHERE 1 = 1
                         AND PC.IsActive = 1
                         --Filtros
@@ -563,7 +1085,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 sqlParCompany = $@" AND PD.ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)}) ";
             }
 
-            var query = $@"SELECT Distinct PD.Id,PD.Name FROM ParDepartment PD 
+            var query = $@"SELECT Distinct PD.Id,PD.Name FROM ParDepartment PD WITH (NOLOCK)
                             WHERE 1=1 
                             AND PD.Active = 1 
                             AND (PD.Parent_Id IS NULL OR PD.Parent_Id = 0) " + sqlParCompany;
@@ -589,7 +1111,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                              {sqlDepartamentoPelaHash})";
             }
 
-            var query = $@"SELECT Distinct PD.Id,PD.Name  FROM ParDepartment PD 
+            var query = $@"SELECT Distinct PD.Id,PD.Name  FROM ParDepartment PD WITH (NOLOCK)
                 WHERE 1=1 
                 AND PD.Active = 1 
                 AND PD.Parent_Id IS NOT NULL " + sqlParDepartment;
@@ -607,8 +1129,8 @@ namespace SgqSystem.Controllers.Api.Formulario
                 sqlParDepartment = $@" AND PCXD.ParDepartment_Id IN ({string.Join(",", parDepartment_Ids)})";
             }
 
-            var query = $@"SELECT Distinct PC.Id,PC.Name FROM ParCargo PC
-                        LEFT JOIN ParCargoXDepartment PCXD ON PCXD.ParCargo_Id = PC.Id
+            var query = $@"SELECT Distinct PC.Id,PC.Name FROM ParCargo PC WITH (NOLOCK)
+                        LEFT JOIN ParCargoXDepartment PCXD WITH (NOLOCK) ON PCXD.ParCargo_Id = PC.Id
                         WHERE 1 = 1
                         {sqlParDepartment}";
 
@@ -623,11 +1145,11 @@ namespace SgqSystem.Controllers.Api.Formulario
             string sqlFilter = "";
             if (form.ParCompany_Ids.Length > 0 && parDepartment_Ids.Count > 0)
             {
-                sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel1_Id = PL1.Id WHERE 1 = 1 ";
+                sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP WITH (NOLOCK) ON PVP.ParLevel1_Id = PL1.Id WHERE 1 = 1 ";
                 sqlFilter += $@"AND (PVP.ParDepartment_Id IN ({ string.Join(",", parDepartment_Ids)})";
                 sqlFilter += $@"OR PVP.ParDepartment_Id IS NULL) ";
             }
-            var query = "SELECT DISTINCT PL1.ID, PL1.NAME FROM parLevel1 PL1 " + sqlFilter;
+            var query = "SELECT DISTINCT PL1.ID, PL1.NAME FROM parLevel1 PL1 WITH (NOLOCK)" + sqlFilter;
 
             var retorno = factory.SearchQuery<ParLevel1>(query).ToList();
 
@@ -639,11 +1161,11 @@ namespace SgqSystem.Controllers.Api.Formulario
             string sqlFilter = "";
             if (parLevel1_Ids.Count > 0)
             {
-                sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel2_Id = PL2.Id
+                sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP WITH (NOLOCK) ON PVP.ParLevel2_Id = PL2.Id
                                 WHERE PVP.ParLevel1_Id IN ({string.Join(",", parLevel1_Ids)})";
             }
 
-            var query = "SELECT DISTINCT PL2.ID, PL2.NAME FROM parLevel2 PL2 " + sqlFilter;
+            var query = "SELECT DISTINCT PL2.ID, PL2.NAME FROM parLevel2 PL2 WITH (NOLOCK)" + sqlFilter;
 
             var retorno = factory.SearchQuery<ParLevel2>(query).ToList();
 
@@ -656,7 +1178,7 @@ namespace SgqSystem.Controllers.Api.Formulario
             string sqlFilter = "";
             if (parLevel1_Ids.Count > 0 || parLevel2_Ids.Count > 0)
             {
-                sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP ON PVP.ParLevel2_Id = PL3.Id WHERE 1 = 1 ";
+                sqlFilter = $@" LEFT JOIN ParVinculoPeso PVP WITH (NOLOCK) ON PVP.ParLevel2_Id = PL3.Id WHERE 1 = 1 ";
                 if (parLevel1_Ids.Count > 0)
                 {
                     sqlFilter += $@"AND PVP.ParLevel1_Id IN ({ string.Join(",", parLevel1_Ids)})";
@@ -667,7 +1189,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 }
             }
 
-            var query = "SELECT DISTINCT PL3.ID, PL3.NAME FROM parLevel3 PL3 " + sqlFilter;
+            var query = "SELECT DISTINCT PL3.ID, PL3.NAME FROM parLevel3 PL3 WITH (NOLOCK) " + sqlFilter;
 
             var retorno = factory.SearchQuery<ParLevel3>(query).ToList();
 

@@ -22,45 +22,78 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             var whereDepartment = "";
             var whereSecao = "";
             var whereCargo = "";
-            var whereStructure = "";
+            var whereStructure3 = "";
             var whereUnit = "";
             var whereCluster = "";
             var whereClusterGroup = "";
 
+            var whereModulo = "";
+            var whereStructure2 = "";
+            var whereCriticalLevel = "";
+            var whereParLevel1 = "";
+            var whereParLevel2 = "";
+            var whereParLevel3 = "";
+
             if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment = $@" AND L2.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
+                whereDepartment = $@" AND L2.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) --Centro de custo";
             }
 
             if (form.ParSecao_Ids.Length > 0)
             {
-                whereSecao = $@" AND L2.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
+                whereSecao = $@" AND L2.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) --Seção";
             }
 
             if (form.ParCargo_Ids.Length > 0)
             {
-                whereCargo = $@" AND L2.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
+                whereCargo = $@" AND L2.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) --Cargo";
             }
 
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
-                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) --Unidade";
             }
 
             if (form.ParClusterGroup_Ids.Length > 0)
             {
-                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ") --Grupo de cluster";
             }
 
             if (form.ParCluster_Ids.Length > 0)
             {
-                whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
+                whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ") --Cluster";
             }
 
-            if (form.ParStructure_Ids.Length > 0)
+            if (form.ParStructure3_Ids.Length > 0)
             {
-                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+                whereStructure3 = $@"AND L2.Regional in ({string.Join(",", form.ParStructure3_Ids)}) --Regional";
             }
+
+            if (form.ParModule_Ids.Length > 0)
+            {
+                whereModulo = ""; //Esperando passar o documento de prioridades do
+            }
+            if (form.ParStructureGroup_Ids.Length > 0)
+            {
+                whereStructure2 = $@"AND L2.GrupoDeEmpresa in ({ string.Join(",", form.ParStructure2_Ids)}) --Grupo De Empresa";
+            }
+            if (form.ParCriticalLevel_Ids.Length > 0)
+            {
+                whereCriticalLevel = "";
+            }
+            if (form.ParLevel1_Ids.Length > 0)
+            {
+                whereParLevel1 = "";
+            }
+            if (form.ParLevel2_Ids.Length > 0)
+            {
+                whereParLevel2 = "";
+            }
+            if (form.ParLevel3_Ids.Length > 0)
+            {
+                whereParLevel3 = "";
+            }
+
 
             var query = $@"
                 
@@ -84,7 +117,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 					LEft Join (select * from ParStructure where ParStructureGroup_Id = 1) Holding on L2.Holding = Holding.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                    {whereStructure}
+                    {whereStructure3}
                     {whereUnit}
                     {whereDepartment}
                     {whereSecao}
@@ -110,7 +143,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             var whereDepartment = "";
             var whereSecao = "";
             var whereCargo = "";
-            var whereStructure = "";
+            var whereStructure3 = "";
             var whereUnit = "";
             var whereCluster = "";
             var whereClusterGroup = "";
@@ -145,9 +178,9 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
             }
 
-            if (form.ParStructure_Ids.Length > 0)
+            if (form.ParStructure3_Ids.Length > 0)
             {
-                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+                whereStructure3 = $@"AND L2.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
             }
 
             var query = $@"
@@ -173,7 +206,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 					LEft Join (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on L2.GrupoDeEmpresa = GrupoDeEmpresa.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                    {whereStructure}
+                    {whereStructure3}
                     {whereUnit}
                     {whereDepartment}
                     {whereSecao}
@@ -200,7 +233,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             var whereDepartment = "";
             var whereSecao = "";
             var whereCargo = "";
-            var whereStructure = "";
+            var whereStructure3 = "";
             var whereUnit = "";
             var whereCluster = "";
             var whereClusterGroup = "";
@@ -235,9 +268,9 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
             }
 
-            if (form.ParStructure_Ids.Length > 0)
+            if (form.ParStructure3_Ids.Length > 0)
             {
-                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+                whereStructure3 = $@"AND L2.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
             }
 
             var query = $@"
@@ -264,7 +297,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on L2.Regional = Regional.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                    {whereStructure}
+                    {whereStructure3}
                     {whereUnit}
                     {whereDepartment}
                     {whereSecao}
@@ -296,7 +329,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             var whereDepartment = "";
             var whereSecao = "";
             var whereCargo = "";
-            var whereStructure = "";
+            var whereStructure3 = "";
             var whereUnit = "";
             //var whereShift = "";
             var whereCluster = "";
@@ -346,9 +379,9 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
             }
 
-            if (form.ParStructure_Ids.Length > 0)
+            if (form.ParStructure3_Ids.Length > 0)
             {
-                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+                whereStructure3 = $@"AND L2.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
             }
 
             //if (form.ParCriticalLevel_Ids.Length > 0)
@@ -387,7 +420,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 
-                    {whereStructure}
+                    {whereStructure3}
                     {whereUnit}
                     {whereDepartment}
                     {whereSecao}
@@ -416,7 +449,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             var whereDepartment = "";
             var whereSecao = "";
             var whereCargo = "";
-            var whereStructure = "";
+            var whereStructure3 = "";
             var whereUnit = "";
             //var whereShift = "";
             var whereCluster = "";
@@ -466,9 +499,9 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
             }
 
-            if (form.ParStructure_Ids.Length > 0)
+            if (form.ParStructure3_Ids.Length > 0)
             {
-                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+                whereStructure3 = $@"AND L2.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
             }
 
             //if (form.ParCriticalLevel_Ids.Length > 0)
@@ -520,7 +553,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 AND L2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
                 AND C.Name  = '{ form.Param["unitName"] }'
                 
-                {whereStructure}
+                {whereStructure3}
                 {whereUnit}
                 {whereDepartment}
                 {whereSecao}
@@ -1062,7 +1095,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             var whereDepartmentFiltro = "";
             var whereSecao = "";
             var whereCargo = "";
-            var whereStructure = "";
+            var whereStructure3 = "";
             var whereUnit = "";
             //var whereShift = "";
             var whereCluster = "";
@@ -1120,9 +1153,9 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
             }
 
-            if (form.ParStructure_Ids.Length > 0)
+            if (form.ParStructure3_Ids.Length > 0)
             {
-                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+                whereStructure3 = $@"AND L2.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
             }
 
             //if (form.ParCriticalLevel_Ids.Length > 0)
@@ -1170,7 +1203,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 		            AND C.Name = '{form.Param["unitName"] }'
                     
 
-                {whereStructure}
+                {whereStructure3}
                 {whereUnit}
                 {whereDepartment}
                 {whereDepartmentFiltro}
@@ -1503,7 +1536,7 @@ DROP TABLE #AMOSTRATIPO4 ";
             var whereDepartmentFiltro = "";
             var whereSecao = "";
             var whereCargo = "";
-            var whereStructure = "";
+            var whereStructure3 = "";
             var whereUnit = "";
             //var whereShift = "";
             var whereCluster = "";
@@ -1558,9 +1591,9 @@ DROP TABLE #AMOSTRATIPO4 ";
                 whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
             }
 
-            if (form.ParStructure_Ids.Length > 0)
+            if (form.ParStructure3_Ids.Length > 0)
             {
-                whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+                whereStructure3 = $@"AND L2.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
             }
 
             //if (form.ParCriticalLevel_Ids.Length > 0)
@@ -1641,7 +1674,7 @@ DROP TABLE #AMOSTRATIPO4 ";
             var whereDepartmentFiltro = "";
             var whereSecao = "";
             var whereCargo = "";
-            var whereStructure = "";
+            var whereStructure3 = "";
             var whereUnit = "";
             //var whereShift = "";
             var whereCluster = "";
@@ -1696,9 +1729,9 @@ DROP TABLE #AMOSTRATIPO4 ";
                 whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
             }
 
-            if (form.ParStructure_Ids.Length > 0)
+            if (form.ParStructure3_Ids.Length > 0)
             {
-                whereStructure = $@"AND L3.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+                whereStructure3 = $@"AND L3.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
             }
 
             //if (form.ParCriticalLevel_Ids.Length > 0)
