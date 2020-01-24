@@ -1,4 +1,5 @@
-﻿using Helper;
+﻿using DTO;
+using Helper;
 using PlanoDeAcaoMVC.MapperConfig;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace PlanoDeAcaoMVC
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             AutoMapperConfig.RegisterMappings();
+
+            GlobalConfig.VerifyConfig("DefaultConnection");
         }
     }
 }
