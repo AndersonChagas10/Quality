@@ -144,48 +144,64 @@ function voltarPlanejamentoColeta() {
     }
 }
 
+function verificaAlgumIndicadorClicado(levels1) {
+    if ($(levels1).hasClass('btn-success'))
+        return true;
+    else
+        return false;
+}
+
 var planejamento = {};
 function savePlanejar() {
+
     var levels1 = $('body [data-selects-indicador] button');
 
-    var todos = true;
-    $(levels1).each(function (i, o) {
-        if ($(o).hasClass('btn-default')) {
-            todos = false;
-            return false;
-        }
-    });
+    if (verificaAlgumIndicadorClicado(levels1)) {
 
-    planejamento.indicador_Id = undefined;
-    planejamento.indicador_Name = undefined;
-
-    if (todos != true) {
+        var todos = true;
         $(levels1).each(function (i, o) {
-            if ($(o).hasClass('btn-success')) {
-                planejamento.indicador_Id = $(o).attr('data-level1-id');
-                planejamento.indicador_Name = $(o).text();
-
-                if (!planejamentoIsValid())
-                    return false;
-
-                if (planejamento.parDepartment_Id > 0) {
-                    currentPlanejamento.push($.extend({}, planejamento));
-                    $('[data-save-planned]').html(renderPlanejamentos());
-                    saveInFilePlanejamento();
-                    changeStateButtonColetar();
-                }
+            if ($(o).hasClass('btn-default')) {
+                todos = false;
+                return false;
             }
         });
-    } else {
-        if (!planejamentoIsValid())
-            return false;
 
-        if (planejamento.parDepartment_Id > 0) {
-            currentPlanejamento.push($.extend({}, planejamento));
-            $('[data-save-planned]').html(renderPlanejamentos());
-            saveInFilePlanejamento();
-            changeStateButtonColetar();
+        planejamento.indicador_Id = undefined;
+        planejamento.indicador_Name = undefined;
+
+        if (todos != true) {
+            $(levels1).each(function (i, o) {
+                if ($(o).hasClass('btn-success')) {
+                    planejamento.indicador_Id = $(o).attr('data-level1-id');
+                    planejamento.indicador_Name = $(o).text();
+
+                    if (!planejamentoIsValid())
+                        return false;
+
+                    if (planejamento.parDepartment_Id > 0) {
+                        currentPlanejamento.push($.extend({}, planejamento));
+                        $('[data-save-planned]').html(renderPlanejamentos());
+                        saveInFilePlanejamento();
+                        changeStateButtonColetar();
+                    }
+                }
+            });
+        } else {
+            if (!planejamentoIsValid())
+                return false;
+
+            if (planejamento.parDepartment_Id > 0) {
+                currentPlanejamento.push($.extend({}, planejamento));
+                $('[data-save-planned]').html(renderPlanejamentos());
+                saveInFilePlanejamento();
+                changeStateButtonColetar();
+            }
         }
+
+    } else {
+        openMensagem("Selecione um ou mais indicadores para planejar", '#428bca', 'white');
+        closeMensagem(2000);
+        return false;
     }
 }
 
@@ -274,10 +290,6 @@ $('body').off('change', '[data-selects-cargo] select').on('change', '[data-selec
         var level1List = [];
         montarLevel1(level1List);
 
-        listaLevel1Selecionados = level1List;
-
-        //$('[data-selects-indicador]').html(criaHtmlSelect('Indicador:', retornaOptionsPeloArray(level1List, 'Id', 'Name', 'Selecione')));
-
         $('[data-selects-indicador]').html(criaHtmlButtonsIndicador('Indicador:', level1List));
     } else {
         planejamento.parCargo_Id = undefined;
@@ -286,27 +298,37 @@ $('body').off('change', '[data-selects-cargo] select').on('change', '[data-selec
 
 });
 
-//$('body').off('change', '[data-selects-indicador] select').on('change', '[data-selects-indicador] select', function (e) {
-//    var indicador_Id = $(this).val();
-
-//    if (indicador_Id > 0) {
-//        planejamento.indicador_Id = indicador_Id;
-//        planejamento.indicador_Name = $(this).find(':selected').text();
-//    } else {
-//        planejamento.indicador_Id = undefined;
-//        planejamento.indicador_Name = undefined;
-//    }
-//});
-
 function criaHtmlButtonsIndicador(titulo, level1List) {
     var htmlLevel1Button = "";
     htmlLevel1Button += '<label>Indicador:</label> <div class="form-group">';
+
+    htmlLevel1Button += '<div class="form-check">' +
+                            '<input type="checkbox" class="form-check-input" id="checkLevel1">' +
+                            '<label class="form-check-label" for="checkLevel1">Selecionar todos os indicadores:</label>' +
+                        '</div>';
+                        
     $(level1List).each(function (i, o) {
-        htmlLevel1Button += '<button type="button" data-level1-id="' + o.Id + '" onclick="flagSelectedLevel1(this)" class="btn btn-md btn-success">' + o.Name + '</button>'
+        htmlLevel1Button += '<button type="button" data-level1-id="' + o.Id + '" onclick="flagSelectedLevel1(this)" class="btn btn-md btn-default" style="margin: 5px;">' + o.Name + '</button>';
     });
     htmlLevel1Button += '</div>';
     return htmlLevel1Button;
 }
+
+$('body').off('click', '#checkLevel1').on('click', '#checkLevel1', function (e) {
+
+    if ($("#checkLevel1").is(":checked")) {
+        $($('body [data-selects-indicador] button')).each(function (i, o) {
+            $(o).removeClass('btn-default');
+            $(o).addClass('btn-success');
+        });
+    } else {
+        $($('body [data-selects-indicador] button')).each(function (i, o) {
+            $(o).removeClass('btn-success');
+            $(o).addClass('btn-default');
+        });
+    }
+});
+
 
 function flagSelectedLevel1(data) {
     if ($(data).hasClass('btn-success')) {
@@ -315,6 +337,12 @@ function flagSelectedLevel1(data) {
     } else {
         $(data).removeClass('btn-default');
         $(data).addClass('btn-success');
+    }
+
+    if (!$('body [data-selects-indicador] button').hasClass('btn-default')) {
+        $("#checkLevel1").trigger('click');
+    } else {
+        $("#checkLevel1").prop('checked', false);
     }
 }
 
