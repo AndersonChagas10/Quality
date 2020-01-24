@@ -113,7 +113,9 @@ namespace SgqSystem.Controllers
                         {
                             ViewBag.itemMenu = itensMenu.FirstOrDefault(i => i.Url != null && i.Url.ToUpperInvariant().Contains((controller + "/" + action).ToUpperInvariant()));
                             if (ViewBag.itemMenu == null)
-                                throw new Exception("Acesso Negado!");
+                            {
+                                filterContext.Result = new RedirectResult(Url.Action("AcessoNegado", "Error"));
+                            }
                         }
                     }
             }

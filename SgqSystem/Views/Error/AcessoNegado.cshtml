@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Acesso Negado";
+}
+
+<style>
+    #acessoNegado {
+        font-size: 40px;
+        margin-top: 50px;
+        padding: 100px 0 80px 0;
+    }
+
+    #fraseAlerta {
+        font-size: 25px;
+        color: black;
+        padding: 0 0 200px 0;
+    }
+
+    #acaoVoltar {
+        padding: 50px 0 0 0;
+    }
+</style>
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <div class="text-center alert-danger" id="acessoNegado">
+                                    Acesso Negado!
+                                </div>
+                                <div class="text-center alert-danger" id="fraseAlerta">
+                                    <div>
+                                        Você não tem permissão para acessar a página solicitada.
+                                    </div>
+                                    <div id="acaoVoltar">
+                                        <a href="javascript:history.back()">Voltar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
