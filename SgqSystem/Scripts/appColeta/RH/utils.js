@@ -50,22 +50,20 @@ function retornaOptions(lista, value, text, defaultText) {
     $(lista).each(function (i, o) {
         if (lista.length == 1) {
             html += '<option value="' + o[value] + '" selected>' + o[text] + '</option>';
-            if ($('[data-selects-cc]').val() != "") {
-                setTimeout(function () {
-                    $('body [data-selects-cc] select').trigger('change');
-                    if ($('body [data-selects-cc] select').length == 2) {
-                        var segundoSelect = $('body [data-selects-cc] select')[1];
-                        $(segundoSelect).trigger('change')
-                        $(segundoSelect).css('display', 'none');
-                    }
-                }, 1);
-            }
-            if ($('[data-selects-cargo]').val() != "") {
-                setTimeout(function () {
-                    $('body [data-selects-cargo] select').trigger('change');
-                    $('body [data-selects-cargo]').css('display', 'none');
-                }, 1);
-            }
+			
+			setTimeout(function () {
+				var selectCentroCusto = $('body [data-selects-cc] select')[0];
+				var selectSecao = $('body [data-selects-cc] select')[1];
+				var selectCargo = $('body [data-selects-cargo] select')[0];
+				
+				if(!!selectCargo && parseInt($(selectCentroCusto).val()) > 0){
+					$(selectCargo).trigger('change');
+				}else if(!!selectSecao && parseInt($(selectSecao).val()) > 0){
+					$(selectSecao).trigger('change');
+				}else if(!!selectCentroCusto && parseInt($(selectCentroCusto).val()) > 0){
+					$(selectCentroCusto).trigger('change');
+				}
+			}, 1);
         } else {
             html += '<option value="' + o[value] + '">' + o[text] + '</option>';
         }
