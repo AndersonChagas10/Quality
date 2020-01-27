@@ -51,7 +51,12 @@ function listarParFrequency() {
 
 		var frequency = {};
 
-		var htmlParFrequency = "";
+        var htmlParFrequency = "";
+
+        if (listaParFrequency.length == 1) {
+            getPlanejamentoPorFrequencia(listaParFrequency[0].Id);
+            return;
+        }
 
 		$(data).each(function (i, o) {
 
