@@ -42,37 +42,6 @@ function retornaOptionsPeloArray(lista, value, text, defaultText){
     return html;
 }
 
-function retornaOptions(lista, value, text, defaultText) {
-    var html = "";
-    if (typeof (defaultText) != 'undefined') {
-        html += '<option value="">' + defaultText + '</option>';
-    }
-    $(lista).each(function (i, o) {
-        if (lista.length == 1) {
-            html += '<option value="' + o[value] + '" selected>' + o[text] + '</option>';
-            if ($('[data-selects-cc]').val() != "") {
-                setTimeout(function () {
-                    $('body [data-selects-cc] select').trigger('change');
-                    if ($('body [data-selects-cc] select').length == 2) {
-                        var segundoSelect = $('body [data-selects-cc] select')[1];
-                        $(segundoSelect).trigger('change')
-                        $(segundoSelect).css('display', 'none');
-                    }
-                }, 1);
-            }
-            if ($('[data-selects-cargo]').val() != "") {
-                setTimeout(function () {
-                    $('body [data-selects-cargo] select').trigger('change');
-                    $('body [data-selects-cargo]').css('display', 'none');
-                }, 1);
-            }
-        } else {
-            html += '<option value="' + o[value] + '">' + o[text] + '</option>';
-        }
-    });
-    return html;
-}
-
 function criaHtmlSelect(titulo,options){
 	return '<div class="form-group">'+
 	'	<label>'+titulo+'</label>'+
