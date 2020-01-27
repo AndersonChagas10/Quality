@@ -27,7 +27,8 @@ namespace SgqSystem.Controllers.V2.Api
 
                 foreach (var item in listaParVinculoPesoClusterIds)
                 {
-                    listaCluster.Add(db.ParCluster.Where(x => x.Id == item.Value).FirstOrDefault());
+                    if(item != null)
+                        listaCluster.Add(db.ParCluster.Where(x => x.Id == item.Value).FirstOrDefault());
                 }
 
                 foreach (var item in listaCluster)
