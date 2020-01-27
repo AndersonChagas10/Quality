@@ -263,3 +263,15 @@ IF COL_LENGTH('ParLevel3Value','ParCluster_Id') IS NULL
 		ALTER TABLE ParLevel3Value ADD ParCluster_Id int null;
     END
 GO
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParAlertXUser' AND xtype='U')
+create table ParAlertXUser(
+	Id int not null identity(1,1) primary key,
+	ParCompany_Id int null FOREIGN key REFERENCES ParCompany(Id),
+	ParAlert_Id int not null FOREIGN key REFERENCES ParAlert(Id),
+	UserSgq_Id int not null FOREIGN key REFERENCES UserSgq(Id),
+	AddDate datetime not null,
+	AlterDate datetime null,
+	IsActive bit not null default 1,
+)

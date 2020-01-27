@@ -1958,4 +1958,22 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-258</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>Criação de tela (CRUD) para cadastro de vinculo de Usuario com Alerta</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParAlertXUser' AND xtype='U')
+      create table ParAlertXUser(
+      Id int not null identity(1,1) primary key,
+      ParCompany_Id int null FOREIGN key REFERENCES ParCompany(Id),
+      ParAlert_Id int not null FOREIGN key REFERENCES ParAlert(Id),
+      UserSgq_Id int not null FOREIGN key REFERENCES UserSgq(Id),
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+    </Script>
+  </Card>
+
 </Cards>

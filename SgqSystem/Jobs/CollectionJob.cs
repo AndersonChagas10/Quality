@@ -383,7 +383,7 @@ namespace SgqSystem.Jobs
                         AddDate = DateTime.Now,
                         UnitId = db.ParCompany.FirstOrDefault()?.Id ?? 1,
                         DepartmentId = getDepartment(),
-                        ParLevel1_Id = 1,
+                        ParLevel1_Id = GetParLevel1(),
                         ConsolidationDate = DateTime.Now
                     };
 
@@ -400,6 +400,16 @@ namespace SgqSystem.Jobs
             }
         }
 
+        private static int GetParLevel1()
+        {
+            var level1 = new ParLevel1();
+            using (var db = new SgqDbDevEntities())
+            {
+                level1 = db.ParLevel1.FirstOrDefault();
+            }
+            return level1.Id;
+        }
+
         private static int setConsolidationLevel2(int consolidationLevel1_Id)
         {
             using (var db = new SgqDbDevEntities())
@@ -407,7 +417,7 @@ namespace SgqSystem.Jobs
                 var consolidationLevel2 = new ConsolidationLevel2()
                 {
                     ConsolidationLevel1_Id = consolidationLevel1_Id,
-                    ParLevel2_Id = 1,
+                    ParLevel2_Id = GetParLevel2(),
                     AddDate = DateTime.Now,
                     UnitId = 1
                 };
@@ -424,6 +434,16 @@ namespace SgqSystem.Jobs
 
                 return consolidationLevel2.Id;
             }
+        }
+
+        private static int GetParLevel2()
+        {
+            var level2 = new ParLevel2();
+            using (var db = new SgqDbDevEntities())
+            {
+                level2 = db.ParLevel2.FirstOrDefault();
+            }
+            return level2.Id;
         }
 
         public static int returnConsolidationLevel2Id()
