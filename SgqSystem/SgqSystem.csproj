@@ -2082,6 +2082,7 @@
     <Content Include="Views\ParAlertXUser\Delete.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioEdicao.cshtml" />
     <Content Include="Views\ScriptsVersion\Index.cshtml" />
+    <Content Include="Views\Error\AcessoNegado.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2177,7 +2178,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:8081</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
