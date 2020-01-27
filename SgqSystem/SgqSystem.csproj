@@ -460,6 +460,7 @@
     <Compile Include="Controllers\V2\Api\AppColetaController.cs" />
     <Compile Include="Controllers\V2\Api\DepartmentXRotinaApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParClusterApiController.cs" />
+    <Compile Include="Controllers\V2\Api\ParClusterGroupApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParDepartmentXHeaderFieldApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParFrequencyController.cs" />
     <Compile Include="Controllers\V2\Api\ParDepartmentController.cs" />
