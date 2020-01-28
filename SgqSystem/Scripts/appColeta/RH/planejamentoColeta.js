@@ -98,7 +98,7 @@ function renderPlanejamentoColeta(frequencia, cluster, clusterGroup) {
         '	<input type="text" class="form-control" value="' + frequencia.Name + '" readonly>' +
         '</div>' +
         '<div data-selects-cc>' +
-        criaHtmlSelect('Centro de Custo:', retornaOptions(retornaDepartamentos(0, undefined, parametrization.listaParDepartment), 'Id', 'Name', 'Selecione')) +
+        criaHtmlSelect('Coletar para:', retornaOptions(retornaDepartamentos(0, undefined, parametrization.listaParDepartment), 'Id', 'Name', 'Selecione')) +
         '</div>' +
         '<div data-selects-cargo>' +
         '</div>' +
@@ -285,7 +285,7 @@ $('body').off('change', '[data-selects-cc] select').on('change', '[data-selects-
 
             $('[data-selects-cc]').append(criaHtmlSelect('', departamentos));
         } else {
-            $('[data-selects-cargo]').html(criaHtmlSelect('Cargo:', retornaOptions(retornaCargos($(this).val()), 'Id', 'Name', 'Selecione')));
+            $('[data-selects-cargo]').html(criaHtmlSelect('', retornaOptions(retornaCargos($(this).val()), 'Id', 'Name', 'Selecione')));
         }
     }
 });
