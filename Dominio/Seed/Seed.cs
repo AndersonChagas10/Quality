@@ -61,7 +61,7 @@ namespace Dominio.Seed
         {
             DicionarioEstaticoSeed dicionarioSeed = new DicionarioEstaticoSeed();
 
-            #if RELEASE
+            #if !DEBUG
                  dicionarioSeed.SetDicionarioEstatico();
             #endif 
 
