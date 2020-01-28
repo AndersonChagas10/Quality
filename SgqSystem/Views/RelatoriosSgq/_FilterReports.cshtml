@@ -492,9 +492,11 @@
         $('#filterReports select').on('change', function () {
             preencheFiltrosAjax();
         });
-
+        
         var dataFiltro = [];
-        var objFiltro = { Param: {}};
+        var objFiltro = {
+            Param: {}
+        };
 
         function atualizaObjFiltro() {
             var objFiltroParam = objFiltro.Param;
@@ -505,6 +507,7 @@
                 }
             });
             objFiltro.Param = objFiltroParam;
+            objFiltro.ShowUserCompanies = @Html.Raw(Json.Encode(ViewBag.ShowUserCompanies));
         }
 
         function preencheFiltrosAjax() {

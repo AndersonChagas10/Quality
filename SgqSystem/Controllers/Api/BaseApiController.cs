@@ -39,8 +39,9 @@ namespace SgqSystem.Controllers.Api
             try
             {
                 //userlogado.attr('userlogin') +"|"+ userlogado.attr('userpass')
-                token = Request.Headers.GetValues("token").FirstOrDefault().ToString();
-                
+                //token = Request.Headers.GetValues("Cookie").FirstOrDefault().ToString();
+                token = Request.Headers.GetValues("Cookie").FirstOrDefault().ToString().Split('&').ElementAt(1).Split('=')[1];
+                token += "|00000";
 
             }
             catch
@@ -83,7 +84,8 @@ namespace SgqSystem.Controllers.Api
                         throw new UnauthorizedAccessException("Acesso negado!");
                     }
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new UnauthorizedAccessException("Acesso negado!");
             }
@@ -314,6 +316,50 @@ namespace SgqSystem.Controllers.Api
             {
                 return null;
             }
+        }
+
+        protected string GetUserUnitsIds(bool showUserCompanies = false)
+        {
+
+            var unidadesUsuario = new List<string>();
+
+            try
+            {
+                using (SgqDbDevEntities db = new SgqDbDevEntities())
+                {
+                    var user = new CredenciaisSgq()
+                    {
+                        Username = token.Split('|')[0],
+                        Senha = token.Split('|')[1]
+                    };
+
+                    var usuarioLogado = db.UserSgq.Where(x => x.Name == user.Username).FirstOrDefault();
+
+
+                    if (usuarioLogado == null)
+                        throw new UnauthorizedAccessException("Acesso negado!");
+
+                    if (usuarioLogado.ShowAllUnits.Value || !showUserCompanies)
+                    {
+                        unidadesUsuario = db.ParCompany.Where(x => x.IsActive).Select(x => x.Id.ToString()).ToList();
+                    }
+                    else
+                    {
+                        unidadesUsuario = db.ParCompanyXUserSgq.Where(x => x.UserSgq_Id == usuarioLogado.Id).Select(x => x.ParCompany_Id.ToString()).ToList();
+                        unidadesUsuario.Add(usuarioLogado.ParCompany_Id.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+                throw new UnauthorizedAccessException("Acesso negado!");
+            }
+
+            var retorno = string.Join(",", unidadesUsuario);
+
+            return retorno;
+
         }
 
     }

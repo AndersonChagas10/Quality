@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace DTO
 {
     public class DataCarrierFormularioNew
-    {
+    { 
+
         public DateTime startDate { get; set; }
 
         public DateTime endDate { get; set; }
@@ -18,6 +19,8 @@ namespace DTO
         public int[] ParStructureRegional_Ids { get; set; } = new int[] { };
 
         public int[] ParStructureGroup_Ids { get; set; } = new int[] { };
+
+        public bool ShowUserCompanies { get; set; } = false;
 
         public int[] ParCompany_Ids { get; set; } = new int[] { };
 
