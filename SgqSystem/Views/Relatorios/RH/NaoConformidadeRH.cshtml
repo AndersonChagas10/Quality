@@ -148,7 +148,7 @@
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
         //var Grafico1 = '@Resources.Resource.defects_per_unit'; //'NC por unidade';
-        var Department = '@Resources.Resource.department'
+        var Department = '@Html.Raw(Resources.Resource.department)'
         var GraficoDepto = '@Resources.Resource.defects_per_deparment'; //'NC por departamento';
         var GraficoIndic = '@Resources.Resource.defects_per_audit'; //'NC por Indicador: ';
         var GraficoMon = '@Resources.Resource.defects_per_monitoring'; //'NC por Monitoramento: ';
@@ -268,7 +268,6 @@
         };
 
         function GetGraficoUnidade(holdingName, holding_Id, grupoEmpresaName, grupoEmpresa_Id, regionalName, regional_Id) {
-
             objFiltro.Param.holdingName = holdingName;
             objFiltro.Param.holding_Id = holding_Id;
 
@@ -486,7 +485,6 @@
                     break;
 
                 case "Unidade":
-                    debugger
                     GetGraficoUnidade(objFiltro.Param["holdingName"], objFiltro.Param["holding_Id"], objFiltro.Param["grupoEmpresa"], objFiltro.Param["grupoEmpresa_Id"], Aux, Aux2);
                     break;
 
@@ -673,7 +671,6 @@
                 })
                 .done(function (data) {
                     //console.log(data);
-                    debugger
                     GraficoNegocio(data, objFiltro);
                     closeLoader();
                 })
@@ -739,8 +736,7 @@
             Highcharts.chart('RGHoldingGrafico', {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(setNameTitulos("NC por Holding")),
-                subtitle: Chart.Subtitulo(setNameSubtitulos(Resources('defects_per_unit'))),
+                title: Chart.Titulo("NC por Holding"),
                 xAxis: Chart.Xaxis(dataX),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -787,8 +783,7 @@
             Highcharts.chart('RGNegocioGrafico', {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(setNameTitulos("NC por Negócio")),
-                subtitle: Chart.Subtitulo(setNameSubtitulos(Resources('defects_per_unit'))),
+                title: Chart.Titulo("NC por Negócio"),
                 xAxis: Chart.Xaxis(dataX),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -830,12 +825,11 @@
             var Proc = MapeiaValorParaHC(data, "Proc");
 
             $('#RGRegionalGrafico').empty();
-
+            debugger
             Highcharts.chart('RGRegionalGrafico', {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(setNameTitulos("NC por Regional")),
-                subtitle: Chart.Subtitulo(setNameSubtitulos(Resources('defects_per_unit'))),
+                title: Chart.Titulo("NC por Regional"),
                 xAxis: Chart.Xaxis(dataX),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
