@@ -95,6 +95,11 @@ namespace Dominio.Seed
 
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "CollectionJobTime0IsDisabled", Value = "0", ControllerName = "CollectionJob", Descricao = "Intervalo que o CollectionJob será executado, 0 = desligado" });
 
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "parStructure1", Value = "Holding", ControllerName = "_FilterReports", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "parStructure2", Value = "Grupo de Empresa", ControllerName = "_FilterReports", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "parStructure3", Value = "Regional", ControllerName = "_FilterReports", Descricao = "" });
+
+
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys).ToList();
 
                 if (add.Count > 0)
