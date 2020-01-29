@@ -39,7 +39,7 @@
     ViewBag.ShowParClusterGroup = true;
     ViewBag.ShowParStructure2 = true; //Grupo de empresa
     ViewBag.ShowParStructure3 = true; //Regional
-    //ViewBag.ShowParModule = true; 
+                                      //ViewBag.ShowParModule = true;
     ViewBag.ShowParLevel1 = true;
     ViewBag.ShowParLevel2 = true;
     ViewBag.ShowParLevel3 = true;
@@ -214,9 +214,7 @@
         });
 
         function enviarFiltro() {
-
-            openLoader('Aguarde...');
-            $btn.button('loading');
+            
             $('#results').empty();
             $("#RGOperacoesGrafico").empty();
             $('#RGDepartamentosGrafico').empty();
@@ -236,6 +234,11 @@
                 $btn.button('reset');
                 return;
             }
+
+            $btn.button('loading');
+
+            openLoader('Aguarde...');
+
             objFiltro.Param = {};
             objFiltro.Param.auditorId = GetUsuarioId();
 
@@ -265,7 +268,7 @@
         };
 
         function GetGraficoUnidade(holdingName, holding_Id, grupoEmpresaName, grupoEmpresa_Id, regionalName, regional_Id) {
-            debugger
+
             objFiltro.Param.holdingName = holdingName;
             objFiltro.Param.holding_Id = holding_Id;
 
@@ -301,13 +304,20 @@
             $('#RGTarefasPivotTable').hide();
         };
 
-    function ValidaDadosParaEnvio() {
+        function ValidaDadosParaEnvio() {
+
+            GuardJs.esconderMensagem();
+
             GuardJs.resetForValidation(objFiltro);
             GuardJs.CheckRangeDateTime(objFiltro.endDate, objFiltro.startDate, "Initial date", "End date");
 
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
-            GuardJs.esconderMensagem();
+
+            if (!objFiltro.parClusterGroup_Ids || objFiltro.parClusterGroup_Ids.length < 0) {
+                GuardJs.exibirMensagemAlerta("Selecione o Grupo de Clusters.");
+                return false;
+            }
 
             return true;
         }
@@ -402,7 +412,7 @@
         }
 
         function GetPopover(param, grafico, shift, param_Id) {
-            
+
             popoverMain.addClass('hide');
 
             hidePopoverItems();
@@ -760,12 +770,12 @@
         }
 
         function GraficoNegocio(data, data2) {
-            
+
             if (!(data.length > 0)) {
                 GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
                 return;
             }
-           
+
             var dataX = MapeiaValorParaHC(data, "GrupoDeEmpresaName");
             var dataXId = MapeiaValorParaHC(data, "GrupoDeEmpresa_Id");
             var Nc = MapeiaValorParaHC(data, "Nc");
