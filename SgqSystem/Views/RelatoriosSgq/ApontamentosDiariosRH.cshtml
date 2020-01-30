@@ -50,7 +50,8 @@
                 beforeSend: function () {
                 }
             })
-            .done(function (data) {
+                .done(function (data) {
+                    debugger
                 GerarTabela(data);
                 closeLoader();
             })
@@ -100,8 +101,11 @@
                         { title: "@Resources.Resource.auditor", mData: "Auditor" },
                         { title: "@Resources.Resource.date", mData: "_Data" },
                         { title: "@Resources.Resource.time", mData: "_Hora" },
-
-                        { title: "@Resources.Resource.department", mData: "Departamento" },
+                        { title: "@Resources.Resource.costcenter", mData: "CentroCusto" },
+                        { title: "@Resources.Resource.department", mData: "Secao" },
+                        { title: "@Resources.Resource.company_group", mData: "GrupoEmpresa" },
+                        { title: "@Resources.Resource.structure", mData: "regional" },
+                        { title: "@Resources.Resource.cluster_group1", mData: "GrupoCluster" },
                         { title: "Cargo", mData: "Cargo" },
                         { title: "@Resources.Resource.audit", mData: "Indicador" },
                         { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
@@ -136,7 +140,7 @@
                             }
                         },
                         { title: "@Resources.Resource.value", mData: "Lancado" },
-                        { title: "@Resources.Resource.valueText", mData: "ValueText" },
+                        { title: "@Resources.Resource.textfield", mData: "ValueText" },
                         { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
                         { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
                         { title: "@Resources.Resource.na ?", mData: "_NA" },
