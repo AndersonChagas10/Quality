@@ -261,6 +261,18 @@ function convertDate(date) {
     return mes + "/" + dia + "/" + ano;
 }
 
+function convertDateBRToUSA(date) {
+
+    var dateArray = date.split('/');
+
+    var dia = dateArray[1];
+    var mes = dateArray[0];
+    var ano = dateArray[2];
+
+    return mes + "/" + dia + "/" + ano;
+
+}
+
 function toDateTime(datetime){
     if(datetime){
         var day = parseInt(datetime.substring(0, 2));
@@ -352,5 +364,20 @@ function stringToTime(string) {
 
 function dateInternacionalFormat(date){    
     return (new Date(date)).toLocaleDateString("pt-BR")
+}
+
+function dateConvertToDefault(date){
+
+    var dateDefault = "";
+
+    var day = date.substr(0,2);
+    var month = date.substr(3,2);
+    var year =  date.substr(6, 4);
+    var hour = date.substr(11,6);
+    
+    dateDefault = year + "-" + month + "-" + day + " " + hour;
+
+    return dateDefault
+
 }
 
