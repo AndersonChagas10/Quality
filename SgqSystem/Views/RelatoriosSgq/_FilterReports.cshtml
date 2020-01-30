@@ -634,8 +634,7 @@
         var dataFiltro = [];
         var objFiltro = { Param: {}};
 
-        function atualizaObjFiltro() {
-            debugger
+        function atualizaObjFiltro() { 
             var objFiltroParam = objFiltro.Param;
             objFiltro = $('#filterReports').serializeObject();
             $(Object.keys(objFiltro)).each(function (i, o) {
