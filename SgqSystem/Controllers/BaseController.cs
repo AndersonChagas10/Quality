@@ -228,17 +228,22 @@ namespace SgqSystem.Controllers
                     {
                         var rolesNames = db.UserSgq.Find(int.Parse(UserId)).Role.Split(',');
 
-                        var rolesIDs = db.RoleUserSgq.Where(r => rolesNames.Contains(r.Name) && r.IsActive == true).Select(r => r.Id).ToList();
+                        var roleUserSgqList = db.RoleUserSgq.Where(r => rolesNames.Contains(r.Name) && r.IsActive == true).ToList();
 
-                        var roleUSerSGQ = new List<RoleUserSgq>();
-                        foreach (var item in rolesIDs)
+                        var rolesIDs = roleUserSgqList.Select(r => r.Id).ToList();
+
+                        var roleUser = new RoleUserSgq();
+                        foreach (var item in roleUserSgqList)
                         {
-                            roleUSerSGQ.Add(db.RoleUserSgq.Where(x => x.Id == item).FirstOrDefault());
+                            roleUser.FazColeta = roleUser.FazColeta == true ? roleUser.FazColeta : item.FazColeta;
+                            roleUser.IsCorporativo = roleUser.IsCorporativo == true ? roleUser.IsCorporativo : item.IsCorporativo;
+                            roleUser.IsNegocio = roleUser.IsNegocio == true ? roleUser.IsNegocio : item.IsNegocio;
+                            roleUser.IsRegional = roleUser.IsRegional == true ? roleUser.IsRegional : item.IsRegional;
                         }
 
-                        ViewBag.RoleUSerSgq = roleUSerSGQ;
+                        ViewBag.RoleUSerSgq = roleUser;
 
-                       var ItensDeMenuUsuarioIds = db.RoleUserSgqXItemMenu.Where(r => rolesIDs.Contains(r.RoleUserSgq_Id) && r.IsActive == true).Select(r => r.ItemMenu_Id).Distinct().ToList();
+                        var ItensDeMenuUsuarioIds = db.RoleUserSgqXItemMenu.Where(r => rolesIDs.Contains(r.RoleUserSgq_Id) && r.IsActive == true).Select(r => r.ItemMenu_Id).Distinct().ToList();
 
                         ViewBag.TodosItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && ItensDeMenuUsuarioIds.Contains(r.Id)));
                         ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null && ItensDeMenuUsuarioIds.Contains(r.Id)));

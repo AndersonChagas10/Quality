@@ -8,14 +8,6 @@ using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api.Relatorios.RH
 {
-
-    public enum Role
-    {
-        Adm = 1,
-        BackDate = 2,
-        ApenasColeta = 3
-    }
-
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/NaoConformidadeRH")]
     public class NaoConformidadeRHApiController : BaseApiController
@@ -59,6 +51,15 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
 
+            if (form.ShowUserCompanies)
+            {
+                whereUnit += $@"
+                    AND L2.UnitId in (select DISTINCT PC.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    where usuario.Id = {form.Param["auditorId"]}) ";
+            }
+
             if (form.ParClusterGroup_Ids.Length > 0)
             {
                 whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
@@ -96,6 +97,16 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 					LEft Join (select * from ParStructure where ParStructureGroup_Id = 1) Holding on L2.Holding = Holding.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    AND Holding.Id in (select DISTINCT PS2.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    inner join ParCompanyXStructure PCXStructure on Pc.Id = PCXStructure.ParCompany_Id
+                    inner join ParStructure PS on PCXStructure.ParStructure_Id = PS.Id
+                    inner join ParStructure PS1 on Ps.ParStructureParent_Id = PS1.Id 
+                    inner join ParStructure PS2 on Ps1.ParStructureParent_Id = PS2.Id 
+                    where usuario.Id = {form.Param["auditorId"]})
+
                     {whereStructure}
                     {whereUnit}
                     {whereDepartment}
@@ -151,6 +162,15 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
 
+            if (form.ShowUserCompanies)
+            {
+                whereUnit += $@"
+                    AND L2.UnitId in (select DISTINCT PC.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    where usuario.Id = {form.Param["auditorId"]}) ";
+            }
+
             if (form.ParClusterGroup_Ids.Length > 0)
             {
                 whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
@@ -189,6 +209,15 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 					LEft Join (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on L2.GrupoDeEmpresa = GrupoDeEmpresa.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    AND GrupoDeEmpresa.Id in (select DISTINCT PS1.Id from UserSgq as usuario
+                        inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                        inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                        inner join ParCompanyXStructure PCXStructure on Pc.Id = PCXStructure.ParCompany_Id
+                        inner join ParStructure PS on PCXStructure.ParStructure_Id = PS.Id 
+                        inner join ParStructure PS1 on Ps.ParStructureParent_Id = PS1.Id 
+                        where usuario.Id = {form.Param["auditorId"]})
+
                     {whereStructure}
                     {whereUnit}
                     {whereDepartment}
@@ -196,7 +225,6 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereCargo}
                     {whereCluster}
                     {whereClusterGroup}
-					AND Holding.Id = {form.Param["holding_Id"]}
                 GROUP BY 
 	                GrupoDeEmpresa.NAME, GrupoDeEmpresa.Id 
                 ";
@@ -245,6 +273,16 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
 
+            if (form.ShowUserCompanies)
+            {
+                whereUnit += $@"
+                    AND L2.UnitId in (select DISTINCT PC.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    where usuario.Id = {form.Param["auditorId"]}) ";
+            }
+
+
             if (form.ParClusterGroup_Ids.Length > 0)
             {
                 whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
@@ -284,6 +322,14 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on L2.Regional = Regional.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    AND Regional.Id in (select DISTINCT PS.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    inner join ParCompanyXStructure PCXStructure on Pc.Id = PCXStructure.ParCompany_Id
+                    inner join ParStructure PS on PCXStructure.ParStructure_Id = PS.Id 
+                    where usuario.Id = {form.Param["auditorId"]})
+
                     {whereStructure}
                     {whereUnit}
                     {whereDepartment}
@@ -291,8 +337,6 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereCargo}
                     {whereCluster}
                     {whereClusterGroup}
-				    AND Holding.Id = {form.Param["holding_Id"]}
-					AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
                 GROUP BY 
 	                Regional.NAME, Regional.Id 
                 ";
@@ -352,13 +396,15 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             {
                 whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
-            //else
-            //{
-            //    whereUnit = $@"AND UNI.Id IN (SELECT
-            //    				ParCompany_Id
-            //    			FROM ParCompanyXUserSgq
-            //    			WHERE UserSgq_Id = { form.Param["auditorId"] })";
-            //}
+
+            if (form.ShowUserCompanies)
+            {
+                whereUnit += $@"
+                    AND L2.UnitId in (select DISTINCT PC.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    where usuario.Id = {form.Param["auditorId"]}) ";
+            }
 
             if (form.ParClusterGroup_Ids.Length > 0)
             {
@@ -418,9 +464,6 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereCargo}
                     {whereCluster}
                     {whereClusterGroup}
-                    AND Holding.Id = {form.Param["holding_Id"]}
-					AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-					AND Regional.Id = {form.Param["regional_Id"]} 
                 GROUP BY 
 	                C.NAME, C.Id ";
 
@@ -555,9 +598,6 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereCargo}
                 {whereCluster}
                 {whereClusterGroup}
-                AND Holding.Id = {form.Param["holding_Id"]}
-				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-				AND Regional.Id = {form.Param["regional_Id"]} 
             GROUP BY 
 	            D1.NAME, D1.Id
             ORDER BY 4 DESC 
@@ -1210,9 +1250,6 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereCargo}
                 {whereCluster}
                 {whereClusterGroup}
-                AND Holding.Id = {form.Param["holding_Id"]}
-				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-				AND Regional.Id = {form.Param["regional_Id"]} 
             GROUP BY 
 	            L.NAME, L.Id
             ORDER BY 4 DESC
@@ -1651,9 +1688,6 @@ DROP TABLE #AMOSTRATIPO4 ";
                     {whereCargo}
                     {whereCluster}
                     {whereClusterGroup}
-                AND Holding.Id = {form.Param["holding_Id"]}
-				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-				AND Regional.Id = {form.Param["regional_Id"]} 
 
             GROUP BY 
 	            M.NAME, M.Id
@@ -1792,9 +1826,6 @@ DROP TABLE #AMOSTRATIPO4 ";
                  {whereUnit}
                  {whereCluster}
                  {whereClusterGroup}
-                AND Holding.Id = {form.Param["holding_Id"]}
-				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-				AND Regional.Id = {form.Param["regional_Id"]} 
         GROUP BY 
 	        T.NAME, T.ID
         ORDER BY 4 DESC
@@ -1835,11 +1866,11 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
-                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+                whereUnit = $@"AND L3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
             else
             {
-                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+                whereUnit = $@"AND L3.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -1905,13 +1936,10 @@ DROP TABLE #AMOSTRATIPO4 ";
                  {whereCluster}
                  {whereClusterGroup}
                  {whereUnit}
-                AND Holding.Id = {form.Param["holding_Id"]}
-				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-				AND Regional.Id = {form.Param["regional_Id"]} 
-        GROUP BY 
-	        T.NAME, T.ID
-        ORDER BY 4 DESC
-";
+                        GROUP BY 
+	                        T.NAME, T.ID
+                        ORDER BY 4 DESC
+                ";
 
 
             using (Factory factory = new Factory("DefaultConnection"))
