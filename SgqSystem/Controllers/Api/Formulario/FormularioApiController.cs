@@ -1616,7 +1616,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             {whereUnidadesUsuario}
                             {whereClusterGroup}
                             {whereCluster}
-                            AND PCL.Name LIKE '%{search}%'";
+                            AND PS.Name LIKE '%{search}%'";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
@@ -1717,7 +1717,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             {whereUnidadesUsuario}
                             {whereCluster}
                             {whereStructParent}
-                            AND PCL.Name LIKE '%{search}%'";
+                            AND PS.Name LIKE '%{search}%'";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
@@ -1826,7 +1826,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             {whereUnidadesUsuario}
                             {whereClusterGroup}
                             {whereCluster}
-                            AND PCL.Name LIKE '%{search}%'";
+                            AND PC.Name LIKE '%{search}%'";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 

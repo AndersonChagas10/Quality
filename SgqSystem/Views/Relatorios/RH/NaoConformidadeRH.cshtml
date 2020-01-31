@@ -211,6 +211,8 @@
 
             $('.sidebar-nav select').select2();
 
+            $('[name="parCluster_Ids"]').parent().find('label strong').append('<span style="color:red;font-size:20px"> *</span>');
+
         });
 
         function enviarFiltro() {
@@ -825,7 +827,7 @@
             var Proc = MapeiaValorParaHC(data, "Proc");
 
             $('#RGRegionalGrafico').empty();
-            debugger
+            
             Highcharts.chart('RGRegionalGrafico', {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
