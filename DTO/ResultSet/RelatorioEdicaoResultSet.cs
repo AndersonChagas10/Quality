@@ -28,8 +28,8 @@ namespace DTO.ResultSet
 
         public string Valor_Texto 
         {
-            get { return _result_Level3?.ValueText == "undefined" || _result_Level3?.ValueText == "null" ?  "" : _result_Level3?.ValueText ?? this._valor_Texto; }
-            set { _valor_Texto = value; }
+             get { return _result_Level3?.ValueText == "undefined" || _result_Level3?.ValueText == "null" ?  "" : _result_Level3?.ValueText ?? this._valor_Texto; } 
+             set { _valor_Texto = value; }
         }
 
 
@@ -48,7 +48,7 @@ namespace DTO.ResultSet
         public bool IsConform { get { return Convert.ToBoolean(_result_Level3?.IsConform); } }
         public string Conforme { get; set; }
         public int EvaluationNumber { get; set; }
-        public string AVALIADO_NAO_AVALIADO { get { return Convert.ToString(_result_Level3?.IsNotEvaluate); } }
+        public string AVALIADO_NAO_AVALIADO { get { return Convert.ToString( _result_Level3?.IsNotEvaluate == false? 0 : 1); } }
         public int Avaliado { get; set; }
         public string Avaliacao { get; set; }
         public string Amostra { get; set; }
@@ -91,7 +91,8 @@ namespace DTO.ResultSet
         {
             var dtInit = form.startDate.ToString("yyyyMMdd");
             var dtF = form.endDate.ToString("yyyyMMdd");
-
+            
+            var sqlModulo = "";
             var sqlTurno = "";
             var sqlUnidade = "";
             var sqlLevel1 = "";
@@ -105,6 +106,11 @@ namespace DTO.ResultSet
 
             #region Filtros
 
+            if (form.ParModule_Ids.Length > 0)
+            {
+                sqlModulo = $"\n AND plx.ParModule_Id in ({string.Join(",", form.ParModule_Ids)})";
+            }
+
             if (form.Shift_Ids.Length > 0)
             {
                 sqlTurno = $"\n AND [Shift] in ({string.Join(",", form.Shift_Ids)})";
@@ -112,32 +118,32 @@ namespace DTO.ResultSet
 
             if (form.ParCompany_Ids.Length > 0)
             {
-                sqlUnidade = $"\n AND UnitId in ({string.Join(",", form.ParCompany_Ids)})";
+                sqlUnidade = $"\n AND cl.UnitId in ({string.Join(",", form.ParCompany_Ids)})";
             }
 
             if (form.ParLevel1_Ids.Length > 0)
             {
-                sqlLevel1 = $"\n AND ParLevel1_id in ({string.Join(",", form.ParLevel1_Ids)})";
+                sqlLevel1 = $"\n AND cl.ParLevel1_id in ({string.Join(",", form.ParLevel1_Ids)})";
             }
 
             if (form.ParLevel2_Ids.Length > 0)
             {
-                sqlLevel2 = $"\n AND ParLevel2_Id in ({string.Join(",", form.ParLevel2_Ids)})";
+                sqlLevel2 = $"\n AND cl.ParLevel2_Id in ({string.Join(",", form.ParLevel2_Ids)})";
             }
 
             if (form.ParLevel3_Ids.Length > 0)
             {
-                sqlLevel3 = $"\n AND ParLevel3_Id  in ({string.Join(",", form.ParLevel3_Ids)})";
+                sqlLevel3 = $"\n AND rl.ParLevel3_Id  in ({string.Join(",", form.ParLevel3_Ids)})";
             }
 
             if (form.userSgqMonitor_Ids.Length > 0)
             {
-                sqlSgqMonitor = $"\n AND AuditorId  in ({string.Join(",", form.userSgqMonitor_Ids)})";
+                sqlSgqMonitor = $"\n AND cl.AuditorId  in ({string.Join(",", form.userSgqMonitor_Ids)})";
             }
 
             if (form.ParReason_Ids.Length > 0)
             {
-                sqlParReason = $"\n AND ParReason_Id  in ({string.Join(",", form.ParReason_Ids)})";
+                sqlParReason = $"\n AND lt.ParReason_Id  in ({string.Join(",", form.ParReason_Ids)})";
             }
 
             if (form.ParSecao_Ids.Length > 0)
@@ -245,8 +251,8 @@ namespace DTO.ResultSet
 						   ,pr.Motivo
 						   ,lt.Motivo AS DescMotivo
 						   ,CASE
-								WHEN lt.ParReason_Id IS NULL THEN 'ORIGINAL'
-								ELSE 'EDITADO'
+								WHEN lt.ParReason_Id IS NULL THEN 'Original'
+								ELSE 'Editado'
 							END AS 'ORIGINAL_EDITADO' 
 							,cl.adddate as Data_Adicao
 							,lt.Json as json
@@ -268,6 +274,9 @@ namespace DTO.ResultSet
 
 						LEFT JOIN #CollectionLevel2XParHeaderField2 cl2hf (NOLOCK)
 							ON cl2hf.CollectionLevel2_Id = cl.Id
+
+                        LEFT JOIN ParLevel1XModule plx 
+				        	ON plx.ParLevel1_Id = cl.ParLevel1_Id
 
 						-- Parametrizacao
 						LEFT JOIN ParLevel1 p1 (NOLOCK)
@@ -316,6 +325,9 @@ namespace DTO.ResultSet
 
                AND cl.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
                AND lt.Tabela = 'CollectionLevel2XParHeaderField'-- Tabela
+                         { sqlModulo }                         
+                         { sqlTurno }                         
+                         { sqlUnidade }
                          { sqlLevel1 } 
                          { sqlLevel2 } 
                          { sqlSgqMonitor }
@@ -355,6 +367,7 @@ namespace DTO.ResultSet
             var dtInit = form.startDate.ToString("yyyyMMdd");
             var dtF = form.endDate.ToString("yyyyMMdd");
 
+            var  sqlModulo = "";
             var sqlTurno = "";
             var sqlUnidade = "";
             var sqlLevel1 = "";
@@ -366,6 +379,12 @@ namespace DTO.ResultSet
             var sqlSgqMonitor = "";
             var sqlParReason = "";
 
+
+            if (form.ParModule_Ids.Length > 0)
+            {
+                sqlModulo = $"\n AND plx.ParModule_Id in ({string.Join(",", form.ParModule_Ids)})";
+            }
+
             if (form.Shift_Ids.Length > 0)
             {
                 sqlTurno = $"\n AND [Shift] in ({string.Join(",", form.Shift_Ids)})";
@@ -373,32 +392,32 @@ namespace DTO.ResultSet
 
             if (form.ParCompany_Ids.Length > 0)
             {
-                sqlUnidade = $"\n AND UnitId in ({string.Join(",", form.ParCompany_Ids)})";
+                sqlUnidade = $"\n AND cl.UnitId in ({string.Join(",", form.ParCompany_Ids)})";
             }
 
             if (form.ParLevel1_Ids.Length > 0)
             {
-                sqlLevel1 = $"\n AND ParLevel1_id in ({string.Join(",", form.ParLevel1_Ids)})";
+                sqlLevel1 = $"\n AND cl.ParLevel1_id in ({string.Join(",", form.ParLevel1_Ids)})";
             }
 
             if (form.ParLevel2_Ids.Length > 0)
             {
-                sqlLevel2 = $"\n AND ParLevel2_Id in ({string.Join(",", form.ParLevel2_Ids)})";
+                sqlLevel2 = $"\n AND cl.ParLevel2_Id in ({string.Join(",", form.ParLevel2_Ids)})";
             }
 
             if (form.ParLevel3_Ids.Length > 0)
             {
-                sqlLevel3 = $"\n AND ParLevel3_Id  in ({string.Join(",", form.ParLevel3_Ids)})";
+                sqlLevel3 = $"\n AND rl.ParLevel3_Id  in ({string.Join(",", form.ParLevel3_Ids)})";
             }
 
             if (form.userSgqMonitor_Ids.Length > 0)
             {
-                sqlSgqMonitor = $"\n AND AuditorId  in ({string.Join(",", form.userSgqMonitor_Ids)})";
+                sqlSgqMonitor = $"\n AND cl.AuditorId  in ({string.Join(",", form.userSgqMonitor_Ids)})";
             }
 
             if (form.ParReason_Ids.Length > 0)
             {
-                sqlParReason = $"\n AND ParReason_Id  in ({string.Join(",", form.ParReason_Ids)})";
+                sqlParReason = $"\n AND lt.ParReason_Id  in ({string.Join(",", form.ParReason_Ids)})";
             }
 
             if (form.ParSecao_Ids.Length > 0)
@@ -495,13 +514,13 @@ namespace DTO.ResultSet
 				   ,cl.AlterDate as _Data_Alteracao
 	        	   --,rl.Value as Resultado 
 				   --,rl.ValueText as Valor_Texto 
+	        	    ,CASE
+	        		 	WHEN rl.isconform = 1 THEN 'Conforme'
+	        		 	ELSE 'Nâo Conforme'
+	        		 END AS Conforme
 	        	   --,CASE
-	        		--	WHEN rl.isconform = 1 THEN 'CONFORME'
-	        		--	ELSE 'NAO CONFORME'
-	        		--END AS Conforme
-	        	   --,CASE
-	        		--	WHEN rl.IsNotEvaluate = 0 THEN 'AVALIADO'
-	        			--ELSE 'NAO AVALIADO'
+	        		--	WHEN rl.IsNotEvaluate = 0 THEN 'Avaliado'
+	        			--ELSE 'Não Avaliado'
 	        		--END AS 'AVALIADO_NAO_AVALIADO'
 
 	        	   ,USC.Name AS Usuario_Coleta
@@ -510,9 +529,9 @@ namespace DTO.ResultSet
 	        	   ,pr.Motivo
 	        	   ,lt.Motivo as DescMotivo
 	        	   ,CASE
-                       WHEN lt.ParReason_Id IS NULL THEN 'ORIGINAL'
+                       WHEN lt.ParReason_Id IS NULL THEN 'Original'
 
-                       ELSE 'EDITADO'
+                       ELSE 'Editado'
 
                    END AS 'ORIGINAL_EDITADO'
 				   --,rl.WeiEvaluation AS Av_Peso
@@ -538,8 +557,11 @@ namespace DTO.ResultSet
 
                    ON cl.Id = rl.CollectionLevel2_Id
 
-			LEFT JOIN #CollectionLevel2XParHeaderField2 clxp
-			ON clxp.CollectionLevel2_Id = cl.Id
+			    LEFT JOIN #CollectionLevel2XParHeaderField2 clxp
+			    ON clxp.CollectionLevel2_Id = cl.Id
+
+                LEFT JOIN ParLevel1XModule plx 
+					ON plx.ParLevel1_Id = cl.ParLevel1_Id
 
                -- Parametrizacao
                LEFT JOIN ParLevel1 p1(NOLOCK)
@@ -577,6 +599,9 @@ namespace DTO.ResultSet
 
                AND cl.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
                AND Tabela = 'Result_Level3'-- Tabela
+                         { sqlModulo }                         
+                         { sqlTurno }                         
+                         { sqlUnidade }                        
                          { sqlLevel1 } 
                          { sqlLevel2 }
                          { sqlLevel3 }
