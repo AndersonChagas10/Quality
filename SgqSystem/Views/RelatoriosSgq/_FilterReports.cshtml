@@ -361,16 +361,16 @@
                                 </div>
                             }
 
-                                <select class="form-control hidden" name="IsCascadeLevel2Level3">
-                                    @if (ViewBag.IsCascadeLevel2Level3 == 0)
-                                    {
-                                        <option value="0" selected></option>
-                                    }
-                                    else
-                                    {
-                                        <option value="1" selected></option>
-                                    }
-                                </select>
+                            <select class="form-control hidden" name="IsCascadeLevel2Level3">
+                                @if (ViewBag.IsCascadeLevel2Level3 == 0)
+                                {
+                                    <option value="0" selected></option>
+                                }
+                                else
+                                {
+                                    <option value="1" selected></option>
+                                }
+                            </select>
 
                             @if (ViewBag.ShowParLevel1GQ == true)
                             {
@@ -619,6 +619,17 @@
                             onclick="toggleDivFilterReports();">
                         < Esconder Filtros
                     </button>
+                    @if (ViewBag.pivotTable == true)
+                    {
+                        <button type="button" class="btn btn-primary pull-left"
+                                id="tabela">
+                            Tabela
+                        </button>
+                        <button type="button" class="btn btn-primary pull-left"
+                                id="pivot-table">
+                            Analítico
+                        </button>
+                    }
                     <button type="button" class="btn btn-primary pull-right"
                             id="btnSend" onclick="enviarFiltro();">
                         @Resources.Resource.refresh
@@ -923,7 +934,7 @@
             $('input[name=endDate]').val(end.format("YYYY-MM-DD"));
             atualizaObjFiltro();
         }
-        
+
         var configCallendar = {};
         moment.locale('pt-BR');
         $('input[name=dateRange]').daterangepicker({
